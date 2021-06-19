@@ -1,0 +1,21 @@
+﻿
+
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Arad.Portal.Abstraction\Arad.Portal.Abstraction.csproj" />
+    <ProjectReference Include="..\Arad.Portal.GeneralLibrary\Arad.Portal.GeneralLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Transaction\" />
+    <Folder Include="Repositories\Shop\Order\Mongo\" />
+    <Folder Include="Repositories\Shop\Promotion\Mongo\" />
+    <Folder Include="Repositories\Shop\Transaction\Mongo\" />
+  </ItemGroup>
+
+</Project>

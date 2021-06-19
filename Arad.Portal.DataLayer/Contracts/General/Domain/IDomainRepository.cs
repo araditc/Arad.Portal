@@ -1,0 +1,19 @@
+﻿using Arad.Portal.DataLayer.Models.Shared;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Arad.Portal.DataLayer.Models.Domain;
+
+namespace Arad.Portal.DataLayer.Contracts.General.Domain
+{
+    public interface IDomainRepository
+    {
+        Task<RepositoryOperationResult> AddDomain(DomainDTO dto);
+        Task<RepositoryOperationResult> DomainChangePrice(DomainPrice dto);
+        Task<PagedItems<DomainDTO>> AllDomainList(string queryString);
+        Task<RepositoryOperationResult> DeleteDomain(string domainId);
+        RepositoryOperationResult<DomainDTO> FetchDomain(string currencyId);
+    }
+}

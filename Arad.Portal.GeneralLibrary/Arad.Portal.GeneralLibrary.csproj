@@ -8,8 +8,4 @@
     <ProjectReference Include="..\Arad.Portal.Abstraction\Arad.Portal.Abstraction.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Product\" />
-  </ItemGroup>
-
 </Project>
