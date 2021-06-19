@@ -160,7 +160,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
                 var list = _context.Collection.AsQueryable().Skip((page - 1) * pageSize)
                    .Take(pageSize).Select(_ => new ProductUnitDTO()
                    {
-                      ProductUnitId = _.Pr
+                      ProductUnitId = _.ProductUnitId,
+                      ProductUnitName = _.UnitName
                    }).ToList();
 
                 result.CurrentPage = page;
@@ -173,7 +174,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
             catch (Exception ex)
             {
                 result.CurrentPage = 1;
-                result.Items = new List<LanguageDTO>();
+                result.Items = new List<ProductUnitDTO>();
                 result.ItemsCount = 0;
                 result.PageSize = 10;
                 result.QueryString = queryString;
