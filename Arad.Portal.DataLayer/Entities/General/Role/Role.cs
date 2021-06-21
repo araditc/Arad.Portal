@@ -6,11 +6,11 @@ namespace Arad.Portal.DataLayer.Entities.General.Role
     {
         public Role()
         {
-            Permissions = new();
+            PermissionIds = new();
         }
         public string RoleId { get; set; }
         public string RoleName { get; set; }
-        public List<Permission.Permission> Permissions { get; set; }
+        public List<string> PermissionIds { get; set; }
 
     }
 }

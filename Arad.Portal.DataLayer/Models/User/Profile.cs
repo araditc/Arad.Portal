@@ -19,6 +19,8 @@ namespace Arad.Portal.DataLayer.Models.User
 
         public string NationalId { get; set; }
 
+        public string PhoneNumber { get; set; }
+
         public DateTime BirthDate { get; set; }
 
         public Picture ProfilePhoto { get; set; }
@@ -39,7 +41,8 @@ namespace Arad.Portal.DataLayer.Models.User
     public enum UserType
     {
         Admin,
-        Seller
+        Seller,
+        Customer
     }
     public class BankAccount
     {
@@ -55,6 +58,7 @@ namespace Arad.Portal.DataLayer.Models.User
         public SpecialAccess()
         {
             AccessibleProductGroupIds = new();
+
         }
         /// <summary>
         /// if user is type of seller then also has a role seller

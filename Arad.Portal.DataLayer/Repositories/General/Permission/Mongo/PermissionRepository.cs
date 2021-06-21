@@ -35,21 +35,39 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
             _userManager = userManager;
             _userRepository = userRepository;
         }
-        public async Task<RepositoryOperationResult> Delete(string permissionId)
+        public async Task<RepositoryOperationResult> Delete(string permissionId, string modificationReason)
         {
             var result = new RepositoryOperationResult();
             try
             {
-                var delResult = await _context.Collection.DeleteOneAsync(_=>_.PermissionId == permissionId);
-                if (delResult.IsAcknowledged)
+                var permissionEntity = _context.Collection
+                    .Find(_ => _.PermissionId == permissionId).FirstOrDefault();
+                if(permissionEntity != null)
                 {
-                   
-                    result.Message = ConstMessages.SuccessfullyDone;
-                    result.Succeeded = true;
+                    permissionEntity.IsDeleted = true;
+
+                    #region Add Modification
+                    var currentModification = permissionEntity.Modifications;
+                    var mod = GetCurrentModification(modificationReason);
+                    currentModification.Add(mod);
+                    permissionEntity.Modifications = currentModification;
+                    #endregion
+
+                    var updateResult = await _context.Collection
+                            .ReplaceOneAsync(_ => _.PermissionId == permissionId, permissionEntity);
+                    if (updateResult.IsAcknowledged)
+                    {
+                        result.Message = ConstMessages.SuccessfullyDone;
+                        result.Succeeded = true;
+                    }
+                    else
+                    {
+                        result.Message = ConstMessages.GeneralError;
+                    }
                 }
                 else
                 {
-                    result.Message = ConstMessages.GeneralError;
+                    result.Message = ConstMessages.ObjectNotFound;
                 }
             }
             catch (Exception e)
@@ -284,21 +302,19 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
 
             return result;
         }
-        private async Task<RepositoryOperationResult> UpdatePermissionAsync(PermissionDTO dto,
-            Entities.General.Permission.Permission equallentModel)
+        private async Task<RepositoryOperationResult> UpdatePermissionAsync
+            (Entities.General.Permission.Permission equallentModel, string modificationReason)
         {
             var result = new RepositoryOperationResult();
 
             var availableEntity = await _context.Collection
-                    .Find(_ => _.PermissionId.Equals(dto.PermissionId)).FirstOrDefaultAsync();
+                    .Find(_ => _.PermissionId.Equals(equallentModel.PermissionId)).FirstOrDefaultAsync();
 
             if (availableEntity != null)
             {
                 #region Add Modification
                 var currentModification = availableEntity.Modifications;
-                currentModification ??= new List<Modification>();
-                var mod = GetCurrentModification(dto.ModificationReason);
-
+                var mod = GetCurrentModification(modificationReason);
                 currentModification.Add(mod);
                 #endregion
 
@@ -325,6 +341,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
             return result;
         }
 
+
         private async Task<RepositoryOperationResult> InsertPermissionAsync(
             Entities.General.Permission.Permission equallentModel)
         {
@@ -338,6 +355,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
                 .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
             try
             {
+                equallentModel.PermissionId = Guid.NewGuid().ToString();
                 await _context.Collection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;
                 result.Message = ConstMessages.SuccessfullyDone;

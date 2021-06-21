@@ -42,6 +42,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 {
 
                     var equallentEntity = _mapper.Map<Entities.General.Domain.Domain>(dto);
+                    equallentEntity.DomainId = Guid.NewGuid().ToString();
                     if (!string.IsNullOrWhiteSpace(dto.OwnerUserId))
                     {
                         var ownerUser = _userContext.Collection.Find(_ => _.Id == dto.OwnerUserId).FirstOrDefault();

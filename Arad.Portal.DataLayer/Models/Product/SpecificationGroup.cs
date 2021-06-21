@@ -11,6 +11,7 @@ namespace Arad.Portal.DataLayer.Models.Product
     {
         public string SpecificationGroupId { get; set; }
         public string GroupName { get; set; }
-        public Language Language { get; set; }
+        public string LanguageId { get; set; }
+        public string LanguageName { get; set; }
     }
 }

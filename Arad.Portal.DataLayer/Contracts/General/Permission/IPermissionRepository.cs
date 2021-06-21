@@ -20,7 +20,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Permission
         List<PermissionDTO> MenusPermission(Enums.PermissionType typeMenu);
         Task<RepositoryOperationResult> Save(PermissionDTO permission);
         RepositoryOperationResult<PermissionDTO> GetForEdit(string permissionId);
-        Task<RepositoryOperationResult> Delete(string permissionId);
+        Task<RepositoryOperationResult> Delete(string permissionId, string modificationReason);
         RepositoryOperationResult<List<Modification>> GetModifications(string permissionId);
     }
 }

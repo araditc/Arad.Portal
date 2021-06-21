@@ -38,7 +38,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
            
             if (!string.IsNullOrWhiteSpace(dto.CurrencyId))//it is update case
             {
-                result = await UpdateCurrencyAsync(dto, equallentModel);
+                result = await UpdateCurrencyAsync(equallentModel, dto.ModificationReason);
             }
             else //it is insert case
             {
@@ -49,20 +49,19 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
         }
 
 
-        private async Task<RepositoryOperationResult> UpdateCurrencyAsync(CurrencyDTO dto,
-            Entities.General.Currency.Currency equallentModel)
+        private async Task<RepositoryOperationResult> UpdateCurrencyAsync(Entities.General.Currency.Currency equallentModel, string modificationReason)
         {
             var result = new RepositoryOperationResult();
 
             var availableEntity = await _context.Collection
-                    .Find(_ => _.CurrencyId.Equals(dto.CurrencyId)).FirstOrDefaultAsync();
+                    .Find(_ => _.CurrencyId.Equals(equallentModel.CurrencyId)).FirstOrDefaultAsync();
 
             if (availableEntity != null)
             {
                 #region Add Modification
                 var currentModification = availableEntity.Modifications;
-                currentModification ??= new List<Modification>();
-                var mod = GetCurrentModification(dto.ModificationReason);
+                //currentModification ??= new List<Modification>();
+                var mod = GetCurrentModification(modificationReason);
 
                 currentModification.Add(mod);
                 #endregion
@@ -80,6 +79,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
                 {
                     result.Succeeded = true;
                     result.Message = ConstMessages.SuccessfullyDone;
+                    //??? we have to update this entity wherever it is used in other entities
                 }
                 else
                 {
@@ -103,6 +103,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
                 .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
             try
             {
+                equallentModel.CurrencyId = Guid.NewGuid().ToString();
                 await _context.Collection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;
                 result.Message = ConstMessages.SuccessfullyDone;

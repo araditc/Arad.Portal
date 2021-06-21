@@ -31,7 +31,6 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
         {
             RepositoryOperationResult result = new RepositoryOperationResult();
             var equallentModel = _mapper.Map<Entities.General.Language.Language>(dto);
-            equallentModel.Modifications = new List<Modification>();
 
             equallentModel.CreationDate = DateTime.Now;
             equallentModel.CreatorUserId = _httpContextAccessor.HttpContext.User.Claims
@@ -40,6 +39,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
                 .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
             try
             {
+                equallentModel.LanguageId = Guid.NewGuid().ToString();
                 await _context.Collection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;
                 result.Message = ConstMessages.SuccessfullyDone;
@@ -64,14 +64,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
             {
                 #region Add Modification
                 var currentModification = availableEntity.Modifications;
-                currentModification ??= new List<Modification>();
                 var mod = GetCurrentModification(dto.ModificationReason);
-
                 currentModification.Add(mod);
                 #endregion
 
                 equallentModel.Modifications = currentModification;
-
                 equallentModel.CreationDate = availableEntity.CreationDate;
                 equallentModel.CreatorUserId = availableEntity.CreatorUserId;
                 equallentModel.CreatorUserName = availableEntity.CreatorUserName;
@@ -93,7 +90,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Delete(string languageId)
+        public async Task<RepositoryOperationResult> Delete(string languageId, string modificationReason)
         {
             RepositoryOperationResult result = new RepositoryOperationResult();
 
@@ -106,15 +103,32 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
                 #endregion
                 if (allowDeletion)
                 {
-                    var delResult = await _context.Collection.DeleteOneAsync(_ => _.LanguageId == languageId);
-                    if (delResult.IsAcknowledged)
+                    var languageEntity =await  _context.Collection.Find(_ => _.LanguageId == languageId).FirstOrDefaultAsync();
+                    if(languageEntity != null)
                     {
-                        result.Message = ConstMessages.SuccessfullyDone;
-                        result.Succeeded = true;
-                    }
-                    else
+                        languageEntity.IsDeleted = true;
+
+                        #region Add Modification
+                        var currentModification = languageEntity.Modifications;
+                        var mod = GetCurrentModification(modificationReason);
+                        currentModification.Add(mod);
+                        languageEntity.Modifications = currentModification;
+                        #endregion
+
+                        var updateResult = await _context.Collection
+                            .ReplaceOneAsync(_ => _.LanguageId == languageId, languageEntity);
+                        if (updateResult.IsAcknowledged)
+                        {
+                            result.Message = ConstMessages.SuccessfullyDone;
+                            result.Succeeded = true;
+                        }
+                        else
+                        {
+                            result.Message = ConstMessages.GeneralError;
+                        }
+                    }else
                     {
-                        result.Message = ConstMessages.GeneralError;
+                        result.Message = ConstMessages.ObjectNotFound;
                     }
                 }
                 else

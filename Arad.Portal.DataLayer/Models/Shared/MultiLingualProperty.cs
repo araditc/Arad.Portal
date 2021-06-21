@@ -20,6 +20,8 @@ namespace Arad.Portal.DataLayer.Models.Shared
 
         public string UrlFriend { get; set; }
 
-        public Entities.General.Language.Language Language { get; set; }
+        public string LanguageId { get; set; }
+
+        public string LanguageName { get; set; }
     }
 }

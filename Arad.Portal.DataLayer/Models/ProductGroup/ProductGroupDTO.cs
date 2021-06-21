@@ -1,4 +1,4 @@
-﻿using Arad.Portal.DataLayer.Entities.Shop.Product;
+﻿using Arad.Portal.DataLayer.Entities.Shop.Promotion;
 using Arad.Portal.DataLayer.Models.Shared;
 using System;
 using System.Collections.Generic;
@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arad.Portal.DataLayer.Entities.Shop.ProductGroup
+namespace Arad.Portal.DataLayer.Models.ProductGroup
 {
-    public class ProductGroup : BaseEntity
+    public class ProductGroupDTO
     {
-        public ProductGroup()
+        public ProductGroupDTO()
         {
-            MultiLingualProperties = new List<MultiLingualProperty>();
+            MultiLingualProperties = new ();
         }
         public string Id { get; set; }
 
@@ -20,7 +20,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ProductGroup
 
         public string ParentId { get; set; }
 
-        public Promotion.Promotion Promotion { get; set; }
+        public int IsDeleted { get; set; }
+
+        public Promotion Promotion { get; set; }
 
     }
 }

@@ -30,7 +30,7 @@ namespace Arad.Portal.DataLayer.Entities
 
         public bool IsActive { get; set; }
 
-        public General.Domain.Domain Domain { get; set; }
+        public string AssociatedDomainId { get; set; }
         #endregion
       
     }
