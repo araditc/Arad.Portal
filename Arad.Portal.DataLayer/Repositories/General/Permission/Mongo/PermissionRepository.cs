@@ -28,11 +28,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
         private readonly IMapper _mapper;
         public PermissionRepository(PermissionContext context,
             IHttpContextAccessor httpContextAccessor,
+            IMapper mapper,
             UserManager<ApplicationUser> userManager, 
             IUserRepository userRepository): base(httpContextAccessor)
         {
             _context = context;
             _userManager = userManager;
+            _mapper = mapper;
             _userRepository = userRepository;
         }
         public async Task<RepositoryOperationResult> Delete(string permissionId, string modificationReason)
@@ -293,7 +295,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
 
             if (!string.IsNullOrWhiteSpace(dto.PermissionId))//it is update case
             {
-                result = await UpdatePermissionAsync(dto, equallentModel);
+                result = await UpdatePermissionAsync(equallentModel, dto.ModificationReason);
             }
             else //it is insert case
             {

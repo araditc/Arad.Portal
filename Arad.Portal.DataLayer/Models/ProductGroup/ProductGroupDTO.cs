@@ -12,7 +12,7 @@ namespace Arad.Portal.DataLayer.Models.ProductGroup
     {
         public ProductGroupDTO()
         {
-            MultiLingualProperties = new ();
+            MultiLingualProperties = new List<MultiLingualProperty>();
         }
         public string Id { get; set; }
 
@@ -20,9 +20,7 @@ namespace Arad.Portal.DataLayer.Models.ProductGroup
 
         public string ParentId { get; set; }
 
-        public int IsDeleted { get; set; }
-
-        public Promotion Promotion { get; set; }
+        public Entities.Shop.Promotion.Promotion Promotion { get; set; }
 
     }
 }

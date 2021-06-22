@@ -1,17 +1,16 @@
-﻿using Arad.Portal.DataLayer.Models.Product;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arad.Portal.DataLayer.Entities.Shop.ProductSpecification
+namespace Arad.Portal.DataLayer.Models.ProductSpecification
 {
-    public class ProductSpecification : BaseEntity
+    public class ProductSpecificationDTO
     {
-        public ProductSpecification()
+        public ProductSpecificationDTO()
         {
-            SpecificationValues = new ();
+            SpecificationValues = new();
         }
         public string ProductSpecificationId { get; set; }
 
@@ -23,5 +22,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ProductSpecification
         /// all possible values which this specification has
         /// </summary>
         public List<string> SpecificationValues { get; set; }
+
+        public string ModificationReason { get; set; }
     }
 }

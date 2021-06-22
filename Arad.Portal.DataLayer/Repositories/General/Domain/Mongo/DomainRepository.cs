@@ -129,7 +129,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> DeleteDomain(string domainId)
+        public async Task<RepositoryOperationResult> DeleteDomain(string domainId, string modificationReason)
         {
             RepositoryOperationResult result = new RepositoryOperationResult();
 
@@ -142,16 +142,30 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 #endregion
                 if(allowDeletion)
                 {
-                    var delResult = await _context.Collection.DeleteOneAsync(_ => _.DomainId == domainId);
-                    if (delResult.IsAcknowledged)
+                    var entity = _context.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
+                    if(entity != null)
                     {
-                        result.Message = ConstMessages.SuccessfullyDone;
-                        result.Succeeded = true;
-                    }
-                    else
+                        entity.IsDeleted = true;
+                        #region add modification
+                        var mod = GetCurrentModification(modificationReason);
+                        entity.Modifications.Add(mod);
+                        #endregion
+
+                        var updateResult = await _context.Collection.ReplaceOneAsync(_ => _.DomainId == domainId, entity);
+                        if (updateResult.IsAcknowledged)
+                        {
+                            result.Message = ConstMessages.SuccessfullyDone;
+                            result.Succeeded = true;
+                        }
+                        else
+                        {
+                            result.Message = ConstMessages.GeneralError;
+                        }
+                    }else
                     {
-                        result.Message = ConstMessages.GeneralError;
+                        result.Message = ConstMessages.ObjectNotFound;
                     }
+                    
                 }else
                 {
                     result.Message = ConstMessages.DeletedNotAllowedForDependencies;

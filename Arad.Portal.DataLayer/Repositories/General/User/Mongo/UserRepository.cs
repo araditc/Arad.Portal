@@ -199,17 +199,17 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
                     query = query.Where(_ => _.UserName.Contains(searchParam.UserName.Trim()));
                 }
 
-                if (!string.IsNullOrEmpty(searchParam.Name))
+                if (!string.IsNullOrWhiteSpace(searchParam.Name))
                 {
                     query = query.Where(c => c.Profile.FirstName.Contains(searchParam.Name.Trim()));
                 }
 
-                if (!string.IsNullOrEmpty(searchParam.LastName))
+                if (!string.IsNullOrWhiteSpace(searchParam.LastName))
                 {
                     query = query.Where(_ => _.Profile.LastName.Contains(searchParam.LastName.Trim()));
                 }
 
-                if (!string.IsNullOrEmpty(searchParam.PhoneNumber))
+                if (!string.IsNullOrWhiteSpace(searchParam.PhoneNumber))
                 {
                     query = query.Where(_ => _.PhoneNumber.Contains(searchParam.PhoneNumber.Trim()));
                 }

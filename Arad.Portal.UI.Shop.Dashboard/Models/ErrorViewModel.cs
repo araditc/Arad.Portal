@@ -6,6 +6,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Models
     {
         public string RequestId { get; set; }
 
-        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+        public bool ShowRequestId => !string.IsNullOrWhiteSpace(RequestId);
     }
 }

@@ -24,7 +24,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Product
             MultiLingualProperties = new ();
         }
 
-        public string Id { get; set; }
+        public string ProductId { get; set; }
 
         public List<string> GroupIds { get; set; }
 

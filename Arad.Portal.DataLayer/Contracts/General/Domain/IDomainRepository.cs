@@ -13,7 +13,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Domain
         Task<RepositoryOperationResult> AddDomain(DomainDTO dto);
         Task<RepositoryOperationResult> DomainChangePrice(DomainPrice dto);
         Task<PagedItems<DomainDTO>> AllDomainList(string queryString);
-        Task<RepositoryOperationResult> DeleteDomain(string domainId);
+        Task<RepositoryOperationResult> DeleteDomain(string domainId, string modificationReason);
         RepositoryOperationResult<DomainDTO> FetchDomain(string currencyId);
     }
 }

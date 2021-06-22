@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 
-namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
+namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 {
     public class ProductContext
     {

@@ -1,13 +1,13 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using Arad.Portal.DataLayer.Entities.Shop.Promotion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
+namespace Arad.Portal.DataLayer.Models.Promotion
 {
-    public class Promotion
+    public class PromotionDTO
     {
         public string PromotionId { get; set; }
 
@@ -19,27 +19,8 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
 
         public string CurrencyId { get; set; }
 
-
-        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime StartDate { get; set; }
-
-
-        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
+       
         public DateTime? EndDate { get; set; }
-
-
-    }
-
-    public enum PromotionType
-    {
-        All,
-        Group, 
-        Product
-    }
-
-    public enum DiscountType
-    {
-        Fixed,
-        Percentage
     }
 }

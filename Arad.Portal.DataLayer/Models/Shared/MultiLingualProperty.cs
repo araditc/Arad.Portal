@@ -10,6 +10,9 @@ namespace Arad.Portal.DataLayer.Models.Shared
 {
     public class MultiLingualProperty
     {
+
+        public string  MultiLingualPropertyId { get; set; }
+
         public string Name { get; set; }
 
         public string Description { get; set; }
