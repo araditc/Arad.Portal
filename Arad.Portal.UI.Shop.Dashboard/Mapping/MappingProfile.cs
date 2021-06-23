@@ -4,6 +4,7 @@ using Arad.Portal.DataLayer.Entities.General.Language;
 using Arad.Portal.DataLayer.Entities.General.Permission;
 using Arad.Portal.DataLayer.Entities.General.Role;
 using Arad.Portal.DataLayer.Entities.General.User;
+using Arad.Portal.DataLayer.Entities.Shop.Product;
 using Arad.Portal.DataLayer.Entities.Shop.ProductGroup;
 using Arad.Portal.DataLayer.Entities.Shop.ProductSpecification;
 using Arad.Portal.DataLayer.Entities.Shop.ProductSpecificationGroup;
@@ -40,6 +41,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Mapping
             CreateMap<RoleDTO, Role>().ReverseMap();
             CreateMap<SpecificationGroupDTO, ProductSpecGroup>().ReverseMap();
             CreateMap<ProductSpecification, ProductSpecificationDTO>().ReverseMap();
+            CreateMap<ProductInputDTO, Product>();
+            CreateMap<Product, ProductOutputDTO>();
         }
         
     }

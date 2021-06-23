@@ -20,14 +20,13 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
     public class ProductSpecificationRepository : BaseRepository, IProductSpecificationRepository
     {
         private readonly IMapper _mapper;
-        private readonly ProductSpecificationContext _context;
+      
         private readonly ProductContext _productContext;
         public ProductSpecificationRepository(IHttpContextAccessor httpContextAccessor,
-            IMapper mapper, ProductSpecificationContext context,
+            IMapper mapper, 
             ProductContext productContext): base(httpContextAccessor)
         {
             _mapper = mapper;
-            _context = context;
             _productContext = productContext;
         }
         public async Task<RepositoryOperationResult> Add(ProductSpecificationDTO dto)
@@ -46,7 +45,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                     .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
 
 
-                await _context.Collection.InsertOneAsync(equallentEntity);
+                await _productContext.SpecificationCollection.InsertOneAsync(equallentEntity);
                 result.Succeeded = true;
                 result.Message = ConstMessages.SuccessfullyDone;
 
@@ -67,9 +66,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                 #region check object dependency
                 var allowDeletion = true;
                 //??? this part should be checked in mongo
-                var check = _productContext.Collection
+                var check = _productContext.ProductCollection
                     .AsQueryable()
-                    .Any(baseProduct => baseProduct.Attributes.Any(x => x.Key.SpecificationGroupId == specificationId));
+                    .Any(baseProduct => 
+                        baseProduct.Specifications
+                    .Any(_=> _.Specification.ProductSpecificationId == specificationId));
 
 
                 if (check)
@@ -81,7 +82,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                 #endregion
                 if (allowDeletion)
                 {
-                    var entity = _context.Collection
+                    var entity = _productContext.SpecificationCollection
                         .Find(_ => _.ProductSpecificationId == specificationId).FirstOrDefault();
                     if (entity != null)
                     {
@@ -91,7 +92,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                         entity.Modifications.Add(mod);
                         #endregion
 
-                        var updateResult = await _context.Collection
+                        var updateResult = await _productContext.SpecificationCollection
                             .ReplaceOneAsync(_ => _.ProductSpecificationId == specificationId, entity);
                         if (updateResult.IsAcknowledged)
                         {
@@ -120,11 +121,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult<ProductSpecificationDTO>> Fetch(string specId)
+        public async Task<RepositoryOperationResult<ProductSpecificationDTO>> GetModel(string specId)
         {
             RepositoryOperationResult<ProductSpecificationDTO> result =
                 new RepositoryOperationResult<ProductSpecificationDTO>();
-            var entity = await _context.Collection
+            var entity = await _productContext.SpecificationCollection
                 .Find(_ => _.ProductSpecificationId == specId).FirstOrDefaultAsync();
             if(entity != null)
             {
@@ -140,10 +141,29 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
             return result;
         }
 
+        public RepositoryOperationResult<Entities.Shop.ProductSpecification.ProductSpecification> GetEntity(string specId)
+        {
+            RepositoryOperationResult<Entities.Shop.ProductSpecification.ProductSpecification> result =
+               new RepositoryOperationResult<Entities.Shop.ProductSpecification.ProductSpecification>();
+            var entity = _productContext.SpecificationCollection
+                .Find(_ => _.ProductSpecificationId == specId).FirstOrDefault();
+            if (entity != null)
+            {
+                result.Message = ConstMessages.SuccessfullyDone;
+                result.ReturnValue = entity;
+                result.Succeeded = true;
+            }
+            else
+            {
+                result.Message = ConstMessages.ObjectNotFound;
+            }
+            return result;
+        }
+
         public List<ProductSpecificationDTO> GetAllSpecificationsInGroup(string specificationGroupId)
         {
             var result = new List<ProductSpecificationDTO>();
-            var lst = _context.Collection.AsQueryable()
+            var lst = _productContext.SpecificationCollection.AsQueryable()
                 .Where(_ => _.SpecificationGroupId == specificationGroupId).ToList();
             if(lst != null && lst.Count > 0)
             {
@@ -156,7 +176,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
         public RepositoryOperationResult<List<string>> GetSpecificationValues(string productSpecificationId)
         {
             var result = new RepositoryOperationResult<List<string>>();
-            var lst = _context.Collection.AsQueryable()
+            var lst = _productContext.SpecificationCollection.AsQueryable()
                 .Where(_ => _.ProductSpecificationId == productSpecificationId);
             if(lst != null && lst.Count() > 0)
             {
@@ -192,8 +212,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                 var page = Convert.ToInt32(filter["CurrentPage"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
 
-                long totalCount = await _context.Collection.Find(c => true).CountDocumentsAsync();
-                var list = _context.Collection.AsQueryable().Skip((page - 1) * pageSize)
+                long totalCount = await _productContext.SpecificationCollection.Find(c => true).CountDocumentsAsync();
+                var list = _productContext.SpecificationCollection.AsQueryable().Skip((page - 1) * pageSize)
                    .Take(pageSize).Select(_ => new ProductSpecificationDTO()
                    {
                       ProductSpecificationId = _.ProductSpecificationId,
@@ -226,7 +246,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
 
             var equallentModel = _mapper.Map<Entities.Shop.ProductSpecification.ProductSpecification>(dto);
 
-            var availableEntity = await _context.Collection
+            var availableEntity = await _productContext.SpecificationCollection
                     .Find(_ => _.ProductSpecificationId.Equals(dto.ProductSpecificationId)).FirstOrDefaultAsync();
 
             if (availableEntity != null)
@@ -244,7 +264,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                 equallentModel.CreatorUserId = availableEntity.CreatorUserId;
                 equallentModel.CreatorUserName = availableEntity.CreatorUserName;
 
-                var updateResult = await _context.Collection
+                var updateResult = await _productContext.SpecificationCollection
                    .ReplaceOneAsync(_ => _.ProductSpecificationId == availableEntity.ProductSpecificationId, equallentModel);
 
                 if (updateResult.IsAcknowledged)
@@ -260,6 +280,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
             }
             return result;
         }
-       
+
+        
     }
 }

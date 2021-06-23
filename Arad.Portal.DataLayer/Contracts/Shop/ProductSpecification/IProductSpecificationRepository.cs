@@ -12,7 +12,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductSpecification
     {
         Task<RepositoryOperationResult> Add(ProductSpecificationDTO dto);
         Task<PagedItems<ProductSpecificationDTO>> List(string queryString);
-        Task<RepositoryOperationResult<ProductSpecificationDTO>> Fetch(string specId);
+        Task<RepositoryOperationResult<ProductSpecificationDTO>> GetModel(string specId);
+        RepositoryOperationResult<Entities.Shop.ProductSpecification.ProductSpecification> GetEntity(string specId);
         Task<RepositoryOperationResult> Update(ProductSpecificationDTO spec);
         Task<RepositoryOperationResult> Delete(string specificationId, string modificationReason);
         RepositoryOperationResult<List<string>> GetSpecificationValues(string productSpecificationId);

@@ -1,6 +1,7 @@
 ﻿using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Models.Comment;
 using Arad.Portal.DataLayer.Models.Price;
+using Arad.Portal.DataLayer.Models.Product;
 using Arad.Portal.DataLayer.Models.Shared;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -17,7 +18,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Product
         public BaseProduct()
         {
             GroupNames = new ();
-            Attributes = new ();
+            Specifications = new ();
             Pictures = new ();
             Prices = new ();
             Comments = new ();
@@ -34,8 +35,8 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Product
 
         public string UniqueCode { get; set; }
 
-        public Dictionary<ProductSpecification.ProductSpecification, string> Attributes { get; set; }
-
+        public List<ProductSpecificationValue> Specifications { get; set; }
+      
         public List<Picture> Pictures { get; set; }
 
         public int Inventory { get; set; }
@@ -50,9 +51,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Product
         /// </summary>
         public string SellerUserId { get; set; }
 
-        public ProductUnit.ProductUnit Unit { get; set; }
-
         public string SellerUserName { get; set; }
+
+        public ProductUnit.ProductUnit Unit { get; set; }
 
         public List<Price> Prices { get; set; }
 

@@ -20,14 +20,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
 {
     public class ProductUnitRepository : BaseRepository, IProductUnitRepository
     {
-        ProductUnitContext _context;
+       
         ProductContext _productContext;
         IMapper _mapper;
-        public ProductUnitRepository(ProductUnitContext context,
+        public ProductUnitRepository(
             ProductContext productContext,
             IMapper mapper, IHttpContextAccessor httpContextAccessor): base(httpContextAccessor)
         {
-            _context = context;
+           
             _mapper = mapper;
             _productContext = productContext;
         }
@@ -44,7 +44,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
                 .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
             try
             {
-                await _context.Collection.InsertOneAsync(equallentModel);
+                await _productContext.ProductUnitCollection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;
                 result.Message = ConstMessages.SuccessfullyDone;
             }
@@ -64,14 +64,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
             {
                 #region check object dependency 
                 var allowDeletion = true;
-                if(_productContext.Collection.CountDocuments(_=>_.Unit.ProductUnitId == productUnitId) > 0)
+                if(_productContext.ProductCollection.CountDocuments(_=>_.Unit.ProductUnitId == productUnitId) > 0)
                 {
                     allowDeletion = false;
                 }
                 #endregion
                 if (allowDeletion)
                 {
-                    var delResult = await _context.Collection.DeleteOneAsync(_ => _.ProductUnitId == productUnitId);
+                    var delResult = await _productContext.ProductUnitCollection.DeleteOneAsync(_ => _.ProductUnitId == productUnitId);
                     if (delResult.IsAcknowledged)
                     {
                         result.Message = ConstMessages.SuccessfullyDone;
@@ -100,7 +100,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
             RepositoryOperationResult result = new RepositoryOperationResult();
             var equallentModel = _mapper.Map<Entities.Shop.ProductUnit.ProductUnit>(dto);
 
-            var availableEntity = await _context.Collection
+            var availableEntity = await _productContext.ProductUnitCollection
                     .Find(_ => _.ProductUnitId == dto.ProductUnitId).FirstOrDefaultAsync();
 
             if (availableEntity != null)
@@ -119,7 +119,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
                 equallentModel.CreatorUserId = availableEntity.CreatorUserId;
                 equallentModel.CreatorUserName = availableEntity.CreatorUserName;
 
-                var updateResult = await _context.Collection
+                var updateResult = await _productContext.ProductUnitCollection
                    .ReplaceOneAsync(_ => _.ProductUnitId == availableEntity.ProductUnitId, equallentModel);
 
                 if (updateResult.IsAcknowledged)
@@ -156,8 +156,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
                 var page = Convert.ToInt32(filter["CurrentPage"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
 
-                long totalCount = await _context.Collection.Find(c => true).CountDocumentsAsync();
-                var list = _context.Collection.AsQueryable().Skip((page - 1) * pageSize)
+                long totalCount = await _productContext.ProductUnitCollection.Find(c => true).CountDocumentsAsync();
+                var list = _productContext.ProductUnitCollection.AsQueryable().Skip((page - 1) * pageSize)
                    .Take(pageSize).Select(_ => new ProductUnitDTO()
                    {
                       ProductUnitId = _.ProductUnitId,

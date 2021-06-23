@@ -32,7 +32,8 @@ namespace Arad.Portal.DataLayer.Entities
 
         public string AssociatedDomainId { get; set; }
         #endregion
-      
+
+        
     }
 
     public class Modification

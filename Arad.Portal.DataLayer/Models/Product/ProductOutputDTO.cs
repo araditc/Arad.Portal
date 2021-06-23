@@ -1,0 +1,59 @@
+﻿using Arad.Portal.DataLayer.Models.Promotion;
+using Arad.Portal.DataLayer.Models.Shared;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Arad.Portal.DataLayer.Models.Product
+{
+    public class ProductOutputDTO
+    {
+        public ProductOutputDTO()
+        {
+            MultiLingualProperties = new();
+            Pictures = new();
+            Comments = new();
+            Specifications = new();
+            Prices = new List<Price.Price>();
+        }
+        public string ProductId { get; set; }
+
+        public List<string> GroupIds { get; set; }
+
+        public List<string> GroupNames { get; set; }
+
+        public List<MultiLingualProperty> MultiLingualProperties { get; set; }
+
+        public string UniqueCode { get; set; }
+
+        public List<ProductSpecificationValue> Specifications { get; set; }
+
+        public List<Picture> Pictures { get; set; }
+
+        public int Inventory { get; set; }
+
+        public int MinimumCount { get; set; }
+
+        public bool ShowInLackOfInventory { get; set; }
+
+        public string SellerUserId { get; set; }
+
+        public Entities.Shop.ProductUnit.ProductUnit Unit { get; set; }
+
+        public string SellerUserName { get; set; }
+
+        public List<Price.Price> Prices { get; set; }
+
+        public Entities.Shop.Promotion.Promotion Promotion { get; set; }
+
+        public int PopularityRate { get; set; }
+
+        public int SaleCount { get; set; }
+
+        public int VisitCount { get; set; }
+
+        public List<Comment.Comment> Comments { get; set; }
+    }
+}

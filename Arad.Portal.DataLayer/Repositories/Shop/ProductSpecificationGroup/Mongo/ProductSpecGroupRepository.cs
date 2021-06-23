@@ -14,22 +14,21 @@ using System.Security.Claims;
 using Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo;
 using System.Collections.Specialized;
 using System.Web;
+using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mongo
 {
     public class ProductSpecGroupRepository : BaseRepository , IProductSpecGroupRepository
     {
         private readonly IMapper _mapper;
-        private readonly ProductSpecGroupContext _context;
-        private readonly ProductSpecificationContext _productSpecificationContext;
+        private readonly ProductContext _productContext;
+        
         public ProductSpecGroupRepository(IHttpContextAccessor httpContextAccessor,
-            IMapper mapper, ProductSpecGroupContext context,
-            ProductSpecificationContext productSpecificationContext)
+            IMapper mapper, ProductContext productContext)
             : base(httpContextAccessor)
         {
             _mapper = mapper;
-            _context = context;
-            _productSpecificationContext = productSpecificationContext;
+            _productContext = productContext;
         }
 
         public async Task<RepositoryOperationResult> Add(SpecificationGroupDTO dto)
@@ -49,7 +48,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
                     .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
 
 
-                await _context.Collection.InsertOneAsync(equallentEntity);
+                await _productContext.SpecGroupCollection.InsertOneAsync(equallentEntity);
                 result.Succeeded = true;
                 result.Message = ConstMessages.SuccessfullyDone;
                
@@ -70,7 +69,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
             {
                 #region check object dependency
                 var allowDeletion = true;
-                if (_productSpecificationContext.Collection
+                if (_productContext.SpecGroupCollection
                     .AsQueryable().Any(_=>_.SpecificationGroupId == productSpecificationGroupId))
                 {
                     allowDeletion = false;
@@ -79,7 +78,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
                 #endregion
                 if (allowDeletion)
                 {
-                    var entity = _context.Collection
+                    var entity = _productContext.SpecGroupCollection
                         .Find(_ => _.SpecificationGroupId == productSpecificationGroupId).FirstOrDefault();
                     if (entity != null)
                     {
@@ -89,7 +88,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
                         entity.Modifications.Add(mod);
                         #endregion
 
-                        var updateResult = await _context.Collection.ReplaceOneAsync(_ => _.SpecificationGroupId == productSpecificationGroupId, entity);
+                        var updateResult = await _productContext.SpecGroupCollection.ReplaceOneAsync(_ => _.SpecificationGroupId == productSpecificationGroupId, entity);
                         if (updateResult.IsAcknowledged)
                         {
                             result.Message = ConstMessages.SuccessfullyDone;
@@ -123,7 +122,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
             var result = new SpecificationGroupDTO();
             try
             {
-                var group = await _context.Collection
+                var group = await _productContext.SpecGroupCollection
                     .Find(_=>_.SpecificationGroupId == productSpecificationGroupId).FirstOrDefaultAsync();
                 result = _mapper.Map<SpecificationGroupDTO>(group);
             }
@@ -154,8 +153,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
                 var page = Convert.ToInt32(filter["CurrentPage"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
 
-                long totalCount = await _context.Collection.Find(c => true).CountDocumentsAsync();
-                var list = _context.Collection.AsQueryable().Skip((page - 1) * pageSize)
+                long totalCount = await _productContext.SpecGroupCollection.Find(c => true).CountDocumentsAsync();
+                var list = _productContext.SpecGroupCollection.AsQueryable().Skip((page - 1) * pageSize)
                    .Take(pageSize).Select(_ => new SpecificationGroupDTO()
                    {
                        GroupName = _.GroupName,
@@ -187,7 +186,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
             RepositoryOperationResult result = new RepositoryOperationResult();
             var equallentModel = _mapper.Map<Entities.Shop.ProductSpecificationGroup.ProductSpecGroup>(dto);
 
-            var availableEntity = await _context.Collection
+            var availableEntity = await _productContext.SpecGroupCollection
                     .Find(_ => _.SpecificationGroupId == dto.SpecificationGroupId).FirstOrDefaultAsync();
 
             if (availableEntity != null)
@@ -203,7 +202,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
                 equallentModel.CreatorUserId = availableEntity.CreatorUserId;
                 equallentModel.CreatorUserName = availableEntity.CreatorUserName;
 
-                var updateResult = await _context.Collection
+                var updateResult = await _productContext.SpecGroupCollection
                    .ReplaceOneAsync(_ => _.SpecificationGroupId == availableEntity.SpecificationGroupId, equallentModel);
 
                 if (updateResult.IsAcknowledged)

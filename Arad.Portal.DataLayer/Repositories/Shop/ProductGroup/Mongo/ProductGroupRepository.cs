@@ -18,18 +18,16 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
 {
     public class ProductGroupRepository : BaseRepository, IProductGroupRepository
     {
-        private readonly ProductGroupContext _context;
         private readonly ProductContext _productContext;
         private readonly IMapper _mapper;
       
-        public ProductGroupRepository(ProductGroupContext context,
-            ProductContext productContext,
+        public ProductGroupRepository(ProductContext context,
             IHttpContextAccessor httpContextAccessor,
             IMapper mapper):
             base(httpContextAccessor)
         {
-            _context = context;
-            _productContext = productContext;
+            
+            _productContext = context;
             _mapper = mapper;
         }
 
@@ -46,7 +44,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             try
             {
                 equallentModel.ProductGroupId = Guid.NewGuid().ToString();
-                await _context.Collection.InsertOneAsync(equallentModel);
+                await _productContext.ProductGroupCollection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;
                 result.Message = ConstMessages.SuccessfullyDone;
             }
@@ -61,7 +59,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
         public async Task<List<ProductGroupDTO>> AllProductGroups()
         {
             var result = new List<ProductGroupDTO>();
-            var lst = await _context.Collection.AsQueryable().Where(_ => !_.IsDeleted).ToListAsync();
+            var lst = await _productContext.ProductGroupCollection.AsQueryable().Where(_ => !_.IsDeleted).ToListAsync();
             result = _mapper.Map<List<ProductGroupDTO>>(lst);
             return result;
         }
@@ -72,14 +70,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             try
             {
                 var allowDeletion = false;
-                var check = _productContext.Collection.AsQueryable().Any(_ => _.GroupIds.Contains(productGroupId));
+                var check = _productContext.ProductCollection.AsQueryable().Any(_ => _.GroupIds.Contains(productGroupId));
                 if(!check)
                 {
                     allowDeletion = true;
                 }
                 if(allowDeletion)
                 {
-                    var groupEntity = _context.Collection.Find(_ => _.ProductGroupId == productGroupId).First();
+                    var groupEntity = _productContext.ProductGroupCollection.Find(_ => _.ProductGroupId == productGroupId).First();
                     if (groupEntity != null)
                     {
                         groupEntity.IsDeleted = true;
@@ -91,7 +89,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                         groupEntity.Modifications = currentModifications;
                         #endregion
 
-                        var updateResult = await _context.Collection.ReplaceOneAsync(_ => _.ProductGroupId == productGroupId, groupEntity);
+                        var updateResult = await _productContext.ProductGroupCollection.ReplaceOneAsync(_ => _.ProductGroupId == productGroupId, groupEntity);
                         if (updateResult.IsAcknowledged)
                         {
                             result.Succeeded = true;
@@ -122,7 +120,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
         public ProductGroupDTO ProductGroupFetch(string productGroupId)
         {
             var result = new ProductGroupDTO();
-            var entity = _context.Collection.Find(_ => _.ProductGroupId == productGroupId);
+            var entity = _productContext.ProductGroupCollection.Find(_ => _.ProductGroupId == productGroupId);
             result = _mapper.Map<ProductGroupDTO>(entity);
             return result;
         }
@@ -132,7 +130,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             var result = new List<ProductGroupDTO>();
             try
             {
-                var lst = _context.Collection.AsQueryable()
+                var lst = _productContext.ProductGroupCollection.AsQueryable()
                     .Where(_ => _.ParentId == productGroupId && !_.IsDeleted).ToList();
 
                 result = _mapper.Map<List<ProductGroupDTO>>(lst);
@@ -146,7 +144,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
         public List<ProductGroupDTO> GetsParents()
         {
             var result = new List<ProductGroupDTO>();
-            var lst= _context.Collection.AsQueryable()
+            var lst= _productContext.ProductGroupCollection.AsQueryable()
                .Where(_ => !_.IsDeleted && _.ParentId == null)
                .ToList();
             result = _mapper.Map<List<ProductGroupDTO>>(lst);
@@ -158,7 +156,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             bool result = false;
             try
             {
-                var exist = _context.Collection.AsQueryable()
+                var exist = _productContext.ProductGroupCollection.AsQueryable()
                     .Any(_=>_.ProductGroupId == productGroupId);
                 if (exist)
                 {
@@ -176,7 +174,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             PromotionDTO promotionDto, string modificationReason)
         {
             var result = new RepositoryOperationResult();
-            var groupEntity = await _context.Collection
+            var groupEntity = await _productContext.ProductGroupCollection
                 .Find(_ => _.ProductGroupId == productGroupId).FirstOrDefaultAsync();
             if(groupEntity != null)
             {
@@ -190,7 +188,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
 
                 try
                 {
-                    var updateResult = await _context.Collection
+                    var updateResult = await _productContext.ProductGroupCollection
                     .ReplaceOneAsync(_ => _.ProductGroupId == productGroupId, groupEntity);
 
                     if (updateResult.IsAcknowledged)
