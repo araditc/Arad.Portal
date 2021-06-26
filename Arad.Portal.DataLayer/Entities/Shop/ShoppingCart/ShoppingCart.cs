@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
 {
+    /// <summary>
+    /// owner Of this shopping cart is creatorUserId of baseEntity
+    /// </summary>
     public class ShoppingCart : BaseEntity
     {
         public ShoppingCart()
@@ -18,9 +21,13 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
 
     public class ShoppingCartDetail : BaseEntity
     {
-        public string ShoppingCartDetailId { get; set; }
-
         public string ProductId { get; set; }
+
+        public string LanguageId { get; set; }
+
+        public string languageName { get; set; }
+
+        public string CurrencyId { get; set; }
 
         public string ProductName { get; set; }
 

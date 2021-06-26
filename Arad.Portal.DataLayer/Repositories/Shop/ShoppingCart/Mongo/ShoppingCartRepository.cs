@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Arad.Portal.DataLayer.Entities.Shop.ShoppingCart;
+using AutoMapper;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
 {
@@ -18,13 +19,16 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
     {
         private readonly ShoppingCartContext _context;
         private readonly ProductContext _productContext;
+        private readonly IMapper _mapper;
         public ShoppingCartRepository(IHttpContextAccessor httpContextAccessor,
             ShoppingCartContext context,
-            ProductContext productContext)
+            ProductContext productContext,
+            IMapper mapper)
             : base(httpContextAccessor)
         {
             _context = context;
             _productContext = productContext;
+            _mapper = mapper;
         }
         public RepositoryOperationResult<string> FindCurrentUserShoppingCart(string userId)
         {
@@ -80,7 +84,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
 
                     userCartEntity.Details.Add(new ShoppingCartDetail
                     {
-                        ShoppingCartDetailId = Guid.NewGuid().ToString(),
+                       
                         CreationDate = DateTime.Now,
                         CreatorUserId = productDto.UserId,
                         CreatorUserName = productDto.UserName,
@@ -235,9 +239,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> RefreshUserShoppingCart(string userId)
+        public async Task<RepositoryOperationResult<ShoppingCartDTO>> FetchUserShopCart(string userId)
         {
-            var result = new RepositoryOperationResult();
+            var result = new RepositoryOperationResult<ShoppingCartDTO>();
             var userCartEntity = _context.Collection
                 .Find(_ => _.CreatorUserId == userId && !_.IsDeleted).FirstOrDefault();
             if(userCartEntity != null)
@@ -254,7 +258,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                         var discountPerUnit = GetCurrentDiscountPerUnit(productEntity, activePriceValue);
                         var det = new ShoppingCartDetail
                         {
-                            ShoppingCartDetailId = Guid.NewGuid().ToString(),
+                           
                             CreationDate = DateTime.Now,
                             CreatorUserId = userCartEntity.CreatorUserId,
                             CreatorUserName = userCartEntity.CreatorUserName,
@@ -282,13 +286,15 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                 {
                     result.Succeeded = true;
                     result.Message = ConstMessages.SuccessfullyDone;
+                    result.ReturnValue = _mapper.Map<ShoppingCartDTO>(userCartEntity);
                 }
                 else
                 {
                     result.Message = ConstMessages.GeneralError;
 
                 }
-            }else
+            }
+            else
             {
                 result.Message = ConstMessages.ObjectNotFound;
             }

@@ -1,4 +1,4 @@
-﻿using Arad.Portal.DataLayer.Models.Order;
+﻿using Arad.Portal.DataLayer.Entities.Shop.Order;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arad.Portal.DataLayer.Entities.Shop.Order
+namespace Arad.Portal.DataLayer.Models.Order
 {
-    public class Order : BaseEntity
+    public class OrderDTO
     {
-        public Order()
+        public OrderDTO()
         {
             Details = new();
         }
@@ -26,16 +26,5 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Order
         public OrderStatus OrderStatus { get; set; }
 
         public decimal TotalAmountOfOrder { get; set; }
-
-    }
-
-    
-
-    public enum OrderStatus
-    {
-        Paid = 0,
-        UnPaid = 1
     }
 }
-
-

@@ -25,6 +25,8 @@ using Arad.Portal.DataLayer.Entities.Shop.ProductSpecificationGroup;
 using Arad.Portal.DataLayer.Entities.Shop.ProductSpecification;
 using Arad.Portal.DataLayer.Models.ProductSpecification;
 using Arad.Portal.DataLayer.Entities.Shop.Product;
+using Arad.Portal.DataLayer.Entities.Shop.ShoppingCart;
+using Arad.Portal.DataLayer.Models.ShoppingCart;
 
 namespace Arad.Portal.UI.Shop.Mapping
 {
@@ -44,6 +46,7 @@ namespace Arad.Portal.UI.Shop.Mapping
             CreateMap<ProductSpecification, ProductSpecificationDTO>().ReverseMap();
             CreateMap<ProductInputDTO, Product>();
             CreateMap<Product, ProductOutputDTO>();
+            CreateMap<ShoppingCart, ShoppingCartDTO>();
         }
     }
 }

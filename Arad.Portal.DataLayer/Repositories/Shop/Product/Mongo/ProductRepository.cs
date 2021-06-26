@@ -16,6 +16,8 @@ using Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo;
 using System.Security.Claims;
 using Arad.Portal.DataLayer.Repositories.Shop.Order.Mongo;
 using Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo;
+using System.Collections.Specialized;
+using System.Web;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 {
@@ -479,9 +481,46 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public Task<PagedItems<ProductsListGrid>> List(string queryString)
+        public async Task<PagedItems<ProductsListGrid>> List(string queryString)
         {
-            throw new NotImplementedException();
+            PagedItems<ProductsListGrid> result = new PagedItems<ProductsListGrid>();
+            try
+            {
+                NameValueCollection filter = HttpUtility.ParseQueryString(queryString);
+
+                if (string.IsNullOrWhiteSpace(filter["CurrentPage"]))
+                {
+                    filter.Set("CurrentPage", "1");
+                }
+
+                if (string.IsNullOrWhiteSpace(filter["PageSize"]))
+                {
+                    filter.Set("PageSize", "20");
+                }
+
+                var page = Convert.ToInt32(filter["CurrentPage"]);
+                var pageSize = Convert.ToInt32(filter["PageSize"]);
+
+                long totalCount = await _context.ProductCollection.Find(c => true).CountDocumentsAsync();
+                var list = _context.ProductCollection.AsQueryable().Skip((page - 1) * pageSize)
+                   .Take(pageSize).ToList();
+
+                result.Items = _mapper.Map<List<ProductsListGrid>>(list);
+                result.CurrentPage = page;
+                result.ItemsCount = totalCount;
+                result.PageSize = pageSize;
+                result.QueryString = queryString;
+
+            }
+            catch (Exception ex)
+            {
+                result.CurrentPage = 1;
+                result.Items = new List<ProductsListGrid>();
+                result.ItemsCount = 0;
+                result.PageSize = 10;
+                result.QueryString = queryString;
+            }
+            return result;
         }
 
         public async Task<RepositoryOperationResult> UpdateProduct(ProductInputDTO dto, string modificationReason)
