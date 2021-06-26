@@ -29,5 +29,17 @@ namespace Arad.Portal.DataLayer.Repositories
                 ModificationReason = modificationReason
             };
         }
+
+        protected string GetUserName()
+        {
+            return _httpContextAccessor.HttpContext.User.Claims
+                 .FirstOrDefault(_ => _.Type == ClaimTypes.Name).Value;
+        }
+
+        protected string GetUserId()
+        {
+            return _httpContextAccessor.HttpContext.User.Claims
+                 .FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+        }
     }
 }

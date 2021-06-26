@@ -15,7 +15,6 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Order
         }
         public string OrderId { get; set; }
 
-
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime OrderDate { get; set; }
 
@@ -33,12 +32,20 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Order
 
         public string ProductName { get; set; }
 
+        public decimal PricePerUnit { get; set; }
+
+        public decimal DiscountPerUnit { get; set; }
+
         public int OrderCount { get; set; }
+
+        public decimal TotalAmountToPay { get; set; }
     }
 
     public enum OrderStatus
     {
-        UnPaid = 0,
-        Paid = 1
+        SuccessfullPaid = 0,
+        UnSuccessfulPaid = 1
     }
 }
+
+

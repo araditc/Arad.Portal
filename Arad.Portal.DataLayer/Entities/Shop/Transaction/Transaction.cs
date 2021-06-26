@@ -80,6 +80,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
         public string InternalTokenIdentifier { get; set; }
         public string OverallConcatDescription { get; set; }
         public Enums.PaymentIdentifierMethod PaymentIdentifierMethod { get; set; }
+        /// <summary>
+        /// شماره پیگیری تراکنش
+        /// </summary>
         public string ReferenceId { get; set; }
         public Enums.PaymentStage Stage { get; set; }
         public Enums.PspType PspType { get; set; }
