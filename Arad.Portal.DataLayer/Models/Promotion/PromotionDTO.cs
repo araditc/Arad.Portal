@@ -22,5 +22,6 @@ namespace Arad.Portal.DataLayer.Models.Promotion
         public DateTime StartDate { get; set; }
        
         public DateTime? EndDate { get; set; }
+        public string ModificationReason { get; set; }
     }
 }

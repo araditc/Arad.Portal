@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
 {
-    public class Promotion
+    public class Promotion : BaseEntity
     {
         public string PromotionId { get; set; }
 

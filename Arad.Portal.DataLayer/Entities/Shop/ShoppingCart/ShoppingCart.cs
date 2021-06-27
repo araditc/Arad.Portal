@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using Arad.Portal.DataLayer.Models.Shared;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 
@@ -15,6 +16,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
         }
         public string UserCartId { get; set; }
 
+        public EntityCulture ShoppingCartCulture { get; set; }
+
+
         public List<ShoppingCartDetail> Details { get; set; }
 
     }
@@ -22,12 +26,6 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
     public class ShoppingCartDetail : BaseEntity
     {
         public string ProductId { get; set; }
-
-        public string LanguageId { get; set; }
-
-        public string languageName { get; set; }
-
-        public string CurrencyId { get; set; }
 
         public string ProductName { get; set; }
 

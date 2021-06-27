@@ -1,4 +1,5 @@
 ﻿using Arad.Portal.DataLayer.Models.Order;
+using Arad.Portal.DataLayer.Models.Shared;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,8 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Order
 
         public string OrderUserId { get; set; }
 
+        public EntityCulture OrderCulture { get; set; }
+
         public List<OrderDetail> Details { get; set; }
 
         public OrderStatus OrderStatus { get; set; }
@@ -28,14 +31,13 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Order
         public decimal TotalAmountOfOrder { get; set; }
 
     }
-
-    
-
     public enum OrderStatus
     {
         Paid = 0,
         UnPaid = 1
     }
+
+   
 }
 
 

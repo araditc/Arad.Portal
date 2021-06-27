@@ -14,6 +14,7 @@ using MongoDB.Driver.Linq;
 using System.Collections.Specialized;
 using System.Web;
 using Arad.Portal.DataLayer.Entities.Shop.Order;
+using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Order.Mongo
 {
@@ -21,15 +22,18 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Order.Mongo
     {
         private readonly OrderContext _context;
         private readonly ShoppingCartContext _shoppingCartContext;
+        private readonly ProductContext _productContext;
         private readonly IMapper _mapper;
         public OrderRepository(OrderContext context,
                                ShoppingCartContext shoppingCartContext,
+                               ProductContext productContext,
                                IHttpContextAccessor httpContextAccessor,
                                IMapper mapper) : base(httpContextAccessor)
         {
             _context = context;
             _mapper = mapper ;
             _shoppingCartContext = shoppingCartContext;
+            _productContext = productContext;
         }
 
         public async Task<OrderDTO> FetchOrder(string orderId)
@@ -127,16 +131,15 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Order.Mongo
                 foreach (var item in userCartEntity.Details)
                 {
                     var amount = (item.PricePerUnit - item.DiscountPricePerUnit) * item.OrderCount;
+                    var productEntity = _productContext.ProductCollection
+                        .Find(_ => _.ProductId == item.ProductId).FirstOrDefault();
                     orderObject.Details.Add(new OrderDetail()
                     {
                         DiscountPerUnit = item.DiscountPricePerUnit,
                         OrderCount = item.OrderCount,
                         PricePerUnit = item.PricePerUnit,
                         ProductId = item.ProductId,
-                        ProductName = item.ProductName,
-                        CurrencyId = item.CurrencyId,
-                        LanguageId = item.LanguageId,
-                        LanguageName = item.languageName,
+                        MultiLingualProperties = productEntity.MultiLingualProperties,
                         ProductAmountToPay = amount
                     });
                     totalOrderAmount += amount;
