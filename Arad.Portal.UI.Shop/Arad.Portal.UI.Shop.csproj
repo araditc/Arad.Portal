@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Arad.Portal.Abstraction\Arad.Portal.Abstraction.csproj" />
     <ProjectReference Include="..\Arad.Portal.DataLayer\Arad.Portal.DataLayer.csproj" />
     <ProjectReference Include="..\Arad.Portal.GeneralLibrary\Arad.Portal.GeneralLibrary.csproj" />

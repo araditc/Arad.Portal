@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [{
+  "library": "overlayscrollbars@1.13.1",
+  "destination": "wwwroot/lib/overlayscrollbars/"
+}
+,
+{
+  "library": "summernote@0.8.18",
+  "destination": "wwwroot/lib/summernote/"
+}
+]
+}

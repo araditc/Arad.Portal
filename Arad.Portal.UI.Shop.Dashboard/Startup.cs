@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -53,6 +55,30 @@ namespace Arad.Portal.UI.Shop.Dashboard
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            var supportedCulturesStrings = Configuration.GetSection("SupportedCultures")
+                .Get<string[]>();
+
+            var supportedCultures = new List<CultureInfo>();
+
+            foreach (var item in supportedCulturesStrings)
+            {
+                supportedCultures.Add(new CultureInfo(item));
+            }
+
+            var options = new RequestLocalizationOptions()
+            {
+                DefaultRequestCulture = new RequestCulture("en-US"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures,
+                RequestCultureProviders = new List<IRequestCultureProvider>()
+                {
+                    new QueryStringRequestCultureProvider(),
+                    new CookieRequestCultureProvider()
+                }
+            };
+
+            app.UseRequestLocalization(options);
         }
     }
 }

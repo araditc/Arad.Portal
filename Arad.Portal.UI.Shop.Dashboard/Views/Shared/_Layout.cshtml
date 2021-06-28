@@ -1,48 +1,163 @@
 ﻿<!DOCTYPE html>
+@using System.Globalization;
+@{
+    var direction = "";
+    var bodyClass = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        direction = "rtl";
+        bodyClass = "hold-transition sidebar-mini layout-fixed";
+    }
+    else
+    {
+        direction = "ltr";
+        bodyClass = "hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed";
+    }
+    
+}
 <html lang="en">
 <head>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Arad.Portal.UI.Shop.Dashboard</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <title>@ViewData["Title"] - Arad.Portal.UI.Shop</title>
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" />*@
+    <!-------------------rtl-------------->
+    @if (direction == "rtl")
+    {
+        <!-- Tempusdominus Bbootstrap 4 -->
+        <link rel="stylesheet" href="~/css/siteTemplate/ltr/datePicker/tempusdominus-bootstrap-4.min.css">
+        <!-- iCheck bootstrap -->
+        <link rel="stylesheet" href="~/css/siteTemplate/shared/icheck-bootstrap/icheck-bootstrap.min.css">
+
+        <!-- Daterange picker not added -->
+        <!-- summernote -->
+        @*<link rel="stylesheet" href="~/lib/summernote/summernote-bs4.css">*@
+        <!-- Google Font: Source Sans Pro not added -->
+        <!-- -->
+        <!-- Bootstrap 4 RTL -->
+        <link rel="stylesheet" href="~/css/siteTemplate/rtl/bootstrap4rtl/bootstrap-4.2.1.css">
+        <!-- Custom style for RTL -->
+        <link rel="stylesheet" href="~/css/siteTemplate/rtl/custom.css">
+    }
+
+   
+    <link href="~/css/siteTemplate/shared/fontawesome-free/all.min.css" rel="stylesheet" />
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="~/lib//overlayscrollbars/css/OverlayScrollbars.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="~/css/siteTemplate/shared/ionicons.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/css/siteTeplate/shared/AdminLTE/adminlte.min">
+
+
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Arad.Portal.UI.Shop.Dashboard</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+<body class="@bodyClass">
+    <div class="wrapper">
+        <!--Navbar-->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav"></ul>
+
+
+            <!-- Right navbar links -->
+            <!--???-->
         </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        <!--/navbar-->
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="#" class="brand-link">
+                <img src="~/imgs/Logo.png" alt="Arad Group" class="brand-image img-circle elevation-3"
+                     style="opacity: .8">
+                <span class="brand-text font-weight-light">Arad Portal Dashboard</span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar user panel (optional) -->
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        @*<img src="@userProfilePhotoimagePath" class="img-circle elevation-2" alt="User Image">*@
+                    </div>
+                    <div class="info">
+                        @*<a href="#" class="d-block">@userName</a>*@
+                    </div>
+                </div>
+
+
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        @*@menuContent*@
+                    </ul>
+                </nav>
+                <!--/.sidebar menu-->
+            </div>
+            <!--/.sidebars-->
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                @*@contentHeader*@
+            </div>
+            <!-- /.content-header -->
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+            </section>
+            <!-- /.content -->
+        </div>
+        <!--/.content wrapper-->
+
+        <footer class="main-footer">
+            <strong>Copyright &copy; 2021 <a href="http://arad-itc.com">Arad.Portal.UI.Shop</a>.</strong>
+            All rights reserved.
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Version</b> 1.0.0
+            </div>
+        </footer>
+
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - Arad.Portal.UI.Shop.Dashboard - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+
+    <!---------shared----------->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="~/js/siteTemplate/overlayScrollbars/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/js/siteTemplate/Adminlte/adminlte.js"></script>
+    <!---------/.shared----------->
+    <!---------rtl----------->
+    <script src="~/js/siteTemplate/jqueryui1.11.4/jquery-ui.min.js"></script>
+   
+    <script src="~/js/siteTemplate/bootstrap4rtl/bootstrap.min.js"></script>
+    <!---------/.rtl----------->
+    <!---------ltr----------->
+    <!---------/.ltr----------->
+
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script>
+    function setLang(lang) {
+        var currentCulture = '@CultureInfo.CurrentCulture.Name';
+        if (currentCulture !== lang) {
+
+            $.ajax({
+                type: "GET",
+                url: '/Account/changeLang?langId=' + lang,
+                success: function() {
+                    window.location.reload();
+                }
+            });
+        }
+    }
+    </script>
 </body>
 </html>
