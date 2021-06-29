@@ -1,0 +1,958 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<dictionary>
+	<!--START [Allert And Message]-->
+	<string key="AlertAndMessage_RequiredErrorMessage">
+		<value>This field is required.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidFileType">
+		<value>Invalid file type.</value>
+	</string>
+
+	<string key="AlertAndMessage_NewPasswordwordDoesNotMatchWithRepeat">
+		<value>New password doesn't match with the repeat one.</value>
+	</string>
+	<string key="Tariff_Needed">
+		<value>At least one tariff should be selected.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidFileSize">
+		<value>Invalid file size.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidExpirationDateRange">
+		<value>Selected expiration date is incorrect.</value>
+	</string>
+	<string key="AlertAndMessage_EnterBirthDate">
+		<value>Please enter birth date.</value>
+	</string>
+	<string key="AlertAndMessage_MaxDateTime">
+		<value>Maximum selectable expiration date according to your sender choices is:</value>
+	</string>
+
+	<string key="AlertAndMessage_ErrorUploadingFile">
+		<value>Error uploading file.</value>
+	</string>
+	<string key="AlertAndMessage_IdRequired">
+		<value>Id is not specified.</value>
+	</string>
+	<string key="AlertAndMessage_ObjectNotFound">
+		<value>Item not found!</value>
+	</string>
+	<string key="Regex_Not_Match">
+		<value>Value does not match the supposed pattern!</value>
+	</string>
+
+	<string key="AlertAndMessage_EnterUsername">
+		<value>Please enter username.</value>
+	</string>
+	<string key="AlertAndMessage_EnterFirstName">
+		<value>Please enter first name.</value>
+	</string>
+
+	<string key="AlertAndMessage_EnterLastName">
+		<value>Please enter last name.</value>
+	</string>
+	<string key="AlertAndMessage_EnterPassword">
+		<value>Please enter password.</value>
+	</string>
+	<string key="AlertAndMessage_SelectGender">
+		<value>Please select the gender type.</value>
+	</string>
+	<string key="AlertAndMessage_SelectMCCMNC">
+		<value>Please select the operator.</value>
+	</string>
+
+
+	<string key="AlertAndMessage_Gender">
+		<value>Gender</value>
+	</string>
+	<string key="AlertAndMessage_EnterFatherName">
+		<value>Please enter the father name.</value>
+	</string>
+	<string key="AlertAndMessage_InternalServerErrorMessage">
+		<value>Sorry, something went wrong!</value>
+	</string>
+	<string key="AlertAndMessage_ModelHasIdError">
+		<value>Model to be created should not contain id parameter!</value>
+	</string>
+	<string key="AlertAndMessage_DuplicateClientIdInsertError">
+		<value>Item with same clientId already exists!</value>
+	</string>
+	<string key="AlertAndMessage_InProperIdFormat">
+		<value>Id format is wrong!</value>
+	</string>
+	<string key="AlertAndMessage_ExceptionOccured">
+		<value>Exception occured.</value>
+	</string>
+	<string key="AlertAndMessage_ParameterError">
+		<value>Check query parameters.</value>
+	</string>
+	<string key="AlertAndMessage_SuccessfullyDone">
+		<value>Successfully done.</value>
+	</string>
+	<string key="AlertAndMessage_DuplicateError">
+		<value>Item aleardy exists!</value>
+	</string>
+	<string key="AlertAndMessage_GeneralError">
+		<value>Unknown error.</value>
+	</string>
+	<string key="AlertAndMessage_ModelError">
+		<value>Model error!</value>
+	</string>
+	<string key="AlertAndMessage_InvalidPassword">
+		<value>Invalid password!</value>
+	</string>
+	<string key="AlertAndMessage_NoServerResponseError">
+		<value>Server is not responding at the moment!</value>
+	</string>
+	<string key="AlertAndMessage_BadRequestError">
+		<value>The request is not valid!</value>
+	</string>
+	<string key="AlertAndMessage_RangeLimitExceed">
+		<value>Range limit exceed!</value>
+	</string>
+	<string key="AlertAndMessage_OperationDoneSuccessfully">
+		<value>Operation done successfully</value>
+	</string>
+	<string key="AlertAndMessage_OperationFailed">
+		<value>Operation failed</value>
+	</string>
+	<string key="AlertAndMessage_ErrorInSaving">
+		<value>Error storing data.</value>
+	</string>
+
+	<string key="AlertAndMessage_InvalidDate">
+		<value>Invalid date.</value>
+	</string>
+	<string key="AlertAndMessage_EnterFixedPhoneNumber">
+		<value>Please enter your fixed phone number.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidFixedPhoneNumber">
+		<value>Invalid fix phone number.</value>
+	</string>
+
+	<string key="AlertAndMessage_SelectOne">
+		<value>Select item....</value>
+	</string>
+
+
+	<string key="AlertAndMessage_YouEnteredMobileNumber">
+		<value>You entered mobile number.</value>
+	</string>
+	<string key="AlertAndMessage_EnterMobileNumber">
+		<value>Please enter your mobile number.</value>
+	</string>
+	<string key="AlertAndMessage_EnterMobile">
+		<value>Please enter your mobile number:</value>
+	</string>
+	<string key="AlertAndMessage_InvalidMobileNumber">
+		<value>Invalid mobile number.</value>
+	</string>
+	<string key="AlertAndMessage_YouEnteredFixPhoneNumber">
+		<value>You entered fix phone number.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidNationalId">
+		<value>Invalid national id.</value>
+	</string>
+	<string key="AlertAndMessage_EnterPostalCode">
+		<value>Please enter postal code.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidPostalCode">
+		<value>Invalid postal code.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidUsernameOrPassword">
+		<value>Invalid username or password.</value>
+	</string>
+	<string key="AlertAndMessage_TheAccountHasBeenDisabledByTheAdmin">
+		<value>The account has been disabled by the admin.</value>
+	</string>
+	<string key="AlertAndMessage_Welcome">
+		<value>Welcome.</value>
+	</string>
+	<string key="AlertAndMessage_YouCameInInsteadOf">
+		<value>You came in instead of </value>
+	</string>
+	<string key="AlertAndMessage_YourOTPIs">
+		<value>Your code is: </value>
+	</string>
+	<string key="AlertAndMessage_ErrorInSendingSMS">
+		<value>Error in sending SMS.</value>
+	</string>
+	<string key="AlertAndMessage_UserNotFound">
+		<value>User not found.</value>
+	</string>
+
+	<string key="AlertAndMessage_NotAllowed">
+		<value>You are not allowed.</value>
+	</string>
+	<string key="AlertAndMessage_ErrorTryAgain">
+		<value>Error, please try again</value>
+	</string>
+	<string key="AlertAndMessage_ErrorTryAgainLater">
+		<value>Error, please try again later</value>
+	</string>
+	<string key="AlertAndMessage_ValidityOfOTP">
+		<value>The validity of the OTP is only 3 minutes</value>
+	</string>
+	<string key="AlertAndMessage_YourNewPasswordIs">
+		<value>Your new password is: </value>
+	</string>
+	<string key="AlertAndMessage_InvalidCaptcha">
+		<value>Invalid captcha.</value>
+	</string>
+	<string key="AlertAndMessage_SelectCountry">
+		<value>Please select country.</value>
+	</string>
+	<string key="AlertAndMessage_SelectState">
+		<value>Please select state.</value>
+	</string>
+	<string key="AlertAndMessage_SelectCity">
+		<value>Please select city.</value>
+	</string>
+	<string key="AlertAndMessage_ModificationProfile">
+		<value>Modification profile.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidCurrentPassword">
+		<value>Invalid current password.</value>
+	</string>
+	<string key="AlertAndMessage_ModificationPasswordByUser">
+		<value>Modification password by user.</value>
+	</string>
+	<string key="AlertAndMessage_ModificationPasswordByAdmin">
+		<value>Modification password by admin.</value>
+	</string>
+	<string key="AlertAndMessage_PasswordChanged">
+		<value>Password changed.</value>
+	</string>
+	<string key="AlertAndMessage_EnterModificationReason">
+		<value>Please enter modification reason.</value>
+	</string>
+	<string key="AlertAndMessage_EnterValidNumber">
+		<value>The value of this field must be a number.</value>
+	</string>
+	<string key="AlertAndMessage_EnterValidAlphanumeric">
+		<value>The value of this field must be a number and alphanumeric.</value>
+	</string>
+	<string key="AlertAndMessage_EnterValidAlphanumericRange">
+		<value>The value of this field must be a number, alphanumeric and * or ?</value>
+	</string>
+	<string key="AlertAndMessage_SelectAtLeastOneItem">
+		<value>Select at least one item is required</value>
+	</string>
+
+	<string key="AlertAndMessage_Choose">
+		<value>Choose...</value>
+	</string>
+
+	<string key="AlertAndMessage_Cancel">
+		<value>Cancel</value>
+	</string>
+
+	<string key="AlertAndMessage_FormatIsNotCorrect">
+		<value>The format of the entered parameters is not correct</value>
+	</string>
+	<string key="AlertAndMessage_UpperAndLowerLimit">
+		<value>The upper limit cannot be smaller than the lower limit.</value>
+	</string>
+	<string key="AlertAndMessage_UpperAndLowerLimitOverlap">
+		<value>The upper or lower limit values of this package overlap with the other package.</value>
+	</string>
+	<string key="AlertAndMessage_EnterBlockedMobileNumber">
+		<value>Please enter mobile number.</value>
+	</string>
+	<string key="AlertAndMessage_EnterChangeRoutedMobileNumber">
+		<value>Please enter mobile number.</value>
+	</string>
+
+	<string key="AlertAndMessage_NotEnoughCredit">
+		<value>Not enough credit!</value>
+	</string>
+	<string key="AlertAndMessage_FileHasNoInformation">
+		<value>The imported file has no information.</value>
+	</string>
+	<string key="AlertAndMessage_UpstreamGatewayNotFound">
+		<value>Upstream gateway not found.</value>
+	</string>
+	<string key="AlertAndMessage_EditUpstreamGateway">
+		<value>Edit upstream gateway</value>
+	</string>
+	<string key="AlertAndMessage_ThePriorityIsMandatory">
+		<value>The priority for accessing the menu type is mandatory and must be a number greater than 0.</value>
+	</string>
+	<string key="AlertAndMessage_Creator">
+		<value>Creator</value>
+	</string>
+	<string key="AlertAndMessage_NotFound">
+		<value>Not found.</value>
+	</string>
+
+	<string key="AlertAndMessage_DirectUsers">
+		<value>Direct users</value>
+	</string>
+
+
+	<string key="AlertAndMessage_UsernameExist">
+		<value>the username exists.</value>
+	</string>
+
+	<string key="AlertAndMessage_NoSenderIdFoundToAssign">
+		<value>No sender id found to assign.</value>
+	</string>
+
+	<string key="AlertAndMessage_ChooseAnotherUsername">
+		<value>Choose another username.</value>
+	</string>
+	<string key="AlertAndMessage_MobileExist">
+		<value>the mobile exists.</value>
+	</string>
+	<string key="AlertAndMessage_PasswordAndRepetitionNotTheSame">
+		<value>The password and its repetition are not the same.</value>
+	</string>
+	<string key="AlertAndMessage_FillAllField">
+		<value>Please fill all fields.</value>
+	</string>
+	<string key="AlertAndMessage_CheckTheInputDataFormat">
+		<value>Please check the input data format.</value>
+	</string>
+	<string key="AlertAndMessage_AccessDenied">
+		<value>Access denied.</value>
+	</string>
+	<string key="AlertAndMessage_AccessDeniedToThisPage">
+		<value>You do not have permission to access this page.</value>
+	</string>
+	<string key="AlertAndMessage_ClickMe">
+		<value>click here</value>
+	</string>
+	<string key="AlertAndMessage_ClickMeToReturn">
+		<value>To return to the main page.</value>
+	</string>
+	<string key="AlertAndMessage_Inaccessibility">
+		<value>Inaccessibility</value>
+	</string>
+	<string key="AlertAndMessage_ErrorOccurrence">
+		<value>Error occurrence</value>
+	</string>
+	<string key="AlertAndMessage_TheRequestedSubmissionParametersAreIncorrect">
+		<value>The requested submission parameters are incorrect.</value>
+	</string>
+	<string key="AlertAndMessage_LoginPage">
+		<value>Login</value>
+	</string>
+	<string key="AlertAndMessage_Login">
+		<value>Login</value>
+	</string>
+	<string key="AlertAndMessage_Logout">
+		<value>Logout</value>
+	</string>
+	<string key="AlertAndMessage_LoginHistory">
+		<value>login and logout history</value>
+	</string>
+	<string key="AlertAndMessage_LoginToAccount">
+		<value>Login to your account</value>
+	</string>
+	<string key="AlertAndMessage_EnterUserAndPassword">
+		<value>Enter your username and password</value>
+	</string>
+	<string key="AlertAndMessage_EnterOTP">
+		<value>Enter OTP</value>
+	</string>
+
+	<string key="AlertAndMessage_ChangePassword">
+		<value>ChangePassword:</value>
+	</string>
+	<string key="AlertAndMessage_CurrentPassword">
+		<value>Current password</value>
+	</string>
+	<string key="AlertAndMessage_NewPassword">
+		<value>New password</value>
+	</string>
+	<string key="AlertAndMessage_ConfirmPassword">
+		<value>Confirm password</value>
+	</string>
+	<string key="AlertAndMessage_CreatePasswordBySyetm">
+		<value>Create a password by the system</value>
+	</string>
+	<string key="AlertAndMessage_RandomPassword">
+		<value>Random password</value>
+	</string>
+	<string key="AlertAndMessage_CopyToClipboard">
+		<value>Copy to clipboard</value>
+	</string>
+	<string key="AlertAndMessage_SentToUser">
+		<value>is now sent to user.</value>
+	</string>
+
+
+	<string key="AlertAndMessage_OTP">
+		<value>OTP: </value>
+	</string>
+	<string key="AlertAndMessage_SendOTP">
+		<value>Send OTP</value>
+	</string>
+	<string key="AlertAndMessage_OTPSentSuccessfully">
+		<value>OTP sent successfully</value>
+	</string>
+	<string key="AlertAndMessage_Username">
+		<value>Username</value>
+	</string>
+	<string key="AlertAndMessage_Password">
+		<value>Password</value>
+	</string>
+	<string key="AlertAndMessage_RememberMe">
+		<value>Remember Me</value>
+	</string>
+	<string key="AlertAndMessage_ResetPassword">
+		<value>Reset password</value>
+	</string>
+	<string key="AlertAndMessage_PageNotFound">
+		<value>Page not found</value>
+	</string>
+
+	<string key="AlertAndMessage_DeleteConfirm">
+		<value>Yes, Delete!</value>
+	</string>
+
+	<string key="AlertAndMessage_Deny">
+		<value>No</value>
+	</string>
+
+	<string key="AlertAndMessage_Approve">
+		<value>Yes</value>
+	</string>
+	<string key="AlertAndMessage_AskForConfirm">
+		<value>Are you sure?</value>
+	</string>
+
+	<string key="AlertAndMessage_PermissionWillBeDeleted">
+		<value>Permission will be deleted.</value>
+	</string>
+
+	<string key="AlertAndMessage_RoleWillBeDeleted">
+		<value>Role will be deleted.</value>
+	</string>
+
+	<string key="AlertAndMessage_ItemWillBeDeleted">
+		<value>Item will be deleted.</value>
+	</string>
+
+	<string key="AlertAndMessage_NothingToShow">
+		<value>Nothing to show.</value>
+	</string>
+	<string key="AlertAndMessage_SelectFile">
+		<value>Please select a file.</value>
+	</string>
+	<string key="AlertAndMessage_NoFileSelected">
+		<value>No file selected yet.</value>
+	</string>
+	<string key="AlertAndMessage_Succeeded">
+		<value>Succeeded</value>
+	</string>
+	<string key="AlertAndMessage_Failed">
+		<value>Failed</value>
+	</string>
+	<string key="AlertAndMessage_AllFailed">
+		<value>All failed</value>
+	</string>
+	<string key="AlertAndMessage_UserIpAddress">
+		<value>Ip address</value>
+	</string>
+	<string key="AlertAndMessage_ViewBatchIDs">
+		<value>View batchId's</value>
+	</string>
+	<string key="AlertAndMessage_IncompleteProfile">
+		<value>Incomplete profile</value>
+	</string>
+	<string key="AlertAndMessage_IncompleteProfileMessage">
+		<value>Please complete your information from the profile menu before accessing the system features.</value>
+	</string>
+	<string key="AlertAndMessage_IncompleteProfileItems">
+		<value>The following items need to be completed:</value>
+	</string>
+	<string key="AlertAndMessage_TransferCellphoneBetweenOperatorsList">
+		<value>Transfered cellphone list</value>
+	</string>
+	<string key="AlertAndMessage_TransferCellphone">
+		<value>Transfered cellphone</value>
+	</string>
+	<string key="AlertAndMessage_AddExtraParams">
+		<value>Add extra params</value>
+	</string>
+
+	<string key="AlertAndMessage_ApiAccessFormatError">
+		<value>Please input api claims in a correct format.</value>
+	</string>
+
+	<string key="AlertAndMessage_OperatorList">
+		<value>Operator list</value>
+	</string>
+	<string key="AlertAndMessage_NewOperator">
+		<value>New operator</value>
+	</string>
+	<string key="AlertAndMessage_SuccessCount">
+		<value>Success count</value>
+	</string>
+	<string key="AlertAndMessage_FailedCount">
+		<value>Failed count</value>
+	</string>
+	<string key="AlertAndMessage_NewRole">
+		<value>New role</value>
+	</string>
+	<string key="AlertAndMessage_Receivers">
+		<value>Receivers</value>
+	</string>
+	<string key="AlertAndMessage_ChangeUserTariff">
+		<value>Change tariff</value>
+	</string>
+	<string key="AlertAndMessage_SetUserSenderIds">
+		<value>Set User Sender Ids</value>
+	</string>
+	<string key="AlertAndMessage_DateFrom">
+		<value>from</value>
+	</string>
+	<string key="AlertAndMessage_DateTo">
+		<value>to</value>
+	</string>
+	<string key="AlertAndMessage_Type">
+		<value>Type</value>
+	</string>
+	<string key="AlertAndMessage_Icon">
+		<value>Set Icon</value>
+	</string>
+	<string key="AlertAndMessage_Priority">
+		<value>Set Priority</value>
+	</string>
+	<string key="AlertAndMessage_Route">
+		<value>Set Route</value>
+	</string>
+	<string key="AlertAndMessage_MenuOfModule">
+		<value>Choose MenuOfModule</value>
+	</string>
+	<!--END [Allert And Message]-->
+	<!--START [Dashboard]-->
+	<string key="Menu_Profile">
+		<value>Profile</value>
+	</string>
+	<string key="Menu_Home">
+		<value>Home</value>
+	</string>
+	<string key="Menu_Dashboard">
+		<value>Dashboard</value>
+	</string>
+	<string key="Menu_Dashboardv1">
+		<value>Dashboard v1</value>
+	</string>
+	<string key="Menu_Dashboard_Examples">
+		<value>EXAMPLES</value>
+	</string>
+	<string key="Menu_Dashboard_Invoice">
+		<value>invoice</value>
+	</string>
+	<string key="Menu_Dashboard_Profile">
+		<value>پروفایل</value>
+	</string>
+	<string key="Menu_Dashboard_Gallery">
+		<value>Gallery</value>
+	</string>
+	<string key="Menu_Dashboard_Pages">
+		<value>Pages</value>
+	</string>
+	<string key="Menu_Dashboard_Notification">
+		<value>Notification</value>
+	</string>
+	<string key="Menu_Dashboard_newMesseges">
+		<value>new messeges</value>
+	</string>
+	<string key="Menu_Dashboard_min">
+		<value>mins</value>
+	</string>
+	<string key="Menu_Dashboard_SeeAllNotifications">
+		<value>See All Notifications</value>
+	</string>
+	<!--END [Dashboard]-->
+	<!--Messege Content of AdminLTE-->
+	<string key="Msg_Content_Test1">
+		<value></value>
+	</string>
+	<string key="Msg_Content_Test2">
+		<value>Hours Ago</value>
+	</string>
+	
+	<string key="CompanyName">
+		<value>Arad Portal Dashboard</value>
+	</string>
+	<string key="SeeMoreMsgs">
+		<value>See All Messages</value>
+	</string>
+	<!--/.Messege Content of AdminLTE-->
+	<!--START [Action]-->
+	<string key="Exit">
+		<value>Exit</value>
+	</string>
+	<string key="New">
+		<value>New</value>
+	</string>
+	<string key="Crop">
+		<value>Crop</value>
+	</string>
+	<string key="ChangeImage">
+		<value>Change image</value>
+	</string>
+	<string key="ProfilePic">
+		<value>Profile picture</value>
+	</string>
+	<string key="ChangeProfilePic">
+		<value>Change picture</value>
+	</string>
+	<string key="EditProfile">
+		<value>Edit profile</value>
+	</string>
+	<string key="CropImage">
+		<value>Crop image</value>
+	</string>
+	<string key="AssignNumber">
+		<value>Assign numbers</value>
+	</string>
+
+	<string key="CreateNew">
+		<value>Create new</value>
+	</string>
+
+	<string key="Active">
+		<value>Active</value>
+	</string>
+	<string key="Ok">
+		<value>Ok</value>
+	</string>
+
+	<string key="Return">
+		<value>Go back</value>
+	</string>
+	<string key="Inactive">
+		<value>Inactive</value>
+	</string>
+	<string key="Add">
+		<value>Add</value>
+	</string>
+	<string key="Edit">
+		<value>Edit</value>
+	</string>
+	<string key="Delete">
+		<value>Delete</value>
+	</string>
+
+	<string key="Search">
+		<value>Search</value>
+	</string>
+	<string key="GetFromExcelFile">
+		<value>get from excel file</value>
+	</string>
+	<string key="Find">
+		<value>Find</value>
+	</string>
+
+	<string key="ChangePassword">
+		<value>Change password</value>
+	</string>
+	<string key="LoginAsUser">
+		<value>Login as user</value>
+	</string>
+	<string key="View">
+		<value>View</value>
+	</string>
+	<string key="Copy">
+		<value>Copy</value>
+	</string>
+
+	<string key="Close">
+		<value>Close</value>
+	</string>
+	<string key="SendSms">
+		<value>Send sms</value>
+	</string>
+	<string key="Send">
+		<value>Send</value>
+	</string>
+	<string key="Sent">
+		<value>Sent</value>
+	</string>
+	<string key="Save">
+		<value>Save</value>
+	</string>
+	<!--END [Action]-->
+	<!--START [Entities]-->
+	<string key="Entities_Permissions">
+		<value>Permissions</value>
+	</string>
+	<string key="Entities_PermissionIcon">
+		<value>Icon</value>
+	</string>
+	<string key="Entities_Title">
+		<value>Title</value>
+	</string>
+	<string key="Entities_PermissionType">
+		<value>PermissionType</value>
+	</string>
+	<string key="Entities_PermissionViewKey">
+		<value>PermissionViewKey</value>
+	</string>
+	<string key="Entities_Priority">
+		<value>Priority</value>
+	</string>
+	<string key="Entities_MenuOfModule">
+		<value>MenuOfModule</value>
+	</string>
+	<string key="Entities_ParentMenu">
+		<value>ParentMenu</value>
+	</string>
+	<string key="Entities_PermissionRoutes">
+		<value>PermissionRoutes</value>
+	</string>
+	<string key="Entities_ModificationReason">
+		<value>ModificationReason</value>
+	</string>
+	<string key="Entities_PermissionClientAddress">
+		<value>PermissionClientAddress</value>
+	</string>
+	<!--END [Entities]-->
+	<!--START [Page Navigation]-->
+	<string key="PageNavigation_showing">
+		<value>showing</value>
+	</string>
+	<string key="PageNavigation_from">
+		<value>from</value>
+	</string>
+	<string key="PageNavigation_to">
+		<value>to</value>
+	</string>
+	<string key="PageNavigation_items">
+		<value>items</value>
+	</string>
+	<string key="PageNavigation_next">
+		<value>next</value>
+	</string>
+	<string key="PageNavigation_previous">
+		<value>previous</value>
+	</string>
+	<string key="PageNavigation_last">
+		<value>last</value>
+	</string>
+	<string key="PageNavigation_first">
+		<value>first</value>
+	</string>
+	<!--END [Page Navigation]-->
+	<!--START [Table headers]-->
+	<string key="TableHeader_BasicInfo">
+		<value>Basic information</value>
+	</string>
+	<string key="TableHeader_Male">
+		<value>Male</value>
+	</string>
+
+	<string key="TableHeader_Female">
+		<value>Female</value>
+	</string>
+
+	<string key="TableHeader_OtherInfo">
+		<value>Other information</value>
+	</string>
+	<string key="TableHeader_UserImage">
+		<value>User image</value>
+	</string>
+
+	<string key="TableHeader_Row">
+		<value>No</value>
+	</string>
+	<string key="TableHeader_Date">
+		<value>Date</value>
+	</string>
+	<string key="TableHeader_PreviousInventory">
+		<value>Previous balance</value>
+	</string>
+	<string key="TableHeader_CurrentInventory">
+		<value>Current balance</value>
+	</string>
+	<string key="TableHeader_ModificationReason">
+		<value>Modification reason</value>
+	</string>
+	<string key="TableHeader_Actions">
+		<value>Actions</value>
+	</string>
+
+	<string key="TableHeader_Priority">
+		<value>Priority</value>
+	</string>
+	<string key="TableHeader_Title">
+		<value>Title</value>
+	</string>
+	<string key="TableHeader_Creator">
+		<value>Creator</value>
+	</string>
+	<string key="TableHeader_CreateDate">
+		<value>Create date</value>
+	</string>
+	<string key="TableHeader_Modifications">
+		<value>Modifications</value>
+	</string>
+	<string key="TableHeader_Status">
+		<value>Status</value>
+	</string>
+	<!--END [Table headers]-->
+
+	<!--START [Application User]-->
+	<string key="ApplicationUser_IsSystemAccount">
+		<value>Is System Account</value>
+	</string>
+	<string key="ApplicationUser_Address">
+		<value>Address</value>
+	</string>
+	<string key="ApplicationUser_Profile">
+		<value>Profile</value>
+	</string>
+	<string key="ApplicationUser_FixedPhoneNumber">
+		<value>Fixed PhoneNumber</value>
+	</string>
+	<string key="ApplicationUser_LastLoginDate">
+		<value>Last Login Date</value>
+	</string>
+	<string key="ApplicationUser_Role">
+		<value>Role</value>
+	</string>
+	<string key="ApplicationUser_ReceiveActive">
+		<value>Receive Active</value>
+	</string>
+	<string key="ApplicationUser_ReceiveSettings">
+		<value>Receive Settings</value>
+	</string>
+	<string key="ApplicationUser_DeliverySettings">
+		<value>Delivery Settings</value>
+	</string>
+	<string key="ApplicationUser_Reference">
+		<value>Reference</value>
+	</string>
+
+	<string key="ApplicationUser_Relay">
+		<value>Relay</value>
+	</string>
+	<string key="ApplicationUser_ReceiveType">
+		<value>Receive Type</value>
+	</string>
+	<string key="ApplicationUser_ReceiveMethod">
+		<value>Receive Method</value>
+	</string>
+	<string key="ApplicationUser_ReceiveSetting">
+		<value>Receive Setting</value>
+	</string>
+	<string key="ApplicationUser_TariffPackage">
+		<value>Tariff Package</value>
+	</string>
+	<string key="ApplicationUser_Credit">
+		<value>Credit</value>
+	</string>
+	<string key="ApplicationUser_IsPostPaid">
+		<value>Is Postpaid</value>
+	</string>
+	<string key="ApplicationUser_SendViaHttp">
+		<value>Send via http</value>
+	</string>
+	<string key="ApplicationUser_SendViaSMPP">
+		<value>Send via SMPP</value>
+	</string>
+	<string key="ApplicationUser_FilterCheck">
+		<value>Filter check</value>
+	</string>
+	<string key="ApplicationUser_BlackListCheck">
+		<value>BlackList check</value>
+	</string>
+	<string key="ApplicationUser_ArchiveAccess">
+		<value>Archive access</value>
+	</string>
+	<string key="ApplicationUser_PostPaid">
+		<value>Post paid</value>
+	</string>
+	<string key="ApplicationUser_Method">
+		<value>Method</value>
+	</string>
+	<string key="ApplicationUser_ChangeType">
+		<value>Change type</value>
+	</string>
+
+	<string key="ApplicationUser_AssignSenderId">
+		<value>Assign number</value>
+	</string>
+	<string key="ApplicationUser_UserSenderIds">
+		<value>User SenderIds</value>
+	</string>
+	<string key="ApplicationUser_Description">
+		<value>Description</value>
+	</string>
+	<string key="DropdownItems_Management">
+		<value>management</value>
+	</string>
+	<string key="DropdownItems_ChangeAmount">
+		<value>Change amount</value>
+	</string>
+	<string key="ApplicationUser_CreditChanges">
+		<value>Credit Changes</value>
+	</string>
+	<string key="ApplicationUser_MPS">
+		<value>MPS</value>
+	</string>
+	<string key="ApplicationUser_LastSendDate">
+		<value>Last Send Date</value>
+	</string>
+	<string key="ApplicationUser_LastReceiveDate">
+		<value>Last Receive Date</value>
+	</string>
+	<string key="ApplicationUser_DeliveryActive">
+		<value>Delivery Active</value>
+	</string>
+	<string key="ApplicationUser_DeliveryType">
+		<value>Delivery Type</value>
+	</string>
+	<string key="ApplicationUser_DeliveryMethod">
+		<value>Delivery Method</value>
+	</string>
+	<string key="ApplicationUser_DeliverySetting">
+		<value>Delivery Setting</value>
+	</string>
+	<string key="ApplicationUser_APIAccess">
+		<value>API Access</value>
+	</string>
+	<string key="ApplicationUser_SMPPAccess">
+		<value>SMPP Access</value>
+	</string>
+	<string key="ApplicationUser_Priority">
+		<value>Priority</value>
+	</string>
+	<string key="ApplicationUser_ViewOldData">
+		<value>View Old Data</value>
+	</string>
+	<string key="ApplicationUser_AlertCredit">
+		<value>Alert Credit</value>
+	</string>
+	<string key="ApplicationUser_CreditAmountForAlert">
+		<value>Credit Amount For Alert</value>
+	</string>
+	<string key="ApplicationUser_LastSendAlertDate">
+		<value>Last Send Alert Date</value>
+	</string>
+	<string key="ApplicationUser_Ips">
+		<value>Ips</value>
+	</string>
+	<string key="ApplicationUser_User">
+		<value>User</value>
+	</string>
+	<string key="ApplicationUser_UserList">
+		<value>User list</value>
+	</string>
+	<!--END [Application User]-->
+	<!--START [Permission Title]-->
+	<string key="PermissionTitle_Dashboard">
+		<value>Dashboard</value>
+	</string>
+	<string key="PermissionTitle_User_Management">
+		<value>User Management</value>
+	</string>
+	<string key="PermissionTitle_User_Permissions">
+		<value>Permissions</value>
+	</string>
+	<!--END [Permission Title]-->
+</dictionary>

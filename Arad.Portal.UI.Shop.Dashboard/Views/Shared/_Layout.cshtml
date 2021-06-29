@@ -1,19 +1,36 @@
 ﻿<!DOCTYPE html>
 @using System.Globalization;
+@using Arad.Portal.GeneralLibrary.Utilities;
 @{
     var direction = "";
     var bodyClass = "";
+    var ulNavbarLinkClass = "";
+    var bellCls = "";
+    var faCls = "";
+    var floatlr = "";
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
     {
         direction = "rtl";
-        bodyClass = "hold-transition sidebar-mini layout-fixed";
+        bodyClass = "hold-transition sidebar-mini";
+        ulNavbarLinkClass = "navbar-nav mr-auto";
+        floatlr = "float-sm-left";
+        bellCls = "fa fa-bell-o";
+        faCls = "fa";
+
     }
     else
     {
         direction = "ltr";
         bodyClass = "hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed";
+        ulNavbarLinkClass = "navbar-nav ml-auto";
+        floatlr = "float-sm-right";
+        bellCls = "far fa-bell";
+        faCls = "fas";
+
+
+
     }
-    
+
 }
 <html lang="en">
 <head>
@@ -21,35 +38,45 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Arad.Portal.UI.Shop</title>
-    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="~/css/site.css" />*@
-    <!-------------------rtl-------------->
+
     @if (direction == "rtl")
     {
-        <!-- Tempusdominus Bbootstrap 4 -->
-        <link rel="stylesheet" href="~/css/siteTemplate/ltr/datePicker/tempusdominus-bootstrap-4.min.css">
+        <link rel="stylesheet" href="~/css/font-awesome/font-awesome.css">
+        //iCheck/flat/blue.css
+        <link href="~/css/blue.css" rel="stylesheet" />
+        <link href="~/css/datePicker/datepicker3.css" rel="stylesheet" />
+        <link href="~/css/dateRangePicker/daterangepicker-bs3.css" rel="stylesheet" />
+        <!-- Ionicons -->
+        <link href="~/css/siteTemplate/rtl/bootstrap-rtl.min.css" rel="stylesheet" />
+        <link href="~/css/siteTemplate/rtl/custom-style.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/css/siteTemplate/shared/ionicons.css">
         <!-- iCheck bootstrap -->
-        <link rel="stylesheet" href="~/css/siteTemplate/shared/icheck-bootstrap/icheck-bootstrap.min.css">
+        @*<link rel="stylesheet" href="~/css/siteTemplate/shared/icheck-bootstrap/icheck-bootstrap.min.css">*@
 
-        <!-- Daterange picker not added -->
-        <!-- summernote -->
-        @*<link rel="stylesheet" href="~/lib/summernote/summernote-bs4.css">*@
-        <!-- Google Font: Source Sans Pro not added -->
-        <!-- -->
         <!-- Bootstrap 4 RTL -->
-        <link rel="stylesheet" href="~/css/siteTemplate/rtl/bootstrap4rtl/bootstrap-4.2.1.css">
+        @*<link rel="stylesheet" href="~/css/siteTemplate/rtl/bootstrap4rtl/bootstrap.min.css">*@
         <!-- Custom style for RTL -->
-        <link rel="stylesheet" href="~/css/siteTemplate/rtl/custom.css">
+        @*<link rel="stylesheet" href="~/css/siteTemplate/rtl/custom.css">*@
+
+
+        <style>
+            .content-wrapper {
+                margin-left: 0 !important;
+            }
+
+            nav.main-header {
+                margin-left: 0;
+            }
+        </style>
     }
 
-   
+
     <link href="~/css/siteTemplate/shared/fontawesome-free/all.min.css" rel="stylesheet" />
+    <!-- Theme style -->
+    <link href="~/css/siteTemplate/shared/AdminLTE/adminlte.min.css" rel="stylesheet" />
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="~/lib//overlayscrollbars/css/OverlayScrollbars.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="~/css/siteTemplate/shared/ionicons.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="~/css/siteTeplate/shared/AdminLTE/adminlte.min">
+
 
 
 </head>
@@ -58,11 +85,96 @@
         <!--Navbar-->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Left navbar links -->
-            <ul class="navbar-nav"></ul>
+            <ul class="navbar-nav">
+
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a class="nav-link">
+                        <img src="~/imgs/IRAN.png"  onclick="setLang('fa-IR')" />
+                    </a>
+                    
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a class="nav-link">
+                        <img src="~/imgs/USA.png"  onclick="setLang('en-US')" />
+                    </a>
+                    
+                </li>
+            </ul>
 
 
             <!-- Right navbar links -->
-            <!--???-->
+            <ul class="@ulNavbarLinkClass">
+                <!-- Messages Dropdown Menu -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="far fa-comments"></i>
+                        <span class="badge badge-danger navbar-badge">3</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <a href="#" class="dropdown-item">
+                            <!-- Message Start -->
+                            <div class="media">
+                                <img src="~/imgs/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                                <div class="media-body">
+                                    <h3 class="dropdown-item-title">
+                                        John Pierce
+                                        <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+                                    </h3>
+                                    <p class="text-sm">Call me whenever you can...</p>
+                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 @Language.GetString("Msg_Content_Test2")</p>
+                                </div>
+                            </div>
+                            <!-- Message End -->
+                        </a>
+                        <div class="dropdown-divider"></div>
+
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <!-- Message Start -->
+                            <div class="media">
+                                <img src="~/imgs/user1-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                <div class="media-body">
+                                    <h3 class="dropdown-item-title">
+                                        Nora Silvester
+                                        <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
+                                    </h3>
+                                    <p class="text-sm">The subject goes here</p>
+                                    <p class="text-sm text-muted">
+                                        <i class="far fa-clock mr-1"></i> 4 @Language.GetString("Msg_Content_Test2")
+                                    </p>
+                                </div>
+                            </div>
+                            <!--Message End-->
+                        </a>
+
+                        <div class="dropdown-divider">
+                        </div>
+                        <a href="#" class="dropdown-item dropdown-footer">@Language.GetString("SeeMoreMsgs")</a>
+                    </div>
+                </li>
+                <!-- Notifications Dropdown Menu -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="@bellCls"></i>
+                        <span class="badge badge-warning navbar-badge">15</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg @(direction == "rtl"? "dropdown-menu-left" : "dropdown-menu-right")">
+                        <span class="dropdown-item dropdown-header">15 @Language.GetString("Menu_Dashboard_Notification")</span>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fa-envelope @(direction == "rtl" ? "fa ml-2" : "fas mr-2")"></i> 4 @Language.GetString("Menu_Dashboard_newMesseges")
+                            <span class="@(direction == "rtl" ? "float-right" : "float-right"  ) text-muted text-sm">3 @Language.GetString("Menu_Dashboard_min")</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item dropdown-footer"></a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
+                        <i class="@faCls fa-th-large"></i>
+                    </a>
+                </li>
+            </ul>
         </nav>
         <!--/navbar-->
         <!-- Main Sidebar Container -->
@@ -71,18 +183,18 @@
             <a href="#" class="brand-link">
                 <img src="~/imgs/Logo.png" alt="Arad Group" class="brand-image img-circle elevation-3"
                      style="opacity: .8">
-                <span class="brand-text font-weight-light">Arad Portal Dashboard</span>
+                <span class="brand-text font-weight-light">@Language.GetString("CompanyName")</span>
             </a>
 
             <!-- Sidebar -->
-            <div class="sidebar">
-                <!-- Sidebar user panel (optional) -->
+            <div class="sidebar" style="direction : @(direction =="rtl" ? "ltr" : "rtl")">
+                <!-- Sidebar user panel(optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        @*<img src="@userProfilePhotoimagePath" class="img-circle elevation-2" alt="User Image">*@
+                        <img src="~/imgs/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        @*<a href="#" class="d-block">@userName</a>*@
+                        <a href="#" class="d-block">Alexander Pierce</a>
                     </div>
                 </div>
 
@@ -90,7 +202,61 @@
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        @*@menuContent*@
+                        <!-- Add icons to the links using the .nav-icon class
+                        with font-awesome or any other icon font library -->
+                        <li class="nav-item has-treeview menu-open">
+                            <a href="#" class="nav-link active">
+                                <i class="nav-icon @(direction == "rtl" ? "fa fa-dashboard" : "fas fa-tachometer-alt")"></i>
+                                <p>
+                                    @Language.GetString("Menu_Dashboard")
+                                    <i class="right @faCls fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link active">
+                                        <i class="@(direction == "rtl" ? "fa fa-circle-o" : "far fa-circle")  nav-icon"></i>
+                                        <p>@Language.GetString("Menu_Dashboardv1")</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-header">@Language.GetString("Menu_Dashboard_Examples")</li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon far fa-image"></i>
+                                <p>
+                                    @Language.GetString("Menu_Dashboard_Gallery")
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>
+                                    @Language.GetString("Menu_Dashboard_Pages")
+                                    <i class="@faCls fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="@(direction =="rtl" ? "fa fa-circle-o" : "far fa-circle") nav-icon"></i>
+                                        <p>@Language.GetString("Menu_Dashboard_Invoice")</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="@(direction =="rtl" ? "fa fa-circle-o" : "far fa-circle")nav-icon"></i>
+                                        <p>@Language.GetString("Menu_Dashboard_Profile")</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
                     </ul>
                 </nav>
                 <!--/.sidebar menu-->
@@ -98,11 +264,23 @@
             <!--/.sidebars-->
         </aside>
 
-        <!-- Content Wrapper. Contains page content -->
+        <!-- Content Wrapper.Contains page content -->
         <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
+            <!-- Content Header(Page header) -->
             <div class="content-header">
-                @*@contentHeader*@
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0 text-dark">@Language.GetString("Menu_Dashboard")</h1>
+                        </div><!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb @floatlr">
+                                <li class="breadcrumb-item"><a href="#">@Language.GetString("Menu_Dashboardv1")</a></li>
+                                <li class="breadcrumb-item active">@Language.GetString("Menu_Home")</li>
+                            </ol>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div>
             </div>
             <!-- /.content-header -->
             <!-- Main content -->
@@ -128,36 +306,44 @@
 
     <!---------shared----------->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @if (direction == "rtl")
+    {
+        <script src="~/js/siteTemplate/jqueryui1.11.4/jquery-ui.min.js"></script>
+
+        <script src="~/js/siteTemplate/bootstrap4rtl/bootstrap.min.js"></script>
+    }
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    @*<script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>*@
     <!-- overlayScrollbars -->
-    <script src="~/js/siteTemplate/overlayScrollbars/jquery.overlayScrollbars.min.js"></script>
+    @*<script src="~/js/siteTemplate/overlayScrollbars/jquery.overlayScrollbars.min.js"></script>*@
     <!-- AdminLTE App -->
     <script src="~/js/siteTemplate/Adminlte/adminlte.js"></script>
-    <!---------/.shared----------->
-    <!---------rtl----------->
-    <script src="~/js/siteTemplate/jqueryui1.11.4/jquery-ui.min.js"></script>
    
-    <script src="~/js/siteTemplate/bootstrap4rtl/bootstrap.min.js"></script>
-    <!---------/.rtl----------->
-    <!---------ltr----------->
-    <!---------/.ltr----------->
+
 
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-    <script>
-    function setLang(lang) {
+    @await RenderSectionAsync("Scripts", required: false);
+<script>
+        function pageLoad() {
+            alert('@CultureInfo.CurrentCulture.Name');
+        }
+        function setLang(lang) {
+            debugger;
         var currentCulture = '@CultureInfo.CurrentCulture.Name';
         if (currentCulture !== lang) {
 
             $.ajax({
                 type: "GET",
                 url: '/Account/changeLang?langId=' + lang,
-                success: function() {
+                success: function () {
+                    debugger;
                     window.location.reload();
+
                 }
             });
         }
     }
-    </script>
+</script>
 </body>
 </html>

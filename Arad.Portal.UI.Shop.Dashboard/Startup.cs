@@ -1,3 +1,4 @@
+using Arad.Portal.DataLayer.Entities.General.Language;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -15,9 +16,10 @@ namespace Arad.Portal.UI.Shop.Dashboard
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            Arad.Portal.GeneralLibrary.Utilities.Language._hostingEnvironment = env.WebRootPath;
         }
 
         public IConfiguration Configuration { get; }
@@ -25,7 +27,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddAutoMapper(typeof(Startup));
         }
 
@@ -44,17 +46,6 @@ namespace Arad.Portal.UI.Shop.Dashboard
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-            });
 
             var supportedCulturesStrings = Configuration.GetSection("SupportedCultures")
                 .Get<string[]>();
@@ -79,6 +70,20 @@ namespace Arad.Portal.UI.Shop.Dashboard
             };
 
             app.UseRequestLocalization(options);
+
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            
         }
     }
 }
