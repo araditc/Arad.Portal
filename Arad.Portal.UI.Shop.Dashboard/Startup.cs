@@ -1,16 +1,47 @@
-using Arad.Portal.DataLayer.Entities.General.Language;
+using Arad.Portal.DataLayer.Entities.General.User;
+using AspNetCore.Identity.Mongo;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
+using AspNetCore.Identity.Mongo.Model;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Arad.Portal.UI.Shop.Dashboard.Authorization;
+using Arad.Portal.DataLayer.Contracts.General.User;
+using Arad.Portal.DataLayer.Repositories.General.User.Mongo;
+using Arad.Portal.DataLayer.Contracts.General.Currency;
+using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
+using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
+using Arad.Portal.DataLayer.Contracts.General.Language;
+using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
+using Arad.Portal.DataLayer.Contracts.General.Permission;
+using Arad.Portal.DataLayer.Repositories.General.Permission.Mongo;
+using Arad.Portal.DataLayer.Contracts.General.Role;
+using Arad.Portal.DataLayer.Repositories.General.Role.Mongo;
+using Arad.Portal.DataLayer.Contracts.Shop.Order;
+using Arad.Portal.DataLayer.Repositories.Shop.Order.Mongo;
+using Arad.Portal.DataLayer.Contracts.Shop.Product;
+using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
+using Arad.Portal.DataLayer.Contracts.Shop.ProductGroup;
+using Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo;
+using Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo;
+using Arad.Portal.DataLayer.Contracts.Shop.ProductSpecification;
+using Arad.Portal.DataLayer.Contracts.Shop.ProductSpecificationGroup;
+using Arad.Portal.DataLayer.Contracts.Shop.ProductUnit;
+using Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo;
+using Arad.Portal.DataLayer.Contracts.Shop.Promotion;
+using Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo;
+using Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart;
+using Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo;
+using Arad.Portal.DataLayer.Contracts.Shop.Transaction;
+using Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo;
 
 namespace Arad.Portal.UI.Shop.Dashboard
 {
@@ -19,7 +50,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
-            Arad.Portal.GeneralLibrary.Utilities.Language._hostingEnvironment = env.WebRootPath;
+            GeneralLibrary.Utilities.Language._hostingEnvironment = env.WebRootPath;
         }
 
         public IConfiguration Configuration { get; }
@@ -28,9 +59,43 @@ namespace Arad.Portal.UI.Shop.Dashboard
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+            services.AddIdentityMongoDbProvider<ApplicationUser, MongoRole>(identityOptions =>
+            {
+                identityOptions.Password.RequiredLength = 6;
+                identityOptions.Password.RequireLowercase = true;
+                identityOptions.Password.RequireUppercase = false;
+                identityOptions.Password.RequireNonAlphanumeric = false;
+                identityOptions.Password.RequireDigit = true;
+
+            }, mongoIdentityOptions =>
+            {
+                mongoIdentityOptions.ConnectionString = Configuration.GetSection("DB").Get<string>();
+            });
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+              .AddCookie(opt =>
+              {
+                  opt.Cookie.HttpOnly = true;
+              });
+
+            services.AddTransient<IAuthorizationHandler, RoleHandler>();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Role", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.Requirements.Add(new RoleRequirement());
+                });
+            });
             services.AddAutoMapper(typeof(Startup));
+
+            services.AddTransient<IPermissionView, PermissionView>();
+
+            AddRepositoryServices(services);
         }
 
+       
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -46,32 +111,8 @@ namespace Arad.Portal.UI.Shop.Dashboard
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
-            var supportedCulturesStrings = Configuration.GetSection("SupportedCultures")
-                .Get<string[]>();
-
-            var supportedCultures = new List<CultureInfo>();
-
-            foreach (var item in supportedCulturesStrings)
-            {
-                supportedCultures.Add(new CultureInfo(item));
-            }
-
-            var options = new RequestLocalizationOptions()
-            {
-                DefaultRequestCulture = new RequestCulture("en-US"),
-                SupportedCultures = supportedCultures,
-                SupportedUICultures = supportedCultures,
-                RequestCultureProviders = new List<IRequestCultureProvider>()
-                {
-                    new QueryStringRequestCultureProvider(),
-                    new CookieRequestCultureProvider()
-                }
-            };
-
-            app.UseRequestLocalization(options);
-
-
+           
+            app.UseRequestLocalization(AddMultilingualSettings());
             app.UseRouting();
 
             app.UseAuthorization();
@@ -82,8 +123,52 @@ namespace Arad.Portal.UI.Shop.Dashboard
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
 
-            
+        private RequestLocalizationOptions AddMultilingualSettings()
+        {
+            string[] supportedCulturesStrings = Configuration.GetSection("SupportedCultures")
+               .Get<string[]>();
+
+            List<CultureInfo> supportedCultures = new();
+
+            foreach (string item in supportedCulturesStrings)
+            {
+                supportedCultures.Add(new CultureInfo(item));
+            }
+
+            RequestLocalizationOptions options = new RequestLocalizationOptions()
+            {
+                DefaultRequestCulture = new RequestCulture("en-US"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures,
+                RequestCultureProviders = new List<IRequestCultureProvider>()
+                {
+                    new QueryStringRequestCultureProvider(),
+                    new CookieRequestCultureProvider()
+                }
+            };
+            return options;
+        }
+
+        private void AddRepositoryServices(IServiceCollection services)
+        {
+            services.AddTransient<ICurrencyRepository, CurrencyRepository>();
+            services.AddTransient<IDomainRepository, DomainRepository>();
+            services.AddTransient<ILanguageRepository, LanguageRepository>();
+            services.AddTransient<IPermissionRepository, PermissionRepository>();
+            services.AddTransient<IRoleRepository, RoleRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IProductGroupRepository, ProductGroupRepository>();
+            services.AddTransient<IProductSpecificationRepository, ProductSpecificationRepository>();
+            services.AddTransient<IProductSpecGroupRepository, IProductSpecGroupRepository>();
+            services.AddTransient<IProductUnitRepository, ProductUnitRepository>();
+            services.AddTransient<IPromotionRepository, PromotionRepository>();
+            services.AddTransient<IShoppingCartRepository, ShoppingCartRepository>();
+            services.AddTransient<ITransationRepository, TransactionRepository>();
+
         }
     }
 }

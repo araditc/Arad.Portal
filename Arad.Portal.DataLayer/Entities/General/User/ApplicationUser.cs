@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Entities.General.User
 {
-    public class ApplicationUser : MongoUser<string>
+    public class ApplicationUser : MongoUser
     {
         public ApplicationUser()
         {

@@ -61,14 +61,8 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public enum PermissionType
         {
             Module = 0,
-            /// <summary>
-            /// Menu
-            /// </summary>
-            CategoryItem = 1,
-            /// <summary>
-            /// baseMenu
-            /// </summary>
-            Category = 2
+            Menu = 1,
+            baseMenu = 2
         }
 
         /// <summary>

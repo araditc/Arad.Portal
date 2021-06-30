@@ -17,7 +17,7 @@ namespace Arad.Portal.DataLayer.Entities.General.Permission
         public Enums.PermissionType Type { get; set; }
         public Enums.PermissionMethod Method { get; set; }
 
-        public string MenuId { get; set; }
+        public string MenuIdOfModule { get; set; }
 
         /// <summary>
         /// ParentMenu

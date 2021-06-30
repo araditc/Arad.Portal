@@ -45,7 +45,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                     equallentEntity.DomainId = Guid.NewGuid().ToString();
                     if (!string.IsNullOrWhiteSpace(dto.OwnerUserId))
                     {
-                        var ownerUser = _userContext.Collection.Find(_ => _.Id == dto.OwnerUserId).FirstOrDefault();
+                        var ownerUser = _userContext.Collection.Find(_ => _.Id.ToString() == dto.OwnerUserId).FirstOrDefault();
                         if (ownerUser != null)
                             equallentEntity.Owner = ownerUser;
                     }
@@ -106,7 +106,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                        DomainId = _.DomainId,
                        DomainName = _.DomainName,
                        DomainPrice  = _.Prices.FirstOrDefault(_=>_.IsActive),
-                       OwnerUserId = _.Owner.Id,
+                       OwnerUserId = _.Owner.Id.ToString(),
                        OwnerUserName = _.Owner.UserName,
                        Prices = _.Prices
                    }).ToList();

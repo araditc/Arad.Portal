@@ -1,0 +1,60 @@
+﻿@using System.ComponentModel.Design
+@using Arad.Portal.GeneralLibrary.Utilities; 
+@model List<Arad.Portal.DataLayer.Models.Shared.MenuLinkModel>
+@{
+    Layout = null;
+}
+
+<div class="sidebar ">
+    <div class="sidebar-nav">
+        <div class="sidebar-wrap">
+            <ul class="nav">
+                <li>
+                    <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+                        <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+                            <a href="#">
+                                <span class="btn btn-success" style="width: 100%;border-radius: 0;padding: .5em;">
+                                    @Language.GetString("Menu_Dashboard_HomeTitle");
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                @if (@Model != null && Model.Count() > 0)
+                {
+                    @foreach (var root in @Model)
+                    {
+                        <li class="nav-item">
+                            @if (root.Menus.Count != 0)
+                            {
+                                var hrefCollapse = "menu"+@root.Id;
+                                <a class="nav-link @(root.Current ? "active":"notActive")" data-toggle="collapse" href="#@hrefCollapse" >
+                                    <i class="nav-icon @root.Icone"></i> @root.Title
+                                    <span class="expand-state pull-left"><i class="fa fa-chevron-down pull-left"></i></span>
+                                </a>
+                                <ul class="sub unstyle collapse @(root.Current ? "show":"")" id="@hrefCollapse">
+                                    @foreach (var menu in root.Menus)
+                                    {
+                                        <li><a class="@(menu.Current ? "active":"notActive")" href="/Admin/@menu.Link">@menu.Title</a></li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <a class="nav-link @(root.Current ? "active":"notActive")" href="/Admin/@root.Link">
+                                    <i class="nav-icon @root.Icone"></i> @root.Title
+                                </a>
+                            }
+                            </li>
+                    }
+                }
+            <li class="nav-item">
+                <a class="nav-link" asp-action="Index" asp-controller="Home" asp-area="">
+                    <i class="nav-icon fa fa-desktop"></i>فروشگاه
+                </a>
+            </li>
+            </ul>
+        </div>
+    </div>
+</div>
+

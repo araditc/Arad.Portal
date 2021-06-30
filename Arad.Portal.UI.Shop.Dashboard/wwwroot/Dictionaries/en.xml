@@ -545,6 +545,10 @@
 	<string key="Menu_Dashboard_Invoice">
 		<value>invoice</value>
 	</string>
+	<string key="Menu_Dashboard_HomeTitle">
+		<value>Arad Portal Management System</value>
+	</string>
+	
 	<string key="Menu_Dashboard_Profile">
 		<value>پروفایل</value>
 	</string>

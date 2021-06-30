@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Contracts.Shop.Transaction
 {
-    public class ITransationRepository
+    public interface ITransationRepository
     {
     }
 }

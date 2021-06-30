@@ -513,6 +513,9 @@
 	<string key="Menu_Dashboard_Invoice">
 		<value>فاکتور</value>
 	</string>
+	<string key="Menu_Dashboard_HomeTitle">
+		<value>سیستم مدیریت پورتال آراد</value>
+	</string>
 	<string key="Menu_Dashboard_Profile">
 		<value>پروفایل</value>
 	</string>

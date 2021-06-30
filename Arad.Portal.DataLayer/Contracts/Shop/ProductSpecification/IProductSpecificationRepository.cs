@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Contracts.Shop.ProductSpecification
 {
-    interface IProductSpecificationRepository
+    public interface IProductSpecificationRepository
     {
         Task<RepositoryOperationResult> Add(ProductSpecificationDTO dto);
         Task<PagedItems<ProductSpecificationDTO>> List(string queryString);

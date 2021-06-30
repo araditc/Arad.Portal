@@ -16,7 +16,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Permission
         /// <summary>
         /// لیست منوهایی که این یوزر دسترسی داره
         /// </summary>
-        Task<List<LinkViewModel>> ListOfMenu(string currentUserId, string address);
+        Task<List<MenuLinkModel>> ListOfMenues(string currentUserId, string address);
         List<PermissionDTO> MenusPermission(Enums.PermissionType typeMenu);
         Task<RepositoryOperationResult> Save(PermissionDTO permission);
         RepositoryOperationResult<PermissionDTO> GetForEdit(string permissionId);

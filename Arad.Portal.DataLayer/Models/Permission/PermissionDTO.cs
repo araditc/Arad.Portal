@@ -16,7 +16,7 @@ namespace Arad.Portal.DataLayer.Models.Permission
         public Enums.PermissionType Type { get; set; }
         public Enums.PermissionMethod Method { get; set; }
 
-        public string MenuId { get; set; }
+        public string MenuIdOfModule { get; set; }
 
         /// <summary>
         /// ParentMenu
@@ -24,7 +24,6 @@ namespace Arad.Portal.DataLayer.Models.Permission
         public string ParentMenuId { get; set; }
         public double Priority { get; set; }
         public string Icon { get; set; }
-
         public bool IsEditView { get; set; }
         public string ModificationReason { get; set; }
     }

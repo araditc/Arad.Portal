@@ -113,9 +113,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             return result;
         }
 
-        public List<PermissionDTO> GetPermissionsOfUser(ApplicationUser user)
+        public List<Entities.General.Permission.Permission> GetPermissionsOfUser(ApplicationUser user)
         {
-            List<PermissionDTO> finalList = new List<PermissionDTO>();
+            List<Entities.General.Permission.Permission> permissionList = new();
             try
             {
                 List<string> roleIdList = user.UserRoles;
@@ -124,7 +124,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
                     .Where(_ => roleIdList.Contains(_.RoleId)).ToList();
 
 
-                List<Entities.General.Permission.Permission> permissionList = new();
+                
                 //permissionList = userRolesEntities.SelectMany(x => x.Permissions).ToList();
                 foreach (var item in userRolesEntities)
                 {
@@ -134,14 +134,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
                 }
 
                 permissionList = permissionList.Distinct().ToList();
-                finalList = _mapper.Map<List<PermissionDTO>>(permissionList);
-
             }
             catch (Exception ex)
             {
 
             }
-            return finalList;
+            return permissionList;
         }
 
         public List<string> GetRoleNamesOfUser(string userId)
@@ -150,7 +148,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             try
             {
                 var user = _context.Collection.AsQueryable()
-                    .FirstOrDefault(c => c.Id == userId);
+                    .FirstOrDefault(c => c.Id.ToString() == userId);
 
                 if (user != null)
                 {
@@ -192,7 +190,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             try
             {
                 var query = _context.Collection.AsQueryable()
-                    .Where(u => !u.IsSystemAccount && u.Id != currentUserId);
+                    .Where(u => !u.IsSystemAccount && u.Id.ToString() != currentUserId);
 
                 if (!string.IsNullOrEmpty(searchParam.UserName))
                 {
