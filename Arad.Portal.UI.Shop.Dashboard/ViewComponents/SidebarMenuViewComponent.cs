@@ -37,7 +37,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var menus = new List<MenuLinkModel>();
+            var menues = new List<MenuLinkModel>();
 
             try
             {
@@ -50,15 +50,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
 
                 if (userId != null)
                 {
-                    menus = await _permissionRepository.ListOfMenues(userId, address);
+                    menues = await _permissionRepository.ListOfMenues(userId, address);
                 }
-
-                return View(menus);
             }
             catch (Exception e)
             {
-                return View(menus);
+               
             }
+            return View(menues);
         }
     }
 }

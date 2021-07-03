@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Arad.Portal.DataLayer.Models.Shared.Enums;
 
 namespace Arad.Portal.DataLayer.Contracts.General.Permission
 {
@@ -17,10 +18,16 @@ namespace Arad.Portal.DataLayer.Contracts.General.Permission
         /// لیست منوهایی که این یوزر دسترسی داره
         /// </summary>
         Task<List<MenuLinkModel>> ListOfMenues(string currentUserId, string address);
-        List<PermissionDTO> MenusPermission(Enums.PermissionType typeMenu);
+
+        Task<RepositoryOperationResult<string>> GetPermissionType(string permissionId);
+        List<MenuLinkModel> GetChildren(List<Entities.General.Permission.Permission> context,
+           string permissionId, string address);
+        Task<List<PermissionDTO>> MenusPermission(Enums.PermissionType typeMenu);
         Task<RepositoryOperationResult> Save(PermissionDTO permission);
         RepositoryOperationResult<PermissionDTO> GetForEdit(string permissionId);
         Task<RepositoryOperationResult> Delete(string permissionId, string modificationReason);
         RepositoryOperationResult<List<Modification>> GetModifications(string permissionId);
+
+        Task<Entities.General.Permission.Permission> FetchPermission(string permissionId);
     }
 }

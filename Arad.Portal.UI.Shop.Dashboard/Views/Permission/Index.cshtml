@@ -1,0 +1,693 @@
+﻿@using Arad.Portal.GeneralLibrary.Utilities; 
+@using Arad.Portal.DataLayer.Models.Shared;
+@model Dictionary<string, bool>;
+@{
+    ViewData["Title"] = "Index";
+
+}
+@section Styles{
+    @*<link href="~/css/form.css" rel="stylesheet" />*@
+    @*<link href="~/css/data-grid.css" rel="stylesheet" />*@
+    @*<link href="~/lib/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />*@
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/css/DataTable/dataTables.bootstrap4.css" />
+}
+
+<div class="headPage text-right">
+    <h5>@Language.GetString("Menu_Permissions")</h5>
+    @if (@Model["List"])
+    {
+        <a class="action-head search open" data-toggle="collapse" href="#search">
+            <i class="fa fa-filter" aria-hidden="true"></i>
+        </a>
+    }
+
+    @if (@Model["Add"])
+    {
+        <a class="action-head add open" data-toggle="collapse" href="#add">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+        </a>
+    }
+
+</div>
+@if (@Model["Add"])
+{
+    @await Component.InvokeAsync("AddPermissionComponent")
+}
+
+
+@if (@Model["List"])
+{
+    @*<div class="table">
+           
+
+            <div id="table" class="table-body">
+
+            </div>
+            @await Component.InvokeAsync("LoadingGridData")
+            <ul id="pagination" class="pagination-sm"></ul>
+        </div>*@
+    <section class="content">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table id="permissionList" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>@Language.GetString("tbl_RowName")</th>
+                                    <th>@Language.GetString("tbl_PermissionTitle")</th>
+                                    <th>@Language.GetString("tbl_PermissionType")</th>
+                                    <th>@Language.GetString("tbl_Routes")</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                               
+                            </tbody>
+                        </table>
+                        @await Component.InvokeAsync("LoadingGridData")
+                        <ul id="pagination" class="pagination-sm"></ul>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+        <!-- /.row -->
+    </section>
+}
+
+@if (@Model["Edit"])
+{
+    <!-- Modal Edit -->
+    <div id="editModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <a role="button" class="modal-close" data-dismiss="modal"></a>
+                <div class="modal-header">
+                    <h6 class="modal-title">@Language.GetString("EditPermissions")</h6>
+                </div>
+                <div class="modal-body text-center">
+                    <form id="editPer" class="sm" method="post" autocomplete="off" asp-antiforgery="true">
+                        <div class="form-row text-right ">
+                            <div class=" col-md-12">
+                                <input type="hidden" id="Id" name="Id">
+                                <div class="row">
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="Title">@Language.GetString("Menu_PermissionTitle")</label>
+                                        <input type="text" class="form-control" id="Title" name="Title" placeholder=" ">
+                                        <span class="field-validation-error" data-val-result="Title"></span>
+                                    </div>
+                                    <div id="typeSelect" class="form-group col-md-6 col-lg-6">
+                                        <label for="Type">@Language.GetString("Menu_PermissionType")</label>
+                                        <select id="Type" class="form-control select2" name="Type" asp-items="Html.GetEnumSelectList<Enums.PermissionType>()">
+                                        </select>
+                                        <span class="field-validation-error" data-val-result="Type"></span>
+                                    </div>
+                                    <div id="RoutePer" class="form-group col-md-6 col-lg-6">
+                                        <label for="Routes">@Language.GetString("Menu_Routes")</label>
+                                        <input type="text" class="form-control" id="Routes"
+                                               placeholder="@Language.GetString("Menu_RoutePlaceHolder")" name="Routes" dir="ltr">
+                                        <span class="field-validation-error" data-val-result="Routes"></span>
+                                    </div>
+                                    <div id="keySelect" class="form-group col-md-6 col-lg-6">
+                                        <label for="Method">@Language.GetString("Menu_RoutePlaceHolder")</label>
+                                        <select id="Method" class="form-control select2" name="Method" asp-items="Html.GetEnumSelectList<Enums.PermissionMethod>()">
+                                        </select>
+                                        <span class="field-validation-error" data-val-result="Method"></span>
+                                    </div>
+                                    <div id="MenuIdOfModule" class="form-group col-md-6 col-lg-6">
+                                        <label for="MenuIdOfModule">@Language.GetString("Menu_MenuIdOfModule")</label>
+                                        <select id="MenuIdOfModule" class="form-control" name="MenuIdOfModule">
+                                        </select>
+                                        <span class="field-validation-error" data-val-result="MenuIdOfModule"></span>
+                                    </div>
+                                    <div id="parentMenuSelect" class="form-group col-md-6 col-lg-6" style="display: none;">
+                                        <label for="ParentMenuId">@Language.GetString("Menu_ParentMenuId")</label>
+                                        <select id="ParentMenuId" class="form-control" name="ParentMenuId">
+                                        </select>
+                                        <span class="field-validation-error" data-val-result="ParentMenuId"></span>
+                                    </div>
+                                    <div id="icon" class="form-group col-md-6 col-lg-6" style="display: none;">
+                                        <label for="Icon">@Language.GetString("Menu_Icon")</label>
+                                        <input type="text" class="form-control" id="Icon" name="Icon" dir="ltr">
+                                        <span class="field-validation-error" data-val-result="Icon"></span>
+                                    </div>
+                                    <div id="priority" class="form-group col-md-6 col-lg-6" style="display: none;">
+                                        <label for="Priority">@Language.GetString("Menu_Priority")</label>
+                                        <input type="number" class="form-control" id="Priority" name="Priority" dir="ltr" value="1" min="1">
+                                        <span class="field-validation-error" data-val-result="Priority"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-xs">
+                            <i class="fa fa-check" aria-hidden="true"></i>@Language.GetString("btn_Edit")
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
+@if (@Model["Remove"])
+{
+    <!-- Modal remove-->
+    <div id="removeModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <a role="button" class="modal-close" data-dismiss="modal"></a>
+                <div class="modal-header">
+                    <h6 class="modal-title">حذف دسترسی </h6>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="alert warning">آیا برای حذف دسترسی اطمینان دارید؟</p>
+                    <button id="delete" type="button" class="btn btn-danger btn-sm btn-modal-body" data-dismiss="modal">حذف</button>
+                    <button type="button" class="btn btn-outline-danger btn-sm btn-modal-body" data-dismiss="modal" style="margin-left:5px">انصراف</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts{
+    <script src="~/lib/twbs-pagination/jquery.twbsPagination.js"></script>
+    <script src="~/lib/bootstrap-select/js/bootstrap-select.js"></script>
+    @if (@Model["List"])
+    {
+        <script>
+            $(document).ready(function () {
+
+                list(pageSize, 1);
+                $(document).on("click",
+                    ".page-link",
+                    function (e) {
+                        e.preventDefault();
+
+                        list(pageSize, $pagination.twbsPagination('getCurrentPage'));
+                    });
+            });
+        </script>
+    }
+
+    @if (@Model["Add"])
+    {
+        <script>
+            $(document).ready(function() {
+                MenusSelectList(1);
+                MenusSelectList(2);
+
+
+            $("#addPer").submit(function(e) {
+                e.preventDefault();
+                var site = $("#site").val();
+
+                var $inputs = $('#addPer :input');
+                var valuesForm = {};
+                $inputs.each(function() {
+                    valuesForm[this.name] = $(this).val();
+                });
+                var active;
+                if ($("input[name='IsActive']").is(":checked")=== true) {
+                    active = true;
+                } else active = false;
+                valuesForm['IsActive'] = active;
+
+                $.ajax({
+                    url: "@Url.Action("AddPermission")",
+                    type: 'Post',
+                    //data: $(this).serialize(),
+                    data: valuesForm,
+                    beforeSend: function() {
+                        $("#loading").css("display", "block");
+                    },
+                    success: function(result) {
+                        var spanErrorList = $('#addPer span[data-val-result]');
+
+                        spanErrorList.html("");
+                        spanErrorList.parent().removeClass("has-error");
+                        if (result.status === "success") {
+                            MenusSelectList(1);
+                            MenusSelectList(2);
+
+                            toastr.success(result.message);
+
+                            list(pageSize, $pagination.twbsPagination('getCurrentPage'));
+
+                        } else if (result.status === "error") {
+                            if (spanErrorList.length > 0) {
+                                spanErrorList.each(function() {
+                                    $(this).html("");
+                                    $(this).parent().removeClass("has-error");
+                                });
+                            }
+
+                            if (result.modelStateErrors !== null) {
+
+                                result.modelStateErrors.forEach(function(value, index) {
+
+                                    $("#addPer").find('[data-val-result=' + value.key + ']')
+                                        .html(value.errorMessage);
+                                    $("#addPer").find('[data-val-result=' + value.key + ']').parent()
+                                        .addClass("has-error");
+                                });
+                            } else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: result.message,
+                                    confirmButtonText:
+                                        '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                });
+                            }
+                        }
+
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        alert(xhr.status);
+                        alert(thrownError);
+                    },
+                    complete: function() {
+                        $("#loading").css("display", "none");
+                    }
+                });
+            });
+            });
+        </script>
+    }
+
+    @if (@Model["Edit"])
+    {
+        <script>
+            $(document).ready(function() {
+                $(document).on("click",
+                "#editRecord",
+                function(e) {
+                    e.preventDefault();
+                    var id = $(this).data("id");
+                    var data = { Id: id };
+                    var spanErrorList = $('#editPer span[data-val-result]');
+
+                    spanErrorList.html("");
+                    spanErrorList.parent().removeClass("has-error");
+
+                    $.ajax({
+                        url: "@Url.Action("GetPermission")",
+                        type: 'Get',
+                        data: data,
+                        beforeSend: function() {
+                            $("#loading").css("display", "block");
+                        },
+                        success: function(result) {
+
+                            if (result.status = "success") {
+
+                                var per = result.data;
+
+                                $('#editPer select[id=Type]').val(per.type).trigger('change');
+                                $('#editPer select[id=Type]').selectpicker('val', per.type);
+                                $('#editPer select[id=key]').selectpicker('val', per.key);
+                                $('#editPer select[id=parentMenu]').selectpicker('val', per.parentMenu);
+                                $('#editPer select[id=MenuOfModule]').selectpicker('val', per.menuOfModule);
+
+                                $("#editPer #Title").val(per.title);
+                                $("#editPer #Route").val(per.route);
+                                $("#editPer #Icon").val(per.icon);
+                                $("#editPer #Priority").val(per.priority);
+                                $("#editPer #Id").val(per.id);
+
+                                $("#editModal").modal("show");
+
+                            } else {
+                                toastr.error(result.message);
+                            }
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                            alert(xhr.status);
+                            alert(thrownError);
+                        },
+                        complete: function() {
+                            $("#loading").css("display", "none");
+                        }
+                    });
+                });
+
+
+            $("#editPer").submit(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "@Url.Action("Edit")",
+                    type: 'Post',
+                    data: $(this).serialize(),
+                    beforeSend: function() {
+                        $("#loading").css("display", "block");
+                    },
+                    success: function(result) {
+                        var spanErrorList = $('#editPer span[data-val-result]');
+
+                        spanErrorList.html("");
+                        spanErrorList.parent().removeClass("has-error");
+                        if (result.status === "success") {
+
+                            $("#editModal").modal("hide");
+
+                            MenusSelectList(1);
+                            MenusSelectList(2);
+
+                            toastr.success(result.message);
+
+                            list(pageSize, $pagination.twbsPagination('getCurrentPage'));
+
+                        } else if (result.status === "error") {
+
+                            if (spanErrorList.length > 1) {
+                                spanErrorList.each(function() {
+                                    $(this).html("");
+                                    $(this).parent().removeClass("has-error");
+                                });
+                            }
+
+                            if (result.modelStateErrors !== null) {
+
+                                result.modelStateErrors.forEach(function(value, index) {
+
+                                    $("#editPer").find('[data-val-result=' + value.key + ']')
+                                        .html(value.errorMessage);
+                                    $("#editPer").find('[data-val-result=' + value.key + ']').parent()
+                                        .addClass("has-error");
+                                });
+                            } else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: result.message,
+                                    confirmButtonText:
+                                        '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                });
+                            }
+                        }
+
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        alert(xhr.status);
+                        alert(thrownError);
+                    },
+                    complete: function() {
+                        $("#loading").css("display", "none");
+                    }
+                });
+            });
+
+            });
+        </script>
+    }
+
+    @if (@Model["Remove"])
+    {
+        <script>
+            $(document).ready(function() {
+                 $(document).on("click",
+                "#deleteRecord",
+                function(e) {
+                    e.preventDefault();
+                    var id = $(this).data("id");
+                    console.log(id);
+                    $("#delete").data("id", id);
+                    $("#removeModal").modal("show");
+
+                });
+
+            $(document).on("click",
+                "#delete",
+                function(e) {
+                    e.preventDefault();
+                    var id = $(this).data("id");
+                    var data = { Id: id };
+
+                    $.ajax({
+                        url: "@Url.Action("Delete")",
+                        type: 'Get',
+                        data: data,
+                        beforeSend: function() {
+                            $("#loading").css("display", "block");
+                        },
+                        success: function(result) {
+
+                            if (result.status === "success") {
+                                MenusSelectList(1);
+                                MenusSelectList(2);
+
+                                list(pageSize, $pagination.twbsPagination('getCurrentPage'));
+
+                                $("#removeModal").modal("hide");
+                                Swal.fire({
+                                    type: 'success',
+                                    title: result.message,
+                                    confirmButtonText:
+                                        '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                });
+
+                            } else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: result.message,
+                                    confirmButtonText:
+                                        '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                });
+                            }
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                            alert(xhr.status);
+                            alert(thrownError);
+                        },
+                        complete: function() {
+                            $("#loading").css("display", "none");
+                        }
+                    });
+                });
+            });
+        </script>
+    }
+
+    @if (@Model["Active"])
+    {
+        <script>
+            $(document).ready(function() {
+                  $(document).on("change",
+                "#active",
+                function() {
+                    var elm = $(this);
+                    var id = $(this).data("id");
+                    var active;
+                    if (event.target.checked === true) {
+                        active = true;
+                    } else active = false;
+                    var data = { Id: id, IsActive: active };
+
+                    $.ajax({
+                        url: "@Url.Action("ChangeBeActive")",
+                        type: 'Get',
+                        data: data,
+                        beforeSend: function() {
+                            $("#loading").css("display", "block");
+                        },
+                        success: function(result) {
+
+                            if (result.status === "success") {
+
+                                var card = elm.parent().parent().parent().parent();
+
+                                if (active === true) {
+                                    $(card).addClass("active");
+                                    $(card).removeClass("notActive");
+                                } else {
+                                    $(card).removeClass("active");
+                                    $(card).addClass("notActive");
+                                }
+
+                                toastr.success(result.message);
+
+                            } else {
+                                elm.prop("checked", !active).change();
+                                toastr.error(result.message);
+                            }
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                            alert(xhr.status);
+                            alert(thrownError);
+                        },
+                        complete: function() {
+                            $("#loading").css("display", "none");
+                        }
+                    });
+                });
+            });
+        </script>
+    }
+
+    <script>
+        var pageSize = 20;
+            var $pagination = $('#pagination');
+            var defaultOpts = {
+                visiblePages: 5,
+                first: "اولین",
+                prev: "قبلی",
+                next: "بعدی",
+                last: "آخرین"
+            };
+
+
+            $(document).on("change",
+                "#addPer #typeSelect",
+                function() {
+
+                    if ($("#Type").val() === '1') { //menu
+                        $("#keySelect").css("display", "none");
+                        $("#priority").css("display", "block");
+                        $("#icon").css("display", "block");
+                        $("#MenuModule").css("display", "none");
+                        $("#parentMenuSelect").css("display", "block");
+                        $("#RoutePer").css("display", "block");
+
+                    } else if ($("#Type").val() === '0') { //module
+                        $("#keySelect").css("display", "block");
+                        $("#priority").css("display", "none");
+                        $("#icon").css("display", "none");
+                        $("#MenuModule").css("display", "block");
+                        $("#parentMenuSelect").css("display", "none");
+                        $("#RoutePer").css("display", "block");
+
+                    } else { //BaseMenu
+                        $("#keySelect").css("display", "none");
+                        $("#priority").css("display", "block");
+                        $("#icon").css("display", "block");
+                        $("#MenuModule").css("display", "none");
+                        $("#parentMenuSelect").css("display", "none");
+                        $("#RoutePer").css("display", "block");
+                    }
+                });
+
+
+            $(document).on("change",
+                "#editPer #typeSelect",
+                function() {
+
+                    if ($("#editPer #Type").val() === '1') { //menu
+                        $("#editPer #keySelect").css("display", "none");
+                        $("#editPer #priority").css("display", "block");
+                        $("#editPer #icon").css("display", "block");
+                        $("#editPer #MenuModule").css("display", "none");
+                        $("#editPer #parentMenuSelect").css("display", "block");
+                        $("#editPer #RoutePer").css("display", "block");
+
+                    } else if ($("#editPer #Type").val() === '0') { //module
+                        $("#editPer #keySelect").css("display", "block");
+                        $("#editPer #priority").css("display", "none");
+                        $("#editPer #icon").css("display", "none");
+                        $("#editPer #MenuModule").css("display", "block");
+                        $("#editPer #parentMenuSelect").css("display", "none");
+                        $("#editPer #RoutePer").css("display", "block");
+
+                    } else { //BaseMenu
+                        $("#editPer #keySelect").css("display", "none");
+                        $("#editPer #priority").css("display", "block");
+                        $("#editPer #icon").css("display", "block");
+                        $("#editPer #MenuModule").css("display", "none");
+                        $("#editPer #parentMenuSelect").css("display", "none");
+                        $("#editPer #RoutePer").css("display", "block");
+                    }
+                });
+
+
+            function list(pageSize, currentPage) {
+                var data = { pageSize: pageSize, currentPage: currentPage };
+                $.ajax({
+                    url: "@Url.Action("List")",
+                    type: 'Post',
+                    data: data,
+                    beforeSend: function() {
+                        $("#loading-data").css("display", "block");
+                    },
+                    success: function(result) {
+
+                        $("#table").html(result);
+                        var totalPages = $("#page-data").data("total");
+                        var currentPage = $pagination.twbsPagination('getCurrentPage');
+
+                        $pagination.twbsPagination('destroy');
+
+                        if (totalPages > 0) {
+                            $pagination.twbsPagination($.extend({},
+                                defaultOpts,
+                                {
+                                    startPage: currentPage,
+                                    totalPages: totalPages
+                                }));
+                        }
+
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        alert("error");
+                        alert(xhr.status);
+                        alert(thrownError);
+                    },
+                    complete: function() {
+
+                        $("#loading-data").css("display", "none");
+                    }
+                });
+            };
+
+
+            function MenusSelectList(typemenu) {
+
+                data = { typeMenu: typemenu };
+                $.ajax({
+                    url: "@Url.Action("MenusSelectList")",
+                    type: 'Get',
+                    data: data,
+                    success: function (result) {
+                        var options = "<option value='-1'>انتخاب کنید..</option>";
+                        if (result.status === "success") {
+                            if (result.data.length != 0) {
+                                (result.data).forEach(function(item) {
+                                    var op = "<option value='" + item.id + "'>" + item.title + "</option>";
+                                    options += op;
+                                });
+                            }
+
+                        } else if (result.status === "error") {
+
+
+                        }
+                        if (typemenu === 1) {
+                            $("#addPer #MenuOfModule").html(options);
+                            $('#addPer #MenuOfModule').selectpicker('refresh');
+
+                            $("#editPer #MenuOfModule").html(options);
+                            $('#editPer #MenuOfModule').selectpicker('refresh');
+                        } else if (typemenu === 2) {
+                            $("#addPer #parentMenu").html(options);
+                            $('#addPer #parentMenu').selectpicker('refresh');
+
+                            $("#editPer #parentMenu").html(options);
+                            $('#editPer #parentMenu').selectpicker('refresh');
+                        }
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        alert("error");
+                        alert(xhr.status);
+                        alert(thrownError);
+                    },
+                    complete: function() {
+                    }
+                });
+            }
+
+
+    </script>
+}

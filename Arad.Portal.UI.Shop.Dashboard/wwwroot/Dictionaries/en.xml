@@ -1,5 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <dictionary>
+	<!--Start [buttons text]-->
+	<string key="btn_Add">
+		<value>Add</value>
+	</string>
+	<string key="btn_Edit">
+		<value>Edit</value>
+	</string>
+	<!--End [buttons text]-->
+	<!--Start [tables]-->
+	<string key="tbl_RowName">
+		<value>Row</value>
+	</string>
+	<string key="tbl_PermissionTitle">
+		<value>Permission Title</value>
+	</string>
+	<string key="tbl_PermissionType">
+		<value>Permission Type</value>
+	</string>
+	<string key="tbl_Routes">
+		<value>Routes</value>
+	</string>
+	<!--End [tables]-->
 	<!--START [Allert And Message]-->
 	<string key="AlertAndMessage_RequiredErrorMessage">
 		<value>This field is required.</value>
@@ -527,12 +549,52 @@
 	</string>
 	<!--END [Allert And Message]-->
 	<!--START [Dashboard]-->
+	<string key="Menu_Permissions">
+		<value>Permissions</value>
+	</string>
+	<string key="EditPermissions">
+		<value>Edit permissions</value>
+	</string>
 	<string key="Menu_Profile">
 		<value>Profile</value>
 	</string>
 	<string key="Menu_Home">
 		<value>Home</value>
 	</string>
+	<string key="Menu_RoutePlaceHolder">
+		<value>Seprate each route with comma ,</value>
+	</string>
+	<setting key="Menu_AddNewPermission">
+		<value>Adding New Permission</value>
+	</setting>
+	<setting key="Menu_PermissionName">
+		<value>PermissionName</value>
+	</setting>
+	<setting key="Menu_PermissionTitle">
+		<value>Permission Title</value>
+	</setting>
+	<setting key="Menu_PermissionType">
+		<value>PermissionType</value>
+	</setting>
+	<setting key="Menu_Routes">
+		<value>Routes</value>
+	</setting>
+	<setting key="Menu_PermissionMethod">
+		<value>PermissionMethod</value>
+	</setting>
+	<setting key="Menu_MenuIdOfModule">
+		<value>MenuIdOfModule</value>
+	</setting>
+	<setting key="Menu_ParentMenuId">
+		<value>ParentMenuId</value>
+	</setting>
+	<setting key="Menu_Icon">
+		<value>Icon</value>
+	</setting>
+	<setting key="Menu_Priority">
+		<value>Priority</value>
+	</setting>
+	
 	<string key="Menu_Dashboard">
 		<value>Dashboard</value>
 	</string>
@@ -742,6 +804,7 @@
 		<value>first</value>
 	</string>
 	<!--END [Page Navigation]-->
+	
 	<!--START [Table headers]-->
 	<string key="TableHeader_BasicInfo">
 		<value>Basic information</value>

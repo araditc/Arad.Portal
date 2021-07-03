@@ -9,7 +9,11 @@ namespace Arad.Portal.DataLayer.Models.Shared
 {
     public class MenuLinkModel
     {
-        public string PermissionId { get; set; }
+        public MenuLinkModel()
+        {
+            Children = new List<MenuLinkModel>();
+        }
+        public string MenuId { get; set; }
         public string MenuTitle { get; set; }
         public string Link { get; set; }
         public string Icon { get; set; }

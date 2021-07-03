@@ -11,7 +11,8 @@ namespace Arad.Portal.DataLayer.Models.Permission
     {
         public string PermissionId { get; set; }
         public string Title { get; set; }
-        public List<string> Routes { get; set; }
+        public string Routes { get; set; }
+        //public string Route { get; set; }
         public string ClientAddress { get; set; }
         public Enums.PermissionType Type { get; set; }
         public Enums.PermissionMethod Method { get; set; }

@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
 using MongoDB.Driver;
+using Arad.Portal.DataLayer.Entities.General.Permission;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Authorization
 {
@@ -66,7 +67,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Authorization
                 //    .Where(a => a.Type == Enums.PermissionType.Module 
                 //           && a.MenuIdOfModule == page.PermissionId).ToList();
 
-                List<PermissionDTO> persUser = _userRepository.GetPermissionsOfUser(user)
+                List<Permission> persUser = _userRepository.GetPermissionsOfUser(user)
                     .Where(_=>_.Type == Enums.PermissionType.Module 
                                 && _.MenuIdOfModule == page.PermissionId).Distinct().ToList();
                 foreach (var item in trans)

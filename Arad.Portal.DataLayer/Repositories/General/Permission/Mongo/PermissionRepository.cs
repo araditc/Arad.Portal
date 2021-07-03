@@ -175,28 +175,28 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
             return result;
         }
 
-        public async Task<List<MenuLinkModel>> ListOfMenu(string currentUserId, string address)
+        public async Task<List<MenuLinkModel>> ListOfMenues(string currentUserId, string address)
         {
             var result = new List<MenuLinkModel>();
             try
             {
                 var user = await _userManager.FindByIdAsync(currentUserId);
-
+              
                 if (user.IsSystemAccount)
                 {
                     var query = _context.Collection.AsQueryable();
                     var allBaseMenues = query.Where(p => p.Type == Enums.PermissionType.baseMenu).ToList();
-
                     var allMenues = query.Where(p => p.Type == Enums.PermissionType.Menu).ToList();
+
 
                     result = allBaseMenues.Select(_ => new MenuLinkModel()
                     {
-                        PermissionId = _.PermissionId,
+                        MenuId = _.PermissionId,
                         MenuTitle = GeneralLibrary.Utilities.Language.GetString("PermissionTitle_" + _.Title),
                         Icon = _.Icon,
                         Priority = _.Priority,
                         IsActive = _.ClientAddress != null && _.Routes.Contains(address),
-                        Children = GetChildrens(allMenues, _.PermissionId, address)
+                        Children = GetChildren(allMenues, _.PermissionId, address)
                     }).ToList().OrderBy(_=>_.Priority).ToList();
                 }
                 else
@@ -208,12 +208,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
 
                     result = baseMenues.Select(_ => new MenuLinkModel()
                     {
-                        PermissionId = _.PermissionId,
+                        MenuId = _.PermissionId,
                         MenuTitle = GeneralLibrary.Utilities.Language.GetString("PermissionTitle_" + _.Title),
                         Icon = _.Icon,
                         Priority = _.Priority,
                         IsActive = _.ClientAddress != null && _.Routes.Contains(address),
-                        Children = GetChildrens(menues, _.PermissionId, address)
+                        Children = GetChildren(menues, _.PermissionId, address)
                     }).OrderBy(o => o.Priority).ToList();
                 }
             }
@@ -224,7 +224,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
             return result;
         }
 
-        private List<MenuLinkModel> GetChildrens(List<Entities.General.Permission.Permission> context,
+        public List<MenuLinkModel> GetChildren(List<Entities.General.Permission.Permission> context,
            string permissionId, string address)
         {
             if (context.Any(_ => _.ParentMenuId == permissionId))
@@ -232,13 +232,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
                 return context.Select(_ => new MenuLinkModel()
                 {
                     Icon = _.Icon,
-                    IsActive = _.IsActive,
+                    IsActive = _.Routes != null && _.Routes.Contains(address),
                     Link = _.ClientAddress,
-                    IsCurrentRoute = _.Routes != null && _.Routes.Contains(address),
                     MenuTitle = GeneralLibrary.Utilities.Language.GetString("PermissionTitle_" + _.Title),
-                    PermissionId = _.PermissionId,
+                    MenuId = _.PermissionId,
                     Priority = _.Priority,
-                    Children = GetChildrens(context, _.PermissionId, address)
+                    Children = GetChildren(context, _.PermissionId, address)
                 }).ToList();
             }
             else
@@ -246,12 +245,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
                 return new List<MenuLinkModel>();
             }
         }
-        public List<PermissionDTO> MenusPermission(Enums.PermissionType typeMenu)
+        public async Task<List<PermissionDTO>> MenusPermission(Enums.PermissionType typeMenu)
         {
             var result = new List<PermissionDTO>();
             try
             {
-                var list = _context.Collection.AsQueryable().Where(c => c.Type == typeMenu).ToList();
+                var list = await _context.Collection.Find(_ => _.Type == typeMenu).ToListAsync();
                 result = _mapper.Map<List<PermissionDTO>>(list);
             }
             catch (Exception)
@@ -342,6 +341,38 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
             }
 
             return result;
+        }
+
+        public async Task<RepositoryOperationResult<string>> GetPermissionType(string permissionId)
+        {
+            var result = new RepositoryOperationResult<string>();
+           if (!string.IsNullOrWhiteSpace(permissionId))
+            {
+                var per = await _context.Collection
+                    .Find(_ => _.PermissionId == permissionId).FirstOrDefaultAsync();
+
+                if(per != null)
+                {
+                   result.ReturnValue =  per.Type.ToString();
+                   result.Message = ConstMessages.SuccessfullyDone;
+                   result.Succeeded = true;
+                }else
+                {
+                    result.Message = ConstMessages.ObjectNotFound;
+                }
+            }else
+            {
+                result.Message = ConstMessages.ObjectNotFound;
+            }
+            return result;
+        }
+
+        public async Task<Entities.General.Permission.Permission> FetchPermission(string permissionId)
+        {
+            Entities.General.Permission.Permission result = null;
+            result = await _context.Collection.Find(_ => _.PermissionId == permissionId).FirstOrDefaultAsync();
+            return result;
+
         }
     }
 }

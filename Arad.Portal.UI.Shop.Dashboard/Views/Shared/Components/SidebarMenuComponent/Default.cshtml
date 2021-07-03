@@ -20,39 +20,38 @@
                         </div>
                     </div>
                 </li>
-                @if (@Model != null && Model.Count() > 0)
-                {
-                    @foreach (var root in @Model)
+               
+                    @foreach (var item in @Model)
                     {
                         <li class="nav-item">
-                            @if (root.Menus.Count != 0)
+                            @if (item.Children.Count != 0)
                             {
-                                var hrefCollapse = "menu"+@root.Id;
-                                <a class="nav-link @(root.Current ? "active":"notActive")" data-toggle="collapse" href="#@hrefCollapse" >
-                                    <i class="nav-icon @root.Icone"></i> @root.Title
-                                    <span class="expand-state pull-left"><i class="fa fa-chevron-down pull-left"></i></span>
+                                var hrefcollapse = "menu"+item.MenuId;
+                                <a class="nav-link @(item.IsActive ? "active":"notactive")" data-toggle="collapse" href="#@hrefcollapse" >
+                                    <i class="nav-icon @item.Icon"></i> 
+                                        @item.MenuTitle
+                                    <span class="expand-state pull-left">
+                                       <i class="fa fa-chevron-down pull-left"></i>
+                                    </span>
                                 </a>
-                                <ul class="sub unstyle collapse @(root.Current ? "show":"")" id="@hrefCollapse">
-                                    @foreach (var menu in root.Menus)
+                                <ul class="sub unstyle collapse @(item.IsActive ? "show":"")" id="@hrefcollapse">
+                                    @foreach (var menu in item.Children)
                                     {
-                                        <li><a class="@(menu.Current ? "active":"notActive")" href="/Admin/@menu.Link">@menu.Title</a></li>
+                                        <li>
+                                           @await Component.InvokeAsync("InnerMenu", menu.MenuId);
+                                        </li>
                                     }
                                 </ul>
                             }
                             else
                             {
-                                <a class="nav-link @(root.Current ? "active":"notActive")" href="/Admin/@root.Link">
-                                    <i class="nav-icon @root.Icone"></i> @root.Title
+                                <a class="nav-link @(item.IsActive ? "active":"notActive")" href="/Admin/@item.Link">
+                                    <i class="nav-icon @item.Icon"></i> @item.MenuTitle
                                 </a>
                             }
-                            </li>
+                        </li>
                     }
-                }
-            <li class="nav-item">
-                <a class="nav-link" asp-action="Index" asp-controller="Home" asp-area="">
-                    <i class="nav-icon fa fa-desktop"></i>فروشگاه
-                </a>
-            </li>
+              
             </ul>
         </div>
     </div>

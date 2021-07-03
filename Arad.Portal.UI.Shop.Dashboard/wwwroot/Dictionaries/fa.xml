@@ -1,5 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <dictionary>
+	<!--Start [buttons text]-->
+	<string key="btn_Add">
+		<value>افزودن</value>
+	</string>
+	<string key="btn_Edit">
+		<value>ویرایش</value>
+	</string>
+	<!--End [buttons text]-->
+	<!--Start [tables]-->
+	<string key="tbl_RowName">
+		<value>ردیف</value>
+	</string>
+	<string key="tbl_PermissionTitle">
+		<value>عنوان دسترسی</value>
+	</string>
+	<string key="tbl_PermissionType">
+		<value>نوع دسترسی</value>
+	</string>
+	<string key="tbl_Routes">
+		<value>مسیرها</value>
+	</string>
+	<!--End [tables]-->
   <!--START [Allert And Message]-->
   <string key="AlertAndMessage_RequiredErrorMessage">
     <value>این فیلد الزامی است.</value>
@@ -495,12 +517,51 @@
   </string>
   <!--END [Allert And Message]-->
   <!--START [Dashboard]-->
+	<string key="Menu_Permissions">
+		<value>دسترسی ها</value>
+	</string>
+	<string key="EditPermissions">
+		<value>ویرایش دسترسی ها</value>
+	</string>
   <string key="Menu_Profile">
     <value>پروفایل</value>
   </string>
 	<string key="Menu_Home">
 		<value>خانه</value>
 	</string>
+	<string key="Menu_RoutePlaceHolder">
+		<value>مسیرهای مختلف را با , از هم جداکنید.</value>
+	</string>
+	<setting key="Menu_AddNewPermission">
+		<value>اضافه کردن دسترسی جدید</value>
+	</setting>
+	<setting key="Menu_PermissionName">
+		<value>نام دسترسی</value>
+	</setting>
+	<setting key="Menu_PermissionTitle">
+		<value>عنوان دسترسی</value>
+	</setting>
+	<setting key="Menu_PermissionType">
+		<value>نوع دسترسی</value>
+	</setting>
+	<setting key="Menu_Routes">
+		<value>مسیرها</value>
+	</setting>
+	<setting key="Menu_PermissionMethod">
+		<value>رویه ی دسترسی</value>
+	</setting>
+	<setting key="Menu_MenuIdOfModule">
+		<value>منوی ماژول</value>
+	</setting>
+	<setting key="Menu_ParentMenuId">
+		<value>منوی والد</value>
+	</setting>
+	<setting key="Menu_Icon">
+		<value>آیکان</value>
+	</setting>
+	<setting key="Menu_Priority">
+		<value>اولویت</value>
+	</setting>
   <string key="Menu_Dashboard">
     <value>داشبورد</value>
   </string>

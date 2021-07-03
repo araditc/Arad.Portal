@@ -1,0 +1,33 @@
+﻿@using System.ComponentModel.Design
+@using Arad.Portal.GeneralLibrary.Utilities;
+@model Arad.Portal.DataLayer.Models.Shared.MenuLinkModel
+@{
+    Layout = null;
+}
+
+
+@if (Model.Children.Count != 0)
+{
+    var hrefcollapse = "menu" + Model.MenuId;
+    <a class="nav-link @(Model.IsActive ? "active":"notactive")" data-toggle="collapse" href="#@hrefcollapse">
+        <i class="nav-icon @Model.Icon"></i>
+        @Model.MenuTitle
+        <span class="expand-state pull-left">
+            <i class="fa fa-chevron-down pull-left"></i>
+        </span>
+    </a>
+    <ul class="sub unstyle collapse @(Model.IsActive ? "show":"")" id="@hrefcollapse">
+        @foreach (var menu in Model.Children)
+        {
+            <li>
+                @await Component.InvokeAsync("InnerMenu", menu.MenuId);
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <a class="nav-link @(Model.IsActive ? "active":"notActive")" href="/Admin/@Model.Link">
+        <i class="nav-icon @Model.Icon"></i> @Model.MenuTitle
+    </a>
+}

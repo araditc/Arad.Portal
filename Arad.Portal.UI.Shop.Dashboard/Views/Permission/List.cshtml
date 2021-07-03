@@ -1,0 +1,71 @@
+﻿@model Models.Pagination<Models.Permission>
+@{
+    Layout = null;
+}
+
+@{
+    <div id="page-data" data-current="@Model.CurrentPage" data-total="@Model.TotalPage" data-size="@Model.PageSize">
+        @{
+            if (Model.Data.Count != 0)
+            {
+                int i = (Model.CurrentPage - 1) * Model.PageSize;
+
+                @foreach (var item in Model.Data)
+                {
+                    <div class="table-row">
+                        <div class="card-table @(item.IsActive ? "active":"notActive")">
+                            <div class="row m-0">
+                                <div class="table-col col-xs-12 col-md-1 d-none d-lg-block">
+                                    <span>@(++i)</span>
+                                </div>
+                                <div class="table-col col-xs-12 col-lg-2">
+                                    <span class="mo-title">نام:</span>
+                                    <span>@item.Title</span>
+                                </div>
+                                <div class="table-col col-xs-12 col-lg-2">
+                                    <span class="mo-title">نوع</span>
+                                    <span>@item.Type</span>
+                                </div>
+                                <div class="table-col col-xs-12 col-lg-3">
+                                    <span class="mo-title">مسیر</span>
+                                    <span>@item.Route</span>
+                                </div>
+                                <div class="table-col col-xs-12 col-lg-2">
+                                    <span class="mo-title">وضعیت</span>
+                                    <label class="switch">
+                                        <input class="checkbox" type="checkbox" id="active" checked="@item.IsActive" data-id="@item.Id" value="@item.IsActive">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="table-col col-xs-12 col-lg-2">
+                                    <div class="">
+                                        @if (ViewBag.Permissions["Edit"])
+                                        {
+                                            <a id="editRecord" href="#" data-toggle="modal" data-id="@item.Id" class=" btn btn-outline-primary btn-xs">
+                                                ویرایش
+                                            </a>
+                                        }
+                                        @if (ViewBag.Permissions["Remove"])
+                                        {
+                                            <button id="deleteRecord" href="#" data-toggle="modal" data-id="@item.Id" type="button" class="btn btn-outline-danger btn-xs">
+                                                حذف
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="card-menu d-lg-none d-xl-none">
+                                <p>dfffffffffffffff</p>
+                            </div> -->
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="empty text-center">اطلاعاتی برای نمایش وجود ندارد.</div>
+            }
+        }
+    </div>
+}
+
