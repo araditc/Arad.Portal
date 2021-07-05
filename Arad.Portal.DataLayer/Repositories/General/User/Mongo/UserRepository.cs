@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
+using Arad.Portal.DataLayer.Repositories.General.Role.Mongo;
+using Arad.Portal.DataLayer.Repositories.General.Permission.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
 {

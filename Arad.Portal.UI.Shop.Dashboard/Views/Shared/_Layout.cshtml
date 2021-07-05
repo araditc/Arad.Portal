@@ -43,19 +43,12 @@
         <link href="~/css/blue.css" rel="stylesheet" />
         <link href="~/css/datePicker/datepicker3.css" rel="stylesheet" />
         <link href="~/css/dateRangePicker/daterangepicker-bs3.css" rel="stylesheet" />
+        <link href="~/css/siteTemplate/rtl/SidebarMenu/style.css" rel="stylesheet" />
         <!-- Ionicons -->
+
         <link href="~/css/siteTemplate/rtl/bootstrap-rtl.min.css" rel="stylesheet" />
         <link href="~/css/siteTemplate/rtl/custom-style.css" rel="stylesheet" />
-        <link rel="stylesheet" href="~/css/siteTemplate/shared/ionicons.css">
-        <!-- iCheck bootstrap -->
-        @*<link rel="stylesheet" href="~/css/siteTemplate/shared/icheck-bootstrap/icheck-bootstrap.min.css">*@
-
-        <!-- Bootstrap 4 RTL -->
-        @*<link rel="stylesheet" href="~/css/siteTemplate/rtl/bootstrap4rtl/bootstrap.min.css">*@
-        <!-- Custom style for RTL -->
-        @*<link rel="stylesheet" href="~/css/siteTemplate/rtl/custom.css">*@
-
-
+        <link rel="stylesheet" href="~/css/siteTemplate/shared/ionicons.css"><!-- iCheck bootstrap -->@*<link rel="stylesheet" href="~/css/siteTemplate/shared/icheck-bootstrap/icheck-bootstrap.min.css">*@<!-- Bootstrap 4 RTL -->@*<link rel="stylesheet" href="~/css/siteTemplate/rtl/bootstrap4rtl/bootstrap.min.css">*@<!-- Custom style for RTL -->@*<link rel="stylesheet" href="~/css/siteTemplate/rtl/custom.css">*@
         <style>
             .content-wrapper {
                 margin-left: 0 !important;
@@ -65,6 +58,12 @@
                 margin-left: 0;
             }
         </style>
+
+    }
+    else
+    {
+
+        <link href="~/css/siteTemplate/ltr/SidebarMenu/style.css" rel="stylesheet" />
     }
     <link href="~/css/siteTemplate/shared/fontawesome-free/all.min.css" rel="stylesheet" />
     <!-- Theme style -->
@@ -72,7 +71,7 @@
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="~/lib//overlayscrollbars/css/OverlayScrollbars.min.css">
 </head>
-<body class="@bodyClass">
+<body class="@bodyClass" dir="@direction">
     <div class="wrapper">
         <!--Navbar-->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Entities.General.User
 {
-    public class ApplicationUser : MongoUser
+    public class ApplicationUser : MongoUser<string>
     {
         public ApplicationUser()
         {
@@ -35,6 +35,12 @@ namespace Arad.Portal.DataLayer.Entities.General.User
         public List<Modification> Modifications { get; set; }
         public DateTime LastLoginDate { get; set; }
         public List<LoginLogoutRecord> LoginData { get; set; } = new List<LoginLogoutRecord>();
+    }
+
+
+    public class ApplicationRole : MongoRole<string>
+    {
+
     }
 
     //public enum AccountType

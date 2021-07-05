@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 
-namespace Arad.Portal.DataLayer.Repositories.General.Permission
+namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
 {
     public class PermissionContext
     {
@@ -13,8 +13,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission
         public PermissionContext(IConfiguration configuration)
         {
             _configuration = configuration;
-            client = new MongoClient(_configuration["DB:ConnectionString"]);
-            db = client.GetDatabase(_configuration["DB:DbName"]);
+            client = new MongoClient(_configuration["Database:ConnectionString"]);
+            db = client.GetDatabase(_configuration["Database:DbName"]);
             Collection = db.GetCollection<Entities.General.Permission.Permission>("Permission");
         }
     }

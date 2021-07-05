@@ -38,25 +38,27 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var menues = new List<MenuLinkModel>();
+            //try
+            //{
+            //    string userId = _accessor.HttpContext.User.Claims
+            //        .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            //    var route = _accessor.HttpContext.GetRouteData();
+            //    var controller = route.Values["controller"].ToString();
+            //    var action = route.Values["action"].ToString();
+            //    string address = $"{controller}/{action}";
 
-            try
-            {
-                string userId = _accessor.HttpContext.User.Claims
-                    .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-                var route = _accessor.HttpContext.GetRouteData();
-                var controller = route.Values["controller"].ToString();
-                var action = route.Values["action"].ToString();
-                string address = $"{controller}/{action}";
+            //    if (userId != null)
+            //    {
+            //        menues = await _permissionRepository.ListOfMenues(userId, address);
+            //    }
+            //}
+            //catch (Exception e)
+            //{
 
-                if (userId != null)
-                {
-                    menues = await _permissionRepository.ListOfMenues(userId, address);
-                }
-            }
-            catch (Exception e)
-            {
-               
-            }
+            //}
+            //return View(menues);
+           
+
             return View(menues);
         }
     }

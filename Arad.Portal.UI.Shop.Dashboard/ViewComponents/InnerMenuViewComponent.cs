@@ -1,4 +1,5 @@
 ﻿using Arad.Portal.DataLayer.Contracts.General.Permission;
+using Arad.Portal.DataLayer.Contracts.General.User;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Repositories.General.Permission;
@@ -20,13 +21,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
         private readonly IHttpContextAccessor _accessor;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IPermissionRepository _permissionRepository;
-        private readonly UserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
 
         public InnerMenuViewComponent(
             IHttpContextAccessor accessor,
             IPermissionRepository permissionRepository,
             UserManager<ApplicationUser> userManager,
-            UserRepository userRepository)
+            IUserRepository userRepository)
         {
             _accessor = accessor;
             _permissionRepository = permissionRepository;
@@ -38,7 +39,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
         {
             var result = new MenuLinkModel();
            
-
             try
             {
                 string currentUserId = _accessor.HttpContext.User.Claims
@@ -51,8 +51,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
 
                 var pers = _userRepository.GetPermissionsOfUser(applicationUser);
                 var context = pers.Where(p => p.Type == Enums.PermissionType.Menu).ToList();
-                var per =await _permissionRepository.FetchPermission(menuId);
-                if(per != null)
+                var per = await _permissionRepository.FetchPermission(menuId);
+                if (per != null)
                 {
                     result.MenuId = per.PermissionId;
                     result.MenuTitle = GeneralLibrary.Utilities.Language.GetString("PermissionTitle_" + per.Title);
@@ -68,7 +68,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
             }
             catch (Exception e)
             {
-               
+
             }
 
 

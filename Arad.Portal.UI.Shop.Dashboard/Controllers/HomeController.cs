@@ -1,4 +1,5 @@
 ﻿using Arad.Portal.UI.Shop.Dashboard.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
+    [Authorize(Policy = "Role")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

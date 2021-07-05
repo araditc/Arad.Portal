@@ -4,7 +4,11 @@
 @{
     Layout = null;
 }
-
+<style>
+    .list-group-item {
+        background-color: inherit;;
+    }
+</style>
 
 @if (Model.Children.Count != 0)
 {
@@ -16,10 +20,10 @@
             <i class="fa fa-chevron-down pull-left"></i>
         </span>
     </a>
-    <ul class="sub unstyle collapse @(Model.IsActive ? "show":"")" id="@hrefcollapse">
+    <ul class="list-group @(Model.IsActive ? "show":"")" id="@hrefcollapse">
         @foreach (var menu in Model.Children)
         {
-            <li>
+            <li class="list-group-item @(menu.Children.Count > 0 ? "has-sub" : "")">
                 @await Component.InvokeAsync("InnerMenu", menu.MenuId);
             </li>
         }

@@ -1,14 +1,27 @@
 {
   "version": "1.0",
   "defaultProvider": "cdnjs",
-  "libraries": [{
-  "library": "overlayscrollbars@1.13.1",
-  "destination": "wwwroot/lib/overlayscrollbars/"
-}
-,
+  "libraries": [
+    {
+      "library": "overlayscrollbars@1.13.1",
+      "destination": "wwwroot/lib/overlayscrollbars/"
+    },
+    {
+      "library": "summernote@0.8.18",
+      "destination": "wwwroot/lib/summernote/"
+    },
+    {
+      "library": "twbs-pagination@1.4.2",
+      "destination": "wwwroot/lib/twbs-pagination/",
+      "files": [
+        "jquery.twbsPagination.min.js",
+        "jquery.twbsPagination.js"
+      ]
+    }
+  ,
 {
-  "library": "summernote@0.8.18",
-  "destination": "wwwroot/lib/summernote/"
+  "library": "bootstrap-select@1.13.18",
+  "destination": "wwwroot/lib/bootstrap-select/"
 }
 ]
 }

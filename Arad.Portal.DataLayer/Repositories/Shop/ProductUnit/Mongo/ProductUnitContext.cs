@@ -18,8 +18,8 @@
 //        public ProductUnitContext(IConfiguration configuration)
 //        {
 //            _configuration = configuration;
-//            client = new MongoClient(_configuration["DB:ConnectionString"]);
-//            db = client.GetDatabase(_configuration["DB:DbName"]);
+//             client = new MongoClient(_configuration["Database:ConnectionString"]);
+//           db = client.GetDatabase(_configuration["Database:DbName"]);
 //            Collection = db.GetCollection<Entities.Shop.ProductUnit.ProductUnit>("ProductUnit");
 //        }
 //    }

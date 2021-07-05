@@ -2,6 +2,7 @@
 using Arad.Portal.DataLayer.Entities;
 using Arad.Portal.DataLayer.Models.Domain;
 using Arad.Portal.DataLayer.Models.Shared;
+using Arad.Portal.DataLayer.Repositories.General.User.Mongo;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using MongoDB.Driver;
@@ -18,10 +19,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
     public class DomainRepository : BaseRepository, IDomainRepository
     {
         private readonly DomainContext _context;
-        private readonly User.UserContext _userContext;
+        private readonly UserContext _userContext;
         private readonly IMapper _mapper;
         public DomainRepository(DomainContext context,
-                                User.UserContext user,
+                                UserContext user,
                                 IHttpContextAccessor httpContextAccessor,
                                 IMapper mapper): base(httpContextAccessor)
         {

@@ -13,6 +13,10 @@ using System.Security.Claims;
 using MongoDB.Bson;
 using System.Collections.Specialized;
 using System.Web;
+using Arad.Portal.DataLayer.Entities.General.State;
+using Arad.Portal.DataLayer.Entities.General.City;
+using Arad.Portal.DataLayer.Entities.General.District;
+using Arad.Portal.DataLayer.Entities.General.County;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
 {
@@ -20,11 +24,21 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
     {
         private readonly RoleContext _context;
         private readonly IMapper _mapper;
+        public IMongoCollection<State> States { get; set; }
+        public IMongoCollection<City> Cities { get; set; }
+
+        public IMongoCollection<District> Districts { get; set; }
+        public IMongoCollection<County> Counties { get; set; }
+
         public RoleRepository(RoleContext roleContext, 
             IHttpContextAccessor httpContextAccessor, IMapper mapper): base(httpContextAccessor)
         {
             _context = roleContext;
             _mapper = mapper;
+            States = roleContext.States;
+            Cities = roleContext.Cities;
+            Districts = roleContext.Districts;
+            Counties = roleContext.Counties;
         }
 
         public async Task<RepositoryOperationResult> Add(RoleDTO dto)

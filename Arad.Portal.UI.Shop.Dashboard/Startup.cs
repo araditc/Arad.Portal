@@ -42,6 +42,10 @@ using Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart;
 using Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo;
 using Arad.Portal.DataLayer.Contracts.Shop.Transaction;
 using Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo;
+using Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mongo;
+using Microsoft.AspNetCore.Http;
+using Arad.Portal.UI.Shop.Dashboard.Helpers;
+
 
 namespace Arad.Portal.UI.Shop.Dashboard
 {
@@ -51,16 +55,19 @@ namespace Arad.Portal.UI.Shop.Dashboard
         {
             Configuration = configuration;
             GeneralLibrary.Utilities.Language._hostingEnvironment = env.WebRootPath;
+            ApplicationPath = env.ContentRootPath;
         }
 
         public IConfiguration Configuration { get; }
+        public static string ApplicationPath { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
-            services.AddIdentityMongoDbProvider<ApplicationUser, MongoRole>(identityOptions =>
+            services.AddIdentityMongoDbProvider<ApplicationUser, ApplicationRole, string>(identityOptions =>
             {
                 identityOptions.Password.RequiredLength = 6;
                 identityOptions.Password.RequireLowercase = true;
@@ -70,7 +77,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
 
             }, mongoIdentityOptions =>
             {
-                mongoIdentityOptions.ConnectionString = Configuration.GetSection("DB").Get<string>();
+                mongoIdentityOptions.ConnectionString = Configuration["Database:ConnectionString"];
             });
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
               .AddCookie(opt =>
@@ -123,7 +130,10 @@ namespace Arad.Portal.UI.Shop.Dashboard
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            app.UseSeedDatabase(ApplicationPath);
         }
+
+       
 
         private RequestLocalizationOptions AddMultilingualSettings()
         {
@@ -163,11 +173,26 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IProductGroupRepository, ProductGroupRepository>();
             services.AddTransient<IProductSpecificationRepository, ProductSpecificationRepository>();
-            services.AddTransient<IProductSpecGroupRepository, IProductSpecGroupRepository>();
+            services.AddTransient<IProductSpecGroupRepository, ProductSpecGroupRepository>();
             services.AddTransient<IProductUnitRepository, ProductUnitRepository>();
             services.AddTransient<IPromotionRepository, PromotionRepository>();
             services.AddTransient<IShoppingCartRepository, ShoppingCartRepository>();
             services.AddTransient<ITransationRepository, TransactionRepository>();
+
+            #region contexes
+            services.AddTransient<CurrencyContext>();
+            services.AddTransient<DomainContext>();
+            services.AddTransient<LanguageContext>();
+            services.AddTransient<PermissionContext>();
+            services.AddTransient<RoleContext>();
+            services.AddTransient<UserContext>();
+            services.AddTransient<OrderContext>();
+            services.AddTransient<ProductContext>();
+            services.AddTransient<PromotionContext>();
+            services.AddTransient<ShoppingCartContext>();
+            services.AddTransient<TransactionContext>();
+
+            #endregion
 
         }
     }

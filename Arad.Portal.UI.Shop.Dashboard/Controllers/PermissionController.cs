@@ -65,7 +65,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     ModelState.AddModelError("Priority", "لطفا الویت منو را مشخص نمایید.");
                 }
-                if (permission.Routes.Count == 0)
+                if (string.IsNullOrWhiteSpace(permission.Routes))
                 {
                     ModelState.AddModelError("Routes", "لطفا مسیر منو را مشخص نمایید.");
                 }
@@ -76,7 +76,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     ModelState.AddModelError("MenuIdOfModule", "لطفا منو ماژول را مشخص نمایید.");
                 }
-                if (permission.Routes.Count == 0)
+                if (string.IsNullOrWhiteSpace(permission.Routes))
                 {
                     ModelState.AddModelError("Routes", "لطفا مسیر ماژول را مشخص نمایید.");
                 }
@@ -180,7 +180,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                     errors.Add(obj);
                 }
-                if (permission.Routes.Count == 0)
+                if (string.IsNullOrWhiteSpace(permission.Routes))
                 {
                     var obj = new ClientValidationErrorModel
                     {
@@ -192,8 +192,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 }
 
                 if (permission.Icon == null || 
-                    permission.Priority == 0 || 
-                    permission.Routes.Count == 0)
+                    permission.Priority == 0 ||
+                    string.IsNullOrWhiteSpace(permission.Routes))
                 {
                     result =  new JsonResult(new { Status = "error", Message = "", ModelStateErrors = errors });
                 }
@@ -211,7 +211,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                     errors.Add(obj);
                 }
-                if (permission.Routes.Count == 0)
+                if (string.IsNullOrWhiteSpace(permission.Routes))
                 {
                     var obj = new ClientValidationErrorModel
                     {
@@ -222,7 +222,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     errors.Add(obj);
                 }
 
-                if (permission.Routes.Count == 0 || permission.MenuIdOfModule == "-1")
+                if (string.IsNullOrWhiteSpace(permission.Routes) || permission.MenuIdOfModule == "-1")
                 {
                     result =new  JsonResult(new { Status = "error", Message = "", ModelStateErrors = errors });
                 }
