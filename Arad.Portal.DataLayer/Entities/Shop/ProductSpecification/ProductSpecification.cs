@@ -1,4 +1,5 @@
 ﻿using Arad.Portal.DataLayer.Models.Product;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ProductSpecification
         {
             SpecificationValues = new ();
         }
+
+        [BsonId]
+        [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string ProductSpecificationId { get; set; }
 
         public string SpecificationGroupId { get; set; }

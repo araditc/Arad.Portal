@@ -8,6 +8,31 @@
 		<value>ویرایش</value>
 	</string>
 	<!--End [buttons text]-->
+	<!--Start[JustForTesting]-->
+	<string key="PermissionTitle_Manu11">
+		<value>منوی 1-1</value>
+	</string>
+	<string key="PermissionTitle_Menu12">
+		<value>منوی 1-2</value>
+	</string>
+	<string key="PermissionTitle_Menu111">
+		<value>منوی 1-1-1</value>
+	</string>
+	<string key="PermissionTitle_Menu112">
+		<value>منوی 1-1-2</value>
+	</string>
+	<string key="PermissionTitle_Menu1111">
+		<value>منوی 1-1-1-1</value>
+	</string>
+	<string key="PermissionTitle_Menu11111">
+		<value>منوی 1-1-1-1-1</value>
+	</string>
+	<!--End[JustForTesting]-->
+	<!--Start [PermissionTitle]-->
+	<string key="PermissionTitle_MainPage">
+		<value>داشبورد</value>
+	</string>
+	<!--End [PermissionTitle]-->
 	<!--Start [tables]-->
 	<string key="tbl_RowName">
 		<value>ردیف</value>

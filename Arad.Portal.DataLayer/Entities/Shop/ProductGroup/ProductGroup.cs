@@ -1,5 +1,6 @@
 ﻿using Arad.Portal.DataLayer.Entities.Shop.Product;
 using Arad.Portal.DataLayer.Models.Shared;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ProductGroup
         {
             MultiLingualProperties = new List<MultiLingualProperty>();
         }
+
+        [BsonId]
+        [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string ProductGroupId { get; set; }
 
         public List<MultiLingualProperty> MultiLingualProperties { get; set; }

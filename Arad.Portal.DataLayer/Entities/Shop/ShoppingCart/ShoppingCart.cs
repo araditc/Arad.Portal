@@ -14,6 +14,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
         {
             Details = new();
         }
+
+        [BsonId]
+        [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string UserCartId { get; set; }
 
         public EntityCulture ShoppingCartCulture { get; set; }

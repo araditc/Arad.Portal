@@ -25,11 +25,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IConfiguration _configuration;
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            UserExtensions userExtension, IConfiguration configuration)
+            //UserExtensions userExtension,
+            IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _userExtension = userExtension;
+            //_userExtension = userExtension;
             _configuration = configuration;
 
         }
@@ -95,7 +96,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
 
             TempData["LoginUser"] = $"کاربر {user.Profile.FirstName} {user.Profile.LastName} خوش آمدید.";
-            return RedirectToAction("index", "Home");
+            return RedirectToAction("Index", "Home");
         }
 
 

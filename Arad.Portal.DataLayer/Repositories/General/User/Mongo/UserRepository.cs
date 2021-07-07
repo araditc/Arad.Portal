@@ -120,22 +120,28 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             List<Entities.General.Permission.Permission> permissionList = new();
             try
             {
-                List<string> roleIdList = user.UserRoles;
-                List<Entities.General.Role.Role> userRolesEntities = new();
-                userRolesEntities = _roleContext.Collection.AsQueryable()
-                    .Where(_ => roleIdList.Contains(_.RoleId)).ToList();
-
-
-                
-                //permissionList = userRolesEntities.SelectMany(x => x.Permissions).ToList();
-                foreach (var item in userRolesEntities)
+                if(!user.IsSystemAccount)
                 {
-                    var lst = _permissionContext.Collection.AsQueryable()
-                        .Where(_ => _.IsActive && item.PermissionIds.Contains(_.PermissionId)).ToList();
-                    permissionList.AddRange(lst);
-                }
+                    List<string> roleIdList = user.UserRoles;
+                    List<Entities.General.Role.Role> userRolesEntities = new();
+                    userRolesEntities = _roleContext.Collection.AsQueryable()
+                        .Where(_ => roleIdList.Contains(_.RoleId)).ToList();
 
-                permissionList = permissionList.Distinct().ToList();
+                    //permissionList = userRolesEntities.SelectMany(x => x.Permissions).ToList();
+                    foreach (var item in userRolesEntities)
+                    {
+                        var lst = _permissionContext.Collection.AsQueryable()
+                            .Where(_ => _.IsActive && item.PermissionIds.Contains(_.PermissionId)).ToList();
+                        permissionList.AddRange(lst);
+                    }
+
+                    permissionList = permissionList.Distinct().ToList();
+                }
+                else
+                {
+                    permissionList = _permissionContext.Collection.AsQueryable().Where(_ => _.IsActive).ToList();
+                }
+               
             }
             catch (Exception ex)
             {

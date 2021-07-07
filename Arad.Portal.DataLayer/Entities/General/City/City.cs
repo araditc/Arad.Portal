@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,8 @@ namespace Arad.Portal.DataLayer.Entities.General.City
 {
     public class City
     {
+       
+        [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string Id { get; set; }
 
         public string Name { get; set; }

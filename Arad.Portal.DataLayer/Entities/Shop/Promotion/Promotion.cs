@@ -9,6 +9,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
 {
     public class Promotion : BaseEntity
     {
+
+        [BsonId]
+        [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string PromotionId { get; set; }
 
         public PromotionType PromotionType { get; set; }

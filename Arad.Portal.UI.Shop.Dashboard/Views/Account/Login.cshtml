@@ -14,21 +14,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Font Awesome -->
-    <link href="~/dashboardAsset/plugins/font-awesome/css/font-awesome.css" rel="stylesheet" />
-
+    <link href="~/css/fonts/font-awesome.css" rel="stylesheet" />
     <!-- Ionicons -->
-    <link href="~/dashboardAsset/plugins/icons/ionicons.min.css" rel="stylesheet" />
+    <link href="~/css/siteTemplate/shared/ionicons.css" rel="stylesheet" />
+
     <!-- Theme style -->
-    <link rel="stylesheet" href="~/dashboardAsset/dist/css/adminlte.min.css">
+    <link href="~/css/siteTemplate/shared/AdminLTE/adminlte.min.css" rel="stylesheet" />
+
     <!-- iCheck -->
-    <link rel="stylesheet" href="~/dashboardAsset/plugins/iCheck/square/blue.css">
+    <link href="~/css/blue.css" rel="stylesheet" />
     <!-- Google Font: Source Sans Pro -->
     <!-- bootstrap rtl -->
-    <link rel="stylesheet" href="~/dashboardAsset/dist/css/bootstrap-rtl.min.css">
+    <link href="~/css/siteTemplate/rtl/bootstrap-rtl.min.css" rel="stylesheet" />
+
     <!-- template rtl version -->
-    <link rel="stylesheet" href="~/dashboardAsset/dist/css/custom-style.css">
     <link href="~/Fonts/IranSans/css/fontiran.css" rel="stylesheet" />
-    <link href="~/dashboardAsset/dist/css/loader-double.css" rel="stylesheet" />
+    <link href="~/css/siteTemplate/rtl/custom-style.css" rel="stylesheet" />
+    <link href="~/css/loader-double.css" rel="stylesheet" />
     <style>
 
         .tooltip-inner {
@@ -165,30 +167,32 @@
     </div>
     <!-- /.login-box -->
     <!-- jQuery -->
-    <script src="~/dashboardAsset/plugins/jquery/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
     <!-- Bootstrap 4 -->
-    <script src="~/dashboardAsset/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib\bootstrap\dist\js\bootstrap.bundle.min.js"></script>
+
     <!-- iCheck -->
-    <script src="~/dashboardAsset/plugins/iCheck/icheck.min.js"></script>
-    <script src="~/lib/jquery-validate/jquery.validate.js"></script>
+    <script src="~/lib/iCheck/icheck.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
     <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
     })
 
-        function togglePassword() {
-            var pw_ele = document.getElementById("pw_element");
-            var icon = document.getElementById("ic_span");
+    function togglePassword() {
+        var pw_ele = document.getElementById("pw_element");
+        var icon = document.getElementById("ic_span");
 
-            if (pw_ele.type === "password") {
-                pw_ele.type = "text";
-                icon.className = "fa fa-eye-slash input-group-text"
-            } else {
-                pw_ele.type = "password";
-                icon.className = "fa fa-eye input-group-text"
-            }
+        if (pw_ele.type === "password") {
+            pw_ele.type = "text";
+            icon.className = "fa fa-eye-slash input-group-text"
+        } else {
+            pw_ele.type = "password";
+            icon.className = "fa fa-eye input-group-text"
         }
+    }
 
     $(function() {
         $('input').iCheck({

@@ -1,5 +1,6 @@
 ﻿using Arad.Portal.DataLayer.Contracts.General.Permission;
 using Arad.Portal.DataLayer.Contracts.General.User;
+using Arad.Portal.DataLayer.Entities.General.Permission;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Repositories.General.Permission;
@@ -38,7 +39,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync(string menuId)
         {
             var result = new MenuLinkModel();
-           
+            List<Permission> pers = new List<Permission>(); ;
             try
             {
                 string currentUserId = _accessor.HttpContext.User.Claims
@@ -48,8 +49,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
                 var action = route.Values["action"].ToString();
                 string address = $"{controller}/{action}";
                 var applicationUser = await _userManager.FindByIdAsync(currentUserId);
-
-                var pers = _userRepository.GetPermissionsOfUser(applicationUser);
+                
+                pers = _userRepository.GetPermissionsOfUser(applicationUser);
                 var context = pers.Where(p => p.Type == Enums.PermissionType.Menu).ToList();
                 var per = await _permissionRepository.FetchPermission(menuId);
                 if (per != null)
@@ -70,8 +71,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
             {
 
             }
-
-
             return View(result);
         }
     }

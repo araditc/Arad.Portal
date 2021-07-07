@@ -15,6 +15,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Order
         {
             Details = new();
         }
+
+        [BsonId]
+        [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string OrderId { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]

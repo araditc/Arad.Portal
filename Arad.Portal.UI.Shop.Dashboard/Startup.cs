@@ -64,6 +64,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSession();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -120,8 +121,11 @@ namespace Arad.Portal.UI.Shop.Dashboard
             app.UseStaticFiles();
            
             app.UseRequestLocalization(AddMultilingualSettings());
+           
             app.UseRouting();
 
+            app.UseSession();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -130,6 +134,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
             app.UseSeedDatabase(ApplicationPath);
         }
 

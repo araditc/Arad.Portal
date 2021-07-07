@@ -17,11 +17,14 @@
         "jquery.twbsPagination.min.js",
         "jquery.twbsPagination.js"
       ]
+    },
+    {
+      "library": "bootstrap-select@1.13.18",
+      "destination": "wwwroot/lib/bootstrap-select/"
+    },
+    {
+      "library": "iCheck@1.0.3",
+      "destination": "wwwroot/lib/iCheck/"
     }
-  ,
-{
-  "library": "bootstrap-select@1.13.18",
-  "destination": "wwwroot/lib/bootstrap-select/"
-}
-]
+  ]
 }

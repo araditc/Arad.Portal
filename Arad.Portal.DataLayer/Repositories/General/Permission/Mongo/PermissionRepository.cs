@@ -374,5 +374,21 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
             return result;
 
         }
+
+        public bool HasAny()
+        {
+            var result = false;
+            if(_context.Collection.AsQueryable().Any())
+            {
+                result = true;
+            }
+            return result;
+        }
+
+        public async Task InsertMany(List<Entities.General.Permission.Permission> permissions)
+        {
+            await _context.Collection.InsertManyAsync(permissions);
+        }
+
     }
 }

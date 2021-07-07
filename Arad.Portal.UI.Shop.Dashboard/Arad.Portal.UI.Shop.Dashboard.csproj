@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <Folder Include="Views\Role\" />
-    <Folder Include="wwwroot\css\fonts\" />
     <Folder Include="wwwroot\lib\bootstrap-select\" />
   </ItemGroup>
 

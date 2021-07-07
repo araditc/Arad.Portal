@@ -1,5 +1,6 @@
 ﻿using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Models.Price;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,8 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
             Prices = new ();
         }
 
+        [BsonId]
+        [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string DomainId { get; set; }
 
         public string DomainName { get; set; }

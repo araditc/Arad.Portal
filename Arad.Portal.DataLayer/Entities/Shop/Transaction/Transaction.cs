@@ -18,6 +18,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
             UserData = new();
             TransactionItems = new();
         }
+
+        [BsonId]
+        [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string TransactionId { get; set; }
 
         public List<EventData> EventsData { get; set; }

@@ -1,4 +1,5 @@
 ﻿using Arad.Portal.DataLayer.Models.Shared;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +11,8 @@ namespace Arad.Portal.DataLayer.Entities.General.Permission
 {
     public class Permission : BaseEntity
     {
+        [BsonId]
+        [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string PermissionId { get; set; }
         public string Title { get; set; }
         public List<string> Routes { get; set; }

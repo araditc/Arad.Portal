@@ -19,7 +19,7 @@ using Arad.Portal.DataLayer.Entities.General.City;
 using Arad.Portal.DataLayer.Entities.General.State;
 using Arad.Portal.DataLayer.Entities.General.County;
 using Arad.Portal.DataLayer.Entities.General.District;
-
+using Arad.Portal.DataLayer.Entities.General.Permission;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 {
@@ -32,7 +32,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                 (UserManager<ApplicationUser>)userScope.ServiceProvider
                     .GetService(typeof(UserManager<ApplicationUser>));
 
-            if (userManager != null && userManager.Users.Any())
+            if (userManager != null && !userManager.Users.Any())
             {
                 var user = new ApplicationUser()
                 {
@@ -78,7 +78,21 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                 userManager.CreateAsync(user, "Sa@12345").Wait();
             }
 
-           
+            using var permissionScope = app.ApplicationServices.CreateScope();
+            var permissionRepository =
+                (PermissionRepository)permissionScope.ServiceProvider.GetService(typeof(IPermissionRepository));
+
+            if (!permissionRepository.HasAny())
+            {
+                using StreamReader r = new StreamReader(Path.Combine(applicationPath, "SeedData", "permissions.json"));
+                string json = r.ReadToEnd();
+                List<Permission> items = JsonConvert.DeserializeObject<List<Permission>>(json);
+
+                if (items.Any())
+                {
+                    permissionRepository.InsertMany(items).Wait();
+                }
+            }
 
             using var stateScope = app.ApplicationServices.CreateScope();
             var stateRepository =
