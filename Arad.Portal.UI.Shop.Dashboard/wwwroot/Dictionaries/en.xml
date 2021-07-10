@@ -35,6 +35,18 @@
 	<string key="PermissionTitle_UserManagement">
 		<value>User Management</value>
 	</string>
+	<string key="PermissionTitle_Users">
+		<value>Users</value>
+	</string>
+	<string key="PermissionTitle_Users">
+		<value>Users</value>
+	</string>
+	<string key="PermissionTitle_AddUser">
+		<value>Add User</value>
+	</string>
+	<string key="PermissionTitle_EditUser">
+		<value>Edit User</value>
+	</string>
 	<!--End [PermissionTitle]-->
 	<!--Start [tables]-->
 	<string key="tbl_RowName">

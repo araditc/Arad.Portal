@@ -25,7 +25,7 @@
   },
   {
     "PermissionId": "90d3381a-d733-4775-9a16-5e93a74c6958",
-    "Title": "کاربران",
+    "Title": "Users",
     "Routes": [ "Account/Index" ],
     "ClientAddress": "Account/Index",
     "Type": 1,
@@ -37,7 +37,7 @@
   },
   {
     "PermissionId": "de565b89-504f-4360-a71a-f94de6f70374",
-    "Title": "اضافه کردن کاربر جدید",
+    "Title": "AddUser",
     "Routes": [ "Account/AddUser" ],
     "ClientAddress": "Account/AddUser",
     "Type": 1,
@@ -49,7 +49,7 @@
   },
   {
     "PermissionId": "13ec1923-5a92-4937-98f6-702cf22af036",
-    "Title": "ویرایش کاربر",
+    "Title": "EditUser",
     "Routes": [ "Account/EditUser" ],
     "ClientAddress": "Account/EditUser",
     "Type": 1,

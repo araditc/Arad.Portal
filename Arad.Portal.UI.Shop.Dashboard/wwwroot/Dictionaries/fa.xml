@@ -33,7 +33,16 @@
 		<value>داشبورد</value>
 	</string>
 	<string key="PermissionTitle_UserManagement">
-		<value>User Management</value>
+		<value>مدیریت کاربران</value>
+	</string>
+	<string key="PermissionTitle_Users">
+		<value>کاربران</value>
+	</string>
+	<string key="PermissionTitle_AddUser">
+		<value>افزودن کاربر</value>
+	</string>
+	<string key="PermissionTitle_EditUser">
+		<value>ویرایش کاربر</value>
 	</string>
 	<!--End [PermissionTitle]-->
 	<!--Start [tables]-->
