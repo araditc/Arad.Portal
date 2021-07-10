@@ -1,64 +1,57 @@
-﻿@using System.ComponentModel.Design
-@using Arad.Portal.GeneralLibrary.Utilities; 
+﻿
+@using Arad.Portal.GeneralLibrary.Utilities;
+@using System.Globalization;
 @model List<Arad.Portal.DataLayer.Models.Shared.MenuLinkModel>
 @{
     Layout = null;
 }
-<style>
-    .list-group-item {
-        background-color: inherit;
-    }
-</style>
 
 <div class="sidebar ">
     <div class="sidebar-nav">
-        <div class="navigation">
-            <ul class="list-group">
-                <li class="list-group-item">
+        <div class="sidebar-wrap">
+            <ul class="nav">
+                <li>
                     <div class="sidebar-shortcuts" id="sidebar-shortcuts">
                         <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
                             <a href="#">
                                 <span class="btn btn-success" style="width: 100%;border-radius: 0;padding: .5em;">
-                                    @Language.GetString("Menu_Dashboard_HomeTitle");
+                                    @Language.GetString("Menu_Dashboard_HomeTitle")
                                 </span>
                             </a>
                         </div>
                     </div>
                 </li>
-               
-                    @foreach (var item in @Model)
+
+                @foreach (var root in @Model)
                     {
-                        <li class="list-group-item @(item.Children.Count > 0 ? "has-sub" : "")">
-                            @if (item.Children.Count != 0)
+                <li class="nav-item">
+                    @if (root.Children.Count != 0)
                             {
-                                var hrefcollapse = "menu"+item.MenuId;
-                                <a class="nav-link @(item.IsActive ? "active":"notactive")" data-toggle="collapse" href="#@hrefcollapse" >
-                                    <i class="nav-icon @item.Icon"></i> 
-                                        @item.MenuTitle
-                                    <span class="expand-state pull-left">
-                                       <i class="fa fa-chevron-down pull-left"></i>
-                                    </span>
-                                </a>
-                                <ul class="list-group @(item.IsActive ? "show":"")" id="@hrefcollapse">
-                                    @foreach (var menu in item.Children)
+                                var hrefCollapse = "menu"+@root.MenuId;
+                    <a class="nav-link @(root.IsActive ? "active":"notActive")" data-toggle="collapse" href="#@hrefCollapse">
+                        <i class="nav-icon @root.Icon"></i> @Language.GetString(root.MenuTitle)
+                        <span class="expand-state pull-left"><i class="fa fa-chevron-down pull-left"></i></span>
+                    </a>
+                    <ul class="sub unstyle collapse @(root.IsActive ? "show":"")" id="@hrefCollapse">
+                        @foreach (var menu in root.Children)
                                     {
-                                        <li class="list-group-item">
-                                           @await Component.InvokeAsync("InnerMenu", menu.MenuId);
-                                        </li>
+                        <li><a class="@(menu.IsActive ? "active":"notActive")" href="/Admin/@menu.Link">@menu.MenuTitle</a></li>
                                     }
-                                </ul>
+                    </ul>
                             }
                             else
                             {
-                                <a class="nav-link @(item.IsActive ? "active":"notActive")" href="/Admin/@item.Link">
-                                    <i class="nav-icon @item.Icon"></i> @item.MenuTitle
-                                </a>
+                    <a class="nav-link @(root.IsActive ? "active":"notActive")" href="/Admin/@root.Link">
+                        <i class="nav-icon @root.Icon"></i> @root.MenuTitle
+                    </a>
                             }
-                        </li>
-                    }
-              
+                </li>
+                        }
+
+
             </ul>
         </div>
     </div>
 </div>
+
 

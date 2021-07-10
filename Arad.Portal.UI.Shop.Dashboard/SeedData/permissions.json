@@ -1,10 +1,9 @@
 ﻿[
-
   {
     "PermissionId": "d03e2a1f-6a80-47d7-8b34-b20bda16f77e",
     "Title": "MainPage",
-    "Routes": [],
-    "ClientAddress": "",
+    "Routes": [ "Home/Index" ],
+    "ClientAddress": "Home/index",
     "Type": 2,
     "Method": 0,
     "MenuIdOfModule": null,
@@ -14,98 +13,51 @@
   },
   {
     "PermissionId": "86deb739-c63a-460d-8c31-86c80b2a85b1",
-    "Title": "MainPage",
-    "Routes": [],
+    "Title": "UserManagement",
+    "Routes": [ "Account/Index", "Role/Index", "Permission/Index" ],
     "ClientAddress": "",
     "Type": 2,
     "Method": 0,
     "MenuIdOfModule": null,
     "ParentMenuId": null,
-    "Priority": 2,
-    "Icon": "fa fa-tachometer"
+    "Priority": 1,
+    "Icon": "fa fa-users"
   },
   {
     "PermissionId": "90d3381a-d733-4775-9a16-5e93a74c6958",
-    "Title": "MainPage",
-    "Routes": [],
-    "ClientAddress": "",
-    "Type": 2,
+    "Title": "کاربران",
+    "Routes": [ "Account/Index" ],
+    "ClientAddress": "Account/Index",
+    "Type": 1,
     "Method": 0,
     "MenuIdOfModule": null,
     "ParentMenuId": null,
-    "Priority": 3,
-    "Icon": "fa fa-tachometer"
-  },
-  {
-    "PermissionId": "99b6f6e8-1a59-4355-9429-037c95f6e2fa",
-    "Title": "Manu11",
-    "Routes": [],
-    "ClientAddress": "",
-    "Type": 1,
-    "Method": 0,
-    "MenuIdOfModule": null,
-    "ParentMenuId": "d03e2a1f-6a80-47d7-8b34-b20bda16f77e",
     "Priority": 1,
-    "Icon": null
+    "Icon": "fa fa-users"
   },
   {
     "PermissionId": "de565b89-504f-4360-a71a-f94de6f70374",
-    "Title": "Manu12",
-    "Routes": [],
-    "ClientAddress": "",
+    "Title": "اضافه کردن کاربر جدید",
+    "Routes": [ "Account/AddUser" ],
+    "ClientAddress": "Account/AddUser",
     "Type": 1,
     "Method": 0,
     "MenuIdOfModule": null,
-    "ParentMenuId": "d03e2a1f-6a80-47d7-8b34-b20bda16f77e",
+    "ParentMenuId": null,
     "Priority": 2,
-    "Icon": null
+    "Icon": "fa fa-users"
   },
   {
     "PermissionId": "13ec1923-5a92-4937-98f6-702cf22af036",
-    "Title": "Menu111",
-    "Routes": [],
-    "ClientAddress": "",
+    "Title": "ویرایش کاربر",
+    "Routes": [ "Account/EditUser" ],
+    "ClientAddress": "Account/EditUser",
     "Type": 1,
     "Method": 0,
     "MenuIdOfModule": null,
-    "ParentMenuId": "99b6f6e8-1a59-4355-9429-037c95f6e2fa",
-    "Priority": 1,
-    "Icon": null
-  },
-  {
-    "PermissionId": "2ccc8e3a-434d-42ae-8b76-3fbe6420c4e7",
-    "Title": "Menu112",
-    "Routes": [],
-    "ClientAddress": "",
-    "Type": 1,
-    "Method": 0,
-    "MenuIdOfModule": null,
-    "ParentMenuId": "99b6f6e8-1a59-4355-9429-037c95f6e2fa",
+    "ParentMenuId": null,
     "Priority": 2,
-    "Icon": null
-  },
-  {
-    "PermissionId": "76f9c6fb-5611-41fa-bf68-bb45dd9da1db",
-    "Title": "Menu1111",
-    "Routes": [],
-    "ClientAddress": "",
-    "Type": 1,
-    "Method": 0,
-    "MenuIdOfModule": null,
-    "ParentMenuId": "13ec1923-5a92-4937-98f6-702cf22af036",
-    "Priority": 1,
-    "Icon": null
-  },
-  {
-    "PermissionId": "0f7969ab-013e-46ad-badb-f27c306fb877",
-    "Title": "Menu11111",
-    "Routes": [],
-    "ClientAddress": "",
-    "Type": 1,
-    "Method": 0,
-    "MenuIdOfModule": null,
-    "ParentMenuId": "76f9c6fb-5611-41fa-bf68-bb45dd9da1db",
-    "Priority": 1,
-    "Icon": null
+    "Icon": "fa fa-users"
   }
+
 ]

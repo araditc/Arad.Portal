@@ -14,6 +14,7 @@ namespace Arad.Portal.DataLayer.Models.Permission
         public string Title { get; set; }
         public Enums.PermissionType Type { get; set; }
         public string ClientAddress { get; set; }
+        public string Routes { get; set; }
         public DateTime CreationDate { get; set; }
         public string CreatorName { get; set; }
         public bool HasModification { get; set; }

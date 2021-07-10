@@ -1,4 +1,4 @@
-﻿@using Arad.Portal.GeneralLibrary.Utilities; 
+﻿@using Arad.Portal.GeneralLibrary.Utilities;
 @using Arad.Portal.DataLayer.Models.Shared;
 @model Dictionary<string, bool>;
 @{
@@ -38,44 +38,59 @@
 
 @if (@Model["List"])
 {
-    @*<div class="table">
-           
 
-            <div id="table" class="table-body">
-
-            </div>
+    <div class="card">
+        <div class="card-body">
+            <table id="permissionList" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>@Language.GetString("tbl_RowName")</th>
+                        <th>@Language.GetString("tbl_PermissionTitle")</th>
+                        <th>@Language.GetString("tbl_PermissionType")</th>
+                        <th>@Language.GetString("tbl_Routes")</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
             @await Component.InvokeAsync("LoadingGridData")
             <ul id="pagination" class="pagination-sm"></ul>
-        </div>*@
-    <section class="content">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <table id="permissionList" class="table table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>@Language.GetString("tbl_RowName")</th>
-                                    <th>@Language.GetString("tbl_PermissionTitle")</th>
-                                    <th>@Language.GetString("tbl_PermissionType")</th>
-                                    <th>@Language.GetString("tbl_Routes")</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                               
-                            </tbody>
-                        </table>
-                        @await Component.InvokeAsync("LoadingGridData")
-                        <ul id="pagination" class="pagination-sm"></ul>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+    <div class="table">
+        <div class="table-head d-none d-lg-block">
+            <div class="table-row">
+                <div class="row m-0">
+                    <div class="table-col col-md-1">
+                        <span>@Language.GetString("tbl_RowName")</span>
                     </div>
-                    <!-- /.card-body -->
+                    <div class="table-col col-md-3">
+                        <span>@Language.GetString("tbl_PermissionTitle")</span>
+                    </div>
+                    <div class="table-col col-md-2">
+                        <span>@Language.GetString("tbl_PermissionType")</span>
+                    </div>
+                    <div class="table-col col-md-4">
+                        <span>@Language.GetString("tbl_Routes")</span>
+                    </div>
+                    <div class="table-col col-md-2">
+                        <span></span>
+                    </div>
                 </div>
-                <!-- /.card -->
             </div>
         </div>
-        <!-- /.row -->
-    </section>
+
+        <div id="table" class="table-body">
+
+        </div>
+        @await Component.InvokeAsync("LoadingGridData")
+        <ul id="pagination" class="pagination-sm"></ul>
+    </div>
+
+
 }
 
 @if (@Model["Edit"])

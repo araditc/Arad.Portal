@@ -9,7 +9,7 @@
 	</string>
 	<!--End [buttons text]-->
 	<!--Start[JustForTesting]-->
-	<string key="PermissionTitle_Manu11">
+	<string key="PermissionTitle_Menu11">
 		<value>منوی 1-1</value>
 	</string>
 	<string key="PermissionTitle_Menu12">
@@ -31,6 +31,9 @@
 	<!--Start [PermissionTitle]-->
 	<string key="PermissionTitle_MainPage">
 		<value>داشبورد</value>
+	</string>
+	<string key="PermissionTitle_UserManagement">
+		<value>User Management</value>
 	</string>
 	<!--End [PermissionTitle]-->
 	<!--Start [tables]-->

@@ -43,7 +43,7 @@
         <link href="~/css/blue.css" rel="stylesheet" />
         <link href="~/css/datePicker/datepicker3.css" rel="stylesheet" />
         <link href="~/css/dateRangePicker/daterangepicker-bs3.css" rel="stylesheet" />
-        <link href="~/css/siteTemplate/rtl/SidebarMenu/style.css" rel="stylesheet" />
+        @*<link href="~/css/siteTemplate/rtl/SidebarMenu/style.css" rel="stylesheet" />*@
         <!-- Ionicons -->
 
         <link href="~/css/siteTemplate/rtl/bootstrap-rtl.min.css" rel="stylesheet" />
@@ -63,7 +63,7 @@
     else
     {
 
-        <link href="~/css/siteTemplate/ltr/SidebarMenu/style.css" rel="stylesheet" />
+        @*<link href="~/css/siteTemplate/ltr/SidebarMenu/style.css" rel="stylesheet" />*@
     }
     <link href="~/css/siteTemplate/shared/fontawesome-free/all.min.css" rel="stylesheet" />
     <!-- Theme style -->
@@ -193,8 +193,8 @@
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" 
-                        ata-widget="treeview" role="menu" data-accordion="false"></ul>
-                    @await Component.InvokeAsync("SidebarMenu");
+                        data-widget="treeview" role="menu" data-accordion="false"></ul>
+                    @await Component.InvokeAsync("SidebarMenu")
                 </nav>
                 <!--/.sidebar menu-->
             </div>

@@ -35,28 +35,53 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
             _permissionRepository = permissionRepository;
             _userManager = userManager;
         }
+        //public async Task<IViewComponentResult> InvokeAsync()
+        //{
+        //    var menues = new List<MenuLinkModel>();
+        //    try
+        //    {
+        //        string userId = _accessor.HttpContext.User.Claims
+        //            .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        //        var route = _accessor.HttpContext.GetRouteData();
+        //        var controller = route.Values["controller"].ToString();
+        //        var action = route.Values["action"].ToString();
+        //        string address = $"{controller}/{action}";
+
+        //        if (userId != null)
+        //        {
+        //            menues = await _permissionRepository.ListOfMenues(userId, address);
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+
+        //    }
+        //    return View(menues);
+        //}
+
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var menues = new List<MenuLinkModel>();
+            var menus = new List<MenuLinkModel>();
+
             try
             {
-                string userId = _accessor.HttpContext.User.Claims
-                    .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                string sub = _accessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
                 var route = _accessor.HttpContext.GetRouteData();
                 var controller = route.Values["controller"].ToString();
                 var action = route.Values["action"].ToString();
                 string address = $"{controller}/{action}";
 
-                if (userId != null)
+                if (sub != null)
                 {
-                    menues = await _permissionRepository.ListOfMenues(userId, address);
+                    menus = await _permissionRepository.ListOfMenues(sub, address);
                 }
+
+                return View(menus);
             }
             catch (Exception e)
             {
-
+                return View(menus);
             }
-            return View(menues);
         }
     }
 }

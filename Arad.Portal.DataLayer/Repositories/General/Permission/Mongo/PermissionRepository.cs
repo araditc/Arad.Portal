@@ -181,55 +181,155 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
             try
             {
                 var user = await _userManager.FindByIdAsync(currentUserId);
-              
+
                 if (user.IsSystemAccount)
                 {
                     var query = _context.Collection.AsQueryable();
-                    var allBaseMenues = query.Where(p => p.Type == Enums.PermissionType.baseMenu).ToList();
-                    var allMenues = query.Where(p => p.Type == Enums.PermissionType.Menu).ToList();
+                    var baseMenusAll = query.Where(p => p.Type == Enums.PermissionType.baseMenu).ToList();
 
+                    var menusAll = query.Where(p => p.Type == Enums.PermissionType.Menu).ToList();
 
-                    result = allBaseMenues.Select(_ => new MenuLinkModel()
+                    result = baseMenusAll.Select(_ => new MenuLinkModel()
                     {
                         MenuId = _.PermissionId,
                         MenuTitle = GeneralLibrary.Utilities.Language.GetString("PermissionTitle_" + _.Title),
                         Icon = _.Icon,
                         Priority = _.Priority,
+                        Link = _.ClientAddress,
                         IsActive = _.ClientAddress != null && _.Routes.Contains(address),
-                        Children = GetChildren(allMenues, _.PermissionId, address)
-                    }).ToList().OrderBy(_=>_.Priority).ToList();
+                        Children = menusAll.Where(b => b.ParentMenuId == _.PermissionId)
+                            .Select(d => new MenuLinkModel()
+                            {
+                                MenuId = d.PermissionId,
+                                MenuTitle = GeneralLibrary.Utilities.Language.GetString("PermissionTitle_" + d.Title),
+                                Icon = d.Icon,
+                                Priority = d.Priority,
+                                Link = d.ClientAddress,
+                                IsActive = d.ClientAddress != null && d.Routes.Contains(address),
+                            }).ToList().OrderBy(o => o.Priority).ToList(),
+                    }).ToList();
+
+                    var listAllWithoutBaseMenu = menusAll.Where(b => b.ParentMenuId == null)
+                        .Select(h => new MenuLinkModel()
+                        {
+                            MenuId = h.PermissionId,
+                            MenuTitle = GeneralLibrary.Utilities.Language.GetString("PermissionTitle_" + h.Title),
+                            Icon = h.Icon,
+                            Priority = h.Priority,
+                            Link = h.ClientAddress,
+                            IsActive = h.ClientAddress != null && h.Routes.Contains(address),
+                            Children = new List<MenuLinkModel>()
+                        }).ToList();
+
+                    result.AddRange(listAllWithoutBaseMenu);
+                    result = result.OrderBy(o => o.Priority).ToList();
                 }
                 else
                 {
                     var pers = _userRepository.GetPermissionsOfUser(user);
-                    var baseMenues = pers.Where(p => p.Type == Enums.PermissionType.baseMenu).ToList();
+                    var baseMenus = pers.Where(p => p.Type == Enums.PermissionType.baseMenu).ToList();
 
-                    var menues = pers.Where(p => p.Type == Enums.PermissionType.Menu).ToList();
+                    var menus = pers.Where(p => p.Type == Enums.PermissionType.Menu).ToList();
 
-                    result = baseMenues.Select(_ => new MenuLinkModel()
+                    result = baseMenus.Select(_ => new MenuLinkModel()
                     {
                         MenuId = _.PermissionId,
-                        MenuTitle = GeneralLibrary.Utilities.Language.GetString("PermissionTitle_" + _.Title),
+                        MenuTitle = _.Title,
                         Icon = _.Icon,
                         Priority = _.Priority,
                         IsActive = _.ClientAddress != null && _.Routes.Contains(address),
-                        Children = GetChildren(menues, _.PermissionId, address)
-                    }).OrderBy(o => o.Priority).ToList();
+                        Children = menus.Where(b => b.ParentMenuId == _.PermissionId && !b.Routes.Contains("permission"))
+                            .Select(d => new MenuLinkModel()
+                            {
+                                MenuId = d.PermissionId,
+                                MenuTitle = d.Title,
+                                Icon = d.Icon,
+                                Priority = d.Priority,
+                                Link = d.ClientAddress,
+                                IsActive = d.ClientAddress != null && d.Routes.Contains(address)
+                            }).ToList().OrderBy(o => o.Priority).ToList(),
+                    }).ToList();
+
+                    var list = menus.Where(b => b.ParentMenuId.Equals("-1") && !b.Routes.Contains("permission"))
+                        .Select(h => new MenuLinkModel()
+                        {
+                            MenuId = h.PermissionId,
+                            MenuTitle = h.Title,
+                            Icon = h.Icon,
+                            Priority = h.Priority,
+                            Link = h.ClientAddress,
+                            IsActive = h.ClientAddress != null && h.Routes.Contains(address),
+                            Children = new List<MenuLinkModel>()
+                        }).ToList();
+
+                    result.AddRange(list);
+                    result = result.OrderBy(o => o.Priority).ToList();
                 }
             }
             catch (Exception)
             {
-              
+
             }
             return result;
         }
 
+        //public async Task<List<MenuLinkModel>> ListOfMenues(string currentUserId, string address)
+        //{
+        //    var result = new List<MenuLinkModel>();
+        //    try
+        //    {
+        //        var user = await _userManager.FindByIdAsync(currentUserId);
+              
+        //        if (user.IsSystemAccount)
+        //        {
+        //            var query = _context.Collection.AsQueryable();
+        //            var allBaseMenues = query.Where(p => p.Type == Enums.PermissionType.baseMenu).ToList();
+        //            var allMenues = query.Where(p => p.Type == Enums.PermissionType.Menu).ToList();
+
+
+        //            result = allBaseMenues.Select(_ => new MenuLinkModel()
+        //            {
+        //                MenuId = _.PermissionId,
+        //                MenuTitle = GeneralLibrary.Utilities.Language.GetString("PermissionTitle_" + _.Title),
+        //                Icon = _.Icon,
+        //                Priority = _.Priority,
+        //                IsActive = _.ClientAddress != null && _.Routes.Contains(address),
+        //                Children = GetChildren(allMenues, _.PermissionId, address)
+        //            }).ToList().OrderBy(_=>_.Priority).ToList();
+        //        }
+        //        else
+        //        {
+        //            var pers = _userRepository.GetPermissionsOfUser(user);
+        //            var baseMenues = pers.Where(p => p.Type == Enums.PermissionType.baseMenu).ToList();
+
+        //            var menues = pers.Where(p => p.Type == Enums.PermissionType.Menu).ToList();
+
+        //            result = baseMenues.Select(_ => new MenuLinkModel()
+        //            {
+        //                MenuId = _.PermissionId,
+        //                MenuTitle = GeneralLibrary.Utilities.Language.GetString("PermissionTitle_" + _.Title),
+        //                Icon = _.Icon,
+        //                Priority = _.Priority,
+        //                IsActive = _.ClientAddress != null && _.Routes.Contains(address),
+        //                Children = GetChildren(menues, _.PermissionId, address)
+        //            }).OrderBy(o => o.Priority).ToList();
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+              
+        //    }
+        //    return result;
+        //}
+
         public List<MenuLinkModel> GetChildren(List<Entities.General.Permission.Permission> context,
            string permissionId, string address)
         {
+            var result = new List<MenuLinkModel>();
             if (context.Any(_ => _.ParentMenuId == permissionId))
             {
-                return context.Select(_ => new MenuLinkModel()
+                result = context.Where(_ => _.ParentMenuId == permissionId)
+                    .Select(_ => new MenuLinkModel()
                 {
                     Icon = _.Icon,
                     IsActive = _.Routes != null && _.Routes.Contains(address),
@@ -240,10 +340,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
                     Children = GetChildren(context, _.PermissionId, address)
                 }).ToList();
             }
-            else
-            {
-                return new List<MenuLinkModel>();
-            }
+
+            return result;
+            
         }
         public async Task<List<PermissionDTO>> MenusPermission(Enums.PermissionType typeMenu)
         {
