@@ -7,6 +7,12 @@
 	<string key="btn_Edit">
 		<value>Edit</value>
 	</string>
+	<string key="btn_Send">
+		<value>Send</value>
+	</string>
+	<string key="btn_Cancel">
+		<value>Cancel</value>
+	</string>
 	<!--End [buttons text]-->
 	<!--Start[JustForTesting]-->
 	<string key="PermissionTitle_Menu11">
@@ -38,9 +44,6 @@
 	<string key="PermissionTitle_Users">
 		<value>Users</value>
 	</string>
-	<string key="PermissionTitle_Users">
-		<value>Users</value>
-	</string>
 	<string key="PermissionTitle_AddUser">
 		<value>Add User</value>
 	</string>
@@ -48,6 +51,7 @@
 		<value>Edit User</value>
 	</string>
 	<!--End [PermissionTitle]-->
+	<!--Start [tables]-->
 	<!--Start [tables]-->
 	<string key="tbl_RowName">
 		<value>Row</value>
@@ -63,6 +67,15 @@
 	</string>
 	<!--End [tables]-->
 	<!--START [Allert And Message]-->
+	<string key="AlertAndMessage_UserDeletionSureness">
+		<value>Are you Sure For Deleting This User?</value>
+	</string>
+	<string key="AlertAndMessage_UserRestoreSureness">
+		<value>Are you Sure For Restoring This User?</value>
+	</string>
+	<string key="AlertAndMessage_NotifyEmptyList">
+		<value>No Data To Show</value>
+	</string>
 	<string key="AlertAndMessage_RequiredErrorMessage">
 		<value>This field is required.</value>
 	</string>
@@ -589,6 +602,78 @@
 	</string>
 	<!--END [Allert And Message]-->
 	<!--START [Dashboard]-->
+	<string key="AddUserPart_Title">
+		<value>Add New User</value>
+	</string>
+	<string key="User_FirstName">
+		<value>Name</value>
+	</string>
+	<string key="User_LastName">
+		<value>LastName</value>
+	</string>
+	<string key="User_PhoneNumber">
+		<value>PhoneNumber</value>
+	</string>
+	<string key="User_UserName">
+		<value>UserName</value>
+	</string>
+	<string key="User_Password">
+		<value>Password</value>
+	</string>
+	<string key="User_RePassword">
+		<value>RePassword</value>
+	</string>
+	<string key="ActivationState">
+		<value>State</value>
+	</string>
+	<string key="User_Roles">
+		<value>Roles</value>
+	</string>
+	<string key="User_Filters">
+		<value>User Filters</value>
+	</string>
+	<string key="User_Delete">
+		<value>User Delete</value>
+	</string>
+	<string key="User_Restore">
+		<value>User Restore</value>
+	</string>
+	<string key="User_FullName">
+		<value>First and LastName</value>
+	</string>
+	<string key="Active">
+		<value>Active</value>
+	</string>
+	<string key="InActive">
+		<value>InActive</value>
+	</string>
+	<string key="FromDate">
+		<value>From Date</value>
+	</string>
+	<string key="ToDate">
+		<value>To Date</value>
+	</string>
+	<string key="Restore">
+		<value>Restore</value>
+	</string>
+	<string key="CreationDate">
+		<value>CreationDate</value>
+	</string>
+	<string key="User_Add">
+		<value>Add New User</value>
+	</string>
+	<string key="User_Edit">
+		<value>Edit User</value>
+	</string>
+	<string key="User_ChangePass">
+		<value>change Password</value>
+	</string>
+	<string key="FormClear">
+		<value>Clear Form</value>
+	</string>
+	<string key="Filter">
+		<value>Filter</value>
+	</string>
 	<string key="Menu_Permissions">
 		<value>Permissions</value>
 	</string>
@@ -604,8 +689,8 @@
 	<string key="Menu_RoutePlaceHolder">
 		<value>Seprate each route with comma ,</value>
 	</string>
-	<setting key="Menu_AddNewPermission">
-		<value>Adding New Permission</value>
+	<setting key="Menu_Add">
+		<value>Add</value>
 	</setting>
 	<setting key="Menu_PermissionName">
 		<value>PermissionName</value>
@@ -720,10 +805,6 @@
 	<string key="CreateNew">
 		<value>Create new</value>
 	</string>
-
-	<string key="Active">
-		<value>Active</value>
-	</string>
 	<string key="Ok">
 		<value>Ok</value>
 	</string>
@@ -731,15 +812,16 @@
 	<string key="Return">
 		<value>Go back</value>
 	</string>
-	<string key="Inactive">
-		<value>Inactive</value>
-	</string>
 	<string key="Add">
 		<value>Add</value>
 	</string>
 	<string key="Edit">
 		<value>Edit</value>
 	</string>
+	<string key="Cancel">
+		<value>Cancel</value>
+	</string>
+	
 	<string key="Delete">
 		<value>Delete</value>
 	</string>

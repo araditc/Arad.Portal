@@ -19,7 +19,7 @@ namespace Arad.Portal.DataLayer.Models.User
 
         public string NationalId { get; set; }
 
-        public string PhoneNumber { get; set; }
+        //public string PhoneNumber { get; set; }
 
         public DateTime BirthDate { get; set; }
 

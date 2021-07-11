@@ -1,0 +1,86 @@
+﻿@using Arad.Portal.DataLayer.Models.User;
+@using Arad.Portal.GeneralLibrary.Utilities; 
+@model Arad.Portal.DataLayer.Models.Shared.PagedItems<UserListView>
+@{
+    Layout = null;
+}
+
+@{
+    <div id="page-data" data-current="@Model.CurrentPage" data-total="@Model.Items" data-size="@Model.PageSize">
+        @if (Model.Items.Count != 0)
+        {
+            int i = (Model.CurrentPage - 1) * Model.PageSize;
+
+            @foreach (var item in Model.Items)
+            {
+                <div class="table-row">
+                    <div class="card-table @(item.IsActive ? "active" : "notActive")" >
+                        <div class="row m-0">
+                            <div class="table-col col-xs-12 col-md-1 d-none d-lg-block">
+                                <span>@(++i)</span>
+                            </div>
+                            <div class="table-col col-xs-12 col-lg-2">
+                                <span class="mo-title">@Language.GetString("User_UserName")</span>
+                                <span>@item.UserName</span>
+                            </div>
+                            <div class="table-col col-xs-12 col-lg-2">
+                                <span class="mo-title">@Language.GetString("User_FullName")</span>
+                                <span>@item.Name @item.LastName</span>
+                            </div>
+                            <div class="table-col col-xs-12 col-lg-2">
+                                <span class="mo-title">@Language.GetString("CreationDate")</span>
+                                <span>@item.CreateDate</span>
+                            </div>
+                            <div class="table-col col-xs-12 col-lg-2">
+                                <span class="mo-title">@Language.GetString("User_PhoneNumber")</span>
+                                <span>@item.PhoneNumber</span>
+                            </div>
+
+                            <div class="table-col col-xs-12 col-lg-1">
+                                <label class="switch">
+                                    <input type="checkbox" class="checkbox" id="activeUser" disabled='@(!ViewBag.Permissions["Active"])' checked="@item.IsActive" data-id="@item.Id" value="@item.IsActive">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="table-col col-xs-12 col-lg-2">
+                                <div class="">
+                                    @if (ViewBag.Permissions["Details"])
+                                    {
+                                        <button id="editRecord" data-id="@item.Id" href="#" type="button" class="btn btn-outline-primary btn-xs-icon" data-toggle="tooltip" title="جزییات">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+
+                                    }
+                                    @if (ViewBag.Permissions["Password"])
+                                    {
+                                        <button id="passChange" data-id="@item.Id" href="#" type="button" class="btn btn-outline-info btn-xs-icon" data-toggle="tooltip" title="تغییر رمز عبور">
+                                            <i class="fa fa-key" aria-hidden="true"></i>
+                                        </button>
+                                    }
+                                    @if (ViewBag.Permissions["Remove"])
+                                    {
+                                        <button id="deleteRecord" data-id="@item.Id" href="#" data-toggle="modal" type="button" class="btn btn-outline-danger btn-xs-icon" data-toggle="tooltip" title="حذف کاربر">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
+                                    }
+                                    @if (ViewBag.Permissions["Remove"] && item.IsDelete)
+                                    {
+                                    <button id="restoreRecord" data-id="@item.Id" href="#" data-toggle="modal" type="button" class="btn btn-outline-warning btn-xs-icon" data-toggle="tooltip" title="بازگردانی کاربر">
+                                        <i class="fa fa-undo" aria-hidden="true"></i>
+                                    </button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        }
+        else
+        {
+            <div class="empty text-center">@Language.GetString("AlertAndMessage_NotifyEmptyList")</div>
+        }
+    </div>
+}
+

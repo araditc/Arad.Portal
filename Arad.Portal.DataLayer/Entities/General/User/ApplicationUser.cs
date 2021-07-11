@@ -17,7 +17,8 @@ namespace Arad.Portal.DataLayer.Entities.General.User
             Addresses = new ();
             FavoriteList = new ();
             DomainId = new ();
-            LoginData = new (); 
+            LoginData = new ();
+            Profile = new ();
         }
         public bool IsSystemAccount { get; set; }
         public bool IsDomainAdmin { get; set; }

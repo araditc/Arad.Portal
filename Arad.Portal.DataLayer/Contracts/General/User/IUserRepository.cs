@@ -13,7 +13,6 @@ namespace Arad.Portal.DataLayer.Contracts.General.User
     public interface IUserRepository
     {
         List<Entities.General.Permission.Permission> GetPermissionsOfUser(ApplicationUser user);
-        Task<PagedItems<UserDTO>> List(UserSearchParams searchParam, string currentUserId);
         List<string> GetAccessibleRoutsOfUser(ApplicationUser user);
         List<string> GetRoleNamesOfUser(string userId);
         UserDTO GetUserWithPhone(string phoneNumber);

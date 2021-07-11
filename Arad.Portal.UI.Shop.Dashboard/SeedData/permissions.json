@@ -58,6 +58,18 @@
     "ParentMenuId": null,
     "Priority": 2,
     "Icon": "fa fa-users"
+  },
+  {
+    "PermissionId": "2ccc8e3a-434d-42ae-8b76-3fbe6420c4e7",
+    "Title": "RoleList",
+    "Routes": [ "Account/RoleList" ],
+    "ClientAddress": "Account/RoleList",
+    "Type": 1,
+    "Method": 0,
+    "MenuIdOfModule": null,
+    "ParentMenuId": null,
+    "Priority": 2,
+    "Icon": "fa fa-users"
   }
 
 ]

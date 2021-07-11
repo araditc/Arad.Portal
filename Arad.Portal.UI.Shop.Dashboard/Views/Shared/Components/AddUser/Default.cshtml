@@ -1,0 +1,73 @@
+﻿@using Arad.Portal.GeneralLibrary.Utilities; 
+@{
+    Layout = null;
+}
+
+<div id="add" class="box-container collapse">
+    <div class="box-head">
+        <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+        @Language.GetString("AddUserPart_Title");
+    </div>
+    <div class="box-body ">
+        <form id="addUser" class="sm" asp-action="AddUser" asp-controller="Account" method="post" autocomplete="off" asp-antiforgery="true">
+            <div class="form-row text-right">
+                <div class=" col-md-12">
+                    <div class="row">
+                        <div class="form-group col-md-4 col-lg-3">
+                            <label for="Name">@Language.GetString("User_FirstName")</label>
+                            <input type="text" class="form-control" id="Name" name="Name" placeholder=" ">
+                            <span class="field-validation-error" data-val-result="Name"></span>
+                        </div>
+                        <div class="form-group col-md-4 col-lg-3">
+                            <label for="LastName">@Language.GetString("User_LastName")</label>
+                            <input type="text" class="form-control" id="LastName" name="LastName" placeholder=" ">
+                            <span class="field-validation-error" data-val-result="LastName"></span>
+                        </div>
+                        <div class="form-group col-md-4 col-lg-3">
+                            <label for="PhoneNumber">@Language.GetString("User_PhoneNumber")</label>
+                            <input type="tel" value="" class="form-control" id="PhoneNumber" name="PhoneNumber" placeholder=" ">
+                            <span class="field-validation-error" data-val-result="PhoneNumber"></span>
+                        </div>
+                        @*<input id="hidePhone" type="hidden" value="" name="fullMobile" />*@
+                        <div class="form-group col-md-4 col-lg-3">
+                            <label for="UserName">@Language.GetString("User_UserName")</label>
+                            <input type="text" class="form-control" id="UserName" name="UserName" placeholder=" ">
+                            <span class="field-validation-error" data-val-result="UserName"></span>
+                        </div>
+                        <div class="form-group col-md-4 col-lg-3">
+                            <label for="Password">@Language.GetString("User_Password")</label>
+                            <input type="password" class="form-control" id="Password" name="Password" placeholder=" ">
+                            <span class="field-validation-error" data-val-result="Password"></span>
+                        </div>
+                        <div class="form-group col-md-4 col-lg-3">
+                            <label for="RePassword">@Language.GetString("User_RePassword")</label>
+                            <input type="password" class="form-control" id="RePassword" name="RePassword" placeholder=" ">
+                            <span class="field-validation-error" data-val-result="RePassword"></span>
+                        </div>
+                        <div class="form-group col-md-4 col-lg-3">
+                            <label for="inputEmail4">@Language.GetString("ActivationState")</label>
+                            <div>
+                                <label class="switch">
+                                    <input class="checkbox" type="checkbox" name="IsActive" value="false">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="box-head inner">
+                            <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+                            @Language.GetString("User_Roles")
+                            <span class="field-validation-error" data-val-result="UserRoles"></span>
+                        </div>
+                        <div id="roles" class="row w-100">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success btn-xs">
+                <i class="fa fa-check" aria-hidden="true"></i>@Language.GetString("Menu_Add")
+            </button>
+        </form>
+    </div>
+</div>
+

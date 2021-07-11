@@ -7,6 +7,12 @@
 	<string key="btn_Edit">
 		<value>ویرایش</value>
 	</string>
+	<string key="btn_Send">
+		<value>ارسال</value>
+	</string>
+	<string key="btn_Cancel">
+		<value>انصراف</value>
+	</string>
 	<!--End [buttons text]-->
 	<!--Start[JustForTesting]-->
 	<string key="PermissionTitle_Menu11">
@@ -60,6 +66,15 @@
 	</string>
 	<!--End [tables]-->
   <!--START [Allert And Message]-->
+	<string key="AlertAndMessage_UserDeletionSureness">
+		<value>آیا برای حذف این کاربر اطمینان دارید؟</value>
+	</string>
+	<string key="AlertAndMessage_UserRestoreSureness">
+		<value>آیا برای بازگزدانی کاربر جاری اطمینان دارید؟</value>
+	</string>
+	<string key="AlertAndMessage_NotifyEmptyList">
+		<value>اطلاعاتی برای نمایش وجود ندارد.</value>
+	</string>
   <string key="AlertAndMessage_RequiredErrorMessage">
     <value>این فیلد الزامی است.</value>
   </string>
@@ -554,6 +569,78 @@
   </string>
   <!--END [Allert And Message]-->
   <!--START [Dashboard]-->
+	<string key="AddUserPart_Title">
+		<value>افزودن کاربر جدید</value>
+	</string>
+	<string key="User_FirstName">
+		<value>نام</value>
+	</string>
+	<string key="User_LastName">
+		<value>نام خانوادگی</value>
+	</string>
+	<string key="User_PhoneNumber">
+		<value>تلفن همراه</value>
+	</string>
+	<string key="User_UserName">
+		<value>نام کاربری</value>
+	</string>
+	<string key="User_Password">
+		<value>رمز عبور</value>
+	</string>
+	<string key="User_RePassword">
+		<value>تکرار رمز عبور</value>
+	</string>
+	<string key="ActivationState">
+		<value>وضعیت</value>
+	</string>
+	<string key="User_Roles">
+		<value>نقش ها</value>
+	</string>
+	<string key="User_Filters">
+		<value>فیلتر کاربران</value>
+	</string>
+	<string key="User_Delete">
+		<value>حذف کاربر</value>
+	</string>
+	<string key="User_Restore">
+		<value>بازگردانی کاربر</value>
+	</string>
+	<string key="User_FullName">
+		<value>نام و نام خانوادگی</value>
+	</string>
+	<string key="Active">
+		<value>فعال</value>
+	</string>
+	<string key="InActive">
+		<value>غیرفعال</value>
+	</string>
+	<string key="FromDate">
+		<value>از تاریخ</value>
+	</string>
+	<string key="ToDate">
+		<value>تا تاریخ</value>
+	</string>
+	<string key="Restore">
+		<value>بازگردانی</value>
+	</string>
+	<string key="CreationDate">
+		<value>تاریخ ثبت</value>
+	</string>
+	<string key="User_Add">
+		<value>ثبت کاربر جدید</value>
+	</string>
+	<string key="User_Edit">
+		<value>ویرایش کاربر</value>
+	</string>
+	<string key="User_ChangePass">
+		<value>تغییر کلمه عبور</value>
+	</string>
+	<string key="FormClear">
+		<value>پاک کردن فرم</value>
+	</string>
+	<string key="Filter">
+		<value>فیلتر</value>
+	</string>
 	<string key="Menu_Permissions">
 		<value>دسترسی ها</value>
 	</string>
@@ -569,8 +656,8 @@
 	<string key="Menu_RoutePlaceHolder">
 		<value>مسیرهای مختلف را با , از هم جداکنید.</value>
 	</string>
-	<setting key="Menu_AddNewPermission">
-		<value>اضافه کردن دسترسی جدید</value>
+	<setting key="Menu_Add">
+		<value>افزودن</value>
 	</setting>
 	<setting key="Menu_PermissionName">
 		<value>نام دسترسی</value>
@@ -678,17 +765,11 @@
   <string key="CreateNew">
     <value>ایجاد جدید</value>
   </string>
-  <string key="Active">
-    <value>فعال</value>
-  </string>
   <string key="Ok">
     <value>تائید</value>
   </string>
   <string key="Return">
     <value>برگشت</value>
-  </string>
-  <string key="Inactive">
-    <value>غیرفعال</value>
   </string>
   <string key="Add">
     <value>افزودن</value>
@@ -696,6 +777,9 @@
   <string key="Edit">
     <value>ویرایش</value>
   </string>
+	<string key="Cancel">
+		<value>انصراف</value>
+	</string>
   <string key="Delete">
     <value>حذف</value>
   </string>

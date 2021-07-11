@@ -25,6 +25,10 @@
     {
       "library": "iCheck@1.0.3",
       "destination": "wwwroot/lib/iCheck/"
+    },
+    {
+      "library": "intl-tel-input@17.0.13",
+      "destination": "wwwroot/lib/intl-tel-input/"
     }
   ]
 }

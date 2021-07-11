@@ -174,6 +174,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<IPermissionRepository, PermissionRepository>();
             services.AddTransient<IRoleRepository, RoleRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<UserExtensions, UserExtensions>();
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IProductGroupRepository, ProductGroupRepository>();
