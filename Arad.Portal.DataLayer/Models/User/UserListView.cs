@@ -16,7 +16,7 @@ namespace Arad.Portal.DataLayer.Models.User
         public bool IsSystem { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreateDate { get; set; }
-        public string persianCreateDate { get; set; }
+        //public string persianCreateDate { get; set; }
         public bool IsVerify { get; set; }
         public bool IsDelete { get; set; }
     }

@@ -67,6 +67,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
             return result;
         }
 
+
+        public async Task InsertMany(List<Entities.General.Role.Role> roles)
+        {
+            await _context.Collection.InsertManyAsync(roles);
+        }
+
         public async Task<RepositoryOperationResult> ChangeActivation(string roleId,
             bool isActive, string modificationReason)
         {
@@ -211,7 +217,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
                    { 
                      RoleId = _.RoleId,
                      RoleName = _.RoleName,
-                     PermissionIds = _.PermissionIds
+                     PermissionIds = _.PermissionIds,
+                     IsActive = _.IsActive
                    }).ToList();
 
                 result.CurrentPage = page;
@@ -269,6 +276,16 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
                     result.Succeeded = false;
                     result.Message = ConstMessages.ErrorInSaving;
                 }
+            }
+            return result;
+        }
+
+        public bool HasAny()
+        {
+            var result = false;
+            if (_context.Collection.AsQueryable().Any())
+            {
+                result = true;
             }
             return result;
         }

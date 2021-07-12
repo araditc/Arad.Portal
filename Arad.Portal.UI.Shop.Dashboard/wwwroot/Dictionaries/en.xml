@@ -50,8 +50,10 @@
 	<string key="PermissionTitle_EditUser">
 		<value>Edit User</value>
 	</string>
+	<string key="PermissionTitle_RoleList">
+		<value>Role List</value>
+	</string>
 	<!--End [PermissionTitle]-->
-	<!--Start [tables]-->
 	<!--Start [tables]-->
 	<string key="tbl_RowName">
 		<value>Row</value>
@@ -75,6 +77,9 @@
 	</string>
 	<string key="AlertAndMessage_NotifyEmptyList">
 		<value>No Data To Show</value>
+	</string>
+	<string key="AlertAndMessage_GotIt">
+		<value>Got it</value>
 	</string>
 	<string key="AlertAndMessage_RequiredErrorMessage">
 		<value>This field is required.</value>

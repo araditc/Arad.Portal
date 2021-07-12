@@ -2,7 +2,7 @@
 @model Dictionary<string, bool>;
 @{
     ViewData["Title"] = "Index";
-  
+    var alert = Language.GetString("AlertAndMessage_GotIt");
 }
 
 @section Styles{
@@ -17,7 +17,7 @@
 <div class="headPage text-right">
     <h5>@Language.GetString("PermissionTitle_Users")</h5>
     @{
-        if (@Model["List"])
+        if (@Model["Add"])
         {
             <a class="action-head search open" data-toggle="collapse"
                href="#search" data-placement="top" data-original-title="@Language.GetString("User_Add")">
@@ -27,7 +27,7 @@
     }
 
     @{
-        if (@Model["Add"])
+        if (@Model["List"])
         {
             <a class="action-head add open" data-toggle="collapse" 
                href="#add" data-placement="top" data-original-title="@Language.GetString("User_Filters")">
@@ -112,7 +112,7 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary btn-xs filter">
-                    <i class="fa fa-filter" aria-hidden="true"></i>&nbsp @Language.GetString("Filtering")</button>
+                    <i class="fa fa-filter" aria-hidden="true"></i>&nbsp @Language.GetString("Filter")</button>
                     <a id="reset" style="color: white;" class="btn btn-secondary btn-xs">&nbsp @Language.GetString("FormClear")</a>
                 </form>
             </div>
@@ -134,10 +134,10 @@
                             <span>@Language.GetString("User_UserName")</span>
                         </div>
                         <div class="table-col col-md-2">
-                            <span>@Language.GetString("User_FirstName")+" "+@Language.GetString("User_LastName") </span>
+                            <span>@Language.GetString("User_FullName")</span>
                         </div>
                         <div class="table-col col-md-2">
-                            <span>@Language.GetString("User_CreationDate")</span>
+                            <span>@Language.GetString("CreationDate")</span>
                         </div>
                         <div class="table-col col-md-2">
                             <span>@Language.GetString("User_PhoneNumber")</span>
@@ -177,6 +177,7 @@
                         <div class="form-row text-right">
                             <div class="row">
                                 <input type="hidden" id="UserId" />
+                                @*<input id="hdnFullMobile" type="hidden" value="" name="FulMobile" />*@
                                 <div class="form-group col-md-6 col-lg-6">
                                     <label for="FirstName">@Language.GetString("User_FirstName") </label>
                                     <input type="text" class="form-control" id="FirstName" name="FirstName" placeholder=" ">
@@ -292,7 +293,7 @@
     {
         <script>
             $(document).ready(function () {
-
+             
                 //var formData = new FormData();
                 //formData.append("PageSize", pageSize);
                 //formData.append("CurrentPage", 1);
@@ -315,6 +316,7 @@
                         var rolesCheck = $("#rolesFilter input[type='checkbox']");
 
                         rolesCheck.each(function (index) {
+                          
                             if (rolesCheck[index].checked) {
 
                                 var id = rolesCheck[index].name;
@@ -336,6 +338,7 @@
                     });
 
                 $("#filter").submit(function (e) {
+                   
                     e.preventDefault();
                     var rolesSelect = [];
                     var rolesCheck = $("#rolesFilter input[type='checkbox']");
@@ -371,8 +374,9 @@
 
     @if (@Model["Add"])
     {
-        <script>
-            $(document).ready(function() {
+<script>
+            $(document).ready(function () {
+
                 var input = document.querySelector("#PhoneNumber");
 
                 window.intlTelInput(input,
@@ -391,7 +395,8 @@
 
                 ListRoles();
 
-                $("#addUser").submit(function(e) {
+                $("#addUser").submit(function (e) {
+
                     e.preventDefault();
 
                     var rolesSelect = [];
@@ -412,8 +417,8 @@
                         valuesForm[this.name] = $(this).val();
                     });
 
-                    valuesForm['FullMobile'] = $('input[name ="fullMobile"]').val();
-                    valuesForm['RolesUser'] = rolesSelect;
+                    valuesForm['FullMobile'] = $('input[name ="FullMobile"]').val();
+                    valuesForm['UserRoles'] = rolesSelect;
                     var active;
                     if ($("input[name='IsActive']").is(":checked")=== true) {
                         active = true;
@@ -428,13 +433,14 @@
                             $("#loading").css("display", "block");
                         },
                         success: function (result) {
+
                             if (result.status === "success") {
 
                                 Swal.fire({
-                                    type: 'success',
-                                    title: result.message,
+                                    icon: 'success',
+                                    text: result.message,
                                     confirmButtonText:
-                                        '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                        '<i class="fa fa-thumbs-up"></i> @alert',
                                 });
                                 var $inputs = $('#filter :input');
                                 var values2 = {};
@@ -466,10 +472,10 @@
                                     });
                                 } else {
                                     Swal.fire({
-                                        type: 'error',
-                                        title: result.message,
+                                        icon: 'error',
+                                        text: result.message,
                                         confirmButtonText:
-                                            '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                            '<i class="fa fa-thumbs-up"></i> @alert',
                                     });
                                 }
                             }
@@ -487,26 +493,26 @@
                 });
 
                 function ListRoles() {
-                    debugger;
+
                     $.ajax({
                         url: '@Url.Action("RoleList")',
                         type: 'Get',
                         success: function(result) {
                             if (result.status === "success") {
-                                debugger;
+
                                 var rolesHtml = '';
                                 var rolesHtmlFilter = '';
                                 var data = result.data;
                                 data.forEach(function (item) {
-                                    debugger;
+
                                     rolesHtml += '<div class="form-group col-xs-12 col-md-3 col-lg-2 table-check">' +
                                         '<div class="custom-control custom-checkbox checbox-right">' +
-                                        '<input type="checkbox" class="checkbox custom-control-input" id="' +
+                                        '<input type="checkbox" class="checkbox custom-control-input"  id="' +
                                         item.id +
                                         '" ' +
                                         (item.isActive ? "" : "disabled") +
                                         '>' +
-                                        '<label class="custom-control-label" for="' +
+                                        '<label class="custom-control-label" style="position:initial;" for="' +
                                         item.id +
                                         '">' +
                                         item.title +
@@ -547,13 +553,14 @@
                     });
                 }
             });
-        </script>
+</script>
     }
 
     @if (@Model["Details"])
     {
         <script>
-            $(document).ready(function() {
+            $(document).ready(function () {
+                debugger;
                 var input = document.querySelector("#edit #PhoneNumber");
 
                 window.intlTelInput(input,
@@ -568,7 +575,8 @@
 
                 $(document).on("click",
                     "#editRecord",
-                    function(e) {
+                    function (e) {
+                     
                         e.preventDefault();
 
                         var id = $(this).data("id");
@@ -587,13 +595,13 @@
                                 $("#loading").css("display", "block");
                             },
                             success: function (result) {
-                                debugger;
+                             
                                 if (result.status === "success") {
 
                                     var user = result.data.user;
-                                    $("#edit #UserId").val(user.id);
-                                    $("#edit #FirstName").val(user.name);
-                                    $("#edit #LastName").val(user.lastName);
+                                    $("#edit #UserId").val(user.userId);
+                                    $("#edit #FirstName").val(user.userProfile.firstName);
+                                    $("#edit #LastName").val(user.userProfile.lastName);
                                     $("#edit #PhoneNumber").val(user.phoneNumber);
 
                                     var roles = result.data.roles;
@@ -601,7 +609,7 @@
                                     var html = '';
 
                                     roles.forEach(function (item) {
-                                        debugger;
+                                       
                                         html += '<div class="form-group col-xs-12 col-md-6 col-lg-4 table-check">' +
                                             '<div class="custom-control custom-checkbox checbox-right">' +
                                             '<input type="checkbox" class="custom-control-input" id="r' +
@@ -610,7 +618,7 @@
                                             item.id +
                                             '"' +
                                             (item.isSelected === true ? 'checked>' : '>') +
-                                            '<label class="custom-control-label" for="r' +
+                                            '<label class="custom-control-label" style="position:initial;" for="r' +
                                             item.id +
                                             '">' +
                                             item.title +
@@ -641,10 +649,11 @@
 
     @if (@Model["Edit"])
     {
-        <script>
+<script>
             $(document).ready(function() {
-
-                $("#edit").submit(function(e) {
+                debugger;
+                $("#edit").submit(function (e) {
+                    debugger;
                     e.preventDefault();
 
                     var rolesSelect = [];
@@ -675,7 +684,8 @@
                         beforeSend: function() {
                             $("#loading").css("display", "block");
                         },
-                        success: function(result) {
+                        success: function (result) {
+                            debugger;
                             var spanErrorList = $('#edit span[data-val-result]');
 
                             spanErrorList.html("");
@@ -715,10 +725,10 @@
                                     });
                                 } else {
                                     Swal.fire({
-                                        type: 'error',
-                                        title: result.message,
+                                        icon: 'error',
+                                        text: result.message,
                                         confirmButtonText:
-                                            '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                            '<i class="fa fa-thumbs-up"></i> @alert',
                                     });
                                 }
                             }
@@ -736,16 +746,17 @@
                 });
 
             });
-        </script>
+</script>
     }
 
     @if (@Model["Remove"])
     {
-        <script>
+<script>
             $(document).ready(function() {
                 $(document).on("click",
                     "#deleteRecord",
-                    function(e) {
+                    function (e) {
+                        debugger;
                         e.preventDefault();
                         var id = $(this).data("id");
 
@@ -756,7 +767,8 @@
 
                 $(document).on("click",
                     "#delete",
-                    function(e) {
+                    function (e) {
+                        debugger;
                         e.preventDefault();
                         var id = $(this).data("id");
                         var data = { Id: id };
@@ -782,18 +794,18 @@
 
                                     $("#removeModal").modal("hide");
                                     Swal.fire({
-                                        type: 'success',
-                                        title: result.message,
+                                        icon: 'success',
+                                        text: result.message,
                                         confirmButtonText:
-                                            '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                            '<i class="fa fa-thumbs-up"></i> @alert',
                                     });
 
                                 } else {
                                     Swal.fire({
-                                        type: 'error',
-                                        title: result.message,
+                                        icon: 'error',
+                                        text: result.message,
                                         confirmButtonText:
-                                            '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                            '<i class="fa fa-thumbs-up"></i> @alert',
                                     });
                                 }
                             },
@@ -808,16 +820,17 @@
                         });
                     });
             });
-        </script>
+</script>
     }
 
     @if (@Model["Remove"])
     {
-        <script>
+<script>
             $(document).ready(function() {
                 $(document).on("click",
                     "#restoreRecord",
-                    function(e) {
+                    function (e) {
+                        debugger;
                         e.preventDefault();
                         var id = $(this).data("id");
 
@@ -828,7 +841,8 @@
 
                 $(document).on("click",
                     "#restore",
-                    function(e) {
+                    function (e) {
+                        debugger;
                         e.preventDefault();
                         var id = $(this).data("id");
                         var data = { Id: id };
@@ -854,18 +868,18 @@
 
                                     $("#removeModal").modal("hide");
                                     Swal.fire({
-                                        type: 'success',
-                                        title: result.message,
+                                        icon: 'success',
+                                        text: result.message,
                                         confirmButtonText:
-                                            '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                            '<i class="fa fa-thumbs-up"></i> @alert',
                                     });
 
                                 } else {
                                     Swal.fire({
-                                        type: 'error',
-                                        title: result.message,
+                                        icon: 'error',
+                                        text: result.message,
                                         confirmButtonText:
-                                            '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                            '<i class="fa fa-thumbs-up"></i> @alert',
                                     });
                                 }
                             },
@@ -880,7 +894,7 @@
                         });
                     });
             });
-        </script>
+</script>
     }
 
     @if (@Model["Active"])
@@ -946,11 +960,12 @@
 
     @if (@Model["Password"])
     {
-        <script>
+<script>
             $(document).ready(function() {
                 $(document).on("click",
                     "#passChange",
-                    function(e) {
+                    function (e) {
+                        debugger;
                         e.preventDefault();
                         var id = $(this).data("id");
 
@@ -977,20 +992,20 @@
 
                                 if (result.status === "success") {
 
-                                    $("#passModal").modal("hide");
+                                  alert $("#passModal").modal("hide");
                                     Swal.fire({
-                                        type: 'success',
-                                        title: result.message,
+                                        icon: 'success',
+                                        text: result.message,
                                         confirmButtonText:
-                                            '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                            '<i class="fa fa-thumbs-up"></i> @alert ',
                                     });
 
                                 } else {
                                     Swal.fire({
-                                        type: 'error',
-                                        title: result.message,
+                                        icon: 'error',
+                                        text: result.message,
                                         confirmButtonText:
-                                            '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                            '<i class="fa fa-thumbs-up"></i> @alert ',
                                     });
                                 }
                             },
@@ -1005,7 +1020,7 @@
                         });
                     });
             });
-        </script>
+</script>
     }
 
     <script>
@@ -1032,6 +1047,7 @@
         };
 
         function list(formData) {
+          
             $("#table").html("");
             //var data = { pageSize: pageSize, currentPage: currentPage };
             console.log(formData);
@@ -1039,11 +1055,12 @@
                 url: "@Url.Action("List")",
                 type: 'Post',
                 data: formData,
-                beforeSend: function() {
+                beforeSend: function () {
+                   
                     $("#loading-data").css("display", "block");
                 },
                 success: function(result) {
-
+                 
                     $("#table").html(result);
 
                     var totalPages = $("#page-data").data("total");
@@ -1062,6 +1079,7 @@
 
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
+                 
                     alert("error");
                     alert(xhr.status);
                     alert(thrownError);

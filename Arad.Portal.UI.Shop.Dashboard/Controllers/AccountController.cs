@@ -172,7 +172,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                             IsSystem = _.IsSystemAccount,
                             LastName = _.UserProfile.LastName,
                             UserName = _.UserName,
-                            persianCreateDate = _.CreationDate.ToUniversalTime().ToPersianDdate(),
+                            CreateDate = _.CreationDate,
+                            //persianCreateDate = _.CreationDate,
                             IsDelete = _.IsDeleted
                         }).ToList()
                     };
@@ -200,7 +201,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     Title = _.RoleName,
                     Id = _.RoleId,
-                    IsSelected = false
+                    IsSelected = false,
+                    IsActive = _.IsActive
                 }).ToList();
                 result = new JsonResult(new { Status = "success", Data = roles });
             }
@@ -255,6 +257,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                             FirstName = model.Name,
                             LastName = model.LastName
                         },
+                        Id = Guid.NewGuid().ToString(),
                         PhoneNumber = model.FullMobile.Replace("+", ""),
                         UserName = model.UserName,
                         IsActive = model.IsActive,
@@ -327,7 +330,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         FirstName = userDb.Profile.FirstName,
                         LastName = userDb.Profile.LastName
                     },
-                    UserRoles = userDb.UserRoles
+                    UserRoles = userDb.UserRoles,
+                    CreationDate = userDb.CreationDate
                 };
 
                 var list = await _roleRepository.List("");
@@ -350,21 +354,21 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(UserDTO model)
+        public async Task<IActionResult> Edit(UserEdit model)
         {
             List<ClientValidationErrorModel> errors = new List<ClientValidationErrorModel>();
             var user = new ApplicationUser();
-            JsonResult result;
-            if (model.UserId != null)
+            var result = new JsonResult(new { Status = "success", Message = "کاربر با موفقیت ویرایش شد." });
+            if (model.Id != null)
             {
-                user = await _userManager.FindByIdAsync(model.UserId);
+                user = await _userManager.FindByIdAsync(model.Id);
 
                 if (user == null)
                 {
                     ModelState.AddModelError("Name", "کاربر یافت نشد");
                 }
 
-                var state = _userExtension.IsPhoneNumberUnique(model.PhoneNumber.Replace("+", ""), user.PhoneNumber);
+                var state = _userExtension.IsPhoneNumberUnique(model.FullMobile.Replace("+", ""), user.PhoneNumber);
 
                 if (!state)
                 {
@@ -378,7 +382,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                    if (currentUserId == model.UserId)
+                    if (currentUserId == model.Id)
                     {
                         result = new JsonResult(new 
                         {   Status = "error",
@@ -388,9 +392,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     }
 
 
-                    user.Profile.FirstName = model.UserProfile.FirstName;
-                    user.Profile.LastName = model.UserProfile.LastName;
-                    user.PhoneNumber = model.PhoneNumber.Replace("+", "");
+                    user.Profile.FirstName = model.FirstName;
+                    user.Profile.LastName = model.LastName;
+                    user.PhoneNumber = model.FullMobile.Replace("+", "");
                     user.UserRoles = model.UserRoles;
 
 
@@ -449,9 +453,53 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                });
             }
 
-            result = new JsonResult(new { Status = "success", Message = "کاربر با موفقیت ویرایش شد." });
+            
 
             return result;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Restore(string id)
+        {
+            JsonResult result ;
+            var userCurrentId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userCurrentId == id)
+            {
+               result = new  JsonResult(new { Status = "error", Message = "دسترسی بازگردانی کاربر مورد نظر را ندارید." });
+            }
+            else
+            {
+                try
+                {
+                    var user = await _userManager.FindByIdAsync(id);
+                    if (user == null)
+                    {
+                        result = new  JsonResult(new { Status = "error", Message = "کاربر یافت نشد." });
+                    }
+                    else
+                    {
+                        user.IsDeleted = false;
+
+                        var res = await _userManager.UpdateAsync(user);
+
+                        if (res.Succeeded)
+                        {
+                            result = new JsonResult(new { Status = "success", Message = "  کاربر با موفقیت بازگردانی گردید " });
+                        }
+                        else
+                        {
+                            result = new JsonResult(new { Status = "error", Message = "لطفا مجددا سعی نمایید." });
+                        }
+                    }
+                    
+                }
+                catch (Exception e)
+                {
+                    result =new  JsonResult(new { Status = "error", Message = "لطفا مجددا سعی نمایید." });
+                }
+            }
+            return result;
+           
         }
 
         [HttpGet]
@@ -511,9 +559,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     if (res.Succeeded)
                     {
                         result = new JsonResult(new { Status = "success", Message = "  کاربر با موفقیت حذف گردید " });
+                    }else
+                    {
+                        result = new JsonResult(new { Status = "error", Message = "لطفا مجددا سعی نمایید." });
                     }
-                    result = new JsonResult(new { Status = "error", Message = "لطفا مجددا سعی نمایید." });
-
                 }
                 catch (Exception e)
                 {
@@ -542,7 +591,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     pass = Password.GeneratePassword(true, true, true,
                         true, false, 8);
                 }
-
+                //add new record in notify table and declare user that I send the codes
                 //???
                 //var resultSendPass = SendPassSms(user.PhoneNumber, pass);
 

@@ -26,12 +26,12 @@
   {
     "PermissionId": "90d3381a-d733-4775-9a16-5e93a74c6958",
     "Title": "Users",
-    "Routes": [ "Account/Index" ],
+    "Routes": [ "Account/Index", "Account/AddUser", "Account/EditUser", "Account/RoleList" ],
     "ClientAddress": "Account/Index",
     "Type": 1,
     "Method": 0,
     "MenuIdOfModule": null,
-    "ParentMenuId": null,
+    "ParentMenuId": "86deb739-c63a-460d-8c31-86c80b2a85b1",
     "Priority": 1,
     "Icon": "fa fa-users"
   },
@@ -43,7 +43,7 @@
     "Type": 1,
     "Method": 0,
     "MenuIdOfModule": null,
-    "ParentMenuId": null,
+    "ParentMenuId": "86deb739-c63a-460d-8c31-86c80b2a85b1",
     "Priority": 2,
     "Icon": "fa fa-users"
   },
@@ -55,7 +55,7 @@
     "Type": 1,
     "Method": 0,
     "MenuIdOfModule": null,
-    "ParentMenuId": null,
+    "ParentMenuId": "86deb739-c63a-460d-8c31-86c80b2a85b1",
     "Priority": 2,
     "Icon": "fa fa-users"
   },
@@ -67,7 +67,7 @@
     "Type": 1,
     "Method": 0,
     "MenuIdOfModule": null,
-    "ParentMenuId": null,
+    "ParentMenuId": "86deb739-c63a-460d-8c31-86c80b2a85b1",
     "Priority": 2,
     "Icon": "fa fa-users"
   }

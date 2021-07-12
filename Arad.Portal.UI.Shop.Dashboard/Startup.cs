@@ -45,7 +45,8 @@ using Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo;
 using Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mongo;
 using Microsoft.AspNetCore.Http;
 using Arad.Portal.UI.Shop.Dashboard.Helpers;
-
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 
 namespace Arad.Portal.UI.Shop.Dashboard
 {
@@ -67,6 +68,9 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddSession();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<HtmlEncoder>(
+                HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.BasicLatin,
+                    UnicodeRanges.Arabic }));
 
             services.AddIdentityMongoDbProvider<ApplicationUser, ApplicationRole, string>(identityOptions =>
             {

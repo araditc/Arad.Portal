@@ -7,7 +7,7 @@ using PhoneNumbers;
 
 namespace Arad.Portal.DataLayer.Models.Validator
 {
-    public class MobilePhoneUserDTOValidator : ValidationAttribute
+    public class MobilePhoneUserEditValidator : ValidationAttribute
     {
         protected override ValidationResult IsValid(
             object value, ValidationContext validationContext)
@@ -15,7 +15,7 @@ namespace Arad.Portal.DataLayer.Models.Validator
 
             try
             {
-                UserDTO user = (UserDTO)validationContext.ObjectInstance;
+                UserEdit user = (UserEdit)validationContext.ObjectInstance;
                 if (string.IsNullOrEmpty(user.PhoneNumber))
                 {
                     return new ValidationResult("لطفا تلفن همراه را وارد کنید.");
@@ -23,7 +23,7 @@ namespace Arad.Portal.DataLayer.Models.Validator
 
                 PhoneNumberUtil phoneUtil = PhoneNumberUtil.GetInstance();
 
-                PhoneNumber phoneNumber = phoneUtil.Parse(user.PhoneNumber, null);
+                PhoneNumber phoneNumber = phoneUtil.Parse(user.FullMobile, null);
 
                 bool isMobile = false;
                 bool isValidNumber = phoneUtil.IsValidNumber(phoneNumber);

@@ -1,6 +1,7 @@
 ﻿using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Models.User;
 using AspNetCore.Identity.Mongo.Model;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,22 +15,24 @@ namespace Arad.Portal.DataLayer.Entities.General.User
     {
         public ApplicationUser()
         {
-            Addresses = new ();
-            FavoriteList = new ();
-            DomainId = new ();
-            LoginData = new ();
-            Profile = new ();
+            Addresses = new();
+            FavoriteList = new();
+            DomainId = new();
+            LoginData = new();
+            Profile = new();
         }
         public bool IsSystemAccount { get; set; }
         public bool IsDomainAdmin { get; set; }
         public bool IsActive { get; set; }
         public Profile Profile { get; set; }
         public List<Address> Addresses { get; set; }
-        public List<string> UserRoles { get; set; }      
+        public List<string> UserRoles { get; set; }
         public OneTimePass Otp { get; set; }
         public bool IsDeleted { get; set; }
         public List<string> FavoriteList { get; set; }
-        public List<string> DomainId { get; set; } 
+        public List<string> DomainId { get; set; }
+
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime CreationDate { get; set; }
         public string CreatorId { get; set; }
         public string CreatorUserName { get; set; }

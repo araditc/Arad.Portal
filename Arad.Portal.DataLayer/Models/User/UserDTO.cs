@@ -25,7 +25,7 @@ namespace Arad.Portal.DataLayer.Models.User
         public bool IsDomainAdmin { get; set; }
         public bool IsActive { get; set; }
 
-        [MobilePhoneUserDTOValidator]
+        [MobilePhoneUserEditValidator]
         [Required(ErrorMessage = "لطفا شماره موبایل را وارد نمایید.")]
         public string PhoneNumber { get; set; }
 

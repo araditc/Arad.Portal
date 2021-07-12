@@ -29,6 +29,10 @@
     {
       "library": "intl-tel-input@17.0.13",
       "destination": "wwwroot/lib/intl-tel-input/"
+    },
+    {
+      "library": "limonte-sweetalert2@11.0.18",
+      "destination": "wwwroot/lib/limonte-sweetalert2/"
     }
   ]
 }

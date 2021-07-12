@@ -38,7 +38,9 @@
 
     @if (direction == "rtl")
     {
+
         <link rel="stylesheet" href="~/css/fonts/font-awesome.css">
+        <link href="~/fonts/font.css" rel="stylesheet" />
         //iCheck/flat/blue.css
         <link href="~/css/blue.css" rel="stylesheet" />
         <link href="~/css/datePicker/datepicker3.css" rel="stylesheet" />
@@ -48,7 +50,9 @@
 
         <link href="~/css/siteTemplate/rtl/bootstrap-rtl.min.css" rel="stylesheet" />
         <link href="~/css/siteTemplate/rtl/custom-style.css" rel="stylesheet" />
-        <link rel="stylesheet" href="~/css/siteTemplate/shared/ionicons.css"><!-- iCheck bootstrap -->@*<link rel="stylesheet" href="~/css/siteTemplate/shared/icheck-bootstrap/icheck-bootstrap.min.css">*@<!-- Bootstrap 4 RTL -->@*<link rel="stylesheet" href="~/css/siteTemplate/rtl/bootstrap4rtl/bootstrap.min.css">*@<!-- Custom style for RTL -->@*<link rel="stylesheet" href="~/css/siteTemplate/rtl/custom.css">*@
+        <link rel="stylesheet" href="~/css/siteTemplate/shared/ionicons.css">
+        <link href="~/lib/limonte-sweetalert2/sweetalert2.css" rel="stylesheet" />
+        <!-- iCheck bootstrap -->@*<link rel="stylesheet" href="~/css/siteTemplate/shared/icheck-bootstrap/icheck-bootstrap.min.css">*@<!-- Bootstrap 4 RTL -->@*<link rel="stylesheet" href="~/css/siteTemplate/rtl/bootstrap4rtl/bootstrap.min.css">*@<!-- Custom style for RTL -->@*<link rel="stylesheet" href="~/css/siteTemplate/rtl/custom.css">*@
         <style>
             .content-wrapper {
                 margin-left: 0 !important;
@@ -65,11 +69,13 @@
 
         @*<link href="~/css/siteTemplate/ltr/SidebarMenu/style.css" rel="stylesheet" />*@
     }
+    @RenderSection("Styles", required: false)
     <link href="~/css/siteTemplate/shared/fontawesome-free/all.min.css" rel="stylesheet" />
     <!-- Theme style -->
     <link href="~/css/siteTemplate/shared/AdminLTE/adminlte.min.css" rel="stylesheet" />
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="~/lib//overlayscrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="~/css/page.css" />
 </head>
 <body class="@bodyClass" dir="@direction">
     <div class="wrapper">
@@ -80,15 +86,15 @@
 
                 <li class="nav-item d-none d-sm-inline-block">
                     <a class="nav-link">
-                        <img src="~/imgs/IRAN.png"  onclick="setLang('fa-IR')" />
+                        <img src="~/imgs/IRAN.png" onclick="setLang('fa-IR')" />
                     </a>
-                    
+
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a class="nav-link">
-                        <img src="~/imgs/USA.png"  onclick="setLang('en-US')" />
+                        <img src="~/imgs/USA.png" onclick="setLang('en-US')" />
                     </a>
-                    
+
                 </li>
             </ul>
 
@@ -192,7 +198,7 @@
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" 
+                    <ul class="nav nav-pills nav-sidebar flex-column"
                         data-widget="treeview" role="menu" data-accordion="false"></ul>
                     @await Component.InvokeAsync("SidebarMenu")
                 </nav>
@@ -208,7 +214,7 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">@Language.GetString("Menu_Dashboard")</h1>
+                            <h1 class="m-0 text-dark">@*@Language.GetString("Menu_Dashboard")*@</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb @floatlr">
@@ -221,11 +227,13 @@
             </div>
             <!-- /.content-header -->
             <!-- Main content -->
-            <section class="content">
-                <div class="container-fluid">
+            @*<section class="content">*@
+            <div class="container-fluid">
+                <section class="container wrapper">
                     @RenderBody()
-                </div>
-            </section>
+                </section>
+            </div>
+            @*</section>*@
             <!-- /.content -->
         </div>
         <!--/.content wrapper-->
@@ -256,12 +264,13 @@
     @*<script src="~/js/siteTemplate/overlayScrollbars/jquery.overlayScrollbars.min.js"></script>*@
     <!-- AdminLTE App -->
     <script src="~/js/siteTemplate/Adminlte/adminlte.js"></script>
-   
+    <script src="~/lib/limonte-sweetalert2/sweetalert2.all.min.js"></script>
+
 
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false);
-<script>
+    <script>
         function pageLoad() {
             alert('@CultureInfo.CurrentCulture.Name');
         }
@@ -281,6 +290,6 @@
             });
         }
     }
-</script>
+    </script>
 </body>
 </html>

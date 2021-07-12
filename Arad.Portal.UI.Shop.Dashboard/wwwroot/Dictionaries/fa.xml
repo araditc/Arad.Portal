@@ -50,6 +50,9 @@
 	<string key="PermissionTitle_EditUser">
 		<value>ویرایش کاربر</value>
 	</string>
+	<string key="PermissionTitle_RoleList">
+		<value>لیست نقش ها</value>
+	</string>
 	<!--End [PermissionTitle]-->
 	<!--Start [tables]-->
 	<string key="tbl_RowName">
@@ -74,6 +77,9 @@
 	</string>
 	<string key="AlertAndMessage_NotifyEmptyList">
 		<value>اطلاعاتی برای نمایش وجود ندارد.</value>
+	</string>
+	<string key="AlertAndMessage_GotIt">
+		<value>متوجه شدم</value>
 	</string>
   <string key="AlertAndMessage_RequiredErrorMessage">
     <value>این فیلد الزامی است.</value>
@@ -946,15 +952,5 @@
     <value>وضعیت</value>
   </string>
   <!--END [Table headers]-->
-  <!--START [Permission Title]-->
-  <string key="PermissionTitle_Dashboard">
-    <value>داشبورد</value>
-  </string>
-  <string key="PermissionTitle_User_Management">
-    <value>مدریت کاربران</value>
-  </string>
-  <string key="PermissionTitle_User_Permissions">
-    <value>دسترسی ها</value>
-  </string>
-  <!--END [Permission Title]-->
+  
 </dictionary>

@@ -14,7 +14,7 @@ namespace Arad.Portal.DataLayer.Models.User
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
         public List<string> UserRoles { get; set; }
-        public bool IsActive { get; set; }
+        public bool? IsActive { get; set; }
         public bool IsVerify { get; set; }
         public DateTime? StartRegisterDate { get; set; }
         public DateTime? EndRegisterDate { get; set; }

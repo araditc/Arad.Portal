@@ -35,13 +35,13 @@
                     <ul class="sub unstyle collapse @(root.IsActive ? "show":"")" id="@hrefCollapse">
                         @foreach (var menu in root.Children)
                                     {
-                        <li><a class="@(menu.IsActive ? "active":"notActive")" href="/Admin/@menu.Link">@menu.MenuTitle</a></li>
+                        <li><a class="@(menu.IsActive ? "active":"notActive")" href="/@menu.Link">@menu.MenuTitle</a></li>
                                     }
                     </ul>
                             }
                             else
                             {
-                    <a class="nav-link @(root.IsActive ? "active":"notActive")" href="/Admin/@root.Link">
+                    <a class="nav-link @(root.IsActive ? "active":"notActive")" href="/@root.Link">
                         <i class="nav-icon @root.Icon"></i> @root.MenuTitle
                     </a>
                             }

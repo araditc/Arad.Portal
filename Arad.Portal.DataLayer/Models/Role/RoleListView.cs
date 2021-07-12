@@ -9,6 +9,8 @@ namespace Arad.Portal.DataLayer.Models.Role
         public string Id { get; set; }
         public string Title { get; set; }
         public bool IsSelected { get; set; }
-      
+
+        public bool IsActive { get; set; }
+
     }
 }

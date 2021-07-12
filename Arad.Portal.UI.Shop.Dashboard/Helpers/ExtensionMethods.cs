@@ -20,6 +20,8 @@ using Arad.Portal.DataLayer.Entities.General.State;
 using Arad.Portal.DataLayer.Entities.General.County;
 using Arad.Portal.DataLayer.Entities.General.District;
 using Arad.Portal.DataLayer.Entities.General.Permission;
+using Arad.Portal.DataLayer.Models.Role;
+using Arad.Portal.DataLayer.Entities.General.Role;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 {
@@ -45,16 +47,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                             ClaimType = ClaimTypes.GivenName,
                             ClaimValue = "ادمین شماره یک"
                         },
-                        new IdentityUserClaim<string>()
-                        {
-                            ClaimType = "IsSystemAccount",
-                            ClaimValue = true.ToString()
-                        },
-                        new IdentityUserClaim<string>()
-                        {
-                            ClaimType = "IsActive",
-                            ClaimValue = true.ToString()
-                        }
+                        //new IdentityUserClaim<string>()
+                        //{
+                        //    ClaimType = "IsSystemAccount",
+                        //    ClaimValue = true.ToString()
+                        //},
+                        //new IdentityUserClaim<string>()
+                        //{
+                        //    ClaimType = "IsActive",
+                        //    ClaimValue = true.ToString()
+                        //}
                     },
                     PhoneNumber = "989309910790",
                     IsActive = true,
@@ -71,8 +73,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                         UserType = UserType.Admin
                     },
                     Addresses = new List<Address>(),
-                    CreationDate = DateTime.UtcNow,
-                    Modifications = new List<Modification>()
+                    CreationDate = DateTime.UtcNow
                 };
 
                 userManager.CreateAsync(user, "Sa@12345").Wait();
@@ -95,10 +96,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
             }
 
             using var stateScope = app.ApplicationServices.CreateScope();
-            var stateRepository =
+            var roleRepository =
                 (RoleRepository)stateScope.ServiceProvider.GetService(typeof(IRoleRepository));
 
-            if (!stateRepository.States.AsQueryable().Any())
+            if (!roleRepository.States.AsQueryable().Any())
             {
                 using StreamReader r = new StreamReader(Path.Combine(applicationPath, "SeedData", "States.json"));
                 string json = r.ReadToEnd();
@@ -106,11 +107,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 
                 if (states.Any())
                 {
-                    stateRepository.States.InsertMany(states);
+                    roleRepository.States.InsertMany(states);
                 }
             }
 
-            if (!stateRepository.Counties.AsQueryable().Any())
+            if (!roleRepository.Counties.AsQueryable().Any())
             {
                 using StreamReader r = new StreamReader(Path.Combine(applicationPath, "SeedData", "States.json"));
                 string json = r.ReadToEnd();
@@ -118,11 +119,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 
                 if (counties.Any())
                 {
-                    stateRepository.Counties.InsertMany(counties);
+                    roleRepository.Counties.InsertMany(counties);
                 }
             }
 
-            if (!stateRepository.Districts.AsQueryable().Any())
+            if (!roleRepository.Districts.AsQueryable().Any())
             {
                 using StreamReader r = new StreamReader(Path.Combine(applicationPath, "SeedData", "States.json"));
                 string json = r.ReadToEnd();
@@ -130,11 +131,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 
                 if (districts.Any())
                 {
-                    stateRepository.Districts.InsertMany(districts);
+                    roleRepository.Districts.InsertMany(districts);
                 }
             }
 
-            if (!stateRepository.Cities.AsQueryable().Any())
+            if (!roleRepository.Cities.AsQueryable().Any())
             {
                 using StreamReader r = new StreamReader(Path.Combine(applicationPath, "SeedData", "States.json"));
                 string json = r.ReadToEnd();
@@ -142,7 +143,34 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 
                 if (cities.Any())
                 {
-                    stateRepository.Cities.InsertMany(cities);
+                    roleRepository.Cities.InsertMany(cities);
+                }
+            }
+
+            if (!roleRepository.HasAny())
+            {
+                var role = new Role()
+                {
+                    RoleId = Guid.NewGuid().ToString(),
+                    RoleName = "سوپر ادمین",
+                    CreationDate = DateTime.UtcNow,
+                    IsActive = true,
+                    PermissionIds = permissionRepository.GetAllPermissionIds()
+                };
+                var role2 = new Role()
+                {
+                    RoleId = Guid.NewGuid().ToString(),
+                    RoleName = "مدیریت کاربران",
+                    CreationDate = DateTime.UtcNow,
+                    IsActive = true
+                };
+                List<Role> items = new List<Role>();
+                items.Add(role);
+                items.Add(role2);
+
+                if (items.Any())
+                {
+                    roleRepository.InsertMany(items).Wait();
                 }
             }
         }

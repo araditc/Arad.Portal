@@ -49,9 +49,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
                     users = users.Where(_ => _.PhoneNumber.Contains(search.PhoneNumber.Trim()));
                 }
 
-                users = users.Where(_ => _.IsActive == search.IsActive);
-
-
+                if(search.IsActive != null)
+                {
+                    users = users.Where(_ => _.IsActive == search.IsActive);
+                }
                 if (search.StartRegisterDate != null)
                 {
                     //???? univeral or not
@@ -75,7 +76,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
                 users = users.Skip((search.CurrentPage - 1) * search.PageSize)
                     .Take(search.PageSize);
 
-                var res = new PagedItems<UserDTO>()
+                result = new PagedItems<UserDTO>()
                 {
                     CurrentPage = search.CurrentPage,
                     ItemsCount = count,
@@ -85,6 +86,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
                         UserId = _.Id.ToString(),
                         UserName = _.UserName,
                         UserProfile = _.Profile,
+                        PhoneNumber =_.PhoneNumber,
                         IsActive = _.IsActive,
                         CreationDate = _.CreationDate,
                         IsDeleted = _.IsDeleted
@@ -119,6 +121,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             bool result = false;
             try
             {
+             
                 var user = _userManager.Users.Where(u => u.PhoneNumber == modelPhone).ToList();
 
                 var count = user.Count;
@@ -140,7 +143,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             {
                 result = false;
             }
-            return false;
+            return result;
         }
     }
 }

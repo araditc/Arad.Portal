@@ -14,6 +14,8 @@ namespace Arad.Portal.DataLayer.Models.Role
         }
         public string RoleId { get; set; }
         public string RoleName { get; set; }
+        public DateTime CreationDate { get; set; }
+        public bool IsActive { get; set; }
         public List<string> PermissionIds { get; set; }
         public string ModificationReason { get; set; }
     }

@@ -1,0 +1,51 @@
+/*!
+ *  Font.css
+ */
+@font-face {
+    font-family: IRANSansWeb;
+    src: url('./IRANSansWeb.eot');
+    src: url('IRANSansWeb.eot?#iefix') format('embedded-opentype'),
+         url('IRANSansWeb.woff') format('woff'),
+         url('IRANSansWeb.ttf') format('truetype');
+    font-weight: normal;
+  }
+  
+  @font-face {
+    font-family: IRANSansWeb;
+    src: url('IRANSansWeb_Bold.eot');
+    src: url('IRANSansWeb_Bold.eot?#iefix') format('embedded-opentype'),
+         url('IRANSansWeb_Bold.woff') format('woff'),
+         url('IRANSansWeb_Bold.ttf') format('truetype');
+    font-weight: bold;
+  }
+
+  @font-face {
+    font-family: Vazir;
+    src: url('Vazir.eot');
+    src: url('Vazir.eot?#iefix') format('embedded-opentype'),
+         url('Vazir.woff') format('woff'),
+         url('Vazir.ttf') format('truetype');
+    font-weight: normal;
+  }
+
+  @font-face {
+    font-family: Shabnam;
+    src: url('Shabnam.eot');
+    src: url('Shabnam.eot?#iefix') format('embedded-opentype'),
+         url('Shabnam.woff') format('woff'),
+         url('Shabnam.ttf') format('truetype');
+    font-weight: normal;
+  }
+
+  @font-face {
+    font-family: WeblogmaYekan;
+    src: url('WeblogmaYekan.eot');
+    src: url('WeblogmaYekan.eot?#iefix') format('embedded-opentype'),
+         url('WeblogmaYekan.woff') format('woff'),
+         url('WeblogmaYekan.ttf') format('truetype');
+    font-weight: normal;
+  }
+
+  html,body,p,a,label,li,h1,h2,h3,h4,h5, input, select{
+      font-family: 'IRANSansWeb','WeblogmaYekan','Vazir','Shabnam';
+  }

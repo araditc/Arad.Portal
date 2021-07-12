@@ -9,6 +9,10 @@ namespace Arad.Portal.DataLayer.Models.User
 {
     public class RegisterUserModel
     {
+        //public RegisterUserModel()
+        //{
+        //    UserRoles = new();
+        //}
         [Required(ErrorMessage = "ورود نام کاربری الزامی می باشد.")]
         [MinLength(3, ErrorMessage = "طول نام کاربری نباید کم تر از 3 کاراکتر باشد.")]
         public string UserName { get; set; }
