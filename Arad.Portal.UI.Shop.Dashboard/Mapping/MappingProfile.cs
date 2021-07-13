@@ -1,6 +1,7 @@
 ﻿using Arad.Portal.DataLayer.Entities.General.Currency;
 using Arad.Portal.DataLayer.Entities.General.Domain;
 using Arad.Portal.DataLayer.Entities.General.Language;
+using Arad.Portal.DataLayer.Entities.General.Notification;
 using Arad.Portal.DataLayer.Entities.General.Permission;
 using Arad.Portal.DataLayer.Entities.General.Role;
 using Arad.Portal.DataLayer.Entities.General.User;
@@ -13,6 +14,7 @@ using Arad.Portal.DataLayer.Entities.Shop.ShoppingCart;
 using Arad.Portal.DataLayer.Models.Currency;
 using Arad.Portal.DataLayer.Models.Domain;
 using Arad.Portal.DataLayer.Models.Language;
+using Arad.Portal.DataLayer.Models.Notification;
 using Arad.Portal.DataLayer.Models.Permission;
 using Arad.Portal.DataLayer.Models.Product;
 using Arad.Portal.DataLayer.Models.ProductGroup;
@@ -46,6 +48,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Mapping
             CreateMap<ProductInputDTO, Product>();
             CreateMap<Product, ProductOutputDTO>();
             CreateMap<ShoppingCart, ShoppingCartDTO>();
+            CreateMap<NotificationDTO, Notification>();
         }
         
     }

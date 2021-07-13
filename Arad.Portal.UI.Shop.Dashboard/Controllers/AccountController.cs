@@ -21,6 +21,10 @@ using System.Security.Claims;
 using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Models.Role;
 using Microsoft.Extensions.Options;
+using Arad.Portal.DataLayer.Contracts.General.Notification;
+using Arad.Portal.DataLayer.Models.Notification;
+using Arad.Portal.DataLayer.Contracts.General.MessageTemplate;
+using Arad.Portal.GeneralLibrary.Utilities;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -32,8 +36,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IConfiguration _configuration;
         private readonly IRoleRepository _roleRepository;
         private readonly IPermissionRepository _permissionRepository;
+        private readonly INotificationRepository _notificationRepository;
         private readonly IPermissionView _permissionViewManager;
         private readonly IOptions<MessageCenter> _smsSettings;
+        private readonly IMessageTemplateRepository _messageTemplateRepository;
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IPermissionView permissionView,
@@ -41,7 +47,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             IRoleRepository roleRepository,
             IPermissionRepository permissionRepository,
             IConfiguration configuration,
-            IOptions<MessageCenter> smsSettings)
+            IOptions<MessageCenter> smsSettings,
+            INotificationRepository notificationRepository,
+            IMessageTemplateRepository messageTemplateRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -51,6 +59,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _roleRepository = roleRepository;
             _permissionRepository = permissionRepository;
             _smsSettings = smsSettings;
+            _notificationRepository = notificationRepository;
+            _messageTemplateRepository = messageTemplateRepository;
         }
 
         [HttpGet]
@@ -543,9 +553,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 try
                 {
-
-
-
                     var user = await _userManager.FindByIdAsync(id);
                     if (user == null)
                     {
@@ -571,10 +578,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             return result;
         }
-        //????? 
+      
         [HttpGet]
         public async Task<IActionResult> ChangePassword(string id)
         {
+            JsonResult result;
             try
             {
                 var user = await _userManager.FindByIdAsync(id);
@@ -592,32 +600,36 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         true, false, 8);
                 }
                 //add new record in notify table and declare user that I send the codes
-                //???
-                //var resultSendPass = SendPassSms(user.PhoneNumber, pass);
-
-                //if (resultSendPass)
-                //{
-                //    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                //    var changePassResult =
-                //        await _userManager.ResetPasswordAsync(user, token, pass);
-
-                //    if (changePassResult.Succeeded)
-                //    {
-                //        return Json(new { Status = "success", Message = "کلمه عبور با موفقیت تغییر یافت." });
-                //    }
-                //}
-
-                return Json(new { Status = "error", Message = "لطفا مجددا امتحان نمایید." });
+                var template = _messageTemplateRepository.FetchTemplateByName("ChangePassword");
+                var body = template.Body.Replace("[0]", pass);
+                var notify = new NotificationDTO()
+                {
+                    NotificationId = Guid.NewGuid().ToString(),
+                    CreationDate = DateTime.UtcNow,
+                    CreatorUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier),
+                    CreatorUserName = HttpContext.User.FindFirstValue(ClaimTypes.Name),
+                    MessageText = body,
+                    To = user.PhoneNumber,
+                    TemplateName = "ChangePassword",
+                    Type = Enums.NotificationType.Sms
+                };
+                var res = _notificationRepository.AddNewNotification(notify);
+                if(res.Succeeded)
+                {
+                    result =  Json(new { Status = "success", Message = Language.GetString("AlertAndMessage_SendNewPassword") });
+                }
+                else
+                {
+                    result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
+                }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 throw;
             }
+            return result;
         }
-
-        
-
     }
 }
 

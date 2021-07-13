@@ -27,6 +27,8 @@ using Arad.Portal.DataLayer.Models.ProductSpecification;
 using Arad.Portal.DataLayer.Entities.Shop.Product;
 using Arad.Portal.DataLayer.Entities.Shop.ShoppingCart;
 using Arad.Portal.DataLayer.Models.ShoppingCart;
+using Arad.Portal.DataLayer.Models.Notification;
+using Arad.Portal.DataLayer.Entities.General.Notification;
 
 namespace Arad.Portal.UI.Shop.Mapping
 {
@@ -47,6 +49,7 @@ namespace Arad.Portal.UI.Shop.Mapping
             CreateMap<ProductInputDTO, Product>();
             CreateMap<Product, ProductOutputDTO>();
             CreateMap<ShoppingCart, ShoppingCartDTO>();
+            CreateMap<NotificationDTO, Notification>();
         }
     }
 }

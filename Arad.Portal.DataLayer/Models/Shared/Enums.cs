@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Arad.Portal.GeneralLibrary.CustomAttributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -57,6 +58,25 @@ namespace Arad.Portal.DataLayer.Models.Shared
             Failed
         }
 
+
+        public enum NotificationType
+        {
+            [CustomDescription("EnumDesc_Email")]
+            Email = 1,
+
+            [CustomDescription("EnumDesc_Sms")]
+            Sms,
+
+            [CustomDescription("EnumDesc_Notification")]
+            Notification
+        }
+
+        public enum NotificationSendStatus
+        {
+            Store = 1,
+            Send,
+            Error
+        }
 
         public enum PermissionType
         {

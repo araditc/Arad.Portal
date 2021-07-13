@@ -264,7 +264,7 @@
 @if (@Model["Password"])
 {
     <!-- modal password-->
-    <div id="passmodal" class="modal fade" role="dialog">
+    <div id="passModal" class="modal fade" role="dialog">
         <div class="modal-dialog modal-xl">
             <!-- modal content-->
             <div class="modal-content">
@@ -976,7 +976,8 @@
 
                 $(document).on("click",
                     "#pass",
-                    function(e) {
+                    function (e) {
+                        debugger;
                         e.preventDefault();
                         var id = $(this).data("id");
                         var data = { Id: id };
@@ -992,7 +993,7 @@
 
                                 if (result.status === "success") {
 
-                                  alert $("#passModal").modal("hide");
+                                  $("#passModal").modal("hide");
                                     Swal.fire({
                                         icon: 'success',
                                         text: result.message,

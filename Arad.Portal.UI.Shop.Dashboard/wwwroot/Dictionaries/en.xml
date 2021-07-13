@@ -68,7 +68,27 @@
 		<value>Routes</value>
 	</string>
 	<!--End [tables]-->
+	<!--START [Enum Descriptions]-->
+	<string key="EnumDesc_Email">
+		<value>Email</value>
+	</string>
+	<string key="EnumDesc_Sms">
+		<value>SMS</value>
+	</string>
+	<string key="EnumDesc_Notification">
+		<value>Notification</value>
+	</string>
+	<!--End [Enum Descriptions]-->
 	<!--START [Allert And Message]-->
+	<string key="AlertAndMessage_NotifySendingSMS">
+		<value>Your new password will be sent to ypur mobilephone if you press send button</value>
+	</string>
+	<string key="AlertAndMessage_SendNewPassword">
+		<value>Your new Pass will be sent to your mobilephone</value>
+	</string>
+	<string key="AlertAndMessage_TryLator">
+		<value>Please try again lator.</value>
+	</string>
 	<string key="AlertAndMessage_UserDeletionSureness">
 		<value>Are you Sure For Deleting This User?</value>
 	</string>

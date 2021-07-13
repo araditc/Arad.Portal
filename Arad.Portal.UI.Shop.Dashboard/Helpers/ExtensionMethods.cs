@@ -22,6 +22,9 @@ using Arad.Portal.DataLayer.Entities.General.District;
 using Arad.Portal.DataLayer.Entities.General.Permission;
 using Arad.Portal.DataLayer.Models.Role;
 using Arad.Portal.DataLayer.Entities.General.Role;
+using Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo;
+using Arad.Portal.DataLayer.Contracts.General.MessageTemplate;
+using Arad.Portal.DataLayer.Entities.General.MessageTemplate;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 {
@@ -147,6 +150,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                 }
             }
 
+            //Role
             if (!roleRepository.HasAny())
             {
                 var role = new Role()
@@ -172,6 +176,27 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                 {
                     roleRepository.InsertMany(items).Wait();
                 }
+            }
+
+            //MessageTemplate
+            using var messageTemplateScope = app.ApplicationServices.CreateScope();
+            var messageTemplateRepository =
+                (MessageTemplateRepository)stateScope.ServiceProvider.GetService(typeof(IMessageTemplateRepository));
+
+            if(!messageTemplateRepository.HasAny())
+            {
+                var changePasswordTemplate = new MessageTemplate()
+                {
+                    MessageTemplateId = Guid.NewGuid().ToString(),
+                    CreationDate = DateTime.UtcNow,
+                    IsActive = true,
+                    IsSystemTemplate = true,
+                    NotificationType = DataLayer.Models.Shared.Enums.NotificationType.Sms,
+                    TemplateDescription = "this template is used when user request to change password",
+                    TemplateName = "ChangePassword",
+                    Body = "Your New Password will be : [0]"
+                };
+                messageTemplateRepository.InsertOne(changePasswordTemplate);
             }
         }
     }

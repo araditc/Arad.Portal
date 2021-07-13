@@ -47,6 +47,10 @@ using Microsoft.AspNetCore.Http;
 using Arad.Portal.UI.Shop.Dashboard.Helpers;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+using Arad.Portal.DataLayer.Contracts.General.Notification;
+using Arad.Portal.DataLayer.Repositories.General.Notification.Mongo;
+using Arad.Portal.DataLayer.Contracts.General.MessageTemplate;
+using Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo;
 
 namespace Arad.Portal.UI.Shop.Dashboard
 {
@@ -188,6 +192,9 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<IPromotionRepository, PromotionRepository>();
             services.AddTransient<IShoppingCartRepository, ShoppingCartRepository>();
             services.AddTransient<ITransationRepository, TransactionRepository>();
+            services.AddTransient<INotificationRepository, NotificationRepository>();
+            services.AddTransient<IMessageTemplateRepository, MessageTemplateRepository>();
+
 
             #region contexes
             services.AddTransient<CurrencyContext>();
@@ -201,7 +208,8 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<PromotionContext>();
             services.AddTransient<ShoppingCartContext>();
             services.AddTransient<TransactionContext>();
-
+            services.AddTransient<MessageTemplateContext>();
+            services.AddTransient<NotificationContext>();
             #endregion
 
         }
