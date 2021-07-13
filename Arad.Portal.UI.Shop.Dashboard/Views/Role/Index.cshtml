@@ -1,0 +1,664 @@
+﻿@using Arad.Portal.GeneralLibrary.Utilities
+@model Dictionary<string, bool>;
+@{
+    ViewData["Title"] = "Index";
+    var alert = Language.GetString("AlertAndMessage_GotIt");
+}
+
+@section Styles{
+    <link href="~/css/form.css" rel="stylesheet" />
+    <link href="~/css/data-grid.css" rel="stylesheet" />
+}
+
+<div class="headPage text-right">
+    <h5>@Language.GetString("Menu_Permissions")</h5>
+    @{
+        if (@Model["List"])
+        {
+            @*<a class="action-head search open" data-toggle="collapse" href="#search">
+                    <i class="fa fa-filter" aria-hidden="true"></i>
+                </a>*@
+        }
+    }
+    @{
+        if (@Model["Add"])
+        {
+            <a class="action-head add open" data-toggle="collapse" href="#add">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </a>
+        }
+    }
+</div>
+@{
+    if (@Model["Add"])
+    {
+        @await Component.InvokeAsync("AddRoleComponent")
+    }
+}
+@{
+    if (@Model["List"])
+    {
+        <div class="table">
+            <div class="table-head d-none d-lg-block">
+                <div class="table-row">
+                    <div class="row m-0">
+                        <div class="table-col col-md-1">
+                            <span>@Language.GetString("tbl_RowName")</span>
+                        </div>
+                        <div class="table-col col-md-7">
+                            <span>@Language.GetString("tbl_RoleName")</span>
+                        </div>
+                        <div class="table-col col-md-2">
+                            <span>@Language.GetString("ActivationState")</span>
+                        </div>
+                        <div class="table-col col-md-2">
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="table" class="table-body">
+
+            </div>
+            @await Component.InvokeAsync("LoadingGridData")
+            <ul id="pagination" class="pagination-sm"></ul>
+        </div>
+    }
+}
+
+@if (@Model["Details"])
+{
+    <!-- Modal Edit -->
+    <div id="editModal" class="modal fade " role="dialog">
+        <div class="modal-dialog modal-xl">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <a role="button" class="modal-close" data-dismiss="modal"></a>
+                <div class="modal-header">
+                    <h6 class="modal-title"> @Language.GetString("Role_Edit")</h6>
+                </div>
+                <div class="modal-body text-center">
+                    <form id="edit" class="sm" method="post" autocomplete="off" asp-antiforgery="true">
+                        <div class="form-row text-right ">
+                            <div class=" col-md-12">
+                                <input type="hidden" id="Id" name="Id">
+                                <div class="row">
+                                    <div class="form-group col-md-4 col-lg-4">
+                                        <label for="Title">@Language.GetString("Role_Name") </label>
+                                        <input type="text" class="form-control" id="Title" name="Title" placeholder=" ">
+                                        <span class="field-validation-error" data-val-result="Title"></span>
+                                    </div>
+                                    <div class="box-head inner ">
+                                        <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+                                        @Language.GetString("User_Roles")
+                                        <span class="field-validation-error" data-val-result="Permissions"></span>
+                                    </div>
+                                    <div id="permissions" class="row w-100">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @if (@Model["Edit"])
+                        {
+                            <button type="submit" class="btn btn-success btn-xs">
+                                <i class="fa fa-check" aria-hidden="true"></i>@Language.GetString("btn_Edit")
+                            </button>
+                        }
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
+@if (@Model["Remove"])
+{
+    <!-- Modal remove-->
+    <div id="removeModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <a role="button" class="modal-close" data-dismiss="modal"></a>
+                <div class="modal-header">
+                    <h6 class="modal-title">@Language.GetString("Role_Delete")</h6>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="alert warning">@Language.GetString("AlertAndMessage_UserDeletionSureness")</p>
+                    <button id="delete" type="button" class="btn btn-danger btn-sm btn-modal-body" data-dismiss="modal">@Language.GetString("btn_Delete")</button>
+                    <button type="button" class="btn btn-outline-danger btn-sm btn-modal-body" data-dismiss="modal" style="margin-left:5px">@Language.GetString("btn_Cancel")</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    <script src="~/lib/twbs-pagination/jquery.twbsPagination.js"></script>
+    <script src="~/js/tree.js"></script>
+
+    @if (@Model["List"])
+    {
+        <script>
+            $(document).ready(function () {
+                list(pageSize, 1);
+                $(document).on("click", ".page-link", function (e) {
+                    e.preventDefault();
+                    list(pageSize, $pagination.twbsPagination('getCurrentPage'));
+                });
+            });
+
+        </script>
+    }
+
+    @if (@Model["Add"])
+    {
+        <script>
+            $(document).ready(function () {
+                //$("#add").on('show.bs.collapse',
+                //    function() {
+                //        ListPermissions();
+                //    });
+                ListPermissions();
+
+                $("#addRole").submit(function(e) {
+                    e.preventDefault();
+
+                    var persSelect = [];
+                    var treesCheck = $("#addRole .tree input[type='checkbox']");
+
+                    treesCheck.each(function(index) {
+                        if (treesCheck[index].checked) {
+
+                            var id = treesCheck[index].id;
+                            persSelect.push(id);
+                        }
+                    });
+
+                    var $inputs = $('#addRole :input');
+                    var values = {};
+                    $inputs.each(function() {
+                        values[this.name] = $(this).val();
+                    });
+
+                    var active;
+                    if ($("input[name='IsActive']").is(":checked")=== true) {
+                        active = true;
+                    } else active = false;
+                    values['IsActive'] = active;
+
+                    values['Permissions'] = persSelect;
+                    console.log(values);
+                    $.ajax({
+                        url: '@Url.Action("Add")',
+                        type: 'Post',
+                        data: values,
+                        beforeSend: function() {
+                            $("#loading").css("display", "block");
+                        },
+                        success: function(result) {
+                            var spanErrorList = $('#addRole span[data-val-result]');
+                            spanErrorList.html("");
+                            spanErrorList.parent().removeClass("has-error");
+
+                            if (result.status === "success") {
+                                list(pageSize, 1);
+                                //toastr.success(result.message);
+                                Swal.fire({
+                                    type: 'success',
+                                    title: result.message,
+                                    confirmButtonText:
+                                        '<i class="fa fa-thumbs-up"></i> @alert',
+                                });
+
+
+                            } else if (result.status === "error") {
+                                if (spanErrorList.length > 1) {
+                                    spanErrorList.each(function() {
+                                        $(this).html("");
+                                        $(this).parent().removeClass("has-error");
+                                    });
+                                }
+
+                                if (result.modelStateErrors !== null) {
+                                    console.log(result);
+                                    result.modelStateErrors.forEach(function(value, index) {
+                                        $("#addRole").find('[data-val-result=' + value.key + ']').html(value.errorMessage);
+                                        $("#addRole").find('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: result.message,
+                                        confirmButtonText:
+                                            '<i class="fa fa-thumbs-up"></i> @alert',
+                                    });
+                                }
+                            }
+
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                            alert("error");
+                            alert(xhr.status);
+                            alert(thrownError);
+                        },
+                        complete: function () {
+                            $("#loading").css("display", "none");
+                        }
+                    });
+                });
+
+            });
+        </script>
+    }
+
+    @if (@Model["Details"])
+    {
+        <script>
+            $(document).ready(function() {
+                $(document).on("click",
+                "#editRecord",
+                function(e) {
+                    e.preventDefault();
+
+                    var id = $(this).data("id");
+                    var data = { Id: id };
+                    var spanErrorList = $('#edit span[data-val-result]');
+
+                    spanErrorList.html("");
+                    spanErrorList.parent().removeClass("has-error");
+
+                    $.ajax({
+                        url: '@Url.Action("GetRole")',
+                        type: 'Get',
+                        data: data,
+                        beforeSend: function() {
+                            $("#loading").css("display", "block");
+                        },
+                        success: function(result) {
+
+                            if (result.status === "success") {
+
+                                var role = result.data.role;
+                                $("#edit #Title").val(role.title);
+                                $("#edit #Id").val(role.id);
+
+                                var pers = result.data.allPers;
+
+                                var html = '';
+                                pers.forEach(function (item) {
+                                    html +=
+                                        '<ul class="tree col-md-6">' +
+                                        '<li class="custom-control custom-checkbox checbox-right custom-control-inline">' +
+                                        '<span class="caret"></span>' +
+                                        '<input type="checkbox" class="custom-control-input checkbox" name="' +
+                                        item.id +
+                                        '"id="p' +
+                                        item.id +
+                                        '"'+
+                                        (item.isSelected === true ? 'checked>' : '>')+
+                                        '<label class="custom-control-label" for="p' +
+                                        item.id +
+                                        '">' +
+                                        item.title +
+                                        '</label>';
+                                    if (item.pers.length != 0) {
+                                        html += '<ul class="nested">';
+                                        (item.pers).forEach(function (menu) {
+                                            html +=
+                                                '<li class="custom-control custom-checkbox checbox-right custom-control-inline">' +
+                                                '<span class="caret"></span>' +
+                                                '<input type="checkbox" class="custom-control-input checkbox" name="' +
+                                                menu.id +
+                                                '"id="p' +
+                                                menu.id +
+                                                    '" ' +
+                                                (menu.isSelected === true ? 'checked>' : '>')+
+                                                '<label class="custom-control-label" for="p' +
+                                                    menu.id +
+                                                    '">' +
+                                                    menu.title +
+                                                    '</label>';
+                                                if (menu.pers.length != 0) {
+                                                    html += '<ul class="nested">';
+                                                    (menu.pers).forEach(function (module) {
+                                                        html +=
+                                                            '<li class="custom-control custom-checkbox checbox-right custom-control-inline">' +
+                                                            '<input type="checkbox" class="custom-control-input checkbox" name="' +
+                                                                module.id +
+                                                                '"id="p' +
+                                                                module.id + '"' +
+                                                                (module.isSelected === true ? 'checked>' : '>')+
+                                                            '<label class="custom-control-label" for="p' +
+                                                                module.id +
+                                                                '">' +
+                                                                module.title +
+                                                                '</label></li>';
+                                                        });
+                                                    html += '</ul>';
+                                                } else {
+                                                    html += '<ul class="nested"><li><span class="empty">بدون زیر مجموعه</span></li></ul>';
+                                                }
+                                                html += '</li>';
+                                            });
+                                        html += '</ul>';
+                                    } else {
+                                        html += '<ul class="nested"><li><span class="empty">بدون زیر مجموعه</span></li></ul>';
+                                    }
+                                    html += '</li></ul>';
+                                });
+
+                                $("#edit #permissions").html(html);
+                                $("#editModal").modal("show");
+
+                            } else {
+                                toastr.error(result.message);
+                            }
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                            alert(xhr.status);
+                            alert(thrownError);
+                        },
+                        complete: function() {
+                            $("#loading").css("display", "none");
+                        }
+                    });
+                });
+
+            });
+        </script>
+    }
+
+    @if (@Model["Edit"])
+    {
+        <script>
+            $(document).ready(function () {
+
+            $("#edit").submit(function(e) {
+                e.preventDefault();
+
+                var persSelect = [];
+                var treesCheck = $("#edit .tree input[type='checkbox']");
+
+                treesCheck.each(function(index) {
+                    if (treesCheck[index].checked) {
+
+                        var id = $(treesCheck[index]).attr("name");
+                        persSelect.push(id);
+                    }
+                });
+                var $inputs = $('#edit :input');
+                var values = {};
+                $inputs.each(function() {
+                    values[this.name] = $(this).val();
+                });
+                values['Permissions'] = persSelect;
+                values['id'] = $("#Id").val();
+
+                $.ajax({
+                    url: "@Url.Action("Edit")",
+                    type: 'Post',
+                    data: values,
+                    beforeSend: function() {
+                        $("#loading").css("display", "block");
+                    },
+                    success: function(result) {
+                        var spanErrorList = $('#edit span[data-val-result]');
+
+                        spanErrorList.html("");
+                        spanErrorList.parent().removeClass("has-error");
+                        if (result.status === "success") {
+
+                            $("#editModal").modal("hide");
+
+                                 toastr.success(result.message);
+
+                            list(pageSize, $pagination.twbsPagination('getCurrentPage'));
+
+                        } else if (result.status === "error") {
+
+                            if (spanErrorList.length > 1) {
+                                spanErrorList.each(function() {
+                                    $(this).html("");
+                                    $(this).parent().removeClass("has-error");
+                                });
+                            }
+
+                            if (result.modelStateErrors !== null) {
+
+                                result.modelStateErrors.forEach(function(value, index) {
+
+                                    $("#edit").find('[data-val-result=' + value.key + ']')
+                                        .html(value.errorMessage);
+                                    $("#edit").find('[data-val-result=' + value.key + ']').parent()
+                                        .addClass("has-error");
+                                });
+                            } else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: result.message,
+                                    confirmButtonText:
+                                        '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                });
+                            }
+                        }
+
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        alert(xhr.status);
+                        alert(thrownError);
+                    },
+                    complete: function() {
+                        $("#loading").css("display", "none");
+                    }
+                });
+            });
+
+            });
+        </script>
+    }
+
+    @if (@Model["Remove"])
+    {
+        <script>
+            $(document).ready(function() {
+                 $(document).on("click",
+                "#deleteRecord",
+                function(e) {
+                    e.preventDefault();
+                    var id = $(this).data("id");
+                    $("#delete").data("id", id);
+                    $("#removeModal").modal("show");
+
+                });
+
+            $(document).on("click", "#delete", function(e) {
+                    e.preventDefault();
+                    var id = $(this).data("id");
+                    var data = { Id: id };
+
+                    $.ajax({
+                        url: "@Url.Action("Delete")",
+                        type: 'Get',
+                        data: data,
+                        beforeSend: function() {
+                            $("#loading").css("display", "block");
+                        },
+                        success: function(result) {
+
+                            if (result.status === "success") {
+                                list(pageSize, $pagination.twbsPagination('getCurrentPage'));
+
+                                $("#removeModal").modal("hide");
+                                Swal.fire({
+                                    type: 'success',
+                                    title: result.message,
+                                    confirmButtonText:
+                                        '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                });
+
+                            } else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: result.message,
+                                    confirmButtonText:
+                                        'متوجه شدم!',
+                                });
+                            }
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                            alert(xhr.status);
+                            alert(thrownError);
+                        },
+                        complete: function() {
+                            $("#loading").css("display", "none");
+                        }
+                    });
+                });
+            });
+        </script>
+    }
+
+    @if (@Model["Active"])
+    {
+        <script>
+            $(document).ready(function () {
+
+                $(document).on("click", "#activeUser", function (e) {
+                    var active;
+                    if (event.target.checked === true) {
+                        active = true;
+                    } else active = false;
+
+                    var elm = $(this);
+                    var id = $(this).data("id");
+                    var data = { Id: id, IsActive: active };
+
+                    $.ajax({
+                        url: "@Url.Action("ChangeBeActive")",
+                        type: 'Get',
+                        data: data,
+                        beforeSend: function() {
+                            $("#loading").css("display", "block");
+                        },
+                        success: function(result) {
+
+                            if (result.status === "success") {
+
+                                var card = elm.parent().parent().parent().parent();
+
+                                if (active === true) {
+                                    $(card).removeClass("notActive");
+                                    $(card).addClass("active");
+
+                                } else {
+                                    $(card).removeClass("active");
+                                    $(card).addClass("notActive");
+                                }
+
+                                toastr.success(result.message);
+
+                            } else {
+                                elm.prop("checked", !active).change();
+                                toastr.error(result.message);
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            elm.prop("checked", !active).change();
+                            alert(xhr.status);
+                            alert(thrownError);
+                        },
+                        complete: function() {
+                            $("#loading").css("display", "none");
+                        }
+                    });
+                });
+            });
+        </script>
+    }
+
+    <script>
+        var pageSize = 5;
+        var $pagination = $('#pagination');
+        var defaultOpts = {
+            visiblePages: 5,
+            first: "اولین",
+            prev: "قبلی",
+            next: "بعدی",
+            last: "آخرین"
+        };
+
+        function list(pageSize, currentPage) {
+            var data = { pageSize: pageSize, currentPage: currentPage };
+            $.ajax({
+                url: "@Url.Action("List")",
+                type: 'Post',
+                data: data,
+                beforeSend: function() {
+                    $("#loading-data").css("display", "block");
+                },
+                success: function(result) {
+
+                    $("#table").html(result);
+
+                    var totalPages = $("#page-data").data("total");
+                    var currentPage = $pagination.twbsPagination('getCurrentPage');
+
+                    $pagination.twbsPagination('destroy');
+
+                    if (totalPages > 0) {
+                        $pagination.twbsPagination($.extend({},
+                            defaultOpts,
+                            {
+                                startPage: currentPage,
+                                totalPages: totalPages
+                            }));
+                    }
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                },
+                complete: function() {
+
+                    $("#loading-data").css("display", "none");
+                }
+            });
+        }
+
+
+        function ListPermissions() {
+            $.ajax({
+                url: "@Url.Action("ListPermissions")",
+                type: 'Get',
+                success: function(result) {
+                    //if (result.status === "success") {
+                    //    var persHtml = '';
+                    //    var data = result.data;
+                    //    console.log(data);
+
+
+                    //    $("#permissions").html(persHtml);
+
+                    //} else if (result.status === "error") {
+
+                    //}
+
+                    $("#permissions").html(result);
+
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    alert("error");
+                    alert(xhr.status);
+                    alert(thrownError);
+                },
+                complete: function() {
+                }
+            });
+        }
+
+    </script>
+}

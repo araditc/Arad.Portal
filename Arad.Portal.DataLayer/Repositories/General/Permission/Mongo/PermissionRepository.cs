@@ -489,7 +489,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
             await _context.Collection.InsertManyAsync(permissions);
         }
 
-
+        public List<Entities.General.Permission.Permission> GetAllPermissions()
+        {
+            var result = new List<Entities.General.Permission.Permission>();
+            result = _context.Collection.AsQueryable()
+                .Where(_ => _.IsActive && !_.IsDeleted).ToList();
+            return result;
+        }
         public List<string> GetAllPermissionIds()
         {
             var result = new List<string>();

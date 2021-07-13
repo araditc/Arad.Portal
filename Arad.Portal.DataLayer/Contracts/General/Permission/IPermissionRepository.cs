@@ -29,8 +29,11 @@ namespace Arad.Portal.DataLayer.Contracts.General.Permission
         RepositoryOperationResult<List<Modification>> GetModifications(string permissionId);
 
         Task<Entities.General.Permission.Permission> FetchPermission(string permissionId);
-        
 
-        
+        List<Entities.General.Permission.Permission> GetAllPermissions();
+
+
+
+
     }
 }

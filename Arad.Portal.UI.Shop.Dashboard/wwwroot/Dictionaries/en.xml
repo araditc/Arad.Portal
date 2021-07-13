@@ -13,6 +13,9 @@
 	<string key="btn_Cancel">
 		<value>Cancel</value>
 	</string>
+	<string key="btn_Delete">
+		<value>Delete</value>
+	</string>
 	<!--End [buttons text]-->
 	<!--Start[JustForTesting]-->
 	<string key="PermissionTitle_Menu11">
@@ -58,6 +61,9 @@
 	<string key="tbl_RowName">
 		<value>Row</value>
 	</string>
+	<string key="tbl_RoleName">
+		<value>Name</value>
+	</string>
 	<string key="tbl_PermissionTitle">
 		<value>Permission Title</value>
 	</string>
@@ -80,8 +86,20 @@
 	</string>
 	<!--End [Enum Descriptions]-->
 	<!--START [Allert And Message]-->
+	<string key="AlertAndMessage_DataWasNotFound">
+		<value>the data was not found.</value>
+	</string>
+	<string key="AlertAndMessage_DeletionSureness">
+		<value>Are you sure for deleting ?</value>
+	</string>
+	<string key="AlertAndMessage_UserDeletionSureness">
+		<value>Are you sure for deleting this role?</value>
+	</string>
+	<string key="AlertAndMessage_NoRoleWasFound">
+		<value>No role was found.</value>
+	</string>
 	<string key="AlertAndMessage_NotifySendingSMS">
-		<value>Your new password will be sent to ypur mobilephone if you press send button</value>
+		<value>Your new password will be sent to your mobilephone if you press send button</value>
 	</string>
 	<string key="AlertAndMessage_SendNewPassword">
 		<value>Your new Pass will be sent to your mobilephone</value>
@@ -629,6 +647,18 @@
 	<!--START [Dashboard]-->
 	<string key="AddUserPart_Title">
 		<value>Add New User</value>
+	</string>
+	<string key="AddRolePart_Title">
+		<value>Add New Role</value>
+	</string>
+	<string key="Role_Name">
+		<value>RoleName</value>
+	</string>
+	<string key="Role_Edit">
+		<value>Role Edit</value>
+	</string>
+	<string key="Role_Delete">
+		<value>Role Delete</value>
 	</string>
 	<string key="User_FirstName">
 		<value>Name</value>
