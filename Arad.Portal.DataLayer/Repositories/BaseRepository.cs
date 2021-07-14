@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Repositories
 {
-    public class BaseRepository
+    public class BaseRepository 
     {
         protected  IHttpContextAccessor _httpContextAccessor;
         public BaseRepository(IHttpContextAccessor httpContextAccessor)
@@ -29,6 +29,7 @@ namespace Arad.Portal.DataLayer.Repositories
                 ModificationReason = modificationReason
             };
         }
+
 
         protected string GetUserName()
         {

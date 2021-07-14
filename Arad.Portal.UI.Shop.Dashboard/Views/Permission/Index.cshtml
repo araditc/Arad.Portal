@@ -3,6 +3,7 @@
 @model Dictionary<string, bool>;
 @{
     ViewData["Title"] = "Index";
+    var alert = Language.GetString("AlertAndMessage_GotIt");
 
 }
 @section Styles{
@@ -178,12 +179,12 @@
             <div class="modal-content">
                 <a role="button" class="modal-close" data-dismiss="modal"></a>
                 <div class="modal-header">
-                    <h6 class="modal-title">حذف دسترسی </h6>
+                    <h6 class="modal-title">@Language.GetString("Permission_Delete") </h6>
                 </div>
                 <div class="modal-body text-center">
-                    <p class="alert warning">آیا برای حذف دسترسی اطمینان دارید؟</p>
-                    <button id="delete" type="button" class="btn btn-danger btn-sm btn-modal-body" data-dismiss="modal">حذف</button>
-                    <button type="button" class="btn btn-outline-danger btn-sm btn-modal-body" data-dismiss="modal" style="margin-left:5px">انصراف</button>
+                    <p class="alert warning">@Language.GetString("AlertAndMessage_DeletionSureness")</p>
+                    <button id="delete" type="button" class="btn btn-danger btn-sm btn-modal-body" data-dismiss="modal">@Language.GetString("btn_Delete")</button>
+                    <button type="button" class="btn btn-outline-danger btn-sm btn-modal-body" data-dismiss="modal" style="margin-left:5px">@Language.GetString("btn_Cancel")</button>
                 </div>
             </div>
         </div>
@@ -234,7 +235,7 @@
                 valuesForm['IsActive'] = active;
 
                 $.ajax({
-                    url: "@Url.Action("AddPermission")",
+                    url: '@Url.Action("AddPermission")',
                     type: 'Post',
                     //data: $(this).serialize(),
                     data: valuesForm,
@@ -276,7 +277,7 @@
                                     type: 'error',
                                     title: result.message,
                                     confirmButtonText:
-                                        '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                        '<i class="fa fa-thumbs-up"></i> @alert',
                                 });
                             }
                         }
@@ -400,7 +401,7 @@
                                     type: 'error',
                                     title: result.message,
                                     confirmButtonText:
-                                        '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                        '<i class="fa fa-thumbs-up"></i> @alert!',
                                 });
                             }
                         }
@@ -462,7 +463,7 @@
                                     type: 'success',
                                     title: result.message,
                                     confirmButtonText:
-                                        '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                        '<i class="fa fa-thumbs-up"></i> @alert',
                                 });
 
                             } else {
@@ -470,7 +471,7 @@
                                     type: 'error',
                                     title: result.message,
                                     confirmButtonText:
-                                        '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                        '<i class="fa fa-thumbs-up"></i> @alert',
                                 });
                             }
                         },
@@ -503,7 +504,7 @@
                     var data = { Id: id, IsActive: active };
 
                     $.ajax({
-                        url: "@Url.Action("ChangeBeActive")",
+                        url: "@Url.Action("ChangeActivation")",
                         type: 'Get',
                         data: data,
                         beforeSend: function() {
@@ -543,15 +544,15 @@
         </script>
     }
 
-    <script>
+<script>
         var pageSize = 20;
             var $pagination = $('#pagination');
             var defaultOpts = {
                 visiblePages: 5,
-                first: "اولین",
-                prev: "قبلی",
-                next: "بعدی",
-                last: "آخرین"
+                first: '@Language.GetString("tbl_FirstPage")',
+                prev: '@Language.GetString("tbl_PreviousPage")',
+                next: '@Language.GetString("tbl_NextPage")',
+                last: '@Language.GetString("tbl_LastPage")'
             };
 
 
@@ -635,7 +636,7 @@
                         $pagination.twbsPagination('destroy');
 
                         if (totalPages > 0) {
-                            $pagination.twbsPagination($.extend({},
+                            $pagination.twbsPagLanguagetGetStringion($.extend({},
                                 defaultOpts,
                                 {
                                     startPage: currentPage,
@@ -665,10 +666,10 @@
                     type: 'Get',
                     data: data,
                     success: function (result) {
-                        var options = "<option value='-1'>انتخاب کنید..</option>";
+                        var options = "<option value='-1'>@Language.GetString("Choose")</option>";
                         if (result.status === "success") {
                             if (result.data.length != 0) {
-                                (result.data).forEach(function(item) {
+                                (result.data).foLanguageEach(function(item) {
                                     var op = "<option value='" + item.id + "'>" + item.title + "</option>";
                                     options += op;
                                 });
@@ -703,5 +704,5 @@
             }
 
 
-    </script>
+</script>
 }

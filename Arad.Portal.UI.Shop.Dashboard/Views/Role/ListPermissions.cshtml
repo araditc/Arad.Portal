@@ -1,4 +1,5 @@
-﻿@model List<Models.ViewModel.PermissionListView>;
+﻿@using Arad.Portal.GeneralLibrary.Utilities; 
+@model List<Arad.Portal.DataLayer.Models.Permission.PermissionListView>;
 @{
     Layout = null;
 }
@@ -12,19 +13,19 @@
                 <span class="caret"></span>
                 <input type="checkbox" class="custom-control-input checkbox" id="@root.Id">
                 <label class="custom-control-label" for="@root.Id">@root.Title</label>
-                @if (root.pers.Count != 0)
+                @if (root.Pers.Count != 0)
                 {
                     <ul class="nested">
-                        @foreach (var menu in root.pers)
+                        @foreach (var menu in root.Pers)
                         {
                         <li class="custom-control custom-checkbox checbox-right custom-control-inline">
                             <span class="caret"></span>
                             <input type="checkbox" class="custom-control-input checkbox" id="@menu.Id">
                             <label class="custom-control-label" for="@menu.Id">@menu.Title</label>
-                            @if (menu.pers.Count != 0)
+                            @if (menu.Pers.Count != 0)
                             {
                                 <ul class="nested">
-                                    @foreach (var module in menu.pers)
+                                    @foreach (var module in menu.Pers)
                                     {
                                         <li class="custom-control custom-checkbox checbox-right custom-control-inline">
                                             <input type="checkbox" class="custom-control-input checkbox" id="@module.Id" @(module.IsActive ? "":"disabled")>
@@ -35,7 +36,7 @@
                             }
                             else
                             {
-                                <ul class="nested"><li><span class="empty">بدون زیر مجموعه</span></li></ul>
+                                <ul class="nested"><li><span class="empty">@Language.GetString("treeView_Empty")</span></li></ul>
                             }
                         </li>
                         }
@@ -43,7 +44,7 @@
                 }
                 else
                 {
-                    <ul class="nested"><li><span class="empty">بدون زیر مجموعه</span></li></ul>
+                    <ul class="nested"><li><span class="empty">@Language.GetString("treeView_Empty")</span></li></ul>
                 }
             </li>
         </ul>

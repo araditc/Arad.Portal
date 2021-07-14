@@ -82,7 +82,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
         {
             Module = 0,
             Menu = 1,
-            baseMenu = 2
+            BaseMenu = 2
         }
 
         /// <summary>

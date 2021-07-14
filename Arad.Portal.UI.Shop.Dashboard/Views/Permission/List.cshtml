@@ -1,4 +1,5 @@
 ﻿@using Arad.Portal.DataLayer.Models.Shared;
+@using Arad.Portal.GeneralLibrary.Utilities;
 @using Arad.Portal.DataLayer.Models.Permission;
 @model PagedItems<ListPermissionViewModel>
 @{
@@ -20,31 +21,31 @@
                                 <span>@(++i)</span>
                             </div>
                             <div class="table-col col-xs-12 col-lg-2">
-                                <span class="mo-title">نام:</span>
+                                <span class="mo-title">@Language.GetString("Permission_Name"):</span>
                                 <span>@item.Title</span>
                             </div>
                             <div class="table-col col-xs-12 col-lg-2">
-                                <span class="mo-title">نوع</span>
+                                <span class="mo-title">@Language.GetString("Permission_Type")</span>
                                 <span>@item.Type</span>
                             </div>
                             <div class="table-col col-xs-12 col-lg-3">
-                                <span class="mo-title">مسیر</span>
+                                <span class="mo-title">@Language.GetString("Permission_Routes")</span>
                                 <span>@item.Routes</span>
                             </div>
-                            
+
                             <div class="table-col col-xs-12 col-lg-2">
                                 <div class="">
                                     @if (ViewBag.Permissions["Edit"])
                                     {
                                         <a id="editRecord" href="#" data-toggle="modal" data-id="@item.Id" class=" btn btn-outline-primary btn-xs">
-                                            ویرایش
+                                            @Language.GetString("btn_Edit")
                                         </a>
                                     }
                                     @if (ViewBag.Permissions["Remove"])
                                     {
-                                        <button id="deleteRecord" href="#" data-toggle="modal" data-id="@item.Id" type="button" class="btn btn-outline-danger btn-xs">
-                                            حذف
-                                        </button>
+                                <button id="deleteRecord" href="#" data-toggle="modal" data-id="@item.Id" type="button" class="btn btn-outline-danger btn-xs">
+                                    @Language.GetString("btn_Delete")
+                                </button>
                                     }
                                 </div>
                             </div>
@@ -55,7 +56,7 @@
         }
         else
         {
-            <div class="empty text-center">اطلاعاتی برای نمایش وجود ندارد.</div>
+              <div class="empty text-center">@Language.GetString("AlertAndMessage_NoDataToShow")</div>
         }
     }
 </div>

@@ -48,6 +48,28 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ChangeActivation(string id, bool IsActive, string modificationReason)
+        {
+            JsonResult result;
+            try
+            {
+                var res = await _permissionRepository.ChangeActivation(id, IsActive, modificationReason);
+                if (res.Succeeded)
+                {
+                    result =  Json(new { Status = "success", Message = res.Message });
+                }else
+                {
+                    result =  Json(new { Status = "error", Message = res.Message });
+                }
+            }
+            catch (Exception e)
+            {
+                result = Json(new { Status = "error", Message = "لطفا مجددا امتحان نمایید." });
+            }
+            return result;
+        }
+
 
         [HttpPost]
         public IActionResult AddPermission(PermissionDTO permission)

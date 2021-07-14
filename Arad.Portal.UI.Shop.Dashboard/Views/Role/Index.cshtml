@@ -127,7 +127,7 @@
                     <h6 class="modal-title">@Language.GetString("Role_Delete")</h6>
                 </div>
                 <div class="modal-body text-center">
-                    <p class="alert warning">@Language.GetString("AlertAndMessage_UserDeletionSureness")</p>
+                    <p class="alert warning">@Language.GetString("AlertAndMessage_DeletionSureness")</p>
                     <button id="delete" type="button" class="btn btn-danger btn-sm btn-modal-body" data-dismiss="modal">@Language.GetString("btn_Delete")</button>
                     <button type="button" class="btn btn-outline-danger btn-sm btn-modal-body" data-dismiss="modal" style="margin-left:5px">@Language.GetString("btn_Cancel")</button>
                 </div>
@@ -399,7 +399,7 @@
                 values['id'] = $("#Id").val();
 
                 $.ajax({
-                    url: "@Url.Action("Edit")",
+                    url: '@Url.Action("Edit")',
                     type: 'Post',
                     data: values,
                     beforeSend: function() {
@@ -441,11 +441,10 @@
                                     type: 'error',
                                     title: result.message,
                                     confirmButtonText:
-                                        '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                        '<i class="fa fa-thumbs-up"></i> @alert',
                                 });
                             }
                         }
-
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         alert(xhr.status);
@@ -456,7 +455,6 @@
                     }
                 });
             });
-
             });
         </script>
     }
@@ -476,12 +474,12 @@
                 });
 
             $(document).on("click", "#delete", function(e) {
-                    e.preventDefault();
+                    e.prealerttDefault();
                     var id = $(this).data("id");
                     var data = { Id: id };
 
                     $.ajax({
-                        url: "@Url.Action("Delete")",
+                        url: '@Url.Action("Delete")',
                         type: 'Get',
                         data: data,
                         beforeSend: function() {
@@ -490,14 +488,14 @@
                         success: function(result) {
 
                             if (result.status === "success") {
-                                list(pageSize, $pagination.twbsPagination('getCurrentPage'));
+                                list(pageSize, $paginatLanguageoGetStringGetStringGetStringGetStringGetStringn.twbsPagination('getCurrentPage'));
 
                                 $("#removeModal").modal("hide");
                                 Swal.fire({
                                     type: 'success',
                                     title: result.message,
                                     confirmButtonText:
-                                        '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                        '<i class="fa fa-thumbs-up"></i> @alert',
                                 });
 
                             } else {
@@ -505,7 +503,7 @@
                                     type: 'error',
                                     title: result.message,
                                     confirmButtonText:
-                                        'متوجه شدم!',
+                                        '@alert',
                                 });
                             }
                         },
@@ -522,79 +520,22 @@
         </script>
     }
 
-    @if (@Model["Active"])
-    {
-        <script>
-            $(document).ready(function () {
 
-                $(document).on("click", "#activeUser", function (e) {
-                    var active;
-                    if (event.target.checked === true) {
-                        active = true;
-                    } else active = false;
-
-                    var elm = $(this);
-                    var id = $(this).data("id");
-                    var data = { Id: id, IsActive: active };
-
-                    $.ajax({
-                        url: "@Url.Action("ChangeBeActive")",
-                        type: 'Get',
-                        data: data,
-                        beforeSend: function() {
-                            $("#loading").css("display", "block");
-                        },
-                        success: function(result) {
-
-                            if (result.status === "success") {
-
-                                var card = elm.parent().parent().parent().parent();
-
-                                if (active === true) {
-                                    $(card).removeClass("notActive");
-                                    $(card).addClass("active");
-
-                                } else {
-                                    $(card).removeClass("active");
-                                    $(card).addClass("notActive");
-                                }
-
-                                toastr.success(result.message);
-
-                            } else {
-                                elm.prop("checked", !active).change();
-                                toastr.error(result.message);
-                            }
-                        },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            elm.prop("checked", !active).change();
-                            alert(xhr.status);
-                            alert(thrownError);
-                        },
-                        complete: function() {
-                            $("#loading").css("display", "none");
-                        }
-                    });
-                });
-            });
-        </script>
-    }
-
-    <script>
+<script>
         var pageSize = 5;
         var $pagination = $('#pagination');
         var defaultOpts = {
             visiblePages: 5,
-            first: "اولین",
-            prev: "قبلی",
-            next: "بعدی",
-            last: "آخرین"
+            first: '@Language.GetString("tbl_FirstPage")',
+            prev: '@Language.GetString("tbl_PreviousPage")',
+            next: '@Language.GetString("tbl_NextPage")',
+            last: '@Language.GetString("tbl_LastPage")'
         };
 
         function list(pageSize, currentPage) {
             var data = { pageSize: pageSize, currentPage: currentPage };
             $.ajax({
-                url: "@Url.Action("List")",
+                url: '@Url.Action("List")',
                 type: 'Post',
                 data: data,
                 beforeSend: function() {
@@ -632,7 +573,7 @@
 
         function ListPermissions() {
             $.ajax({
-                url: "@Url.Action("ListPermissions")",
+                url: '@Url.Action("ListPermissions")',
                 type: 'Get',
                 success: function(result) {
                     //if (result.status === "success") {
@@ -660,5 +601,5 @@
             });
         }
 
-    </script>
+</script>
 }

@@ -16,6 +16,12 @@
 	<string key="btn_Delete">
 		<value>حذف</value>
 	</string>
+	<string key="btn_Detail">
+		<value>جزییات</value>
+	</string>
+	<string key="treeView_Empty">
+		<value>بدون زیرمجموعه</value>
+	</string>
 	<!--End [buttons text]-->
 	<!--Start[JustForTesting]-->
 	<string key="PermissionTitle_Menu11">
@@ -56,6 +62,66 @@
 	<string key="PermissionTitle_RoleList">
 		<value>لیست نقش ها</value>
 	</string>
+	<string key="PermissionTitle_Roles">
+		<value>نقش ها</value>
+	</string>
+	<string key="PermissionTitle_ViewUserList">
+		<value>مشاهده لیست کاربران</value>
+	</string>
+	<string key="PermissionTitle_UserDelete">
+		<value>حذف کاربر</value>
+	</string>
+	<string key="PermissionTitle_UserChangePassword">
+		<value>تغییر کلمه عبور</value>
+	</string>
+	<string key="PermissionTitle_UserChangeActivation">
+		<value>فعال یا غیر فعال کردن کاربر</value>
+	</string>
+	<string key="PermissionTitle_PermissionChangeActivation">
+		<value>فعال یا غیر فعال کردن دسترسی</value>
+	</string>
+	<string key="PermissionTitle_MenuList">
+		<value>لیست منوها</value>
+	</string>
+	<string key="PermissionTitle_GetUser">
+		<value>اطلاعات کاربر</value>
+	</string>
+	<string key="PermissionTitle_GetRole">
+		<value>اطلاعات نقش</value>
+	</string>
+	<string key="PermissionTitle_Role">
+		<value>نقش ها</value>
+	</string>
+	<string key="PermissionTitle_ViewRoleList">
+		<value>مشاهده لیست نقش ها</value>
+	</string>
+	<string key="PermissionTitle_TreeViewRoleList">
+		<value>لیست درختی نقش ها</value>
+	</string>
+	<string key="PermissionTitle_RoleEdit">
+		<value>ویرایش نقش</value>
+	</string>
+	<string key="PermissionTitle_RoleDelete">
+		<value>حذف نقش</value>
+	</string>
+	<string key="PermissionTitle_RoleChangeActivation">
+		<value>تغییر وضعیت نقش</value>
+	</string>
+	<string key="PermissionTitle_Permissions">
+		<value>دسترسی ها</value>
+	</string>
+	<string key="PermissionTitle_PermissionList">
+		<value>لیست دسترسی ها</value>
+	</string>
+	<string key="PermissionTitle_AddPermission">
+		<value>افزودن دسترسی</value>
+	</string>
+	<string key="PermissionTitle_EditPermission">
+		<value>ویرایش دسترسی</value>
+	</string>
+	<string key="PermissionTitle_PermissionDelete">
+		<value>حذف دسترسی</value>
+	</string>
 	<!--End [PermissionTitle]-->
 	<!--Start [tables]-->
 	<string key="tbl_RowName">
@@ -73,6 +139,18 @@
 	<string key="tbl_Routes">
 		<value>مسیرها</value>
 	</string>
+	<string key="tbl_FirstPage">
+		<value>اولین</value>
+	</string>
+	<string key="tbl_LastPage">
+		<value>آخرین</value>
+	</string>
+	<string key="tbl_PreviousPage">
+		<value>قبلی</value>
+	</string>
+	<string key="tbl_NextPage">
+		<value>بعدی</value>
+	</string>
 	<!--End [tables]-->
 	<!--START [Enum Descriptions]-->
 	<string key="EnumDesc_Email">
@@ -86,6 +164,9 @@
 	</string>
 	<!--End [Enum Descriptions]-->
   <!--START [Allert And Message]-->
+	<string key="AlertAndMessage_FillEssentialFields">
+		<value>لطفا فیلدهای ضروری تکمیل گردد.</value>
+	</string>
 	<string key="AlertAndMessage_DataWasNotFound">
 		<value>داده مورد نظر یافت نشد</value>
 	</string>
@@ -95,9 +176,10 @@
 	<string key="AlertAndMessage_NoRoleWasFound">
 		<value>نقش مورد نظر یافت نشد</value>
 	</string>
-	<string key="AlertAndMessage_UserDeletionSureness">
-		<value>آیا برای حذف دسترسی اطمینان دارید؟</value>
+	<string key="AlertAndMessage_NoDataToShow">
+		<value>اطلاعاتی برای نمایش موجود نمیباشد.</value>
 	</string>
+	
 	<string key="AlertAndMessage_NotifySendingSMS">
 		<value>با زدن دکمه ارسال کلمه عبور جدید به شماره موبایل کاربر ارسال خواهد شد.</value>
 	</string>
@@ -613,11 +695,26 @@
   </string>
   <!--END [Allert And Message]-->
   <!--START [Dashboard]-->
+	<string key="Choose">
+		<value>انتخاب کنید ...</value>
+	</string>
 	<string key="AddUserPart_Title">
 		<value>افزودن کاربر جدید</value>
 	</string>
 	<string key="AddRolePart_Title">
 		<value>اضافه کردن نقش جدید</value>
+	</string>
+	<string key="Permission_Delete">
+		<value>حذف دسترسی</value>
+	</string>
+	<string key="Permission_Name">
+		<value>عنوان دسترسی</value>
+	</string>
+	<string key="Permission_Type">
+		<value>نوع</value>
+	</string>
+	<string key="Permission_Routes">
+		<value>مسیرها</value>
 	</string>
 	<string key="Role_Name">
 		<value>نام نقش</value>

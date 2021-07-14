@@ -5,49 +5,47 @@
 @{
     Layout = null;
 }
-@if(CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-{
-    <style>
-            /*.list-group-item {
-            background-color: inherit;
-        }*/
-        li.nav-item {
-            margin-right: 10px;
-        }
-    </style>
-}else
-{
-    <style>
-        li.nav-item {
-            margin-left: 10px;
-        }
-    </style>
-
-}
-
-    @if (Model.Children.Count != 0)
+@{
+    var direction = "";
+    var chevron = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
     {
-        var hrefcollapse = "menu" + Model.MenuId;
-        <a class="nav-link @(Model.IsActive ? "active":"notactive")" @*data-toggle="collapse"*@ href="#@hrefcollapse">
-            <i class="@Model.Icon"></i>
-            @Language.GetString(Model.MenuTitle)
-            <span class="expand-state pull-left">
-                <i class="fa fa-chevron-down pull-left"></i>
-            </span>
-        </a>
-        <ul class="nav nav-treeview @(Model.IsActive ? "show":"")" id="@hrefcollapse">
-            @foreach (var menu in Model.Children)
-            {
-                @*@(menu.Children.Count > 0 ? "has-sub" : "")*@
-                <li class="nav-item">
-                    @await Component.InvokeAsync("InnerMenu", menu.MenuId)
-                </li>
-            }
-        </ul>
+        direction = "rtl";
+        chevron = "fa fa-chevron-left";
+
+
     }
     else
     {
-        <a class="@(Model.IsActive ? "active":"notActive")" href="@Model.Link">
-            <i class="nav-icon @Model.Icon"></i>  @Language.GetString(Model.MenuTitle)
-        </a>
-    }
+        direction = "ltr";
+        chevron = "fa fa-chevron-right";
+
+     }
+}
+
+@if (Model.Children.Count != 0)
+{
+    var hrefcollapse = "menu" + Model.MenuId;
+    <a class="nav-link @(Model.IsActive ? "active":"notactive")" @*data-toggle="collapse"*@ href="#@hrefcollapse">
+        <i class="@Model.Icon"></i>
+        @Language.GetString(Model.MenuTitle)
+        <span class="expand-state pull-left">
+            <i class="@(chevron) pull-left"></i>
+        </span>
+    </a>
+    <ul class="nav nav-treeview @(Model.IsActive ? "show":"")" id="@hrefcollapse">
+        @foreach (var menu in Model.Children)
+        {
+            @*@(menu.Children.Count > 0 ? "has-sub" : "")*@
+            <li class="nav-item">
+                @await Component.InvokeAsync("InnerMenu", menu.MenuId)
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <a class="@(Model.IsActive ? "active":"notActive")" href="@Model.Link">
+        <i class="nav-icon @Model.Icon"></i>  @Language.GetString(Model.MenuTitle)
+    </a>
+}

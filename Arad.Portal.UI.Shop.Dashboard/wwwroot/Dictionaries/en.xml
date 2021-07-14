@@ -16,6 +16,12 @@
 	<string key="btn_Delete">
 		<value>Delete</value>
 	</string>
+	<string key="btn_Detail">
+		<value>Detail</value>
+	</string>
+	<string key="treeView_Empty">
+		<value>Without childs</value>
+	</string>
 	<!--End [buttons text]-->
 	<!--Start[JustForTesting]-->
 	<string key="PermissionTitle_Menu11">
@@ -56,6 +62,69 @@
 	<string key="PermissionTitle_RoleList">
 		<value>Role List</value>
 	</string>
+	<string key="PermissionTitle_Roles">
+		<value>Roles</value>
+	</string>
+	<string key="PermissionTitle_ViewUserList">
+		<value>View User List</value>
+	</string>
+	<string key="PermissionTitle_UserDelete">
+		<value>Delete User</value>
+	</string>
+	<string key="PermissionTitle_UserChangePassword">
+		<value>Change Password</value>
+	</string>
+	<string key="PermissionTitle_UserChangeActivation">
+		<value>Change Activation</value>
+	</string>
+	<string key="PermissionTitle_PermissionChangeActivation">
+		<value>Change Activation</value>
+	</string>
+	<string key="PermissionTitle_MenuList">
+		<value>Menu List</value>
+	</string>
+	<string key="PermissionTitle_GetUser">
+		<value>get user</value>
+	</string>
+	<string key="PermissionTitle_GetRole">
+		<value>get role</value>
+	</string>
+	<string key="PermissionTitle_Role">
+		<value>Roles</value>
+	</string>
+	<string key="PermissionTitle_ViewRoleList">
+		<value>view role list</value>
+	</string>
+	<string key="PermissionTitle_AddRole">
+		<value>Add Role</value>
+	</string>
+	<string key="PermissionTitle_TreeViewRoleList">
+		<value>treeview role list</value>
+	</string>
+	<string key="PermissionTitle_RoleEdit">
+		<value>Edit Role</value>
+	</string>
+	<string key="PermissionTitle_RoleDelete">
+		<value>Delete Role</value>
+	</string>
+	<string key="PermissionTitle_RoleChangeActivation">
+		<value>change role activation</value>
+	</string>
+	<string key="PermissionTitle_Permissions">
+		<value>Permissions</value>
+	</string>
+	<string key="PermissionTitle_PermissionList">
+		<value>Permissions</value>
+	</string>
+	<string key="PermissionTitle_AddPermission">
+		<value>Add Permission</value>
+	</string>
+	<string key="PermissionTitle_EditPermission">
+		<value>Edit Permission</value>
+	</string>
+	<string key="PermissionTitle_PermissionDelete">
+		<value>Delete Permission</value>
+	</string>
 	<!--End [PermissionTitle]-->
 	<!--Start [tables]-->
 	<string key="tbl_RowName">
@@ -73,6 +142,18 @@
 	<string key="tbl_Routes">
 		<value>Routes</value>
 	</string>
+	<string key="tbl_FirstPage">
+		<value>First</value>
+	</string>
+	<string key="tbl_LastPage">
+		<value>Last</value>
+	</string>
+	<string key="tbl_PreviousPage">
+		<value>Previous</value>
+	</string>
+	<string key="tbl_NextPage">
+		<value>Next</value>
+	</string>
 	<!--End [tables]-->
 	<!--START [Enum Descriptions]-->
 	<string key="EnumDesc_Email">
@@ -86,17 +167,21 @@
 	</string>
 	<!--End [Enum Descriptions]-->
 	<!--START [Allert And Message]-->
+	<string key="AlertAndMessage_FillEssentialFields">
+		<value>Please Fill Essential Fields.</value>
+	</string>
 	<string key="AlertAndMessage_DataWasNotFound">
 		<value>the data was not found.</value>
 	</string>
 	<string key="AlertAndMessage_DeletionSureness">
 		<value>Are you sure for deleting ?</value>
 	</string>
-	<string key="AlertAndMessage_UserDeletionSureness">
-		<value>Are you sure for deleting this role?</value>
-	</string>
+	
 	<string key="AlertAndMessage_NoRoleWasFound">
 		<value>No role was found.</value>
+	</string>
+	<string key="AlertAndMessage_NoDataToShow">
+		<value>no data to show</value>
 	</string>
 	<string key="AlertAndMessage_NotifySendingSMS">
 		<value>Your new password will be sent to your mobilephone if you press send button</value>
@@ -107,9 +192,7 @@
 	<string key="AlertAndMessage_TryLator">
 		<value>Please try again lator.</value>
 	</string>
-	<string key="AlertAndMessage_UserDeletionSureness">
-		<value>Are you Sure For Deleting This User?</value>
-	</string>
+	
 	<string key="AlertAndMessage_UserRestoreSureness">
 		<value>Are you Sure For Restoring This User?</value>
 	</string>
@@ -645,11 +728,26 @@
 	</string>
 	<!--END [Allert And Message]-->
 	<!--START [Dashboard]-->
+	<string key="Choose">
+		<value>choose ...</value>
+	</string>
 	<string key="AddUserPart_Title">
 		<value>Add New User</value>
 	</string>
 	<string key="AddRolePart_Title">
 		<value>Add New Role</value>
+	</string>
+	<string key="Permission_Delete">
+		<value>Delete Permission</value>
+	</string>
+	<string key="Permission_Name">
+		<value>Permission Title</value>
+	</string>
+	<string key="Permission_Type">
+		<value>Permission Type</value>
+	</string>
+	<string key="Permission_Routes">
+		<value>Routes</value>
 	</string>
 	<string key="Role_Name">
 		<value>RoleName</value>

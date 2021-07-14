@@ -1,15 +1,32 @@
-﻿
+﻿@using System.Globalization;
 @using Arad.Portal.GeneralLibrary.Utilities;
-@using System.Globalization;
 @model List<Arad.Portal.DataLayer.Models.Shared.MenuLinkModel>
 @{
     Layout = null;
 }
+@{
+    var direction = "";
+    var chevron = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        direction = "rtl";
+        chevron = "fa fa-chevron-left";
 
-<div class="sidebar ">
+
+    }
+    else
+    {
+        direction = "ltr";
+        chevron = "fa fa-chevron-right";
+
+     }
+}
+
+
+<div class="sidebar">
     <div class="sidebar-nav">
-        <div class="sidebar-wrap">
-            <ul class="nav">
+        <div @*class="navigation"*@>
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
                 <li>
                     <div class="sidebar-shortcuts" id="sidebar-shortcuts">
                         <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
@@ -22,36 +39,40 @@
                     </div>
                 </li>
 
-                @foreach (var root in @Model)
-                    {
-                <li class="nav-item">
-                    @if (root.Children.Count != 0)
-                            {
-                                var hrefCollapse = "menu"+@root.MenuId;
-                    <a class="nav-link @(root.IsActive ? "active":"notActive")" data-toggle="collapse" href="#@hrefCollapse">
-                        <i class="nav-icon @root.Icon"></i> @Language.GetString(root.MenuTitle)
-                        <span class="expand-state pull-left"><i class="fa fa-chevron-down pull-left"></i></span>
-                    </a>
-                    <ul class="sub unstyle collapse @(root.IsActive ? "show":"")" id="@hrefCollapse">
-                        @foreach (var menu in root.Children)
-                                    {
-                        <li><a class="@(menu.IsActive ? "active":"notActive")" href="/@menu.Link">@menu.MenuTitle</a></li>
-                                    }
-                    </ul>
-                            }
-                            else
-                            {
-                    <a class="nav-link @(root.IsActive ? "active":"notActive")" href="/@root.Link">
-                        <i class="nav-icon @root.Icon"></i> @root.MenuTitle
-                    </a>
-                            }
-                </li>
+                @foreach (var item in @Model)
+                {
+                    @*@(item.Children.Count > 0 ? "has-sub" : "")*@
+                    <li class="nav-item">
+                        @if (item.Children.Count != 0)
+                        {
+                            var hrefcollapse = "menu" + item.MenuId;
+                            <a class="nav-link @(item.IsActive ? "active":"notactive")" @*data-toggle="collapse"*@ href="#@hrefcollapse">
+                                <i class="nav-icon @item.Icon"></i>
+                                @Language.GetString(item.MenuTitle)
+                                <span class="expand-state pull-left">
+                                    <i class="@(chevron) pull-left"></i>
+                                </span>
+                            </a>
+                            <ul class="@(item.IsActive ? "show":"")" id="@hrefcollapse">
+                                @foreach (var menu in item.Children)
+                                {
+                                    <li class="nav-item">
+                                        @await Component.InvokeAsync("InnerMenu", menu.MenuId);
+                                    </li>
+                                }
+                            </ul>
                         }
-
+                        else
+                        {
+                            <a class="nav-link @(item.IsActive ? "active":"notActive")" href="@item.Link">
+                                <i class="nav-icon @item.Icon"></i>   @Language.GetString(item.MenuTitle)
+                            </a>
+                        }
+                    </li>
+                }
 
             </ul>
         </div>
     </div>
 </div>
-
 
