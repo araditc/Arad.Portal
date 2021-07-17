@@ -57,14 +57,14 @@
                                 @foreach (var menu in item.Children)
                                 {
                                     <li class="nav-item">
-                                        @await Component.InvokeAsync("InnerMenu", menu.MenuId);
+                                        @await Component.InvokeAsync("InnerMenu", menu);
                                     </li>
                                 }
                             </ul>
                         }
                         else
                         {
-                            <a class="nav-link @(item.IsActive ? "active":"notActive")" href="@item.Link">
+                            <a class="nav-link @(item.IsActive ? "active":"notActive")" href="/@item.Link">
                                 <i class="nav-icon @item.Icon"></i>   @Language.GetString(item.MenuTitle)
                             </a>
                         }

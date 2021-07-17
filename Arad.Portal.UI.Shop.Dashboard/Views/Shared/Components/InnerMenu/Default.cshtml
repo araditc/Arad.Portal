@@ -45,7 +45,7 @@
 }
 else
 {
-    <a class="@(Model.IsActive ? "active":"notActive")" href="@Model.Link">
+    <a class="@(Model.IsActive ? "active":"notActive")" href=@($"/{Model.Link}")>
         <i class="nav-icon @Model.Icon"></i>  @Language.GetString(Model.MenuTitle)
     </a>
 }

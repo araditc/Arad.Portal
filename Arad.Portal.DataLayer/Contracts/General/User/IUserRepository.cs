@@ -14,7 +14,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.User
     {
         List<Entities.General.Permission.Permission> GetPermissionsOfUser(ApplicationUser user);
         List<string> GetAccessibleRoutsOfUser(ApplicationUser user);
-        List<string> GetRoleNamesOfUser(string userId);
+        string GetRoleNameOfUser(string userId);
         UserDTO GetUserWithPhone(string phoneNumber);
         List<UserDTO> GetAll();
         List<UserDTO> search(string word);

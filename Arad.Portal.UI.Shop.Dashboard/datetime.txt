@@ -1,0 +1,49 @@
+@if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <link href="~/dashboardAsset/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
+    }
+	
+	
+	
+	@if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                                    {
+                                        <div class="input-group-prepend ">
+                                            <span class="input-group-text">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                            <input autocomplete="off" id="userBirthDate" type="text" class=" form-control" value="@Model.BirthDate" asp-for="BirthDate">
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="input-group date" id="userBirthDate" data-target-input="nearest">
+                                            <input type="text" class="form-control datetimepicker-input" data-target="#userBirthDate" value="@Model.BirthDate" asp-for="BirthDate" />
+                                            <div class="input-group-append" data-target="#userBirthDate" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+                                    }
+									
+									
+									
+									
+									@if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <script src="~/dashboardAsset/plugins/datePicker/kamadatepicker.min.js"></script>
+    }
+    else
+    {
+        <script src="~/dashboardAsset/plugins/moment/moment.min.js"></script>
+        <script src="~/dashboardAsset/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    }
+	
+	
+	
+	
+	 if ("@CultureInfo.CurrentCulture.Name" === "fa-IR") {
+            kamaDatepicker('userBirthDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+        } else {
+            $('#userBirthDate').datetimepicker({
+                format: 'L'
+            });
+        }

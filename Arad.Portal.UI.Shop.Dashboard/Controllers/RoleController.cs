@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
@@ -56,7 +57,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         errors.Add(obj);
                     }
                 }
-                result = new  JsonResult(new { Status = "error", Message = "فیلدهای ضروری تکمیل گردد.", ModelStateErrors = errors });
+                result = new  JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_FillEssentialFields"), ModelStateErrors = errors });
             }
             else
             {
@@ -81,7 +82,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return result;
         }
 
-        //this part should change on treeview
+      
         [HttpGet]
         public async Task<IActionResult> GetRole(string id)
         {
@@ -94,47 +95,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_DataWasNotFound") });
                 }
-
-                //this part should be changed based on our menu preview
-                //???
-                var AllPers = await _permissionRepository.ListPermissions();
-                var pers = AllPers.Select(c => new PermissionListView
-                {
-                    Title = c.Title,
-                    Id = c.Id,
-                    IsSelected = role.PermissionIds.Any(n => n == c.Id),
-                    IsActive = c.IsActive,
-                    Pers = c.Type == Enums.PermissionType.BaseMenu ? c.Menus.Select(d => new PermissionListView()
-                    {
-                        Id = d.Id,
-                        Title = d.Title,
-                        IsSelected = role.PermissionIds.Any(f => f == d.Id),
-                        IsActive = d.IsActive,
-                        Pers = d.Modules.Select(m => new PermissionListView()
-                        {
-                            Id = m.Id,
-                            Title = m.Title,
-                            IsSelected = role.PermissionIds.Any(h => h == m.Id),
-                            IsActive = m.IsActive
-                        }).ToList(),
-                    }).ToList() : c.Modules != null ? c.Modules.Select(m => new PermissionListView()
-                    {
-                        Id = m.Id,
-                        Title = m.Title,
-                        IsSelected = role.PermissionIds.Any(h => h == m.Id),
-                        IsActive = m.IsActive,
-                        Pers = new List<PermissionListView>()
-                    }).ToList() : new List<PermissionListView>()
-                }).ToList();
-
-
-                var data = new { Role = role, AllPers = pers };
+                
+                //var permissions = await _permissionRepository.ListPermissions(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+              
+                var data = new { Role = role };
 
                 result = Json(new { Status = "success", Data = data });
             }
             catch (Exception e)
             {
-                result = Json(new { Status = "error", Message = "لطفا مجددا امتحان نمایید." });
+                result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
             }
             return result;
         }
@@ -256,37 +226,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             try
             {
-                var list = await _permissionRepository.ListPermissions();
-                var pers = list.Select(c => new PermissionListView
-                {
-                    Title = c.Title,
-                    Id = c.Id,
-                    IsSelected = false,
-                    IsActive = c.IsActive,
-                    Pers = c.Type == Enums.PermissionType.BaseMenu ? c.Menus.Select(d => new PermissionListView()
-                    {
-                        Id = d.Id,
-                        Title = d.Title,
-                        IsSelected = false,
-                        IsActive = d.IsActive,
-                        Pers = d.Modules.Select(m => new PermissionListView()
-                        {
-                            Id = m.Id,
-                            Title = m.Title,
-                            IsSelected = false,
-                            IsActive = m.IsActive
-                        }).ToList(),
-                    }).ToList() : c.Modules != null ? c.Modules.Select(m => new PermissionListView()
-                    {
-                        Id = m.Id,
-                        Title = m.Title,
-                        IsSelected = false,
-                        IsActive = m.IsActive,
-                        Pers = new List<PermissionListView>()
-                    }).ToList() : new List<PermissionListView>()
-                }).ToList();
-
-                return View(pers);
+                var list = await _permissionRepository.ListPermissions(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+                return View(list);
             }
             catch (Exception e)
             {

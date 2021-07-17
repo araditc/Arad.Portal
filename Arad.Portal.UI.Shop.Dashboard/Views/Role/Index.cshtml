@@ -11,7 +11,7 @@
 }
 
 <div class="headPage text-right">
-    <h5>@Language.GetString("Menu_Permissions")</h5>
+    <h5>@Language.GetString("Menu_Roles")</h5>
     @{
         if (@Model["List"])
         {
@@ -95,7 +95,7 @@
                                         <span class="field-validation-error" data-val-result="Permissions"></span>
                                     </div>
                                     <div id="permissions" class="row w-100">
-
+                                        @await Component.InvokeAsync("GeneratePermissions")
                                     </div>
                                 </div>
                             </div>
@@ -285,73 +285,6 @@
                                 var role = result.data.role;
                                 $("#edit #Title").val(role.title);
                                 $("#edit #Id").val(role.id);
-
-                                var pers = result.data.allPers;
-
-                                var html = '';
-                                pers.forEach(function (item) {
-                                    html +=
-                                        '<ul class="tree col-md-6">' +
-                                        '<li class="custom-control custom-checkbox checbox-right custom-control-inline">' +
-                                        '<span class="caret"></span>' +
-                                        '<input type="checkbox" class="custom-control-input checkbox" name="' +
-                                        item.id +
-                                        '"id="p' +
-                                        item.id +
-                                        '"'+
-                                        (item.isSelected === true ? 'checked>' : '>')+
-                                        '<label class="custom-control-label" for="p' +
-                                        item.id +
-                                        '">' +
-                                        item.title +
-                                        '</label>';
-                                    if (item.pers.length != 0) {
-                                        html += '<ul class="nested">';
-                                        (item.pers).forEach(function (menu) {
-                                            html +=
-                                                '<li class="custom-control custom-checkbox checbox-right custom-control-inline">' +
-                                                '<span class="caret"></span>' +
-                                                '<input type="checkbox" class="custom-control-input checkbox" name="' +
-                                                menu.id +
-                                                '"id="p' +
-                                                menu.id +
-                                                    '" ' +
-                                                (menu.isSelected === true ? 'checked>' : '>')+
-                                                '<label class="custom-control-label" for="p' +
-                                                    menu.id +
-                                                    '">' +
-                                                    menu.title +
-                                                    '</label>';
-                                                if (menu.pers.length != 0) {
-                                                    html += '<ul class="nested">';
-                                                    (menu.pers).forEach(function (module) {
-                                                        html +=
-                                                            '<li class="custom-control custom-checkbox checbox-right custom-control-inline">' +
-                                                            '<input type="checkbox" class="custom-control-input checkbox" name="' +
-                                                                module.id +
-                                                                '"id="p' +
-                                                                module.id + '"' +
-                                                                (module.isSelected === true ? 'checked>' : '>')+
-                                                            '<label class="custom-control-label" for="p' +
-                                                                module.id +
-                                                                '">' +
-                                                                module.title +
-                                                                '</label></li>';
-                                                        });
-                                                    html += '</ul>';
-                                                } else {
-                                                    html += '<ul class="nested"><li><span class="empty">بدون زیر مجموعه</span></li></ul>';
-                                                }
-                                                html += '</li>';
-                                            });
-                                        html += '</ul>';
-                                    } else {
-                                        html += '<ul class="nested"><li><span class="empty">بدون زیر مجموعه</span></li></ul>';
-                                    }
-                                    html += '</li></ul>';
-                                });
-
-                                $("#edit #permissions").html(html);
                                 $("#editModal").modal("show");
 
                             } else {

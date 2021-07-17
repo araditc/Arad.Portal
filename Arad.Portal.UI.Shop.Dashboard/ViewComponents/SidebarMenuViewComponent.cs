@@ -58,30 +58,5 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
             }
             return View(menues);
         }
-
-        //public async Task<IViewComponentResult> InvokeAsync()
-        //{
-        //    var menus = new List<MenuLinkModel>();
-
-        //    try
-        //    {
-        //        string sub = _accessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-        //        var route = _accessor.HttpContext.GetRouteData();
-        //        var controller = route.Values["controller"].ToString();
-        //        var action = route.Values["action"].ToString();
-        //        string address = $"{controller}/{action}";
-
-        //        if (sub != null)
-        //        {
-        //            menus = await _permissionRepository.ListOfMenues(sub, address);
-        //        }
-
-        //        return View(menus);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return View(menus);
-        //    }
-        //}
     }
 }

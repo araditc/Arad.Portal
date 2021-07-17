@@ -83,29 +83,17 @@ namespace Arad.Portal.UI.Shop.Dashboard.Authorization
 
                 string address = $"{controller}/{action}".ToLower();
 
-                List<string> roleIdList = user.UserRoles;
-                List<Role> userRoles = _roleContext.Collection
-                    .AsQueryable().Where(_ => roleIdList.Contains(_.RoleId)).ToList();
+
+                Role userRoleEntity = _roleContext.Collection.Find(_ => _.RoleId == user.UserRoleId).FirstOrDefault();
+                   
 
                 var permissions = _permissionContext.Collection.AsQueryable().Where(p => p.IsActive).ToList();
                 List<DataLayer.Entities.General.Permission.Permission> permissionList = new();
                 var toLowerRoutesPers = new List<string>();
-                
-                //foreach (var role in userRoles)
-                //{
-                //    var routesPer = role.PermissionIds.Join(permissions, perId => perId, permission => permission.Id,
-                //            (a, b) => permissions.Where(c => c.Id == b.Id))
-                //        .SelectMany(c => c).Distinct().SelectMany(s => s.Routes).ToList();
 
-                //    routesPer.ForEach(c => { toLowerRoutesPers.Add(c.ToLower()); });
-                //}
-
-                foreach (var item in userRoles)
-                {
-                    var lst = _permissionContext.Collection.AsQueryable()
-                        .Where(_ => _.IsActive && item.PermissionIds.Contains(_.PermissionId)).ToList();
-                    permissionList.AddRange(lst);
-                }
+                permissionList = _permissionContext.Collection.AsQueryable()
+                        .Where(_ => _.IsActive && userRoleEntity.PermissionIds.Contains(_.PermissionId)).ToList();
+                   
                 toLowerRoutesPers = permissionList.SelectMany(_ => _.Routes).ToList();
 
                 //string ch = toLowerRoutesPers.FirstOrDefault(w => w == address);

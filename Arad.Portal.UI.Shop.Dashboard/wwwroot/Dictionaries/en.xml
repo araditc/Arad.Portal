@@ -176,7 +176,34 @@
 	<string key="AlertAndMessage_DeletionSureness">
 		<value>Are you sure for deleting ?</value>
 	</string>
+	<string key="AlertAndMessage_CaptchaIsExpired">
+		<value>The captcha is invalid or expired.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidUsernameOrPassword">
+		<value>The captcha is invalid or expired.</value>
+	</string>
+	<string key="AlertAndMessage_InActiveUserAccount">
+		<value>This Account was deactivated by Admin.</value>
+	</string>
+	<string key="AlertAndMessage_Welcome">
+		<value>Welcome</value>
+	</string>
+	<string key="AlertAndMessage_DuplicateUsername">
+		<value>Duplicate username</value>
+	</string>
+	<string key="AlertAndMessage_UserCreatedSuccessfully">
+		<value>User was created successfully.</value>
+	</string>
 	
+	<string key="AlertAndMessage_DuplicatePhoneNumber">
+		<value>There is a user account with this mobilePhone.</value>
+	</string>
+	<string key="AlertAndMessage_NoAccess">
+		<value>You dont have access to do this action.</value>
+	</string>
+	<string key="AlertAndMessage_NoUserWasFound">
+		<value>No user was found.</value>
+	</string>
 	<string key="AlertAndMessage_NoRoleWasFound">
 		<value>No role was found.</value>
 	</string>
@@ -190,9 +217,29 @@
 		<value>Your new Pass will be sent to your mobilephone</value>
 	</string>
 	<string key="AlertAndMessage_TryLator">
-		<value>Please try again lator.</value>
+		<value>Please try lator again.</value>
 	</string>
-	
+	<string key="AlertAndMessage_lackOfIcon">
+		<value>Please select icon.</value>
+	</string>
+	<string key="AlertAndMessage_lackOfPriority">
+		<value>Please set priority.</value>
+	</string>
+	<string key="AlertAndMessage_lackOfRoutes">
+		<value>Please set at least one route.</value>
+	</string>
+	<string key="AlertAndMessage_lackOfMenuIdofModule">
+		<value>Please set menuId of this module.</value>
+	</string>
+	<string key="AlertAndMessage_EditionDoneSuccessfully">
+		<value>Edition done successfully.</value>
+	</string>
+	<string key="AlertAndMessage_InsertionDoneSuccessfully">
+		<value>Insertion done successfully.</value>
+	</string>
+	<string key="AlertAndMessage_DeletionDoneSuccessfully">
+		<value>Deletion done successfully.</value>
+	</string>
 	<string key="AlertAndMessage_UserRestoreSureness">
 		<value>Are you Sure For Restoring This User?</value>
 	</string>
@@ -208,39 +255,6 @@
 	<string key="AlertAndMessage_InvalidFileType">
 		<value>Invalid file type.</value>
 	</string>
-
-	<string key="AlertAndMessage_NewPasswordwordDoesNotMatchWithRepeat">
-		<value>New password doesn't match with the repeat one.</value>
-	</string>
-	<string key="Tariff_Needed">
-		<value>At least one tariff should be selected.</value>
-	</string>
-	<string key="AlertAndMessage_InvalidFileSize">
-		<value>Invalid file size.</value>
-	</string>
-	<string key="AlertAndMessage_InvalidExpirationDateRange">
-		<value>Selected expiration date is incorrect.</value>
-	</string>
-	<string key="AlertAndMessage_EnterBirthDate">
-		<value>Please enter birth date.</value>
-	</string>
-	<string key="AlertAndMessage_MaxDateTime">
-		<value>Maximum selectable expiration date according to your sender choices is:</value>
-	</string>
-
-	<string key="AlertAndMessage_ErrorUploadingFile">
-		<value>Error uploading file.</value>
-	</string>
-	<string key="AlertAndMessage_IdRequired">
-		<value>Id is not specified.</value>
-	</string>
-	<string key="AlertAndMessage_ObjectNotFound">
-		<value>Item not found!</value>
-	</string>
-	<string key="Regex_Not_Match">
-		<value>Value does not match the supposed pattern!</value>
-	</string>
-
 	<string key="AlertAndMessage_EnterUsername">
 		<value>Please enter username.</value>
 	</string>
@@ -257,11 +271,6 @@
 	<string key="AlertAndMessage_SelectGender">
 		<value>Please select the gender type.</value>
 	</string>
-	<string key="AlertAndMessage_SelectMCCMNC">
-		<value>Please select the operator.</value>
-	</string>
-
-
 	<string key="AlertAndMessage_Gender">
 		<value>Gender</value>
 	</string>
@@ -274,21 +283,13 @@
 	<string key="AlertAndMessage_ModelHasIdError">
 		<value>Model to be created should not contain id parameter!</value>
 	</string>
-	<string key="AlertAndMessage_DuplicateClientIdInsertError">
-		<value>Item with same clientId already exists!</value>
-	</string>
-	<string key="AlertAndMessage_InProperIdFormat">
-		<value>Id format is wrong!</value>
-	</string>
 	<string key="AlertAndMessage_ExceptionOccured">
 		<value>Exception occured.</value>
 	</string>
 	<string key="AlertAndMessage_ParameterError">
 		<value>Check query parameters.</value>
 	</string>
-	<string key="AlertAndMessage_SuccessfullyDone">
-		<value>Successfully done.</value>
-	</string>
+	
 	<string key="AlertAndMessage_DuplicateError">
 		<value>Item aleardy exists!</value>
 	</string>
@@ -359,37 +360,23 @@
 	<string key="AlertAndMessage_InvalidPostalCode">
 		<value>Invalid postal code.</value>
 	</string>
-	<string key="AlertAndMessage_InvalidUsernameOrPassword">
-		<value>Invalid username or password.</value>
-	</string>
 	<string key="AlertAndMessage_TheAccountHasBeenDisabledByTheAdmin">
 		<value>The account has been disabled by the admin.</value>
-	</string>
-	<string key="AlertAndMessage_Welcome">
-		<value>Welcome.</value>
 	</string>
 	<string key="AlertAndMessage_YouCameInInsteadOf">
 		<value>You came in instead of </value>
 	</string>
-	<string key="AlertAndMessage_YourOTPIs">
-		<value>Your code is: </value>
-	</string>
+	
 	<string key="AlertAndMessage_ErrorInSendingSMS">
 		<value>Error in sending SMS.</value>
 	</string>
-	<string key="AlertAndMessage_UserNotFound">
-		<value>User not found.</value>
-	</string>
+	
 
-	<string key="AlertAndMessage_NotAllowed">
-		<value>You are not allowed.</value>
-	</string>
+	
 	<string key="AlertAndMessage_ErrorTryAgain">
 		<value>Error, please try again</value>
 	</string>
-	<string key="AlertAndMessage_ErrorTryAgainLater">
-		<value>Error, please try again later</value>
-	</string>
+
 	<string key="AlertAndMessage_ValidityOfOTP">
 		<value>The validity of the OTP is only 3 minutes</value>
 	</string>
@@ -830,6 +817,10 @@
 	<string key="Menu_Permissions">
 		<value>Permissions</value>
 	</string>
+	<string key="Menu_Roles">
+		<value>Roles</value>
+	</string>
+	
 	<string key="EditPermissions">
 		<value>Edit permissions</value>
 	</string>

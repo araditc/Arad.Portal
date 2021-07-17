@@ -26,7 +26,7 @@ namespace Arad.Portal.DataLayer.Entities.General.User
         public bool IsActive { get; set; }
         public Profile Profile { get; set; }
         public List<Address> Addresses { get; set; }
-        public List<string> UserRoles { get; set; }
+        public string UserRoleId { get; set; }
         public OneTimePass Otp { get; set; }
         public bool IsDeleted { get; set; }
         public List<string> FavoriteList { get; set; }

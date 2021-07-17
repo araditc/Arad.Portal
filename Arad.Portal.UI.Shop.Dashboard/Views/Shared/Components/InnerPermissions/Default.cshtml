@@ -1,0 +1,19 @@
+﻿@model Arad.Portal.DataLayer.Models.Permission.ListPermissions
+@{
+    Layout = null;
+}
+
+<span class="caret"></span>
+<input type="checkbox" class="custom-control-input checkbox" name="@Model.Id" id="p@(Model.Id)" @(Model.IsSelected ? "checked" : "") />
+<label class="custom-control-label" for="p@(Model.Id)">@Model.Title</label>
+@if (Model.Childrens.Count != 0)
+{
+    <ul class="nested">
+        @foreach (var child in Model.Childrens)
+        {
+            <li class="custom-control custom-checkbox checbox-right custom-control-inline">
+                @await Component.InvokeAsync("InnerPermissions", child);
+            </li>
+        }
+    </ul>
+}

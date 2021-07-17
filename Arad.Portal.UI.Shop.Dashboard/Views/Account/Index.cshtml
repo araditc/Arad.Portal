@@ -398,9 +398,9 @@
                 $("#addUser").submit(function (e) {
 
                     e.preventDefault();
-
+                    debugger;
                     var rolesSelect = [];
-                    var rolesCheck = $("#addUser #roles input[type='checkbox']");
+                    var rolesCheck = $("#addUser #roles input[type='radio']");
 
                     rolesCheck.each(function (index) {
 
@@ -418,7 +418,7 @@
                     });
 
                     valuesForm['FullMobile'] = $('input[name ="FullMobile"]').val();
-                    valuesForm['UserRoles'] = rolesSelect;
+                    valuesForm['UserRoleId'] = rolesSelect;
                     var active;
                     if ($("input[name='IsActive']").is(":checked")=== true) {
                         active = true;
@@ -506,8 +506,8 @@
                                 data.forEach(function (item) {
 
                                     rolesHtml += '<div class="form-group col-xs-12 col-md-3 col-lg-2 table-check">' +
-                                        '<div class="custom-control custom-checkbox checbox-right">' +
-                                        '<input type="checkbox" class="checkbox custom-control-input"  id="' +
+                                        '<div class="custom-control custom-radio radio-right">' +
+                                        '<input type="radio" name="userRoleList" class="radio custom-control-input"  id="' +
                                         item.id +
                                         '" ' +
                                         (item.isActive ? "" : "disabled") +
@@ -520,8 +520,8 @@
 
                                     rolesHtmlFilter +=
                                         '<div class="form-group col-xs-12 col-md-3 col-lg-2 table-check">' +
-                                        '<div class="custom-control custom-checkbox checbox-right">' +
-                                        '<input type="checkbox" class="checkbox custom-control-input" id="f' +
+                                        '<div class="custom-control custom-radio radio-right">' +
+                                        '<input type="radio" name="userFilterRoleList" class="radio custom-control-input" id="f' +
                                         item.id +
                                         '" ' +
                                         'name="' +
@@ -611,8 +611,8 @@
                                     roles.forEach(function (item) {
                                        
                                         html += '<div class="form-group col-xs-12 col-md-6 col-lg-4 table-check">' +
-                                            '<div class="custom-control custom-checkbox checbox-right">' +
-                                            '<input type="checkbox" class="custom-control-input" id="r' +
+                                            '<div class="custom-control custom-radio radio-right">' +
+                                            '<input type="radio" class="custom-control-input" id="r' +
                                             item.id +
                                             '" name="' +
                                             item.id +

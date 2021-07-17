@@ -1,0 +1,53 @@
+﻿@using Arad.Portal.GeneralLibrary.Utilities; 
+@model List<Arad.Portal.DataLayer.Models.Permission.PermissionListView>;
+@{
+    Layout = null;
+}
+
+@if (@Model.Count != 0)
+{
+    @foreach (var root in @Model)
+    {
+        <ul class="tree col-md-3">
+            <li class=" custom-control custom-checkbox checbox-right custom-control-inline">
+                <span class="caret"></span>
+                <input type="checkbox" class="custom-control-input checkbox" id="@root.Id">
+                <label class="custom-control-label" for="@root.Id">@root.Title</label>
+                @if (root.Pers.Count != 0)
+                {
+                    <ul class="nested">
+                        @foreach (var menu in root.Pers)
+                        {
+                        <li class="custom-control custom-checkbox checbox-right custom-control-inline">
+                            <span class="caret"></span>
+                            <input type="checkbox" class="custom-control-input checkbox" id="@menu.Id">
+                            <label class="custom-control-label" for="@menu.Id">@menu.Title</label>
+                            @if (menu.Pers.Count != 0)
+                            {
+                                <ul class="nested">
+                                    @foreach (var module in menu.Pers)
+                                    {
+                                        <li class="custom-control custom-checkbox checbox-right custom-control-inline">
+                                            <input type="checkbox" class="custom-control-input checkbox" id="@module.Id" @(module.IsActive ? "":"disabled")>
+                                            <label class="custom-control-label" for="@module.Id">@module.Title</label>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <ul class="nested"><li><span class="empty">@Language.GetString("treeView_Empty")</span></li></ul>
+                            }
+                        </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <ul class="nested"><li><span class="empty">@Language.GetString("treeView_Empty")</span></li></ul>
+                }
+            </li>
+        </ul>
+    }
+}
+

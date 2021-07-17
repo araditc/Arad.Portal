@@ -1,4 +1,5 @@
-﻿@model List<Arad.Portal.DataLayer.Models.Permission.ListPermissions>
+﻿
+@model List<Arad.Portal.DataLayer.Models.Permission.ListPermissions>
 @{
     Layout = null;
 }
@@ -14,23 +15,23 @@
         <label class="custom-control-label" for="p@(item.Id)">@item.Title</label>
         @if (item.Childrens.Count != 0)
         {
-        <ul class="nested">
-            @foreach (var child in item.Childrens)
+            <ul class="nested">
+                @foreach (var child in item.Childrens)
                 {
-            @await Component.InvokeAsync("InnerPermissions", child);
+                    @await Component.InvokeAsync("InnerPermissions", child);
                 }
-        </ul>
+            </ul>
         }
     </li>
         }else
                 {
-    <li class="custom-control custom-checkbox checbox-right custom-control-inline">
-        '<span class="caret"></span>
-        <input type="checkbox" class="custom-control-input checkbox" name="@item.Id" id="p@(item.Id)" @(item.IsSelected ? "checked" : "") />
-        <label class="custom-control-label" for="p@(item.Id)">@item.Title</label>
-    </li>
+<li class="custom-control custom-checkbox checbox-right custom-control-inline">
+    '<span class="caret"></span>
+    <input type="checkbox" class="custom-control-input checkbox" name="@item.Id" id="p@(item.Id)" @(item.IsSelected ? "checked" : "") />
+    <label class="custom-control-label" for="p@(item.Id)">@item.Title</label>
+</li>
                 }
 
     }
-</ul>
+    </ul>
 

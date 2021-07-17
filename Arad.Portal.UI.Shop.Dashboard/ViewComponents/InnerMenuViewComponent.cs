@@ -19,59 +19,59 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
 {
     public class InnerMenuViewComponent : ViewComponent
     {
-        private readonly IHttpContextAccessor _accessor;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IPermissionRepository _permissionRepository;
-        private readonly IUserRepository _userRepository;
+        //private readonly IHttpContextAccessor _accessor;
+        //private readonly UserManager<ApplicationUser> _userManager;
+        //private readonly IPermissionRepository _permissionRepository;
+        //private readonly IUserRepository _userRepository;
 
-        public InnerMenuViewComponent(
-            IHttpContextAccessor accessor,
-            IPermissionRepository permissionRepository,
-            UserManager<ApplicationUser> userManager,
-            IUserRepository userRepository)
-        {
-            _accessor = accessor;
-            _permissionRepository = permissionRepository;
-            _userManager = userManager;
-            _userRepository = userRepository;
-        }
+        //public InnerMenuViewComponent(
+        //    IHttpContextAccessor accessor,
+        //    IPermissionRepository permissionRepository,
+        //    UserManager<ApplicationUser> userManager,
+        //    IUserRepository userRepository)
+        //{
+        //    _accessor = accessor;
+        //    _permissionRepository = permissionRepository;
+        //    _userManager = userManager;
+        //    _userRepository = userRepository;
+        //}
 
-        public async Task<IViewComponentResult> InvokeAsync(string menuId)
+        public  IViewComponentResult Invoke(MenuLinkModel model)
         {
-            var result = new MenuLinkModel();
-            List<Permission> pers = new List<Permission>(); ;
-            try
-            {
-                string currentUserId = _accessor.HttpContext.User.Claims
-                    .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-                var route = _accessor.HttpContext.GetRouteData();
-                var controller = route.Values["controller"].ToString();
-                var action = route.Values["action"].ToString();
-                string address = $"{controller}/{action}";
-                var applicationUser = await _userManager.FindByIdAsync(currentUserId);
+            //var result = new MenuLinkModel();
+            //List<Permission> pers = new List<Permission>(); ;
+            //try
+            //{
+            //    string currentUserId = _accessor.HttpContext.User.Claims
+            //        .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            //    var route = _accessor.HttpContext.GetRouteData();
+            //    var controller = route.Values["controller"].ToString();
+            //    var action = route.Values["action"].ToString();
+            //    string address = $"{controller}/{action}";
+            //    var applicationUser = await _userManager.FindByIdAsync(currentUserId);
                 
-                pers = _userRepository.GetPermissionsOfUser(applicationUser);
-                var context = pers.Where(p => p.Type == Enums.PermissionType.Menu).ToList();
-                var per = await _permissionRepository.FetchPermission(menuId);
-                if (per != null)
-                {
-                    result.MenuId = per.PermissionId;
-                    result.MenuTitle = GeneralLibrary.Utilities.Language.GetString("PermissionTitle_" + per.Title);
-                    result.Icon = per.Icon;
-                    result.Priority = per.Priority;
-                    result.IsActive = per.ClientAddress != null && per.Routes.Contains(address);
-                }
+            //    pers = _userRepository.GetPermissionsOfUser(applicationUser);
+            //    var context = pers.Where(p => p.Type == Enums.PermissionType.Menu).ToList();
+            //    var per = await _permissionRepository.FetchPermission(menuId);
+            //    if (per != null)
+            //    {
+            //        result.MenuId = per.PermissionId;
+            //        result.MenuTitle = GeneralLibrary.Utilities.Language.GetString("PermissionTitle_" + per.Title);
+            //        result.Icon = per.Icon;
+            //        result.Priority = per.Priority;
+            //        result.IsActive = per.ClientAddress != null && per.Routes.Contains(address);
+            //    }
 
-                if (applicationUser != null)
-                {
-                    result.Children = _permissionRepository.GetChildren(context, menuId, address);
-                }
-            }
-            catch (Exception e)
-            {
+            //    if (applicationUser != null)
+            //    {
+            //        result.Children = _permissionRepository.GetChildren(context, menuId, address);
+            //    }
+            //}
+            //catch (Exception e)
+            //{
 
-            }
-            return View(result);
+            //}
+            return  View(model);
         }
     }
 }

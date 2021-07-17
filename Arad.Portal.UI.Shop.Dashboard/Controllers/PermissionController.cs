@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Arad.Portal.UI.Shop.Dashboard.Helpers;
+using Arad.Portal.GeneralLibrary.Utilities;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -65,7 +66,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             catch (Exception e)
             {
-                result = Json(new { Status = "error", Message = "لطفا مجددا امتحان نمایید." });
+                result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
             }
             return result;
         }
@@ -80,34 +81,34 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 if (permission.Icon == null)
                 {
-                    ModelState.AddModelError("Icon", "لطفا فایل آیکون منو را مشخص نمایید.");
+                    ModelState.AddModelError("Icon", Language.GetString("AlertAndMessage_lackOfIcon"));
                 }
 
                 if (permission.Priority < 1)
                 {
-                    ModelState.AddModelError("Priority", "لطفا الویت منو را مشخص نمایید.");
+                    ModelState.AddModelError("Priority", Language.GetString("AlertAndMessage_lackOfPriority"));
                 }
                 if (string.IsNullOrWhiteSpace(permission.Routes))
                 {
-                    ModelState.AddModelError("Routes", "لطفا مسیر منو را مشخص نمایید.");
+                    ModelState.AddModelError("Routes", Language.GetString("AlertAndMessage_lackOfRoutes"));
                 }
             }
             else if (permission.Type == Enums.PermissionType.Module)
             {
                 if (permission.MenuIdOfModule == "-1")
                 {
-                    ModelState.AddModelError("MenuIdOfModule", "لطفا منو ماژول را مشخص نمایید.");
+                    ModelState.AddModelError("MenuIdOfModule", Language.GetString("AlertAndMessage_lackOfMenuIdofModule"));
                 }
                 if (string.IsNullOrWhiteSpace(permission.Routes))
                 {
-                    ModelState.AddModelError("Routes", "لطفا مسیر ماژول را مشخص نمایید.");
+                    ModelState.AddModelError("Routes", Language.GetString("AlertAndMessage_lackOfRoutes"));
                 }
             }
 
             if (!ModelState.IsValid)
             {
                 errors = ModelState.Generate();
-                return new JsonResult(new { Status = "error", Message = "فیلدهای ضروری تکمیل گردد.", ModelStateErrors = errors });
+                return new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_FillEssentialFields"), ModelStateErrors = errors });
             }
 
             try
@@ -119,21 +120,21 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     if (!result.Result.Succeeded)
                     {
                         finalResult = new JsonResult(new { Status = "error",
-                            Message = "لطفا مجددا تلاش کنید.", ModelStateErrors = errors });
+                            Message = Language.GetString("AlertAndMessage_TryLator"), ModelStateErrors = errors });
                     }
                     else
                     {
-                        finalResult = new JsonResult(new { Status = "success", Message = "دسترسی با موفقیت اضافه گردید.", ModelStateErrors = errors });
+                        finalResult = new JsonResult(new { Status = "success", Message = Language.GetString("AlertAndMessage_InsertionDoneSuccessfully"), ModelStateErrors = errors });
                     }
                 }else
                 {
-                    finalResult = new JsonResult(new { Status = "error", Message = "لطفا مجددا تلاش کنید." });
+                    finalResult = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
                 }
             }
             catch (Exception e)
             {
 
-                finalResult = new  JsonResult(new { Status = "error", Message = "لطفا مجددا تلاش کنید." });
+                finalResult = new  JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
             }
             return finalResult;
         }
@@ -149,7 +150,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             catch (Exception e)
             {
-                return Json(new { Status = "error", Message = "لطفا مجددا امتحان نمایید." });
+                return Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
             }
         }
 
@@ -176,7 +177,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     }
                 }
                 result =  new JsonResult(new { Status = "error",
-                    Message = "فیلدهای ضروری تکمیل گردد.", ModelStateErrors = errors });
+                    Message = Language.GetString("AlertAndMessage_FillEssentialFields"), ModelStateErrors = errors });
             }
 
             if (permission.Type == Enums.PermissionType.Menu)
@@ -186,7 +187,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     var obj = new ClientValidationErrorModel
                     {
                         Key = "Icon",
-                        ErrorMessage = "لطفا فایل آیکون منو را مشخص نمایید.",
+                        ErrorMessage = Language.GetString("AlertAndMessage_lackOfIcon"),
                     };
 
                     errors.Add(obj);
@@ -197,7 +198,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     var obj = new ClientValidationErrorModel
                     {
                         Key = "Priority",
-                        ErrorMessage = "لطفا الویت منو را مشخص نمایید.",
+                        ErrorMessage = Language.GetString("AlertAndMessage_lackOfPriority"),
                     };
 
                     errors.Add(obj);
@@ -207,7 +208,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     var obj = new ClientValidationErrorModel
                     {
                         Key = "Route",
-                        ErrorMessage = "لطفا مسیر منو را مشخص نمایید.",
+                        ErrorMessage = Language.GetString("AlertAndMessage_lackOfRoutes")
                     };
 
                     errors.Add(obj);
@@ -228,7 +229,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     var obj = new ClientValidationErrorModel
                     {
                         Key = "MenuIdOfModule",
-                        ErrorMessage = "لطفا منو ماژول را مشخص نمایید.",
+                        ErrorMessage = Language.GetString("AlertAndMessage_lackOfMenuIdofModule"),
                     };
 
                     errors.Add(obj);
@@ -238,7 +239,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     var obj = new ClientValidationErrorModel
                     {
                         Key = "Route",
-                        ErrorMessage = "لطفا مسیر ماژول را مشخص نمایید.",
+                        ErrorMessage = Language.GetString("AlertAndMessage_lackOfRoutes"),
                     };
 
                     errors.Add(obj);
@@ -260,7 +261,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     result = new JsonResult(new
                     {
                         Status = "error",
-                        Message = "لطفا مجددا تلاش کنید.",
+                        Message = Language.GetString("AlertAndMessage_TryLator"),
                         ModelStateErrors = errors
                     });
                 }
@@ -268,7 +269,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     result = new JsonResult(new { 
                                                   Status = "success", 
-                                                  Message = "دسترسی با موفقیت ویرایش گردید.", 
+                                                  Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully"), 
                                                   ModelStateErrors = errors 
                                                 });
                 }
@@ -276,7 +277,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             catch (Exception e)
             {
 
-               result =  new JsonResult(new { Status = "error", Message = "لطفا مجددا تلاش کنید." });
+               result =  new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
             }
             return result;
         }
@@ -292,15 +293,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     result = Json(new {
                         Status = "success", 
-                        Message = "حذف دسترسی با موفقیت انجام شد" });
+                        Message = Language.GetString("AlertAndMessage_DeletionDoneSuccessfully") });
                 }else
                 {
-                    result = Json(new { Status = "error", Message = "لطفا مجددا امتحان نمایید." });
+                    result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
                 }
             }
             catch (Exception e)
             {
-               result = Json(new { Status = "error", Message = "لطفا مجددا امتحان نمایید." });
+               result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
             }
             return result;
         }

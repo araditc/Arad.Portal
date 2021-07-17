@@ -515,75 +515,71 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
             return result;
         }
 
-        public async Task<List<ListPermissions>> ListPermissions()
+        public async Task<List<ListPermissions>> ListPermissions(string currentUserId)
         { 
             var result = new List<ListPermissions>();
             try
             {
-                var query = _context.Collection.AsQueryable();
-                var baseMenu = await query.Where(a => a.Type == Enums.PermissionType.BaseMenu).ToListAsync();
-                var menus = await query.Where(a => a.Type == Enums.PermissionType.Menu).ToListAsync();
-                var modules = await query.Where(a => a.Type == Enums.PermissionType.Module).ToListAsync();
-
-                try
+                var user = await _userManager.FindByIdAsync(currentUserId);
+                if(user.IsSystemAccount)
                 {
+                    var query = _context.Collection.AsQueryable();
+                    var baseMenu = await query.Where(a => a.Type == Enums.PermissionType.BaseMenu).ToListAsync();
+                    var menusAndModules = await query.Where(a => a.Type == Enums.PermissionType.Menu || a.Type == Enums.PermissionType.Module).ToListAsync();
+                    //var modules = await query.Where(a => a.Type == Enums.PermissionType.Module).ToListAsync();
                     var list = baseMenu.Select(d => new ListPermissions()
                     {
                         Id = d.PermissionId,
                         Title = d.Title,
                         Type = d.Type,
-                        Menus = menus.Where(b => b.ParentMenuId == d.PermissionId && !b.Routes.Any(_=>_.StartsWith("Permission")))
-                            .Select(h => new ListPermissions()
-                            {
-                                Id = h.PermissionId,
-                                Title = h.Title,
-                                Type = d.Type,
-                                Modules = modules.Where(b => b.MenuIdOfModule == h.PermissionId)
-                                    .Select(m => new ListPermissions()
-                                    {
-                                        Id = m.PermissionId,
-                                        Title = m.Title,
-                                        IsSelected = false,
-                                        IsActive = m.IsActive
-                                    }).ToList(),
-                                IsSelected = false,
-                                IsActive = h.IsActive
-                            }).ToList(),
+                        Childrens = GetChildren(menusAndModules, d.PermissionId).ToList(),
                         IsSelected = false,
-                        IsActive = d.IsActive
-                    }).ToList();
-
-                    var list2 = menus.Where(b => b.ParentMenuId == "-1")
-                        .Select(h => new ListPermissions()
-                        {
-                            Id = h.PermissionId,
-                            Title = h.Title,
-                            Type = h.Type,
-                            Modules = modules.Where(b => b.MenuIdOfModule == h.PermissionId)
-                                .Select(m => new ListPermissions()
-                                {
-                                    Id = m.PermissionId,
-                                    Title = m.Title,
-                                    Type = m.Type,
-                                    IsSelected = false,
-                                    IsActive = m.IsActive
-                                }).ToList(),
-                            Menus = new List<ListPermissions>(),
-                            IsSelected = false,
-                            IsActive = h.IsActive
-                        }).ToList();
-
-                    list.AddRange(list2);
+                        IsActive = d.IsActive,
+                        Priority = d.Priority
+                    }).OrderBy(_=>_.Priority).ToList();
 
                     result = list;
+                   
                 }
-                catch (Exception e)
+                else
                 {
+                    var pers = _userRepository.GetPermissionsOfUser(user);
+                    var baseMenues = pers.Where(p => p.Type == Enums.PermissionType.BaseMenu).ToList();
+                    var menuesAndModules = pers.Where(p => p.Type == Enums.PermissionType.Menu || p.Type == Enums.PermissionType.Module).ToList();
+                    result = baseMenues.Select(_ => new ListPermissions()
+                    {
+                        Id = _.PermissionId,
+                        Title = _.Title,
+                        Type = _.Type,
+                        Childrens = GetChildren(menuesAndModules, _.PermissionId).ToList(),
+                        IsSelected = false,
+                        IsActive = _.IsActive,
+                        Priority = _.Priority
+                    }).OrderBy(_=>_.Priority).ToList();
                 }
-
             }
-            catch (Exception e)
+            catch(Exception ex)
             {
+            }
+            return result;
+        }
+
+        public List<ListPermissions> GetChildren(List<Entities.General.Permission.Permission> context, string parentId)
+        {
+            var result = new List<ListPermissions>();
+            if (context.Any(_ => _.ParentMenuId == parentId))
+            {
+                result = context.Where(_ => _.ParentMenuId == parentId)
+                    .Select(_ => new ListPermissions()
+                    {
+                        Id = _.PermissionId,
+                        Title = _.Title,
+                        Type = _.Type,
+                        Childrens = GetChildren(context, _.PermissionId).ToList(),
+                        IsSelected = false,
+                        IsActive = _.IsActive,
+                        Priority = _.Priority
+                    }).OrderBy(_ => _.Priority).ToList();
             }
             return result;
         }

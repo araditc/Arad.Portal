@@ -38,7 +38,7 @@ namespace Arad.Portal.DataLayer.Models.User
         public List<Address> Addresses { get; set; }
 
         [Required(ErrorMessage = "لطفا برای کاربر نقشی را انتخاب نمایید.")]
-        public List<string> UserRoles { get; set; }
+        public string UserRoleId { get; set; }
         public OneTimePass Otp { get; set; }
         public bool IsDeleted { get; set; }
         public List<string> FavoriteList { get; set; }

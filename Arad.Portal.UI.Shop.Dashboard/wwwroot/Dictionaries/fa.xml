@@ -173,6 +173,32 @@
 	<string key="AlertAndMessage_DeletionSureness">
 		<value>آیا برای حذف اطمینان دارید؟</value>
 	</string>
+	<string key="AlertAndMessage_CaptchaIsExpired">
+		<value>عبارت امنیتی صحیح نیست یا منقضی شده است.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidUsernameOrPassword">
+		<value>نام کاربری یا کلمه عبور اشتباه است.</value>
+	</string>
+	<string key="AlertAndMessage_InActiveUserAccount">
+		<value>حساب کاربری توسط ادمین غیر فعال شده است.</value>
+	</string>
+	<string key="AlertAndMessage_DuplicateUsername">
+		<value>نام کاربری تکراری می باشد.</value>
+	</string>
+	<string key="AlertAndMessage_UserCreatedSuccessfully">
+		<value>کاربر با موفقیت ایجاد شد.</value>
+	</string>
+	
+	<string key="AlertAndMessage_DuplicatePhoneNumber">
+		<value>با این شماره موبایل قبلا کاربری ثبت نام شده است.</value>
+	</string>
+	<string key="AlertAndMessage_NoAccess">
+		<value>شما دسترسی انجام فعالیت جاری را ندارید.</value>
+	</string>
+	<string key="AlertAndMessage_NoUserWasFound">
+		<value>کاربر مورد نظر یافت نشد.</value>
+	</string>
+	
 	<string key="AlertAndMessage_NoRoleWasFound">
 		<value>نقش مورد نظر یافت نشد</value>
 	</string>
@@ -185,6 +211,27 @@
 	</string>
 	<string key="AlertAndMessage_TryLator">
 		<value>لطفا مجددا امتحان کنید.</value>
+	</string>
+	<string key="AlertAndMessage_lackOfIcon">
+		<value>لطفا فایل آیکون منو را مشخص نمایید.</value>
+	</string>
+	<string key="AlertAndMessage_lackOfPriority">
+		<value>لطفا اولویت را مشخص کنید.</value>
+	</string>
+	<string key="AlertAndMessage_lackOfRoutes">
+		<value>لطفا حداقل یک مسیر مشخص نمایید.</value>
+	</string>
+	<string key="AlertAndMessage_lackOfMenuIdofModule">
+		<value>لطفا منوی ماژول را مشخص نمایید.</value>
+	</string>
+	<string key="AlertAndMessage_EditionDoneSuccessfully">
+		<value>ویرایش یا موفقیت انجام شد.</value>
+	</string>
+	<string key="AlertAndMessage_InsertionDoneSuccessfully">
+		<value>ثبت با موفقیت انجام شد.</value>
+	</string>
+	<string key="AlertAndMessage_DeletionDoneSuccessfully">
+		<value>عملیات حذف با موفقیت انجام گردید.</value>
 	</string>
 	<string key="AlertAndMessage_SendNewPassword">
 		<value>کلمه عبور جدید به تلفن همراه شما پیامک میشود.</value>
@@ -347,9 +394,7 @@
   <string key="AlertAndMessage_InvalidPostalCode">
     <value>کد پستی اشتباه است.</value>
   </string>
-  <string key="AlertAndMessage_InvalidUsernameOrPassword">
-    <value>نام کاربری یا گذرواژه اشتباه است.</value>
-  </string>
+ 
   <string key="AlertAndMessage_TheAccountHasBeenDisabledByTheAdmin">
     <value>این اکانت توسط مدیریت مسدود شده است.</value>
   </string>
@@ -796,6 +841,9 @@
 	</string>
 	<string key="Menu_Permissions">
 		<value>دسترسی ها</value>
+	</string>
+	<string key="Menu_Roles">
+		<value>نقش ها</value>
 	</string>
 	<string key="EditPermissions">
 		<value>ویرایش دسترسی ها</value>

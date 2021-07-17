@@ -74,20 +74,20 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             List<string> finalList = new List<string>();
             try
             {
-                List<string> roleIdList = user.UserRoles;
-                List<Entities.General.Role.Role> userRolesEntities = new();
-                userRolesEntities = _roleContext.Collection.AsQueryable()
-                    .Where(_ => roleIdList.Contains(_.RoleId)).ToList();
 
+                Entities.General.Role.Role userRoleEntity =
+                    _roleContext.Collection.Find(_ => _.RoleId == user.UserRoleId).FirstOrDefault();
 
-                foreach (var item in userRolesEntities)
-                {
-                    var lst = _permissionContext.Collection.AsQueryable()
-                        .Where(_ => _.IsActive && item.PermissionIds.Contains(_.PermissionId)).SelectMany(_ => _.Routes).ToList();
-                    finalList.AddRange(lst);
-                }
+                //foreach (var item in userRolesEntities)
+                //{
+                //    var lst = _permissionContext.Collection.AsQueryable()
+                //        .Where(_ => _.IsActive && item.PermissionIds.Contains(_.PermissionId)).SelectMany(_ => _.Routes).ToList();
+                //    finalList.AddRange(lst);
+                //}
 
-                finalList = finalList.Distinct().ToList();
+                //finalList = finalList.Distinct().ToList();
+                finalList = _permissionContext.Collection.AsQueryable()
+                        .Where(_ => _.IsActive && userRoleEntity.PermissionIds.Contains(_.PermissionId)).SelectMany(_ => _.Routes).ToList();
             }
             catch (Exception ex)
             {
@@ -122,19 +122,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             {
                 if(!user.IsSystemAccount)
                 {
-                    List<string> roleIdList = user.UserRoles;
-                    List<Entities.General.Role.Role> userRolesEntities = new();
-                    userRolesEntities = _roleContext.Collection.AsQueryable()
-                        .Where(_ => roleIdList.Contains(_.RoleId)).ToList();
 
-                    //permissionList = userRolesEntities.SelectMany(x => x.Permissions).ToList();
-                    foreach (var item in userRolesEntities)
-                    {
-                        var lst = _permissionContext.Collection.AsQueryable()
-                            .Where(_ => _.IsActive && item.PermissionIds.Contains(_.PermissionId)).ToList();
-                        permissionList.AddRange(lst);
-                    }
-
+                   Entities.General.Role.Role userRoleEntity =
+                     _roleContext.Collection.Find(_ => _.RoleId == user.UserRoleId).FirstOrDefault();
+                    
+                    permissionList = _permissionContext.Collection.AsQueryable()
+                            .Where(_ => _.IsActive && userRoleEntity.PermissionIds.Contains(_.PermissionId)).ToList();
+                      
                     permissionList = permissionList.Distinct().ToList();
                 }
                 else
@@ -150,9 +144,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             return permissionList;
         }
 
-        public List<string> GetRoleNamesOfUser(string userId)
+        public string GetRoleNameOfUser(string userId)
         {
-            List<string> result = new List<string>();
+            string result = string.Empty;
             try
             {
                 var user = _context.Collection.AsQueryable()
@@ -160,9 +154,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
 
                 if (user != null)
                 {
-
-                    result = _roleContext.Collection
-                       .AsQueryable().Where(_ => user.UserRoles.Contains(_.RoleId)).Select(_ => _.RoleName).ToList();
+                    result = _roleContext.Collection.Find(_ => _.RoleId == user.UserRoleId).FirstOrDefault().RoleName;
                 }
 
             }

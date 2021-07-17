@@ -29,5 +29,6 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public static string DuplicateField = GetString("AlerAndMessage_DuplicateField");
         public static string DeletedNotAllowedForDependencies = GetString("AlerAndMessage_DeletedNotAllowedForDependencies");
         public static string LackOfInventoryOfProduct = GetString("AlertAndMessage_LackOfInventoryOfProduct");
+        
     }
 }

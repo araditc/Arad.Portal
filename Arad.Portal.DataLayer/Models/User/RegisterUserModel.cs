@@ -33,7 +33,7 @@ namespace Arad.Portal.DataLayer.Models.User
         public bool IsActive { get; set; } = true;
 
         [Required(ErrorMessage = "لطفا برای کاربر نقشی را انتخاب نمایید.")]
-        public List<string> UserRoles { get; set; }
+        public string UserRoleId { get; set; }
 
         [DataType(DataType.Password)]
         [Required(ErrorMessage = "لطفا رمز عبور را وارد نمایید.")]

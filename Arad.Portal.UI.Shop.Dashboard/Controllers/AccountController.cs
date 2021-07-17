@@ -99,7 +99,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
             if (!HttpContext.Session.ValidateCaptcha(model.Captcha))
             {
-                ModelState.AddModelError("Captcha", "عبارت امنیتی صحیح نیست یا منقضی شده است.");
+                ModelState.AddModelError("Captcha", Language.GetString("AlertAndMessage_CaptchaIsExpired"));
             }
 
             if (!ModelState.IsValid)
@@ -112,13 +112,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
             if (user == null || await _userManager.CheckPasswordAsync(user, model.Password) != true)
             {
-                ViewBag.Message = "نام کاربری یا رمز عبور صحیح نیست.";
+                ViewBag.Message = Language.GetString("AlertAndMessage_InvalidUsernameOrPassword");
                 return View(model);
             }
 
             if (!user.IsActive)
             {
-                ViewBag.Message = "حساب کاربری توسط ادمین مربوطه غیر فعال شده است.";
+                ViewBag.Message = Language.GetString("AlertAndMessage_InActiveUserAccount");
                 return View(model);
             }
 
@@ -132,7 +132,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 return Redirect(model.ReturnUrl);
             }
 
-            TempData["LoginUser"] = $"کاربر {user.Profile.FirstName} {user.Profile.LastName} خوش آمدید.";
+            TempData["LoginUser"] = $"{user.Profile.FirstName} {user.Profile.LastName} {Language.GetString("AlertAndMessage_Welcome")}";
             return RedirectToAction("Index", "Home");
         }
 
@@ -249,7 +249,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 return new JsonResult(new
                 {
                     Status = "error",
-                    Message = "فیلدهای ضروری تکمیل گردد.",
+                    Message = Language.GetString("AlertAndMessage_FillEssentialFields"),
                     ModelStateErrors = errors
                 });
             }
@@ -271,7 +271,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         PhoneNumber = model.FullMobile.Replace("+", ""),
                         UserName = model.UserName,
                         IsActive = model.IsActive,
-                        UserRoles = model.UserRoles,
+                        UserRoleId = model.UserRoleId,
                         CreationDate = DateTime.UtcNow,
                         CreatorId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
                     };
@@ -289,7 +289,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                                 var obj = new ClientValidationErrorModel
                                 {
                                     Key = "UserName",
-                                    ErrorMessage = "نام کاربری تکراری می باشد.",
+                                    ErrorMessage = Language.GetString("AlertAndMessage_DuplicateUsername"),
                                 };
 
                                 errors.Add(obj);
@@ -297,13 +297,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         }
 
                         result = new JsonResult(new { Status = "error", Message = "", ModelStateErrors = errors });
+                    }else
+                    {
+                        result = new JsonResult(new { Status = "success", Message = Language.GetString("AlertAndMessage_UserCreatedSuccessfully") });
                     }
-
-                    result = new JsonResult(new { Status = "success", Message = "کاربر با موفقیت ایجاد شد." });
+                }else
+                {
+                    result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_DuplicateMobilePhone"), ModelStateErrors = errors });
                 }
-
-                result = new JsonResult(new { Status = "error", Message = "با این شماره موبایل قبلا کاربری ثبت نام شده است.", ModelStateErrors = errors });
-
             }
             catch (Exception e)
             {
@@ -311,7 +312,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 result = new JsonResult(new
                 {
                     Status = "error",
-                    Message = "لطفا مجددا تلاش کنید.",
+                    Message = Language.GetString("AlertAndMessage_TryLator"),
                     ModelStateErrors = errors
                 });
             }
@@ -329,7 +330,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                 if (userDb == null)
                 {
-                   result = new JsonResult(new { Status = "error", Message = "کاربر مورد نظر یافت نشد." });
+                   result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_NoUserWasFound") });
                 }
                 var user = new UserDTO()
                 {
@@ -340,7 +341,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         FirstName = userDb.Profile.FirstName,
                         LastName = userDb.Profile.LastName
                     },
-                    UserRoles = userDb.UserRoles,
+                    UserRoleId = userDb.UserRoleId,
                     CreationDate = userDb.CreationDate
                 };
 
@@ -349,7 +350,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     Title = _.RoleName,
                     Id = _.RoleId,
-                    IsSelected = user.UserRoles.Any(c => c == _.RoleId)
+                    IsSelected = user.UserRoleId == _.RoleId
                 }).ToList();
 
                 var data = new { User = user, Roles = roles };
@@ -358,7 +359,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             catch (Exception e)
             {
-               result =new  JsonResult(new { Status = "error", Message = "لطفا مجددا سعی نمایید." });
+               result =new  JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
             }
             return result;
         }
@@ -368,21 +369,21 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             List<ClientValidationErrorModel> errors = new List<ClientValidationErrorModel>();
             var user = new ApplicationUser();
-            var result = new JsonResult(new { Status = "success", Message = "کاربر با موفقیت ویرایش شد." });
+            var result = new JsonResult(new { Status = "success", Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully") });
             if (model.Id != null)
             {
                 user = await _userManager.FindByIdAsync(model.Id);
 
                 if (user == null)
                 {
-                    ModelState.AddModelError("Name", "کاربر یافت نشد");
+                    ModelState.AddModelError("Name", Language.GetString("AlertAndMessage_NoUserWasFound"));
                 }
 
                 var state = _userExtension.IsPhoneNumberUnique(model.FullMobile.Replace("+", ""), user.PhoneNumber);
 
                 if (!state)
                 {
-                    ModelState.AddModelError("PhoneNumber", "شماره تلفن تکراری می باشد.");
+                    ModelState.AddModelError("PhoneNumber", Language.GetString("AlertAndMessage_DuplicatePhoneNumber"));
                 }
             }
 
@@ -396,7 +397,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     {
                         result = new JsonResult(new 
                         {   Status = "error",
-                            Message = "شما دسترسی ویرایش کاربر مورد نظر را ندارید.", 
+                            Message = Language.GetString("AlertAndMessage_DontAccess"), 
                             ModelStateErrors = errors 
                         });
                     }
@@ -405,7 +406,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     user.Profile.FirstName = model.FirstName;
                     user.Profile.LastName = model.LastName;
                     user.PhoneNumber = model.FullMobile.Replace("+", "");
-                    user.UserRoles = model.UserRoles;
+                    user.UserRoleId = model.UserRoleId;
 
 
                     var res = await _userManager.UpdateAsync(user);
@@ -421,7 +422,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                                 var obj = new ClientValidationErrorModel
                                 {
                                     Key = "UserName",
-                                    ErrorMessage = "نام کاربری تکراری می باشد.",
+                                    ErrorMessage = Language.GetString("AlertAndMessage_DuplicateUsername"),
                                 };
 
                                 errors.Add(obj);
@@ -436,7 +437,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 catch (Exception e)
                 {
 
-                    result = new JsonResult(new { Status = "error", Message = "لطفا مجددا تلاش کنید.", ModelStateErrors = errors });
+                    result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator"), ModelStateErrors = errors });
                 }
             }
             else
@@ -458,7 +459,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 }
                result =  new JsonResult(new
                { Status = "error", 
-                 Message = "فیلدهای ضروری تکمیل گردد.", 
+                 Message = Language.GetString("AlertAndMessage_FillEssentialFields"), 
                  ModelStateErrors = errors 
                });
             }
@@ -475,7 +476,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var userCurrentId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userCurrentId == id)
             {
-               result = new  JsonResult(new { Status = "error", Message = "دسترسی بازگردانی کاربر مورد نظر را ندارید." });
+               result = new  JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_NoAccess") });
             }
             else
             {
@@ -484,7 +485,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     var user = await _userManager.FindByIdAsync(id);
                     if (user == null)
                     {
-                        result = new  JsonResult(new { Status = "error", Message = "کاربر یافت نشد." });
+                        result = new  JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_NoUserWasFound") });
                     }
                     else
                     {
@@ -494,18 +495,18 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                         if (res.Succeeded)
                         {
-                            result = new JsonResult(new { Status = "success", Message = "  کاربر با موفقیت بازگردانی گردید " });
+                            result = new JsonResult(new { Status = "success", Message = Language.GetString("AlertAndMessage_InsertionDoneSuccessfully") });
                         }
                         else
                         {
-                            result = new JsonResult(new { Status = "error", Message = "لطفا مجددا سعی نمایید." });
+                            result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
                         }
                     }
                     
                 }
                 catch (Exception e)
                 {
-                    result =new  JsonResult(new { Status = "error", Message = "لطفا مجددا سعی نمایید." });
+                    result =new  JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
                 }
             }
             return result;
@@ -522,18 +523,18 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                 if (user == null)
                 {
-                    result =  new JsonResult(new { Status = "error", Message = "کاربر یافت نشد." });
+                    result =  new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_NoUserWasFound") });
                 }
 
                 user.IsActive = IsActive;
 
                 var res = await _userManager.UpdateAsync(user);
 
-                result = new JsonResult(new { Status = "success", Message = "تغییر وضعیت کاربر با موفقیت انجام شد" });
+                result = new JsonResult(new { Status = "success", Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully") });
             }
             catch (Exception e)
             {
-                return new JsonResult(new { Status = "error", Message = "لطفا مجددا سعی نمایید." });
+                return new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
             }
             return result;
 
@@ -545,7 +546,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             JsonResult result = new JsonResult(new
             {
                 Status = "error",
-                Message = "دسترسی حذف کاربر مورد نظر را ندارید."
+                Message = Language.GetString("AlertAndMessage_NoAccess")
             });
             var userCurrentId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -556,7 +557,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     var user = await _userManager.FindByIdAsync(id);
                     if (user == null)
                     {
-                        result = new JsonResult(new { Status = "error", Message = "کاربر یافت نشد." });
+                        result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_NoUserWasFound") });
                     }
 
                     user.IsDeleted = true;
@@ -565,15 +566,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                     if (res.Succeeded)
                     {
-                        result = new JsonResult(new { Status = "success", Message = "  کاربر با موفقیت حذف گردید " });
+                        result = new JsonResult(new { Status = "success", Message = Language.GetString("AlertAndMessage_DeletionDoneSuccessfully") });
                     }else
                     {
-                        result = new JsonResult(new { Status = "error", Message = "لطفا مجددا سعی نمایید." });
+                        result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
                     }
                 }
                 catch (Exception e)
                 {
-                    result = new JsonResult(new { Status = "error", Message = "لطفا مجددا سعی نمایید." });
+                    result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
                 }
             }
             return result;
@@ -588,7 +589,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 var user = await _userManager.FindByIdAsync(id);
                 if (user == null)
                 {
-                    return Json(new { Status = "error", Message = "کاربر یافت نشد." });
+                    return Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_NoUserWasFound") });
                 }
 
                 var pass = Password.GeneratePassword(true, true, true,

@@ -29,6 +29,6 @@ namespace Arad.Portal.DataLayer.Models.User
         public string FullMobile { get; set; }
 
         [Required(ErrorMessage = "لطفا برای کاربر نقشی را انتخاب نمایید.")]
-        public List<string> UserRoles { get; set; }
+        public string UserRoleId { get; set; }
     }
 }

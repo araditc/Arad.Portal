@@ -64,11 +64,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
                     //??? adding one day or not
                     users = users.Where(_ => _.CreationDate < search.EndRegisterDate.Value.ToUniversalTime());
                 }
-
-
-                if (search.UserRoles != null && search.UserRoles.Any())
+                if (!string.IsNullOrWhiteSpace(search.UserRoleId))
                 {
-                    users = users.Where(c => c.UserRoles.Any(r => search.UserRoles.Contains(r)));
+                    users = users.Where(c => c.UserRoleId == search.UserRoleId);
                 }
 
                 var count = users.Count();
