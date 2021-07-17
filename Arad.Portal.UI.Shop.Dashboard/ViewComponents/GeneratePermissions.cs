@@ -19,6 +19,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var permissions = await _permissionRepository.ListPermissions(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
             return View(permissions);
         }
     }
