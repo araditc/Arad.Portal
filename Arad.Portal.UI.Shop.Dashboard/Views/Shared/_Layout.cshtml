@@ -8,6 +8,7 @@
     var bellCls = "";
     var faCls = "";
     var floatlr = "";
+    var chevron = "";
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
     {
         direction = "rtl";
@@ -16,6 +17,7 @@
         floatlr = "float-sm-left";
         bellCls = "fa fa-bell-o";
         faCls = "fa";
+        chevron = "fa fa-chevron-left";
 
     }
     else
@@ -26,6 +28,7 @@
         floatlr = "float-sm-right";
         bellCls = "far fa-bell";
         faCls = "fas";
+        chevron = "fa fa-chevron-right";
     }
 
 }
@@ -35,23 +38,17 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Arad.Portal.UI.Dashboard</title>
-
+    <link rel="stylesheet" href="~/css/fonts/font-awesome.css">
+    <link href="~/fonts/font.css" rel="stylesheet" />
+    @*iCheck/flat/blue.css*@
+    <link href="~/css/blue.css" rel="stylesheet" />
     @if (direction == "rtl")
     {
-
-        <link rel="stylesheet" href="~/css/fonts/font-awesome.css">
-        <link href="~/fonts/font.css" rel="stylesheet" />
-        //iCheck/flat/blue.css
-        <link href="~/css/blue.css" rel="stylesheet" />
         <link href="~/css/datePicker/datepicker3.css" rel="stylesheet" />
         <link href="~/css/dateRangePicker/daterangepicker-bs3.css" rel="stylesheet" />
-        @*<link href="~/css/siteTemplate/rtl/SidebarMenu/style.css" rel="stylesheet" />*@
-        <!-- Ionicons -->
-
         <link href="~/css/siteTemplate/rtl/bootstrap-rtl.min.css" rel="stylesheet" />
         <link href="~/css/siteTemplate/rtl/custom-style.css" rel="stylesheet" />
-        <link rel="stylesheet" href="~/css/siteTemplate/shared/ionicons.css">
-        <link href="~/lib/limonte-sweetalert2/sweetalert2.css" rel="stylesheet" />
+        <link href="~/css/siteTemplate/rtl/SidebarMenu/sideNav.css" rel="stylesheet" />
         <!-- iCheck bootstrap -->@*<link rel="stylesheet" href="~/css/siteTemplate/shared/icheck-bootstrap/icheck-bootstrap.min.css">*@<!-- Bootstrap 4 RTL -->@*<link rel="stylesheet" href="~/css/siteTemplate/rtl/bootstrap4rtl/bootstrap.min.css">*@<!-- Custom style for RTL -->@*<link rel="stylesheet" href="~/css/siteTemplate/rtl/custom.css">*@
         <style>
             .content-wrapper {
@@ -66,10 +63,26 @@
     }
     else
     {
-
+        <link href="~/css/siteTemplate/ltr/SidebarMenu/sideNav.css" rel="stylesheet" />
+        <link href="~/css/siteTemplate/ltr/custom-style.css" rel="stylesheet" />
         @*<link href="~/css/siteTemplate/ltr/SidebarMenu/style.css" rel="stylesheet" />*@
+        <style>
+            .content-wrapper {
+                margin-right: 0 !important;
+            }
+
+            nav.main-header {
+                margin-right: 0;
+                padding-left: 2%;
+            }
+            .sidebar{
+                padding-left: 0px;
+            }
+        </style>
     }
     @RenderSection("Styles", required: false)
+    <link rel="stylesheet" href="~/css/siteTemplate/shared/ionicons.css">
+    <link href="~/lib/limonte-sweetalert2/sweetalert2.css" rel="stylesheet" />
     <link href="~/css/siteTemplate/shared/fontawesome-free/all.min.css" rel="stylesheet" />
     <!-- Theme style -->
     <link href="~/css/siteTemplate/shared/AdminLTE/adminlte.min.css" rel="stylesheet" />
@@ -80,7 +93,7 @@
 <body class="@bodyClass" dir="@direction">
     <div class="wrapper">
         <!--Navbar-->
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <nav class="main-header navbar navbar-expand navbar-white">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
 
@@ -175,7 +188,7 @@
         </nav>
         <!--/navbar-->
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4" style="width:15%;">
             <!-- Brand Logo -->
             <a href="#" class="brand-link">
                 <img src="~/imgs/Logo.png" alt="Arad Group" class="brand-image img-circle elevation-3"
@@ -184,7 +197,7 @@
             </a>
 
             <!-- Sidebar -->
-            <div class="sidebar" style="direction : @(direction =="rtl" ? "ltr" : "rtl")">
+            <div class="sidebar" style="direction :ltr;">
                 <!-- Sidebar user panel(optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
@@ -251,11 +264,16 @@
 
     <!---------shared----------->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/siteTemplate/jqueryui1.11.4/jquery-ui.min.js"></script>
     @if (direction == "rtl")
     {
-        <script src="~/js/siteTemplate/jqueryui1.11.4/jquery-ui.min.js"></script>
 
         <script src="~/js/siteTemplate/bootstrap4rtl/bootstrap.min.js"></script>
+        <script src="~/js/siteTemplate/sidebarMenu/rtl/sidenav.js"></script>
+    }
+    else
+    {
+        <script src="~/js/siteTemplate/sidebarMenu/ltr/sidenav.js"></script>
     }
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Tempusdominus Bootstrap 4 -->
@@ -265,20 +283,36 @@
     <!-- AdminLTE App -->
     <script src="~/js/siteTemplate/Adminlte/adminlte.js"></script>
     <script src="~/lib/limonte-sweetalert2/sweetalert2.all.min.js"></script>
-
-
-
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false);
     <script>
+     $(document).ready(function () {
+
+      $("li.nav-item").click(function (e) {
+
+          var tag = $(this).find("span.expand-state.pull-left")[0].children[0];
+          var ul = $(this).children().eq(1);
+          if ($(tag).hasClass('@chevron'))
+          {
+            $(tag).removeClass('@chevron').addClass("fa fa-chevron-down");
+           }
+          else
+              if ($(tag).hasClass("fa fa-chevron-down"))
+              {
+                  $(tag).removeClass("fa fa-chevron-down").addClass('@chevron');
+              }
+        /*  e.stopPropagation();*/
+    });
+    });
+
+
+
         function pageLoad() {
             alert('@CultureInfo.CurrentCulture.Name');
         }
         function setLang(lang) {
-            debugger;
         var currentCulture = '@CultureInfo.CurrentCulture.Name';
         if (currentCulture !== lang) {
-
             $.ajax({
                 type: "GET",
                 url: '/Account/changeLang?langId=' + lang,
@@ -290,6 +324,9 @@
             });
         }
     }
+
+
     </script>
 </body>
 </html>
+

@@ -8,11 +8,11 @@
     float: right;
 }
 .content-wrapper, .main-footer, .main-header {
-    margin-left: 0px;
-    margin-right: 15%;
+    margin-right: 0px;
+    margin-left: 15% !important;
 }
 .mr-auto-navbav{
-    margin-right: auto!important;
+    margin-left: auto!important;
 }
 .navbar-expand .navbar-nav .nav-link {
     padding-right: 1rem;
@@ -40,25 +40,25 @@
 }
 @media (min-width: 992px){
     .sidebar-mini.sidebar-collapse .content-wrapper, .sidebar-mini.sidebar-collapse .main-footer, .sidebar-mini.sidebar-collapse .main-header {
-        margin-right: 4.6rem!important;
+        margin-left: 4.6rem!important;
     }
     .sidebar-mini.sidebar-collapse .content-wrapper, .sidebar-mini.sidebar-collapse .main-footer, .sidebar-mini.sidebar-collapse .main-header {
-        margin-right: 4.6rem!important;
-        margin-left: 0!important;
+        margin-left: 4.6rem!important;
+        margin-right: 0!important;
     }
 }
 
 @media (max-width: 767.98px) {
     .main-sidebar, .main-sidebar::before {
         box-shadow: none !important;
-        margin-right: -250px;
+        margin-left: -250px;
     }
 
     .content-wrapper, .content-wrapper::before, .main-footer, .main-footer::before, .main-header, .main-header::before {
-        margin-right: 0;
+        margin-left: 0;
     }
 
     .sidebar-open .main-sidebar, .sidebar-open .main-sidebar::before {
-        margin-right: 0;
+        margin-left: 0;
     }
 }

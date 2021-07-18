@@ -6,46 +6,48 @@
     Layout = null;
 }
 @{
-    var direction = "";
+  
     var chevron = "";
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
     {
-        direction = "rtl";
         chevron = "fa fa-chevron-left";
-
-
     }
     else
     {
-        direction = "ltr";
         chevron = "fa fa-chevron-right";
-
      }
 }
 
 @if (Model.Children.Count != 0)
 {
     var hrefcollapse = "menu" + Model.MenuId;
-    <a class="nav-link @(Model.IsActive ? "active":"notactive")" @*data-toggle="collapse"*@ href="#@hrefcollapse">
-        <i class="@Model.Icon"></i>
+<a class="nav-link @(Model.IsActive ? "active":"notactive")" data-toggle="collapse" href="#@hrefcollapse">
+    @if (!string.IsNullOrWhiteSpace(Model.Icon))
+    {
+        <i class="nav-icon  @Model.Icon"></i>
+    }
         @Language.GetString(Model.MenuTitle)
         <span class="expand-state pull-left">
-            <i class="@(chevron) pull-left"></i>
+            <i class="@chevron pull-left"></i>
         </span>
     </a>
-    <ul class="nav nav-treeview @(Model.IsActive ? "show":"")" id="@hrefcollapse">
+    <ul class="sub unstyle collapse @(Model.IsActive ? "show":"")" id="@hrefcollapse">
         @foreach (var menu in Model.Children)
         {
             @*@(menu.Children.Count > 0 ? "has-sub" : "")*@
             <li class="nav-item">
-                @await Component.InvokeAsync("InnerMenu", menu.MenuId)
+                @await Component.InvokeAsync("InnerMenu", menu)
             </li>
         }
     </ul>
 }
 else
 {
-    <a class="@(Model.IsActive ? "active":"notActive")" href=@($"/{Model.Link}")>
-        <i class="nav-icon @Model.Icon"></i>  @Language.GetString(Model.MenuTitle)
-    </a>
+<a class="nav-link @(Model.IsActive ? "active":"notActive")" href=@($"/{Model.Link}")>
+    @if (!string.IsNullOrWhiteSpace(Model.Icon))
+    {
+        <i class="nav-icon @Model.Icon"></i>
+    }
+    @Language.GetString(Model.MenuTitle)
+</a>
 }

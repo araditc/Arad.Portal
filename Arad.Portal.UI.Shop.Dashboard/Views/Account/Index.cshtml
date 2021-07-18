@@ -1,4 +1,5 @@
 ﻿@using Arad.Portal.GeneralLibrary.Utilities;
+@using System.Globalization;
 @model Dictionary<string, bool>;
 @{
     ViewData["Title"] = "Index";
@@ -6,7 +7,14 @@
 }
 
 @section Styles{
-    <link href="~/css/form.css" rel="stylesheet" />
+    @if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        <link href="~/css/siteTemplate/rtl/form.css" rel="stylesheet" />
+    }else
+            {
+<link href="~/css/siteTemplate/ltr/form.css" rel="stylesheet" />
+            }
+
     <link href="~/css/data-grid.css" rel="stylesheet" />
     <link href="~/lib/intl-tel-input/css/intlTelInput.css" rel="stylesheet" />
     <link href="~/lib/MD.BootstrapPersianDateTimePicker/dist/jquery.md.bootstrap.datetimepicker.style.css"
@@ -29,7 +37,7 @@
     @{
         if (@Model["List"])
         {
-            <a class="action-head add open" data-toggle="collapse" 
+            <a class="action-head add open" data-toggle="collapse"
                href="#add" data-placement="top" data-original-title="@Language.GetString("User_Filters")">
                 <i class="fa fa-plus" aria-hidden="true"></i>
             </a>
@@ -83,7 +91,7 @@
                                 <div class="form-group col-md-4 col-lg-3">
                                     <label for="StartRegisterDate">@Language.GetString("FromDate")</label>
                                     <div class="input-group">
-                                        <input type="text" name="StartRegisterDate" id="StartRegisterDate" 
+                                        <input type="text" name="StartRegisterDate" id="StartRegisterDate"
                                                class="form-control" placeholder="" aria-label="dateTime" aria-describedby="date" readonly="" value="">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text cursor-pointer" id="calenderStart"
@@ -112,7 +120,8 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary btn-xs filter">
-                    <i class="fa fa-filter" aria-hidden="true"></i>&nbsp @Language.GetString("Filter")</button>
+                        <i class="fa fa-filter" aria-hidden="true"></i>&nbsp @Language.GetString("Filter")
+                    </button>
                     <a id="reset" style="color: white;" class="btn btn-secondary btn-xs">&nbsp @Language.GetString("FormClear")</a>
                 </form>
             </div>
@@ -231,14 +240,18 @@
                 <div class="modal-body text-center">
                     <p class="alert warning">@Language.GetString("AlertAndMessage_DeletionSureness")</p>
                     <button id="delete" type="button" class="btn btn-danger btn-sm btn-modal-body"
-                            data-dismiss="modal">@Language.GetString("Delete")</button>
-                    <button type="button" class="btn btn-outline-danger btn-sm btn-modal-body" 
-                            data-dismiss="modal" style="margin-left:5px">@Language.GetString("Cancel")</button>
+                            data-dismiss="modal">
+                        @Language.GetString("Delete")
+                        </button>
+                        <button type="button" class="btn btn-outline-danger btn-sm btn-modal-body"
+                                data-dismiss="modal" style="margin-left:5px">
+                            @Language.GetString("Cancel")
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-}
+        }
 
 @if (@Model["Remove"])
 {
@@ -293,7 +306,7 @@
     {
         <script>
             $(document).ready(function () {
-             
+
                 //var formData = new FormData();
                 //formData.append("PageSize", pageSize);
                 //formData.append("CurrentPage", 1);
@@ -316,7 +329,7 @@
                         var rolesCheck = $("#rolesFilter input[type='checkbox']");
 
                         rolesCheck.each(function (index) {
-                          
+
                             if (rolesCheck[index].checked) {
 
                                 var id = rolesCheck[index].name;
@@ -338,7 +351,7 @@
                     });
 
                 $("#filter").submit(function (e) {
-                   
+
                     e.preventDefault();
                     var rolesSelect = [];
                     var rolesCheck = $("#rolesFilter input[type='checkbox']");
@@ -374,7 +387,7 @@
 
     @if (@Model["Add"])
     {
-<script>
+        <script>
             $(document).ready(function () {
 
                 var input = document.querySelector("#PhoneNumber");
@@ -553,7 +566,7 @@
                     });
                 }
             });
-</script>
+        </script>
     }
 
     @if (@Model["Details"])
@@ -576,7 +589,7 @@
                 $(document).on("click",
                     "#editRecord",
                     function (e) {
-                     
+
                         e.preventDefault();
 
                         var id = $(this).data("id");
@@ -595,7 +608,7 @@
                                 $("#loading").css("display", "block");
                             },
                             success: function (result) {
-                             
+
                                 if (result.status === "success") {
 
                                     var user = result.data.user;
@@ -609,7 +622,7 @@
                                     var html = '';
 
                                     roles.forEach(function (item) {
-                                       
+
                                         html += '<div class="form-group col-xs-12 col-md-6 col-lg-4 table-check">' +
                                             '<div class="custom-control custom-radio radio-right">' +
                                             '<input type="radio" class="custom-control-input" id="r' +
@@ -649,7 +662,7 @@
 
     @if (@Model["Edit"])
     {
-<script>
+        <script>
             $(document).ready(function() {
                 debugger;
                 $("#edit").submit(function (e) {
@@ -746,12 +759,12 @@
                 });
 
             });
-</script>
+        </script>
     }
 
     @if (@Model["Remove"])
     {
-<script>
+        <script>
             $(document).ready(function() {
                 $(document).on("click",
                     "#deleteRecord",
@@ -820,12 +833,12 @@
                         });
                     });
             });
-</script>
+        </script>
     }
 
     @if (@Model["Remove"])
     {
-<script>
+        <script>
             $(document).ready(function() {
                 $(document).on("click",
                     "#restoreRecord",
@@ -894,7 +907,7 @@
                         });
                     });
             });
-</script>
+        </script>
     }
 
     @if (@Model["Active"])
@@ -960,7 +973,7 @@
 
     @if (@Model["Password"])
     {
-<script>
+        <script>
             $(document).ready(function() {
                 $(document).on("click",
                     "#passChange",
@@ -1021,7 +1034,7 @@
                         });
                     });
             });
-</script>
+        </script>
     }
 
     <script>
@@ -1048,7 +1061,7 @@
         };
 
         function list(formData) {
-          
+
             $("#table").html("");
             //var data = { pageSize: pageSize, currentPage: currentPage };
             console.log(formData);
@@ -1057,11 +1070,11 @@
                 type: 'Post',
                 data: formData,
                 beforeSend: function () {
-                   
+
                     $("#loading-data").css("display", "block");
                 },
                 success: function(result) {
-                 
+
                     $("#table").html(result);
 
                     var totalPages = $("#page-data").data("total");
@@ -1080,7 +1093,7 @@
 
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                 
+
                     alert("error");
                     alert(xhr.status);
                     alert(thrownError);

@@ -5,21 +5,19 @@
     Layout = null;
 }
 @{
-    var direction = "";
+
     var chevron = "";
+    var dir = "";
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
     {
-        direction = "rtl";
         chevron = "fa fa-chevron-left";
-
-
+        dir = "rtl";
     }
     else
     {
-        direction = "ltr";
         chevron = "fa fa-chevron-right";
-
-     }
+        dir = "ltr";
+    }
 }
 
 
@@ -46,14 +44,17 @@
                         @if (item.Children.Count != 0)
                         {
                             var hrefcollapse = "menu" + item.MenuId;
-                            <a class="nav-link @(item.IsActive ? "active":"notactive")" @*data-toggle="collapse"*@ href="#@hrefcollapse">
+                        <a class="nav-link @(item.IsActive ? "active":"notactive")" data-toggle="collapse" href="#@hrefcollapse" aria-expanded="false">
+                            @if (!string.IsNullOrWhiteSpace(@item.Icon))
+                            {
                                 <i class="nav-icon @item.Icon"></i>
+                            }
                                 @Language.GetString(item.MenuTitle)
                                 <span class="expand-state pull-left">
-                                    <i class="@(chevron) pull-left"></i>
+                                    <i class="@chevron pull-left"></i>
                                 </span>
                             </a>
-                            <ul class="@(item.IsActive ? "show":"")" id="@hrefcollapse">
+                            <ul class="sub unstyle collapse @(item.IsActive ? "show":"")" id="@hrefcollapse">
                                 @foreach (var menu in item.Children)
                                 {
                                     <li class="nav-item">
@@ -65,7 +66,8 @@
                         else
                         {
                             <a class="nav-link @(item.IsActive ? "active":"notActive")" href="/@item.Link">
-                                <i class="nav-icon @item.Icon"></i>   @Language.GetString(item.MenuTitle)
+                                @if (!string.IsNullOrWhiteSpace(@item.Icon)) { <i class="nav-icon @item.Icon"></i> } 
+                                @Language.GetString(item.MenuTitle)
                             </a>
                         }
                     </li>

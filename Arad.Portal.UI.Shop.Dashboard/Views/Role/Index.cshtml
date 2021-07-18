@@ -1,4 +1,5 @@
 ﻿@using Arad.Portal.GeneralLibrary.Utilities
+@using System.Globalization; 
 @model Dictionary<string, bool>;
 @{
     ViewData["Title"] = "Index";
@@ -6,7 +7,14 @@
 }
 
 @section Styles{
-    <link href="~/css/form.css" rel="stylesheet" />
+    @if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        <link href="~/css/siteTemplate/rtl/form.css" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="~/css/siteTemplate/ltr/form.css" rel="stylesheet" />
+    }
     <link href="~/css/data-grid.css" rel="stylesheet" />
 }
 
@@ -454,7 +462,7 @@
     }
 
 
-<script>
+    <script>
         var pageSize = 5;
         var $pagination = $('#pagination');
         var defaultOpts = {
@@ -534,5 +542,5 @@
             });
         }
 
-</script>
+    </script>
 }
