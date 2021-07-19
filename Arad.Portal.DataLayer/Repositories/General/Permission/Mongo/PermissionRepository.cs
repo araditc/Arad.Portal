@@ -19,7 +19,8 @@ using Arad.Portal.GeneralLibrary;
 using System.Security.Claims;
 using AspNetCore.Identity.Mongo.Mongo;
 using MongoDB.Driver.Linq;
-
+using Arad.Portal.DataLayer.Contracts.General.Role;
+using Arad.Portal.DataLayer.Models.Role;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
 {
@@ -29,16 +30,19 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly IRoleRepository _roleRepository;
         public PermissionRepository(PermissionContext context,
             IHttpContextAccessor httpContextAccessor,
             IMapper mapper,
             UserManager<ApplicationUser> userManager, 
+            IRoleRepository roleRepository,
             IUserRepository userRepository): base(httpContextAccessor)
         {
             _context = context;
             _userManager = userManager;
             _mapper = mapper;
             _userRepository = userRepository;
+            _roleRepository = roleRepository;
         }
         public async Task<RepositoryOperationResult> Delete(string permissionId, string modificationReason)
         {
@@ -515,11 +519,16 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
             return result;
         }
 
-        public async Task<List<ListPermissions>> ListPermissions(string currentUserId)
+        public async Task<List<ListPermissions>> ListPermissions(string currentUserId, string currentRoleId)
         { 
             var result = new List<ListPermissions>();
             try
             {
+                RoleDTO role = new RoleDTO();
+                if(!string.IsNullOrWhiteSpace(currentRoleId))
+                {
+                   role = await _roleRepository.FetchRole(currentRoleId);
+                }
                 var user = await _userManager.FindByIdAsync(currentUserId);
                 if(user.IsSystemAccount)
                 {
@@ -532,8 +541,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
                         Id = d.PermissionId,
                         Title = d.Title,
                         Type = d.Type,
-                        Childrens = GetChildren(menusAndModules, d.PermissionId).ToList(),
-                        IsSelected = false,
+                        Childrens = GetChildren(menusAndModules, d.PermissionId, role).ToList(),
+                        IsSelected = !string.IsNullOrWhiteSpace(currentRoleId) && role.PermissionIds.Contains(d.PermissionId),
                         IsActive = d.IsActive,
                         Priority = d.Priority
                     }).OrderBy(_=>_.Priority).ToList();
@@ -551,7 +560,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
                         Id = _.PermissionId,
                         Title = _.Title,
                         Type = _.Type,
-                        Childrens = GetChildren(menuesAndModules, _.PermissionId).ToList(),
+                        Childrens = GetChildren(menuesAndModules, _.PermissionId, role).ToList(),
                         IsSelected = false,
                         IsActive = _.IsActive,
                         Priority = _.Priority
@@ -564,7 +573,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
             return result;
         }
 
-        public List<ListPermissions> GetChildren(List<Entities.General.Permission.Permission> context, string parentId)
+        public List<ListPermissions> GetChildren(List<Entities.General.Permission.Permission> context, string parentId, RoleDTO? currentRole)
         {
             var result = new List<ListPermissions>();
             if (context.Any(_ => _.ParentMenuId == parentId))
@@ -575,8 +584,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
                         Id = _.PermissionId,
                         Title = _.Title,
                         Type = _.Type,
-                        Childrens = GetChildren(context, _.PermissionId).ToList(),
-                        IsSelected = false,
+                        Childrens = GetChildren(context, _.PermissionId, currentRole).ToList(),
+                        IsSelected = currentRole != null && currentRole.PermissionIds.Contains(_.PermissionId),
                         IsActive = _.IsActive,
                         Priority = _.Priority
                     }).OrderBy(_ => _.Priority).ToList();

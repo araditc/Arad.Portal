@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,9 +14,15 @@ namespace Arad.Portal.DataLayer.Models.Role
             PermissionIds = new();
         }
         public string RoleId { get; set; }
+
+        [Required(ErrorMessage = "لطفا نام نقش را وارد نمایید.")]
         public string RoleName { get; set; }
         public DateTime CreationDate { get; set; }
         public bool IsActive { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        [Required(ErrorMessage = "لطفا دسترسی های نقش را انتخاب نمایید.")]
         public List<string> PermissionIds { get; set; }
         public string ModificationReason { get; set; }
     }

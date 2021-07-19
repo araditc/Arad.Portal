@@ -16,12 +16,17 @@
                 @if (item.Childrens.Count != 0)
                 {
                     <ul class="nested">
+
                         @foreach (var child in item.Childrens)
                         {
-                            @await Component.InvokeAsync("InnerPermissions", child);
+                            <li class="custom-control custom-checkbox checbox-right custom-control-inline">
+                                @await Component.InvokeAsync("InnerPermissions", child);
+
+                            </li>
                         }
                     </ul>
                 }
+
             </li>
         }
         else
@@ -35,4 +40,5 @@
 
     }
 </ul>
+
 

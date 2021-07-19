@@ -13,6 +13,12 @@
 	<string key="btn_Cancel">
 		<value>انصراف</value>
 	</string>
+	<string key="btn_Back">
+		<value>بازگشت</value>
+	</string>
+	<string key="btn_Restore">
+		<value>بازگزدانی</value>
+	</string>
 	<string key="btn_Delete">
 		<value>حذف</value>
 	</string>

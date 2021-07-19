@@ -1,0 +1,170 @@
+﻿@using Arad.Portal.GeneralLibrary.Utilities;
+@model Arad.Portal.DataLayer.Models.Role.RoleDTO
+@{
+    var alert = Language.GetString("AlertAndMessage_GotIt");
+}
+
+@section Styles{
+    @if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        <link href="~/css/siteTemplate/rtl/form.css" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="~/css/siteTemplate/ltr/form.css" rel="stylesheet" />
+    }
+    <link href="~/css/data-grid.css" rel="stylesheet" />
+}
+
+
+<div id="edit" class="card bg-light" >
+       
+<div class="card-header">
+    <h6 > @Language.GetString("Role_Edit")</h6>
+</div>
+<div class="card-body">
+
+    <div class="row">
+        <div class="col-md-2">
+            <input asp-for="RoleId" type="hidden">
+            <label class="control-label" for="RoleName">@Language.GetString("Role_Name") </label>
+        </div>
+        <div class="col-md-3">
+            <input asp-for="RoleName" class="form-control" placeholder=" ">
+            <span asp-validation-for="RoleName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="box-head inner">
+            <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+            @Language.GetString("User_Roles")
+            <span asp-validation-for="PermissionIds" class="text-danger"></span>
+        </div>
+        <div id="permissions" class="row w-100">
+
+        </div>
+    </div>
+</div>
+<div class="card-footer">
+    <div class="row">
+        <div class="col-md-4 offset-md-2">
+            @if (ViewBag.Edit)
+            {
+                <button id="btnEdit" class="btn btn-success">
+                    <i class="fa fa-check" aria-hidden="true"></i>@Language.GetString("btn_Edit")
+                </button>
+            }
+            <a asp-action="Index" class="btn btn-info">@Language.GetString("btn_Back")</a>
+        </div>
+    </div>
+</div>
+
+       
+</div>
+
+<script src="~/js/tree.js"></script>
+<script>
+
+    $(document).ready(function () {
+        debugger;
+        $.ajax({
+            url: '@Url.Action("ListPermissions")',
+            type: 'Get',
+            data: { currentRoleId : '@Model.RoleId' },
+                        beforeSend: function () {
+                            $("#loading").css("display", "block");
+                        },
+                        success: function (result) {
+                            $("#permissions").html(result);
+
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert("error");
+                            alert(xhr.status);
+                            alert(thrownError);
+                        },
+                        complete: function () {
+                            $("#loading").css("display", "none");
+                        }
+
+        });
+
+
+        $("#btnEdit").click(function (e) {
+            debugger;
+
+                var persSelect = [];
+                var treesCheck = $("#edit .tree input[type='checkbox']");
+
+                treesCheck.each(function(index) {
+                    if (treesCheck[index].checked) {
+
+                        var id = $(treesCheck[index]).attr("name");
+                        persSelect.push(id);
+                    }
+                });
+                var values = {};
+
+                values['RoleName'] = $("#edit #RoleName").val();
+                values['PermissionIds'] = persSelect;
+
+
+                $.ajax({
+                    url: '@Url.Action("Edit")',
+                    type: 'Post',
+                    data: values,
+                    beforeSend: function() {
+                        $("#loading").css("display", "block");
+                    },
+                    success: function(result) {
+                        var spanErrorList = $('#edit span[data-val-result]');
+
+                        spanErrorList.html("");
+                        spanErrorList.parent().removeClass("has-error");
+                        if (result.status === "success") {
+
+                          /*  $("#editModal").modal("hide");*/
+
+                            toastr.success(result.message);
+
+                            list(pageSize, $pagination.twbsPagination('getCurrentPage'));
+
+                        } else if (result.status === "error") {
+
+                            if (spanErrorList.length > 1) {
+                                spanErrorList.each(function() {
+                                    $(this).html("");
+                                    $(this).parent().removeClass("has-error");
+                                });
+                            }
+
+                            if (result.modelStateErrors !== null) {
+
+                                result.modelStateErrors.forEach(function(value, index) {
+
+                                    $("#edit").find('[data-val-result=' + value.key + ']')
+                                        .html(value.errorMessage);
+                                    $("#edit").find('[data-val-result=' + value.key + ']').parent()
+                                        .addClass("has-error");
+                                });
+                            } else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: result.message,
+                                    confirmButtonText:
+                                        '<i class="fa fa-thumbs-up"></i> @alert',
+                                });
+                            }
+                        }
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        alert(xhr.status);
+                        alert(thrownError);
+                    },
+                    complete: function() {
+                        $("#loading").css("display", "none");
+                    }
+                });
+            });
+    });
+</script>

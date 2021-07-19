@@ -20,6 +20,7 @@ namespace Arad.Portal.DataLayer.Entities.General.User
             DomainId = new();
             LoginData = new();
             Profile = new();
+            LoginData = new();
         }
         public bool IsSystemAccount { get; set; }
         public bool IsDomainAdmin { get; set; }
@@ -38,7 +39,7 @@ namespace Arad.Portal.DataLayer.Entities.General.User
         public string CreatorUserName { get; set; }
         public List<Modification> Modifications { get; set; }
         public DateTime LastLoginDate { get; set; }
-        public List<LoginLogoutRecord> LoginData { get; set; } = new List<LoginLogoutRecord>();
+        public List<LoginLogoutRecord> LoginData { get; set; } 
     }
 
 

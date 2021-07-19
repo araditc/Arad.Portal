@@ -218,7 +218,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
                      RoleId = _.RoleId,
                      RoleName = _.RoleName,
                      PermissionIds = _.PermissionIds,
-                     IsActive = _.IsActive
+                     IsActive = _.IsActive,
+                     IsDeleted = _.IsDeleted
                    }).ToList();
 
                 result.CurrentPage = page;

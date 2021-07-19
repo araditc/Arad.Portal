@@ -25,31 +25,38 @@
                                     <span class="mo-title">@Language.GetString("Role_Name")</span>
                                     <span>@item.RoleName</span>
                                 </div>
-                                <div class="table-col col-xs-12 col-lg-2">
+                                @*<div class="table-col col-xs-12 col-lg-2">
                                     <span class="mo-title">@Language.GetString("ActivationState")</span>
                                     <label class="switch">
                                         <input class="checkbox" type="checkbox" id="activeUser" checked="@item.IsActive" data-id="@item.RoleId" value="@item.IsActive">
                                         <span class="slider round"></span>
                                     </label>
-                                </div>
-                                <div class="table-col col-xs-12 col-lg-2">
+                                </div>*@
+                                <div class="table-col col-xs-12 col-lg-3">
                                     <div class="">
                                         @if (ViewBag.Permissions["Details"])
                                         {
-                                            <a id="editRecord" data-id="@item.RoleId" href="#" class="btn btn-outline-primary btn-xs">
-                                                @Language.GetString("btn_Detail")
-                                            </a>
+                                            <input id="editRecord" class="btn btn-outline-primary btn-xs" data-id="@item.RoleId" type="button"
+                                                   value="@Language.GetString("btn_Detail")"
+                                                   onclick="location.href= '@Url.Action("GetRole", "Role", new  {id = @item.RoleId , editPermission = ViewBag.Permissions["Edit"] })'" />
+
                                         }
                                         @if (ViewBag.Permissions["Remove"])
                                         {
                                             <button id="deleteRecord" data-id="@item.RoleId" href="#" data-toggle="modal" type="button" class="btn btn-outline-danger btn-xs">
-                                               @Language.GetString("btn_Delete")
+                                                @Language.GetString("btn_Delete")
                                             </button>
+                                        }
+                                        @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
+                                        {
+                                        <button id="restoreRecord" data-id="@item.RoleId" href="#" data-toggle="modal" type="button" class="btn btn-outline-warning btn-xs">
+                                            @Language.GetString("btn_Restore")
+                                        </button>
                                         }
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                 }

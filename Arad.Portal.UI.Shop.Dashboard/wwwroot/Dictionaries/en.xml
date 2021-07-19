@@ -13,6 +13,12 @@
 	<string key="btn_Cancel">
 		<value>Cancel</value>
 	</string>
+	<string key="btn_Back">
+		<value>Back</value>
+	</string>
+	<string key="btn_Restore">
+		<value>Restore</value>
+	</string>
 	<string key="btn_Delete">
 		<value>Delete</value>
 	</string>

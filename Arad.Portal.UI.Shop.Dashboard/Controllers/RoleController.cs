@@ -83,21 +83,69 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
       
+        //[HttpGet]
+        //public async Task<IActionResult> GetRole(string id)
+        //{
+        //    JsonResult result;
+        //    try
+        //    {
+        //        var role = await _roleRepository.FetchRole(id);
+
+        //        if (role == null)
+        //        {
+        //            result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_DataWasNotFound") });
+        //        }
+
+        //        //var permissions = await _permissionRepository.ListPermissions(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+        //        var data = new { Role = role };
+
+        //        result = Json(new { Status = "success", Data = data });
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
+        //    }
+        //    return result;
+        //}
+
         [HttpGet]
-        public async Task<IActionResult> GetRole(string id)
+        public async Task<IActionResult> GetRole(string id, bool editPermission)
         {
-            JsonResult result; 
+            RoleDTO role = new RoleDTO();
+           
             try
             {
-                var role = await _roleRepository.FetchRole(id);
+                ViewBag.Edit = editPermission;
+                role = await _roleRepository.FetchRole(id);
+            }
+            catch (Exception e)
+            {
+            }
+            return View(role);
+        }
+
+        public async Task<IActionResult> GeneratePermissions(string roleId)
+        {
+            var permissions = await _permissionRepository.ListPermissions(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), roleId);
+            return PartialView(permissions);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(string roleId)
+        {
+            JsonResult result;
+            try
+            {
+                var role = await _roleRepository.FetchRole(roleId);
 
                 if (role == null)
                 {
                     result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_DataWasNotFound") });
                 }
-                
+
                 //var permissions = await _permissionRepository.ListPermissions(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
-              
+
                 var data = new { Role = role };
 
                 result = Json(new { Status = "success", Data = data });
@@ -136,6 +184,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 try
                 {
+                    //first should fetch role then just change its rolename and permissionsIds
+                    var oldRole =await _roleRepository.FetchRole(role.RoleId);
+                    oldRole.RoleName = role.RoleName;
+                    oldRole.PermissionIds = role.PermissionIds;
+
                     var res = await _roleRepository.Update(role);
 
                     if (!res.Succeeded)
@@ -157,12 +210,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Delete(string id, string modificationReason)
+        public async Task<IActionResult> Delete(string id)
         {
             JsonResult result;
             try
             {
-                var res = await _roleRepository.Delete(id, modificationReason);
+                var res = await _roleRepository.Delete(id, "");
                 if (res.Succeeded)
                 {
                     result =  Json(new { Status = "success", Message = res.Message });
@@ -222,18 +275,18 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ListPermissions()
+        public IActionResult ListPermissions(string currentRoleId = "")
         {
+            var result = new List<ListPermissions>();
             try
             {
-                var list = await _permissionRepository.ListPermissions(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
-                return View(list);
+                result =  _permissionRepository.ListPermissions(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), currentRoleId).Result;
+               
             }
             catch (Exception e)
             {
-                return View(new List<PermissionListView>());
             }
-
+            return View(result);
         }
     }
 }

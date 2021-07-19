@@ -1,5 +1,4 @@
-﻿@using Arad.Portal.GeneralLibrary.Utilities
-@using System.Globalization; 
+﻿
 @model Dictionary<string, bool>;
 @{
     ViewData["Title"] = "Index";
@@ -56,10 +55,7 @@
                         <div class="table-col col-md-7">
                             <span>@Language.GetString("tbl_RoleName")</span>
                         </div>
-                        <div class="table-col col-md-2">
-                            <span>@Language.GetString("ActivationState")</span>
-                        </div>
-                        <div class="table-col col-md-2">
+                        <div class="table-col col-md-3">
                             <span></span>
                         </div>
                     </div>
@@ -73,54 +69,6 @@
             <ul id="pagination" class="pagination-sm"></ul>
         </div>
     }
-}
-
-@if (@Model["Details"])
-{
-    <!-- Modal Edit -->
-    <div id="editModal" class="modal fade " role="dialog">
-        <div class="modal-dialog modal-xl">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <a role="button" class="modal-close" data-dismiss="modal"></a>
-                <div class="modal-header">
-                    <h6 class="modal-title"> @Language.GetString("Role_Edit")</h6>
-                </div>
-                <div class="modal-body text-center">
-                    <form id="edit" class="sm" method="post" autocomplete="off" asp-antiforgery="true">
-                        <div class="form-row text-right ">
-                            <div class=" col-md-12">
-                                <input type="hidden" id="Id" name="Id">
-                                <div class="row">
-                                    <div class="form-group col-md-4 col-lg-4">
-                                        <label for="Title">@Language.GetString("Role_Name") </label>
-                                        <input type="text" class="form-control" id="Title" name="Title" placeholder=" ">
-                                        <span class="field-validation-error" data-val-result="Title"></span>
-                                    </div>
-                                    <div class="box-head inner ">
-                                        <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
-                                        @Language.GetString("User_Roles")
-                                        <span class="field-validation-error" data-val-result="Permissions"></span>
-                                    </div>
-                                    <div id="permissions" class="row w-100">
-                                        @await Component.InvokeAsync("GeneratePermissions")
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @if (@Model["Edit"])
-                        {
-                            <button type="submit" class="btn btn-success btn-xs">
-                                <i class="fa fa-check" aria-hidden="true"></i>@Language.GetString("btn_Edit")
-                            </button>
-                        }
-
-                    </form>
-                </div>
-            </div>
-
-        </div>
-    </div>
 }
 
 @if (@Model["Remove"])
@@ -145,9 +93,9 @@
 }
 
 @section Scripts{
+
     <script src="~/lib/twbs-pagination/jquery.twbsPagination.js"></script>
     <script src="~/js/tree.js"></script>
-
     @if (@Model["List"])
     {
         <script>
@@ -166,13 +114,17 @@
     {
         <script>
             $(document).ready(function () {
+            
                 //$("#add").on('show.bs.collapse',
-                //    function() {
+                //    function () {
+                     
                 //        ListPermissions();
                 //    });
+               
                 ListPermissions();
 
-                $("#addRole").submit(function(e) {
+                $("#addRole").submit(function (e) {
+                    debugger;
                     e.preventDefault();
 
                     var persSelect = [];
@@ -198,7 +150,7 @@
                     } else active = false;
                     values['IsActive'] = active;
 
-                    values['Permissions'] = persSelect;
+                    values['PermissionIds'] = persSelect;
                     console.log(values);
                     $.ajax({
                         url: '@Url.Action("Add")',
@@ -265,11 +217,12 @@
 
     @if (@Model["Details"])
     {
-        <script>
+<script>
             $(document).ready(function() {
                 $(document).on("click",
                 "#editRecord",
-                function(e) {
+                    function (e) {
+                        debugger;
                     e.preventDefault();
 
                     var id = $(this).data("id");
@@ -278,7 +231,7 @@
 
                     spanErrorList.html("");
                     spanErrorList.parent().removeClass("has-error");
-
+                   
                     $.ajax({
                         url: '@Url.Action("GetRole")',
                         type: 'Get',
@@ -289,10 +242,11 @@
                         success: function(result) {
 
                             if (result.status === "success") {
-
+                                debugger;
                                 var role = result.data.role;
-                                $("#edit #Title").val(role.title);
-                                $("#edit #Id").val(role.id);
+                                $("#edit #permissions").load('/role/ListPermissions?currentRoleId=' + role.roleId);
+                                $("#edit #RoleName").val(role.roleName);
+                                $("#edit #RoleId").val(role.roleId);
                                 $("#editModal").modal("show");
 
                             } else {
@@ -310,7 +264,7 @@
                 });
 
             });
-        </script>
+</script>
     }
 
     @if (@Model["Edit"])
@@ -414,8 +368,9 @@
 
                 });
 
-            $(document).on("click", "#delete", function(e) {
-                    e.prealerttDefault();
+                $(document).on("click", "#delete", function (e) {
+                    debugger;
+                    e.preventDefault();
                     var id = $(this).data("id");
                     var data = { Id: id };
 
@@ -427,9 +382,9 @@
                             $("#loading").css("display", "block");
                         },
                         success: function(result) {
-
+                            debugger;
                             if (result.status === "success") {
-                                list(pageSize, $paginatLanguageoGetStringGetStringGetStringGetStringGetStringn.twbsPagination('getCurrentPage'));
+                                list(pageSize, $pagination.twbsPagination('getCurrentPage'));
 
                                 $("#removeModal").modal("hide");
                                 Swal.fire({
@@ -513,22 +468,11 @@
 
 
         function ListPermissions() {
+        
             $.ajax({
                 url: '@Url.Action("ListPermissions")',
                 type: 'Get',
                 success: function(result) {
-                    //if (result.status === "success") {
-                    //    var persHtml = '';
-                    //    var data = result.data;
-                    //    console.log(data);
-
-
-                    //    $("#permissions").html(persHtml);
-
-                    //} else if (result.status === "error") {
-
-                    //}
-
                     $("#permissions").html(result);
 
                 },
