@@ -17,23 +17,27 @@
                 <div class="table-row">
                     <div class="card-table @(item.IsActive ? "active":"notActive")">
                         <div class="row m-0">
-                            <div class="table-col col-xs-12 col-md-1 d-none d-lg-block">
+                            <div class="table-col col-xs-12 col-md-1 d-lg-block">
                                 <span>@(++i)</span>
                             </div>
-                            <div class="table-col col-xs-12 col-lg-2">
-                                <span class="mo-title">@Language.GetString("Permission_Name"):</span>
+                            <div class="table-col col-xs-12 col-md-3 col-lg-2">
+                                <span class="mo-title">@Language.GetString("permission_name"):</span>
                                 <span>@item.Title</span>
                             </div>
-                            <div class="table-col col-xs-12 col-lg-2">
+                            <div class="table-col col-xs-12 col-lg-2 col-md-2">
                                 <span class="mo-title">@Language.GetString("Permission_Type")</span>
                                 <span>@item.Type</span>
                             </div>
-                            <div class="table-col col-xs-12 col-lg-3">
+                            <div class="table-col col-xs-12 col-lg-3 col-md-2">
+                                <span class="mo-title">@Language.GetString("Permission_ClientAddress")</span>
+                                <span>@item.ClientAddress</span>
+                            </div>
+                            <div class="table-col col-xs-12 col-lg-3 col-md-2">
                                 <span class="mo-title">@Language.GetString("Permission_Routes")</span>
                                 <span>@item.Routes</span>
                             </div>
 
-                            <div class="table-col col-xs-12 col-lg-2">
+                            <div class="table-col col-xs-12 col-lg-2 col-md-2">
                                 <div class="">
                                     @if (ViewBag.Permissions["Edit"])
                                     {
@@ -43,9 +47,9 @@
                                     }
                                     @if (ViewBag.Permissions["Remove"])
                                     {
-                                <button id="deleteRecord" href="#" data-toggle="modal" data-id="@item.Id" type="button" class="btn btn-outline-danger btn-xs">
-                                    @Language.GetString("btn_Delete")
-                                </button>
+                                        <button id="deleteRecord" href="#" data-toggle="modal" data-id="@item.Id" type="button" class="btn btn-outline-danger btn-xs">
+                                            @Language.GetString("btn_Delete")
+                                        </button>
                                     }
                                 </div>
                             </div>

@@ -6,48 +6,50 @@
     Layout = null;
 }
 @{
-  
-    var chevron = "";
-    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-    {
-        chevron = "fa fa-chevron-left";
-    }
-    else
-    {
-        chevron = "fa fa-chevron-right";
-     }
+
+//var chevron = "";
+//if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+//{
+//    chevron = "fa fa-chevron-left";
+//}
+//else
+//{
+//    chevron = "fa fa-chevron-right";
+// }
 }
 
 @if (Model.Children.Count != 0)
 {
-    var hrefcollapse = "menu" + Model.MenuId;
-<a class="nav-link @(Model.IsActive ? "active":"notactive")" data-toggle="collapse" href="#@hrefcollapse">
-    @if (!string.IsNullOrWhiteSpace(Model.Icon))
-    {
-        <i class="nav-icon  @Model.Icon"></i>
-    }
-        @Language.GetString(Model.MenuTitle)
-        <span class="expand-state pull-left">
-            <i class="@chevron pull-left"></i>
-        </span>
-    </a>
-    <ul class="sub unstyle collapse @(Model.IsActive ? "show":"")" id="@hrefcollapse">
-        @foreach (var menu in Model.Children)
-        {
-            @*@(menu.Children.Count > 0 ? "has-sub" : "")*@
-            <li class="nav-item">
-                @await Component.InvokeAsync("InnerMenu", menu)
-            </li>
-        }
-    </ul>
-}
-else
-{
-<a class="nav-link @(Model.IsActive ? "active":"notActive")" href=@($"/{Model.Link}")>
+   
+<a class="nav-link @(Model.IsActive ? "active":"notactive")" href="#">
     @if (!string.IsNullOrWhiteSpace(Model.Icon))
     {
         <i class="nav-icon @Model.Icon"></i>
     }
-    @Language.GetString(Model.MenuTitle)
+    <p>
+        @Language.GetString(Model.MenuTitle)
+        <i class="right fa fa-angle-left"></i>
+    </p>
 </a>
+<ul class="nav nav-treeview">
+    @foreach (var menu in Model.Children)
+    {
+        <li class="nav-item @(menu.Children.Count != 0 ? "has-treeview" : "")">
+            @await Component.InvokeAsync("InnerMenu", menu);
+        </li>
+    }
+</ul>
+}
+else
+{
+<a class="nav-link">
+    @if (!string.IsNullOrWhiteSpace(Model.Icon))
+    {
+        <i class="nav-icon @Model.Icon"></i>
+    }
+    <p>
+        @Language.GetString(Model.MenuTitle)
+    </p>
+</a>
+
 }

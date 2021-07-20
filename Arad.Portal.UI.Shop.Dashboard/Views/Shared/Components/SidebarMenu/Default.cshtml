@@ -19,62 +19,63 @@
         dir = "ltr";
     }
 }
+<style>
+    .dirClassRtl{
+        direction : rtl;
+    }
+    .dirClassLtr{
+        direction: ltr;
+    }
+</style>
 
-
-<div class="sidebar">
-    <div class="sidebar-nav">
-        <div @*class="navigation"*@>
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
-                <li>
-                    <div class="sidebar-shortcuts" id="sidebar-shortcuts">
-                        <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
-                            <a href="#">
-                                <span class="btn btn-success" style="width: 100%;border-radius: 0;padding: .5em;">
-                                    @Language.GetString("Menu_Dashboard_HomeTitle")
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                </li>
-
+<div class="sidebar @(dir== "rtl" ? "dirClassLtr" : "")" >
+    <div class="@(dir == "rtl" ? "dirClassRtl" : "")">
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 @foreach (var item in @Model)
                 {
-                    @*@(item.Children.Count > 0 ? "has-sub" : "")*@
-                    <li class="nav-item">
-                        @if (item.Children.Count != 0)
-                        {
-                            var hrefcollapse = "menu" + item.MenuId;
-                        <a class="nav-link @(item.IsActive ? "active":"notactive")" data-toggle="collapse" href="#@hrefcollapse" aria-expanded="false">
-                            @if (!string.IsNullOrWhiteSpace(@item.Icon))
-                            {
-                                <i class="nav-icon @item.Icon"></i>
-                            }
-                                @Language.GetString(item.MenuTitle)
-                                <span class="expand-state pull-left">
-                                    <i class="@chevron pull-left"></i>
-                                </span>
+                    @if (item.Children.Count != 0)
+                    {
+                        <li class="nav-item  @(dir == "rtl" ? "has-treeview" : "")">
+                            <a href="#" class="nav-link active">
+                                @if (!string.IsNullOrWhiteSpace(item.Icon))
+                                {
+                                    <i class="nav-icon @item.Icon"></i>
+                                }
+                                <p>
+                                    @item.MenuTitle
+                                    <i class="right @(dir =="rtl" ? "fa" : "fas") fa-angle-left"></i>
+                                </p>
                             </a>
-                            <ul class="sub unstyle collapse @(item.IsActive ? "show":"")" id="@hrefcollapse">
+                            <ul class="nav nav-treeview">
                                 @foreach (var menu in item.Children)
                                 {
-                                    <li class="nav-item">
+                                    <li class="nav-item @(menu.Children.Count != 0 ? "has-treeview menu-open" : "")">
                                         @await Component.InvokeAsync("InnerMenu", menu);
                                     </li>
                                 }
                             </ul>
-                        }
-                        else
-                        {
-                            <a class="nav-link @(item.IsActive ? "active":"notActive")" href="/@item.Link">
-                                @if (!string.IsNullOrWhiteSpace(@item.Icon)) { <i class="nav-icon @item.Icon"></i> } 
-                                @Language.GetString(item.MenuTitle)
-                            </a>
-                        }
-                    </li>
-                }
+                        </li>
 
+                    }
+                    else
+                    {
+            <li class="nav-item">
+                <a href="/@item.Link" class="nav-link">
+                    @if (!string.IsNullOrWhiteSpace(item.Icon))
+                    {
+                        <i class="nav-icon @item.Icon"></i>
+                    }
+                    <p>
+                        @Language.GetString(item.MenuTitle)
+                    </p>
+                </a>
+            </li>
+                    }
+                }
             </ul>
-        </div>
+        </nav>
     </div>
 </div>
+
 

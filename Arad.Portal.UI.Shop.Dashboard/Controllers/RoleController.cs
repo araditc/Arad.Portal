@@ -184,7 +184,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 try
                 {
-                    //first should fetch role then just change its rolename and permissionsIds
+                   
                     var oldRole =await _roleRepository.FetchRole(role.RoleId);
                     oldRole.RoleName = role.RoleName;
                     oldRole.PermissionIds = role.PermissionIds;

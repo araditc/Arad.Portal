@@ -40,44 +40,26 @@
 @if (@Model["List"])
 {
 
-    <div class="card">
-        <div class="card-body">
-            <table id="permissionList" class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>@Language.GetString("tbl_RowName")</th>
-                        <th>@Language.GetString("tbl_PermissionTitle")</th>
-                        <th>@Language.GetString("tbl_PermissionType")</th>
-                        <th>@Language.GetString("tbl_Routes")</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-            @await Component.InvokeAsync("LoadingGridData")
-            <ul id="pagination" class="pagination-sm"></ul>
-        </div>
-        <!-- /.card-body -->
-    </div>
-
     <div class="table">
         <div class="table-head d-none d-lg-block">
             <div class="table-row">
                 <div class="row m-0">
-                    <div class="table-col col-md-1">
+                    <div class="table-col col-xs-12 col-md-1 d-lg-block1">
                         <span>@Language.GetString("tbl_RowName")</span>
                     </div>
-                    <div class="table-col col-md-3">
+                    <div class="table-col col-xs-12 col-md-3 col-lg-2">
                         <span>@Language.GetString("tbl_PermissionTitle")</span>
                     </div>
-                    <div class="table-col col-md-2">
+                    <div class="table-col col-xs-12 col-lg-2 col-md-2">
                         <span>@Language.GetString("tbl_PermissionType")</span>
                     </div>
-                    <div class="table-col col-md-4">
+                    <div class="table-col col-xs-12 col-lg-3 col-md-2">
+                        <span>@Language.GetString("tbl_ClientAddress")</span>
+                    </div>
+                    <div class="table-col col-xs-12 col-lg-3 col-md-2">
                         <span>@Language.GetString("tbl_Routes")</span>
                     </div>
-                    <div class="table-col col-md-2">
+                    <div class="table-col col-xs-12 col-lg-2 col-md-2">
                         <span></span>
                     </div>
                 </div>
@@ -199,6 +181,7 @@
     {
         <script>
             $(document).ready(function () {
+                debugger;
 
                 list(pageSize, 1);
                 $(document).on("click",
@@ -219,7 +202,8 @@
                 MenusSelectList(2);
 
 
-            $("#addPer").submit(function(e) {
+                $("#addPer").submit(function (e) {
+                    debugger;
                 e.preventDefault();
                 var site = $("#site").val();
 
@@ -302,7 +286,8 @@
             $(document).ready(function() {
                 $(document).on("click",
                 "#editRecord",
-                function(e) {
+                    function (e) {
+                        debugger;
                     e.preventDefault();
                     var id = $(this).data("id");
                     var data = { Id: id };
@@ -353,7 +338,8 @@
                 });
 
 
-            $("#editPer").submit(function(e) {
+                $("#editPer").submit(function (e) {
+                    debugger;
                 e.preventDefault();
                 $.ajax({
                     url: "@Url.Action("Edit")",
@@ -427,7 +413,8 @@
             $(document).ready(function() {
                  $(document).on("click",
                 "#deleteRecord",
-                function(e) {
+                     function (e) {
+                         debugger;
                     e.preventDefault();
                     var id = $(this).data("id");
                     console.log(id);
@@ -438,7 +425,8 @@
 
             $(document).on("click",
                 "#delete",
-                function(e) {
+                function (e) {
+                    debugger;
                     e.preventDefault();
                     var id = $(this).data("id");
                     var data = { Id: id };
@@ -494,7 +482,8 @@
             $(document).ready(function() {
                   $(document).on("change",
                 "#active",
-                function() {
+                      function () {
+                          debugger;
                     var elm = $(this);
                     var id = $(this).data("id");
                     var active;
@@ -559,7 +548,7 @@
             $(document).on("change",
                 "#addPer #typeSelect",
                 function() {
-
+                    debugger;
                     if ($("#Type").val() === '1') { //menu
                         $("#keySelect").css("display", "none");
                         $("#priority").css("display", "block");
@@ -618,7 +607,8 @@
                 });
 
 
-            function list(pageSize, currentPage) {
+    function list(pageSize, currentPage) {
+        debugger;
                 var data = { pageSize: pageSize, currentPage: currentPage };
                 $.ajax({
                     url: "@Url.Action("List")",
@@ -628,7 +618,7 @@
                         $("#loading-data").css("display", "block");
                     },
                     success: function(result) {
-
+                        debugger;
                         $("#table").html(result);
                         var totalPages = $("#page-data").data("total");
                         var currentPage = $pagination.twbsPagination('getCurrentPage');
@@ -636,7 +626,7 @@
                         $pagination.twbsPagination('destroy');
 
                         if (totalPages > 0) {
-                            $pagination.twbsPagLanguagetGetStringion($.extend({},
+                            $pagination.twbsPagination($.extend({},
                                 defaultOpts,
                                 {
                                     startPage: currentPage,
@@ -659,7 +649,7 @@
 
 
             function MenusSelectList(typemenu) {
-
+                debugger;
                 data = { typeMenu: typemenu };
                 $.ajax({
                     url: "@Url.Action("MenusSelectList")",
@@ -669,7 +659,7 @@
                         var options = "<option value='-1'>@Language.GetString("Choose")</option>";
                         if (result.status === "success") {
                             if (result.data.length != 0) {
-                                (result.data).foLanguageEach(function(item) {
+                                (result.data).forEach(function(item) {
                                     var op = "<option value='" + item.id + "'>" + item.title + "</option>";
                                     options += op;
                                 });

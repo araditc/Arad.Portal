@@ -152,13 +152,15 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
 
                 long count = await _context.Collection.Find(c => true).CountDocumentsAsync();
 
-                var list = _context.Collection.AsQueryable().Where(per => !per.IsDeleted).Skip((page - 1) * pageSize)
-                    .Take(pageSize).Select(_ => new ListPermissionViewModel()
+                var mongoList = _context.Collection.AsQueryable().Where(per => !per.IsDeleted).Skip((page - 1) * pageSize)
+                    .Take(pageSize).ToList();
+                var list =  mongoList.Select(_ => new ListPermissionViewModel()
                     {
                         Id = _.PermissionId,
                         ClientAddress = _.ClientAddress,
                         Title = _.Title,
                         Type = _.Type,
+                        Routes =_.Routes.Count != 0 ?  string.Join(",", _.Routes) : "",
                         CreationDate = _.CreationDate,
                         CreatorName = _.CreatorUserName,
                         HasModification = _.Modifications != null && _.Modifications.Any(),

@@ -109,6 +109,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<IPermissionView, PermissionView>();
 
             AddRepositoryServices(services);
+            services.AddProgressiveWebApp();
         }
 
        

@@ -312,6 +312,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> MenusSelectList(Enums.PermissionType typeMenu)
         {
+            
             JsonResult result;
             try
             {

@@ -33,6 +33,10 @@
     {
       "library": "limonte-sweetalert2@11.0.18",
       "destination": "wwwroot/lib/limonte-sweetalert2/"
+    },
+    {
+      "library": "bootstrap-iconpicker@1.10.0",
+      "destination": "wwwroot/lib/bootstrap-iconpicker/"
     }
   ]
 }

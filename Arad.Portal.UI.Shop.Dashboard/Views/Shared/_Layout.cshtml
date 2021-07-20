@@ -38,60 +38,38 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Arad.Portal.UI.Dashboard</title>
-    <link rel="stylesheet" href="~/css/fonts/font-awesome.css">
-    <link href="~/fonts/font.css" rel="stylesheet" />
-    @*iCheck/flat/blue.css*@
-    <link href="~/css/blue.css" rel="stylesheet" />
-    @if (direction == "rtl")
-    {
-        <link href="~/css/datePicker/datepicker3.css" rel="stylesheet" />
-        <link href="~/css/dateRangePicker/daterangepicker-bs3.css" rel="stylesheet" />
-        <link href="~/css/siteTemplate/rtl/bootstrap-rtl.min.css" rel="stylesheet" />
-        <link href="~/css/siteTemplate/rtl/custom-style.css" rel="stylesheet" />
-        <link href="~/css/siteTemplate/rtl/SidebarMenu/sideNav.css" rel="stylesheet" />
-        <!-- iCheck bootstrap -->@*<link rel="stylesheet" href="~/css/siteTemplate/shared/icheck-bootstrap/icheck-bootstrap.min.css">*@<!-- Bootstrap 4 RTL -->@*<link rel="stylesheet" href="~/css/siteTemplate/rtl/bootstrap4rtl/bootstrap.min.css">*@<!-- Custom style for RTL -->@*<link rel="stylesheet" href="~/css/siteTemplate/rtl/custom.css">*@
-        <style>
-            .content-wrapper {
-                margin-left: 0 !important;
-            }
-
-            nav.main-header {
-                margin-left: 0;
-            }
-        </style>
-
-    }
-    else
-    {
-        <link href="~/css/siteTemplate/ltr/SidebarMenu/sideNav.css" rel="stylesheet" />
-        <link href="~/css/siteTemplate/ltr/custom-style.css" rel="stylesheet" />
-        @*<link href="~/css/siteTemplate/ltr/SidebarMenu/style.css" rel="stylesheet" />*@
-        <style>
-            .content-wrapper {
-                margin-right: 0 !important;
-            }
-
-            nav.main-header {
-                margin-right: 0;
-                padding-left: 2%;
-            }
-
-            .sidebar {
-                padding-left: 0px;
-            }
-        </style>
-    }
-    @RenderSection("Styles", required: false)
+    <link rel="stylesheet" href="~/css/font-awesome/font-awesome.min.css">
     <link rel="stylesheet" href="~/css/siteTemplate/shared/ionicons.css">
-    <link href="~/lib/limonte-sweetalert2/sweetalert2.css" rel="stylesheet" />
-    <link href="~/css/siteTemplate/shared/fontawesome-free/all.min.css" rel="stylesheet" />
     <!-- Theme style -->
     <link href="~/css/siteTemplate/shared/AdminLTE/adminlte.min.css" rel="stylesheet" />
+    @if (direction == "rtl")
+    {
+
+        @*<link href="~/css/datePicker/datepicker3.css" rel="stylesheet" />*@
+        @*<link href="~/css/dateRangePicker/daterangepicker-bs3.css" rel="stylesheet" />*@
+        <!-- Ionicons -->
+        <link href="~/fonts/IranSans/css/persianfonts.css" rel="stylesheet" />
+        <link href="~/css/siteTemplate/rtl/bootstrap-rtl.min.css" rel="stylesheet" />
+        <link href="~/css/siteTemplate/rtl/custom-style.css" rel="stylesheet" />
+        @*<style>
+                .content-wrapper {
+                    margin-left: 0 !important;
+                }
+
+                nav.main-header {
+                    margin-left: 0;
+                }
+            </style>*@
+<link href="~/css/persian-datepicker.min.css" rel="stylesheet" />
+    }
+
+
+
+    <link href="~/css/siteTemplate/shared/fontawesome-free/all.min.css" rel="stylesheet" />
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="~/lib//overlayscrollbars/css/OverlayScrollbars.min.css">
-    <link rel="stylesheet" href="~/css/page.css" />
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/js/siteTemplate/jqueryui1.11.4/jquery-ui.min.js"></script>
+    @RenderSection("Styles", required: false)
+
 </head>
 <body class="@bodyClass" dir="@direction">
     <div class="wrapper">
@@ -191,7 +169,7 @@
         </nav>
         <!--/navbar-->
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4" style="width:15%;">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="#" class="brand-link">
                 <img src="~/imgs/Logo.png" alt="Arad Group" class="brand-image img-circle elevation-3"
@@ -266,31 +244,27 @@
 
 
     <!---------shared----------->
-   
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     @if (direction == "rtl")
     {
+        <script src="~/js/siteTemplate/jqueryui1.11.4/jquery-ui.min.js"></script>
+        @*<script src="~/js/siteTemplate/bootstrap4rtl/bootstrap.min.js"></script>*@
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    }
 
-        <script src="~/js/siteTemplate/bootstrap4rtl/bootstrap.min.js"></script>
-        <script src="~/js/siteTemplate/sidebarMenu/rtl/sidenav.js"></script>
-    }
-    else
-    {
-        <script src="~/js/siteTemplate/sidebarMenu/ltr/sidenav.js"></script>
-    }
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Tempusdominus Bootstrap 4 -->
     @*<script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>*@
     <!-- overlayScrollbars -->
     @*<script src="~/js/siteTemplate/overlayScrollbars/jquery.overlayScrollbars.min.js"></script>*@
     <!-- AdminLTE App -->
     <script src="~/js/siteTemplate/Adminlte/adminlte.js"></script>
-    <script src="~/lib/limonte-sweetalert2/sweetalert2.all.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false);
     <script>
      $(document).ready(function () {
 
-      $("li.nav-item").click(function (e) {
+      @*$("li.nav-item").click(function (e) {
 
           var tag = $(this).find("span.expand-state.pull-left")[0].children[0];
           var ul = $(this).children().eq(1);
@@ -304,14 +278,9 @@
                   $(tag).removeClass("fa fa-chevron-down").addClass('@chevron');
               }
         /*  e.stopPropagation();*/
+    });*@
     });
-    });
 
-
-
-        function pageLoad() {
-            alert('@CultureInfo.CurrentCulture.Name');
-        }
         function setLang(lang) {
         var currentCulture = '@CultureInfo.CurrentCulture.Name';
         if (currentCulture !== lang) {

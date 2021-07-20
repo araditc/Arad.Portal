@@ -148,6 +148,9 @@
 	<string key="tbl_Routes">
 		<value>Routes</value>
 	</string>
+	<string key="tbl_ClientAddress">
+		<value>Client Address</value>
+	</string>
 	<string key="tbl_FirstPage">
 		<value>First</value>
 	</string>
@@ -741,6 +744,9 @@
 	</string>
 	<string key="Permission_Routes">
 		<value>Routes</value>
+	</string>
+	<string key="Permission_ClientAddress">
+		<value>Client Address</value>
 	</string>
 	<string key="Role_Name">
 		<value>RoleName</value>

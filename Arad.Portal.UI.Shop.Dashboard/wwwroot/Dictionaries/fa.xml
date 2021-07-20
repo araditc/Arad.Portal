@@ -145,6 +145,9 @@
 	<string key="tbl_Routes">
 		<value>مسیرها</value>
 	</string>
+	<string key="tbl_ClientAddress">
+		<value>آدرس کلاینت</value>
+	</string>
 	<string key="tbl_FirstPage">
 		<value>اولین</value>
 	</string>
@@ -766,6 +769,9 @@
 	</string>
 	<string key="Permission_Routes">
 		<value>مسیرها</value>
+	</string>
+	<string key="Permission_ClientAddress">
+		<value>آدرس کلاینت</value>
 	</string>
 	<string key="Role_Name">
 		<value>نام نقش</value>
