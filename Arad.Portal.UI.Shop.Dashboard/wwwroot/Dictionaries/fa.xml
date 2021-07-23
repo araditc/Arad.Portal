@@ -173,6 +173,40 @@
 	</string>
 	<!--End [Enum Descriptions]-->
   <!--START [Allert And Message]-->
+  <string key="AlertAndMessage_Error">
+    <value>خطا</value>
+  </string>
+  <string key="AlertAndMessage_UserNameRequired">
+    <value>لطفا نام کاربری را وارد کنید.</value>
+  </string>
+  <string key="AlertAndMessage_NameRequired">
+    <value>لطفا نام کاربر را وارد کنید.</value>
+  </string>
+  <string key="AlertAndMessage_LastNameRequired">
+    <value>لطفا نام خانوادگی را وارد کنید.</value>
+  </string>
+  <string key="AlertAndMessage_PhonenumberRequired">
+    <value>لطفا شماره موبایل را وارد نمایید.</value>
+  </string>
+  <string key="AlertAndMessage_UserRoleRequired">
+    <value>لطفانقش کاربر را انتخاب کنید.</value>
+  </string>
+  <string key="AlertAndMessage_PasswordRequired">
+    <value>لطفا کلمه غبور را وارد کنید.</value>
+  </string>
+  <string key="AlertAndMessage_PasswordValidation">
+    <value>پسورد باید ترکیبی از حروف وعدد باشد.</value>
+  </string>
+  <string key="AlertAndMessage_RePasswordRequired">
+    <value> لطفا تکرار پسورد را وارد کنید.</value>
+  </string>
+  <string key="AlertAndMessage_PasswordRepassWordCompare">
+    <value>کلمه عبور و تکرار کلمه عبور باید یکسان باشند.</value>
+  </string>
+  
+  <string key="AlertAndMessage_MinLength">
+    <value>طول 0 نیاید کمتر از 1 باشد.</value>
+  </string>
 	<string key="AlertAndMessage_FillEssentialFields">
 		<value>لطفا فیلدهای ضروری تکمیل گردد.</value>
 	</string>
@@ -803,6 +837,12 @@
 	<string key="ActivationState">
 		<value>وضعیت</value>
 	</string>
+  <string key="Active">
+    <value>فعال</value>
+  </string>
+  <string key="InActive">
+    <value>غیر فعال</value>
+  </string>
 	<string key="User_Roles">
 		<value>نقش ها</value>
 	</string>

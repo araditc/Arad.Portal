@@ -1,0 +1,134 @@
+﻿@model Arad.Portal.DataLayer.Models.User.UserDTO
+
+@{
+    var alert = Language.GetString("AlertAndMessage_GotIt");
+    var error = Language.GetString("AlertAndMessage_Error");
+}
+
+
+<div class="row">
+    <div class="col-md-10 offset-md1">
+        <div class="card card-primary" id="editUserCard">
+            <div class="card-header">
+                <h3 class="card-title">@Language.GetString("User_Edit")</h3>
+            </div>
+            <form id="editUserFrm" asp-action="EditUser">
+                <div class="card-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="UserName" class="control-label"></label>
+                        <input asp-for="UserName" class="form-control" />
+                        <span data-val-result="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="IsSystemAccount" /> @Html.DisplayNameFor(model => model.IsSystemAccount)
+                        </label>
+                    </div>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="IsDomainAdmin" /> @Html.DisplayNameFor(model => model.IsDomainAdmin)
+                        </label>
+                    </div>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PhoneNumber" class="control-label"></label>
+                        <input asp-for="PhoneNumber" class="form-control" />
+                        <input id="hidePhone" type="hidden" value="" name="FullMobile" />
+                        <span data-val-result="PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FirstName" class="control-label"></label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span data-val-result="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LastName" class="control-label"></label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span data-val-result="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="UserRoleId" class="control-label"></label>
+                        <select asp-for="UserRoleId" asp-items="@(new SelectList(Model.Roles,"Id","Title"))">
+                        </select>
+                        <span data-val-result="UserRoleId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="form-group">
+                        <input type="submit" value="@Language.GetString("btn_Edit")" class="btn btn-block btn-success" />
+                        <a asp-action="Index" class="btn btn-block btn-default">@Language.GetString("btn_Back")</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#editUserFrm").submit(function (e) {
+                    debugger;
+        e.preventDefault();
+        var frm = document.getElementById('editUserFrm');
+        var form = new FormData(frm);
+        form.append("FullMobile", $("#hidePhone").val());
+
+    $.ajax({
+        url: '@Url.Action("EditUser")',
+        type: 'Post',
+        data: values,
+        beforeSend: function() {
+            AddLoading($("#editUserCard"));
+        },
+        success: function (result) {
+            debugger;
+            var spanErrorList = $('#edit span[data-val-result]');
+
+            spanErrorList.html("");
+            spanErrorList.parent().removeClass("has-error");
+            if (result.status === "success") {
+                toastr.success(result.message);
+            } else if (result.status === "error") {
+
+                if (spanErrorList.length > 1) {
+                    spanErrorList.each(function() {
+                        $(this).html("");
+                        $(this).parent().removeClass("has-error");
+                    });
+                }
+
+                if (result.modelStateErrors !== null) {
+
+                    result.modelStateErrors.forEach(function(value, index) {
+
+                        $("#edit").find('[data-val-result=' + value.key + ']')
+                            .html(value.errorMessage);
+                        $("#edit").find('[data-val-result=' + value.key + ']').parent()
+                            .addClass("has-error");
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        text: result.message,
+                        confirmButtonText:
+                            '<i class="fa fa-thumbs-up"></i> @alert',
+                    });
+                }
+            }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert("@error");
+            alert(xhr.status);
+            alert(thrownError);
+        },
+        complete: function() {
+            removeLoading($("#editUserCard"));
+        }
+    });
+});
+</script>

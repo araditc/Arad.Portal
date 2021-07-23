@@ -10,10 +10,11 @@
     @if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
     {
         <link href="~/css/siteTemplate/rtl/form.css" rel="stylesheet" />
-    }else
-            {
-<link href="~/css/siteTemplate/ltr/form.css" rel="stylesheet" />
-            }
+    }
+    else
+    {
+        <link href="~/css/siteTemplate/ltr/form.css" rel="stylesheet" />
+    }
 
     <link href="~/css/data-grid.css" rel="stylesheet" />
     <link href="~/lib/intl-tel-input/css/intlTelInput.css" rel="stylesheet" />
@@ -242,16 +243,16 @@
                     <button id="delete" type="button" class="btn btn-danger btn-sm btn-modal-body"
                             data-dismiss="modal">
                         @Language.GetString("Delete")
-                        </button>
-                        <button type="button" class="btn btn-outline-danger btn-sm btn-modal-body"
-                                data-dismiss="modal" style="margin-left:5px">
-                            @Language.GetString("Cancel")
-                            </button>
-                        </div>
-                    </div>
+                    </button>
+                    <button type="button" class="btn btn-outline-danger btn-sm btn-modal-body"
+                            data-dismiss="modal" style="margin-left:5px">
+                        @Language.GetString("Cancel")
+                    </button>
                 </div>
             </div>
-        }
+        </div>
+    </div>
+}
 
 @if (@Model["Remove"])
 {
@@ -1106,3 +1107,7 @@
         }
     </script>
 }
+
+
+
+

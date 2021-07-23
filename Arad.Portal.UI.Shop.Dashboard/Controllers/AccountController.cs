@@ -199,31 +199,42 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return View(result);
         }
 
-
-        [HttpGet]
-        public async Task<IActionResult> RoleList()
+        private List<RoleListView>  RoleList()
         {
-            JsonResult result;
+            var result = new List<RoleListView>();
             try
             {
-                var pagedItems = await _roleRepository.List("");
-                var roles = pagedItems.Items.Select(_ => new RoleListView()
+                var pagedItems =_roleRepository.List("");
+                result = pagedItems.Result.Items.Select(_ => new RoleListView()
                 {
                     Title = _.RoleName,
                     Id = _.RoleId,
-                    IsSelected = false,
                     IsActive = _.IsActive
                 }).ToList();
-                result = new JsonResult(new { Status = "success", Data = roles });
+                
             }
             catch (Exception e)
             {
-                result = new JsonResult(new { Status = "error" });
+               
             }
             return result;
         }
 
+        public async  Task<IActionResult> AddUser()
+        {
+            var model = new RegisterUserModel();
+            var list = await _roleRepository.List("");
+            model.Roles = list.Items.Select(_ => new RoleListView()
+            {
+                Title = _.RoleName,
+                Id = _.RoleId,
+            }).ToList();
+            model.Roles = RoleList();
+            return View(model);
+        }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddUser([FromForm] RegisterUserModel model)
         {
             List<ClientValidationErrorModel> errors = new List<ClientValidationErrorModel>();
@@ -321,18 +332,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetUser(string id)
+        public async Task<IActionResult> EditUser(string id)
         {
-            JsonResult result;
+            var model = new UserDTO();
             try
             {
                 var userDb = await _userManager.FindByIdAsync(id);
-
-                if (userDb == null)
-                {
-                   result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_NoUserWasFound") });
-                }
-                var user = new UserDTO()
+                
+                model = new UserDTO()
                 {
                     UserId = userDb.Id.ToString(),
                     PhoneNumber = userDb.PhoneNumber.Substring(2, 10),
@@ -346,25 +353,21 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 };
 
                 var list = await _roleRepository.List("");
-                var roles = list.Items.Select(_ => new RoleListView()
+                model.Roles = list.Items.Select(_ => new RoleListView()
                 {
                     Title = _.RoleName,
-                    Id = _.RoleId,
-                    IsSelected = user.UserRoleId == _.RoleId
+                    Id = _.RoleId
                 }).ToList();
-
-                var data = new { User = user, Roles = roles };
-
-               result = new JsonResult(new { Status = "success", Data = data });
             }
             catch (Exception e)
             {
-               result =new  JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
+               
             }
-            return result;
+            return View(model);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(UserEdit model)
         {
             List<ClientValidationErrorModel> errors = new List<ClientValidationErrorModel>();

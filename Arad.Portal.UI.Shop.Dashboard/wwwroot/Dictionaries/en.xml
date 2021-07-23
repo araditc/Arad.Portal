@@ -176,6 +176,40 @@
 	</string>
 	<!--End [Enum Descriptions]-->
 	<!--START [Allert And Message]-->
+  <string key="AlertAndMessage_Error">
+    <value>error</value>
+  </string>
+  <string key="AlertAndMessage_UserNameRequired">
+    <value>Please fill username.</value>
+  </string>
+  <string key="AlertAndMessage_NameRequired">
+    <value>Please fill Name.</value>
+  </string>
+  <string key="AlertAndMessage_LastNameRequired">
+    <value>Please fill LastName.</value>
+  </string>
+  <string key="AlertAndMessage_PhonenumberRequired">
+    <value>Please fill PhoneNumber.</value>
+  </string>
+  <string key="AlertAndMessage_UserRoleRequired">
+    <value>Please Select UserRole.</value>
+  </string>
+  <string key="AlertAndMessage_PasswordRequired">
+    <value>Please Fill Password.</value>
+  </string>
+  <string key="AlertAndMessage_PasswordValidation">
+    <value>Password have to be mixed of characters and numbers.</value>
+  </string>
+  <string key="AlertAndMessage_RePasswordRequired">
+    <value>Please fill repassword.</value>
+  </string>
+  <string key="AlertAndMessage_PasswordRepassWordCompare">
+    <value>Password and Repassword should be matched.</value>
+  </string>
+  
+  <string key="AlertAndMessage_MinLength">
+    <value>0 length dont have to be less than 1.</value>
+  </string>
 	<string key="AlertAndMessage_FillEssentialFields">
 		<value>Please Fill Essential Fields.</value>
 	</string>
@@ -778,6 +812,12 @@
 	<string key="ActivationState">
 		<value>State</value>
 	</string>
+  <string key="Active">
+    <value>Active</value>
+  </string>
+  <string key="InActive">
+    <value>InActive</value>
+  </string>
 	<string key="User_Roles">
 		<value>Roles</value>
 	</string>

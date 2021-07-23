@@ -1,49 +1,60 @@
-﻿using Arad.Portal.DataLayer.Models.Validator;
+﻿using Arad.Portal.DataLayer.Models.Role;
+using Arad.Portal.DataLayer.Models.Validator;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Arad.Portal.GeneralLibrary.Utilities;
 using System.Security.AccessControl;
 using System.Text;
+using Arad.Portal.GeneralLibrary.CustomAttributes;
 
 namespace Arad.Portal.DataLayer.Models.User
 {
     public class RegisterUserModel
     {
-        //public RegisterUserModel()
-        //{
-        //    UserRoles = new();
-        //}
-        [Required(ErrorMessage = "ورود نام کاربری الزامی می باشد.")]
-        [MinLength(3, ErrorMessage = "طول نام کاربری نباید کم تر از 3 کاراکتر باشد.")]
+        public RegisterUserModel()
+        {
+            Roles = new List<RoleListView>();
+        }
+        
+        [CustomErrorMessage("AlertAndMessage_UserNameRequired")]
+        [CustomMinLength(3, "AlertAndMessage_MinLength")]
         public string UserName { get; set; }
 
-        [Required(ErrorMessage = "لطفا نام کاربر را وارد نمایید.")]
+        [CustomErrorMessage("AlertAndMessage_NameRequired")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "لطفا نام خانوادگی کاربر را وارد نمایید.")]
+        [CustomErrorMessage("AlertAndMessage_LastName")]
         public string LastName { get; set; }
 
+        public string FatherName { get; set; }
+
+       
+        public Gender Gender { get; set; }
+
         [MobilePhoneValidator]
-        [Required(ErrorMessage = "لطفا شماره موبایل را وارد نمایید.")]
+        [CustomErrorMessage("AlertAndMessage_PhoneNumberRequired")]
         public string PhoneNumber { get; set; }
 
         public string FullMobile { get; set; }
-
-        [Required(ErrorMessage = "وضعیت کاربر را مشخص نمایید.")]
+       
         public bool IsActive { get; set; } = true;
 
-        [Required(ErrorMessage = "لطفا برای کاربر نقشی را انتخاب نمایید.")]
+        [CustomErrorMessage("AlertAndMessage_UserRoleRequired")]
         public string UserRoleId { get; set; }
 
         [DataType(DataType.Password)]
-        [Required(ErrorMessage = "لطفا رمز عبور را وارد نمایید.")]
-        [RegularExpression("^(?=.*[A-Za-z])(?=.*[0-9]).{4,}$", ErrorMessage = "پسورد باید ترکیبی از حروف وعدد باشد")]
-        [MinLength(6, ErrorMessage = "طول پسورد نباید کم تر از 6 کاراکتر باشد.")]
+        [CustomErrorMessage("AlertAndMessage_PasswordRequired")]
+        [CustomRegularExpression("^(?=.*[A-Za-z])(?=.*[0-9]).{4,}$", "AlertAndMessage_PasswordValidation")]
+       
+        [CustomMinLength(6, "AlertAndMessage_MinLength")]
         public string Password { get; set; }
 
-        [Required(ErrorMessage = "تکرار کلمه عبور الزامی می باشد.")]
-        [Compare("Password",ErrorMessage = " کلمه عبور و تکرار کلمه عبور باید یکسان باشند. ")]
+        [CustomErrorMessage("AlertAndMessage_RePasswordRequired")]
+        [CustomCompare("Password", "AlertAndMessage_PasswordRepassWordCompare")]
         public string RePassword { get; set; }
-       
+
+        public List<RoleListView> Roles { get; set; }
+
     }
 }

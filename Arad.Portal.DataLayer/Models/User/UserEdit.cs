@@ -12,7 +12,7 @@ namespace Arad.Portal.DataLayer.Models.User
 {
     public class UserEdit
     {
-        [BsonRepresentation(BsonType.ObjectId)]
+       
         [Required(ErrorMessage = "شناسه کاربر را مشخص نمایید")]
         public string Id { get; set; }
 

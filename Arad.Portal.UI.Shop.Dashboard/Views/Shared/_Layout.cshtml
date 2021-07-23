@@ -261,7 +261,7 @@
     <script src="~/js/siteTemplate/Adminlte/adminlte.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false);
-    <script>
+<script>
      $(document).ready(function () {
 
       @*$("li.nav-item").click(function (e) {
@@ -279,6 +279,8 @@
               }
         /*  e.stopPropagation();*/
     });*@
+
+
     });
 
         function setLang(lang) {
@@ -295,9 +297,25 @@
             });
         }
     }
+    function getLoadingClass() {
+            if (@direction == "rtl") {
+            cls = "fa fa-refresh fa-spin";
+        } else {
+                cls = "fas fa-2x fa-sync-alt";
+        }
+        return cls;
+        }
+    function AddLoading(cardElement) {
+        var cls = getLoadingClass();
+        $(cardElement).append("<div class='overlay'>" +
+            "<i class='" + cls + "'></i></div>");
+    } 
+    function removeLoading(cardElement) {
+        $(cardElement).find(".overlay").remove();
+    }
+        
 
-
-    </script>
+</script>
 </body>
 </html>
 

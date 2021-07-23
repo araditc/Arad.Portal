@@ -6,6 +6,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Arad.Portal.GeneralLibrary.CustomAttributes;
+using Arad.Portal.DataLayer.Models.Role;
 
 namespace Arad.Portal.DataLayer.Models.User
 {
@@ -16,28 +18,30 @@ namespace Arad.Portal.DataLayer.Models.User
             Addresses = new();
             FavoriteList = new();
             DomainId = new();
+            Roles = new();
         }
 
-        [Required(ErrorMessage = "شناسه کاربر را مشخص نمایید")]
         public string UserId { get; set; }
+
+        [CustomErrorMessage("AlertAndMessage_UserNameRequired")]
         public string UserName { get; set; }
         public bool IsSystemAccount { get; set; }
         public bool IsDomainAdmin { get; set; }
         public bool IsActive { get; set; }
 
         [MobilePhoneUserEditValidator]
-        [Required(ErrorMessage = "لطفا شماره موبایل را وارد نمایید.")]
+        [CustomErrorMessage("AlertAndMessage_PhonenumberRequired")]
         public string PhoneNumber { get; set; }
 
-        [Required(ErrorMessage = "لطفا نام کاربر را وارد نمایید.")]
+        [CustomErrorMessage("AlertAndMessage_PhonenumberRequired")]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "لطفا نام خانوادگی کاربر را وارد نمایید.")]
+        [CustomErrorMessage("AlertAndMessage_LastNameRequired")]
         public string LastName { get; set; }
         public Profile UserProfile { get; set; }
         public List<Address> Addresses { get; set; }
 
-        [Required(ErrorMessage = "لطفا برای کاربر نقشی را انتخاب نمایید.")]
+        [CustomErrorMessage("AlertAndMessage_UserRoleRequired")]
         public string UserRoleId { get; set; }
         public OneTimePass Otp { get; set; }
         public bool IsDeleted { get; set; }
@@ -47,6 +51,8 @@ namespace Arad.Portal.DataLayer.Models.User
         public string CreatorId { get; set; }
         public string CreatorUserName { get; set; }
         public DateTime LastLoginDate { get; set; }
-        
+
+        public List<RoleListView> Roles { get; set; }
+
     }
 }
