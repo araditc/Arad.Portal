@@ -4,8 +4,10 @@
 @{
     Layout = null;
 }
+<div class="card">
 
-@{
+</div>
+
     <div id="page-data" data-current="@Model.CurrentPage" data-total="@Model.Items" data-size="@Model.PageSize">
         @if (Model.Items.Count != 0)
         {
@@ -82,5 +84,5 @@
             <div class="empty text-center">@Language.GetString("AlertAndMessage_NotifyEmptyList")</div>
         }
     </div>
-}
+
 

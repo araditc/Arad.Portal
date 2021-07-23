@@ -71,7 +71,21 @@
 </div>
 
 <script>
-    $("#editUserFrm").submit(function (e) {
+    $(document).ready(function () {
+        var input = document.querySelector("#PhoneNumber");
+
+        window.intlTelInput(input,
+            {
+                initialCountry: "IR",
+                placeholderNumberType: "MOBILE",
+                separateDialCode: true,
+                utilsScript: "../../lib/intl-tel-input/js/utils.js",
+                nationalMode: true,
+                hiddenInput: "FullMobile"
+            });
+
+
+         $("#editUserFrm").submit(function (e) {
                     debugger;
         e.preventDefault();
         var frm = document.getElementById('editUserFrm');
@@ -131,4 +145,6 @@
         }
     });
 });
+    });
+
 </script>

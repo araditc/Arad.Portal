@@ -46,12 +46,7 @@
     }
 </div>
 
-@{
-    if (@Model["Add"])
-    {
-        @await Component.InvokeAsync("AddUserComponent")
-    }
-}
+
 @if (@Model["List"])
 {
     <div id="search" class="box-container collapse">
@@ -133,39 +128,27 @@
 @{
     if (@Model["List"])
     {
-        <div class="table">
-            <div class="table-head d-none d-lg-block">
-                <div class="table-row">
-                    <div class="row m-0">
-                        <div class="table-col col-md-1">
-                            <span>@Language.GetString("tbl_RowName")</span>
-                        </div>
-                        <div class="table-col col-md-2">
-                            <span>@Language.GetString("User_UserName")</span>
-                        </div>
-                        <div class="table-col col-md-2">
-                            <span>@Language.GetString("User_FullName")</span>
-                        </div>
-                        <div class="table-col col-md-2">
-                            <span>@Language.GetString("CreationDate")</span>
-                        </div>
-                        <div class="table-col col-md-2">
-                            <span>@Language.GetString("User_PhoneNumber")</span>
-                        </div>
-                        <div class="table-col col-md-1">
-                            <span>@Language.GetString("ActivationState")</span>
-                        </div>
-                        <div class="table-col col-md-2">
-                            <span></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="card">
+            <div class="card-body" id="userListCard">
+                <table id="userListTbl" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>@Language.GetString("tbl_RowName")</th>
+                            <th>@Language.GetString("User_UserName")</th>
+                            <th>@Language.GetString("User_FullName")</th>
+                            <th>@Language.GetString("CreationDate")</th>
+                            <th>@Language.GetString("User_PhoneNumber")</th>
+                            <th>@Language.GetString("ActivationState")</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="table">
 
-            <div id="table" class="table-body">
-
+                    </tbody>
+                </table>
+               
             </div>
-            @await Component.InvokeAsync("LoadingGridData")
+          
             <ul id="pagination" class="pagination-sm"></ul>
         </div>
     }
@@ -174,10 +157,10 @@
 @if (@Model["Details"])
 {
     <!-- Modal Edit -->
-    <div id="editModal" class="modal fade " role="dialog">
-        <div class="modal-dialog">
+    <!--<div id="editModal" class="modal fade " role="dialog">
+        <div class="modal-dialog">-->
             <!-- Modal content-->
-            <div class="modal-content">
+            <!--<div class="modal-content">
                 <a role="button" class="modal-close" data-dismiss="modal"></a>
                 <div class="modal-header">
                     <h6 class="modal-title"> @Language.GetString("User_Edit") </h6>
@@ -187,7 +170,7 @@
                         <div class="form-row text-right">
                             <div class="row">
                                 <input type="hidden" id="UserId" />
-                                @*<input id="hdnFullMobile" type="hidden" value="" name="FulMobile" />*@
+                               
                                 <div class="form-group col-md-6 col-lg-6">
                                     <label for="FirstName">@Language.GetString("User_FirstName") </label>
                                     <input type="text" class="form-control" id="FirstName" name="FirstName" placeholder=" ">
@@ -224,7 +207,7 @@
             </div>
 
         </div>
-    </div>
+    </div>-->
 }
 
 @if (@Model["Remove"])
@@ -308,10 +291,6 @@
         <script>
             $(document).ready(function () {
 
-                //var formData = new FormData();
-                //formData.append("PageSize", pageSize);
-                //formData.append("CurrentPage", 1);
-
                 var $inputs = $('#filter :input');
                 var values = {};
                 $inputs.each(function () {
@@ -320,7 +299,7 @@
                 values['PageSize'] = pageSize;
                 values['CurrentPage'] = 1;
 
-                list(values);
+                list(values, $("#userListCard"));
 
                 $(document).on("click",
                     ".page-link",
@@ -348,7 +327,7 @@
                         values1['PageSize'] = pageSize;
                         values1['CurrentPage'] = $pagination.twbsPagination('getCurrentPage');
                         values1['UserRoles'] = rolesSelect;
-                        list(values1);
+                        list(values1, $("#userListCard"));
                     });
 
                 $("#filter").submit(function (e) {
@@ -373,7 +352,7 @@
                     values2['CurrentPage'] = 1;
                     values2['UserRoles'] = rolesSelect;
                     $("#loading").css("display", "block");
-                    list(values2);
+                    list(values2, $("#userListCard"));
                 });
 
                 $(document).on("click", "#reset", function (e) {
@@ -386,382 +365,6 @@
         </script>
     }
 
-    @if (@Model["Add"])
-    {
-        <script>
-            $(document).ready(function () {
-
-                var input = document.querySelector("#PhoneNumber");
-
-                window.intlTelInput(input,
-                    {
-                        initialCountry: "IR",
-                        placeholderNumberType: "MOBILE",
-                        separateDialCode: true,
-                        utilsScript: "../../lib/intl-tel-input/js/utils.js",
-                        nationalMode: true,
-                        hiddenInput: "FullMobile"
-                    });
-
-                //$("#add").on('show.bs.collapse', function() {
-                //    ListRoles();
-                //});
-
-                ListRoles();
-
-                $("#addUser").submit(function (e) {
-
-                    e.preventDefault();
-                    debugger;
-                    var rolesSelect = [];
-                    var rolesCheck = $("#addUser #roles input[type='radio']");
-
-                    rolesCheck.each(function (index) {
-
-                        if (rolesCheck[index].checked) {
-
-                            var id = rolesCheck[index].id;
-                            rolesSelect.push(id);
-                        }
-                    });
-
-                    var $inputs = $('#addUser :input');
-                    var valuesForm = {};
-                    $inputs.each(function() {
-                        valuesForm[this.name] = $(this).val();
-                    });
-
-                    valuesForm['FullMobile'] = $('input[name ="FullMobile"]').val();
-                    valuesForm['UserRoleId'] = rolesSelect;
-                    var active;
-                    if ($("input[name='IsActive']").is(":checked")=== true) {
-                        active = true;
-                    } else active = false;
-                    valuesForm['IsActive'] = active;
-
-                    $.ajax({
-                        url: '@Url.Action("AddUser")',
-                        type: 'Post',
-                        data: valuesForm,
-                        beforeSend: function() {
-                            $("#loading").css("display", "block");
-                        },
-                        success: function (result) {
-
-                            if (result.status === "success") {
-
-                                Swal.fire({
-                                    icon: 'success',
-                                    text: result.message,
-                                    confirmButtonText:
-                                        '<i class="fa fa-thumbs-up"></i> @alert',
-                                });
-                                var $inputs = $('#filter :input');
-                                var values2 = {};
-                                $inputs.each(function() {
-                                    values2[this.id] = $(this).val();
-                                });
-                                values2['PageSize'] = pageSize;
-                                values2['CurrentPage'] = $pagination.twbsPagination('getCurrentPage');
-                                list(values2);
-
-                            } else if (result.status === "error") {
-                                var spanErrorList = $('span[data-val-result]');
-
-                                if (spanErrorList.length > 0) {
-                                    spanErrorList.each(function() {
-                                        $(this).html("");
-                                        $(this).parent().removeClass("has-error");
-                                    });
-                                } else {
-                                    spanErrorList.html("");
-                                    spanErrorList.parent().removeClass("has-error");
-                                }
-
-                                if (result.modelStateErrors.length > 0) {
-                                    debugger;
-                                    result.modelStateErrors.forEach(function(value, index) {
-                                        $('[data-val-result=' + value.key + ']').html(value.errorMessage);
-                                        $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        text: result.message,
-                                        confirmButtonText:
-                                            '<i class="fa fa-thumbs-up"></i> @alert',
-                                    });
-                                }
-                            }
-
-                        },
-                        error: function(xhr, ajaxOptions, thrownError) {
-                            alert("error");
-                            alert(xhr.status);
-                            alert(thrownError);
-                        },
-                        complete: function() {
-                            $("#loading").css("display", "none");
-                        }
-                    });
-                });
-
-                function ListRoles() {
-
-                    $.ajax({
-                        url: '@Url.Action("RoleList")',
-                        type: 'Get',
-                        success: function(result) {
-                            if (result.status === "success") {
-
-                                var rolesHtml = '';
-                                var rolesHtmlFilter = '';
-                                var data = result.data;
-                                data.forEach(function (item) {
-
-                                    rolesHtml += '<div class="form-group col-xs-12 col-md-3 col-lg-2 table-check">' +
-                                        '<div class="custom-control custom-radio radio-right">' +
-                                        '<input type="radio" name="userRoleList" class="radio custom-control-input"  id="' +
-                                        item.id +
-                                        '" ' +
-                                        (item.isActive ? "" : "disabled") +
-                                        '>' +
-                                        '<label class="custom-control-label" style="position:initial;" for="' +
-                                        item.id +
-                                        '">' +
-                                        item.title +
-                                        '</label></div></div>';
-
-                                    rolesHtmlFilter +=
-                                        '<div class="form-group col-xs-12 col-md-3 col-lg-2 table-check">' +
-                                        '<div class="custom-control custom-radio radio-right">' +
-                                        '<input type="radio" name="userFilterRoleList" class="radio custom-control-input" id="f' +
-                                        item.id +
-                                        '" ' +
-                                        'name="' +
-                                        item.id +
-                                        '" ' +
-                                        '>' +
-                                        '<label class="custom-control-label" for="f' +
-                                        item.id +
-                                        '">' +
-                                        item.title +
-                                        '</label></div></div>';
-                                });
-
-                                $("#roles").html(rolesHtml);
-                                $("#rolesFilter").html(rolesHtmlFilter);
-
-                            } else if (result.status === "error") {
-
-                            }
-
-                        },
-                        error: function(xhr, ajaxOptions, thrownError) {
-                            alert("error");
-                            alert(xhr.status);
-                            alert(thrownError);
-                        },
-                        complete: function() {
-                        }
-                    });
-                }
-            });
-        </script>
-    }
-
-    @if (@Model["Details"])
-    {
-        <script>
-            $(document).ready(function () {
-                debugger;
-                var input = document.querySelector("#edit #PhoneNumber");
-
-                window.intlTelInput(input,
-                    {
-                        initialCountry: "IR",
-                        placeholderNumberType: "MOBILE",
-                        separateDialCode: true,
-                        utilsScript: "../../lib/intl-tel-input/js/utils.js",
-                        nationalMode: true,
-                        hiddenInput: "FullMobile"
-                    });
-
-                $(document).on("click",
-                    "#editRecord",
-                    function (e) {
-
-                        e.preventDefault();
-
-                        var id = $(this).data("id");
-                        var data = { Id: id };
-
-                        var spanErrorList = $('#edit span[data-val-result]');
-
-                        spanErrorList.html("");
-                        spanErrorList.parent().removeClass("has-error");
-
-                        $.ajax({
-                            url: '@Url.Action("GetUser")',
-                            type: 'Get',
-                            data: data,
-                            beforeSend: function() {
-                                $("#loading").css("display", "block");
-                            },
-                            success: function (result) {
-
-                                if (result.status === "success") {
-
-                                    var user = result.data.user;
-                                    $("#edit #UserId").val(user.userId);
-                                    $("#edit #FirstName").val(user.userProfile.firstName);
-                                    $("#edit #LastName").val(user.userProfile.lastName);
-                                    $("#edit #PhoneNumber").val(user.phoneNumber);
-
-                                    var roles = result.data.roles;
-
-                                    var html = '';
-
-                                    roles.forEach(function (item) {
-
-                                        html += '<div class="form-group col-xs-12 col-md-6 col-lg-4 table-check">' +
-                                            '<div class="custom-control custom-radio radio-right">' +
-                                            '<input type="radio" class="custom-control-input" id="r' +
-                                            item.id +
-                                            '" name="' +
-                                            item.id +
-                                            '"' +
-                                            (item.isSelected === true ? 'checked>' : '>') +
-                                            '<label class="custom-control-label" style="position:initial;" for="r' +
-                                            item.id +
-                                            '">' +
-                                            item.title +
-                                            '</label></div></div>';
-                                    });
-
-                                    $("#edit #roles").html(html);
-                                    $("#editModal").modal("show");
-
-                                } else {
-                                    toastr.error(result.message);
-                                }
-                            },
-                            error: function (xhr, ajaxOptions, thrownError) {
-                                alert("error");
-                                alert(xhr.status);
-                                alert(thrownError);
-                            },
-                            complete: function() {
-                                $("#loading").css("display", "none");
-                            }
-                        });
-                    });
-
-            });
-        </script>
-    }
-
-    @if (@Model["Edit"])
-    {
-        <script>
-            $(document).ready(function() {
-                debugger;
-                $("#edit").submit(function (e) {
-                    debugger;
-                    e.preventDefault();
-
-                    var rolesSelect = [];
-                    var treesCheck = $("#edit input[type='checkbox']");
-
-                    treesCheck.each(function(index) {
-                        if (treesCheck[index].checked) {
-
-                            var id = $(treesCheck[index]).attr("name");
-                            rolesSelect.push(id);
-                        }
-                    });
-
-                    var $inputs = $('#edit :input');
-                    var values = {};
-                    $inputs.each(function() {
-                        values[this.name] = $(this).val();
-                    });
-
-                    values['FullMobile'] = $('#edit input[name ="FullMobile"]').val();
-                    values['UserRoles'] = rolesSelect;
-                    values['id'] = $("#edit #UserId").val();
-
-                    $.ajax({
-                        url: '@Url.Action("Edit")',
-                        type: 'Post',
-                        data: values,
-                        beforeSend: function() {
-                            $("#loading").css("display", "block");
-                        },
-                        success: function (result) {
-                            debugger;
-                            var spanErrorList = $('#edit span[data-val-result]');
-
-                            spanErrorList.html("");
-                            spanErrorList.parent().removeClass("has-error");
-                            if (result.status === "success") {
-
-                                $("#editModal").modal("hide");
-
-                                toastr.success(result.message);
-
-                                var $inputs = $('#filter :input');
-                                var values2 = {};
-                                $inputs.each(function() {
-                                    values2[this.id] = $(this).val();
-                                });
-                                values2['PageSize'] = pageSize;
-                                values2['CurrentPage'] = $pagination.twbsPagination('getCurrentPage');
-                                list(values2);
-
-                            } else if (result.status === "error") {
-
-                                if (spanErrorList.length > 1) {
-                                    spanErrorList.each(function() {
-                                        $(this).html("");
-                                        $(this).parent().removeClass("has-error");
-                                    });
-                                }
-
-                                if (result.modelStateErrors !== null) {
-
-                                    result.modelStateErrors.forEach(function(value, index) {
-
-                                        $("#edit").find('[data-val-result=' + value.key + ']')
-                                            .html(value.errorMessage);
-                                        $("#edit").find('[data-val-result=' + value.key + ']').parent()
-                                            .addClass("has-error");
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        text: result.message,
-                                        confirmButtonText:
-                                            '<i class="fa fa-thumbs-up"></i> @alert',
-                                    });
-                                }
-                            }
-
-                        },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            alert("error");
-                            alert(xhr.status);
-                            alert(thrownError);
-                        },
-                        complete: function() {
-                            $("#loading").css("display", "none");
-                        }
-                    });
-                });
-
-            });
-        </script>
-    }
 
     @if (@Model["Remove"])
     {
@@ -804,7 +407,7 @@
                                     });
                                     values2['PageSize'] = pageSize;
                                     values2['CurrentPage'] = $pagination.twbsPagination('getCurrentPage');
-                                    list(values2);
+                                    list(values2, $("#userListCard"));
 
                                     $("#removeModal").modal("hide");
                                     Swal.fire({
@@ -878,7 +481,7 @@
                                     });
                                     values2['PageSize'] = pageSize;
                                     values2['CurrentPage'] = $pagination.twbsPagination('getCurrentPage');
-                                    list(values2);
+                                    list(values2, $("#userListCard"));
 
                                     $("#removeModal").modal("hide");
                                     Swal.fire({
@@ -1038,7 +641,7 @@
         </script>
     }
 
-    <script>
+<script>
         $(document).ready(function() {
             $('#calenderStart').MdPersianDateTimePicker({
                 targetTextSelector: '#StartRegisterDate',
@@ -1055,16 +658,16 @@
         var $pagination = $('#pagination');
         var defaultOpts = {
             visiblePages: 5,
-            first: "اولین",
-            prev: "قبلی",
-            next: "بعدی",
-            last: "آخرین"
+            first: "@Language.GetString("tbl_FirstPage")",
+            prev: "@Language.GetString("tbl_PreviousPage")",
+            next: "@Language.GetString("tbl_NextPage")",
+            last: "@Language.GetString("tbl_LastPage")"
         };
 
-        function list(formData) {
+        function list(formData, cardDiv) {
 
             $("#table").html("");
-            //var data = { pageSize: pageSize, currentPage: currentPage };
+            
             console.log(formData);
             $.ajax({
                 url: "@Url.Action("List")",
@@ -1072,7 +675,7 @@
                 data: formData,
                 beforeSend: function () {
 
-                    $("#loading-data").css("display", "block");
+                    AddLoading(cardDiv);
                 },
                 success: function(result) {
 
@@ -1100,12 +703,11 @@
                     alert(thrownError);
                 },
                 complete: function() {
-                    $("#loading-data").css("display", "none");
-                    $("#loading").css("display", "none");
+                    removeLoading(cardDiv);
                 }
             });
         }
-    </script>
+</script>
 }
 
 

@@ -68,12 +68,26 @@
 
 
 <script>
-    $("#addUserFrm").submit(function(e) {
+    $(document).ready(function () {
+        var input = document.querySelector("#PhoneNumber");
+
+        window.intlTelInput(input,
+            {
+                initialCountry: "IR",
+                placeholderNumberType: "MOBILE",
+                separateDialCode: true,
+                utilsScript: "../../lib/intl-tel-input/js/utils.js",
+                nationalMode: true,
+                hiddenInput: "FullMobile"
+            });
+
+
+        $("#addUserFrm").submit(function(e) {
             e.preventDefault();
             var frm = document.getElementById('addUserFrm');
         var form = new FormData(frm);
         form.append("FullMobile", $("#hidePhone").val());
-      
+
             $.ajax({
                 url: $(this).attr('action'),
                 data: form,
@@ -133,4 +147,8 @@
                 }
             });
         });
+
+    }
+    );
+
 </script>
