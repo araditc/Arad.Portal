@@ -25,6 +25,8 @@ using Arad.Portal.DataLayer.Contracts.General.Notification;
 using Arad.Portal.DataLayer.Models.Notification;
 using Arad.Portal.DataLayer.Contracts.General.MessageTemplate;
 using Arad.Portal.GeneralLibrary.Utilities;
+using System.Collections.Specialized;
+using System.Web;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -156,31 +158,69 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<IActionResult> List([FromForm] UserSearchParams searchParam)
+        [HttpGet]
+        public async Task<IActionResult> List()
         {
+            var pageSize = 10;
+            var page = 1;
             var result = new PagedItems<UserListView>();
+           
             if (ModelState.IsValid)
             {
                 var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
+                ViewBag.Permissions = dicKey;
 
                 try
                 {
                     var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    PagedItems<UserDTO> data = _userExtension.UserFilters(searchParam, currentUserId);
+                    var query = _userManager.Users.Where(c => c.Id != currentUserId);
+
+                    NameValueCollection queryParams = HttpUtility.ParseQueryString(Request.QueryString.ToString());
+
+                    if (!string.IsNullOrWhiteSpace(queryParams["page"]))
+                    {
+                        page = Convert.ToInt32(queryParams["page"]);
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(queryParams["pageSize"]))
+                    {
+                        pageSize = Convert.ToInt32(queryParams["pageSize"]);
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(queryParams["role"]))
+                    {
+                        query = query.Where(c => c.UserRoleId == queryParams["role"]);
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(queryParams["name"]))
+                    {
+                        query = query.Where(c => c.Profile.FullName.ToLower().Contains(queryParams["name"].ToLower()) );
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(queryParams["userName"]))
+                    {
+                        query = query.Where(c => c.UserName.ToLower().Contains(queryParams["userName"].ToLower()));
+                    }
+
+
+                    long count = query.Count();
+
+                    var lst = query.OrderBy(x => x.CreationDate).ThenBy(x => x.Profile.LastName)
+                        .Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
                     result = new PagedItems<UserListView>()
                     {
-                        CurrentPage = data.CurrentPage,
-                        PageSize = data.PageSize,
-                        ItemsCount = data.ItemsCount,
-                        Items = data.Items.Select(_ => new UserListView()
+                        CurrentPage = page,
+                        PageSize = pageSize,
+                        ItemsCount = count,
+                        Items = lst.Select(_ => new UserListView()
                         {
-                            Id = _.UserId,
+                            Id = _.Id,
                             PhoneNumber = _.PhoneNumber,
                             IsActive = _.IsActive,
-                            Name = _.UserProfile.FirstName,
+                            Name = _.Profile.FirstName,
                             IsSystem = _.IsSystemAccount,
-                            LastName = _.UserProfile.LastName,
+                            LastName = _.Profile.LastName,
                             UserName = _.UserName,
                             CreateDate = _.CreationDate,
                             //persianCreateDate = _.CreationDate,
@@ -188,8 +228,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         }).ToList()
                     };
 
-
-                    ViewBag.Permissions = dicKey;
+                   
+                    var list = await _roleRepository.List("");
+                    ViewBag.Roles = list.Items.Select(_ => new RoleListView()
+                    {
+                        Title = _.RoleName,
+                        Id = _.RoleId,
+                    }).ToList();
                 }
                 catch (Exception e)
                 {
@@ -199,26 +244,26 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return View(result);
         }
 
-        private List<RoleListView>  RoleList()
-        {
-            var result = new List<RoleListView>();
-            try
-            {
-                var pagedItems =_roleRepository.List("");
-                result = pagedItems.Result.Items.Select(_ => new RoleListView()
-                {
-                    Title = _.RoleName,
-                    Id = _.RoleId,
-                    IsActive = _.IsActive
-                }).ToList();
+        //private List<RoleListView>  RoleList()
+        //{
+        //    var result = new List<RoleListView>();
+        //    try
+        //    {
+        //        var pagedItems =_roleRepository.List("");
+        //        result = pagedItems.Result.Items.Select(_ => new RoleListView()
+        //        {
+        //            Title = _.RoleName,
+        //            Id = _.RoleId,
+        //            IsActive = _.IsActive
+        //        }).ToList();
                 
-            }
-            catch (Exception e)
-            {
+        //    }
+        //    catch (Exception e)
+        //    {
                
-            }
-            return result;
-        }
+        //    }
+        //    return result;
+        //}
 
         public async  Task<IActionResult> AddUser()
         {
@@ -229,7 +274,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 Title = _.RoleName,
                 Id = _.RoleId,
             }).ToList();
-            model.Roles = RoleList();
             return View(model);
         }
 
@@ -517,7 +561,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ChangeActivation(string id, bool IsActive)
+        public async Task<IActionResult> ChangeActivation(string id)
         {
             JsonResult result;
             try
@@ -529,7 +573,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     result =  new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_NoUserWasFound") });
                 }
 
-                user.IsActive = IsActive;
+                user.IsActive = !user.IsActive;
 
                 var res = await _userManager.UpdateAsync(user);
 
@@ -630,7 +674,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                throw;
+                 throw;
             }
             return result;
         }

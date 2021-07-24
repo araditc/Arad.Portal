@@ -25,6 +25,24 @@
 	<string key="btn_Detail">
 		<value>جزییات</value>
 	</string>
+	<string key="btn_ChangePass">
+		<value>تغییر رمز عبور</value>
+	</string>
+	<string key="btn_Search">
+		<value>جستجو</value>
+	</string>
+	<string key="btn_Find">
+		<value>جستجو</value>
+	</string>
+	<string key="btn_Confirm">
+		<value>بله</value>
+	</string>
+	<string key="btn_NotConfirm">
+		<value>خیر</value>
+	</string>
+	<string key="btn_ChangeActivation">
+		<value>تغییر وضعیت</value>
+	</string>
 	<string key="treeView_Empty">
 		<value>بدون زیرمجموعه</value>
 	</string>
@@ -149,10 +167,10 @@
 		<value>آدرس کلاینت</value>
 	</string>
 	<string key="tbl_FirstPage">
-		<value>اولین</value>
+		<value>اول</value>
 	</string>
 	<string key="tbl_LastPage">
-		<value>آخرین</value>
+		<value>آخر</value>
 	</string>
 	<string key="tbl_PreviousPage">
 		<value>قبلی</value>
@@ -176,6 +194,12 @@
   <string key="AlertAndMessage_Error">
     <value>خطا</value>
   </string>
+	<string key="AlertAndMessage_Success">
+		<value>موفقیت</value>
+	</string>
+	<string key="AlertAndMessage_ChangePassSureness">
+		<value>برای تغییر رمز اطمینان دارید؟</value>
+	</string>
   <string key="AlertAndMessage_UserNameRequired">
     <value>لطفا نام کاربری را وارد کنید.</value>
   </string>
@@ -215,6 +239,15 @@
 	</string>
 	<string key="AlertAndMessage_DeletionSureness">
 		<value>آیا برای حذف اطمینان دارید؟</value>
+	</string>
+	<string key="AlertAndMessage_AreYouSure">
+		<value>مطمئن هستید؟</value>
+	</string>
+	<string key="AlertAndMessage_UserDeleteText">
+		<value>کاربر مربوطه حذف خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_UserRestoreText">
+		<value>کاربر مربوطه بازگزدانی خواهد شد.</value>
 	</string>
 	<string key="AlertAndMessage_CaptchaIsExpired">
 		<value>عبارت امنیتی صحیح نیست یا منقضی شده است.</value>
@@ -834,6 +867,9 @@
 	<string key="User_RePassword">
 		<value>تکرار رمز عبور</value>
 	</string>
+	<string key="User_FullName">
+		<value>نام و نام خانوادگی</value>
+	</string>
 	<string key="ActivationState">
 		<value>وضعیت</value>
 	</string>
@@ -854,15 +890,6 @@
 	</string>
 	<string key="User_Restore">
 		<value>بازگردانی کاربر</value>
-	</string>
-	<string key="User_FullName">
-		<value>نام و نام خانوادگی</value>
-	</string>
-	<string key="Active">
-		<value>فعال</value>
-	</string>
-	<string key="InActive">
-		<value>غیرفعال</value>
 	</string>
 	<string key="FromDate">
 		<value>از تاریخ</value>

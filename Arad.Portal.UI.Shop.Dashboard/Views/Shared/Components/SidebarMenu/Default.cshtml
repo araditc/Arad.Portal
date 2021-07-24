@@ -60,17 +60,17 @@
                     }
                     else
                     {
-            <li class="nav-item">
-                <a href="/@item.Link" class="nav-link">
-                    @if (!string.IsNullOrWhiteSpace(item.Icon))
-                    {
-                        <i class="nav-icon @item.Icon"></i>
-                    }
-                    <p>
-                        @Language.GetString(item.MenuTitle)
-                    </p>
-                </a>
-            </li>
+                            <li class="nav-item">
+                                <a href="/@item.Link" class="nav-link">
+                                    @if (!string.IsNullOrWhiteSpace(item.Icon))
+                                    {
+                                        <i class="nav-icon @item.Icon"></i>
+                                    }
+                                    <p>
+                                        @Language.GetString(item.MenuTitle)
+                                    </p>
+                                </a>
+                            </li>
                     }
                 }
             </ul>

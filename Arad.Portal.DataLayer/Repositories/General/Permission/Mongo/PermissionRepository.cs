@@ -309,6 +309,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
                         MenuId = _.PermissionId,
                         MenuTitle = GeneralLibrary.Utilities.Language.GetString("PermissionTitle_" + _.Title),
                         Icon = _.Icon,
+                        Link = _.ClientAddress,
                         Priority = _.Priority,
                         IsActive = _.ClientAddress != null && _.Routes.Contains(address),
                         Children = GetChildren(allMenues, _.PermissionId, address)
@@ -326,6 +327,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
                         MenuId = _.PermissionId,
                         MenuTitle = GeneralLibrary.Utilities.Language.GetString("PermissionTitle_" + _.Title),
                         Icon = _.Icon,
+                        Link = _.ClientAddress,
                         Priority = _.Priority,
                         IsActive = _.ClientAddress != null && _.Routes.Contains(address),
                         Children = GetChildren(menues, _.PermissionId, address)

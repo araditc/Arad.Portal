@@ -128,29 +128,9 @@
 @{
     if (@Model["List"])
     {
-        <div class="card">
-            <div class="card-body" id="userListCard">
-                <table id="userListTbl" class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>@Language.GetString("tbl_RowName")</th>
-                            <th>@Language.GetString("User_UserName")</th>
-                            <th>@Language.GetString("User_FullName")</th>
-                            <th>@Language.GetString("CreationDate")</th>
-                            <th>@Language.GetString("User_PhoneNumber")</th>
-                            <th>@Language.GetString("ActivationState")</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="table">
-
-                    </tbody>
-                </table>
-               
-            </div>
-          
-            <ul id="pagination" class="pagination-sm"></ul>
+        <div class="row" id="userListDiv">
         </div>
+       
     }
 }
 
