@@ -130,7 +130,7 @@
     {
         <div class="row" id="userListDiv">
         </div>
-       
+
     }
 }
 
@@ -139,8 +139,8 @@
     <!-- Modal Edit -->
     <!--<div id="editModal" class="modal fade " role="dialog">
         <div class="modal-dialog">-->
-            <!-- Modal content-->
-            <!--<div class="modal-content">
+    <!-- Modal content-->
+    <!--<div class="modal-content">
                 <a role="button" class="modal-close" data-dismiss="modal"></a>
                 <div class="modal-header">
                     <h6 class="modal-title"> @Language.GetString("User_Edit") </h6>
@@ -150,7 +150,7 @@
                         <div class="form-row text-right">
                             <div class="row">
                                 <input type="hidden" id="UserId" />
-                               
+
                                 <div class="form-group col-md-6 col-lg-6">
                                     <label for="FirstName">@Language.GetString("User_FirstName") </label>
                                     <input type="text" class="form-control" id="FirstName" name="FirstName" placeholder=" ">
@@ -624,7 +624,7 @@
         </script>
     }
 
-<script>
+    <script>
         $(document).ready(function() {
             $('#calenderStart').MdPersianDateTimePicker({
                 targetTextSelector: '#StartRegisterDate',
@@ -650,7 +650,7 @@
         function list(formData, cardDiv) {
 
             $("#table").html("");
-            
+
             console.log(formData);
             $.ajax({
                 url: "@Url.Action("List")",
@@ -690,7 +690,7 @@
                 }
             });
         }
-</script>
+    </script>
 }
 
 

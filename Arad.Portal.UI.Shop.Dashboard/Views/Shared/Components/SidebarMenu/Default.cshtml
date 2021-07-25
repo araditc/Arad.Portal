@@ -20,62 +20,63 @@
     }
 }
 <style>
-    .dirClassRtl{
-        direction : rtl;
+    .dirClassRtl {
+        direction: rtl;
     }
-    .dirClassLtr{
+
+    .dirClassLtr {
         direction: ltr;
     }
 </style>
 
-<div class="sidebar @(dir== "rtl" ? "dirClassLtr" : "")" >
-    <div class="@(dir == "rtl" ? "dirClassRtl" : "")">
-        <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                @foreach (var item in @Model)
-                {
-                    @if (item.Children.Count != 0)
-                    {
-                        <li class="nav-item  @(dir == "rtl" ? "has-treeview" : "")">
-                            <a href="#" class="nav-link active">
-                                @if (!string.IsNullOrWhiteSpace(item.Icon))
-                                {
-                                    <i class="nav-icon @item.Icon"></i>
-                                }
-                                <p>
-                                    @item.MenuTitle
-                                    <i class="right @(dir =="rtl" ? "fa" : "fas") fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                @foreach (var menu in item.Children)
-                                {
-                                    <li class="nav-item @(menu.Children.Count != 0 ? "has-treeview menu-open" : "")">
-                                        @await Component.InvokeAsync("InnerMenu", menu);
-                                    </li>
-                                }
-                            </ul>
-                        </li>
-
-                    }
-                    else
-                    {
-                            <li class="nav-item">
-                                <a href="/@item.Link" class="nav-link">
-                                    @if (!string.IsNullOrWhiteSpace(item.Icon))
-                                    {
-                                        <i class="nav-icon @item.Icon"></i>
-                                    }
-                                    <p>
-                                        @Language.GetString(item.MenuTitle)
-                                    </p>
-                                </a>
+@*<div class="sidebar @(dir== "rtl" ? "dirClassLtr" : "")" >
+    <div class="@(dir == "rtl" ? "dirClassRtl" : "")">*@
+<nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        @foreach (var item in @Model)
+        {
+            @if (item.Children.Count != 0)
+            {
+                <li class="nav-item  @(dir == "rtl" ? "has-treeview" : "")">
+                    <a href="#" class="nav-link active">
+                        @if (!string.IsNullOrWhiteSpace(item.Icon))
+                        {
+                            <i class="nav-icon @item.Icon"></i>
+                        }
+                        <p>
+                            @item.MenuTitle
+                            <i class="right @(dir =="rtl" ? "fa" : "fas") fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @foreach (var menu in item.Children)
+                        {
+                            <li class="nav-item @(menu.Children.Count != 0 ? "has-treeview menu-open" : "")">
+                                @await Component.InvokeAsync("InnerMenu", menu);
                             </li>
-                    }
-                }
-            </ul>
-        </nav>
-    </div>
-</div>
+                        }
+                    </ul>
+                </li>
+
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a href="/@item.Link" class="nav-link">
+                        @if (!string.IsNullOrWhiteSpace(item.Icon))
+                        {
+                            <i class="nav-icon @item.Icon"></i>
+                        }
+                        <p>
+                            @Language.GetString(item.MenuTitle)
+                        </p>
+                    </a>
+                </li>
+            }
+        }
+    </ul>
+</nav>
+    @*</div>
+</div>*@
 
 

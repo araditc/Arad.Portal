@@ -12,6 +12,7 @@
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
     {
         direction = "rtl";
+        ViewBag.dir = "rtl";
         bodyClass = "hold-transition sidebar-mini";
         ulNavbarLinkClass = "navbar-nav mr-auto";
         floatlr = "float-sm-left";
@@ -23,6 +24,7 @@
     else
     {
         direction = "ltr";
+        ViewBag.dir = "ltr";
         bodyClass = "hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed";
         ulNavbarLinkClass = "navbar-nav ml-auto";
         floatlr = "float-sm-right";
@@ -60,7 +62,8 @@
                     margin-left: 0;
                 }
             </style>*@
-<link href="~/css/persian-datepicker.min.css" rel="stylesheet" />
+        <link href="~/lib/limonte-sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+        <link href="~/css/persian-datepicker.min.css" rel="stylesheet" />
     }
 
 
@@ -69,6 +72,25 @@
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="~/lib//overlayscrollbars/css/OverlayScrollbars.min.css">
     @RenderSection("Styles", required: false)
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @if (direction == "rtl")
+    {
+        <script src="~/js/siteTemplate/jqueryui1.11.4/jquery-ui.min.js"></script>
+        @*<script src="~/js/siteTemplate/bootstrap4rtl/bootstrap.min.js"></script>*@
+    }
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Tempusdominus Bootstrap 4 -->
+    @*<script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>*@
+    <!-- overlayScrollbars -->
+    @*<script src="~/js/siteTemplate/overlayScrollbars/jquery.overlayScrollbars.min.js"></script>*@
+    <!-- AdminLTE App -->
+    <script src="~/js/siteTemplate/Adminlte/adminlte.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/limonte-sweetalert2/sweetalert2.all.min.js"></script>
+    <script src="~/lib/limonte-sweetalert2/sweetalert2.all.js"></script>
+    @await RenderSectionAsync("Scripts", required: false);
 
 </head>
 <body class="@bodyClass" dir="@direction">
@@ -178,25 +200,27 @@
             </a>
 
             <!-- Sidebar -->
-            <div class="sidebar" style="direction :ltr;">
-                <!-- Sidebar user panel(optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <img src="~/imgs/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+            <div class="sidebar" style="@(direction == "rtl" ? "direction :ltr;" : ""  )">
+                <div style="@(direction == "rtl" ? "direction :rtl;" : "")">
+
+                    <!-- Sidebar user panel(optional) -->
+                    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                        <div class="image">
+                            <img src="~/imgs/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                        </div>
+                        <div class="info">
+                            <a href="#" class="d-block">Alexander Pierce</a>
+                        </div>
                     </div>
-                    <div class="info">
-                        <a href="#" class="d-block">Alexander Pierce</a>
-                    </div>
-                </div>
 
 
-                <!-- Sidebar Menu -->
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column"
-                        data-widget="treeview" role="menu" data-accordion="false"></ul>
+                    <!-- Sidebar Menu -->
+                    @*<ul class="nav nav-pills nav-sidebar flex-column"
+                        data-widget="treeview" role="menu" data-accordion="false"></ul>*@
                     @await Component.InvokeAsync("SidebarMenu")
-                </nav>
-                <!--/.sidebar menu-->
+
+                    <!--/.sidebar menu-->
+                </div>
             </div>
             <!--/.sidebars-->
         </aside>
@@ -245,25 +269,10 @@
 
     <!---------shared----------->
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    @if (direction == "rtl")
-    {
-        <script src="~/js/siteTemplate/jqueryui1.11.4/jquery-ui.min.js"></script>
-        @*<script src="~/js/siteTemplate/bootstrap4rtl/bootstrap.min.js"></script>*@
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    }
-
-    <!-- Tempusdominus Bootstrap 4 -->
-    @*<script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>*@
-    <!-- overlayScrollbars -->
-    @*<script src="~/js/siteTemplate/overlayScrollbars/jquery.overlayScrollbars.min.js"></script>*@
-    <!-- AdminLTE App -->
-    <script src="~/js/siteTemplate/Adminlte/adminlte.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false);
-<script>
+   
+    <script>
      $(document).ready(function () {
-
+        
       @*$("li.nav-item").click(function (e) {
 
           var tag = $(this).find("span.expand-state.pull-left")[0].children[0];
@@ -298,7 +307,7 @@
         }
     }
     function getLoadingClass() {
-            if (@direction == "rtl") {
+            if ("@direction" == "rtl") {
             cls = "fa fa-refresh fa-spin";
         } else {
                 cls = "fas fa-2x fa-sync-alt";
@@ -309,13 +318,13 @@
         var cls = getLoadingClass();
         $(cardElement).append("<div class='overlay'>" +
             "<i class='" + cls + "'></i></div>");
-    } 
+    }
     function removeLoading(cardElement) {
         $(cardElement).find(".overlay").remove();
     }
-        
 
-</script>
+
+    </script>
 </body>
 </html>
 

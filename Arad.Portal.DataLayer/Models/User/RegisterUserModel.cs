@@ -18,7 +18,7 @@ namespace Arad.Portal.DataLayer.Models.User
         }
         
         [CustomErrorMessage("AlertAndMessage_UserNameRequired")]
-        [CustomMinLength(3, "AlertAndMessage_MinLength")]
+       // [CustomMinLength(3, "AlertAndMessage_MinLength")]
         public string UserName { get; set; }
 
         [CustomErrorMessage("AlertAndMessage_NameRequired")]
@@ -45,13 +45,13 @@ namespace Arad.Portal.DataLayer.Models.User
 
         [DataType(DataType.Password)]
         [CustomErrorMessage("AlertAndMessage_PasswordRequired")]
-        [CustomRegularExpression("^(?=.*[A-Za-z])(?=.*[0-9]).{4,}$", "AlertAndMessage_PasswordValidation")]
+        //[CustomRegularExpression("^(?=.*[A-Za-z])(?=.*[0-9]).{4,}$", "AlertAndMessage_PasswordValidation")]
        
-        [CustomMinLength(6, "AlertAndMessage_MinLength")]
+        //[CustomMinLength(6, "AlertAndMessage_MinLength")]
         public string Password { get; set; }
 
         [CustomErrorMessage("AlertAndMessage_RePasswordRequired")]
-        [CustomCompare("Password", "AlertAndMessage_PasswordRepassWordCompare")]
+        //[CustomCompare("Password", "AlertAndMessage_PasswordRepassWordCompare")]
         public string RePassword { get; set; }
 
         public List<RoleListView> Roles { get; set; }

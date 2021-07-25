@@ -14,8 +14,6 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public long ItemsCount { get; set; }
         public List<T> Items { get; set; }
         public int PageSize { get; set; }
-
-        public string  Navigation { get; set; }
         public string QueryString { get; set; }
     }
 }

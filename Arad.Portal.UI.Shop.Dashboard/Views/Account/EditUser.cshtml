@@ -1,10 +1,10 @@
-﻿@model Arad.Portal.DataLayer.Models.User.UserDTO
+﻿@model Arad.Portal.DataLayer.Models.User.UserEdit
 
 @{
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
 }
-
+<link href="~/lib/intl-tel-input/css/intlTelInput.css" rel="stylesheet" />
 
 <div class="row">
     <div class="col-md-10 offset-md1">
@@ -12,49 +12,36 @@
             <div class="card-header">
                 <h3 class="card-title">@Language.GetString("User_Edit")</h3>
             </div>
-            <form id="editUserFrm" asp-action="EditUser">
+            <form id="editUserFrm" asp-action="Edit" asp-controller="Account" method="post">
                 <div class="card-body">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <div class="form-group">
+                    @*<div class="form-group">
                         <label asp-for="UserName" class="control-label"></label>
                         <input asp-for="UserName" class="form-control" />
+                       
                         <span data-val-result="UserName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" asp-for="IsSystemAccount" /> @Html.DisplayNameFor(model => model.IsSystemAccount)
-                        </label>
-                    </div>
-                    <div class="form-group form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" asp-for="IsDomainAdmin" /> @Html.DisplayNameFor(model => model.IsDomainAdmin)
-                        </label>
-                    </div>
-                    <div class="form-group form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
-                        </label>
-                    </div>
+                    </div>*@
                     <div class="form-group">
+                        <input asp-for="Id" type="hidden" class="form-control" />
                         <label asp-for="PhoneNumber" class="control-label"></label>
-                        <input asp-for="PhoneNumber" class="form-control" />
-                        <input id="hidePhone" type="hidden" value="" name="FullMobile" />
+                        <input asp-for="PhoneNumber" type="tel" class="form-control" style="direction:ltr;" />
+                        @*<input id="hidePhone" type="hidden" value="" name="FullMobile" />*@
                         <span data-val-result="PhoneNumber" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="FirstName" class="control-label"></label>
                         <input asp-for="FirstName" class="form-control" />
-                        <span data-val-result="FirstName" class="text-danger"></span>
+                        <span data-val-result="UserProfile.FirstName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="LastName" class="control-label"></label>
                         <input asp-for="LastName" class="form-control" />
-                        <span data-val-result="LastName" class="text-danger"></span>
+                        <span data-val-result="UserProfile.LastName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="UserRoleId" class="control-label"></label>
-                        <select asp-for="UserRoleId" asp-items="@(new SelectList(Model.Roles,"Id","Title"))">
+                        <select class="form-control select2" asp-for="UserRoleId" asp-items="@(new SelectList(ViewBag.Roles,"Id","Title"))">
                         </select>
                         <span data-val-result="UserRoleId" class="text-danger"></span>
                     </div>
@@ -62,7 +49,7 @@
                 <div class="card-footer">
                     <div class="form-group">
                         <input type="submit" value="@Language.GetString("btn_Edit")" class="btn btn-block btn-success" />
-                        <a asp-action="Index" class="btn btn-block btn-default">@Language.GetString("btn_Back")</a>
+                        <a asp-action="List" class="btn btn-block btn-default">@Language.GetString("btn_Back")</a>
                     </div>
                 </div>
             </form>
@@ -70,10 +57,17 @@
     </div>
 </div>
 
-<script>
-    $(document).ready(function () {
+@section Scripts
+{
+    <script src="~/lib/twbs-pagination/jquery.twbsPagination.js"></script>
+    <script src="~/lib/intl-tel-input/js/intlTelInput-jquery.min.js"></script>
+    <script src="~/lib/intl-tel-input/js/intlTelInput.js"></script>
+    <script src="~/lib/MD.BootstrapPersianDateTimePicker/dist/jquery.md.bootstrap.datetimepicker.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            debugger;
         var input = document.querySelector("#PhoneNumber");
-
+            debugger;
         window.intlTelInput(input,
             {
                 initialCountry: "IR",
@@ -88,14 +82,16 @@
          $("#editUserFrm").submit(function (e) {
                     debugger;
         e.preventDefault();
-        var frm = document.getElementById('editUserFrm');
-        var form = new FormData(frm);
-        form.append("FullMobile", $("#hidePhone").val());
-
-    $.ajax({
-        url: '@Url.Action("EditUser")',
+        //     var frm = document.getElementById('editUserFrm');
+        //var form = new FormData(frm);
+             /*form.append("FullMobile", $("#hidePhone").val());*/
+             var form = $("#editUserFrm").serialize();
+        $.ajax({
+        url: $(this).attr('action'),
         type: 'Post',
-        data: values,
+            data: form,
+            processData: false,
+            contentType: false,
         beforeSend: function() {
             AddLoading($("#editUserCard"));
         },
@@ -135,16 +131,16 @@
                 }
             }
         },
-        error: function (xhr, ajaxOptions, thrownError) {
+        @*error: function (xhr, ajaxOptions, thrownError) {
             alert("@error");
             alert(xhr.status);
             alert(thrownError);
-        },
+        },*@
         complete: function() {
             removeLoading($("#editUserCard"));
         }
     });
 });
     });
-
-</script>
+    </script>
+}

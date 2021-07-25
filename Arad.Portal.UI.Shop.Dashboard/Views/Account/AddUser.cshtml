@@ -1,8 +1,12 @@
 ﻿@model Arad.Portal.DataLayer.Models.User.RegisterUserModel
-@{ 
+@{
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
 }
+
+
+<link href="~/lib/intl-tel-input/css/intlTelInput.css" rel="stylesheet" />
+
 
 <h4>  @Language.GetString("AddUserPart_Title") </h4>
 <hr />
@@ -23,6 +27,11 @@
                         <label for="LastName">@Language.GetString("User_LastName")</label>
                         <input asp-for="LastName" type="text" class="form-control" placeholder=" ">
                         <span data-val-result="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="UserName">@Language.GetString("User_UserName")</label>
+                        <input asp-for="UserName" type="text" class="form-control" placeholder=" ">
+                        <span data-val-result="UserName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label for="PhoneNumber">@Language.GetString("User_PhoneNumber")</label>
@@ -49,7 +58,7 @@
                     </div>
                     <div class="form-group">
                         <label for="UserRoleId">@Language.GetString("User_Roles")</label>
-                        <select asp-for="UserRoleId" asp-items="@(new SelectList(Model.Roles,"Id","Title"))">
+                        <select class="form-control select2" asp-for="UserRoleId" asp-items="@(new SelectList(Model.Roles,"Id","Title"))">
                         </select>
                         <span data-val-result="UserRoleId" class="text-danger"></span>
                     </div>
@@ -57,98 +66,106 @@
                 <div class="card-footer">
                     <div class="form-group">
                         <input type="submit" value="@Language.GetString("btn_Add")" class="btn btn-block btn-success" />
-                        <a asp-action="Index" class="btn btn-block btn-default">@Language.GetString("btn_Back")</a>
+                        <a asp-action="List" class="btn btn-block btn-default">@Language.GetString("btn_Back")</a>
                     </div>
                 </div>
             </form>
         </div>
 
-        </div>
     </div>
+</div>
 
 
-<script>
+@section Scripts
+{
+    <script src="~/lib/twbs-pagination/jquery.twbsPagination.js"></script>
+    <script src="~/lib/intl-tel-input/js/intlTelInput-jquery.min.js"></script>
+    <script src="~/lib/intl-tel-input/js/intlTelInput.js"></script>
+    <script src="~/lib/MD.BootstrapPersianDateTimePicker/dist/jquery.md.bootstrap.datetimepicker.js"></script>
+    <script type="text/javascript">
     $(document).ready(function () {
-        var input = document.querySelector("#PhoneNumber");
+    
+    var input = document.querySelector("#PhoneNumber");
 
-        window.intlTelInput(input,
-            {
-                initialCountry: "IR",
-                placeholderNumberType: "MOBILE",
-                separateDialCode: true,
-                utilsScript: "../../lib/intl-tel-input/js/utils.js",
-                nationalMode: true,
-                hiddenInput: "FullMobile"
-            });
+    window.intlTelInput(input,
+    {
+    initialCountry: "IR",
+    placeholderNumberType: "MOBILE",
+    separateDialCode: true,
+    utilsScript: "../../lib/intl-tel-input/js/utils.js",
+    nationalMode: true,
+    hiddenInput: "FullMobile"
+    });
 
 
-        $("#addUserFrm").submit(function(e) {
-            e.preventDefault();
-            var frm = document.getElementById('addUserFrm');
-        var form = new FormData(frm);
-        form.append("FullMobile", $("#hidePhone").val());
+    $("#addUserFrm").submit(function (e) {
 
-            $.ajax({
-                url: $(this).attr('action'),
-                data: form,
-                type: 'Post',
-                processData: false,
-                contentType: false,
-                beforeSend: function() {
-                    AddLoading($("#addUserCard"));
-                },
-                success: function (result) {
+    e.preventDefault();
+    var frm = document.getElementById('addUserFrm');
+    var form = new FormData(frm);
+    /*form.append("FullMobile", $("#hidePhone").val());*/
 
-                        if (result.status === "success") {
+    $.ajax({
+    url: $(this).attr('action'),
+    data: form,
+    type: 'Post',
+    processData: false,
+    contentType: false,
+    beforeSend: function() {
+    AddLoading($("#addUserCard"));
+    },
+    success: function (result) {
 
-                            Swal.fire({
-                                icon: 'success',
-                                text: result.message,
-                                confirmButtonText:
-                                    '<i class="fa fa-thumbs-up"></i> @alert',
-                            });
-                        } else if (result.status === "error") {
-                            var spanErrorList = $('span[data-val-result]');
+    if(result.status === "success") {
 
-                            if (spanErrorList.length > 0) {
-                                spanErrorList.each(function() {
-                                    $(this).html("");
-                                    $(this).parent().removeClass("has-error");
-                                });
-                            } else {
-                                spanErrorList.html("");
-                                spanErrorList.parent().removeClass("has-error");
-                            }
+    Swal.fire({
+    icon: 'success',
+    text: result.message,
+    confirmButtonText:
+    '<i class="fa fa-thumbs-up"></i> @alert',
+    });
+    } else if (result.status === "error") {
+    var spanErrorList = $('span[data-val-result]');
 
-                            if (result.modelStateErrors.length > 0) {
-                                debugger;
-                                result.modelStateErrors.forEach(function(value, index) {
-                                    $('[data-val-result=' + value.key + ']').html(value.errorMessage);
-                                    $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    text: result.message,
-                                    confirmButtonText:
-                                        '<i class="fa fa-thumbs-up"></i> @alert',
-                                });
-                            }
-                        }
+    if (spanErrorList.length > 0) {
+    spanErrorList.each(function() {
+    $(this).html("");
+    $(this).parent().removeClass("has-error");
+    });
+    } else {
+    spanErrorList.html("");
+    spanErrorList.parent().removeClass("has-error");
+    }
 
-                    },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    alert("@error");
-                    alert(xhr.status);
-                    alert(thrownError);
-                },
-                complete: function () {
-                    removeLoading($("#addUserCard"));
-                }
-            });
-        });
+    if (result.modelStateErrors.length > 0) {
+    debugger;
+    result.modelStateErrors.forEach(function(value, index) {
+    $('[data-val-result=' + value.key + ']').html(value.errorMessage);
+    $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+    });
+    } else {
+    Swal.fire({
+    icon: 'error',
+    text: result.message,
+    confirmButtonText:
+    '<i class="fa fa-thumbs-up"></i> @alert',
+    });
+    }
+    }
+
+    },
+    error: function (xhr, ajaxOptions, thrownError) {
+    alert("@error");
+    alert(xhr.status);
+    alert(thrownError);
+    },
+    complete: function () {
+    removeLoading($("#addUserCard"));
+    }
+    });
+    });
 
     }
     );
-
-</script>
+    </script>
+}

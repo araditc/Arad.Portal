@@ -29,9 +29,11 @@ namespace Arad.Portal.DataLayer.Models.User
         public bool IsDomainAdmin { get; set; }
         public bool IsActive { get; set; }
 
-        [MobilePhoneUserEditValidator]
+        [MobilePhoneUserDTOValidator]
         [CustomErrorMessage("AlertAndMessage_PhonenumberRequired")]
         public string PhoneNumber { get; set; }
+
+        public string  FullMobile { get; set; }
 
         [CustomErrorMessage("AlertAndMessage_PhonenumberRequired")]
         public string FirstName { get; set; }

@@ -378,26 +378,22 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> EditUser(string id)
         {
-            var model = new UserDTO();
+            var model = new UserEdit();
             try
             {
                 var userDb = await _userManager.FindByIdAsync(id);
                 
-                model = new UserDTO()
+                model = new UserEdit()
                 {
-                    UserId = userDb.Id.ToString(),
+                    Id = userDb.Id.ToString(),
                     PhoneNumber = userDb.PhoneNumber.Substring(2, 10),
-                    UserProfile = new Profile()
-                    {
-                        FirstName = userDb.Profile.FirstName,
-                        LastName = userDb.Profile.LastName
-                    },
-                    UserRoleId = userDb.UserRoleId,
-                    CreationDate = userDb.CreationDate
+                    FirstName = userDb.Profile.FirstName,
+                    LastName = userDb.Profile.LastName,
+                    UserRoleId = userDb.UserRoleId
                 };
 
                 var list = await _roleRepository.List("");
-                model.Roles = list.Items.Select(_ => new RoleListView()
+                ViewBag.Roles = list.Items.Select(_ => new RoleListView()
                 {
                     Title = _.RoleName,
                     Id = _.RoleId
@@ -412,14 +408,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(UserEdit model)
+        public async Task<IActionResult> Edit(UserDTO model)
         {
             List<ClientValidationErrorModel> errors = new List<ClientValidationErrorModel>();
             var user = new ApplicationUser();
             var result = new JsonResult(new { Status = "success", Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully") });
-            if (model.Id != null)
+            if (model.UserId != null)
             {
-                user = await _userManager.FindByIdAsync(model.Id);
+                user = await _userManager.FindByIdAsync(model.UserId);
 
                 if (user == null)
                 {
@@ -440,7 +436,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                    if (currentUserId == model.Id)
+                    if (currentUserId == model.UserId)
                     {
                         result = new JsonResult(new 
                         {   Status = "error",
