@@ -13,6 +13,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Role
         Task<RoleDTO> FetchRole(string roleId);
         Task<RoleDTO> FetchRoleByName(string roleName);
         Task<PagedItems<RoleDTO>> List(string queryString);
+        Task<PagedItems<RoleListViewModel>> RoleList(string queryString);
         Task<RepositoryOperationResult> Add(RoleDTO dto);
         Task<RepositoryOperationResult> Update(RoleDTO dto);
         Task<RepositoryOperationResult> Delete(string roleId, string modificationReason);

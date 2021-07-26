@@ -25,7 +25,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Permission
         Task<List<PermissionDTO>> MenusPermission(Enums.PermissionType typeMenu);
         Task<RepositoryOperationResult> Save(PermissionDTO permission);
         RepositoryOperationResult<PermissionDTO> GetForEdit(string permissionId);
-        Task<RepositoryOperationResult> Delete(string permissionId, string modificationReason);
+        Task<RepositoryOperationResult> Delete(string permissionId);
         RepositoryOperationResult<List<Modification>> GetModifications(string permissionId);
 
         Task<Entities.General.Permission.Permission> FetchPermission(string permissionId);

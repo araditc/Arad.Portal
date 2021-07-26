@@ -17,11 +17,11 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     @*<div class="form-group">
-                        <label asp-for="UserName" class="control-label"></label>
-                        <input asp-for="UserName" class="form-control" />
-                       
-                        <span data-val-result="UserName" class="text-danger"></span>
-                    </div>*@
+                            <label asp-for="UserName" class="control-label"></label>
+                            <input asp-for="UserName" class="form-control" />
+
+                            <span data-val-result="UserName" class="text-danger"></span>
+                        </div>*@
                     <div class="form-group">
                         <input asp-for="Id" type="hidden" class="form-control" />
                         <label asp-for="PhoneNumber" class="control-label"></label>
@@ -79,30 +79,34 @@
             });
 
 
-         $("#editUserFrm").submit(function (e) {
-                    debugger;
-        e.preventDefault();
-        //     var frm = document.getElementById('editUserFrm');
-        //var form = new FormData(frm);
+            $("#editUserFrm").submit(function (e) {
+                debugger;
+             e.preventDefault();
+             var frm = document.getElementById('editUserFrm');
+             var form = new FormData(frm);
              /*form.append("FullMobile", $("#hidePhone").val());*/
-             var form = $("#editUserFrm").serialize();
-        $.ajax({
-        url: $(this).attr('action'),
-        type: 'Post',
-            data: form,
-            processData: false,
-            contentType: false,
-        beforeSend: function() {
-            AddLoading($("#editUserCard"));
-        },
+
+             $.ajax({
+                 url: $(this).attr('action'),
+                 data: form,
+                 type: 'Post',
+                 processData: false,
+                 contentType: false,
+                 beforeSend: function () {
+                     AddLoading($("#editUserCard"));
+                 },
         success: function (result) {
             debugger;
             var spanErrorList = $('#edit span[data-val-result]');
-
             spanErrorList.html("");
             spanErrorList.parent().removeClass("has-error");
             if (result.status === "success") {
-                toastr.success(result.message);
+                Swal.fire({
+                        icon: 'success',
+                        text: result.message,
+                        confirmButtonText:
+                        '<i class="fa fa-thumbs-up"></i> @alert',
+                        });
             } else if (result.status === "error") {
 
                 if (spanErrorList.length > 1) {
@@ -131,11 +135,11 @@
                 }
             }
         },
-        @*error: function (xhr, ajaxOptions, thrownError) {
+        error: function (xhr, ajaxoptions, thrownerror) {
             alert("@error");
             alert(xhr.status);
-            alert(thrownError);
-        },*@
+            alert(thrownerror);
+        },
         complete: function() {
             removeLoading($("#editUserCard"));
         }

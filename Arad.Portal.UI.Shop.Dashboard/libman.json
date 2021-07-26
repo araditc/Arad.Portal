@@ -41,6 +41,14 @@
     {
       "library": "toastr.js@2.1.4",
       "destination": "wwwroot/lib/toastr.js/"
+    },
+    {
+      "library": "iCheck@1.0.3",
+      "destination": "wwwroot/lib/iCheck/"
+    },
+    {
+      "library": "cropperjs@1.5.12",
+      "destination": "wwwroot/lib/cropperjs/"
     }
   ]
 }

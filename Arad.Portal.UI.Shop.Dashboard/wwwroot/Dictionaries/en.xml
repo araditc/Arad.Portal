@@ -4,6 +4,9 @@
 	<string key="btn_Add">
 		<value>Add</value>
 	</string>
+	<string key="btn_Save">
+		<value>Save</value>
+	</string>
 	<string key="btn_Edit">
 		<value>Edit</value>
 	</string>
@@ -183,6 +186,30 @@
 	</string>
 	<!--End [tables]-->
 	<!--START [Enum Descriptions]-->
+	<string key="EnumDesc_List">
+		<value>List</value>
+	</string>
+	<string key="EnumDesc_Add">
+		<value>Add</value>
+	</string>
+	<string key="EnumDesc_Remove">
+		<value>Remove</value>
+	</string>
+	<string key="EnumDesc_Edit">
+		<value>Edit</value>
+	</string>
+	<string key="EnumDesc_Password">
+		<value>Password</value>
+	</string>
+	<string key="EnumDesc_Active">
+		<value>Active</value>
+	</string>
+	<string key="EnumDesc_Dependency">
+		<value>Dependency</value>
+	</string>
+	<string key="EnumDesc_Details">
+		<value>Details</value>
+	</string>
 	<string key="EnumDesc_Email">
 		<value>Email</value>
 	</string>
@@ -194,6 +221,15 @@
 	</string>
 	<!--End [Enum Descriptions]-->
 	<!--START [Allert And Message]-->
+	<string key="AlertAndMessage_FieldEssential">
+		<value>Filling this field is essential.</value>
+	</string>
+	<string key="AlertAndMessage_OptionEssential">
+		<value>Selecting one option is essential.</value>
+	</string>
+	<string key="AlertAndMessage_ModificationReason">
+		<value>Please fill why you modify this entity.</value>
+	</string>
   <string key="AlertAndMessage_Error">
     <value>error</value>
   </string>
@@ -773,6 +809,12 @@
 	<string key="Choose">
 		<value>choose ...</value>
 	</string>
+	<string key="AddPermissionPart_Title">
+		<value>Add New Permission</value>
+	</string>
+	<string key="EditPermissionPart_Title">
+		<value>Edit Permission</value>
+	</string>
 	<string key="AddUserPart_Title">
 		<value>Add New User</value>
 	</string>
@@ -787,6 +829,9 @@
 	</string>
 	<string key="Permission_Type">
 		<value>Permission Type</value>
+	</string>
+	<string key="Permission_Method">
+		<value>Permission Method</value>
 	</string>
 	<string key="Permission_Routes">
 		<value>Routes</value>
@@ -823,6 +868,9 @@
 	</string>
 	<string key="User_FullName">
 		<value>First and LastName</value>
+	</string>
+	<string key="User_RoleName">
+		<value>Role Name</value>
 	</string>
 	<string key="ActivationState">
 		<value>State</value>
@@ -919,6 +967,12 @@
 	</setting>
 	<setting key="Menu_Priority">
 		<value>Priority</value>
+	</setting>
+	<setting key="Menu_ClientAddress">
+		<value>Client Address</value>
+	</setting>
+	<setting key="ModificationReason">
+		<value>Modification Reason</value>
 	</setting>
 	<string key="Menu_Dashboard">
 		<value>Dashboard</value>

@@ -119,12 +119,13 @@
         <table id="userListTbl" class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>@Language.GetString("tbl_RowName")</th>
-                    <th>@Language.GetString("User_UserName")</th>
-                    <th>@Language.GetString("User_FullName")</th>
-                    <th>@Language.GetString("CreationDate")</th>
-                    <th>@Language.GetString("User_PhoneNumber")</th>
-                    <th>@Language.GetString("ActivationState")</th>
+                    <th class="userListCell">@Language.GetString("tbl_RowName")</th>
+                    <th class="userListCell">@Language.GetString("User_UserName")</th>
+                    <th class="userListCell">@Language.GetString("User_FullName")</th>
+                    <th class="userListCell">@Language.GetString("User_RoleName")</th>
+                    <th class="userListCell">@Language.GetString("CreationDate")</th>
+                    <th class="userListCell">@Language.GetString("User_PhoneNumber")</th>
+                    <th class="userListCell">@Language.GetString("ActivationState")</th>
                     <th></th>
                 </tr>
             </thead>
@@ -133,57 +134,42 @@
                 {
                     @foreach (var item in Model.Items)
                     {
-                        <tr>
-                            <td class="userListCell">@(++i)</td>
-                            <td class="userListCell">@item.UserName</td>
-                            <td class="userListCell">@($"{@item.Name} {@item.LastName}")</td>
-                            <td class="userListCell">@item.CreateDate</td>
-                            <td class="userListCell">@item.PhoneNumber</td>
-                            <td id="@("activation" + item.Id)" class="userListCell">
-                                @{
-                                    if (item.IsActive)
-                                    {
-                                        <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-success">@Language.GetString("Active")</button>
-                                    }
-                                    else
-                                    {
-                            <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-danger">@Language.GetString("InActive")</button>
-                                    }
-                                }
-                            </td>
-                            <td class="userListCell">
-                                @if (ViewBag.Permissions["Details"])
-                                {
-                                    <a id="editRecord" asp-action="EditUser" asp-controller="Account" asp-route-id="@item.Id" class="btn btn-sm btn-info">
-                                        @Language.GetString("btn_Edit")
-                                    </a>
-                                }
-                                @*@if (ViewBag.Permissions["Active"])
-                                {
-                                    <button id="changeActivation" onclick="changeActivation('@item.Id')" class="btn btn-sm btn-success">
-                                        @Language.GetString("btn_ChangeActivation")
-                                    </button>
-                                }*@
-                                @if (ViewBag.Permissions["Password"])
-                                {
-                                    <button id="passChange" onclick="changePassword('@item.Id')"  class="btn btn-sm btn-primary">
-                                        @Language.GetString("btn_ChangePass")
-                                    </button>
-                                }
-                                @if (ViewBag.Permissions["Remove"])
-                                {
-                                    <button id="deleteRecord"  onclick="deleteUser('@item.Id')" class="btn btn-sm btn-danger">
-                                        @Language.GetString("btn_Delete")
-                                    </button>
-                                }
-                                @if (ViewBag.Permissions["Remove"] && item.IsDelete)
-                                {
-                                    <button id="restoreRecord" data-id="@item.Id" onclick="restoreUser('@item.Id')" class="btn btn-sm btn-warning">
-                                        @Language.GetString("btn_Restore")
-                                    </button>
-                                }
-                            </td>
-                        </tr>
+                <tr>
+                    <td class="userListCell">@(++i)</td>
+                    <td class="userListCell">@item.UserName</td>
+                    <td class="userListCell">@($"{@item.Name} {@item.LastName}")</td>
+                    <td class="userListCell">@item.RoleName</td>
+                    <td class="userListCell">@item.CreateDate</td>
+                    <td class="userListCell">@item.PhoneNumber</td>
+                    <td id="@("activation" + item.Id)" class="userListCell">
+                        @{
+                            if (item.IsActive)
+                            {
+                                <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-success">@Language.GetString("Active")</button>
+                            }
+                            else
+                            {
+                                <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-danger">@Language.GetString("InActive")</button>
+                            }
+                        }
+                    </td>
+                    <td class="userListCell">
+                        @if (ViewBag.Permissions["Edit"])
+                        {
+                            <a id="editRecord" asp-action="EditUser" asp-controller="Account" asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                                @Language.GetString("btn_Edit")
+                            </a>
+                        }
+                       
+                      
+                        @if (ViewBag.Permissions["Remove"] && item.IsDelete)
+                        {
+                            <button id="restoreRecord" data-id="@item.Id" onclick="restoreUser('@item.Id')" class="btn btn-sm btn-warning">
+                                @Language.GetString("btn_Restore")
+                            </button>
+                        }
+                    </td>
+                </tr>
                     }
                 }
                 else
@@ -213,8 +199,10 @@
 @section scripts
     {
     <script>
-
-            $("#btnLoad").click(function() {
+        $(document).ready(function () {
+            debugger;
+             $("#btnLoad").click(function () {
+            debugger;
                 var queryString = '';
                 if ($("#name").val() !== '') {
                     queryString = '?name=' + $("#name").val();
@@ -239,6 +227,8 @@
 
                 window.location.href = '@Url.Action("List", "Account")' + queryString;
             });
+        });
+
 
             //function ViewImage(address) {
             //    var tag = '<img src="' + address + '" width="500px" />';
@@ -256,7 +246,8 @@
                     type: 'Get',
                     url: '@Url.Action("ChangeActivation", "Account")' + '?id=' + id,
                     success: function(resultData) {
-                        if (resultData.status === "Success") {
+                        if (resultData.status === "success") {
+                            debugger;
                             var html = '';
                             if (resultData.result === true) {
                                 html = '<button onclick="changeActivation(\'' + id + '\')" class="btn btn-sm btn-success"> ' + '@Language.GetString("Active")' +' </button>';
@@ -266,7 +257,7 @@
                             $('#activation' + id).html(html);
                         }
 
-                        if (resultData.status === "Error") {
+                        if (resultData.status === "error") {
                             Swal.fire({
                                 icon: 'error',
                                 title: resultData.message,
@@ -295,10 +286,11 @@
                             type: 'Get',
                             url: '@Url.Action("Delete", "Account")' + '?id=' + id,
                             success: function(resultData) {
-                                if (resultData.status === "Success") {
+                                if (resultData.status === "success") {
+                                    debugger;
                                     Swal.fire({
                                         icon: 'success',
-                                        title: resultData.message,
+                                        text: resultData.message,
                                         showConfirmButton: false,
                                         timer: 1500
                                     }).then(() => {
@@ -306,10 +298,11 @@
                                     });
                                 }
 
-                                if (resultData.status === "Error") {
+                                if (resultData.status === "error") {
+                                    debugger;
                                     Swal.fire({
                                         icon: 'error',
-                                        title: resultData.message,
+                                        text: resultData.message,
                                         showConfirmButton: false,
                                         timer: 1500
                                     });
@@ -336,10 +329,10 @@
                             type: 'Get',
                             url: '@Url.Action("Restore", "Account")' + '?id=' + id,
                             success: function(resultData) {
-                                if (resultData.status === "Success") {
+                                if (resultData.status === "success") {
                                     Swal.fire({
                                         icon: 'success',
-                                        title: resultData.message,
+                                        text: resultData.message,
                                         showConfirmButton: false,
                                         timer: 1500
                                     }).then(() => {
@@ -347,10 +340,10 @@
                                     });
                                 }
 
-                                if (resultData.status === "Error") {
+                                if (resultData.status === "error") {
                                     Swal.fire({
                                         icon: 'error',
-                                        title: resultData.message,
+                                        text: resultData.message,
                                         showConfirmButton: false,
                                         timer: 1500
                                     });
@@ -381,23 +374,23 @@
                             type: 'Get',
                             url: '@Url.Action("ChangePassword", "Account")' + '?id=' + id,
                             success: function(resultData) {
-                                if (resultData.status === "Success") {
+                                if (resultData.status === "success") {
                                     Swal.fire({
                                         icon: 'success',
-                                        title: resultData.message,
+                                        text: resultData.message,
                                         showConfirmButton: false,
-                                        timer: 1500
+                                        timer: 3000
                                     }).then(() => {
                                         window.location.reload();
                                     });
                                 }
 
-                                if (resultData.status === "Error") {
+                                if (resultData.status === "error") {
                                     Swal.fire({
                                         icon: 'error',
-                                        title: resultData.message,
+                                        text: resultData.message,
                                         showConfirmButton: false,
-                                        timer: 1500
+                                        timer: 3000
                                     });
                                 }
                             }

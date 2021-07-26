@@ -1,0 +1,171 @@
+﻿@model Arad.Portal.DataLayer.Models.Permission.UserPermissionViewModel
+@using Arad.Portal.DataLayer.Models.Shared;
+@{
+  Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <link href="~/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css" rel="stylesheet" />
+    <link href="~/lib/intl-tel-input/css/intlTelInput.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/iCheck/skins/all.css">
+    <style>
+        .text-danger {
+            font-size: 12px;
+        }
+    </style>
+}
+
+
+<h4>  @Language.GetString("Menu_Permissions") </h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary" id="addPermissionCard">
+            <div class="card-header">
+                <h3 class="card-title" data-toggle="tab">@(Model.IsEditView ? Language.GetString("EditPermissionPart_Title") : Language.GetString("AddPermissionPart_Title"))</h3>
+            </div>
+            <form asp-controller="Permission" role="form" asp-action="Save" id="addEditPermissionFrm" method="post">
+                @{
+                    if (Model.IsEditView)
+                    {
+                        <input type="hidden" value="@Model.Id" data-val="true" asp-for="Id">
+                        <input type="hidden" value="@Model.IsEditView" data-val="true" asp-for="IsEditView" />
+                    }
+                }
+                <div class="card-body" id="addEditPermissionCard">
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label asp-for="Title">@Language.GetString("Menu_PermissionName")</label>
+                            <input type="text" class="form-control" asp-for="Title" placeholder=" ">
+                            <span data-val-result="Title" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3" id="typeSelect">
+                            <label asp-for="Type">@Language.GetString("Menu_PermissionType")</label>
+                            <select asp-for="Type" class="form-control select2" name="Type" asp-items="Html.GetEnumSelectList<Enums.PermissionType>()">
+                            </select>
+                            <span data-val-result="Type" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3" id="keySelect">
+                            <label asp-for="Method">@Language.GetString("Menu_PermissionMethod")</label>
+                            <select asp-for="Method" class="form-control select2" name="Method" asp-items="Html.GetEnumSelectList<Enums.PermissionMethod>()">
+                            </select>
+                            <span class="text-danger" data-val-result="Method"></span>
+                        </div>
+                        <div class="form-group col-md-3" id="MenuIdOfModule">
+                            <select asp-for="MenuIdOfModule" class="form-control select2" name="MenuIdOfModule">
+                            </select>
+                            <span class="text-danger" data-val-result="MenuIdOfModule"></span>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6" id="RoutePer">
+                            <label asp-for="Routes">@Language.GetString("Menu_Routes")</label>
+                            <textarea  class="form-control" asp-for="Routes"
+                                   dir="ltr" placeholder="@Language.GetString("Menu_RoutePlaceHolder")">@Model.Routes</textarea>
+                            <span class="text-danger" data-val-result="Routes"></span>
+                        </div>
+                        <div class="form-group col-md-4" id="parentMenuSelect" style="display:none;">
+                            <label asp-for="ParentMenuId">@Language.GetString("Menu_ParentMenuId")</label>
+                            <select asp-for="ParentMenuId" class="form-control select2">
+                            </select>
+                            <span class="text-danger" data-val-result="ParentMenuId"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label asp-for="Icon">@Language.GetString("Menu_Icon")</label>
+                            <input type="text" class="form-control" asp-for="Icon" dir="ltr">
+                            <span class="text-danger" data-val-result="Icon"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="Priority">@Language.GetString("Menu_Priority")</label>
+                            <input type="number" class="form-control" asp-for="Priority" dir="ltr" value="1" min="1">
+                            <span class="text-danger" data-val-result="Priority"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="ClientAddress">@Language.GetString("Menu_ClientAddress")</label>
+                            <input type="tel" class="form-control" asp-for="ClientAddress" dir="ltr">
+                            <span class="text-danger" data-val-result="ClientAddress"></span>
+                        </div>
+                        @{
+                            if (Model.IsEditView)
+                            {
+                                <div class="orm-group col-md-3">
+                                    <label asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
+                                    <textarea dir="rtl" asp-for="ModificationReason" class="form-control" rows="3"></textarea>
+                                    <span data-val-result="ModificationReason" class="text-danger"></span>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <input type="submit" value="@Language.GetString("btn_Save")" class="btn btn-block btn-success" />
+                        <a asp-action="List" class="btn btn-block btn-default">@Language.GetString("btn_Back")</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="add" class="box-container collapse">
+
+    <div class="box-body ">
+        <form id="addPer" class="sm" asp-action="AddPermission" asp-controller="Permission"
+              method="post" autocomplete="off" asp-antiforgery="true">
+            <div class="form-row text-right ">
+                <div class=" col-md-12">
+                    <div class="row">
+
+                        @*<div id="typeSelect" class="form-group col-md-4 col-lg-3">
+                                <label for="Type">@Language.GetString("Menu_PermissionType")</label>
+                                <select id="Type" class="form-control select2" name="Type" asp-items="Html.GetEnumSelectList<Enums.PermissionType>()">
+                                </select>
+                                <span class="field-validation-error" data-val-result="Type"></span>
+                            </div>*@
+                        @*<div id="RoutePer" class="form-group col-md-4 col-lg-3">
+                                <label for="Routes">@Language.GetString("Menu_Routes")</label>
+                                <input type="text" class="form-control" id="Routes" name="Routes"
+                                       dir="ltr" placeholder="@Language.GetString("Menu_RoutePlaceHolder")">
+                                <span class="field-validation-error" data-val-result="Routes"></span>
+                            </div>*@
+                        @*<div id="keySelect" class="form-group col-md-4 col-lg-3">
+                                <label for="Method">@Language.GetString("Menu_PermissionMethod")</label>
+                                <select id="Method" class="form-control select2" name="Method" asp-items="Html.GetEnumSelectList<Enums.PermissionMethod>()">
+                                </select>
+                                <span class="field-validation-error" data-val-result="Method"></span>
+                            </div>*@
+                        @*<div id="MenuIdOfModule" class="form-group col-md-4 col-lg-3">
+                                <label for="MenuIdOfModule">@Language.GetString("Menu_MenuIdOfModule")</label>
+                                <select id="MenuIdOfModule" class="form-control select2" name="MenuIdOfModule">
+                                </select>
+                                <span class="field-validation-error" data-val-result="MenuIdOfModule"></span>
+                            </div>*@
+                        @*<div id="parentMenuSelect" class="form-group col-md-4 col-lg-3" style="display: none;">
+                                <label for="ParentMenuId">@Language.GetString("Menu_ParentMenuId")</label>
+                                <select id="ParentMenuId" class="form-control select2" name="ParentMenuId">
+                                </select>
+                                <span class="field-validation-error" data-val-result="ParentMenuId"></span>
+                            </div>*@
+                        @*<div id="icon" class="form-group col-md-4 col-lg-3" style="display: none;">
+                                <label for="Icon">@Language.GetString("Menu_Icon")</label>
+                                <input type="text" class="form-control" id="Icon" name="Icon" dir="ltr">
+                                <span class="field-validation-error" data-val-result="Icon"></span>
+                            </div>*@
+                        @*<div id="priority" class="form-group col-md-4 col-lg-3" style="display: none;">
+                                <label for="Priority">@Language.GetString("Menu_Priority")</label>
+                                <input type="number" class="form-control" id="Priority" name="Priority" dir="ltr" value="1" min="1">
+                                <span class="field-validation-error" data-val-result="Priority"></span>
+                            </div>*@
+
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success btn-xs">
+                <i class="fa fa-check" aria-hidden="true"></i>@Language.GetString("btn_Add")
+            </button>
+        </form>
+    </div>
+</div>
+

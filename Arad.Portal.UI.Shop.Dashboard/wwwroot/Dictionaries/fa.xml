@@ -4,6 +4,9 @@
 	<string key="btn_Add">
 		<value>افزودن</value>
 	</string>
+	<string key="btn_Save">
+		<value>ذخیره</value>
+	</string>
 	<string key="btn_Edit">
 		<value>ویرایش</value>
 	</string>
@@ -17,7 +20,7 @@
 		<value>بازگشت</value>
 	</string>
 	<string key="btn_Restore">
-		<value>بازگزدانی</value>
+		<value>بازگردانی</value>
 	</string>
 	<string key="btn_Delete">
 		<value>حذف</value>
@@ -180,6 +183,30 @@
 	</string>
 	<!--End [tables]-->
 	<!--START [Enum Descriptions]-->
+	<string key="EnumDesc_List">
+		<value>لیست</value>
+	</string>
+	<string key="EnumDesc_Add">
+		<value>افزودن</value>
+	</string>
+	<string key="EnumDesc_Remove">
+		<value>حذف</value>
+	</string>
+	<string key="EnumDesc_Edit">
+		<value>ویرایش</value>
+	</string>
+	<string key="EnumDesc_Password">
+		<value>رمز عبور</value>
+	</string>
+	<string key="EnumDesc_Active">
+		<value>فعال بودن</value>
+	</string>
+	<string key="EnumDesc_Dependency">
+		<value>وابستگی</value>
+	</string>
+	<string key="EnumDesc_Details">
+		<value>جزییات</value>
+	</string>
 	<string key="EnumDesc_Email">
 		<value>ایمیل</value>
 	</string>
@@ -191,6 +218,15 @@
 	</string>
 	<!--End [Enum Descriptions]-->
   <!--START [Allert And Message]-->
+	<string key="AlertAndMessage_FieldEssential">
+		<value>پر کردن این فیلد الزامی است.</value>
+	</string>
+	<string key="AlertAndMessage_OptionEssential">
+		<value>انتخاب یک گزینه الزامی است.</value>
+	</string>
+	<string key="AlertAndMessage_ModificationReason">
+		<value>لطفا دلیل ویرایش را ذکر کنید.</value>
+	</string>
   <string key="AlertAndMessage_Error">
     <value>خطا</value>
   </string>
@@ -819,6 +855,12 @@
 	<string key="Choose">
 		<value>انتخاب کنید ...</value>
 	</string>
+	<string key="AddPermissionPart_Title">
+		<value>افزودن نقش جدید</value>
+	</string>
+	<string key="EditPermissionPart_Title">
+		<value>ویرایش نقش</value>
+	</string>
 	<string key="AddUserPart_Title">
 		<value>افزودن کاربر جدید</value>
 	</string>
@@ -833,6 +875,9 @@
 	</string>
 	<string key="Permission_Type">
 		<value>نوع</value>
+	</string>
+	<string key="Permission_Method">
+		<value>متود</value>
 	</string>
 	<string key="Permission_Routes">
 		<value>مسیرها</value>
@@ -869,6 +914,9 @@
 	</string>
 	<string key="User_FullName">
 		<value>نام و نام خانوادگی</value>
+	</string>
+	<string key="User_RoleName">
+		<value>نام نقش</value>
 	</string>
 	<string key="ActivationState">
 		<value>وضعیت</value>
@@ -965,6 +1013,12 @@
 	</setting>
 	<setting key="Menu_Priority">
 		<value>اولویت</value>
+	</setting>
+	<setting key="Menu_ClientAddress">
+		<value>آدرس کلاینت</value>
+	</setting>
+	<setting key="ModificationReason">
+		<value>دلیل ویرایش</value>
 	</setting>
   <string key="Menu_Dashboard">
     <value>داشبورد</value>

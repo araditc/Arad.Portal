@@ -240,6 +240,57 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
             return result;
         }
 
+
+        public async Task<PagedItems<RoleListViewModel>> RoleList(string queryString)
+        {
+            PagedItems<RoleListViewModel> result = new PagedItems<RoleListViewModel>();
+            try
+            {
+                NameValueCollection filter = HttpUtility.ParseQueryString(queryString);
+
+                if (string.IsNullOrWhiteSpace(filter["page"]))
+                {
+                    filter.Set("page", "1");
+                }
+
+                if (string.IsNullOrWhiteSpace(filter["pageSize"]))
+                {
+                    filter.Set("pageSize", "20");
+                }
+
+                var page = Convert.ToInt32(filter["page"]);
+                var pageSize = Convert.ToInt32(filter["pageSize"]);
+
+                long totalCount = await _context.Collection.Find(c => true).CountDocumentsAsync();
+                var list = _context.Collection.AsQueryable().Skip((page - 1) * pageSize)
+                   .Take(pageSize).Select(_ => new RoleListViewModel()
+                   {
+                       Id = _.RoleId,
+                       RoleName = _.RoleName,
+                       CreatorId = _.CreatorUserId,
+                       CreatorUserName = _.CreatorUserName,
+                       CreationDateTime = _.CreationDate,
+                       HasModifications = _.Modifications.Any()
+                   }).ToList();
+
+                result.CurrentPage = page;
+                result.Items = list;
+                result.ItemsCount = totalCount;
+                result.PageSize = pageSize;
+                result.QueryString = queryString;
+
+            }
+            catch (Exception ex)
+            {
+                result.CurrentPage = 1;
+                result.Items = new List<RoleListViewModel>();
+                result.ItemsCount = 0;
+                result.PageSize = 10;
+                result.QueryString = queryString;
+            }
+            return result;
+        }
+
         public async Task<RepositoryOperationResult> Update(RoleDTO dto)
         {
             var result = new RepositoryOperationResult();
@@ -290,5 +341,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
             }
             return result;
         }
+
+       
     }
 }

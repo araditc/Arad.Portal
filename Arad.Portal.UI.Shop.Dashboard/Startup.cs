@@ -126,6 +126,8 @@ namespace Arad.Portal.UI.Shop.Dashboard
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+           
             app.UseHttpsRedirection();
             app.UseStaticFiles();
            
@@ -139,6 +141,11 @@ namespace Arad.Portal.UI.Shop.Dashboard
 
             app.UseEndpoints(endpoints =>
             {
+                //if (env.IsDevelopment())
+                //    endpoints.MapControllers().WithMetadata(new AllowAnonymousAttribute());
+                //else
+                //    endpoints.MapControllers();
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

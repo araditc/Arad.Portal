@@ -19,5 +19,7 @@ namespace Arad.Portal.DataLayer.Models.User
         //public string persianCreateDate { get; set; }
         public bool IsVerify { get; set; }
         public bool IsDelete { get; set; }
+        public string UserRoleId { get; set; }
+        public string RoleName { get; set; }
     }
 }

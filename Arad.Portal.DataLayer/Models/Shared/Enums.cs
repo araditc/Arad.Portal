@@ -90,21 +90,21 @@ namespace Arad.Portal.DataLayer.Models.Shared
         /// </summary>
         public enum PermissionMethod
         {
-            [Description("List")]
+            [CustomDescription("EnumDesc_List")]
             List = 0,
-            [Description("Add")]
+            [CustomDescription("EnumDesc_Add")]
             Add = 1,
-            [Description("Remove")]
+            [CustomDescription("EnumDesc_Remove")]
             Remove = 2,
-            [Description("Edit")]
+            [CustomDescription("EnumDesc_Edit")]
             Edit = 3,
-            [Description("Password")]
+            [CustomDescription("EnumDesc_Password")]
             Password = 4,
-            [Description("Active")]
+            [CustomDescription("EnumDesc_Active")]
             Active = 5,
-            [Description("Dependency")]
+            [CustomDescription("EnumDesc_Dependency")]
             Dependency = 6,
-            [Description("Details")]
+            [CustomDescription("EnumDesc_Details")]
             Details = 7,
         }
     }

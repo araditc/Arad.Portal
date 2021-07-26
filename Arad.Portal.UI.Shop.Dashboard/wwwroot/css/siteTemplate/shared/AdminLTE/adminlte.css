@@ -8524,7 +8524,10 @@ body,
 }
 
 .wrapper {
-  position: relative;
+    position: relative;
+    margin-left: 0;
+    margin-right: 0;
+    max-width: inherit;
 }
 
 .layout-boxed .wrapper {

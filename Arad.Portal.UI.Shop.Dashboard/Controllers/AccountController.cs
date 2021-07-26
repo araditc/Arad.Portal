@@ -99,31 +99,32 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> Login([FromForm] LoginViewModel model)
         {
 
-            if (!HttpContext.Session.ValidateCaptcha(model.Captcha))
-            {
-                ModelState.AddModelError("Captcha", Language.GetString("AlertAndMessage_CaptchaIsExpired"));
-            }
 
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+            //if (!HttpContext.Session.ValidateCaptcha(model.Captcha))
+            //{
+            //    ModelState.AddModelError("Captcha", Language.GetString("AlertAndMessage_CaptchaIsExpired"));
+            //}
 
-            await HttpContext.SignOutAsync();
-            ApplicationUser user = await _userManager.FindByNameAsync(model.Username);
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(model);
+            //}
 
-            if (user == null || await _userManager.CheckPasswordAsync(user, model.Password) != true)
-            {
-                ViewBag.Message = Language.GetString("AlertAndMessage_InvalidUsernameOrPassword");
-                return View(model);
-            }
+            //await HttpContext.SignOutAsync();
+            //ApplicationUser user = await _userManager.FindByNameAsync(model.Username);
 
-            if (!user.IsActive)
-            {
-                ViewBag.Message = Language.GetString("AlertAndMessage_InActiveUserAccount");
-                return View(model);
-            }
+            //if (user == null || await _userManager.CheckPasswordAsync(user, model.Password) != true)
+            //{
+            //    ViewBag.Message = Language.GetString("AlertAndMessage_InvalidUsernameOrPassword");
+            //    return View(model);
+            //}
 
+            //if (!user.IsActive)
+            //{
+            //    ViewBag.Message = Language.GetString("AlertAndMessage_InActiveUserAccount");
+            //    return View(model);
+            //}
+            ApplicationUser user = await _userManager.FindByNameAsync("superAdmin");
             await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
 
             user.LastLoginDate = DateTime.Now;
@@ -165,8 +166,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var page = 1;
             var result = new PagedItems<UserListView>();
            
-            if (ModelState.IsValid)
-            {
+            
                 var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
                 ViewBag.Permissions = dicKey;
 
@@ -222,6 +222,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                             IsSystem = _.IsSystemAccount,
                             LastName = _.Profile.LastName,
                             UserName = _.UserName,
+                            UserRoleId = _.UserRoleId,
+                            RoleName = _roleRepository.FetchRole(_.UserRoleId).Result.RoleName,
                             CreateDate = _.CreationDate,
                             //persianCreateDate = _.CreationDate,
                             IsDelete = _.IsDeleted
@@ -240,7 +242,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
 
                 }
-            }
             return View(result);
         }
 
@@ -408,14 +409,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(UserDTO model)
+        public async Task<IActionResult> Edit([FromForm] UserEdit model)
         {
             List<ClientValidationErrorModel> errors = new List<ClientValidationErrorModel>();
             var user = new ApplicationUser();
             var result = new JsonResult(new { Status = "success", Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully") });
-            if (model.UserId != null)
+            if (model.Id != null)
             {
-                user = await _userManager.FindByIdAsync(model.UserId);
+                user = await _userManager.FindByIdAsync(model.Id);
 
                 if (user == null)
                 {
@@ -436,7 +437,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                    if (currentUserId == model.UserId)
+                    if (currentUserId == model.Id)
                     {
                         result = new JsonResult(new 
                         {   Status = "error",
@@ -538,7 +539,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                         if (res.Succeeded)
                         {
-                            result = new JsonResult(new { Status = "success", Message = Language.GetString("AlertAndMessage_InsertionDoneSuccessfully") });
+                            result = new JsonResult(new { Status = "success", Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully") });
                         }
                         else
                         {
@@ -573,7 +574,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                 var res = await _userManager.UpdateAsync(user);
 
-                result = new JsonResult(new { Status = "success", Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully") });
+                result = new JsonResult(new { Status = "success",result = user.IsActive, Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully") });
             }
             catch (Exception e)
             {

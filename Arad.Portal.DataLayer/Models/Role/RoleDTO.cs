@@ -20,6 +20,12 @@ namespace Arad.Portal.DataLayer.Models.Role
         public DateTime CreationDate { get; set; }
         public bool IsActive { get; set; }
 
+        public string CreatorId { get; set; }
+
+        public string CreatorUserName { get; set; }
+
+        public bool HasModifications { get; set; }
+
         public bool IsDeleted { get; set; }
 
         [Required(ErrorMessage = "لطفا دسترسی های نقش را انتخاب نمایید.")]

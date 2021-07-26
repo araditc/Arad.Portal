@@ -44,7 +44,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
             _userRepository = userRepository;
             _roleRepository = roleRepository;
         }
-        public async Task<RepositoryOperationResult> Delete(string permissionId, string modificationReason)
+        public async Task<RepositoryOperationResult> Delete(string permissionId)
         {
             var result = new RepositoryOperationResult();
             try
@@ -54,14 +54,6 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
                 if(permissionEntity != null)
                 {
                     permissionEntity.IsDeleted = true;
-
-                    #region Add Modification
-                    var currentModification = permissionEntity.Modifications;
-                    var mod = GetCurrentModification(modificationReason);
-                    currentModification.Add(mod);
-                    permissionEntity.Modifications = currentModification;
-                    #endregion
-
                     var updateResult = await _context.Collection
                             .ReplaceOneAsync(_ => _.PermissionId == permissionId, permissionEntity);
                     if (updateResult.IsAcknowledged)
@@ -160,6 +152,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
                         ClientAddress = _.ClientAddress,
                         Title = _.Title,
                         Type = _.Type,
+                        Method = _.Method,
                         Routes =_.Routes.Count != 0 ?  string.Join(",", _.Routes) : "",
                         CreationDate = _.CreationDate,
                         CreatorName = _.CreatorUserName,
