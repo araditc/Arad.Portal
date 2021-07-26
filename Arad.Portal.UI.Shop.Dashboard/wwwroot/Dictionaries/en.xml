@@ -104,6 +104,9 @@
 	<string key="PermissionTitle_UserChangeActivation">
 		<value>Change Activation</value>
 	</string>
+	<string key="PermissionTitle_UserRestore">
+		<value>User Restore</value>
+	</string>
 	<string key="PermissionTitle_PermissionChangeActivation">
 		<value>Change Activation</value>
 	</string>
@@ -221,6 +224,12 @@
 	</string>
 	<!--End [Enum Descriptions]-->
 	<!--START [Allert And Message]-->
+	<string key="AlertAndMessage_SeprateRoutesByComma">
+		<value>Seperate diffrent routes by ,comma.</value>
+	</string>
+	<string key="AlertAndMessage_DeletePermission">
+		<value>This Permission will be deleted.</value>
+	</string>
 	<string key="AlertAndMessage_FieldEssential">
 		<value>Filling this field is essential.</value>
 	</string>
@@ -938,42 +947,72 @@
 	<string key="Menu_RoutePlaceHolder">
 		<value>Seprate each route with comma ,</value>
 	</string>
-	<setting key="Menu_Add">
+	<string key="Menu_Add">
 		<value>Add</value>
-	</setting>
-	<setting key="Menu_PermissionName">
+	</string>
+	<string key="Menu_PermissionName">
 		<value>PermissionName</value>
-	</setting>
-	<setting key="Menu_PermissionTitle">
+	</string>
+	<string key="Menu_PermissionTitle">
 		<value>Permission Title</value>
-	</setting>
-	<setting key="Menu_PermissionType">
+	</string>
+	<string key="Menu_PermissionType">
 		<value>PermissionType</value>
-	</setting>
-	<setting key="Menu_Routes">
+	</string>
+	<string key="Menu_Routes">
 		<value>Routes</value>
-	</setting>
-	<setting key="Menu_PermissionMethod">
+	</string>
+	<string key="Menu_PermissionMethod">
 		<value>PermissionMethod</value>
-	</setting>
-	<setting key="Menu_MenuIdOfModule">
+	</string>
+	<string key="Menu_MenuIdOfModule">
 		<value>MenuIdOfModule</value>
-	</setting>
-	<setting key="Menu_ParentMenuId">
+	</string>
+	<string key="Menu_ParentMenuId">
 		<value>ParentMenuId</value>
-	</setting>
-	<setting key="Menu_Icon">
+	</string>
+	<string key="Menu_Icon">
 		<value>Icon</value>
-	</setting>
-	<setting key="Menu_Priority">
+	</string>
+	<string key="Menu_Priority">
 		<value>Priority</value>
-	</setting>
-	<setting key="Menu_ClientAddress">
+	</string>
+	<string key="Menu_ClientAddress">
 		<value>Client Address</value>
-	</setting>
-	<setting key="ModificationReason">
+	</string>
+	<string key="Per_PermissionName">
+		<value>PermissionName</value>
+	</string>
+	<string key="Per_PermissionTitle">
+		<value>Permission Title</value>
+	</string>
+	<string key="Per_PermissionType">
+		<value>PermissionType</value>
+	</string>
+	<string key="Per_Routes">
+		<value>Routes</value>
+	</string>
+	<string key="Per_PermissionMethod">
+		<value>PermissionMethod</value>
+	</string>
+	<string key="Per_MenuIdOfModule">
+		<value>MenuIdOfModule</value>
+	</string>
+	<string key="Per_ParentMenuId">
+		<value>ParentMenuId</value>
+	</string>
+	<string key="Per_Icon">
+		<value>Icon</value>
+	</string>
+	<string key="Per_Priority">
+		<value>Priority</value>
+	</string>
+	<string key="Per_ClientAddress">
+		<value>Client Address</value>
+	</string>
+	<string key="ModificationReason">
 		<value>Modification Reason</value>
-	</setting>
+	</string>
 	<string key="Menu_Dashboard">
 		<value>Dashboard</value>
 	</string>

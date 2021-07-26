@@ -280,7 +280,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddUser([FromForm] RegisterUserModel model)
+        public async Task<IActionResult> Add([FromForm] RegisterUserModel model)
         {
             List<ClientValidationErrorModel> errors = new List<ClientValidationErrorModel>();
             JsonResult result;

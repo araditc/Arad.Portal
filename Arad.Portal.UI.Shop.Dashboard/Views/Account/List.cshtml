@@ -110,7 +110,7 @@
     <div class="card-header" style='background-color: beige;'>
         <h3 class="card-title">@Language.GetString("PermissionTitle_UserManagement")</h3>
         <div class="card-tools" style='@(dir=="rtl" ? "float:left;" : "float:right;")'>
-            <a asp-action="AddUser" asp-controller="Account" class="btn btn-success btn-sm">
+            <a asp-action="Add" asp-controller="Account" class="btn btn-success btn-sm">
                 <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus"></i>&nbsp; @Language.GetString("btn_Add")
             </a>
         </div>
@@ -196,7 +196,7 @@
     </div>
 </div>
 
-@section scripts
+@section Scripts
     {
     <script>
         $(document).ready(function () {

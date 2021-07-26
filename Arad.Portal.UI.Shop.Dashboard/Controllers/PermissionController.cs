@@ -52,10 +52,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 model.ClientAddress = permission.ClientAddress;
 
             }
-            else
-            {
-                return Ok(500);
-            }
             return View(model);
         }
 

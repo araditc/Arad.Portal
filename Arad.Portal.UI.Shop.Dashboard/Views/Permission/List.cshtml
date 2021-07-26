@@ -10,7 +10,7 @@
 
     queryString.Remove("page");
 
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
     var dir = "";
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
     {
@@ -67,6 +67,13 @@
                             <td class="userListCell">@item.ClientAddress</td>
                             <td class="userListCell">@item.Routes</td>
                             <td>
+
+                                @if (ViewBag.Permissions["Edit"])
+                                {
+                                    <a asp-action="AddEdit" asp-controller="Permission" asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                                        <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>ویرایش
+                                    </a>
+                                }
                                 @if (ViewBag.Permissions["Remove"])
                                 {
                                     <button onclick="deletePer('@item.Id')" class="btn btn-sm btn-danger">
@@ -74,12 +81,7 @@
                                     </button>
                                 }
 
-                                @if (ViewBag.Permissions["Edit"])
-                                {
-                                    <a asp-action="AddEdit" asp-controller="Permission" asp-route-id="@item.Id" class="btn btn-sm btn-warning">
-                                        <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>ویرایش
-                                    </a>
-                                }
+
                             </td>
                         </tr>
                     }
@@ -103,62 +105,51 @@
     </div>
 
 </div>
-<div id="page-data" data-current="@Model.CurrentPage" data-total="@Model.ItemsCount" data-size="@Model.PageSize">
-    @{
-        if (Model.Items.Count != 0)
-        {
-            int i = (Model.CurrentPage - 1) * Model.PageSize;
-
-            @foreach (var item in Model.Items)
-            {
-                <div class="table-row">
-                    <div class="card-table @(item.IsActive ? "active":"notActive")">
-                        <div class="row m-0">
-                            <div class="table-col col-xs-12 col-md-1 d-lg-block">
-                                <span>@(++i)</span>
-                            </div>
-                            <div class="table-col col-xs-12 col-md-3 col-lg-2">
-                                <span class="mo-title">@Language.GetString("permission_name"):</span>
-                                <span>@item.Title</span>
-                            </div>
-                            <div class="table-col col-xs-12 col-lg-2 col-md-2">
-                                <span class="mo-title">@Language.GetString("Permission_Type")</span>
-                                <span>@item.Type</span>
-                            </div>
-                            <div class="table-col col-xs-12 col-lg-3 col-md-2">
-                                <span class="mo-title">@Language.GetString("Permission_ClientAddress")</span>
-                                <span>@item.ClientAddress</span>
-                            </div>
-                            <div class="table-col col-xs-12 col-lg-3 col-md-2">
-                                <span class="mo-title">@Language.GetString("Permission_Routes")</span>
-                                <span>@item.Routes</span>
-                            </div>
-
-                            <div class="table-col col-xs-12 col-lg-2 col-md-2">
-                                <div class="">
-                                    @if (ViewBag.Permissions["Edit"])
-                                    {
-                                        <a id="editRecord" href="#" data-toggle="modal" data-id="@item.Id" class=" btn btn-outline-primary btn-xs">
-                                            @Language.GetString("btn_Edit")
-                                        </a>
-                                    }
-                                    @if (ViewBag.Permissions["Remove"])
-                                    {
-                                        <button id="deleteRecord" href="#" data-toggle="modal" data-id="@item.Id" type="button" class="btn btn-outline-danger btn-xs">
-                                            @Language.GetString("btn_Delete")
-                                        </button>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-        }
-        else
-        {
-            <div class="empty text-center">@Language.GetString("AlertAndMessage_NoDataToShow")</div>
-        }
+@section Scripts{
+    <script>
+    function PermissionDelete(id) {
+        Swal.fire({
+            title: '@Language.GetString("AlertAndMessage_AreYouSure")',
+            text: '@Language.GetString("AlertAndMessage_DeletePermission")',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d51c1c',
+    cancelButtonColor: '#009c09db',
+    confirmButtonText: '@Language.GetString("btn_Confirm")',
+    cancelButtonText: '@Language.GetString("btn_NotConfirm")'
+    }).then((result) => {
+    if (result.isConfirmed) {
+    $.ajax({
+    type: 'Get',
+    url: '@Url.Action("Delete", "Permission")' + '?id=' + id,
+    beforeSend: function() {
+    $("#loading").addClass('is-active');
+    },
+    success: function (resultData) {
+    $("#loading").removeClass('is-active');
+    if (resultData.status === "Success") {
+    Swal.fire({
+    icon: 'success',
+    text: resultData.message,
+    showConfirmButton: false,
+    timer: 3000
+    }).then(() => {
+    window.location.reload();
+    });
     }
-</div>
 
+    if (resultData.status === "Error") {
+    Swal.fire({
+    icon: 'error',
+    text: resultData.message,
+    showConfirmButton: false,
+    timer: 1500
+    });
+    }
+    }
+    });
+    }
+    });
+    }
+    </script>
+}

@@ -17,8 +17,8 @@ namespace Arad.Portal.DataLayer.Models.Role
         [CustomErrorMessage("AlertAndMessage_FieldEssential")]
         public string RoleName { get; set; }
         public List<string> SelectedPermissions { get; set; }
-        public List<PerSelect> AllAllowedPermissions { get; set; }
-        public CityStateRoleModel CityStateRole { get; set; }
+        //public List<PerSelect> AllAllowedPermissions { get; set; }
+        //public CityStateRoleModel CityStateRole { get; set; }
         public string ModificationReason { get; set; }
         public string Color { get; set; }
     }

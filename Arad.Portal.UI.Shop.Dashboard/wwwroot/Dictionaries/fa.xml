@@ -104,6 +104,9 @@
 	<string key="PermissionTitle_UserChangeActivation">
 		<value>فعال یا غیر فعال کردن کاربر</value>
 	</string>
+	<string key="PermissionTitle_UserRestore">
+		<value>بازگردانی کاربر</value>
+	</string>
 	<string key="PermissionTitle_PermissionChangeActivation">
 		<value>فعال یا غیر فعال کردن دسترسی</value>
 	</string>
@@ -217,7 +220,13 @@
 		<value>اعلان</value>
 	</string>
 	<!--End [Enum Descriptions]-->
-  <!--START [Allert And Message]-->
+	<!--START [Allert And Message]-->
+	<string key="AlertAndMessage_SeprateRoutesByComma">
+		<value>مسیرهای مختلف را با , از هم جداکنید.</value>
+	</string>
+	<string key="AlertAndMessage_DeletePermission">
+		<value>دسترسی مربوطه حذف خواهد شد.</value>
+	</string>
 	<string key="AlertAndMessage_FieldEssential">
 		<value>پر کردن این فیلد الزامی است.</value>
 	</string>
@@ -227,46 +236,46 @@
 	<string key="AlertAndMessage_ModificationReason">
 		<value>لطفا دلیل ویرایش را ذکر کنید.</value>
 	</string>
-  <string key="AlertAndMessage_Error">
-    <value>خطا</value>
-  </string>
+	<string key="AlertAndMessage_Error">
+		<value>خطا</value>
+	</string>
 	<string key="AlertAndMessage_Success">
 		<value>موفقیت</value>
 	</string>
 	<string key="AlertAndMessage_ChangePassSureness">
 		<value>برای تغییر رمز اطمینان دارید؟</value>
 	</string>
-  <string key="AlertAndMessage_UserNameRequired">
-    <value>لطفا نام کاربری را وارد کنید.</value>
-  </string>
-  <string key="AlertAndMessage_NameRequired">
-    <value>لطفا نام کاربر را وارد کنید.</value>
-  </string>
-  <string key="AlertAndMessage_LastNameRequired">
-    <value>لطفا نام خانوادگی را وارد کنید.</value>
-  </string>
-  <string key="AlertAndMessage_PhonenumberRequired">
-    <value>لطفا شماره موبایل را وارد نمایید.</value>
-  </string>
-  <string key="AlertAndMessage_UserRoleRequired">
-    <value>لطفانقش کاربر را انتخاب کنید.</value>
-  </string>
-  <string key="AlertAndMessage_PasswordRequired">
-    <value>لطفا کلمه غبور را وارد کنید.</value>
-  </string>
-  <string key="AlertAndMessage_PasswordValidation">
-    <value>پسورد باید ترکیبی از حروف وعدد باشد.</value>
-  </string>
-  <string key="AlertAndMessage_RePasswordRequired">
-    <value> لطفا تکرار پسورد را وارد کنید.</value>
-  </string>
-  <string key="AlertAndMessage_PasswordRepassWordCompare">
-    <value>کلمه عبور و تکرار کلمه عبور باید یکسان باشند.</value>
-  </string>
-  
-  <string key="AlertAndMessage_MinLength">
-    <value>طول 0 نیاید کمتر از 1 باشد.</value>
-  </string>
+	<string key="AlertAndMessage_UserNameRequired">
+		<value>لطفا نام کاربری را وارد کنید.</value>
+	</string>
+	<string key="AlertAndMessage_NameRequired">
+		<value>لطفا نام کاربر را وارد کنید.</value>
+	</string>
+	<string key="AlertAndMessage_LastNameRequired">
+		<value>لطفا نام خانوادگی را وارد کنید.</value>
+	</string>
+	<string key="AlertAndMessage_PhonenumberRequired">
+		<value>لطفا شماره موبایل را وارد نمایید.</value>
+	</string>
+	<string key="AlertAndMessage_UserRoleRequired">
+		<value>لطفانقش کاربر را انتخاب کنید.</value>
+	</string>
+	<string key="AlertAndMessage_PasswordRequired">
+		<value>لطفا کلمه غبور را وارد کنید.</value>
+	</string>
+	<string key="AlertAndMessage_PasswordValidation">
+		<value>پسورد باید ترکیبی از حروف وعدد باشد.</value>
+	</string>
+	<string key="AlertAndMessage_RePasswordRequired">
+		<value> لطفا تکرار پسورد را وارد کنید.</value>
+	</string>
+	<string key="AlertAndMessage_PasswordRepassWordCompare">
+		<value>کلمه عبور و تکرار کلمه عبور باید یکسان باشند.</value>
+	</string>
+
+	<string key="AlertAndMessage_MinLength">
+		<value>طول 0 نیاید کمتر از 1 باشد.</value>
+	</string>
 	<string key="AlertAndMessage_FillEssentialFields">
 		<value>لطفا فیلدهای ضروری تکمیل گردد.</value>
 	</string>
@@ -300,7 +309,7 @@
 	<string key="AlertAndMessage_UserCreatedSuccessfully">
 		<value>کاربر با موفقیت ایجاد شد.</value>
 	</string>
-	
+
 	<string key="AlertAndMessage_DuplicatePhoneNumber">
 		<value>با این شماره موبایل قبلا کاربری ثبت نام شده است.</value>
 	</string>
@@ -310,14 +319,14 @@
 	<string key="AlertAndMessage_NoUserWasFound">
 		<value>کاربر مورد نظر یافت نشد.</value>
 	</string>
-	
+
 	<string key="AlertAndMessage_NoRoleWasFound">
 		<value>نقش مورد نظر یافت نشد</value>
 	</string>
 	<string key="AlertAndMessage_NoDataToShow">
 		<value>اطلاعاتی برای نمایش موجود نمیباشد.</value>
 	</string>
-	
+
 	<string key="AlertAndMessage_NotifySendingSMS">
 		<value>با زدن دکمه ارسال کلمه عبور جدید به شماره موبایل کاربر ارسال خواهد شد.</value>
 	</string>
@@ -360,498 +369,498 @@
 	<string key="AlertAndMessage_GotIt">
 		<value>متوجه شدم</value>
 	</string>
-  <string key="AlertAndMessage_RequiredErrorMessage">
-    <value>این فیلد الزامی است.</value>
-  </string>
-  <string key="AlertAndMessage_InvalidFileType">
-    <value>نوع فایل اشتباه است.</value>
-  </string>
-  <string key="AlertAndMessage_NewPasswordwordDoesNotMatchWithRepeat">
-    <value>گذرواژه و تکرار آن با هم مطابقت ندارند.</value>
-  </string>
-  <string key="Tariff_Needed">
-    <value>حداقل یک تعرفه باید انتخاب گردد.</value>
-  </string>
-  <string key="AlertAndMessage_InvalidFileSize">
-    <value>سایز فایل مناسب نیست.</value>
-  </string>
-  <string key="AlertAndMessage_EnterBirthDate">
-    <value>لطفا تاریخ تولد را وارد نمائید.</value>
-  </string>
+	<string key="AlertAndMessage_RequiredErrorMessage">
+		<value>این فیلد الزامی است.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidFileType">
+		<value>نوع فایل اشتباه است.</value>
+	</string>
+	<string key="AlertAndMessage_NewPasswordwordDoesNotMatchWithRepeat">
+		<value>گذرواژه و تکرار آن با هم مطابقت ندارند.</value>
+	</string>
+	<string key="Tariff_Needed">
+		<value>حداقل یک تعرفه باید انتخاب گردد.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidFileSize">
+		<value>سایز فایل مناسب نیست.</value>
+	</string>
+	<string key="AlertAndMessage_EnterBirthDate">
+		<value>لطفا تاریخ تولد را وارد نمائید.</value>
+	</string>
 
-  <string key="AlertAndMessage_InvalidExpirationDateRange">
-	  <value>تاریخ انقضای انتخاب شده مورد قبول نمی باشد.</value>
-  </string>
+	<string key="AlertAndMessage_InvalidExpirationDateRange">
+		<value>تاریخ انقضای انتخاب شده مورد قبول نمی باشد.</value>
+	</string>
 
-  <string key="AlertAndMessage_MaxDateTime">
-    <value>حداکثر تاریخ انقضای قابل انتخاب برای این شماره: </value>
-  </string>
-  <string key="AlertAndMessage_ErrorUploadingFile">
-    <value>خطا در بارگذاری فایل.</value>
-  </string>
-  <string key="AlertAndMessage_IdRequired">
-    <value>Id مشخص نشده است.</value>
-  </string>
-  <string key="AlertAndMessage_ObjectNotFound">
-    <value>آیتمی پیدا نشد!</value>
-  </string>
-  <string key="Regex_Not_Match">
-    <value>مقدار وارد شده با الگو مطابقت ندارد.</value>
-  </string>
-  <string key="AlertAndMessage_EnterUsername">
-    <value>لطفا نام کاربری را وارد نمائید.</value>
-  </string>
-  <string key="AlertAndMessage_EnterFirstName">
-    <value>لطفا نام را وارد نمائید.</value>
-  </string>
-  <string key="AlertAndMessage_EnterLastName">
-    <value>لطفا نام خانوادگی را وارد نمائید.</value>
-  </string>
-  <string key="AlertAndMessage_EnterPassword">
-    <value>لطفا گذرواژه را انتخاب نمائید.</value>
-  </string>
-  <string key="AlertAndMessage_SelectGender">
-    <value>لطفا جنسیت را انتخاب نمائید.</value>
-  </string>
-  <string key="AlertAndMessage_Gender">
-    <value>جنسیت</value>
-  </string>
-  <string key="AlertAndMessage_EnterFatherName">
-    <value>لطفا نام پدر را وارد نمائید.</value>
-  </string>
-  <string key="AlertAndMessage_InternalServerErrorMessage">
-    <value>متاسفانه، ظاهرا برخی اطلاعات اشتباه وارد شده است!</value>
-  </string>
-  <string key="AlertAndMessage_ModelHasIdError">
-    <value>مدل ایجاد شده نباید حاوی پارامتر id باشد!</value>
-  </string>
-  <string key="AlertAndMessage_DuplicateClientIdInsertError">
-    <value>این شناسه در سیستم موجود است!</value>
-  </string>
-  <string key="AlertAndMessage_InProperIdFormat">
-    <value>فرمت Id اشتباه است.</value>
-  </string>
-  <string key="AlertAndMessage_ExceptionOccured">
-    <value>خطایی رخ داده است.</value>
-  </string>
-  <string key="AlertAndMessage_ParameterError">
-    <value>لطفا پارامترها را بررسی نمائید.</value>
-  </string>
-  <string key="AlertAndMessage_SuccessfullyDone">
-    <value>با موفقیت انجام شد.</value>
-  </string>
-  <string key="AlertAndMessage_DuplicateError">
-    <value>این آیتم وجود دارد!</value>
-  </string>
-  <string key="AlertAndMessage_GeneralError">
-    <value>خطای نامشخص.</value>
-  </string>
-  <string key="AlertAndMessage_ModelError">
-    <value>خطای مدل!</value>
-  </string>
-  <string key="AlertAndMessage_InvalidPassword">
-    <value>گذرواژه نامعتبر است!</value>
-  </string>
-  <string key="AlertAndMessage_NoServerResponseError">
-    <value>سرور پاسخگوی این عملیات نمی باشد!</value>
-  </string>
-  <string key="AlertAndMessage_BadRequestError">
-    <value>درخواست نامعتبر می باشد!</value>
-  </string>
-  <string key="AlertAndMessage_RangeLimitExceed">
-    <value>بیش از حد مجاز!</value>
-  </string>
-  <string key="AlertAndMessage_OperationDoneSuccessfully">
-    <value>عملیات با موفقیت انجام شد.</value>
-  </string>
-  <string key="AlertAndMessage_OperationFailed">
-    <value>عملیات ناموفق بود!</value>
-  </string>
-  <string key="AlertAndMessage_ErrorInSaving">
-    <value>خطا در ذخیره سازی داده!</value>
-  </string>
-  <string key="AlertAndMessage_InvalidDate">
-    <value>تاریخ نامعتبر است.</value>
-  </string>
-  <string key="AlertAndMessage_EnterFixedPhoneNumber">
-    <value>لطفا شماره تلفن ثابت خود را وارد نمائید.</value>
-  </string>
-  <string key="AlertAndMessage_InvalidFixedPhoneNumber">
-    <value>شماره تلفن اشتباه است.</value>
-  </string>
-  <string key="AlertAndMessage_SelectOne">
-    <value>لطفا انتخاب کنید...</value>
-  </string>
-  <string key="AlertAndMessage_YouEnteredMobileNumber">
-    <value>شما، شماره موبایل وارد کرده اید.</value>
-  </string>
-  <string key="AlertAndMessage_EnterMobileNumber">
-    <value>لطفا شماره همراه خود را وارد نمائید.</value>
-  </string>
-  <string key="AlertAndMessage_EnterMobile">
-    <value>لطفا شماره همراه خود را وارد نمائید:</value>
-  </string>
-  <string key="AlertAndMessage_InvalidMobileNumber">
-    <value>شماره همراه وارد شده اشتباه است.</value>
-  </string>
-  <string key="AlertAndMessage_YouEnteredFixPhoneNumber">
-    <value>شما، شماره تلفن ثابت وارد نموده اید.</value>
-  </string>
-  <string key="AlertAndMessage_InvalidNationalId">
-    <value>کد ملی اشتباه است.</value>
-  </string>
-  <string key="AlertAndMessage_EnterPostalCode">
-    <value>لطفا کد پستی را وارد نمائید.</value>
-  </string>
-  <string key="AlertAndMessage_InvalidPostalCode">
-    <value>کد پستی اشتباه است.</value>
-  </string>
- 
-  <string key="AlertAndMessage_TheAccountHasBeenDisabledByTheAdmin">
-    <value>این اکانت توسط مدیریت مسدود شده است.</value>
-  </string>
-  <string key="AlertAndMessage_Welcome">
-    <value>خوش آمدید.</value>
-  </string>
-  <string key="AlertAndMessage_YouCameInInsteadOf">
-    <value>شما وارد شده اید به جای  </value>
-  </string>
-  <string key="AlertAndMessage_YourOTPIs">
-    <value>کد شما : </value>
-  </string>
-  <string key="AlertAndMessage_ErrorInSendingSMS">
-    <value>خطا در ارسال پیامک.</value>
-  </string>
-  <string key="AlertAndMessage_UserNotFound">
-    <value>کاربر پیدا نشد.</value>
-  </string>
-  <string key="AlertAndMessage_NotAllowed">
-    <value>شما مجاز نیستید.</value>
-  </string>
-  <string key="AlertAndMessage_ErrorTryAgain">
-    <value>خطا، لطفا مجدد تلاش کنید.</value>
-  </string>
-  <string key="AlertAndMessage_ErrorTryAgainLater">
-    <value>خطا، لطفا بعدا تلاش کنید.</value>
-  </string>
-  <string key="AlertAndMessage_ValidityOfOTP">
-    <value>اعتبار یک بار رمز فقط 3 دقیقه می باشد.</value>
-  </string>
-  <string key="AlertAndMessage_YourNewPasswordIs">
-    <value>گذرواژه جدید: </value>
-  </string>
-  <string key="AlertAndMessage_InvalidCaptcha">
-    <value>عبارت امنیتی اشتباه است.</value>
-  </string>
-  <string key="AlertAndMessage_SelectCountry">
-    <value>لطفا کشور را انتخاب نمائید.</value>
-  </string>
-  <string key="AlertAndMessage_SelectState">
-    <value>لطفا استان را انتخاب نمائید.</value>
-  </string>
-  <string key="AlertAndMessage_SelectCity">
-    <value>لطفا شهر را انتخاب نمائید.</value>
-  </string>
-  <string key="AlertAndMessage_ModificationProfile">
-    <value>تغییرات پروفایل.</value>
-  </string>
-  <string key="AlertAndMessage_InvalidCurrentPassword">
-    <value>گذرواژه فعلی اشتباه است.</value>
-  </string>
-  <string key="AlertAndMessage_ModificationPasswordByUser">
-    <value>تغییر گذرواژه توسط کاربر.</value>
-  </string>
-  <string key="AlertAndMessage_ModificationPasswordByAdmin">
-    <value>تغییر گذرواژه توسط مدیریت.</value>
-  </string>
-  <string key="AlertAndMessage_PasswordChanged">
-    <value>گذرواژه تغییر یافت.</value>
-  </string>
-  <string key="AlertAndMessage_EnterModificationReason">
-    <value>لطفا دلیل ویرایش را بنویسید.</value>
-  </string>
-  <string key="AlertAndMessage_EnterValidNumber">
-    <value>لطفا مقدار عددی وارد نمائید.</value>
-  </string>
-  <string key="AlertAndMessage_EnterValidAlphanumeric">
-    <value>لطفا حرف و اعداد وارد نمائید.</value>
-  </string>
-  <string key="AlertAndMessage_EnterValidAlphanumericRange">
-    <value>لطفا مقادیر عددی یا حرفی را به همراه * یا ؟ وارد نمائید.</value>
-  </string>
-  <string key="AlertAndMessage_SelectAtLeastOneItem">
-    <value>لطفا حداقل یک گرینه را انتخاب نمائید.</value>
-  </string>
-  <string key="AlertAndMessage_Choose">
-    <value>انتخاب کنید</value>
-  </string>
-  <string key="AlertAndMessage_Cancel">
-    <value>لغو</value>
-  </string>
-  <string key="AlertAndMessage_FormatIsNotCorrect">
-    <value>فرمت پارامترهای وارد شده، اشتباه است.</value>
-  </string>
-  <string key="AlertAndMessage_UpperAndLowerLimit">
-    <value>مقدار بالا نمی تواند کمتر از مقدار پائین باشد.</value>
-  </string>
-  <string key="AlertAndMessage_UpperAndLowerLimitOverlap">
-    <value>مقادیر وارد شده، با بازه دیگری همپوشانی دارد.</value>
-  </string>
-  <string key="AlertAndMessage_EnterBlockedMobileNumber">
-    <value>لطفا شماره موبایل را وارد نمائید.</value>
-  </string>
-  <string key="AlertAndMessage_EnterChangeRoutedMobileNumber">
-    <value>لطفا شماره موبایل را وارد نمائید.</value>
-  </string>
-  <string key="AlertAndMessage_NotEnoughCredit">
-    <value>موجودی کافی نیست!</value>
-  </string>
-  <string key="AlertAndMessage_FileHasNoInformation">
-    <value>فایل وارد شده، محتوایی ندارد.</value>
-  </string>
-  <string key="AlertAndMessage_UpstreamGatewayNotFound">
-    <value>سرویس دهنده ای یافت نشد.</value>
-  </string>
-  <string key="AlertAndMessage_EditUpstreamGateway">
-    <value>ویرایش سرویس دهنده</value>
-  </string>
-  <string key="AlertAndMessage_ThePriorityIsMandatory">
-    <value>ورود اولویت الزامی است و می بایست بزرگتر از 0 باشد.</value>
-  </string>
-  <string key="AlertAndMessage_Creator">
-    <value>ایجاد کننده</value>
-  </string>
-  <string key="AlertAndMessage_NotFound">
-    <value>پیدا نشد.</value>
-  </string>
-  <string key="AlertAndMessage_DirectUsers">
-    <value>کاربران مستقیم</value>
-  </string>
-  <string key="AlertAndMessage_UsernameExist">
-    <value>این کاربر وجود دارد.</value>
-  </string>
-  <string key="AlertAndMessage_NoSenderIdFoundToAssign">
-    <value>شماره ای برای تخصیص یافت نشد.</value>
-  </string>
-  <string key="AlertAndMessage_ChooseAnotherUsername">
-    <value>لطفا نام کاربری دیگری انتخاب کنید.</value>
-  </string>
-  <string key="AlertAndMessage_MobileExist">
-    <value>این شماره موبایل وجود دارد.</value>
-  </string>
-  <string key="AlertAndMessage_PasswordAndRepetitionNotTheSame">
-    <value>گذرواژه و تکرار آن با هم مطابقت ندارند.</value>
-  </string>
-  <string key="AlertAndMessage_FillAllField">
-    <value>لطفا تمامی فیلدها را پر کنید.</value>
-  </string>
-  <string key="AlertAndMessage_CheckTheInputDataFormat">
-    <value>لطفا فرمت مقادیر ورودی را چک کنید.</value>
-  </string>
-  <string key="AlertAndMessage_AccessDenied">
-    <value>دسترسی محدود شده است.</value>
-  </string>
-  <string key="AlertAndMessage_AccessDeniedToThisPage">
-    <value>شما اجازه دسترسی به این صفحه را ندارید.</value>
-  </string>
-  <string key="AlertAndMessage_ClickMe">
-    <value>اینجا را کلیک کنید</value>
-  </string>
-  <string key="AlertAndMessage_ClickMeToReturn">
-    <value>تا به صفحه اصلی بازگردید.</value>
-  </string>
-  <string key="AlertAndMessage_Inaccessibility">
-    <value>عدم دسترسی</value>
-  </string>
-  <string key="AlertAndMessage_ErrorOccurrence">
-    <value>خطایی رخ داده است.</value>
-  </string>
-  <string key="AlertAndMessage_TheRequestedSubmissionParametersAreIncorrect">
-    <value>پارامترهای ارسال درخواست، نادرست است.</value>
-  </string>
-  <string key="AlertAndMessage_LoginPage">
-    <value>ورود به سامانه</value>
-  </string>
-  <string key="AlertAndMessage_Login">
-    <value>ورود</value>
-  </string>
-  <string key="AlertAndMessage_Logout">
-    <value>خروج</value>
-  </string>
-  <string key="AlertAndMessage_LoginHistory">
-    <value>تاریخچه ورود و خروج</value>
-  </string>
-  <string key="AlertAndMessage_LoginToAccount">
-    <value>ورود به پنل کاربری</value>
-  </string>
-  <string key="AlertAndMessage_EnterUserAndPassword">
-    <value>لطفا نام کاربری و گذرواژه را وارد نمائید.</value>
-  </string>
-  <string key="AlertAndMessage_EnterOTP">
-    <value>یک بار رمز را وارد نمائید.</value>
-  </string>
-  <string key="AlertAndMessage_ChangePassword">
-    <value>تغییر گذرواژه</value>
-  </string>
+	<string key="AlertAndMessage_MaxDateTime">
+		<value>حداکثر تاریخ انقضای قابل انتخاب برای این شماره: </value>
+	</string>
+	<string key="AlertAndMessage_ErrorUploadingFile">
+		<value>خطا در بارگذاری فایل.</value>
+	</string>
+	<string key="AlertAndMessage_IdRequired">
+		<value>Id مشخص نشده است.</value>
+	</string>
+	<string key="AlertAndMessage_ObjectNotFound">
+		<value>آیتمی پیدا نشد!</value>
+	</string>
+	<string key="Regex_Not_Match">
+		<value>مقدار وارد شده با الگو مطابقت ندارد.</value>
+	</string>
+	<string key="AlertAndMessage_EnterUsername">
+		<value>لطفا نام کاربری را وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_EnterFirstName">
+		<value>لطفا نام را وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_EnterLastName">
+		<value>لطفا نام خانوادگی را وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_EnterPassword">
+		<value>لطفا گذرواژه را انتخاب نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_SelectGender">
+		<value>لطفا جنسیت را انتخاب نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_Gender">
+		<value>جنسیت</value>
+	</string>
+	<string key="AlertAndMessage_EnterFatherName">
+		<value>لطفا نام پدر را وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_InternalServerErrorMessage">
+		<value>متاسفانه، ظاهرا برخی اطلاعات اشتباه وارد شده است!</value>
+	</string>
+	<string key="AlertAndMessage_ModelHasIdError">
+		<value>مدل ایجاد شده نباید حاوی پارامتر id باشد!</value>
+	</string>
+	<string key="AlertAndMessage_DuplicateClientIdInsertError">
+		<value>این شناسه در سیستم موجود است!</value>
+	</string>
+	<string key="AlertAndMessage_InProperIdFormat">
+		<value>فرمت Id اشتباه است.</value>
+	</string>
+	<string key="AlertAndMessage_ExceptionOccured">
+		<value>خطایی رخ داده است.</value>
+	</string>
+	<string key="AlertAndMessage_ParameterError">
+		<value>لطفا پارامترها را بررسی نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_SuccessfullyDone">
+		<value>با موفقیت انجام شد.</value>
+	</string>
+	<string key="AlertAndMessage_DuplicateError">
+		<value>این آیتم وجود دارد!</value>
+	</string>
+	<string key="AlertAndMessage_GeneralError">
+		<value>خطای نامشخص.</value>
+	</string>
+	<string key="AlertAndMessage_ModelError">
+		<value>خطای مدل!</value>
+	</string>
+	<string key="AlertAndMessage_InvalidPassword">
+		<value>گذرواژه نامعتبر است!</value>
+	</string>
+	<string key="AlertAndMessage_NoServerResponseError">
+		<value>سرور پاسخگوی این عملیات نمی باشد!</value>
+	</string>
+	<string key="AlertAndMessage_BadRequestError">
+		<value>درخواست نامعتبر می باشد!</value>
+	</string>
+	<string key="AlertAndMessage_RangeLimitExceed">
+		<value>بیش از حد مجاز!</value>
+	</string>
+	<string key="AlertAndMessage_OperationDoneSuccessfully">
+		<value>عملیات با موفقیت انجام شد.</value>
+	</string>
+	<string key="AlertAndMessage_OperationFailed">
+		<value>عملیات ناموفق بود!</value>
+	</string>
+	<string key="AlertAndMessage_ErrorInSaving">
+		<value>خطا در ذخیره سازی داده!</value>
+	</string>
+	<string key="AlertAndMessage_InvalidDate">
+		<value>تاریخ نامعتبر است.</value>
+	</string>
+	<string key="AlertAndMessage_EnterFixedPhoneNumber">
+		<value>لطفا شماره تلفن ثابت خود را وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidFixedPhoneNumber">
+		<value>شماره تلفن اشتباه است.</value>
+	</string>
+	<string key="AlertAndMessage_SelectOne">
+		<value>لطفا انتخاب کنید...</value>
+	</string>
+	<string key="AlertAndMessage_YouEnteredMobileNumber">
+		<value>شما، شماره موبایل وارد کرده اید.</value>
+	</string>
+	<string key="AlertAndMessage_EnterMobileNumber">
+		<value>لطفا شماره همراه خود را وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_EnterMobile">
+		<value>لطفا شماره همراه خود را وارد نمائید:</value>
+	</string>
+	<string key="AlertAndMessage_InvalidMobileNumber">
+		<value>شماره همراه وارد شده اشتباه است.</value>
+	</string>
+	<string key="AlertAndMessage_YouEnteredFixPhoneNumber">
+		<value>شما، شماره تلفن ثابت وارد نموده اید.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidNationalId">
+		<value>کد ملی اشتباه است.</value>
+	</string>
+	<string key="AlertAndMessage_EnterPostalCode">
+		<value>لطفا کد پستی را وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidPostalCode">
+		<value>کد پستی اشتباه است.</value>
+	</string>
 
-  <string key="AlertAndMessage_ApiAccessFormatError">
-	  <value>فرمت ورودی صحیح نیست.</value>
-  </string>
-  <string key="AlertAndMessage_CurrentPassword">
-    <value>گذرواژه فعلی: </value>
-  </string>
-  <string key="AlertAndMessage_NewPassword">
-    <value>گذرواژه جدید: </value>
-  </string>
-  <string key="AlertAndMessage_ConfirmPassword">
-    <value>تکرار گذرواژه: </value>
-  </string>
-  <string key="AlertAndMessage_CreatePasswordBySyetm">
-    <value>ایجاد گذرواژه توسط سیستم</value>
-  </string>
-  <string key="AlertAndMessage_RandomPassword">
-    <value>گذرواژه تصادفی</value>
-  </string>
-  <string key="AlertAndMessage_CopyToClipboard">
-    <value>کپی در حافظه</value>
-  </string>
-  <string key="AlertAndMessage_SentToUser">
-    <value>اکنون برای کاربر ارسال می شود.</value>
-  </string>
-  <string key="AlertAndMessage_OTP">
-    <value>یک بار رمز: </value>
-  </string>
-  <string key="AlertAndMessage_SendOTP">
-    <value>ارسال یک بار رمز</value>
-  </string>
-  <string key="AlertAndMessage_OTPSentSuccessfully">
-    <value>یک بار رمز ارسال شد</value>
-  </string>
-  <string key="AlertAndMessage_Username">
-    <value>نام کاربری</value>
-  </string>
-  <string key="AlertAndMessage_Password">
-    <value>گذرواژه</value>
-  </string>
-  <string key="AlertAndMessage_RememberMe">
-    <value>مرا به خاطر بسپار</value>
-  </string>
-  <string key="AlertAndMessage_ResetPassword">
-    <value>بازنشانی گذرواژه</value>
-  </string>
-  <string key="AlertAndMessage_PageNotFound">
-    <value>صفحه یافت نشد.</value>
-  </string>
-  <string key="AlertAndMessage_DeleteConfirm">
-    <value>بله، حذف شود!</value>
-  </string>
-  <string key="AlertAndMessage_Deny">
-    <value>خیر</value>
-  </string>
-  <string key="AlertAndMessage_Approve">
-    <value>بله</value>
-  </string>
-  <string key="AlertAndMessage_AskForConfirm">
-    <value>آیا مطمئن هستید؟</value>
-  </string>
-  <string key="AlertAndMessage_PermissionWillBeDeleted">
-    <value>دسترسی حذف خواهد شد.</value>
-  </string>
-  <string key="AlertAndMessage_RoleWillBeDeleted">
-    <value>نقش حذف خواهد شد.</value>
-  </string>
-  <string key="AlertAndMessage_ItemWillBeDeleted">
-    <value>آیتم حذف خواهد شد.</value>
-  </string>
-  <string key="AlertAndMessage_NothingToShow">
-    <value>چیزی برای نمایش وجود ندارد.</value>
-  </string>
-  <string key="AlertAndMessage_SelectFile">
-    <value>لطفا فایل را انتخاب نمائید.</value>
-  </string>
-  <string key="AlertAndMessage_NoFileSelected">
-    <value>هنوز فایلی انتخاب نشده است.</value>
-  </string>
-  <string key="AlertAndMessage_Succeeded">
-    <value>موفق</value>
-  </string>
-  <string key="AlertAndMessage_Failed">
-    <value>ناموفق</value>
-  </string>
-  <string key="AlertAndMessage_AllFailed">
-    <value>همه، ناموفق</value>
-  </string>
-  <string key="AlertAndMessage_UserIpAddress">
-    <value>آدرس IP</value>
-  </string>
-  <string key="AlertAndMessage_ViewBatchIDs">
-    <value>مشاهده شناسه ها</value>
-  </string>
-  <string key="AlertAndMessage_IncompleteProfile">
-    <value>پروفایل ناقص است.</value>
-  </string>
-  <string key="AlertAndMessage_IncompleteProfileMessage">
-    <value>لطفا قبل از استفاده از امکانات سیستم، پروفایل خود را تکمیل کنید.</value>
-  </string>
-  <string key="AlertAndMessage_IncompleteProfileItems">
-    <value>لطفا آیتم های زیر را تکمیل کنید:</value>
-  </string>
-  <string key="AlertAndMessage_TransferCellphoneBetweenOperatorsList">
-    <value>لیست ترابردها</value>
-  </string>
-  <string key="AlertAndMessage_TransferCellphone">
-    <value>ترابرد شده ها</value>
-  </string>
-  <string key="AlertAndMessage_AddExtraParams">
-    <value>پارامترهای اضافی</value>
-  </string>
-  <string key="AlertAndMessage_OperatorList">
-    <value>لیست اپراتورهای موبایل</value>
-  </string>
-  <string key="AlertAndMessage_NewOperator">
-    <value>اپراتور جدید</value>
-  </string>
-  <string key="AlertAndMessage_SuccessCount">
-    <value>تعداد موفق</value>
-  </string>
-  <string key="AlertAndMessage_FailedCount">
-    <value>تعداد ناموفق</value>
-  </string>
-  <string key="AlertAndMessage_NewRole">
-    <value>نقش جدید</value>
-  </string>
-  <string key="AlertAndMessage_Receivers">
-    <value>دریافت کنندگان</value>
-  </string>
-  <string key="AlertAndMessage_ChangeUserTariff">
-    <value>تغییر تعرفه</value>
-  </string>
-  <string key="AlertAndMessage_SetUserSenderIds">
-    <value>تخصیص شماره</value>
-  </string>
-  <string key="AlertAndMessage_DateFrom">
-    <value>از تاریخ</value>
-  </string>
-  <string key="AlertAndMessage_DateTo">
-    <value>تا تاریخ</value>
-  </string>
-  <string key="AlertAndMessage_Type">
-    <value>نوع</value>
-  </string>
-  <string key="AlertAndMessage_Icon">
-    <value>لطفا آیکون را انتخاب نمایید.</value>
-  </string>
-  <string key="AlertAndMessage_Priority">
-    <value>لطفا الویت را مشخص نمایید.</value>
-  </string>
-  <string key="AlertAndMessage_Route">
-    <value>لطفا آدرس را مشخص نمایید.</value>
-  </string>
-  <string key="AlertAndMessage_MenuOfModule">
-    <value>لطفا منو را انتخاب نمایید.</value>
-  </string>
-  <!--END [Allert And Message]-->
-  <!--START [Dashboard]-->
+	<string key="AlertAndMessage_TheAccountHasBeenDisabledByTheAdmin">
+		<value>این اکانت توسط مدیریت مسدود شده است.</value>
+	</string>
+	<string key="AlertAndMessage_Welcome">
+		<value>خوش آمدید.</value>
+	</string>
+	<string key="AlertAndMessage_YouCameInInsteadOf">
+		<value>شما وارد شده اید به جای  </value>
+	</string>
+	<string key="AlertAndMessage_YourOTPIs">
+		<value>کد شما : </value>
+	</string>
+	<string key="AlertAndMessage_ErrorInSendingSMS">
+		<value>خطا در ارسال پیامک.</value>
+	</string>
+	<string key="AlertAndMessage_UserNotFound">
+		<value>کاربر پیدا نشد.</value>
+	</string>
+	<string key="AlertAndMessage_NotAllowed">
+		<value>شما مجاز نیستید.</value>
+	</string>
+	<string key="AlertAndMessage_ErrorTryAgain">
+		<value>خطا، لطفا مجدد تلاش کنید.</value>
+	</string>
+	<string key="AlertAndMessage_ErrorTryAgainLater">
+		<value>خطا، لطفا بعدا تلاش کنید.</value>
+	</string>
+	<string key="AlertAndMessage_ValidityOfOTP">
+		<value>اعتبار یک بار رمز فقط 3 دقیقه می باشد.</value>
+	</string>
+	<string key="AlertAndMessage_YourNewPasswordIs">
+		<value>گذرواژه جدید: </value>
+	</string>
+	<string key="AlertAndMessage_InvalidCaptcha">
+		<value>عبارت امنیتی اشتباه است.</value>
+	</string>
+	<string key="AlertAndMessage_SelectCountry">
+		<value>لطفا کشور را انتخاب نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_SelectState">
+		<value>لطفا استان را انتخاب نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_SelectCity">
+		<value>لطفا شهر را انتخاب نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_ModificationProfile">
+		<value>تغییرات پروفایل.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidCurrentPassword">
+		<value>گذرواژه فعلی اشتباه است.</value>
+	</string>
+	<string key="AlertAndMessage_ModificationPasswordByUser">
+		<value>تغییر گذرواژه توسط کاربر.</value>
+	</string>
+	<string key="AlertAndMessage_ModificationPasswordByAdmin">
+		<value>تغییر گذرواژه توسط مدیریت.</value>
+	</string>
+	<string key="AlertAndMessage_PasswordChanged">
+		<value>گذرواژه تغییر یافت.</value>
+	</string>
+	<string key="AlertAndMessage_EnterModificationReason">
+		<value>لطفا دلیل ویرایش را بنویسید.</value>
+	</string>
+	<string key="AlertAndMessage_EnterValidNumber">
+		<value>لطفا مقدار عددی وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_EnterValidAlphanumeric">
+		<value>لطفا حرف و اعداد وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_EnterValidAlphanumericRange">
+		<value>لطفا مقادیر عددی یا حرفی را به همراه * یا ؟ وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_SelectAtLeastOneItem">
+		<value>لطفا حداقل یک گرینه را انتخاب نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_Choose">
+		<value>انتخاب کنید</value>
+	</string>
+	<string key="AlertAndMessage_Cancel">
+		<value>لغو</value>
+	</string>
+	<string key="AlertAndMessage_FormatIsNotCorrect">
+		<value>فرمت پارامترهای وارد شده، اشتباه است.</value>
+	</string>
+	<string key="AlertAndMessage_UpperAndLowerLimit">
+		<value>مقدار بالا نمی تواند کمتر از مقدار پائین باشد.</value>
+	</string>
+	<string key="AlertAndMessage_UpperAndLowerLimitOverlap">
+		<value>مقادیر وارد شده، با بازه دیگری همپوشانی دارد.</value>
+	</string>
+	<string key="AlertAndMessage_EnterBlockedMobileNumber">
+		<value>لطفا شماره موبایل را وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_EnterChangeRoutedMobileNumber">
+		<value>لطفا شماره موبایل را وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_NotEnoughCredit">
+		<value>موجودی کافی نیست!</value>
+	</string>
+	<string key="AlertAndMessage_FileHasNoInformation">
+		<value>فایل وارد شده، محتوایی ندارد.</value>
+	</string>
+	<string key="AlertAndMessage_UpstreamGatewayNotFound">
+		<value>سرویس دهنده ای یافت نشد.</value>
+	</string>
+	<string key="AlertAndMessage_EditUpstreamGateway">
+		<value>ویرایش سرویس دهنده</value>
+	</string>
+	<string key="AlertAndMessage_ThePriorityIsMandatory">
+		<value>ورود اولویت الزامی است و می بایست بزرگتر از 0 باشد.</value>
+	</string>
+	<string key="AlertAndMessage_Creator">
+		<value>ایجاد کننده</value>
+	</string>
+	<string key="AlertAndMessage_NotFound">
+		<value>پیدا نشد.</value>
+	</string>
+	<string key="AlertAndMessage_DirectUsers">
+		<value>کاربران مستقیم</value>
+	</string>
+	<string key="AlertAndMessage_UsernameExist">
+		<value>این کاربر وجود دارد.</value>
+	</string>
+	<string key="AlertAndMessage_NoSenderIdFoundToAssign">
+		<value>شماره ای برای تخصیص یافت نشد.</value>
+	</string>
+	<string key="AlertAndMessage_ChooseAnotherUsername">
+		<value>لطفا نام کاربری دیگری انتخاب کنید.</value>
+	</string>
+	<string key="AlertAndMessage_MobileExist">
+		<value>این شماره موبایل وجود دارد.</value>
+	</string>
+	<string key="AlertAndMessage_PasswordAndRepetitionNotTheSame">
+		<value>گذرواژه و تکرار آن با هم مطابقت ندارند.</value>
+	</string>
+	<string key="AlertAndMessage_FillAllField">
+		<value>لطفا تمامی فیلدها را پر کنید.</value>
+	</string>
+	<string key="AlertAndMessage_CheckTheInputDataFormat">
+		<value>لطفا فرمت مقادیر ورودی را چک کنید.</value>
+	</string>
+	<string key="AlertAndMessage_AccessDenied">
+		<value>دسترسی محدود شده است.</value>
+	</string>
+	<string key="AlertAndMessage_AccessDeniedToThisPage">
+		<value>شما اجازه دسترسی به این صفحه را ندارید.</value>
+	</string>
+	<string key="AlertAndMessage_ClickMe">
+		<value>اینجا را کلیک کنید</value>
+	</string>
+	<string key="AlertAndMessage_ClickMeToReturn">
+		<value>تا به صفحه اصلی بازگردید.</value>
+	</string>
+	<string key="AlertAndMessage_Inaccessibility">
+		<value>عدم دسترسی</value>
+	</string>
+	<string key="AlertAndMessage_ErrorOccurrence">
+		<value>خطایی رخ داده است.</value>
+	</string>
+	<string key="AlertAndMessage_TheRequestedSubmissionParametersAreIncorrect">
+		<value>پارامترهای ارسال درخواست، نادرست است.</value>
+	</string>
+	<string key="AlertAndMessage_LoginPage">
+		<value>ورود به سامانه</value>
+	</string>
+	<string key="AlertAndMessage_Login">
+		<value>ورود</value>
+	</string>
+	<string key="AlertAndMessage_Logout">
+		<value>خروج</value>
+	</string>
+	<string key="AlertAndMessage_LoginHistory">
+		<value>تاریخچه ورود و خروج</value>
+	</string>
+	<string key="AlertAndMessage_LoginToAccount">
+		<value>ورود به پنل کاربری</value>
+	</string>
+	<string key="AlertAndMessage_EnterUserAndPassword">
+		<value>لطفا نام کاربری و گذرواژه را وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_EnterOTP">
+		<value>یک بار رمز را وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_ChangePassword">
+		<value>تغییر گذرواژه</value>
+	</string>
+
+	<string key="AlertAndMessage_ApiAccessFormatError">
+		<value>فرمت ورودی صحیح نیست.</value>
+	</string>
+	<string key="AlertAndMessage_CurrentPassword">
+		<value>گذرواژه فعلی: </value>
+	</string>
+	<string key="AlertAndMessage_NewPassword">
+		<value>گذرواژه جدید: </value>
+	</string>
+	<string key="AlertAndMessage_ConfirmPassword">
+		<value>تکرار گذرواژه: </value>
+	</string>
+	<string key="AlertAndMessage_CreatePasswordBySyetm">
+		<value>ایجاد گذرواژه توسط سیستم</value>
+	</string>
+	<string key="AlertAndMessage_RandomPassword">
+		<value>گذرواژه تصادفی</value>
+	</string>
+	<string key="AlertAndMessage_CopyToClipboard">
+		<value>کپی در حافظه</value>
+	</string>
+	<string key="AlertAndMessage_SentToUser">
+		<value>اکنون برای کاربر ارسال می شود.</value>
+	</string>
+	<string key="AlertAndMessage_OTP">
+		<value>یک بار رمز: </value>
+	</string>
+	<string key="AlertAndMessage_SendOTP">
+		<value>ارسال یک بار رمز</value>
+	</string>
+	<string key="AlertAndMessage_OTPSentSuccessfully">
+		<value>یک بار رمز ارسال شد</value>
+	</string>
+	<string key="AlertAndMessage_Username">
+		<value>نام کاربری</value>
+	</string>
+	<string key="AlertAndMessage_Password">
+		<value>گذرواژه</value>
+	</string>
+	<string key="AlertAndMessage_RememberMe">
+		<value>مرا به خاطر بسپار</value>
+	</string>
+	<string key="AlertAndMessage_ResetPassword">
+		<value>بازنشانی گذرواژه</value>
+	</string>
+	<string key="AlertAndMessage_PageNotFound">
+		<value>صفحه یافت نشد.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteConfirm">
+		<value>بله، حذف شود!</value>
+	</string>
+	<string key="AlertAndMessage_Deny">
+		<value>خیر</value>
+	</string>
+	<string key="AlertAndMessage_Approve">
+		<value>بله</value>
+	</string>
+	<string key="AlertAndMessage_AskForConfirm">
+		<value>آیا مطمئن هستید؟</value>
+	</string>
+	<string key="AlertAndMessage_PermissionWillBeDeleted">
+		<value>دسترسی حذف خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_RoleWillBeDeleted">
+		<value>نقش حذف خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_ItemWillBeDeleted">
+		<value>آیتم حذف خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_NothingToShow">
+		<value>چیزی برای نمایش وجود ندارد.</value>
+	</string>
+	<string key="AlertAndMessage_SelectFile">
+		<value>لطفا فایل را انتخاب نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_NoFileSelected">
+		<value>هنوز فایلی انتخاب نشده است.</value>
+	</string>
+	<string key="AlertAndMessage_Succeeded">
+		<value>موفق</value>
+	</string>
+	<string key="AlertAndMessage_Failed">
+		<value>ناموفق</value>
+	</string>
+	<string key="AlertAndMessage_AllFailed">
+		<value>همه، ناموفق</value>
+	</string>
+	<string key="AlertAndMessage_UserIpAddress">
+		<value>آدرس IP</value>
+	</string>
+	<string key="AlertAndMessage_ViewBatchIDs">
+		<value>مشاهده شناسه ها</value>
+	</string>
+	<string key="AlertAndMessage_IncompleteProfile">
+		<value>پروفایل ناقص است.</value>
+	</string>
+	<string key="AlertAndMessage_IncompleteProfileMessage">
+		<value>لطفا قبل از استفاده از امکانات سیستم، پروفایل خود را تکمیل کنید.</value>
+	</string>
+	<string key="AlertAndMessage_IncompleteProfileItems">
+		<value>لطفا آیتم های زیر را تکمیل کنید:</value>
+	</string>
+	<string key="AlertAndMessage_TransferCellphoneBetweenOperatorsList">
+		<value>لیست ترابردها</value>
+	</string>
+	<string key="AlertAndMessage_TransferCellphone">
+		<value>ترابرد شده ها</value>
+	</string>
+	<string key="AlertAndMessage_AddExtraParams">
+		<value>پارامترهای اضافی</value>
+	</string>
+	<string key="AlertAndMessage_OperatorList">
+		<value>لیست اپراتورهای موبایل</value>
+	</string>
+	<string key="AlertAndMessage_NewOperator">
+		<value>اپراتور جدید</value>
+	</string>
+	<string key="AlertAndMessage_SuccessCount">
+		<value>تعداد موفق</value>
+	</string>
+	<string key="AlertAndMessage_FailedCount">
+		<value>تعداد ناموفق</value>
+	</string>
+	<string key="AlertAndMessage_NewRole">
+		<value>نقش جدید</value>
+	</string>
+	<string key="AlertAndMessage_Receivers">
+		<value>دریافت کنندگان</value>
+	</string>
+	<string key="AlertAndMessage_ChangeUserTariff">
+		<value>تغییر تعرفه</value>
+	</string>
+	<string key="AlertAndMessage_SetUserSenderIds">
+		<value>تخصیص شماره</value>
+	</string>
+	<string key="AlertAndMessage_DateFrom">
+		<value>از تاریخ</value>
+	</string>
+	<string key="AlertAndMessage_DateTo">
+		<value>تا تاریخ</value>
+	</string>
+	<string key="AlertAndMessage_Type">
+		<value>نوع</value>
+	</string>
+	<string key="AlertAndMessage_Icon">
+		<value>لطفا آیکون را انتخاب نمایید.</value>
+	</string>
+	<string key="AlertAndMessage_Priority">
+		<value>لطفا الویت را مشخص نمایید.</value>
+	</string>
+	<string key="AlertAndMessage_Route">
+		<value>لطفا آدرس را مشخص نمایید.</value>
+	</string>
+	<string key="AlertAndMessage_MenuOfModule">
+		<value>لطفا منو را انتخاب نمایید.</value>
+	</string>
+	<!--END [Allert And Message]-->
+	<!--START [Dashboard]-->
 	<string key="Choose">
 		<value>انتخاب کنید ...</value>
 	</string>
@@ -921,12 +930,12 @@
 	<string key="ActivationState">
 		<value>وضعیت</value>
 	</string>
-  <string key="Active">
-    <value>فعال</value>
-  </string>
-  <string key="InActive">
-    <value>غیر فعال</value>
-  </string>
+	<string key="Active">
+		<value>فعال</value>
+	</string>
+	<string key="InActive">
+		<value>غیر فعال</value>
+	</string>
 	<string key="User_Roles">
 		<value>نقش ها</value>
 	</string>
@@ -975,54 +984,84 @@
 	<string key="EditPermissions">
 		<value>ویرایش دسترسی ها</value>
 	</string>
-  <string key="Menu_Profile">
-    <value>پروفایل</value>
-  </string>
+	<string key="Menu_Profile">
+		<value>پروفایل</value>
+	</string>
 	<string key="Menu_Home">
 		<value>خانه</value>
 	</string>
 	<string key="Menu_RoutePlaceHolder">
 		<value>مسیرهای مختلف را با , از هم جداکنید.</value>
 	</string>
-	<setting key="Menu_Add">
+	<string key="Menu_Add">
 		<value>افزودن</value>
-	</setting>
-	<setting key="Menu_PermissionName">
+	</string>
+	<string key="Menu_PermissionName">
 		<value>نام دسترسی</value>
-	</setting>
-	<setting key="Menu_PermissionTitle">
+	</string>
+	<string key="Menu_PermissionTitle">
 		<value>عنوان دسترسی</value>
-	</setting>
-	<setting key="Menu_PermissionType">
+	</string>
+	<string key="Menu_PermissionType">
 		<value>نوع دسترسی</value>
-	</setting>
-	<setting key="Menu_Routes">
+	</string>
+	<string key="Menu_Routes">
 		<value>مسیرها</value>
-	</setting>
-	<setting key="Menu_PermissionMethod">
+	</string>
+	<string key="Menu_PermissionMethod">
 		<value>رویه ی دسترسی</value>
-	</setting>
-	<setting key="Menu_MenuIdOfModule">
+	</string>
+	<string key="Menu_MenuIdOfModule">
 		<value>منوی ماژول</value>
-	</setting>
-	<setting key="Menu_ParentMenuId">
+	</string>
+	<string key="Menu_ParentMenuId">
 		<value>منوی والد</value>
-	</setting>
-	<setting key="Menu_Icon">
+	</string>
+	<string key="Menu_Icon">
 		<value>آیکان</value>
-	</setting>
-	<setting key="Menu_Priority">
+	</string>
+	<string key="Menu_Priority">
 		<value>اولویت</value>
-	</setting>
-	<setting key="Menu_ClientAddress">
+	</string>
+	<string key="Menu_ClientAddress">
 		<value>آدرس کلاینت</value>
-	</setting>
-	<setting key="ModificationReason">
+	</string>
+	<string key="Per_PermissionName">
+		<value>نام دسترسی</value>
+	</string>
+	<string key="Per_PermissionTitle">
+		<value>عنوان دسترسی</value>
+	</string>
+	<string key="Per_PermissionType">
+		<value>نوع دسترسی</value>
+	</string>
+	<string key="Per_Routes">
+		<value>مسیرها</value>
+	</string>
+	<string key="Per_PermissionMethod">
+		<value>رویه ی دسترسی</value>
+	</string>
+	<string key="Per_MenuIdOfModule">
+		<value>منوی ماژول</value>
+	</string>
+	<string key="Per_ParentMenuId">
+		<value>منوی والد</value>
+	</string>
+	<string key="Per_Icon">
+		<value>آیکان</value>
+	</string>
+	<string key="Per_Priority">
+		<value>اولویت</value>
+	</string>
+	<string key="Per_ClientAddress">
+		<value>آدرس کلاینت</value>
+	</string>
+	<string key="ModificationReason">
 		<value>دلیل ویرایش</value>
-	</setting>
-  <string key="Menu_Dashboard">
-    <value>داشبورد</value>
-  </string>
+	</string>
+	<string key="Menu_Dashboard">
+		<value>داشبورد</value>
+	</string>
 	<string key="Menu_Dashboardv1">
 		<value>داشبورد ورژن 1</value>
 	</string>
@@ -1056,7 +1095,7 @@
 	<string key="Menu_Dashboard_SeeAllNotifications">
 		<value>همه اعلان ها را مشاهده کنید</value>
 	</string>
-  <!--Messege Content of AdminLTE-->
+	<!--Messege Content of AdminLTE-->
 	<string key="Msg_Content_Test2">
 		<value>ساعت پیش</value>
 	</string>
@@ -1067,218 +1106,218 @@
 		<value>همه پیام ها را ببینید</value>
 	</string>
 	<!--/.Messege Content of AdminLTE-->
-  <!--END [Dashboard]-->
-  <!--START [Action]-->
-  <string key="Exit">
-    <value>خروج</value>
-  </string>
-  <string key="New">
-    <value>جدید</value>
-  </string>
-  <string key="Crop">
-    <value>برش</value>
-  </string>
-  <string key="ChangeImage">
-    <value>تغییر عکس</value>
-  </string>
-  <string key="ProfilePic">
-    <value>عکس پروفایل</value>
-  </string>
-  <string key="ChangeProfilePic">
-    <value>تغییر عکس</value>
-  </string>
-  <string key="EditProfile">
-    <value>ویرایش پروفایل</value>
-  </string>
-  <string key="CropImage">
-    <value>برش عکس</value>
-  </string>
-  <string key="AssignNumber">
-    <value>تخصیص شماره</value>
-  </string>
-  <string key="CreateNew">
-    <value>ایجاد جدید</value>
-  </string>
-  <string key="Ok">
-    <value>تائید</value>
-  </string>
-  <string key="Return">
-    <value>برگشت</value>
-  </string>
-  <string key="Add">
-    <value>افزودن</value>
-  </string>
-  <string key="Edit">
-    <value>ویرایش</value>
-  </string>
+	<!--END [Dashboard]-->
+	<!--START [Action]-->
+	<string key="Exit">
+		<value>خروج</value>
+	</string>
+	<string key="New">
+		<value>جدید</value>
+	</string>
+	<string key="Crop">
+		<value>برش</value>
+	</string>
+	<string key="ChangeImage">
+		<value>تغییر عکس</value>
+	</string>
+	<string key="ProfilePic">
+		<value>عکس پروفایل</value>
+	</string>
+	<string key="ChangeProfilePic">
+		<value>تغییر عکس</value>
+	</string>
+	<string key="EditProfile">
+		<value>ویرایش پروفایل</value>
+	</string>
+	<string key="CropImage">
+		<value>برش عکس</value>
+	</string>
+	<string key="AssignNumber">
+		<value>تخصیص شماره</value>
+	</string>
+	<string key="CreateNew">
+		<value>ایجاد جدید</value>
+	</string>
+	<string key="Ok">
+		<value>تائید</value>
+	</string>
+	<string key="Return">
+		<value>برگشت</value>
+	</string>
+	<string key="Add">
+		<value>افزودن</value>
+	</string>
+	<string key="Edit">
+		<value>ویرایش</value>
+	</string>
 	<string key="Cancel">
 		<value>انصراف</value>
 	</string>
-  <string key="Delete">
-    <value>حذف</value>
-  </string>
-  <string key="Search">
-    <value>جستجو</value>
-  </string>
-  <string key="GetFromExcelFile">
-    <value>دریافت از فایل اکسل</value>
-  </string>
-  <string key="Find">
-    <value>پیدا کن</value>
-  </string>
-  <string key="ChangeUserSettings">
-    <value>ویرایش تنظیمات کاربر</value>
-  </string>
-  <string key="ChangeInCreditOfUser">
-    <value>تغییر اعتبار کاربر</value>
-  </string>
-  <string key="ChangePassword">
-    <value>تغییر گذرواژه</value>
-  </string>
-  <string key="Credits">
-    <value>اعتبارات</value>
-  </string>
-  <string key="LoginAsUser">
-    <value>ورود به جای کاربر</value>
-  </string>
-  <string key="View">
-    <value>مشاهده</value>
-  </string>
-  <string key="Copy">
-    <value>کپی</value>
-  </string>
-  <string key="Close">
-    <value>بستن</value>
-  </string>
-  <string key="SendSms">
-    <value>ارسال پیام</value>
-  </string>
-  <string key="Send">
-    <value>ارسال</value>
-  </string>
-  <string key="Sent">
-    <value>ارسال شده</value>
-  </string>
-  <string key="Save">
-    <value>ذخیره</value>
-  </string>
-  <string key="AddExtraParams">
-    <value>پارامترهای اضافه</value>
-  </string>
-  <!--END [Action]-->
-  <!--START [Entities]-->
-  <string key="Entities_Permissions">
-    <value>دسترسی ها</value>
-  </string>
-  <string key="Entities_PermissionIcon">
-    <value>آیکون</value>
-  </string>
-  <string key="Entities_Title">
-    <value>عنوان</value>
-  </string>
-  <string key="Entities_PermissionType">
-    <value>PermissionType</value>
-  </string>
-  <string key="Entities_PermissionViewKey">
-    <value>PermissionViewKey</value>
-  </string>
-  <string key="Entities_Priority">
-    <value>الویت</value>
-  </string>
-  <string key="Entities_MenuOfModule">
-    <value>MenuOfModule</value>
-  </string>
-  <string key="Entities_ParentMenu">
-    <value>ParentMenu</value>
-  </string>
-  <string key="Entities_PermissionRoutes">
-    <value>PermissionRoutes</value>
-  </string>
-  <string key="Entities_ModificationReason">
-    <value>ModificationReason</value>
-  </string>
-  <string key="Entities_PermissionClientAddress">
-    <value>PermissionClientAddress</value>
-  </string>
-  <!--END [Entities]-->
-  <!--START [Page Navigation]-->
-  <string key="PageNavigation_showing">
-    <value>showing</value>
-  </string>
-  <string key="PageNavigation_from">
-    <value>from</value>
-  </string>
-  <string key="PageNavigation_to">
-    <value>to</value>
-  </string>
-  <string key="PageNavigation_items">
-    <value>items</value>
-  </string>
-  <string key="PageNavigation_next">
-    <value>next</value>
-  </string>
-  <string key="PageNavigation_previous">
-    <value>previous</value>
-  </string>
-  <string key="PageNavigation_last">
-    <value>last</value>
-  </string>
-  <string key="PageNavigation_first">
-    <value>first</value>
-  </string>
-  <!--END [Page Navigation]-->
-  <!--START [Table headers]-->
-  <string key="TableHeader_BasicInfo">
-    <value>اطلاعات پایه</value>
-  </string>
-  <string key="TableHeader_Male">
-    <value>آقا</value>
-  </string>
-  <string key="TableHeader_Female">
-    <value>خانم</value>
-  </string>
-  <string key="TableHeader_OtherInfo">
-    <value>سایر اطلاعات</value>
-  </string>
-  <string key="TableHeader_UserImage">
-    <value>عکس کاربر</value>
-  </string>
-  <string key="TableHeader_Row">
-    <value>ردیف</value>
-  </string>
-  <string key="TableHeader_Date">
-    <value>تاریخ</value>
-  </string>
-  <string key="TableHeader_PreviousInventory">
-    <value>موجودی قبلی</value>
-  </string>
-  <string key="TableHeader_CurrentInventory">
-    <value>موجودی فعلی</value>
-  </string>
-  <string key="TableHeader_ModificationReason">
-    <value>دلیل تغییرات</value>
-  </string>
-  <string key="TableHeader_Actions">
-    <value>دستورات</value>
-  </string>
-  <string key="TableHeader_Priority">
-    <value>اولویت</value>
-  </string>
-  <string key="TableHeader_Title">
-    <value>عنوان</value>
-  </string>
-  <string key="TableHeader_Creator">
-    <value>ایجاد کننده</value>
-  </string>
-  <string key="TableHeader_CreateDate">
-    <value>تاریخ ایجاد</value>
-  </string>
-  <string key="TableHeader_Modifications">
-    <value>تغییرات</value>
-  </string>
-  <string key="TableHeader_Status">
-    <value>وضعیت</value>
-  </string>
-  <!--END [Table headers]-->
-  
+	<string key="Delete">
+		<value>حذف</value>
+	</string>
+	<string key="Search">
+		<value>جستجو</value>
+	</string>
+	<string key="GetFromExcelFile">
+		<value>دریافت از فایل اکسل</value>
+	</string>
+	<string key="Find">
+		<value>پیدا کن</value>
+	</string>
+	<string key="ChangeUserSettings">
+		<value>ویرایش تنظیمات کاربر</value>
+	</string>
+	<string key="ChangeInCreditOfUser">
+		<value>تغییر اعتبار کاربر</value>
+	</string>
+	<string key="ChangePassword">
+		<value>تغییر گذرواژه</value>
+	</string>
+	<string key="Credits">
+		<value>اعتبارات</value>
+	</string>
+	<string key="LoginAsUser">
+		<value>ورود به جای کاربر</value>
+	</string>
+	<string key="View">
+		<value>مشاهده</value>
+	</string>
+	<string key="Copy">
+		<value>کپی</value>
+	</string>
+	<string key="Close">
+		<value>بستن</value>
+	</string>
+	<string key="SendSms">
+		<value>ارسال پیام</value>
+	</string>
+	<string key="Send">
+		<value>ارسال</value>
+	</string>
+	<string key="Sent">
+		<value>ارسال شده</value>
+	</string>
+	<string key="Save">
+		<value>ذخیره</value>
+	</string>
+	<string key="AddExtraParams">
+		<value>پارامترهای اضافه</value>
+	</string>
+	<!--END [Action]-->
+	<!--START [Entities]-->
+	<string key="Entities_Permissions">
+		<value>دسترسی ها</value>
+	</string>
+	<string key="Entities_PermissionIcon">
+		<value>آیکون</value>
+	</string>
+	<string key="Entities_Title">
+		<value>عنوان</value>
+	</string>
+	<string key="Entities_PermissionType">
+		<value>PermissionType</value>
+	</string>
+	<string key="Entities_PermissionViewKey">
+		<value>PermissionViewKey</value>
+	</string>
+	<string key="Entities_Priority">
+		<value>الویت</value>
+	</string>
+	<string key="Entities_MenuOfModule">
+		<value>MenuOfModule</value>
+	</string>
+	<string key="Entities_ParentMenu">
+		<value>ParentMenu</value>
+	</string>
+	<string key="Entities_PermissionRoutes">
+		<value>PermissionRoutes</value>
+	</string>
+	<string key="Entities_ModificationReason">
+		<value>ModificationReason</value>
+	</string>
+	<string key="Entities_PermissionClientAddress">
+		<value>PermissionClientAddress</value>
+	</string>
+	<!--END [Entities]-->
+	<!--START [Page Navigation]-->
+	<string key="PageNavigation_showing">
+		<value>showing</value>
+	</string>
+	<string key="PageNavigation_from">
+		<value>from</value>
+	</string>
+	<string key="PageNavigation_to">
+		<value>to</value>
+	</string>
+	<string key="PageNavigation_items">
+		<value>items</value>
+	</string>
+	<string key="PageNavigation_next">
+		<value>next</value>
+	</string>
+	<string key="PageNavigation_previous">
+		<value>previous</value>
+	</string>
+	<string key="PageNavigation_last">
+		<value>last</value>
+	</string>
+	<string key="PageNavigation_first">
+		<value>first</value>
+	</string>
+	<!--END [Page Navigation]-->
+	<!--START [Table headers]-->
+	<string key="TableHeader_BasicInfo">
+		<value>اطلاعات پایه</value>
+	</string>
+	<string key="TableHeader_Male">
+		<value>آقا</value>
+	</string>
+	<string key="TableHeader_Female">
+		<value>خانم</value>
+	</string>
+	<string key="TableHeader_OtherInfo">
+		<value>سایر اطلاعات</value>
+	</string>
+	<string key="TableHeader_UserImage">
+		<value>عکس کاربر</value>
+	</string>
+	<string key="TableHeader_Row">
+		<value>ردیف</value>
+	</string>
+	<string key="TableHeader_Date">
+		<value>تاریخ</value>
+	</string>
+	<string key="TableHeader_PreviousInventory">
+		<value>موجودی قبلی</value>
+	</string>
+	<string key="TableHeader_CurrentInventory">
+		<value>موجودی فعلی</value>
+	</string>
+	<string key="TableHeader_ModificationReason">
+		<value>دلیل تغییرات</value>
+	</string>
+	<string key="TableHeader_Actions">
+		<value>دستورات</value>
+	</string>
+	<string key="TableHeader_Priority">
+		<value>اولویت</value>
+	</string>
+	<string key="TableHeader_Title">
+		<value>عنوان</value>
+	</string>
+	<string key="TableHeader_Creator">
+		<value>ایجاد کننده</value>
+	</string>
+	<string key="TableHeader_CreateDate">
+		<value>تاریخ ایجاد</value>
+	</string>
+	<string key="TableHeader_Modifications">
+		<value>تغییرات</value>
+	</string>
+	<string key="TableHeader_Status">
+		<value>وضعیت</value>
+	</string>
+	<!--END [Table headers]-->
+
 </dictionary>
