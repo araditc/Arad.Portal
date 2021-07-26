@@ -73,6 +73,7 @@
     <link rel="stylesheet" href="~/lib//overlayscrollbars/css/OverlayScrollbars.min.css">
     @RenderSection("Styles", required: false)
 
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     @if (direction == "rtl")
     {
@@ -215,6 +216,7 @@
 
 
                     <!-- Sidebar Menu -->
+
                     @*<ul class="nav nav-pills nav-sidebar flex-column"
                         data-widget="treeview" role="menu" data-accordion="false"></ul>*@
                     @await Component.InvokeAsync("SidebarMenu")
