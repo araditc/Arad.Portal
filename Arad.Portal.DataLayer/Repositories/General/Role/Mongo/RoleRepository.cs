@@ -74,25 +74,15 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
             await _context.Collection.InsertManyAsync(roles);
         }
 
-        public async Task<RepositoryOperationResult> ChangeActivation(string roleId,
-            bool isActive, string modificationReason)
+        public async Task<RepositoryOperationResult> ChangeActivation(string roleId)
         {
             var result = new RepositoryOperationResult();
             try
             {
-
                 var roleEntity = _context.Collection.Find(_ => _.RoleId == roleId).First();
                 if(roleEntity != null)
                 {
-                    roleEntity.IsActive = isActive;
-
-                    #region Add Modification record
-                    var currentModifications = roleEntity.Modifications;
-                    var mod = GetCurrentModification(modificationReason);
-                    currentModifications.Add(mod);
-                    roleEntity.Modifications = currentModifications;
-                    #endregion
-
+                    roleEntity.IsActive = !roleEntity.IsActive;
                     var updateResult = await _context.Collection.ReplaceOneAsync(_=>_.RoleId == roleId, roleEntity);
                     if (updateResult.IsAcknowledged)
                     {
@@ -103,7 +93,6 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
                     {
                         result.Message = ConstMessages.ErrorInSaving;
                     }
-
                 }
                 else
                 {
@@ -271,7 +260,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
                        CreatorId = _.CreatorUserId,
                        CreatorUserName = _.CreatorUserName,
                        CreationDateTime = _.CreationDate,
-                       HasModifications = _.Modifications.Any()
+                       HasModifications = _.Modifications.Any(),
+                       IsActive = _.IsActive
                    }).ToList();
 
                 result.CurrentPage = page;
@@ -384,6 +374,22 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
                 Text = _.Name
             }).ToList();
             return lst;
+        }
+
+        public async Task<Entities.General.Role.Role> FetchRoleEntity(string roleId)
+        {
+            var result = new Entities.General.Role.Role();
+            try
+            {
+                result = await _context.Collection
+                    .Find(c => c.RoleId == roleId).FirstOrDefaultAsync();
+               
+            }
+            catch (Exception e)
+            {
+                result = null;
+            }
+            return result;
         }
     }
 }

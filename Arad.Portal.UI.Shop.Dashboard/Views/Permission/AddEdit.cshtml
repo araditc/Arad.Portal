@@ -1,7 +1,9 @@
 ﻿@model Arad.Portal.DataLayer.Models.Permission.UserPermissionViewModel
 @using Arad.Portal.DataLayer.Models.Shared;
 @{
-//Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    var alert = Language.GetString("AlertAndMessage_GotIt");
+    var error = Language.GetString("AlertAndMessage_Error");
 }
 @section Styles{
     <link href="~/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css" rel="stylesheet" />
@@ -81,7 +83,7 @@
                         </div>
                         <div class="form-group col-md-3" id="PriorityPart">
                             <label asp-for="Priority">@Language.GetString("Per_Priority")</label>
-                            <input type="number" class="form-control" asp-for="Priority" dir="ltr" value="1" min="1">
+                            <input type="number" class="form-control"  asp-for="Priority" dir="ltr" value="1" min="1">
                             <span class="text-danger" data-val-result="Priority"></span>
                         </div>
                         <div class="form-group col-md-3" id="ClientAddressPart">
@@ -117,40 +119,106 @@
             debugger;
             MenusSelectList(1);
             MenusSelectList(2);
-
+            /*$("#Type").val("0").change();*/
+            ChangingType();
 
             $("#Type").change(function () {
-                switch ($(this).val()) {
-                    case "0":
-                        $("#MethodSelect").css("display", "block");
-                        $("#PriorityPart").css("display", "none");
-                        $("#IconPart").css("display", "none");
-                        $("#MenuIdOfModulePart").css("display", "block");
-                        $("#ParentMenuSelect").css("display", "none");
-                        $("#RoutePer").css("display", "block");
-                        $("#ClientAddressPart").css("display", "none");
-                        break;
-                    case "1":
-                        $("#MethodSelect").css("display", "none");
-                        $("#PriorityPart").css("display", "block");
-                        $("#IconPart").css("display", "block");
-                        $("#MenuIdOfModulePart").css("display", "none");
-                        $("#ParentMenuSelect").css("display", "block");
-                        $("#RoutePer").css("display", "block");
-                        $("#ClientAddressPart").css("display", "block");
-                        break;
-                    case "2":
-                        $("#MethodSelect").css("display", "none");
-                        $("#PriorityPart").css("display", "block");
-                        $("#IconPart").css("display", "block");
-                        $("#MenuIdOfModulePart").css("display", "none");
-                        $("#ParentMenuSelect").css("display", "none");
-                        $("#RoutePer").css("display", "block");
-                        $("#ClientAddressPart").css("display", "none");
-                        break;
+                debugger;
+               /* alert("fire;")*/
+                ChangingType();
+            });
+
+              $("#addEditPermissionFrm").submit(function (e) {
+            debugger;
+            e.preventDefault();
+            var form = $(this).serialize();
+            $.ajax({
+                url: $(this).attr('action'),
+                data: form,
+                type: 'Post',
+                beforeSend: function () {
+                    debugger;
+                    AddLoading($("#addEditPermissionCard"));
+                },
+                success: function (result) {
+                    debugger;
+                   /* $("#loading").removeClass('is-active');*/
+                    if (result.status === "Success") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: result.message,
+                            showConfirmButton: false,
+                            timer: 3000
+                        }).then(() => {
+                            window.location.href = '@Url.Action("List")';
+                        });
+                    }
+                    if (result.status === "ModelError") {
+                        var spanErrorList = $('span[data-val-result]');
+                        if (spanErrorList.length > 1) {
+                            spanErrorList.each(function() {
+                                $(this).html("");
+                                $(this).parent().removeClass("has-error");
+                            });
+                        } else {
+                            spanErrorList.html("");
+                            spanErrorList.parent().removeClass("has-error");
+                        }
+
+                        if (result.modelStateErrors !== null) {
+                            result.modelStateErrors.forEach(function(value, index) {
+
+                                $('[data-val-result=' + value.key + ']').html(value.errorMessage);
+                                $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                            });
+                        }
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert("@error");
+                    alert(xhr.status);
+                    alert(thrownError);
+                },
+                complete: function () {
+                    removeLoading($("#addEditPermissionCard"));
                 }
             });
-    });
+        });
+        });
+
+        function ChangingType() {
+            debugger;
+            switch ($("#Type").val()) {
+                case "0":
+
+                    $("#MethodSelect").css("display", "block");
+                    $("#PriorityPart").css("display", "none");
+                    $("#IconPart").css("display", "none");
+                    $("#MenuIdOfModulePart").css("display", "block");
+                    $("#ParentMenuSelect").css("display", "none");
+                    $("#RoutePer").css("display", "block");
+                    $("#ClientAddressPart").css("display", "none");
+                    break;
+                case "1":
+                    $("#MethodSelect").css("display", "none");
+                    $("#PriorityPart").css("display", "block");
+                    $("#IconPart").css("display", "block");
+                    $("#MenuIdOfModulePart").css("display", "none");
+                    $("#ParentMenuSelect").css("display", "block");
+                    $("#RoutePer").css("display", "block");
+                    $("#ClientAddressPart").css("display", "block");
+                    break;
+                case "2":
+                    $("#MethodSelect").css("display", "none");
+                    $("#PriorityPart").css("display", "block");
+                    $("#IconPart").css("display", "block");
+                    $("#MenuIdOfModulePart").css("display", "none");
+                    $("#ParentMenuSelect").css("display", "none");
+                    $("#RoutePer").css("display", "block");
+                    $("#ClientAddressPart").css("display", "none");
+                    break;
+            }
+        }
      function MenusSelectList(typemenu) {
 
                 data = { typeMenu: typemenu };
@@ -163,7 +231,7 @@
                         if (result.status === "success") {
                             if (result.data.length != 0) {
                                 (result.data).forEach(function(item) {
-                                    var op = "<option value='" + item.permissionid + "'>" + item.title + "</option>";
+                                    var op = "<option value='" + item.permissionId + "'>" + item.title + "</option>";
                                     options += op;
                                 });
                             }
@@ -174,16 +242,10 @@
                         }
                         if (typemenu === 1) {
                             $("#MenuIdOfModule").html(options);
-                            $('#MenuIdOfModule').selectpicker('refresh');
-
-                            $("#MenuIdOfModule").html(options);
-                            $('#MenuIdOfModule').selectpicker('refresh');
+                            //$('#MenuIdOfModule').selectpicker('refresh');
                         } else if (typemenu === 2) {
                             $("#ParentMenuId").html(options);
-                            $('#ParentMenuId').selectpicker('refresh');
-
-                            $("#ParentMenuId").html(options);
-                            $('#ParentMenuId').selectpicker('refresh');
+                            //$('#ParentMenuId').selectpicker('refresh');
                         }
                     },
                     //error: function(xhr, ajaxOptions, thrownError) {
@@ -191,7 +253,8 @@
                     //    alert(xhr.status);
                     //    alert(thrownError);
                     //},
-                    complete: function() {
+                    complete: function () {
+                        removeLoading($("#addUserCard"));
                     }
                 });
             }

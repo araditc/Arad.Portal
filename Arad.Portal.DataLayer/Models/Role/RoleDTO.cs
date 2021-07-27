@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Arad.Portal.DataLayer.Models.Permission;
 
 namespace Arad.Portal.DataLayer.Models.Role
 {
@@ -31,5 +32,7 @@ namespace Arad.Portal.DataLayer.Models.Role
         [Required(ErrorMessage = "لطفا دسترسی های نقش را انتخاب نمایید.")]
         public List<string> PermissionIds { get; set; }
         public string ModificationReason { get; set; }
+
+       
     }
 }

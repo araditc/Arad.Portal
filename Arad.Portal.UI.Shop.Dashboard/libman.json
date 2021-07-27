@@ -49,6 +49,10 @@
     {
       "library": "cropperjs@1.5.12",
       "destination": "wwwroot/lib/cropperjs/"
+    },
+    {
+      "library": "twitter-bootstrap@5.0.2",
+      "destination": "wwwroot/lib/twitter-bootstrap/"
     }
   ]
 }

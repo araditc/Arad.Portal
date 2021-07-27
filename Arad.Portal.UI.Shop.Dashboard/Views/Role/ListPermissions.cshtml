@@ -3,40 +3,51 @@
 @{
     Layout = null;
 }
-<style>
-    .custom-control-label{
-        position: initial;
-    }
-</style>
-<ul class="tree col-md-6">
+
+@section Style
+{
+    <link href="~/css/jquerysctipttop.css" rel="stylesheet" />
+    <link href="~/lib/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+}
+
+@section Scripts
+{
+    <script src="~/lib/twitter-bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/js/jqueryTreeview/logger.js"></script>
+    <script src="~/js/jqueryTreeview/treeview.js"></script>
+}
+<ul>
     @foreach (var item in Model)
     {
         if (item.Childrens.Count != 0)
         {
-            <li class="custom-control custom-checkbox checbox-right custom-control-inline">
-                <span class="caret"></span>
-                <input type="checkbox" class="custom-control-input checkbox" name="@item.Id" id="@(item.Id)" @(item.IsSelected ? "checked" : "") />
-                <label class="custom-control-label" for="@(item.Id)">@Language.GetString($"PermissionTitle_{item.Title}")</label>
-                @if (item.Childrens.Count != 0)
+    <li data-value="@item.Id">
+        @Language.GetString($"PermissionTitle_{item.Title}")
+
+        @if (item.Childrens.Count != 0)
+        {
+            <ul >
+                @foreach (var child in item.Childrens)
                 {
-                    <ul class="nested">
-                        @foreach (var child in item.Childrens)
-                        {
-                            <li class="custom-control custom-checkbox checbox-right custom-control-inline">
-                                @await Component.InvokeAsync("InnerPermissions", child)
-                            </li>
-                        }
-                    </ul>
+                <li data-value="@child.Id">
+                    @Language.GetString($"PermissionTitle_{child.Title}")
+                    @if (child.Childrens.Count != 0)
+                    {
+                        @await Component.InvokeAsync("InnerPermissions", child)
+                    }
+
+                </li>
                 }
-            </li>
+            </ul>
+        }
+    </li>
         }
         else
         {
-            <li class="custom-control custom-checkbox checbox-right custom-control-inline">
-                @*<span class="caret"></span>*@
-                <input type="checkbox" class="custom-control-input checkbox" name="@(item.Id)" id="@(item.Id)" @(item.IsSelected ? "checked" : "") />
-                <label class="custom-control-label" for="@(item.Id)">@Language.GetString($"PermissionTitle_{item.Title}")</label>
-            </li>
+                <li data-value="@item.Id">
+                    @Language.GetString($"PermissionTitle_{item.Title}")
+                 </li>
+         
         }
 
     }

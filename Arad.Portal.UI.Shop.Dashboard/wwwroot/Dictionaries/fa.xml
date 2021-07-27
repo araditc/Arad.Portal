@@ -28,6 +28,9 @@
 	<string key="btn_Detail">
 		<value>جزییات</value>
 	</string>
+	<string key="btn_Show">
+		<value>نمایش</value>
+	</string>
 	<string key="btn_ChangePass">
 		<value>تغییر رمز عبور</value>
 	</string>
@@ -226,6 +229,9 @@
 	</string>
 	<string key="AlertAndMessage_DeletePermission">
 		<value>دسترسی مربوطه حذف خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteRole">
+		<value>نقش مربوطه حذف خواهد شد.</value>
 	</string>
 	<string key="AlertAndMessage_FieldEssential">
 		<value>پر کردن این فیلد الزامی است.</value>
@@ -876,6 +882,9 @@
 	<string key="AddRolePart_Title">
 		<value>اضافه کردن نقش جدید</value>
 	</string>
+	<string key="EditRolePart_Title">
+		<value>ویرایش نقش</value>
+	</string>
 	<string key="Permission_Delete">
 		<value>حذف دسترسی</value>
 	</string>
@@ -902,6 +911,9 @@
 	</string>
 	<string key="Role_Delete">
 		<value>حذف نقش</value>
+	</string>
+	<string key="Role_CreatorUserName">
+		<value>کاربر ایجادکننده</value>
 	</string>
 	<string key="User_FirstName">
 		<value>نام</value>
@@ -937,7 +949,7 @@
 		<value>غیر فعال</value>
 	</string>
 	<string key="User_Roles">
-		<value>نقش ها</value>
+		<value>نقش های کاربری</value>
 	</string>
 	<string key="User_Filters">
 		<value>فیلتر کاربران</value>
@@ -980,6 +992,9 @@
 	</string>
 	<string key="Menu_Roles">
 		<value>نقش ها</value>
+	</string>
+	<string key="Role">
+		<value>نقش</value>
 	</string>
 	<string key="EditPermissions">
 		<value>ویرایش دسترسی ها</value>
@@ -1058,6 +1073,9 @@
 	</string>
 	<string key="ModificationReason">
 		<value>دلیل ویرایش</value>
+	</string>
+	<string key="WithoutModification">
+		<value>بدون تغییر</value>
 	</string>
 	<string key="Menu_Dashboard">
 		<value>داشبورد</value>

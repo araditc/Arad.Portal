@@ -1,0 +1,30 @@
+﻿
+@model List<Arad.Portal.DataLayer.Entities.Modification>
+@{
+    Layout = null;
+    int i = 0;
+}
+<table class="table table-bordered" style="font-size: 15px;max-width: 800px">
+    <thead style="background-color: antiquewhite">
+        <tr style="text-align: center">
+            <th>@Language.GetString("tbl_RowName")</th>
+            <th>@Language.GetString("CreationDate")</th>
+            <th>@Language.GetString("Role_CreatorUserName")</th>
+            <th>@Language.GetString("ModificationReason")</th>
+        </tr>
+    </thead>
+    <tbody>
+    @{
+        foreach (var item in Model)
+        {
+            i++;
+            <tr style="text-align: center">
+                <td>@i</td>
+                <td>@item.DateTime.ToPersianLetDateTime()</td>
+                <td>@item.UserName</td>
+                <td>@item.ModificationReason</td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>

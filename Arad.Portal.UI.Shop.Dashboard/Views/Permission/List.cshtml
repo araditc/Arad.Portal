@@ -71,12 +71,12 @@
                                 @if (ViewBag.Permissions["Edit"])
                                 {
                                     <a asp-action="AddEdit" asp-controller="Permission" asp-route-id="@item.Id" class="btn btn-sm btn-info">
-                                        <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>ویرایش
+                                        <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                                     </a>
                                 }
                                 @if (ViewBag.Permissions["Remove"])
                                 {
-                                    <button onclick="deletePer('@item.Id')" class="btn btn-sm btn-danger">
+                                    <button onclick="PermissionDelete('@item.Id')" class="btn btn-sm btn-danger">
                                         <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
                                     </button>
                                 }
@@ -88,7 +88,11 @@
                 }
                 else
                 {
-
+                    <tr>
+                        <td colspan="7" class="userListCell">
+                            <h6>@Language.GetString("AlertAndMessage_NoDataToShow")</h6>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -107,49 +111,50 @@
 </div>
 @section Scripts{
     <script>
-    function PermissionDelete(id) {
+        function PermissionDelete(id) {
+            debugger;
         Swal.fire({
             title: '@Language.GetString("AlertAndMessage_AreYouSure")',
             text: '@Language.GetString("AlertAndMessage_DeletePermission")',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#d51c1c',
-    cancelButtonColor: '#009c09db',
-    confirmButtonText: '@Language.GetString("btn_Confirm")',
-    cancelButtonText: '@Language.GetString("btn_NotConfirm")'
-    }).then((result) => {
-    if (result.isConfirmed) {
-    $.ajax({
-    type: 'Get',
-    url: '@Url.Action("Delete", "Permission")' + '?id=' + id,
-    beforeSend: function() {
-    $("#loading").addClass('is-active');
-    },
-    success: function (resultData) {
-    $("#loading").removeClass('is-active');
-    if (resultData.status === "Success") {
-    Swal.fire({
-    icon: 'success',
-    text: resultData.message,
-    showConfirmButton: false,
-    timer: 3000
-    }).then(() => {
-    window.location.reload();
-    });
-    }
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d51c1c',
+            cancelButtonColor: '#009c09db',
+            confirmButtonText: '@Language.GetString("btn_Confirm")',
+            cancelButtonText: '@Language.GetString("btn_NotConfirm")'
+            }).then((result) => {
+            if (result.isConfirmed) {
+            $.ajax({
+            type: 'Get',
+            url: '@Url.Action("Delete", "Permission")' + '?id=' + id,
+            beforeSend: function() {
+                AddRemoving($("#permissionListCard"));
+            },
+            success: function (resultData) {
+                removeLoading($("permissionListCard"))
+            if (resultData.status === "Success") {
+            Swal.fire({
+            icon: 'success',
+            text: resultData.message,
+            showConfirmButton: false,
+            timer: 3000
+            }).then(() => {
+            window.location.reload();
+            });
+            }
 
-    if (resultData.status === "Error") {
-    Swal.fire({
-    icon: 'error',
-    text: resultData.message,
-    showConfirmButton: false,
-    timer: 1500
-    });
-    }
-    }
-    });
-    }
-    });
-    }
+            if (resultData.status === "Error") {
+            Swal.fire({
+            icon: 'error',
+            text: resultData.message,
+            showConfirmButton: false,
+            timer: 1500
+            });
+            }
+            }
+            });
+            }
+            });
+            }
     </script>
 }

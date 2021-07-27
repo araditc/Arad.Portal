@@ -15,6 +15,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Arad.Portal.DataLayer.Entities;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -39,32 +41,28 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> List()
         {
             var claims = User.Claims;
+            var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
+            ViewBag.Permissions = dicKey;
             PagedItems<RoleListViewModel> list = await _roleRepository.RoleList(Request.QueryString.ToString());
             return View(list);
         }
 
         [HttpGet]
-        public async Task<IActionResult> New()
+        public async Task<IActionResult> AddEdit(string roleId)
         {
+            var model = new RoleDTO();
+           
             var currentUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-
-            var model = new UserRoleViewModel()
+            if(!string.IsNullOrWhiteSpace(roleId))
             {
-                //AllAllowedPermissions = await _roleRepository.GetAllPermissions(currentUserId),
-                //SelectedPermissions = _roleRepository.GetSelectedPermissions(string.Empty),
-                IsEditView = false,
-            };
-
+                ViewBag.IsEditView = true;
+                model = await _roleRepository.FetchRole(roleId);
+            }else
+            {
+                ViewBag.IsEditView = false;
+            }
             return View(model);
         }
-
-
-        //[HttpGet]
-        //public IActionResult GetCitiesForAddress(string id)
-        //{
-        //    SelectList cities = _roleRepository.GetCities(id);
-        //    return View("GetCitiesForAddress", cities);
-        //}
 
 
         [HttpPost]
@@ -198,11 +196,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
            // return View("~/Views/Permission/GetLatestModifications.cshtml", entity.Modifications.Take(10).ToList());
         //}
-        public async Task<IActionResult> Index()
-        {
-            var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
-            return View(dicKey);
-        }
+        //public async Task<IActionResult> Index()
+        //{
+        //    var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
+        //    return View(dicKey);
+        //}
 
         [HttpPost]
         public async Task<IActionResult> Add(RoleDTO role)
@@ -250,53 +248,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return result;
         }
 
-      
-        //[HttpGet]
-        //public async Task<IActionResult> GetRole(string id)
-        //{
-        //    JsonResult result;
-        //    try
-        //    {
-        //        var role = await _roleRepository.FetchRole(id);
-
-        //        if (role == null)
-        //        {
-        //            result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_DataWasNotFound") });
-        //        }
-
-        //        //var permissions = await _permissionRepository.ListPermissions(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
-
-        //        var data = new { Role = role };
-
-        //        result = Json(new { Status = "success", Data = data });
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
-        //    }
-        //    return result;
-        //}
-
         [HttpGet]
-        public async Task<IActionResult> GetRole(string id, bool editPermission)
+        public  IActionResult GeneratePermissions(string roleId)
         {
-            RoleDTO role = new RoleDTO();
-           
-            try
-            {
-                ViewBag.Edit = editPermission;
-                role = await _roleRepository.FetchRole(id);
-            }
-            catch (Exception e)
-            {
-            }
-            return View(role);
-        }
-
-        public async Task<IActionResult> GeneratePermissions(string roleId)
-        {
-            var permissions = await _permissionRepository.ListPermissions(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), roleId);
-            return PartialView(permissions);
+            var permissions =  _permissionRepository.ListPermissions(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), roleId).Result;
+            return  this.Json(permissions);
         }
 
         [HttpGet]
@@ -325,89 +281,89 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return result;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Edit(RoleDTO role)
-        {
-            JsonResult result;
-            List<ClientValidationErrorModel> errors = new List<ClientValidationErrorModel>();
-
-            if (!ModelState.IsValid)
-            {
-                foreach (var modelStateKey in ModelState.Keys)
-                {
-                    var modelStateVal = ModelState[modelStateKey];
-                    foreach (var error in modelStateVal.Errors)
-                    {
-                        var obj = new ClientValidationErrorModel
-                        {
-                            Key = modelStateKey,
-                            ErrorMessage = error.ErrorMessage,
-                        };
-                        errors.Add(obj);
-                    }
-                }
-                result =  new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_FillEssentialFields"), ModelStateErrors = errors });
-            }
-            else
-            {
-                try
-                {
-                   
-                    var oldRole =await _roleRepository.FetchRole(role.RoleId);
-                    oldRole.RoleName = role.RoleName;
-                    oldRole.PermissionIds = role.PermissionIds;
-
-                    var res = await _roleRepository.Update(role);
-
-                    if (!res.Succeeded)
-                    {
-                        result = new JsonResult(new { Status = "error", Message = res.Message, ModelStateErrors = errors });
-                    }
-                    else
-                    {
-                        result = new JsonResult(new { Status = "success", Message = res.Message, ModelStateErrors = errors });
-                    }
-
-                }
-                catch
-                {
-                    result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
-                }
-            }
-            return result;
-        }
-
-        //[HttpGet]
-        //public async Task<IActionResult> Delete(string id)
+        //[HttpPost]
+        //public async Task<IActionResult> Edit(RoleDTO role)
         //{
         //    JsonResult result;
-        //    try
-        //    {
-        //        var res = await _roleRepository.Delete(id, "");
-        //        if (res.Succeeded)
-        //        {
-        //            result =  Json(new { Status = "success", Message = res.Message });
-        //        }
-        //        else
-        //        {
-        //            result = Json(new { Status = "error", Message = res.Message });
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
-        //    }
+        //    List<ClientValidationErrorModel> errors = new List<ClientValidationErrorModel>();
 
+        //    if (!ModelState.IsValid)
+        //    {
+        //        foreach (var modelStateKey in ModelState.Keys)
+        //        {
+        //            var modelStateVal = ModelState[modelStateKey];
+        //            foreach (var error in modelStateVal.Errors)
+        //            {
+        //                var obj = new ClientValidationErrorModel
+        //                {
+        //                    Key = modelStateKey,
+        //                    ErrorMessage = error.ErrorMessage,
+        //                };
+        //                errors.Add(obj);
+        //            }
+        //        }
+        //        result =  new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_FillEssentialFields"), ModelStateErrors = errors });
+        //    }
+        //    else
+        //    {
+        //        try
+        //        {
+
+        //            var oldRole =await _roleRepository.FetchRole(role.RoleId);
+        //            oldRole.RoleName = role.RoleName;
+        //            oldRole.PermissionIds = role.PermissionIds;
+
+        //            var res = await _roleRepository.Update(role);
+
+        //            if (!res.Succeeded)
+        //            {
+        //                result = new JsonResult(new { Status = "error", Message = res.Message, ModelStateErrors = errors });
+        //            }
+        //            else
+        //            {
+        //                result = new JsonResult(new { Status = "success", Message = res.Message, ModelStateErrors = errors });
+        //            }
+
+        //        }
+        //        catch
+        //        {
+        //            result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
+        //        }
+        //    }
         //    return result;
         //}
 
         [HttpGet]
-        public async Task<IActionResult> ChangeActivation(string id, bool IsActive, string modificationReason)
+        public async Task<IActionResult> Delete(string id)
         {
             JsonResult result;
             try
             {
-                var res = await _roleRepository.ChangeActivation(id, IsActive, modificationReason);
+                var res = await _roleRepository.Delete(id, "");
+                if (res.Succeeded)
+                {
+                    result = Json(new { Status = "success", Message = res.Message });
+                }
+                else
+                {
+                    result = Json(new { Status = "error", Message = res.Message });
+                }
+            }
+            catch (Exception e)
+            {
+                result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
+            }
+
+            return result;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ChangeActivation(string id)
+        {
+            JsonResult result;
+            try
+            {
+                var res = await _roleRepository.ChangeActivation(id);
                 if (res.Succeeded)
                 {
                     result = Json(new { Status = "success", Message = res.Message });
@@ -440,6 +396,19 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                
             }
             return View(res);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetLatestModifications(string id)
+        {
+            var result = new List<Modification>();
+            var entity = await _roleRepository.FetchRoleEntity(id);
+            if(entity != null)
+            {
+                result = entity.Modifications.OrderByDescending(_ => _.DateTime).Take(10).ToList();
+            }
+           
+            return View("~/Views/Shared/GetLatestModifications.cshtml", result);
         }
 
         [HttpGet]

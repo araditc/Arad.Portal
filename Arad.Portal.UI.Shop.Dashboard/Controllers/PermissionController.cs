@@ -140,7 +140,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             RepositoryOperationResult opResult = await _permissionRepository.Delete(id);
-            return Ok(opResult.Succeeded ? new { Status = "Success", opResult.Message } : new { Status = "Error", opResult.Message });
+            return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message } : new { Status = "Error", opResult.Message });
         }
 
         //[HttpGet]

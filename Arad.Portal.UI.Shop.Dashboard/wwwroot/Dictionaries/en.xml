@@ -28,6 +28,9 @@
 	<string key="btn_Detail">
 		<value>Detail</value>
 	</string>
+	<string key="btn_Show">
+		<value>Show</value>
+	</string>
 	<string key="btn_ChangePass">
 		<value>Change Password</value>
 	</string>
@@ -229,6 +232,9 @@
 	</string>
 	<string key="AlertAndMessage_DeletePermission">
 		<value>This Permission will be deleted.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteRole">
+		<value>This Role will be deleted.</value>
 	</string>
 	<string key="AlertAndMessage_FieldEssential">
 		<value>Filling this field is essential.</value>
@@ -830,6 +836,9 @@
 	<string key="AddRolePart_Title">
 		<value>Add New Role</value>
 	</string>
+	<string key="EditRolePart_Title">
+		<value>Edit Role</value>
+	</string>
 	<string key="Permission_Delete">
 		<value>Delete Permission</value>
 	</string>
@@ -857,6 +866,10 @@
 	<string key="Role_Delete">
 		<value>Role Delete</value>
 	</string>
+	<string key="Role_CreatorUserName">
+		<value>Creator username</value>
+	</string>
+	
 	<string key="User_FirstName">
 		<value>Name</value>
 	</string>
@@ -935,6 +948,9 @@
 	<string key="Menu_Roles">
 		<value>Roles</value>
 	</string>
+	<string key="Role">
+		<value>نقش</value>
+	</string>
 	<string key="EditPermissions">
 		<value>Edit permissions</value>
 	</string>
@@ -1012,6 +1028,9 @@
 	</string>
 	<string key="ModificationReason">
 		<value>Modification Reason</value>
+	</string>
+	<string key="WithoutModification">
+		<value>without modification</value>
 	</string>
 	<string key="Menu_Dashboard">
 		<value>Dashboard</value>

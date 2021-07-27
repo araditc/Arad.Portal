@@ -1,72 +1,228 @@
 ﻿@using Arad.Portal.GeneralLibrary.Utilities
 @using Arad.Portal.DataLayer.Models.Shared;
 @using Arad.Portal.DataLayer.Models.Role
-@model PagedItems<RoleDTO>
+@using Arad.Portal.UI.Shop.Dashboard.ViewComponents;
+@using System.Web;
+@model PagedItems<RoleListViewModel>
 @{
-    Layout = null;
+    var i = ((Model.CurrentPage - 1) * Model.PageSize);
+    System.Collections.Specialized.NameValueCollection queryString = HttpUtility.ParseQueryString(Model.QueryString);
+    queryString.Remove("page");
+    var dir = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        dir = "rtl";
+    }
+    else
+    {
+        dir = "ltr";
+    }
 }
 
-@{
-    <div id="page-data" data-current="@Model.CurrentPage" data-total="@Model.ItemsCount" data-size="@Model.PageSize">
-        @{
-            if (Model.Items.Count != 0)
-            {
-                int i = (Model.CurrentPage - 1) * Model.PageSize;
-
-                @foreach (var item in Model.Items)
-                {
-                    <div class="table-row">
-                        <div class="card-table @(item.IsActive ? "active":"notActive")">
-                            <div class="row m-0">
-                                <div class="table-col col-xs-12 col-md-1 d-none d-lg-block">
-                                    <span>@(++i)</span>
-                                </div>
-                                <div class="table-col col-xs-12 col-lg-7">
-                                    <span class="mo-title">@Language.GetString("Role_Name")</span>
-                                    <span>@item.RoleName</span>
-                                </div>
-                                @*<div class="table-col col-xs-12 col-lg-2">
-                                    <span class="mo-title">@Language.GetString("ActivationState")</span>
-                                    <label class="switch">
-                                        <input class="checkbox" type="checkbox" id="activeUser" checked="@item.IsActive" data-id="@item.RoleId" value="@item.IsActive">
-                                        <span class="slider round"></span>
-                                    </label>
-                                </div>*@
-                                <div class="table-col col-xs-12 col-lg-3">
-                                    <div class="">
-                                        @if (ViewBag.Permissions["Details"])
-                                        {
-                                            <input id="editRecord" class="btn btn-outline-primary btn-xs" data-id="@item.RoleId" type="button"
-                                                   value="@Language.GetString("btn_Detail")"
-                                                   onclick="location.href= '@Url.Action("GetRole", "Role", new  {id = @item.RoleId , editPermission = ViewBag.Permissions["Edit"] })'" />
-
-                                        }
-                                        @if (ViewBag.Permissions["Remove"])
-                                        {
-                                            <button id="deleteRecord" data-id="@item.RoleId" href="#" data-toggle="modal" type="button" class="btn btn-outline-danger btn-xs">
-                                                @Language.GetString("btn_Delete")
-                                            </button>
-                                        }
-                                        @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
-                                        {
-                                        <button id="restoreRecord" data-id="@item.RoleId" href="#" data-toggle="modal" type="button" class="btn btn-outline-warning btn-xs">
-                                            @Language.GetString("btn_Restore")
-                                        </button>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                }
-            }
-            else
-            {
-                <div class="empty text-center">@Language.GetString("AlertAndMessage_NotifyEmptyList")</div>
-            }
+@section Styles
+{
+    <style>
+        .userListCell {
+            text-align: center;
+            vertical-align: middle;
         }
-    </div>
+    </style>
 }
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">@Language.GetString("User_Roles")</h3>
+        <div class="card-tools">
+            <a asp-action="AddEdit" class="btn btn-success btn-sm"><i style="position: relative;left: 5px;top: 2px;" class="fa fa-plus"></i>@Language.GetString("AddRolePart_Title")</a>
+        </div>
+    </div>
+    <div class="card-body table-bordered  table-responsive p-0" id="roleListCard">
+        <table class="table table-hover">
+            <thead>
+                <tr style="text-align:center;">
+                    <th>@Language.GetString("tbl_RowName")</th>
+                    <th>@Language.GetString("tbl_RoleName") </th>
+                    <th>@Language.GetString("Role_CreatorUserName")</th>
+                    <th>@Language.GetString("CreationDate")</th>
+                    <th>@Language.GetString("ActivationState")</th>
+                    <th>@Language.GetString("TableHeader_Modifications")</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Items.Any())
+                {
+                    foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td class="userListCell">@(++i)</td>
+                            <td class="userListCell">@item.RoleName</td>
+                            <td class="userListCell">@item.CreatorUserName</td>
+                            <td class="userListCell">@item.CreationDateTime</td>
+                            <td id="@("activation" + item.Id)" class="userListCell">
+                                @{
+                                    if (item.IsActive)
+                                    {
+                                        <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-success">@Language.GetString("Active")</button>
+                                    }
+                                    else
+                                    {
+                                        <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-danger">@Language.GetString("InActive")</button>
+                                    }
+                                }
+                            </td>
+                            <td class="userListCell">
+                                @{
+                                    if (item.HasModifications)
+                                    {
+                                        <button onclick="getLatestModifications('@item.Id')" class="btn btn-sm btn-primary">@Language.GetString("btn_Show")</button>
+                                    }
+                                    else
+                                    {
+                                        <span>@Language.GetString("WithoutModification")</span>
+                                    }
+                                }
+                            </td>
+                            <td class="userListCell">
+                                @if (ViewBag.Permissions["Edit"])
+                                {
+                                <a asp-action="AddEdit" asp-controller="Role" asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                                    <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
+                                </a>
+                                }
+                                @if (ViewBag.Permissions["Remove"])
+                                {
+                                    <button onclick="RoleDelete('@item.Id')" class="btn btn-sm btn-danger">
+                                        <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="userListCell">
+                            <h6>@Language.GetString("AlertAndMessage_NoDataToShow")</h6>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card-footer">
+        @await Component.InvokeAsync("Pagination", new PageViewModel
+      {
+          CurrentPage = Model.CurrentPage,
+          ItemsCount = Model.ItemsCount,
+          PageSize = Model.PageSize,
+          Navigation = Url.Action("List", "Role"),
+          QueryParams = Model.QueryString
+      })
+    </div>
+ </div>
+@section Scripts{ 
+    <script>
+    function changeActivation(id) {
+            debugger;
+                $.ajax({
+                    type: 'Get',
+                    url: '@Url.Action("ChangeActivation", "Role")' + '?id=' + id,
+                    success: function(resultData) {
+                        if (resultData.status === "success") {
+                            debugger;
+                            var html = '';
+                            if (resultData.result === true) {
+                                html = '<button onclick="changeActivation(\'' + id + '\')" class="btn btn-sm btn-success"> ' + '@Language.GetString("Active")' +' </button>';
+                            } else {
+                                html = '<button onclick="changeActivation(\'' + id + '\')" class="btn btn-sm btn-danger"> '+ '@Language.GetString("InActive")' +' </button>';
+                            }
+                            $('#activation' + id).html(html);
+                        }
+
+                        if (resultData.status === "error") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: resultData.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                    }
+                });
+        }
+
+        function getLatestModifications(id) {
+            $.ajax({
+                type: 'Get',
+                url: '@Url.Action("GetLatestModifications", "Role")' + '?id=' + id,
+                beforeSend: function() {
+                    AddLoading($("#roleListCard"));
+                },
+                success: function (resultData) {
+                    removeLoading($("#roleListCard"));
+                        Swal.fire({
+                            title: resultData.message,
+                            html: resultData,
+                            width: 'auto',
+                            showConfirmButton: true,
+                            confirmButtonText: '@Language.GetString("Close")'
+                        });
+                    },
+            });
+        }
+
+        function RoleDelete(id) {
+            debugger;
+        Swal.fire({
+            title: '@Language.GetString("AlertAndMessage_AreYouSure")',
+            text: '@Language.GetString("AlertAndMessage_DeleteRole")',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d51c1c',
+            cancelButtonColor: '#009c09db',
+            confirmButtonText: '@Language.GetString("btn_Confirm")',
+            cancelButtonText: '@Language.GetString("btn_NotConfirm")'
+            }).then((result) => {
+            if (result.isConfirmed) {
+            $.ajax({
+            type: 'Get',
+            url: '@Url.Action("Delete", "Role")' + '?id=' + id,
+            beforeSend: function() {
+                AddLoading($("#roleListCard"));
+            },
+            success: function (resultData) {
+                removeLoading($("#roleListCard"));
+            if (resultData.status === "Success") {
+            Swal.fire({
+            icon: 'success',
+            text: resultData.message,
+            showConfirmButton: false,
+            timer: 3000
+            }).then(() => {
+            window.location.reload();
+            });
+            }
+
+            if (resultData.status === "Error") {
+            Swal.fire({
+            icon: 'error',
+            text: resultData.message,
+            showConfirmButton: false,
+            timer: 1500
+            });
+            }
+            }
+            });
+            }
+            });
+            }
+    </script>
+} 
+
+   
+
 
 

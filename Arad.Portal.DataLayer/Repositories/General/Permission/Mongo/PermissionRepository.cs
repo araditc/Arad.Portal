@@ -376,6 +376,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
 
             //mapping the input model to equallent object of database
             var equallentModel = _mapper.Map<Entities.General.Permission.Permission>(dto);
+            equallentModel.Routes = dto.Routes.Split(",").ToList();
 
             if (!string.IsNullOrWhiteSpace(dto.PermissionId))//it is update case
             {
@@ -558,7 +559,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
                         Title = _.Title,
                         Type = _.Type,
                         Childrens = GetChildren(menuesAndModules, _.PermissionId, role).ToList(),
-                        IsSelected = false,
+                        IsSelected = !string.IsNullOrWhiteSpace(currentRoleId) && role.PermissionIds.Contains(_.PermissionId),
                         IsActive = _.IsActive,
                         Priority = _.Priority
                     }).OrderBy(_=>_.Priority).ToList();
