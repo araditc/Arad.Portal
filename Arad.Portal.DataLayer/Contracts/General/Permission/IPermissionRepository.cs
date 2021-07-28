@@ -27,9 +27,9 @@ namespace Arad.Portal.DataLayer.Contracts.General.Permission
         RepositoryOperationResult<PermissionDTO> GetForEdit(string permissionId);
         Task<RepositoryOperationResult> Delete(string permissionId);
         RepositoryOperationResult<List<Modification>> GetModifications(string permissionId);
-
+        Task<List<string>> GetUserPermissionsAsync();
         Task<Entities.General.Permission.Permission> FetchPermission(string permissionId);
-        Task<List<ListPermissions>> ListPermissions(string currentUserId, string currentRoleId);
+        Task<List<TreeviewModel>> ListPermissions(string currentUserId, string currentRoleId);
         List<Entities.General.Permission.Permission> GetAllPermissions();
 
         Task<RepositoryOperationResult> ChangeActivation(string permissionId, bool isActive, string modificationReason);

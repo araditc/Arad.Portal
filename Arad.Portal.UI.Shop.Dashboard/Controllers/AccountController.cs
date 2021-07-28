@@ -245,6 +245,18 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return View(result);
         }
 
+        [HttpGet]
+        public IActionResult AccessDenied(string returnUrl)
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult PageOrItemNotFound()
+        {
+            return View();
+        }
+
         //private List<RoleListView>  RoleList()
         //{
         //    var result = new List<RoleListView>();
@@ -257,11 +269,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         //            Id = _.RoleId,
         //            IsActive = _.IsActive
         //        }).ToList();
-                
+
         //    }
         //    catch (Exception e)
         //    {
-               
+
         //    }
         //    return result;
         //}

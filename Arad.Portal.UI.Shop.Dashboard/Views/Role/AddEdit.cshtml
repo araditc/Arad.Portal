@@ -3,28 +3,45 @@
     //Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
+    var dir = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        dir = "rtl";
+    }
+    else
+    {
+        dir = "ltr";
+    }
 }
-@section Styles{
-    <link href="~/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/lib/iCheck/skins/all.css">
-    <link href="~/css/siteTemplate/permissionTree/gijgo.min.css" rel="stylesheet" />
-    <style>
-        .text-danger {
-            font-size: 12px;
-        }
-    </style>
-}
+
+
+<link href="~/css/jquerysctipttop.css" rel="stylesheet" />
+<script src="~/js/plugins/jquery/jquery.min.js"></script>
+<link href="~/css/font-awesome/font-awesome.min.css" rel="stylesheet" />
+<link href="~/css/jqueryTreeview/jquery.treeview.css" rel="stylesheet" />
+<script src="~/js/jqueryTreeview/jquery.treeview.js"></script>
+
+<style>
+    .text-danger {
+        font-size: 12px;
+    }
+    p.group{
+        padding-right :@(dir == "rtl" ? "3%" : "0%");
+    }
+</style>
+
+
 <h4>  @Language.GetString("Menu_Permissions") </h4>
 <hr />
 <div class="row">
     <div class="col-md-12">
         <div class="card card-primary" id="addPermissionCard">
             <div class="card-header">
-                <h3 class="card-title" data-toggle="tab">@(ViewBag.IsEditView ? Language.GetString("EditRolePart_Title") : Language.GetString("AddRolePart_Title"))</h3>
+                <h3 class="card-title" data-toggle="tab">@(Model.IsEditView ? Language.GetString("EditRolePart_Title") : Language.GetString("AddRolePart_Title"))</h3>
             </div>
             <form asp-controller="Role" role="form" asp-action="Save" id="addEditRoleFrm" method="post">
                 @{
-                    if (ViewBag.IsEditView)
+                    if (Model.IsEditView)
                     {
                         <input type="hidden" value="@Model.RoleId" data-val="true" asp-for="@Model.RoleId">
                         <input type="hidden" value="@ViewBag.IsEditView" id="IsEditView" />
@@ -39,23 +56,25 @@
                             <span data-val-result="RoleName" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-3" id="TypeSelect">
-                            <label asp-for="IsActive">@Language.GetString("ActivationState")</label><br/>
-                            <input @(Model.IsActive ? "checked" : false) asp-for="IsActive" type="radio"
-                                   value="true" class="flat-red"><span>@Language.GetString("Active")</span></input>
-                                <input @(!Model.IsActive ? "checked" : false) asp-for="IsActive" type="radio"
-                                       value="false" class="flat-red"><span>@Language.GetString("InActive")</span></input>
+                            <label asp-for="IsActive">@Language.GetString("ActivationState")</label><br />
+                            <input @(Model.IsActive ? "checked" : "") id="IsActive" name="IsActive" type="radio"
+                                   value="true" ><span>@Language.GetString("Active")</span></input>
+                                <input @(!Model.IsActive ? "checked" : "") id="IsActive" name="IsActive" type="radio"
+                                       value="false" ><span>@Language.GetString("InActive")</span></input>
                                     <span data-val-result="IsActive" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="row">
-                                <div id="permissionTreeView">
+                                <div class="col-md-6">
+                                    <div id="permissionTreeView">
 
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer">
                             <div class="row">
-                                <input type="submit" value="@Language.GetString("btn_Save")" class="btn btn-block btn-success" />
+                                <input type="submit" id="savebtn" value="@Language.GetString("btn_Save")" class="btn btn-block btn-success" />
                                 <a asp-action="List" class="btn btn-block btn-default">@Language.GetString("btn_Back")</a>
                             </div>
                         </div>
@@ -63,27 +82,72 @@
                 </div>
             </div>
         </div>
-        @section Scripts{
-            
-         <script>
-             $(document).ready(function () {
-             
 
-            $("#addEditRoleFrm").submit(function (e) {
+        @section Scripts
+{
+            @*<script src="~/lib/twitter-bootstrap/js/bootstrap.min.js"></script>*@
+            @*<script src="~/js/jqueryTreeview/jquery.treeview.js"></script>*@
+<script>
+               /* vat treeModel = {};*/
+                $(document).ready(function () {
+                    debugger;
+                 $.ajax({
+                     url: '@Url.Action("ListPermissions")',
+                     type: 'Get',
+                     data: '@Model.RoleId',
+                     success: function (result) {
+                         debugger;
+
+                         var tw = new TreeView(
+                             result,
+                             { showAlwaysCheckBox: true, fold: false });
+                         document.body.appendChild(tw.root)
+                         //$("#permissionTreeView").appendChild(tw.root);
+                         document.getElementById("permissionTreeView").appendChild(tw.root);
+
+
+                     },
+                     error: function (xhr, ajaxOptions, thrownError) {
+                         alert(xhr.status);
+                         alert(thrownError);
+                     }
+                 });
+
+            
+
+   $("#addEditRoleFrm").submit(function (e) {
             debugger;
             e.preventDefault();
-            var form = $(this).serialize();
+               /* var form = $(this).serialize();*/
+            var myform = document.getElementById('addEditRoleFrm');
+                var form = new FormData(myform);
+                var PermissionIds = [];
+                $("#permissionTreeView span.item").each(function () {
+                    var data = $(this).attr("check-value");
+                    var num = parseInt(data);
+                    if (num > 0) {
+                        PermissionIds.push($(this).attr("data-id"));
+                    }
+                });
+       form.append('PermissionIds', JSON.stringify(PermissionIds));
+       form.append('IsActive', $("input[name='IsActive']:checked").val());
+       debugger;
             $.ajax({
                 url: $(this).attr('action'),
                 data: form,
+               /* dataType : "json",*/
                 type: 'Post',
+                processData: false,
+                contentType:false,
+               /* contentType: "application/json; charset=utf-8",*/
+               
                 beforeSend: function () {
                     debugger;
                     AddLoading($("#addEditPermissionCard"));
                 },
                 success: function (result) {
                     debugger;
-                 
+
                     if (result.status === "Success") {
                         Swal.fire({
                             icon: 'success',
@@ -93,7 +157,7 @@
                         }).then(() => {
                             window.location.href = '@Url.Action("List")';
                         });
-                    }
+                    }else
                     if (result.status === "ModelError") {
                         var spanErrorList = $('span[data-val-result]');
                         if (spanErrorList.length > 1) {
@@ -126,7 +190,7 @@
             });
         });
         });
-         </script>
+</script>
         }
 
 

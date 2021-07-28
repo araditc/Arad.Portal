@@ -83,15 +83,28 @@
 	<string key="PermissionTitle_Users">
 		<value>Users</value>
 	</string>
+  <string key="PermissionTitle_UserDetails">
+    <value>User detail</value>
+  </string>
 	<string key="PermissionTitle_AddUser">
 		<value>Add User</value>
 	</string>
+  <string key="PermissionTitle_RoleDetails">
+    <value>Role Details</value>
+  </string>
+ 
 	<string key="PermissionTitle_EditUser">
 		<value>Edit User</value>
 	</string>
 	<string key="PermissionTitle_RoleList">
 		<value>Role List</value>
 	</string>
+  <string key="PermissionTitle_SaveRole">
+    <value>Save Role</value>
+  </string>
+  <string key="PermissionTitle_SavePermission">
+    <value>Save Permission</value>
+  </string>
 	<string key="PermissionTitle_Roles">
 		<value>Roles</value>
 	</string>
@@ -116,12 +129,26 @@
 	<string key="PermissionTitle_MenuList">
 		<value>Menu List</value>
 	</string>
-	<string key="PermissionTitle_GetUser">
-		<value>get user</value>
-	</string>
-	<string key="PermissionTitle_GetRole">
-		<value>get role</value>
-	</string>
+  <string key="PermissionTitle_ProductManagement">
+    <value>Product Management</value>
+  </string>
+  <string key="PermissionTitle_ProductUnit">
+    <value>Product Unit</value>
+  </string>
+  <string key="PermissionTitle_ProductGroup">
+    <value>Product Group</value>
+  </string>
+  <string key="PermissionTitle_ProductSpecification">
+    <value>Product Specification</value>
+  </string>
+  <string key="PermissionTitle_ProductSpecificationGroup">
+    <value>Product SpecificationGroup</value>
+  </string>
+  <string key="PermissionTitle_Products">
+    <value>Products</value>
+  </string>
+	
+	
 	<string key="PermissionTitle_Role">
 		<value>Roles</value>
 	</string>
@@ -245,6 +272,9 @@
 	<string key="AlertAndMessage_ModificationReason">
 		<value>Please fill why you modify this entity.</value>
 	</string>
+  <string key="AlertAndMessage_PermissionSelectLimitation">
+    <value>One permission must be selected at least.</value>
+  </string>
   <string key="AlertAndMessage_Error">
     <value>error</value>
   </string>

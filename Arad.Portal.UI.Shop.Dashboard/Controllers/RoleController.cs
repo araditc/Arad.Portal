@@ -55,11 +55,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var currentUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             if(!string.IsNullOrWhiteSpace(roleId))
             {
-                ViewBag.IsEditView = true;
+                model.IsEditView = true;
                 model = await _roleRepository.FetchRole(roleId);
             }else
             {
-                ViewBag.IsEditView = false;
+                model.IsEditView = false;
             }
             return View(model);
         }
@@ -67,87 +67,96 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Save([FromForm] UserRoleViewModel model)
-        //{
-            //if (!model.PermissionIds.Any())
-            //{
-            //    ModelState.AddModelError("PermissionIds", "حداقل یک دسترسی باید انتخاب شود.");
-            //}
+        public async Task<IActionResult> Save([FromForm]RoleDTO model)
+        {
+            if (!model.PermissionIds.Any())
+            {
+                ModelState.AddModelError("PermissionIds", Language.GetString("AlertAndMessage_PermissionSelectLimitation"));
+            }else
+            {
+                model.PermissionIds = model.PermissionIds[0].Split(',').ToList();
+            }
+            
+            if (model.IsEditView)
+            {
+                if (string.IsNullOrWhiteSpace(model.ModificationReason))
+                {
+                    ModelState.AddModelError("ModificationReason", Language.GetString("AlertAndMessage_ModificationReason"));
+                }
+            }
 
-            //if (model.IsEditView)
-            //{
-            //    if (string.IsNullOrWhiteSpace(model.ModificationReason))
-            //    {
-            //        ModelState.AddModelError("ModificationReason", "دلیل ویرایش را به طور مختصر ذکر نمایید.");
-            //    }
-            //}
+            if (!ModelState.IsValid)
+            {
+                var errors = new List<AjaxValidationErrorModel>();
 
-            //if (!ModelState.IsValid)
-            //{
-            //    var errors = new List<AjaxValidationErrorModel>();
+                foreach (var modelStateKey in ModelState.Keys)
+                {
+                    var modelStateVal = ModelState[modelStateKey];
+                    errors.AddRange(modelStateVal.Errors.Select(error => new AjaxValidationErrorModel { Key = modelStateKey, ErrorMessage = error.ErrorMessage }));
+                }
 
-            //    foreach (var modelStateKey in ModelState.Keys)
-            //    {
-            //        var modelStateVal = ModelState[modelStateKey];
-            //        errors.AddRange(modelStateVal.Errors.Select(error => new AjaxValidationErrorModel { Key = modelStateKey, ErrorMessage = error.ErrorMessage }));
-            //    }
+                return Json(new { Status = "ModelError", ModelStateErrors = errors });
+            }
 
-            //    return Ok(new { Status = "ModelError", ModelStateErrors = errors });
-            //}
+            List<string> currentUserPers = await _permissionRepository
+                .GetUserPermissionsAsync();
 
-            //List<string> currentUserPers = await _permissionRepository
-            //    .GetUserPermissionsAsync();
+            if (model.PermissionIds.Any(item => !currentUserPers.Contains(item)))
+            {
+                return RedirectToAction("AccessDenied", "Account");
+            }
 
-            //if (model.PermissionIds.Any(item => !currentUserPers.Contains(item)))
-            //{
-            //    return RedirectToAction("AccessDenied", "Account");
-            //}
+            if (model.IsEditView)
+            {
+                var role = await _roleRepository.FetchRole(model.RoleId);
+                if (role == null)
+                {
+                    return RedirectToAction("PageOrItemNotFound", "Account");
+                }
+            }
+            RepositoryOperationResult saveResult;
+            if (!string.IsNullOrWhiteSpace(model.RoleId))
+            {
+                saveResult = await _roleRepository.Update(model);
+            }else
+            {
+                saveResult = await _roleRepository.Add(model);
+            }
 
-            //if (model.IsEditView)
-            //{
-                //var role = await _roleRepository.GetRoleByRoleId(model.Id);
-                //if (role == null)
-                //{
-                //    return RedirectToAction("PageOrItemNotFound", "Account");
-                //}
-
-                
-            //}
-
-            //RepositoryOperationResult saveResult = await _roleRepository.Save(model);
-            //return Ok(saveResult.Succeeded ? new { Status = "Success", saveResult.Message } : new { Status = "Error", saveResult.Message });
-        //}
+            
+            return Ok(saveResult.Succeeded ? new { Status = "Success", saveResult.Message } : new { Status = "Error", saveResult.Message });
+        }
 
         //[HttpGet]
         //public async Task<IActionResult> Edit(string id)
         //{
-            //var role = await _roleRepository.GetRoleByRoleId(id);
+        //var role = await _roleRepository.GetRoleByRoleId(id);
 
-            //if (role == null)
-            //{
-            //    return RedirectToAction("PageOrItemNotFound", "Account");
-            //}
+        //if (role == null)
+        //{
+        //    return RedirectToAction("PageOrItemNotFound", "Account");
+        //}
 
-            //if (User.GetUserId() != role.CreatorId)
-            //{
-            //    if (await _userExtension.CheckIfIsSubUserAsync(User.GetUserId(), role.CreatorId) == false)
-            //    {
-            //        return RedirectToAction("AccessDenied", "Account");
-            //    }
-            //}
+        //if (User.GetUserId() != role.CreatorId)
+        //{
+        //    if (await _userExtension.CheckIfIsSubUserAsync(User.GetUserId(), role.CreatorId) == false)
+        //    {
+        //        return RedirectToAction("AccessDenied", "Account");
+        //    }
+        //}
 
-            //var model = new UserRoleViewModel()
-            //{
-            //    AllAllowedPermissions = await _roleRepository.GetAllPermissions(role.CreatorId),
-            //    SelectedPermissions = _roleRepository.GetSelectedPermissions(id),
-            //    IsEditView = true,
-            //    Color = role.Color,
-            //    FaTitle = role.FaTitle,
-            //    Id = role.Id
-            //};
+        //var model = new UserRoleViewModel()
+        //{
+        //    AllAllowedPermissions = await _roleRepository.GetAllPermissions(role.CreatorId),
+        //    SelectedPermissions = _roleRepository.GetSelectedPermissions(id),
+        //    IsEditView = true,
+        //    Color = role.Color,
+        //    FaTitle = role.FaTitle,
+        //    Id = role.Id
+        //};
 
-            //return View("New", model);
-       // }
+        //return View("New", model);
+        // }
 
 
         //[HttpGet]
@@ -177,30 +186,32 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         //[HttpGet]
         //public async Task<IActionResult> GetLatestModifications(string id)
         //{
-            //var entity = await _roleRepository.GetRoleByRoleId(id);
-            //if (entity == null)
-            //{
-            //    return NotFound();
-            //}
+        //var entity = await _roleRepository.GetRoleByRoleId(id);
+        //if (entity == null)
+        //{
+        //    return NotFound();
+        //}
 
-            //if (!User.IsSystemAccount())
-            //{
-            //    if (User.GetUserId() != entity.CreatorId)
-            //    {
-            //        if (await _userExtension.CheckIfIsSubUserAsync(User.GetUserId(), entity.CreatorId) == false)
-            //        {
-            //            return Forbid();
-            //        }
-            //    }
-            //}
+        //if (!User.IsSystemAccount())
+        //{
+        //    if (User.GetUserId() != entity.CreatorId)
+        //    {
+        //        if (await _userExtension.CheckIfIsSubUserAsync(User.GetUserId(), entity.CreatorId) == false)
+        //        {
+        //            return Forbid();
+        //        }
+        //    }
+        //}
 
-           // return View("~/Views/Permission/GetLatestModifications.cshtml", entity.Modifications.Take(10).ToList());
+        // return View("~/Views/Permission/GetLatestModifications.cshtml", entity.Modifications.Take(10).ToList());
         //}
         //public async Task<IActionResult> Index()
         //{
         //    var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
         //    return View(dicKey);
         //}
+
+
 
         [HttpPost]
         public async Task<IActionResult> Add(RoleDTO role)
@@ -248,12 +259,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return result;
         }
 
-        [HttpGet]
-        public  IActionResult GeneratePermissions(string roleId)
-        {
-            var permissions =  _permissionRepository.ListPermissions(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), roleId).Result;
-            return  this.Json(permissions);
-        }
+        //[HttpGet]
+        //public  IActionResult GeneratePermissions(string roleId)
+        //{
+        //    var permissions =  _permissionRepository.ListPermissions(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), roleId).Result;
+        //    return  this.Json(permissions);
+        //}
 
         [HttpGet]
         public async Task<IActionResult> Details(string roleId)
@@ -411,22 +422,36 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return View("~/Views/Shared/GetLatestModifications.cshtml", result);
         }
 
+        //[HttpGet]
+        //public IActionResult ListPermissions(string currentRoleId = "")
+        //{
+        //    var result = new List<ListPermissions>();
+        //    try
+        //    {
+        //        result =  _permissionRepository.ListPermissions(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), currentRoleId).Result;
+               
+        //    }
+        //    catch (Exception e)
+        //    {
+        //    }
+        //    return View(result);
+        //}
+
         [HttpGet]
         public IActionResult ListPermissions(string currentRoleId = "")
         {
-            var result = new List<ListPermissions>();
+            var result = new List<TreeviewModel>();
             try
             {
-                result =  _permissionRepository.ListPermissions(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), currentRoleId).Result;
+                result = _permissionRepository
+                    .ListPermissions(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), currentRoleId).Result;
                
             }
             catch (Exception e)
             {
             }
-            return View(result);
+            return Json(result);
         }
-
-
 
     }
 }

@@ -4,29 +4,17 @@
     Layout = null;
 }
 
-@section Style
-{
-    <link href="~/css/jquerysctipttop.css" rel="stylesheet" />
-    <link href="~/lib/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-}
 
-@section Scripts
-{
-    <script src="~/lib/twitter-bootstrap/js/bootstrap.min.js"></script>
-    <script src="~/js/jqueryTreeview/logger.js"></script>
-    <script src="~/js/jqueryTreeview/treeview.js"></script>
-}
-
-    <ul >
-        @foreach (var child in Model.Childrens)
+<ul >
+    @foreach (var child in Model.Childrens)
+    {
+    <li data-value="@child.Id">
+        @Language.GetString($"PermissionTitle_{child.Title}")
+        @if (child.Childrens.Count != 0)
         {
-        <li data-value="@child.Id">
-            @Language.GetString($"PermissionTitle_{child.Title}")
-            @if (child.Childrens.Count != 0)
-            {
-                @await Component.InvokeAsync("InnerPermissions", child)
-            }
-            </li>
+            @await Component.InvokeAsync("InnerPermissions", child)
         }
-    </ul>
+        </li>
+    }
+</ul>
 

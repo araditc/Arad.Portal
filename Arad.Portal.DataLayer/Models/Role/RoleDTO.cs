@@ -33,6 +33,8 @@ namespace Arad.Portal.DataLayer.Models.Role
         public List<string> PermissionIds { get; set; }
         public string ModificationReason { get; set; }
 
-       
+        public bool IsEditView { get; set; }
+
+
     }
 }

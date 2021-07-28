@@ -83,15 +83,27 @@
 	<string key="PermissionTitle_Users">
 		<value>کاربران</value>
 	</string>
+  <string key="PermissionTitle_UserDetails">
+    <value>جرییات کاربران</value>
+  </string>
 	<string key="PermissionTitle_AddUser">
 		<value>افزودن کاربر</value>
 	</string>
+  <string key="PermissionTitle_RoleDetails">
+    <value>جزییات نقش</value>
+  </string>
 	<string key="PermissionTitle_EditUser">
 		<value>ویرایش کاربر</value>
 	</string>
 	<string key="PermissionTitle_RoleList">
 		<value>لیست نقش ها</value>
 	</string>
+  <string key="PermissionTitle_SaveRole">
+    <value>ذخیره نقش</value>
+  </string>
+  <string key="PermissionTitle_SavePermission">
+    <value>ذخیره دسترسی</value>
+  </string>
 	<string key="PermissionTitle_Roles">
 		<value>نقش ها</value>
 	</string>
@@ -116,12 +128,24 @@
 	<string key="PermissionTitle_MenuList">
 		<value>لیست منوها</value>
 	</string>
-	<string key="PermissionTitle_GetUser">
-		<value>اطلاعات کاربر</value>
-	</string>
-	<string key="PermissionTitle_GetRole">
-		<value>اطلاعات نقش</value>
-	</string>
+  <string key="PermissionTitle_ProductManagement">
+    <value>مدیریت محصولات</value>
+  </string>
+  <string key="PermissionTitle_ProductUnit">
+    <value>واحد محصول</value>
+  </string>
+  <string key="PermissionTitle_ProductGroup">
+    <value>گروه محصول</value>
+  </string>
+  <string key="PermissionTitle_ProductSpecification">
+    <value>مشحصات محصول</value>
+  </string>
+  <string key="PermissionTitle_ProductSpecificationGroup">
+    <value>گروه مشخصات محصول</value>
+  </string>
+  <string key="PermissionTitle_Products">
+    <value>محصولات</value>
+  </string>
 	<string key="PermissionTitle_Role">
 		<value>نقش ها</value>
 	</string>
@@ -242,6 +266,9 @@
 	<string key="AlertAndMessage_ModificationReason">
 		<value>لطفا دلیل ویرایش را ذکر کنید.</value>
 	</string>
+  <string key="AlertAndMessage_PermissionSelectLimitation">
+    <value>حداقل یک دسترسی باید انتخاب شود.</value>
+  </string>
 	<string key="AlertAndMessage_Error">
 		<value>خطا</value>
 	</string>
