@@ -35,6 +35,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
         {
             RepositoryOperationResult result = new RepositoryOperationResult();
             var equallentModel = _mapper.Map<Entities.Shop.ProductUnit.ProductUnit>(dto);
+
             equallentModel.Modifications = new List<Modification>();
 
             equallentModel.CreationDate = DateTime.Now;
@@ -42,6 +43,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
                 .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             equallentModel.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                 .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+
+            equallentModel.ProductUnitId = Guid.NewGuid().ToString();
             try
             {
                 await _productContext.ProductUnitCollection.InsertOneAsync(equallentModel);
@@ -176,7 +179,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
                     filter.Set("PageSize", "20");
                 }
 
-                var page = Convert.ToInt32(filter["CurrentPage"]);
+                var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
 
                 long totalCount = await _productContext.ProductUnitCollection.Find(c => true).CountDocumentsAsync();
@@ -184,7 +187,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
                    .Take(pageSize).Select(_ => new ProductUnitDTO()
                    {
                       ProductUnitId = _.ProductUnitId,
-                      ProductUnitName = _.UnitName
+                      UnitName = _.UnitName
                    }).ToList();
 
                 result.CurrentPage = page;

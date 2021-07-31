@@ -22,30 +22,26 @@
     <div class="col-md-12">
         <div class="card card-primary" id="addProductUnitCard">
             <div class="card-header">
-                <h3 class="card-title" data-toggle="tab">@(Model.IsEditView ? Language.GetString("EditProductUnitPart_Title") : Language.GetString("AddProductUnitPart_Title"))</h3>
+                <h3 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.ProductUnitId) ? Language.GetString("EditProductUnitPart_Title") : Language.GetString("AddProductUnitPart_Title"))</h3>
             </div>
             <form asp-controller="ProductUnit" role="form"
-                  asp-action='@(Model.IsEditView ? "Edit" : "Add")' id="addEditProductUnitFrm" method="post">
-                @{
-                    if (Model.IsEditView)
-                    {
-                        <input type="hidden" value="@Model.ProductUnitId" data-val="true" asp-for="ProductUnitId">
-                        <input type="hidden" value="@Model.IsEditView" data-val="true" asp-for="IsEditView" />
-                    }
-                }
+                  asp-action='@(!string.IsNullOrWhiteSpace(Model.ProductUnitId) ? "Edit" : "Add")' id="addEditProductUnitFrm" method="post">
+             
+                <input type="hidden" value="@Model.ProductUnitId" data-val="true" asp-for="ProductUnitId">
+               
                 <div class="card-body" id="addEditPermissionCard">
                     <div class="row">
                         <div class="form-group col-md-3">
 
-                            <label asp-for="ProductUnitName">@Language.GetString("ProductUnit_Name")</label>
-                            <input type="text" class="form-control" asp-for="ProductUnitName" placeholder=" ">
+                            <label asp-for="UnitName">@Language.GetString("ProductUnit_Name")</label>
+                            <input type="text" class="form-control" asp-for="UnitName" placeholder=" ">
                             <span data-val-result="ProductUnitName" class="text-danger"></span>
                         </div>
                     </div>
                     
                     <div class="row">
                         @{
-                            if (Model.IsEditView)
+                            if (!string.IsNullOrWhiteSpace(Model.ProductUnitId))
                             {
                                 <div class="orm-group col-md-6">
                                     <label asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
@@ -69,7 +65,7 @@
 @section Scripts{
     <script>
         $(document).ready(function () {
-          
+            debugger;
          $("#addEditProductUnitFrm").submit(function (e) {
             debugger;
             e.preventDefault();
@@ -77,8 +73,8 @@
             $.ajax({
                 url: $(this).attr('action'),
                 data: form,
-                dataType: 'json',
-                contentType: 'application/json; charset=utf-8',
+                /*dataType: 'json',*/
+                /*contentType: 'application/json; charset=utf-8',*/
                 type: 'Post',
                 beforeSend: function () {
                     debugger;
@@ -109,20 +105,16 @@
                             spanErrorList.parent().removeClass("has-error");
                         }
                         if (result.modelStateErrors !== null) {
-                            result.modelStateErrors.forEach(function (value, index) {
-
-
                                 $('[data-val-result=' + value.key + ']').html(value.errorMessage);
                                 $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
-                            });
+                            }
                         }
-                    }
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
+                    },
+                @*error: function (xhr, ajaxOptions, thrownError) {
                     alert("@error");
                     alert(xhr.status);
                     alert(thrownError);
-                },
+                },*@
                 complete: function () {
                     removeLoading($("#addEditProductUnitFrm"));
                 }

@@ -40,19 +40,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var currentUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             if (!string.IsNullOrWhiteSpace(id))
             {
-                model.IsEditView = true;
                 model = _unitRepository.FetchUnit(id);
-            }
-            else
-            {
-                model.IsEditView = false;
             }
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(ProductUnitDTO dto)
+        public async Task<IActionResult> Add([FromForm]ProductUnitDTO dto)
         {
             JsonResult result;
             if (!ModelState.IsValid)
@@ -69,7 +64,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
-                var uniqueness = _unitRepository.FetchByName(dto.ProductUnitName);
+                var uniqueness = _unitRepository.FetchByName(dto.UnitName);
                 if(uniqueness != null)
                 {
                     ModelState.AddModelError("ProductUnitName", Language.GetString("AlertAndMessage_AlreadyExists"));
@@ -85,7 +80,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(ProductUnitDTO dto)
+        public async Task<IActionResult> Edit([FromForm]ProductUnitDTO dto)
         {
             JsonResult result;
             if (string.IsNullOrWhiteSpace(dto.ModificationReason))

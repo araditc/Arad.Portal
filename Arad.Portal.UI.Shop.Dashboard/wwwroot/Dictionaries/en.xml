@@ -868,10 +868,10 @@
 		<value>Add New Permission</value>
 	</string>
 	<string key="AddProductUnitPart_Title">
-		<value>Add New ProductUnit Part</value>
+		<value>Add New ProductUnit</value>
 	</string>
 	<string key="EditProductUnitPart_Title">
-		<value>Edit ProductUnit Part</value>
+		<value>Edit ProductUnit</value>
 	</string>
 	<string key="EditPermissionPart_Title">
 		<value>Edit Permission</value>
@@ -1098,9 +1098,6 @@
 	</string>
 	<string key="Menu_Dashboard_HomeTitle">
 		<value>Arad Portal Management System</value>
-	</string>
-	<string key="Menu_Dashboard_Profile">
-		<value>پروفایل</value>
 	</string>
 	<string key="Menu_Dashboard_Gallery">
 		<value>Gallery</value>

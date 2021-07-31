@@ -58,7 +58,7 @@
                     {
                         <tr>
                             <td class="userListCell">@(++i)</td>
-                            <td class="userListCell">@item.ProductUnitName</td>
+                            <td class="userListCell">@item.UnitName</td>
                             <td>
 
                                 @if (ViewBag.Permissions["Edit"])
@@ -108,7 +108,7 @@
             debugger;
         Swal.fire({
             title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-            text: '@Language.GetString("AlertAndMessage_DeletePermission")',
+            text: '@Language.GetString("AlertAndMessage_DeleteProductUnit")',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d51c1c',
@@ -116,12 +116,13 @@
             confirmButtonText: '@Language.GetString("btn_Confirm")',
             cancelButtonText: '@Language.GetString("btn_NotConfirm")'
             }).then((result) => {
-            if (result.isConfirmed) {
+                if (result.isConfirmed) {
+                    debugger;
             $.ajax({
                 type: 'Get',
                 url: '@Url.Action("Delete", "ProductUnit")' + "/" + id,
             beforeSend: function() {
-                AddRemoving($("#productUnitListCard"));
+                AddLoading($("#productUnitListCard"));
             },
             success: function (resultData) {
                 removeLoading($("productUnitListCard"))
