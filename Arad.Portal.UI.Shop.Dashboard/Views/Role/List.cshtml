@@ -32,7 +32,7 @@
     <div class="card-header">
         <h3 class="card-title">@Language.GetString("User_Roles")</h3>
         <div class="card-tools">
-            <a asp-action="AddEdit" class="btn btn-success btn-sm"><i style="position: relative;left: 5px;top: 2px;" class="fa fa-plus"></i>@Language.GetString("AddRolePart_Title")</a>
+            <a asp-action="AddEdit" class="btn btn-success btn-sm"><i style="position: relative;left: 5px;top: 2px;" class="fa fa-plus"></i>@Language.GetString("btn_Add")</a>
         </div>
     </div>
     <div class="card-body table-bordered  table-responsive p-0" id="roleListCard">
@@ -193,9 +193,10 @@
             beforeSend: function() {
                 AddLoading($("#roleListCard"));
             },
-            success: function (resultData) {
+                success: function (resultData) {
+                    debugger;
                 removeLoading($("#roleListCard"));
-            if (resultData.status === "Success") {
+            if (resultData.status === "success") {
             Swal.fire({
             icon: 'success',
             text: resultData.message,

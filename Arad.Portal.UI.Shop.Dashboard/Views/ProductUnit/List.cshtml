@@ -1,9 +1,10 @@
 ﻿@using System.Web
 @using Arad.Portal.DataLayer.Models.Shared;
 @using Arad.Portal.GeneralLibrary.Utilities;
-@using Arad.Portal.DataLayer.Models.Permission;
+@using Arad.Portal.DataLayer.Models.Product;
 @using Arad.Portal.UI.Shop.Dashboard.ViewComponents;
-@model PagedItems<ListPermissionViewModel>
+
+@model PagedItems<ProductUnitDTO>
 @{
     var i = ((Model.CurrentPage - 1) * Model.PageSize);
     System.Collections.Specialized.NameValueCollection queryString = HttpUtility.ParseQueryString(Model.QueryString);
@@ -32,24 +33,20 @@
 }
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">@Language.GetString("Menu_Permissions")</h3>
+        <h3 class="card-title">@Language.GetString("Menu_ProductUnits")</h3>
         <div class="card-tools" style='@(dir=="rtl" ? "float:left;" : "float:right;")'>
 
-            <a asp-action="AddEdit" class="btn btn-success btn-sm">
+            <a asp-action="AddEdit" asp-controller="ProductUnit" class="btn btn-success btn-sm">
                 <i style="position: relative;left: 5px;top: 2px;" class="fa fa-plus"></i>@Language.GetString("btn_Add")
             </a>
         </div>
     </div>
-    <div class="card-body table-bordered  table-responsive p-0" id="permissionListCard">
+    <div class="card-body table-bordered  table-responsive p-0" id="productUnitListCard">
         <table class="table table-hover">
             <thead>
                 <tr style="text-align:center;">
                     <th>@Language.GetString("tbl_RowName")</th>
-                    <th>@Language.GetString("Permission_Name")</th>
-                    <th>@Language.GetString("Permission_Type")</th>
-                    <th>@Language.GetString("Permission_Method")</th>
-                    <th>@Language.GetString("Permission_ClientAddress")</th>
-                    <th>@Language.GetString("Permission_Routes")</th>
+                    <th>@Language.GetString("ProductUnit_Name")</th>
                     <th></th>
                 </tr>
             </thead>
@@ -61,22 +58,18 @@
                     {
                         <tr>
                             <td class="userListCell">@(++i)</td>
-                            <td class="userListCell">@item.Title</td>
-                            <td class="userListCell">@item.Type</td>
-                            <td class="userListCell">@item.Method</td>
-                            <td class="userListCell">@item.ClientAddress</td>
-                            <td class="userListCell">@item.Routes</td>
+                            <td class="userListCell">@item.ProductUnitName</td>
                             <td>
 
                                 @if (ViewBag.Permissions["Edit"])
                                 {
-                                    <a asp-action="AddEdit" asp-controller="Permission" asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                                    <a asp-action="AddEdit" asp-controller="ProductUnit" asp-route-id="@item.ProductUnitId" class="btn btn-sm btn-info">
                                         <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                                     </a>
                                 }
                                 @if (ViewBag.Permissions["Remove"])
                                 {
-                                    <button onclick="PermissionDelete('@item.Id')" class="btn btn-sm btn-danger">
+                                    <button onclick="EntityDelete('@item.ProductUnitId')" class="btn btn-sm btn-danger">
                                         <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
                                     </button>
                                 }
@@ -103,7 +96,7 @@
           CurrentPage = Model.CurrentPage,
           ItemsCount = Model.ItemsCount,
           PageSize = Model.PageSize,
-          Navigation = Url.Action("List", "Permission"),
+          Navigation = Url.Action("List", "ProductUnit"),
           QueryParams = Model.QueryString
       })
     </div>
@@ -111,7 +104,7 @@
 </div>
 @section Scripts{
     <script>
-        function PermissionDelete(id) {
+        function EntityDelete(id) {
             debugger;
         Swal.fire({
             title: '@Language.GetString("AlertAndMessage_AreYouSure")',
@@ -125,13 +118,13 @@
             }).then((result) => {
             if (result.isConfirmed) {
             $.ajax({
-            type: 'Get',
-            url: '@Url.Action("Delete", "Permission")' + '?id=' + id,
+                type: 'Get',
+                url: '@Url.Action("Delete", "ProductUnit")' + "/" + id,
             beforeSend: function() {
-                AddRemoving($("#permissionListCard"));
+                AddRemoving($("#productUnitListCard"));
             },
             success: function (resultData) {
-                removeLoading($("permissionListCard"))
+                removeLoading($("productUnitListCard"))
             if (resultData.status === "Success") {
             Swal.fire({
             icon: 'success',

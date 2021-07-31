@@ -1,87 +1,131 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Arad.Portal.DataLayer.Contracts.Shop.ProductUnit;
+using Arad.Portal.DataLayer.Models.Product;
+using Arad.Portal.DataLayer.Models.Shared;
+using Arad.Portal.UI.Shop.Dashboard.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Arad.Portal.GeneralLibrary.Utilities;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
     public class ProductUnitController : Controller
     {
-        // GET: ProductUnitController
-        public ActionResult Index()
+        private readonly IProductUnitRepository _unitRepository;
+        private readonly IPermissionView _permissionViewManager;
+        //private readonly UserExtensions _userExtensions;
+        public ProductUnitController(IProductUnitRepository unitRepository, IPermissionView permissionView)
         {
-            return View();
+            _unitRepository = unitRepository;
+            _permissionViewManager = permissionView;
         }
 
-        // GET: ProductUnitController/Details/5
-        public ActionResult Details(int id)
+
+        [HttpGet]
+        public async Task<IActionResult> List()
         {
-            return View();
+            var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
+            ViewBag.Permissions = dicKey;
+            PagedItems<ProductUnitDTO> list = await _unitRepository.List(Request.QueryString.ToString());
+            return View(list);
+        }
+        public IActionResult AddEdit(string id)
+        {
+            var model = new ProductUnitDTO();
+
+            var currentUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                model.IsEditView = true;
+                model = _unitRepository.FetchUnit(id);
+            }
+            else
+            {
+                model.IsEditView = false;
+            }
+            return View(model);
         }
 
-        // GET: ProductUnitController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ProductUnitController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Add(ProductUnitDTO dto)
         {
-            try
+            JsonResult result;
+            if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                var errors = new List<AjaxValidationErrorModel>();
+
+                foreach (var modelStateKey in ModelState.Keys)
+                {
+                    var modelStateVal = ModelState[modelStateKey];
+                    errors.AddRange(modelStateVal.Errors
+                        .Select(error => new AjaxValidationErrorModel { Key = modelStateKey, ErrorMessage = error.ErrorMessage }));
+                }
+                result = Json(new { Status = "ModelError", ModelStateErrors = errors });
             }
-            catch
+            else
             {
-                return View();
+                var uniqueness = _unitRepository.FetchByName(dto.ProductUnitName);
+                if(uniqueness != null)
+                {
+                    ModelState.AddModelError("ProductUnitName", Language.GetString("AlertAndMessage_AlreadyExists"));
+                    //result = Json(new )
+                }
+                RepositoryOperationResult saveResult = await _unitRepository.AddProductUnit(dto);
+                result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
+                : new { Status = "Error", saveResult.Message });
             }
+            return result;
+
         }
 
-        // GET: ProductUnitController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: ProductUnitController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(ProductUnitDTO dto)
         {
-            try
+            JsonResult result;
+            if (string.IsNullOrWhiteSpace(dto.ModificationReason))
             {
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError("ModificationReason", Language.GetString("AlertAndMessage_ModificationReason"));
             }
-            catch
+            
+            if (!ModelState.IsValid)
             {
-                return View();
+                var errors = new List<AjaxValidationErrorModel>();
+
+                foreach (var modelStateKey in ModelState.Keys)
+                {
+                    var modelStateVal = ModelState[modelStateKey];
+                    errors.AddRange(modelStateVal.Errors.Select(error => new AjaxValidationErrorModel { Key = modelStateKey, ErrorMessage = error.ErrorMessage }));
+                }
+
+                result = Json(new { Status = "ModelError", ModelStateErrors = errors });
             }
+            else
+            {
+                var model = _unitRepository.FetchUnit(dto.ProductUnitId);
+                if(model == null)
+                {
+                    return RedirectToAction("PageOrItemNotFound", "Account");
+                }
+            }
+            RepositoryOperationResult saveResult = await _unitRepository.EditProductUnit(dto);
+           
+            result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message } 
+            : new { Status = "Error", saveResult.Message });
+            return result;
         }
 
-        // GET: ProductUnitController/Delete/5
-        public ActionResult Delete(int id)
+       [HttpGet]
+        public async Task<IActionResult> Delete(string id)
         {
-            return View();
-        }
-
-        // POST: ProductUnitController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            RepositoryOperationResult opResult = await _unitRepository.Delete(id);
+            return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
+            : new { Status = "Error", opResult.Message });
         }
     }
 }

@@ -25,8 +25,12 @@
     .text-danger {
         font-size: 12px;
     }
-    p.group{
-        padding-right :@(dir == "rtl" ? "3%" : "0%");
+    p.group {
+        padding-right: @(dir == "rtl" ? "3%" : "0%");
+       
+    }
+    .treeview .item i{
+        margin : 10px;
     }
 </style>
 
@@ -58,9 +62,9 @@
                         <div class="form-group col-md-3" id="TypeSelect">
                             <label asp-for="IsActive">@Language.GetString("ActivationState")</label><br />
                             <input @(Model.IsActive ? "checked" : "") id="IsActive" name="IsActive" type="radio"
-                                   value="true" ><span>@Language.GetString("Active")</span></input>
+                                   value="true" ><span style="margin:0 5px;">@Language.GetString("Active")</span></input>
                                 <input @(!Model.IsActive ? "checked" : "") id="IsActive" name="IsActive" type="radio"
-                                       value="false" ><span>@Language.GetString("InActive")</span></input>
+                                       value="false" ><span style="margin:0 5px;">@Language.GetString("InActive")</span></input>
                                     <span data-val-result="IsActive" class="text-danger"></span>
                                 </div>
                             </div>
@@ -92,16 +96,16 @@
                 $(document).ready(function () {
                     debugger;
                  $.ajax({
-                     url: '@Url.Action("ListPermissions")',
+                     url: '@Url.Action("ListPermissions")' +"/"+"@Model.RoleId",
                      type: 'Get',
-                     data: '@Model.RoleId',
+                     @*data: '@Model.RoleId',*@
                      success: function (result) {
                          debugger;
 
                          var tw = new TreeView(
                              result,
                              { showAlwaysCheckBox: true, fold: false });
-                         document.body.appendChild(tw.root)
+                        /* document.body.appendChild(tw.root)*/
                          //$("#permissionTreeView").appendChild(tw.root);
                          document.getElementById("permissionTreeView").appendChild(tw.root);
 
@@ -113,7 +117,7 @@
                      }
                  });
 
-            
+
 
    $("#addEditRoleFrm").submit(function (e) {
             debugger;
@@ -129,7 +133,7 @@
                         PermissionIds.push($(this).attr("data-id"));
                     }
                 });
-       form.append('PermissionIds', JSON.stringify(PermissionIds));
+       form.append('PermissionIds', PermissionIds);
        form.append('IsActive', $("input[name='IsActive']:checked").val());
        debugger;
             $.ajax({
@@ -140,7 +144,7 @@
                 processData: false,
                 contentType:false,
                /* contentType: "application/json; charset=utf-8",*/
-               
+
                 beforeSend: function () {
                     debugger;
                     AddLoading($("#addEditPermissionCard"));

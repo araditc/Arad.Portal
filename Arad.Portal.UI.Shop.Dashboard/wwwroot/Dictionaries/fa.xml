@@ -10,6 +10,9 @@
 	<string key="btn_Edit">
 		<value>ویرایش</value>
 	</string>
+	<string key="btn_Exit">
+		<value>خروج</value>
+	</string>
 	<string key="btn_Send">
 		<value>ارسال</value>
 	</string>
@@ -251,8 +254,14 @@
 	<string key="AlertAndMessage_SeprateRoutesByComma">
 		<value>مسیرهای مختلف را با , از هم جداکنید.</value>
 	</string>
+	<string key="AlertAndMessage_AlreadyExists">
+		<value>این نام درحال حاضر موجود است.</value>
+	</string>
 	<string key="AlertAndMessage_DeletePermission">
 		<value>دسترسی مربوطه حذف خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteProductUnit">
+		<value>واحد بار مربوطه حذف خواهد شد.</value>
 	</string>
 	<string key="AlertAndMessage_DeleteRole">
 		<value>نقش مربوطه حذف خواهد شد.</value>
@@ -900,6 +909,12 @@
 	<string key="AddPermissionPart_Title">
 		<value>افزودن نقش جدید</value>
 	</string>
+	<string key="AddProductUnitPart_Title">
+		<value>افزودن واحد بار جدید</value>
+	</string>
+	<string key="EditProductUnitPart_Title">
+		<value>ویرایش واحد محصول</value>
+	</string>
 	<string key="EditPermissionPart_Title">
 		<value>ویرایش نقش</value>
 	</string>
@@ -929,6 +944,9 @@
 	</string>
 	<string key="Permission_ClientAddress">
 		<value>آدرس کلاینت</value>
+	</string>
+	<string key="ProductUnit_Name">
+		<value>نام واحد محصول</value>
 	</string>
 	<string key="Role_Name">
 		<value>نام نقش</value>
@@ -1016,6 +1034,9 @@
 	</string>
 	<string key="Menu_Permissions">
 		<value>دسترسی ها</value>
+	</string>
+	<string key="Menu_ProductUnits">
+		<value>واحدهای محصول</value>
 	</string>
 	<string key="Menu_Roles">
 		<value>نقش ها</value>

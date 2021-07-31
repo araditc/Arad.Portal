@@ -10,6 +10,9 @@
 	<string key="btn_Edit">
 		<value>Edit</value>
 	</string>
+	<string key="btn_Exit">
+		<value>Exit</value>
+	</string>
 	<string key="btn_Send">
 		<value>Send</value>
 	</string>
@@ -257,8 +260,14 @@
 	<string key="AlertAndMessage_SeprateRoutesByComma">
 		<value>Seperate diffrent routes by ,comma.</value>
 	</string>
+	<string key="AlertAndMessage_AlreadyExists">
+		<value>This name already exist.</value>
+	</string>
 	<string key="AlertAndMessage_DeletePermission">
 		<value>This Permission will be deleted.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteProductUnit">
+		<value>This ProductUnit will be deleted.</value>
 	</string>
 	<string key="AlertAndMessage_DeleteRole">
 		<value>This Role will be deleted.</value>
@@ -854,8 +863,15 @@
 	<string key="Choose">
 		<value>choose ...</value>
 	</string>
+	
 	<string key="AddPermissionPart_Title">
 		<value>Add New Permission</value>
+	</string>
+	<string key="AddProductUnitPart_Title">
+		<value>Add New ProductUnit Part</value>
+	</string>
+	<string key="EditProductUnitPart_Title">
+		<value>Edit ProductUnit Part</value>
 	</string>
 	<string key="EditPermissionPart_Title">
 		<value>Edit Permission</value>
@@ -886,6 +902,9 @@
 	</string>
 	<string key="Permission_ClientAddress">
 		<value>Client Address</value>
+	</string>
+	<string key="ProductUnit_Name">
+		<value>ProductUnitName</value>
 	</string>
 	<string key="Role_Name">
 		<value>RoleName</value>
@@ -974,6 +993,9 @@
 	</string>
 	<string key="Menu_Permissions">
 		<value>Permissions</value>
+	</string>
+	<string key="Menu_ProductUnits">
+		<value>Product Units</value>
 	</string>
 	<string key="Menu_Roles">
 		<value>Roles</value>

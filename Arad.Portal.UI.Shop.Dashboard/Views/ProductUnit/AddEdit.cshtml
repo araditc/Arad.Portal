@@ -1,0 +1,137 @@
+﻿@model Arad.Portal.DataLayer.Models.Product.ProductUnitDTO
+@using Arad.Portal.DataLayer.Models.Shared;
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    var alert = Language.GetString("AlertAndMessage_GotIt");
+    var error = Language.GetString("AlertAndMessage_Error");
+}
+@section Styles{
+    <link href="~/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css" rel="stylesheet" />
+    @*<link rel="stylesheet" href="~/lib/iCheck/skins/all.css">*@
+    <style>
+        .text-danger {
+            font-size: 12px;
+        }
+    </style>
+}
+
+
+<h4>  @Language.GetString("Menu_ProductUnits") </h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary" id="addProductUnitCard">
+            <div class="card-header">
+                <h3 class="card-title" data-toggle="tab">@(Model.IsEditView ? Language.GetString("EditProductUnitPart_Title") : Language.GetString("AddProductUnitPart_Title"))</h3>
+            </div>
+            <form asp-controller="ProductUnit" role="form"
+                  asp-action='@(Model.IsEditView ? "Edit" : "Add")' id="addEditProductUnitFrm" method="post">
+                @{
+                    if (Model.IsEditView)
+                    {
+                        <input type="hidden" value="@Model.ProductUnitId" data-val="true" asp-for="ProductUnitId">
+                        <input type="hidden" value="@Model.IsEditView" data-val="true" asp-for="IsEditView" />
+                    }
+                }
+                <div class="card-body" id="addEditPermissionCard">
+                    <div class="row">
+                        <div class="form-group col-md-3">
+
+                            <label asp-for="ProductUnitName">@Language.GetString("ProductUnit_Name")</label>
+                            <input type="text" class="form-control" asp-for="ProductUnitName" placeholder=" ">
+                            <span data-val-result="ProductUnitName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        @{
+                            if (Model.IsEditView)
+                            {
+                                <div class="orm-group col-md-6">
+                                    <label asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
+                                    <textarea dir="rtl" asp-for="ModificationReason" class="form-control" rows="3"></textarea>
+                                    <span data-val-result="ModificationReason" class="text-danger"></span>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <input type="submit" value="@Language.GetString("btn_Save")" class="btn btn-block btn-success" />
+                        <a asp-action="List" class="btn btn-block btn-default">@Language.GetString("btn_Back")</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+          
+         $("#addEditProductUnitFrm").submit(function (e) {
+            debugger;
+            e.preventDefault();
+            var form = $(this).serialize();
+            $.ajax({
+                url: $(this).attr('action'),
+                data: form,
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                type: 'Post',
+                beforeSend: function () {
+                    debugger;
+                    AddLoading($("#addEditProductUnitFrm"));
+                },
+                success: function (result) {
+                    debugger;
+                   /* $("#loading").removeClass('is-active');*/
+                    if (result.status === "Success") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: result.message,
+                            showConfirmButton: false,
+                            timer: 3000
+                        }).then(() => {
+                            window.location.href = '@Url.Action("List")';
+                        });
+                    }else
+                    if (result.status === "ModelError") {
+                        var spanErrorList = $('span[data-val-result]');
+                        if (spanErrorList.length > 1) {
+                            spanErrorList.each(function() {
+                                $(this).html("");
+                                $(this).parent().removeClass("has-error");
+                            });
+                        } else {
+                            spanErrorList.html("");
+                            spanErrorList.parent().removeClass("has-error");
+                        }
+                        if (result.modelStateErrors !== null) {
+                            result.modelStateErrors.forEach(function (value, index) {
+
+
+                                $('[data-val-result=' + value.key + ']').html(value.errorMessage);
+                                $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                            });
+                        }
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert("@error");
+                    alert(xhr.status);
+                    alert(thrownError);
+                },
+                complete: function () {
+                    removeLoading($("#addEditProductUnitFrm"));
+                }
+            });
+        });
+        });
+    </script>
+}
+
+
+
+

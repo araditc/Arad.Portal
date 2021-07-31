@@ -251,9 +251,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
                 var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["pageSize"]);
 
-                long totalCount = await _context.Collection.Find(c => true).CountDocumentsAsync();
+                long totalCount = await _context.Collection.Find(_=>!_.IsDeleted).CountDocumentsAsync();
                 var list = _context.Collection.AsQueryable().Skip((page - 1) * pageSize)
-                   .Take(pageSize).Select(_ => new RoleListViewModel()
+                   .Take(pageSize).Where(_=>!_.IsDeleted).Select(_ => new RoleListViewModel()
                    {
                        Id = _.RoleId,
                        RoleName = _.RoleName,
