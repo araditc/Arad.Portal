@@ -109,9 +109,6 @@
                             spanErrorList.parent().removeClass("has-error");
                         }
                         if (result.modelStateErrors !== null) {
-                            result.modelStateErrors.forEach(function (value, index) {
-
-
                                 $('[data-val-result=' + value.key + ']').html(value.errorMessage);
                                 $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
                             });
