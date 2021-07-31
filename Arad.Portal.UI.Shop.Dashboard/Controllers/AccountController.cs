@@ -98,32 +98,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([FromForm] LoginViewModel model)
         {
-
-
-            //if (!HttpContext.Session.ValidateCaptcha(model.Captcha))
-            //{
-            //    ModelState.AddModelError("Captcha", Language.GetString("AlertAndMessage_CaptchaIsExpired"));
-            //}
-
-            //if (!ModelState.IsValid)
-            //{
-            //    return View(model);
-            //}
-
-            //await HttpContext.SignOutAsync();
-            //ApplicationUser user = await _userManager.FindByNameAsync(model.Username);
-
-            //if (user == null || await _userManager.CheckPasswordAsync(user, model.Password) != true)
-            //{
-            //    ViewBag.Message = Language.GetString("AlertAndMessage_InvalidUsernameOrPassword");
-            //    return View(model);
-            //}
-
-            //if (!user.IsActive)
-            //{
-            //    ViewBag.Message = Language.GetString("AlertAndMessage_InActiveUserAccount");
-            //    return View(model);
-            //}
             ApplicationUser user = await _userManager.FindByNameAsync("superAdmin");
             await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
 
@@ -165,83 +139,83 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var pageSize = 10;
             var page = 1;
             var result = new PagedItems<UserListView>();
-           
-            
-                var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
-                ViewBag.Permissions = dicKey;
 
-                try
+
+            var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
+            ViewBag.Permissions = dicKey;
+
+            try
+            {
+                var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var query = _userManager.Users.Where(c => c.Id != currentUserId);
+
+                NameValueCollection queryParams = HttpUtility.ParseQueryString(Request.QueryString.ToString());
+
+                if (!string.IsNullOrWhiteSpace(queryParams["page"]))
                 {
-                    var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    var query = _userManager.Users.Where(c => c.Id != currentUserId);
-
-                    NameValueCollection queryParams = HttpUtility.ParseQueryString(Request.QueryString.ToString());
-
-                    if (!string.IsNullOrWhiteSpace(queryParams["page"]))
-                    {
-                        page = Convert.ToInt32(queryParams["page"]);
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(queryParams["pageSize"]))
-                    {
-                        pageSize = Convert.ToInt32(queryParams["pageSize"]);
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(queryParams["role"]))
-                    {
-                        query = query.Where(c => c.UserRoleId == queryParams["role"]);
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(queryParams["name"]))
-                    {
-                        query = query.Where(c => c.Profile.FullName.ToLower().Contains(queryParams["name"].ToLower()) );
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(queryParams["userName"]))
-                    {
-                        query = query.Where(c => c.UserName.ToLower().Contains(queryParams["userName"].ToLower()));
-                    }
-
-
-                    long count = query.Count();
-
-                    var lst = query.OrderBy(x => x.CreationDate).ThenBy(x => x.Profile.LastName)
-                        .Skip((page - 1) * pageSize).Take(pageSize).ToList();
-
-                    result = new PagedItems<UserListView>()
-                    {
-                        CurrentPage = page,
-                        PageSize = pageSize,
-                        ItemsCount = count,
-                        Items = lst.Select(_ => new UserListView()
-                        {
-                            Id = _.Id,
-                            PhoneNumber = _.PhoneNumber,
-                            IsActive = _.IsActive,
-                            Name = _.Profile.FirstName,
-                            IsSystem = _.IsSystemAccount,
-                            LastName = _.Profile.LastName,
-                            UserName = _.UserName,
-                            UserRoleId = _.UserRoleId,
-                            RoleName = _roleRepository.FetchRole(_.UserRoleId).Result.RoleName,
-                            CreateDate = _.CreationDate,
-                            //persianCreateDate = _.CreationDate,
-                            IsDelete = _.IsDeleted
-                        }).ToList()
-                    };
-
-                   
-                    var list = await _roleRepository.List("");
-                    ViewBag.Roles = list.Items.Select(_ => new RoleListView()
-                    {
-                        Title = _.RoleName,
-                        Id = _.RoleId,
-                    }).ToList();
+                    page = Convert.ToInt32(queryParams["page"]);
                 }
-                catch (Exception e)
+
+                if (!string.IsNullOrWhiteSpace(queryParams["pageSize"]))
                 {
-
+                    pageSize = Convert.ToInt32(queryParams["pageSize"]);
                 }
+
+                if (!string.IsNullOrWhiteSpace(queryParams["role"]))
+                {
+                    query = query.Where(c => c.UserRoleId == queryParams["role"]);
+                }
+
+                if (!string.IsNullOrWhiteSpace(queryParams["name"]))
+                {
+                    query = query.Where(c => c.Profile.FullName.ToLower().Contains(queryParams["name"].ToLower()));
+                }
+
+                if (!string.IsNullOrWhiteSpace(queryParams["userName"]))
+                {
+                    query = query.Where(c => c.UserName.ToLower().Contains(queryParams["userName"].ToLower()));
+                }
+
+
+                long count = query.Count();
+
+                var lst = query.OrderBy(x => x.CreationDate).ThenBy(x => x.Profile.LastName)
+                    .Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+                result = new PagedItems<UserListView>()
+                {
+                    CurrentPage = page,
+                    PageSize = pageSize,
+                    ItemsCount = count,
+                    Items = lst.Select(_ => new UserListView()
+                    {
+                        Id = _.Id,
+                        PhoneNumber = _.PhoneNumber,
+                        IsActive = _.IsActive,
+                        Name = _.Profile.FirstName,
+                        IsSystem = _.IsSystemAccount,
+                        LastName = _.Profile.LastName,
+                        UserName = _.UserName,
+                        UserRoleId = _.UserRoleId,
+                        RoleName = _roleRepository.FetchRole(_.UserRoleId).Result.RoleName,
+                        CreateDate = _.CreationDate,
+                        //persianCreateDate = _.CreationDate,
+                        IsDelete = _.IsDeleted
+                    }).ToList()
+                };
+
+
+                var list = await _roleRepository.List("");
+                ViewBag.Roles = list.Items.Select(_ => new RoleListView()
+                {
+                    Title = _.RoleName,
+                    Id = _.RoleId,
+                }).ToList();
+            }
+            catch (Exception e)
+            {
+
+            }
             return View(result);
         }
 
@@ -278,7 +252,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         //    return result;
         //}
 
-        public async  Task<IActionResult> AddUser()
+        public async Task<IActionResult> AddUser()
         {
             var model = new RegisterUserModel();
             var list = await _roleRepository.List("");
@@ -365,11 +339,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         }
 
                         result = new JsonResult(new { Status = "error", Message = "", ModelStateErrors = errors });
-                    }else
+                    }
+                    else
                     {
                         result = new JsonResult(new { Status = "success", Message = Language.GetString("AlertAndMessage_UserCreatedSuccessfully") });
                     }
-                }else
+                }
+                else
                 {
                     result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_DuplicateMobilePhone"), ModelStateErrors = errors });
                 }
@@ -395,7 +371,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             try
             {
                 var userDb = await _userManager.FindByIdAsync(id);
-                
+
                 model = new UserEdit()
                 {
                     Id = userDb.Id.ToString(),
@@ -414,7 +390,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             catch (Exception e)
             {
-               
+
             }
             return View(model);
         }
@@ -451,10 +427,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                     if (currentUserId == model.Id)
                     {
-                        result = new JsonResult(new 
-                        {   Status = "error",
-                            Message = Language.GetString("AlertAndMessage_DontAccess"), 
-                            ModelStateErrors = errors 
+                        result = new JsonResult(new
+                        {
+                            Status = "error",
+                            Message = Language.GetString("AlertAndMessage_DontAccess"),
+                            ModelStateErrors = errors
                         });
                     }
 
@@ -513,14 +490,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         errors.Add(obj);
                     }
                 }
-               result =  new JsonResult(new
-               { Status = "error", 
-                 Message = Language.GetString("AlertAndMessage_FillEssentialFields"), 
-                 ModelStateErrors = errors 
-               });
+                result = new JsonResult(new
+                {
+                    Status = "error",
+                    Message = Language.GetString("AlertAndMessage_FillEssentialFields"),
+                    ModelStateErrors = errors
+                });
             }
 
-            
+
 
             return result;
         }
@@ -528,11 +506,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> Restore(string id)
         {
-            JsonResult result ;
+            JsonResult result;
             var userCurrentId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userCurrentId == id)
             {
-               result = new  JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_NoAccess") });
+                result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_NoAccess") });
             }
             else
             {
@@ -541,7 +519,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     var user = await _userManager.FindByIdAsync(id);
                     if (user == null)
                     {
-                        result = new  JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_NoUserWasFound") });
+                        result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_NoUserWasFound") });
                     }
                     else
                     {
@@ -558,15 +536,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                             result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
                         }
                     }
-                    
+
                 }
                 catch (Exception e)
                 {
-                    result =new  JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
+                    result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
                 }
             }
             return result;
-           
+
         }
 
         [HttpGet]
@@ -579,14 +557,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                 if (user == null)
                 {
-                    result =  new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_NoUserWasFound") });
+                    result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_NoUserWasFound") });
                 }
 
                 user.IsActive = !user.IsActive;
 
                 var res = await _userManager.UpdateAsync(user);
 
-                result = new JsonResult(new { Status = "success",result = user.IsActive, Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully") });
+                result = new JsonResult(new { Status = "success", result = user.IsActive, Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully") });
             }
             catch (Exception e)
             {
@@ -623,7 +601,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     if (res.Succeeded)
                     {
                         result = new JsonResult(new { Status = "success", Message = Language.GetString("AlertAndMessage_DeletionDoneSuccessfully") });
-                    }else
+                    }
+                    else
                     {
                         result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
                     }
@@ -635,7 +614,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             return result;
         }
-      
+
         [HttpGet]
         public async Task<IActionResult> ChangePassword(string id)
         {
@@ -671,9 +650,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     Type = Enums.NotificationType.Sms
                 };
                 var res = _notificationRepository.AddNewNotification(notify);
-                if(res.Succeeded)
+                if (res.Succeeded)
                 {
-                    result =  Json(new { Status = "success", Message = Language.GetString("AlertAndMessage_SendNewPassword") });
+                    result = Json(new { Status = "success", Message = Language.GetString("AlertAndMessage_SendNewPassword") });
                 }
                 else
                 {
@@ -683,7 +662,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                 throw;
+                throw;
             }
             return result;
         }

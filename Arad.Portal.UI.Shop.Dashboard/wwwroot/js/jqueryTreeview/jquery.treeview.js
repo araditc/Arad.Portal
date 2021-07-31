@@ -81,13 +81,13 @@ function TreeView(datas, options) {
         this.checked = value
         this.setAttribute("check-value", value)
         if (value == 0) {
-            $(this).find(">[check-icon]")[0].className = "fa fa-circle-thin";
+            $(this).find(">[check-icon]")[0].className = "fa fa-square-o";
         }
         if (value == 1) {
-            $(this).find(">[check-icon]")[0].className = "fa fa-check-circle-o";
+            $(this).find(">[check-icon]")[0].className = "fa fa-check-square-o";
         }
         if (value == 2) {
-            $(this).find(">[check-icon]")[0].className = "fa fa-dot-circle-o";
+            $(this).find(">[check-icon]")[0].className = "fas fa-square-full" ;
         }
     }
 

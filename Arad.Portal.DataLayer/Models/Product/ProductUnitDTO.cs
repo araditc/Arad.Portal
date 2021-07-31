@@ -12,6 +12,7 @@ namespace Arad.Portal.DataLayer.Models.Product
 
         public string ProductUnitName { get; set; }
 
+        public bool IsEditView { get; set; }
         public string ModificationReason { get; set; }
     }
 }

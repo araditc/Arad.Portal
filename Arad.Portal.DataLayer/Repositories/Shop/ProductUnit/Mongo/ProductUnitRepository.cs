@@ -136,6 +136,29 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
             return result;
         }
 
+        public Entities.Shop.ProductUnit.ProductUnit FetchByName(string unitName)
+        {
+            Entities.Shop.ProductUnit.ProductUnit result;
+            result = _productContext.ProductUnitCollection.Find(_ => _.UnitName == unitName).FirstOrDefault();
+            return result;
+        }
+
+        public ProductUnitDTO FetchUnit(string productUnitId)
+        {
+            var result = new ProductUnitDTO();
+           
+            try
+            {
+                var model = _productContext.ProductUnitCollection.Find(_ => _.ProductUnitId == productUnitId).FirstOrDefault();
+                result = _mapper.Map<ProductUnitDTO>(model);
+            }
+            catch (Exception)
+            {
+                result = null;
+            }
+            return result;
+        }
+
         public async Task<PagedItems<ProductUnitDTO>> List(string queryString)
         {
             PagedItems<ProductUnitDTO> result = new PagedItems<ProductUnitDTO>();
@@ -143,9 +166,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
             {
                 NameValueCollection filter = HttpUtility.ParseQueryString(queryString);
 
-                if (string.IsNullOrWhiteSpace(filter["CurrentPage"]))
+                if (string.IsNullOrWhiteSpace(filter["page"]))
                 {
-                    filter.Set("CurrentPage", "1");
+                    filter.Set("page", "1");
                 }
 
                 if (string.IsNullOrWhiteSpace(filter["PageSize"]))

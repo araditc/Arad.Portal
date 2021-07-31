@@ -48,15 +48,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddEdit(string roleId)
+        public async Task<IActionResult> AddEdit(string id)
         {
             var model = new RoleDTO();
            
             var currentUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            if(!string.IsNullOrWhiteSpace(roleId))
+            if(!string.IsNullOrWhiteSpace(id))
             {
                 model.IsEditView = true;
-                model = await _roleRepository.FetchRole(roleId);
+                model = await _roleRepository.FetchRole(id);
             }else
             {
                 model.IsEditView = false;
@@ -127,91 +127,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return Ok(saveResult.Succeeded ? new { Status = "Success", saveResult.Message } : new { Status = "Error", saveResult.Message });
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> Edit(string id)
-        //{
-        //var role = await _roleRepository.GetRoleByRoleId(id);
-
-        //if (role == null)
-        //{
-        //    return RedirectToAction("PageOrItemNotFound", "Account");
-        //}
-
-        //if (User.GetUserId() != role.CreatorId)
-        //{
-        //    if (await _userExtension.CheckIfIsSubUserAsync(User.GetUserId(), role.CreatorId) == false)
-        //    {
-        //        return RedirectToAction("AccessDenied", "Account");
-        //    }
-        //}
-
-        //var model = new UserRoleViewModel()
-        //{
-        //    AllAllowedPermissions = await _roleRepository.GetAllPermissions(role.CreatorId),
-        //    SelectedPermissions = _roleRepository.GetSelectedPermissions(id),
-        //    IsEditView = true,
-        //    Color = role.Color,
-        //    FaTitle = role.FaTitle,
-        //    Id = role.Id
-        //};
-
-        //return View("New", model);
-        // }
-
-
-        //[HttpGet]
-        //public async Task<IActionResult> Delete(string id)
-        //{
-        //    var role = await _roleRepository.GetRoleByRoleId(id);
-        //    if (role == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (!User.IsSystemAccount())
-        //    {
-        //        if (User.GetUserId() != role.CreatorId)
-        //        {
-        //            if (await _userExtension.CheckIfIsSubUserAsync(User.GetUserId(), role.CreatorId) == false)
-        //            {
-        //                return Forbid();
-        //            }
-        //        }
-        //    }
-
-        //    RepositoryOperationResult opResult = await _roleRepository.DeleteRole(id);
-        //    return Ok(opResult.Succeeded ? new { Status = "Success", opResult.Message } : new { Status = "Error", opResult.Message });
-        //}
-
-        //[HttpGet]
-        //public async Task<IActionResult> GetLatestModifications(string id)
-        //{
-        //var entity = await _roleRepository.GetRoleByRoleId(id);
-        //if (entity == null)
-        //{
-        //    return NotFound();
-        //}
-
-        //if (!User.IsSystemAccount())
-        //{
-        //    if (User.GetUserId() != entity.CreatorId)
-        //    {
-        //        if (await _userExtension.CheckIfIsSubUserAsync(User.GetUserId(), entity.CreatorId) == false)
-        //        {
-        //            return Forbid();
-        //        }
-        //    }
-        //}
-
-        // return View("~/Views/Permission/GetLatestModifications.cshtml", entity.Modifications.Take(10).ToList());
-        //}
-        //public async Task<IActionResult> Index()
-        //{
-        //    var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
-        //    return View(dicKey);
-        //}
-
-
 
         [HttpPost]
         public async Task<IActionResult> Add(RoleDTO role)
@@ -259,13 +174,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return result;
         }
 
-        //[HttpGet]
-        //public  IActionResult GeneratePermissions(string roleId)
-        //{
-        //    var permissions =  _permissionRepository.ListPermissions(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), roleId).Result;
-        //    return  this.Json(permissions);
-        //}
-
+        
         [HttpGet]
         public async Task<IActionResult> Details(string roleId)
         {
@@ -377,11 +286,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 var res = await _roleRepository.ChangeActivation(id);
                 if (res.Succeeded)
                 {
-                    result = Json(new { Status = "success", Message = res.Message });
+                    var role = await _roleRepository.FetchRole(id);
+                    result = Json(new { Status = "success", Message = res.Message, result = role.IsActive.ToString()});
                 }
                 else
                 {
-                    result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
+                    result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator")});
                 }
             }
             catch (Exception e)
@@ -438,13 +348,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         //}
 
         [HttpGet]
-        public IActionResult ListPermissions(string currentRoleId = "")
+        public IActionResult ListPermissions(string id = "")
         {
             var result = new List<TreeviewModel>();
             try
             {
                 result = _permissionRepository
-                    .ListPermissions(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), currentRoleId).Result;
+                    .ListPermissions(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), id).Result;
                
             }
             catch (Exception e)
