@@ -20,5 +20,6 @@ namespace Arad.Portal.DataLayer.Models.Permission
         public string CreatorName { get; set; }
         public bool HasModification { get; set; }
         public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

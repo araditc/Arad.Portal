@@ -10,6 +10,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Arad.Portal.GeneralLibrary.Utilities;
+using Arad.Portal.DataLayer.Contracts.General.Language;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -17,11 +18,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
     {
         private readonly IProductUnitRepository _unitRepository;
         private readonly IPermissionView _permissionViewManager;
+        private readonly ILanguageRepository _lanRepository;
         //private readonly UserExtensions _userExtensions;
-        public ProductUnitController(IProductUnitRepository unitRepository, IPermissionView permissionView)
+        public ProductUnitController(IProductUnitRepository unitRepository,
+            IPermissionView permissionView, ILanguageRepository lanRepository)
         {
             _unitRepository = unitRepository;
             _permissionViewManager = permissionView;
+            _lanRepository = lanRepository;
         }
 
 
@@ -42,6 +46,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 model = _unitRepository.FetchUnit(id);
             }
+            ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
             return View(model);
         }
 
@@ -50,6 +55,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> Add([FromForm]ProductUnitDTO dto)
         {
             JsonResult result;
+            var uniqueness = _unitRepository.FetchByName(dto.UnitName);
+            if (uniqueness != null)
+            {
+                ModelState.AddModelError("ProductUnitName", Language.GetString("AlertAndMessage_AlreadyExists"));
+                //result = Json(new )
+            }
+            if (string.IsNullOrEmpty(dto.LanguageId))
+            {
+                ModelState.AddModelError("LanguageId", Language.GetString("AlertAndMessage_FillLangId"));
+            }
             if (!ModelState.IsValid)
             {
                 var errors = new List<AjaxValidationErrorModel>();
@@ -64,18 +79,53 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
-                var uniqueness = _unitRepository.FetchByName(dto.UnitName);
-                if(uniqueness != null)
+                var language = _lanRepository.FetchLanguage(dto.LanguageId);
+                if(language != null)
                 {
-                    ModelState.AddModelError("ProductUnitName", Language.GetString("AlertAndMessage_AlreadyExists"));
-                    //result = Json(new )
+                    dto.LanguageName = language.LanguageName;
                 }
+
                 RepositoryOperationResult saveResult = await _unitRepository.AddProductUnit(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
             }
             return result;
+        }
 
+        [HttpGet]
+        public async Task<IActionResult> Restore(string id)
+        {
+            JsonResult result;
+
+            try
+            {
+                var unitDto = _unitRepository.FetchUnit(id);
+                if (unitDto == null)
+                {
+                    result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_EntityNotFound") });
+                }
+                else
+                {
+                    unitDto.IsDeleted = false;
+                    unitDto.ModificationReason = "restore productUnit";
+
+                    var res = await _unitRepository.EditProductUnit(unitDto);
+
+                    if (res.Succeeded)
+                    {
+                        result = new JsonResult(new { Status = "success", Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully") });
+                    }
+                    else
+                    {
+                        result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
+            }
+            return result;
         }
 
         [HttpPost]
@@ -87,7 +137,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 ModelState.AddModelError("ModificationReason", Language.GetString("AlertAndMessage_ModificationReason"));
             }
-            
+
+            if (string.IsNullOrEmpty(dto.LanguageId))
+            {
+                ModelState.AddModelError("LanguageId", Language.GetString("AlertAndMessage_FillLangId"));
+            }
+
             if (!ModelState.IsValid)
             {
                 var errors = new List<AjaxValidationErrorModel>();
@@ -107,6 +162,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     return RedirectToAction("PageOrItemNotFound", "Account");
                 }
+            }
+            var language = _lanRepository.FetchLanguage(dto.LanguageId);
+            if (language != null)
+            {
+                dto.LanguageName = language.LanguageName;
             }
             RepositoryOperationResult saveResult = await _unitRepository.EditProductUnit(dto);
            

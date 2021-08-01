@@ -40,7 +40,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                 .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             equallentModel.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                 .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
-
+            equallentModel.ProductGroupId = Guid.NewGuid().ToString();
             try
             {
                 equallentModel.ProductGroupId = Guid.NewGuid().ToString();

@@ -363,5 +363,44 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return Json(result);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Restore(string id)
+        {
+            JsonResult result;
+
+            try
+            {
+                var roleDto = await _roleRepository.FetchRole(id);
+                if (roleDto == null)
+                {
+                    result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_EntityNotFound") });
+                }
+                else
+                {
+                    roleDto.IsDeleted = false;
+                    roleDto.ModificationReason = "restore role";
+
+                    var res = await _roleRepository.Update(roleDto);
+
+                    if (res.Succeeded)
+                    {
+                        result = new JsonResult(new { Status = "success", Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully") });
+                    }
+                    else
+                    {
+                        result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
+            }
+
+            return result;
+
+        }
+
     }
 }

@@ -52,6 +52,15 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
             return result;
         }
 
+
+        /// <summary>
+        /// this method is used just in seedData
+        /// </summary>
+        /// <param name="entity"></param>
+        public void InsertOne(Entities.General.Language.Language entity)
+        {
+            _context.Collection.InsertOne(entity);
+        }
         public async Task<RepositoryOperationResult> EditLanguage(LanguageDTO dto)
         {
             RepositoryOperationResult result = new RepositoryOperationResult();
@@ -90,6 +99,15 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
             return result;
         }
 
+        public bool HasAny()
+        {
+            var result = false;
+            if (_context.Collection.AsQueryable().Any())
+            {
+                result = true;
+            }
+            return result;
+        }
         public async Task<RepositoryOperationResult> Delete(string languageId, string modificationReason)
         {
             RepositoryOperationResult result = new RepositoryOperationResult();
@@ -188,6 +206,31 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
                 result.ItemsCount = 0;
                 result.PageSize = 10;
                 result.QueryString = queryString;
+            }
+            return result;
+        }
+
+        public List<SelectListModel> GetAllActiveLanguage()
+        {
+            var result = new List<SelectListModel>();
+            result = _context.Collection.AsQueryable().Where(_ => _.IsActive).Select(_ => new SelectListModel()
+            {
+                Text = _.LanguageName,
+                Value = _.LanguageId
+            }).ToList();
+            return result;
+        }
+
+        public LanguageDTO FetchLanguage(string languageId)
+        {
+            LanguageDTO result;
+            var entity = _context.Collection.Find(_ => _.LanguageId == languageId).FirstOrDefault();
+            if(entity != null)
+            {
+                result = _mapper.Map<LanguageDTO>(entity);
+            }else
+            {
+                result = null;
             }
             return result;
         }

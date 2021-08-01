@@ -14,5 +14,9 @@ namespace Arad.Portal.DataLayer.Contracts.General.Language
         Task<RepositoryOperationResult> AddNewLanguage(LanguageDTO dto);
         Task<RepositoryOperationResult> EditLanguage(LanguageDTO dto);
         Task<RepositoryOperationResult> Delete(string languageId, string modificationReason);
+        List<SelectListModel> GetAllActiveLanguage();
+        LanguageDTO FetchLanguage(string LanguageId);
+
+
     }
 }

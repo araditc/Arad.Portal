@@ -20,6 +20,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductSpecificationGroup
             string modificationReason);
 
         Task<SpecificationGroupDTO> GroupSpecificationFetch(string productSpecificationGroupId);
-        
+
+        Entities.Shop.ProductSpecificationGroup.ProductSpecGroup FetchByName(string groupName);
+
     }
 }

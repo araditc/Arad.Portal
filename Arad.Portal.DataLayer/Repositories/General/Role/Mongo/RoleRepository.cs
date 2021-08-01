@@ -253,7 +253,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
 
                 long totalCount = await _context.Collection.Find(_=>!_.IsDeleted).CountDocumentsAsync();
                 var list = _context.Collection.AsQueryable().Skip((page - 1) * pageSize)
-                   .Take(pageSize).Where(_=>!_.IsDeleted).Select(_ => new RoleListViewModel()
+                   .Take(pageSize).Select(_ => new RoleListViewModel()
                    {
                        Id = _.RoleId,
                        RoleName = _.RoleName,
@@ -261,7 +261,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
                        CreatorUserName = _.CreatorUserName,
                        CreationDateTime = _.CreationDate,
                        HasModifications = _.Modifications.Any(),
-                       IsActive = _.IsActive
+                       IsActive = _.IsActive,
+                       IsDeleted = _.IsDeleted
                    }).ToList();
 
                 result.CurrentPage = page;

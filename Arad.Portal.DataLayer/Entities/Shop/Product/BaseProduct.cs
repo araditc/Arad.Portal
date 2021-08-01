@@ -68,6 +68,8 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Product
 
         public int VisitCount { get; set; }
 
+        public bool IsPublishedOnMainDomain { get; set; }
+
         public List<Comment> Comments { get; set; }
 
         

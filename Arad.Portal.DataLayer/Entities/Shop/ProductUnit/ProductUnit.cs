@@ -15,5 +15,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ProductUnit
         public string ProductUnitId { get; set; }
 
         public string UnitName { get; set; }
+        public string LanguageId { get; set; }
+        public string LanguageName { get; set; }
     }
 }

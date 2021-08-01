@@ -144,7 +144,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
 
                 long count = await _context.Collection.Find(c => true).CountDocumentsAsync();
 
-                var mongoList = _context.Collection.AsQueryable().Where(per => !per.IsDeleted).Skip((page - 1) * pageSize)
+                var mongoList = _context.Collection.AsQueryable().Skip((page - 1) * pageSize)
                     .Take(pageSize).ToList();
                 var list =  mongoList.Select(_ => new ListPermissionViewModel()
                     {
@@ -157,7 +157,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
                         CreationDate = _.CreationDate,
                         CreatorName = _.CreatorUserName,
                         HasModification = _.Modifications != null && _.Modifications.Any(),
-                        IsActive = _.IsActive
+                        IsActive = _.IsActive,
+                        IsDeleted = _.IsDeleted
                     }).ToList();
 
                 result.CurrentPage = page;

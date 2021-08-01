@@ -1,53 +1,48 @@
-﻿@model Arad.Portal.DataLayer.Models.Product.ProductUnitDTO
-@using Arad.Portal.DataLayer.Models.Shared;
+﻿@model Arad.Portal.DataLayer.Models.ProductSpecificationGroup.SpecificationGroupDTO
 @{
-    //Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
 }
 @section Styles{
-    <link href="~/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css" rel="stylesheet" />
-    @*<link rel="stylesheet" href="~/lib/iCheck/skins/all.css">*@
+    @*<link href="~/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css" rel="stylesheet" />*@
     <style>
         .text-danger {
             font-size: 12px;
         }
     </style>
 }
-
-
-<h4>  @Language.GetString("Menu_ProductUnits") </h4>
+<h4>  @Language.GetString("Menu_ProductSpecificationGroup") </h4>
 <hr />
 <div class="row">
     <div class="col-md-12">
-        <div class="card card-primary" id="addProductUnitCard">
+        <div class="card card-primary" id="ProductSpecificationGroupCard">
             <div class="card-header">
-                <h3 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.ProductUnitId) ? Language.GetString("EditProductUnitPart_Title") : Language.GetString("AddProductUnitPart_Title"))</h3>
+                <h3 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.SpecificationGroupId) ?
+        Language.GetString("EditProSpecGroupPart_Title") : Language.GetString("AddProSpecGroupPart_Title"))</h3>
             </div>
-            <form asp-controller="ProductUnit" role="form"
-                  asp-action='@(!string.IsNullOrWhiteSpace(Model.ProductUnitId) ? "Edit" : "Add")' id="addEditProductUnitFrm" method="post">
+            <form asp-controller="ProductSpecificationGroup" role="form"
+                  asp-action='@(!string.IsNullOrWhiteSpace(Model.SpecificationGroupId) ? "Edit" : "Add")' id="addEditProSpecGroupFrm" method="post">
              
-                <input type="hidden" value="@Model.ProductUnitId" data-val="true" asp-for="ProductUnitId">
+                <input type="hidden" value="@Model.SpecificationGroupId" data-val="true" asp-for="SpecificationGroupId">
                
-                <div class="card-body" id="addEditPermissionCard">
+                <div class="card-body" id="addEditSpecificationGroupCard">
                     <div class="row">
                         <div class="form-group col-md-3">
 
-                            <label asp-for="UnitName">@Language.GetString("ProductUnit_Name")</label>
-                            <input type="text" class="form-control" asp-for="UnitName" placeholder=" ">
-                            <span data-val-result="UnitName" class="text-danger"></span>
+                            <label asp-for="GroupName">@Language.GetString("SpecificationGroupName")</label>
+                            <input type="text" class="form-control" asp-for="GroupName" placeholder=" ">
+                            <span data-val-result="GroupName" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-3">
                             <label asp-for="LanguageId">@Language.GetString("LanguageName")</label><br />
                             <select class="form-control select2" asp-for="LanguageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                             </select>
-                            <span data-val-result="LanguageId" class="text-danger"></span>
                         </div>
                     </div>
                     
                     <div class="row">
                         @{
-                            if (!string.IsNullOrWhiteSpace(Model.ProductUnitId))
+                            if (!string.IsNullOrWhiteSpace(Model.SpecificationGroupId))
                             {
                                 <div class="orm-group col-md-6">
                                     <label asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
@@ -72,7 +67,7 @@
     <script>
         $(document).ready(function () {
             debugger;
-         $("#addEditProductUnitFrm").submit(function (e) {
+            $("#addEditProSpecGroupFrm").submit(function (e) {
             debugger;
             e.preventDefault();
             var form = $(this).serialize();
@@ -82,7 +77,7 @@
                 type: 'Post',
                 beforeSend: function () {
                     debugger;
-                    AddLoading($("#addEditPermissionCard"));
+                    AddLoading($("#addEditSpecificationGroupCard"));
                 },
                 success: function (result) {
                     debugger;
@@ -119,7 +114,7 @@
                     alert(thrownError);
                 },
                 complete: function () {
-                    removeLoading($("#addEditPermissionCard"));
+                    removeLoading($("#addEditSpecificationGroupCard"));
                 }
             });
         });

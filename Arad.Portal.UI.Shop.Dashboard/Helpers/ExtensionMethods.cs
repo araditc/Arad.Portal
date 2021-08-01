@@ -25,6 +25,8 @@ using Arad.Portal.DataLayer.Entities.General.Role;
 using Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.MessageTemplate;
 using Arad.Portal.DataLayer.Entities.General.MessageTemplate;
+using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
+using Arad.Portal.DataLayer.Contracts.General.Language;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 {
@@ -49,17 +51,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                         {
                             ClaimType = ClaimTypes.GivenName,
                             ClaimValue = "ادمین شماره یک"
-                        },
-                        //new IdentityUserClaim<string>()
-                        //{
-                        //    ClaimType = "IsSystemAccount",
-                        //    ClaimValue = true.ToString()
-                        //},
-                        //new IdentityUserClaim<string>()
-                        //{
-                        //    ClaimType = "IsActive",
-                        //    ClaimValue = true.ToString()
-                        //}
+                        }
                     },
                     PhoneNumber = "989309910790",
                     IsActive = true,
@@ -197,6 +189,32 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                     Body = "Your New Password will be : [0]"
                 };
                 messageTemplateRepository.InsertOne(changePasswordTemplate);
+            }
+
+            //Language
+            using var languageScope = app.ApplicationServices.CreateScope();
+            var languageRepository =
+                (LanguageRepository)languageScope.ServiceProvider.GetService(typeof(ILanguageRepository));
+            if(!languageRepository.HasAny())
+            {
+                var lan = new DataLayer.Entities.General.Language.Language()
+                {
+                    LanguageId = Guid.NewGuid().ToString(),
+                    Direction = DataLayer.Entities.General.Language.Direction.ltr,
+                    IsActive = true,
+                    LanguageName = "English",
+                    Symbol = "en-US"
+                };
+                languageRepository.InsertOne(lan);
+                var lanFa = new DataLayer.Entities.General.Language.Language()
+                {
+                    LanguageId = Guid.NewGuid().ToString(),
+                    Direction = DataLayer.Entities.General.Language.Direction.rtl,
+                    IsActive = true,
+                    LanguageName = "فارسی",
+                    Symbol = "fa-IR"
+                };
+                languageRepository.InsertOne(lanFa);
             }
         }
     }

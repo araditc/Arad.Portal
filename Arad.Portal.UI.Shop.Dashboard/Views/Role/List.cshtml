@@ -32,7 +32,12 @@
     <div class="card-header">
         <h3 class="card-title">@Language.GetString("User_Roles")</h3>
         <div class="card-tools">
-            <a asp-action="AddEdit" class="btn btn-success btn-sm"><i style="position: relative;left: 5px;top: 2px;" class="fa fa-plus"></i>@Language.GetString("btn_Add")</a>
+            @if (ViewBag.Permissions["Add"])
+            {
+                <a asp-action="AddEdit" class="btn btn-success btn-sm">
+                    <i style="position: relative;left: 5px;top: 2px;" class="fa fa-plus"></i>@Language.GetString("btn_Add")
+                </a>
+            }
         </div>
     </div>
     <div class="card-body table-bordered  table-responsive p-0" id="roleListCard">
@@ -85,14 +90,21 @@
                             <td class="userListCell">
                                 @if (ViewBag.Permissions["Edit"])
                                 {
-                                <a asp-action="AddEdit" asp-controller="Role" asp-route-id="@item.Id" class="btn btn-sm btn-info">
-                                    <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
-                                </a>
+                                    <a asp-action="AddEdit" asp-controller="Role" asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                                        <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
+                                    </a>
                                 }
                                 @if (ViewBag.Permissions["Remove"])
                                 {
                                     <button onclick="RoleDelete('@item.Id')" class="btn btn-sm btn-danger">
                                         <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
+                                    </button>
+                                }
+                                @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
+                                {
+                                    <button id="restoreRecord" data-id="@item.Id" onclick="RoleRestore('@item.Id')" class="btn btn-sm btn-warning">
+                                        <i style="position: relative;left: 5px;top: 2px;" class="fa fa-refresh"></i>
+                                        @Language.GetString("btn_Restore")
                                     </button>
                                 }
                             </td>
@@ -219,6 +231,48 @@
             });
             }
             });
+        }
+
+        function RoleRestore(id) {
+            debugger;
+                Swal.fire({
+                    title: '@Language.GetString("AlertAndMessage_AreYouSure")',
+                    text: '@Language.GetString("AlertAndMessage_UserEntityText")',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d51c1c',
+                    cancelButtonColor: '#009c09db',
+                    confirmButtonText: '@Language.GetString("btn_Confirm")',
+                    cancelButtonText: '@Language.GetString("btn_NotConfirm")'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'Get',
+                            url: '@Url.Action("Restore", "Role")' + '?id=' + id,
+                            success: function(resultData) {
+                                if (resultData.status === "success") {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        text: resultData.message,
+                                        showConfirmButton: false,
+                                        timer: 2000
+                                    }).then(() => {
+                                        window.location.reload();
+                                    });
+                                }
+
+                                if (resultData.status === "error") {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        text: resultData.message,
+                                        showConfirmButton: false,
+                                        timer: 2000
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
             }
     </script>
 } 

@@ -251,6 +251,9 @@
 	</string>
 	<!--End [Enum Descriptions]-->
 	<!--START [Allert And Message]-->
+	<string key="AlertAndMessage_FillLangId">
+		<value>لطفا زبان مربوطه را انتخاب کنید.</value>
+	</string>
 	<string key="AlertAndMessage_SeprateRoutesByComma">
 		<value>مسیرهای مختلف را با , از هم جداکنید.</value>
 	</string>
@@ -261,7 +264,10 @@
 		<value>دسترسی مربوطه حذف خواهد شد.</value>
 	</string>
 	<string key="AlertAndMessage_DeleteProductUnit">
-		<value>واحد بار مربوطه حذف خواهد شد.</value>
+		<value>واحد محصول مربوطه حذف خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteProductSpecificationGroup">
+		<value>گروه مشخصات محصول مربوطه حذف خواهد شد.</value>
 	</string>
 	<string key="AlertAndMessage_DeleteRole">
 		<value>نقش مربوطه حذف خواهد شد.</value>
@@ -336,6 +342,9 @@
 	<string key="AlertAndMessage_UserRestoreText">
 		<value>کاربر مربوطه بازگزدانی خواهد شد.</value>
 	</string>
+	<string key="AlertAndMessage_UserEntityText">
+		<value>موجودیت مورد نظر بازگردانی خواهد شد.</value>
+	</string>
 	<string key="AlertAndMessage_CaptchaIsExpired">
 		<value>عبارت امنیتی صحیح نیست یا منقضی شده است.</value>
 	</string>
@@ -360,6 +369,10 @@
 	</string>
 	<string key="AlertAndMessage_NoUserWasFound">
 		<value>کاربر مورد نظر یافت نشد.</value>
+	</string>
+
+	<string key="AlertAndMessage_EntityNotFound">
+		<value>موجودیت مورد نظر یافت نشد.</value>
 	</string>
 
 	<string key="AlertAndMessage_NoRoleWasFound">
@@ -906,6 +919,15 @@
 	<string key="Choose">
 		<value>انتخاب کنید ...</value>
 	</string>
+	<string key="SpecificationGroupName">
+		<value>نام گروه مشخصات محصول</value>
+	</string>
+	<string key="AddProSpecGroupPart_Title">
+		<value>افزودن گروه مشخصات محصول</value>
+	</string>
+	<string key="EditProSpecGroupPart_Title">
+		<value>ویرایش گروه مشخصات محصول</value>
+	</string>
 	<string key="AddPermissionPart_Title">
 		<value>افزودن نقش جدید</value>
 	</string>
@@ -1031,6 +1053,9 @@
 	</string>
 	<string key="Filter">
 		<value>فیلتر</value>
+	</string>
+	<string key="Menu_ProductSpecificationGroup">
+		<value>گروه مشخصات محصول</value>
 	</string>
 	<string key="Menu_Permissions">
 		<value>دسترسی ها</value>
@@ -1224,6 +1249,12 @@
 	</string>
 	<string key="Search">
 		<value>جستجو</value>
+	</string>
+	<string key="RelatedLanguage">
+		<value>زبان مربوطه</value>
+	</string>
+	<string key="LanguageName">
+		<value>نام زبان</value>
 	</string>
 	<string key="GetFromExcelFile">
 		<value>دریافت از فایل اکسل</value>

@@ -15,6 +15,7 @@ using Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo;
 using System.Collections.Specialized;
 using System.Web;
 using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
+using Arad.Portal.DataLayer.Entities.Shop.ProductSpecificationGroup;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mongo
 {
@@ -37,8 +38,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
             try
             {
 
-                var equallentEntity = _mapper.Map<Entities.Shop.ProductSpecificationGroup
-                    .ProductSpecGroup>(dto);
+                var equallentEntity = _mapper.Map<ProductSpecGroup>(dto);
                 equallentEntity.SpecificationGroupId = Guid.NewGuid().ToString();
              
                 equallentEntity.CreationDate = DateTime.Now;
@@ -46,7 +46,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
                     .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
                 equallentEntity.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
-
+                equallentEntity.SpecificationGroupId = Guid.NewGuid().ToString();
 
                 await _productContext.SpecGroupCollection.InsertOneAsync(equallentEntity);
                 result.Succeeded = true;
@@ -69,7 +69,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
             {
                 #region check object dependency
                 var allowDeletion = true;
-                if (_productContext.SpecGroupCollection
+                if (_productContext.SpecificationCollection
                     .AsQueryable().Any(_=>_.SpecificationGroupId == productSpecificationGroupId))
                 {
                     allowDeletion = false;
@@ -114,6 +114,13 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
             {
                 result.Message = ConstMessages.ExceptionOccured;
             }
+            return result;
+        }
+
+        public ProductSpecGroup FetchByName(string groupName)
+        {
+           ProductSpecGroup result;
+            result = _productContext.SpecGroupCollection.Find(_ => _.GroupName == groupName).FirstOrDefault();
             return result;
         }
 

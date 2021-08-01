@@ -15,5 +15,7 @@ namespace Arad.Portal.DataLayer.Models.Role
         public DateTime CreationDateTime { get; set; }
         public bool HasModifications { get; set; }
         public bool IsActive { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

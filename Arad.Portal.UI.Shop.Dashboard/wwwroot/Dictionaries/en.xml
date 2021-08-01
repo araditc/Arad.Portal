@@ -257,6 +257,9 @@
 	</string>
 	<!--End [Enum Descriptions]-->
 	<!--START [Allert And Message]-->
+	<string key="AlertAndMessage_FillLangId">
+		<value>Please select related language.</value>
+	</string>
 	<string key="AlertAndMessage_SeprateRoutesByComma">
 		<value>Seperate diffrent routes by ,comma.</value>
 	</string>
@@ -268,6 +271,9 @@
 	</string>
 	<string key="AlertAndMessage_DeleteProductUnit">
 		<value>This ProductUnit will be deleted.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteProductSpecificationGroup">
+		<value>This Product specification group will be deleted.</value>
 	</string>
 	<string key="AlertAndMessage_DeleteRole">
 		<value>This Role will be deleted.</value>
@@ -342,6 +348,9 @@
 	<string key="AlertAndMessage_UserRestoreText">
 		<value>The user will be restored.</value>
 	</string>
+	<string key="AlertAndMessage_UserEntityText">
+		<value>The entity will be restored.</value>
+	</string>
 	<string key="AlertAndMessage_CaptchaIsExpired">
 		<value>The captcha is invalid or expired.</value>
 	</string>
@@ -369,6 +378,9 @@
 	</string>
 	<string key="AlertAndMessage_NoUserWasFound">
 		<value>No user was found.</value>
+	</string>
+	<string key="AlertAndMessage_EntityNotFound">
+		<value>The entity not found.</value>
 	</string>
 	<string key="AlertAndMessage_NoRoleWasFound">
 		<value>No role was found.</value>
@@ -863,7 +875,15 @@
 	<string key="Choose">
 		<value>choose ...</value>
 	</string>
-	
+	<string key="SpecificationGroupName">
+		<value></value>
+	</string>
+	<string key="AddProSpecGroupPart_Title">
+		<value>Add New Product Specification Group</value>
+	</string>
+	<string key="EditProSpecGroupPart_Title">
+		<value>Add Product Specification Group</value>
+	</string>
 	<string key="AddPermissionPart_Title">
 		<value>Add New Permission</value>
 	</string>
@@ -990,6 +1010,9 @@
 	</string>
 	<string key="Filter">
 		<value>Filter</value>
+	</string>
+	<string key="Menu_ProductSpecificationGroup">
+		<value>Product Specification Group</value>
 	</string>
 	<string key="Menu_Permissions">
 		<value>Permissions</value>
@@ -1183,6 +1206,12 @@
 	</string>
 	<string key="Search">
 		<value>Search</value>
+	</string>
+	<string key="RelatedLanguage">
+		<value>Related Language</value>
+	</string>
+	<string key="LanguageName">
+		<value>Language Name</value>
 	</string>
 	<string key="GetFromExcelFile">
 		<value>get from excel file</value>

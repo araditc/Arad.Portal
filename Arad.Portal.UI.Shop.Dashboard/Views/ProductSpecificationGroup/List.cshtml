@@ -1,17 +1,15 @@
 ﻿@using System.Web
 @using Arad.Portal.DataLayer.Models.Shared;
 @using Arad.Portal.GeneralLibrary.Utilities;
-@using Arad.Portal.DataLayer.Models.Product;
+@using Arad.Portal.DataLayer.Models.ProductSpecificationGroup;
 @using Arad.Portal.UI.Shop.Dashboard.ViewComponents;
 
-@model PagedItems<ProductUnitDTO>
+@model PagedItems<SpecificationGroupDTO>
 @{
     var i = ((Model.CurrentPage - 1) * Model.PageSize);
     System.Collections.Specialized.NameValueCollection queryString = HttpUtility.ParseQueryString(Model.QueryString);
 
     queryString.Remove("page");
-
-    //Layout = "~/Views/Shared/_Layout.cshtml";
     var dir = "";
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
     {
@@ -33,22 +31,22 @@
 }
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">@Language.GetString("Menu_ProductUnits")</h3>
+        <h3 class="card-title">@Language.GetString("Menu_ProductSpecificationGroup")</h3>
         <div class="card-tools" style='@(dir=="rtl" ? "float:left;" : "float:right;")'>
             @if (ViewBag.Permissions["Add"])
             {
-                <a asp-action="AddEdit" asp-controller="ProductUnit" class="btn btn-success btn-sm">
+                <a asp-action="AddEdit" asp-controller="ProductSpecificationGroup" class="btn btn-success btn-sm">
                     <i style="position: relative;left: 5px;top: 2px;" class="fa fa-plus"></i>@Language.GetString("btn_Add")
                 </a>
             }
         </div>
     </div>
-    <div class="card-body table-bordered  table-responsive p-0" id="productUnitListCard">
+    <div class="card-body table-bordered  table-responsive p-0" id="productSpecGroupListCard">
         <table class="table table-hover">
             <thead>
                 <tr style="text-align:center;">
                     <th>@Language.GetString("tbl_RowName")</th>
-                    <th>@Language.GetString("ProductUnit_Name")</th>
+                    <th>@Language.GetString("SpecificationGroupName")</th>
                     <th>@Language.GetString("RelatedLanguage")</th>
                     <th></th>
                 </tr>
@@ -61,26 +59,19 @@
                     {
                         <tr>
                             <td class="userListCell">@(++i)</td>
-                            <td class="userListCell">@item.UnitName</td>
+                            <td class="userListCell">@item.GroupName</td>
                             <td class="userListCell">@item.LanguageName</td>
                             <td>
                                 @if (ViewBag.Permissions["Edit"])
                                 {
-                                    <a asp-action="AddEdit" asp-controller="ProductUnit" asp-route-id="@item.ProductUnitId" class="btn btn-sm btn-info">
+                                    <a asp-action="AddEdit" asp-controller="ProductSpecificationGroup" asp-route-id="@item.SpecificationGroupId" class="btn btn-sm btn-info">
                                         <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                                     </a>
                                 }
                                 @if (ViewBag.Permissions["Remove"])
                                 {
-                                    <button onclick="EntityDelete('@item.ProductUnitId')" class="btn btn-sm btn-danger">
+                                    <button onclick="EntityDelete('@item.SpecificationGroupId')" class="btn btn-sm btn-danger">
                                         <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
-                                    </button>
-                                }
-                                @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
-                                {
-                                    <button id="restoreRecord" data-id="@item.ProductUnitId" onclick="ProductUnitRestore('@item.ProductUnitId')" class="btn btn-sm btn-warning">
-                                        <i style="position: relative;left: 5px;top: 2px;" class="fa fa-refresh"></i>
-                                        @Language.GetString("btn_Restore")
                                     </button>
                                 }
                             </td>
@@ -104,7 +95,7 @@
           CurrentPage = Model.CurrentPage,
           ItemsCount = Model.ItemsCount,
           PageSize = Model.PageSize,
-          Navigation = Url.Action("List", "ProductUnit"),
+          Navigation = Url.Action("List", "ProductSpecificationGroup"),
           QueryParams = Model.QueryString
       })
     </div>
@@ -116,7 +107,7 @@
             debugger;
         Swal.fire({
             title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-            text: '@Language.GetString("AlertAndMessage_DeleteProductUnit")',
+            text: '@Language.GetString("AlertAndMessage_DeleteProductSpecificationGroup")',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d51c1c',
@@ -128,12 +119,12 @@
                     debugger;
             $.ajax({
                 type: 'Get',
-                url: '@Url.Action("Delete", "ProductUnit")' + "/" + id,
+                url: '@Url.Action("Delete", "ProductSpecificationGroup")' + "/" + id,
             beforeSend: function() {
-                AddLoading($("#productUnitListCard"));
+                AddLoading($("#productSpecGroupListCard"));
             },
             success: function (resultData) {
-                removeLoading($("productUnitListCard"))
+                removeLoading($("productSpecGroupListCard"))
             if (resultData.status === "Success") {
             Swal.fire({
             icon: 'success',
@@ -157,48 +148,6 @@
             });
             }
             });
-        }
-
-        function ProductUnitRestore(id) {
-            debugger;
-                Swal.fire({
-                    title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-                    text: '@Language.GetString("AlertAndMessage_UserEntityText")',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d51c1c',
-                    cancelButtonColor: '#009c09db',
-                    confirmButtonText: '@Language.GetString("btn_Confirm")',
-                    cancelButtonText: '@Language.GetString("btn_NotConfirm")'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            type: 'Get',
-                            url: '@Url.Action("Restore", "ProductUnit")' + '?id=' + id,
-                            success: function(resultData) {
-                                if (resultData.status === "success") {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        text: resultData.message,
-                                        showConfirmButton: false,
-                                        timer: 2000
-                                    }).then(() => {
-                                        window.location.reload();
-                                    });
-                                }
-
-                                if (resultData.status === "error") {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        text: resultData.message,
-                                        showConfirmButton: false,
-                                        timer: 2000
-                                    });
-                                }
-                            }
-                        });
-                    }
-                });
             }
     </script>
 }

@@ -43,7 +43,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                     .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
                 equallentEntity.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
-
+                equallentEntity.ProductSpecificationId = Guid.NewGuid().ToString();
 
                 await _productContext.SpecificationCollection.InsertOneAsync(equallentEntity);
                 result.Succeeded = true;

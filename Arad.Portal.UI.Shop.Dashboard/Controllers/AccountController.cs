@@ -497,9 +497,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     ModelStateErrors = errors
                 });
             }
-
-
-
             return result;
         }
 

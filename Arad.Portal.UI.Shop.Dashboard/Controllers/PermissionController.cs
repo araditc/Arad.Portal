@@ -12,6 +12,8 @@ using Arad.Portal.UI.Shop.Dashboard.Helpers;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
+using AutoMapper;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -20,13 +22,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
     {
         private readonly IPermissionRepository _permissionRepository;
         private readonly IPermissionView _permissionViewManager;
+        private readonly IMapper _mapper;
 
 
         public PermissionController(IPermissionRepository repository,
-            IPermissionView permissionView)
+            IPermissionView permissionView, IMapper mapper)
         {
             _permissionRepository = repository;
             _permissionViewManager = permissionView;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -176,24 +180,47 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return Content(modifResult.Message);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Restore(string id)
+        {
+            JsonResult result;
+            
+            try
+            {
+                var permissionEntity = await _permissionRepository.FetchPermission(id);
+                if (permissionEntity == null)
+                {
+                    result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_EntityNotFound") });
+                }
+                else
+                {
+                    permissionEntity.IsDeleted = false;
+                    PermissionDTO dto = _mapper.Map<PermissionDTO>(permissionEntity);
+                    dto.Routes = string.Join(',', permissionEntity.Routes);
+                    dto.ModificationReason = "restore permission";
 
-        //[HttpPost]
-        //public async Task<IActionResult> List(int pageSize, int currentPage)
-        //{
-        //    try
-        //    {
-        //        var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
-        //        ViewBag.Permissions = dicKey;
-        //        PagedItems<ListPermissionViewModel> data = await _permissionRepository.List($"?CurrentPage={currentPage}&PageSize={pageSize}");
-        //        return View(data);
-        //    }
-        //    catch
-        //    {
-        //        return View(new PagedItems<ListPermissionViewModel>());
-        //    }
+                    var res = await _permissionRepository.Save(dto);
 
-        //}
+                    if (res.Succeeded)
+                    {
+                        result = new JsonResult(new { Status = "success", Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully") });
+                    }
+                    else
+                    {
+                        result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
+                    }
+                }
 
+            }
+            catch (Exception e)
+            {
+                result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
+            }
+           
+            return result;
+
+        }
+       
         [HttpGet]
         public async Task<IActionResult> ChangeActivation(string id, bool IsActive, string modificationReason)
         {

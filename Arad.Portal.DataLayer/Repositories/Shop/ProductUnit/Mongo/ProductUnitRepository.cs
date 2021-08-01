@@ -187,7 +187,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
                    .Take(pageSize).Select(_ => new ProductUnitDTO()
                    {
                       ProductUnitId = _.ProductUnitId,
-                      UnitName = _.UnitName
+                      UnitName = _.UnitName,
+                      LanguageId = _.LanguageId,
+                      LanguageName = _.LanguageName,
+                      IsDeleted = _.IsDeleted
                    }).ToList();
 
                 result.CurrentPage = page;

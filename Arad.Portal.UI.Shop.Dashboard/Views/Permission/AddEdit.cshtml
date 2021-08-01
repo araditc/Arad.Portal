@@ -119,11 +119,11 @@
             debugger;
             MenusSelectList(1);
             MenusSelectList(2);
-            /*$("#Type").val("0").change();*/
+
             ChangingType();
 
-            $("#Type").change(function () {
-                debugger;
+          $("#Type").change(function () {
+
                /* alert("fire;")*/
                 ChangingType();
             });
@@ -187,7 +187,7 @@
         });
 
         function ChangingType() {
-            debugger;
+
             switch ($("#Type").val()) {
                 case "0":
 
@@ -219,7 +219,7 @@
                     break;
             }
         }
-     function MenusSelectList(typemenu) {
+        function MenusSelectList(typemenu) {
 
                 data = { typeMenu: typemenu };
                 $.ajax({
@@ -242,17 +242,25 @@
                         }
                         if (typemenu === 1) {
                             $("#MenuIdOfModule").html(options);
-                            //$('#MenuIdOfModule').selectpicker('refresh');
+                             if ('@Model.IsEditView' == 'True') {
+                                if ('@Model.MenuIdOfModule' != '-1') {
+                                    $("#MenuIdOfModule").val('@Model.MenuIdOfModule');
+                                }
+                               }
                         } else if (typemenu === 2) {
                             $("#ParentMenuId").html(options);
-                            //$('#ParentMenuId').selectpicker('refresh');
+                             if ('@Model.IsEditView' == 'True') {
+                            if ('@Model.ParentMenuId' != '-1') {
+                                $('#ParentMenuId').val('@Model.ParentMenuId');
+                            }
+                         }
                         }
                     },
-                    //error: function(xhr, ajaxOptions, thrownError) {
-                    //    alert("error");
-                    //    alert(xhr.status);
-                    //    alert(thrownError);
-                    //},
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        alert("error");
+                        alert(xhr.status);
+                        alert(thrownError);
+                    },
                     complete: function () {
                         removeLoading($("#addUserCard"));
                     }
