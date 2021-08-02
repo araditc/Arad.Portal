@@ -1,0 +1,192 @@
+﻿@model Arad.Portal.DataLayer.Models.ProductGroup.ProductGroupDTO
+@using Arad.Portal.DataLayer.Models.Shared;
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    var alert = Language.GetString("AlertAndMessage_GotIt");
+    var error = Language.GetString("AlertAndMessage_Error");
+}
+@section Styles{
+    <link href="~/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css" rel="stylesheet"/>
+    <style>
+        .text-danger {
+            font-size: 12px;
+        }
+    </style>
+}
+
+
+<h4>  @Language.GetString("Menu_ProductGroups") </h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary" id="addProductGroupCard">
+            <div class="card-header">
+                <h3 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.ProductGroupId) ? Language.GetString("EditProductGroupPart_Title") : Language.GetString("AddProductGroupPart_Title"))</h3>
+            </div>
+            <form asp-controller="ProductGroup" role="form"
+                  asp-action='@(!string.IsNullOrWhiteSpace(Model.ProductGroupId) ? "Edit" : "Add")' id="addEditProductGroupFrm" method="post">
+             
+                <input type="hidden" value="@Model.ProductGroupId"  asp-for="ProductGroupId"/>
+               <input type="hidden" value="@Model.MultiLingualProperty.MultiLingualPropertyId" asp-for="@Model.MultiLingualProperty.MultiLingualPropertyId"/>
+                <div class="card-body" id="addEditProductGroupCard">
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label asp-for="@Model.MultiLingualProperty.Name">@Language.GetString("Name")</label>
+                            <input type="text" class="form-control" asp-for="@Model.MultiLingualProperty.Name" placeholder=" ">
+                            <span data-val-result="@Model.MultiLingualProperty.Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="@Model.MultiLingualProperty.LanguageId">@Language.GetString("LanguageName")</label><br />
+                            <select class="form-control select2" asp-for="@Model.MultiLingualProperty.LanguageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                            </select>
+                            <span data-val-result="LanguageId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="@Model.MultiLingualProperty.CurrencyId">@Language.GetString("Currency")</label><br />
+                            <select class="form-control select2" asp-for="@Model.MultiLingualProperty.CurrencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
+                            </select>
+                            <span data-val-result="CurrencyId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="@Model.ParentId">@Language.GetString("ParentGroup")</label>
+                            <select class="form-control select2" asp-for="@Model.ParentId">
+                            </select>
+                            <span data-val-result="ParentId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label asp-for="@Model.MultiLingualProperty.SeoTitle">@Language.GetString("SeoTitle")</label>
+                            <input type="text" class="form-control" asp-for="@Model.MultiLingualProperty.SeoTitle" placeholder=" ">
+                            <span data-val-result="SeoTitle" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="@Model.MultiLingualProperty.SeoDescription">@Language.GetString("SeoDescription")</label>
+                            <input type="text" class="form-control" asp-for="@Model.MultiLingualProperty.SeoDescription" placeholder=" ">
+                            <span data-val-result="SeoDescription" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="@Model.MultiLingualProperty.Description">@Language.GetString("Description")</label>
+                            <input type="text" class="form-control" asp-for="@Model.MultiLingualProperty.Description" placeholder=" ">
+                            <span data-val-result="Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="@Model.MultiLingualProperty.UrlFriend">@Language.GetString("UrlFriend")</label>
+                            <input type="text" class="form-control" asp-for="@Model.MultiLingualProperty.UrlFriend" placeholder=" ">
+                            <span data-val-result="UrlFriend" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        @{
+                            if (!string.IsNullOrWhiteSpace(Model.ProductGroupId))
+                            {
+                                <div class="orm-group col-md-6">
+                                    <label asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
+                                    <textarea dir="rtl" asp-for="ModificationReason" class="form-control" rows="3"></textarea>
+                                    <span data-val-result="ModificationReason" class="text-danger"></span>
+                                </div>
+                            }
+                        }
+                    </div>
+                    </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <input type="submit" value="@Language.GetString("btn_Save")" class="btn btn-block btn-success" />
+                        <a asp-action="List" class="btn btn-block btn-default">@Language.GetString("btn_Back")</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            debugger;
+            $("#MultiLingualProperty_LanguageId").change(function () {
+                var langId = $("#MultiLingualProperty_LanguageId").val();
+                $.ajax({
+                    url: "/ProductGroup/GetProductGroupList",
+                    data : langId,
+                    type: 'Get',
+                    dataType : 'json',
+                    success: function (result) {
+                        debugger;
+                        var options = "<option value='-1'> " +'@Language.GetString("AlertAndMessage_Choose")'+" </option>";
+                        if (result.status === "success") {
+                            debugger;
+                            if (result.data.length != 0) {
+                                (result.data).forEach(function (item) {
+                                    var op = "<option value='" + item.Value + "'>" + item.Text + "</option>";
+                                    options += op;
+                                });
+                            }
+                            $("#ParentId").html(options);
+                        }
+                        },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert("@error");
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+            });
+            });
+            $("#addEditProductGroupFrm").submit(function (e) {
+            debugger;
+            e.preventDefault();
+            var form = $(this).serialize();
+            $.ajax({
+                url: $(this).attr('action'),
+                data: form,
+                type: 'Post',
+                beforeSend: function () {
+                    debugger;
+                    AddLoading($("#addEditProductGroupCard"));
+                },
+                success: function (result) {
+                    debugger;
+                    if (result.status === "Success") {
+                        Swal.fire({
+                            icon: 'success',
+                            text: result.message,
+                            showConfirmButton: false,
+                            timer: 3000
+                        }).then(() => {
+                            window.location.href = '@Url.Action("List")';
+                        });
+                    }else
+                    if (result.status === "ModelError") {
+                        var spanErrorList = $('span[data-val-result]');
+                        if (spanErrorList.length > 1) {
+                            spanErrorList.each(function() {
+                                $(this).html("");
+                                $(this).parent().removeClass("has-error");
+                            });
+                        } else {
+                            spanErrorList.html("");
+                            spanErrorList.parent().removeClass("has-error");
+                        }
+                        if (result.modelStateErrors !== null) {
+                                $('[data-val-result=' + value.key + ']').html(value.errorMessage);
+                                $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                            }
+                        }
+                    },
+                @*error: function (xhr, ajaxOptions, thrownError) {
+                    alert("@error");
+                    alert(xhr.status);
+                    alert(thrownError);
+                },*@
+                complete: function () {
+                    removeLoading($("#addEditProductGroupCard"));
+                }
+            });
+        });
+        });
+    </script>
+}
+
+
+
+

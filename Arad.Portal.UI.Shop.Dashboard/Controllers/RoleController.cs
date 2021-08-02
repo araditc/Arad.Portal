@@ -332,21 +332,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return View("~/Views/Shared/GetLatestModifications.cshtml", result);
         }
 
-        //[HttpGet]
-        //public IActionResult ListPermissions(string currentRoleId = "")
-        //{
-        //    var result = new List<ListPermissions>();
-        //    try
-        //    {
-        //        result =  _permissionRepository.ListPermissions(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), currentRoleId).Result;
-               
-        //    }
-        //    catch (Exception e)
-        //    {
-        //    }
-        //    return View(result);
-        //}
-
+        
         [HttpGet]
         public IActionResult ListPermissions(string id = "")
         {
@@ -373,33 +359,33 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 var roleDto = await _roleRepository.FetchRole(id);
                 if (roleDto == null)
                 {
-                    result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_EntityNotFound") });
+                    result = new JsonResult(new { Status = "error", 
+                        Message = Language.GetString("AlertAndMessage_EntityNotFound") });
                 }
                 else
                 {
                     roleDto.IsDeleted = false;
                     roleDto.ModificationReason = "restore role";
-
                     var res = await _roleRepository.Update(roleDto);
-
                     if (res.Succeeded)
                     {
-                        result = new JsonResult(new { Status = "success", Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully") });
+                        result = new JsonResult(new { Status = "success", 
+                            Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully") });
                     }
                     else
                     {
-                        result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
+                        result = new JsonResult(new { Status = "error", 
+                            Message = Language.GetString("AlertAndMessage_TryLator") });
                     }
                 }
-
             }
             catch (Exception e)
             {
-                result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
+                result = new JsonResult(new { Status = "error", 
+                    Message = Language.GetString("AlertAndMessage_TryLator") });
             }
 
             return result;
-
         }
 
     }

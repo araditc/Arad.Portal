@@ -187,6 +187,9 @@
 	<string key="tbl_RowName">
 		<value>ردیف</value>
 	</string>
+	<string key="tbl_GroupName">
+		<value>نام گروه</value>
+	</string>
 	<string key="tbl_RoleName">
 		<value>نام</value>
 	</string>
@@ -251,6 +254,12 @@
 	</string>
 	<!--End [Enum Descriptions]-->
 	<!--START [Allert And Message]-->
+	<string key="AlertAndMessage_ChooseLanguage">
+		<value>ابتدا زبان مورد نظر را انتخاب کنید.</value>
+	</string>
+	<string key="AlertAndMessage_FillMultiLingualProperty">
+		<value>لطفا حداقل یک سطر برای خصوصیات چند زبانه پرکنید.</value>
+	</string>
 	<string key="AlertAndMessage_FillLangId">
 		<value>لطفا زبان مربوطه را انتخاب کنید.</value>
 	</string>
@@ -342,7 +351,7 @@
 	<string key="AlertAndMessage_UserRestoreText">
 		<value>کاربر مربوطه بازگزدانی خواهد شد.</value>
 	</string>
-	<string key="AlertAndMessage_UserEntityText">
+	<string key="AlertAndMessage_EntityRestoreText">
 		<value>موجودیت مورد نظر بازگردانی خواهد شد.</value>
 	</string>
 	<string key="AlertAndMessage_CaptchaIsExpired">
@@ -615,6 +624,9 @@
 	</string>
 	<string key="AlertAndMessage_SelectCity">
 		<value>لطفا شهر را انتخاب نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_SelectCurrency">
+		<value>لطفا واحد پول مربوطه را انتخاب نمایید.</value>
 	</string>
 	<string key="AlertAndMessage_ModificationProfile">
 		<value>تغییرات پروفایل.</value>
@@ -929,10 +941,16 @@
 		<value>ویرایش گروه مشخصات محصول</value>
 	</string>
 	<string key="AddPermissionPart_Title">
-		<value>افزودن نقش جدید</value>
+		<value>افزودن نقش </value>
+	</string>
+	<string key="AddProductGroupPart_Title">
+		<value>افزودن گروه محصول</value>
+	</string>
+	<string key="EditProductGroupPart_Title">
+		<value>ویرایش گروه محصول</value>
 	</string>
 	<string key="AddProductUnitPart_Title">
-		<value>افزودن واحد محصول جدید</value>
+		<value>افزودن واحد محصول</value>
 	</string>
 	<string key="EditProductUnitPart_Title">
 		<value>ویرایش واحد محصول</value>
@@ -941,10 +959,10 @@
 		<value>ویرایش نقش</value>
 	</string>
 	<string key="AddUserPart_Title">
-		<value>افزودن کاربر جدید</value>
+		<value>افزودن کاربر</value>
 	</string>
 	<string key="AddRolePart_Title">
-		<value>اضافه کردن نقش جدید</value>
+		<value>اضافه کردن نقش</value>
 	</string>
 	<string key="EditRolePart_Title">
 		<value>ویرایش نقش</value>
@@ -1015,6 +1033,27 @@
 	<string key="InActive">
 		<value>غیر فعال</value>
 	</string>
+	<string key="ParentGroup">
+		<value>گروه والد</value>
+	</string>
+	<string key="Name">
+		<value>نام</value>
+	</string>
+	<string key="SeoDescription">
+		<value>توضیحات سئو</value>
+	</string>
+	<string key="Description">
+		<value>توضیحات</value>
+	</string>
+	<string key="SeoTitle">
+		<value>عنوان سئو</value>
+	</string>
+	<string key="UrlFriend">
+		<value>UrlFriend</value>
+	</string>
+	<string key="Currency">
+		<value>واحد پول</value>
+	</string>
 	<string key="User_Roles">
 		<value>نقش های کاربری</value>
 	</string>
@@ -1062,6 +1101,9 @@
 	</string>
 	<string key="Menu_ProductUnits">
 		<value>واحدهای محصول</value>
+	</string>
+	<string key="Menu_ProductGroups">
+		<value>گروه های محصول</value>
 	</string>
 	<string key="Menu_Roles">
 		<value>نقش ها</value>

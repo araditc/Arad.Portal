@@ -145,17 +145,12 @@ namespace Arad.Portal.UI.Shop.Dashboard
                 //    endpoints.MapControllers().WithMetadata(new AllowAnonymousAttribute());
                 //else
                 //    endpoints.MapControllers();
-
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-
             app.UseSeedDatabase(ApplicationPath);
         }
-
-       
-
         private RequestLocalizationOptions AddMultilingualSettings()
         {
             string[] supportedCulturesStrings = Configuration.GetSection("SupportedCultures")

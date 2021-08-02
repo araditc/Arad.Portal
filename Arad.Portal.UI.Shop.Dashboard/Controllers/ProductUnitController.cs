@@ -96,13 +96,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> Restore(string id)
         {
             JsonResult result;
-
             try
             {
                 var unitDto = _unitRepository.FetchUnit(id);
                 if (unitDto == null)
                 {
-                    result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_EntityNotFound") });
+                    result = new JsonResult(new { Status = "error", 
+                        Message = Language.GetString("AlertAndMessage_EntityNotFound") });
                 }
                 else
                 {
@@ -113,17 +113,20 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                     if (res.Succeeded)
                     {
-                        result = new JsonResult(new { Status = "success", Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully") });
+                        result = new JsonResult(new { Status = "success", 
+                            Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully") });
                     }
                     else
                     {
-                        result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
+                        result = new JsonResult(new { Status = "error", 
+                            Message = Language.GetString("AlertAndMessage_TryLator") });
                     }
                 }
             }
             catch (Exception e)
             {
-                result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
+                result = new JsonResult(new { Status = "error", 
+                    Message = Language.GetString("AlertAndMessage_TryLator") });
             }
             return result;
         }
