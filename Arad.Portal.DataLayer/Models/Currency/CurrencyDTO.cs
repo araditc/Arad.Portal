@@ -10,7 +10,7 @@ namespace Arad.Portal.DataLayer.Models.Currency
     {
         public string CurrencyId { get; set; }
 
-        public string Name { get; set; }
+        public string CurrencyName { get; set; }
 
         public string Prefix { get; set; }
 

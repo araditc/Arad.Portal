@@ -27,6 +27,8 @@ using Arad.Portal.DataLayer.Contracts.General.MessageTemplate;
 using Arad.Portal.DataLayer.Entities.General.MessageTemplate;
 using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.Language;
+using Arad.Portal.DataLayer.Contracts.General.Currency;
+using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 {
@@ -203,7 +205,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                     Direction = DataLayer.Entities.General.Language.Direction.ltr,
                     IsActive = true,
                     LanguageName = "English",
-                    Symbol = "en-US"
+                    Symbol = "en-US",
+                    IsDefault = false
                 };
                 languageRepository.InsertOne(lan);
                 var lanFa = new DataLayer.Entities.General.Language.Language()
@@ -212,10 +215,43 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                     Direction = DataLayer.Entities.General.Language.Direction.rtl,
                     IsActive = true,
                     LanguageName = "فارسی",
-                    Symbol = "fa-IR"
+                    Symbol = "fa-IR",
+                    IsDefault = true
                 };
                 languageRepository.InsertOne(lanFa);
             }
+
+
+            //Currency
+            using var currencyScope = app.ApplicationServices.CreateScope();
+            var currencyRepository =
+                 (CurrencyRepository)languageScope.ServiceProvider.GetService(typeof(ICurrencyRepository));
+            if (!currencyRepository.HasAny())
+            {
+                var currencyDef = new DataLayer.Entities.General.Currency.Currency
+                {
+                    CurrencyId = Guid.NewGuid().ToString(),
+                    CurrencyName = "ریال",
+                    Prefix = "IRR",
+                    Symbol = "ریال",
+                    IsDefault = true,
+                    IsActive = true
+                };
+                currencyRepository.InsertOne(currencyDef);
+
+
+                var currency = new DataLayer.Entities.General.Currency.Currency
+                {
+                   CurrencyId = Guid.NewGuid().ToString(),
+                   CurrencyName = "American Dollar",
+                   Prefix = "USD",
+                   Symbol = "$",
+                   IsDefault = false,
+                   IsActive = true
+                };
+                currencyRepository.InsertOne(currency);
+            }
+
         }
     }
 }

@@ -74,6 +74,13 @@
                                         <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
                                     </button>
                                 }
+                                @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
+                                {
+                                    <button id="restoreRecord"  onclick="EntityRestore('@item.SpecificationGroupId')" class="btn btn-sm btn-warning">
+                                        <i style="position: relative;left: 5px;top: 2px;" class="fa fa-refresh"></i>
+                                        @Language.GetString("btn_Restore")
+                                    </button>
+                                }
                             </td>
                         </tr>
                     }
@@ -141,13 +148,54 @@
             icon: 'error',
             text: resultData.message,
             showConfirmButton: false,
-            timer: 1500
+            timer: 2000
             });
             }
             }
             });
             }
             });
+        }
+
+           function EntityRestore(id) {
+            debugger;
+                Swal.fire({
+                    title: '@Language.GetString("AlertAndMessage_AreYouSure")',
+                    text: '@Language.GetString("AlertAndMessage_EntityRestoreText")',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d51c1c',
+                    cancelButtonColor: '#009c09db',
+                    confirmButtonText: '@Language.GetString("btn_Confirm")',
+                    cancelButtonText: '@Language.GetString("btn_NotConfirm")'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'Get',
+                            url:  '@Url.Action("Restore", "ProductSpecificationGroup")' + '?id=' + id,
+                            success: function(resultData) {
+                                if (resultData.status === "success") {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        text: resultData.message,
+                                        showConfirmButton: false,
+                                        timer: 2000
+                                    }).then(() => {
+                                        window.location.reload();
+                                    });
+                                }
+                                if (resultData.status === "error") {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        text: resultData.message,
+                                        showConfirmButton: false,
+                                        timer: 2000
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
             }
     </script>
 }

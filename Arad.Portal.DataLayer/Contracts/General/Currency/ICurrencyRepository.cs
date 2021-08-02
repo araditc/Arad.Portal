@@ -22,5 +22,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Currency
         RepositoryOperationResult<CurrencyDTO> FetchCurrency(string currencyId);
         RepositoryOperationResult<CurrencyDTO> GetDefaultCurrency();
 
+        List<SelectListModel> GetAllActiveCurrency();
+
     }
 }

@@ -12,7 +12,7 @@ namespace Arad.Portal.DataLayer.Models.ProductSpecificationGroup
         public string GroupName { get; set; }
         public string LanguageId { get; set; }
         public string LanguageName { get; set; }
-
         public string ModificationReason { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

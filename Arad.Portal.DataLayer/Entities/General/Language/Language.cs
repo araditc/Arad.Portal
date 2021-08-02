@@ -18,6 +18,8 @@ namespace Arad.Portal.DataLayer.Entities.General.Language
         public string Symbol { get; set; }
 
         public Direction Direction { get; set; }
+
+        public bool IsDefault { get; set; }
     }
 
     public enum Direction

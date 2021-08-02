@@ -13,21 +13,31 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Arad.Portal.DataLayer.Models.Promotion;
 using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
+using System.Web;
+using System.Collections.Specialized;
+using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
+using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
+using System.Globalization;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
 {
     public class ProductGroupRepository : BaseRepository, IProductGroupRepository
     {
         private readonly ProductContext _productContext;
+        private readonly LanguageContext _languageContext;
+        private readonly CurrencyContext _currencyContext;
         private readonly IMapper _mapper;
       
         public ProductGroupRepository(ProductContext context,
+            LanguageContext languageContext, CurrencyContext currencyContext,
             IHttpContextAccessor httpContextAccessor,
             IMapper mapper):
             base(httpContextAccessor)
         {
             
             _productContext = context;
+            _languageContext = languageContext;
+            _currencyContext = currencyContext;
             _mapper = mapper;
         }
 
@@ -35,15 +45,16 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
         {
             var result = new RepositoryOperationResult();
             var equallentModel = _mapper.Map<Entities.Shop.ProductGroup.ProductGroup>(dto);
+
             equallentModel.CreationDate = DateTime.Now;
             equallentModel.CreatorUserId = _httpContextAccessor.HttpContext.User.Claims
                 .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             equallentModel.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                 .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
-            equallentModel.ProductGroupId = Guid.NewGuid().ToString();
             try
             {
                 equallentModel.ProductGroupId = Guid.NewGuid().ToString();
+                equallentModel.IsActive = true;
                 await _productContext.ProductGroupCollection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;
                 result.Message = ConstMessages.SuccessfullyDone;
@@ -120,8 +131,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
         public ProductGroupDTO ProductGroupFetch(string productGroupId)
         {
             var result = new ProductGroupDTO();
-            var entity = _productContext.ProductGroupCollection.Find(_ => _.ProductGroupId == productGroupId);
-            result = _mapper.Map<ProductGroupDTO>(entity);
+            var entity = _productContext.ProductGroupCollection.Find(_ => _.ProductGroupId == productGroupId).FirstOrDefault();
+            if(entity != null)
+            {
+                result.ProductGroupId = entity.ProductGroupId;
+                result.ParentId = entity.ParentId;
+                result.MultiLingualProperties = entity.MultiLingualProperties;
+                result.Promotion = entity.Promotion;
+            }
             return result;
         }
 
@@ -214,76 +231,128 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             }
             return result;
         }
-        //public Task<RepositoryOperationResult> Update(ProductGroupDTO dto)
+
+        public async Task<PagedItems<ProductGroupViewModel>> List(string queryString)
+        {
+            PagedItems<ProductGroupViewModel> result = new PagedItems<ProductGroupViewModel>();
+            try
+            {
+                NameValueCollection filter = HttpUtility.ParseQueryString(queryString);
+
+                if (string.IsNullOrWhiteSpace(filter["page"]))
+                {
+                    filter.Set("page", "1");
+                }
+
+                if (string.IsNullOrWhiteSpace(filter["PageSize"]))
+                {
+                    filter.Set("PageSize", "20");
+                }
+                if (string.IsNullOrWhiteSpace(filter["LanguageId"]))
+                {
+                    var lan = _languageContext.Collection.Find(_ => _.IsDefault).FirstOrDefault();
+                    filter.Set("LanguageId", lan.LanguageId);
+                }
+                var page = Convert.ToInt32(filter["page"]);
+                var pageSize = Convert.ToInt32(filter["PageSize"]);
+                var langId = filter["LanguageId"].ToString();
+                long totalCount = await _productContext.ProductGroupCollection.Find(c => true).CountDocumentsAsync();
+                var lst = _productContext.ProductGroupCollection.AsQueryable().Skip((page - 1) * pageSize)
+                   .Take(pageSize).Select(_ => new ProductGroupViewModel()
+                   {
+                       ProductGroupId = _.ProductGroupId,
+                       ParentId = _.ParentId,
+                       IsDeleted = _.IsDeleted,
+                       MultiLingualProperty = _.MultiLingualProperties.ToList().First(a=>a.LanguageId == langId)
+                   }).ToList();
+                result.CurrentPage = page;
+                result.Items = lst;
+                result.ItemsCount = totalCount;
+                result.PageSize = pageSize;
+                result.QueryString = queryString;
+            }
+            catch (Exception ex)
+            {
+                result.CurrentPage = 1;
+                result.Items = new List<ProductGroupViewModel>();
+                result.ItemsCount = 0;
+                result.PageSize = 10;
+                result.QueryString = queryString;
+            }
+            return result;
+        }
+
+        public async Task<RepositoryOperationResult> Update(ProductGroupDTO dto)
+        {
+            var result = new RepositoryOperationResult();
+            var entity = _productContext.ProductGroupCollection
+                .Find(_ => _.ProductGroupId == dto.ProductGroupId).FirstOrDefault();
+
+            entity.ParentId = dto.ParentId;
+            entity.MultiLingualProperties = dto.MultiLingualProperties;
+            
+            #region Add Modification
+            var currentModifications = entity.Modifications;
+            var mod = GetCurrentModification(dto.ModificationReason);
+            currentModifications.Add(mod);
+            #endregion
+
+            entity.Modifications = currentModifications;
+
+            var updateResult = await _productContext.ProductGroupCollection
+                .ReplaceOneAsync(_ => _.ProductGroupId == dto.ProductGroupId, entity);
+            if (updateResult.IsAcknowledged)
+            {
+                result.Succeeded = true;
+                result.Message = ConstMessages.SuccessfullyDone;
+            }
+            else
+            {
+                result.Succeeded = false;
+                result.Message = ConstMessages.ErrorInSaving;
+            }
+            return result;
+        }
+
+        public async Task<RepositoryOperationResult> Restore(string id)
+        {
+            var result = new RepositoryOperationResult();
+            var entity = _productContext.ProductGroupCollection
+              .Find(_ => _.ProductGroupId == id).FirstOrDefault();
+            entity.IsDeleted = false;
+            var updateResult = await _productContext.ProductGroupCollection
+               .ReplaceOneAsync(_ => _.ProductGroupId == id, entity);
+            if (updateResult.IsAcknowledged)
+            {
+                result.Succeeded = true;
+                result.Message = ConstMessages.SuccessfullyDone;
+            }
+            else
+            {
+                result.Succeeded = false;
+                result.Message = ConstMessages.ErrorInSaving;
+            }
+            return result;
+        }
+
+        public List<SelectListModel> GetAlActiveProductGroup(string langId)
+        {
+             var result = new List<SelectListModel>();
+            result = _productContext.ProductGroupCollection.Find(x => x.IsActive)
+               .Project(x => new SelectListModel
+               {
+                   Text = x.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() == 0 ? "" : x.MultiLingualProperties.First(a => a.LanguageId == langId).Name,
+                   Value = x.ProductGroupId
+               }).ToList();
+          
+            return result;
+        }
+
+        //public Entities.Shop.ProductGroup.ProductGroup FetchWholeProductGroup(string productGroupId)
         //{
-        //    try
-        //    {
-        //        var exist = new List<ProductGroup>();
-
-        //        if (dto.MultiLingualProperties.Count > 0)
-        //        {
-        //            exist = _context.Collection.AsQueryable()
-        //                .Where(_ => m.UrlFriendGroup == group.UrlFriendGroup && m.IsDeleted != 1).ToList();
-
-        //            if (exist.Any())
-        //            {
-        //                if (exist.Count > 1)
-        //                {
-        //                    return false;
-        //                }
-
-        //                if (exist.Count == 1)
-        //                {
-        //                    if (exist[0].Id != group.Id)
-        //                    {
-        //                        return false;
-        //                    }
-        //                }
-        //            }
-
-        //            group.UrlFriendGroup = group.UrlFriendGroup.Replace(" ", "-");
-        //        }
-
-        //        var filter = Builders<ProductGroup>.Filter.Eq("_id", new BsonObjectId(ObjectId.Parse(group.Id)));
-        //        var update = Builders<ProductGroup>.Update.Set("Title", group.Title)
-        //            .Set("MenuId", group.MenuId)
-        //            .Set("UrlFriendGroup", group.UrlFriendGroup);
-
-        //        var resultUpdate = await _context.collection.UpdateOneAsync(filter, update);
-        //        var ack = resultUpdate.IsAcknowledged;
-
-        //        if (ack)
-        //        {
-        //            //update باکس های صفحه اول شاپ
-
-        //            var setting = _settingsContext.collection.AsQueryable().FirstOrDefault();
-
-        //            if (setting != null)
-        //            {
-        //                foreach (var box in setting.BoxHomePics)
-        //                {
-        //                    if (box.ProductGroupId == group.Id)
-        //                    {
-        //                        box.Title = group.Title;
-        //                    }
-        //                }
-
-        //                var resultSett =
-        //                    await _settingsContext.collection.ReplaceOneAsync(c => c.Id == setting.Id, setting);
-        //            }
-
-        //            return true;
-        //        }
-
-        //        return false;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Log.Error(e.ToString());
-        //        return false;
-        //    }
+        //    Entities.Shop.ProductGroup.ProductGroup result;
+        //    result = _productContext.ProductGroupCollection.Find(_ => _.ProductGroupId == productGroupId).FirstOrDefault();
+        //    return result;
         //}
-
-
     }
 }

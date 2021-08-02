@@ -10,9 +10,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
 {
     public class MultiLingualProperty
     {
-
-        public string  MultiLingualPropertyId { get; set; }
-
+        public string MultiLingualPropertyId { get; set; }
         public string Name { get; set; }
 
         public string Description { get; set; }
@@ -27,6 +25,8 @@ namespace Arad.Portal.DataLayer.Models.Shared
 
         public string LanguageName { get; set; }
 
+        public string LanguageSymbol { get; set; }
+
         public string CurrencyId { get; set; }
        
         public string CurrencyPrefix { get; set; }
@@ -34,5 +34,6 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public string CurrencySymbol { get; set; }
 
         public string CurrencyName { get; set; }
+
     }
 }

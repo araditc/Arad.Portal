@@ -218,6 +218,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
                 Text = _.LanguageName,
                 Value = _.LanguageId
             }).ToList();
+            result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
             return result;
         }
 
@@ -231,6 +232,17 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
             }else
             {
                 result = null;
+            }
+            return result;
+        }
+
+        public LanguageDTO GetDefaultLanguage()
+        {
+            LanguageDTO result = null;
+            var lan = _context.Collection.Find(_ => _.IsDefault).FirstOrDefault();
+            if(lan != null)
+            {
+                result = _mapper.Map<LanguageDTO>(lan);
             }
             return result;
         }

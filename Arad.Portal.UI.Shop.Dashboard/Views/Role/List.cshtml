@@ -157,7 +157,7 @@
                         if (resultData.status === "error") {
                             Swal.fire({
                                 icon: 'error',
-                                title: resultData.message,
+                                text: resultData.message,
                                 showConfirmButton: false,
                                 timer: 1500
                             });
@@ -176,7 +176,7 @@
                 success: function (resultData) {
                     removeLoading($("#roleListCard"));
                         Swal.fire({
-                            title: resultData.message,
+                            text: resultData.message,
                             html: resultData,
                             width: 'auto',
                             showConfirmButton: true,
@@ -237,7 +237,7 @@
             debugger;
                 Swal.fire({
                     title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-                    text: '@Language.GetString("AlertAndMessage_UserEntityText")',
+                    text: '@Language.GetString("AlertAndMessage_EntityRestoreText")',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#d51c1c',
@@ -255,7 +255,7 @@
                                         icon: 'success',
                                         text: resultData.message,
                                         showConfirmButton: false,
-                                        timer: 2000
+                                        timer: 3000
                                     }).then(() => {
                                         window.location.reload();
                                     });
@@ -266,7 +266,7 @@
                                         icon: 'error',
                                         text: resultData.message,
                                         showConfirmButton: false,
-                                        timer: 2000
+                                        timer: 3000
                                     });
                                 }
                             }

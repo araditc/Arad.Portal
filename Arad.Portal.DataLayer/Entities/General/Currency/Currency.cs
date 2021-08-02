@@ -14,7 +14,7 @@ namespace Arad.Portal.DataLayer.Entities.General.Currency
         [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string CurrencyId { get; set; }
 
-        public string Name { get; set; }
+        public string CurrencyName { get; set; }
 
         public string Prefix { get; set; }
 

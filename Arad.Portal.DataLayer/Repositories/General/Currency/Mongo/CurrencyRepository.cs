@@ -48,7 +48,23 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
             return result;
         }
 
-
+        public bool HasAny()
+        {
+            var result = false;
+            if (_context.Collection.AsQueryable().Any())
+            {
+                result = true;
+            }
+            return result;
+        }
+        /// <summary>
+        /// this method is used just in seedData
+        /// </summary>
+        /// <param name="entity"></param>
+        public void InsertOne(Entities.General.Currency.Currency entity)
+        {
+            _context.Collection.InsertOne(entity);
+        }
         private async Task<RepositoryOperationResult> UpdateCurrencyAsync(Entities.General.Currency.Currency equallentModel, string modificationReason)
         {
             var result = new RepositoryOperationResult();
@@ -142,7 +158,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
                    {
                        CurrencyId = _.CurrencyId,
                        IsDefault = _.IsDefault,
-                       Name = _.Name,
+                       CurrencyName = _.CurrencyName,
                        Prefix = _.Prefix,
                        Symbol = _.Symbol
                        
@@ -255,6 +271,17 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
 
             return result;
         }
-        
+
+        public List<SelectListModel> GetAllActiveCurrency()
+        {
+            var result = new List<SelectListModel>();
+            result = _context.Collection.AsQueryable().Where(_ => _.IsActive).Select(_ => new SelectListModel()
+            {
+                Text = _.CurrencyName,
+                Value = _.CurrencyId
+            }).ToList();
+            result.Insert(0, new SelectListModel() { Value = "-1", Text = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_Choose") });
+            return result;
+        }
     }
 }

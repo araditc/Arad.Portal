@@ -147,9 +147,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
             {
                 NameValueCollection filter = HttpUtility.ParseQueryString(queryString);
 
-                if (string.IsNullOrWhiteSpace(filter["CurrentPage"]))
+                if (string.IsNullOrWhiteSpace(filter["page"]))
                 {
-                    filter.Set("CurrentPage", "1");
+                    filter.Set("page", "1");
                 }
 
                 if (string.IsNullOrWhiteSpace(filter["PageSize"]))
@@ -157,7 +157,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
                     filter.Set("PageSize", "20");
                 }
 
-                var page = Convert.ToInt32(filter["CurrentPage"]);
+                var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
 
                 long totalCount = await _productContext.SpecGroupCollection.Find(c => true).CountDocumentsAsync();

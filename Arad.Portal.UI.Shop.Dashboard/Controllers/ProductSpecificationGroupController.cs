@@ -90,6 +90,55 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Restore(string id)
+        {
+            JsonResult result;
+            try
+            {
+                var dTO = await _productSpecGrpRepository.GroupSpecificationFetch(id);
+                if (dTO == null)
+                {
+                    result = new JsonResult(new
+                    {
+                        Status = "error",
+                        Message = Language.GetString("AlertAndMessage_EntityNotFound")
+                    });
+                }
+                else
+                {
+                    dTO.IsDeleted = false;
+                    dTO.ModificationReason = "restore productSpecificationGroup";
+                    var res = await _productSpecGrpRepository.Update(dTO);
+                    if (res.Succeeded)
+                    {
+                        result = new JsonResult(new
+                        {
+                            Status = "success",
+                            Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully")
+                        });
+                    }
+                    else
+                    {
+                        result = new JsonResult(new
+                        {
+                            Status = "error",
+                            Message = Language.GetString("AlertAndMessage_TryLator")
+                        });
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                result = new JsonResult(new
+                {
+                    Status = "error",
+                    Message = Language.GetString("AlertAndMessage_TryLator")
+                });
+            }
+            return result;
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit([FromForm] SpecificationGroupDTO dto)
