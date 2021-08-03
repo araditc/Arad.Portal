@@ -128,7 +128,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             return result;
         }
 
-        public ProductGroupDTO ProductGroupFetch(string productGroupId)
+        public ProductGroupDTO ProductGroupFetch(string productGroupId, string langId)
         {
             var result = new ProductGroupDTO();
             var entity = _productContext.ProductGroupCollection.Find(_ => _.ProductGroupId == productGroupId).FirstOrDefault();
@@ -348,11 +348,45 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             return result;
         }
 
-        //public Entities.Shop.ProductGroup.ProductGroup FetchWholeProductGroup(string productGroupId)
-        //{
-        //    Entities.Shop.ProductGroup.ProductGroup result;
-        //    result = _productContext.ProductGroupCollection.Find(_ => _.ProductGroupId == productGroupId).FirstOrDefault();
-        //    return result;
-        //}
+        public async Task<RepositoryOperationResult> Restore(string id)
+        {
+            var result = new RepositoryOperationResult();
+            var entity = _productContext.ProductGroupCollection
+              .Find(_ => _.ProductGroupId == id).FirstOrDefault();
+            entity.IsDeleted = false;
+            var updateResult = await _productContext.ProductGroupCollection
+               .ReplaceOneAsync(_ => _.ProductGroupId == id, entity);
+            if (updateResult.IsAcknowledged)
+            {
+                result.Succeeded = true;
+                result.Message = ConstMessages.SuccessfullyDone;
+            }
+            else
+            {
+                result.Succeeded = false;
+                result.Message = ConstMessages.ErrorInSaving;
+            }
+            return result;
+        }
+
+        public List<SelectListModel> GetAlActiveProductGroup(string langId)
+        {
+            var result = new List<SelectListModel>();
+            result = _productContext.ProductGroupCollection.AsQueryable()
+                .Where(_ => _.IsActive).Select(_ => new SelectListModel()
+            {
+                Text = _.MultiLingualProperties.First(a=>a.LanguageId == langId) != null ?
+                _.MultiLingualProperties.First(a => a.LanguageId == langId).Name : "",
+                Value = _.ProductGroupId
+            }).OrderBy(_=>_.Text).ToList();
+            return result;
+        }
+
+        public Entities.Shop.ProductGroup.ProductGroup FetchWholeProductGroup(string productGroupId)
+        {
+            Entities.Shop.ProductGroup.ProductGroup result;
+            result = _productContext.ProductGroupCollection.Find(_ => _.ProductGroupId == productGroupId).FirstOrDefault();
+            return result;
+        }
     }
 }

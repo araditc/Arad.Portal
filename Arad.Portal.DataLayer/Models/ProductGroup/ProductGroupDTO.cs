@@ -12,11 +12,11 @@ namespace Arad.Portal.DataLayer.Models.ProductGroup
     {
         public ProductGroupDTO()
         {
-            MultiLingualProperties = new List<MultiLingualProperty>();
+            MultiLingualProperty = new MultiLingualProperty();
         }
         public string ProductGroupId { get; set; }
 
-        public List<MultiLingualProperty> MultiLingualProperties { get; set; }
+        public MultiLingualProperty MultiLingualProperty { get; set; }
 
         public string ParentId { get; set; }
 
