@@ -181,7 +181,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
             if(lst != null && lst.Count() > 0)
             {
                 var entity = lst.FirstOrDefault();
-                result.ReturnValue = entity.SpecificationValues;
+              //  result.ReturnValue = entity.SpecificationValues;
                 result.Message = ConstMessages.SuccessfullyDone;
                 result.Succeeded = true;
             }
@@ -218,8 +218,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                    {
                       ProductSpecificationId = _.ProductSpecificationId,
                       SpecificationGroupId = _.SpecificationGroupId,
-                      SpecificationName = _.SpecificationName,
-                      SpecificationValues = _.SpecificationValues
+                      //SpecificationName = _.SpecificationName,
+                      //SpecificationValues = _.SpecificationValues
                    }).ToList();
 
                 result.CurrentPage = page;

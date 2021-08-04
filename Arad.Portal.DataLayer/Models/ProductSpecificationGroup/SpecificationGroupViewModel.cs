@@ -7,15 +7,16 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Models.ProductSpecificationGroup
 {
-    public class SpecificationGroupDTO
+    public class SpecificationGroupViewModel
     {
-        public SpecificationGroupDTO()
+        public SpecificationGroupViewModel()
         {
-            GroupNames = new List<MultiLingualProperty>();
+            GroupName = new MultiLingualProperty();
         }
         public string SpecificationGroupId { get; set; }
-        public List<MultiLingualProperty> GroupNames { get; set; }
+        public MultiLingualProperty GroupName { get; set; }
         public string ModificationReason { get; set; }
         public bool IsDeleted { get; set; }
     }
+    
 }

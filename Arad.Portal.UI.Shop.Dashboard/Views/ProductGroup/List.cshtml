@@ -68,15 +68,7 @@
                     </div>
                 </div>
             </div>
-
         </div>
-        @*<div class="card-footer">
-            <div class="row">
-                <div class="col-md-3">
-                    <button id="btnLoad" class="btn btn-primary" type="button">@Language.GetString("btn_Find")</button>
-                </div>
-            </div>
-        </div>*@
     </div>
 </div>
 <div class="card">
@@ -124,8 +116,7 @@
                     <td>
                         @if (ViewBag.Permissions["Edit"])
                         {
-                            <a asp-action="AddEdit" asp-controller="ProductGroup" asp-route-id="@item.ProductGroupId"
-                               asp-route-langId="@item.MultiLingualProperty.LanguageId" class="btn btn-sm btn-info">
+                            <a asp-action="AddEdit" asp-controller="ProductGroup" asp-route-id="@item.ProductGroupId" class="btn btn-sm btn-info">
                                 <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                             </a>
                         }
@@ -163,7 +154,7 @@
           CurrentPage = Model.CurrentPage,
           ItemsCount = Model.ItemsCount,
           PageSize = Model.PageSize,
-          Navigation = Url.Action("List", "ProductUnit"),
+          Navigation = Url.Action("List", "ProductGroup"),
           QueryParams = Model.QueryString
       })
     </div>
@@ -231,7 +222,7 @@
             });
         }
 
-        function ProductUnitRestore(id) {
+        function EntityRestore(id) {
             debugger;
                 Swal.fire({
                     title: '@Language.GetString("AlertAndMessage_AreYouSure")',
@@ -246,7 +237,7 @@
                     if (result.isConfirmed) {
                         $.ajax({
                             type: 'Get',
-                            url:  '@Url.Action("Restore", "ProductUnit")' + '?id=' + id,
+                            url:  '@Url.Action("Restore", "ProductGroup")' + '?id=' + id,
                             success: function(resultData) {
                                 if (resultData.status === "success") {
                                     Swal.fire({

@@ -267,7 +267,7 @@
 		<value>Please choose your desired language.</value>
 	</string>
 	<string key="AlertAndMessage_FillMultiLingualProperty">
-		<value>Please fill at Least one row of multilingual properties.</value>
+		<value>Please fill at Least one row of table.</value>
 	</string>
 	<string key="AlertAndMessage_FillLangId">
 		<value>Please select related language.</value>

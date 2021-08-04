@@ -52,8 +52,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public IActionResult AddEdit(string id="")
         {
             var model = new ProductGroupDTO();
-           
-            var currentUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = _productGroupRepository.ProductGroupFetch(id);

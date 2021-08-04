@@ -11,7 +11,10 @@ namespace Arad.Portal.DataLayer.Models.Shared
     public class MultiLingualProperty
     {
         public string MultiLingualPropertyId { get; set; }
+
         public string Name { get; set; }
+
+        public string GroupName { get; set; }
 
         public string Description { get; set; }
 
@@ -20,6 +23,11 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public string SeoDescription { get; set; }
 
         public string UrlFriend { get; set; }
+
+        ///// <summary>
+        ///// all possible values which this Name has
+        ///// </summary>
+        public List<string> NameValues { get; set; }
 
         public string LanguageId { get; set; }
 

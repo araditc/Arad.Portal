@@ -16,6 +16,8 @@ using System.Collections.Specialized;
 using System.Web;
 using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
 using Arad.Portal.DataLayer.Entities.Shop.ProductSpecificationGroup;
+using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
+using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mongo
 {
@@ -23,13 +25,17 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
     {
         private readonly IMapper _mapper;
         private readonly ProductContext _productContext;
-        
+        private readonly LanguageContext _languageContext;
+        private readonly CurrencyContext _currencyContext;
+
         public ProductSpecGroupRepository(IHttpContextAccessor httpContextAccessor,
-            IMapper mapper, ProductContext productContext)
+            IMapper mapper, ProductContext productContext, LanguageContext langContext, CurrencyContext currencyContext)
             : base(httpContextAccessor)
         {
             _mapper = mapper;
             _productContext = productContext;
+            _currencyContext = currencyContext;
+            _languageContext = langContext;
         }
 
         public async Task<RepositoryOperationResult> Add(SpecificationGroupDTO dto)
@@ -46,11 +52,20 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
                     .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
                 equallentEntity.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
-                equallentEntity.SpecificationGroupId = Guid.NewGuid().ToString();
 
-                await _productContext.SpecGroupCollection.InsertOneAsync(equallentEntity);
-                result.Succeeded = true;
-                result.Message = ConstMessages.SuccessfullyDone;
+                try
+                {
+                    equallentEntity.SpecificationGroupId = Guid.NewGuid().ToString();
+                    equallentEntity.IsActive = true;
+                    await _productContext.SpecGroupCollection.InsertOneAsync(equallentEntity);
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                }
+                catch (Exception e)
+                {
+                    result.Message = ConstMessages.ErrorInSaving;
+                }
+               
                
             }
             catch (Exception ex)
@@ -117,13 +132,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
             return result;
         }
 
-        public ProductSpecGroup FetchByName(string groupName)
-        {
-           ProductSpecGroup result;
-            result = _productContext.SpecGroupCollection.Find(_ => _.GroupName == groupName).FirstOrDefault();
-            return result;
-        }
-
+       
         public async Task<SpecificationGroupDTO> GroupSpecificationFetch(string productSpecificationGroupId)
         {
             var result = new SpecificationGroupDTO();
@@ -140,9 +149,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
             return result;
         }
 
-        public async Task<PagedItems<SpecificationGroupDTO>> List(string queryString)
+        public async Task<PagedItems<SpecificationGroupViewModel>> List(string queryString)
         {
-            PagedItems<SpecificationGroupDTO> result = new PagedItems<SpecificationGroupDTO>();
+            PagedItems<SpecificationGroupViewModel> result = new PagedItems<SpecificationGroupViewModel>();
             try
             {
                 NameValueCollection filter = HttpUtility.ParseQueryString(queryString);
@@ -156,18 +165,22 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
                 {
                     filter.Set("PageSize", "20");
                 }
+                if (string.IsNullOrWhiteSpace(filter["LanguageId"]))
+                {
+                    var lan = _languageContext.Collection.Find(_ => _.IsDefault).FirstOrDefault();
+                    filter.Set("LanguageId", lan.LanguageId);
+                }
 
                 var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
-
+                var langId = filter["LanguageId"].ToString();
                 long totalCount = await _productContext.SpecGroupCollection.Find(c => true).CountDocumentsAsync();
                 var list = _productContext.SpecGroupCollection.AsQueryable().Skip((page - 1) * pageSize)
-                   .Take(pageSize).Select(_ => new SpecificationGroupDTO()
+                   .Take(pageSize).Select(_ => new SpecificationGroupViewModel()
                    {
-                       GroupName = _.GroupName,
-                       LanguageId = _.LanguageId,
-                       LanguageName = _.LanguageName,
-                       SpecificationGroupId = _.SpecificationGroupId
+                       SpecificationGroupId = _.SpecificationGroupId,
+                       IsDeleted = _.IsDeleted,
+                       GroupName = _.GroupNames.First(a => a.LanguageId == langId)
                    }).ToList();
 
                 result.CurrentPage = page;
@@ -180,7 +193,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
             catch (Exception ex)
             {
                 result.CurrentPage = 1;
-                result.Items = new List<SpecificationGroupDTO>();
+                result.Items = new List<SpecificationGroupViewModel>();
                 result.ItemsCount = 0;
                 result.PageSize = 10;
                 result.QueryString = queryString;
@@ -191,7 +204,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
         public async Task<RepositoryOperationResult> Update(SpecificationGroupDTO dto)
         {
             RepositoryOperationResult result = new RepositoryOperationResult();
-            var equallentModel = _mapper.Map<Entities.Shop.ProductSpecificationGroup.ProductSpecGroup>(dto);
+            //var equallentModel = _mapper.Map<ProductSpecGroup>(dto);
 
             var availableEntity = await _productContext.SpecGroupCollection
                     .Find(_ => _.SpecificationGroupId == dto.SpecificationGroupId).FirstOrDefaultAsync();
@@ -203,14 +216,16 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
                 var mod = GetCurrentModification(dto.ModificationReason);
                 currentModifications.Add(mod);
                 #endregion
-
-                equallentModel.Modifications = currentModifications;
-                equallentModel.CreationDate = availableEntity.CreationDate;
-                equallentModel.CreatorUserId = availableEntity.CreatorUserId;
-                equallentModel.CreatorUserName = availableEntity.CreatorUserName;
-
+                availableEntity.Modifications = currentModifications;
+                if (dto.IsDeleted)
+                {
+                    availableEntity.IsDeleted = true;
+                }else
+                {
+                    availableEntity.GroupNames = dto.GroupNames;
+                }
                 var updateResult = await _productContext.SpecGroupCollection
-                   .ReplaceOneAsync(_ => _.SpecificationGroupId == availableEntity.SpecificationGroupId, equallentModel);
+                   .ReplaceOneAsync(_ => _.SpecificationGroupId == availableEntity.SpecificationGroupId, availableEntity);
 
                 if (updateResult.IsAcknowledged)
                 {
@@ -222,6 +237,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
                     result.Succeeded = false;
                     result.Message = ConstMessages.ErrorInSaving;
                 }
+            }
+            else
+            {
+                result.Succeeded = false;
+                result.Message = ConstMessages.ObjectNotFound;
             }
             return result;
         }

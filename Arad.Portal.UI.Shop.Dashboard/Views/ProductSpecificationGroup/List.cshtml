@@ -4,12 +4,27 @@
 @using Arad.Portal.DataLayer.Models.ProductSpecificationGroup;
 @using Arad.Portal.UI.Shop.Dashboard.ViewComponents;
 
-@model PagedItems<SpecificationGroupDTO>
+@model PagedItems<SpecificationGroupViewModel>
 @{
     var i = ((Model.CurrentPage - 1) * Model.PageSize);
-    System.Collections.Specialized.NameValueCollection queryString = HttpUtility.ParseQueryString(Model.QueryString);
-
-    queryString.Remove("page");
+    bool isSearch = false;
+    System.Collections.Specialized.NameValueCollection queryString = null;
+    var langId = "";
+    if (!string.IsNullOrWhiteSpace(Model.QueryString))
+    {
+        queryString = System.Web.HttpUtility.ParseQueryString(Model.QueryString);
+        isSearch = !string.IsNullOrWhiteSpace(queryString["LanguageId"]);
+        if (isSearch)
+        {
+            langId = queryString["LanguageId"].ToString();
+        }
+        queryString.Remove("page");
+    }
+    else
+    {
+        langId = ViewBag.DefLangId;
+    }
+    var searchCollapseClass = isSearch ? "panel-collapse in collapse show" : "panel-collapse in collapse";
     var dir = "";
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
     {
@@ -29,18 +44,43 @@
         }
     </style>
 }
-<div class="card">
-    <div class="card-header">
-        <h3 class="card-title">@Language.GetString("Menu_ProductSpecificationGroup")</h3>
-        <div class="card-tools" style='@(dir=="rtl" ? "float:left;" : "float:right;")'>
-            @if (ViewBag.Permissions["Add"])
-            {
-                <a asp-action="AddEdit" asp-controller="ProductSpecificationGroup" class="btn btn-success btn-sm">
-                    <i style="position: relative;left: 5px;top: 2px;" class="fa fa-plus"></i>@Language.GetString("btn_Add")
-                </a>
-            }
+<div class="card card-dark">
+    <a data-toggle="collapse" data-parent="#accordion" href="#searchCollapse" aria-expanded="@(!isSearch ? "false" : "true" )" class="@(!isSearch ? " collapsed" : null)">
+
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-search"></i>
+                <span style="margin-right: 5px">@Language.GetString("btn_Search")</span>
+            </h3>
+        </div>
+    </a>
+    <div id="searchCollapse"  style="">
+        <div class="card-body">
+            <div id="accordion">
+                <div class="row">
+
+                    <div class="form-group col-md-3">
+                        <label>@Language.GetString("LanguageName")</label>
+                        <select class="form-control select2" id="cmbLangIdFilter" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+</div>
+<div class="card">
+    <div class="card-header">
+            <h3 class="card-title">@Language.GetString("Menu_ProductSpecificationGroup")</h3>
+            <div class="card-tools" style='@(dir=="rtl" ? "float:left;" : "float:right;")'>
+                @if (ViewBag.Permissions["Add"])
+                {
+                    <a asp-action="AddEdit" asp-controller="ProductSpecificationGroup" class="btn btn-success btn-sm">
+                        <i style="position: relative;left: 5px;top: 2px;" class="fa fa-plus"></i>@Language.GetString("btn_Add")
+                    </a>
+                }
+            </div>
+        </div>
     <div class="card-body table-bordered  table-responsive p-0" id="productSpecGroupListCard">
         <table class="table table-hover">
             <thead>
@@ -48,6 +88,7 @@
                     <th>@Language.GetString("tbl_RowName")</th>
                     <th>@Language.GetString("SpecificationGroupName")</th>
                     <th>@Language.GetString("RelatedLanguage")</th>
+                    <th>@Language.GetString("Currency")</th>
                     <th></th>
                 </tr>
             </thead>
@@ -59,8 +100,9 @@
                     {
                         <tr>
                             <td class="userListCell">@(++i)</td>
-                            <td class="userListCell">@item.GroupName</td>
-                            <td class="userListCell">@item.LanguageName</td>
+                            <td class="userListCell">@item.GroupName.Name</td>
+                            <td class="userListCell">@item.GroupName.LanguageName</td>
+                            <td class="userListCell">@item.GroupName.CurrencyName</td>
                             <td>
                                 @if (ViewBag.Permissions["Edit"])
                                 {
@@ -76,7 +118,7 @@
                                 }
                                 @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
                                 {
-                                    <button id="restoreRecord"  onclick="EntityRestore('@item.SpecificationGroupId')" class="btn btn-sm btn-warning">
+                                    <button id="restoreRecord" onclick="EntityRestore('@item.SpecificationGroupId')" class="btn btn-sm btn-warning">
                                         <i style="position: relative;left: 5px;top: 2px;" class="fa fa-refresh"></i>
                                         @Language.GetString("btn_Restore")
                                     </button>
@@ -110,6 +152,18 @@
 </div>
 @section Scripts{
     <script>
+        $(document).ready(function () {
+            debugger;
+            if ("@langId" != "") {
+                $("#cmbLangIdFilter").val("@langId");
+            }
+
+           $("#cmbLangIdFilter").change(function () {
+            debugger;
+               var queryString = '?LanguageId=' + $("#cmbLangIdFilter").val();
+               window.location.href = '@Url.Action("List", "ProductSpecificationGroup")' + queryString;
+            });
+        });
         function EntityDelete(id) {
             debugger;
         Swal.fire({
@@ -157,7 +211,7 @@
             });
         }
 
-           function EntityRestore(id) {
+        function EntityRestore(id) {
             debugger;
                 Swal.fire({
                     title: '@Language.GetString("AlertAndMessage_AreYouSure")',

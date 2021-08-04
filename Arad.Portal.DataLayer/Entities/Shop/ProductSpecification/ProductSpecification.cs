@@ -1,4 +1,6 @@
 ﻿using Arad.Portal.DataLayer.Models.Product;
+using Arad.Portal.DataLayer.Models.ProductSpecification;
+using Arad.Portal.DataLayer.Models.Shared;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
@@ -12,7 +14,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ProductSpecification
     {
         public ProductSpecification()
         {
-            SpecificationValues = new ();
+            SpecificationNameValues = new List<MultiLingualProperty>();
         }
 
         [BsonId]
@@ -20,14 +22,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ProductSpecification
         public string ProductSpecificationId { get; set; }
 
         public string SpecificationGroupId { get; set; }
-
-        public string SpecificationGroupName { get; set; }
-
-        public string SpecificationName { get; set; }
-
         /// <summary>
-        /// all possible values which this specification has
+        /// languageId, groupname, specificationName and list of values
         /// </summary>
-        public List<string> SpecificationValues { get; set; }
+        public List<MultiLingualProperty> SpecificationNameValues { get; set; }
     }
 }

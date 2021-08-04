@@ -261,7 +261,7 @@
 		<value>ابتدا زبان مورد نظر را انتخاب کنید.</value>
 	</string>
 	<string key="AlertAndMessage_FillMultiLingualProperty">
-		<value>لطفا حداقل یک سطر برای خصوصیات چند زبانه پرکنید.</value>
+		<value>لطفا حداقل یک سطر جدول را پرکنید.</value>
 	</string>
 	<string key="AlertAndMessage_FillLangId">
 		<value>لطفا زبان مربوطه را انتخاب کنید.</value>

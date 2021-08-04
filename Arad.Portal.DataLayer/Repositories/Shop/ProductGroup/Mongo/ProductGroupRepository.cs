@@ -128,10 +128,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             return result;
         }
 
-        public ProductGroupDTO ProductGroupFetch(string productGroupId, string langId)
+        public ProductGroupDTO ProductGroupFetch(string productGroupId)
         {
             var result = new ProductGroupDTO();
-            var entity = _productContext.ProductGroupCollection.Find(_ => _.ProductGroupId == productGroupId).FirstOrDefault();
+            var entity = _productContext.ProductGroupCollection
+                .Find(_ => _.ProductGroupId == productGroupId).FirstOrDefault();
             if(entity != null)
             {
                 result.ProductGroupId = entity.ProductGroupId;
@@ -287,64 +288,46 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             var result = new RepositoryOperationResult();
             var entity = _productContext.ProductGroupCollection
                 .Find(_ => _.ProductGroupId == dto.ProductGroupId).FirstOrDefault();
+            if(entity != null)
+            {
+                entity.ParentId = dto.ParentId;
+               
 
-            entity.ParentId = dto.ParentId;
-            entity.MultiLingualProperties = dto.MultiLingualProperties;
+                #region Add Modification
+                var currentModifications = entity.Modifications;
+                var mod = GetCurrentModification(dto.ModificationReason);
+                currentModifications.Add(mod);
+                #endregion
+               
+                entity.Modifications = currentModifications;
+                if (dto.IsDeleted)
+                {
+                    entity.IsDeleted = true;
+                }else
+                {
+                    entity.MultiLingualProperties = dto.MultiLingualProperties;
+                }
+               
+                var updateResult = await _productContext.ProductGroupCollection
+               .ReplaceOneAsync(_ => _.ProductGroupId == dto.ProductGroupId, entity);
+                if (updateResult.IsAcknowledged)
+                {
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                }
+                else
+                {
+                    result.Succeeded = false;
+                    result.Message = ConstMessages.ErrorInSaving;
+                }
+            }else
+            {
+                result.Succeeded = false;
+                result.Message = ConstMessages.ObjectNotFound;
+            }
             
-            #region Add Modification
-            var currentModifications = entity.Modifications;
-            var mod = GetCurrentModification(dto.ModificationReason);
-            currentModifications.Add(mod);
-            #endregion
 
-            entity.Modifications = currentModifications;
-
-            var updateResult = await _productContext.ProductGroupCollection
-                .ReplaceOneAsync(_ => _.ProductGroupId == dto.ProductGroupId, entity);
-            if (updateResult.IsAcknowledged)
-            {
-                result.Succeeded = true;
-                result.Message = ConstMessages.SuccessfullyDone;
-            }
-            else
-            {
-                result.Succeeded = false;
-                result.Message = ConstMessages.ErrorInSaving;
-            }
-            return result;
-        }
-
-        public async Task<RepositoryOperationResult> Restore(string id)
-        {
-            var result = new RepositoryOperationResult();
-            var entity = _productContext.ProductGroupCollection
-              .Find(_ => _.ProductGroupId == id).FirstOrDefault();
-            entity.IsDeleted = false;
-            var updateResult = await _productContext.ProductGroupCollection
-               .ReplaceOneAsync(_ => _.ProductGroupId == id, entity);
-            if (updateResult.IsAcknowledged)
-            {
-                result.Succeeded = true;
-                result.Message = ConstMessages.SuccessfullyDone;
-            }
-            else
-            {
-                result.Succeeded = false;
-                result.Message = ConstMessages.ErrorInSaving;
-            }
-            return result;
-        }
-
-        public List<SelectListModel> GetAlActiveProductGroup(string langId)
-        {
-             var result = new List<SelectListModel>();
-            result = _productContext.ProductGroupCollection.Find(x => x.IsActive)
-               .Project(x => new SelectListModel
-               {
-                   Text = x.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() == 0 ? "" : x.MultiLingualProperties.First(a => a.LanguageId == langId).Name,
-                   Value = x.ProductGroupId
-               }).ToList();
-          
+           
             return result;
         }
 
@@ -374,11 +357,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             var result = new List<SelectListModel>();
             result = _productContext.ProductGroupCollection.AsQueryable()
                 .Where(_ => _.IsActive).Select(_ => new SelectListModel()
-            {
-                Text = _.MultiLingualProperties.First(a=>a.LanguageId == langId) != null ?
-                _.MultiLingualProperties.First(a => a.LanguageId == langId).Name : "",
-                Value = _.ProductGroupId
-            }).OrderBy(_=>_.Text).ToList();
+                {
+                    Text = _.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() != 0 ?
+                         _.MultiLingualProperties.First(a => a.LanguageId == langId).Name : "",
+                    Value = _.ProductGroupId
+                }).OrderBy(_ => _.Text).ToList();
             return result;
         }
 

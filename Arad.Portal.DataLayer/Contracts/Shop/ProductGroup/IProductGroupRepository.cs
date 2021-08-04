@@ -15,12 +15,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductGroup
 
         Task<RepositoryOperationResult> Update(ProductGroupDTO dto);
         ProductGroupDTO ProductGroupFetch(string productGroupId);
-
-       
         bool GroupExistance(string productGroupId);
-        //update based on the UI
-        //Task<RepositoryOperationResult> Update(ProductGroupDTO dto);
-
         Task<PagedItems<ProductGroupViewModel>> List(string queryString);
         Task<RepositoryOperationResult> Delete(string productGroupId, string modificationReason);
         Task<RepositoryOperationResult> Restore(string id);

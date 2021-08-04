@@ -10,7 +10,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductSpecificationGroup
 {
     public interface IProductSpecGroupRepository 
     {
-        Task<PagedItems<SpecificationGroupDTO>> List(string queryString);
+        Task<PagedItems<SpecificationGroupViewModel>> List(string queryString);
 
         Task<RepositoryOperationResult> Add(SpecificationGroupDTO dto);
 
@@ -20,8 +20,6 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductSpecificationGroup
             string modificationReason);
 
         Task<SpecificationGroupDTO> GroupSpecificationFetch(string productSpecificationGroupId);
-
-        Entities.Shop.ProductSpecificationGroup.ProductSpecGroup FetchByName(string groupName);
 
     }
 }
