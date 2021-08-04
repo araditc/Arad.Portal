@@ -10,9 +10,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductGroup
 {
     public interface IProductGroupRepository
     {
-        Task<List<ProductGroupDTO>> AllProductGroups();
         Task<RepositoryOperationResult> Add(ProductGroupDTO dto);
-
         Task<RepositoryOperationResult> Update(ProductGroupDTO dto);
         ProductGroupDTO ProductGroupFetch(string productGroupId);
         bool GroupExistance(string productGroupId);

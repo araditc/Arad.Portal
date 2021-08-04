@@ -106,37 +106,24 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             JsonResult result;
             try
             {
-                var dTO = await _productSpecGrpRepository.GroupSpecificationFetch(id);
-                if (dTO == null)
+                   
+                var res = await _productSpecGrpRepository.Restore(id);
+                if (res.Succeeded)
                 {
                     result = new JsonResult(new
                     {
-                        Status = "error",
-                        Message = Language.GetString("AlertAndMessage_EntityNotFound")
+                        Status = "success",
+                        Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully")
                     });
                 }
                 else
                 {
-                    dTO.IsDeleted = false;
-                    dTO.ModificationReason = "restore productSpecificationGroup";
-                    var res = await _productSpecGrpRepository.Update(dTO);
-                    if (res.Succeeded)
+                    result = new JsonResult(new
                     {
-                        result = new JsonResult(new
-                        {
-                            Status = "success",
-                            Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully")
-                        });
+                        Status = "error",
+                        Message = Language.GetString("AlertAndMessage_TryLator")
+                    });
                     }
-                    else
-                    {
-                        result = new JsonResult(new
-                        {
-                            Status = "error",
-                            Message = Language.GetString("AlertAndMessage_TryLator")
-                        });
-                    }
-                }
             }
             catch(Exception ex)
             {

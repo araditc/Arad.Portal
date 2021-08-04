@@ -21,20 +21,18 @@ using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mongo
 {
-    public class ProductSpecGroupRepository : BaseRepository , IProductSpecGroupRepository
+    public class ProductSpecGroupRepository : BaseRepository, IProductSpecGroupRepository
     {
         private readonly IMapper _mapper;
         private readonly ProductContext _productContext;
         private readonly LanguageContext _languageContext;
-        private readonly CurrencyContext _currencyContext;
-
+        
         public ProductSpecGroupRepository(IHttpContextAccessor httpContextAccessor,
-            IMapper mapper, ProductContext productContext, LanguageContext langContext, CurrencyContext currencyContext)
+            IMapper mapper, ProductContext productContext, LanguageContext langContext)
             : base(httpContextAccessor)
         {
             _mapper = mapper;
             _productContext = productContext;
-            _currencyContext = currencyContext;
             _languageContext = langContext;
         }
 
@@ -43,35 +41,37 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
             RepositoryOperationResult result = new RepositoryOperationResult();
             try
             {
-
                 var equallentEntity = _mapper.Map<ProductSpecGroup>(dto);
                 equallentEntity.SpecificationGroupId = Guid.NewGuid().ToString();
-             
+
                 equallentEntity.CreationDate = DateTime.Now;
                 equallentEntity.CreatorUserId = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
                 equallentEntity.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
-
-                try
-                {
-                    equallentEntity.SpecificationGroupId = Guid.NewGuid().ToString();
-                    equallentEntity.IsActive = true;
-                    await _productContext.SpecGroupCollection.InsertOneAsync(equallentEntity);
-                    result.Succeeded = true;
-                    result.Message = ConstMessages.SuccessfullyDone;
-                }
-                catch (Exception e)
-                {
-                    result.Message = ConstMessages.ErrorInSaving;
-                }
-               
-               
+                equallentEntity.SpecificationGroupId = Guid.NewGuid().ToString();
+                equallentEntity.IsActive = true;
+                await _productContext.SpecGroupCollection.InsertOneAsync(equallentEntity);
+                result.Succeeded = true;
+                result.Message = ConstMessages.SuccessfullyDone;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                result.Message = ConstMessages.InternalServerErrorMessage;
+                result.Message = ConstMessages.ErrorInSaving;
             }
+            return result;
+        }
+
+        public List<SelectListModel> AllActiveSpecificationGroup(string langId)
+        {
+            var result = new List<SelectListModel>();
+            result = _productContext.SpecGroupCollection.Find(_=>_.IsActive)
+                .Project(_=> new SelectListModel()
+                {
+                    Text = _.GroupNames.Where(a => a.LanguageId == langId).Count() != 0 ?
+                         _.GroupNames.First(a => a.LanguageId == langId).Name : "",
+                    Value = _.SpecificationGroupId
+                }).ToList();
             return result;
         }
 
@@ -85,11 +85,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
                 #region check object dependency
                 var allowDeletion = true;
                 if (_productContext.SpecificationCollection
-                    .AsQueryable().Any(_=>_.SpecificationGroupId == productSpecificationGroupId))
+                    .AsQueryable().Any(_ => _.SpecificationGroupId == productSpecificationGroupId))
                 {
                     allowDeletion = false;
                 }
-                
+
                 #endregion
                 if (allowDeletion)
                 {
@@ -132,14 +132,13 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
             return result;
         }
 
-       
         public async Task<SpecificationGroupDTO> GroupSpecificationFetch(string productSpecificationGroupId)
         {
             var result = new SpecificationGroupDTO();
             try
             {
                 var group = await _productContext.SpecGroupCollection
-                    .Find(_=>_.SpecificationGroupId == productSpecificationGroupId).FirstOrDefaultAsync();
+                    .Find(_ => _.SpecificationGroupId == productSpecificationGroupId).FirstOrDefaultAsync();
                 result = _mapper.Map<SpecificationGroupDTO>(group);
             }
             catch (Exception e)
@@ -201,6 +200,27 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
             return result;
         }
 
+        public async Task<RepositoryOperationResult> Restore(string productSpecificationGroupId)
+        {
+            var result = new RepositoryOperationResult();
+            var entity = _productContext.SpecGroupCollection
+              .Find(_ => _.SpecificationGroupId == productSpecificationGroupId).FirstOrDefault();
+            entity.IsDeleted = false;
+            var updateResult = await _productContext.SpecGroupCollection
+               .ReplaceOneAsync(_ => _.SpecificationGroupId == productSpecificationGroupId, entity);
+            if (updateResult.IsAcknowledged)
+            {
+                result.Succeeded = true;
+                result.Message = ConstMessages.SuccessfullyDone;
+            }
+            else
+            {
+                result.Succeeded = false;
+                result.Message = ConstMessages.ErrorInSaving;
+            }
+            return result;
+        }
+
         public async Task<RepositoryOperationResult> Update(SpecificationGroupDTO dto)
         {
             RepositoryOperationResult result = new RepositoryOperationResult();
@@ -220,7 +240,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
                 if (dto.IsDeleted)
                 {
                     availableEntity.IsDeleted = true;
-                }else
+                }
+                else
                 {
                     availableEntity.GroupNames = dto.GroupNames;
                 }

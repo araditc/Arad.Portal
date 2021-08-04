@@ -187,6 +187,12 @@
 	<string key="tbl_RowName">
 		<value>ردیف</value>
 	</string>
+	<string key="tbl_SpecificationName">
+		<value>نام خصیصه</value>
+	</string>
+	<string key="tbl_SpecificationValues">
+		<value>مقادیر خصیصه</value>
+	</string>
 	<string key="tbl_ParentGroupName">
 		<value>نام گروه</value>
 	</string>
@@ -952,6 +958,12 @@
 	<string key="EditProductGroupPart_Title">
 		<value>ویرایش گروه محصول</value>
 	</string>
+	<string key="AddProductSpecificationPart_Title">
+		<value>افزودن خصوصیات محصول</value>
+	</string>
+	<string key="EditProductSpecificationPart_Title">
+		<value>ویرایش خصوصیات محصول</value>
+	</string>
 	<string key="AddProductUnitPart_Title">
 		<value>افزودن واحد محصول</value>
 	</string>
@@ -1107,6 +1119,9 @@
 	</string>
 	<string key="Menu_ProductGroups">
 		<value>گروه های محصول</value>
+	</string>
+	<string key="Menu_ProductSpecifications">
+		<value>خصوصیات محصول</value>
 	</string>
 	<string key="Menu_Roles">
 		<value>نقش ها</value>

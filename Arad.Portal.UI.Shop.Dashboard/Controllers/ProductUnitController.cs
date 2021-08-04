@@ -52,7 +52,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add([FromForm]ProductUnitDTO dto)
+        public async Task<IActionResult> Add([FromForm] ProductUnitDTO dto)
         {
             JsonResult result;
             var uniqueness = _unitRepository.FetchByName(dto.UnitName);
@@ -80,7 +80,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             else
             {
                 var language = _lanRepository.FetchLanguage(dto.LanguageId);
-                if(language != null)
+                if (language != null)
                 {
                     dto.LanguageName = language.LanguageName;
                 }
@@ -98,42 +98,39 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             JsonResult result;
             try
             {
-                var unitDto = _unitRepository.FetchUnit(id);
-                if (unitDto == null)
+                var res = await _unitRepository.Restore(id);
+                if (res.Succeeded)
                 {
-                    result = new JsonResult(new { Status = "error", 
-                        Message = Language.GetString("AlertAndMessage_EntityNotFound") });
+                    result = new JsonResult(new
+                    {
+                        Status = "success",
+                        Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully")
+                    });
                 }
                 else
                 {
-                    unitDto.IsDeleted = false;
-                    unitDto.ModificationReason = "restore productUnit";
-
-                    var res = await _unitRepository.EditProductUnit(unitDto);
-
-                    if (res.Succeeded)
+                    result = new JsonResult(new
                     {
-                        result = new JsonResult(new { Status = "success", 
-                            Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully") });
-                    }
-                    else
-                    {
-                        result = new JsonResult(new { Status = "error", 
-                            Message = Language.GetString("AlertAndMessage_TryLator") });
-                    }
+                        Status = "error",
+                        Message = Language.GetString("AlertAndMessage_TryLator")
+                    });
                 }
+
             }
             catch (Exception e)
             {
-                result = new JsonResult(new { Status = "error", 
-                    Message = Language.GetString("AlertAndMessage_TryLator") });
+                result = new JsonResult(new
+                {
+                    Status = "error",
+                    Message = Language.GetString("AlertAndMessage_TryLator")
+                });
             }
             return result;
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([FromForm]ProductUnitDTO dto)
+        public async Task<IActionResult> Edit([FromForm] ProductUnitDTO dto)
         {
             JsonResult result;
             if (string.IsNullOrWhiteSpace(dto.ModificationReason))
@@ -161,7 +158,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             else
             {
                 var model = _unitRepository.FetchUnit(dto.ProductUnitId);
-                if(model == null)
+                if (model == null)
                 {
                     return RedirectToAction("PageOrItemNotFound", "Account");
                 }
@@ -172,13 +169,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 dto.LanguageName = language.LanguageName;
             }
             RepositoryOperationResult saveResult = await _unitRepository.EditProductUnit(dto);
-           
-            result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message } 
+
+            result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
             : new { Status = "Error", saveResult.Message });
             return result;
         }
 
-       [HttpGet]
+        [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
             RepositoryOperationResult opResult = await _unitRepository.Delete(id);

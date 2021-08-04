@@ -37,7 +37,7 @@
         {
             @if (item.Children.Count != 0)
             {
-                <li class="nav-item  @(dir == "rtl" ? "has-treeview" : "")">
+                <li class="nav-item">
                     <a href="#" class="nav-link">
                         @if (!string.IsNullOrWhiteSpace(item.Icon))
                         {
@@ -51,7 +51,7 @@
                     <ul class="nav nav-treeview">
                         @foreach (var menu in item.Children)
                         {
-                            <li class="nav-item @(menu.Children.Count != 0 ? "has-treeview menu-open" : "")">
+                            <li class="nav-item @(menu.Children.Count != 0 ? "menu-open" : "")">
                                 @await Component.InvokeAsync("InnerMenu", menu)
                             </li>
                         }

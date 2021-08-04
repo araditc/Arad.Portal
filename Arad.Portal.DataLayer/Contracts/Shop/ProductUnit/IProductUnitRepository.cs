@@ -14,6 +14,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductUnit
         Task<RepositoryOperationResult> AddProductUnit(ProductUnitDTO dto);
         Task<RepositoryOperationResult> EditProductUnit(ProductUnitDTO dto);
         Task<RepositoryOperationResult> Delete(string productUnitId);
+        Task<RepositoryOperationResult> Restore(string productUnitId);
 
         ProductUnitDTO FetchUnit(string productUnitId);
         Entities.Shop.ProductUnit.ProductUnit FetchByName(string unitName);

@@ -14,6 +14,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using System.Collections.Specialized;
 using System.Web;
+using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
 {
@@ -22,12 +23,15 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
         private readonly IMapper _mapper;
       
         private readonly ProductContext _productContext;
+        private readonly LanguageContext _languageContext;
+       
         public ProductSpecificationRepository(IHttpContextAccessor httpContextAccessor,
             IMapper mapper, 
-            ProductContext productContext): base(httpContextAccessor)
+            ProductContext productContext, LanguageContext languageContext): base(httpContextAccessor)
         {
             _mapper = mapper;
             _productContext = productContext;
+            _languageContext = languageContext;     
         }
         public async Task<RepositoryOperationResult> Add(ProductSpecificationDTO dto)
         {
@@ -43,8 +47,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                     .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
                 equallentEntity.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
-                equallentEntity.ProductSpecificationId = Guid.NewGuid().ToString();
 
+                equallentEntity.ProductSpecificationId = Guid.NewGuid().ToString();
+                equallentEntity.IsActive = true;
                 await _productContext.SpecificationCollection.InsertOneAsync(equallentEntity);
                 result.Succeeded = true;
                 result.Message = ConstMessages.SuccessfullyDone;
@@ -72,12 +77,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                         baseProduct.Specifications
                     .Any(_=> _.Specification.ProductSpecificationId == specificationId));
 
-
                 if (check)
                 {
                     allowDeletion = false;
                 }
-
 
                 #endregion
                 if (allowDeletion)
@@ -121,23 +124,17 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult<ProductSpecificationDTO>> GetModel(string specId)
+        public async Task<ProductSpecificationDTO> SpecificationFetch(string specId)
         {
-            RepositoryOperationResult<ProductSpecificationDTO> result =
-                new RepositoryOperationResult<ProductSpecificationDTO>();
+            ProductSpecificationDTO result = null;
+            
             var entity = await _productContext.SpecificationCollection
                 .Find(_ => _.ProductSpecificationId == specId).FirstOrDefaultAsync();
             if(entity != null)
             {
-                var dto = _mapper.Map<ProductSpecificationDTO>(entity);
-                result.Message = ConstMessages.SuccessfullyDone;
-                result.ReturnValue = dto;
-                result.Succeeded = true;
+                result = _mapper.Map<ProductSpecificationDTO>(entity);
             }
-            else
-            {
-                result.Message = ConstMessages.ObjectNotFound;
-            }
+            
             return result;
         }
 
@@ -173,14 +170,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
         }
 
         
-        public RepositoryOperationResult<List<string>> GetSpecificationValues(string productSpecificationId)
+        public RepositoryOperationResult<List<MultiLingualProperty>> GetSpecificationValues(string productSpecificationId)
         {
-            var result = new RepositoryOperationResult<List<string>>();
+            var result = new RepositoryOperationResult<List<MultiLingualProperty>>();
             var lst = _productContext.SpecificationCollection.AsQueryable()
                 .Where(_ => _.ProductSpecificationId == productSpecificationId);
             if(lst != null && lst.Count() > 0)
             {
-                var entity = lst.FirstOrDefault();
+                var entity = lst;
               //  result.ReturnValue = entity.SpecificationValues;
                 result.Message = ConstMessages.SuccessfullyDone;
                 result.Succeeded = true;
@@ -192,9 +189,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
             return result;
         }
 
-        public async Task<PagedItems<ProductSpecificationDTO>> List(string queryString)
+        public async Task<PagedItems<ProductSpecificationViewModel>> List(string queryString)
         {
-            PagedItems<ProductSpecificationDTO> result = new PagedItems<ProductSpecificationDTO>();
+            PagedItems<ProductSpecificationViewModel> result = new PagedItems<ProductSpecificationViewModel>();
             try
             {
                 NameValueCollection filter = HttpUtility.ParseQueryString(queryString);
@@ -208,18 +205,22 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                 {
                     filter.Set("PageSize", "20");
                 }
-
+                if (string.IsNullOrWhiteSpace(filter["LanguageId"]))
+                {
+                    var lan = _languageContext.Collection.Find(_ => _.IsDefault).FirstOrDefault();
+                    filter.Set("LanguageId", lan.LanguageId);
+                }
                 var page = Convert.ToInt32(filter["CurrentPage"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
-
+                var langId = filter["LanguageId"].ToString();
                 long totalCount = await _productContext.SpecificationCollection.Find(c => true).CountDocumentsAsync();
                 var list = _productContext.SpecificationCollection.AsQueryable().Skip((page - 1) * pageSize)
-                   .Take(pageSize).Select(_ => new ProductSpecificationDTO()
+                   .Take(pageSize).Select(_ => new ProductSpecificationViewModel()
                    {
                       ProductSpecificationId = _.ProductSpecificationId,
                       SpecificationGroupId = _.SpecificationGroupId,
-                      //SpecificationName = _.SpecificationName,
-                      //SpecificationValues = _.SpecificationValues
+                      SpecificationNameValues = _.SpecificationNameValues.Where(a=>a.LanguageId == langId).First()
+                     
                    }).ToList();
 
                 result.CurrentPage = page;
@@ -232,7 +233,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
             catch (Exception ex)
             {
                 result.CurrentPage = 1;
-                result.Items = new List<ProductSpecificationDTO>();
+                result.Items = new List<ProductSpecificationViewModel>();
                 result.ItemsCount = 0;
                 result.PageSize = 10;
                 result.QueryString = queryString;
@@ -244,8 +245,6 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
         {
             var result = new RepositoryOperationResult();
 
-            var equallentModel = _mapper.Map<Entities.Shop.ProductSpecification.ProductSpecification>(dto);
-
             var availableEntity = await _productContext.SpecificationCollection
                     .Find(_ => _.ProductSpecificationId.Equals(dto.ProductSpecificationId)).FirstOrDefaultAsync();
 
@@ -254,18 +253,16 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                 #region Add Modification
                 var currentModifications = availableEntity.Modifications;
                 var mod = GetCurrentModification(dto.ModificationReason);
-
                 currentModifications.Add(mod);
                 #endregion
 
-                equallentModel.Modifications = currentModifications;
+                availableEntity.Modifications = currentModifications;
+                availableEntity.SpecificationGroupId = dto.SpecificationGroupId;
+                availableEntity.SpecificationNameValues = dto.SpecificationNameValues;
 
-                equallentModel.CreationDate = availableEntity.CreationDate;
-                equallentModel.CreatorUserId = availableEntity.CreatorUserId;
-                equallentModel.CreatorUserName = availableEntity.CreatorUserName;
-
+              
                 var updateResult = await _productContext.SpecificationCollection
-                   .ReplaceOneAsync(_ => _.ProductSpecificationId == availableEntity.ProductSpecificationId, equallentModel);
+                   .ReplaceOneAsync(_ => _.ProductSpecificationId == availableEntity.ProductSpecificationId, availableEntity);
 
                 if (updateResult.IsAcknowledged)
                 {
@@ -281,6 +278,25 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
             return result;
         }
 
-        
+        public async Task<RepositoryOperationResult> Restore(string specificationId)
+        {
+            var result = new RepositoryOperationResult();
+            var entity = _productContext.SpecificationCollection
+              .Find(_ => _.ProductSpecificationId == specificationId).FirstOrDefault();
+            entity.IsDeleted = false;
+            var updateResult = await _productContext.SpecificationCollection
+               .ReplaceOneAsync(_ => _.ProductSpecificationId == specificationId, entity);
+            if (updateResult.IsAcknowledged)
+            {
+                result.Succeeded = true;
+                result.Message = ConstMessages.SuccessfullyDone;
+            }
+            else
+            {
+                result.Succeeded = false;
+                result.Message = ConstMessages.ErrorInSaving;
+            }
+            return result;
+        }
     }
 }

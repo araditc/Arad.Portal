@@ -14,7 +14,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ProductSpecification
     {
         public ProductSpecification()
         {
-            SpecificationNameValues = new List<MultiLingualProperty>();
+            SpecificationNameValues = new ();
         }
 
         [BsonId]
@@ -23,7 +23,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ProductSpecification
 
         public string SpecificationGroupId { get; set; }
         /// <summary>
-        /// languageId, groupname, specificationName and list of values
+        /// languageId, specificationGroupName, specificationName and list of its values
         /// </summary>
         public List<MultiLingualProperty> SpecificationNameValues { get; set; }
     }

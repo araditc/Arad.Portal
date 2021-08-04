@@ -25,11 +25,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
     {
         private readonly ProductContext _productContext;
         private readonly LanguageContext _languageContext;
-        private readonly CurrencyContext _currencyContext;
         private readonly IMapper _mapper;
       
         public ProductGroupRepository(ProductContext context,
-            LanguageContext languageContext, CurrencyContext currencyContext,
+            LanguageContext languageContext, 
             IHttpContextAccessor httpContextAccessor,
             IMapper mapper):
             base(httpContextAccessor)
@@ -37,7 +36,6 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             
             _productContext = context;
             _languageContext = languageContext;
-            _currencyContext = currencyContext;
             _mapper = mapper;
         }
 
@@ -66,15 +64,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
 
             return result;
         }
-
-        public async Task<List<ProductGroupDTO>> AllProductGroups()
-        {
-            var result = new List<ProductGroupDTO>();
-            var lst = await _productContext.ProductGroupCollection.AsQueryable().Where(_ => !_.IsDeleted).ToListAsync();
-            result = _mapper.Map<List<ProductGroupDTO>>(lst);
-            return result;
-        }
-
+        
         public async Task<RepositoryOperationResult> Delete(string productGroupId, string modificationReason)
         {
             var result = new RepositoryOperationResult();
@@ -264,7 +254,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                        ProductGroupId = _.ProductGroupId,
                        ParentId = _.ParentId,
                        IsDeleted = _.IsDeleted,
-                       MultiLingualProperty = _.MultiLingualProperties.ToList().First(a=>a.LanguageId == langId)
+                       MultiLingualProperty = _.MultiLingualProperties.Where(a => a.LanguageId == langId).First()
                    }).ToList();
                 result.CurrentPage = page;
                 result.Items = lst;
@@ -300,13 +290,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                 #endregion
                
                 entity.Modifications = currentModifications;
-                if (dto.IsDeleted)
-                {
-                    entity.IsDeleted = true;
-                }else
-                {
-                    entity.MultiLingualProperties = dto.MultiLingualProperties;
-                }
+                entity.MultiLingualProperties = dto.MultiLingualProperties;
+       
                
                 var updateResult = await _productContext.ProductGroupCollection
                .ReplaceOneAsync(_ => _.ProductGroupId == dto.ProductGroupId, entity);
@@ -355,13 +340,13 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
         public List<SelectListModel> GetAlActiveProductGroup(string langId)
         {
             var result = new List<SelectListModel>();
-            result = _productContext.ProductGroupCollection.AsQueryable()
-                .Where(_ => _.IsActive).Select(_ => new SelectListModel()
+            result = _productContext.ProductGroupCollection.Find(_=>_.IsActive)
+                .Project(_ => new SelectListModel()
                 {
                     Text = _.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() != 0 ?
                          _.MultiLingualProperties.First(a => a.LanguageId == langId).Name : "",
                     Value = _.ProductGroupId
-                }).OrderBy(_ => _.Text).ToList();
+                }).ToList();
             return result;
         }
 

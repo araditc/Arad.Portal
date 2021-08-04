@@ -193,6 +193,12 @@
 	<string key="tbl_RowName">
 		<value>Row</value>
 	</string>
+	<string key="tbl_SpecificationName">
+		<value>Specification Name</value>
+	</string>
+	<string key="tbl_SpecificationValues">
+		<value>Specification Values</value>
+	</string>
 	<string key="tbl_ParentGroup">
 		<value>Parent Group</value>
 	</string>
@@ -908,6 +914,12 @@
 	<string key="EditProductGroupPart_Title">
 		<value>Edit ProductGroup</value>
 	</string>
+	<string key="AddProductSpecificationPart_Title">
+		<value>Add ProductSpecification</value>
+	</string>
+	<string key="EditProductSpecificationPart_Title">
+		<value>Edit ProductSpecification</value>
+	</string>
 	<string key="AddProductUnitPart_Title">
 		<value>Add ProductUnit</value>
 	</string>
@@ -1064,6 +1076,9 @@
 	</string>
 	<string key="Menu_ProductGroups">
 		<value>Product Groups</value>
+	</string>
+	<string key="Menu_ProductSpecifications">
+		<value>Product Specifications</value>
 	</string>
 	<string key="Menu_Roles">
 		<value>Roles</value>

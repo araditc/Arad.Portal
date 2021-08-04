@@ -210,5 +210,26 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
             }
             return result;
         }
+
+        public async Task<RepositoryOperationResult> Restore(string productUnitId)
+        {
+            var result = new RepositoryOperationResult();
+            var entity = _productContext.ProductUnitCollection
+              .Find(_ => _.ProductUnitId == productUnitId).FirstOrDefault();
+            entity.IsDeleted = false;
+            var updateResult = await _productContext.ProductUnitCollection
+               .ReplaceOneAsync(_ => _.ProductUnitId == productUnitId, entity);
+            if (updateResult.IsAcknowledged)
+            {
+                result.Succeeded = true;
+                result.Message = ConstMessages.SuccessfullyDone;
+            }
+            else
+            {
+                result.Succeeded = false;
+                result.Message = ConstMessages.ErrorInSaving;
+            }
+            return result;
+        }
     }
 }

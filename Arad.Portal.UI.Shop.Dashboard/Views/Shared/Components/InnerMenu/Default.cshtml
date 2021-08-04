@@ -34,7 +34,7 @@
 <ul class="nav nav-treeview">
     @foreach (var menu in Model.Children)
     {
-        <li class="nav-item @(menu.Children.Count != 0 ? "has-treeview" : "")">
+        <li class="nav-item">
             @await Component.InvokeAsync("InnerMenu", menu)
         </li>
     }
