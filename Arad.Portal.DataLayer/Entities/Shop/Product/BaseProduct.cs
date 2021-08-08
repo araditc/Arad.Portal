@@ -33,7 +33,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Product
         public List<string> GroupIds { get; set; }
 
         public List<string> GroupNames { get; set; }
-
+        /// <summary>
+        /// Name, language, currency, seo
+        /// </summary>
         public List<MultiLingualProperty> MultiLingualProperties { get; set; }
 
         public string UniqueCode { get; set; }

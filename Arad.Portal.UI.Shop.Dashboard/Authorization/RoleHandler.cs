@@ -98,7 +98,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Authorization
 
                 //string ch = toLowerRoutesPers.FirstOrDefault(w => w == address);
 
-                if (!toLowerRoutesPers.Any(_=>_ == address))
+                if (!toLowerRoutesPers.Any(_=>_.ToLower() == address))
                 {
                     context.Fail();
                     return Task.CompletedTask;

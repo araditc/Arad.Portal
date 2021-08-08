@@ -27,7 +27,7 @@
     }
     p.group {
         padding-right: @(dir == "rtl" ? "3%" : "0%");
-       
+
     }
     .treeview .item i{
         margin : 10px;
@@ -41,16 +41,10 @@
     <div class="col-md-12">
         <div class="card card-primary" id="addPermissionCard">
             <div class="card-header">
-                <h3 class="card-title" data-toggle="tab">@(Model.IsEditView ? Language.GetString("EditRolePart_Title") : Language.GetString("AddRolePart_Title"))</h3>
+                <h3 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.RoleId) ? Language.GetString("EditRolePart_Title") : Language.GetString("AddRolePart_Title"))</h3>
             </div>
             <form asp-controller="Role" role="form" asp-action="Save" id="addEditRoleFrm" method="post">
-                @{
-                    if (Model.IsEditView)
-                    {
-                        <input type="hidden" value="@Model.RoleId" data-val="true" asp-for="@Model.RoleId">
-                        <input type="hidden" value="@ViewBag.IsEditView" id="IsEditView" />
-                    }
-                }
+                <input type="hidden" value="@Model.RoleId" data-val="true" asp-for="@Model.RoleId">
                 <div class="card-body" id="addEditPermissionCard">
                     <div class="row">
                         <div class="form-group col-md-3">
@@ -62,20 +56,32 @@
                         <div class="form-group col-md-3" id="TypeSelect">
                             <label asp-for="IsActive">@Language.GetString("ActivationState")</label><br />
                             <input @(Model.IsActive ? "checked" : "") id="IsActive" name="IsActive" type="radio"
-                                   value="true" ><span style="margin:0 5px;">@Language.GetString("Active")</span></input>
+                                   value="true"><span style="margin:0 5px;">@Language.GetString("Active")</span></input>
                                 <input @(!Model.IsActive ? "checked" : "") id="IsActive" name="IsActive" type="radio"
-                                       value="false" ><span style="margin:0 5px;">@Language.GetString("InActive")</span></input>
+                                       value="false"><span style="margin:0 5px;">@Language.GetString("InActive")</span></input>
                                     <span data-val-result="IsActive" class="text-danger"></span>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div id="permissionTreeView">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div id="permissionTreeView">
 
-                                    </div>
-                                </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
+                        @{
+                            if (!string.IsNullOrWhiteSpace(Model.RoleId))
+                            {
+                                <div class="form-group col-md-6">
+                                    <label asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
+                                    <textarea dir="rtl" asp-for="ModificationReason" class="form-control" rows="3"></textarea>
+                                    <span data-val-result="ModificationReason" class="text-danger"></span>
+                                </div>
+                            }
+                        }
+                    </div>
+                  </div>
                         <div class="card-footer">
                             <div class="row">
                                 <input type="submit" id="savebtn" value="@Language.GetString("btn_Save")" class="btn btn-block btn-success" />
@@ -86,30 +92,22 @@
                 </div>
             </div>
         </div>
-
         @section Scripts
 {
-            @*<script src="~/lib/twitter-bootstrap/js/bootstrap.min.js"></script>*@
-            @*<script src="~/js/jqueryTreeview/jquery.treeview.js"></script>*@
-<script>
-               /* vat treeModel = {};*/
+
+            <script>
+              
                 $(document).ready(function () {
                     debugger;
                  $.ajax({
                      url: '@Url.Action("ListPermissions")' +"/"+"@Model.RoleId",
                      type: 'Get',
-                     @*data: '@Model.RoleId',*@
                      success: function (result) {
                          debugger;
-
                          var tw = new TreeView(
                              result,
                              { showAlwaysCheckBox: true, fold: false });
-                        /* document.body.appendChild(tw.root)*/
-                         //$("#permissionTreeView").appendChild(tw.root);
                          document.getElementById("permissionTreeView").appendChild(tw.root);
-
-
                      },
                      error: function (xhr, ajaxOptions, thrownError) {
                          alert(xhr.status);
@@ -194,7 +192,7 @@
             });
         });
         });
-</script>
+            </script>
         }
 
 

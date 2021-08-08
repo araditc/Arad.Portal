@@ -32,9 +32,5 @@ namespace Arad.Portal.DataLayer.Models.Role
         [Required(ErrorMessage = "لطفا دسترسی های نقش را انتخاب نمایید.")]
         public List<string> PermissionIds { get; set; }
         public string ModificationReason { get; set; }
-
-        public bool IsEditView { get; set; }
-
-
     }
 }

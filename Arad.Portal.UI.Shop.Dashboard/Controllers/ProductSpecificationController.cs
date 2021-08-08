@@ -56,7 +56,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
 
             var lan = _lanRepository.GetDefaultLanguage();
-            ViewBag.SpecificationGroupList = _groupRepository.AllActiveSpecificationGroup(lan.LanguageId);
+            var groupList = _groupRepository.AllActiveSpecificationGroup(lan.LanguageId);
+            groupList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value =""  });
+            ViewBag.SpecificationGroupList = groupList;
             ViewBag.LangId = lan.LanguageId;
 
             ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
@@ -112,7 +114,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.LanguageName = lan.LanguageName;
                     item.LanguageSymbol = lan.Symbol;
                     item.GroupName = group != null && group.GroupNames.First(_ => _.LanguageId == lan.LanguageId) != null ?
-                        group.GroupNames.First(_ => _.LanguageId == lan.LanguageId).GroupName : "";
+                        group.GroupNames.First(_ => _.LanguageId == lan.LanguageId).Name : "";
                 }
 
                 RepositoryOperationResult saveResult = await _specificationRepository.Add(dto);

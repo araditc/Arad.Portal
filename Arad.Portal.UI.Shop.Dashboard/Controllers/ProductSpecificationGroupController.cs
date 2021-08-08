@@ -135,6 +135,28 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             return result;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id">id stands for languageId</param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult GetProductSpecificationGroupList(string id)
+        {
+            JsonResult result;
+            List<SelectListModel> lst;
+            lst = _productSpecGrpRepository.AllActiveSpecificationGroup(id).OrderBy(_ => _.Text).ToList();
+            if (lst.Count() > 0)
+            {
+                result = new JsonResult(new { Status = "success", Data = lst });
+            }
+            else
+            {
+                result = new JsonResult(new { Status = "error", Message = "" });
+            }
+            return result;
+
+        }
 
         [HttpPost]
         public async Task<IActionResult> Edit([FromBody] SpecificationGroupDTO dto)

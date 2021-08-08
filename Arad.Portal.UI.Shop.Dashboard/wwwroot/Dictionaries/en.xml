@@ -193,6 +193,9 @@
 	<string key="tbl_RowName">
 		<value>Row</value>
 	</string>
+	<string key="specificationName_placeHolder">
+		<value>possible value for this specification</value>
+	</string>
 	<string key="tbl_SpecificationName">
 		<value>Specification Name</value>
 	</string>
@@ -269,11 +272,23 @@
 	</string>
 	<!--End [Enum Descriptions]-->
 	<!--START [Allert And Message]-->
+	<string key="AlertAndMessage_SelectSpecificationGroup">
+		<value>please select specificationgroup.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteSpecificationValue">
+		<value>this specification value will be deleted.</value>
+	</string>
+	<string key="AlertAndMessage_FillSpecificationValue">
+		<value>Please fill specification value.</value>
+	</string>
 	<string key="AlertAndMessage_ChooseLanguage">
 		<value>Please choose your desired language.</value>
 	</string>
 	<string key="AlertAndMessage_FillMultiLingualProperty">
 		<value>Please fill at Least one row of table.</value>
+	</string>
+	<string key="AlertAndMessage_FillList">
+		<value>Please add at Least one item to list.</value>
 	</string>
 	<string key="AlertAndMessage_FillLangId">
 		<value>Please select related language.</value>

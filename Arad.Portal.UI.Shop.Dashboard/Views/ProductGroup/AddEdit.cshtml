@@ -202,8 +202,6 @@
             $("#btnAddProductGroup").click(function () {
             debugger;
                 var flag = false;
-
-                var dataModel = FillDataToSend();
                 if ("@Model.ProductGroupId" != "" && $("#ModificationReason").val() == "") {
                     $("span[data-val-result='ModificationReason']").html('@Language.GetString("AlertAndMessage_ModificationReason")');
                     flag = true;
@@ -213,6 +211,8 @@
                     flag = true;
                 }
                 if (!flag) {
+
+            var dataModel = FillDataToSend();
             $.ajax({
                     url: "@Model.ProductGroupId" != "" ? "/ProductGroup/Edit" : "/ProductGroup/Add",
                     data: dataModel,
@@ -271,8 +271,10 @@
             var obj = {};
            obj.MultiLingualProperties = [];
            obj.ProductGroupId = $("#ProductGroupId").val();
-           obj.ParentId = $("#ParentId").val();
-           obj.ModificationReason = $("#ModificationReason").val();
+            obj.ParentId = $("#ParentId").val();
+            if ($("#ModificationReason").length > 0) {
+                obj.ModificationReason = $("#ModificationReason").val();
+            }
             $("#multiLingualList tr").each(function () {
                 debugger;
                 var innerModel = {};

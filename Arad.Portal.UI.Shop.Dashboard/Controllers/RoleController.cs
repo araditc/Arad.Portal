@@ -55,11 +55,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var currentUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             if(!string.IsNullOrWhiteSpace(id))
             {
-                model.IsEditView = true;
                 model = await _roleRepository.FetchRole(id);
-            }else
-            {
-                model.IsEditView = false;
             }
             return View(model);
         }
@@ -77,7 +73,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 model.PermissionIds = model.PermissionIds[0].Split(',').ToList();
             }
             
-            if (model.IsEditView)
+            if (!string.IsNullOrWhiteSpace(model.RoleId))
             {
                 if (string.IsNullOrWhiteSpace(model.ModificationReason))
                 {
@@ -106,7 +102,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 return RedirectToAction("AccessDenied", "Account");
             }
 
-            if (model.IsEditView)
+            if (!string.IsNullOrWhiteSpace(model.RoleId))
             {
                 var role = await _roleRepository.FetchRole(model.RoleId);
                 if (role == null)
