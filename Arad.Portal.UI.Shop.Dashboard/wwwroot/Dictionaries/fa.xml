@@ -190,6 +190,15 @@
 	<string key="specificationName_placeHolder">
 		<value>مقدار ممکن برای این خصیصه</value>
 	</string>
+	<string key="tbl_ProductUnit">
+		<value>واحد محصول</value>
+	</string>
+	<string key="tbl_ProductName">
+		<value>نام محصول</value>
+	</string>
+	<string key="tbl_ProductGroup">
+		<value>گروه محصول</value>
+	</string>
 	<string key="tbl_SpecificationName">
 		<value>نام خصیصه</value>
 	</string>
@@ -201,6 +210,15 @@
 	</string>
 	<string key="tbl_GroupName">
 		<value>نام گروه</value>
+	</string>
+	<string key="tbl_GroupNames">
+		<value>نام گروه ها</value>
+	</string>
+	<string key="tbl_UniqeCode">
+		<value>کد انحصاری</value>
+	</string>
+	<string key="tbl_Inventory">
+		<value>موجودی</value>
 	</string>
 	<string key="tbl_RoleName">
 		<value>نام</value>
@@ -298,6 +316,12 @@
 	</string>
 	<string key="AlertAndMessage_DeleteProductUnit">
 		<value>واحد محصول مربوطه حذف خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteProductGroup">
+		<value>گروه محصول حذف خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteProduct">
+		<value>محصول مربوطه حذف خواهد شد.</value>
 	</string>
 	<string key="AlertAndMessage_DeleteProductSpecificationGroup">
 		<value>گروه مشخصات محصول مربوطه حذف خواهد شد.</value>
@@ -1069,6 +1093,24 @@
 	<string key="Name">
 		<value>نام</value>
 	</string>
+	<string key="fromCreationDate">
+		<value>از تاریخ ایجاد</value>
+	</string>
+	<string key="toCreationDate">
+		<value>تا تاریخ ایجاد</value>
+	</string>
+	<string key="ProductWithDiscount">
+		<value>محصولات تخفبف دار</value>
+	</string>
+	<string key="ExistentProducts">
+		<value>محصولات موجود</value>
+	</string>
+	<string key="ProductsOnPromotion">
+		<value>محصولات دارای ترفیع</value>
+	</string>
+	<string key="ProductInventoryLessThan">
+		<value>موجودی کمتر از</value>
+	</string>
 	<string key="SeoDescription">
 		<value>توضیحات سئو</value>
 	</string>
@@ -1128,6 +1170,9 @@
 	</string>
 	<string key="Menu_Permissions">
 		<value>دسترسی ها</value>
+	</string>
+	<string key="Menu_Products">
+		<value>محصولات</value>
 	</string>
 	<string key="Menu_ProductUnits">
 		<value>واحدهای محصول</value>

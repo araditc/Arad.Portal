@@ -1,8 +1,7 @@
 ﻿using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Models.Comment;
-using Arad.Portal.DataLayer.Models.Price;
-using Arad.Portal.DataLayer.Models.Product;
 using Arad.Portal.DataLayer.Models.Shared;
+using Arad.Portal.DataLayer.Models.Product;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;

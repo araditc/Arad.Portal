@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Arad.Portal.DataLayer.Models.Price
+namespace Arad.Portal.DataLayer.Models.Shared
 {
     public class Price
     {

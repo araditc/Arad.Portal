@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Arad.Portal.DataLayer.Models.Price;
 using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Models.Promotion;
 using Arad.Portal.DataLayer.Models.ProductSpecification;
@@ -46,7 +45,7 @@ namespace Arad.Portal.DataLayer.Models.Product
 
         public string UnitId { get; set; }
 
-        public Price.Price Price { get; set; }
+        public Price Price { get; set; }
 
         public string PromotionId { get; set; }
 
@@ -56,6 +55,10 @@ namespace Arad.Portal.DataLayer.Models.Product
 
         public int VisitCount { get; set; }
 
+        public string ModificationReason { get; set; }
+
         public List<Comment.Comment> Comments { get; set; }
+
+        public bool IsPublishedOnMainDomain { get; set; }
     }
 }

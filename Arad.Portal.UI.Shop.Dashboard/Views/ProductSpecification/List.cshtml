@@ -38,7 +38,7 @@
 @section Styles
 {
     <style>
-        .userListCell {
+        .ListCell {
             text-align: center;
             vertical-align: middle;
         }
@@ -101,11 +101,11 @@
                     @foreach (var item in Model.Items)
                     {
                 <tr>
-                    <td class="userListCell">@(++i)</td>
-                    <td class="userListCell">@item.SpecificationNameValues.LanguageName</td>
-                    <td class="userListCell">@item.SpecificationNameValues.GroupName</td>
-                    <td class="userListCell">@item.SpecificationNameValues.Name</td>
-                    <td class="userListCell">@(string.Join(", ", item.SpecificationNameValues.NameValues))</td>
+                    <td class="ListCell">@(++i)</td>
+                    <td class="ListCell">@item.SpecificationNameValues.LanguageName</td>
+                    <td class="ListCell">@item.SpecificationNameValues.GroupName</td>
+                    <td class="ListCell">@item.SpecificationNameValues.Name</td>
+                    <td class="ListCell">@(string.Join(", ", item.SpecificationNameValues.NameValues))</td>
                     <td>
                         @if (ViewBag.Permissions["Edit"])
                         {
@@ -113,7 +113,7 @@
                                 <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                             </a>
                         }
-                        @if (ViewBag.Permissions["Remove"])
+                        @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
                         {
                             <button onclick="EntityDelete('@item.ProductSpecificationId')" class="btn btn-sm btn-danger">
                                 <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
@@ -133,7 +133,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="9" class="userListCell">
+                        <td colspan="9" class="ListCell">
                             <h6>@Language.GetString("AlertAndMessage_NoDataToShow")</h6>
                         </td>
                     </tr>

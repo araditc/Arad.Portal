@@ -38,7 +38,7 @@
 @section Styles
 {
     <style>
-        .userListCell {
+        .ListCell {
             text-align: center;
             vertical-align: middle;
         }
@@ -105,14 +105,14 @@
                     @foreach (var item in Model.Items)
                     {
                 <tr>
-                    <td class="userListCell">@(++i)</td>
-                    <td class="userListCell">@item.MultiLingualProperty.Name</td>
-                    <td class="userListCell">@item.MultiLingualProperty.SeoDescription</td>
-                    <td class="userListCell">@item.MultiLingualProperty.Description</td>
-                    <td class="userListCell">@item.MultiLingualProperty.SeoTitle</td>
-                    <td class="userListCell">@item.MultiLingualProperty.UrlFriend</td>
-                    <td class="userListCell">@item.MultiLingualProperty.LanguageName</td>
-                    <td class="userListCell">@item.MultiLingualProperty.CurrencyName</td>
+                    <td class="ListCell">@(++i)</td>
+                    <td class="ListCell">@item.MultiLingualProperty.Name</td>
+                    <td class="ListCell">@item.MultiLingualProperty.SeoDescription</td>
+                    <td class="ListCell">@item.MultiLingualProperty.Description</td>
+                    <td class="ListCell">@item.MultiLingualProperty.SeoTitle</td>
+                    <td class="ListCell">@item.MultiLingualProperty.UrlFriend</td>
+                    <td class="ListCell">@item.MultiLingualProperty.LanguageName</td>
+                    <td class="ListCell">@item.MultiLingualProperty.CurrencyName</td>
                     <td>
                         @if (ViewBag.Permissions["Edit"])
                         {
@@ -120,7 +120,7 @@
                                 <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                             </a>
                         }
-                        @if (ViewBag.Permissions["Remove"])
+                        @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
                         {
                             <button onclick="EntityDelete('@item.ProductGroupId')" class="btn btn-sm btn-danger">
                                 <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
@@ -140,7 +140,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="9" class="userListCell">
+                        <td colspan="9" class="ListCell">
                             <h6>@Language.GetString("AlertAndMessage_NoDataToShow")</h6>
                         </td>
                     </tr>
@@ -149,13 +149,13 @@
         </table>
     </div>
     <div class="card-footer">
-        @await Component.InvokeAsync("Pagination", new PageViewModel
+      @await Component.InvokeAsync("Pagination", new PageViewModel
       {
           CurrentPage = Model.CurrentPage,
           ItemsCount = Model.ItemsCount,
           PageSize = Model.PageSize,
           Navigation = Url.Action("List", "ProductGroup"),
-          QueryParams = Model.QueryString
+          QueryParams = Model.QueryString 
       })
     </div>
 
@@ -178,7 +178,7 @@
             debugger;
         Swal.fire({
             title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-            text: '@Language.GetString("AlertAndMessage_DeleteProductUnit")',
+            text: '@Language.GetString("AlertAndMessage_DeleteProductGroup")',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d51c1c',

@@ -218,7 +218,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
                 Text = _.LanguageName,
                 Value = _.LanguageId
             }).ToList();
-            result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
+            //result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
             return result;
         }
 

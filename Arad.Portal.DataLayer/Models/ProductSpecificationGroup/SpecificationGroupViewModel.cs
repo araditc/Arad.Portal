@@ -15,7 +15,7 @@ namespace Arad.Portal.DataLayer.Models.ProductSpecificationGroup
         }
         public string SpecificationGroupId { get; set; }
         public MultiLingualProperty GroupName { get; set; }
-        public string ModificationReason { get; set; }
+        //public string ModificationReason { get; set; }
         public bool IsDeleted { get; set; }
     }
     

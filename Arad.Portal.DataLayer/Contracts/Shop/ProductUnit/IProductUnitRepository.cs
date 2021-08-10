@@ -10,13 +10,12 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductUnit
 {
     public interface IProductUnitRepository
     {
-        Task<PagedItems<ProductUnitDTO>> List(string queryString);
+        Task<PagedItems<ProductUnitViewModel>> List(string queryString);
         Task<RepositoryOperationResult> AddProductUnit(ProductUnitDTO dto);
         Task<RepositoryOperationResult> EditProductUnit(ProductUnitDTO dto);
         Task<RepositoryOperationResult> Delete(string productUnitId);
         Task<RepositoryOperationResult> Restore(string productUnitId);
-
         ProductUnitDTO FetchUnit(string productUnitId);
-        Entities.Shop.ProductUnit.ProductUnit FetchByName(string unitName);
+        List<SelectListModel> GetAllActiveProductUnit(string langId);
     }
 }

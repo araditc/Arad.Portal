@@ -11,6 +11,9 @@ namespace Arad.Portal.DataLayer.Models.ProductSpecification
 
         public string ProductSpecificationId { get; set; }
 
+        /// <summary>
+        /// | seperated values
+        /// </summary>
         public string specificationValue { get; set; }
     }
 }

@@ -1,0 +1,445 @@
+﻿@using System.Web
+@using Arad.Portal.DataLayer.Models.Shared;
+@using Arad.Portal.GeneralLibrary.Utilities;
+@using Arad.Portal.DataLayer.Models.Product
+@using Arad.Portal.UI.Shop.Dashboard.ViewComponents;
+
+@model PagedItems<ProductViewModel>
+@{
+    var i = ((Model.CurrentPage - 1) * Model.PageSize);
+    bool isSearch = false;
+    System.Collections.Specialized.NameValueCollection queryString = null;
+    var langId = "";
+    if (!string.IsNullOrWhiteSpace(Model.QueryString))
+    {
+        queryString = System.Web.HttpUtility.ParseQueryString(Model.QueryString);
+        isSearch = !string.IsNullOrWhiteSpace(queryString["LanguageId"]);
+        if (isSearch)
+        {
+            langId = queryString["LanguageId"].ToString();
+        }
+        queryString.Remove("page");
+    }
+    else
+    {
+        langId = ViewBag.DefLangId;
+    }
+    var searchCollapseClass = isSearch ? "panel-collapse in collapse show" : "panel-collapse in collapse";
+    var dir = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        dir = "rtl";
+    }
+    else
+    {
+        dir = "ltr";
+    }
+}
+@section Styles
+{
+    <style>
+        .ListCell {
+            text-align: center;
+            vertical-align: middle;
+        }
+    </style>
+    <link href="~/plugin/select2/css/select2.css" rel="stylesheet" />
+    <link href="~/plugin/select2-bootstrap4-theme/select2-bootstrap4.css" rel="stylesheet" />
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <link href="~/dashboardAsset/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
+    }
+}
+
+<div class="card card-dark">
+    <a data-toggle="collapse" data-parent="#accordion" href="#searchCollapse"
+       aria-expanded="@(!isSearch ? "false" : "true" )" class="@(!isSearch ? " collapsed" : null)">
+
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-search"></i>
+                <span style="margin-right: 5px">@Language.GetString("btn_Search")</span>
+            </h3>
+        </div>
+    </a>
+
+    <div id="searchCollapse" @*class="@searchCollapseClass"*@ style="">
+        <div class="card-body">
+            <div id="accordion">
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label>@Language.GetString("tbl_ProductGroup")</label>
+                        <select class="form-control select2" multiple="multiple" id="cmbProductGroupFilter" asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))">
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>@Language.GetString("tbl_ProductName")</label>
+                        <input type="text" class="form-control" id="txtProductNameFilter" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>@Language.GetString("Description")</label>
+                        <input type="text" class="form-control" id="txtDescriptionFilter" />
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>@Language.GetString("tbl_UniqeCode")</label>
+                        <input type="text" class="form-control" id="txtUniqueCodeFilter" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label>@Language.GetString("fromCreationDate")</label>
+                        @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                        {
+                            <div class="input-group-prepend ">
+                                <span class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                                <input autocomplete="off" id="fromCreationDateFilter" type="text" class="form-control" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="input-group date" id="fromCreationDateFilter" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input" />
+                                <div class="input-group-append" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>@Language.GetString("toCreationDate")</label>
+                        @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                        {
+                            <div class="input-group-prepend ">
+                                <span class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                                <input autocomplete="off" id="toCreationDateFilter" type="text" class="form-control" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="input-group date" id="toCreationDateFilter" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input" />
+                                <div class="input-group-append" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                    <div class="form-group col-md-3">
+                        @if (dir == "rtl")
+                        {
+                            <label>
+                                <input type="checkbox" id="chbDiscountedStuffs" class="minimal">
+                                @Language.GetString("ProductWithDiscount")
+                            </label>
+                        }
+                        else
+                        {
+                            <div class="icheck-primary d-inline">
+                                <input type="checkbox" id="chbDiscountedStuffs" >
+                                <label for="chbDiscountedStuffs">
+                                    @Language.GetString("ProductWithDiscount")
+                                </label>
+                            </div>
+                        }
+                    </div>
+                    <div class="form-group col-md-3">
+                        @if (dir == "rtl")
+                        {
+                            <label>
+                                <input type="checkbox" id="chbExistentProducts" class="minimal">
+                                @Language.GetString("ExistentProducts")
+                            </label>
+                        }
+                        else
+                        {
+                            <div class="icheck-primary d-inline">
+                                <input type="checkbox" id="chbExistentProducts">
+                                <label for="chbExistentProducts">
+                                    @Language.GetString("ExistentProducts")
+                                </label>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        @if (dir == "rtl")
+                        {
+                            <label>
+                                <input type="checkbox" id="chbProductsOnPromotion" class="minimal">
+                                @Language.GetString("ProductsOnPromotion")
+                            </label>
+                        }
+                        else
+                        {
+                            <div class="icheck-primary d-inline">
+                                <input type="checkbox" id="chbProductsOnPromotion">
+                                <label for="chbProductsOnPromotion">
+                                    @Language.GetString("ProductsOnPromotion")
+                                </label>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <label>@Language.GetString("ProductInventoryLessThan")</label>
+                        <input type="number" id="txtLeastProduct" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button id="btnSearch" class="btn btn-primary" type="submit">
+                <i style="position: relative; left: 5px; top: 1px;" class="fa fa-search"></i>
+                @Language.GetString("btn_Search")
+            </button>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">@Language.GetString("Menu_Products")</h3>
+        <div class="card-tools" style='@(dir=="rtl" ? "float:left;" : "float:right;")'>
+            <div class="row">
+                <div class="form-group col-md-3">
+                    <label>@Language.GetString("LanguageName")</label>
+                    <select class="form-control" id="cmbLangIdFilter" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    @if (ViewBag.Permissions["Add"])
+                    {
+                        <a asp-action="AddEdit" asp-controller="Product" class="btn btn-success btn-sm">
+                            <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus"></i>&nbsp; @Language.GetString("btn_Add")
+                        </a>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="card-body table-bordered  table-responsive p-0" id="productListCard">
+        <table class="table table-hover">
+            <thead>
+                <tr style="text-align:center;">
+                    <th>@Language.GetString("tbl_RowName")</th>
+                    <th>@Language.GetString("RelatedLanguage")</th>
+                    <th>@Language.GetString("Currency")</th>
+                    <th>@Language.GetString("tbl_ProductName")</th>
+                    <th>@Language.GetString("tbl_ProductUnit")</th>
+                    <th>@Language.GetString("tbl_GroupNames")</th>
+                    <th>@Language.GetString("tbl_UniqeCode")</th>
+                    <th>@Language.GetString("tbl_Inventory")</th>
+                    <th>@Language.GetString("SeoTitle")</th>
+                    <th>@Language.GetString("SeoDescription")</th>
+                    <th>@Language.GetString("Description")</th>
+                    <th>@Language.GetString("UrlFriend")</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Items.Any())
+                {
+
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td class="ListCell">@(++i)</td>
+                            <td class="ListCell">@item.MultiLingualProperty.LanguageName</td>
+                            <td class="ListCell">@item.MultiLingualProperty.CurrencyName</td>
+                            <td class="ListCell">@item.MultiLingualProperty.Name</td>
+                            <td class="ListCell">@item.Unit.UnitName.Name</td>
+                            <td class="ListCell">@(string.Join("|",item.GroupNames))</td>
+                            <td class="ListCell">@item.UniqueCode</td>
+                            <td class="ListCell">@item.Inventory</td>
+                            <td class="ListCell">@item.MultiLingualProperty.SeoTitle</td>
+                            <td class="ListCell">@item.MultiLingualProperty.SeoDescription</td>
+                            <td class="ListCell">@item.MultiLingualProperty.Description</td>
+                            <td class="ListCell">@item.MultiLingualProperty.UrlFriend</td>
+                            <td></td>
+                            <td>
+                                @if (ViewBag.Permissions["Edit"])
+                                {
+                                    <a asp-action="AddEdit" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-info">
+                                        <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
+                                    </a>
+                                }
+                                @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
+                                {
+                                    <button onclick="EntityDelete('@item.ProductId')" class="btn btn-sm btn-danger">
+                                        <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
+                                    </button>
+                                }
+                                @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
+                                {
+                                    <button id="restoreRecord" onclick="EntityRestore('@item.ProductId')" class="btn btn-sm btn-warning">
+                                        <i style="position: relative;left: 5px;top: 2px;" class="fa fa-refresh"></i>
+                                        @Language.GetString("btn_Restore")
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="9" class="ListCell">
+                            <h6>@Language.GetString("AlertAndMessage_NoDataToShow")</h6>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        @await Component.InvokeAsync("Pagination", new PageViewModel
+        {
+            CurrentPage = Model.CurrentPage,
+            ItemsCount = Model.ItemsCount,
+            PageSize = Model.PageSize,
+            Navigation = Url.Action("List", "Product"),
+            QueryParams = Model.QueryString
+        })
+    </div>
+
+</div>
+@section Scripts{
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <script src="~/plugin/datePicker/kamadatepicker.min.js"></script>
+    }
+    else
+    {
+        <script src="~/js/moment.min.js"></script>
+        <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
+    }
+
+    <script src="~/plugin/select2/js/select2.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#cmbProductGroupFilter").select2({ dir : '@dir', theme : 'bootstrap4'});
+            debugger;
+            if ("@langId" != "") {
+                $("#cmbLangIdFilter").val("@langId");
+            }
+
+           $("#cmbLangIdFilter").change(function () {
+            debugger;
+               var queryString = '?LanguageId=' + $("#cmbLangIdFilter").val();
+               window.location.href = '@Url.Action("List", "Product")' + queryString;
+            });
+            $("#btnSearch").click(function () {
+                debugger;
+                var queryString = "?LanguageId=" + $("#cmbLangIdFilter").val();
+                if ($("#cmbProductGroupFilter").val().length != 0) {
+                    var groupIds = $("#cmbProductGroupFilter").val().join('|');
+                    queryString += "&groupIds=" + groupIds;
+                }
+                if ($("#txtProductNameFilter").val() != "") {
+                    queryString += "&name=" + $("#txtProductNameFilter").val().trim();
+                }
+                if ($("#txtDescriptionFilter").val() != "") {
+                    queryString += "&desc=" + $("#txtDescriptionFilter").val().trim();
+                }
+                if ($("#txtUniqueCodeFilter").val() != "") {
+                    queryString += "&code=" + $("#txtUniqueCodeFilter").val().trim();
+                }
+                window.location.href = '@Url.Action("List", "Product")' + queryString;
+            });
+        });
+        function EntityDelete(id) {
+            debugger;
+        Swal.fire({
+            title: '@Language.GetString("AlertAndMessage_AreYouSure")',
+            text: '@Language.GetString("AlertAndMessage_DeleteProductGroup")',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d51c1c',
+            cancelButtonColor: '#009c09db',
+            confirmButtonText: '@Language.GetString("btn_Confirm")',
+            cancelButtonText: '@Language.GetString("btn_NotConfirm")'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    debugger;
+            $.ajax({
+                type: 'Get',
+                url: '@Url.Action("Delete", "Product")' + "/" + id,
+            beforeSend: function() {
+                AddLoading($("#productListCard"));
+            },
+                success: function (resultData) {
+                    debugger;
+                    removeLoading($("productListCard"))
+            if (resultData.status === "Success") {
+            Swal.fire({
+            icon: 'success',
+            text: resultData.message,
+            showConfirmButton: false,
+            timer: 3000
+            }).then(() => {
+            window.location.reload();
+            });
+            }
+
+            if (resultData.status === "Error") {
+            Swal.fire({
+            icon: 'error',
+            text: resultData.message,
+            showConfirmButton: false,
+            timer: 1500
+            });
+            }
+            }
+            });
+            }
+            });
+        }
+
+        function EntityRestore(id) {
+            debugger;
+                Swal.fire({
+                    title: '@Language.GetString("AlertAndMessage_AreYouSure")',
+                    text: '@Language.GetString("AlertAndMessage_EntityRestoreText")',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d51c1c',
+                    cancelButtonColor: '#009c09db',
+                    confirmButtonText: '@Language.GetString("btn_Confirm")',
+                    cancelButtonText: '@Language.GetString("btn_NotConfirm")'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'Get',
+                            url:  '@Url.Action("Restore", "Product")' + '?id=' + id,
+                            success: function(resultData) {
+                                if (resultData.status === "success") {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        text: resultData.message,
+                                        showConfirmButton: false,
+                                        timer: 2000
+                                    }).then(() => {
+                                        window.location.reload();
+                                    });
+                                }
+                                if (resultData.status === "error") {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        text: resultData.message,
+                                        showConfirmButton: false,
+                                        timer: 2000
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+    </script>
+}

@@ -205,7 +205,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 item.LanguageName = lan.LanguageName;
                 item.LanguageSymbol = lan.Symbol;
                 item.GroupName = group != null && group.GroupNames.First(_ => _.LanguageId == lan.LanguageId) != null ?
-                       group.GroupNames.First(_ => _.LanguageId == lan.LanguageId).GroupName : "";
+                       group.GroupNames.First(_ => _.LanguageId == lan.LanguageId).Name : "";
 
             }
 

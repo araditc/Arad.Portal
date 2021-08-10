@@ -130,7 +130,7 @@
                                         <td style="display:none;">@item.LanguageId</td>
                                         <td>@item.LanguageName</td>
                                         <td>@item.Name</td>
-                                        <td>@(string.Join(',', item.NameValues))</td>
+                                        <td>@(string.Join('|', item.NameValues))</td>
                                         <td>
                                             <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromTable(this);">
                                                 <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
@@ -206,9 +206,7 @@
                 if ($("#SpecificationGroupId").val() == "") {
                     $("span[data-val-result='specificationGroupId']").html('@Language.GetString("AlertAndMessage_SelectSpecificationGroup")');
                 }
-                @*if ($("#name").val() == "") {
-                    $("span[data-val-result='name']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
-                }*@
+               
                 if ($("#multiLingualList tr").length == 0) {
                     $("span[data-val-result='SpecificationNameValues']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
                     flag = true;
@@ -328,7 +326,7 @@
                 innerModel.Name = $(this).find("td:eq(3)").text();
                 innerModel.LanguageId = $(this).find("td:eq(1)").text();
                 var joinedValues = $(this).find("td:eq(4)").text();
-                innerModel.NameValues = joinedValues.split(",");
+                innerModel.NameValues = joinedValues.split("|");
 
                 obj.SpecificationNameValues.push(innerModel);
             });
@@ -361,7 +359,7 @@
                 $("#nameValuesList li").each(function () {
                     valuesArray.push($(this).text())
                 });
-                var joinedValues = valuesArray.join();
+                var joinedValues = valuesArray.join('|');
                 var tr = "<tr style='text-align:center;'><td>" + $("#SpecificationGroupId option:selected").text() +
                     "</td><td style='display:none;'>" + $("#languageId").val() +
                     "</td><td>" + $('#languageId option:selected').text() +

@@ -12,7 +12,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 {
     public interface IProductRepository
     {
-        Task<PagedItems<ProductsListGrid>> List(string queryString);
+        Task<PagedItems<ProductViewModel>> List(string queryString);
 
         Task<RepositoryOperationResult> Add(ProductInputDTO dto);
 
@@ -20,7 +20,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 
         Task<RepositoryOperationResult> AddCommentToProduct(string productId, Comment comment);
 
-        Task<RepositoryOperationResult> ChangeProductUnitOfProduct(string productId,
+        Task<RepositoryOperationResult> ChangeUnitOfProduct(string productId,
             string unitId, string modificationReason);
 
         Task<RepositoryOperationResult> AddMultilingualProperty(string productId,
@@ -33,7 +33,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 
         Task<RepositoryOperationResult> AddProductSpecifications(string productId,
             SpecificationValueDTO specValueDto);
-        Task<RepositoryOperationResult> UpdateProduct(ProductInputDTO dto, string modificationReason);
+        Task<RepositoryOperationResult> UpdateProduct(ProductInputDTO dto);
 
         Task<RepositoryOperationResult> DeleteProduct(string productId, string modificationReason);
 
@@ -41,7 +41,6 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 
         List<string> GetProductGroups(string productId);
 
-        //Pagination<ProductsListShop> Filter(FilterProductsShop filterProduct);
         //Task<bool> SetProductPic(string path, string productId);
         List<ProductSpecificationValue> GetProductSpecifications(string productId);
         //ProductBasket GetProductBasket(string id);
@@ -53,8 +52,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         //Pagination<ProductViewGallery> ListProductsGroup(GalleryPagination modelPagination);
         int GetInventory(string productId);
         
-        //List<Product> Search(string word);
-        Task<ProductOutputDTO> GetByUrlFriend(string urlFriend);
+        //Task<ProductOutputDTO> GetByUrlFriend(string urlFriend);
         
     }
 }

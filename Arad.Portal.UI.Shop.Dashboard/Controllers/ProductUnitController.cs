@@ -34,7 +34,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
             ViewBag.Permissions = dicKey;
-            PagedItems<ProductUnitDTO> list = await _unitRepository.List(Request.QueryString.ToString());
+            PagedItems<ProductUnitViewModel> list = await _unitRepository.List(Request.QueryString.ToString());
             return View(list);
         }
         public IActionResult AddEdit(string id)
@@ -55,16 +55,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> Add([FromForm] ProductUnitDTO dto)
         {
             JsonResult result;
-            var uniqueness = _unitRepository.FetchByName(dto.UnitName);
-            if (uniqueness != null)
-            {
-                ModelState.AddModelError("ProductUnitName", Language.GetString("AlertAndMessage_AlreadyExists"));
-                //result = Json(new )
-            }
-            if (string.IsNullOrEmpty(dto.LanguageId))
-            {
-                ModelState.AddModelError("LanguageId", Language.GetString("AlertAndMessage_FillLangId"));
-            }
             if (!ModelState.IsValid)
             {
                 var errors = new List<AjaxValidationErrorModel>();
@@ -79,10 +69,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
-                var language = _lanRepository.FetchLanguage(dto.LanguageId);
-                if (language != null)
+                foreach (var item in dto.UnitNames)
                 {
-                    dto.LanguageName = language.LanguageName;
+                    var lan = _lanRepository.FetchLanguage(item.LanguageId);
+                    item.MultiLingualPropertyId = Guid.NewGuid().ToString();
+                    item.LanguageName = lan.LanguageName;
+                    item.LanguageSymbol = lan.Symbol;
                 }
 
                 RepositoryOperationResult saveResult = await _unitRepository.AddProductUnit(dto);
@@ -133,16 +125,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> Edit([FromForm] ProductUnitDTO dto)
         {
             JsonResult result;
-            if (string.IsNullOrWhiteSpace(dto.ModificationReason))
-            {
-                ModelState.AddModelError("ModificationReason", Language.GetString("AlertAndMessage_ModificationReason"));
-            }
-
-            if (string.IsNullOrEmpty(dto.LanguageId))
-            {
-                ModelState.AddModelError("LanguageId", Language.GetString("AlertAndMessage_FillLangId"));
-            }
-
             if (!ModelState.IsValid)
             {
                 var errors = new List<AjaxValidationErrorModel>();
@@ -163,13 +145,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     return RedirectToAction("PageOrItemNotFound", "Account");
                 }
             }
-            var language = _lanRepository.FetchLanguage(dto.LanguageId);
-            if (language != null)
+            foreach (var item in dto.UnitNames)
             {
-                dto.LanguageName = language.LanguageName;
+                var lan = _lanRepository.FetchLanguage(item.LanguageId);
+                item.MultiLingualPropertyId = Guid.NewGuid().ToString();
+                item.LanguageName = lan.LanguageName;
+                item.LanguageSymbol = lan.Symbol;
             }
             RepositoryOperationResult saveResult = await _unitRepository.EditProductUnit(dto);
-
             result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
             : new { Status = "Error", saveResult.Message });
             return result;

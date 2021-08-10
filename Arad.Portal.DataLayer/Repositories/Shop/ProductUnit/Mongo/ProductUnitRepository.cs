@@ -15,20 +15,23 @@ using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
 using Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo;
 using System.Web;
 using System.Collections.Specialized;
+using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
 {
     public class ProductUnitRepository : BaseRepository, IProductUnitRepository
     {
        
-        ProductContext _productContext;
-        IMapper _mapper;
+        private readonly ProductContext _productContext;
+        private readonly LanguageContext _languageContext;
+        private readonly IMapper _mapper;
         public ProductUnitRepository(
             ProductContext productContext,
+            LanguageContext languageContext,
             IMapper mapper, IHttpContextAccessor httpContextAccessor): base(httpContextAccessor)
         {
-           
             _mapper = mapper;
+            _languageContext = languageContext;
             _productContext = productContext;
         }
         public async Task<RepositoryOperationResult> AddProductUnit(ProductUnitDTO dto)
@@ -139,12 +142,6 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
             return result;
         }
 
-        public Entities.Shop.ProductUnit.ProductUnit FetchByName(string unitName)
-        {
-            Entities.Shop.ProductUnit.ProductUnit result;
-            result = _productContext.ProductUnitCollection.Find(_ => _.UnitName == unitName).FirstOrDefault();
-            return result;
-        }
 
         public ProductUnitDTO FetchUnit(string productUnitId)
         {
@@ -162,9 +159,22 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
             return result;
         }
 
-        public async Task<PagedItems<ProductUnitDTO>> List(string queryString)
+        public List<SelectListModel> GetAllActiveProductUnit(string langId)
         {
-            PagedItems<ProductUnitDTO> result = new PagedItems<ProductUnitDTO>();
+            var result = new List<SelectListModel>();
+            result = _productContext.ProductUnitCollection.Find(_ => _.IsActive)
+                .Project(_ => new SelectListModel()
+                {
+                    Text = _.UnitNames.Where(a => a.LanguageId == langId).Count() != 0 ?
+                         _.UnitNames.First(a => a.LanguageId == langId).Name : "",
+                    Value = _.ProductUnitId
+                }).ToList();
+            return result;
+        }
+
+        public async Task<PagedItems<ProductUnitViewModel>> List(string queryString)
+        {
+            PagedItems<ProductUnitViewModel> result = new PagedItems<ProductUnitViewModel>();
             try
             {
                 NameValueCollection filter = HttpUtility.ParseQueryString(queryString);
@@ -178,18 +188,21 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
                 {
                     filter.Set("PageSize", "20");
                 }
-
+                if (string.IsNullOrWhiteSpace(filter["LanguageId"]))
+                {
+                    var lan = _languageContext.Collection.Find(_ => _.IsDefault).FirstOrDefault();
+                    filter.Set("LanguageId", lan.LanguageId);
+                }
+                var langId = filter["LanguageId"].ToString();
                 var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
 
                 long totalCount = await _productContext.ProductUnitCollection.Find(c => true).CountDocumentsAsync();
                 var list = _productContext.ProductUnitCollection.AsQueryable().Skip((page - 1) * pageSize)
-                   .Take(pageSize).Select(_ => new ProductUnitDTO()
+                   .Take(pageSize).Select(_ => new ProductUnitViewModel()
                    {
                       ProductUnitId = _.ProductUnitId,
-                      UnitName = _.UnitName,
-                      LanguageId = _.LanguageId,
-                      LanguageName = _.LanguageName,
+                      UnitName = _.UnitNames.Where(a => a.LanguageId == langId).First(),
                       IsDeleted = _.IsDeleted
                    }).ToList();
 
@@ -203,7 +216,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
             catch (Exception ex)
             {
                 result.CurrentPage = 1;
-                result.Items = new List<ProductUnitDTO>();
+                result.Items = new List<ProductUnitViewModel>();
                 result.ItemsCount = 0;
                 result.PageSize = 10;
                 result.QueryString = queryString;

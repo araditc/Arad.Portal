@@ -9,7 +9,9 @@ namespace Arad.Portal.DataLayer.Models.Product
     public class ProductSpecificationValue
     {
         public Entities.Shop.ProductSpecification.ProductSpecification Specification { get; set; }
-
+    /// <summary>
+    ///  | seperated values
+    /// </summary>
         public string Value { get; set; }
     }
 }

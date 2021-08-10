@@ -38,7 +38,7 @@
 @section Styles
 {
     <style>
-        .userListCell {
+        .ListCell {
             text-align: center;
             vertical-align: middle;
         }
@@ -99,10 +99,10 @@
                     @foreach (var item in Model.Items)
                     {
                         <tr>
-                            <td class="userListCell">@(++i)</td>
-                            <td class="userListCell">@item.GroupName.Name</td>
-                            <td class="userListCell">@item.GroupName.LanguageName</td>
-                            <td class="userListCell">@item.GroupName.CurrencyName</td>
+                            <td class="ListCell">@(++i)</td>
+                            <td class="ListCell">@item.GroupName.Name</td>
+                            <td class="ListCell">@item.GroupName.LanguageName</td>
+                            <td class="ListCell">@item.GroupName.CurrencyName</td>
                             <td>
                                 @if (ViewBag.Permissions["Edit"])
                                 {
@@ -110,7 +110,7 @@
                                         <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                                     </a>
                                 }
-                                @if (ViewBag.Permissions["Remove"])
+                                @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
                                 {
                                     <button onclick="EntityDelete('@item.SpecificationGroupId')" class="btn btn-sm btn-danger">
                                         <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
@@ -130,7 +130,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="7" class="userListCell">
+                        <td colspan="7" class="ListCell">
                             <h6>@Language.GetString("AlertAndMessage_NoDataToShow")</h6>
                         </td>
                     </tr>

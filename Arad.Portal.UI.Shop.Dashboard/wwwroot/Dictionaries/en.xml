@@ -196,6 +196,15 @@
 	<string key="specificationName_placeHolder">
 		<value>possible value for this specification</value>
 	</string>
+	<string key="tbl_ProductUnit">
+		<value>Product Unit</value>
+	</string>
+	<string key="tbl_ProductName">
+		<value>Product Name</value>
+	</string>
+	<string key="tbl_ProductGroup">
+		<value>Product Group</value>
+	</string>
 	<string key="tbl_SpecificationName">
 		<value>Specification Name</value>
 	</string>
@@ -207,6 +216,15 @@
 	</string>
 	<string key="tbl_GroupName">
 		<value>Group Name</value>
+	</string>
+	<string key="tbl_GroupNames">
+		<value>Group Names</value>
+	</string>
+	<string key="tbl_UniqeCode">
+		<value>Unique Code</value>
+	</string>
+	<string key="tbl_Inventory">
+		<value>Inventory</value>
 	</string>
 	<string key="tbl_RoleName">
 		<value>Name</value>
@@ -304,6 +322,12 @@
 	</string>
 	<string key="AlertAndMessage_DeleteProductUnit">
 		<value>This ProductUnit will be deleted.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteProductGroup">
+		<value>This ProductGroup will be deleted.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteProduct">
+		<value>This Product will be deleted.</value>
 	</string>
 	<string key="AlertAndMessage_DeleteProductSpecificationGroup">
 		<value>This Product specification group will be deleted.</value>
@@ -1026,6 +1050,24 @@
 	<string key="Name">
 		<value>Name</value>
 	</string>
+	<string key="fromCreationDate">
+		<value>from creation date</value>
+	</string>
+	<string key="toCreationDate">
+		<value>to creation date</value>
+	</string>
+	<string key="ProductWithDiscount">
+		<value>Products With Discount </value>
+	</string>
+	<string key="ExistentProducts">
+		<value>Existent Products</value>
+	</string>
+	<string key="ProductsOnPromotion">
+		<value>Products on Promotions</value>
+	</string>
+	<string key="ProductInventoryLessThan">
+		<value>Product Inventory Less than</value>
+	</string>
 	<string key="SeoDescription">
 		<value>Seo Description</value>
 	</string>
@@ -1085,6 +1127,9 @@
 	</string>
 	<string key="Menu_Permissions">
 		<value>Permissions</value>
+	</string>
+	<string key="Menu_Products">
+		<value>Products</value>
 	</string>
 	<string key="Menu_ProductUnits">
 		<value>Product Units</value>

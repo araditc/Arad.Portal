@@ -12,11 +12,11 @@ namespace Arad.Portal.DataLayer.Models.Product
     {
         public ProductOutputDTO()
         {
-            MultiLingualProperties = new();
             Pictures = new();
             Comments = new();
             Specifications = new();
-            Prices = new List<Price.Price>();
+            Prices = new List<Price>();
+            MultiLingualProperties = new();
         }
         public string ProductId { get; set; }
 
@@ -40,11 +40,11 @@ namespace Arad.Portal.DataLayer.Models.Product
 
         public string SellerUserId { get; set; }
 
-        public Entities.Shop.ProductUnit.ProductUnit Unit { get; set; }
-
         public string SellerUserName { get; set; }
 
-        public List<Price.Price> Prices { get; set; }
+        public Entities.Shop.ProductUnit.ProductUnit Unit { get; set; }
+
+        public List<Price> Prices { get; set; }
 
         public Entities.Shop.Promotion.Promotion Promotion { get; set; }
 
@@ -55,5 +55,7 @@ namespace Arad.Portal.DataLayer.Models.Product
         public int VisitCount { get; set; }
 
         public List<Comment.Comment> Comments { get; set; }
+
+        public bool IsPublishedOnMainDomain { get; set; }
     }
 }

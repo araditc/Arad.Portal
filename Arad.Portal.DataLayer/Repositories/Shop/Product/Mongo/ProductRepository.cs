@@ -18,6 +18,7 @@ using Arad.Portal.DataLayer.Repositories.Shop.Order.Mongo;
 using Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo;
 using System.Collections.Specialized;
 using System.Web;
+using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 {
@@ -27,11 +28,13 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         private readonly OrderContext _orderContext;
         private readonly TransactionContext _transactionContext;
         private readonly PromotionContext _promotionContext;
+        private readonly LanguageContext _languageContext;
         private readonly IMapper _mapper;
         public ProductRepository(IHttpContextAccessor httpContextAccessor,
             ProductContext context, IMapper mapper,
             PromotionContext promotionContext,
             OrderContext orderContext,
+            LanguageContext languageContext,
             TransactionContext transactionContext)
             : base(httpContextAccessor)
         {
@@ -40,6 +43,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             _promotionContext = promotionContext;
             _orderContext = orderContext;
             _transactionContext = transactionContext;
+            _languageContext = languageContext;
         }
 
         public async Task<RepositoryOperationResult> Add(ProductInputDTO dto)
@@ -246,7 +250,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> ChangeProductUnitOfProduct(string productId, string unitId, string modificationReason)
+        public async Task<RepositoryOperationResult> ChangeUnitOfProduct(string productId, string unitId, string modificationReason)
         {
             var result = new RepositoryOperationResult();
             var entity = _context.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
@@ -341,18 +345,19 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public async Task<ProductOutputDTO> GetByUrlFriend(string urlFriend)
-        {
-            var result = new ProductOutputDTO();
-            var entity = await _context.ProductCollection.AsQueryable()
-                .Where(_ =>
-                _.MultiLingualProperties.Any(_ => _.UrlFriend.Equals(urlFriend))).FirstOrDefaultAsync();
-            if(entity != null)
-            {
-                result = _mapper.Map<ProductOutputDTO>(entity);
-            }
-            return result;
-        }
+        //public async Task<ProductOutputDTO> GetByUrlFriend(string urlFriend)
+        //{
+        //    var result = new ProductOutputDTO();
+        //    var entity = await _context.ProductCollection.AsQueryable()
+        //        .Where(_ =>
+        //        _.MultiLingualProperties.Any(_ => _.UrlFriend.Equals(urlFriend))).FirstOrDefaultAsync();
+        //    if(entity != null)
+        //    {
+        //        result = _mapper.Map<ProductOutputDTO>(entity);
+        //        result.MultiLingualProperty = entity.MultiLingualProperties.First(_=>_.)
+        //    }
+        //    return result;
+        //}
 
         private Entities.Shop.Product.Product MappingProduct(ProductInputDTO dto)
         {
@@ -403,7 +408,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             #endregion
 
             #region Prices
-            equallentModel.Prices = new List<Models.Price.Price>();
+            equallentModel.Prices = new List<Models.Shared.Price>();
             if (dto.Price != null)
             {
                 equallentModel.Prices.Add(dto.Price);
@@ -481,31 +486,64 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public async Task<PagedItems<ProductsListGrid>> List(string queryString)
+        public async Task<PagedItems<ProductViewModel>> List(string queryString)
         {
-            PagedItems<ProductsListGrid> result = new PagedItems<ProductsListGrid>();
+            PagedItems<ProductViewModel> result = new PagedItems<ProductViewModel>();
             try
             {
                 NameValueCollection filter = HttpUtility.ParseQueryString(queryString);
 
-                if (string.IsNullOrWhiteSpace(filter["CurrentPage"]))
+                if (string.IsNullOrWhiteSpace(filter["page"]))
                 {
-                    filter.Set("CurrentPage", "1");
+                    filter.Set("page", "1");
                 }
 
                 if (string.IsNullOrWhiteSpace(filter["PageSize"]))
                 {
                     filter.Set("PageSize", "20");
                 }
-
                 var page = Convert.ToInt32(filter["CurrentPage"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
 
                 long totalCount = await _context.ProductCollection.Find(c => true).CountDocumentsAsync();
-                var list = _context.ProductCollection.AsQueryable().Skip((page - 1) * pageSize)
-                   .Take(pageSize).ToList();
+                var totalList = _context.ProductCollection.AsQueryable();
+                if(!string.IsNullOrWhiteSpace(filter["groupIds"]))
+                {
+                    var arr = filter["groupIds"].ToString().Split("|");
+                    totalList = totalList.Where(_ => _.GroupIds.Intersect(arr.ToList()).Any());
+                }
+                
+                if(!string.IsNullOrWhiteSpace(filter["filter"]))
+                {
+                    totalList = totalList
+                        .Where(_=>_.MultiLingualProperties.Any(a=>a.Name.Contains(filter["filter"]))
+                             || _.UniqueCode.Equals(filter["filter"])); 
+                }
+                if (string.IsNullOrWhiteSpace(filter["LanguageId"]))
+                {
+                    var lan = _languageContext.Collection.Find(_ => _.IsDefault).FirstOrDefault();
+                    filter.Set("LanguageId", lan.LanguageId);
+                }
+                var langId = filter["LanguageId"].ToString();
+                var list = totalList.Skip((page - 1) * pageSize)
+                   .Take(pageSize).Select(_ => new ProductViewModel()
+                   {
+                       ProductId =_.ProductId,
+                       GroupNames = _.GroupNames,
+                       GroupIds = _.GroupIds,
+                       Inventory = _.Inventory,
+                       IsDeleted = _.IsDeleted,
+                       MultiLingualProperty =_.MultiLingualProperties.Where(_=>_.LanguageId == langId).First(),
+                       Price = _.Prices.Where(_=>_.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate)).First(),
+                       UniqueCode = _.UniqueCode,
+                       Unit =  new ProductUnitViewModel()
+                       {
+                           ProductUnitId = _.Unit.ProductUnitId,
+                           UnitName = _.Unit.UnitNames.Where(a=>a.LanguageId == langId).First()
+                       }
+                   }).ToList();
 
-                result.Items = _mapper.Map<List<ProductsListGrid>>(list);
+                result.Items = list;
                 result.CurrentPage = page;
                 result.ItemsCount = totalCount;
                 result.PageSize = pageSize;
@@ -515,7 +553,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             catch (Exception ex)
             {
                 result.CurrentPage = 1;
-                result.Items = new List<ProductsListGrid>();
+                result.Items = new List<ProductViewModel>();
                 result.ItemsCount = 0;
                 result.PageSize = 10;
                 result.QueryString = queryString;
@@ -523,14 +561,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> UpdateProduct(ProductInputDTO dto, string modificationReason)
+        public async Task<RepositoryOperationResult> UpdateProduct(ProductInputDTO dto)
         {
             var result = new RepositoryOperationResult();
            
                 var equallentModel = MappingProduct(dto);
 
                 #region add modification
-                var mod = GetCurrentModification(modificationReason);
+                var mod = GetCurrentModification(dto.ModificationReason);
                 equallentModel.Modifications.Add(mod);
                 #endregion
 

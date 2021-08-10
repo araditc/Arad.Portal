@@ -97,7 +97,7 @@
 
                     <div class="input-group mb-3" style="margin-bottom: 12px !important;">
 
-                        <input dir="ltr" placeholder="نام کاربری" asp-for="Username" type="text" class="form-control">
+                        <input dir="ltr" placeholder="نام کاربری" asp-for="Username" type="text" class="form-control" autocomplete="off">
 
                         <div class="input-group-append">
                             <span class="fa fa-user input-group-text"></span>
@@ -106,14 +106,13 @@
                     </div>
                     <div style="text-align: center">
                         <span asp-validation-for="Username" class="text-danger"></span>
-
                     </div>
                     <div class="input-group mb-3" style="margin-top: 15px; margin-bottom: 12px !important;">
 
                         <div onclick="togglePassword();" style="cursor:pointer" data-toggle="tooltip" data-placement="right" title="نمایش/عدم نمایش" class="input-group-append">
                             <span id="ic_span" class="fa fa-eye input-group-text"></span>
                         </div>
-                        <input id="pw_element" dir="ltr" placeholder="رمز عبور" asp-for="Password" type="password" class="form-control">
+                        <input id="pw_element" dir="ltr" placeholder="رمز عبور" asp-for="Password" type="password" class="form-control" autocomplete="new-password">
                         <div class="input-group-append">
                             <span class="fa fa-lock input-group-text"></span>
                         </div>

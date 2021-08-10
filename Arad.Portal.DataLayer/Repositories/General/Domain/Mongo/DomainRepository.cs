@@ -55,7 +55,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                     {
                         dto.DomainPrice.PriceId = Guid.NewGuid().ToString();
                     }
-                    equallentEntity.Prices = new List<Models.Price.Price>();
+                    equallentEntity.Prices = new List<Models.Shared.Price>();
                     equallentEntity.Prices.Add(dto.DomainPrice);
 
 

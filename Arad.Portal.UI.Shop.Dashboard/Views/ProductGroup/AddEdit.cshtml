@@ -144,8 +144,7 @@
                             </tbody>
                         </table>
                     </div>
-                    }
-                    }
+                   
                 </div>
 
             </div>
@@ -167,7 +166,7 @@
             if ("@Model.ProductGroupId" != "" && "@Model.ParentId" != "") {
                 $("#ParentId").val("@Model.ParentId");
             }
-            $("#languageId").change(function () {
+            @*$("#languageId").change(function () {
                 debugger;
                 var langId = $("#languageId").val();
                 if (langId != "-1") {
@@ -177,19 +176,20 @@
                     dataType : 'json',
                     success: function (result) {
                         debugger;
-                        var options = "<option value='-1'> " +'@Language.GetString("AlertAndMessage_Choose")'+" </option>";
+                        var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
                         if (result.status === "success") {
                             debugger;
                             if (result.data.length != 0) {
                                 (result.data).forEach(function (item) {
-                                var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                    var op = "<option value='" + item.value + "'>" + item.text + "</option>";
                                     options += op;
                                 });
 
-                            $("#ParentId").html(options);
-                            $("#ParentId").val('@Model.ParentId');
+                                $("#ParentId").html(options);
+                                $("#ParentId").val('@Model.ParentId');
+                            }
                         }
-                        },
+                    },
                     error: function (xhr, ajaxOptions, thrownError) {
                         alert("@error");
                         alert(xhr.status);
@@ -198,7 +198,7 @@
             });
                 }
 
-            });
+            });*@
             $("#btnAddProductGroup").click(function () {
             debugger;
                 var flag = false;
@@ -206,7 +206,7 @@
                     $("span[data-val-result='ModificationReason']").html('@Language.GetString("AlertAndMessage_ModificationReason")');
                     flag = true;
                 }
-                if (dataModel.MultiLingualProperties.length == 0) {
+                if ($("#multiLingualList tr").length == 0) {
                     $("span[data-val-result='MultiLingualProperties']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
                     flag = true;
                 }

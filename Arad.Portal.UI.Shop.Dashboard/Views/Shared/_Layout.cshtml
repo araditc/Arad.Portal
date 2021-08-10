@@ -44,6 +44,8 @@
     <link rel="stylesheet" href="~/css/siteTemplate/shared/ionicons.css">
     <!-- Theme style -->
     <link href="~/css/siteTemplate/shared/AdminLTE/adminlte.css" rel="stylesheet" />
+
+
     @if (direction == "rtl")
     {
 
@@ -51,6 +53,8 @@
         @*<link href="~/css/dateRangePicker/daterangepicker-bs3.css" rel="stylesheet" />*@
         <!-- Ionicons -->
         <link href="~/fonts/IranSans/css/persianfonts.css" rel="stylesheet" />
+        <link href="~/plugin/iCheck/all.css" rel="stylesheet" />
+        <link href="~/plugin/iCheck/flat/blue.css" rel="stylesheet" />
         <link href="~/css/siteTemplate/rtl/bootstrap-rtl.min.css" rel="stylesheet" />
         <link href="~/css/siteTemplate/rtl/custom-style.css" rel="stylesheet" />
         @*<style>
@@ -65,6 +69,11 @@
         <link href="~/lib/limonte-sweetalert2/sweetalert2.min.css" rel="stylesheet" />
         <link href="~/css/persian-datepicker.min.css" rel="stylesheet" />
     }
+    else
+
+    {
+        <link href="~/plugin/icheck-bootstrap/icheck-bootstrap.css" rel="stylesheet" />
+    }
 
 
 
@@ -78,8 +87,10 @@
     @if (direction == "rtl")
     {
         <script src="~/js/siteTemplate/jqueryui1.11.4/jquery-ui.min.js"></script>
+        <script src="~/lib/iCheck/icheck.min.js"></script>
         @*<script src="~/js/siteTemplate/bootstrap4rtl/bootstrap.min.js"></script>*@
     }
+   
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Tempusdominus Bootstrap 4 -->

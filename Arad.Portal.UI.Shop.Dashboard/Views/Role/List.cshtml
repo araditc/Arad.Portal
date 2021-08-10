@@ -22,7 +22,7 @@
 @section Styles
 {
     <style>
-        .userListCell {
+        .ListCell {
             text-align: center;
             vertical-align: middle;
         }
@@ -59,11 +59,11 @@
                     foreach (var item in Model.Items)
                     {
                         <tr>
-                            <td class="userListCell">@(++i)</td>
-                            <td class="userListCell">@item.RoleName</td>
-                            <td class="userListCell">@item.CreatorUserName</td>
-                            <td class="userListCell">@item.CreationDateTime</td>
-                            <td id="@("activation" + item.Id)" class="userListCell">
+                            <td class="ListCell">@(++i)</td>
+                            <td class="ListCell">@item.RoleName</td>
+                            <td class="ListCell">@item.CreatorUserName</td>
+                            <td class="ListCell">@item.CreationDateTime</td>
+                            <td id="@("activation" + item.Id)" class="ListCell">
                                 @{
                                     if (item.IsActive)
                                     {
@@ -75,7 +75,7 @@
                                     }
                                 }
                             </td>
-                            <td class="userListCell">
+                            <td class="ListCell">
                                 @{
                                     if (item.HasModifications)
                                     {
@@ -87,14 +87,14 @@
                                     }
                                 }
                             </td>
-                            <td class="userListCell">
+                            <td class="ListCell">
                                 @if (ViewBag.Permissions["Edit"])
                                 {
                                     <a asp-action="AddEdit" asp-controller="Role" asp-route-id="@item.Id" class="btn btn-sm btn-info">
                                         <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                                     </a>
                                 }
-                                @if (ViewBag.Permissions["Remove"])
+                                @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
                                 {
                                     <button onclick="RoleDelete('@item.Id')" class="btn btn-sm btn-danger">
                                         <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
@@ -115,7 +115,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="7" class="userListCell">
+                        <td colspan="7" class="ListCell">
                             <h6>@Language.GetString("AlertAndMessage_NoDataToShow")</h6>
                         </td>
                     </tr>

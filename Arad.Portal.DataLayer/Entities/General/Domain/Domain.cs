@@ -1,5 +1,5 @@
 ﻿using Arad.Portal.DataLayer.Entities.General.User;
-using Arad.Portal.DataLayer.Models.Price;
+using Arad.Portal.DataLayer.Models.Shared;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
