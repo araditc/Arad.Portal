@@ -270,8 +270,11 @@
             debugger;
             var obj = {};
            obj.MultiLingualProperties = [];
-           obj.ProductGroupId = $("#ProductGroupId").val();
-            obj.ParentId = $("#ParentId").val();
+            obj.ProductGroupId = $("#ProductGroupId").val();
+            if ($("#ParentId").val() != "-1") {
+                obj.ParentId = $("#ParentId").val();
+            }
+            
             if ($("#ModificationReason").length > 0) {
                 obj.ModificationReason = $("#ModificationReason").val();
             }

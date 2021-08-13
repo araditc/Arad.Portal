@@ -16,6 +16,7 @@ using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
 using System.Web;
 using System.Collections.Specialized;
 using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
+using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
 using System.Globalization;
 
@@ -347,6 +348,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                          _.MultiLingualProperties.First(a => a.LanguageId == langId).Name : "",
                     Value = _.ProductGroupId
                 }).ToList();
+            result.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
             return result;
         }
 

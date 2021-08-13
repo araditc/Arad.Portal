@@ -42,12 +42,17 @@
             text-align: center;
             vertical-align: middle;
         }
+
+        .centerContentDiv {
+            text-align: center;
+            margin: auto;
+        }
     </style>
-    <link href="~/plugin/select2/css/select2.css" rel="stylesheet" />
-    <link href="~/plugin/select2-bootstrap4-theme/select2-bootstrap4.css" rel="stylesheet" />
+    <link href="~/plugins/select2/css/select2.css" rel="stylesheet" />
+    <link href="~/plugins/select2-bootstrap4-theme/select2-bootstrap4.css" rel="stylesheet" />
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <link href="~/dashboardAsset/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
+        <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
     }
 }
 
@@ -130,7 +135,7 @@
                         }
 
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-3 centerContentDiv">
                         @if (dir == "rtl")
                         {
                             <label>
@@ -141,14 +146,14 @@
                         else
                         {
                             <div class="icheck-primary d-inline">
-                                <input type="checkbox" id="chbDiscountedStuffs" >
+                                <input type="checkbox" id="chbDiscountedStuffs">
                                 <label for="chbDiscountedStuffs">
                                     @Language.GetString("ProductWithDiscount")
                                 </label>
                             </div>
                         }
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-3 centerContentDiv">
                         @if (dir == "rtl")
                         {
                             <label>
@@ -168,7 +173,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="form-group col-md-3 centerContentDiv">
                         @if (dir == "rtl")
                         {
                             <label>
@@ -186,10 +191,11 @@
                             </div>
                         }
                     </div>
-                    <div class="col-md-3">
+                    <div class="form-group col-md-3">
                         <label>@Language.GetString("ProductInventoryLessThan")</label>
-                        <input type="number" id="txtLeastProduct" />
+                        <input type="number" id="txtLeastProduct" class="form-control" />
                     </div>
+                    <div class="col-md-6"></div>
                 </div>
             </div>
         </div>
@@ -310,9 +316,13 @@
 
 </div>
 @section Scripts{
+    @if (dir == "rtl")
+    {
+        <script src="~/plugins/iCheck/icheck.min.js"></script>
+    }
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <script src="~/plugin/datePicker/kamadatepicker.min.js"></script>
+        <script src="~/plugins/datePicker/kamadatepicker.min.js"></script>
     }
     else
     {
@@ -320,9 +330,15 @@
         <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
     }
 
-    <script src="~/plugin/select2/js/select2.js"></script>
+    <script src="~/plugins/select2/js/select2.js"></script>
     <script>
         $(document).ready(function () {
+            if ("@dir" == "rtl") {
+                $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+                    checkboxClass: 'icheckbox_minimal-blue',
+                    radioClass: 'iradio_minimal-blue'
+                })
+            }
             $("#cmbProductGroupFilter").select2({ dir : '@dir', theme : 'bootstrap4'});
             debugger;
             if ("@langId" != "") {
