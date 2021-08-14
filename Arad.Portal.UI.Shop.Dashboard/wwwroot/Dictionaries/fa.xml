@@ -4,6 +4,9 @@
 	<string key="btn_Add">
 		<value>افزودن</value>
 	</string>
+	<string key="btn_ExcelImport">
+		<value>دریافت داده از فایل اکسل</value>
+	</string>
 	<string key="btn_Save">
 		<value>ذخیره</value>
 	</string>
@@ -186,6 +189,12 @@
 	<!--Start [tables]-->
 	<string key="tbl_RowName">
 		<value>ردیف</value>
+	</string>
+	<string key="tbl_Price">
+		<value>قیمت</value>
+	</string>
+	<string key="tbl_MainImage">
+		<value>تصویر اصلی</value>
 	</string>
 	<string key="specificationName_placeHolder">
 		<value>مقدار ممکن برای این خصیصه</value>

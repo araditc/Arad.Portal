@@ -16,11 +16,10 @@ namespace Arad.Portal.DataLayer.Models.Product
         public string UniqueCode { get; set; }
         public int Inventory { get; set; }
         public MultiLingualProperty MultiLingualProperty { get; set; }
-
+        public string MainImage { get; set; }
         public Price Price { get; set; }
-
         public ProductUnitViewModel Unit { get; set; }
-
+        public DateTime CreationDate { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

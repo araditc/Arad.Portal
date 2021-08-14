@@ -502,7 +502,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 {
                     filter.Set("PageSize", "20");
                 }
-                var page = Convert.ToInt32(filter["CurrentPage"]);
+                var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
 
                 long totalCount = await _context.ProductCollection.Find(c => true).CountDocumentsAsync();
@@ -513,11 +513,56 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     totalList = totalList.Where(_ => _.GroupIds.Intersect(arr.ToList()).Any());
                 }
                 
-                if(!string.IsNullOrWhiteSpace(filter["filter"]))
+                if(!string.IsNullOrWhiteSpace(filter["name"]))
                 {
                     totalList = totalList
-                        .Where(_=>_.MultiLingualProperties.Any(a=>a.Name.Contains(filter["filter"]))
-                             || _.UniqueCode.Equals(filter["filter"])); 
+                        .Where(_=>_.MultiLingualProperties.Any(a=>a.Name.Contains(filter["name"])));
+                }
+                if (!string.IsNullOrWhiteSpace(filter["code"]))
+                {
+                    totalList = totalList
+                        .Where(_ => _.UniqueCode.Equals(filter["code"].ToString()));
+                }
+                if (!string.IsNullOrWhiteSpace(filter["desc"]))
+                {
+                    totalList = totalList
+                        .Where(_ => _.MultiLingualProperties.Any(a => a.Description.Contains(filter["desc"])));
+                }
+                if(!string.IsNullOrWhiteSpace(filter["from"]))
+                {
+                    //???
+                    totalList = totalList
+                        .Where(_ => _.CreationDate >= DateTime.Parse(filter["from"]).ToUniversalTime());
+                }
+                if (!string.IsNullOrWhiteSpace(filter["to"]))
+                {
+                    //???
+                    totalList = totalList
+                        .Where(_ => _.CreationDate <= DateTime.Parse(filter["to"]).ToUniversalTime());
+                }
+                if (!string.IsNullOrWhiteSpace(filter["inventory"]))
+                {
+                    totalList = totalList
+                        .Where(_ => _.Inventory <= int.Parse(filter["inventory"].ToString()));
+                }
+                if (!string.IsNullOrWhiteSpace(filter["discount"]) && Convert.ToBoolean(filter["discount"].ToString()))
+                {
+                    //???
+                    //totalList = totalList
+                    //    .Where(_ => _.Inventory <= int.Parse(filter["inventory"].ToString()));
+                    //promotion vs discount
+                }
+                if (!string.IsNullOrWhiteSpace(filter["promotion"]) && Convert.ToBoolean(filter["promotion"].ToString()))
+                {
+                    //???
+                    //totalList = totalList
+                    //    .Where(_ => _.Inventory <= int.Parse(filter["inventory"].ToString()));
+                    //promotion vs discount
+                }
+                if (!string.IsNullOrWhiteSpace(filter["exist"]) && Convert.ToBoolean(filter["exist"].ToString()))
+                {
+                    totalList = totalList
+                        .Where(_ => _.Inventory > 0 );
                 }
                 if (string.IsNullOrWhiteSpace(filter["LanguageId"]))
                 {
@@ -532,15 +577,18 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                        GroupNames = _.GroupNames,
                        GroupIds = _.GroupIds,
                        Inventory = _.Inventory,
+                       UniqueCode = _.UniqueCode,
                        IsDeleted = _.IsDeleted,
                        MultiLingualProperty =_.MultiLingualProperties.Where(_=>_.LanguageId == langId).First(),
+                       MainImage = _.Pictures.Where(_=>_.IsMain).First().Url,
                        Price = _.Prices.Where(_=>_.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate)).First(),
-                       UniqueCode = _.UniqueCode,
+                      
                        Unit =  new ProductUnitViewModel()
                        {
                            ProductUnitId = _.Unit.ProductUnitId,
                            UnitName = _.Unit.UnitNames.Where(a=>a.LanguageId == langId).First()
-                       }
+                       },
+                       CreationDate = _.CreationDate
                    }).ToList();
 
                 result.Items = list;

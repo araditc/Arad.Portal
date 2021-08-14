@@ -4,6 +4,9 @@
 	<string key="btn_Add">
 		<value>Add</value>
 	</string>
+	<string key="btn_ExcelImport">
+		<value>Get data from excel file</value>
+	</string>
 	<string key="btn_Save">
 		<value>Save</value>
 	</string>
@@ -192,6 +195,12 @@
 	<!--Start [tables]-->
 	<string key="tbl_RowName">
 		<value>Row</value>
+	</string>
+	<string key="tbl_Price">
+		<value>Price</value>
+	</string>
+	<string key="tbl_MainImage">
+		<value>Main Image</value>
 	</string>
 	<string key="specificationName_placeHolder">
 		<value>possible value for this specification</value>

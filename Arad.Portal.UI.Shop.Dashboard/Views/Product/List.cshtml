@@ -43,8 +43,7 @@
             vertical-align: middle;
         }
 
-        .centerContentDiv {
-            text-align: center;
+        .contentDiv {
             margin: auto;
         }
     </style>
@@ -81,13 +80,13 @@
                         <label>@Language.GetString("tbl_ProductName")</label>
                         <input type="text" class="form-control" id="txtProductNameFilter" />
                     </div>
-                    <div class="form-group col-md-4">
-                        <label>@Language.GetString("Description")</label>
-                        <input type="text" class="form-control" id="txtDescriptionFilter" />
-                    </div>
                     <div class="form-group col-md-2">
                         <label>@Language.GetString("tbl_UniqeCode")</label>
                         <input type="text" class="form-control" id="txtUniqueCodeFilter" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>@Language.GetString("Description")</label>
+                        <input type="text" class="form-control" id="txtDescriptionFilter" />
                     </div>
                 </div>
                 <div class="row">
@@ -135,7 +134,14 @@
                         }
 
                     </div>
-                    <div class="form-group col-md-3 centerContentDiv">
+                    <div class="form-group col-md-2">
+                        <label>@Language.GetString("ProductInventoryLessThan")</label>
+                        <input type="number" id="txtLeastProduct" class="form-control" />
+                    </div>
+            
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3 contentDiv">
                         @if (dir == "rtl")
                         {
                             <label>
@@ -153,7 +159,7 @@
                             </div>
                         }
                     </div>
-                    <div class="form-group col-md-3 centerContentDiv">
+                    <div class="form-group col-md-3 contentDiv">
                         @if (dir == "rtl")
                         {
                             <label>
@@ -171,9 +177,7 @@
                             </div>
                         }
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-3 centerContentDiv">
+                    <div class="form-group col-md-3 contentDiv">
                         @if (dir == "rtl")
                         {
                             <label>
@@ -191,11 +195,8 @@
                             </div>
                         }
                     </div>
-                    <div class="form-group col-md-3">
-                        <label>@Language.GetString("ProductInventoryLessThan")</label>
-                        <input type="number" id="txtLeastProduct" class="form-control" />
-                    </div>
-                    <div class="col-md-6"></div>
+
+                    <div class="col-md-3"></div>
                 </div>
             </div>
         </div>
@@ -210,41 +211,42 @@
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">@Language.GetString("Menu_Products")</h3>
-        <div class="card-tools" style='@(dir=="rtl" ? "float:left;" : "float:right;")'>
-            <div class="row">
-                <div class="form-group col-md-3">
-                    <label>@Language.GetString("LanguageName")</label>
-                    <select class="form-control" id="cmbLangIdFilter" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
-                    </select>
-                </div>
-                <div class="form-group col-md-3">
-                    @if (ViewBag.Permissions["Add"])
-                    {
-                        <a asp-action="AddEdit" asp-controller="Product" class="btn btn-success btn-sm">
-                            <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus"></i>&nbsp; @Language.GetString("btn_Add")
-                        </a>
-                    }
-                </div>
-            </div>
+        <div class="card-tools">
+            @if (ViewBag.Permissions["Add"])
+            {
+                <a asp-action="ImportFromExcel" asp-controller="Product" class="btn btn-info btn-sm">
+                    <i style="position: relative; left: 5px; top: 2px;" class="fa fa-file-excel"></i>&nbsp; @Language.GetString("btn_ExcelImport")
+                </a>
 
+                <a asp-action="AddEdit" asp-controller="Product" class="btn btn-success btn-sm">
+                    <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus"></i>&nbsp; @Language.GetString("btn_Add")
+                </a>
+            }
         </div>
     </div>
     <div class="card-body table-bordered  table-responsive p-0" id="productListCard">
+        <div class="row" style="background-color: #cbcdce;">
+            <div class="col-md-1 offset-md-1">
+                <span class="form-control" style="background-color: #f4f4f5;">@Language.GetString("LanguageName")</span>
+            </div>
+            <div class="col-md-2">
+                <select class="form-control" id="cmbLangIdFilter" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                </select>
+            </div>
+        </div>
         <table class="table table-hover">
             <thead>
                 <tr style="text-align:center;">
                     <th>@Language.GetString("tbl_RowName")</th>
-                    <th>@Language.GetString("RelatedLanguage")</th>
-                    <th>@Language.GetString("Currency")</th>
+                    <th>@Language.GetString("tbl_MainImage")</th>
                     <th>@Language.GetString("tbl_ProductName")</th>
                     <th>@Language.GetString("tbl_ProductUnit")</th>
                     <th>@Language.GetString("tbl_GroupNames")</th>
                     <th>@Language.GetString("tbl_UniqeCode")</th>
                     <th>@Language.GetString("tbl_Inventory")</th>
-                    <th>@Language.GetString("SeoTitle")</th>
-                    <th>@Language.GetString("SeoDescription")</th>
-                    <th>@Language.GetString("Description")</th>
-                    <th>@Language.GetString("UrlFriend")</th>
+                    <th>@Language.GetString("tbl_Price")</th>
+                    <th>@Language.GetString("CreationDate")</th>
+                    <th>@* with urFriends goes to the related link in shop *@</th>
                     <th></th>
                 </tr>
             </thead>
@@ -254,20 +256,21 @@
 
                     @foreach (var item in Model.Items)
                     {
-                        <tr>
-                            <td class="ListCell">@(++i)</td>
-                            <td class="ListCell">@item.MultiLingualProperty.LanguageName</td>
-                            <td class="ListCell">@item.MultiLingualProperty.CurrencyName</td>
-                            <td class="ListCell">@item.MultiLingualProperty.Name</td>
-                            <td class="ListCell">@item.Unit.UnitName.Name</td>
-                            <td class="ListCell">@(string.Join("|",item.GroupNames))</td>
-                            <td class="ListCell">@item.UniqueCode</td>
-                            <td class="ListCell">@item.Inventory</td>
-                            <td class="ListCell">@item.MultiLingualProperty.SeoTitle</td>
-                            <td class="ListCell">@item.MultiLingualProperty.SeoDescription</td>
-                            <td class="ListCell">@item.MultiLingualProperty.Description</td>
-                            <td class="ListCell">@item.MultiLingualProperty.UrlFriend</td>
-                            <td></td>
+                        <tr class="ListCell">
+                            <td >@(++i)</td>
+                            <td >@item.MainImage</td>
+                            <td >@item.MultiLingualProperty.Name</td>
+                            <td >@item.Unit.UnitName</td>
+                            <td >@(string.Join("|", item.GroupNames))</td>
+                            <td >@item.UniqueCode</td>
+                            <td >@item.Inventory</td>
+                            <td >@item.Price.PriceValue</td>
+                            <td >@item.CreationDate</td>
+                            <td>
+                                <a class="btn btn-sm btn-light">
+                                    <i style="position: relative;left: 5px;top: 2px;" class="fa fa-eye"></i>@Language.GetString("btn_Show")
+                                </a>
+                            </td>
                             <td>
                                 @if (ViewBag.Permissions["Edit"])
                                 {
@@ -295,7 +298,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="9" class="ListCell">
+                        <td colspan="11" class="ListCell">
                             <h6>@Language.GetString("AlertAndMessage_NoDataToShow")</h6>
                         </td>
                     </tr>
@@ -339,6 +342,19 @@
                     radioClass: 'iradio_minimal-blue'
                 })
             }
+            if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
+            {
+                kamaDatepicker('fromCreationDateFilter', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+                kamaDatepicker('toCreationDateFilter', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+            } else
+            {
+                $('#fromCreationDateFilter').datetimepicker({
+                    format: 'L'
+                });
+                $('#toCreationDateFilter').datetimepicker({
+                    format: 'L'
+                });
+            }
             $("#cmbProductGroupFilter").select2({ dir : '@dir', theme : 'bootstrap4'});
             debugger;
             if ("@langId" != "") {
@@ -349,7 +365,8 @@
             debugger;
                var queryString = '?LanguageId=' + $("#cmbLangIdFilter").val();
                window.location.href = '@Url.Action("List", "Product")' + queryString;
-            });
+           });
+
             $("#btnSearch").click(function () {
                 debugger;
                 var queryString = "?LanguageId=" + $("#cmbLangIdFilter").val();
