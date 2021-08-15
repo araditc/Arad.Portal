@@ -30,7 +30,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         Task<RepositoryOperationResult> AddPictureToProduct(string productId,
             Picture picture);
 
-
+        Task<RepositoryOperationResult> Restore(string productId);
         Task<RepositoryOperationResult> AddProductSpecifications(string productId,
             SpecificationValueDTO specValueDto);
         Task<RepositoryOperationResult> UpdateProduct(ProductInputDTO dto);

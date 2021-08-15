@@ -57,5 +57,7 @@ namespace Arad.Portal.DataLayer.Models.Product
         public List<Comment.Comment> Comments { get; set; }
 
         public bool IsPublishedOnMainDomain { get; set; }
+
+        public string ModificationReason { get; set; }
     }
 }

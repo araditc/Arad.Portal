@@ -629,5 +629,26 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
+        public async Task<RepositoryOperationResult> Restore(string productId)
+        {
+            var result = new RepositoryOperationResult();
+            var entity = _context.ProductCollection
+              .Find(_ => _.ProductId == productId).FirstOrDefault();
+            entity.IsDeleted = false;
+            var updateResult = await _context.ProductCollection
+               .ReplaceOneAsync(_ => _.ProductId == productId, entity);
+            if (updateResult.IsAcknowledged)
+            {
+                result.Succeeded = true;
+                result.Message = ConstMessages.SuccessfullyDone;
+            }
+            else
+            {
+                result.Succeeded = false;
+                result.Message = ConstMessages.ErrorInSaving;
+            }
+            return result;
+        }
+
     }
 }

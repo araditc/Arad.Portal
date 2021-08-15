@@ -390,50 +390,50 @@
         });
         function EntityDelete(id) {
             debugger;
-        Swal.fire({
-            title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-            text: '@Language.GetString("AlertAndMessage_DeleteProductGroup")',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d51c1c',
-            cancelButtonColor: '#009c09db',
-            confirmButtonText: '@Language.GetString("btn_Confirm")',
-            cancelButtonText: '@Language.GetString("btn_NotConfirm")'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    debugger;
-            $.ajax({
-                type: 'Get',
-                url: '@Url.Action("Delete", "Product")' + "/" + id,
-            beforeSend: function() {
-                AddLoading($("#productListCard"));
-            },
-                success: function (resultData) {
-                    debugger;
-                    removeLoading($("productListCard"))
-            if (resultData.status === "Success") {
             Swal.fire({
-            icon: 'success',
-            text: resultData.message,
-            showConfirmButton: false,
-            timer: 3000
-            }).then(() => {
-            window.location.reload();
-            });
-            }
+                title: '@Language.GetString("AlertAndMessage_AreYouSure")',
+                text: '@Language.GetString("AlertAndMessage_DeleteProductGroup")',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d51c1c',
+                cancelButtonColor: '#009c09db',
+                confirmButtonText: '@Language.GetString("btn_Confirm")',
+                cancelButtonText: '@Language.GetString("btn_NotConfirm")'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        debugger;
+                $.ajax({
+                    type: 'Get',
+                    url: '@Url.Action("Delete", "Product")' + "/" + id,
+                beforeSend: function() {
+                    AddLoading($("#productListCard"));
+                },
+                    success: function (resultData) {
+                        debugger;
+                        removeLoading($("productListCard"))
+                if (resultData.status === "Success") {
+                Swal.fire({
+                icon: 'success',
+                text: resultData.message,
+                showConfirmButton: false,
+                timer: 3000
+                }).then(() => {
+                window.location.reload();
+                });
+                }
 
-            if (resultData.status === "Error") {
-            Swal.fire({
-            icon: 'error',
-            text: resultData.message,
-            showConfirmButton: false,
-            timer: 1500
-            });
-            }
-            }
-            });
-            }
-            });
+                if (resultData.status === "Error") {
+                Swal.fire({
+                icon: 'error',
+                text: resultData.message,
+                showConfirmButton: false,
+                timer: 1500
+                });
+                }
+                }
+                });
+                }
+                });
         }
 
         function EntityRestore(id) {

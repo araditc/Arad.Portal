@@ -22,6 +22,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ProductSpecification
         public string ProductSpecificationId { get; set; }
 
         public string SpecificationGroupId { get; set; }
+
         /// <summary>
         /// languageId, specificationGroupName, specificationName and list of its values
         /// </summary>

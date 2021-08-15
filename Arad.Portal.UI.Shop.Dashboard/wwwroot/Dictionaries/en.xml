@@ -211,6 +211,9 @@
 	<string key="tbl_ProductName">
 		<value>Product Name</value>
 	</string>
+	<string key="tbl_ProductImages">
+		<value>Product Images</value>
+	</string>
 	<string key="tbl_ProductGroup">
 		<value>Product Group</value>
 	</string>
@@ -945,7 +948,10 @@
 		<value>choose ...</value>
 	</string>
 	<string key="SpecificationGroupName">
-		<value></value>
+		<value>Specification group name</value>
+	</string>
+	<string key="SpecificationGroup">
+		<value>Specification group</value>
 	</string>
 	<string key="AddProSpecGroupPart_Title">
 		<value>Add New Product Specification Group</value>
@@ -961,6 +967,12 @@
 	</string>
 	<string key="EditProductGroupPart_Title">
 		<value>Edit ProductGroup</value>
+	</string>
+	<string key="EditProductPart_Title">
+		<value>Edit Product</value>
+	</string>
+	<string key="AddProductPart_Title">
+		<value>Add Product</value>
 	</string>
 	<string key="AddProductSpecificationPart_Title">
 		<value>Add ProductSpecification</value>
@@ -1053,6 +1065,9 @@
   <string key="InActive">
     <value>InActive</value>
   </string>
+	<string key="MultiLingualProperty">
+		<value>Multi lingual property</value>
+	</string>
 	<string key="ParentGroup">
 		<value>Parent Group</value>
 	</string>
@@ -1142,6 +1157,9 @@
 	</string>
 	<string key="Menu_ProductUnits">
 		<value>Product Units</value>
+	</string>
+	<string key="Menu_ProductUnit">
+		<value>Product Unit</value>
 	</string>
 	<string key="Menu_ProductGroups">
 		<value>Product Groups</value>

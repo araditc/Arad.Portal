@@ -8,10 +8,16 @@ namespace Arad.Portal.DataLayer.Models.Product
 {
     public class ProductSpecificationValue
     {
-        public Entities.Shop.ProductSpecification.ProductSpecification Specification { get; set; }
-    /// <summary>
-    ///  | seperated values
-    /// </summary>
-        public string Value { get; set; }
+
+        public string LanguageId { get; set; }
+        public string SpecificationId { get; set; }
+        public string SpecificationGroupId { get; set; }
+        public string LanguageName { get; set; }
+        public string SpecificationGroupName { get; set; }
+        public string SpecificationName { get; set; }
+        /// <summary>
+        ///  | seperated values
+        /// </summary>
+        public string Values { get; set; }
     }
 }

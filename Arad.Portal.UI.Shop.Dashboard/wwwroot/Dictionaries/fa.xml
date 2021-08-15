@@ -205,6 +205,9 @@
 	<string key="tbl_ProductName">
 		<value>نام محصول</value>
 	</string>
+	<string key="tbl_ProductImages">
+		<value>تصاویر محصول</value>
+	</string>
 	<string key="tbl_ProductGroup">
 		<value>گروه محصول</value>
 	</string>
@@ -989,7 +992,10 @@
 		<value>انتخاب کنید ...</value>
 	</string>
 	<string key="SpecificationGroupName">
-		<value>نام گروه مشخصات محصول</value>
+		<value>نام گروه خصیصه محصول</value>
+	</string>
+	<string key="SpecificationGroup">
+		<value>گروه خصیصه</value>
 	</string>
 	<string key="AddProSpecGroupPart_Title">
 		<value>افزودن گروه مشخصات محصول</value>
@@ -1005,6 +1011,12 @@
 	</string>
 	<string key="EditProductGroupPart_Title">
 		<value>ویرایش گروه محصول</value>
+	</string>
+	<string key="EditProductPart_Title">
+		<value>ویرایش محصول</value>
+	</string>
+	<string key="AddProductPart_Title">
+		<value>افزودن محصول</value>
 	</string>
 	<string key="AddProductSpecificationPart_Title">
 		<value>افزودن خصوصیات محصول</value>
@@ -1096,6 +1108,9 @@
 	<string key="InActive">
 		<value>غیر فعال</value>
 	</string>
+	<string key="MultiLingualProperty">
+		<value>صفات چند زبانه</value>
+	</string>
 	<string key="ParentGroup">
 		<value>گروه والد</value>
 	</string>
@@ -1185,6 +1200,9 @@
 	</string>
 	<string key="Menu_ProductUnits">
 		<value>واحدهای محصول</value>
+	</string>
+	<string key="Menu_ProductUnit">
+		<value>واحد محصول</value>
 	</string>
 	<string key="Menu_ProductGroups">
 		<value>گروه های محصول</value>

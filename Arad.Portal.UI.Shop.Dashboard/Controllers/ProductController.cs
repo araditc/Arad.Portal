@@ -73,6 +73,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
 
             var lan = _lanRepository.GetDefaultLanguage();
+
             var specGroupList = _specGroupRepository.AllActiveSpecificationGroup(lan.LanguageId);
             specGroupList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
             ViewBag.SpecificationGroupList = specGroupList;
@@ -82,13 +83,63 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.ProductGroupList = groupList;
 
             var currencyList = _curRepository.GetAllActiveCurrency();
-            currencyList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
             ViewBag.CurrencyList = currencyList;
+            ViewBag.DefCurrency = _curRepository.GetDefaultCurrency().ReturnValue.CurrencyId;
 
             ViewBag.LangId = lan.LanguageId;
             ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
+
+            var unitList = _unitRepository.GetAllActiveProductUnit(lan.LanguageId);
+            unitList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
+            ViewBag.ProductUnitList = unitList;
+
+
             return View(model);
 
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(string id)
+        {
+            RepositoryOperationResult opResult = await _productRepository.DeleteProduct(id, "delete");
+            return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
+            : new { Status = "Error", opResult.Message });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Restore(string id)
+        {
+            JsonResult result;
+            try
+            {
+
+                var res = await _productRepository.Restore(id);
+                if (res.Succeeded)
+                {
+                    result = new JsonResult(new
+                    {
+                        Status = "success",
+                        Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully")
+                    });
+                }
+                else
+                {
+                    result = new JsonResult(new
+                    {
+                        Status = "error",
+                        Message = Language.GetString("AlertAndMessage_TryLator")
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                result = new JsonResult(new
+                {
+                    Status = "error",
+                    Message = Language.GetString("AlertAndMessage_TryLator")
+                });
+            }
+            return result;
         }
 
     }

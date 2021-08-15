@@ -1,0 +1,419 @@
+﻿@model Arad.Portal.DataLayer.Models.Product.ProductOutputDTO
+@using Arad.Portal.DataLayer.Models.Shared;
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    var alert = Language.GetString("AlertAndMessage_GotIt");
+    var error = Language.GetString("AlertAndMessage_Error");
+    var dir = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        dir = "rtl";
+    }
+    else
+    {
+        dir = "ltr";
+    }
+}
+@section Styles{
+    <style>
+        .text-danger {
+            font-size: 12px;
+        }
+
+        .btn-circle {
+            width: 30px;
+            height: 30px;
+            padding: 6px 0px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.42857;
+        }
+    </style>
+}
+
+<h4>  @Language.GetString("Menu_Products") </h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary" id="addProductCard">
+            <div class="card-header">
+                <h3 class="card-title" data-toggle="tab">
+                    @(!string.IsNullOrWhiteSpace(Model.ProductId) ?
+                     Language.GetString("EditProductPart_Title") : Language.GetString("AddProductPart_Title"))
+                </h3>
+            </div>
+
+            <div class="card-body" id="addEditProductCard">
+                <input type="hidden" value="@Model.ProductId" asp-for="ProductId" />
+                <div class="row">
+                    @{
+                        if (!string.IsNullOrWhiteSpace(Model.ProductId))
+                        {
+                            <div class="form-group col-md-6">
+                                <label asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
+                                <textarea dir="rtl" asp-for="ModificationReason" class="form-control" rows="3"></textarea>
+                                <span data-val-result="ModificationReason" class="text-danger"></span>
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label>@Language.GetString("tbl_ProductGroup")</label>
+                        <select class="form-control select2" multiple="multiple" asp-for="@Model.GroupIds" asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))">
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>@Language.GetString("tbl_UniqeCode")</label>
+                        <input type="text" class="form-control" asp-for="@Model.UniqueCode" value="@Model.UniqueCode" />
+                        <span data-val-result="UniqueCode" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>@Language.GetString("tbl_Inventory")</label>
+                        <input type="number" class="form-control" asp-for="@Model.Inventory" value="@Model.Inventory" min="0" />
+                        <span data-val-result="Inventory" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>@Language.GetString("Menu_ProductUnit")</label>
+                        <select class="form-control" asp-for="@Model.Unit.ProductUnitId" asp-items="@(new SelectList(ViewBag.ProductUnitList,"Value","Text"))">
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">@Language.GetString("Menu_ProductSpecifications")</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group col-md-2">
+                                    <label>@Language.GetString("LanguageName")</label>
+                                    <select class="form-control" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                                    </select>
+                                    <span data-val-result="languageId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>@Language.GetString("SpecificationGroup")</label>
+                                    <select class="form-control" id="specGroupId" asp-items="@(new SelectList(ViewBag.SpecificationGroupList,"Value","Text"))">
+                                    </select>
+                                    <span data-val-result="specGroupId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>@Language.GetString("tbl_SpecificationName")</label>
+                                    <select class="form-control" id="specificationId">
+                                    </select>
+                                    <span data-val-result="specificationId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>@Language.GetString("tbl_SpecificationValues")</label>
+                                    <select class="form-control select2" multiple="multiple" id="specValues">
+                                    </select>
+                                    <span data-val-result="specValues" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-1" style="text-align:center;margin:auto;">
+                                    <div style="margin:auto;display:inline-block;">
+                                        <button type="button" class="btn btn-info btn-circle" onclick="addSpecToList();">
+                                            <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 offset-md-3">
+                                    <span data-val-result="Specifications" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top:1%;">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr style="text-align:center;">
+                                            <th>@Language.GetString("LanguageName")</th>
+                                            <th style="display:none"></th>
+                                            <th>@Language.GetString("SpecificationGroup")</th>
+                                            <th style="display:none"></th>
+                                            <th>@Language.GetString("tbl_SpecificationName")</th>
+                                            <th style="display:none"></th>
+                                            <th>@Language.GetString("tbl_SpecificationValues")</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="specificationList">
+                                        @foreach (var item in Model.Specifications)
+                                        {
+                                            <tr style="text-align:center;">
+                                                <td>@item.LanguageName</td>
+                                                <td style="display:none;">@item.LanguageId</td>
+                                                <td>@item.SpecificationGroupName</td>
+                                                <td style="display:none;">@item.SpecificationGroupId</td>
+                                                <td>@item.SpecificationName</td>
+                                                <td style="display:none;">@item.SpecificationId</td>
+                                                <td>@item.Values</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromList(this);">
+                                                        <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card-footer"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">@Language.GetString("MultiLingualProperty")</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row" style="background-color: #f0f0f5;">
+                                <div class="form-group col-md-2">
+                                    <label>@Language.GetString("LanguageName")</label>
+                                    <select class="form-control" id="multiLangId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                                    </select>
+                                    <span data-val-result="multiLangId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>@Language.GetString("tbl_ProductName")</label>
+                                    <input type="text" class="form-control" id="productName" placeholder=" ">
+                                    <span data-val-result="productName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>@Language.GetString("UrlFriend")</label>
+                                    <input type="text" class="form-control" id="urlFriend" placeholder=" ">
+                                    <span data-val-result="urlFriend" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>@Language.GetString("SeoTitle")</label>
+                                    <input type="text" class="form-control" id="seoTitle" placeholder=" ">
+                                    <span data-val-result="seoTitle" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row" style="background-color: #f0f0f5;">
+                                <div class="form-group col-md-3">
+                                    <label>@Language.GetString("SeoDescription")</label>
+                                    <input type="text" class="form-control" id="seoDescription" placeholder=" ">
+                                    <span data-val-result="seoDescription" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>@Language.GetString("Description")</label>
+                                    <input type="text" class="form-control" id="description" placeholder=" ">
+                                    <span data-val-result="description" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-3" style="text-align:center;margin:auto;">
+                                    <div style="margin:auto;display:inline-block;">
+                                        <button type="button" class="btn btn-info btn-circle" onclick="addToTable();">
+                                            <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>@Language.GetString("LanguageName")</th>
+                                            <th>@Language.GetString("tbl_ProductName")</th>
+                                            <th>@Language.GetString("seoTitle")</th>
+                                            <th>@Language.GetString("SeoDescription")</th>
+                                            <th>@Language.GetString("Description")</th>
+                                            <th>@Language.GetString("UrlFriend")</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="multiLingualList">
+                                        @foreach (var item in Model.MultiLingualProperties)
+                                        {
+                                            <tr style="text-align:center;">
+                                                <td>@item.LanguageName</td>
+                                                <td>@item.Name</td>
+                                                <td>@item.SeoTitle</td>
+                                                <td>@item.SeoDescription</td>
+                                                <td>@item.Description</td>
+                                                <td>@item.UrlFriend</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromTable(this);">
+                                                        <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card-footer"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">@Language.GetString("tbl_ProductImages")</div>
+                        </div>
+                        <div class="card-body"></div>
+                        <div class="card-footer"></div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <input type="button" id="btnAddProductSpecificationGroup" value="@Language.GetString("btn_Save")" class="btn btn-block btn-success" />
+                    <a asp-action="List" class="btn btn-block btn-default">@Language.GetString("btn_Back")</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    @if (dir == "rtl")
+    {
+        <script src="~/plugins/iCheck/icheck.min.js"></script>
+    }
+    <script src="~/plugins/select2/js/select2.js"></script>
+    <script>
+    $(document).ready(function () {
+            debugger;
+       //multiselect
+      $("#GroupIds").select2({ dir : '@dir', theme : 'bootstrap4'});
+
+      $("#btnAddProductSpecificationGroup").click(function () {
+            debugger;
+                var flag = false;
+
+          var dataModel = FillDataToSend();
+          if ("@Model.SpecificationGroupId" != "" && $("#ModificationReason").val() == "") {
+                    $("span[data-val-result='ModificationReason']").html('@Language.GetString("AlertAndMessage_ModificationReason")');
+                    flag = true;
+                }
+          if (dataModel.GroupNames.length == 0) {
+                    $("span[data-val-result='GroupNames']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
+                    flag = true;
+                }
+                if (!flag) {
+            $.ajax({
+                url: "@Model.SpecificationGroupId" != "" ? "/ProductSpecificationGroup/Edit" : "/ProductSpecificationGroup/Add",
+                    data: dataModel,
+                    contentType: 'application/json',
+                    data: JSON.stringify(dataModel),
+                type: 'Post',
+                beforeSend: function () {
+                    debugger;
+                    AddLoading($("#addProductSpecificationGroupCard"));
+                },
+                success: function (result) {
+                    debugger;
+                    if (result.status === "Success") {
+                        Swal.fire({
+                            icon: 'success',
+                            text: result.message,
+                            showConfirmButton: false,
+                            timer: 3000
+                        }).then(() => {
+                            window.location.href = '@Url.Action("List")';
+                        });
+                    }else
+                    if (result.status === "ModelError") {
+                        var spanErrorList = $('span[data-val-result]');
+                        if (spanErrorList.length > 1) {
+                            spanErrorList.each(function() {
+                                $(this).html("");
+                                $(this).parent().removeClass("has-error");
+                            });
+                        } else {
+                            spanErrorList.html("");
+                            spanErrorList.parent().removeClass("has-error");
+                        }
+                        if (result.modelStateErrors !== null) {
+                                $('[data-val-result=' + value.key + ']').html(value.errorMessage);
+                                $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                            }
+                        }
+                    },
+                @*error: function (xhr, ajaxOptions, thrownError) {
+                    alert("@error");
+                    alert(xhr.status);
+                    alert(thrownError);
+                },*@
+                complete: function () {
+                    removeLoading($("#addProductSpecificationGroupCard"));
+                }
+                });
+                }
+
+            });
+        });
+
+        function FillDataToSend() {
+            debugger;
+            var obj = {};
+            obj.GroupNames = [];
+            obj.SpecificationGroupId = $("#SpecificationGroupId").val();
+           obj.ModificationReason = $("#ModificationReason").val();
+            $("#multiLingualList tr").each(function () {
+                debugger;
+                var innerModel = {};
+
+                innerModel.Name = $(this).find("td:eq(0)").text();
+                innerModel.LanguageId = $(this).find("td:eq(2)").text();
+                innerModel.CurrencyId = $(this).find("td:eq(3)").text();
+
+                obj.GroupNames.push(innerModel);
+        });
+            return obj;
+        }
+
+        function deleteFromTable(sender) {
+            debugger;
+            var tr = $(sender).parent().parent();
+            $(tr).remove();
+        }
+        function addToTable() {
+            var flag = false;
+            debugger;
+
+            if ($("#groupName").val() == "") {
+                $("span[data-val-result='groupName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                flag = true;
+            }
+            if ($("#languageId").val() == "-1") {
+                 $("span[data-val-result='languageId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                flag = true;
+            }
+            if ($("#currencyId").val() == "-1") {
+                 $("span[data-val-result='currencyId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                flag = true;
+            }
+            if (!flag) {
+                var tr = "<tr style='text-align:center;'><td>" + $("#groupName").val() +
+                    "</td><td>" + $('#languageId option:selected').text() +
+                    "</td><td style='display:none;'>" + $("#languageId").val() +
+                    "</td><td style='display:none;'>" + $("#currencyId").val() +
+                    "</td><td>" + $("#currencyId option:selected").text() +
+                    "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' onclick='deleteFromTable(this);'>" +
+                    "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
+
+                $("#multiLingualList").append(tr);
+                $("#groupName").val("");
+                $("#languageId").val("-1");
+                $("#currencyId").val("-1");
+            }
+        }
+    </script>
+}
+
+
+
+
