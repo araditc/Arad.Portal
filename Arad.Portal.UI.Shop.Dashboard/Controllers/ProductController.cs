@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.DataLayer.Contracts.Shop.ProductSpecificationGroup;
+using Microsoft.Extensions.Configuration;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -25,19 +26,23 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IPermissionView _permissionViewManager;
         private readonly ILanguageRepository _lanRepository;
         private readonly ICurrencyRepository _curRepository;
+        private readonly IConfiguration _configuration;
+        private readonly string imageSize = "";
         public ProductController(
             IProductRepository productRepository, IPermissionView permissionView,
             ILanguageRepository languageRepository, IProductGroupRepository productGroupRepository,
             ICurrencyRepository currencyRepository, IProductUnitRepository unitRepository,
-            IProductSpecGroupRepository specGroupRepository)
+            IProductSpecGroupRepository specGroupRepository, IConfiguration configuration)
         {
             _productRepository = productRepository;
+            _configuration = configuration;
             _permissionViewManager = permissionView;
             _lanRepository = languageRepository;
             _curRepository = currencyRepository;
             _productGroupRepository = productGroupRepository;
             _unitRepository = unitRepository;
             _specGroupRepository = specGroupRepository;
+            imageSize = _configuration["ProductImageSize:Size"];
         }
         [HttpGet]
         public async Task<IActionResult> List()
@@ -93,6 +98,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             unitList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
             ViewBag.ProductUnitList = unitList;
 
+
+            ViewBag.PicSize = imageSize;
 
             return View(model);
 

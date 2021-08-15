@@ -1,6 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <dictionary>
 	<!--Start [buttons text]-->
+	<string key="btn_Rotate">
+		<value>Rotate</value>
+	</string>
+	<string key="btn_Crop">
+		<value>Crop</value>
+	</string>
+	<string key="btn_UploadImage">
+		<value>Upload Image</value>
+	</string>
 	<string key="btn_Add">
 		<value>Add</value>
 	</string>
@@ -302,6 +311,12 @@
 	</string>
 	<!--End [Enum Descriptions]-->
 	<!--START [Allert And Message]-->
+	<string key="AlertAndMessage_InvalidFileSize">
+		<value>the file size exceed </value>
+	</string>
+	<string key="AlertAndMessage_InvalidFormat">
+		<value>invalid format.</value>
+	</string>
 	<string key="AlertAndMessage_SelectSpecificationGroup">
 		<value>please select specificationgroup.</value>
 	</string>

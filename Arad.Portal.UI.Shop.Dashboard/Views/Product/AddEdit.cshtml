@@ -30,9 +30,47 @@
             line-height: 1.42857;
         }
     </style>
+    <link href="~/plugins/ekko-lightbox/ekko-lightbox.css" rel="stylesheet" />
+    <link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
 }
+<h4>@Language.GetString("Menu_Products")</h4>
 
-<h4>  @Language.GetString("Menu_Products") </h4>
+
+<div class="modal fade" id="uploadModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content col-md-12">
+            <div class="modal-header">
+                <div class="col-md-1">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="col-md-11" style="text-align: center">
+                    <h5 class="modal-title align-content-center" id="exampleModalLongTitle">برش تصویر</h5>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="upload-modal-body">
+                    <div id="rowContainer" class="row justify-content-center align-items-center">
+                        <div id="container" style="position: relative;display: inline; height: 400px; width: 400px;max-width:100%;">
+                            <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="blah" src="#" alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center align-items-center">
+                <div>
+                    <button class="btn btn-success" id="send_pic" type="button"><i style="margin-left: 5px;font-size:13px" class="fas fa-share-square"></i>@Language.GetString("btn_Send")</button>
+                    <button class="btn btn-primary" id="crop_button"><i style="margin-left: 5px;font-size:13px" class="fas fa-cut"></i>@Language.GetString("btn_Crop")</button>
+                    <button class="btn btn-default" style="background-color: crimson;color: white;border: 1px solid crimson" onclick="rotatePic()"> <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i> @Language.GetString("btn_Rotate")</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <hr />
 <div class="row">
     <div class="col-md-12">
@@ -253,18 +291,27 @@
                         <div class="card-header">
                             <div class="card-title">@Language.GetString("tbl_ProductImages")</div>
                         </div>
-                        <div class="card-body"></div>
-                        <div class="card-footer"></div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="custom-file">
+                                    <input style="width: -webkit-fill-available;" accept="image/x-png,image/jpeg" 
+                                           type="file" class="btn btn-sm" name="image" id="image" onchange="getURL(this)">
+                                    <label class="custom-file-label" for="image">@Language.GetString("btn_UploadImage")</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                @foreach (var pic in Model.Pictures)
+                                {
+                                    <div class="col-sm-2">
+                                        <a href="@pic.Url" data-toggle="lightbox" data-title="@pic.Title" data-gallery="gallery">
+                                            <img src="" class="img-fluid mb-2" alt="@pic.Title" />
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-
-
-
-
-
-
-
 
 
             </div>
@@ -278,6 +325,8 @@
     </div>
 </div>
 @section Scripts{
+    <script src="~/plugins/ekko-lightbox/ekko-lightbox.js"></script>
+    <script src="~/lib/cropperjs/cropper.js"></script>
     @if (dir == "rtl")
     {
         <script src="~/plugins/iCheck/icheck.min.js"></script>
@@ -356,61 +405,164 @@
             });
         });
 
-        function FillDataToSend() {
+    function FillDataToSend() {
+        debugger;
+        var obj = {};
+        obj.GroupNames = [];
+        obj.SpecificationGroupId = $("#SpecificationGroupId").val();
+        obj.ModificationReason = $("#ModificationReason").val();
+        $("#multiLingualList tr").each(function () {
             debugger;
-            var obj = {};
-            obj.GroupNames = [];
-            obj.SpecificationGroupId = $("#SpecificationGroupId").val();
-           obj.ModificationReason = $("#ModificationReason").val();
-            $("#multiLingualList tr").each(function () {
-                debugger;
-                var innerModel = {};
+            var innerModel = {};
 
-                innerModel.Name = $(this).find("td:eq(0)").text();
-                innerModel.LanguageId = $(this).find("td:eq(2)").text();
-                innerModel.CurrencyId = $(this).find("td:eq(3)").text();
+            innerModel.Name = $(this).find("td:eq(0)").text();
+            innerModel.LanguageId = $(this).find("td:eq(2)").text();
+            innerModel.CurrencyId = $(this).find("td:eq(3)").text();
 
-                obj.GroupNames.push(innerModel);
-        });
-            return obj;
+            obj.GroupNames.push(innerModel);
+    });
+        return obj;
+    }
+
+    function deleteFromTable(sender) {
+        debugger;
+        var tr = $(sender).parent().parent();
+        $(tr).remove();
         }
 
-        function deleteFromTable(sender) {
-            debugger;
-            var tr = $(sender).parent().parent();
-            $(tr).remove();
-        }
-        function addToTable() {
-            var flag = false;
-            debugger;
+    function addToTable() {
+        var flag = false;
+        debugger;
 
-            if ($("#groupName").val() == "") {
-                $("span[data-val-result='groupName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
-                flag = true;
-            }
-            if ($("#languageId").val() == "-1") {
-                 $("span[data-val-result='languageId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
-                flag = true;
-            }
-            if ($("#currencyId").val() == "-1") {
-                 $("span[data-val-result='currencyId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
-                flag = true;
-            }
-            if (!flag) {
-                var tr = "<tr style='text-align:center;'><td>" + $("#groupName").val() +
-                    "</td><td>" + $('#languageId option:selected').text() +
-                    "</td><td style='display:none;'>" + $("#languageId").val() +
-                    "</td><td style='display:none;'>" + $("#currencyId").val() +
-                    "</td><td>" + $("#currencyId option:selected").text() +
-                    "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' onclick='deleteFromTable(this);'>" +
-                    "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
+        if ($("#groupName").val() == "") {
+            $("span[data-val-result='groupName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+            flag = true;
+        }
+        if ($("#languageId").val() == "-1") {
+                $("span[data-val-result='languageId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+            flag = true;
+        }
+        if ($("#currencyId").val() == "-1") {
+                $("span[data-val-result='currencyId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+            flag = true;
+        }
+        if (!flag) {
+            var tr = "<tr style='text-align:center;'><td>" + $("#groupName").val() +
+                "</td><td>" + $('#languageId option:selected').text() +
+                "</td><td style='display:none;'>" + $("#languageId").val() +
+                "</td><td style='display:none;'>" + $("#currencyId").val() +
+                "</td><td>" + $("#currencyId option:selected").text() +
+                "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' onclick='deleteFromTable(this);'>" +
+                "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
 
-                $("#multiLingualList").append(tr);
-                $("#groupName").val("");
-                $("#languageId").val("-1");
-                $("#currencyId").val("-1");
+            $("#multiLingualList").append(tr);
+            $("#groupName").val("");
+            $("#languageId").val("-1");
+            $("#currencyId").val("-1");
+        }
+        }
+
+    function upRiseModal() {
+        $("#send_pic").attr("disabled", true);
+        $("#uploadModal").modal("show");
+        }
+
+    function initCropper() {
+        debugger;
+        var image = document.getElementById('blah');
+        if (cropper !== null && cropper !== undefined) {
+            cropper.destroy();
+        }
+
+        cropper = new Cropper(image,
+            {
+                background: true,
+                aspectRatio: 1,
+                viewMode: 2,
+                responsive: true,
+                rotatable: true
+            });
+
+        document.getElementById('crop_button').addEventListener('click',
+            function () {
+
+                var imgUrl = cropper.getCroppedCanvas().toDataURL('image/jpeg');
+                var img = document.createElement("img");
+                img.setAttribute("id", "dada");
+                img.setAttribute("class", "img-fluid");
+                var height = document.getElementById("container").getAttribute("width");
+                var croppedContainer = document.createElement("div");
+                croppedContainer.setAttribute("id", "cropped_result");
+                croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
+                document.getElementById("rowContainer").appendChild(croppedContainer);
+                img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
+                img.src = imgUrl;
+                document.getElementById("cropped_result").innerHTML = "";
+                document.getElementById("cropped_result").appendChild(img);
+                $("#send_pic").attr("disabled", false);
+            });
+    }
+    function getURL(input) {
+        $("#cropped_result").remove();
+        if (input.files && input.files[0]) {
+            var file = input.files[0];
+            currentFileName = file.name;
+            currentFileSize = file.size;
+
+            if (currentFileSize <= "@ViewBag.PicSize") {
+                var reader = new FileReader();
+                reader.readAsDataURL(input.files[0]);
+                reader.onload = function (e) {
+                    var content = e.target.result;
+                    //if file format is incorrect, then the 'content' won't have any src.
+                    if (content !== "data:") {
+                        var reducedContent = content.slice(5);
+
+                        if (reducedContent.startsWith("image")) {
+                            $('#blah').attr('src', content);
+                            setTimeout(upRiseModal, 100);
+                            setTimeout(initCropper, 500);
+                        } else {
+
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+
+                            document.getElementById("image").value = "";
+                            $("#cropped_result").remove();
+
+
+                        }
+                    } else {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+
+                        document.getElementById("image").value = "";
+                        $("#cropped_result").remove();
+                    }
+                };
+            } else
+            {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'حجم فایل بیش از 500 کیلوبایت است.',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                document.getElementById("image").value = "";
+                $("#cropped_result").remove();
             }
         }
+    }
     </script>
 }
 
