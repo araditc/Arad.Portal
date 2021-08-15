@@ -44,7 +44,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Product
         public List<Picture> Pictures { get; set; }
 
         public int Inventory { get; set; }
-
+        /// <summary>
+        /// درصورتیکه مقدار از این تعداد کمتر شد پیغام هشداربه owner میدهد.
+        /// </summary>
         public int MinimumCount { get; set; }
         /// <summary>
         /// نمایش در صورت عدم موجودی

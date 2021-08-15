@@ -458,6 +458,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             if (entity != null)
             {
                 result = _mapper.Map<ProductOutputDTO>(entity);
+                
             }
             return result;
         }
@@ -532,32 +533,25 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 {
                     //???
                     totalList = totalList
-                        .Where(_ => _.CreationDate >= DateTime.Parse(filter["from"]).ToUniversalTime());
+                        .Where(_ => _.CreationDate >= filter["from"].ToString().ToEnglishDate().ToUniversalTime());
                 }
                 if (!string.IsNullOrWhiteSpace(filter["to"]))
                 {
                     //???
                     totalList = totalList
-                        .Where(_ => _.CreationDate <= DateTime.Parse(filter["to"]).ToUniversalTime());
+                        .Where(_ => _.CreationDate <= filter["to"].ToString().ToEnglishDate().ToUniversalTime());
                 }
                 if (!string.IsNullOrWhiteSpace(filter["inventory"]))
                 {
                     totalList = totalList
                         .Where(_ => _.Inventory <= int.Parse(filter["inventory"].ToString()));
                 }
-                if (!string.IsNullOrWhiteSpace(filter["discount"]) && Convert.ToBoolean(filter["discount"].ToString()))
-                {
-                    //???
-                    //totalList = totalList
-                    //    .Where(_ => _.Inventory <= int.Parse(filter["inventory"].ToString()));
-                    //promotion vs discount
-                }
                 if (!string.IsNullOrWhiteSpace(filter["promotion"]) && Convert.ToBoolean(filter["promotion"].ToString()))
                 {
-                    //???
-                    //totalList = totalList
-                    //    .Where(_ => _.Inventory <= int.Parse(filter["inventory"].ToString()));
-                    //promotion vs discount
+                    totalList = totalList
+                        .Where(_ => _.Promotion != null &&
+                                    _.Promotion.StartDate <= DateTime.UtcNow &&
+                        (_.Promotion.EndDate == null || _.Promotion.EndDate <= DateTime.UtcNow));
                 }
                 if (!string.IsNullOrWhiteSpace(filter["exist"]) && Convert.ToBoolean(filter["exist"].ToString()))
                 {
@@ -582,7 +576,6 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                        MultiLingualProperty =_.MultiLingualProperties.Where(_=>_.LanguageId == langId).First(),
                        MainImage = _.Pictures.Where(_=>_.IsMain).First().Url,
                        Price = _.Prices.Where(_=>_.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate)).First(),
-                      
                        Unit =  new ProductUnitViewModel()
                        {
                            ProductUnitId = _.Unit.ProductUnitId,

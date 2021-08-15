@@ -98,12 +98,12 @@
                                 <span class="input-group-text">
                                     <i class="fa fa-calendar"></i>
                                 </span>
-                                <input autocomplete="off" id="fromCreationDateFilter" type="text" class="form-control" />
+                                <input autocomplete="off" id="dtpFomCreationDate" type="text" class="form-control" />
                             </div>
                         }
                         else
                         {
-                            <div class="input-group date" id="fromCreationDateFilter" data-target-input="nearest">
+                            <div class="input-group date" id="dtpFromCreationDate" data-target-input="nearest">
                                 <input type="text" class="form-control datetimepicker-input" />
                                 <div class="input-group-append" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -120,12 +120,12 @@
                                 <span class="input-group-text">
                                     <i class="fa fa-calendar"></i>
                                 </span>
-                                <input autocomplete="off" id="toCreationDateFilter" type="text" class="form-control" />
+                                <input autocomplete="off" id="dtpToCreationDate" type="text" class="form-control" />
                             </div>
                         }
                         else
                         {
-                            <div class="input-group date" id="toCreationDateFilter" data-target-input="nearest">
+                            <div class="input-group date" id="dtpToCreationDate" data-target-input="nearest">
                                 <input type="text" class="form-control datetimepicker-input" />
                                 <div class="input-group-append" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -136,29 +136,12 @@
                     </div>
                     <div class="form-group col-md-2">
                         <label>@Language.GetString("ProductInventoryLessThan")</label>
-                        <input type="number" id="txtLeastProduct" class="form-control" />
+                        <input type="number" id="txtLeastProduct" class="form-control" min="0"/>
                     </div>
             
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-3 contentDiv">
-                        @if (dir == "rtl")
-                        {
-                            <label>
-                                <input type="checkbox" id="chbDiscountedStuffs" class="minimal">
-                                @Language.GetString("ProductWithDiscount")
-                            </label>
-                        }
-                        else
-                        {
-                            <div class="icheck-primary d-inline">
-                                <input type="checkbox" id="chbDiscountedStuffs">
-                                <label for="chbDiscountedStuffs">
-                                    @Language.GetString("ProductWithDiscount")
-                                </label>
-                            </div>
-                        }
-                    </div>
+                   
                     <div class="form-group col-md-3 contentDiv">
                         @if (dir == "rtl")
                         {
@@ -196,7 +179,7 @@
                         }
                     </div>
 
-                    <div class="col-md-3"></div>
+                    <div class="col-md-6"></div>
                 </div>
             </div>
         </div>
@@ -336,27 +319,31 @@
     <script src="~/plugins/select2/js/select2.js"></script>
     <script>
         $(document).ready(function () {
+            //icheckboxes
             if ("@dir" == "rtl") {
                 $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
                     checkboxClass: 'icheckbox_minimal-blue',
                     radioClass: 'iradio_minimal-blue'
                 })
             }
+            //datetimepicker
             if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
             {
-                kamaDatepicker('fromCreationDateFilter', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
-                kamaDatepicker('toCreationDateFilter', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
-            } else
+                kamaDatepicker('dtpFromCreationDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+                kamaDatepicker('dtpToCreationDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+            }
+            else
             {
-                $('#fromCreationDateFilter').datetimepicker({
+                $('#dtpFromCreationDate').datetimepicker({
                     format: 'L'
                 });
-                $('#toCreationDateFilter').datetimepicker({
+                $('#dtpToCreationDate').datetimepicker({
                     format: 'L'
                 });
             }
+            //multiselect
             $("#cmbProductGroupFilter").select2({ dir : '@dir', theme : 'bootstrap4'});
-            debugger;
+           
             if ("@langId" != "") {
                 $("#cmbLangIdFilter").val("@langId");
             }
@@ -382,6 +369,21 @@
                 }
                 if ($("#txtUniqueCodeFilter").val() != "") {
                     queryString += "&code=" + $("#txtUniqueCodeFilter").val().trim();
+                }
+                if ($("#dtpFromCreationDate").val() != "") {
+                    queryString += "&from=" + $("#dtpFromCreationDate").val().trim();
+                }
+                if ($("#dtpToCreationDate").val() != "") {
+                    queryString += "&to=" + $("#dtpToCreationDate").val().trim();
+                }
+                if ($("#txtLeastProduct").val() != "0") {
+                    queryString += "&inventory=" + $("#txtLeastProduct").val();
+                }
+                if ($("#chbProductsOnPromotion").prop("checked") == true) {
+                    queryString += "&promotion=true";
+                }
+                if ($("#chbExistentProducts").prop("checked") == true) {
+                    queryString += "&exist=true";
                 }
                 window.location.href = '@Url.Action("List", "Product")' + queryString;
             });
