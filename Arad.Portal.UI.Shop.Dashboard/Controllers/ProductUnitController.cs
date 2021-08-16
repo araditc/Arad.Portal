@@ -34,6 +34,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
             ViewBag.Permissions = dicKey;
+            var lan = _lanRepository.GetDefaultLanguage();
+            ViewBag.LangId = lan.LanguageId;
+            ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
             PagedItems<ProductUnitViewModel> list = await _unitRepository.List(Request.QueryString.ToString());
             return View(list);
         }
@@ -51,8 +54,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add([FromForm] ProductUnitDTO dto)
+        public async Task<IActionResult> Add([FromBody] ProductUnitDTO dto)
         {
             JsonResult result;
             if (!ModelState.IsValid)
@@ -76,7 +78,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.LanguageName = lan.LanguageName;
                     item.LanguageSymbol = lan.Symbol;
                 }
-
+              
                 RepositoryOperationResult saveResult = await _unitRepository.AddProductUnit(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
@@ -121,8 +123,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([FromForm] ProductUnitDTO dto)
+        public async Task<IActionResult> Edit([FromBody] ProductUnitDTO dto)
         {
             JsonResult result;
             if (!ModelState.IsValid)

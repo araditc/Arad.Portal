@@ -48,9 +48,6 @@
 
     @if (direction == "rtl")
     {
-
-        @*<link href="~/css/datePicker/datepicker3.css" rel="stylesheet" />*@
-        @*<link href="~/css/dateRangePicker/daterangepicker-bs3.css" rel="stylesheet" />*@
         <!-- Ionicons -->
         <link href="~/fonts/IranSans/css/persianfonts.css" rel="stylesheet" />
         <link href="~/plugins/iCheck/all.css" rel="stylesheet" />
@@ -70,7 +67,6 @@
         <link href="~/css/persian-datepicker.min.css" rel="stylesheet" />
     }
     else
-
     {
         <link href="~/plugins/icheck-bootstrap/icheck-bootstrap.css" rel="stylesheet" />
     }
@@ -82,13 +78,11 @@
     <link rel="stylesheet" href="~/lib//overlayscrollbars/css/OverlayScrollbars.min.css">
     @RenderSection("Styles", required: false)
 
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     @if (direction == "rtl")
     {
         <script src="~/js/siteTemplate/jqueryui1.11.4/jquery-ui.min.js"></script>
-        <script src="~/lib/iCheck/icheck.min.js"></script>
-        @*<script src="~/js/siteTemplate/bootstrap4rtl/bootstrap.min.js"></script>*@
+        @*<script src="~/lib/iCheck/icheck.min.js"></script>*@
     }
    
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

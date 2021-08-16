@@ -4,6 +4,9 @@
 	<string key="btn_Rotate">
 		<value>چرخش</value>
 	</string>
+	<string key="btn_Login">
+		<value>ورود</value>
+	</string>
 	<string key="btn_Crop">
 		<value>برش</value>
 	</string>
@@ -66,6 +69,9 @@
 	</string>
 	<string key="treeView_Empty">
 		<value>بدون زیرمجموعه</value>
+	</string>
+		<string key="LoginPage">
+		<value>صفحه ورود</value>
 	</string>
 	<!--End [buttons text]-->
 	<!--Start[JustForTesting]-->
@@ -308,8 +314,20 @@
 	<string key="AlertAndMessage_InvalidFormat">
 		<value>فرمت فایل نامعتبر است.</value>
 	</string>
+	<string key="AlertAndMessage_EnterTheResult">
+		<value>حاصل را وارد کنید</value>
+	</string>
+	<string key="AlertAndMessage_SignInToSite">
+		<value>ورود به سایت</value>
+	</string>
+	<string key="AlertAndMessage_ForgetPassword">
+		<value>رمز عبور را فراموش کرده ام.</value>
+	</string>
+	<string key="AlertAndMessage_EnterUsernameAndPassword">
+		<value>لطفا نام کاربری و کلمه عبور را وارد کنید.</value>
+	</string>
 	<string key="AlertAndMessage_SelectSpecificationGroup">
-		<value>لطفا نام گروه خصیصه را انتخاب کنید.</value>
+		<value>لطفا نام گروه مشخصات را انتخاب کنید.</value>
 	</string>
 	<string key="AlertAndMessage_DeleteSpecificationValue">
 		<value>این مقدار خصیصه حذف خواهد شد.</value>
@@ -1004,10 +1022,10 @@
 		<value>انتخاب کنید ...</value>
 	</string>
 	<string key="SpecificationGroupName">
-		<value>نام گروه خصیصه محصول</value>
+		<value>نام گروه مشخصات محصول</value>
 	</string>
 	<string key="SpecificationGroup">
-		<value>گروه خصیصه</value>
+		<value>گروه مشخصات</value>
 	</string>
 	<string key="AddProSpecGroupPart_Title">
 		<value>افزودن گروه مشخصات محصول</value>
@@ -1119,6 +1137,9 @@
 	</string>
 	<string key="InActive">
 		<value>غیر فعال</value>
+	</string>
+	<string key="ShowHide">
+		<value>نمایش/عدم نمایش</value>
 	</string>
 	<string key="MultiLingualProperty">
 		<value>صفات چند زبانه</value>

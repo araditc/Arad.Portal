@@ -48,6 +48,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
                 .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
 
             equallentModel.ProductUnitId = Guid.NewGuid().ToString();
+            equallentModel.IsActive = true;
             try
             {
                 await _productContext.ProductUnitCollection.InsertOneAsync(equallentModel);

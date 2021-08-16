@@ -4,6 +4,9 @@
 	<string key="btn_Rotate">
 		<value>Rotate</value>
 	</string>
+	<string key="btn_Login">
+		<value>Login</value>
+	</string>
 	<string key="btn_Crop">
 		<value>Crop</value>
 	</string>
@@ -66,6 +69,9 @@
 	</string>
 	<string key="treeView_Empty">
 		<value>Without childs</value>
+	</string>
+	<string key="LoginPage">
+		<value>Login Page</value>
 	</string>
 	<!--End [buttons text]-->
 	<!--Start[JustForTesting]-->
@@ -313,6 +319,18 @@
 	<!--START [Allert And Message]-->
 	<string key="AlertAndMessage_InvalidFileSize">
 		<value>the file size exceed </value>
+	</string>
+	<string key="AlertAndMessage_EnterTheResult">
+		<value>Enter the result.</value>
+	</string>
+	<string key="AlertAndMessage_SignInToSite">
+		<value>Sign in to site</value>
+	</string>
+	<string key="AlertAndMessage_ForgetPassword">
+		<value>forgot password. </value>
+	</string>
+	<string key="AlertAndMessage_EnterUsernameAndPassword">
+		<value>please enter username and password.</value>
 	</string>
 	<string key="AlertAndMessage_InvalidFormat">
 		<value>invalid format.</value>
@@ -841,7 +859,7 @@
 	<string key="AlertAndMessage_DeleteConfirm">
 		<value>Yes, Delete!</value>
 	</string>
-
+    
 	<string key="AlertAndMessage_Deny">
 		<value>No</value>
 	</string>
@@ -1080,6 +1098,9 @@
   <string key="InActive">
     <value>InActive</value>
   </string>
+	<string key="ShowHide">
+		<value>Show/Hide</value>
+	</string>
 	<string key="MultiLingualProperty">
 		<value>Multi lingual property</value>
 	</string>
