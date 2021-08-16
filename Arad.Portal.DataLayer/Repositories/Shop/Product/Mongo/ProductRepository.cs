@@ -138,18 +138,18 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> AddPictureToProduct(string productId, Picture picture)
+        public async Task<RepositoryOperationResult> AddPictureToProduct(string productId, Image picture)
         {
             var result = new RepositoryOperationResult();
             var entity = await _context.ProductCollection.Find(_ => _.ProductId == productId)
                 .FirstOrDefaultAsync();
             if (entity != null)
             {
-                if (string.IsNullOrWhiteSpace(picture.PictureId))
+                if (string.IsNullOrWhiteSpace(picture.ImageId))
                 {
-                    picture.PictureId = Guid.NewGuid().ToString();
+                    picture.ImageId = Guid.NewGuid().ToString();
                 }
-                entity.Pictures.Add(picture);
+                entity.Images.Add(picture);
                 var updateResult = await _context.ProductCollection.ReplaceOneAsync(_ => _.ProductId == productId,
                     entity);
                 if (updateResult.IsAcknowledged)
@@ -170,25 +170,20 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> AddProductSpecifications(string productId, SpecificationValueDTO specValueDto)
+        public async Task<RepositoryOperationResult> AddProductSpecifications(string productId, ProductSpecificationValue specValues)
         {
             var result = new RepositoryOperationResult();
             var entity = await _context.ProductCollection.Find(_ => _.ProductId == productId)
                 .FirstOrDefaultAsync();
-
             if (entity != null)
             {
-                if (!string.IsNullOrWhiteSpace(specValueDto.ProductSpecificationId))
+                if (!string.IsNullOrWhiteSpace(specValues.SpecificationId))
                 {
                     var specEntity = _context.SpecificationCollection
-                        .Find(_ => _.ProductSpecificationId == specValueDto.ProductSpecificationId).FirstOrDefault();
+                        .Find(_ => _.ProductSpecificationId == specValues.SpecificationId).FirstOrDefault();
                     if (specEntity != null)
                     {
-                        entity.Specifications.Add(new ProductSpecificationValue()
-                        {
-                            Specification = specEntity,
-                            Value = specValueDto.specificationValue
-                        });
+                        entity.Specifications.Add(specValues);
 
                         var updateResult = await _context.ProductCollection
                             .ReplaceOneAsync(_ => _.ProductId == productId, entity);
@@ -201,7 +196,6 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                         else
                         {
                             result.Message = ConstMessages.GeneralError;
-
                         }
                     }
                     else
@@ -386,13 +380,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 foreach (var item in dto.Specifications)
                 {
                     var specEntity = _context
-                        .SpecificationCollection.Find(_ => _.ProductSpecificationId == item.ProductSpecificationId).FirstOrDefault();
-                    var obj = new ProductSpecificationValue()
+                        .SpecificationCollection.Find(_ => _.ProductSpecificationId == item.SpecificationId).FirstOrDefault();
+                    if(specEntity != null)
                     {
-                        Specification = specEntity,
-                        Value = item.specificationValue
-                    };
-                    equallentModel.Specifications.Add(obj);
+                        equallentModel.Specifications.Add(item);
+                    }
                 }
             }
             #endregion
@@ -438,14 +430,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public List<Picture> GetPictures(string productId)
+        public List<Image> GetPictures(string productId)
         {
-            var result = new List<Picture>();
+            var result = new List<Image>();
             var entity = _context.ProductCollection
                 .Find(_ => _.ProductId == productId).FirstOrDefault();
             if(entity != null)
             {
-                result = entity.Pictures;
+                result = entity.Images;
             }
             return result;
         }
@@ -574,7 +566,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                        UniqueCode = _.UniqueCode,
                        IsDeleted = _.IsDeleted,
                        MultiLingualProperty =_.MultiLingualProperties.Where(_=>_.LanguageId == langId).First(),
-                       MainImage = _.Pictures.Where(_=>_.IsMain).First().Url,
+                       MainImage = _.Images.Where(_=>_.IsMain).First().Url,
                        Price = _.Prices.Where(_=>_.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate)).First(),
                        Unit =  new ProductUnitViewModel()
                        {

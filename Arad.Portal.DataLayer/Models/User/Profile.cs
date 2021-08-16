@@ -26,7 +26,7 @@ namespace Arad.Portal.DataLayer.Models.User
 
         public DateTime BirthDate { get; set; }
 
-        public Picture ProfilePhoto { get; set; }
+        public Image ProfilePhoto { get; set; }
 
         public string CompanyName { get; set; }
 

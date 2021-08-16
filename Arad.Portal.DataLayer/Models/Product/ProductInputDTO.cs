@@ -29,9 +29,9 @@ namespace Arad.Portal.DataLayer.Models.Product
 
         public string UniqueCode { get; set; }
 
-        public List<SpecificationValueDTO> Specifications { get; set; }
+        public List<ProductSpecificationValue> Specifications { get; set; }
 
-        public List<Picture> Pictures { get; set; }
+        public List<Image> Pictures { get; set; }
 
         public int Inventory { get; set; }
 

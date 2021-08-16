@@ -12,7 +12,7 @@ namespace Arad.Portal.DataLayer.Models.Product
     {
         public ProductOutputDTO()
         {
-            Pictures = new();
+            Images = new();
             Comments = new();
             Specifications = new();
             Prices = new List<Price>();
@@ -30,7 +30,7 @@ namespace Arad.Portal.DataLayer.Models.Product
 
         public List<ProductSpecificationValue> Specifications { get; set; }
 
-        public List<Picture> Pictures { get; set; }
+        public List<Image> Images { get; set; }
 
         public int Inventory { get; set; }
 

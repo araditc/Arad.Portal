@@ -75,7 +75,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                     .AsQueryable()
                     .Any(baseProduct => 
                         baseProduct.Specifications
-                    .Any(_=> _.Specification.ProductSpecificationId == specificationId));
+                    .Any(_=> _.SpecificationId == specificationId));
 
                 if (check)
                 {

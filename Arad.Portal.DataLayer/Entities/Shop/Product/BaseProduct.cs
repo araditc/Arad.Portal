@@ -18,7 +18,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Product
         {
             GroupNames = new ();
             Specifications = new ();
-            Pictures = new ();
+            Images = new ();
             Prices = new ();
             Comments = new ();
             MultiLingualProperties = new ();
@@ -41,7 +41,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Product
 
         public List<ProductSpecificationValue> Specifications { get; set; }
       
-        public List<Picture> Pictures { get; set; }
+        public List<Image> Images { get; set; }
 
         public int Inventory { get; set; }
         /// <summary>

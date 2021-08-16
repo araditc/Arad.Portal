@@ -28,16 +28,16 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 
 
         Task<RepositoryOperationResult> AddPictureToProduct(string productId,
-            Picture picture);
+            Image picture);
 
         Task<RepositoryOperationResult> Restore(string productId);
         Task<RepositoryOperationResult> AddProductSpecifications(string productId,
-            SpecificationValueDTO specValueDto);
+            ProductSpecificationValue specValues);
         Task<RepositoryOperationResult> UpdateProduct(ProductInputDTO dto);
 
         Task<RepositoryOperationResult> DeleteProduct(string productId, string modificationReason);
 
-        List<Picture> GetPictures(string productId);
+        List<Image> GetPictures(string productId);
 
         List<string> GetProductGroups(string productId);
 

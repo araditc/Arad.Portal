@@ -300,7 +300,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                @foreach (var pic in Model.Pictures)
+                                @foreach (var pic in Model.Images)
                                 {
                                     <div class="col-sm-2">
                                         <a href="@pic.Url" data-toggle="lightbox" data-title="@pic.Title" data-gallery="gallery">
@@ -343,24 +343,21 @@
                 var flag = false;
 
           var dataModel = FillDataToSend();
-          if ("@Model.SpecificationGroupId" != "" && $("#ModificationReason").val() == "") {
-                    $("span[data-val-result='ModificationReason']").html('@Language.GetString("AlertAndMessage_ModificationReason")');
-                    flag = true;
-                }
+        
           if (dataModel.GroupNames.length == 0) {
                     $("span[data-val-result='GroupNames']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
                     flag = true;
                 }
                 if (!flag) {
-            $.ajax({
-                url: "@Model.SpecificationGroupId" != "" ? "/ProductSpecificationGroup/Edit" : "/ProductSpecificationGroup/Add",
+                    $.ajax({
+                        url: "@Model.ProductId" != "" ? "/Product/Edit" : "/Product/Add",
                     data: dataModel,
                     contentType: 'application/json',
                     data: JSON.stringify(dataModel),
                 type: 'Post',
                 beforeSend: function () {
                     debugger;
-                    AddLoading($("#addProductSpecificationGroupCard"));
+                    AddLoading($("#addProductCard"));
                 },
                 success: function (result) {
                     debugger;
@@ -401,9 +398,19 @@
                 }
                 });
                 }
+      });
 
-            });
+        $("#send_pic").click(function () {
+            debugger;
+            $("#uploadModal").modal("hide");
+            var url = $("#galleryPic").attr("src");
+            debugger;
+            //first send it to the server ad after that get different size from it and create its tag to show in gallery
+            //$("#userPic").attr('src', url);
+            //fileContent = url;
+            //fileName = currentFileName;
         });
+    });
 
     function FillDataToSend() {
         debugger;
@@ -462,6 +469,7 @@
         }
         }
 
+    
     function upRiseModal() {
         $("#send_pic").attr("disabled", true);
         $("#uploadModal").modal("show");
@@ -485,10 +493,9 @@
 
         document.getElementById('crop_button').addEventListener('click',
             function () {
-
                 var imgUrl = cropper.getCroppedCanvas().toDataURL('image/jpeg');
                 var img = document.createElement("img");
-                img.setAttribute("id", "dada");
+                img.setAttribute("id", "galleryPic");
                 img.setAttribute("class", "img-fluid");
                 var height = document.getElementById("container").getAttribute("width");
                 var croppedContainer = document.createElement("div");

@@ -31,7 +31,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 
             using (var mem = new MemoryStream())
             using (var bmp = new Bitmap(130, 30))
-            using (var gfx = Graphics.FromImage((Image)bmp))
+            using (var gfx = Graphics.FromImage((System.Drawing.Image)bmp))
             {
                 gfx.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
                 gfx.SmoothingMode = SmoothingMode.AntiAlias;
