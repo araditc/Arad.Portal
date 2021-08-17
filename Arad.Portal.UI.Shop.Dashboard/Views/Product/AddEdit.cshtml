@@ -169,13 +169,11 @@
                                     </div>
                                 </div>
                                 <div class="row" style="margin-top:1%;">
-                                    <table class="table table-hover">
+                                    <table class="table table-hover table-bordered table-responsive p-0">
                                         <thead>
                                             <tr style="text-align:center;">
                                                 <th>@Language.GetString("LanguageName")</th>
-                                                <th style="display:none"></th>
                                                 <th>@Language.GetString("SpecificationGroup")</th>
-                                                <th style="display:none"></th>
                                                 <th>@Language.GetString("tbl_SpecificationName")</th>
                                                 <th style="display:none"></th>
                                                 <th>@Language.GetString("tbl_SpecificationValues")</th>
@@ -187,9 +185,7 @@
                                             {
                                                 <tr style="text-align:center;">
                                                     <td>@item.LanguageName</td>
-                                                    <td style="display:none;">@item.LanguageId</td>
                                                     <td>@item.SpecificationGroupName</td>
-                                                    <td style="display:none;">@item.SpecificationGroupId</td>
                                                     <td>@item.SpecificationName</td>
                                                     <td style="display:none;">@item.SpecificationId</td>
                                                     <td>@item.Values</td>
@@ -258,9 +254,9 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <table class="table table-hover">
+                                    <table class="table table-hover table-bordered table-responsive p-0">
                                         <thead>
-                                            <tr>
+                                            <tr style="text-align:center;">
                                                 <th>@Language.GetString("LanguageName")</th>
                                                 <th>@Language.GetString("tbl_ProductName")</th>
                                                 <th>@Language.GetString("seoTitle")</th>
@@ -346,11 +342,19 @@
     }
     <script src="~/plugins/select2/js/select2.js"></script>
     <script>
+        var fileName;
+        var fileContent;
+        var cropper;
+        var currentFileSize;
+        var currentFileName;
     $(document).ready(function () {
             debugger;
        //multiselect
         $("#GroupIds").select2({ dir: '@dir', theme: 'bootstrap4' });
-        $("#specValues").select2({ dir: '@dir', theme: 'bootstrap4' }); 
+        $("#specValues").select2({ dir: '@dir', theme: 'bootstrap4' });
+        $("#languageId").val('@ViewBag.LangId');
+        $("#multiLangId").val('@ViewBag.LangId');
+       
 
       $("#btnAddProductSpecificationGroup").click(function () {
             debugger;
@@ -414,7 +418,7 @@
                 }
       });
 
-        $("#send_pic").click(function () {
+      $("#send_pic").click(function () {
             debugger;
             $("#uploadModal").modal("hide");
             var url = $("#galleryPic").attr("src");
@@ -425,8 +429,157 @@
             //$("#userPic").attr('src', url);
             //fileContent = url;
             //fileName = currentFileName;
+      });
+
+      $("#languageId").change(function () {
+                debugger;
+                var langId = $("#languageId").val();
+
+                $.ajax({
+                    url: "/ProductSpecification/GetSpecificationGroupList/" + langId,
+                    type: 'Get',
+                    dataType : 'json',
+                    success: function (result) {
+                        debugger;
+                        var options = "<option value='-1'> " +'@Language.GetString("AlertAndMessage_Choose")'+" </option>";
+                        if (result.status === "success") {
+                            debugger;
+                            if (result.data.length != 0) {
+                                (result.data).forEach(function (item) {
+                                    var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                    options += op;
+                                });
+
+                                $("#specGroupId").html(options);
+                            }
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert("@error");
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+            });
+       });
+
+      $("#specGroupId").change(function () {
+        var langId = $("#languageId").val();
+        var groupId = $("#specGroupId").val();
+        if (groupId != "-1") {
+            $.ajax({
+                url: "/ProductSpecification/GetSpecificationInGroupAndLang?groupId=" + groupId + "&langId=" + langId,
+                type: 'Get',
+                dataType : 'json',
+                success: function (result) {
+                    debugger;
+                    var options = "<option value='-1'> " +'@Language.GetString("AlertAndMessage_Choose")'+" </option>";
+                    if (result.status === "success") {
+                        debugger;
+                        if (result.data.length != 0) {
+                            (result.data).forEach(function (item) {
+                                var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                options += op;
+                            });
+
+                            $("#specificationId").html(options);
+                        }
+                    }
+                },
+                error: function (xhr, thrownError) {
+                    alert("@error");
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+        });
+        }
+    });
+
+      $("#specificationId").change(function () {
+            var langId = $("#languageId").val();
+            var specId = $("#specificationId").val();
+            if (specId != "-1") {
+                $.ajax({
+                    url: "/ProductSpecification/GetSpecificationValuesInLanguage?specId=" + specId + "&langId=" + langId,
+                    type: 'Get',
+                    dataType : 'json',
+                    success: function (result) {
+                        debugger;
+                        var options = "<option value='-1'> " +'@Language.GetString("AlertAndMessage_Choose")'+" </option>";
+                        if (result.status === "success") {
+                            debugger;
+                            if (result.data.length != 0) {
+                                (result.data).forEach(function (item) {
+                                    var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                    options += op;
+                                });
+
+                                $("#specValues").html(options);
+                            }
+                        }
+                    },
+                    error: function (xhr, thrownError) {
+                        alert("@error");
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+            });
+            }
         });
     });
+    function addSpecToList() {
+        var flag = false;
+        $("span[data-val-result='languageId']").html("");
+        $("span[data-val-result='specGroupId']").html("");
+        $("span[data-val-result='specificationId']").html("");
+        $("span[data-val-result='specValues']").html("");
+        debugger;
+
+        if ($("#languageId").val() == "-1") {
+            $("span[data-val-result='languageId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+            flag = true;
+        }
+        if ($("#specGroupId").val() == "-1") {
+            $("span[data-val-result='specGroupId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+            flag = true;
+        }
+        if ($("#specificationId").val() == "-1") {
+            $("span[data-val-result='specificationId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+            flag = true;
+        }
+        if ($("#specValues").val().length == 0) {
+            $("span[data-val-result='specValues']").html('@Language.GetString("AlertAndMessage_SelectAtLeastOneItem")');
+            flag = true;
+        }
+       
+        if (!flag) {
+            var vals = "";
+            for (var i = 0; i < $("#specValues").select2("data").length; i++) {
+                debugger;
+                vals += $("#specValues").select2("data")[i].text + "|";
+            }
+            //remove last '|'
+            vals = vals.substring(0, vals.length - 1);
+          
+            var tr = "<tr style='text-align:center;'><td>" + $("#languageId option:selected").text() +
+                "</td><td>" + $('#specGroupId option:selected').text() +
+                "</td><td>" + $("#specificationId option:selected").text() +
+                "</td><td style='display:none;'>" + $("#specificationId").val() +
+                "</td><td>" + vals +
+                "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' onclick='deleteFromSpecList(this);'>" +
+                "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
+
+            $("#specificationList").append(tr);
+            $("#languageId").val("@ViewBag.LangId");
+            $("#specGroupId").val("-1");
+            $("#specificationId").val("-1");
+            $('#specValues').select2('data', null);
+        }
+        }
+
+    function deleteFromSpecList(sender) {
+        var tr = $(sender).parent().parent();
+        $(tr).remove();
+    }
 
     function FillDataToSend() {
         debugger;
@@ -451,45 +604,78 @@
         debugger;
         var tr = $(sender).parent().parent();
         $(tr).remove();
-        }
+    }
 
     function addToTable() {
         var flag = false;
+        $("span[data-val-result='multiLangId']").html("");
+        $("span[data-val-result='productName']").html("");
         debugger;
 
-        if ($("#groupName").val() == "") {
-            $("span[data-val-result='groupName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+        if ($("#multiLangId").val() == "") {
+            $("span[data-val-result='multiLangId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
             flag = true;
         }
-        if ($("#languageId").val() == "-1") {
-                $("span[data-val-result='languageId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
-            flag = true;
-        }
-        if ($("#currencyId").val() == "-1") {
-                $("span[data-val-result='currencyId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+        if ($("#productName").val() == "") {
+                $("span[data-val-result='productName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
             flag = true;
         }
         if (!flag) {
-            var tr = "<tr style='text-align:center;'><td>" + $("#groupName").val() +
-                "</td><td>" + $('#languageId option:selected').text() +
-                "</td><td style='display:none;'>" + $("#languageId").val() +
-                "</td><td style='display:none;'>" + $("#currencyId").val() +
-                "</td><td>" + $("#currencyId option:selected").text() +
+            var tr = "<tr style='text-align:center;'><td>" + $("#multiLangId option:selected").text() +
+                "</td><td>" + $('#productName').val() +
+                "</td><td>" + $("#seoTitle").val() +
+                "</td><td>" + $("#seoDescription").val() +
+                "</td><td>" + $("#description").val() +
+                "</td><td>" + $("#urlFriend").val() +
                 "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' onclick='deleteFromTable(this);'>" +
                 "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
 
             $("#multiLingualList").append(tr);
-            $("#groupName").val("");
-            $("#languageId").val("-1");
-            $("#currencyId").val("-1");
+            $("#multiLangId").val("@ViewBag.LangId");
+            $("#productName").val("");
+            $("#seoTitle").val("");
+            $("#seoDescription").val("");
+            $("#description").val("");
+            $("#urlFriend").val("");
         }
-        }
+       }
 
+    $('#uploadModal').on('hidden.bs.modal',
+        function () {
+            debugger;
+            cropper.destroy();
+            document.getElementById("image").value = "";
+            $("#cropped_result").remove();
+        });
+
+    function rotatePic() {
+        cropper.rotate(90);
+    }
+
+    //function ViewImage(address) {
+    //    var tag = '<img src="' + address + '" width="500px" />';
+    //    Swal.fire({
+    //        html: tag,
+    //        width: 'auto',
+    //        showConfirmButton: true,
+    //        confirmButtonText: 'بستن'
+    //    });
+    //}
+
+    $("#send_pic").click(function () {
+        debugger;
+        $("#uploadModal").modal("hide");
+        var url = $("#dada").attr("src");
+        debugger;
+        $("#userPic").attr('src', url);
+        fileContent = url;
+        fileName = currentFileName;
+    });
 
     function upRiseModal() {
         $("#send_pic").attr("disabled", true);
         $("#uploadModal").modal("show");
-        }
+    }
 
     function initCropper() {
         debugger;
@@ -525,42 +711,34 @@
                 $("#send_pic").attr("disabled", false);
             });
     }
+
     function getURL(input) {
-        $("#cropped_result").remove();
-        if (input.files && input.files[0]) {
-            var file = input.files[0];
-            currentFileName = file.name;
-            currentFileSize = file.size;
+        debugger;
+    $("#cropped_result").remove();
+    if (input.files && input.files[0]) {
+        var file = input.files[0];
+        currentFileName = file.name;
+        currentFileSize = file.size;
 
-            if (currentFileSize <= "@ViewBag.PicSize") {
-                var reader = new FileReader();
-                reader.readAsDataURL(input.files[0]);
-                reader.onload = function (e) {
-                    var content = e.target.result;
-                    //if file format is incorrect, then the 'content' won't have any src.
-                    if (content !== "data:") {
-                        var reducedContent = content.slice(5);
+        if (currentFileSize <= @ViewBag.PicSize) {
+            var reader = new FileReader();
+            try {
+                reader.readAsDataURL(file);
+            } catch (e) {
 
-                        if (reducedContent.startsWith("image")) {
-                            $('#blah').attr('src', content);
-                            setTimeout(upRiseModal, 100);
-                            setTimeout(initCropper, 500);
-                        } else {
+            }
+            reader.onload = function (e) {
+                var content = e.target.result;
+                //if file format is incorrect, then the 'content' won't have any src.
+                if (content !== "data:") {
+                    var reducedContent = content.slice(5);
 
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: 'error',
-                                title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
-
-                            document.getElementById("image").value = "";
-                            $("#cropped_result").remove();
-
-
-                        }
+                    if (reducedContent.startsWith("image")) {
+                        $('#blah').attr('src', content);
+                        setTimeout(upRiseModal, 100);
+                        setTimeout(initCropper, 500);
                     } else {
+
                         Swal.fire({
                             position: 'top-end',
                             icon: 'error',
@@ -572,20 +750,33 @@
                         document.getElementById("image").value = "";
                         $("#cropped_result").remove();
                     }
-                };
-            } else
-            {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'حجم فایل بیش از 500 کیلوبایت است.',
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-                document.getElementById("image").value = "";
-                $("#cropped_result").remove();
-            }
+                } else {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+
+                    document.getElementById("image").value = "";
+                    $("#cropped_result").remove();
+                }
+            };
+        }
+        else
+        {
+            Swal.fire({
+                icon: 'error',
+                title: '@Language.GetString("AlertAndMessage_InvalidFileSize")',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            document.getElementById("image").value = "";
+            $("#cropped_result").remove();
         }
     }
+}
     </script>
 }
 

@@ -318,7 +318,7 @@
 	<!--End [Enum Descriptions]-->
 	<!--START [Allert And Message]-->
 	<string key="AlertAndMessage_InvalidFileSize">
-		<value>the file size exceed </value>
+		<value>the file size exceed limitation.</value>
 	</string>
 	<string key="AlertAndMessage_EnterTheResult">
 		<value>Enter the result.</value>

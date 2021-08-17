@@ -100,7 +100,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
 
             ViewBag.PicSize = imageSize;
-
             return View(model);
 
         }

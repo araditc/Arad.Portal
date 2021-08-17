@@ -87,6 +87,43 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         }
 
+        [HttpGet]
+        public IActionResult GetSpecificationInGroupAndLang(string groupId, string langId)
+        {
+            JsonResult result;
+            List<SelectListModel> lst;
+            lst = _specificationRepository.GetSpecInGroupAndLanguage(groupId, langId)
+                .OrderBy(_ => _.Text).ToList();
+            if (lst.Count() > 0)
+            {
+                result = new JsonResult(new { Status = "success", Data = lst });
+            }
+            else
+            {
+                result = new JsonResult(new { Status = "error", Message = "" });
+            }
+            return result;
+
+        }
+
+        [HttpGet]
+        public IActionResult GetSpecificationValuesInLanguage(string specId, string langId)
+        {
+            JsonResult result;
+            List<SelectListModel> lst;
+            lst = _specificationRepository.GetSpcificationValuesInLanguage(specId, langId)
+                .OrderBy(_ => _.Text).ToList();
+            if (lst.Count() > 0)
+            {
+                result = new JsonResult(new { Status = "success", Data = lst });
+            }
+            else
+            {
+                result = new JsonResult(new { Status = "error", Message = "" });
+            }
+            return result;
+        }
+
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] ProductSpecificationDTO dto)
         {

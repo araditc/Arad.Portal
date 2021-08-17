@@ -536,7 +536,7 @@
 		<value>حداقل یک تعرفه باید انتخاب گردد.</value>
 	</string>
 	<string key="AlertAndMessage_InvalidFileSize">
-		<value>سایز فایل مناسب نیست.</value>
+		<value>سایز فایل بیش از حد مجاز است.</value>
 	</string>
 	<string key="AlertAndMessage_EnterBirthDate">
 		<value>لطفا تاریخ تولد را وارد نمائید.</value>

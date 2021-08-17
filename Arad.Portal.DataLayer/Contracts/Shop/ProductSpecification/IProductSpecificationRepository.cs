@@ -18,6 +18,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductSpecification
         Task<RepositoryOperationResult> Delete(string specificationId, string modificationReason);
         Task<RepositoryOperationResult> Restore(string specificationId);
         RepositoryOperationResult<List<MultiLingualProperty>> GetSpecificationValues(string productSpecificationId);
+        List<SelectListModel> GetSpcificationValuesInLanguage(string specificationId, string languageId);
         List<ProductSpecificationDTO> GetAllSpecificationsInGroup(string specificationGroupId);
+        List<SelectListModel> GetSpecInGroupAndLanguage(string specificationGroupId, string languageId);
     }
 }
