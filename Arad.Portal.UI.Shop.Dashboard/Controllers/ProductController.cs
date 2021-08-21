@@ -14,6 +14,12 @@ using System.Threading.Tasks;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.DataLayer.Contracts.Shop.ProductSpecificationGroup;
 using Microsoft.Extensions.Configuration;
+using System.IO;
+using System.Drawing;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+using Arad.Portal.DataLayer.Entities.General.User;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -27,12 +33,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly ILanguageRepository _lanRepository;
         private readonly ICurrencyRepository _curRepository;
         private readonly IConfiguration _configuration;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly string imageSize = "";
-        public ProductController(
+        public ProductController(UserManager<ApplicationUser> userManager,
             IProductRepository productRepository, IPermissionView permissionView,
             ILanguageRepository languageRepository, IProductGroupRepository productGroupRepository,
             ICurrencyRepository currencyRepository, IProductUnitRepository unitRepository,
-            IProductSpecGroupRepository specGroupRepository, IConfiguration configuration)
+            IProductSpecGroupRepository specGroupRepository,
+            IHttpContextAccessor accessor, IConfiguration configuration)
         {
             _productRepository = productRepository;
             _configuration = configuration;
@@ -42,6 +51,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _productGroupRepository = productGroupRepository;
             _unitRepository = unitRepository;
             _specGroupRepository = specGroupRepository;
+            _httpContextAccessor = accessor;
+            _userManager = userManager;
             imageSize = _configuration["ProductImageSize:Size"];
         }
         [HttpGet]
@@ -69,8 +80,76 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return View(result);
         }
 
+
+        [HttpPost]
+        public IActionResult  SaveProductImage(string file)
+        {
+            JsonResult output;
+            try
+            {
+                if (!Directory.Exists("~/imgs/Products/temp"))
+                {
+                    Directory.CreateDirectory("~/imgs/Products/temp");
+                };
+                var temporaryFileName = $"{DateTime.Now.Ticks}.jpg";
+                var path = $"~/imgs/Products/temp/{temporaryFileName}";
+                System.IO.File.Create(path);
+                System.IO.File.WriteAllText(path, file);
+                output =  Json(new { status = "Succeed", path = path });
+            }
+            catch (Exception)
+            {
+                output = Json(new { status = "Error", path = string.Empty });
+            }
+            return output;
+        }
+
+        public string ResizeImage(string filePath, int desiredHeight)
+        {
+            var base64String = System.IO.File.ReadAllText(filePath);
+            byte[] byteArray = Convert.FromBase64String(base64String);
+            System.Drawing.Image img;
+            using (MemoryStream ms = new MemoryStream(byteArray))
+            {
+                img = System.Drawing.Image.FromStream(ms);
+            }
+
+            double ratio = (double)desiredHeight / img.Height;
+            int newWidth = (int)(img.Width * ratio);
+            int newHeight = (int)(img.Height * ratio);
+            Bitmap bitMapImage = new Bitmap(newWidth, newHeight);
+            using (Graphics g = Graphics.FromImage(bitMapImage))
+            {
+                g.DrawImage(img, 0, 0, newWidth, newHeight);
+            }
+            img.Dispose();
+            //return newImage;
+
+            byte[] byteImage;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bitMapImage.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                byteImage = ms.ToArray();
+            }
+            return Convert.ToBase64String(byteImage);
+        }
         public async Task<IActionResult> AddEdit(string id = "")
         {
+            var currentUserId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userDB = await _userManager.FindByIdAsync(currentUserId);
+            if(userDB.IsSystemAccount)
+            {
+                var vendorList = await _userManager.GetUsersForClaimAsync(new Claim("AppRole", "True"));
+                ViewBag.Vendors = vendorList.ToList().Select(_=>new SelectListModel()
+                {
+                    Text = _.Profile.FullName,
+                    Value = _.Id
+                });
+            }
+            else
+            {
+                ViewBag.Vendors = "-1";
+            }
             var model = new ProductOutputDTO();
             if (!string.IsNullOrWhiteSpace(id))
             {

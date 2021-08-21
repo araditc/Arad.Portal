@@ -3,6 +3,15 @@
 @{
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
+    var dir = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        dir = "rtl";
+    }
+    else
+    {
+        dir = "ltr";
+    }
 }
 <link href="~/lib/intl-tel-input/css/intlTelInput.css" rel="stylesheet" />
 
@@ -44,6 +53,25 @@
                         <select class="form-control select2" asp-for="UserRoleId" asp-items="@(new SelectList(ViewBag.Roles,"Id","Title"))">
                         </select>
                         <span data-val-result="UserRoleId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        @if (dir == "rtl")
+                        {
+                            <label>
+                                <input type="checkbox" asp-for="IsVendor" class="minimal">
+                                @Language.GetString("IsVendor")
+                            </label>
+                        }
+                        else
+                        {
+                            <div class="icheck-primary d-inline">
+                                <input type="checkbox" asp-for="IsVendor">
+                                <label asp-for="IsVendor">
+                                    @Language.GetString("IsVendor")
+                                </label>
+                            </div>
+                        }
+
                     </div>
                 </div>
                 <div class="card-footer">

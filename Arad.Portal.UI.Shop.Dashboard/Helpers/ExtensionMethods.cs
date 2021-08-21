@@ -53,6 +53,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                         {
                             ClaimType = ClaimTypes.GivenName,
                             ClaimValue = "ادمین شماره یک"
+                        },
+                        new IdentityUserClaim<string>()
+                        {
+                            ClaimType = "AppRole",
+                            ClaimValue = true.ToString()
                         }
                     },
                     PhoneNumber = "989309910790",

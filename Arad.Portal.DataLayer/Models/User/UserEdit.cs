@@ -27,6 +27,8 @@ namespace Arad.Portal.DataLayer.Models.User
         [CustomErrorMessage("AlertAndMessage_PhoneNumberRequired")]
         public string PhoneNumber { get; set; }
 
+        public bool IsVendor { get; set; }
+
         public string FullMobile { get; set; }
 
         [CustomErrorMessage("AlertAndMessage_UserRoleRequired")]

@@ -14,6 +14,7 @@
         dir = "ltr";
     }
 }
+
 @section Styles{
     <style>
         .text-danger {
@@ -29,11 +30,26 @@
             font-size: 12px;
             line-height: 1.42857;
         }
+
         .card-header {
             background-color: #e0dcdf;
         }
+
+        .removeImage {
+            display: inline-block;
+            position: absolute;
+            top: -7px;
+            right: -5px;
+            width: 20px;
+            height: 21px;
+            background: #dc3545;
+            text-align: center;
+            border-radius: 50%;
+            color: white !important;
+            cursor: pointer;
+        }
     </style>
-    <link href="~/plugins/ekko-lightbox/ekko-lightbox.css" rel="stylesheet" />
+    @*<link href="~/plugins/ekko-lightbox/ekko-lightbox.css" rel="stylesheet" />*@
     <link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
     <link href="~/plugins/select2/css/select2.css" rel="stylesheet" />
     <link href="~/plugins/select2-bootstrap4-theme/select2-bootstrap4.css" rel="stylesheet" />
@@ -65,7 +81,7 @@
             </div>
             <div class="modal-footer justify-content-center align-items-center">
                 <div>
-                    <button class="btn btn-success" id="send_pic" type="button"><i style="margin-left: 5px;font-size:13px" class="fas fa-share-square"></i>@Language.GetString("btn_Send")</button>
+                    <button class="btn btn-success" id="send_pic" type="button"><i style="margin-left: 5px;font-size:13px" class="fas fa-check"></i>@Language.GetString("btn_Approve")</button>
                     <button class="btn btn-primary" id="crop_button"><i style="margin-left: 5px;font-size:13px" class="fas fa-cut"></i>@Language.GetString("btn_Crop")</button>
                     <button class="btn btn-default" style="background-color: crimson;color: white;border: 1px solid crimson" onclick="rotatePic()"> <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i> @Language.GetString("btn_Rotate")</button>
 
@@ -124,206 +140,293 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-title">@Language.GetString("Menu_ProductSpecifications")</div>
+                    <div class="form-group col-md-4">
+                        @if (dir == "rtl")
+                        {
+                            <label>
+                                <input type="checkbox" id="chbNotifyInventory" class="minimal">
+                                @Language.GetString("AlertAndMessage_NotifyWhenCountIsLessThan")
+                            </label>
+                        }
+                        else
+                        {
+                            <div class="icheck-primary d-inline">
+                                <input type="checkbox" id="chbNotifyInventory">
+                                <label for="chbNotifyInventory">
+                                    @Language.GetString("AlertAndMessage_NotifyWhenCountIsLessThan")
+                                </label>
                             </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="form-group col-md-2">
-                                        <label>@Language.GetString("LanguageName")</label>
-                                        <select class="form-control" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
-                                        </select>
-                                        <span data-val-result="languageId" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label>@Language.GetString("SpecificationGroup")</label>
-                                        <select class="form-control" id="specGroupId" asp-items="@(new SelectList(ViewBag.SpecificationGroupList,"Value","Text"))">
-                                        </select>
-                                        <span data-val-result="specGroupId" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label>@Language.GetString("tbl_SpecificationName")</label>
-                                        <select class="form-control" id="specificationId">
-                                        </select>
-                                        <span data-val-result="specificationId" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label>@Language.GetString("tbl_SpecificationValues")</label>
-                                        <select class="form-control select2" multiple="multiple" id="specValues">
-                                        </select>
-                                        <span data-val-result="specValues" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group col-md-1" style="text-align:center;margin:auto;">
-                                        <div style="margin:auto;display:inline-block;">
-                                            <button type="button" class="btn btn-info btn-circle" onclick="addSpecToList();">
-                                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3 offset-md-3">
-                                        <span data-val-result="Specifications" class="text-danger"></span>
-                                    </div>
-                                </div>
-                                <div class="row" style="margin-top:1%;">
-                                    <table class="table table-hover table-bordered table-responsive p-0">
-                                        <thead>
-                                            <tr style="text-align:center;">
-                                                <th>@Language.GetString("LanguageName")</th>
-                                                <th>@Language.GetString("SpecificationGroup")</th>
-                                                <th>@Language.GetString("tbl_SpecificationName")</th>
-                                                <th style="display:none"></th>
-                                                <th>@Language.GetString("tbl_SpecificationValues")</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="specificationList">
-                                            @foreach (var item in Model.Specifications)
-                                            {
-                                                <tr style="text-align:center;">
-                                                    <td>@item.LanguageName</td>
-                                                    <td>@item.SpecificationGroupName</td>
-                                                    <td>@item.SpecificationName</td>
-                                                    <td style="display:none;">@item.SpecificationId</td>
-                                                    <td>@item.Values</td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromList(this);">
-                                                            <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            }
-                                        </tbody>
-                                    </table>
-                                </div>
+                        }
+                    </div>
+                    <div class="form-group col-md-4">
+                        @if (dir == "rtl")
+                        {
+                            <label>
+                                <input type="checkbox" id="chbNotifyInventory" class="minimal">
+                                @Language.GetString("ShowInLackOfInventory")
+                            </label>
+                        }
+                        else
+                        {
+                            <div class="icheck-primary d-inline">
+                                <input type="checkbox" id="chbNotifyInventory">
+                                <label for="chbNotifyInventory">
+                                    @Language.GetString("AlertAndMessage_NotifyWhenCountIsLessThan")
+                                </label>
                             </div>
-                            <div class="card-footer"></div>
-                        </div>
+                        }
+                    </div>
+                    <div class="form-group col-md-4">
+                        @if (ViewBag.Vendors != "-1")
+                        {
+                            <label>@Language.GetString("ProductVendor")</label>
+                            <select class="form-control" asp-for="@Model.SellerUserId" asp-items="@(new SelectList(ViewBag.Vendors,"Value","Text"))">
+                            </select>
+                        }
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-title">@Language.GetString("MultiLingualProperty")</div>
+                                <div class="card-title">@Language.GetString("PriceHistory")</div>
                             </div>
                             <div class="card-body">
-                                <div class="row" style="background-color: #f0f0f5;">
-                                    <div class="form-group col-md-2">
-                                        <label>@Language.GetString("LanguageName")</label>
-                                        <select class="form-control" id="multiLangId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
-                                        </select>
-                                        <span data-val-result="multiLangId" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label>@Language.GetString("tbl_ProductName")</label>
-                                        <input type="text" class="form-control" id="productName" placeholder=" ">
-                                        <span data-val-result="productName" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label>@Language.GetString("UrlFriend")</label>
-                                        <input type="text" class="form-control" id="urlFriend" placeholder=" ">
-                                        <span data-val-result="urlFriend" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label>@Language.GetString("SeoTitle")</label>
-                                        <input type="text" class="form-control" id="seoTitle" placeholder=" ">
-                                        <span data-val-result="seoTitle" class="text-danger"></span>
-                                    </div>
-                                </div>
-                                <div class="row" style="background-color: #f0f0f5;">
-                                    <div class="form-group col-md-3">
-                                        <label>@Language.GetString("SeoDescription")</label>
-                                        <input type="text" class="form-control" id="seoDescription" placeholder=" ">
-                                        <span data-val-result="seoDescription" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label>@Language.GetString("Description")</label>
-                                        <input type="text" class="form-control" id="description" placeholder=" ">
-                                        <span data-val-result="description" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group col-md-3" style="text-align:center;margin:auto;">
-                                        <div style="margin:auto;display:inline-block;">
-                                            <button type="button" class="btn btn-info btn-circle" onclick="addToTable();">
-                                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <table class="table table-hover table-bordered table-responsive p-0">
-                                        <thead>
-                                            <tr style="text-align:center;">
-                                                <th>@Language.GetString("LanguageName")</th>
-                                                <th>@Language.GetString("tbl_ProductName")</th>
-                                                <th>@Language.GetString("seoTitle")</th>
-                                                <th>@Language.GetString("SeoDescription")</th>
-                                                <th>@Language.GetString("Description")</th>
-                                                <th>@Language.GetString("UrlFriend")</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="multiLingualList">
-                                            @foreach (var item in Model.MultiLingualProperties)
-                                            {
-                                                <tr style="text-align:center;">
-                                                    <td>@item.LanguageName</td>
-                                                    <td>@item.Name</td>
-                                                    <td>@item.SeoTitle</td>
-                                                    <td>@item.SeoDescription</td>
-                                                    <td>@item.Description</td>
-                                                    <td>@item.UrlFriend</td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromTable(this);">
-                                                            <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            }
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <div class="row"></div>
+                                <div class="row"></div>
                             </div>
                             <div class="card-footer"></div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-title">@Language.GetString("tbl_ProductImages")</div>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="custom-file">
-                                            <input style="width: -webkit-fill-available;" accept="image/x-png,image/jpeg"
-                                                   type="file" class="btn btn-sm" name="image" id="image" onchange="getURL(this)">
-                                            <label class="custom-file-label" for="image">@Language.GetString("btn_UploadImage")</label>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">@Language.GetString("Menu_ProductSpecifications")</div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="form-group col-md-2">
+                                            <label>@Language.GetString("LanguageName")</label>
+                                            <select class="form-control" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                                            </select>
+                                            <span data-val-result="languageId" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label>@Language.GetString("SpecificationGroup")</label>
+                                            <select class="form-control" id="specGroupId" asp-items="@(new SelectList(ViewBag.SpecificationGroupList,"Value","Text"))">
+                                            </select>
+                                            <span data-val-result="specGroupId" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label>@Language.GetString("tbl_SpecificationName")</label>
+                                            <select class="form-control" id="specificationId">
+                                            </select>
+                                            <span data-val-result="specificationId" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label>@Language.GetString("tbl_SpecificationValues")</label>
+                                            <select class="form-control select2" multiple="multiple" id="specValues">
+                                            </select>
+                                            <span data-val-result="specValues" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-1" style="text-align:center;margin:auto;">
+                                            <div style="margin:auto;display:inline-block;">
+                                                <button type="button" class="btn btn-info btn-circle" onclick="addSpecToList();">
+                                                    <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3 offset-md-3">
+                                            <span data-val-result="Specifications" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top:1%;">
+                                        <div class="col-md-12">
+                                            <table class="table table-hover table-bordered">
+                                                <thead>
+                                                    <tr style="text-align:center;">
+                                                        <th>@Language.GetString("LanguageName")</th>
+                                                        <th>@Language.GetString("SpecificationGroup")</th>
+                                                        <th>@Language.GetString("tbl_SpecificationName")</th>
+                                                        <th style="display:none"></th>
+                                                        <th>@Language.GetString("tbl_SpecificationValues")</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="specificationList">
+                                                    @if (Model.Specifications.Any())
+                                                    {
+                                                        @foreach (var item in Model.Specifications)
+                                                        {
+                                                            <tr style="text-align:center;">
+                                                                <td>@item.LanguageName</td>
+                                                                <td>@item.SpecificationGroupName</td>
+                                                                <td>@item.SpecificationName</td>
+                                                                <td style="display:none;">@item.SpecificationId</td>
+                                                                <td>@item.Values</td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromList(this);">
+                                                                        <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        }
+
+
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr style="text-align:center;">
+                                                            <td colspan="6">@Language.GetString("AlertAndMessage_NoDataToShow")</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    @foreach (var pic in Model.Images)
-                                    {
-                                        <div class="col-sm-2">
-                                            <a href="@pic.Url" data-toggle="lightbox" data-title="@pic.Title" data-gallery="gallery">
-                                                <img src="" class="img-fluid mb-2" alt="@pic.Title" />
-                                            </a>
+                                <div class="card-footer"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">@Language.GetString("MultiLingualProperty")</div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row" style="background-color: #f0f0f5;">
+                                        <div class="form-group col-md-2">
+                                            <label>@Language.GetString("LanguageName")</label>
+                                            <select class="form-control" id="multiLangId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                                            </select>
+                                            <span data-val-result="multiLangId" class="text-danger"></span>
                                         </div>
-                                    }
+                                        <div class="form-group col-md-3">
+                                            <label>@Language.GetString("tbl_ProductName")</label>
+                                            <input type="text" class="form-control" id="productName" placeholder=" ">
+                                            <span data-val-result="productName" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label>@Language.GetString("UrlFriend")</label>
+                                            <input type="text" class="form-control" id="urlFriend" placeholder=" ">
+                                            <span data-val-result="urlFriend" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label>@Language.GetString("SeoTitle")</label>
+                                            <input type="text" class="form-control" id="seoTitle" placeholder=" ">
+                                            <span data-val-result="seoTitle" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="background-color: #f0f0f5;">
+                                        <div class="form-group col-md-3">
+                                            <label>@Language.GetString("SeoDescription")</label>
+                                            <input type="text" class="form-control" id="seoDescription" placeholder=" ">
+                                            <span data-val-result="seoDescription" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label>@Language.GetString("Description")</label>
+                                            <input type="text" class="form-control" id="description" placeholder=" ">
+                                            <span data-val-result="description" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-3" style="text-align:center;margin:auto;">
+                                            <div style="margin:auto;display:inline-block;">
+                                                <button type="button" class="btn btn-info btn-circle" onclick="addToTable();">
+                                                    <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table table-hover table-bordered">
+                                                <thead>
+                                                    <tr style="text-align:center;">
+                                                        <th>@Language.GetString("LanguageName")</th>
+                                                        <th>@Language.GetString("tbl_ProductName")</th>
+                                                        <th>@Language.GetString("seoTitle")</th>
+                                                        <th>@Language.GetString("SeoDescription")</th>
+                                                        <th>@Language.GetString("Description")</th>
+                                                        <th>@Language.GetString("UrlFriend")</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="multiLingualList">
+                                                    @if (Model.MultiLingualProperties.Count != 0)
+                                                    {
+                                                        @foreach (var item in Model.MultiLingualProperties)
+                                                        {
+                                                            <tr style="text-align:center;">
+                                                                <td>@item.LanguageName</td>
+                                                                <td>@item.Name</td>
+                                                                <td>@item.SeoTitle</td>
+                                                                <td>@item.SeoDescription</td>
+                                                                <td>@item.Description</td>
+                                                                <td>@item.UrlFriend</td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromTable(this);">
+                                                                        <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr style="text-align:center;">
+                                                            <td colspan="7">@Language.GetString("AlertAndMessage_NoDataToShow")</td>
+                                                        </tr>
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">@Language.GetString("tbl_ProductImages")</div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="custom-file">
+                                                <input style="width: -webkit-fill-available;" accept="image/x-png,image/jpeg"
+                                                       type="file" class="btn btn-sm" name="image" id="image" onchange="getURL(this)">
+                                                <label class="custom-file-label" for="image">@Language.GetString("btn_UploadImage")</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" id="proGallery" style="padding:1%;">
+                                        @foreach (var pic in Model.Images)
+                                        {
+                                            <div class="col-sm-2">
+                                                <a class='removeImage' onclick='removeThisImage(this);'>
+                                                    <span class='fa fa-times'></span>
+                                                </a>
+                                                <img src="@pic.Content" class="img-fluid mb-2" alt="@pic.Title" width="120" height="120" />
+                                            </div>
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+
                 </div>
-
-
-            </div>
             <div class="card-footer">
                 <div class="row">
                     <input type="button" id="btnAddProductSpecificationGroup" value="@Language.GetString("btn_Save")" class="btn btn-block btn-success" />
@@ -334,6 +437,7 @@
     </div>
 </div>
 @section Scripts{
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/plugins/ekko-lightbox/ekko-lightbox.js"></script>
     <script src="~/lib/cropperjs/cropper.js"></script>
     @if (dir == "rtl")
@@ -347,17 +451,18 @@
         var cropper;
         var currentFileSize;
         var currentFileName;
+        var imageContents = [];
     $(document).ready(function () {
-            debugger;
+
        //multiselect
         $("#GroupIds").select2({ dir: '@dir', theme: 'bootstrap4' });
         $("#specValues").select2({ dir: '@dir', theme: 'bootstrap4' });
         $("#languageId").val('@ViewBag.LangId');
         $("#multiLangId").val('@ViewBag.LangId');
-       
+
 
       $("#btnAddProductSpecificationGroup").click(function () {
-            debugger;
+
                 var flag = false;
 
           var dataModel = FillDataToSend();
@@ -369,70 +474,66 @@
                 if (!flag) {
                     $.ajax({
                         url: "@Model.ProductId" != "" ? "/Product/Edit" : "/Product/Add",
-                    data: dataModel,
-                    contentType: 'application/json',
-                    data: JSON.stringify(dataModel),
-                type: 'Post',
-                beforeSend: function () {
-                    debugger;
-                    AddLoading($("#addProductCard"));
-                },
-                success: function (result) {
-                    debugger;
-                    if (result.status === "Success") {
-                        Swal.fire({
-                            icon: 'success',
-                            text: result.message,
-                            showConfirmButton: false,
-                            timer: 3000
-                        }).then(() => {
-                            window.location.href = '@Url.Action("List")';
-                        });
-                    }else
-                    if (result.status === "ModelError") {
-                        var spanErrorList = $('span[data-val-result]');
-                        if (spanErrorList.length > 1) {
-                            spanErrorList.each(function() {
-                                $(this).html("");
-                                $(this).parent().removeClass("has-error");
-                            });
-                        } else {
-                            spanErrorList.html("");
-                            spanErrorList.parent().removeClass("has-error");
+                        contentType: 'application/json',
+                        data: JSON.stringify(dataModel),
+                        type: 'Post',
+                        beforeSend: function () {
+
+                            AddLoading($("#addProductCard"));
+                        },
+                        success: function (result) {
+
+                            if (result.status === "Success") {
+                                Swal.fire({
+                                    icon: 'success',
+                                    text: result.message,
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                }).then(() => {
+                                    window.location.href = '@Url.Action("List")';
+                                });
+                            }else
+                            if (result.status === "ModelError") {
+                                var spanErrorList = $('span[data-val-result]');
+                                if (spanErrorList.length > 1) {
+                                    spanErrorList.each(function() {
+                                        $(this).html("");
+                                        $(this).parent().removeClass("has-error");
+                                    });
+                                } else {
+                                    spanErrorList.html("");
+                                    spanErrorList.parent().removeClass("has-error");
+                                }
+                                if (result.modelStateErrors !== null) {
+                                        $('[data-val-result=' + value.key + ']').html(value.errorMessage);
+                                        $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                    }
+                                }
+                            },
+                        @*error: function (xhr, ajaxOptions, thrownError) {
+                            alert("@error");
+                            alert(xhr.status);
+                            alert(thrownError);
+                        },*@
+                        complete: function () {
+                            removeLoading($("#addProductSpecificationGroupCard"));
                         }
-                        if (result.modelStateErrors !== null) {
-                                $('[data-val-result=' + value.key + ']').html(value.errorMessage);
-                                $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
-                            }
-                        }
-                    },
-                @*error: function (xhr, ajaxOptions, thrownError) {
-                    alert("@error");
-                    alert(xhr.status);
-                    alert(thrownError);
-                },*@
-                complete: function () {
-                    removeLoading($("#addProductSpecificationGroupCard"));
-                }
                 });
                 }
       });
 
-      $("#send_pic").click(function () {
-            debugger;
+        $("#send_pic").click(function () {
+
             $("#uploadModal").modal("hide");
             var url = $("#galleryPic").attr("src");
-            debugger;
-            //first send it to the server ad after that get different size from it and create its tag to show in gallery
+            imageContents.push(url);
+            $("#proGallery").append("<div class='col-sm-2'><a  class='removeImage' onclick='removeThisImage(this);'><span class='fa fa-times'></span>" +
+                                    "</a><img src='" + url + "' width='120' height='120' /></div>");
 
+        });
+       
+        $("#languageId").change(function () {
 
-            //$("#userPic").attr('src', url);
-            //fileContent = url;
-            //fileName = currentFileName;
-      });
-
-      $("#languageId").change(function () {
-                debugger;
                 var langId = $("#languageId").val();
 
                 $.ajax({
@@ -440,10 +541,10 @@
                     type: 'Get',
                     dataType : 'json',
                     success: function (result) {
-                        debugger;
+
                         var options = "<option value='-1'> " +'@Language.GetString("AlertAndMessage_Choose")'+" </option>";
                         if (result.status === "success") {
-                            debugger;
+
                             if (result.data.length != 0) {
                                 (result.data).forEach(function (item) {
                                     var op = "<option value='" + item.value + "'>" + item.text + "</option>";
@@ -471,10 +572,10 @@
                 type: 'Get',
                 dataType : 'json',
                 success: function (result) {
-                    debugger;
+
                     var options = "<option value='-1'> " +'@Language.GetString("AlertAndMessage_Choose")'+" </option>";
                     if (result.status === "success") {
-                        debugger;
+
                         if (result.data.length != 0) {
                             (result.data).forEach(function (item) {
                                 var op = "<option value='" + item.value + "'>" + item.text + "</option>";
@@ -503,10 +604,10 @@
                     type: 'Get',
                     dataType : 'json',
                     success: function (result) {
-                        debugger;
+
                         var options = "<option value='-1'> " +'@Language.GetString("AlertAndMessage_Choose")'+" </option>";
                         if (result.status === "success") {
-                            debugger;
+
                             if (result.data.length != 0) {
                                 (result.data).forEach(function (item) {
                                     var op = "<option value='" + item.value + "'>" + item.text + "</option>";
@@ -526,13 +627,22 @@
             }
         });
     });
+
+    function removeThisImage(sender) {
+        debugger;
+        var content = $(sender).next().attr("src");
+        var index = imageContents.indexOf(content);
+        imageContents.splice(index, 1);
+        $(sender).parent().remove();
+    }
+
     function addSpecToList() {
         var flag = false;
         $("span[data-val-result='languageId']").html("");
         $("span[data-val-result='specGroupId']").html("");
         $("span[data-val-result='specificationId']").html("");
         $("span[data-val-result='specValues']").html("");
-        debugger;
+
 
         if ($("#languageId").val() == "-1") {
             $("span[data-val-result='languageId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
@@ -550,16 +660,16 @@
             $("span[data-val-result='specValues']").html('@Language.GetString("AlertAndMessage_SelectAtLeastOneItem")');
             flag = true;
         }
-       
+
         if (!flag) {
             var vals = "";
             for (var i = 0; i < $("#specValues").select2("data").length; i++) {
-                debugger;
+
                 vals += $("#specValues").select2("data")[i].text + "|";
             }
             //remove last '|'
             vals = vals.substring(0, vals.length - 1);
-          
+
             var tr = "<tr style='text-align:center;'><td>" + $("#languageId option:selected").text() +
                 "</td><td>" + $('#specGroupId option:selected').text() +
                 "</td><td>" + $("#specificationId option:selected").text() +
@@ -582,13 +692,13 @@
     }
 
     function FillDataToSend() {
-        debugger;
+
         var obj = {};
         obj.GroupNames = [];
         obj.SpecificationGroupId = $("#SpecificationGroupId").val();
         obj.ModificationReason = $("#ModificationReason").val();
         $("#multiLingualList tr").each(function () {
-            debugger;
+
             var innerModel = {};
 
             innerModel.Name = $(this).find("td:eq(0)").text();
@@ -601,7 +711,7 @@
     }
 
     function deleteFromTable(sender) {
-        debugger;
+
         var tr = $(sender).parent().parent();
         $(tr).remove();
     }
@@ -610,7 +720,7 @@
         var flag = false;
         $("span[data-val-result='multiLangId']").html("");
         $("span[data-val-result='productName']").html("");
-        debugger;
+
 
         if ($("#multiLangId").val() == "") {
             $("span[data-val-result='multiLangId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
@@ -652,27 +762,12 @@
         cropper.rotate(90);
     }
 
-    //function ViewImage(address) {
-    //    var tag = '<img src="' + address + '" width="500px" />';
-    //    Swal.fire({
-    //        html: tag,
-    //        width: 'auto',
-    //        showConfirmButton: true,
-    //        confirmButtonText: 'بستن'
-    //    });
-    //}
 
-    $("#send_pic").click(function () {
-        debugger;
-        $("#uploadModal").modal("hide");
-        var url = $("#dada").attr("src");
-        debugger;
-        $("#userPic").attr('src', url);
-        fileContent = url;
-        fileName = currentFileName;
-    });
 
-    function upRiseModal() {
+    
+
+        function upRiseModal() {
+            debugger;
         $("#send_pic").attr("disabled", true);
         $("#uploadModal").modal("show");
     }
@@ -713,7 +808,7 @@
     }
 
     function getURL(input) {
-        debugger;
+
     $("#cropped_result").remove();
     if (input.files && input.files[0]) {
         var file = input.files[0];

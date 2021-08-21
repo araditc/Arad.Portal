@@ -31,6 +31,9 @@
 	<string key="btn_Send">
 		<value>Send</value>
 	</string>
+	<string key="btn_Approved">
+		<value>Approve</value>
+	</string>
 	<string key="btn_Cancel">
 		<value>Cancel</value>
 	</string>
@@ -319,6 +322,12 @@
 	<!--START [Allert And Message]-->
 	<string key="AlertAndMessage_InvalidFileSize">
 		<value>the file size exceed limitation.</value>
+	</string>
+	<string key="AlertAndMessage_NotifyWhenCountIsLessThan">
+		<value>Notify when inventory is:</value>
+	</string>
+	<string key="AlertAndMessage_ImageNotSave">
+		<value>The image have not been saved,please try again later.</value>
 	</string>
 	<string key="AlertAndMessage_EnterTheResult">
 		<value>Enter the result.</value>
@@ -1098,6 +1107,19 @@
   <string key="InActive">
     <value>InActive</value>
   </string>
+	<string key="IsVendor">
+		<value>Is Vendor?</value>
+	</string>
+	<string key="ProductVendor">
+		<value>Product Vendor</value>
+	</string>
+	<string key="PriceHistory">
+		<value>Price History</value>
+	</string>
+	<string key="ShowInLackOfInventory">
+		<value>Show in lack of inventory</value>
+	</string>
+	
 	<string key="ShowHide">
 		<value>Show/Hide</value>
 	</string>

@@ -40,6 +40,8 @@ namespace Arad.Portal.DataLayer.Models.User
        
         public bool IsActive { get; set; } = true;
 
+        public bool IsVendor { get; set; }
+
         [CustomErrorMessage("AlertAndMessage_UserRoleRequired")]
         public string UserRoleId { get; set; }
 

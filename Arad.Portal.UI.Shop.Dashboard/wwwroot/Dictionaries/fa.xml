@@ -31,6 +31,9 @@
 	<string key="btn_Send">
 		<value>ارسال</value>
 	</string>
+	<string key="btn_Approve">
+		<value>تایید</value>
+	</string>
 	<string key="btn_Cancel">
 		<value>انصراف</value>
 	</string>
@@ -313,6 +316,12 @@
 	<!--START [Allert And Message]-->
 	<string key="AlertAndMessage_InvalidFormat">
 		<value>فرمت فایل نامعتبر است.</value>
+	</string>
+	<string key="AlertAndMessage_NotifyWhenCountIsLessThan">
+		<value>هشدار برای موجودی کمتر از:</value>
+	</string>
+	<string key="AlertAndMessage_ImageNotSave">
+		<value>تصویر مورد نظر ذخیره نشد لطفا بعدا تلاش کنید.</value>
 	</string>
 	<string key="AlertAndMessage_EnterTheResult">
 		<value>حاصل را وارد کنید</value>
@@ -1137,6 +1146,18 @@
 	</string>
 	<string key="InActive">
 		<value>غیر فعال</value>
+	</string>
+	<string key="IsVendor">
+		<value>فروشنده است؟</value>
+	</string>
+	<string key="ProductVendor">
+		<value>فروشنده محصول</value>
+	</string>
+	<string key="PriceHistory">
+		<value>تاریخچه قیمت</value>
+	</string>
+	<string key="ShowInLackOfInventory">
+		<value>نمایش در صورت عدم موجودی</value>
 	</string>
 	<string key="ShowHide">
 		<value>نمایش/عدم نمایش</value>

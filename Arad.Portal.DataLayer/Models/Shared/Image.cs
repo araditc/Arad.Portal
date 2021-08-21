@@ -12,5 +12,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public string Url { get; set; }
         public string Title { get; set; }
         public bool IsMain { get; set; }
+        public string Description { get; set; }
+        public string Content { get; set; }
     }
 }

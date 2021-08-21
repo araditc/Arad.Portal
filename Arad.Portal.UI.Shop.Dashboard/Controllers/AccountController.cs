@@ -341,6 +341,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         CreationDate = DateTime.UtcNow,
                         CreatorId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
                     };
+                    if(model.IsVendor)
+                    {
+                        user.Claims.Add(new IdentityUserClaim<string>
+                        {
+                            ClaimType = "AppRole",
+                            ClaimValue = true.ToString()
+                        });
+                    }
 
                     var res = await _userManager.CreateAsync(user, model.Password);
 
@@ -425,6 +433,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             List<ClientValidationErrorModel> errors = new List<ClientValidationErrorModel>();
             var user = new ApplicationUser();
+
+       
             var result = new JsonResult(new { Status = "success", Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully") });
             if (model.Id != null)
             {
@@ -464,10 +474,24 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     user.Profile.LastName = model.LastName;
                     user.PhoneNumber = model.FullMobile.Replace("+", "");
                     user.UserRoleId = model.UserRoleId;
-
+                    if(model.IsVendor)
+                    {
+                        user.Claims.Add(new IdentityUserClaim<string>
+                        {
+                            ClaimType = "AppRole",
+                            ClaimValue = true.ToString()
+                        });
+                    }
+                    else
+                    {
+                        var vendorClaim = user.Claims.Find(c => c.ClaimType == "AppRole");
+                        if (vendorClaim != null)
+                        {
+                            user.Claims.Remove(vendorClaim);
+                        }
+                    }
 
                     var res = await _userManager.UpdateAsync(user);
-
                     if (!res.Succeeded)
                     {
                         var identityErrors = res.Errors.ToList();
