@@ -339,114 +339,114 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return result;
         }
 
-        private static async Task RelayViaHttpGetAsync(string host, string query, string messageId,
-            ApiDeliveryQueueDto model, int tryCount, string auth)
-        {
+        //private static async Task RelayViaHttpGetAsync(string host, string query, string messageId,
+        //    ApiDeliveryQueueDto model, int tryCount, string auth)
+        //{
 
-            FullLogOption.OptionalLog("In Relay via get.");
-            FullLogOption.OptionalLog($"{host} {query} {JsonConvert.SerializeObject(model)}");
+        //    FullLogOption.OptionalLog("In Relay via get.");
+        //    FullLogOption.OptionalLog($"{host} {query} {JsonConvert.SerializeObject(model)}");
 
-            FullLogOption.OptionalLog($"relay via get {host} {query} {JsonConvert.SerializeObject(model)}");
+        //    FullLogOption.OptionalLog($"relay via get {host} {query} {JsonConvert.SerializeObject(model)}");
 
-            var st = new Stopwatch();
-            st.Start();
+        //    var st = new Stopwatch();
+        //    st.Start();
 
-            using var serviceScope = _hostBuild.Services.CreateScope();
-            {
-                var services = serviceScope.ServiceProvider;
-                _clientFactory = services.GetService<IHttpClientFactory>();
-                var client = _clientFactory.CreateClient();
+        //    using var serviceScope = _hostBuild.Services.CreateScope();
+        //    {
+        //        var services = serviceScope.ServiceProvider;
+        //        _clientFactory = services.GetService<IHttpClientFactory>();
+        //        var client = _clientFactory.CreateClient();
 
-                if (!string.IsNullOrWhiteSpace(auth))
-                {
-                    client.DefaultRequestHeaders.Add("Authorization", "Basic " + auth);
-                }
+        //        if (!string.IsNullOrWhiteSpace(auth))
+        //        {
+        //            client.DefaultRequestHeaders.Add("Authorization", "Basic " + auth);
+        //        }
 
-                //client.Timeout = TimeSpan.FromMilliseconds(300);
-                var address = Flurl.Url.Combine(host, query);
+        //        //client.Timeout = TimeSpan.FromMilliseconds(300);
+        //        var address = Flurl.Url.Combine(host, query);
 
-                FullLogOption.OptionalLog($"address:{address}");
-                var response = await client.GetAsync(address);
+        //        FullLogOption.OptionalLog($"address:{address}");
+        //        var response = await client.GetAsync(address);
 
-                if (!response.IsSuccessStatusCode)
-                {
-                    throw new ApiDeliveryEngineRetryException { CurrentRetryCount = tryCount, Model = model, TimeElapsed = st.Elapsed, Method = "Get", StatusCode = response.StatusCode };
-                }
+        //        if (!response.IsSuccessStatusCode)
+        //        {
+        //            throw new ApiDeliveryEngineRetryException { CurrentRetryCount = tryCount, Model = model, TimeElapsed = st.Elapsed, Method = "Get", StatusCode = response.StatusCode };
+        //        }
 
-                Logger.WriteLogFile($"Get time: {st.ElapsedMilliseconds}");
-            }
-        }
+        //        Logger.WriteLogFile($"Get time: {st.ElapsedMilliseconds}");
+        //    }
+        //}
 
-        private static async Task RelayViaHttpPostAsync(ApiDeliveryQueueDto model, string host,
-           List<RelayParams> additionalParams, int tryCount, string auth)
-        {
-            FullLogOption.OptionalLog($"relay via post {host} {JsonConvert.SerializeObject(additionalParams)} {JsonConvert.SerializeObject(model)}");
+        //private static async Task RelayViaHttpPostAsync(ApiDeliveryQueueDto model, string host,
+        //   List<RelayParams> additionalParams, int tryCount, string auth)
+        //{
+        //    FullLogOption.OptionalLog($"relay via post {host} {JsonConvert.SerializeObject(additionalParams)} {JsonConvert.SerializeObject(model)}");
 
-            var st = new Stopwatch();
-            st.Start();
+        //    var st = new Stopwatch();
+        //    st.Start();
 
-            using var serviceScope = _hostBuild.Services.CreateScope();
-            {
-                var services = serviceScope.ServiceProvider;
-                _clientFactory = services.GetService<IHttpClientFactory>();
+        //    using var serviceScope = _hostBuild.Services.CreateScope();
+        //    {
+        //        var services = serviceScope.ServiceProvider;
+        //        _clientFactory = services.GetService<IHttpClientFactory>();
 
-                var client = _clientFactory.CreateClient();
-                if (!string.IsNullOrWhiteSpace(auth))
-                {
-                    client.DefaultRequestHeaders.Add("Authorization", "Basic " + auth);
-                }
+        //        var client = _clientFactory.CreateClient();
+        //        if (!string.IsNullOrWhiteSpace(auth))
+        //        {
+        //            client.DefaultRequestHeaders.Add("Authorization", "Basic " + auth);
+        //        }
 
-                var content = new StringContent(
-                    JsonConvert.SerializeObject(new
-                    {
-                        BatchId = model.Object.MessageId,
-                        model.Object.Status,
-                        model.Object.PartNumber,
-                        model.Object.Mobile,
-                        ExtraParameters = additionalParams
-                    }),
-                    Encoding.UTF8, MediaTypeNames.Application.Json);
-                var response = await client.PostAsync(host, content);
+        //        var content = new StringContent(
+        //            JsonConvert.SerializeObject(new
+        //            {
+        //                BatchId = model.Object.MessageId,
+        //                model.Object.Status,
+        //                model.Object.PartNumber,
+        //                model.Object.Mobile,
+        //                ExtraParameters = additionalParams
+        //            }),
+        //            Encoding.UTF8, MediaTypeNames.Application.Json);
+        //        var response = await client.PostAsync(host, content);
 
-                if (!response.IsSuccessStatusCode)
-                {
-                    throw new ApiDeliveryEngineRetryException { CurrentRetryCount = tryCount, Model = model, Address = host, TimeElapsed = st.Elapsed, Method = "Post", StatusCode = response.StatusCode };
-                }
+        //        if (!response.IsSuccessStatusCode)
+        //        {
+        //            throw new ApiDeliveryEngineRetryException { CurrentRetryCount = tryCount, Model = model, Address = host, TimeElapsed = st.Elapsed, Method = "Post", StatusCode = response.StatusCode };
+        //        }
 
-                Logger.WriteLogFile($"Post time: {st.ElapsedMilliseconds}");
-            }
-        }
-
-
-        private async string GetToken()
-        {
-            try
-            {
-                Logger.WriteLogFile("Start Getting token");
-                var client = clientFactory.CreateClient();
-                var keyValues = new List<KeyValuePair<string, string>> {
-                    new KeyValuePair<string, string>("username", userName),
-                    new KeyValuePair<string, string>("password", password),
-                    new KeyValuePair<string, string>("scope", "ApiAccess"),
-                };
-
-                client.BaseAddress = new Uri(authEndPointBaseAddress);
-                var content = new FormUrlEncodedContent(keyValues);
-                var response = await client.PostAsync(/*"/connect/token",*/ content).Content.ReadAsStringAsync();
-                return response;
+        //        Logger.WriteLogFile($"Post time: {st.ElapsedMilliseconds}");
+        //    }
+        //}
 
 
-                                                                         //T
-                //var data = Newtonsoft.Json.JsonConvert.DeserializeObject<TokenResponseModel>(await response.Content.ReadAsStringAsync());
-                //access_token = data.access_token;
-                //Logger.WriteLogFile($"access token = {access_token}");
+        //private async string GetToken()
+        //{
+        //    try
+        //    {
+        //        Logger.WriteLogFile("Start Getting token");
+        //        var client = clientFactory.CreateClient();
+        //        var keyValues = new List<KeyValuePair<string, string>> {
+        //            new KeyValuePair<string, string>("username", userName),
+        //            new KeyValuePair<string, string>("password", password),
+        //            new KeyValuePair<string, string>("scope", "ApiAccess"),
+        //        };
 
-            }
-            catch (Exception e)
-            {
-                Logger.WriteLogFile(e.Message);
-            }
-        }
+        //        client.BaseAddress = new Uri(authEndPointBaseAddress);
+        //        var content = new FormUrlEncodedContent(keyValues);
+        //        var response = await client.PostAsync(/*"/connect/token",*/ content).Content.ReadAsStringAsync();
+        //        return response;
+
+
+        //                                                                 //T
+        //        //var data = Newtonsoft.Json.JsonConvert.DeserializeObject<TokenResponseModel>(await response.Content.ReadAsStringAsync());
+        //        //access_token = data.access_token;
+        //        //Logger.WriteLogFile($"access token = {access_token}");
+
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Logger.WriteLogFile(e.Message);
+        //    }
+        //}
 
 
 
