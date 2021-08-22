@@ -15,6 +15,7 @@ namespace Arad.Portal.DataLayer.Models.Product
         public ProductInputDTO()
         {
             MultiLingualProperties = new();
+            Prices = new();
             Pictures = new ();
             Comments = new ();
             Specifications = new ();
@@ -45,7 +46,7 @@ namespace Arad.Portal.DataLayer.Models.Product
 
         public string UnitId { get; set; }
 
-        public Price Price { get; set; }
+        public List<Price> Prices { get; set; }
 
         public string PromotionId { get; set; }
 
@@ -55,10 +56,10 @@ namespace Arad.Portal.DataLayer.Models.Product
 
         public int VisitCount { get; set; }
 
+        public bool IsPublishedOnMainDomain { get; set; }
+
         public string ModificationReason { get; set; }
 
         public List<Comment.Comment> Comments { get; set; }
-
-        public bool IsPublishedOnMainDomain { get; set; }
     }
 }

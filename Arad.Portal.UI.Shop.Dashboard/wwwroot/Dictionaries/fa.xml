@@ -317,6 +317,12 @@
 	<string key="AlertAndMessage_InvalidFormat">
 		<value>فرمت فایل نامعتبر است.</value>
 	</string>
+	<string key="AlertAndMessage_Specifications">
+		<value>لطفا حداقل یک سطر برای جدول خصوصیات محصول پرکنید.</value>
+	</string>
+	<string key="AlertAndMessage_IsPaublishedOnMainDomain">
+		<value>در دامنه اصلی منتشر شود؟</value>
+	</string>
 	<string key="AlertAndMessage_NotifyWhenCountIsLessThan">
 		<value>هشدار برای موجودی کمتر از:</value>
 	</string>
@@ -349,6 +355,9 @@
 	</string>
 	<string key="AlertAndMessage_FillMultiLingualProperty">
 		<value>لطفا حداقل یک سطر جدول را پرکنید.</value>
+	</string>
+	<string key="AlertAndMessage_FillPriceList">
+		<value>لطفا یک سطر قیمت معتبر و فعال برای محصول وارد کنید.</value>
 	</string>
 	<string key="AlertAndMessage_FillList">
 		<value>لطفا حدااقل یک آیتم به لیست اضافه کنید.</value>
@@ -1141,8 +1150,20 @@
 	<string key="ActivationState">
 		<value>وضعیت</value>
 	</string>
+	<string key="Title">
+		<value>عنوان</value>
+	</string>
+	<string key="Description">
+		<value>توضیحات</value>
+	</string>
 	<string key="Active">
 		<value>فعال</value>
+	</string>
+	<string key="Image">
+		<value>تصویر</value>
+	</string>
+	<string key="MainPhoto">
+		<value>تصویر اصلی</value>
 	</string>
 	<string key="InActive">
 		<value>غیر فعال</value>
@@ -1183,6 +1204,9 @@
 	<string key="ExistentProducts">
 		<value>محصولات موجود</value>
 	</string>
+	<string key="Promotion">
+		<value>ترفیع</value>
+	</string>
 	<string key="ProductsOnPromotion">
 		<value>محصولات دارای ترفیع</value>
 	</string>
@@ -1203,6 +1227,9 @@
 	</string>
 	<string key="Currency">
 		<value>واحد پول</value>
+	</string>
+	<string key="PriceValue">
+		<value>قیمت</value>
 	</string>
 	<string key="User_Roles">
 		<value>نقش های کاربری</value>
@@ -1402,6 +1429,12 @@
 	<!--START [Action]-->
 	<string key="Exit">
 		<value>خروج</value>
+	</string>
+	<string key="StartDate">
+		<value>تاریخ شروع</value>
+	</string>
+	<string key="EndDate">
+		<value>تاریخ پایان</value>
 	</string>
 	<string key="New">
 		<value>جدید</value>

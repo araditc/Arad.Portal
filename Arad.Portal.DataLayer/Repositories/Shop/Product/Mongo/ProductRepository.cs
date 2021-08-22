@@ -58,7 +58,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
                 equallentModel.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
-                equallentModel.ProductId = Guid.NewGuid().ToString();
+                
 
                 await _context.ProductCollection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;
@@ -400,10 +400,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             #endregion
 
             #region Prices
-            equallentModel.Prices = new List<Models.Shared.Price>();
-            if (dto.Price != null)
+            equallentModel.Prices = new List<Price>();
+            if (dto.Prices.Count() == 1)
             {
-                equallentModel.Prices.Add(dto.Price);
+                equallentModel.Prices.Add(dto.Prices[0]);
             }
             #endregion
 
@@ -418,6 +418,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return equallentModel;
         }
 
+
+        private ProductInputDTO UpdateOr
         public int GetInventory(string productId)
         {
             var result = -1;
@@ -642,5 +644,23 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
+        public bool HasActiveProductPromotion(string productId)
+        {
+            var result = false;
+            var productEntity = _context.ProductCollection.Find(_ => _.ProductId == productId).First();
+            if(productEntity != null)
+            {
+                if(productEntity.Promotion != null)
+                {
+                    if(productEntity.Promotion.PromotionType == Entities.Shop.Promotion.PromotionType.Product && 
+                        productEntity.Promotion.IsActive && productEntity.Promotion.StartDate <= DateTime.Now &&
+                        (productEntity.Promotion.EndDate >= DateTime.Now || productEntity.Promotion == null))
+                    {
+                        result = true;
+                    }
+                }
+            }
+            return result;
+        }
     }
 }

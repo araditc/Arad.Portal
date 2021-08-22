@@ -13,6 +13,7 @@ using MongoDB.Driver.Linq;
 using AutoMapper;
 using System.Collections.Specialized;
 using System.Web;
+using Arad.Portal.DataLayer.Entities.Shop.Promotion;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
 {
@@ -278,6 +279,18 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                 result.Message = ConstMessages.ObjectNotFound;
             }
             return result;
+        }
+
+        public List<SelectListModel> GetActivePromotionsOfCurrentUser(string userId, PromotionType type)
+        {
+            var alltypes = _context.Collection.Find(_ => _.CreatorUserId == userId && _.StartDate <= DateTime.Now &&
+            (_.EndDate >= DateTime.Now || _.EndDate == null) && _.IsActive);
+            var res = alltypes.ToList().Where(_=>_.PromotionType == type).Select(_ => new SelectListModel() 
+            { 
+                Text = _.Title,
+                Value = _.PromotionId
+            }).ToList();
+            return res;
         }
     }
 }

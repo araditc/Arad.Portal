@@ -323,6 +323,12 @@
 	<string key="AlertAndMessage_InvalidFileSize">
 		<value>the file size exceed limitation.</value>
 	</string>
+	<string key="AlertAndMessage_Specifications">
+		<value>Please fill at least on row for specifications</value>
+	</string>
+	<string key="AlertAndMessage_IsPaublishedOnMainDomain">
+		<value>Is published on main Domain?</value>
+	</string>
 	<string key="AlertAndMessage_NotifyWhenCountIsLessThan">
 		<value>Notify when inventory is:</value>
 	</string>
@@ -358,6 +364,9 @@
 	</string>
 	<string key="AlertAndMessage_FillMultiLingualProperty">
 		<value>Please fill at Least one row of table.</value>
+	</string>
+	<string key="AlertAndMessage_FillPriceList">
+		<value>Please fill One valid and active price row</value>
 	</string>
 	<string key="AlertAndMessage_FillList">
 		<value>Please add at Least one item to list.</value>
@@ -1101,9 +1110,21 @@
 	<string key="ActivationState">
 		<value>State</value>
 	</string>
+	<string key="Title">
+		<value>Title</value>
+	</string>
+	<string key="Description">
+		<value>Description</value>
+	</string>
   <string key="Active">
     <value>Active</value>
   </string>
+	<string key="Image">
+		<value>Image</value>
+	</string>
+	<string key="MainPhoto">
+		<value>Main Image</value>
+	</string>
   <string key="InActive">
     <value>InActive</value>
   </string>
@@ -1144,6 +1165,9 @@
 	<string key="ExistentProducts">
 		<value>Existent Products</value>
 	</string>
+	<string key="Promotion">
+		<value>Promotion</value>
+	</string>
 	<string key="ProductsOnPromotion">
 		<value>Products on Promotions</value>
 	</string>
@@ -1164,6 +1188,9 @@
 	</string>
 	<string key="Currency">
 		<value>Currency</value>
+	</string>
+	<string key="PriceValue">
+		<value>Price</value>
 	</string>
 	<string key="User_Roles">
 		<value>Roles</value>
@@ -1363,6 +1390,12 @@
 	<!--START [Action]-->
 	<string key="Exit">
 		<value>Exit</value>
+	</string>
+	<string key="StartDate">
+		<value>Start Date</value>
+	</string>
+	<string key="EndDate">
+		<value>End Date</value>
 	</string>
 	<string key="New">
 		<value>New</value>

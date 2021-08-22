@@ -51,8 +51,10 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 
         //Pagination<ProductViewGallery> ListProductsGroup(GalleryPagination modelPagination);
         int GetInventory(string productId);
-        
+
         //Task<ProductOutputDTO> GetByUrlFriend(string urlFriend);
+
+        bool HasActiveProductPromotion(string productId);
         
     }
 }

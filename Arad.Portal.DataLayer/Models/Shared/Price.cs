@@ -12,7 +12,13 @@ namespace Arad.Portal.DataLayer.Models.Shared
     {
         public string PriceId { get; set; }
 
-        public Entities.General.Currency.Currency Currency { get; set; }
+        public string CurrencyId { get; set; }
+
+        public string CurrencyName { get; set; }
+
+        public string Symbol { get; set; }
+
+        public string Prefix { get; set; }
 
         public decimal PriceValue { get; set; }
 

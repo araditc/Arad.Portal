@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Models.Promotion;
+﻿using Arad.Portal.DataLayer.Entities.Shop.Promotion;
+using Arad.Portal.DataLayer.Models.Promotion;
 using Arad.Portal.DataLayer.Models.Shared;
 using System;
 using System.Collections.Generic;
@@ -24,5 +25,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Promotion
         Task<RepositoryOperationResult> DeletePromotion(string promotionId, string modificationReason);
 
         Task<PagedItems<PromotionDTO>> ListPromotions(string queryString);
+
+        List<SelectListModel> GetActivePromotionsOfCurrentUser(string userId, PromotionType type);
     }
 }

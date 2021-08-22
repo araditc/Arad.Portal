@@ -14,6 +14,8 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
         [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string PromotionId { get; set; }
 
+        public string Title { get; set; }
+
         public PromotionType PromotionType { get; set; }
 
         public DiscountType DiscountType { get; set; }
