@@ -34,11 +34,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             PagedItems<SpecificationGroupViewModel> list = new PagedItems<SpecificationGroupViewModel>();
             var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             ViewBag.Permissions = dicKey;
             try
             {
                 list = await _productSpecGrpRepository.List(Request.QueryString.ToString());
-                ViewBag.DefLangId = _lanRepository.GetDefaultLanguage().LanguageId;
+                ViewBag.DefLangId = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
                 ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
             }
             catch (Exception)
@@ -49,11 +50,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> AddEdit(string id)
         {
             var model = new SpecificationGroupDTO();
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = await _productSpecGrpRepository.GroupSpecificationFetch(id);
             }
-            var lan = _lanRepository.GetDefaultLanguage();
+            var lan = _lanRepository.GetDefaultLanguage(currentUserId);
             ViewBag.LangId = lan.LanguageId;
            
             ViewBag.LangList = _lanRepository.GetAllActiveLanguage();

@@ -13,7 +13,8 @@ using System.Security.Claims;
 using AutoMapper;
 using System.Collections.Specialized;
 using System.Web;
-
+using Microsoft.AspNetCore.Identity;
+using Arad.Portal.DataLayer.Entities.General.User;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
 {
@@ -22,12 +23,15 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
         private readonly CurrencyContext _context;
         
         private readonly IMapper _mapper;
+        private readonly UserManager<ApplicationUser> _userManager;
         public CurrencyRepository(CurrencyContext context, 
-            IMapper mapper,IHttpContextAccessor httpContextAccessor) 
+            IMapper mapper,IHttpContextAccessor httpContextAccessor,
+            UserManager<ApplicationUser> userManager) 
             : base(httpContextAccessor)
         {
             _context = context;
             _mapper = mapper;
+            _userManager = userManager;
         }
         public async Task<RepositoryOperationResult> SaveCurrency(CurrencyDTO dto)
         {
@@ -246,13 +250,24 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
             return result;
         }
 
-        public RepositoryOperationResult<CurrencyDTO> GetDefaultCurrency()
+        public RepositoryOperationResult<CurrencyDTO> GetDefaultCurrency(string userId)
         {
             RepositoryOperationResult<CurrencyDTO> result
                  = new RepositoryOperationResult<CurrencyDTO>();
             try
             {
-                var dbEntity = _context.Collection.AsQueryable().FirstOrDefault(_ =>_.IsDefault);
+                Entities.General.Currency.Currency dbEntity;
+                var currentUser = _userManager.Users.AsQueryable().First(_ => _.Id == userId);
+
+                if(currentUser != null && !string.IsNullOrWhiteSpace(currentUser.Profile.DefaultCurrencyId))
+                {
+                    dbEntity = _context.Collection.AsQueryable().First(_ => _.CurrencyId == currentUser.Profile.DefaultCurrencyId);
+                }
+                else
+                {
+                    dbEntity = _context.Collection.AsQueryable().First(_ => _.IsDefault);
+                }
+               
                 if (dbEntity == null)
                 {
                     result.Message = ConstMessages.ObjectNotFound;
@@ -281,6 +296,14 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
                 Value = _.CurrencyId
             }).ToList();
             result.Insert(0, new SelectListModel() { Value = "-1", Text = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_Choose") });
+            return result;
+        }
+
+        public CurrencyDTO GetCurrencyByItsPrefix(string prefix)
+        {
+            var result = new CurrencyDTO();
+            var currency = _context.Collection.Find(_ => _.Prefix == prefix).First();
+            result = _mapper.Map<CurrencyDTO>(currency);
             return result;
         }
     }

@@ -27,6 +27,8 @@ using Arad.Portal.DataLayer.Contracts.General.MessageTemplate;
 using Arad.Portal.GeneralLibrary.Utilities;
 using System.Collections.Specialized;
 using System.Web;
+using Arad.Portal.DataLayer.Contracts.General.Language;
+using Arad.Portal.DataLayer.Contracts.General.Currency;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -42,15 +44,20 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IPermissionView _permissionViewManager;
         private readonly IOptions<MessageCenter> _smsSettings;
         private readonly IMessageTemplateRepository _messageTemplateRepository;
+        private readonly ILanguageRepository _languageRepository;
+        private readonly ICurrencyRepository _currencyRepository;
+        
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IPermissionView permissionView,
             UserExtensions userExtension,
             IRoleRepository roleRepository,
             IPermissionRepository permissionRepository,
+            ILanguageRepository languageRepository,
             IConfiguration configuration,
             IOptions<MessageCenter> smsSettings,
             INotificationRepository notificationRepository,
+            ICurrencyRepository currencyRepository,
             IMessageTemplateRepository messageTemplateRepository)
         {
             _userManager = userManager;
@@ -60,7 +67,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _permissionViewManager = permissionView;
             _roleRepository = roleRepository;
             _permissionRepository = permissionRepository;
+            _languageRepository = languageRepository;
             _smsSettings = smsSettings;
+            _currencyRepository = currencyRepository;
             _notificationRepository = notificationRepository;
             _messageTemplateRepository = messageTemplateRepository;
         }
@@ -280,6 +289,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             var model = new RegisterUserModel();
             var list = await _roleRepository.List("");
+            ViewBag.LangList = _languageRepository.GetAllActiveLanguage();
+           
             model.Roles = list.Items.Select(_ => new RoleListView()
             {
                 Title = _.RoleName,
@@ -319,11 +330,20 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     ModelStateErrors = errors
                 });
             }
-
             try
             {
                 var existUser = _userExtension.GetUsersByPhoneNumber(model.FullMobile.Replace("+", ""));
 
+                #region Fetch currency from language
+                var lan = _languageRepository.FetchLanguage(model.DefaultLanguageId);
+                CultureInfo userCultureInfo = new CultureInfo(lan.Symbol, false);
+                var ri = new RegionInfo(userCultureInfo.LCID);
+                var currencyPrefix = ri.ISOCurrencySymbol;
+                var currencyDto = _currencyRepository.GetCurrencyByItsPrefix(currencyPrefix);
+                #endregion Fetch currency from language
+
+                model.DefaultCurrencyId = currencyDto.CurrencyId;
+                model.DefaultCurrencyName = currencyDto.CurrencyName;
                 if (existUser == null)
                 {
                     var user = new ApplicationUser()
@@ -331,7 +351,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         Profile = new Profile()
                         {
                             FirstName = model.Name,
-                            LastName = model.LastName
+                            LastName = model.LastName,
+                            DefaultCurrencyId = model.DefaultCurrencyId,
+                            DefaultCurrencyName = model.DefaultCurrencyName,
+                            DefaultLanguageId = model.DefaultLanguageId,
+                            DefaultLanguageName = model.DefaultLanguageName
                         },
                         Id = Guid.NewGuid().ToString(),
                         PhoneNumber = model.FullMobile.Replace("+", ""),
@@ -349,7 +373,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                             ClaimValue = true.ToString()
                         });
                     }
-
                     var res = await _userManager.CreateAsync(user, model.Password);
 
                     if (!res.Succeeded)
@@ -365,7 +388,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                                     Key = "UserName",
                                     ErrorMessage = Language.GetString("AlertAndMessage_DuplicateUsername"),
                                 };
-
                                 errors.Add(obj);
                             }
                         }
@@ -395,7 +417,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return result;
         }
 
-
+        
         [HttpGet]
         public async Task<IActionResult> EditUser(string id)
         {
@@ -468,51 +490,63 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                             ModelStateErrors = errors
                         });
                     }
-
-
-                    user.Profile.FirstName = model.FirstName;
-                    user.Profile.LastName = model.LastName;
-                    user.PhoneNumber = model.FullMobile.Replace("+", "");
-                    user.UserRoleId = model.UserRoleId;
-                    if(model.IsVendor)
-                    {
-                        user.Claims.Add(new IdentityUserClaim<string>
-                        {
-                            ClaimType = "AppRole",
-                            ClaimValue = true.ToString()
-                        });
-                    }
                     else
                     {
-                        var vendorClaim = user.Claims.Find(c => c.ClaimType == "AppRole");
-                        if (vendorClaim != null)
-                        {
-                            user.Claims.Remove(vendorClaim);
-                        }
-                    }
+                        user.Profile.FirstName = model.FirstName;
+                        user.Profile.LastName = model.LastName;
 
-                    var res = await _userManager.UpdateAsync(user);
-                    if (!res.Succeeded)
-                    {
-                        var identityErrors = res.Errors.ToList();
+                        #region Fetch currency from language
+                        var lan = _languageRepository.FetchLanguage(model.DefaultLanguageId);
+                        CultureInfo userCultureInfo = new CultureInfo(lan.Symbol, false);
+                        var ri = new RegionInfo(userCultureInfo.LCID);
+                        var currencyPrefix = ri.ISOCurrencySymbol;
+                        var currencyDto = _currencyRepository.GetCurrencyByItsPrefix(currencyPrefix);
+                        #endregion Fetch currency from language
 
-                        foreach (var error in identityErrors)
+
+                        user.Profile.DefaultLanguageId = model.DefaultLanguageId;
+                        //user.Profile.DefaultLanguageName
+                        user.PhoneNumber = model.FullMobile.Replace("+", "");
+                        user.UserRoleId = model.UserRoleId;
+                        if (model.IsVendor)
                         {
-                            if (error.Code == "DuplicateUserName")
+                            user.Claims.Add(new IdentityUserClaim<string>
                             {
-                                var obj = new ClientValidationErrorModel
-                                {
-                                    Key = "UserName",
-                                    ErrorMessage = Language.GetString("AlertAndMessage_DuplicateUsername"),
-                                };
-
-                                errors.Add(obj);
-
-                                result = new JsonResult(new { Status = "error", Message = "", ModelStateErrors = errors });
+                                ClaimType = "AppRole",
+                                ClaimValue = true.ToString()
+                            });
+                        }
+                        else
+                        {
+                            var vendorClaim = user.Claims.Find(c => c.ClaimType == "AppRole");
+                            if (vendorClaim != null)
+                            {
+                                user.Claims.Remove(vendorClaim);
                             }
                         }
+                        var res = await _userManager.UpdateAsync(user);
+                        if (!res.Succeeded)
+                        {
+                            var identityErrors = res.Errors.ToList();
 
-                        return View("Index");
+                            foreach (var error in identityErrors)
+                            {
+                                if (error.Code == "DuplicateUserName")
+                                {
+                                    var obj = new ClientValidationErrorModel
+                                    {
+                                        Key = "UserName",
+                                        ErrorMessage = Language.GetString("AlertAndMessage_DuplicateUsername"),
+                                    };
+
+                                    errors.Add(obj);
+
+                                    result = new JsonResult(new { Status = "error", Message = "", ModelStateErrors = errors });
+                                }
+                            }
+
+                            return View("Index");
+                        }
                     }
                 }
                 catch (Exception e)

@@ -37,11 +37,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             PagedItems<ProductGroupViewModel> result = new PagedItems<ProductGroupViewModel>();
             var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             ViewBag.Permissions = dicKey;
             try
             {
                 result = await _productGroupRepository.List(Request.QueryString.ToString());
-                ViewBag.DefLangId = _lanRepository.GetDefaultLanguage().LanguageId;
+                ViewBag.DefLangId = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
                 ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
             }
             catch (Exception)
@@ -56,8 +57,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 model = _productGroupRepository.ProductGroupFetch(id);
             }
-            
-            var lan = _lanRepository.GetDefaultLanguage();
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var lan = _lanRepository.GetDefaultLanguage(currentUserId);
             ViewBag.ProductGroupList = _productGroupRepository.GetAlActiveProductGroup(lan.LanguageId);
             ViewBag.LangId = lan.LanguageId;
            

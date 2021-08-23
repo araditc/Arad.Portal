@@ -18,7 +18,7 @@ namespace Arad.Portal.DataLayer.Models.User
         }
         
         [CustomErrorMessage("AlertAndMessage_UserNameRequired")]
-       // [CustomMinLength(3, "AlertAndMessage_MinLength")]
+        [CustomMinLength(3, "AlertAndMessage_MinLength")]
         public string UserName { get; set; }
 
         [CustomErrorMessage("AlertAndMessage_NameRequired")]
@@ -28,7 +28,6 @@ namespace Arad.Portal.DataLayer.Models.User
         public string LastName { get; set; }
 
         public string FatherName { get; set; }
-
        
         public Gender Gender { get; set; }
 
@@ -37,7 +36,17 @@ namespace Arad.Portal.DataLayer.Models.User
         public string PhoneNumber { get; set; }
 
         public string FullMobile { get; set; }
-       
+
+
+        [CustomErrorMessage("AlertAndMessage_DefaultLanguageRequired")]
+        public string DefaultLanguageId { get; set; }
+
+        public string DefaultLanguageName { get; set; }
+
+        public string DefaultCurrencyId { get; set; }
+
+        public string DefaultCurrencyName { get; set; }
+
         public bool IsActive { get; set; } = true;
 
         public bool IsVendor { get; set; }
@@ -47,9 +56,9 @@ namespace Arad.Portal.DataLayer.Models.User
 
         [DataType(DataType.Password)]
         [CustomErrorMessage("AlertAndMessage_PasswordRequired")]
-        //[CustomRegularExpression("^(?=.*[A-Za-z])(?=.*[0-9]).{4,}$", "AlertAndMessage_PasswordValidation")]
-       
-        //[CustomMinLength(6, "AlertAndMessage_MinLength")]
+        [CustomRegularExpression("^(?=.*[A-Za-z])(?=.*[0-9]).{4,}$", "AlertAndMessage_PasswordValidation")]
+
+        [CustomMinLength(6, "AlertAndMessage_MinLength")]
         public string Password { get; set; }
 
         [CustomErrorMessage("AlertAndMessage_RePasswordRequired")]

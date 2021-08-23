@@ -15,7 +15,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Language
         Task<RepositoryOperationResult> EditLanguage(LanguageDTO dto);
         Task<RepositoryOperationResult> Delete(string languageId, string modificationReason);
 
-        LanguageDTO GetDefaultLanguage();
+        LanguageDTO GetDefaultLanguage(string currentUserId);
         List<SelectListModel> GetAllActiveLanguage();
         LanguageDTO FetchLanguage(string LanguageId);
 

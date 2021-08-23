@@ -22,8 +22,6 @@ namespace Arad.Portal.DataLayer.Models.User
         //???
         public string NationalId { get; set; }
 
-        //public string PhoneNumber { get; set; }
-
         public DateTime BirthDate { get; set; }
 
         public Image ProfilePhoto { get; set; }
@@ -35,6 +33,14 @@ namespace Arad.Portal.DataLayer.Models.User
         public UserType UserType { get; set; }
                  
         public SpecialAccess Access { get; set; }
+
+        public string DefaultCurrencyId { get; set; }
+
+        public string  DefaultCurrencyName { get; set; }
+
+        public string DefaultLanguageId { get; set; }
+
+        public string DefaultLanguageName { get; set; }
     }
 
 

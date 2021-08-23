@@ -317,6 +317,12 @@
 	<string key="AlertAndMessage_InvalidFormat">
 		<value>فرمت فایل نامعتبر است.</value>
 	</string>
+	<string key="AlertAndMessage_DefaultLanguageRequired">
+		<value>لطفا زبان پیش فرض کاربر را انتخاب کنید.</value>
+	</string>
+	<string key="AlertAndMessage_DefaultCurrencyRequired">
+		<value>لطفا واحد پول پیش فرض کاربر را انتخاب کنید.</value>
+	</string>
 	<string key="AlertAndMessage_Specifications">
 		<value>لطفا حداقل یک سطر برای جدول خصوصیات محصول پرکنید.</value>
 	</string>
@@ -1216,9 +1222,9 @@
 	<string key="SeoDescription">
 		<value>توضیحات سئو</value>
 	</string>
-	<string key="Description">
+	<!--<string key="Description">
 		<value>توضیحات</value>
-	</string>
+	</string>-->
 	<string key="SeoTitle">
 		<value>عنوان سئو</value>
 	</string>
@@ -1227,6 +1233,9 @@
 	</string>
 	<string key="Currency">
 		<value>واحد پول</value>
+	</string>
+	<string key="DefaultCurrency">
+		<value>واحد پول پیش فرض</value>
 	</string>
 	<string key="PriceValue">
 		<value>قیمت</value>
@@ -1486,6 +1495,9 @@
 	</string>
 	<string key="RelatedLanguage">
 		<value>زبان مربوطه</value>
+	</string>
+	<string key="DefaultLanguage">
+		<value>زبان پیش فرض</value>
 	</string>
 	<string key="LanguageName">
 		<value>نام زبان</value>

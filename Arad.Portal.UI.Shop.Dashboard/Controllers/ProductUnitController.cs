@@ -34,7 +34,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
             ViewBag.Permissions = dicKey;
-            var lan = _lanRepository.GetDefaultLanguage();
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var lan = _lanRepository.GetDefaultLanguage(currentUserId);
             ViewBag.LangId = lan.LanguageId;
             ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
             PagedItems<ProductUnitViewModel> list = await _unitRepository.List(Request.QueryString.ToString());

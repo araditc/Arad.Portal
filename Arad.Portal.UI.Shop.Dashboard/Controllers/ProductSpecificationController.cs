@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -35,11 +36,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             PagedItems<ProductSpecificationViewModel> result = new PagedItems<ProductSpecificationViewModel>();
             var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             ViewBag.Permissions = dicKey;
             try
             {
                 result = await _specificationRepository.List(Request.QueryString.ToString());
-                ViewBag.DefLangId = _lanRepository.GetDefaultLanguage().LanguageId;
+                ViewBag.DefLangId = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
                 ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
             }
             catch (Exception)
@@ -50,12 +52,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> AddEdit(string id = "")
         {
             var model = new ProductSpecificationDTO();
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = await _specificationRepository.SpecificationFetch(id);
             }
 
-            var lan = _lanRepository.GetDefaultLanguage();
+            var lan = _lanRepository.GetDefaultLanguage(currentUserId);
             var groupList = _groupRepository.AllActiveSpecificationGroup(lan.LanguageId);
             groupList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value =""  });
             ViewBag.SpecificationGroupList = groupList;

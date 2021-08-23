@@ -33,5 +33,14 @@ namespace Arad.Portal.DataLayer.Models.User
 
         [CustomErrorMessage("AlertAndMessage_UserRoleRequired")]
         public string UserRoleId { get; set; }
+
+        [CustomErrorMessage("AlertAndMessage_DefaultLanguageRequired")]
+        public string DefaultLanguageId { get; set; }
+
+        public string DefaultLanguageName { get; set; }
+
+        public string DefaultCurrencyId { get; set; }
+
+        public string DefaultCurrencyName { get; set; }
     }
 }

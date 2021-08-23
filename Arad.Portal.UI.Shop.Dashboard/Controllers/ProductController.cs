@@ -22,12 +22,14 @@ using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Contracts.Shop.Promotion;
 using Arad.Portal.DataLayer.Entities.Shop.Promotion;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
     public class ProductController : Controller
     {
         private readonly IProductRepository _productRepository;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IProductUnitRepository _unitRepository;
         private readonly IProductGroupRepository _productGroupRepository;
         private readonly IProductSpecGroupRepository _specGroupRepository;
@@ -44,6 +46,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ILanguageRepository languageRepository, IProductGroupRepository productGroupRepository,
             ICurrencyRepository currencyRepository, IProductUnitRepository unitRepository,
             IProductSpecGroupRepository specGroupRepository,IPromotionRepository promotionRepository,
+            IWebHostEnvironment webHostEnvironment,
             IHttpContextAccessor accessor, IConfiguration configuration)
         {
             _productRepository = productRepository;
@@ -57,6 +60,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _httpContextAccessor = accessor;
             _userManager = userManager;
             _promotionRepository = promotionRepository;
+            _webHostEnvironment = webHostEnvironment;
             imageSize = _configuration["ProductImageSize:Size"];
         }
         [HttpGet]
@@ -68,7 +72,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             try
             {
                 result = await _productRepository.List(Request.QueryString.ToString());
-                var defLangId = _lanRepository.GetDefaultLanguage().LanguageId;
+                var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var defLangId = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
                 ViewBag.DefLangId = defLangId;
                 ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
                
@@ -85,28 +90,31 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
 
-        [HttpPost]
-        public IActionResult  SaveProductImage(string file)
-        {
-            JsonResult output;
-            try
-            {
-                if (!Directory.Exists("~/imgs/Products/temp"))
-                {
-                    Directory.CreateDirectory("~/imgs/Products/temp");
-                };
-                var temporaryFileName = $"{DateTime.Now.Ticks}.jpg";
-                var path = $"~/imgs/Products/temp/{temporaryFileName}";
-                System.IO.File.Create(path);
-                System.IO.File.WriteAllText(path, file);
-                output =  Json(new { status = "Succeed", path = path });
-            }
-            catch (Exception)
-            {
-                output = Json(new { status = "Error", path = string.Empty });
-            }
-            return output;
-        }
+        //[HttpPost]
+        //public IActionResult  SaveProductImage(string file)
+        //{
+        //    JsonResult output;
+        //    string webRootPath = _webHostEnvironment.WebRootPath;
+        //    string contentRootPath = _webHostEnvironment.ContentRootPath;
+        //    try
+        //    {
+        //        var path = Path.Combine(webRootPath, )
+        //        if (!Directory.Exists("~/imgs/Products/temp"))
+        //        {
+        //            Directory.CreateDirectory("~/imgs/Products/temp");
+        //        };
+        //        var temporaryFileName = $"{DateTime.Now.Ticks}.jpg";
+        //        var path = $"~/imgs/Products/temp/{temporaryFileName}";
+        //        System.IO.File.Create(path);
+        //        System.IO.File.WriteAllText(path, file);
+        //        output =  Json(new { status = "Succeed", path = path });
+        //    }
+        //    catch (Exception)
+        //    {
+        //        output = Json(new { status = "Error", path = string.Empty });
+        //    }
+        //    return output;
+        //}
 
         public string ResizeImage(string filePath, int desiredHeight)
         {
@@ -139,7 +147,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
         public async Task<IActionResult> AddEdit(string id = "")
         {
-            var currentUserId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userDB = await _userManager.FindByIdAsync(currentUserId);
             if(userDB.IsSystemAccount)
             {
@@ -165,7 +173,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 }
             }
 
-            var lan = _lanRepository.GetDefaultLanguage();
+            var lan = _lanRepository.GetDefaultLanguage(currentUserId);
 
             var specGroupList = _specGroupRepository.AllActiveSpecificationGroup(lan.LanguageId);
             specGroupList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
@@ -177,7 +185,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
             var currencyList = _curRepository.GetAllActiveCurrency();
             ViewBag.CurrencyList = currencyList;
-            ViewBag.DefCurrency = _curRepository.GetDefaultCurrency().ReturnValue.CurrencyId;
+            ViewBag.DefCurrency = _curRepository.GetDefaultCurrency(currentUserId).ReturnValue.CurrencyId;
 
             ViewBag.LangId = lan.LanguageId;
             ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
@@ -299,39 +307,43 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                 result = Json(new { Status = "ModelError", ModelStateErrors = errors });
             }
-            foreach (var item in dto.MultiLingualProperties)
+            else
             {
-                var lan = _lanRepository.FetchLanguage(item.LanguageId);
-                item.LanguageSymbol = lan.Symbol;
-                item.MultiLingualPropertyId = Guid.NewGuid().ToString();
-            }
-
-            foreach (var item in dto.Prices)
-            {
-                var cur = _curRepository.FetchCurrency(item.CurrencyId);
-                //??? just one valid record
-                item.PriceId = Guid.NewGuid().ToString();
-                item.Symbol = cur.ReturnValue.Symbol;
-                item.Prefix = cur.ReturnValue.Symbol;
-                item.IsActive = true;
-            }
-            foreach (var pic in dto.Pictures)
-            {
-                Guid isGuidKey;
-                if(!Guid.TryParse(pic.ImageId,out isGuidKey))
+                foreach (var item in dto.MultiLingualProperties)
                 {
-                    //its insert 
-                    var res = SaveImageModel(pic);
-                    if (res.Key != Guid.Empty.ToString())
-                    {
-                        pic.ImageId = res.Key;
-                        pic.Url = res.Value;
-                        pic.Content = "";
-                    }
-                    //otherwise its  is update then it has no url ;
+                    var lan = _lanRepository.FetchLanguage(item.LanguageId);
+                    item.LanguageSymbol = lan.Symbol;
+                    item.MultiLingualPropertyId = Guid.NewGuid().ToString();
                 }
-               
+
+                foreach (var item in dto.Prices)
+                {
+                    var cur = _curRepository.FetchCurrency(item.CurrencyId);
+                    //??? just one valid record
+                    item.PriceId = Guid.NewGuid().ToString();
+                    item.Symbol = cur.ReturnValue.Symbol;
+                    item.Prefix = cur.ReturnValue.Symbol;
+                    item.IsActive = true;
+                }
+                foreach (var pic in dto.Pictures)
+                {
+                    Guid isGuidKey;
+                    if (!Guid.TryParse(pic.ImageId, out isGuidKey))
+                    {
+                        //its insert 
+                        var res = SaveImageModel(pic);
+                        if (res.Key != Guid.Empty.ToString())
+                        {
+                            pic.ImageId = res.Key;
+                            pic.Url = res.Value;
+                            pic.Content = "";
+                        }
+                        //otherwise its  is update then it has no url ;
+                    }
+
+                }
             }
+            
 
             RepositoryOperationResult saveResult = await _productRepository.UpdateProduct(dto);
             result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }

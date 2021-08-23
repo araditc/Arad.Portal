@@ -323,6 +323,12 @@
 	<string key="AlertAndMessage_InvalidFileSize">
 		<value>the file size exceed limitation.</value>
 	</string>
+	<string key="AlertAndMessage_DefaultLanguageRequired">
+		<value>Please select default language of user.</value>
+	</string>
+	<string key="AlertAndMessage_DefaultCurrencyRequired">
+		<value>Please select default currency of user.</value>
+	</string>
 	<string key="AlertAndMessage_Specifications">
 		<value>Please fill at least on row for specifications</value>
 	</string>
@@ -1177,9 +1183,9 @@
 	<string key="SeoDescription">
 		<value>Seo Description</value>
 	</string>
-	<string key="Description">
+	<!--<string key="Description">
 		<value>Description</value>
-	</string>
+	</string>-->
 	<string key="SeoTitle">
 		<value>Seo Title</value>
 	</string>
@@ -1188,6 +1194,9 @@
 	</string>
 	<string key="Currency">
 		<value>Currency</value>
+	</string>
+	<string key="DefaultCurrency">
+		<value>default currency</value>
 	</string>
 	<string key="PriceValue">
 		<value>Price</value>
@@ -1447,6 +1456,9 @@
 	</string>
 	<string key="RelatedLanguage">
 		<value>Related Language</value>
+	</string>
+	<string key="DefaultLanguage">
+		<value>Default Language</value>
 	</string>
 	<string key="LanguageName">
 		<value>Language Name</value>

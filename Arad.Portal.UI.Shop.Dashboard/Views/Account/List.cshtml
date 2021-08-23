@@ -118,7 +118,7 @@
         <div class="card-tools" style='@(dir=="rtl" ? "float:left;" : "float:right;")'>
             @if (ViewBag.Permissions["Add"])
             {
-                <a asp-action="Add" asp-controller="Account" class="btn btn-success btn-sm">
+                <a asp-action="AddUser" asp-controller="Account" class="btn btn-success btn-sm">
                     <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus"></i>&nbsp; @Language.GetString("btn_Add")
                 </a>
             }

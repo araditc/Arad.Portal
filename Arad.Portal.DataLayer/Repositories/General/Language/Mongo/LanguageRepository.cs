@@ -13,19 +13,23 @@ using Arad.Portal.DataLayer.Entities;
 using System.Security.Claims;
 using System.Web;
 using System.Collections.Specialized;
+using Microsoft.AspNetCore.Identity;
+using Arad.Portal.DataLayer.Entities.General.User;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
 {
     public class LanguageRepository : BaseRepository, ILanguageRepository
     {
         private readonly LanguageContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
         public LanguageRepository(LanguageContext context, IMapper mapper,
+            UserManager<ApplicationUser> userManager,
             IHttpContextAccessor httpContextAccessor): base(httpContextAccessor)
         {
             _context = context;
             _mapper = mapper;
-
+            _userManager = userManager;
         }
         public async Task<RepositoryOperationResult> AddNewLanguage(LanguageDTO dto)
         {
@@ -236,10 +240,18 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
             return result;
         }
 
-        public LanguageDTO GetDefaultLanguage()
+        public LanguageDTO GetDefaultLanguage(string currentUserId)
         {
             LanguageDTO result = null;
-            var lan = _context.Collection.Find(_ => _.IsDefault).FirstOrDefault();
+            Entities.General.Language.Language lan ;
+            var currentUser = _userManager.Users.AsQueryable().First(_ => _.Id == currentUserId);
+            if(currentUser != null && !string.IsNullOrWhiteSpace(currentUser.Profile.DefaultLanguageId))
+            {
+                lan = _context.Collection.Find(_ => _.LanguageId == currentUser.Profile.DefaultLanguageId).First();
+            }else
+            {
+                lan = _context.Collection.Find(_ => _.IsDefault).FirstOrDefault();
+            }
             if(lan != null)
             {
                 result = _mapper.Map<LanguageDTO>(lan);

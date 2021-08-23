@@ -20,8 +20,8 @@ namespace Arad.Portal.DataLayer.Contracts.General.Currency
         Task<PagedItems<CurrencyDTO>> AllCurrencyList(string queryString);
         Task<RepositoryOperationResult> DeleteCurrency(string currencyId);
         RepositoryOperationResult<CurrencyDTO> FetchCurrency(string currencyId);
-        RepositoryOperationResult<CurrencyDTO> GetDefaultCurrency();
-
+        RepositoryOperationResult<CurrencyDTO> GetDefaultCurrency(string userId);
+        CurrencyDTO GetCurrencyByItsPrefix(string prefix);
         List<SelectListModel> GetAllActiveCurrency();
 
     }

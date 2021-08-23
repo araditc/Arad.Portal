@@ -419,7 +419,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         }
 
 
-        private ProductInputDTO UpdateOr
+        //private ProductInputDTO UpdateOr
         public int GetInventory(string productId)
         {
             var result = -1;
