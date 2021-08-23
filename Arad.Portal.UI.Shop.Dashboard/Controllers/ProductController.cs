@@ -23,6 +23,7 @@ using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Contracts.Shop.Promotion;
 using Arad.Portal.DataLayer.Entities.Shop.Promotion;
 using Microsoft.AspNetCore.Hosting;
+using System.Net.Http;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -40,13 +41,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IPromotionRepository _promotionRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IHttpClientFactory _clientFactory;
         private readonly string imageSize = "";
         public ProductController(UserManager<ApplicationUser> userManager,
             IProductRepository productRepository, IPermissionView permissionView,
             ILanguageRepository languageRepository, IProductGroupRepository productGroupRepository,
             ICurrencyRepository currencyRepository, IProductUnitRepository unitRepository,
             IProductSpecGroupRepository specGroupRepository,IPromotionRepository promotionRepository,
-            IWebHostEnvironment webHostEnvironment,
+            IWebHostEnvironment webHostEnvironment, IHttpClientFactory clientFactory,
             IHttpContextAccessor accessor, IConfiguration configuration)
         {
             _productRepository = productRepository;
@@ -56,6 +58,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _curRepository = currencyRepository;
             _productGroupRepository = productGroupRepository;
             _unitRepository = unitRepository;
+            _clientFactory = clientFactory;
             _specGroupRepository = specGroupRepository;
             _httpContextAccessor = accessor;
             _userManager = userManager;
@@ -266,8 +269,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             KeyValuePair<string, string> res;
             var staticFileStorageURL = _configuration["StaticFilesPlace:Url"];
+            //Have to Add Connect to Remote server and send this file to remote server and get its response
+            if(string.IsNullOrWhiteSpace(staticFileStorageURL))
+            {
+                staticFileStorageURL = _webHostEnvironment.WebRootPath;
+            }
             picture.ImageId = Guid.NewGuid().ToString();
-            picture.Url = $"{staticFileStorageURL}/Images/Products/{picture.ImageId}.jpg";
             var path = $"{staticFileStorageURL}/Images/Products";
             try
             {
@@ -275,6 +282,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     Directory.CreateDirectory(path);
                 }
+                picture.Url = $"{staticFileStorageURL}/Images/Products/{picture.ImageId}.jpg";
                 byte[] bytes = Convert.FromBase64String(picture.Content);
                 System.Drawing.Image image;
                 using MemoryStream ms = new MemoryStream(bytes);
@@ -293,18 +301,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> Edit([FromBody] ProductInputDTO dto)
         {
             JsonResult result;
-            ProductInputDTO model;
             if (!ModelState.IsValid)
             {
                 var errors = new List<AjaxValidationErrorModel>();
-
                 foreach (var modelStateKey in ModelState.Keys)
                 {
                     var modelStateVal = ModelState[modelStateKey];
                     errors.AddRange(modelStateVal.Errors.Select(error => new AjaxValidationErrorModel
                     { Key = modelStateKey, ErrorMessage = error.ErrorMessage }));
                 }
-
                 result = Json(new { Status = "ModelError", ModelStateErrors = errors });
             }
             else
@@ -330,7 +335,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     Guid isGuidKey;
                     if (!Guid.TryParse(pic.ImageId, out isGuidKey))
                     {
-                        //its insert 
+                        //its insert and imageId which was int from client replace with guid
                         var res = SaveImageModel(pic);
                         if (res.Key != Guid.Empty.ToString())
                         {
@@ -340,10 +345,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         }
                         //otherwise its  is update then it has no url ;
                     }
-
+                    else
+                    {
+                        //its update properties exept url imageId and Content
+                        //it will be done in repository
+                    }
                 }
             }
-            
 
             RepositoryOperationResult saveResult = await _productRepository.UpdateProduct(dto);
             result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
@@ -351,121 +359,38 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return result;
         }
 
-        //private static async Task RelayViaHttpGetAsync(string host, string query, string messageId,
-        //    ApiDeliveryQueueDto model, int tryCount, string auth)
-        //{
+        private async Task<string> GetToken()
+        {
+            try
+            {
+                var tokenUrl = _configuration["StaticFilesPlace:TokenUrl"];
+                var userName = _configuration["StaticFilesPlace:User"];
+                var password = _configuration["StaticFilesPlace:Password"];
+                var scope = _configuration["StaticFilesPlace:Scope"];
 
-        //    FullLogOption.OptionalLog("In Relay via get.");
-        //    FullLogOption.OptionalLog($"{host} {query} {JsonConvert.SerializeObject(model)}");
+                var client = _clientFactory.CreateClient();
+                var keyValues = new List<KeyValuePair<string, string>> {
+                    new KeyValuePair<string, string>("username", userName),
+                    new KeyValuePair<string, string>("password", password),
+                    new KeyValuePair<string, string>("scope", /*"ApiAccess"*/scope),
+                };
 
-        //    FullLogOption.OptionalLog($"relay via get {host} {query} {JsonConvert.SerializeObject(model)}");
+                client.BaseAddress = new Uri(tokenUrl);
+                var content = new FormUrlEncodedContent(keyValues);
+                var response = await client.PostAsync(new Uri(tokenUrl), content).Result.Content.ReadAsStringAsync();
+                //var response = await client.PostAsync(/*"/connect/token",*/ content).Content.ReadAsStringAsync();
+                return response;
+                //T
+                //var data = Newtonsoft.Json.JsonConvert.DeserializeObject<TokenResponseModel>(await response.Content.ReadAsStringAsync());
+                //access_token = data.access_token;
+                //Logger.WriteLogFile($"access token = {access_token}");
 
-        //    var st = new Stopwatch();
-        //    st.Start();
-
-        //    using var serviceScope = _hostBuild.Services.CreateScope();
-        //    {
-        //        var services = serviceScope.ServiceProvider;
-        //        _clientFactory = services.GetService<IHttpClientFactory>();
-        //        var client = _clientFactory.CreateClient();
-
-        //        if (!string.IsNullOrWhiteSpace(auth))
-        //        {
-        //            client.DefaultRequestHeaders.Add("Authorization", "Basic " + auth);
-        //        }
-
-        //        //client.Timeout = TimeSpan.FromMilliseconds(300);
-        //        var address = Flurl.Url.Combine(host, query);
-
-        //        FullLogOption.OptionalLog($"address:{address}");
-        //        var response = await client.GetAsync(address);
-
-        //        if (!response.IsSuccessStatusCode)
-        //        {
-        //            throw new ApiDeliveryEngineRetryException { CurrentRetryCount = tryCount, Model = model, TimeElapsed = st.Elapsed, Method = "Get", StatusCode = response.StatusCode };
-        //        }
-
-        //        Logger.WriteLogFile($"Get time: {st.ElapsedMilliseconds}");
-        //    }
-        //}
-
-        //private static async Task RelayViaHttpPostAsync(ApiDeliveryQueueDto model, string host,
-        //   List<RelayParams> additionalParams, int tryCount, string auth)
-        //{
-        //    FullLogOption.OptionalLog($"relay via post {host} {JsonConvert.SerializeObject(additionalParams)} {JsonConvert.SerializeObject(model)}");
-
-        //    var st = new Stopwatch();
-        //    st.Start();
-
-        //    using var serviceScope = _hostBuild.Services.CreateScope();
-        //    {
-        //        var services = serviceScope.ServiceProvider;
-        //        _clientFactory = services.GetService<IHttpClientFactory>();
-
-        //        var client = _clientFactory.CreateClient();
-        //        if (!string.IsNullOrWhiteSpace(auth))
-        //        {
-        //            client.DefaultRequestHeaders.Add("Authorization", "Basic " + auth);
-        //        }
-
-        //        var content = new StringContent(
-        //            JsonConvert.SerializeObject(new
-        //            {
-        //                BatchId = model.Object.MessageId,
-        //                model.Object.Status,
-        //                model.Object.PartNumber,
-        //                model.Object.Mobile,
-        //                ExtraParameters = additionalParams
-        //            }),
-        //            Encoding.UTF8, MediaTypeNames.Application.Json);
-        //        var response = await client.PostAsync(host, content);
-
-        //        if (!response.IsSuccessStatusCode)
-        //        {
-        //            throw new ApiDeliveryEngineRetryException { CurrentRetryCount = tryCount, Model = model, Address = host, TimeElapsed = st.Elapsed, Method = "Post", StatusCode = response.StatusCode };
-        //        }
-
-        //        Logger.WriteLogFile($"Post time: {st.ElapsedMilliseconds}");
-        //    }
-        //}
-
-
-        //private async string GetToken()
-        //{
-        //    try
-        //    {
-        //        Logger.WriteLogFile("Start Getting token");
-        //        var client = clientFactory.CreateClient();
-        //        var keyValues = new List<KeyValuePair<string, string>> {
-        //            new KeyValuePair<string, string>("username", userName),
-        //            new KeyValuePair<string, string>("password", password),
-        //            new KeyValuePair<string, string>("scope", "ApiAccess"),
-        //        };
-
-        //        client.BaseAddress = new Uri(authEndPointBaseAddress);
-        //        var content = new FormUrlEncodedContent(keyValues);
-        //        var response = await client.PostAsync(/*"/connect/token",*/ content).Content.ReadAsStringAsync();
-        //        return response;
-
-
-        //                                                                 //T
-        //        //var data = Newtonsoft.Json.JsonConvert.DeserializeObject<TokenResponseModel>(await response.Content.ReadAsStringAsync());
-        //        //access_token = data.access_token;
-        //        //Logger.WriteLogFile($"access token = {access_token}");
-
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Logger.WriteLogFile(e.Message);
-        //    }
-        //}
-
-
-
-
-
-
-
+            }
+            catch (Exception e)
+            {
+                return string.Empty;
+            }
+        }
 
         [HttpGet]
         public async Task<IActionResult> Restore(string id)

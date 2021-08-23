@@ -326,8 +326,8 @@
 	<string key="AlertAndMessage_Specifications">
 		<value>لطفا حداقل یک سطر برای جدول خصوصیات محصول پرکنید.</value>
 	</string>
-	<string key="AlertAndMessage_IsPaublishedOnMainDomain">
-		<value>در دامنه اصلی منتشر شود؟</value>
+	<string key="AlertAndMessage_IsPublishedOnMainDomain">
+		<value>انتشار در دامنه اصلی</value>
 	</string>
 	<string key="AlertAndMessage_NotifyWhenCountIsLessThan">
 		<value>هشدار برای موجودی کمتر از:</value>

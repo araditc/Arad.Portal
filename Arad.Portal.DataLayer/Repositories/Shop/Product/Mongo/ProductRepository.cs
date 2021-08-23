@@ -360,35 +360,16 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             {
                 equallentModel.ProductId = Guid.NewGuid().ToString();
             }
-            
-
             #region MultiLingualProperties
             if (dto.MultiLingualProperties.Count > 0)
             {
                 foreach (var item in equallentModel.MultiLingualProperties)
                 {
+                    if(!string.IsNullOrWhiteSpace(item.MultiLingualPropertyId))
                     item.MultiLingualPropertyId = Guid.NewGuid().ToString();
                 }
             }
             #endregion
-
-
-            #region Specifications
-            equallentModel.Specifications = new List<ProductSpecificationValue>();
-            if (dto.Specifications.Count > 0)
-            {
-                foreach (var item in dto.Specifications)
-                {
-                    var specEntity = _context
-                        .SpecificationCollection.Find(_ => _.ProductSpecificationId == item.SpecificationId).FirstOrDefault();
-                    if(specEntity != null)
-                    {
-                        equallentModel.Specifications.Add(item);
-                    }
-                }
-            }
-            #endregion
-
 
             #region ProductUnit
             if (!string.IsNullOrWhiteSpace(dto.UnitId))
@@ -401,9 +382,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 
             #region Prices
             equallentModel.Prices = new List<Price>();
-            if (dto.Prices.Count() == 1)
+            foreach (var price in dto.Prices)
             {
-                equallentModel.Prices.Add(dto.Prices[0]);
+                equallentModel.Prices.Add(price);
             }
             #endregion
 
@@ -418,8 +399,6 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return equallentModel;
         }
 
-
-        //private ProductInputDTO UpdateOr
         public int GetInventory(string productId)
         {
             var result = -1;

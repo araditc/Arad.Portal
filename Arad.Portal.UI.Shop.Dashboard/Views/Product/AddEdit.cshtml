@@ -151,10 +151,10 @@
                         <input type="number" class="form-control" asp-for="@Model.MinimumCount" value="@Model.MinimumCount" min="0" />
                         
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-3" style="text-align:center;margin:auto;">
                         @if (dir == "rtl")
                         {
-                            <label>
+                            <label style="font-weight:700;">
                                 <input type="checkbox" id="chbNotifyInventory" class="minimal">
                                 @Language.GetString("ShowInLackOfInventory")
                             </label>
@@ -178,12 +178,12 @@
                             <span data-val-result="sellerUserId" class="text-danger"></span>
                         }
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-3" style="text-align:center;margin:auto;">
                         @if (dir == "rtl")
                         {
                             <label>
                                 <input type="checkbox" id="chbIsPublishedOnMainDomain" class="minimal">
-                                @Language.GetString("AlertAndMessage_NotifyWhenCountIsLessThan")
+                                @Language.GetString("AlertAndMessage_IsPublishedOnMainDomain")
                             </label>
                         }
                         else
@@ -191,7 +191,7 @@
                             <div class="icheck-primary d-inline">
                                 <input type="checkbox" id="chbIsPublishedOnMainDomain">
                                 <label for="chbIsPublishedOnMainDomain">
-                                    @Language.GetString("AlertAndMessage_NotifyWhenCountIsLessThan")
+                                    @Language.GetString("AlertAndMessage_IsPublishedOnMainDomain")
                                 </label>
                             </div>
                         }
@@ -635,11 +635,34 @@
     var images = [];
     var counter = 1000;
     $(document).ready(function () {
+        debugger;
 
+         //icheckboxes radiobuttons
+            if ("@dir" == "rtl") {
+                $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+                    checkboxClass: 'icheckbox_minimal-blue',
+                    radioClass: 'iradio_minimal-blue'
+                })
+            }
+         //datetimepicker
+            if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
+            {
+                kamaDatepicker('dtpStartDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+                kamaDatepicker('dtpEndDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+            }
+            else
+            {
+                $('#dtpStartDate').datetimepicker({
+                    format: 'L'
+                });
+                $('#dtpEndDate').datetimepicker({
+                    format: 'L'
+                });
+            }
        //multiselect
         $("#GroupIds").select2({ dir: '@dir', theme: 'bootstrap4' });
         $("#specValues").select2({ dir: '@dir', theme: 'bootstrap4' });
-        if (@Model.Images.Any()) {
+        if ('@Model.Images.Any()'=='True') {
             var serverImages = @Json.Serialize(@Model.Images);
             for (var i = 0; i < serverImages.length; i++) {
                 var model = {};
@@ -800,9 +823,10 @@
        });
 
         $("#specGroupId").change(function () {
+            debugger;
         var langId = $("#languageId").val();
         var groupId = $("#specGroupId").val();
-        if (groupId != "-1") {
+        if (groupId != "") {
             $.ajax({
                 url: "/ProductSpecification/GetSpecificationInGroupAndLang?groupId=" + groupId + "&langId=" + langId,
                 type: 'Get',
@@ -1098,6 +1122,10 @@
                 "</td><td>" + $("#urlFriend").val() +
                 "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' onclick='deleteFromTable(this);'>" +
                 "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
+            debugger;
+            if ($("#multiLingualList tr").length == 1 && $("#multiLingualList tr")[0].children.length == 1) {
+                $("#multiLingualList tr")[0].remove();
+            }
 
             $("#multiLingualList").append(tr);
             $("#multiLangId").val("@ViewBag.LangId");

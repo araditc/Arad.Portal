@@ -70,6 +70,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSession();
+            services.AddHttpClient();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<HtmlEncoder>(
@@ -95,7 +96,6 @@ namespace Arad.Portal.UI.Shop.Dashboard
               });
 
             services.AddTransient<IAuthorizationHandler, RoleHandler>();
-
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Role", policy =>
@@ -107,6 +107,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddAutoMapper(typeof(Startup));
 
             services.AddTransient<IPermissionView, PermissionView>();
+            services.AddTransient<RemoteServerConnection>();
 
             AddRepositoryServices(services);
             services.AddProgressiveWebApp();

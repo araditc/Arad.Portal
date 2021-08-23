@@ -69,6 +69,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                         FatherName = "نام پدر",
                         FirstName = "ادمین",
                         LastName = "شماره یک",
+                        FullName = "ادمین" + " " + "شماره یک",
                         BirthDate = new DateTime(1987, 8, 26).ToUniversalTime(),
                         NationalId = "1292086734",
                         CompanyName = "Arad",

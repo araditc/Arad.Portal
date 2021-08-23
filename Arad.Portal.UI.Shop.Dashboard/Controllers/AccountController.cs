@@ -352,6 +352,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         {
                             FirstName = model.Name,
                             LastName = model.LastName,
+                            FullName = $"{model.Name} {model.LastName}",
                             DefaultCurrencyId = model.DefaultCurrencyId,
                             DefaultCurrencyName = model.DefaultCurrencyName,
                             DefaultLanguageId = model.DefaultLanguageId,
@@ -494,6 +495,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     {
                         user.Profile.FirstName = model.FirstName;
                         user.Profile.LastName = model.LastName;
+                        user.Profile.FullName = $"{model.FirstName} {model.LastName}";
 
                         #region Fetch currency from language
                         var lan = _languageRepository.FetchLanguage(model.DefaultLanguageId);

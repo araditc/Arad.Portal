@@ -332,8 +332,8 @@
 	<string key="AlertAndMessage_Specifications">
 		<value>Please fill at least on row for specifications</value>
 	</string>
-	<string key="AlertAndMessage_IsPaublishedOnMainDomain">
-		<value>Is published on main Domain?</value>
+	<string key="AlertAndMessage_IsPublishedOnMainDomain">
+		<value>Published on main domain.</value>
 	</string>
 	<string key="AlertAndMessage_NotifyWhenCountIsLessThan">
 		<value>Notify when inventory is:</value>
