@@ -48,6 +48,20 @@
             color: white !important;
             cursor: pointer;
         }
+
+        .divCenter{
+            text-align:center;
+            border: 1px solid;
+        }
+        table tr{
+            text-align: center;
+        }
+        tbody tr td{
+            vertical-align:middle;
+        }
+        .valign{
+            vertical-align:middle;
+        }
     </style>
     @*<link href="~/plugins/ekko-lightbox/ekko-lightbox.css" rel="stylesheet" />*@
     <link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
@@ -362,7 +376,7 @@
                                                     <th>@Language.GetString("LanguageName")</th>
                                                     <th style="display:none;"></th>
                                                     <th>@Language.GetString("tbl_ProductName")</th>
-                                                    <th>@Language.GetString("seoTitle")</th>
+                                                    <th>@Language.GetString("SeoTitle")</th>
                                                     <th>@Language.GetString("SeoDescription")</th>
                                                     <th>@Language.GetString("Description")</th>
                                                     <th>@Language.GetString("UrlFriend")</th>
@@ -447,7 +461,7 @@
                                         }
                                         <span data-val-result="startDate" class="text-danger"></span>
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    @*<div class="form-group col-md-3">
                                         <label>@Language.GetString("EndDate")</label>
                                         @if (CultureInfo.CurrentCulture.Name == "fa-IR")
                                         {
@@ -468,7 +482,7 @@
                                             </div>
                                         }
                                         <span data-val-result="endDate" class="text-danger"></span>
-                                    </div>
+                                    </div>*@
                                     <div class="form-group col-md-1" style="text-align:center;margin:auto;">
                                         <div style="margin:auto;display:inline-block;">
                                             <button type="button" class="btn btn-info btn-circle" onclick="addPriceToList();">
@@ -492,6 +506,7 @@
                                                     <th>@Language.GetString("PriceValue")</th>
                                                     <th>@Language.GetString("StartDate")</th>
                                                     <th>@Language.GetString("EndDate")</th>
+                                                    <th>@Language.GetString("ActivationState")</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -506,6 +521,7 @@
                                                             <td>@price.PriceValue</td>
                                                             <td>@price.StartDate</td>
                                                             <td>@price.EndDate</td>
+                                                            <td>@(price.IsActive ? Language.GetString("Active") : Language.GetString("InActive")) </td>
                                                             <td>
                                                                 <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromPriceList(this);">
                                                                     <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
@@ -550,7 +566,7 @@
                                     <div class="col-md-12">
                                         <table class="table table-hover table-bordered">
                                             <thead>
-                                                <tr style="text-align:center;">
+                                                <tr >
                                                     <th>@Language.GetString("Image")</th>
                                                     <th style="display:none;"></th>
                                                     <th>@Language.GetString("Title")</th>
@@ -562,20 +578,20 @@
                                             <tbody id="imageList">
                                                 @foreach (var pic in Model.Images)
                                                 {
-                                                    <tr style="text-align:center;">
+                                                    <tr >
                                                         <td><img src="@pic.Content" width="120" height="120"/></td>
                                                         <td style="display:none;">@pic.ImageId</td>
-                                                        <td><input type="text" asp-for="@pic.Title" class="form-control txtTitle" value="@pic.Title"/></td>
-                                                        <td><input type="text" asp-for="@pic.Description" class="form-control txtDesc" value="@pic.Description"/></td>
-                                                        <td>
+                                                        <td><input type="text" class="form-control txtTitle" value="@pic.Title"/></td>
+                                                        <td><input type="text"  class="form-control txtDesc" value="@pic.Description"/></td>
+                                                        <td >
                                                             @if (dir == "rtl")
                                                             {
-                                                               <input type="radio" asp-for="@pic.IsMain" name="isMainImage" class="minimal rdbIsMain">
+                                                               <input type="radio"  name="isMainImage" checked="@pic.IsMain" class="minimal rdbIsMain">
                                                             }
                                                             else
                                                             {
                                                                 <div class="icheck-primary d-inline">
-                                                                    <input type="radio" asp-for="@pic.IsMain" name="isMainImage" class="rdbIsMain">
+                                                                    <input type="radio" checked="@pic.IsMain" name="isMainImage" class="rdbIsMain">
                                                                 </div>
                                                             }
                                                         </td>
@@ -608,8 +624,8 @@
     </div>
 </div>
 @section Scripts{
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="~/plugins/ekko-lightbox/ekko-lightbox.js"></script>
+    @*<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/plugins/ekko-lightbox/ekko-lightbox.js"></script>*@
     <script src="~/lib/cropperjs/cropper.js"></script>
     <script src="~/plugins/select2/js/select2.js"></script>
     @if (dir == "rtl")
@@ -634,6 +650,7 @@
     var currentFileName;
     var images = [];
     var counter = 1000;
+    var active = '@Language.GetString("Active")';
     $(document).ready(function () {
         debugger;
 
@@ -642,22 +659,22 @@
                 $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
                     checkboxClass: 'icheckbox_minimal-blue',
                     radioClass: 'iradio_minimal-blue'
-                })
+                });
             }
          //datetimepicker
             if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
             {
                 kamaDatepicker('dtpStartDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
-                kamaDatepicker('dtpEndDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+               /* kamaDatepicker('dtpEndDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });*/
             }
             else
             {
                 $('#dtpStartDate').datetimepicker({
                     format: 'L'
                 });
-                $('#dtpEndDate').datetimepicker({
-                    format: 'L'
-                });
+                //$('#dtpEndDate').datetimepicker({
+                //    format: 'L'
+                //});
             }
        //multiselect
         $("#GroupIds").select2({ dir: '@dir', theme: 'bootstrap4' });
@@ -699,7 +716,7 @@
                 $("span[data-val-result='UniqueCode']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                 flag = true;
             }
-            if ($("#ProductUnitId").val() == "-1" || $("#ProductUnitId").val() == "" )
+            if ($("#Unit_ProductUnitId").val() == "-1" || $("#Unit_ProductUnitId").val() == "" )
             {
                 $("span[data-val-result='productUnitId']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                 flag = true;
@@ -722,17 +739,17 @@
                 flag = true;
             }
 
-          var dataModel = FillDataToSend();
-
+          var dto = FillDataToSend();
+            debugger;
 
                 if (!flag) {
                     $.ajax({
                         url: "@Model.ProductId" != "" ? "/Product/Edit" : "/Product/Add",
                         contentType: 'application/json',
-                        data: JSON.stringify(dataModel),
+                        data:  JSON.stringify(dto),
                         type: 'Post',
+                        dataType:'json',
                         beforeSend: function () {
-
                             AddLoading($("#addProductCard"));
                         },
                         success: function (result) {
@@ -777,24 +794,41 @@
       });
 
         $("#send_pic").click(function () {
-
+            debugger;
             $("#uploadModal").modal("hide");
             var url = $("#galleryPic").attr("src");
             var model = {};
             model.ImageId = counter;
             model.Content = url;
             images.push(model);
-            $("#proGallery").append("<div class='col-sm-2'><a  class='removeImage' onclick='removeThisImage(this);'><span class='fa fa-times'></span>" +
-                "</a><img src='" + url + "' imgId='img_" + counter + "' width='120' height='120' /><input type='text' class='txtImageTitle form-control' placeHolder='" + @Language.GetString("Title")
-                +"' /><br/><input type='text' class='txtImageDesc form-control' placeHolder='" +@Language.GetString("Description")+"' /></div>");
-            counter += 1;
+            var tr = "";
+            if ('@dir' == "rtl") {
+                tr = "<tr><td><img imgId='img_" + counter + "' src='" + model.Content +
+                    "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
+                    "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
+                    "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
+                    "'/></td><td style='vertical-align:middle;'><input type='radio'  name='isMainImage' class='minimal rdbIsMain'></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger btn-circle' onclick='deleteFromImageList(this);'><i class='fa fa-minus' style='position:relative;padding: 3px;'></i></button></td></tr>";
+            } else {
+                 tr = "<tr><td><img imgId='img_" + counter + "' src='" + model.Content +
+                    "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
+                    "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
+                    "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
+                    "'/></td><td style='vertical-align:middle;'><div class='icheck-primary d-inline'><input type='radio'  name='isMainImage' class='rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger btn-circle' onclick='deleteFromImageList(this);'><i class='fa fa-minus' style='position:relative;padding: 3px;'></i></button></td></tr>";
 
+            }
+            $("#imageList").append(tr);
+            counter += 1;
+            if ("@dir" == "rtl") {
+                $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+                    checkboxClass: 'icheckbox_minimal-blue',
+                    radioClass: 'iradio_minimal-blue'
+                });
+            }
         });
 
         $("#languageId").change(function () {
 
                 var langId = $("#languageId").val();
-
                 $.ajax({
                     url: "/ProductSpecification/GetSpecificationGroupList/" + langId,
                     type: 'Get',
@@ -873,7 +907,7 @@
                                     var op = "<option value='" + item.value + "'>" + item.text + "</option>";
                                     options += op;
                                 });
-
+                                $("#specValues").empty();
                                 $("#specValues").html(options);
                             }
                         }
@@ -912,25 +946,51 @@
             $("span[data-val-result='startDate']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
             flag = true;
         }
-        if ($("#dtpEndDate").val() =="") {
-            $("span[data-val-result='endDate']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
-            flag = true;
-        }
+        
         if (!flag) {
-            var tr = "<tr style='text-align:center;'><td>" + $("#currencyId option:selected").text() +
-                "</td><td>" + $('#currencyId').val() +
-                "</td><td>" + $('#priceValue').val() +
-                "</td><td>" + $("#dtpStartDate").val() +
-                "</td><td>" + $("#dtpEndDate").text() +
-                "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' onclick='deleteFromPriceList(this);'>" +
-                "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
+            var currencyId = $('#currencyId').val();
+            var confirm = true;
+
+            $("#priceList").find("td:eq(1)").each(function () {
+                debugger;
+                if ($(this).text() == currencyId && $(this).parent().find("td:eq(5)").text() == active) {
+                    confirm = false;
+                    Swal.fire({
+                        title: '@Language.GetString("AlertAndMessage_AreYouSure")',
+                        text: '@Language.GetString("AlertAndMessage_PricePerCurrencyUniqueness")',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d51c1c',
+                        cancelButtonColor: '#009c09db',
+                        confirmButtonText: '@Language.GetString("btn_Confirm")',
+                        cancelButtonText: '@Language.GetString("btn_NotConfirm")'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            confirm = true;
+                        }
+                    });
+                }
+            });
+            if (confirm) {
+                var tr = "<tr style='text-align:center;'><td>" + $("#currencyId option:selected").text() +
+                    "</td><td style='display:none;'>" + $('#currencyId').val() +
+                    "</td><td>" + $('#priceValue').val() +
+                    "</td><td>" + $("#dtpStartDate").val() +
+                    "</td><td></td><td>" + active +
+                    "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' onclick='deleteFromPriceList(this);'>" +
+                    "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
+            }
+
+            if ($("#priceList tr").length == 1 && $("#priceList tr")[0].children.length == 1) {
+                $("#priceList tr")[0].remove();
+            }
+            $("#priceList").append(tr);
+            $("#currencyId").val('@ViewBag.DefCurrency');
+            $("#priceValue").val("0");
+            $("#dtpStartDate").val("");
+            
         }
-        $("#priceList").append(tr);
-        $("#currencyId").val('@ViewBag.DefCurrency');
-        $("#priceValue").val("0");
-        $("#dtpStartDate").val("");
-        $("#dtpEndDate").val("");
-}
+    }
 
     function deleteFromPriceList(sender) {
         var tr = $(sender).parent().parent();
@@ -981,11 +1041,18 @@
                 "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' onclick='deleteFromSpecList(this);'>" +
                 "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
 
+
+            if ($("#specificationList tr").length == 1 && $("#specificationList tr")[0].children.length == 1) {
+                $("#specificationList tr")[0].remove();
+            }
+
             $("#specificationList").append(tr);
             $("#languageId").val("@ViewBag.LangId");
             $("#specGroupId").val("-1");
             $("#specificationId").val("-1");
-            $('#specValues').select2('data', null);
+            debugger;
+            $("#specValues").empty();
+            /*$('#specValues').select2('data', null);*/
         }
         }
 
@@ -996,26 +1063,26 @@
 
     function FillDataToSend() {
 
-        var obj = {};
-        obj.GroupNames = [];
-        obj.GroupIds = [];
-        obj.MultiLingualProperties = [];
-        obj.Specifications = [];
-        obj.Pictures = [];
-        obj.Prices = [];
-        obj.ProductId = $("#ProductId").val();
-        obj.ModificationReason = $("#ModificationReason").val();
+        var dto = {};
+        dto.GroupNames = [];
+        dto.GroupIds = [];
+        dto.MultiLingualProperties = [];
+        dto.Specifications = [];
+        dto.Pictures = [];
+        dto.Prices = [];
+        dto.ProductId = $("#ProductId").val();
+        dto.ModificationReason = $("#ModificationReason").val();
 
         //groupIds
         for (var i = 0; i < $("#GroupIds").val().length; i++) {
-            obj.GroupIds.push($("#GroupIds").val()[0]);
+            dto.GroupIds.push($("#GroupIds").val()[i]);
         }
 
 
         //GroupNames
         for (var i = 0; i < $("#GroupIds").select2("data").length; i++) {
 
-            obj.GroupNames.push($("#GroupIds").select2("data")[i].text);
+            dto.GroupNames.push($("#GroupIds").select2("data")[i].text);
         }
 
 
@@ -1031,19 +1098,27 @@
             innerModel.Description = $(this).find("td:eq(5)").text();
             innerModel.UrlFriend = $(this).find("td:eq(6)").text();
 
-            obj.MultiLingualProperties.push(innerModel);
+            dto.MultiLingualProperties.push(innerModel);
         });
 
         //prices
         $("#priceList tr").each(function () {
-            var innerModel = {};
-            innerModel.CurrencyId = $(this).find("td:eq(5)").text();
-            innerModel.CurrencyName = $(this).find("td:eq(3)").text();
-            innerModel.PriceValue = $(this).find("td:eq(1)").text();
-            innerModel.StartDate = $(this).find("td:eq(0)").text();
-            innerModel.EndDate = $(this).find("td:eq(2)").text();
 
-            obj.Prices.push(innerModel);
+            var innerModel = {};
+            innerModel.CurrencyId = $(this).find("td:eq(1)").text();
+            innerModel.CurrencyName = $(this).find("td:eq(0)").text();
+            innerModel.PriceValue = parseFloat($(this).find("td:eq(2)").text());
+            innerModel.StartDate = $(this).find("td:eq(3)").text();
+            innerModel.EndDate = $(this).find("td:eq(4)").text();
+            if ($(this).find("td:eq(5)").text() == active)
+                innerModel.IsActive = true;
+            else
+                innerModel.IsActive = false;
+            innerModel.PriceId = "";
+            innerModel.Symbol = "";
+            innerModel.Prefix = "";
+
+            dto.Prices.push(innerModel);
 
         });
 
@@ -1058,42 +1133,43 @@
             innerModel.SpecificationName = $(this).find("td:eq(4)").text();
             innerModel.Values = $(this).find("td:eq(6)").text();
 
-            obj.Specifications.push(innerModel);
+            dto.Specifications.push(innerModel);
         });
 
 
         //pictures
         $("#imageList tr").each(function () {
+
             var id = $(this).find("td:eq(1)").text();
-            var item = images.find(_ => _.ImageId === id);
+            var item = images.find(_ => _.ImageId == id);
             index = images.indexOf(item);
 
-            item.IsMain = $(this).find("td:eq(4) .rdbIsMain").prop("checked");
+            item.IsMain = $(this).find("td:eq(4) .rdbIsMain").prop("checked") === 'true';
             item.Title = $(this).find("td:eq(2) .txtTitle").val();
             item.Description = $(this).find("td:eq(3) .txtDesc").val();
-
+            item.ImageId = item.ImageId.toString();
             images[index] = item;
         });
         for (var i = 0; i < images.length; i++) {
-            obj.Pictures.push(images[i]);
+            debugger;
+            dto.Pictures.push(images[i]);
         }
-        obj.UniqueCode = $("#UniqueCode").val();
-        obj.Inventory = $("#Inventory").val();
-        obj.MinimumCount = $("#MinimumCount").val();
-        obj.ShowInLackOfInventory = $("#chbNotifyInventory").prop("checked");
-        if ('@ViewBag.Vendors' != "-1") {
-            obj.SellerUserId = $("#SellerUserId").val();
-            obj.SellerUserName = $("SellerUserName option:selected").text();
+        dto.UniqueCode = $("#UniqueCode").val();
+        dto.Inventory = $("#Inventory").val();
+        dto.MinimumCount = $("#MinimumCount").val();
+        dto.ShowInLackOfInventory = $("#chbNotifyInventory").prop("checked");
+        if ("@ViewBag.Vendors" != "-1") {
+            dto.SellerUserId = $("#SellerUserId").val();
+            dto.SellerUserName = $("SellerUserId option:selected").text();
         }
-        obj.UnitId = $("#ProductUnitId").val();
-        obj.PromotionId = $("#PromotionId").val();
-        obj.IsPublishedOnMainDomain = $("#chbIsPublishedOnMainDomain").prop("checked");
+        dto.UnitId = $("#Unit_ProductUnitId").val();
+        dto.PromotionId = $("#PromotionId").val();
+        dto.IsPublishedOnMainDomain = $("#chbIsPublishedOnMainDomain").prop("checked");
 
-        return obj;
+        return dto;
     }
 
     function deleteFromTable(sender) {
-
         var tr = $(sender).parent().parent();
         $(tr).remove();
     }

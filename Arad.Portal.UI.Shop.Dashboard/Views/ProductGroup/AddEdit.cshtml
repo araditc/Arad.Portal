@@ -212,12 +212,12 @@
                 }
                 if (!flag) {
 
-            var dataModel = FillDataToSend();
+            var dto = FillDataToSend();
             $.ajax({
                     url: "@Model.ProductGroupId" != "" ? "/ProductGroup/Edit" : "/ProductGroup/Add",
-                    data: dataModel,
+                    /*data: dataModel,*/
                     contentType: 'application/json',
-                    data: JSON.stringify(dataModel),
+                    data: JSON.stringify(dto),
                 type: 'Post',
                 beforeSend: function () {
                     debugger;
@@ -268,7 +268,7 @@
 
         function FillDataToSend() {
             debugger;
-            var obj = {};
+            var dto = {};
            obj.MultiLingualProperties = [];
             obj.ProductGroupId = $("#ProductGroupId").val();
             if ($("#ParentId").val() != "-1") {

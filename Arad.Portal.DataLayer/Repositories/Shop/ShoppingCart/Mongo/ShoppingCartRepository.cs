@@ -331,7 +331,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                 _.StartDate <= DateTime.UtcNow && _.EndDate == null);
             if(availablePrice != null)
             {
-                return availablePrice.PriceValue;
+                return Convert.ToDecimal(availablePrice.PriceValue);
             }else
             {
                 return 0;

@@ -237,20 +237,20 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.LanguageSymbol = lan.Symbol;
                     item.MultiLingualPropertyId = Guid.NewGuid().ToString();
                 }
-               
+
                 foreach (var item in dto.Prices)
                 {
                     var cur = _curRepository.FetchCurrency(item.CurrencyId);
-                    //??? just one valid record
+                   
                     item.PriceId = Guid.NewGuid().ToString();
                     item.Symbol = cur.ReturnValue.Symbol;
                     item.Prefix = cur.ReturnValue.Symbol;
-                    item.IsActive = true;
+                    item.SDate = DateHelper.ToEnglishDate(item.StartDate);
                 }
                 foreach (var pic in dto.Pictures)
                 {
                     var res = SaveImageModel(pic);
-                    if(res.Key != Guid.Empty.ToString())
+                    if (res.Key != Guid.Empty.ToString())
                     {
                         pic.ImageId = res.Key;
                         pic.Url = res.Value;
@@ -330,27 +330,27 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.Prefix = cur.ReturnValue.Symbol;
                     item.IsActive = true;
                 }
-                foreach (var pic in dto.Pictures)
-                {
-                    Guid isGuidKey;
-                    if (!Guid.TryParse(pic.ImageId, out isGuidKey))
-                    {
-                        //its insert and imageId which was int from client replace with guid
-                        var res = SaveImageModel(pic);
-                        if (res.Key != Guid.Empty.ToString())
-                        {
-                            pic.ImageId = res.Key;
-                            pic.Url = res.Value;
-                            pic.Content = "";
-                        }
-                        //otherwise its  is update then it has no url ;
-                    }
-                    else
-                    {
-                        //its update properties exept url imageId and Content
-                        //it will be done in repository
-                    }
-                }
+                //foreach (var pic in dto.Pictures)
+                //{
+                //    Guid isGuidKey;
+                //    if (!Guid.TryParse(pic.ImageId, out isGuidKey))
+                //    {
+                //        //its insert and imageId which was int from client replace with guid
+                //        var res = SaveImageModel(pic);
+                //        if (res.Key != Guid.Empty.ToString())
+                //        {
+                //            pic.ImageId = res.Key;
+                //            pic.Url = res.Value;
+                //            pic.Content = "";
+                //        }
+                //        //otherwise its  is update then it has no url ;
+                //    }
+                //    else
+                //    {
+                //        //its update properties exept url imageId and Content
+                //        //it will be done in repository
+                //    }
+                //}
             }
 
             RepositoryOperationResult saveResult = await _productRepository.UpdateProduct(dto);
@@ -359,38 +359,38 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return result;
         }
 
-        private async Task<string> GetToken()
-        {
-            try
-            {
-                var tokenUrl = _configuration["StaticFilesPlace:TokenUrl"];
-                var userName = _configuration["StaticFilesPlace:User"];
-                var password = _configuration["StaticFilesPlace:Password"];
-                var scope = _configuration["StaticFilesPlace:Scope"];
+        //private async Task<string> GetToken()
+        //{
+        //    try
+        //    {
+        //        var tokenUrl = _configuration["StaticFilesPlace:TokenUrl"];
+        //        var userName = _configuration["StaticFilesPlace:User"];
+        //        var password = _configuration["StaticFilesPlace:Password"];
+        //        var scope = _configuration["StaticFilesPlace:Scope"];
 
-                var client = _clientFactory.CreateClient();
-                var keyValues = new List<KeyValuePair<string, string>> {
-                    new KeyValuePair<string, string>("username", userName),
-                    new KeyValuePair<string, string>("password", password),
-                    new KeyValuePair<string, string>("scope", /*"ApiAccess"*/scope),
-                };
+        //        var client = _clientFactory.CreateClient();
+        //        var keyValues = new List<KeyValuePair<string, string>> {
+        //            new KeyValuePair<string, string>("username", userName),
+        //            new KeyValuePair<string, string>("password", password),
+        //            new KeyValuePair<string, string>("scope", /*"ApiAccess"*/scope),
+        //        };
 
-                client.BaseAddress = new Uri(tokenUrl);
-                var content = new FormUrlEncodedContent(keyValues);
-                var response = await client.PostAsync(new Uri(tokenUrl), content).Result.Content.ReadAsStringAsync();
-                //var response = await client.PostAsync(/*"/connect/token",*/ content).Content.ReadAsStringAsync();
-                return response;
-                //T
-                //var data = Newtonsoft.Json.JsonConvert.DeserializeObject<TokenResponseModel>(await response.Content.ReadAsStringAsync());
-                //access_token = data.access_token;
-                //Logger.WriteLogFile($"access token = {access_token}");
+        //        client.BaseAddress = new Uri(tokenUrl);
+        //        var content = new FormUrlEncodedContent(keyValues);
+        //        var response = await client.PostAsync(new Uri(tokenUrl), content).Result.Content.ReadAsStringAsync();
+        //        //var response = await client.PostAsync(/*"/connect/token",*/ content).Content.ReadAsStringAsync();
+        //        return response;
+        //        //T
+        //        //var data = Newtonsoft.Json.JsonConvert.DeserializeObject<TokenResponseModel>(await response.Content.ReadAsStringAsync());
+        //        //access_token = data.access_token;
+        //        //Logger.WriteLogFile($"access token = {access_token}");
 
-            }
-            catch (Exception e)
-            {
-                return string.Empty;
-            }
-        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return string.Empty;
+        //    }
+        //}
 
         [HttpGet]
         public async Task<IActionResult> Restore(string id)

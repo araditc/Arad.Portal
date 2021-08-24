@@ -137,7 +137,7 @@
                 if (!flag) {
             $.ajax({
                 url: "@Model.ProductUnitId" != "" ? "/ProductUnit/Edit" : "/ProductUnit/Add",
-                    data: dataModel,
+                    /*data: dataModel,*/
                     contentType: 'application/json',
                     data: JSON.stringify(dataModel),
                 type: 'Post',

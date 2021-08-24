@@ -382,9 +382,34 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 
             #region Prices
             equallentModel.Prices = new List<Price>();
-            foreach (var price in dto.Prices)
+            foreach (var price in dto.Prices.OrderBy(_=>_.StartDate))
             {
-                equallentModel.Prices.Add(price);
+                if(price.IsActive && string.IsNullOrWhiteSpace(price.EndDate))//price is valid from client
+                {
+                    var exist = equallentModel.Prices
+                    .First(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive);
+                    if (exist != null)
+                    {
+                        equallentModel.Prices.Remove(exist);
+                        exist.IsActive = false;
+                        exist.EndDate = DateTime.UtcNow;
+                        equallentModel.Prices.Add(exist);
+                    }
+                }
+                
+                var p = new Price()
+                {
+                    PriceId = !string.IsNullOrWhiteSpace(price.PriceId) ? price.PriceId : Guid.NewGuid().ToString(),
+                    CurrencyId = price.CurrencyId,
+                    CurrencyName = price.CurrencyName,
+                    IsActive = !string.IsNullOrWhiteSpace(price.PriceId) ? price.IsActive : true,
+                    Prefix = price.Prefix,
+                    PriceValue = price.PriceValue,
+                    StartDate = GeneralLibrary.Utilities.DateHelper.ToEnglishDate(price.StartDate).ToUniversalTime(),
+                    EndDate = !string.IsNullOrWhiteSpace(price.EndDate) ? 
+                    GeneralLibrary.Utilities.DateHelper.ToEnglishDate(price.EndDate).ToUniversalTime() : null
+                };
+                equallentModel.Prices.Add(p);
             }
             #endregion
 

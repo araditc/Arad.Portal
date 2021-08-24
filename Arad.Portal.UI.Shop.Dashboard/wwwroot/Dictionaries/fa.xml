@@ -317,6 +317,9 @@
 	<string key="AlertAndMessage_InvalidFormat">
 		<value>فرمت فایل نامعتبر است.</value>
 	</string>
+	<string key="AlertAndMessage_PricePerCurrencyUniqueness">
+		<value>برای این واحد پول قیمت فعال وجود دارد در صورت همپوشانی بازه های زمانی قیمت قبلی غیر فعال خواهد شد</value>
+	</string>
 	<string key="AlertAndMessage_DefaultLanguageRequired">
 		<value>لطفا زبان پیش فرض کاربر را انتخاب کنید.</value>
 	</string>
@@ -1211,7 +1214,7 @@
 		<value>محصولات موجود</value>
 	</string>
 	<string key="Promotion">
-		<value>ترفیع</value>
+		<value>تخفیفات و جشنواره ها</value>
 	</string>
 	<string key="ProductsOnPromotion">
 		<value>محصولات دارای ترفیع</value>

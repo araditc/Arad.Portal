@@ -145,7 +145,7 @@
                 if (!flag) {
             $.ajax({
                 url: "@Model.SpecificationGroupId" != "" ? "/ProductSpecificationGroup/Edit" : "/ProductSpecificationGroup/Add",
-                    data: dataModel,
+                  /*  data: dataModel,*/
                     contentType: 'application/json',
                     data: JSON.stringify(dataModel),
                 type: 'Post',

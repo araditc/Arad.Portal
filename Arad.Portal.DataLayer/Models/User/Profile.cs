@@ -1,4 +1,5 @@
 ﻿using Arad.Portal.DataLayer.Models.Shared;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace Arad.Portal.DataLayer.Models.User
         //???
         public string NationalId { get; set; }
 
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime BirthDate { get; set; }
 
         public Image ProfilePhoto { get; set; }

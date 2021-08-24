@@ -323,6 +323,9 @@
 	<string key="AlertAndMessage_InvalidFileSize">
 		<value>the file size exceed limitation.</value>
 	</string>
+	<string key="AlertAndMessage_PricePerCurrencyUniqueness">
+		<value>there is already a active price for this currency, if start and end of duration overlapped, then previous price will be deactivated.</value>
+	</string>
 	<string key="AlertAndMessage_DefaultLanguageRequired">
 		<value>Please select default language of user.</value>
 	</string>
@@ -1172,7 +1175,7 @@
 		<value>Existent Products</value>
 	</string>
 	<string key="Promotion">
-		<value>Promotion</value>
+		<value>Promotions</value>
 	</string>
 	<string key="ProductsOnPromotion">
 		<value>Products on Promotions</value>

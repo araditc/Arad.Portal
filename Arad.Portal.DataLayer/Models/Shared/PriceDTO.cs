@@ -1,15 +1,12 @@
-﻿using Arad.Portal.DataLayer.Entities.General.Currency;
-using MongoDB.Bson.Serialization.Attributes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace Arad.Portal.DataLayer.Models.Shared
 {
-    public class Price
+    public class PriceDTO
     {
         public string PriceId { get; set; }
 
@@ -25,10 +22,12 @@ namespace Arad.Portal.DataLayer.Models.Shared
 
         public bool IsActive { get; set; }
 
-        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime StartDate { get; set; }
+        public string StartDate { get; set; }
 
-        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime? EndDate { get; set; }
+        public DateTime? SDate { get; set; }
+
+        public string EndDate { get; set; }
+
+        public DateTime? EDate { get; set; }
     }
 }
