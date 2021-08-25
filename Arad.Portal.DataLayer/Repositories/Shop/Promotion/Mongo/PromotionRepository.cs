@@ -236,13 +236,24 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                 {
                     filter.Set("PageSize", "20");
                 }
+               
 
                 var page = Convert.ToInt32(filter["CurrentPage"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
+                var userId = filter["userId"];
 
+                List<Entities.Shop.Promotion.Promotion> list;
                 long totalCount = await _context.Collection.Find(c => true).CountDocumentsAsync();
-                var list = _productContext.ProductUnitCollection.AsQueryable().Skip((page - 1) * pageSize)
-                   .Take(pageSize).ToList();
+                if(userId == Guid.Empty.ToString())//show all promotions cause the user is system account
+                {
+                    list = _context.Collection.AsQueryable().Skip((page - 1) * pageSize)
+                  .Take(pageSize).ToList();
+                }else
+                {
+                    list = _context.Collection.AsQueryable().Where(_=>_.CreatorUserId == userId).Skip((page - 1) * pageSize)
+                      .Take(pageSize).ToList();
+                }
+             
                 result.Items = _mapper.Map<List<PromotionDTO>>(list);
                
             }
@@ -291,6 +302,49 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                 Value = _.PromotionId
             }).ToList();
             return res;
+        }
+
+        public PromotionDTO FetchPromotion(string id)
+        {
+            var result = new PromotionDTO();
+            var entity = _context.Collection.Find(_ => _.PromotionId == id).First();
+            if(entity != null)
+            {
+                result = _mapper.Map<PromotionDTO>(entity);
+            }
+            return result;
+        }
+
+        public List<SelectListModel> GetAllPromotionType()
+        {
+            var result = new List<SelectListModel>();
+            foreach (int i in Enum.GetValues(typeof(PromotionType)))
+            {
+                string name = Enum.GetName(typeof(PromotionType), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            return result;
+        }
+
+        public List<SelectListModel> GetAllDiscountType()
+        {
+            var result = new List<SelectListModel>();
+            foreach (int i in Enum.GetValues(typeof(DiscountType)))
+            {
+                string name = Enum.GetName(typeof(DiscountType), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            return result;
         }
     }
 }

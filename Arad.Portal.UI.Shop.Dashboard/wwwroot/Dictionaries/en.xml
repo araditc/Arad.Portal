@@ -209,6 +209,27 @@
 	<string key="PermissionTitle_PermissionDelete">
 		<value>Delete Permission</value>
 	</string>
+	<string key="PermissionTitle_Promotions">
+		<value>Promotions</value>
+	</string>
+	<string key="PermissionTitle_PromotionDetails">
+		<value>Promotion Details</value>
+	</string>
+	<string key="PermissionTitle_AddPromotion">
+		<value>Add Promotion</value>
+	</string>
+	<string key="PermissionTitle_EditPromotion">
+		<value>EditPromotion</value>
+	</string>
+	<string key="PermissionTitle_PromotionDelete">
+		<value>Promotion Delete</value>
+	</string>
+	<string key="PermissionTitle_PromotionRestore">
+		<value>Promotion Restore</value>
+	</string>
+	<string key="PermissionTitle_PromotionChangeActivation">
+		<value>Promotion Change Activation</value>
+	</string>
 	<!--End [PermissionTitle]-->
 	<!--Start [tables]-->
 	<string key="tbl_RowName">

@@ -24,6 +24,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
 
         public string CurrencyId { get; set; }
 
+        public string PromotedProductId { get; set; }
+        public int BoughtCount { get; set; }
+        public int? PromotedCountofUnit { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime StartDate { get; set; }
@@ -45,6 +48,10 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
     public enum DiscountType
     {
         Fixed,
-        Percentage
+        Percentage,
+        /// <summary>
+        /// for example if you buy one you get another free
+        /// </summary>
+        Product
     }
 }

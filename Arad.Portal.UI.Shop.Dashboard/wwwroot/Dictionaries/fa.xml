@@ -203,6 +203,27 @@
 	<string key="PermissionTitle_PermissionDelete">
 		<value>حذف دسترسی</value>
 	</string>
+	<string key="PermissionTitle_Promotions">
+		<value>تخفیفات و جشنواره ها</value>
+	</string>
+	<string key="PermissionTitle_PromotionDetails">
+		<value>جزییات تخفیفات و جشنواره ها</value>
+	</string>
+	<string key="PermissionTitle_AddPromotion">
+		<value>افزودن تخفیفات و جشنواره ها</value>
+	</string>
+	<string key="PermissionTitle_EditPromotion">
+		<value>ویرایش تخفیفات و جشنواره ها</value>
+	</string>
+	<string key="PermissionTitle_PromotionDelete">
+		<value>حذف تخفیفات و جشنواره ها</value>
+	</string>
+	<string key="PermissionTitle_PromotionRestore">
+		<value>بازگردانی تخفیفات و جشنواره ها</value>
+	</string>
+	<string key="PermissionTitle_PromotionChangeActivation">
+		<value>تغییر وضعیت تخفیفات و جشنواره ها</value>
+	</string>
 	<!--End [PermissionTitle]-->
 	<!--Start [tables]-->
 	<string key="tbl_RowName">

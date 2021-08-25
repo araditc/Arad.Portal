@@ -11,17 +11,25 @@ namespace Arad.Portal.DataLayer.Models.Promotion
     {
         public string PromotionId { get; set; }
 
+        public string Title { get; set; }
+
         public PromotionType PromotionType { get; set; }
 
         public DiscountType DiscountType { get; set; }
 
         public decimal Value { get; set; }
 
+        public string PromotedProductId { get; set; }
+
+        public int? PromotedCountofUnit { get; set; }
+
         public string CurrencyId { get; set; }
 
         public DateTime StartDate { get; set; }
        
         public DateTime? EndDate { get; set; }
+
         public string ModificationReason { get; set; }
+        
     }
 }

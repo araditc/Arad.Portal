@@ -4,6 +4,7 @@
 @using Arad.Portal.DataLayer.Models.Product
 @using Arad.Portal.UI.Shop.Dashboard.ViewComponents;
 
+ 
 @model PagedItems<ProductViewModel>
 @{
     var i = ((Model.CurrentPage - 1) * Model.PageSize);
@@ -207,7 +208,7 @@
             }
         </div>
     </div>
-    <div class="card-body table-bordered  table-responsive p-0" id="productListCard">
+    <div class="card-body table-bordered  p-0" id="productListCard">
         <div class="row" style="background-color: #cbcdce;">
             <div class="col-md-1 offset-md-1">
                 <span class="form-control" style="background-color: #f4f4f5;">@Language.GetString("LanguageName")</span>
@@ -239,44 +240,49 @@
 
                     @foreach (var item in Model.Items)
                     {
+                        var src = item.Images.Any(_ => _.IsMain) ?
+                            item.Images.First(_ => _.IsMain).Url : $"~/imgs/NoImage.png";
+
+                        var img = $"<img src='{src}' width='75' height='75' />";
                         <tr class="ListCell">
-                            <td >@(++i)</td>
-                            <td >@item.MainImage</td>
-                            <td >@item.MultiLingualProperty.Name</td>
-                            <td >@item.Unit.UnitName</td>
-                            <td >@(string.Join("|", item.GroupNames))</td>
-                            <td >@item.UniqueCode</td>
-                            <td >@item.Inventory</td>
-                            <td >@item.Price.PriceValue</td>
-                            <td >@item.CreationDate</td>
+                            <td>@(++i)</td>
+                            <td>@Html.Raw(img)</td>
+                            <td>@(item.MultiLingualProperties.Any(_=>_.LanguageId == langId) ? item.MultiLingualProperties.First(_ => _.LanguageId == langId).Name : "")</td>
+                            <td>@(item.Unit.UnitNames.Any(_=>_.LanguageId == langId) ? item.Unit.UnitNames.First(_ => _.LanguageId == langId).Name : "")</td>
+                            <td>@(string.Join("|", item.GroupNames))</td>
+                            <td>@item.UniqueCode</td>
+                            <td>@item.Inventory</td>
+                            <td>@(item.Prices.Any(_ => _.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate)) 
+                            ? item.Prices.First(_ => _.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate)).PriceValue : "")</td>
+                            <td>@item.CreationDate</td>
                             <td>
-                                <a class="btn btn-sm btn-light">
+                                <button class="btn btn-sm btn-dark">
                                     <i style="position: relative;left: 5px;top: 2px;" class="fa fa-eye"></i>@Language.GetString("btn_Show")
-                                </a>
+                                </button>
                             </td>
                             <td>
-                                @if (ViewBag.Permissions["Edit"])
-                                {
-                                    <a asp-action="AddEdit" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-info">
-                                        <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
-                                    </a>
-                                }
-                                @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
-                                {
-                                    <button onclick="EntityDelete('@item.ProductId')" class="btn btn-sm btn-danger">
-                                        <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
-                                    </button>
-                                }
-                                @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
-                                {
-                                    <button id="restoreRecord" onclick="EntityRestore('@item.ProductId')" class="btn btn-sm btn-warning">
-                                        <i style="position: relative;left: 5px;top: 2px;" class="fa fa-refresh"></i>
-                                        @Language.GetString("btn_Restore")
-                                    </button>
-                                }
-                            </td>
-                        </tr>
-                    }
+                            @if (ViewBag.Permissions["Edit"])
+                            {
+                                <a asp-action="AddEdit" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-info">
+                                    <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
+                                </a>
+                            }
+                            @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
+                            {
+                                <button onclick="EntityDelete('@item.ProductId')" class="btn btn-sm btn-danger">
+                                    <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
+                                </button>
+                            }
+                            @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
+                            {
+                                <button id="restoreRecord" onclick="EntityRestore('@item.ProductId')" class="btn btn-sm btn-warning">
+                                    <i style="position: relative;left: 5px;top: 2px;" class="fa fa-refresh"></i>
+                                    @Language.GetString("btn_Restore")
+                                </button>
+                            }
+                        </td>
+                         </tr>
+                     }
                 }
                 else
                 {

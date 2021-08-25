@@ -26,6 +26,12 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Promotion
 
         Task<PagedItems<PromotionDTO>> ListPromotions(string queryString);
 
+        PromotionDTO FetchPromotion(string id);
+
         List<SelectListModel> GetActivePromotionsOfCurrentUser(string userId, PromotionType type);
+
+        List<SelectListModel> GetAllPromotionType();
+
+        List<SelectListModel> GetAllDiscountType();
     }
 }

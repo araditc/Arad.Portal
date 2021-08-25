@@ -67,6 +67,13 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             }
             catch (Exception ex)
             {
+                foreach (var item in dto.Pictures)
+                {
+                    if(System.IO.File.Exists(item.Url))
+                    {
+                        System.IO.File.Delete(item.Url);
+                    }
+                }
                 result.Message = ConstMessages.InternalServerErrorMessage;
             }
             return result;
@@ -356,7 +363,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         private Entities.Shop.Product.Product MappingProduct(ProductInputDTO dto)
         {
             var equallentModel = _mapper.Map<Entities.Shop.Product.Product>(dto);
-            if(!string.IsNullOrWhiteSpace(dto.ProductId)) //insert Case
+            if(string.IsNullOrWhiteSpace(dto.ProductId)) //insert Case
             {
                 equallentModel.ProductId = Guid.NewGuid().ToString();
             }
@@ -365,7 +372,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             {
                 foreach (var item in equallentModel.MultiLingualProperties)
                 {
-                    if(!string.IsNullOrWhiteSpace(item.MultiLingualPropertyId))
+                    if(string.IsNullOrWhiteSpace(item.MultiLingualPropertyId))
                     item.MultiLingualPropertyId = Guid.NewGuid().ToString();
                 }
             }
@@ -386,14 +393,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             {
                 if(price.IsActive && string.IsNullOrWhiteSpace(price.EndDate))//price is valid from client
                 {
-                    var exist = equallentModel.Prices
-                    .First(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive);
-                    if (exist != null)
+                    if(equallentModel.Prices.Any(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive))
                     {
+                        var exist = equallentModel.Prices.First(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive);
                         equallentModel.Prices.Remove(exist);
                         exist.IsActive = false;
                         exist.EndDate = DateTime.UtcNow;
                         equallentModel.Prices.Add(exist);
+
                     }
                 }
                 
@@ -421,6 +428,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 equallentModel.Promotion = promotionEntity;
             }
             #endregion Promotion
+            #region images
+            equallentModel.Images = dto.Pictures;
+            #endregion
             return equallentModel;
         }
 
@@ -571,14 +581,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                        Inventory = _.Inventory,
                        UniqueCode = _.UniqueCode,
                        IsDeleted = _.IsDeleted,
-                       MultiLingualProperty =_.MultiLingualProperties.Where(_=>_.LanguageId == langId).First(),
-                       MainImage = _.Images.Where(_=>_.IsMain).First().Url,
-                       Price = _.Prices.Where(_=>_.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate)).First(),
-                       Unit =  new ProductUnitViewModel()
-                       {
-                           ProductUnitId = _.Unit.ProductUnitId,
-                           UnitName = _.Unit.UnitNames.Where(a=>a.LanguageId == langId).First()
-                       },
+                       MultiLingualProperties = _.MultiLingualProperties,
+                       Images = _.Images,
+                       Prices = _.Prices,
+                       Unit =  _.Unit,
                        CreationDate = _.CreationDate
                    }).ToList();
 

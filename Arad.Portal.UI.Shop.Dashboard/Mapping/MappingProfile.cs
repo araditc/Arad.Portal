@@ -21,6 +21,7 @@ using Arad.Portal.DataLayer.Models.ProductGroup;
 using Arad.Portal.DataLayer.Models.ProductSpecification;
 using Arad.Portal.DataLayer.Models.ProductSpecificationGroup;
 using Arad.Portal.DataLayer.Models.Role;
+using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Models.ShoppingCart;
 using Arad.Portal.DataLayer.Models.User;
 using System;
@@ -45,8 +46,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Mapping
             CreateMap<RoleDTO, Role>().ReverseMap();
             CreateMap<SpecificationGroupDTO, ProductSpecGroup>().ReverseMap();
             CreateMap<ProductSpecification, ProductSpecificationDTO>().ReverseMap();
-            CreateMap<ProductInputDTO, Product>();
-            CreateMap<Product, ProductOutputDTO>();
+            CreateMap<ProductInputDTO, Product>().ReverseMap();
+            CreateMap<Product, ProductOutputDTO>().ReverseMap();
+            CreateMap<Price, PriceDTO>().ReverseMap();
             CreateMap<ShoppingCart, ShoppingCartDTO>();
             CreateMap<NotificationDTO, Notification>();
         }

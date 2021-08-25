@@ -44,6 +44,8 @@ namespace Arad.Portal.DataLayer.Models.Product
 
         public string SellerUserName { get; set; }
 
+        public bool  IsActive { get; set; }
+
         public string UnitId { get; set; }
 
         public List<PriceDTO> Prices { get; set; }

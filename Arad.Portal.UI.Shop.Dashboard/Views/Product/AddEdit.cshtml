@@ -74,7 +74,6 @@
 }
 <h4>@Language.GetString("Menu_Products")</h4>
 
-
 <div class="modal fade" id="uploadModal" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content col-md-12">
@@ -533,7 +532,7 @@
                                                 else
                                                 {
                                                     <tr style="text-align:center;">
-                                                        <td colspan="5">@Language.GetString("AlertAndMessage_NoDataToShow")</td>
+                                                        <td colspan="6">@Language.GetString("AlertAndMessage_NoDataToShow")</td>
                                                     </tr>
                                                 }
 
@@ -651,9 +650,10 @@
     var images = [];
     var counter = 1000;
     var active = '@Language.GetString("Active")';
+    var inActive = '@Language.GetString("InActive")';
     $(document).ready(function () {
         debugger;
-
+      
          //icheckboxes radiobuttons
             if ("@dir" == "rtl") {
                 $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
@@ -934,6 +934,7 @@
      }
 
     function addPriceToList() {
+        debugger;
         var flag = false;
         $("span[data-val-result='priceValue']").html("");
         $("span[data-val-result='startDate']").html("");
@@ -946,50 +947,56 @@
             $("span[data-val-result='startDate']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
             flag = true;
         }
-        
+
         if (!flag) {
             var currencyId = $('#currencyId').val();
-            var confirm = true;
 
-            $("#priceList").find("td:eq(1)").each(function () {
-                debugger;
-                if ($(this).text() == currencyId && $(this).parent().find("td:eq(5)").text() == active) {
-                    confirm = false;
-                    Swal.fire({
-                        title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-                        text: '@Language.GetString("AlertAndMessage_PricePerCurrencyUniqueness")',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#d51c1c',
-                        cancelButtonColor: '#009c09db',
-                        confirmButtonText: '@Language.GetString("btn_Confirm")',
-                        cancelButtonText: '@Language.GetString("btn_NotConfirm")'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            confirm = true;
-                        }
-                    });
-                }
-            });
-            if (confirm) {
-                var tr = "<tr style='text-align:center;'><td>" + $("#currencyId option:selected").text() +
+            var tr = "";
+            if ($("#priceList").find("td:eq(1)").length > 0) {
+                $("#priceList").find("td:eq(1)").each(function () {
+                    debugger;
+                    if ($(this).text() == currencyId && $(this).parent().find("td:eq(4)").text() == "" &&
+                        $(this).parent().find("td:eq(5)").text() == active) {
+                        /*confirm = false;*/
+                        Swal.fire({
+                            title: '@Language.GetString("AlertAndMessage_AreYouSure")',
+                            text: '@Language.GetString("AlertAndMessage_PricePerCurrencyUniqueness")',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#d51c1c',
+                            cancelButtonColor: '#009c09db',
+                            confirmButtonText: '@Language.GetString("btn_Confirm")',
+                            cancelButtonText: '@Language.GetString("btn_NotConfirm")'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                debugger;
+                                /*confirm = true;*/
+                                $(this).parent().find("td:eq(5)").text(inActive);
+                                appendToPriceList(tr);
+                            }
+                        });
+                    }
+                });
+            } else {
+                appendToPriceList(tr);
+            }
+        }
+    }
+    function appendToPriceList(tr) {
+         tr = "<tr style='text-align:center;'><td>" + $("#currencyId option:selected").text() +
                     "</td><td style='display:none;'>" + $('#currencyId').val() +
                     "</td><td>" + $('#priceValue').val() +
                     "</td><td>" + $("#dtpStartDate").val() +
                     "</td><td></td><td>" + active +
                     "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' onclick='deleteFromPriceList(this);'>" +
                     "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
-            }
-
-            if ($("#priceList tr").length == 1 && $("#priceList tr")[0].children.length == 1) {
-                $("#priceList tr")[0].remove();
-            }
-            $("#priceList").append(tr);
-            $("#currencyId").val('@ViewBag.DefCurrency');
-            $("#priceValue").val("0");
-            $("#dtpStartDate").val("");
-            
-        }
+                if ($("#priceList tr").length == 1 && $("#priceList tr")[0].children.length == 1) {
+                       $("#priceList tr")[0].remove();
+                     }
+                    $("#priceList").append(tr);
+                    $("#currencyId").val('@ViewBag.DefCurrency');
+                    $("#priceValue").val("0");
+                    $("#dtpStartDate").val("");
     }
 
     function deleteFromPriceList(sender) {
@@ -1072,6 +1079,7 @@
         dto.Prices = [];
         dto.ProductId = $("#ProductId").val();
         dto.ModificationReason = $("#ModificationReason").val();
+        dto.IsActive = true;
 
         //groupIds
         for (var i = 0; i < $("#GroupIds").val().length; i++) {

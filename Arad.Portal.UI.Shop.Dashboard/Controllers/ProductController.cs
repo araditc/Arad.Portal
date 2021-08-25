@@ -79,7 +79,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 var defLangId = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
                 ViewBag.DefLangId = defLangId;
                 ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
-               
+                var contentRoot = _webHostEnvironment.ContentRootPath;
+                ViewBag.Path = contentRoot;
                 var groupList = _productGroupRepository.GetAlActiveProductGroup(defLangId);
                 ViewBag.ProductGroupList = groupList;
                
@@ -231,6 +232,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
+                
                 foreach (var item in dto.MultiLingualProperties)
                 {
                     var lan = _lanRepository.FetchLanguage(item.LanguageId);
@@ -282,15 +284,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     Directory.CreateDirectory(path);
                 }
-                picture.Url = $"{staticFileStorageURL}/Images/Products/{picture.ImageId}.jpg";
-                byte[] bytes = Convert.FromBase64String(picture.Content);
+                picture.Url = $"~/Images/Products/{picture.ImageId}.jpg";
+                byte[] bytes = Convert.FromBase64String(picture.Content.Replace("data:image/jpeg;base64,",""));
                 System.Drawing.Image image;
                 using MemoryStream ms = new MemoryStream(bytes);
                 image = System.Drawing.Image.FromStream(ms);
                 image.Save(picture.Url, System.Drawing.Imaging.ImageFormat.Jpeg);
                 res = new KeyValuePair<string, string>(picture.ImageId, picture.Url);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 res = new KeyValuePair<string, string>(Guid.Empty.ToString(), "");
             }

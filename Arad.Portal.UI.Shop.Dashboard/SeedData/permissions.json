@@ -28,7 +28,7 @@
   {
     "PermissionId": "8cae0481-d040-4ea2-94b3-486af69aa9dc",
     "Title": "ProductManagement",
-    "Routes": [ "ProductUnit/List", "ProductSpecificationGroup/List", "ProductSpecification/List", "ProductGroup/List", "Product/List" ],
+    "Routes": [ "ProductUnit/List", "ProductSpecificationGroup/List", "ProductSpecification/List", "ProductGroup/List", "Product/List", "Promotion/List" ],
     "ClientAddress": "",
     "IsActive": true,
     "Type": 2,
@@ -635,6 +635,97 @@
     "ParentMenuId": null,
     "Priority": 5,
     "Icon": ""
+  },
+  {
+    "PermissionId": "36f8fe1f-c94e-4465-9fc7-f9ee96f2b9a4",
+    "Title": "Promotions",
+    "Routes": [ "Promotion/List", "Promotion/AddEdit", "Promotion/Delete", "Promotion/Restore", "Promotion/ChangeActivation" ],
+    "ClientAddress": "Promotion/List",
+    "IsActive": true,
+    "Type": 1, //menu
+    "Method": 0,
+    "MenuIdOfModule": null,
+    "ParentMenuId": "8cae0481-d040-4ea2-94b3-486af69aa9dc",
+    "Priority": 6,
+    "Icon": ""
+  },
+  {
+    "PermissionId": "03f87624-77a1-4e64-8051-65192f13222b",
+    "Title": "PromotionDetails",
+    "Routes": [ "Promotion/AddEdit" ],
+    "ClientAddress": "Promotion/AddEdit",
+    "IsActive": true,
+    "Type": 0,
+    "Method": 7,
+    "MenuIdOfModule": null,
+    "ParentMenuId": "36f8fe1f-c94e-4465-9fc7-f9ee96f2b9a4",
+    "Priority": 1,
+    "Icon": null
+  },
+  {
+    "PermissionId": "9ce38b30-1c8a-463a-8baf-8ef38afea19d",
+    "Title": "AddPromotion",
+    "Routes": [ "Promotion/Add" ],
+    "ClientAddress": "Promotion/Add",
+    "IsActive": true,
+    "Type": 0,
+    "Method": 1,
+    "MenuIdOfModule": null,
+    "ParentMenuId": "36f8fe1f-c94e-4465-9fc7-f9ee96f2b9a4",
+    "Priority": 2,
+    "Icon": null
+  },
+  {
+    "PermissionId": "c1d39592-6331-4bf2-8adc-8b37f97fe0d8",
+    "Title": "EditPromotion",
+    "Routes": [ "Promotion/Edit" ],
+    "ClientAddress": "Promotion/Edit",
+    "IsActive": true,
+    "Type": 0,
+    "Method": 3,
+    "MenuIdOfModule": null,
+    "ParentMenuId": "36f8fe1f-c94e-4465-9fc7-f9ee96f2b9a4",
+    "Priority": 3,
+    "Icon": null
+  },
+  {
+    "PermissionId": "8945b826-bd4a-470b-b1eb-1c3dea717c22",
+    "Title": "PromotionDelete",
+    "Routes": [ "Promotion/Delete" ],
+    "ClientAddress": "Promotion/Delete",
+    "IsActive": true,
+    "Type": 0,
+    "Method": 2,
+    "MenuIdOfModule": null,
+    "ParentMenuId": "36f8fe1f-c94e-4465-9fc7-f9ee96f2b9a4",
+    "Priority": 4,
+    "Icon": null
+  },
+  {
+    "PermissionId": "712db548-3cb8-48c0-9867-d649479ef148",
+    "Title": "PromotionRestore",
+    "Routes": [ "Promotion/Restore" ],
+    "ClientAddress": "Promotion/Restore",
+    "IsActive": true,
+    "Type": 0,
+    "Method": 2,
+    "MenuIdOfModule": null,
+    "ParentMenuId": "36f8fe1f-c94e-4465-9fc7-f9ee96f2b9a4",
+    "Priority": 5,
+    "Icon": null
+  },
+  {
+    "PermissionId": "8da73077-9c6d-4dca-afc3-57a811268ef9",
+    "Title": "PromotionChangeActivation",
+    "Routes": [ "Promotion/ChangeActivation" ],
+    "ClientAddress": "Promotion/ChangeActivation",
+    "IsActive": true,
+    "Type": 0,
+    "Method": 5,
+    "MenuIdOfModule": null,
+    "ParentMenuId": "36f8fe1f-c94e-4465-9fc7-f9ee96f2b9a4",
+    "Priority": 6,
+    "Icon": null
   }
 
 
