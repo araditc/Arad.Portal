@@ -14,6 +14,7 @@ using AutoMapper;
 using System.Collections.Specialized;
 using System.Web;
 using Arad.Portal.DataLayer.Entities.Shop.Promotion;
+using Arad.Portal.GeneralLibrary.Utilities;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
 {
@@ -328,6 +329,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                 };
                 result.Add(obj);
             }
+            result.Insert(0, new SelectListModel() {Text = Language.GetString("Choose"), Value = "-1" });
             return result;
         }
 
@@ -343,6 +345,28 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                     Value = i.ToString()
                 };
                 result.Add(obj);
+            }
+            result.Insert(0, new SelectListModel() { Text = Language.GetString("Choose"), Value = "-1" });
+            return result;
+        }
+
+        public async Task<RepositoryOperationResult> Restore(string promotionId)
+        {
+            var result = new RepositoryOperationResult();
+            var entity = _context.Collection
+              .Find(_ => _.PromotionId == promotionId).FirstOrDefault();
+            entity.IsDeleted = false;
+            var updateResult = await _context.Collection
+               .ReplaceOneAsync(_ => _.PromotionId == promotionId, entity);
+            if (updateResult.IsAcknowledged)
+            {
+                result.Succeeded = true;
+                result.Message = ConstMessages.SuccessfullyDone;
+            }
+            else
+            {
+                result.Succeeded = false;
+                result.Message = ConstMessages.ErrorInSaving;
             }
             return result;
         }

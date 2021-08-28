@@ -33,5 +33,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Promotion
         List<SelectListModel> GetAllPromotionType();
 
         List<SelectListModel> GetAllDiscountType();
+
+        Task<RepositoryOperationResult> Restore(string promotionId);
     }
 }

@@ -1,0 +1,418 @@
+﻿@model Arad.Portal.DataLayer.Models.Promotion.PromotionDTO
+@using Arad.Portal.DataLayer.Models.Shared;
+@{
+    var alert = Language.GetString("AlertAndMessage_GotIt");
+    var error = Language.GetString("AlertAndMessage_Error");
+
+    var dir = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        dir = "rtl";
+    }
+    else
+    {
+        dir = "ltr";
+    }
+}
+@section Styles{
+    <link href="~/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css" rel="stylesheet" />
+    <style>
+        .text-danger {
+            font-size: 12px;
+        }
+
+        .btn-circle {
+            width: 30px;
+            height: 30px;
+            padding: 6px 0px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.42857;
+        }
+    </style>
+    <link rel="stylesheet" href="~/css/bootstrap-select/bootstrap-select.css" />
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
+    }
+}
+
+<h4>  @Language.GetString("Menu_Promotion") </h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary" id="addProductSpecificationGroupCard">
+            <div class="card-header">
+                <h3 class="card-title" data-toggle="tab">
+                    @(!string.IsNullOrWhiteSpace(Model.PromotionId) ?
+               Language.GetString("EditPromotion_Title") : Language.GetString("AddPromotion_Title"))
+                </h3>
+            </div>
+
+            <div class="card-body" id="addEditProductGroupCard">
+                <input type="hidden" value="@Model.PromotionId" asp-for="PromotionId" />
+                <div class="row">
+                    @{
+                        if (!string.IsNullOrWhiteSpace(Model.PromotionId))
+                        {
+                            <div class="form-group col-md-6">
+                                <label asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
+                                <textarea dir="rtl" asp-for="ModificationReason" class="form-control" rows="3"></textarea>
+                                <span data-val-result="ModificationReason" class="text-danger"></span>
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="row" style="background-color: #f0f0f5;">
+                    <div class="form-group col-md-3">
+                        <label for="title">@Language.GetString("Title")</label><br />
+                        <input type="text" class="form-control" id="title" placeholder=" ">
+                        <span data-val-result="title" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="currencyId">@Language.GetString("Currency")</label><br />
+                        <select class="form-control selectpicker" data-live-search="true" id="currencyId" data-hide-disabled="true"
+                                asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
+                        </select>
+                        <span data-val-result="currencyId" class="text-danger"></span>
+                    </div>
+                   
+                   
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label for="promotionTypeId">@Language.GetString("Classification")</label><br />
+                        <select class="form-control selectpicker" id="promotionTypeId" data-live-search="true" data-hide-disabled="true"
+                                asp-items="@(new SelectList(ViewBag.PromotionTypes,"Value","Text"))">
+                        </select>
+                        <span data-val-result="promotionTypeId" class="text-danger"></span>
+                    </div>
+                    @if (ViewBag.IsSysAcc)
+                    {
+                        <div class="form-group col-md-3 classification2" id="productGroupClassification">
+                            <label for="productGroupId">@Language.GetString("tbl_ProductGroup")</label><br />
+                            <select class="form-control selectpicker" id="productGroupId" data-live-search="true" data-hide-disabled="true"
+                                    asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))">
+                            </select>
+                            <span data-val-result="productGroupId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-3 classification2">
+                            <label for="productVendor">@Language.GetString("ProductVendor")</label><br />
+                            <select class="form-control selectpicker" id="productVendor" data-live-search="true" data-hide-disabled="true"
+                                    asp-items="@(new SelectList(ViewBag.Vendors,"Value","Text"))">
+                            </select>
+                            <span data-val-result="productVendor" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-3 classification2">
+                            <label for="productId">@Language.GetString("Product")</label><br />
+                            <select class="form-control selectpicker" id="productId" data-live-search="true" data-hide-disabled="true">
+                            </select>
+                            <span data-val-result="productId" class="text-danger"></span>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="form-group col-md-3 classification2">
+                            <label for="productId">@Language.GetString("Product")</label><br />
+                            <select class="form-control selectpicker" id="productId" data-live-search="true" data-hide-disabled="true"
+                                    asp-items="@(new SelectList(ViewBag.CurrentSellerProductList,"Value","Text"))">
+                            </select>
+                            <span data-val-result="productId" class="text-danger"></span>
+                        </div>
+
+                    }
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label for="discountTypeId">@Language.GetString("Type")</label><br />
+                        <select class="form-control selectpicker" id="discountTypeId" data-live-search="true" data-hide-disabled="true"
+                                asp-items="@(new SelectList(ViewBag.DiscountTypes,"Value","Text"))">
+                        </select>
+                        <span data-val-result="discountTypeId" class="text-danger"></span>
+                    </div>
+                    @if (ViewBag.IsSysAcc)
+                    {
+                        <div class="form-group col-md-3 type2" id="productGroupType">
+                            <label for="productGroupType">@Language.GetString("tbl_ProductGroup")</label><br />
+                            <select class="form-control selectpicker" id="productGroupType" data-live-search="true" data-hide-disabled="true"
+                                    asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))">
+                            </select>
+                            <span data-val-result="productGroupType" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-2 type2">
+                            <label for="productVendorType">@Language.GetString("ProductVendor")</label><br />
+                            <select class="form-control selectpicker" id="productVendorType" data-live-search="true" data-hide-disabled="true"
+                                    asp-items="@(new SelectList(ViewBag.Vendors,"Value","Text"))">
+                            </select>
+                            <span data-val-result="productVendorType" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-3 type2">
+                            <label for="ProductIdType">@Language.GetString("Product")</label><br />
+                            <select class="form-control selectpicker" id="ProductIdType" data-live-search="true" data-hide-disabled="true"
+                                    asp-items="@(new SelectList(ViewBag.ProductList,"Value","Text"))">
+                            </select>
+                            <span data-val-result="ProductIdType" class="text-danger"></span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-group col-md-3 type2">
+                            <label for="ProductIdType">@Language.GetString("Product")</label><br />
+                            <select class="form-control selectpicker" id="ProductIdType" data-live-search="true" data-hide-disabled="true"
+                                    asp-items="@(new SelectList(ViewBag.CurrentSellerProductList,"Value","Text"))">
+                            </select>
+                            <span data-val-result="ProductIdType" class="text-danger"></span>
+                        </div>
+                    }
+                </div>
+                        <div class="row">
+                            
+                            <div class="form-group col-md-2 type2" style="display:none;">
+                                <label for="boughtCount">@Language.GetString("PromotedCountofUnit")</label><br />
+                                <input type="number" class="form-control" id="PromotedCountofUnit" placeholder=" ">
+                                <span data-val-result="PromotedCountofUnit" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-2 type2" style="display:none;">
+                                <label for="boughtCount">@Language.GetString("BoughtCount")</label><br />
+                                <input type="number" class="form-control" id="boughtCount" placeholder=" ">
+                                <span data-val-result="boughtCount" class="text-danger"></span>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-4" id="PriceOrDiscount">
+                                <label for="value">@Language.GetString("Value")</label><br />
+                                <input type="number" class="form-control" id="value" placeholder=" ">
+                                <span data-val-result="value" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>@Language.GetString("FromDate")</label>
+                                @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                                {
+                                    <div class="input-group-prepend ">
+                                        <span class="input-group-text">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                        <input autocomplete="off" id="dtpFromDate" type="text" class="form-control" />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="input-group date" id="dtpFromDate" data-target-input="nearest">
+                                        <input type="text" class="form-control datetimepicker-input" />
+                                        <div class="input-group-append" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>@Language.GetString("ToDate")</label>
+                                @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                                {
+                                    <div class="input-group-prepend ">
+                                        <span class="input-group-text">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                        <input autocomplete="off" id="dtpToDate" type="text" class="form-control" />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="input-group date" id="dtpToDate" data-target-input="nearest">
+                                        <input type="text" class="form-control datetimepicker-input" />
+                                        <div class="input-group-append" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+            <div class="card-footer">
+                <div class="row">
+                    <input type="button" id="btnAddPromotion" value="@Language.GetString("btn_Save")" class="btn btn-block btn-success" />
+                    <a asp-action="List" class="btn btn-block btn-default">@Language.GetString("btn_Back")</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <script src="~/plugins/datePicker/kamadatepicker.min.js"></script>
+    }
+    else
+    {
+        <script src="~/js/moment.min.js"></script>
+        <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
+    }
+    @if (dir == "rtl")
+    {
+        <script src="~/js/siteTemplate/bootstrap4rtl/bootstrap.min.js"></script>
+    }
+    else
+    {
+        <script src="~/js/plugins/bootstrap/js/bootstrap.min.js"></script>
+    }
+    <script src="~/js/bootstrap-select/bootstrap-select.js"></script>
+
+    <script>
+
+  $(document).ready(function () {
+            debugger;
+      $("#promotionTypeId").change(function () {
+          debugger;
+          if ($(this).val() != "-1") {
+              switch ($(this).val()) {
+                  case "0":
+                      $(".classification2").css("display", "none");
+                      break;
+                  case "1":
+                      $("#productGroupClassification").css("display", "block");
+                      break;
+                  case "2":
+                      $(".classification2").css("display", "block");
+                      break;
+              }
+          }
+      });
+      $("#discountTypeId").change(function () {
+          debugger;
+          if ($(this).val() != "-1") {
+              switch ($(this).val()) {
+
+                  case "0":
+                      $("#PriceOrDiscount").css("display", "block");
+                      $(".type2").css("display", "none");
+                      break;
+                  case "1":
+                      $("#PriceOrDiscount").css("display", "block");
+                      $(".type2").css("display", "none");
+                      break;
+                  case "2":
+                      $("#PriceOrDiscount").css("display", "none");
+                      $(".type2").css("display", "block");
+                      break;
+              }
+          }
+
+      });
+
+     $("#btnAddPromotion").click(function () {
+            debugger;
+                var flag = false;
+
+
+         if ("@Model.PromotionId" != "" && $("#ModificationReason").val() == "") {
+                    $("span[data-val-result='ModificationReason']").html('@Language.GetString("AlertAndMessage_ModificationReason")');
+                    flag = true;
+                }
+         if ($("#title").val() == "") {
+              $("span[data-val-result='title']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+         }
+         if ($("#currencyId").val() == "-1") {
+              $("span[data-val-result='currencyId']").html('@Language.GetString("AlertAndMessage_SelectAtLeastOneItem")');
+                    flag = true;
+         }
+         if ($("#promotionTypeId").val() == "-1") {
+             $("span[data-val-result='promotionTypeId']").html('@Language.GetString("AlertAndMessage_SelectAtLeastOneItem")');
+                    flag = true;
+         }
+         if ($("#discountTypeId").val() == "-1") {
+             $("span[data-val-result='discountTypeId']").html('@Language.GetString("AlertAndMessage_SelectAtLeastOneItem")');
+                    flag = true;
+         }
+         if ($("#PriceOrDiscount").css("display") == "block" && $("#value").val() == "") {
+              $("span[data-val-result='value']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+         }
+         if (!flag) {
+             var dataModel = FillDataToSend();
+            $.ajax({
+                url: "@Model.PromotionId" != "" ? "/Promotion/Edit" : "/Promotion/Add",
+                  /*  data: dataModel,*/
+                    contentType: 'application/json',
+                    data: JSON.stringify(dataModel),
+                type: 'Post',
+                beforeSend: function () {
+                    debugger;
+                    AddLoading($("#addProductSpecificationGroupCard"));
+                },
+                success: function (result) {
+                    debugger;
+                    if (result.status === "Success") {
+                        Swal.fire({
+                            icon: 'success',
+                            text: result.message,
+                            showConfirmButton: false,
+                            timer: 3000
+                        }).then(() => {
+                            window.location.href = '@Url.Action("List")';
+                        });
+                    }else
+                    if (result.status === "ModelError") {
+                        var spanErrorList = $('span[data-val-result]');
+                        if (spanErrorList.length > 1) {
+                            spanErrorList.each(function() {
+                                $(this).html("");
+                                $(this).parent().removeClass("has-error");
+                            });
+                        } else {
+                            spanErrorList.html("");
+                            spanErrorList.parent().removeClass("has-error");
+                        }
+                        if (result.modelStateErrors !== null) {
+                                $('[data-val-result=' + value.key + ']').html(value.errorMessage);
+                                $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                            }
+                        }
+                    },
+                @*error: function (xhr, ajaxOptions, thrownError) {
+                    alert("@error");
+                    alert(xhr.status);
+                    alert(thrownError);
+                },*@
+                complete: function () {
+                    removeLoading($("#addProductSpecificationGroupCard"));
+                }
+                });
+                }
+
+            });
+        });
+
+        function FillDataToSend() {
+            debugger;
+            var obj = {};
+
+           obj.PromotionId = $("#PromotionId").val();
+           obj.ModificationReason = $("#ModificationReason").val();
+            obj.Title = $("#Title").val();
+            obj.CurrencyId = $("#currencyId").val();
+           obj.PromotionType = $("#promotionTypeId").val();
+            obj.DiscountType = $("#discountTypeId").val();
+            if ($("#PriceOrDiscount").css("display") == "block") {
+                obj.Value = $("#value").val();
+            }
+            return obj;
+        }
+
+
+    </script>
+}
+
+
+
+

@@ -153,7 +153,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userDB = await _userManager.FindByIdAsync(currentUserId);
-            if(userDB.IsSystemAccount)
+            if (userDB.IsSystemAccount)
             {
                 var vendorList = await _userManager.GetUsersForClaimAsync(new Claim("AppRole", "True"));
                 ViewBag.Vendors = vendorList.ToList().Select(_=>new SelectListModel()

@@ -10,6 +10,11 @@ using System.Security.Claims;
 using Arad.Portal.DataLayer.Models.Promotion;
 using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Entities.General.User;
+using System.Collections.Generic;
+using System.Linq;
+using Arad.Portal.GeneralLibrary.Utilities;
+using Arad.Portal.DataLayer.Contracts.Shop.Product;
+using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -19,9 +24,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IPermissionView _permissionViewManager;
         private readonly ILanguageRepository _lanRepository;
         private readonly ICurrencyRepository _currencyRepository;
+        private readonly IProductRepository _productRepositoy;
         private readonly UserManager<ApplicationUser> _userManager;
         public PromotionController(IPromotionRepository promotionRepository,
             IPermissionView permissionView, ILanguageRepository lanRepository, 
+            IProductRepository productRepositoy,
             ICurrencyRepository currencyRepository, UserManager<ApplicationUser> userManager)
         {
             _promotionRepository = promotionRepository;
@@ -29,6 +36,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _lanRepository = lanRepository;
             _currencyRepository = currencyRepository;
             _userManager = userManager;
+            _productRepositoy = productRepositoy;
         }
 
         [HttpGet]
@@ -53,16 +61,27 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 list = await _promotionRepository.ListPromotions(q);
                 ViewBag.DefCurrencyId = _currencyRepository.GetDefaultCurrency(currentUserId);
                 ViewBag.CurrencyList = _currencyRepository.GetAllActiveCurrency();
+                ViewBag.PromotionTypes = _promotionRepository.GetAllPromotionType();
+                ViewBag.DiscountTypes = _promotionRepository.GetAllDiscountType();
+               
             }
             catch (Exception)
             {
             }
             return View(list);
         }
-        public  IActionResult AddEdit(string id)
+
+        public  async Task<IActionResult> AddEdit(string id)
         {
             var model = new PromotionDTO();
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var defaulltLang = _lanRepository.GetDefaultLanguage(currentUserId);
+            var userDB = await _userManager.FindByIdAsync(currentUserId);
+            ViewBag.IsSysAcc = userDB.IsSystemAccount;
+            if(!userDB.IsSystemAccount)
+            {
+                ViewBag.CurrentSellerProductList = _productRepositoy.GetProductsOfThesVendor(defaulltLang.LanguageId, currentUserId);
+            }
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = _promotionRepository.FetchPromotion(id);
@@ -72,155 +91,122 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.CurrencyList = _currencyRepository.GetAllActiveCurrency();
             ViewBag.DiscountTypeList = _promotionRepository.GetAllDiscountType();
             ViewBag.PromotionTypeList = _promotionRepository.GetAllPromotionType();
+            
+            ViewBag.ProductGroupList = _productRepositoy.GetAlActiveProductGroup(defaulltLang.LanguageId);
+            var vendorList = await _userManager.GetUsersForClaimAsync(new Claim("AppRole", "True"));
+            ViewBag.Vendors = vendorList.ToList().Select(_ => new SelectListModel()
+            {
+                Text = _.Profile.FullName,
+                Value = _.Id
+            });
             return View(model);
         }
 
-        //[HttpPost]
+        [HttpPost]
 
-        //public async Task<IActionResult> Add([FromBody] SpecificationGroupDTO dto)
-        //{
-        //    JsonResult result;
-        //    if (!ModelState.IsValid)
-        //    {
-        //        var errors = new List<AjaxValidationErrorModel>();
+        public async Task<IActionResult> Add([FromBody] PromotionDTO dto)
+        {
+            JsonResult result;
+            if (!ModelState.IsValid)
+            {
+                var errors = new List<AjaxValidationErrorModel>();
 
-        //        foreach (var modelStateKey in ModelState.Keys)
-        //        {
-        //            var modelStateVal = ModelState[modelStateKey];
-        //            errors.AddRange(modelStateVal.Errors
-        //                .Select(error => new AjaxValidationErrorModel { Key = modelStateKey, ErrorMessage = error.ErrorMessage }));
-        //        }
-        //        result = Json(new { Status = "ModelError", ModelStateErrors = errors });
-        //    }
-        //    else
-        //    {
-        //        foreach (var item in dto.GroupNames)
-        //        {
-        //            var lan = _lanRepository.FetchLanguage(item.LanguageId);
-        //            item.MultiLingualPropertyId = Guid.NewGuid().ToString();
-        //            item.LanguageName = lan.LanguageName;
-        //            item.LanguageSymbol = lan.Symbol;
-        //            var res = _currencyRepository.FetchCurrency(item.CurrencyId);
-        //            item.CurrencyName = res.ReturnValue.CurrencyName;
-        //            item.CurrencyPrefix = res.ReturnValue.Prefix;
-        //            item.CurrencySymbol = res.ReturnValue.Symbol;
-        //        }
-        //        RepositoryOperationResult saveResult = await _productSpecGrpRepository.Add(dto);
-        //        result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
-        //        : new { Status = "Error", saveResult.Message });
-        //    }
+                foreach (var modelStateKey in ModelState.Keys)
+                {
+                    var modelStateVal = ModelState[modelStateKey];
+                    errors.AddRange(modelStateVal.Errors
+                        .Select(error => new AjaxValidationErrorModel { Key = modelStateKey, ErrorMessage = error.ErrorMessage }));
+                }
+                result = Json(new { Status = "ModelError", ModelStateErrors = errors });
+            }
+            else
+            {
+               
+                RepositoryOperationResult saveResult = await _promotionRepository.InsertPromotion(dto);
+                result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
+                : new { Status = "Error", saveResult.Message });
+            }
 
-        //    return result;
+            return result;
 
-        //}
+        }
 
-        //[HttpGet]
-        //public async Task<IActionResult> Restore(string id)
-        //{
-        //    JsonResult result;
-        //    try
-        //    {
+        [HttpGet]
+        public async Task<IActionResult> Restore(string id)
+        {
+            JsonResult result;
+            try
+            {
 
-        //        var res = await _productSpecGrpRepository.Restore(id);
-        //        if (res.Succeeded)
-        //        {
-        //            result = new JsonResult(new
-        //            {
-        //                Status = "success",
-        //                Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully")
-        //            });
-        //        }
-        //        else
-        //        {
-        //            result = new JsonResult(new
-        //            {
-        //                Status = "error",
-        //                Message = Language.GetString("AlertAndMessage_TryLator")
-        //            });
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        result = new JsonResult(new
-        //        {
-        //            Status = "error",
-        //            Message = Language.GetString("AlertAndMessage_TryLator")
-        //        });
-        //    }
-        //    return result;
-        //}
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="id">id stands for languageId</param>
-        ///// <returns></returns>
-        //[HttpGet]
-        //public IActionResult GetProductSpecificationGroupList(string id)
-        //{
-        //    JsonResult result;
-        //    List<SelectListModel> lst;
-        //    lst = _productSpecGrpRepository.AllActiveSpecificationGroup(id).OrderBy(_ => _.Text).ToList();
-        //    if (lst.Count() > 0)
-        //    {
-        //        result = new JsonResult(new { Status = "success", Data = lst });
-        //    }
-        //    else
-        //    {
-        //        result = new JsonResult(new { Status = "error", Message = "" });
-        //    }
-        //    return result;
+                var res = await _promotionRepository.Restore(id);
+                if (res.Succeeded)
+                {
+                    result = new JsonResult(new
+                    {
+                        Status = "success",
+                        Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully")
+                    });
+                }
+                else
+                {
+                    result = new JsonResult(new
+                    {
+                        Status = "error",
+                        Message = Language.GetString("AlertAndMessage_TryLator")
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                result = new JsonResult(new
+                {
+                    Status = "error",
+                    Message = Language.GetString("AlertAndMessage_TryLator")
+                });
+            }
+            return result;
+        }
 
-        //}
 
-        //[HttpPost]
-        //public async Task<IActionResult> Edit([FromBody] SpecificationGroupDTO dto)
-        //{
-        //    JsonResult result;
-        //    SpecificationGroupDTO model;
-        //    if (!ModelState.IsValid)
-        //    {
-        //        var errors = new List<AjaxValidationErrorModel>();
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromBody] PromotionDTO dto)
+        {
+            JsonResult result;
+            PromotionDTO model;
+            if (!ModelState.IsValid)
+            {
+                var errors = new List<AjaxValidationErrorModel>();
 
-        //        foreach (var modelStateKey in ModelState.Keys)
-        //        {
-        //            var modelStateVal = ModelState[modelStateKey];
-        //            errors.AddRange(modelStateVal.Errors.Select(error => new AjaxValidationErrorModel { Key = modelStateKey, ErrorMessage = error.ErrorMessage }));
-        //        }
+                foreach (var modelStateKey in ModelState.Keys)
+                {
+                    var modelStateVal = ModelState[modelStateKey];
+                    errors.AddRange(modelStateVal.Errors.Select(error => new AjaxValidationErrorModel { Key = modelStateKey, ErrorMessage = error.ErrorMessage }));
+                }
 
-        //        result = Json(new { Status = "ModelError", ModelStateErrors = errors });
-        //    }
-        //    else
-        //    {
-        //        model = await _productSpecGrpRepository.GroupSpecificationFetch(dto.SpecificationGroupId);
-        //        if (model == null)
-        //        {
-        //            return RedirectToAction("PageOrItemNotFound", "Account");
-        //        }
-        //    }
+                result = Json(new { Status = "ModelError", ModelStateErrors = errors });
+            }
+            else
+            {
+                model = _promotionRepository.FetchPromotion(dto.PromotionId);
+                if (model == null)
+                {
+                    return RedirectToAction("PageOrItemNotFound", "Account");
+                }
+            }
 
-        //    foreach (var item in dto.GroupNames)
-        //    {
-        //        var lan = _lanRepository.FetchLanguage(item.LanguageId);
-        //        item.MultiLingualPropertyId = Guid.NewGuid().ToString();
-        //        item.LanguageName = lan.LanguageName;
-        //        item.LanguageSymbol = lan.Symbol;
-        //        var res = _currencyRepository.FetchCurrency(item.CurrencyId);
-        //        item.CurrencyName = res.ReturnValue.CurrencyName;
-        //        item.CurrencyPrefix = res.ReturnValue.Prefix;
-        //        item.CurrencySymbol = res.ReturnValue.Symbol;
-        //    }
-        //    RepositoryOperationResult saveResult = await _productSpecGrpRepository.Update(dto);
+            
+            RepositoryOperationResult saveResult = await _promotionRepository.UpdatePromotion(dto);
 
-        //    result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
-        //    : new { Status = "Error", saveResult.Message });
-        //    return result;
-        //}
-        //[HttpGet]
-        //public async Task<IActionResult> Delete(string id)
-        //{
-        //    RepositoryOperationResult opResult = await _productSpecGrpRepository.Delete(id, "delete");
-        //    return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
-        //    : new { Status = "Error", opResult.Message });
-        //}
+            result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
+            : new { Status = "Error", saveResult.Message });
+            return result;
+        }
+        [HttpGet]
+        public async Task<IActionResult> Delete(string id)
+        {
+            RepositoryOperationResult opResult = await _promotionRepository.DeletePromotion(id, "delete");
+            return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
+            : new { Status = "Error", opResult.Message });
+        }
     }
 }

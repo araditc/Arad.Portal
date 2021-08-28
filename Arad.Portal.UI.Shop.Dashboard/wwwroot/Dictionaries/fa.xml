@@ -1075,6 +1075,12 @@
 	<string key="SpecificationGroup">
 		<value>گروه مشخصات</value>
 	</string>
+	<string key="AddPromotion_Title">
+		<value>افزودن تخفیفات و جشنواره ها</value>
+	</string>
+	<string key="EditPromotion_Title">
+		<value>ویرایش تخفیفات و جشنواره ها</value>
+	</string>
 	<string key="AddProSpecGroupPart_Title">
 		<value>افزودن گروه مشخصات محصول</value>
 	</string>
@@ -1189,6 +1195,18 @@
 	<string key="Active">
 		<value>فعال</value>
 	</string>
+	<string key="Value">
+		<value>مقدار</value>
+	</string>
+	<string key="Product">
+		<value>محصول</value>
+	</string>
+	<string key="BoughtCount">
+		<value>تعداد خرید</value>
+	</string>
+	<string key="PromotedCountofUnit">
+		<value>تعداد محصول در تخفیفات و جشنواره ها</value>
+	</string>
 	<string key="Image">
 		<value>تصویر</value>
 	</string>
@@ -1258,6 +1276,12 @@
 	<string key="Currency">
 		<value>واحد پول</value>
 	</string>
+	<string key="Type">
+		<value>نوع</value>
+	</string>
+	<string key="Classification">
+		<value>طبقه بندی</value>
+	</string>
 	<string key="DefaultCurrency">
 		<value>واحد پول پیش فرض</value>
 	</string>
@@ -1302,6 +1326,9 @@
 	</string>
 	<string key="Filter">
 		<value>فیلتر</value>
+	</string>
+	<string key="Menu_Promotion">
+		<value>تخفیفات و جشنواره ها</value>
 	</string>
 	<string key="Menu_ProductSpecificationGroup">
 		<value>گروه مشخصات محصول</value>

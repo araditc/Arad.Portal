@@ -55,6 +55,12 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         //Task<ProductOutputDTO> GetByUrlFriend(string urlFriend);
 
         bool HasActiveProductPromotion(string productId);
-        
+
+        List<SelectListModel> GetAllActiveProductList(string langId, string currentUserId, string productGroupId, string vendorId);
+
+        List<SelectListModel> GetAlActiveProductGroup(string langId);
+
+
+        List<SelectListModel> GetProductsOfThesVendor(string langId, string currentUserId);
     }
 }

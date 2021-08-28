@@ -35,19 +35,20 @@
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         @foreach (var item in @Model)
         {
-            @if (item.Children.Count != 0)
-            {
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        @if (!string.IsNullOrWhiteSpace(item.Icon))
-                        {
-                            <i class="nav-icon @item.Icon"></i>
-                        }
-                        <p>
-                            @item.MenuTitle
-                            <i class="right @(dir =="rtl" ? "fa" : "fas") fa-angle-left"></i>
-                        </p>
-                    </a>
+
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    @if (!string.IsNullOrWhiteSpace(item.Icon))
+                    {
+                        <i class="nav-icon @item.Icon"></i>
+                    }
+                    <p>
+                        @item.MenuTitle
+                        <i class="right @(dir =="rtl" ? "fa" : "fas") fa-angle-left"></i>
+                    </p>
+                </a>
+                @if (item.Children.Count != 0)
+                {
                     <ul class="nav nav-treeview">
                         @foreach (var menu in item.Children)
                         {
@@ -56,27 +57,12 @@
                             </li>
                         }
                     </ul>
-                </li>
-
-            }
-            else
-            {
-                <li class="nav-item">
-                    <a href="/@item.Link" class="nav-link">
-                        @if (!string.IsNullOrWhiteSpace(item.Icon))
-                        {
-                            <i class="nav-icon @item.Icon"></i>
-                        }
-                        <p>
-                            @Language.GetString(item.MenuTitle)
-                        </p>
-                    </a>
-                </li>
-            }
+                }
+            </li>
         }
     </ul>
 </nav>
-    @*</div>
-</div>*@
+@*</div>
+    </div>*@
 
 

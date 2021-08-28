@@ -347,10 +347,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                 switch (promotion.DiscountType)
                 {
                     case Entities.Shop.Promotion.DiscountType.Fixed:
-                        discountPerUnit = promotion.Value;
+                        discountPerUnit = promotion.Value.Value;
                         break;
                     case Entities.Shop.Promotion.DiscountType.Percentage:
-                        discountPerUnit = (priceValue * promotion.Value) / 100;
+                        discountPerUnit = (priceValue * promotion.Value.Value) / 100;
                         break;
                     default:
                         break;

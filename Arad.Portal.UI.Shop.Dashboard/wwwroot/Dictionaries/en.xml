@@ -1034,6 +1034,12 @@
 	<string key="SpecificationGroup">
 		<value>Specification group</value>
 	</string>
+	<string key="AddPromotion_Title">
+		<value>Add Promotion</value>
+	</string>
+	<string key="EditPromotion_Title">
+		<value>Edit Promotion</value>
+	</string>
 	<string key="AddProSpecGroupPart_Title">
 		<value>Add New Product Specification Group</value>
 	</string>
@@ -1149,6 +1155,19 @@
   <string key="Active">
     <value>Active</value>
   </string>
+	<string key="Value">
+		<value>Value</value>
+	</string>
+	<string key="Product">
+		<value>Product</value>
+	</string>
+	<string key="BoughtCount">
+		<value>Bought Count</value>
+	</string>
+	<string key="PromotedCountofUnit">
+		<value>Count Of PromotedProduct</value>
+	</string>
+	
 	<string key="Image">
 		<value>Image</value>
 	</string>
@@ -1219,6 +1238,12 @@
 	<string key="Currency">
 		<value>Currency</value>
 	</string>
+	<string key="Type">
+		<value>Type</value>
+	</string>
+	<string key="Classification">
+		<value>Classification</value>
+	</string>
 	<string key="DefaultCurrency">
 		<value>default currency</value>
 	</string>
@@ -1264,8 +1289,11 @@
 	<string key="Filter">
 		<value>Filter</value>
 	</string>
+	<string key="Menu_Promotion">
+		<value>Promotions</value>
+	</string>
 	<string key="Menu_ProductSpecificationGroup">
-		<value>Product Specification Group</value>
+		<value>Product Specification Groups</value>
 	</string>
 	<string key="Menu_Permissions">
 		<value>Permissions</value>

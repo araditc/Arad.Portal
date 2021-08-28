@@ -19,6 +19,9 @@ using Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo;
 using System.Collections.Specialized;
 using System.Web;
 using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
+using Arad.Portal.GeneralLibrary.Utilities;
+using Microsoft.AspNetCore.Identity;
+using Arad.Portal.DataLayer.Entities.General.User;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 {
@@ -670,6 +673,60 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     }
                 }
             }
+            return result;
+        }
+       
+        public  List<SelectListModel> GetAllActiveProductList(string langId, string currentUserId, string productGroupId, string vendorId)
+        {
+            var result = new List<SelectListModel>();
+          
+            if (currentUserId == Guid.Empty.ToString())//systemAccount
+            {
+                result = _context.ProductCollection.Find(_ => _.GroupIds.Contains(productGroupId) && _.SellerUserId == vendorId && _.IsActive)
+                  .Project(_ => new SelectListModel() {
+                      Text = _.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() != 0 ?
+                         _.MultiLingualProperties.First(a => a.LanguageId == langId).Name : "",
+                      Value = _.ProductId
+                  }).ToList();
+            }
+            else
+            {
+                result = _context.ProductCollection.Find(_ => _.GroupIds.Contains(productGroupId) && _.SellerUserId == vendorId
+                && _.IsActive && _.CreatorUserId == currentUserId)
+                  .Project(_ => new SelectListModel()
+                  {
+                      Text = _.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() != 0 ?
+                         _.MultiLingualProperties.First(a => a.LanguageId == langId).Name : "",
+                      Value = _.ProductId
+                  }).ToList();
+            }
+            return result;
+        }
+
+        public List<SelectListModel> GetAlActiveProductGroup(string langId)
+        {
+            var result = new List<SelectListModel>();
+            result = _context.ProductGroupCollection.Find(_ => _.IsActive)
+                .Project(_ => new SelectListModel()
+                {
+                    Text = _.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() != 0 ?
+                         _.MultiLingualProperties.First(a => a.LanguageId == langId).Name : "",
+                    Value = _.ProductGroupId
+                }).ToList();
+            result.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
+            return result;
+        }
+
+        public List<SelectListModel> GetProductsOfThesVendor(string langId, string currentUserId)
+        {
+            var result = new List<SelectListModel>();
+            result = _context.ProductCollection.Find(_ =>  _.SellerUserId == currentUserId && _.IsActive)
+                  .Project(_ => new SelectListModel()
+                  {
+                      Text = _.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() != 0 ?
+                         _.MultiLingualProperties.First(a => a.LanguageId == langId).Name : "",
+                      Value = _.ProductId
+                  }).ToList();
             return result;
         }
     }
