@@ -425,6 +425,9 @@
 	<string key="AlertAndMessage_DeleteProductSpecificationGroup">
 		<value>This Product specification group will be deleted.</value>
 	</string>
+	<string key="AlertAndMessage_DeletePromotion">
+		<value>This Promotion will be deleted.</value>
+	</string>
 	<string key="AlertAndMessage_DeleteRole">
 		<value>This Role will be deleted.</value>
 	</string>
@@ -745,7 +748,10 @@
 		<value>The value of this field must be a number, alphanumeric and * or ?</value>
 	</string>
 	<string key="AlertAndMessage_SelectAtLeastOneItem">
-		<value>Select at least one item is required</value>
+		<value>At least one item selection is required</value>
+	</string>
+	<string key="AlertAndMessage_SelectOneItem">
+		<value>one item selection is required</value>
 	</string>
 	<string key="AlertAndMessage_Choose">
 		<value>Choose...</value>
@@ -1165,7 +1171,7 @@
 		<value>Bought Count</value>
 	</string>
 	<string key="PromotedCountofUnit">
-		<value>Count Of PromotedProduct</value>
+		<value>Count Of FreeProduct</value>
 	</string>
 	
 	<string key="Image">
@@ -1240,6 +1246,15 @@
 	</string>
 	<string key="Type">
 		<value>Type</value>
+	</string>
+	<string key="AffectedProductName">
+		<value>Product in Promotion</value>
+	</string>
+	<string key="AffectedProductGroupName">
+		<value>ProductGroup in Promotion</value>
+	</string>
+	<string key="PromotedProductName">
+		<value>Free Product</value>
 	</string>
 	<string key="Classification">
 		<value>Classification</value>

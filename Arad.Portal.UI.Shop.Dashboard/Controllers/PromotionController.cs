@@ -45,8 +45,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             PagedItems<PromotionDTO> list = new PagedItems<PromotionDTO>();
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var currentUser = await _userManager.FindByIdAsync(currentUserId);
+            var defaulltLang = _lanRepository.GetDefaultLanguage(currentUserId);
             var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
             ViewBag.Permissions = dicKey;
+            var lst = _productRepositoy.GetProductsOfThesVendor(defaulltLang.LanguageId, currentUserId);
+            lst.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
+            ViewBag.CurrentSellerProductList = lst;
+           
             try
             {
                 var q = string.Empty;
@@ -63,7 +68,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 ViewBag.CurrencyList = _currencyRepository.GetAllActiveCurrency();
                 ViewBag.PromotionTypes = _promotionRepository.GetAllPromotionType();
                 ViewBag.DiscountTypes = _promotionRepository.GetAllDiscountType();
-               
+                ViewBag.ProductGroupList = _productRepositoy.GetAlActiveProductGroup(defaulltLang.LanguageId);
+                var vendorList = await _userManager.GetUsersForClaimAsync(new Claim("AppRole", "True"));
+                var vList = vendorList.ToList().Select(_ => new SelectListModel()
+                {
+                    Text = _.Profile.FullName,
+                    Value = _.Id
+                }).ToList();
+                vList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
+                ViewBag.Vendors = vList;
+
             }
             catch (Exception)
             {
@@ -80,7 +94,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.IsSysAcc = userDB.IsSystemAccount;
             if(!userDB.IsSystemAccount)
             {
-                ViewBag.CurrentSellerProductList = _productRepositoy.GetProductsOfThesVendor(defaulltLang.LanguageId, currentUserId);
+                var lst = _productRepositoy.GetProductsOfThesVendor(defaulltLang.LanguageId, currentUserId);
+                lst.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
+                ViewBag.CurrentSellerProductList = lst;
             }
             if (!string.IsNullOrWhiteSpace(id))
             {
@@ -89,8 +105,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
             ViewBag.DefCurrencyId = _currencyRepository.GetDefaultCurrency(currentUserId);
             ViewBag.CurrencyList = _currencyRepository.GetAllActiveCurrency();
-            ViewBag.DiscountTypeList = _promotionRepository.GetAllDiscountType();
-            ViewBag.PromotionTypeList = _promotionRepository.GetAllPromotionType();
+            ViewBag.DiscountTypes = _promotionRepository.GetAllDiscountType();
+            ViewBag.PromotionTypes = _promotionRepository.GetAllPromotionType();
             
             ViewBag.ProductGroupList = _productRepositoy.GetAlActiveProductGroup(defaulltLang.LanguageId);
             var vendorList = await _userManager.GetUsersForClaimAsync(new Claim("AppRole", "True"));
@@ -121,6 +137,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
+                
                
                 RepositoryOperationResult saveResult = await _promotionRepository.InsertPromotion(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
@@ -207,6 +224,26 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             RepositoryOperationResult opResult = await _promotionRepository.DeletePromotion(id, "delete");
             return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
             : new { Status = "Error", opResult.Message });
+        }
+
+        [HttpGet]
+        public IActionResult GetFilteredProduct(string productGroupId, string vendorId)
+        {
+            JsonResult result;
+            List<SelectListModel> lst;
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var defaultLanguage = _lanRepository.GetDefaultLanguage(currentUserId);
+            lst = _productRepositoy.GetAllActiveProductList(defaultLanguage.LanguageId, currentUserId, productGroupId, vendorId);
+            if (lst.Count() > 0)
+            {
+                result = new JsonResult(new { Status = "success", Data = lst });
+            }
+            else
+            {
+                result = new JsonResult(new { Status = "error", Message = "" });
+            }
+            return result;
+
         }
     }
 }

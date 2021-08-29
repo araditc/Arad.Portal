@@ -160,19 +160,24 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
         public async Task<RepositoryOperationResult> InsertPromotion(PromotionDTO dto)
         {
             var result = new RepositoryOperationResult();
+            try
+            {
             var equallentModel = _mapper.Map<Entities.Shop.Promotion.Promotion>(dto);
             equallentModel.PromotionId = Guid.NewGuid().ToString();
             equallentModel.CreationDate = DateTime.Now;
             equallentModel.CreatorUserId = GetUserId();
             equallentModel.CreatorUserName = GetUserName();
-            try
-            {
+            equallentModel.PromotionType = (PromotionType)dto.PromotionTypeId;
+            equallentModel.DiscountType = (DiscountType)dto.DiscountTypeId;
+            equallentModel.StartDate = DateHelper.ToEnglishDate(dto.PersianStartDate).ToUniversalTime();
+            equallentModel.EndDate = DateHelper.ToEnglishDate(dto.PersianEndDate).ToUniversalTime();
+
                 await _context.Collection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;
                 result.Message = ConstMessages.SuccessfullyDone;
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 result.Message = ConstMessages.GeneralError;
             }

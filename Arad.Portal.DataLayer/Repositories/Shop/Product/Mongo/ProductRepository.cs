@@ -691,7 +691,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             }
             else
             {
-                result = _context.ProductCollection.Find(_ => _.GroupIds.Contains(productGroupId) && _.SellerUserId == vendorId
+                result = _context.ProductCollection.Find(_ => _.GroupIds.Contains(productGroupId) && (vendorId == "-1" || _.SellerUserId == vendorId)
                 && _.IsActive && _.CreatorUserId == currentUserId)
                   .Project(_ => new SelectListModel()
                   {

@@ -241,7 +241,7 @@
                     @foreach (var item in Model.Items)
                     {
                         var src = item.Images.Any(_ => _.IsMain) ?
-                            item.Images.First(_ => _.IsMain).Url : $"~/imgs/NoImage.png";
+                            item.Images.First(_ => _.IsMain).Url : $"/imgs/NoImage.png";
 
                         var img = $"<img src='{src}' width='75' height='75' />";
                         <tr class="ListCell">

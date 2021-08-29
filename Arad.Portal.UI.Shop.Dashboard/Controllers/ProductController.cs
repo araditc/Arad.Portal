@@ -326,7 +326,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 foreach (var item in dto.Prices)
                 {
                     var cur = _curRepository.FetchCurrency(item.CurrencyId);
-                    //??? just one valid record
+                   
                     item.PriceId = Guid.NewGuid().ToString();
                     item.Symbol = cur.ReturnValue.Symbol;
                     item.Prefix = cur.ReturnValue.Symbol;

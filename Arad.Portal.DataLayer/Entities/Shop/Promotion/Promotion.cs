@@ -26,12 +26,18 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
 
         public string CurrencyName { get; set; }
 
-        public int? BoughtCount { get; set; }
+        public string AffectedProductId { get; set; }
 
-        public string ProductId { get; set; }
+        public string AffectedProductName { get; set; }
+
+        public string AffectedProductGroupId { get; set; }
+        public string AffectedProductGroupName { get; set; }
 
         public string PromotedProductId { get; set; }
 
+        public string PromotedProductName { get; set; }
+
+        public int? BoughtCount { get; set; }
         public int? PromotedCountofUnit { get; set; }
 
 

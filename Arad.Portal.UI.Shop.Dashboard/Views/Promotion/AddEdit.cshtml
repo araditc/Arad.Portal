@@ -42,7 +42,7 @@
 <hr />
 <div class="row">
     <div class="col-md-12">
-        <div class="card card-primary" id="addProductSpecificationGroupCard">
+        <div class="card" id="addPromotionCard">
             <div class="card-header">
                 <h3 class="card-title" data-toggle="tab">
                     @(!string.IsNullOrWhiteSpace(Model.PromotionId) ?
@@ -64,7 +64,7 @@
                         }
                     }
                 </div>
-                <div class="row" style="background-color: #f0f0f5;">
+                <div class="row">
                     <div class="form-group col-md-3">
                         <label for="title">@Language.GetString("Title")</label><br />
                         <input type="text" class="form-control" id="title" placeholder=" ">
@@ -77,8 +77,8 @@
                         </select>
                         <span data-val-result="currencyId" class="text-danger"></span>
                     </div>
-                   
-                   
+
+
                 </div>
                 <div class="row">
                     <div class="form-group col-md-3">
@@ -88,43 +88,33 @@
                         </select>
                         <span data-val-result="promotionTypeId" class="text-danger"></span>
                     </div>
+
+                    <div class="form-group col-md-3 classification2" id="productGroupClassification">
+                        <label for="productGroupId">@Language.GetString("tbl_ProductGroup")</label><br />
+                        <select class="form-control selectpicker" id="productGroupId" data-live-search="true" data-hide-disabled="true"
+                                asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))">
+                        </select>
+                        <span data-val-result="productGroupId" class="text-danger"></span>
+                    </div>
                     @if (ViewBag.IsSysAcc)
                     {
-                        <div class="form-group col-md-3 classification2" id="productGroupClassification">
-                            <label for="productGroupId">@Language.GetString("tbl_ProductGroup")</label><br />
-                            <select class="form-control selectpicker" id="productGroupId" data-live-search="true" data-hide-disabled="true"
-                                    asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))">
-                            </select>
-                            <span data-val-result="productGroupId" class="text-danger"></span>
-                        </div>
-
                         <div class="form-group col-md-3 classification2">
                             <label for="productVendor">@Language.GetString("ProductVendor")</label><br />
                             <select class="form-control selectpicker" id="productVendor" data-live-search="true" data-hide-disabled="true"
-                                    asp-items="@(new SelectList(ViewBag.Vendors,"Value","Text"))">
+                                    asp-items="@(new SelectList(ViewBag.Vendors, "Value", "Text"))">
                             </select>
-                            <span data-val-result="productVendor" class="text-danger"></span>
+                            @*<span data-val-result="productVendor" class="text-danger"></span>*@
                         </div>
-
-                        <div class="form-group col-md-3 classification2">
-                            <label for="productId">@Language.GetString("Product")</label><br />
-                            <select class="form-control selectpicker" id="productId" data-live-search="true" data-hide-disabled="true">
-                            </select>
-                            <span data-val-result="productId" class="text-danger"></span>
-                        </div>
-
                     }
-                    else
-                    {
-                        <div class="form-group col-md-3 classification2">
-                            <label for="productId">@Language.GetString("Product")</label><br />
-                            <select class="form-control selectpicker" id="productId" data-live-search="true" data-hide-disabled="true"
-                                    asp-items="@(new SelectList(ViewBag.CurrentSellerProductList,"Value","Text"))">
-                            </select>
-                            <span data-val-result="productId" class="text-danger"></span>
-                        </div>
 
-                    }
+                    <div class="form-group col-md-3 classification2">
+                        <label for="productId">@Language.GetString("Product")</label><br />
+                        <select class="form-control selectpicker" id="productId" data-live-search="true" data-hide-disabled="true">
+                        </select>
+                        <span data-val-result="productId" class="text-danger"></span>
+                    </div>
+
+
                 </div>
                 <div class="row">
                     <div class="form-group col-md-3">
@@ -134,108 +124,99 @@
                         </select>
                         <span data-val-result="discountTypeId" class="text-danger"></span>
                     </div>
+
+                    <div class="form-group col-md-3 type2" id="productGroupType" style="display:none;">
+                        <label for="productGroupType">@Language.GetString("tbl_ProductGroup")</label><br />
+                        <select class="form-control selectpicker" id="productGroupType" data-live-search="true" data-hide-disabled="true"
+                                asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))">
+                        </select>
+                        <span data-val-result="productGroupType" class="text-danger"></span>
+                    </div>
                     @if (ViewBag.IsSysAcc)
                     {
-                        <div class="form-group col-md-3 type2" id="productGroupType">
-                            <label for="productGroupType">@Language.GetString("tbl_ProductGroup")</label><br />
-                            <select class="form-control selectpicker" id="productGroupType" data-live-search="true" data-hide-disabled="true"
-                                    asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))">
-                            </select>
-                            <span data-val-result="productGroupType" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group col-md-2 type2">
+                        <div class="form-group col-md-3 type2" style="display:none;">
                             <label for="productVendorType">@Language.GetString("ProductVendor")</label><br />
                             <select class="form-control selectpicker" id="productVendorType" data-live-search="true" data-hide-disabled="true"
-                                    asp-items="@(new SelectList(ViewBag.Vendors,"Value","Text"))">
+                                    asp-items="@(new SelectList(ViewBag.Vendors, "Value", "Text"))">
                             </select>
-                            <span data-val-result="productVendorType" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group col-md-3 type2">
-                            <label for="ProductIdType">@Language.GetString("Product")</label><br />
-                            <select class="form-control selectpicker" id="ProductIdType" data-live-search="true" data-hide-disabled="true"
-                                    asp-items="@(new SelectList(ViewBag.ProductList,"Value","Text"))">
-                            </select>
-                            <span data-val-result="ProductIdType" class="text-danger"></span>
+                            @*<span data-val-result="productVendorType" class="text-danger"></span>*@
                         </div>
                     }
-                    else
-                    {
-                        <div class="form-group col-md-3 type2">
-                            <label for="ProductIdType">@Language.GetString("Product")</label><br />
-                            <select class="form-control selectpicker" id="ProductIdType" data-live-search="true" data-hide-disabled="true"
-                                    asp-items="@(new SelectList(ViewBag.CurrentSellerProductList,"Value","Text"))">
-                            </select>
-                            <span data-val-result="ProductIdType" class="text-danger"></span>
-                        </div>
-                    }
-                </div>
-                        <div class="row">
-                            
-                            <div class="form-group col-md-2 type2" style="display:none;">
-                                <label for="boughtCount">@Language.GetString("PromotedCountofUnit")</label><br />
-                                <input type="number" class="form-control" id="PromotedCountofUnit" placeholder=" ">
-                                <span data-val-result="PromotedCountofUnit" class="text-danger"></span>
-                            </div>
-                            <div class="form-group col-md-2 type2" style="display:none;">
-                                <label for="boughtCount">@Language.GetString("BoughtCount")</label><br />
-                                <input type="number" class="form-control" id="boughtCount" placeholder=" ">
-                                <span data-val-result="boughtCount" class="text-danger"></span>
-                            </div>
-
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-4" id="PriceOrDiscount">
-                                <label for="value">@Language.GetString("Value")</label><br />
-                                <input type="number" class="form-control" id="value" placeholder=" ">
-                                <span data-val-result="value" class="text-danger"></span>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>@Language.GetString("FromDate")</label>
-                                @if (CultureInfo.CurrentCulture.Name == "fa-IR")
-                                {
-                                    <div class="input-group-prepend ">
-                                        <span class="input-group-text">
-                                            <i class="fa fa-calendar"></i>
-                                        </span>
-                                        <input autocomplete="off" id="dtpFromDate" type="text" class="form-control" />
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="input-group date" id="dtpFromDate" data-target-input="nearest">
-                                        <input type="text" class="form-control datetimepicker-input" />
-                                        <div class="input-group-append" data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                        </div>
-                                    </div>
-                                }
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>@Language.GetString("ToDate")</label>
-                                @if (CultureInfo.CurrentCulture.Name == "fa-IR")
-                                {
-                                    <div class="input-group-prepend ">
-                                        <span class="input-group-text">
-                                            <i class="fa fa-calendar"></i>
-                                        </span>
-                                        <input autocomplete="off" id="dtpToDate" type="text" class="form-control" />
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="input-group date" id="dtpToDate" data-target-input="nearest">
-                                        <input type="text" class="form-control datetimepicker-input" />
-                                        <div class="input-group-append" data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                        </div>
-                                    </div>
-                                }
-                            </div>
-                        </div>
-
+                    <div class="form-group col-md-3 type2" style="display:none;">
+                        <label for="ProductIdType">@Language.GetString("Product")</label><br />
+                        <select class="form-control selectpicker" id="ProductIdType" data-live-search="true" data-hide-disabled="true">
+                        </select>
+                        <span data-val-result="ProductIdType" class="text-danger"></span>
                     </div>
+
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3 type2" style="display:none;">
+                        <label for="boughtCount">@Language.GetString("BoughtCount")</label><br />
+                        <input type="number" class="form-control" id="boughtCount" placeholder=" ">
+                        <span data-val-result="boughtCount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3 type2" style="display:none;">
+                        <label for="promotedCountofUnit">@Language.GetString("PromotedCountofUnit")</label><br />
+                        <input type="number" class="form-control" id="promotedCountofUnit" placeholder=" ">
+                        <span data-val-result="PromotedCountofUnit" class="text-danger"></span>
+                    </div>
+
+
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3" id="PriceOrDiscount">
+                        <label for="value">@Language.GetString("Value")</label><br />
+                        <input type="number" class="form-control" id="value" placeholder=" ">
+                        <span data-val-result="value" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>@Language.GetString("FromDate")</label>
+                        @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                        {
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                                <input autocomplete="off" id="dtpFromDate" type="text" class="form-control" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="input-group date" id="dtpFromDate" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input" />
+                                <div class="input-group-append" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        }
+                        <span data-val-result="FromDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>@Language.GetString("ToDate")</label>
+                        @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                        {
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                                <input autocomplete="off" id="dtpToDate" type="text" class="form-control" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="input-group date" id="dtpToDate" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input" />
+                                <div class="input-group-append" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        }
+                        <span data-val-result="ToDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+            </div>
             <div class="card-footer">
                 <div class="row">
                     <input type="button" id="btnAddPromotion" value="@Language.GetString("btn_Save")" class="btn btn-block btn-success" />
@@ -257,20 +238,29 @@
         <script src="~/js/moment.min.js"></script>
         <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
     }
-    @if (dir == "rtl")
-    {
-        <script src="~/js/siteTemplate/bootstrap4rtl/bootstrap.min.js"></script>
-    }
-    else
-    {
-        <script src="~/js/plugins/bootstrap/js/bootstrap.min.js"></script>
-    }
+    <script src="~/js/popperjs/popper.min.js"></script>
+    <script src="~/js/plugins/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/js/bootstrap-select/bootstrap-select.js"></script>
 
     <script>
 
   $(document).ready(function () {
-            debugger;
+      debugger;
+       //datetimepicker
+            if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
+            {
+                kamaDatepicker('dtpFromDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+                kamaDatepicker('dtpToDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+            }
+            else
+            {
+                $('#dtpFromDate').datetimepicker({
+                    format: 'L'
+                });
+                $('#dtpToDate').datetimepicker({
+                    format: 'L'
+                });
+            }
       $("#promotionTypeId").change(function () {
           debugger;
           if ($(this).val() != "-1") {
@@ -287,7 +277,7 @@
               }
           }
       });
-      $("#discountTypeId").change(function () {
+     $("#discountTypeId").change(function () {
           debugger;
           if ($(this).val() != "-1") {
               switch ($(this).val()) {
@@ -306,9 +296,67 @@
                       break;
               }
           }
-
       });
+      $("#productVendorType").change(function () {
+          if ($("#productGroupType").val() != "-1" && $("#productVendorType").val() != "-1") {
+              $.ajax({
+                  url: "/Promotion/GetFilteredProduct?productGroupId=" + $("#productGroupType").val() + "&vendorId=" + $("#productVendorType").val(),
+                    type: 'Get',
+                    dataType : 'json',
+                  success: function (result) {
+                      debugger;
+                      var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
+                      if (result.status === "success") {
+                          debugger;
+                          if (result.data.length != 0) {
+                              (result.data).forEach(function (item) {
+                                  var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                  options += op;
+                              });
 
+                              $("#ProductIdType").html(options);
+                              $("#ProductIdType").val('@Model.PromotedProductId');
+                          }
+                      }
+                  },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert("@error");
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+                   });
+          }
+      });
+      $("#productVendor").change(function () {
+          if ($("#productGroupId").val() != "-1" && $("#productVendor").val() != "-1") {
+              $.ajax({
+                  url: "/Promotion/GetFilteredProduct?productGroupId=" + $("#productGroupId").val() + "&vendorId=" + $("#productVendor").val(),
+                    type: 'Get',
+                    dataType : 'json',
+                  success: function (result) {
+                      debugger;
+                      var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
+                      if (result.status === "success") {
+                          debugger;
+                          if (result.data.length != 0) {
+                              (result.data).forEach(function (item) {
+                                  var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                  options += op;
+                              });
+
+                              $("#productId").html(options);
+                              $("#productId").val('@Model.AffectedProductId');
+                          }
+                      }
+                  },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert("@error");
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+                   });
+          }
+      });
      $("#btnAddPromotion").click(function () {
             debugger;
                 var flag = false;
@@ -323,35 +371,72 @@
                     flag = true;
          }
          if ($("#currencyId").val() == "-1") {
-              $("span[data-val-result='currencyId']").html('@Language.GetString("AlertAndMessage_SelectAtLeastOneItem")');
+              $("span[data-val-result='currencyId']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
                     flag = true;
          }
          if ($("#promotionTypeId").val() == "-1") {
-             $("span[data-val-result='promotionTypeId']").html('@Language.GetString("AlertAndMessage_SelectAtLeastOneItem")');
+             $("span[data-val-result='promotionTypeId']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
                     flag = true;
          }
          if ($("#discountTypeId").val() == "-1") {
-             $("span[data-val-result='discountTypeId']").html('@Language.GetString("AlertAndMessage_SelectAtLeastOneItem")');
+             $("span[data-val-result='discountTypeId']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
                     flag = true;
          }
          if ($("#PriceOrDiscount").css("display") == "block" && $("#value").val() == "") {
               $("span[data-val-result='value']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                     flag = true;
          }
+         if ($("#dtpFromDate").val() == "")
+         {
+             $("span[data-val-result='FromDate']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+         }
+          if ($("#dtpToDate").val() == "")
+         {
+             $("span[data-val-result='ToDate']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+         }
+         if ($("#promotionTypeId").val() == "1") {
+             if ($("#productGroupId").val() == "-1") {
+                 $("span[data-val-result='productGroupId']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
+                 flag = true;
+             }
+         }
+         if ($("#promotionTypeId").val() == "2")
+         {
+             if ($("#productId").val() == "-1") {
+                 $("span[data-val-result='productId']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                 flag = true;
+             }
+         }
+
+         if ($("#discountTypeId").val() == "2")
+         {
+             if ($("#ProductIdType").val() == "-1") {
+                 $("span[data-val-result='ProductIdType']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
+                 flag = true;
+             }
+             if ($("#boughtCount").val() == "") {
+                 $("span[data-val-result='boughtCount']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+             }
+             if ($("#promotedCountofUnit").val() == "") {
+                 $("span[data-val-result='promotedCountofUnit']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+             }
+         }
          if (!flag) {
              var dataModel = FillDataToSend();
             $.ajax({
                 url: "@Model.PromotionId" != "" ? "/Promotion/Edit" : "/Promotion/Add",
-                  /*  data: dataModel,*/
                     contentType: 'application/json',
                     data: JSON.stringify(dataModel),
                 type: 'Post',
                 beforeSend: function () {
                     debugger;
-                    AddLoading($("#addProductSpecificationGroupCard"));
+                    AddLoading($("#addPromotionCard"));
                 },
                 success: function (result) {
                     debugger;
+                    AddLoading($("#addPromotionCard"));
                     if (result.status === "Success") {
                         Swal.fire({
                             icon: 'success',
@@ -399,13 +484,34 @@
 
            obj.PromotionId = $("#PromotionId").val();
            obj.ModificationReason = $("#ModificationReason").val();
-            obj.Title = $("#Title").val();
+            obj.Title = $("#title").val();
             obj.CurrencyId = $("#currencyId").val();
-           obj.PromotionType = $("#promotionTypeId").val();
-            obj.DiscountType = $("#discountTypeId").val();
-            if ($("#PriceOrDiscount").css("display") == "block") {
-                obj.Value = $("#value").val();
+            obj.CurrencyName = $("#currencyId option:selected").text();
+           obj.PromotionTypeId = parseInt($("#promotionTypeId").val());
+            obj.DiscountTypeId = parseInt($("#discountTypeId").val());
+            //if ($("#PriceOrDiscount").css("display") == "block") {
+            //    obj.Value = parseFloat($("#value").val());
+            //}
+            obj.PersianStartDate = $("#dtpFromDate").val();
+            obj.PersianEndDate = $("#dtpToDate").val();
+            if ($("promotionTypeId").val() == "1") {
+                obj.AffectedProductGroupId = $("#productGroupId").val();
             }
+            else
+            if ($("promotionTypeId").val() == "2") {
+                obj.AffectedProductId = $("#productId").val();
+                }
+            if ($("#discountTypeId").val() == "0" || $("#discountTypeId").val() == "1") {
+                obj.Value = parseFloat($("#value").val());
+            }
+            else if ($("#discountTypeId").val() == "2")
+            {
+                obj.PromotedProductId = $("#productIdType").val();
+                obj.BoughtCount = parseInt($("#boughtCount").val());
+                obj.PromotedCountofUnit = parseInt($("#promotedCountofUnit").val());
+            }
+            obj.IsDeleted = false;
+            debugger;
             return obj;
         }
 

@@ -15,11 +15,22 @@ namespace Arad.Portal.DataLayer.Models.Promotion
 
         public PromotionType PromotionType { get; set; }
 
+        public int PromotionTypeId { get; set; }
+
+        public int DiscountTypeId { get; set; }
+
         public DiscountType DiscountType { get; set; }
 
         public decimal? Value { get; set; }
 
-        public string ProductId { get; set; }
+        public string AffectedProductId { get; set; }
+
+        public string AffectedProductName { get; set; }
+
+        public string AffectedProductGroupId { get; set; }
+
+        public string AffectedProductGroupName { get; set; }
+
         public string PromotedProductId { get; set; }
 
         public string PromotedProductName { get; set; }
@@ -32,11 +43,17 @@ namespace Arad.Portal.DataLayer.Models.Promotion
 
         public string CurrencyName { get; set; }
 
-        public DateTime StartDate { get; set; }
-       
+        public DateTime? StartDate { get; set; }
+
+        public string PersianStartDate { get; set; }
+
         public DateTime? EndDate { get; set; }
 
+        public string PersianEndDate { get; set; }
+
         public string ModificationReason { get; set; }
-        
+
+        public bool IsDeleted { get; set; }
+
     }
 }

@@ -416,6 +416,9 @@
 	<string key="AlertAndMessage_DeleteProductSpecificationGroup">
 		<value>گروه مشخصات محصول مربوطه حذف خواهد شد.</value>
 	</string>
+	<string key="AlertAndMessage_DeletePromotion">
+		<value>این موجودیت تخفیفات و جشنواره ها حذف خواهد شد.</value>
+	</string>
 	<string key="AlertAndMessage_DeleteRole">
 		<value>نقش مربوطه حذف خواهد شد.</value>
 	</string>
@@ -794,7 +797,10 @@
 		<value>لطفا مقادیر عددی یا حرفی را به همراه * یا ؟ وارد نمائید.</value>
 	</string>
 	<string key="AlertAndMessage_SelectAtLeastOneItem">
-		<value>لطفا حداقل یک گرینه را انتخاب نمائید.</value>
+		<value>لطفا حداقل یک آیتم را انتخاب نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_SelectOneItem">
+		<value>لطفا یک آیتم را انتخاب کنید.</value>
 	</string>
 	<string key="AlertAndMessage_Choose">
 		<value>انتخاب کنید</value>
@@ -1205,7 +1211,7 @@
 		<value>تعداد خرید</value>
 	</string>
 	<string key="PromotedCountofUnit">
-		<value>تعداد محصول در تخفیفات و جشنواره ها</value>
+		<value>تعداد محصول رایگان</value>
 	</string>
 	<string key="Image">
 		<value>تصویر</value>
@@ -1278,6 +1284,15 @@
 	</string>
 	<string key="Type">
 		<value>نوع</value>
+	</string>
+	<string key="AffectedProductName">
+		<value>محصول پروموشن دار</value>
+	</string>
+	<string key="AffectedProductGroupName">
+		<value>گروه محصول پروموشن دار</value>
+	</string>
+	<string key="PromotedProductName">
+		<value>محصول رایگان</value>
 	</string>
 	<string key="Classification">
 		<value>طبقه بندی</value>
