@@ -284,7 +284,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     Directory.CreateDirectory(path);
                 }
-                picture.Url = $"~/Images/Products/{picture.ImageId}.jpg";
+                picture.Url = $"/Images/Products/{picture.ImageId}.jpg";
                 byte[] bytes = Convert.FromBase64String(picture.Content.Replace("data:image/jpeg;base64,",""));
                 System.Drawing.Image image;
                 using MemoryStream ms = new MemoryStream(bytes);

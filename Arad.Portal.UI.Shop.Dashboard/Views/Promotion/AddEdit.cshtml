@@ -89,13 +89,6 @@
                         <span data-val-result="promotionTypeId" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group col-md-3 classification2" id="productGroupClassification">
-                        <label for="productGroupId">@Language.GetString("tbl_ProductGroup")</label><br />
-                        <select class="form-control selectpicker" id="productGroupId" data-live-search="true" data-hide-disabled="true"
-                                asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))">
-                        </select>
-                        <span data-val-result="productGroupId" class="text-danger"></span>
-                    </div>
                     @if (ViewBag.IsSysAcc)
                     {
                         <div class="form-group col-md-3 classification2">
@@ -106,6 +99,13 @@
                             @*<span data-val-result="productVendor" class="text-danger"></span>*@
                         </div>
                     }
+                    <div class="form-group col-md-3 classification2" id="productGroupClassification">
+                        <label for="productGroupId">@Language.GetString("tbl_ProductGroup")</label><br />
+                        <select class="form-control selectpicker" id="productGroupId" data-live-search="true" data-hide-disabled="true"
+                                asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))">
+                        </select>
+                        <span data-val-result="productGroupId" class="text-danger"></span>
+                    </div>
 
                     <div class="form-group col-md-3 classification2">
                         <label for="productId">@Language.GetString("Product")</label><br />

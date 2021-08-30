@@ -729,5 +729,35 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                   }).ToList();
             return result;
         }
+
+        public List<SelectListModel> GetGroupsOfThisVendor(string vendorId, string langId)
+        {
+            var result = new List<SelectListModel>();
+            var lst = _context.ProductCollection.Find(_ => _.SellerUserId == vendorId)
+                .Project(_ => _.GroupIds);
+            var groupIds = lst.ToList();
+            var finalList = new List<string>();
+            foreach (var item in groupIds)
+            {
+                foreach (var element in item)
+                {
+                    finalList.Add(element);
+                }
+            }
+            finalList = finalList.Distinct().ToList();
+            foreach (var item in finalList)
+            {
+                result.Add(new SelectListModel()
+                {
+                    Text = _context.ProductGroupCollection.Find(_ => _.ProductGroupId == item)
+                    .First().MultiLingualProperties.Any(_ => _.LanguageId == langId) ? _context.ProductGroupCollection.Find(_ => _.ProductGroupId == item)
+                    .First().MultiLingualProperties.First(_ => _.LanguageId == langId).Name : _context.ProductGroupCollection.Find(_ => _.ProductGroupId == item)
+                    .First().MultiLingualProperties.First().Name,
+                    Value = item
+                });
+            }
+
+            return result;
+        }
     }
 }

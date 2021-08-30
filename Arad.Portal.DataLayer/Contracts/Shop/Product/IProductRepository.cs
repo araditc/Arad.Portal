@@ -60,7 +60,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 
         List<SelectListModel> GetAlActiveProductGroup(string langId);
 
-
+        List<SelectListModel> GetGroupsOfThisVendor(string vendorId, string langId);
         List<SelectListModel> GetProductsOfThesVendor(string langId, string currentUserId);
     }
 }

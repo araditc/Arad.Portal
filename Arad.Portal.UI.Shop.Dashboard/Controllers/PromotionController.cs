@@ -45,6 +45,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             PagedItems<PromotionDTO> list = new PagedItems<PromotionDTO>();
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var currentUser = await _userManager.FindByIdAsync(currentUserId);
+            ViewBag.IsSysAcc = currentUser.IsSystemAccount;
             var defaulltLang = _lanRepository.GetDefaultLanguage(currentUserId);
             var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
             ViewBag.Permissions = dicKey;
@@ -244,6 +245,26 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             return result;
 
+        }
+
+
+        [HttpGet]
+        public IActionResult GetFilteredProductGroup(string vendorId)
+        {
+            JsonResult result;
+            List<SelectListModel> lst;
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var defaultLanguage = _lanRepository.GetDefaultLanguage(currentUserId);
+            var list = _productRepositoy.GetGroupsOfThisVendor(vendorId, defaultLanguage.LanguageId);
+            if (list.Count() > 0)
+            {
+                result = new JsonResult(new { Status = "success", Data = list });
+            }
+            else
+            {
+                result = new JsonResult(new { Status = "error", Message = "" });
+            }
+            return result;
         }
     }
 }

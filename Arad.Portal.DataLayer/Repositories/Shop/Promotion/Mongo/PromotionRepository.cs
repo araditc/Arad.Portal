@@ -247,19 +247,61 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                 var page = Convert.ToInt32(filter["CurrentPage"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
                 var userId = filter["userId"];
+                var promotionTypeId = filter["promotionTypeId"];
+                var groupId = filter["groupId"];
+                var productId = filter["productId"];
+                var discountTypeId = filter["discountTypeId"];
+                var title = filter["title"];
+                var fromDate = filter["fDate"];
+                var toDate = filter["tDate"];
 
                 List<Entities.Shop.Promotion.Promotion> list;
                 long totalCount = await _context.Collection.Find(c => true).CountDocumentsAsync();
                 if(userId == Guid.Empty.ToString())//show all promotions cause the user is system account
                 {
                     list = _context.Collection.AsQueryable().Skip((page - 1) * pageSize)
-                  .Take(pageSize).ToList();
+                          .Take(pageSize).ToList();
                 }else
                 {
                     list = _context.Collection.AsQueryable().Where(_=>_.CreatorUserId == userId).Skip((page - 1) * pageSize)
                       .Take(pageSize).ToList();
                 }
-             
+                if(!string.IsNullOrWhiteSpace(title))
+                {
+                    list = list.Where(_ => _.Title.Contains(title)).Skip((page - 1) * pageSize)
+                     .Take(pageSize).ToList();
+                }
+                if (!string.IsNullOrWhiteSpace(promotionTypeId))
+                {
+                    list = list.Where(_ => _.PromotionType == (PromotionType)Convert.ToInt32(promotionTypeId)).Skip((page - 1) * pageSize)
+                      .Take(pageSize).ToList();
+                }
+                if (!string.IsNullOrWhiteSpace(discountTypeId))
+                {
+                    list = list.Where(_ => _.DiscountType == (DiscountType)Convert.ToInt32(discountTypeId)).Skip((page - 1) * pageSize)
+                      .Take(pageSize).ToList();
+                }
+                if (!string.IsNullOrWhiteSpace(fromDate))
+                {
+                    list = list.Where(_ => _.StartDate >= DateHelper.ToEnglishDate(fromDate).ToUniversalTime()).Skip((page - 1) * pageSize)
+                      .Take(pageSize).ToList();
+                }
+                if (!string.IsNullOrWhiteSpace(toDate))
+                {
+                    list = list.Where(_ => _.EndDate <= DateHelper.ToEnglishDate(toDate).ToUniversalTime()).Skip((page - 1) * pageSize)
+                      .Take(pageSize).ToList();
+                }
+                if (!string.IsNullOrWhiteSpace(productId))
+                {
+                    list = list.Where(_ => _.AffectedProductId == productId).Skip((page - 1) * pageSize)
+                     .Take(pageSize).ToList();
+                }else if (!string.IsNullOrWhiteSpace(groupId))
+                {
+                    list = list.Where(_ => _.AffectedProductGroupId == groupId).Skip((page - 1) * pageSize)
+                     .Take(pageSize).ToList();
+                }
+               
+
                 result.Items = _mapper.Map<List<PromotionDTO>>(list);
                
             }
