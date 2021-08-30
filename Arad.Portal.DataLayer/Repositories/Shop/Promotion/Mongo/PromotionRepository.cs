@@ -360,6 +360,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
             {
                 result = _mapper.Map<PromotionDTO>(entity);
             }
+            result.PersianStartDate = DateHelper.ToPersianDdate(entity.StartDate.ToLocalTime());
+            if(entity.EndDate != null)
+            {
+                result.PersianEndDate = DateHelper.ToPersianDdate(entity.EndDate.Value.ToLocalTime());
+            }
             return result;
         }
 

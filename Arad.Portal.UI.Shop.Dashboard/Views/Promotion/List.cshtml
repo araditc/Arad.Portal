@@ -104,7 +104,7 @@
                     <div class="form-group col-md-3">
                         <label for="promotionTypeId">@Language.GetString("Classification")</label><br />
                         <select class="form-control selectpicker" id="promotionTypeId" data-live-search="true" data-hide-disabled="true"
-                                asp-items="@(new SelectList(ViewBag.PromotionTypes,"Value","Text"))">
+                                asp-items="@(new SelectList(ViewBag.PromotionTypes,"Value","Text", promotionTypeId))">
                         </select>
                     </div>
                     @if (ViewBag.IsSysAcc)
@@ -138,7 +138,7 @@
                     <div class="form-group col-md-3">
                         <label for="discountTypeId">@Language.GetString("Type")</label><br />
                         <select class="form-control selectpicker" id="discountTypeId" data-live-search="true" data-hide-disabled="true"
-                                asp-items="@(new SelectList(ViewBag.DiscountTypes,"Value","Text"))">
+                                asp-items="@(new SelectList(ViewBag.DiscountTypes,"Value","Text", discountTypeId))">
                         </select>
                         <span data-val-result="discountTypeId" class="text-danger"></span>
                     </div>
@@ -314,8 +314,8 @@
 <script type="text/javascript">
        $(document).ready(function () {
            debugger;
-           $("#promotionTypeId").val('@promotionTypeId');
-           $("#discountTypeId").val('@discountTypeId');
+           @*$("#promotionTypeId").val('@promotionTypeId');*@
+           @*$("#discountTypeId").val('@discountTypeId');*@
            $("#title").val('@title');
            $("#dtpFromDate").val('@fromDate');
            $("#dtpToDate").val('@toDate');
@@ -345,13 +345,47 @@
             }
 
            $("#promotionTypeId").change(function () {
-                if ($("#promotionTypeId").val() != "-1") {
-                    if ($("#promotionTypeId").val() == "1" || $("#promotionTypeId").val() == "2") {
-                        $("#firstRow").append(generateVendorSection());
-                    } else {
-                        $("#vendorSection").remove();
-                    }
-                }
+               debugger;
+               if ($("#promotionTypeId").val() != "-1") {
+                   if ($("#promotionTypeId").val() == "1" || $("#promotionTypeId").val() == "2") {
+                       $("#firstRow").append(generateVendorSection());
+                       $("#productVendor").selectpicker();
+                   } else {
+                       $("#vendorSection").remove();
+                   }
+               } else {
+                   $("#vendorSection").remove();
+               }
+               if ($("#promotionTypeId").val() == "1" && $("#productVendor").length == 0) {
+                    $.ajax({
+                       url: "/Promotion/GetFilteredProductGroup?vendorId=-1",
+                        type: 'Get',
+                        dataType: 'json',
+                        success: function (result) {
+                            debugger;
+                            var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
+                            if (result.status === "success") {
+                                debugger;
+                                var options = "";
+                                if (result.data.length != 0) {
+                                    (result.data).forEach(function (item) {
+                                        var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                        options += op;
+                                    });
+                                }
+                                var groupSelect = "<div class='form-group col-md-3' id='groupSection'><label>" + '@Language.GetString("tbl_ProductGroup")' +"</label>" +
+                                    "<select class='form-control selectpicker' id='productGroupId' data-live-search='true' data-hide-disabled='true'>" + options + "</select>";
+                                $("#firstRow").append(groupSelect);
+                                $("#productGroupId").selectpicker();
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert("@error");
+                            alert(xhr.status);
+                            alert(thrownError);
+                        }
+                    });
+               }
             });
 
            $("#btnSearch").click(function () {
@@ -411,11 +445,10 @@
                 window.location.href = '@Url.Action("List", "Promotion")' + queryString;
            });
 
-            $("#productVendor").change(function () {
-                debugger;
-                if ($("#productVendor").val() != "-1") {
-                    $.ajax({
-                        url: "/Promotion/GetFilteredProductGroup?vendorId=" + $("#productVendor").val(),
+           $(document).on('change', '#productVendor' ,function () {
+               if ($("#productVendor").val() != "-1") {
+                   $.ajax({
+                       url: "/Promotion/GetFilteredProductGroup?vendorId=" + $("#productVendor").val(),
                         type: 'Get',
                         dataType: 'json',
                         success: function (result) {
@@ -433,6 +466,7 @@
                                 var groupSelect = "<div class='form-group col-md-3' id='groupSection'><label>" + '@Language.GetString("tbl_ProductGroup")' +"</label>" +
                                     "<select class='form-control selectpicker' id='productGroupId' data-live-search='true' data-hide-disabled='true'>" + options + "</select>";
                                 $("#firstRow").append(groupSelect);
+                                $("#productGroupId").selectpicker();
                             }
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
@@ -444,11 +478,11 @@
                 } else {
                     $("#productGroupId").remove();
                 }
-            });
+           });
 
-            $("#productGroupId").change(function () {
-                debugger;
-                if ($("#productGroupId").val() != "-1" && $("#promotionTypeId").val() == "2")
+
+           $(document).on("change", "#productGroupId", function () {
+               if ($("#productGroupId").val() != "-1" && $("#promotionTypeId").val() == "2")
                 {
                     $.ajax({
                     url: "/Promotion/GetFilteredProduct?productGroupId=" + $("#productGroupId").val() + "&vendorId=" + $("#productVendor").val(),
@@ -470,6 +504,7 @@
                               "<select class='form-control selectpicker' id='productId' data-live-search='true' data-hide-disabled='true'>" + options + "</select>";
 
                           $("#firstRow").append(productSection);
+                          $("#productId").selectpicker();
                           }
                   },
                     error: function (xhr, ajaxOptions, thrownError) {
@@ -483,18 +518,20 @@
                 else {
                     $("#productSection").remove();
                 }
-            });
+           });
+
 
        });
     function generateVendorSection() {
+        debugger;
         var vendorSelect = "";
         if ('@ViewBag.IsSysAcc' == "True") {
                                 var list = @Json.Serialize(ViewBag.Vendors) ;
                                  vendorSelect = "<div class='form-group col-md-3' id='vendorSection'><label for='productVendor'>"
-                                    +'@Language.GetString("ProductVendor")'+"</label><br /><select class='form-control selectpicker' id='productVendor' data-live-search='true' data-hide-disabled='true'>";
+                                    +'@Language.GetString("ProductVendor")'+"</label><br /><select class='form-control' id='productVendor' data-live-search='true' data-hide-disabled='true'>";
                                 var options = "";
                                 (list).forEach(function (item) {
-                                    var op = "<option value='" + item.Value + "'>" + item.Text + "</option>";
+                                    var op = "<option value='" + item.value + "'>" + item.text + "</option>";
                                     options += op;
                                 });
                                 vendorSelect += options + "</select>";
