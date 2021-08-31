@@ -9,6 +9,10 @@ namespace Arad.Portal.DataLayer.Models.Promotion
 {
     public class PromotionDTO
     {
+        public PromotionDTO()
+        {
+            Infoes = new List<PromotionInfo>();
+        }
         public string PromotionId { get; set; }
 
         public string Title { get; set; }
@@ -23,17 +27,17 @@ namespace Arad.Portal.DataLayer.Models.Promotion
 
         public decimal? Value { get; set; }
 
-        public string AffectedProductId { get; set; }
+        public List<PromotionInfo> Infoes { get; set; }
 
-        public string AffectedProductName { get; set; }
-
-        public string AffectedProductGroupId { get; set; }
-
-        public string AffectedProductGroupName { get; set; }
+        public string ProductNamesConcat { get; set; }
 
         public string PromotedProductId { get; set; }
 
         public string PromotedProductName { get; set; }
+
+        public string GroupIdOfPromotedProduct { get; set; }
+
+        public string GroupNameofPromotedProduct { get; set; }
 
         public int? PromotedCountofUnit { get; set; }
 

@@ -3,7 +3,7 @@
 @using Arad.Portal.GeneralLibrary.Utilities;
 @using Arad.Portal.DataLayer.Models.Promotion;
 @using Arad.Portal.UI.Shop.Dashboard.ViewComponents;
-
+@using Arad.Portal.DataLayer.Entities.Shop.Promotion; 
 @model PagedItems<PromotionDTO>
 @{
     var i = ((Model.CurrentPage - 1) * Model.PageSize);
@@ -103,7 +103,7 @@
 
                     <div class="form-group col-md-3">
                         <label for="promotionTypeId">@Language.GetString("Classification")</label><br />
-                        <select class="form-control selectpicker" id="promotionTypeId" data-live-search="true" data-hide-disabled="true"
+                        <select class="form-control selectpicker" id="promotionTypeId" data-live-search="true" 
                                 asp-items="@(new SelectList(ViewBag.PromotionTypes,"Value","Text", promotionTypeId))">
                         </select>
                     </div>
@@ -111,14 +111,14 @@
                     {
                         @*<div class="form-group col-md-3" id="vendorSection">
                                     <label for="productVendor">@Language.GetString("ProductVendor")</label><br />
-                                    <select class="form-control selectpicker" id="productVendor" data-live-search="true" data-hide-disabled="true"
+                                    <select class="form-control selectpicker" id="productVendor" data-live-search="true" 
                                             asp-items="@(new SelectList(ViewBag.Vendors, "Value", "Text"))">
                                     </select>
                             </div>*@
                     }
                     @*<div class="form-group col-md-3" id="groupSection">
                             <label>@Language.GetString("tbl_ProductGroup")</label>
-                                <select class="form-control selectpicker" id="productGroupId" data-live-search="true" data-hide-disabled="true"
+                                <select class="form-control selectpicker" id="productGroupId" data-live-search="true" 
                                         asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))">
                                 </select>
                         </div>*@
@@ -126,7 +126,7 @@
 
                     @*<div class="form-group col-md-3" id="productSection">
                              <label for="productId">@Language.GetString("Product")</label><br />
-                             <select class="form-control selectpicker" id="productId" data-live-search="true" data-hide-disabled="true">
+                             <select class="form-control selectpicker" id="productId" data-live-search="true" >
                              </select>
                         </div>*@
                 </div>
@@ -137,7 +137,7 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label for="discountTypeId">@Language.GetString("Type")</label><br />
-                        <select class="form-control selectpicker" id="discountTypeId" data-live-search="true" data-hide-disabled="true"
+                        <select class="form-control selectpicker" id="discountTypeId" data-live-search="true"
                                 asp-items="@(new SelectList(ViewBag.DiscountTypes,"Value","Text", discountTypeId))">
                         </select>
                         <span data-val-result="discountTypeId" class="text-danger"></span>
@@ -245,8 +245,8 @@
                             <td class="ListCell">@item.PromotionType</td>
                             <td class="ListCell">@item.DiscountType</td>
                             <td class="ListCell">@item.Value</td>
-                            <td class="ListCell">@item.AffectedProductName</td>
-                            <td class="ListCell">@item.AffectedProductGroupName</td>
+                            <td class="ListCell">@item.ProductNamesConcat</td>
+                            <td class="ListCell">@(@item.Infoes.Any() && (item.PromotionType ==  PromotionType.Group|| item.PromotionType == PromotionType.Product) ? @item.Infoes[0].AffectedProductGroupName : "")</td>
                             <td class="ListCell">@item.PromotedProductName</td>
                             <td class="ListCell">@item.BoughtCount</td>
                             <td class="ListCell">@item.PromotedCountofUnit</td>
@@ -366,7 +366,7 @@
                             var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
                             if (result.status === "success") {
                                 debugger;
-                                var options = "";
+                               
                                 if (result.data.length != 0) {
                                     (result.data).forEach(function (item) {
                                         var op = "<option value='" + item.value + "'>" + item.text + "</option>";
@@ -374,7 +374,7 @@
                                     });
                                 }
                                 var groupSelect = "<div class='form-group col-md-3' id='groupSection'><label>" + '@Language.GetString("tbl_ProductGroup")' +"</label>" +
-                                    "<select class='form-control selectpicker' id='productGroupId' data-live-search='true' data-hide-disabled='true'>" + options + "</select>";
+                                    "<select class='form-control selectpicker' id='productGroupId' data-live-search='true' >" + options + "</select>";
                                 $("#firstRow").append(groupSelect);
                                 $("#productGroupId").selectpicker();
                             }
@@ -456,7 +456,7 @@
                             var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
                             if (result.status === "success") {
                                 debugger;
-                                var options = "";
+                               
                                 if (result.data.length != 0) {
                                     (result.data).forEach(function (item) {
                                         var op = "<option value='" + item.value + "'>" + item.text + "</option>";
@@ -464,7 +464,7 @@
                                     });
                                 }
                                 var groupSelect = "<div class='form-group col-md-3' id='groupSection'><label>" + '@Language.GetString("tbl_ProductGroup")' +"</label>" +
-                                    "<select class='form-control selectpicker' id='productGroupId' data-live-search='true' data-hide-disabled='true'>" + options + "</select>";
+                                    "<select class='form-control selectpicker' id='productGroupId' data-live-search='true' >" + options + "</select></div>";
                                 $("#firstRow").append(groupSelect);
                                 $("#productGroupId").selectpicker();
                             }
@@ -493,7 +493,7 @@
                       var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
                       if (result.status === "success") {
                           debugger;
-                          var options = "";
+                         
                           if (result.data.length != 0) {
                               (result.data).forEach(function (item) {
                                   var op = "<option value='" + item.value + "'>" + item.text + "</option>";
@@ -501,7 +501,7 @@
                               });
                           }
                           var productSection = "<div class='form-group col-md-3' id='productSection'><label for='productId'>" +'@Language.GetString("Product")'+"</label><br />" +
-                              "<select class='form-control selectpicker' id='productId' data-live-search='true' data-hide-disabled='true'>" + options + "</select>";
+                              "<select class='form-control selectpicker' id='productId' data-live-search='true' >" + options + "</select></div>";
 
                           $("#firstRow").append(productSection);
                           $("#productId").selectpicker();
@@ -528,8 +528,8 @@
         if ('@ViewBag.IsSysAcc' == "True") {
                                 var list = @Json.Serialize(ViewBag.Vendors) ;
                                  vendorSelect = "<div class='form-group col-md-3' id='vendorSection'><label for='productVendor'>"
-                                    +'@Language.GetString("ProductVendor")'+"</label><br /><select class='form-control' id='productVendor' data-live-search='true' data-hide-disabled='true'>";
-                                var options = "";
+                                    +'@Language.GetString("ProductVendor")'+"</label><br /><select class='form-control' id='productVendor' data-live-search='true' >";
+                                var options = "<option value='-1'>" + '@Language.GetString("AlertAndMessage_Choose")' + "</option>";
                                 (list).forEach(function (item) {
                                     var op = "<option value='" + item.value + "'>" + item.text + "</option>";
                                     options += op;

@@ -71,13 +71,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 ViewBag.DiscountTypes = _promotionRepository.GetAllDiscountType();
                 ViewBag.ProductGroupList = _productRepositoy.GetAlActiveProductGroup(defaulltLang.LanguageId);
                 var vendorList = await _userManager.GetUsersForClaimAsync(new Claim("AppRole", "True"));
-                var vList = vendorList.ToList().Select(_ => new SelectListModel()
+                ViewBag.Vendors = vendorList.ToList().Select(_ => new SelectListModel()
                 {
                     Text = _.Profile.FullName,
                     Value = _.Id
                 }).ToList();
-                vList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
-                ViewBag.Vendors = vList;
+                
 
             }
             catch (Exception)
@@ -228,12 +227,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetFilteredProduct(string productGroupId, string vendorId)
+        public async Task<IActionResult> GetFilteredProduct(string productGroupId, string vendorId)
         {
             JsonResult result;
             List<SelectListModel> lst;
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userDb = await _userManager.FindByIdAsync(currentUserId);
             var defaultLanguage = _lanRepository.GetDefaultLanguage(currentUserId);
+            if (userDb.IsSystemAccount) currentUserId = Guid.Empty.ToString();
             lst = _productRepositoy.GetAllActiveProductList(defaultLanguage.LanguageId, currentUserId, productGroupId, vendorId);
             if (lst.Count() > 0)
             {

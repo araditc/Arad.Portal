@@ -30,6 +30,9 @@
             font-size: 12px;
             line-height: 1.42857;
         }
+        .card-header {
+            background-color: #e0dcdf;
+        }
     </style>
     <link rel="stylesheet" href="~/css/bootstrap-select/bootstrap-select.css" />
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
@@ -72,7 +75,7 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label for="currencyId">@Language.GetString("Currency")</label><br />
-                        <select class="form-control selectpicker" data-live-search="true" id="currencyId" asp-for="CurrencyId" data-hide-disabled="true"
+                        <select class="form-control selectpicker" data-live-search="true" id="currencyId" asp-for="CurrencyId"
                                 asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text", Model.CurrencyId ))">
                         </select>
                         <span data-val-result="currencyId" class="text-danger"></span>
@@ -81,71 +84,116 @@
 
                 </div>
                 <div class="row" id="firstRow">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                         <label for="promotionTypeId">@Language.GetString("Classification")</label><br />
-                        <select class="form-control selectpicker" id="promotionTypeId" data-live-search="true" data-hide-disabled="true"
+                        <select class="form-control selectpicker" id="promotionTypeId" data-live-search="true"
                                 asp-items="@(new SelectList(ViewBag.PromotionTypes,"Value","Text", (int)Model.PromotionType))">
                         </select>
                         <span data-val-result="promotionTypeId" class="text-danger"></span>
                     </div>
 
                     @*@if (ViewBag.IsSysAcc)
-                    {
-                        <div class="form-group col-md-3" id="venderSection">
-                            <label for="productVendor">@Language.GetString("ProductVendor")</label><br />
-                            <select class="form-control selectpicker" id="productVendor" data-live-search="true" data-hide-disabled="true"
-                                    asp-items="@(new SelectList(ViewBag.Vendors, "Value", "Text"))">
-                            </select>
-                        </div>
-                    }
-                    <div class="form-group col-md-3" id="productGroupClassification">
-                        <label for="productGroupId">@Language.GetString("tbl_ProductGroup")</label><br />
-                        <select class="form-control selectpicker" id="productGroupId" data-live-search="true" data-hide-disabled="true">
-                        </select>
-                        <span data-val-result="productGroupId" class="text-danger"></span>
-                    </div>
+            {
+                <div class="form-group col-md-3" id="venderSection">
+                    <label for="productVendor">@Language.GetString("ProductVendor")</label><br />
+                    <select class="form-control selectpicker" id="productVendor" data-live-search="true"
+                            asp-items="@(new SelectList(ViewBag.Vendors, "Value", "Text"))">
+                    </select>
+                </div>
+            }
+            <div class="form-group col-md-3" id="">
+                <label for="productGroupId">@Language.GetString("tbl_ProductGroup")</label><br />
+                <select class="form-control selectpicker" id="productGroupId" data-live-search="true" >
+                </select>
+                <span data-val-result="productGroupId" class="text-danger"></span>
+            </div>
 
-                    <div class="form-group col-md-3" id="productClassification">
-                        <label for="productId">@Language.GetString("Product")</label><br />
-                        <select class="form-control selectpicker" id="productId" data-live-search="true" data-hide-disabled="true">
-                        </select>
-                        <span data-val-result="productId" class="text-danger"></span>
-                    </div>*@
+            <div class="form-group col-md-3" id="">
+                <label for="productId">@Language.GetString("Product")</label><br />
+                <select class="form-control selectpicker" id="productId" data-live-search="true" >
+                </select>
+                <span data-val-result="productId" class="text-danger"></span>
+            </div>*@
+                    <div class="col-md-1" style="margin-top:1%;display:none;" id="addButtonSection">
+                        <div style="margin:auto;display:inline-block;">
+                            <button type="button" class="btn btn-info btn-circle" onclick="addToProductList;">
+                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row"> <div class="col-md-12" ><lable class="form-control" style="background-color: #e0dcdf;">@Language.GetString("ProductsInPromotion")</lable></div></div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr style="text-align:center;">
+                                    <th>@Language.GetString("tbl_GroupName")</th>
+                                    <th style="display:none;"></th>
+                                    <th>@Language.GetString("tbl_VendorName")</th>
+                                    <th style="display:none;"></th>
+                                    <th>@Language.GetString("tbl_ProductName")</th>
+                                    <th style="display:none;"></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="infoList">
+                                @if (Model.PromotionTypeId == 2 && Model.Infoes.Any())
+                                {
+                                    @foreach (var item in Model.Infoes)
+                                    {
+                                        <tr style="text-align:center;">
+                                            <td>@item.AffectedProductGroupName</td>
+                                            <td style="display:none;">@item.AffectedProductGroupId</td>
+                                            <td>@item.ProductVendorName</td>
+                                            <th style="display:none;">@item.ProductVendorId</th>
+                                            <td>@item.AffectedProductName</td>
+                                            <td style="display:none;">@item.AffectedProductId</td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromList(this);">
+                                                    <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr style="text-align:center;">
+                                        <td colspan="7">@Language.GetString("AlertAndMessage_NoDataToShow")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
 
                 </div>
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label for="discountTypeId">@Language.GetString("Type")</label><br />
-                        <select class="form-control selectpicker" id="discountTypeId" data-live-search="true" data-hide-disabled="true"
-                                asp-items="@(new SelectList(ViewBag.DiscountTypes,"Value","Text", Model.DiscountType))">
+                        <select class="form-control selectpicker" id="discountTypeId" data-live-search="true"
+                                asp-items="@(new SelectList(ViewBag.DiscountTypes,"Value","Text", (int)Model.DiscountType))">
                         </select>
                         <span data-val-result="discountTypeId" class="text-danger"></span>
                     </div>
-                   
-                    <div class="form-group col-md-3" id="productGroupType" style="display:none;">
-                        <label for="productGroupType">@Language.GetString("tbl_ProductGroup")</label><br />
-                        <select class="form-control selectpicker" id="productGroupType" data-live-search="true" data-hide-disabled="true">
-                        </select>
-                        <span data-val-result="productGroupType" class="text-danger"></span>
+
+                    <div class="form-group col-md-3" id="productGroupTypeSection" style="display:none;">
                     </div>
 
-                    <div class="form-group col-md-3 type2" id="productType"  style="display:none;" >
-                        <label for="ProductIdType">@Language.GetString("Product")</label><br />
-                        <select class="form-control selectpicker" id="ProductIdType" data-live-search="true" data-hide-disabled="true">
-                        </select>
-                        <span data-val-result="ProductIdType" class="text-danger"></span>
+                    <div class="form-group col-md-3" id="productTypeSection" style="display:none;">
                     </div>
 
                 </div>
-                <div class="row">
-                    <div class="form-group col-md-3 type2" style="display:none;">
+                <div class="row type2">
+                    <div class="form-group col-md-3" style="display:none;">
                         <label for="boughtCount">@Language.GetString("BoughtCount")</label><br />
-                        <input type="number" class="form-control" id="boughtCount" value="@Model.BoughtCount" >
+                        <input type="number" class="form-control" id="boughtCount" value="@Model.BoughtCount">
                         <span data-val-result="boughtCount" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3 type2" style="display:none;">
+                    <div class="form-group col-md-3" style="display:none;">
                         <label for="promotedCountofUnit">@Language.GetString("PromotedCountofUnit")</label><br />
-                        <input type="number" class="form-control" id="promotedCountofUnit" value="@Model.PromotedCountofUnit" >
+                        <input type="number" class="form-control" id="promotedCountofUnit" value="@Model.PromotedCountofUnit">
                         <span data-val-result="PromotedCountofUnit" class="text-danger"></span>
                     </div>
 
@@ -233,13 +281,7 @@
 
   $(document).ready(function () {
       debugger;
-      if ('@Model.PromotionId' != "") {
-          $("#dtpFromDate").val('@Model.PersianStartDate');
-          if('@Model.PersianEndDate' != "")
-          {
-              $("#dtpToDate").val('@Model.PersianEndDate');
-          }
-      }
+     
        //datetimepicker
             if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
             {
@@ -255,6 +297,7 @@
                     format: 'L'
                 });
       }
+      LoadData();
     $("#promotionTypeId").change(function () {
                debugger;
                if ($("#promotionTypeId").val() != "-1") {
@@ -277,7 +320,7 @@
                             var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
                             if (result.status === "success") {
                                 debugger;
-                                var options = "";
+
                                 if (result.data.length != 0) {
                                     (result.data).forEach(function (item) {
                                         var op = "<option value='" + item.value + "'>" + item.text + "</option>";
@@ -285,7 +328,7 @@
                                     });
                                 }
                                 var groupSelect = "<div class='form-group col-md-3' id='groupSection'><label>" + '@Language.GetString("tbl_ProductGroup")' +"</label>" +
-                                    "<select class='form-control selectpicker' id='productGroupId' data-live-search='true' data-hide-disabled='true'>" + options + "</select>";
+                                    "<select class='form-control selectpicker' id='productGroupId' data-live-search='true'>" + options + "</select></div>";
                                 $("#firstRow").append(groupSelect);
                                 $("#productGroupId").selectpicker();
                             }
@@ -298,7 +341,7 @@
                     });
                }
             });
-
+     
      $("#discountTypeId").change(function () {
           debugger;
           if ($(this).val() != "-1") {
@@ -306,14 +349,21 @@
 
                   case "0":
                       $("#PriceOrDiscount").css("display", "block");
+                      $("#productGroupTypeSection").css("display", "none");
+                      $("#productTypeSection").css("display", "none");
                       $(".type2").css("display", "none");
                       break;
                   case "1":
                       $("#PriceOrDiscount").css("display", "block");
+                      $("#productGroupTypeSection").css("display", "block");
+                      $("#productTypeSection").css("display", "none");
                       $(".type2").css("display", "none");
+
                       break;
                   case "2":
                       $("#PriceOrDiscount").css("display", "none");
+                      $("#productGroupTypeSection").css("display", "block");
+                      $("#productTypeSection").css("display", "block");
                       $(".type2").css("display", "block");
                       break;
               }
@@ -321,6 +371,8 @@
      });
 
       $(document).on("change", "#productVendor", function () {
+
+          debugger;
           if ($("#productVendor").val() != "-1") {
                     $.ajax({
                         url: "/Promotion/GetFilteredProductGroup?vendorId=" + $("#productVendor").val(),
@@ -331,18 +383,22 @@
                             var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
                             if (result.status === "success") {
                                 debugger;
-                                var options = "";
                                 if (result.data.length != 0) {
                                     (result.data).forEach(function (item) {
                                         var op = "<option value='" + item.value + "'>" + item.text + "</option>";
                                         options += op;
                                     });
                                 }
-                                var groupSelect = "<div class='form-group col-md-3' id='productGroupClassification'><label>" + '@Language.GetString("tbl_ProductGroup")' +"</label>" +
-                                    "<select class='form-control selectpicker' id='productGroupId' data-live-search='true' data-hide-disabled='true'>" + options + "</select>";
-                                $("#firstRow").append(groupSelect);
-                                $("#productGroupType").html(options);
+                                var productgroupSelect = "<div class='form-group col-md-3' id='productGroupClassification'><label>" + '@Language.GetString("tbl_ProductGroup")' +"</label>" +
+                                    "<select class='form-control selectpicker' id='productGroupId' data-live-search='true' >" + options + "</select></div>";
+                                var productGroupTypeSelect = "<label>" + '@Language.GetString("tbl_ProductGroup")' +"</label>" +
+                                    "<select class='form-control selectpicker' id='productGroupType' data-live-search='true' >" + options +
+                                    "</select><span data-val-result='productGroupType' class='text-danger'></span>";
+                                $("#firstRow").append(productgroupSelect);
+                                debugger;
+                                $("#productGroupTypeSection").append(productGroupTypeSelect);
                                 $("#productGroupId").selectpicker();
+                                $("#productGroupType").selectpicker();
                             }
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
@@ -367,7 +423,6 @@
                       var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
                       if (result.status === "success") {
                           debugger;
-                          var options = "";
                           if (result.data.length != 0) {
                               (result.data).forEach(function (item) {
                                   var op = "<option value='" + item.value + "'>" + item.text + "</option>";
@@ -375,10 +430,11 @@
                               });
                           }
                           var productSection = "<div class='form-group col-md-3' id='productClassification'><label for='productId'>" +'@Language.GetString("Product")'+"</label><br />" +
-                              "<select class='form-control selectpicker' id='productId' data-live-search='true' data-hide-disabled='true'>" + options + "</select>";
+                              "<select class='form-control selectpicker' id='productId' data-live-search='true' >" + options + "</select></div>";
 
                           $("#firstRow").append(productSection);
                           $("#productId").selectpicker();
+                          $("#addButtonSection").css("display", "block");
                           }
                   },
                     error: function (xhr, ajaxOptions, thrownError) {
@@ -394,38 +450,9 @@
                 }
        });
       $(document).on("change", "#productGroupType", function () {
-          if ($("#productGroupType").val() != "-1" && $("#discountTypeId").val() == "2")
-                {
-                    $.ajax({
-                    url: "/Promotion/GetFilteredProduct?productGroupId=" + $("#productGroupId").val() + "&vendorId=" + $("#productVendor").val(),
-                    type: 'Get',
-                    dataType : 'json',
-                  success: function (result) {
-                      debugger;
-                      var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
-                      if (result.status === "success") {
-                          debugger;
-                          var options = "";
-                          if (result.data.length != 0) {
-                              (result.data).forEach(function (item) {
-                                  var op = "<option value='" + item.value + "'>" + item.text + "</option>";
-                                  options += op;
-                              });
-                          }
-                          @*var productSection = "<div class='form-group col-md-3' id='productClassification'><label for='productId'>" +'@Language.GetString("Product")'+"</label><br />" +
-                              "<select class='form-control selectpicker' id='productId' data-live-search='true' data-hide-disabled='true'>" + options + "</select>";*@
-                         /* $("#firstRow").append(productSection);*/
-                          $("#productGroupType").selectpicker();
-                     }
-                  },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        alert("@error");
-                        alert(xhr.status);
-                        alert(thrownError);
-                    }
-                   });
-                }
-           });
+          fillProductTypeIdSelect();
+      });
+
 
      $("#btnAddPromotion").click(function () {
             debugger;
@@ -553,8 +580,8 @@
         if ('@ViewBag.IsSysAcc' == "True") {
                                 var list = @Json.Serialize(ViewBag.Vendors) ;
                                  vendorSelect = "<div class='form-group col-md-3' id='vendorSection'><label for='productVendor'>"
-                                    +'@Language.GetString("ProductVendor")'+"</label><br /><select class='form-control' id='productVendor' data-live-search='true' data-hide-disabled='true'>";
-                                var options = "";
+                + '@Language.GetString("ProductVendor")' + "</label><br /><select class='form-control' id='productVendor' data-live-search='true'>";
+            var options = "<option value='-1'>" + '@Language.GetString("AlertAndMessage_Choose")' + "</option>";
                                 (list).forEach(function (item) {
                                     var op = "<option value='" + item.value + "'>" + item.text + "</option>";
                                     options += op;
@@ -563,35 +590,49 @@
         }
         return vendorSelect;
     }
-        function FillDataToSend() {
+    function FillDataToSend() {
             debugger;
             var obj = {};
-
+           obj.Infoes = [];
            obj.PromotionId = $("#PromotionId").val();
            obj.ModificationReason = $("#ModificationReason").val();
             obj.Title = $("#title").val();
             obj.CurrencyId = $("#currencyId").val();
             obj.CurrencyName = $("#currencyId option:selected").text();
-           obj.PromotionTypeId = parseInt($("#promotionTypeId").val());
+            obj.PromotionTypeId = parseInt($("#promotionTypeId").val());
             obj.DiscountTypeId = parseInt($("#discountTypeId").val());
-            //if ($("#PriceOrDiscount").css("display") == "block") {
-            //    obj.Value = parseFloat($("#value").val());
-            //}
             obj.PersianStartDate = $("#dtpFromDate").val();
             obj.PersianEndDate = $("#dtpToDate").val();
-            if ($("promotionTypeId").val() == "1") {
-                obj.AffectedProductGroupId = $("#productGroupId").val();
+        if ($("#promotionTypeId").val() == "1") {
+            var model = {};
+            model.AffectedProductGroupId = $("#productGroupId").val();
+            model.AffectedProductGroupName = $("#productGroupId option:selected").text();
+            model.ProductVendorId = $("#productVendor").val();
+            model.ProductVendorName = $("#productVendor option:selected").text();
+            obj.Infoes.push(model);
             }
             else
-            if ($("promotionTypeId").val() == "2") {
-                obj.AffectedProductId = $("#productId").val();
-                }
+            if ($("#promotionTypeId").val() == "2") {
+                //multiselect
+                $("#infoList tr").each(function () {
+                    var model = {}
+                    model.AffectedProductId = $(this).find("td:eq(5)").text();
+                    model.AffectedProductName = $(this).find("td:eq(4)").text();
+                    model.AffectedProductGroupId = $(this).find("td:eq(1)").text();
+                    model.AffectedProductGroupName = $(this).find("td:eq(0)").text();
+                    model.ProductVendorId = $(this).find("td:eq(3)").text();
+                    model.ProductVendorName = $(this).find("td:eq(2)").text();
+
+                    obj.Infoes.push(model);
+                });
+            }
             if ($("#discountTypeId").val() == "0" || $("#discountTypeId").val() == "1") {
                 obj.Value = parseFloat($("#value").val());
             }
             else if ($("#discountTypeId").val() == "2")
             {
-                obj.PromotedProductId = $("#productIdType").val();
+                obj.PromotedProductId = $("#ProductIdType").val();
+                obj.PromotedProductName = $("#ProductIdType option:selected").text();
                 obj.BoughtCount = parseInt($("#boughtCount").val());
                 obj.PromotedCountofUnit = parseInt($("#promotedCountofUnit").val());
             }
@@ -599,8 +640,150 @@
             debugger;
             return obj;
         }
+        function LoadData() {
+            debugger;
+            var model = @Json.Serialize(Model);
+            if (model.promotionId != "") {
+                $("#dtpFromDate").val(model.persianStartDate);
+                if (model.persianEndDate != "") {
+                    $("#dtpToDate").val(model.persianEndDate);
+                }
+                debugger;
+               /* $("#promotionTypeId").selectpicker('val', model.promotionTypeId);*/
+                if (model.promotionTypeId == "1") {
+                    {
+                        //vendor
+                        $("#firstRow").append(generateVendorSection());
+                        debugger;
+                        if (model.infoes.length > 0) {
+                            $("#productVendor").selectpicker('val', model.infoes[0].productVendorId);
+                        }
 
 
+                        //group
+                        var vendorId = "-1";
+                        if (model.infoes.length > 0 && model.infoes[0].productVendorId  != "") {
+                            vendorId = model.infoes[0].productVendorId;
+                        }
+                        debugger;
+                        $.ajax({
+                            url: "/Promotion/GetFilteredProductGroup?vendorId=" + vendorId,
+                            type: 'Get',
+                            dataType: 'json',
+                            success: function (result) {
+                                debugger;
+                                var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
+                                if (result.status === "success") {
+                                    debugger;
+                                    if (result.data.length != 0) {
+                                        (result.data).forEach(function (item) {
+                                            var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                            options += op;
+                                        });
+                                    }
+                                    var groupSelect = "<div class='form-group col-md-3' id='groupSection'><label>" + '@Language.GetString("tbl_ProductGroup")' + "</label>" +
+                                        "<select class='form-control selectpicker' id='productGroupId' data-live-search='true'>" + options + "</select></div>";
+
+                                    var productGroupTypeSelect = "<label>" + '@Language.GetString("tbl_ProductGroup")' + "</label>" +
+                                        "<select class='form-control selectpicker' id='productGroupType' data-live-search='true' >" + options +
+                                        "</select><span data-val-result='productGroupType' class='text-danger'></span>";
+                                    $("#firstRow").append(groupSelect);
+                                    debugger;
+                                    $("#productGroupTypeSection").append(productGroupTypeSelect);
+                                    $("#productGroupType").selectpicker('val', model.groupIdOfPromotedProduct);
+                                    $("#productGroupId").selectpicker('val', model.infoes[0].affectedProductGroupId);
+
+                                }
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                alert("@error");
+                                alert(xhr.status);
+                                alert(thrownError);
+                            }
+                        });
+                    }
+
+                    if ($("#discountTypeId").val() == "2" && $("#ProductIdType").length == 0) {
+                        fillProductTypeIdSelect(model.promotedProductId);
+                    }
+                }
+
+            }
+        }
+
+
+        function addToProductList() {
+            debugger;
+            if ($("#productId").val() != "-1") {
+                var vendorId = "";
+                var vendorName = "";
+                if ($("#productVendor").length != 0) {
+                    vendorId = $("#productVendor").val();
+                    vendorName = $("#productVendor option:selected").text();
+                }
+                var tr = "<tr style='text-align: center;'><td>" + vendorName
+                    + "</td><td style='display:none;'>" + vendorId
+                    + "</td><td>" + $("#productGroupId option:selected").text()
+                    + "</td><td style='display:none;'>" + $("#productGroupId").val()
+                    + "</td><td>" + $("#productId option:selected").text()
+                    +"</td><td style='display:none;'>" + $("#productId").val()
+                    + "</td></tr>";
+                if ($("#infoList tr").length == 1 && $("#infoList tr")[0].children.length == 1) {
+                    $("#infoList tr")[0].remove();
+                }
+                $("#infoList").append(tr);
+            }
+        }
+
+        function deleteFromList(sender) {
+            debugger;
+            var tr = $(sender).parent().parent();
+            $(tr).remove();
+        }
+
+        function fillProductTypeIdSelect(selectedProductId = "") {
+          if ($("#productGroupType").val() != "-1" && $("#discountTypeId").val() == "2")
+                {
+                    $.ajax({
+                    url: "/Promotion/GetFilteredProduct?productGroupId=" + $("#productGroupId").val() + "&vendorId=" + $("#productVendor").val(),
+                    type: 'Get',
+                    dataType : 'json',
+                  success: function (result) {
+                      debugger;
+                      var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
+                      if (result.status === "success") {
+                          debugger;
+                          if (result.data.length != 0) {
+                              (result.data).forEach(function (item) {
+                                  var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                  options += op;
+                              });
+                          }
+                          var productTypeSelect = "<label for=ProductIdType>" + '@Language.GetString("Product")' + "</label><br />" +
+                              "<select class=form-control selectpicker id='ProductIdType' data-live-search='true' >" + options +
+                              "</select><span data-val-result='ProductIdType' class='text-danger'></span>";
+
+                          $("#productTypeSection").append(productTypeSelect);
+                          if (selectedProductId == "") {
+                              $("#ProductIdType").selectpicker();
+                          } else {
+                              $("#ProductIdType").selectpicker('val', selectedProductId);
+                          }
+
+                          $("#productTypeSection").css("display", "block");
+                     }
+                  },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert("@error");
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+                   });
+                }
+        }
+
+
+       
     </script>
 }
 

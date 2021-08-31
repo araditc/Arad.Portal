@@ -113,10 +113,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
             var result = new RepositoryOperationResult();
             var promotionEntity = _context.Collection
                 .Find(_ => _.PromotionId == promotionId).FirstOrDefault();
-            bool isValid = (promotionEntity.EndDate != null && promotionEntity.EndDate.Value >= DateTime.UtcNow)
-                 || promotionEntity.EndDate == null;
-            if (isValid)
-            {
+            //bool isValid = (promotionEntity.EndDate != null && promotionEntity.EndDate.Value >= DateTime.UtcNow)
+            //     || promotionEntity.EndDate == null;
+           
                 bool allowDeletion;
 
                 var check = _productContext.ProductCollection
@@ -150,10 +149,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                 {
                     result.Message = ConstMessages.DeletedNotAllowedForDependencies;
                 }
-            }else
-            {
-                result.Message = ConstMessages.ObjectNotFound;
-            }
+           
             return result;
         }
 
@@ -293,16 +289,25 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                 }
                 if (!string.IsNullOrWhiteSpace(productId))
                 {
-                    list = list.Where(_ => _.AffectedProductId == productId).Skip((page - 1) * pageSize)
+                    list = list.Where(_ => _.Infoes.Any(_=>_.AffectedProductId == productId)).Skip((page - 1) * pageSize)
                      .Take(pageSize).ToList();
                 }else if (!string.IsNullOrWhiteSpace(groupId))
                 {
-                    list = list.Where(_ => _.AffectedProductGroupId == groupId).Skip((page - 1) * pageSize)
+                    list = list.Where(_ => _.Infoes.Any(_=> _.AffectedProductGroupId == groupId)).Skip((page - 1) * pageSize)
                      .Take(pageSize).ToList();
                 }
-               
 
                 result.Items = _mapper.Map<List<PromotionDTO>>(list);
+                foreach (var item in result.Items)
+                {
+                    foreach (var desc in item.Infoes)
+                    {
+                        if(!string.IsNullOrWhiteSpace(desc.AffectedProductName))
+                        {
+                            item.ProductNamesConcat += desc.AffectedProductName;
+                        }
+                    }
+                }
                
             }
             catch (Exception ex)
@@ -365,6 +370,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
             {
                 result.PersianEndDate = DateHelper.ToPersianDdate(entity.EndDate.Value.ToLocalTime());
             }
+            
+            result.PromotionTypeId = (int)entity.PromotionType;
+            result.DiscountTypeId = (int)entity.DiscountType;
             return result;
         }
 

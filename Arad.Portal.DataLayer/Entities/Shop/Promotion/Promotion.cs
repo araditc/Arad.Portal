@@ -9,7 +9,10 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
 {
     public class Promotion : BaseEntity
     {
-
+        public Promotion()
+        {
+            Infoes = new List<PromotionInfo>();
+        }
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string PromotionId { get; set; }
@@ -26,18 +29,18 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
 
         public string CurrencyName { get; set; }
 
-        public string AffectedProductId { get; set; }
-
-        public string AffectedProductName { get; set; }
-
-        public string AffectedProductGroupId { get; set; }
-        public string AffectedProductGroupName { get; set; }
+        public List<PromotionInfo> Infoes { get; set; }
 
         public string PromotedProductId { get; set; }
 
         public string PromotedProductName { get; set; }
 
+        public string GroupIdOfPromotedProduct { get; set; }
+
+        public string GroupNameofPromotedProduct { get; set; }
+
         public int? BoughtCount { get; set; }
+
         public int? PromotedCountofUnit { get; set; }
 
 
@@ -51,6 +54,20 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
 
     }
 
+    public class PromotionInfo
+    {
+        public string AffectedProductId { get; set; }
+
+        public string AffectedProductName { get; set; }
+
+        public string AffectedProductGroupId { get; set; }
+
+        public string AffectedProductGroupName { get; set; }
+
+        public string ProductVendorId { get; set; }
+
+        public string ProductVendorName { get; set; }
+    }
     public enum PromotionType
     {
         All,
