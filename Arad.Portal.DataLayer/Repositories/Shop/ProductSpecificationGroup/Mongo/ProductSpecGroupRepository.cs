@@ -42,7 +42,6 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
             try
             {
                 var equallentEntity = _mapper.Map<ProductSpecGroup>(dto);
-                equallentEntity.SpecificationGroupId = Guid.NewGuid().ToString();
 
                 equallentEntity.CreationDate = DateTime.Now;
                 equallentEntity.CreatorUserId = _httpContextAccessor.HttpContext.User.Claims

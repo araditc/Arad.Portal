@@ -43,13 +43,18 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
                 string userId = _accessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
                 var route = _accessor.HttpContext.GetRouteData();
-                var controller = route.Values["controller"].ToString();
-                var action = route.Values["action"].ToString();
-                string address = $"{controller}/{action}";
+               
+
+                var req = _accessor.HttpContext.Request;
+                var obj = new RequestMenuModel()
+                {
+                    PathString = $"{req.RouteValues["controller"]}/{req.RouteValues["action"]}",
+                    Domain = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}"
+                };
 
                 if (userId != null)
                 {
-                    menues = await _permissionRepository.ListOfMenues(userId, address);
+                    menues = await _permissionRepository.ListOfMenues(userId,obj.PathString, obj.Domain);
                 }
             }
             catch (Exception e)

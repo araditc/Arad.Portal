@@ -288,7 +288,7 @@
    
     <script>
      $(document).ready(function () {
-        
+         debugger;
       @*$("li.nav-item").click(function (e) {
 
           var tag = $(this).find("span.expand-state.pull-left")[0].children[0];
@@ -303,8 +303,14 @@
                   $(tag).removeClass("fa fa-chevron-down").addClass('@chevron');
               }
         /*  e.stopPropagation();*/
-    });*@
-
+    });
+         $(".nav-item .nav-link").click(function () {
+             debugger;
+             if ($(this).attr("data-id") != undefined) {
+                 $(this).addClass("active");
+             }
+             
+         });*@
 
     });
 

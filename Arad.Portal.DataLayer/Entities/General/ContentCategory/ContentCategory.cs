@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Entities.General.ContentCategory
 {
-    public class ContentCategory
+    public class ContentCategory :BaseEntity
     {
         public ContentCategory()
         {

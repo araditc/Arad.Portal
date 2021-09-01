@@ -38,39 +38,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
 
         public  IViewComponentResult Invoke(MenuLinkModel model)
         {
-            //var result = new MenuLinkModel();
-            //List<Permission> pers = new List<Permission>(); ;
-            //try
-            //{
-            //    string currentUserId = _accessor.HttpContext.User.Claims
-            //        .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            //    var route = _accessor.HttpContext.GetRouteData();
-            //    var controller = route.Values["controller"].ToString();
-            //    var action = route.Values["action"].ToString();
-            //    string address = $"{controller}/{action}";
-            //    var applicationUser = await _userManager.FindByIdAsync(currentUserId);
-                
-            //    pers = _userRepository.GetPermissionsOfUser(applicationUser);
-            //    var context = pers.Where(p => p.Type == Enums.PermissionType.Menu).ToList();
-            //    var per = await _permissionRepository.FetchPermission(menuId);
-            //    if (per != null)
-            //    {
-            //        result.MenuId = per.PermissionId;
-            //        result.MenuTitle = GeneralLibrary.Utilities.Language.GetString("PermissionTitle_" + per.Title);
-            //        result.Icon = per.Icon;
-            //        result.Priority = per.Priority;
-            //        result.IsActive = per.ClientAddress != null && per.Routes.Contains(address);
-            //    }
-
-            //    if (applicationUser != null)
-            //    {
-            //        result.Children = _permissionRepository.GetChildren(context, menuId, address);
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-
-            //}
             return  View(model);
         }
     }

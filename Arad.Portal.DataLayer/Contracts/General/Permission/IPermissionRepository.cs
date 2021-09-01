@@ -17,11 +17,11 @@ namespace Arad.Portal.DataLayer.Contracts.General.Permission
         /// <summary>
         /// لیست منوهایی که این یوزر دسترسی داره
         /// </summary>
-        Task<List<MenuLinkModel>> ListOfMenues(string currentUserId, string address);
+        Task<List<MenuLinkModel>> ListOfMenues(string currentUserId, string address, string domain);
 
         Task<RepositoryOperationResult<string>> GetPermissionType(string permissionId);
         List<MenuLinkModel> GetChildren(List<Entities.General.Permission.Permission> context,
-           string permissionId, string address);
+           string permissionId, string address, string domain);
         Task<List<PermissionDTO>> MenusPermission(Enums.PermissionType typeMenu);
         Task<RepositoryOperationResult> Save(PermissionDTO permission);
         RepositoryOperationResult<PermissionDTO> GetForEdit(string permissionId);

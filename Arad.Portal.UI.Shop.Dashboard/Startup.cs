@@ -51,6 +51,8 @@ using Arad.Portal.DataLayer.Contracts.General.Notification;
 using Arad.Portal.DataLayer.Repositories.General.Notification.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.MessageTemplate;
 using Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo;
+using Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo;
+using Arad.Portal.DataLayer.Contracts.General.ContentCategory;
 
 namespace Arad.Portal.UI.Shop.Dashboard
 {
@@ -198,7 +200,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<ITransationRepository, TransactionRepository>();
             services.AddTransient<INotificationRepository, NotificationRepository>();
             services.AddTransient<IMessageTemplateRepository, MessageTemplateRepository>();
-
+            services.AddTransient<IContentCategoryRepository, ContentCategoryRepository>();
 
             #region contexes
             services.AddTransient<CurrencyContext>();
@@ -214,6 +216,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<TransactionContext>();
             services.AddTransient<MessageTemplateContext>();
             services.AddTransient<NotificationContext>();
+            services.AddTransient<ContentCategoryContext>();
             #endregion
 
         }

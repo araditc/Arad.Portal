@@ -284,7 +284,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
 
 
        //my own writing
-        public async Task<List<MenuLinkModel>> ListOfMenues(string currentUserId, string address)
+        public async Task<List<MenuLinkModel>> ListOfMenues(string currentUserId, string address, string domain)
         {
             var result = new List<MenuLinkModel>();
             try
@@ -305,8 +305,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
                         Icon = _.Icon,
                         Link = _.ClientAddress,
                         Priority = _.Priority,
-                        IsActive = _.ClientAddress != null && _.Routes.Contains(address),
-                        Children = GetChildren(allMenues, _.PermissionId, address)
+                        IsActive = (!string.IsNullOrWhiteSpace(_.ClientAddress)  && _.ClientAddress.Equals(address)) || (_.ClientAddress == "" && _.Routes.Contains(address)),
+                        Children = GetChildren(allMenues, _.PermissionId, address, domain)
                     }).ToList().OrderBy(_ => _.Priority).ToList();
                 }
                 else
@@ -323,8 +323,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
                         Icon = _.Icon,
                         Link = _.ClientAddress,
                         Priority = _.Priority,
-                        IsActive = _.ClientAddress != null && _.Routes.Contains(address),
-                        Children = GetChildren(menues, _.PermissionId, address)
+                        IsActive = !string.IsNullOrWhiteSpace(_.ClientAddress) && _.ClientAddress.Contains(address),
+                        Children = GetChildren(menues, _.PermissionId, address, domain)
                     }).OrderBy(o => o.Priority).ToList();
                 }
             }
@@ -336,7 +336,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
         }
 
         public List<MenuLinkModel> GetChildren(List<Entities.General.Permission.Permission> context,
-           string permissionId, string address)
+           string permissionId, string address, string domain)
         {
             var result = new List<MenuLinkModel>();
             if (context.Any(_ => _.ParentMenuId == permissionId))
@@ -345,12 +345,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
                     .Select(_ => new MenuLinkModel()
                 {
                     Icon = _.Icon,
-                    IsActive = _.Routes != null && _.Routes.Contains(address),
+                    IsActive = !string.IsNullOrWhiteSpace(_.ClientAddress) && _.ClientAddress.Equals(address),
                     Link = _.ClientAddress,
                     MenuTitle = GeneralLibrary.Utilities.Language.GetString("PermissionTitle_" + _.Title),
                     MenuId = _.PermissionId,
                     Priority = _.Priority,
-                    Children = GetChildren(context, _.PermissionId, address)
+                    Children = GetChildren(context, _.PermissionId, address, domain)
                 }).ToList();
             }
 

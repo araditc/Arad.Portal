@@ -8972,11 +8972,11 @@ body,
   color: #C2C7D0;
 }
 
-.sidebar-dark-primary .nav-sidebar > .nav-item.menu-open > .nav-link,
-.sidebar-dark-primary .nav-sidebar > .nav-item:hover > .nav-link {
-  color: /*#ffffff*/ blue;
-  background-color: rgba(255, 255, 255, 0.1);
-}
+    .sidebar-dark-primary .nav-sidebar > .nav-item.menu-open > .nav-link,
+    .sidebar-dark-primary .nav-sidebar > .nav-item:hover > .nav-link {
+        color: /*#ffffff*/ blue;
+        background-color: /*rgba(255, 255, 255, 0.1);*/ rgba(4, 26, 70, 0.15);
+    }
 
 .sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active {
   color: #ffffff;
@@ -9006,12 +9006,12 @@ body,
 
 .sidebar-dark-primary .nav-treeview > .nav-item > .nav-link:hover {
   color: /*#ffffff*/ blue;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: /*rgba(255, 255, 255, 0.1)*/ rgba(4, 26, 70, 0.15);
 }
 
 .sidebar-dark-primary .nav-treeview > .nav-item > .nav-link.active, .sidebar-dark-primary .nav-treeview > .nav-item > .nav-link.active:hover {
-  color: #343a40;
-  background-color: rgba(255, 255, 255, 0.9);
+    color: #343a40;
+    background-color: /*rgba(255, 255, 255, 0.9)*/ rgba(4, 26, 70, 0.15);
 }
 
 .sidebar-light-primary {
@@ -9120,7 +9120,7 @@ body,
 .sidebar-dark-secondary .nav-sidebar > .nav-item.menu-open > .nav-link,
 .sidebar-dark-secondary .nav-sidebar > .nav-item:hover > .nav-link {
   color: #ffffff;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(4, 26, 70, 0.15);
 }
 
 .sidebar-dark-secondary .nav-sidebar > .nav-item > .nav-link.active {
