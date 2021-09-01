@@ -114,18 +114,12 @@
                 </select>
                 <span data-val-result="productId" class="text-danger"></span>
             </div>*@
-                    <div class="col-md-1" style="margin-top:1%;display:none;" id="addButtonSection">
-                        <div style="margin:auto;display:inline-block;">
-                            <button type="button" class="btn btn-info btn-circle" onclick="addToProductList;">
-                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
-                            </button>
-                        </div>
-                    </div>
+                   
                 </div>
                 <div class="row"> <div class="col-md-12" ><lable class="form-control" style="background-color: #e0dcdf;">@Language.GetString("ProductsInPromotion")</lable></div></div>
 
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12" style="background-color:">
                         <table class="table table-hover table-bordered">
                             <thead>
                                 <tr style="text-align:center;">
@@ -185,19 +179,18 @@
                     </div>
 
                 </div>
-                <div class="row type2">
-                    <div class="form-group col-md-3" style="display:none;">
+                <div class="row type2" style="display:none;">
+                    <div class="col-md-3" >
                         <label for="boughtCount">@Language.GetString("BoughtCount")</label><br />
                         <input type="number" class="form-control" id="boughtCount" value="@Model.BoughtCount">
                         <span data-val-result="boughtCount" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3" style="display:none;">
+                    <div class="col-md-3" >
                         <label for="promotedCountofUnit">@Language.GetString("PromotedCountofUnit")</label><br />
                         <input type="number" class="form-control" id="promotedCountofUnit" value="@Model.PromotedCountofUnit">
                         <span data-val-result="PromotedCountofUnit" class="text-danger"></span>
                     </div>
-
-
+                    <div class="col-md-6"></div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-3" id="PriceOrDiscount">
@@ -281,7 +274,7 @@
 
   $(document).ready(function () {
       debugger;
-     
+
        //datetimepicker
             if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
             {
@@ -341,7 +334,7 @@
                     });
                }
             });
-     
+
      $("#discountTypeId").change(function () {
           debugger;
           if ($(this).val() != "-1") {
@@ -434,7 +427,10 @@
 
                           $("#firstRow").append(productSection);
                           $("#productId").selectpicker();
-                          $("#addButtonSection").css("display", "block");
+                          $("#firstRow").append("<div class='col-md-1' style='margin-top:1%;' id='addButtonSection'><div style='margin:auto;display:inline-block;'>" +
+                              "<button type='button' class='btn btn-info btn-circle' onclick='addProductToPromotion()'>" +
+                              "<i class='fa fa-plus' style='position: relative;padding: 3px;'></i></botton></div></div>");
+                         /* $("#addButtonSection").css("display", "block");*/
                           }
                   },
                     error: function (xhr, ajaxOptions, thrownError) {
@@ -618,10 +614,10 @@
                     var model = {}
                     model.AffectedProductId = $(this).find("td:eq(5)").text();
                     model.AffectedProductName = $(this).find("td:eq(4)").text();
-                    model.AffectedProductGroupId = $(this).find("td:eq(1)").text();
-                    model.AffectedProductGroupName = $(this).find("td:eq(0)").text();
-                    model.ProductVendorId = $(this).find("td:eq(3)").text();
-                    model.ProductVendorName = $(this).find("td:eq(2)").text();
+                    model.AffectedProductGroupId = $(this).find("td:eq(3)").text();
+                    model.AffectedProductGroupName = $(this).find("td:eq(2)").text();
+                    model.ProductVendorId = $(this).find("td:eq(1)").text();
+                    model.ProductVendorName = $(this).find("td:eq(0)").text();
 
                     obj.Infoes.push(model);
                 });
@@ -631,8 +627,11 @@
             }
             else if ($("#discountTypeId").val() == "2")
             {
+                debugger;
                 obj.PromotedProductId = $("#ProductIdType").val();
                 obj.PromotedProductName = $("#ProductIdType option:selected").text();
+                obj.GroupIdOfPromotedProduct = $("#productGroupType").val();
+                obj.GroupNameofPromotedProduct = $("#productGroupType option:selected").text();
                 obj.BoughtCount = parseInt($("#boughtCount").val());
                 obj.PromotedCountofUnit = parseInt($("#promotedCountofUnit").val());
             }
@@ -702,18 +701,21 @@
                             }
                         });
                     }
-
-                    if ($("#discountTypeId").val() == "2" && $("#ProductIdType").length == 0) {
-                        fillProductTypeIdSelect(model.promotedProductId);
-                    }
+                }
+                if ($("#discountTypeId").val() == "2" && $("#ProductIdType").length == 0) {
+                    debugger;
+                    fillProductGroupTypeSelect(model.groupIdOfPromotedProduct, model.promotedProductId);
+                    $(".type2").css("display", "block");
+                    $("#PriceOrDiscount").css("display", "none");
                 }
 
             }
         }
 
 
-        function addToProductList() {
+        function addProductToPromotion() {
             debugger;
+           /* alert("aaaaaaa");*/
             if ($("#productId").val() != "-1") {
                 var vendorId = "";
                 var vendorName = "";
@@ -727,7 +729,7 @@
                     + "</td><td style='display:none;'>" + $("#productGroupId").val()
                     + "</td><td>" + $("#productId option:selected").text()
                     +"</td><td style='display:none;'>" + $("#productId").val()
-                    + "</td></tr>";
+                    + "</td><td><button type='button' class='btn btn-danger btn-circle' onclick='deleteFromList(this);'><i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
                 if ($("#infoList tr").length == 1 && $("#infoList tr")[0].children.length == 1) {
                     $("#infoList tr")[0].remove();
                 }
@@ -741,11 +743,60 @@
             $(tr).remove();
         }
 
+        function fillProductGroupTypeSelect(selectedGroupId = "", selectedProductId ="") {
+            var vendorId = "0";//server converts to currentUser
+            if ($("#productVendor").length != 0) {
+                vendorId = $("#productVendor").val();
+            }
+             $.ajax({
+                 url: "/Promotion/GetFilteredProductGroup?vendorId=" + vendorId ,
+                        type: 'Get',
+                        dataType: 'json',
+                        success: function (result) {
+                            debugger;
+                            var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
+                            if (result.status === "success") {
+                                debugger;
+                                if (result.data.length != 0) {
+                                    (result.data).forEach(function (item) {
+                                        var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                        options += op;
+                                    });
+                                }
+                                
+                                var productGroupTypeSelect = "<label>" + '@Language.GetString("tbl_ProductGroup")' +"</label>" +
+                                    "<select class='form-control selectpicker' id='productGroupType' data-live-search='true' >" + options +
+                                    "</select><span data-val-result='productGroupType' class='text-danger'></span>";
+                               
+                                $("#productGroupTypeSection").append(productGroupTypeSelect);
+
+                                if (selectedGroupId != "") {
+                                    $("#productGroupType").selectpicker('val', selectedGroupId );
+                                } else {
+                                    $("#productGroupType").selectpicker();
+                                }
+                                $("#productGroupTypeSection").css("display", "block");
+                                fillProductTypeIdSelect(selectedProductId);
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert("@error");
+                            alert(xhr.status);
+                            alert(thrownError);
+                        }
+                    });
+        }
+
         function fillProductTypeIdSelect(selectedProductId = "") {
+            debugger;
           if ($("#productGroupType").val() != "-1" && $("#discountTypeId").val() == "2")
-                {
+          {
+              var vendorId = "0";
+              if ($("#productVendor").length != 0) {
+                  vendorId = $("#productVendor").val();
+              }
                     $.ajax({
-                    url: "/Promotion/GetFilteredProduct?productGroupId=" + $("#productGroupId").val() + "&vendorId=" + $("#productVendor").val(),
+                        url: "/Promotion/GetFilteredProduct?productGroupId=" + $("#productGroupType").val() + "&vendorId=" + vendorId,
                     type: 'Get',
                     dataType : 'json',
                   success: function (result) {
@@ -769,7 +820,7 @@
                           } else {
                               $("#ProductIdType").selectpicker('val', selectedProductId);
                           }
-
+                         /* $(".type2").css("display", "block");*/
                           $("#productTypeSection").css("display", "block");
                      }
                   },
@@ -783,7 +834,7 @@
         }
 
 
-       
+
     </script>
 }
 

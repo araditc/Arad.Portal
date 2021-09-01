@@ -21,6 +21,9 @@
             font-size: 12px;
             line-height: 1.42857;
         }
+        .card-header {
+            background-color: #e0dcdf;
+        }
     </style>
 }
 
@@ -28,7 +31,7 @@
 <hr />
 <div class="row">
     <div class="col-md-12">
-        <div class="card card-primary" id="addProductSpecificationGroupCard">
+        <div class="card" id="addProductSpecificationGroupCard">
             <div class="card-header">
                 <h3 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.SpecificationGroupId) ? 
                Language.GetString("EditProSpecGroupPart_Title") : Language.GetString("AddProSpecGroupPart_Title"))</h3>

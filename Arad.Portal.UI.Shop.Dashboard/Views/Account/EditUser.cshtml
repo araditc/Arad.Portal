@@ -13,11 +13,20 @@
         dir = "ltr";
     }
 }
-<link href="~/lib/intl-tel-input/css/intlTelInput.css" rel="stylesheet" />
+@section Styles{
+    <style>
+        .card-header {
+            background-color: #e0dcdf;
+        }
+    </style>
+    <link href="~/lib/intl-tel-input/css/intlTelInput.css" rel="stylesheet" />
+
+}
+
 
 <div class="row">
     <div class="col-md-10 offset-md1">
-        <div class="card card-primary" id="editUserCard">
+        <div class="card" id="editUserCard">
             <div class="card-header">
                 <h3 class="card-title">@Language.GetString("User_Edit")</h3>
             </div>

@@ -32,6 +32,9 @@
     .treeview .item i{
         margin : 10px;
     }
+    .card-header {
+        background-color: #e0dcdf;
+    }
 </style>
 
 
@@ -39,7 +42,7 @@
 <hr />
 <div class="row">
     <div class="col-md-12">
-        <div class="card card-primary" id="addPermissionCard">
+        <div class="card" id="addPermissionCard">
             <div class="card-header">
                 <h3 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.RoleId) ? Language.GetString("EditRolePart_Title") : Language.GetString("AddRolePart_Title"))</h3>
             </div>

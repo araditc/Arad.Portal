@@ -13,6 +13,9 @@
         .text-danger {
             font-size: 12px;
         }
+        .card-header {
+            background-color: #e0dcdf;
+        }
     </style>
 }
 
@@ -21,7 +24,7 @@
 <hr />
 <div class="row">
     <div class="col-md-12">
-        <div class="card card-primary" id="addPermissionCard">
+        <div class="card" id="addPermissionCard">
             <div class="card-header">
                 <h3 class="card-title" data-toggle="tab">@(Model.IsEditView ? Language.GetString("EditPermissionPart_Title") : Language.GetString("AddPermissionPart_Title"))</h3>
             </div>

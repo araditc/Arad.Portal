@@ -234,6 +234,17 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userDb = await _userManager.FindByIdAsync(currentUserId);
             var defaultLanguage = _lanRepository.GetDefaultLanguage(currentUserId);
+            if (vendorId == "0")
+            {
+                if (!userDb.IsSystemAccount)
+                {
+                    vendorId = currentUserId;
+                }
+            }
+            if (userDb.IsSystemAccount)
+            {
+                vendorId = "-1";
+            }
             if (userDb.IsSystemAccount) currentUserId = Guid.Empty.ToString();
             lst = _productRepositoy.GetAllActiveProductList(defaultLanguage.LanguageId, currentUserId, productGroupId, vendorId);
             if (lst.Count() > 0)
@@ -250,11 +261,24 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
 
         [HttpGet]
-        public IActionResult GetFilteredProductGroup(string vendorId)
+        public async Task<IActionResult> GetFilteredProductGroup(string vendorId)
         {
             JsonResult result;
             List<SelectListModel> lst;
+            
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userDb = await _userManager.FindByIdAsync(currentUserId);
+            if (vendorId == "0")
+            {
+                if(!userDb.IsSystemAccount)
+                {
+                    vendorId = currentUserId;
+                }
+            }
+            if(userDb.IsSystemAccount)
+            {
+                vendorId = "-1";
+            }
             var defaultLanguage = _lanRepository.GetDefaultLanguage(currentUserId);
             var list = _productRepositoy.GetGroupsOfThisVendor(vendorId, defaultLanguage.LanguageId);
             if (list.Count() > 0)

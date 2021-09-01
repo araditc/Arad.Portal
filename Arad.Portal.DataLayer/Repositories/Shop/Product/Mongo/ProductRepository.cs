@@ -682,7 +682,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
           
             if (currentUserId == Guid.Empty.ToString())//systemAccount
             {
-                result = _context.ProductCollection.Find(_ => _.GroupIds.Contains(productGroupId) && _.SellerUserId == vendorId && _.IsActive)
+                result = _context.ProductCollection.Find(_ => _.GroupIds.Contains(productGroupId) && (vendorId =="-1" || _.SellerUserId == vendorId) && _.IsActive)
                   .Project(_ => new SelectListModel() {
                       Text = _.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() != 0 ?
                          _.MultiLingualProperties.First(a => a.LanguageId == langId).Name : "",

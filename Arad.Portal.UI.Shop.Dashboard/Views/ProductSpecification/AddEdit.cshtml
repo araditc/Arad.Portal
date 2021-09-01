@@ -28,6 +28,9 @@
             font-size: 12px;
             line-height: 1.42857;
         }
+        .card-header {
+            background-color: #e0dcdf;
+        }
     </style>
 }
 
@@ -35,7 +38,7 @@
 <hr />
 <div class="row">
     <div class="col-md-12">
-        <div class="card card-primary" id="addProductGroupCard">
+        <div class="card" id="addProductGroupCard">
             <div class="card-header">
                 <h3 class="card-title">
                     @(!string.IsNullOrWhiteSpace(Model.ProductSpecificationId)
