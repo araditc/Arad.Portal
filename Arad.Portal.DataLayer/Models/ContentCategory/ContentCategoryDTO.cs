@@ -22,7 +22,9 @@ namespace Arad.Portal.DataLayer.Models.ContentCategory
         /// </summary>
         public List<MultiLingualProperty> CategoryNames { get; set; }
 
-        public CategoryType CategoryType { get; set; }
+        public ContentCategoryType CategoryType { get; set; }
+
+        public int CategoryTypeId { get; set; }
 
         public string ModificationReason { get; set; }
 

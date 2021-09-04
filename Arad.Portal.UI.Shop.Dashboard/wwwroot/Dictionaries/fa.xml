@@ -224,6 +224,57 @@
 	<string key="PermissionTitle_PromotionChangeActivation">
 		<value>تغییر وضعیت تخفیفات و جشنواره ها</value>
 	</string>
+	<string key="PermissionTitle_ContentManagement">
+		<value>مدیریت محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentCategories">
+		<value>گروه های محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentCategory">
+		<value>گروه محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentCategoryDetail">
+		<value>جزییات گروه محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentCategoryAdd">
+		<value>افزودن گروه محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentCategoryEdit">
+		<value>ویرایش گروه محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentCategoryDelete">
+		<value>حذف گروه محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentCategoryRestore">
+		<value>بازگردانی گروه محتوا</value>
+	</string>
+	<string key="PermissionTitle_Contents">
+		<value>محتوا</value>
+	</string>
+	<string key="PermissionTitle_Content">
+		<value>محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentDetail">
+		<value>جزییات محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentAdd">
+		<value>افزودن محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentEdit">
+		<value>ویرایش محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentDelete">
+		<value>حذف محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentRestore">
+		<value>بازگردانی محتوا</value>
+	</string>
+	<string key="PermissionTitle_ProductComments">
+		<value>نظرات محصولات</value>
+	</string>
+	<string key="PermissionTitle_ContentComments">
+		<value>نظرات محتوا</value>
+	</string>
 	<!--End [PermissionTitle]-->
 	<!--Start [tables]-->
 	<string key="tbl_RowName">
@@ -264,6 +315,9 @@
 	</string>
 	<string key="tbl_GroupName">
 		<value>نام گروه</value>
+	</string>
+	<string key="tbl_CategoryName">
+		<value>نام گروه محتوا</value>
 	</string>
 	<string key="tbl_GroupNames">
 		<value>نام گروه ها</value>
@@ -335,6 +389,9 @@
 	</string>
 	<string key="EnumDesc_Notification">
 		<value>اعلان</value>
+	</string>
+	<string key="Enum_ContentCategoryType">
+		<value>نوع گروه</value>
 	</string>
 	<!--End [Enum Descriptions]-->
 	<!--START [Allert And Message]-->
@@ -1111,6 +1168,12 @@
 	<string key="EditProductPart_Title">
 		<value>ویرایش محصول</value>
 	</string>
+	<string key="EditContentCategory_Title">
+		<value>ویرایش گروه محتوا</value>
+	</string>
+	<string key="AddContentCategory_Title">
+		<value>افزودن گروه محتوا</value>
+	</string>
 	<string key="AddProductPart_Title">
 		<value>افزودن محصول</value>
 	</string>
@@ -1252,6 +1315,9 @@
 	<string key="ParentGroup">
 		<value>گروه والد</value>
 	</string>
+	<string key="ParentCategoryName">
+		<value>نام دسته بندی والد</value>
+	</string>
 	<string key="Name">
 		<value>نام</value>
 	</string>
@@ -1371,6 +1437,9 @@
 	</string>
 	<string key="Menu_ProductGroups">
 		<value>گروه های محصول</value>
+	</string>
+	<string key="Menu_ContentCategory">
+		<value>گروه محتوا</value>
 	</string>
 	<string key="Menu_ProductSpecifications">
 		<value>خصوصیات محصول</value>

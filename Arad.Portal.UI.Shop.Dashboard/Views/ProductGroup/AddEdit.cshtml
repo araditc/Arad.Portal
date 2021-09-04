@@ -60,11 +60,6 @@
                 </div>
                 <div class="row" style="background-color: #f0f0f5;">
                     <div class="form-group col-md-3">
-                        <label for="groupName">@Language.GetString("tbl_GroupName")</label><br />
-                        <input type="text" class="form-control" id="groupName" placeholder=" ">
-                        <span data-val-result="groupName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group col-md-3">
                         <label for="languageId">@Language.GetString("LanguageName")</label><br />
                         <select class="form-control" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                         </select>
@@ -75,6 +70,11 @@
                         <select class="form-control select2" id="currencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
                         </select>
                         <span data-val-result="currencyId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="groupName">@Language.GetString("tbl_GroupName")</label><br />
+                        <input type="text" class="form-control" id="groupName" placeholder=" ">
+                        <span data-val-result="groupName" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
                         <label>@Language.GetString("UrlFriend")</label>

@@ -18,7 +18,7 @@ namespace Arad.Portal.DataLayer.Models.ContentCategory
         /// </summary>
         public MultiLingualProperty CategoryName { get; set; }
 
-        public CategoryType CategoryType { get; set; }
+        public ContentCategoryType CategoryType { get; set; }
 
         public bool IsDeleted { get; set; }
     }

@@ -1,0 +1,270 @@
+﻿@model Arad.Portal.DataLayer.Models.ContentCategory.ContentCategoryDTO
+@using Arad.Portal.DataLayer.Models.Shared;
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    var alert = Language.GetString("AlertAndMessage_GotIt");
+    var error = Language.GetString("AlertAndMessage_Error");
+}
+@section Styles{
+    <link href="~/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css" rel="stylesheet" />
+    <style>
+        .text-danger {
+            font-size: 12px;
+        }
+
+        .btn-circle {
+            width: 30px;
+            height: 30px;
+            padding: 6px 0px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.42857;
+        }
+        .card-header {
+            background-color: #e0dcdf;
+        }
+    </style>
+}
+
+<h4>  @Language.GetString("Menu_ContentCategory") </h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <div class="card" id="addContentCategoryCardTitle">
+            <div class="card-header">
+                <h3 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.ContentCategoryId) ? Language.GetString("EditContentCategory_Title") : Language.GetString("AddContentCategory_Title"))</h3>
+            </div>
+
+            <div class="card-body" id="addContentCategoryCardBody">
+                <input type="hidden" value="@Model.ContentCategoryId" asp-for="ContentCategoryId" />
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label asp-for="@Model.ParentCategoryId">@Language.GetString("ParentGroup")</label>
+                        <select class="form-control select2" asp-for="@Model.ParentCategoryId" asp-items="@(new SelectList(ViewBag.CategoryList,"Value","Text"))">
+                        </select>
+                        <span data-val-result="ParentId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="categoryTypeId">@Language.GetString("Enum_ContentCategoryType")</label>
+                        <select class="form-control selectpicker" id="categoryTypeId" data-live-search="true"
+                                asp-items="@(new SelectList(ViewBag.CategoryTypes,"Value","Text", (int)Model.CategoryType))">
+                        </select>
+                        <span data-val-result="categoryTypeId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    @{
+                        if (!string.IsNullOrWhiteSpace(Model.ContentCategoryId))
+                        {
+                            <div class="form-group col-md-6">
+                                <label asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
+                                <textarea dir="rtl" asp-for="ModificationReason" class="form-control" rows="3"></textarea>
+                                <span data-val-result="ModificationReason" class="text-danger"></span>
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="row" style="background-color: #f0f0f5;">
+                    <div class="form-group col-md-3">
+                        <label for="languageId">@Language.GetString("LanguageName")</label><br />
+                        <select class="form-control" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                        </select>
+                        <span data-val-result="languageId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="categoryName">@Language.GetString("tbl_CategoryName")</label><br />
+                        <input type="text" class="form-control" id="categoryName" placeholder=" ">
+                        <span data-val-result="categoryName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-md-1" style="text-align:center;margin:auto;">
+                        <span data-val-result="MultiLingualProperties" class="text-danger"></span>
+                        <div style="margin:auto;display:inline-block;">
+                            <button type="button" class="btn btn-info btn-circle" onclick="addToTable();">
+                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-5"></div>
+
+                </div>
+              
+                <div class="row" style="margin-top:1%;">
+                    <div class="card-body table-bordered  table-responsive p-0">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr style="text-align:center;">
+                                    <th>@Language.GetString("tbl_CategoryName")</th>
+                                    <th>@Language.GetString("LanguageName")</th>
+                                    <th style="display:none"></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="multiLingualList">
+                                @foreach (var item in Model.CategoryNames)
+                                {
+                                    <tr style="text-align:center;">
+                                        <td>@item.Name</td>
+                                        <td>@item.LanguageName</td>
+                                        <td style="display:none;">@item.LanguageId</td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromTable(this);">
+                                                <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                   
+                </div>
+
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <input type="button" id="btnAddContentCategory" value="@Language.GetString("btn_Save")" class="btn btn-block btn-success" />
+                    <a asp-action="List" class="btn btn-block btn-default">@Language.GetString("btn_Back")</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+
+        $(document).ready(function () {
+            debugger;
+            $("#languageId").val('@ViewBag.LangId');
+            if ("@Model.ContentCategoryId" != "" && "@Model.ParentCategoryId" != "") {
+                $("#ParentCategoryId").val("@Model.ParentCategoryId");
+            }
+           
+            $("#btnAddContentCategory").click(function () {
+            debugger;
+                var flag = false;
+                if ("@Model.ParentCategoryId" != "" && $("#ModificationReason").val() == "") {
+                    $("span[data-val-result='ModificationReason']").html('@Language.GetString("AlertAndMessage_ModificationReason")');
+                    flag = true;
+                }
+                if ($("#multiLingualList tr").length == 0) {
+                    $("span[data-val-result='MultiLingualProperties']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
+                    flag = true;
+                }
+                if (!flag) {
+
+                var dto = FillDataToSend();
+                    $.ajax({
+                        url: "@Model.ContentCategoryId" != "" ? "/ContentCategory/Edit" : "/ContentCategory/Add",
+                        contentType: 'application/json',
+                        data: JSON.stringify(dto),
+                    type: 'Post',
+                    beforeSend: function () {
+                        debugger;
+                        AddLoading($("#addContentCategoryCardBody"));
+                    },
+                    success: function (result) {
+                        debugger;
+                        if (result.status === "Success") {
+                            Swal.fire({
+                                icon: 'success',
+                                text: result.message,
+                                showConfirmButton: false,
+                                timer: 3000
+                            }).then(() => {
+                                window.location.href = '@Url.Action("List")';
+                            });
+                        }else
+                        if (result.status === "ModelError") {
+                            var spanErrorList = $('span[data-val-result]');
+                            if (spanErrorList.length > 1) {
+                                spanErrorList.each(function() {
+                                    $(this).html("");
+                                    $(this).parent().removeClass("has-error");
+                                });
+                            } else {
+                                spanErrorList.html("");
+                                spanErrorList.parent().removeClass("has-error");
+                            }
+                            if (result.modelStateErrors !== null) {
+                                    $('[data-val-result=' + value.key + ']').html(value.errorMessage);
+                                    $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                }
+                            }
+                        },
+                    @*error: function (xhr, ajaxOptions, thrownError) {
+                        alert("@error");
+                        alert(xhr.status);
+                        alert(thrownError);
+                    },*@
+                    complete: function () {
+                        removeLoading($("#addContentCategoryCardBody"));
+                    }
+                    });
+                }
+
+            });
+        });
+
+        function FillDataToSend() {
+            debugger;
+            var obj = {};
+            obj.CategoryNames = [];
+            obj.ContentCategoryId = $("#ContentCategoryId").val();
+            if ($("#ParentCategoryId").val() != "-1") {
+                obj.ParentCategoryId = $("#ParentCategoryId").val();
+            }
+            
+            if ($("#ModificationReason").length > 0) {
+                obj.ModificationReason = $("#ModificationReason").val();
+            }
+            obj.CategoryTypeId = parseInt($("#categoryTypeId").val());
+            $("#multiLingualList tr").each(function () {
+                debugger;
+                var innerModel = {};
+                innerModel.Name = $(this).find("td:eq(0)").text();
+                innerModel.LanguageName = $(this).find("td:eq(1)").text();
+                innerModel.LanguageId = $(this).find("td:eq(2)").text();
+
+                obj.CategoryNames.push(innerModel);
+        });
+            return obj;
+        }
+
+        function deleteFromTable(sender) {
+            debugger;
+            var tr = $(sender).parent().parent();
+            $(tr).remove();
+        }
+        function addToTable() {
+            var flag = false;
+            debugger;
+
+            if ($("#categoryName").val() == "") {
+                $("span[data-val-result='categoryName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                flag = true;
+            }
+            if ($("#languageId").val() == "-1") {
+                 $("span[data-val-result='languageId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                flag = true;
+            }
+            if (!flag) {
+                var tr = "<tr style='text-align:center;'><td>" + $("#categoryName").val() +
+                    "</td><td>" + $('#languageId option:selected').text() +
+                    "</td><td style='display:none;'>" + $("#languageId").val() +
+                    "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' onclick='deleteFromTable(this);'>" +
+                    "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
+
+                $("#multiLingualList").append(tr);
+                $("#categoryName").val("");
+                $("#languageId").val("@ViewBag.LangId");
+            }
+        }
+    </script>
+}
+
+
+
+

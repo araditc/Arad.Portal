@@ -1,4 +1,5 @@
 ﻿using Arad.Portal.DataLayer.Contracts.General.ContentCategory;
+using Arad.Portal.DataLayer.Entities.General.ContentCategory;
 using Arad.Portal.DataLayer.Models.ContentCategory;
 using Arad.Portal.DataLayer.Models.ProductSpecificationGroup;
 using Arad.Portal.DataLayer.Models.Shared;
@@ -15,6 +16,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using Arad.Portal.GeneralLibrary.Utilities;
 
 namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
 {
@@ -26,12 +28,14 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
         private readonly LanguageContext _languageContext;
 
         public ContentCategoryRepository(IHttpContextAccessor httpContextAccessor,
-            IMapper mapper, ContentCategoryContext categoryContext, LanguageContext langContext)
+            IMapper mapper, ContentCategoryContext categoryContext,
+            LanguageContext langContext, ContentContext contentContext)
             : base(httpContextAccessor)
         {
             _mapper = mapper;
             _categoryContext = categoryContext;
             _languageContext = langContext;
+            _contentContext = contentContext;
         }
         public async Task<RepositoryOperationResult> Add(ContentCategoryDTO dto)
         {
@@ -143,6 +147,23 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             return result;
         }
 
+        public List<SelectListModel> GetAllContentCategoryType()
+        {
+            var result = new List<SelectListModel>();
+            foreach (int i in Enum.GetValues(typeof(ContentCategoryType)))
+            {
+                string name = Enum.GetName(typeof(ContentCategoryType), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("Choose"), Value = "-1" });
+            return result;
+        }
+
         public async Task<PagedItems<ContentCategoryViewModel>> List(string queryString)
         {
             PagedItems<ContentCategoryViewModel> result = new PagedItems<ContentCategoryViewModel>();
@@ -175,7 +196,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
                        ContentCategoryId = _.ContentCategoryId,
                        ParentCategoryId = _.ParentCategoryId,
                        CategoryType = _.CategoryType,
-                       CategoryName = _.CategoryNames.Count(_=>_.LanguageId == langId) != 0 ? _.CategoryNames.First(_ => _.LanguageId == langId) : _.CategoryNames.First()
+                       CategoryName = _.CategoryNames.Count(a=>a.LanguageId == langId) != 0 ? _.CategoryNames.First(a => a.LanguageId == langId) : _.CategoryNames.First()
                    }).ToList();
 
                 result.CurrentPage = page;

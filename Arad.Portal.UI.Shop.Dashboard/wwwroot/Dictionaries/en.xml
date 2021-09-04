@@ -230,6 +230,57 @@
 	<string key="PermissionTitle_PromotionChangeActivation">
 		<value>Promotion Change Activation</value>
 	</string>
+	<string key="PermissionTitle_ContentManagement">
+		<value>Content Management</value>
+	</string>
+	<string key="PermissionTitle_ContentCategories">
+		<value>Content Categories</value>
+	</string>
+	<string key="PermissionTitle_ContentCategory">
+		<value>Content Category</value>
+	</string>
+	<string key="PermissionTitle_ContentCategoryDetail">
+		<value>Content Category detail</value>
+	</string>
+	<string key="PermissionTitle_ContentCategoryAdd">
+		<value>Content Category Add</value>
+	</string>
+	<string key="PermissionTitle_ContentCategoryEdit">
+		<value>Content Category Edit</value>
+	</string>
+	<string key="PermissionTitle_ContentCategoryDelete">
+		<value>Content Category Delete</value>
+	</string>
+	<string key="PermissionTitle_ContentCategoryRestore">
+		<value>Content Category Restore</value>
+	</string>
+	<string key="PermissionTitle_Contents">
+		<value>Contents</value>
+	</string>
+	<string key="PermissionTitle_Content">
+		<value>Content</value>
+	</string>
+	<string key="PermissionTitle_ContentDetail">
+		<value>Content Detail</value>
+	</string>
+	<string key="PermissionTitle_ContentAdd">
+		<value>Content Add</value>
+	</string>
+	<string key="PermissionTitle_ContentEdit">
+		<value>Content Edit</value>
+	</string>
+	<string key="PermissionTitle_ContentDelete">
+		<value>Content Delete</value>
+	</string>
+	<string key="PermissionTitle_ContentRestore">
+		<value>Content Restore</value>
+	</string>
+	<string key="PermissionTitle_ProductComments">
+		<value>Product Comments</value>
+	</string>
+	<string key="PermissionTitle_ContentComments">
+		<value>Content Comments</value>
+	</string>
 	<!--End [PermissionTitle]-->
 	<!--Start [tables]-->
 	<string key="tbl_RowName">
@@ -270,6 +321,9 @@
 	</string>
 	<string key="tbl_GroupName">
 		<value>Group Name</value>
+	</string>
+	<string key="tbl_CategoryName">
+		<value>ContentCategory Name</value>
 	</string>
 	<string key="tbl_GroupNames">
 		<value>Group Names</value>
@@ -341,6 +395,9 @@
 	</string>
 	<string key="EnumDesc_Notification">
 		<value>Notification</value>
+	</string>
+	<string key="Enum_ContentCategoryType">
+		<value>Category Type</value>
 	</string>
 	<!--End [Enum Descriptions]-->
 	<!--START [Allert And Message]-->
@@ -1070,6 +1127,12 @@
 	<string key="EditProductPart_Title">
 		<value>Edit Product</value>
 	</string>
+	<string key="EditContentCategory_Title">
+		<value>Edit ContentCategory</value>
+	</string>
+	<string key="AddContentCategory_Title">
+		<value>Add ContentCategory</value>
+	</string>
 	<string key="AddProductPart_Title">
 		<value>Add Product</value>
 	</string>
@@ -1214,6 +1277,9 @@
 	<string key="ParentGroup">
 		<value>Parent Group</value>
 	</string>
+	<string key="ParentCategoryName">
+		<value>Parent Category Name</value>
+	</string>
 	<string key="Name">
 		<value>Name</value>
 	</string>
@@ -1333,6 +1399,9 @@
 	</string>
 	<string key="Menu_ProductGroups">
 		<value>Product Groups</value>
+	</string>
+	<string key="Menu_ContentCategory">
+		<value>Content Category</value>
 	</string>
 	<string key="Menu_ProductSpecifications">
 		<value>Product Specifications</value>

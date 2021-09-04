@@ -45,7 +45,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
             {
                 var user = new ApplicationUser()
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    //just for testing
+                    //Id = Guid.NewGuid().ToString(),
+                    Id = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa",
                     UserName = "SuperAdmin",
                     Claims = new List<IdentityUserClaim<string>>()
                     {

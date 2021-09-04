@@ -1,4 +1,5 @@
 ﻿using Arad.Portal.DataLayer.Models.Comment;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,9 @@ namespace Arad.Portal.DataLayer.Entities.General.Content
         {
             Images = new();
         }
+
+        [BsonId]
+        [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string ContentId { get; set; }
 
         public string CategoryContentId { get; set; }

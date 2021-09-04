@@ -26,5 +26,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.ContentCategory
 
         Task<ContentCategoryDTO> ContentCategoryFetch(string contentCategoryId);
 
+        List<SelectListModel> GetAllContentCategoryType();
+
     }
 }
