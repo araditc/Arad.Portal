@@ -116,9 +116,9 @@
             </div>*@
                    
                 </div>
-                <div class="row"> <div class="col-md-12" ><lable class="form-control" style="background-color: #e0dcdf;">@Language.GetString("ProductsInPromotion")</lable></div></div>
+                <div class="row proSec" style="display:none;"> <div class="col-md-12" ><lable class="form-control" style="background-color: #e0dcdf;">@Language.GetString("ProductsInPromotion")</lable></div></div>
 
-                <div class="row">
+                <div class="row proSec" style="display:none;">
                     <div class="col-md-12" style="background-color:">
                         <table class="table table-hover table-bordered">
                             <thead>
@@ -294,14 +294,50 @@
     $("#promotionTypeId").change(function () {
                debugger;
                if ($("#promotionTypeId").val() != "-1") {
-                   if ($("#promotionTypeId").val() == "1" || $("#promotionTypeId").val() == "2") {
+                   if ($("#promotionTypeId").val() == "1" || $("#promotionTypeId").val() == "2")
+                   {
                        $("#firstRow").append(generateVendorSection());
                        $("#productVendor").selectpicker();
-                   } else {
-                       $("#vendorSection").remove();
+                       if ($("#promotionTypeId").val() == "2") {
+                           $(".proSec").css("display", "block");
+                       } else {
+                           $(".proSec").css("display", "none");
+                       }
+
                    }
-               } else {
-                   $("#vendorSection").remove();
+                   else
+                   {
+                      
+                       if ($("#vendorSection").length > 0)
+                           $("#vendorSection").remove();
+
+                       if ($("#groupSection").length > 0)
+                           $("#groupSection").remove();
+
+                       if ($("#productClassification").length > 0)
+                           $("#productClassification").remove();
+
+                       if ($("#productGroupClassification").length > 0)
+                           $("#productGroupClassification").remove();
+                       debugger;
+                       $(".proSec").css("display", "none");
+                   }
+               }
+               else
+               {
+                   if($("#vendorSection").length > 0)
+                       $("#vendorSection").remove();
+
+                   if($("#groupSection").length > 0)
+                       $("#groupSection").remove();
+
+                   if($("#productClassification").length > 0)
+                       $("#productClassification").remove();
+
+                   if ($("#productGroupClassification").length > 0)
+                       $("#productGroupClassification").remove();
+
+                   $(".proSec").css("display", "none");
                }
                if ($("#promotionTypeId").val() == "1" && $("#productVendor").length == 0) {
                     $.ajax({
@@ -648,7 +684,7 @@
                     $("#dtpToDate").val(model.persianEndDate);
                 }
                 debugger;
-               /* $("#promotionTypeId").selectpicker('val', model.promotionTypeId);*/
+              
                 if (model.promotionTypeId == "1") {
                     {
                         //vendor
