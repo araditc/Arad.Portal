@@ -36,8 +36,8 @@
         @foreach (var item in @Model)
         {
 
-            <li class="nav-item">
-                <a href="#" class="nav-link @(item.IsActive ? "active": null)">
+            <li class="nav-item @(item.IsActive ? "menu-open" : "")">
+                <a href="#" class="nav-link @(item.IsActive ? "active": "")">
                     @if (!string.IsNullOrWhiteSpace(item.Icon))
                     {
                         <i class="nav-icon @item.Icon"></i>

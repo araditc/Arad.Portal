@@ -21,7 +21,7 @@
 @if (Model.Children.Count != 0)
 {
    
-<a class="nav-link @(Model.IsActive ? "active": null)" href="#" data-id="@Model.MenuId">
+<a class="nav-link @(Model.IsActive ? "active": "")" href="#" data-id="@Model.MenuId">
     @if (!string.IsNullOrWhiteSpace(Model.Icon))
     {
         <i class="nav-icon @Model.Icon"></i>
@@ -34,7 +34,7 @@
 <ul class="nav nav-treeview">
     @foreach (var menu in Model.Children)
     {
-        <li class="nav-item">
+        <li class="nav-item @(menu.IsActive ? "menu-open" : "")">
             @await Component.InvokeAsync("InnerMenu", menu)
         </li>
     }
@@ -42,7 +42,7 @@
 }
 else
 {
-<a class="nav-link" href="/@Model.Link" data-id="@Model.MenuId">
+<a class="nav-link @(Model.IsActive ? "active": "")" href="/@Model.Link" data-id="@Model.MenuId">
     @if (!string.IsNullOrWhiteSpace(Model.Icon))
     {
         <i class="nav-icon @Model.Icon"></i>
