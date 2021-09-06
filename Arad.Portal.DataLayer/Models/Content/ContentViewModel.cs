@@ -6,15 +6,13 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Models.Content
 {
-    public class ContentDTO
+    public class ContentViewModel
     {
-        public ContentDTO()
-        {
-            Images = new();
-        }
         public string ContentId { get; set; }
 
         public string CategoryContentId { get; set; }
+
+        public string CategoryContentName { get; set; }
 
         public string Title { get; set; }
 
@@ -31,20 +29,16 @@ namespace Arad.Portal.DataLayer.Models.Content
         public string SeoDescription { get; set; }
 
         public string UrlFriend { get; set; }
-        /// <summary>
-        /// main content from textEditor
-        /// </summary>
-        public string Contents { get; set; }
 
         public string FileLogo { get; set; }
 
         public List<Shared.Image> Images { get; set; }
 
-        public DateTime? StartShowDate { get; set; }
+        public DateTime StartShowDate { get; set; }
 
-        public  string PersianStartShowDate { get; set; }
+        public string PersianStartShowDate { get; set; }
 
-        public DateTime? EndShowDate { get; set; }
+        public DateTime EndShowDate { get; set; }
 
         public string PersianEndShowDate { get; set; }
 
@@ -54,12 +48,9 @@ namespace Arad.Portal.DataLayer.Models.Content
 
         public int PopularityRate { get; set; }
 
-        public List<Comment.Comment> Comments { get; set; }
-
         public Entities.General.Content.SourceType SourceType { get; set; }
 
         public string ContentProviderName { get; set; }
-
-        public string ModificationReason { get; set; }
     }
 }
+

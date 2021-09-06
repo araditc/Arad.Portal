@@ -24,6 +24,7 @@ using Arad.Portal.DataLayer.Contracts.Shop.Promotion;
 using Arad.Portal.DataLayer.Entities.Shop.Promotion;
 using Microsoft.AspNetCore.Hosting;
 using System.Net.Http;
+using Arad.Portal.UI.Shop.Dashboard.Helpers;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -81,7 +82,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
                 var contentRoot = _webHostEnvironment.ContentRootPath;
                 ViewBag.Path = contentRoot;
-                var groupList = _productGroupRepository.GetAlActiveProductGroup(defLangId);
+                var groupList = _productGroupRepository.GetAlActiveProductGroup(defLangId, currentUserId);
                 ViewBag.ProductGroupList = groupList;
                
                 var unitList = _unitRepository.GetAllActiveProductUnit(defLangId);
@@ -120,35 +121,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         //    return output;
         //}
 
-        public string ResizeImage(string filePath, int desiredHeight)
-        {
-            var base64String = System.IO.File.ReadAllText(filePath);
-            byte[] byteArray = Convert.FromBase64String(base64String);
-            System.Drawing.Image img;
-            using (MemoryStream ms = new MemoryStream(byteArray))
-            {
-                img = System.Drawing.Image.FromStream(ms);
-            }
-
-            double ratio = (double)desiredHeight / img.Height;
-            int newWidth = (int)(img.Width * ratio);
-            int newHeight = (int)(img.Height * ratio);
-            Bitmap bitMapImage = new Bitmap(newWidth, newHeight);
-            using (Graphics g = Graphics.FromImage(bitMapImage))
-            {
-                g.DrawImage(img, 0, 0, newWidth, newHeight);
-            }
-            img.Dispose();
-            //return newImage;
-
-            byte[] byteImage;
-            using (MemoryStream ms = new MemoryStream())
-            {
-                bitMapImage.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                byteImage = ms.ToArray();
-            }
-            return Convert.ToBase64String(byteImage);
-        }
+        
         public async Task<IActionResult> AddEdit(string id = "")
         {
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -183,7 +156,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             specGroupList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
             ViewBag.SpecificationGroupList = specGroupList;
 
-            var groupList = _productGroupRepository.GetAlActiveProductGroup(lan.LanguageId);
+            var groupList = await _productGroupRepository.GetAlActiveProductGroup(lan.LanguageId, currentUserId);
             groupList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
             ViewBag.ProductGroupList = groupList;
 
@@ -249,9 +222,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.Prefix = cur.ReturnValue.Symbol;
                     item.SDate = DateHelper.ToEnglishDate(item.StartDate);
                 }
+                var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
+                var path = "Images/Products";
                 foreach (var pic in dto.Pictures)
                 {
-                    var res = SaveImageModel(pic);
+                    var res = ImageFunctions.SaveImageModel(pic, path, staticFileStorageURL, _webHostEnvironment.WebRootPath);
                     if (res.Key != Guid.Empty.ToString())
                     {
                         pic.ImageId = res.Key;
@@ -265,38 +240,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 : new { Status = "Error", saveResult.Message });
             }
             return result;
-        }
-
-        private KeyValuePair<string, string> SaveImageModel(DataLayer.Models.Shared.Image picture)
-        {
-            KeyValuePair<string, string> res;
-            var staticFileStorageURL = _configuration["StaticFilesPlace:Url"];
-            //Have to Add Connect to Remote server and send this file to remote server and get its response
-            if(string.IsNullOrWhiteSpace(staticFileStorageURL))
-            {
-                staticFileStorageURL = _webHostEnvironment.WebRootPath;
-            }
-            picture.ImageId = Guid.NewGuid().ToString();
-            var path = $"{staticFileStorageURL}/Images/Products";
-            try
-            {
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-                picture.Url = $"/Images/Products/{picture.ImageId}.jpg";
-                byte[] bytes = Convert.FromBase64String(picture.Content.Replace("data:image/jpeg;base64,",""));
-                System.Drawing.Image image;
-                using MemoryStream ms = new MemoryStream(bytes);
-                image = System.Drawing.Image.FromStream(ms);
-                image.Save(picture.Url, System.Drawing.Imaging.ImageFormat.Jpeg);
-                res = new KeyValuePair<string, string>(picture.ImageId, picture.Url);
-            }
-            catch (Exception ex)
-            {
-                res = new KeyValuePair<string, string>(Guid.Empty.ToString(), "");
-            }
-            return res;
         }
 
         [HttpPost]
@@ -353,11 +296,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 //        //it will be done in repository
                 //    }
                 //}
+                RepositoryOperationResult saveResult = await _productRepository.UpdateProduct(dto);
+                result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
+                : new { Status = "Error", saveResult.Message });
             }
-
-            RepositoryOperationResult saveResult = await _productRepository.UpdateProduct(dto);
-            result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
-            : new { Status = "Error", saveResult.Message });
             return result;
         }
 

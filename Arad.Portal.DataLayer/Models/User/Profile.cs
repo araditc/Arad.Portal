@@ -69,13 +69,15 @@ namespace Arad.Portal.DataLayer.Models.User
         public SpecialAccess()
         {
             AccessibleProductGroupIds = new();
-
+            AccessibleContentCategoryIds = new();
         }
         /// <summary>
         /// if user is type of seller then also has a role seller
         /// and this Ids is the Id of productGroups which product can be added by this user
         /// </summary>
         public List<string> AccessibleProductGroupIds { get; set; }
+
+        public List<string> AccessibleContentCategoryIds { get; set; }
     }
 
     public enum Gender

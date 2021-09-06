@@ -24,8 +24,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
             int b = rand.Next(0, 9);
             var captcha = $"{a} + {b} = ?";
 
-
-
             //image stream
             FileContentResult img = null;
 

@@ -19,6 +19,8 @@ using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
 using System.Globalization;
+using Arad.Portal.DataLayer.Entities.General.User;
+using Microsoft.AspNetCore.Identity;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
 {
@@ -27,16 +29,18 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
         private readonly ProductContext _productContext;
         private readonly LanguageContext _languageContext;
         private readonly IMapper _mapper;
+        private readonly UserManager<ApplicationUser> _userManager;
       
         public ProductGroupRepository(ProductContext context,
             LanguageContext languageContext, 
             IHttpContextAccessor httpContextAccessor,
-            IMapper mapper):
+            IMapper mapper, UserManager<ApplicationUser> userManager):
             base(httpContextAccessor)
         {
             
             _productContext = context;
             _languageContext = languageContext;
+            _userManager = userManager;
             _mapper = mapper;
         }
 
@@ -337,11 +341,19 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             }
             return result;
         }
+       
+        public Entities.Shop.ProductGroup.ProductGroup FetchWholeProductGroup(string productGroupId)
+        {
+            Entities.Shop.ProductGroup.ProductGroup result;
+            result = _productContext.ProductGroupCollection.Find(_ => _.ProductGroupId == productGroupId).FirstOrDefault();
+            return result;
+        }
 
-        public List<SelectListModel> GetAlActiveProductGroup(string langId)
+        public async Task<List<SelectListModel>> GetAlActiveProductGroup(string langId, string currentUserId)
         {
             var result = new List<SelectListModel>();
-            result = _productContext.ProductGroupCollection.Find(_=>_.IsActive)
+            var dbUser = await _userManager.FindByIdAsync(currentUserId);
+            result = _productContext.ProductGroupCollection.Find(_ => dbUser.Profile.Access.AccessibleProductGroupIds.Contains(_.ProductGroupId))
                 .Project(_ => new SelectListModel()
                 {
                     Text = _.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() != 0 ?
@@ -351,14 +363,5 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             result.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
             return result;
         }
-
-        public Entities.Shop.ProductGroup.ProductGroup FetchWholeProductGroup(string productGroupId)
-        {
-            Entities.Shop.ProductGroup.ProductGroup result;
-            result = _productContext.ProductGroupCollection.Find(_ => _.ProductGroupId == productGroupId).FirstOrDefault();
-            return result;
-        }
-
-       
     }
 }

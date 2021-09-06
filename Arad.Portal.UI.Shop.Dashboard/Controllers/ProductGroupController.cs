@@ -50,7 +50,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             return View(result);
         }
-        public IActionResult AddEdit(string id="")
+        public async Task<IActionResult> AddEdit(string id = "")
         {
             var model = new ProductGroupDTO();
             if (!string.IsNullOrWhiteSpace(id))
@@ -60,7 +60,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
-            ViewBag.ProductGroupList = _productGroupRepository.GetAlActiveProductGroup(lan.LanguageId);
+            ViewBag.ProductGroupList = await _productGroupRepository.GetAlActiveProductGroup(lan.LanguageId, currentUserId);
             ViewBag.LangId = lan.LanguageId;
            
             ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
@@ -69,11 +69,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetProductGroupList(string id)
+        public async Task<IActionResult> GetProductGroupList(string id)
         {
             JsonResult result;
             List<SelectListModel> lst;
-            lst = _productGroupRepository.GetAlActiveProductGroup(id).OrderBy(_=>_.Text).ToList();
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            lst = await _productGroupRepository.GetAlActiveProductGroup(id, currentUserId);
             if (lst.Count() > 0)
             {
                 result = new JsonResult(new { Status = "success", Data = lst });

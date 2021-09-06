@@ -20,7 +20,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductGroup
         List<ProductGroupDTO> GetsDirectChildren(string productGroupId);
         List<ProductGroupDTO> GetsParents();
 
-        List<SelectListModel> GetAlActiveProductGroup(string langId);
+        Task<List<SelectListModel>> GetAlActiveProductGroup(string langId, string currentUserId);
        
         Task<RepositoryOperationResult> AddPromotionToGroup(string productGroupId,
             Models.Promotion.PromotionDTO promotionDto, string modificationReason);

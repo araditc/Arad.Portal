@@ -17,6 +17,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Arad.Portal.GeneralLibrary.Utilities;
+using Arad.Portal.DataLayer.Entities.General.User;
+using Microsoft.AspNetCore.Identity;
 
 namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
 {
@@ -26,9 +28,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
         private readonly ContentCategoryContext _categoryContext;
         private readonly ContentContext _contentContext;
         private readonly LanguageContext _languageContext;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public ContentCategoryRepository(IHttpContextAccessor httpContextAccessor,
             IMapper mapper, ContentCategoryContext categoryContext,
+            UserManager<ApplicationUser> userManager,
             LanguageContext langContext, ContentContext contentContext)
             : base(httpContextAccessor)
         {
@@ -36,6 +40,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             _categoryContext = categoryContext;
             _languageContext = langContext;
             _contentContext = contentContext;
+            _userManager = userManager;
         }
         public async Task<RepositoryOperationResult> Add(ContentCategoryDTO dto)
         {
@@ -62,18 +67,19 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             }
             return result;
         }
-
-        public List<SelectListModel> AllActiveContentCategory(string langId)
+              
+        public async Task<List<SelectListModel>> AllActiveContentCategory(string langId, string currentUserId)
         {
             var result = new List<SelectListModel>();
-            result = _categoryContext.Collection.Find(_ => _.IsActive)
+            var dbUser = await _userManager.FindByIdAsync(currentUserId);
+            result = _categoryContext.Collection.Aggregate().Match(_ => dbUser.Profile.Access.AccessibleContentCategoryIds.Contains(_.ContentCategoryId))
                 .Project(_ => new SelectListModel()
                 {
                     Text = _.CategoryNames.Where(a => a.LanguageId == langId).Count() != 0 ?
                          _.CategoryNames.First(a => a.LanguageId == langId).Name : "",
                     Value = _.ContentCategoryId
-                }).ToList();
-            return result;
+                }).Sort(Builders<SelectListModel>.Sort.Ascending(x => x.Text)).ToList();
+            return result; ;
         }
 
         public async Task<ContentCategoryDTO> ContentCategoryFetch(string contentCategoryId)

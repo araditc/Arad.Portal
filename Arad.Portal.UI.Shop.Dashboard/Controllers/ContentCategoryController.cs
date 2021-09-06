@@ -57,7 +57,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
             ViewBag.LangId = lan.LanguageId;
-            var categoryList = _contentCategoryRepository.AllActiveContentCategory(lan.LanguageId);
+            var categoryList = await _contentCategoryRepository.AllActiveContentCategory(lan.LanguageId, currentUserId);
             categoryList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
             ViewBag.CategoryList = categoryList;
              var lst =  _contentCategoryRepository.GetAllContentCategoryType();
@@ -74,11 +74,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         /// <param name="id">id stands for langId</param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult GetContentCategoryList(string id)
+        public async Task<IActionResult> GetContentCategoryList(string id)
         {
             JsonResult result;
             List<SelectListModel> lst;
-            lst = _contentCategoryRepository.AllActiveContentCategory(id).OrderBy(_ => _.Text).ToList();
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            lst = await _contentCategoryRepository.AllActiveContentCategory(id, currentUserId);
             if (lst.Count() > 0)
             {
                 result = new JsonResult(new { Status = "success", Data = lst });

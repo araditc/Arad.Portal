@@ -13,6 +13,8 @@ namespace Arad.Portal.DataLayer.Entities.General.Content
         public Content()
         {
             Images = new();
+            Comments = new();
+            TagKeywords = new();
         }
 
         [BsonId]
@@ -20,6 +22,8 @@ namespace Arad.Portal.DataLayer.Entities.General.Content
         public string ContentId { get; set; }
 
         public string CategoryContentId { get; set; }
+
+        public string CategoryContentName { get; set; }
 
         public string Title { get; set; }
 

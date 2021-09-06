@@ -13,7 +13,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.ContentCategory
     {
         Task<PagedItems<ContentCategoryViewModel>> List(string queryString);
 
-        List<SelectListModel> AllActiveContentCategory(string langId);
+        Task<List<SelectListModel>> AllActiveContentCategory(string langId, string currentUserId);
 
         Task<RepositoryOperationResult> Add(ContentCategoryDTO dto);
 
