@@ -72,13 +72,28 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
         {
             var result = new List<SelectListModel>();
             var dbUser = await _userManager.FindByIdAsync(currentUserId);
-            result = _categoryContext.Collection.Aggregate().Match(_ => dbUser.Profile.Access.AccessibleContentCategoryIds.Contains(_.ContentCategoryId))
+            if(dbUser.IsSystemAccount)
+            {
+                result = _categoryContext.Collection.Find(_ => _.IsActive && !_.IsDeleted)
                 .Project(_ => new SelectListModel()
                 {
                     Text = _.CategoryNames.Where(a => a.LanguageId == langId).Count() != 0 ?
                          _.CategoryNames.First(a => a.LanguageId == langId).Name : "",
                     Value = _.ContentCategoryId
-                }).Sort(Builders<SelectListModel>.Sort.Ascending(x => x.Text)).ToList();
+                }).ToList();
+            }
+            else
+            {
+                result = _categoryContext.Collection.Aggregate().Match(_ => dbUser.Profile.Access.AccessibleContentCategoryIds.Contains(_.ContentCategoryId))
+                .Project(_ => new SelectListModel()
+                {
+                    Text = _.CategoryNames.Where(a => a.LanguageId == langId).Count() != 0 ?
+                         _.CategoryNames.First(a => a.LanguageId == langId).Name : "",
+                    Value = _.ContentCategoryId
+                }).ToList();
+               // .Sort(Builders<SelectListModel>.Sort.Ascending(x => x.Text))
+            }
+            
             return result; ;
         }
 
@@ -107,7 +122,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
                 #region check object dependency
                 var allowDeletion = true;
                 if (_contentContext.Collection
-                    .AsQueryable().Any(_ => _.CategoryContentId == contentCategoryId && !_.IsDeleted))
+                    .AsQueryable().Any(_ => _.ContentCategoryId == contentCategoryId && !_.IsDeleted))
                 {
                     allowDeletion = false;
                 }

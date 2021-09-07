@@ -298,6 +298,9 @@
 	<string key="tbl_ProductImages">
 		<value>تصاویر محصول</value>
 	</string>
+	<string key="tbl_ContentImages">
+		<value>تصاویر محتوا</value>
+	</string>
 	<string key="tbl_ProductGroup">
 		<value>گروه محصول</value>
 	</string>
@@ -318,6 +321,9 @@
 	</string>
 	<string key="tbl_CategoryName">
 		<value>نام گروه محتوا</value>
+	</string>
+	<string key="tbl_Content">
+		<value>محتوا</value>
 	</string>
 	<string key="tbl_GroupNames">
 		<value>نام گروه ها</value>
@@ -1174,6 +1180,12 @@
 	<string key="AddContentCategory_Title">
 		<value>افزودن گروه محتوا</value>
 	</string>
+	<string key="EditContent_Title">
+		<value>ویرایش محتوا</value>
+	</string>
+	<string key="AddContent_Title">
+		<value>افزودن محتوا</value>
+	</string>
 	<string key="AddProductPart_Title">
 		<value>افزودن محصول</value>
 	</string>
@@ -1269,6 +1281,21 @@
 	</string>
 	<string key="Active">
 		<value>فعال</value>
+	</string>
+	<string key="SourceType">
+		<value>نوع صاحب محتوا</value>
+	</string>
+	<string key="ContentProviderName">
+		<value>نام تولیدکننده محتوا</value>
+	</string>
+	<string key="StartShowDate">
+		<value>تاریخ شروع نمایش</value>
+	</string>
+	<string key="EndShowDate">
+		<value>تاریخ پایان نمایش</value>
+	</string>
+	<string key="TagKeywords">
+		<value>کلمات کلیدی</value>
 	</string>
 	<string key="ProductsInPromotion">
 		<value>محصولات پروموشن دار</value>
@@ -1440,6 +1467,9 @@
 	</string>
 	<string key="Menu_ContentCategory">
 		<value>گروه محتوا</value>
+	</string>
+	<string key="Menu_Content">
+		<value>محتوا</value>
 	</string>
 	<string key="Menu_ProductSpecifications">
 		<value>خصوصیات محصول</value>
@@ -1701,6 +1731,9 @@
 	</string>
 	<string key="Entities_Title">
 		<value>عنوان</value>
+	</string>
+	<string key="Entities_SubTitle">
+		<value>زیرنویس</value>
 	</string>
 	<string key="Entities_PermissionType">
 		<value>PermissionType</value>

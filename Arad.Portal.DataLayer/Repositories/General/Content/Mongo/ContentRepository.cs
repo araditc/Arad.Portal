@@ -18,6 +18,7 @@ using MongoDB.Driver.Linq;
 using Arad.Portal.GeneralLibrary.Utilities;
 using System.Linq;
 
+
 namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
 {
     public class ContentRepository : BaseRepository, IContentRepository
@@ -77,6 +78,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             if (entity != null)
             {
                 result = _mapper.Map<ContentDTO>(entity);
+                result.PersianStartShowDate = DateHelper.ToPersianDdate(result.StartShowDate.Value);
+                result.PersianEndShowDate = DateHelper.ToPersianDdate(result.EndShowDate.Value);
             }
             return result;
         }
@@ -116,6 +119,23 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             throw new NotImplementedException();
         }
 
+        public List<SelectListModel> GetAllSourceType()
+        {
+            var result = new List<SelectListModel>();
+            foreach (int i in Enum.GetValues(typeof(Entities.General.Content.SourceType)))
+            {
+                string name = Enum.GetName(typeof(Entities.General.Content.SourceType), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("Choose"), Value = "-1" });
+            return result;
+        }
+
         public async Task<PagedItems<ContentViewModel>> List(string queryString)
         {
             PagedItems<ContentViewModel> result = new PagedItems<ContentViewModel>();
@@ -145,7 +165,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                 var totalList = _contentContext.Collection.AsQueryable();
                 if (!string.IsNullOrWhiteSpace(filter["catId"]))
                 {
-                    totalList = totalList.Where(_ => _.CategoryContentId == filter["catId"]);
+                    totalList = totalList.Where(_ => _.ContentCategoryId == filter["catId"]);
                 }
                 if (!string.IsNullOrWhiteSpace(filter["from"]))
                 {
@@ -174,8 +194,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                        Images = _.Images,
                        FileLogo = _.FileLogo,
                        EndShowDate = _.EndShowDate,
-                       CategoryContentId = _.CategoryContentId,
-                       CategoryContentName = _.CategoryContentName,
+                       ContentCategoryId = _.ContentCategoryId,
+                       ContentCategoryName = _.ContentCategoryName,
                        ContentProviderName = _.ContentProviderName,
                        Description = _.Description,
                        SeoTitle = _.SeoTitle,

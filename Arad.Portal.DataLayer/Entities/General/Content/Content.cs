@@ -21,9 +21,9 @@ namespace Arad.Portal.DataLayer.Entities.General.Content
         [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string ContentId { get; set; }
 
-        public string CategoryContentId { get; set; }
+        public string ContentCategoryId { get; set; }
 
-        public string CategoryContentName { get; set; }
+        public string ContentCategoryName { get; set; }
 
         public string Title { get; set; }
 

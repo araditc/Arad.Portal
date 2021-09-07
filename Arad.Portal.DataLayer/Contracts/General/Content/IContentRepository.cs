@@ -17,5 +17,6 @@ namespace Arad.Portal.DataLayer.Contracts.General.Content
         Task<RepositoryOperationResult> Delete(string contentId, string modificationReason);
         Task<RepositoryOperationResult> Restore(string contentId);
         List<ContentViewModel> GetAllContentsInCategory(string contentCategoryId);
+        List<SelectListModel> GetAllSourceType();
     }
 }

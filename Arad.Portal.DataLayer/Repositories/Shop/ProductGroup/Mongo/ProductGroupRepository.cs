@@ -353,13 +353,27 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
         {
             var result = new List<SelectListModel>();
             var dbUser = await _userManager.FindByIdAsync(currentUserId);
-            result = _productContext.ProductGroupCollection.Find(_ => dbUser.Profile.Access.AccessibleProductGroupIds.Contains(_.ProductGroupId))
-                .Project(_ => new SelectListModel()
-                {
-                    Text = _.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() != 0 ?
-                         _.MultiLingualProperties.First(a => a.LanguageId == langId).Name : "",
-                    Value = _.ProductGroupId
-                }).ToList();
+            if(dbUser.IsSystemAccount)
+            {
+                result = _productContext.ProductGroupCollection.Find(_ => _.IsActive && !_.IsDeleted)
+               .Project(_ => new SelectListModel()
+               {
+                   Text = _.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() != 0 ?
+                        _.MultiLingualProperties.First(a => a.LanguageId == langId).Name : "",
+                   Value = _.ProductGroupId
+               }).ToList();
+            }
+            else
+            {
+                result = _productContext.ProductGroupCollection.Find(_ => dbUser.Profile.Access.AccessibleProductGroupIds.Contains(_.ProductGroupId))
+               .Project(_ => new SelectListModel()
+               {
+                   Text = _.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() != 0 ?
+                        _.MultiLingualProperties.First(a => a.LanguageId == langId).Name : "",
+                   Value = _.ProductGroupId
+               }).ToList();
+            }
+           
             result.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
             return result;
         }

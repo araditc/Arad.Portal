@@ -10,9 +10,9 @@ namespace Arad.Portal.DataLayer.Models.Content
     {
         public string ContentId { get; set; }
 
-        public string CategoryContentId { get; set; }
+        public string ContentCategoryId { get; set; }
 
-        public string CategoryContentName { get; set; }
+        public string ContentCategoryName { get; set; }
 
         public string Title { get; set; }
 
@@ -51,6 +51,8 @@ namespace Arad.Portal.DataLayer.Models.Content
         public Entities.General.Content.SourceType SourceType { get; set; }
 
         public string ContentProviderName { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }
 

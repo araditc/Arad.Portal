@@ -1,0 +1,717 @@
+﻿@model Arad.Portal.DataLayer.Models.Content.ContentDTO
+@using Arad.Portal.DataLayer.Models.Shared;
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    var alert = Language.GetString("AlertAndMessage_GotIt");
+    var error = Language.GetString("AlertAndMessage_Error");
+    var dir = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        dir = "rtl";
+    }
+    else
+    {
+        dir = "ltr";
+    }
+}
+@section Styles{
+    <link href="~/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css" rel="stylesheet" />
+    <link href="~/plugins/ckeditor/styles.css" rel="stylesheet" />
+    <link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
+    <link href="~/plugins/TagInput/amsify.suggestags.css" rel="stylesheet" />
+    <style>
+        .text-danger {
+            font-size: 12px;
+        }
+
+        .btn-circle {
+            width: 30px;
+            height: 30px;
+            padding: 6px 0px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.42857;
+        }
+
+        .card-header {
+            background-color: #e0dcdf;
+        }
+
+        .ck-editor .ck-editor__main .ck-content {
+            height: 280px;
+            min-height: 250px;
+        }
+
+        .removeImage {
+            display: inline-block;
+            position: absolute;
+            top: -7px;
+            right: -5px;
+            width: 20px;
+            height: 21px;
+            background: #dc3545;
+            text-align: center;
+            border-radius: 50%;
+            color: white !important;
+            cursor: pointer;
+        }
+        .row{
+            margin-top: 1%;
+        }
+
+        .amsify-suggestags-input-area {
+            text-align: @(dir == "rtl" ? "right" : "left");
+            height: auto;
+        }
+    </style>
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
+        <style>
+            .ck-tooltip__text {
+                font-family: IRANSansWeb !important;
+            }
+
+            .ck-button__label {
+                font-family: IRANSansWeb !important;
+            }
+        </style>
+    }
+}
+
+<h4>@Language.GetString("Menu_Content")</h4>
+<hr />
+
+<div class="modal fade" id="uploadModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content col-md-12">
+            <div class="modal-header">
+                <div class="col-md-1">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="col-md-11" style="text-align: center">
+                    <h5 class="modal-title align-content-center" id="exampleModalLongTitle">@Language.GetString("CropImage")</h5>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="upload-modal-body">
+                    <div id="rowContainer" class="row justify-content-center align-items-center">
+                        <div id="container" style="position: relative;display: inline; height: 400px; width: 400px;max-width:100%;">
+                            <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="blah" src="#" alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center align-items-center">
+                <div>
+                    <button class="btn btn-success" id="send_pic" type="button"><i style="margin-left: 5px;font-size:13px" class="fas fa-check"></i>@Language.GetString("btn_Approve")</button>
+                    <button class="btn btn-primary" id="crop_button"><i style="margin-left: 5px;font-size:13px" class="fas fa-cut"></i>@Language.GetString("btn_Crop")</button>
+                    <button class="btn btn-default" style="background-color: crimson;color: white;border: 1px solid crimson" onclick="rotatePic()"> <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i> @Language.GetString("btn_Rotate")</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card" id="addContentCardTitle">
+            <div class="card-header">
+                <h3 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.ContentId) ? Language.GetString("EditContent_Title") : Language.GetString("AddContent_Title"))</h3>
+            </div>
+
+            <div class="card-body" id="addContentCardBody">
+                <input type="hidden" value="@Model.ContentId" asp-for="ContentId" />
+                <div class="row">
+                    <div class="col-md-3">
+                        <label asp-for="@Model.LanguageId">@Language.GetString("RelatedLanguage")</label>
+                        <select class="form-control" asp-for="@Model.LanguageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))" onclick="fillCategoryList();">
+                        </select>
+                        <span data-val-result="LanguageId" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="@Model.ContentCategoryId">@Language.GetString("Menu_ContentCategory")</label>
+                        <select class="form-control" asp-for="@Model.ContentCategoryId" asp-items="@(new SelectList(ViewBag.CatList,"Value","Text"))">
+                        </select>
+                        <span data-val-result="ContentCategoryId" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="Title">@Language.GetString("Entities_Title")</label>
+                        <input type="text" class="form-control" asp-for="@Model.Title" placeholder=" ">
+                        <span data-val-result="Title" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="SubTitle">@Language.GetString("Entities_SubTitle")</label>
+                        <input type="text" class="form-control" asp-for="@Model.SubTitle" placeholder=" ">
+                        <span data-val-result="SubTitle" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="row">
+                    @{
+                        if (!string.IsNullOrWhiteSpace(Model.ContentId))
+                        {
+                            <div class="form-group col-md-6">
+                                <label asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
+                                <textarea dir="rtl" asp-for="ModificationReason" class="form-control" rows="3"></textarea>
+                                <span data-val-result="ModificationReason" class="text-danger"></span>
+                            </div>
+                        }
+                    }
+                    <div class="form-group col-md-6">
+                        <label asp-for="Description">@Language.GetString("Description")</label>
+                        <textarea dir="rtl" asp-for="Description" class="form-control" rows="3"></textarea>
+                        <span data-val-result="Description" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label asp-for="SeoTitle">@Language.GetString("SeoTitle")</label>
+                        <input type="text" class="form-control" asp-for="@Model.SeoTitle" placeholder=" ">
+                        <span data-val-result="SeoTitle" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="UrlFriend">@Language.GetString("UrlFriend")</label>
+                        <input type="text" class="form-control" asp-for="@Model.UrlFriend" placeholder=" ">
+                        <span data-val-result="UrlFriend" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="SeoDescription">@Language.GetString("SeoDescription")</label>
+                        <textarea dir="rtl" asp-for="SeoDescription" class="form-control" rows="3"></textarea>
+                        <span data-val-result="SeoDescription" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>@Language.GetString("StartShowDate")</label>
+                        @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                        {
+                            <div class="input-group-prepend ">
+                                <span class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                                <input autocomplete="off" id="dtpStartShowDate" type="text" class="form-control" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="input-group date" id="dtpStartShowDate" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input" />
+                                <div class="input-group-append" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        }
+                        <span data-val-result="StartShowDate" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label>@Language.GetString("EndShowDate")</label>
+                        @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                        {
+                            <div class="input-group-prepend ">
+                                <span class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                                <input autocomplete="off" id="dtpEndShowDate" type="text" class="form-control" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="input-group date" id="dtpEndShowDate" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input" />
+                                <div class="input-group-append" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        }
+                        <span data-val-result="EndShowDate" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label>@Language.GetString("SourceType")</label>
+                        <select class="form-control" asp-for="SourceType" asp-items="@(new SelectList(ViewBag.AllSourceType,"Value","Text"))">
+                        </select>
+                        <span data-val-result="SourceType" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label>@Language.GetString("ContentProviderName")</label>
+                        <input type="text" asp-for="ContentProviderName" class="form-control" />
+                        <span data-val-result="ContentProviderName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">@Language.GetString("tbl_ContentImages")</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="custom-file">
+                                            <input style="width: -webkit-fill-available;" accept="image/x-png,image/jpeg"
+                                                   type="file" class="btn btn-sm" name="image" id="image" onchange="getURL(this)">
+                                            <label class="custom-file-label" for="image">@Language.GetString("btn_UploadImage")</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="proGallery" style="padding:1%;">
+                                    <div class="col-md-12">
+                                        <table class="table table-hover table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>@Language.GetString("Image")</th>
+                                                    <th style="display:none;"></th>
+                                                    <th>@Language.GetString("Title")</th>
+                                                    <th>@Language.GetString("Description")</th>
+                                                    <th>@Language.GetString("MainPhoto")</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="imageList">
+                                                @foreach (var pic in Model.Images)
+                                                {
+                                                    <tr>
+                                                        <td><img src="@pic.Content" width="120" height="120" /></td>
+                                                        <td style="display:none;">@pic.ImageId</td>
+                                                        <td><input type="text" class="form-control txtTitle" value="@pic.Title" /></td>
+                                                        <td><input type="text" class="form-control txtDesc" value="@pic.Description" /></td>
+                                                        <td>
+                                                            @if (dir == "rtl")
+                                                            {
+                                                                <input type="radio" name="isMainImage" checked="@pic.IsMain" class="minimal rdbIsMain">
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="icheck-primary d-inline">
+                                                                    <input type="radio" checked="@pic.IsMain" name="isMainImage" class="rdbIsMain">
+                                                                </div>
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromImageList(this);">
+                                                                <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="tagKeyWords">@Language.GetString("TagKeywords")</label>
+                        <input type="text" class="form-control" id="tagKeyWordsyz" name="tagKeyWords" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card" id="ContentCardTitle">
+                            <div class="card-header">
+                                <h3 class="card-title" data-toggle="tab">@Language.GetString("Menu_Content")</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="myEditor">
+                                    <div id="editorBody">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <input type="button" id="btnAddContent" value="@Language.GetString("btn_Save")" class="btn btn-block btn-success" />
+                    <a asp-action="List" class="btn btn-block btn-default">@Language.GetString("btn_Back")</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/lib/cropperjs/cropper.js"></script>
+    <script src="~/plugins/ckeditor/ckeditor.js"></script>
+    <script src="~/js/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/js/bootstrap-select/bootstrap-select.js"></script>
+    <script src="~/plugins/TagInput/jquery.amsify.suggestags.js"></script>
+
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <script src="~/plugins/datePicker/kamadatepicker.min.js"></script>
+        <script src="~/plugins/ckeditor/translations/fa.js"></script>
+    }
+    else
+    {
+        <script src="~/js/moment.min.js"></script>
+        <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
+        <script src="~/plugins/ckeditor/translations/en-au.js"></script>
+    }
+    @if (dir == "rtl")
+    {
+        <script src="~/plugins/iCheck/icheck.min.js"></script>
+    }
+<script>
+        var fileName;
+        var fileContent;
+        var cropper;
+        var currentFileSize;
+        var currentFileName;
+        var images = [];
+        var lan = "";
+        var counter = 1000;
+        var active = '@Language.GetString("Active")';
+        var inActive = '@Language.GetString("InActive")';
+        var editorBodyVar;
+        if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
+        {
+            lan = "fa";
+        }
+        else
+        {
+            lan = "en";
+        }
+
+                $(document).ready(function () {
+                debugger;
+                //icheckboxes radiobuttons
+                if ("@dir" == "rtl") {
+                $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+                checkboxClass: 'icheckbox_minimal-blue',
+                radioClass: 'iradio_minimal-blue'
+                });
+                }
+                  
+                //TagInput
+                $("input[name='tagKeyWords']").amsifySuggestags();
+
+                //datetimepicker
+                if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
+                {
+                kamaDatepicker('dtpStartShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+                kamaDatepicker('dtpEndShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+                }
+                else
+                {
+                $('#dtpStartDate').datetimepicker({
+                format: 'L'
+                });
+                $('#dtpEndShowDate').datetimepicker({
+                format: 'L'
+                });
+                }
+
+                $("#LanguageId").val('@ViewBag.LangId');
+                    if ("@Model.ContentId" != "") {
+                        if ("@Model.ContentCategoryId" != "") {
+                    $("#ContentCategoryId").val("@Model.ContentCategoryId");
+                }
+                if ("@Model.PersianStartShowDate" != "") {
+                   $("#dtpStartShowDate").val("@Model.PersianStartShowDate");
+                }
+                if ("@Model.PersianEndShowDate" != "") {
+                     $("#dtpEndShowDate").val("@Model.PersianEndShowDate");
+                   }
+                }
+                //ckEditor
+         ClassicEditor.create(document.querySelector('#editorBody'),
+                {
+                    toolbar: {
+                        items: [
+                            'heading',
+                            '|',
+                            'bold',
+                            'italic',
+                            'link',
+                            'bulletedList',
+                            'numberedList',
+                            '|',
+                            'outdent',
+                            'indent',
+                            '|',
+                            'blockQuote',
+                            'insertTable',
+                            'undo',
+                            'redo'
+                        ]
+                    },
+                    language: lan
+
+                })
+            .then(editor =>
+            {
+                editor.setData('@Html.Raw(Model.Contents)');
+                editorBodyVar = editor;
+                })
+                .catch(err =>
+                {
+                console.error(err.stack);
+                });
+
+                $("#btnAddContent").click(function () {
+                debugger;
+                    var flag = false;
+                    if ("@Model.ContentId" != "" && $("#ModificationReason").val() == "") {
+                $("span[data-val-result='ModificationReason']").html('@Language.GetString("AlertAndMessage_ModificationReason")');
+                flag = true;
+                }
+
+                if (!flag) {
+
+                    var dto = FillDataToSend();
+                       $.ajax({
+                        url: "@Model.ContentId" != "" ? "/Content/Edit" : "/Content/Add",
+                        contentType: 'application/json',
+                        data: JSON.stringify(dto),
+                        type: 'Post',
+                        beforeSend: function () {
+                        debugger;
+                        AddLoading($("#addContentCardBody"));
+                        },
+                        success: function (result) {
+                        debugger;
+                        if (result.status === "Success") {
+                        Swal.fire({
+                        icon: 'success',
+                        text: result.message,
+                        showConfirmButton: false,
+                            timer: 3000
+                        });
+                             window.location.href = '@Url.Action("List")';
+                        }
+                        else
+                        if (result.status === "ModelError") {
+                        var spanErrorList = $('span[data-val-result]');
+                        if (spanErrorList.length > 1) {
+                        spanErrorList.each(function() {
+                        $(this).html("");
+                        $(this).parent().removeClass("has-error");
+                        });
+                        }
+                        else {
+                        spanErrorList.html("");
+                        spanErrorList.parent().removeClass("has-error");
+                        }
+                        if (result.modelStateErrors !== null) {
+                        $('[data-val-result=' + value.key + ']').html(value.errorMessage);
+                        $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                        }
+                        }
+                        },
+                        @*error: function (xhr, ajaxOptions, thrownError) {
+                                alert("@error");
+                                alert(xhr.status);
+                                alert(thrownError);
+                            },*@
+                        complete: function () {
+                        removeLoading($("#addContentCardBody"));
+                        }
+                        });
+                }
+                })
+
+                $("#LanguageId").change(function () {
+                debugger;
+                var langId = $("#LanguageId").val();
+                if (langId != "-1") {
+                    $.ajax({
+                        url: "/ContentCategory/GetContentCategoryList/" + langId,
+                        type: 'Get',
+                        dataType: 'json',
+                        success: function (result) {
+                            debugger;
+                            var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
+                            if (result.status === "success") {
+                                debugger;
+                                if (result.data.length != 0) {
+                                    (result.data).forEach(function (item) {
+                                        var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                        options += op;
+                                    });
+
+                                    $("#ContentCategoryId").html(options);
+                                    $("#ContentCategoryId").val('@Model.ContentCategoryId');
+                                }
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert("@error");
+                            alert(xhr.status);
+                            alert(thrownError);
+                        }
+                    });
+                }
+            });
+                });
+
+        function deleteFromImageList(sender) {
+            debugger;
+            var id = $(sender).next().attr("imgId");
+            //removeFromArray
+            var item = images.find(_ => _.ImageId === id);
+            var index = images.indexOf(item);
+            images.splice(index, 1);
+            //remove in view
+            $(sender).parent().remove();
+        }
+
+                function FillDataToSend() {
+                debugger;
+                var obj = {};
+                obj.CategoryNames = [];
+                obj.ContentCategoryId = $("#ContentCategoryId").val();
+                if ($("#ParentCategoryId").val() != "-1") {
+                obj.ParentCategoryId = $("#ParentCategoryId").val();
+                }
+
+                if ($("#ModificationReason").length > 0) {
+                obj.ModificationReason = $("#ModificationReason").val();
+                }
+                obj.CategoryTypeId = parseInt($("#categoryTypeId").val());
+                $("#multiLingualList tr").each(function () {
+                debugger;
+                var innerModel = {};
+                innerModel.Name = $(this).find("td:eq(0)").text();
+                innerModel.LanguageName = $(this).find("td:eq(1)").text();
+                innerModel.LanguageId = $(this).find("td:eq(2)").text();
+
+                obj.CategoryNames.push(innerModel);
+                });
+                return obj;
+                }
+
+
+                $('#uploadModal').on('hidden.bs.modal',
+                function () {
+                debugger;
+                cropper.destroy();
+                document.getElementById("image").value = "";
+                $("#cropped_result").remove();
+                });
+
+                function rotatePic() {
+                cropper.rotate(90);
+                }
+
+                function upRiseModal() {
+                $("#send_pic").attr("disabled", true);
+                $("#uploadModal").modal("show");
+                }
+
+                function initCropper() {
+                debugger;
+                var image = document.getElementById('blah');
+                if (cropper !== null && cropper !== undefined) {
+                cropper.destroy();
+                }
+
+                cropper = new Cropper(image,
+                {
+                background: true,
+                aspectRatio: 1,
+                viewMode: 2,
+                responsive: true,
+                rotatable: true
+                });
+
+                document.getElementById('crop_button').addEventListener('click',
+                function () {
+                var imgUrl = cropper.getCroppedCanvas().toDataURL('image/jpeg');
+                var img = document.createElement("img");
+                img.setAttribute("id", "galleryPic");
+                img.setAttribute("class", "img-fluid");
+                var height = document.getElementById("container").getAttribute("width");
+                var croppedContainer = document.createElement("div");
+                croppedContainer.setAttribute("id", "cropped_result");
+                croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
+                document.getElementById("rowContainer").appendChild(croppedContainer);
+                img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
+                img.src = imgUrl;
+                document.getElementById("cropped_result").innerHTML = "";
+                document.getElementById("cropped_result").appendChild(img);
+                $("#send_pic").attr("disabled", false);
+                });
+                }
+
+                function getURL(input)
+                {
+                $("#cropped_result").remove();
+                if (input.files && input.files[0]) {
+                var file = input.files[0];
+                currentFileName = file.name;
+                currentFileSize = file.size;
+
+                if (currentFileSize <= @ViewBag.PicSize) {
+                var reader = new FileReader();
+                try {
+                reader.readAsDataURL(file);
+                } catch (e) {
+
+                }
+                reader.onload = function (e) {
+                var content = e.target.result;
+                //if file format is incorrect, then the 'content' won't have any src.
+                if (content !== "data:") {
+                var reducedContent = content.slice(5);
+
+                if (reducedContent.startsWith("image")) {
+                $('#blah').attr('src', content);
+                setTimeout(upRiseModal, 100);
+                setTimeout(initCropper, 500);
+                } else {
+
+                Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
+                showConfirmButton: false,
+                timer: 1500
+                });
+
+                document.getElementById("image").value = "";
+                $("#cropped_result").remove();
+                }
+                } else {
+                Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
+                showConfirmButton: false,
+                timer: 1500
+                });
+
+                document.getElementById("image").value = "";
+                $("#cropped_result").remove();
+                }
+                };
+                }
+                else
+                {
+                Swal.fire({
+                icon: 'error',
+                title: '@Language.GetString("AlertAndMessage_InvalidFileSize")',
+                showConfirmButton: false,
+                timer: 1500
+                });
+                document.getElementById("image").value = "";
+                $("#cropped_result").remove();
+                }
+                }
+                }
+</script>
+}
+
+
+
+

@@ -14,7 +14,9 @@ namespace Arad.Portal.DataLayer.Models.Content
         }
         public string ContentId { get; set; }
 
-        public string CategoryContentId { get; set; }
+        public string ContentCategoryId { get; set; }
+
+        public string ContentCategoryName { get; set; }
 
         public string Title { get; set; }
 

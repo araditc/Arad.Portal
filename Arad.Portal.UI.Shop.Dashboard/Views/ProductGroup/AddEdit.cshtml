@@ -46,18 +46,7 @@
                         <span data-val-result="ParentId" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="row">
-                    @{
-                        if (!string.IsNullOrWhiteSpace(Model.ProductGroupId))
-                        {
-                            <div class="form-group col-md-6">
-                                <label asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
-                                <textarea dir="rtl" asp-for="ModificationReason" class="form-control" rows="3"></textarea>
-                                <span data-val-result="ModificationReason" class="text-danger"></span>
-                            </div>
-                        }
-                    }
-                </div>
+               
                 <div class="row" style="background-color: #f0f0f5;">
                     <div class="form-group col-md-3">
                         <label for="languageId">@Language.GetString("LanguageName")</label><br />
@@ -200,15 +189,11 @@
                     }
             });
                 }
-
             });*@
             $("#btnAddProductGroup").click(function () {
             debugger;
                 var flag = false;
-                if ("@Model.ProductGroupId" != "" && $("#ModificationReason").val() == "") {
-                    $("span[data-val-result='ModificationReason']").html('@Language.GetString("AlertAndMessage_ModificationReason")');
-                    flag = true;
-                }
+               
                 if ($("#multiLingualList tr").length == 0) {
                     $("span[data-val-result='MultiLingualProperties']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
                     flag = true;

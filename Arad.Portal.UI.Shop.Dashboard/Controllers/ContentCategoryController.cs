@@ -82,7 +82,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             lst = await _contentCategoryRepository.AllActiveContentCategory(id, currentUserId);
             if (lst.Count() > 0)
             {
-                result = new JsonResult(new { Status = "success", Data = lst });
+                result = new JsonResult(new { Status = "success", Data = lst.OrderBy(_=>_.Text) });
             }
             else
             {
@@ -91,6 +91,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return result;
 
         }
+
+       
+
 
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] ContentCategoryDTO dto)

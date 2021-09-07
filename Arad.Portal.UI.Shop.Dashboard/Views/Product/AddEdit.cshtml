@@ -84,7 +84,7 @@
                     </button>
                 </div>
                 <div class="col-md-11" style="text-align: center">
-                    <h5 class="modal-title align-content-center" id="exampleModalLongTitle">برش تصویر</h5>
+                    <h5 class="modal-title align-content-center" id="exampleModalLongTitle">@Language.GetString("CropImage")</h5>
                 </div>
             </div>
             <div class="modal-body">
@@ -460,28 +460,6 @@
                                         }
                                         <span data-val-result="startDate" class="text-danger"></span>
                                     </div>
-                                    @*<div class="form-group col-md-3">
-                                        <label>@Language.GetString("EndDate")</label>
-                                        @if (CultureInfo.CurrentCulture.Name == "fa-IR")
-                                        {
-                                            <div class="input-group-prepend ">
-                                                <span class="input-group-text">
-                                                    <i class="fa fa-calendar"></i>
-                                                </span>
-                                                <input autocomplete="off" id="dtpEndDate" type="text" class="form-control" />
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="input-group date" id="dtpEndDate" data-target-input="nearest">
-                                                <input type="text" class="form-control datetimepicker-input" />
-                                                <div class="input-group-append" data-toggle="datetimepicker">
-                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                                </div>
-                                            </div>
-                                        }
-                                        <span data-val-result="endDate" class="text-danger"></span>
-                                    </div>*@
                                     <div class="form-group col-md-1" style="text-align:center;margin:auto;">
                                         <div style="margin:auto;display:inline-block;">
                                             <button type="button" class="btn btn-info btn-circle" onclick="addPriceToList();">
@@ -623,8 +601,6 @@
     </div>
 </div>
 @section Scripts{
-    @*<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="~/plugins/ekko-lightbox/ekko-lightbox.js"></script>*@
     <script src="~/lib/cropperjs/cropper.js"></script>
     <script src="~/plugins/select2/js/select2.js"></script>
     @if (dir == "rtl")
@@ -665,16 +641,12 @@
             if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
             {
                 kamaDatepicker('dtpStartDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
-               /* kamaDatepicker('dtpEndDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });*/
             }
             else
             {
                 $('#dtpStartDate').datetimepicker({
                     format: 'L'
                 });
-                //$('#dtpEndDate').datetimepicker({
-                //    format: 'L'
-                //});
             }
        //multiselect
         $("#GroupIds").select2({ dir: '@dir', theme: 'bootstrap4' });
@@ -922,7 +894,7 @@
         });
     });
 
-    function removeThisImage(sender) {
+    function deleteFromImageList(sender) {
         debugger;
         var id = $(sender).next().attr("imgId");
         //removeFromArray
@@ -1233,9 +1205,7 @@
         cropper.rotate(90);
     }
 
-
     function upRiseModal() {
-
     $("#send_pic").attr("disabled", true);
     $("#uploadModal").modal("show");
     }
@@ -1275,10 +1245,10 @@
             });
     }
 
-    function getURL(input) {
-
-    $("#cropped_result").remove();
-    if (input.files && input.files[0]) {
+    function getURL(input)
+    {
+     $("#cropped_result").remove();
+     if (input.files && input.files[0]) {
         var file = input.files[0];
         currentFileName = file.name;
         currentFileSize = file.size;
@@ -1339,7 +1309,7 @@
             $("#cropped_result").remove();
         }
     }
-}
+    }
 </script>
 }
 

@@ -304,6 +304,9 @@
 	<string key="tbl_ProductImages">
 		<value>Product Images</value>
 	</string>
+	<string key="tbl_ContentImages">
+		<value>Content Images</value>
+	</string>
 	<string key="tbl_ProductGroup">
 		<value>Product Group</value>
 	</string>
@@ -324,6 +327,9 @@
 	</string>
 	<string key="tbl_CategoryName">
 		<value>ContentCategory Name</value>
+	</string>
+	<string key="tbl_Content">
+		<value>Content</value>
 	</string>
 	<string key="tbl_GroupNames">
 		<value>Group Names</value>
@@ -1133,6 +1139,12 @@
 	<string key="AddContentCategory_Title">
 		<value>Add ContentCategory</value>
 	</string>
+	<string key="EditContent_Title">
+		<value>Edit Content</value>
+	</string>
+	<string key="AddContent_Title">
+		<value>Add Content</value>
+	</string>
 	<string key="AddProductPart_Title">
 		<value>Add Product</value>
 	</string>
@@ -1230,6 +1242,21 @@
   <string key="Active">
     <value>Active</value>
   </string>
+	<string key="SourceType">
+		<value>Content Owner Type</value>
+	</string>
+	<string key="ContentProviderName">
+		<value>Content ProviderName</value>
+	</string>
+	<string key="StartShowDate">
+		<value>ShowDate Start</value>
+	</string>
+	<string key="EndShowDate">
+		<value>ShowDate End</value>
+	</string>
+	<string key="TagKeywords">
+		<value>Tag Keywords</value>
+	</string>
   <string key="ProductsInPromotion">
     <value>Products in Promotion</value>
   </string>
@@ -1402,6 +1429,9 @@
 	</string>
 	<string key="Menu_ContentCategory">
 		<value>Content Category</value>
+	</string>
+	<string key="Menu_Content">
+		<value>Content</value>
 	</string>
 	<string key="Menu_ProductSpecifications">
 		<value>Product Specifications</value>
@@ -1651,6 +1681,9 @@
 	</string>
 	<string key="Entities_Title">
 		<value>Title</value>
+	</string>
+	<string key="Entities_SubTitle">
+		<value>SubTitle</value>
 	</string>
 	<string key="Entities_PermissionType">
 		<value>PermissionType</value>

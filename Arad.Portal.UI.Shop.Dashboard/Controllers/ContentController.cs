@@ -64,6 +64,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
 
                 var categoryList =await _contentCategoryRepository.AllActiveContentCategory(defLangId, currentUserId);
+                categoryList = categoryList.OrderBy(_ => _.Text).ToList();
                 categoryList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
                 ViewBag.CatList = categoryList;
 
@@ -88,12 +89,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
 
             var categoryList = await _contentCategoryRepository.AllActiveContentCategory(lan.LanguageId, currentUserId);
+            categoryList = categoryList.OrderBy(_ => _.Text).ToList();
             categoryList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
             ViewBag.CatList = categoryList;
 
             ViewBag.LangId = lan.LanguageId;
             ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
 
+
+            ViewBag.AllSourceType = _contentRepository.GetAllSourceType();
 
             ViewBag.PicSize = imageSize;
             return View(model);
