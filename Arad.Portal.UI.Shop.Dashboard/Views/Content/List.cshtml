@@ -10,6 +10,7 @@
     bool isSearch = false;
     System.Collections.Specialized.NameValueCollection queryString = null;
     var langId = "";
+    var error = Language.GetString("AlertAndMessage_Error");
     if (!string.IsNullOrWhiteSpace(Model.QueryString))
     {
         queryString = System.Web.HttpUtility.ParseQueryString(Model.QueryString);
@@ -68,9 +69,8 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>@Language.GetString("Menu_ContentCategory")</label>
-                        <select class="form-control" id="CategoryContentId" asp-items="@(new SelectList(ViewBag.CatList,"Value","Text"))">
+                        <select class="form-control" id="contentCategoryId" asp-items="@(new SelectList(ViewBag.CatList,"Value","Text"))">
                         </select>
-                        <span data-val-result="ContentCategoryId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
                         <label>@Language.GetString("Filter")</label>
@@ -192,12 +192,38 @@
             if ("@langId" != "") {
                 $("#cmbLangIdFilter").val("@langId");
             }
-
-           $("#cmbLangIdFilter").change(function () {
+          
+            $("#cmbLangIdFilter").change(function () {
             debugger;
-               var queryString = '?LanguageId=' + $("#cmbLangIdFilter").val();
-               window.location.href = '@Url.Action("List", "ContentCategory")' + queryString;
-           });
+                var langId = $("#cmbLangIdFilter").val();
+            if (langId != "-1") {
+                $.ajax({
+                    url: "/ContentCategory/GetContentCategoryList/" + langId,
+                    type: 'Get',
+                    dataType: 'json',
+                    success: function (result) {
+                        debugger;
+                        var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
+                        if (result.status === "success") {
+                            debugger;
+                            if (result.data.length != 0) {
+                                (result.data).forEach(function (item) {
+                                    var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                    options += op;
+                                });
+
+                                $("#contentCategoryId").html(options);
+                            }
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert("@error");
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+                });
+            }
+        });
 
              $("#btnSearch").click(function () {
                 debugger;

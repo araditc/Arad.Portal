@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\css\siteTemplate\permissionTree\" />
+    <Folder Include="wwwroot\Images\Contents\CkEditor\" />
     <Folder Include="wwwroot\lib\bootstrap-select\" />
   </ItemGroup>
 

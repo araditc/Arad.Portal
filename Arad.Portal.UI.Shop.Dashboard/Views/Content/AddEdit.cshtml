@@ -16,7 +16,7 @@
 }
 @section Styles{
     <link href="~/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css" rel="stylesheet" />
-    <link href="~/plugins/ckeditor/styles.css" rel="stylesheet" />
+    @*<link href="~/plugins/ckeditor5/styles.css" rel="stylesheet" />*@
     <link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
     <link href="~/plugins/TagInput/amsify.suggestags.css" rel="stylesheet" />
     <style>
@@ -152,32 +152,11 @@
 
                 </div>
                 <div class="row">
-                    @{
-                        if (!string.IsNullOrWhiteSpace(Model.ContentId))
-                        {
-                            <div class="form-group col-md-6">
-                                <label asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
-                                <textarea dir="rtl" asp-for="ModificationReason" class="form-control" rows="3"></textarea>
-                                <span data-val-result="ModificationReason" class="text-danger"></span>
-                            </div>
-                        }
-                    }
+
                     <div class="form-group col-md-6">
                         <label asp-for="Description">@Language.GetString("Description")</label>
                         <textarea dir="rtl" asp-for="Description" class="form-control" rows="3"></textarea>
                         <span data-val-result="Description" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <label asp-for="SeoTitle">@Language.GetString("SeoTitle")</label>
-                        <input type="text" class="form-control" asp-for="@Model.SeoTitle" placeholder=" ">
-                        <span data-val-result="SeoTitle" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-3">
-                        <label asp-for="UrlFriend">@Language.GetString("UrlFriend")</label>
-                        <input type="text" class="form-control" asp-for="@Model.UrlFriend" placeholder=" ">
-                        <span data-val-result="UrlFriend" class="text-danger"></span>
                     </div>
                     <div class="col-md-6">
                         <label asp-for="SeoDescription">@Language.GetString("SeoDescription")</label>
@@ -240,6 +219,18 @@
                         <label>@Language.GetString("ContentProviderName")</label>
                         <input type="text" asp-for="ContentProviderName" class="form-control" />
                         <span data-val-result="ContentProviderName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label asp-for="SeoTitle">@Language.GetString("SeoTitle")</label>
+                        <input type="text" class="form-control" asp-for="@Model.SeoTitle" placeholder=" ">
+                        <span data-val-result="SeoTitle" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="UrlFriend">@Language.GetString("UrlFriend")</label>
+                        <input type="text" class="form-control" asp-for="@Model.UrlFriend" placeholder=" ">
+                        <span data-val-result="UrlFriend" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="row">
@@ -320,8 +311,11 @@
                                 <h3 class="card-title" data-toggle="tab">@Language.GetString("Menu_Content")</h3>
                             </div>
                             <div class="card-body">
-                                <div class="myEditor">
-                                    <div id="editorBody">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <textarea id="editorCk" name="editorCk" class="form-control" rows="10" cols="80">
+                                            This is my textarea to be replaced with CKEditor 4.
+                                        </textarea>
                                     </div>
                                 </div>
                             </div>
@@ -342,27 +336,28 @@
 </div>
 @section Scripts{
     <script src="~/lib/cropperjs/cropper.js"></script>
-    <script src="~/plugins/ckeditor/ckeditor.js"></script>
+    @*<script src="~/plugins/ckeditor5/ckeditor.js"></script>*@
     <script src="~/js/plugins/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/js/bootstrap-select/bootstrap-select.js"></script>
     <script src="~/plugins/TagInput/jquery.amsify.suggestags.js"></script>
+    <script src="~/plugins/ckeditor4/ckeditor.js"></script>
 
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
         <script src="~/plugins/datePicker/kamadatepicker.min.js"></script>
-        <script src="~/plugins/ckeditor/translations/fa.js"></script>
+        @*<script src="~/plugins/ckeditor5/translations/fa.js"></script>*@
     }
     else
     {
         <script src="~/js/moment.min.js"></script>
         <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
-        <script src="~/plugins/ckeditor/translations/en-au.js"></script>
+        @*<script src="~/plugins/ckeditor5/translations/en-au.js"></script>*@
     }
     @if (dir == "rtl")
     {
         <script src="~/plugins/iCheck/icheck.min.js"></script>
     }
-<script>
+    <script>
         var fileName;
         var fileContent;
         var cropper;
@@ -383,177 +378,198 @@
             lan = "en";
         }
 
-                $(document).ready(function () {
-                debugger;
-                //icheckboxes radiobuttons
-                if ("@dir" == "rtl") {
-                $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-                checkboxClass: 'icheckbox_minimal-blue',
-                radioClass: 'iradio_minimal-blue'
-                });
-                }
-                  
-                //TagInput
-                $("input[name='tagKeyWords']").amsifySuggestags();
+            $(document).ready(function () {
+            debugger;
+            //icheckboxes radiobuttons
+            if ("@dir" == "rtl") {
+            $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+            checkboxClass: 'icheckbox_minimal-blue',
+            radioClass: 'iradio_minimal-blue'
+            });
+            }
 
-                //datetimepicker
-                if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
-                {
-                kamaDatepicker('dtpStartShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
-                kamaDatepicker('dtpEndShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
-                }
-                else
-                {
-                $('#dtpStartDate').datetimepicker({
-                format: 'L'
-                });
-                $('#dtpEndShowDate').datetimepicker({
-                format: 'L'
-                });
-                }
+            //TagInput
+            $("input[name='tagKeyWords']").amsifySuggestags();
 
-                $("#LanguageId").val('@ViewBag.LangId');
-                    if ("@Model.ContentId" != "") {
-                        if ("@Model.ContentCategoryId" != "") {
-                    $("#ContentCategoryId").val("@Model.ContentCategoryId");
-                }
-                if ("@Model.PersianStartShowDate" != "") {
-                   $("#dtpStartShowDate").val("@Model.PersianStartShowDate");
-                }
-                if ("@Model.PersianEndShowDate" != "") {
-                     $("#dtpEndShowDate").val("@Model.PersianEndShowDate");
-                   }
-                }
-                //ckEditor
-         ClassicEditor.create(document.querySelector('#editorBody'),
-                {
-                    toolbar: {
-                        items: [
-                            'heading',
-                            '|',
-                            'bold',
-                            'italic',
-                            'link',
-                            'bulletedList',
-                            'numberedList',
-                            '|',
-                            'outdent',
-                            'indent',
-                            '|',
-                            'blockQuote',
-                            'insertTable',
-                            'undo',
-                            'redo'
-                        ]
-                    },
-                    language: lan
-
-                })
-            .then(editor =>
+            //datetimepicker
+            if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
             {
-                editor.setData('@Html.Raw(Model.Contents)');
-                editorBodyVar = editor;
-                })
-                .catch(err =>
+            kamaDatepicker('dtpStartShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+            kamaDatepicker('dtpEndShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+            }
+            else
+            {
+            $('#dtpStartDate').datetimepicker({
+            format: 'L'
+            });
+            $('#dtpEndShowDate').datetimepicker({
+            format: 'L'
+            });
+            }
+
+            $("#LanguageId").val('@ViewBag.LangId');
+                if ("@Model.ContentId" != "") {
+                    if ("@Model.ContentCategoryId" != "") {
+                $("#ContentCategoryId").val("@Model.ContentCategoryId");
+            }
+            if ("@Model.PersianStartShowDate" != "") {
+                $("#dtpStartShowDate").val("@Model.PersianStartShowDate");
+            }
+            if ("@Model.PersianEndShowDate" != "") {
+                    $("#dtpEndShowDate").val("@Model.PersianEndShowDate");
+                }
+                }
+
+           //ckEditor5
+           @*ClassicEditor.create(document.querySelector('#editorBody'),
+            {
+                toolbar: {
+                    items: [
+                        'heading',
+                        '|',
+                        'bold',
+                        'italic',
+                        'link',
+                        'bulletedList',
+                        'numberedList',
+                        '|',
+                        'outdent',
+                        'indent',
+                        '|',
+                        'imageUpload',
+                        'blockQuote',
+                        'insertTable',
+                        'undo',
+                        'redo',
+                        'imageInsert'
+                    ]
+                },
+                language: lan,
+                image: {
+                    toolbar: [
+                        'imageTextAlternative',
+                        'imageStyle:inline',
+                        'imageStyle:block',
+                        'imageStyle:side'
+                    ]
+                },
+                table: {
+                    contentToolbar: [
+                        'tableColumn',
+                        'tableRow',
+                        'mergeTableCells'
+                    ]
+                },
+                licenseKey: '',
+            }
+        ).then(editor =>
                 {
-                console.error(err.stack);
-                });
+                    editor.setData('@Html.Raw(Model.Contents)');
+                    editorBodyVar = editor;
+                }).catch(err => {
+                    console.error(err.stack);
+                });*@
+
+                //ckEditor4
+                CKEDITOR.replace("editorCk");
+                //, {
+                //    customConfig: '/plugins/ckeditor/config.js'
+                //});
 
                 $("#btnAddContent").click(function () {
-                debugger;
+                    debugger;
                     var flag = false;
                     if ("@Model.ContentId" != "" && $("#ModificationReason").val() == "") {
-                $("span[data-val-result='ModificationReason']").html('@Language.GetString("AlertAndMessage_ModificationReason")');
-                flag = true;
-                }
+                        $("span[data-val-result='ModificationReason']").html('@Language.GetString("AlertAndMessage_ModificationReason")');
+                        flag = true;
+                    }
 
-                if (!flag) {
-
-                    var dto = FillDataToSend();
-                       $.ajax({
-                        url: "@Model.ContentId" != "" ? "/Content/Edit" : "/Content/Add",
-                        contentType: 'application/json',
-                        data: JSON.stringify(dto),
-                        type: 'Post',
-                        beforeSend: function () {
-                        debugger;
-                        AddLoading($("#addContentCardBody"));
-                        },
-                        success: function (result) {
-                        debugger;
-                        if (result.status === "Success") {
-                        Swal.fire({
-                        icon: 'success',
-                        text: result.message,
-                        showConfirmButton: false,
-                            timer: 3000
-                        });
-                             window.location.href = '@Url.Action("List")';
-                        }
-                        else
-                        if (result.status === "ModelError") {
-                        var spanErrorList = $('span[data-val-result]');
-                        if (spanErrorList.length > 1) {
-                        spanErrorList.each(function() {
-                        $(this).html("");
-                        $(this).parent().removeClass("has-error");
-                        });
-                        }
-                        else {
-                        spanErrorList.html("");
-                        spanErrorList.parent().removeClass("has-error");
-                        }
-                        if (result.modelStateErrors !== null) {
-                        $('[data-val-result=' + value.key + ']').html(value.errorMessage);
-                        $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
-                        }
-                        }
-                        },
-                        @*error: function (xhr, ajaxOptions, thrownError) {
-                                alert("@error");
-                                alert(xhr.status);
-                                alert(thrownError);
-                            },*@
-                        complete: function () {
-                        removeLoading($("#addContentCardBody"));
-                        }
-                        });
-                }
-                })
-
-                $("#LanguageId").change(function () {
-                debugger;
-                var langId = $("#LanguageId").val();
-                if (langId != "-1") {
-                    $.ajax({
-                        url: "/ContentCategory/GetContentCategoryList/" + langId,
-                        type: 'Get',
-                        dataType: 'json',
-                        success: function (result) {
-                            debugger;
-                            var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
-                            if (result.status === "success") {
+                    if (!flag) {
+                        var dto = FillDataToSend();
+                        $.ajax({
+                            url: "@Model.ContentId" != "" ? "/Content/Edit" : "/Content/Add",
+                            contentType: 'application/json',
+                            data: JSON.stringify(dto),
+                            type: 'Post',
+                            beforeSend: function () {
                                 debugger;
-                                if (result.data.length != 0) {
-                                    (result.data).forEach(function (item) {
-                                        var op = "<option value='" + item.value + "'>" + item.text + "</option>";
-                                        options += op;
+                                AddLoading($("#addContentCardBody"));
+                            },
+                            success: function (result) {
+                                debugger;
+                                if (result.status === "Success") {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        text: result.message,
+                                        showConfirmButton: false,
+                                        timer: 3000
                                     });
-
-                                    $("#ContentCategoryId").html(options);
-                                    $("#ContentCategoryId").val('@Model.ContentCategoryId');
+                                    window.location.href = '@Url.Action("List")';
                                 }
+                                else
+                                    if (result.status === "ModelError") {
+                                        var spanErrorList = $('span[data-val-result]');
+                                        if (spanErrorList.length > 1) {
+                                            spanErrorList.each(function () {
+                                                $(this).html("");
+                                                $(this).parent().removeClass("has-error");
+                                            });
+                                        }
+                                        else {
+                                            spanErrorList.html("");
+                                            spanErrorList.parent().removeClass("has-error");
+                                        }
+                                        if (result.modelStateErrors !== null) {
+                                            $('[data-val-result=' + value.key + ']').html(value.errorMessage);
+                                            $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                        }
+                                    }
+                            },
+                @*error: function (xhr, ajaxOptions, thrownError) {
+                        alert("@error");
+                        alert(xhr.status);
+                        alert(thrownError);
+                    },*@
+                            complete: function () {
+                                removeLoading($("#addContentCardBody"));
                             }
-                        },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            alert("@error");
-                            alert(xhr.status);
-                            alert(thrownError);
-                        }
-                    });
-                }
-            });
+                        });
+                    }
                 });
+
+            $("#LanguageId").change(function () {
+            debugger;
+            var langId = $("#LanguageId").val();
+            if (langId != "-1") {
+                $.ajax({
+                    url: "/ContentCategory/GetContentCategoryList/" + langId,
+                    type: 'Get',
+                    dataType: 'json',
+                    success: function (result) {
+                        debugger;
+                        var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
+                        if (result.status === "success") {
+                            debugger;
+                            if (result.data.length != 0) {
+                                (result.data).forEach(function (item) {
+                                    var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                    options += op;
+                                });
+
+                                $("#ContentCategoryId").html(options);
+                                $("#ContentCategoryId").val('@Model.ContentCategoryId');
+                            }
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert("@error");
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+                });
+            }
+        });
+        });
 
         function deleteFromImageList(sender) {
             debugger;
@@ -566,150 +582,150 @@
             $(sender).parent().remove();
         }
 
-                function FillDataToSend() {
-                debugger;
-                var obj = {};
-                obj.CategoryNames = [];
-                obj.ContentCategoryId = $("#ContentCategoryId").val();
-                if ($("#ParentCategoryId").val() != "-1") {
-                obj.ParentCategoryId = $("#ParentCategoryId").val();
-                }
+        function FillDataToSend() {
+        debugger;
+        var obj = {};
+        obj.CategoryNames = [];
+        obj.ContentCategoryId = $("#ContentCategoryId").val();
+        if ($("#ParentCategoryId").val() != "-1") {
+        obj.ParentCategoryId = $("#ParentCategoryId").val();
+        }
 
-                if ($("#ModificationReason").length > 0) {
-                obj.ModificationReason = $("#ModificationReason").val();
-                }
-                obj.CategoryTypeId = parseInt($("#categoryTypeId").val());
-                $("#multiLingualList tr").each(function () {
-                debugger;
-                var innerModel = {};
-                innerModel.Name = $(this).find("td:eq(0)").text();
-                innerModel.LanguageName = $(this).find("td:eq(1)").text();
-                innerModel.LanguageId = $(this).find("td:eq(2)").text();
+        if ($("#ModificationReason").length > 0) {
+        obj.ModificationReason = $("#ModificationReason").val();
+        }
+        obj.CategoryTypeId = parseInt($("#categoryTypeId").val());
+        $("#multiLingualList tr").each(function () {
+        debugger;
+        var innerModel = {};
+        innerModel.Name = $(this).find("td:eq(0)").text();
+        innerModel.LanguageName = $(this).find("td:eq(1)").text();
+        innerModel.LanguageId = $(this).find("td:eq(2)").text();
 
-                obj.CategoryNames.push(innerModel);
-                });
-                return obj;
-                }
+        obj.CategoryNames.push(innerModel);
+        });
+        return obj;
+        }
 
 
-                $('#uploadModal').on('hidden.bs.modal',
-                function () {
-                debugger;
-                cropper.destroy();
-                document.getElementById("image").value = "";
-                $("#cropped_result").remove();
-                });
+        $('#uploadModal').on('hidden.bs.modal',
+        function () {
+        debugger;
+        cropper.destroy();
+        document.getElementById("image").value = "";
+        $("#cropped_result").remove();
+        });
 
-                function rotatePic() {
-                cropper.rotate(90);
-                }
+        function rotatePic() {
+        cropper.rotate(90);
+        }
 
-                function upRiseModal() {
-                $("#send_pic").attr("disabled", true);
-                $("#uploadModal").modal("show");
-                }
+        function upRiseModal() {
+        $("#send_pic").attr("disabled", true);
+        $("#uploadModal").modal("show");
+        }
 
-                function initCropper() {
-                debugger;
-                var image = document.getElementById('blah');
-                if (cropper !== null && cropper !== undefined) {
-                cropper.destroy();
-                }
+        function initCropper() {
+        debugger;
+        var image = document.getElementById('blah');
+        if (cropper !== null && cropper !== undefined) {
+        cropper.destroy();
+        }
 
-                cropper = new Cropper(image,
-                {
-                background: true,
-                aspectRatio: 1,
-                viewMode: 2,
-                responsive: true,
-                rotatable: true
-                });
+        cropper = new Cropper(image,
+        {
+        background: true,
+        aspectRatio: 1,
+        viewMode: 2,
+        responsive: true,
+        rotatable: true
+        });
 
-                document.getElementById('crop_button').addEventListener('click',
-                function () {
-                var imgUrl = cropper.getCroppedCanvas().toDataURL('image/jpeg');
-                var img = document.createElement("img");
-                img.setAttribute("id", "galleryPic");
-                img.setAttribute("class", "img-fluid");
-                var height = document.getElementById("container").getAttribute("width");
-                var croppedContainer = document.createElement("div");
-                croppedContainer.setAttribute("id", "cropped_result");
-                croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
-                document.getElementById("rowContainer").appendChild(croppedContainer);
-                img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
-                img.src = imgUrl;
-                document.getElementById("cropped_result").innerHTML = "";
-                document.getElementById("cropped_result").appendChild(img);
-                $("#send_pic").attr("disabled", false);
-                });
-                }
+        document.getElementById('crop_button').addEventListener('click',
+        function () {
+        var imgUrl = cropper.getCroppedCanvas().toDataURL('image/jpeg');
+        var img = document.createElement("img");
+        img.setAttribute("id", "galleryPic");
+        img.setAttribute("class", "img-fluid");
+        var height = document.getElementById("container").getAttribute("width");
+        var croppedContainer = document.createElement("div");
+        croppedContainer.setAttribute("id", "cropped_result");
+        croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
+        document.getElementById("rowContainer").appendChild(croppedContainer);
+        img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
+        img.src = imgUrl;
+        document.getElementById("cropped_result").innerHTML = "";
+        document.getElementById("cropped_result").appendChild(img);
+        $("#send_pic").attr("disabled", false);
+        });
+        }
 
-                function getURL(input)
-                {
-                $("#cropped_result").remove();
-                if (input.files && input.files[0]) {
-                var file = input.files[0];
-                currentFileName = file.name;
-                currentFileSize = file.size;
+        function getURL(input)
+        {
+        $("#cropped_result").remove();
+        if (input.files && input.files[0]) {
+        var file = input.files[0];
+        currentFileName = file.name;
+        currentFileSize = file.size;
 
-                if (currentFileSize <= @ViewBag.PicSize) {
-                var reader = new FileReader();
-                try {
-                reader.readAsDataURL(file);
-                } catch (e) {
+        if (currentFileSize <= @ViewBag.PicSize) {
+        var reader = new FileReader();
+        try {
+        reader.readAsDataURL(file);
+        } catch (e) {
 
-                }
-                reader.onload = function (e) {
-                var content = e.target.result;
-                //if file format is incorrect, then the 'content' won't have any src.
-                if (content !== "data:") {
-                var reducedContent = content.slice(5);
+        }
+        reader.onload = function (e) {
+        var content = e.target.result;
+        //if file format is incorrect, then the 'content' won't have any src.
+        if (content !== "data:") {
+        var reducedContent = content.slice(5);
 
-                if (reducedContent.startsWith("image")) {
-                $('#blah').attr('src', content);
-                setTimeout(upRiseModal, 100);
-                setTimeout(initCropper, 500);
-                } else {
+        if (reducedContent.startsWith("image")) {
+        $('#blah').attr('src', content);
+        setTimeout(upRiseModal, 100);
+        setTimeout(initCropper, 500);
+        } else {
 
-                Swal.fire({
-                position: 'top-end',
-                icon: 'error',
-                title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
-                showConfirmButton: false,
-                timer: 1500
-                });
+        Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
+        showConfirmButton: false,
+        timer: 1500
+        });
 
-                document.getElementById("image").value = "";
-                $("#cropped_result").remove();
-                }
-                } else {
-                Swal.fire({
-                position: 'top-end',
-                icon: 'error',
-                title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
-                showConfirmButton: false,
-                timer: 1500
-                });
+        document.getElementById("image").value = "";
+        $("#cropped_result").remove();
+        }
+        } else {
+        Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
+        showConfirmButton: false,
+        timer: 1500
+        });
 
-                document.getElementById("image").value = "";
-                $("#cropped_result").remove();
-                }
-                };
-                }
-                else
-                {
-                Swal.fire({
-                icon: 'error',
-                title: '@Language.GetString("AlertAndMessage_InvalidFileSize")',
-                showConfirmButton: false,
-                timer: 1500
-                });
-                document.getElementById("image").value = "";
-                $("#cropped_result").remove();
-                }
-                }
-                }
-</script>
+        document.getElementById("image").value = "";
+        $("#cropped_result").remove();
+        }
+        };
+        }
+        else
+        {
+        Swal.fire({
+        icon: 'error',
+        title: '@Language.GetString("AlertAndMessage_InvalidFileSize")',
+        showConfirmButton: false,
+        timer: 1500
+        });
+        document.getElementById("image").value = "";
+        $("#cropped_result").remove();
+        }
+        }
+        }
+    </script>
 }
 
 

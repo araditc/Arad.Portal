@@ -12,8 +12,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -74,7 +76,46 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             return View(result);
         }
-       
+
+        [HttpPost]
+        public IActionResult UploadImage(IFormFile upload, string CKEditorFuncNum, string CKEditor, string langCode)
+        {
+            JsonResult result;
+            if (upload.Length <= 0) return null;
+            if (!upload.IsImage())
+            {
+                result = new JsonResult(new {uplaoded = 0, message = Language.GetString("AlertAndMessage_NotImageMessage") });
+                return result;
+            }
+
+            var fileName = Guid.NewGuid().ToString()/* + Path.GetExtension(upload.FileName).ToLower()*/;
+
+            System.Drawing.Image image = System.Drawing.Image.FromStream(upload.OpenReadStream());
+            var arr = imageSize.Split(" * ");
+            int width = image.Width;
+            int height = image.Height;
+            if ((width > int.Parse(arr[0].Trim())) || (height > int.Parse(arr[1].Trim())) || upload.Length > int.Parse(arr[0].Trim()) * int.Parse(arr[1].Trim()))
+            {
+                result = new JsonResult(new { uploaded = 0, message = Language.GetString("AlertAndMessage_InvalidFileSize") });
+                return result;
+            }
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "/Images/Contents/CkEditor");
+            if(!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            path = Path.Combine(path, fileName);
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                upload.CopyTo(stream);
+            }
+
+            var url = $"{"/Images/Contents/CkEditor/"}{fileName}";
+            result = new JsonResult(new {uploaded = 1, fileName = url, message = Language.GetString("AlertAndMessage_ImageSuccessfullyUploaded") });
+            return Json(result);
+        }
+
         public async Task<IActionResult> AddEdit(string id = "")
         {
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
