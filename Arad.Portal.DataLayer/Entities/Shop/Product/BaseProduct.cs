@@ -1,5 +1,5 @@
 ﻿using Arad.Portal.DataLayer.Entities.General.User;
-using Arad.Portal.DataLayer.Models.Comment;
+
 using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Models.Product;
 using MongoDB.Bson;
@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Arad.Portal.DataLayer.Entities.General.Comment;
 
 namespace Arad.Portal.DataLayer.Entities.Shop.Product
 {

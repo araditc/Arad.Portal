@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Arad.Portal.DataLayer.Entities.General.Comment;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace Arad.Portal.DataLayer.Models.Content
         public ContentDTO()
         {
             Images = new();
+            Comments = new();
         }
         public string ContentId { get; set; }
 
@@ -50,18 +52,20 @@ namespace Arad.Portal.DataLayer.Models.Content
 
         public string PersianEndShowDate { get; set; }
 
-        public int VisitCount { get; set; }
+        public int? VisitCount { get; set; }
 
         public List<string> TagKeywords { get; set; }
 
-        public int PopularityRate { get; set; }
+        public int? PopularityRate { get; set; }
 
-        public List<Comment.Comment> Comments { get; set; }
+        public List<Comment> Comments { get; set; }
 
-        public Entities.General.Content.SourceType SourceType { get; set; }
+        public Entities.General.Content.SourceType? SourceType { get; set; }
+
+        public string SourceTypeId { get; set; }
 
         public string ContentProviderName { get; set; }
 
-        public string ModificationReason { get; set; }
+        
     }
 }

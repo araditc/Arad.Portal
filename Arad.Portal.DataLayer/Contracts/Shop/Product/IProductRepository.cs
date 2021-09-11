@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Models.Comment;
+﻿
+using Arad.Portal.DataLayer.Entities.General.Comment;
 using Arad.Portal.DataLayer.Models.Product;
 using Arad.Portal.DataLayer.Models.ProductSpecification;
 using Arad.Portal.DataLayer.Models.Shared;

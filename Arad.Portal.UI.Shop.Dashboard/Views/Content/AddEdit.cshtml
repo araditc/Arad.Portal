@@ -19,6 +19,7 @@
     @*<link href="~/plugins/ckeditor5/styles.css" rel="stylesheet" />*@
     <link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
     <link href="~/plugins/TagInput/amsify.suggestags.css" rel="stylesheet" />
+
     <style>
         .text-danger {
             font-size: 12px;
@@ -76,6 +77,54 @@
             .ck-button__label {
                 font-family: IRANSansWeb !important;
             }
+            .text-danger {
+                font-size: 12px;
+            }
+
+            .btn-circle {
+                width: 30px;
+                height: 30px;
+                padding: 6px 0px;
+                border-radius: 15px;
+                text-align: center;
+                font-size: 12px;
+                line-height: 1.42857;
+            }
+
+            .card-header {
+                background-color: #e0dcdf;
+            }
+
+            .removeImage {
+                display: inline-block;
+                position: absolute;
+                top: -7px;
+                right: -5px;
+                width: 20px;
+                height: 21px;
+                background: #dc3545;
+                text-align: center;
+                border-radius: 50%;
+                color: white !important;
+                cursor: pointer;
+            }
+
+            .divCenter {
+                text-align: center;
+                border: 1px solid;
+            }
+
+            table tr {
+                text-align: center;
+            }
+
+            tbody tr td {
+                vertical-align: middle;
+            }
+
+            .valign {
+                vertical-align: middle;
+            }
         </style>
     }
 }
@@ -129,24 +178,24 @@
                 <div class="row">
                     <div class="col-md-3">
                         <label asp-for="@Model.LanguageId">@Language.GetString("RelatedLanguage")</label>
-                        <select class="form-control" asp-for="@Model.LanguageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))" onclick="fillCategoryList();">
+                        <select class="form-control" asp-for="@Model.LanguageId"  asp-items="@(new SelectList(ViewBag.LangList,"Value","Text", Model.LanguageId))" >
                         </select>
                         <span data-val-result="LanguageId" class="text-danger"></span>
                     </div>
                     <div class="col-md-3">
                         <label asp-for="@Model.ContentCategoryId">@Language.GetString("Menu_ContentCategory")</label>
-                        <select class="form-control" asp-for="@Model.ContentCategoryId" asp-items="@(new SelectList(ViewBag.CatList,"Value","Text"))">
+                        <select class="form-control" asp-for="@Model.ContentCategoryId" asp-items="@(new SelectList(ViewBag.CatList,"Value","Text", Model.ContentCategoryId))">
                         </select>
                         <span data-val-result="ContentCategoryId" class="text-danger"></span>
                     </div>
                     <div class="col-md-3">
                         <label asp-for="Title">@Language.GetString("Entities_Title")</label>
-                        <input type="text" class="form-control" asp-for="@Model.Title" placeholder=" ">
+                        <input type="text" class="form-control" asp-for="@Model.Title" placeholder=" " value="@Model.Title">
                         <span data-val-result="Title" class="text-danger"></span>
                     </div>
                     <div class="col-md-3">
                         <label asp-for="SubTitle">@Language.GetString("Entities_SubTitle")</label>
-                        <input type="text" class="form-control" asp-for="@Model.SubTitle" placeholder=" ">
+                        <input type="text" class="form-control" asp-for="@Model.SubTitle" placeholder=" " value="@Model.SubTitle">
                         <span data-val-result="SubTitle" class="text-danger"></span>
                     </div>
 
@@ -155,12 +204,12 @@
 
                     <div class="form-group col-md-6">
                         <label asp-for="Description">@Language.GetString("Description")</label>
-                        <textarea dir="rtl" asp-for="Description" class="form-control" rows="3"></textarea>
+                        <textarea dir="rtl" asp-for="Description" class="form-control" rows="3" >@Model.Description</textarea>
                         <span data-val-result="Description" class="text-danger"></span>
                     </div>
                     <div class="col-md-6">
                         <label asp-for="SeoDescription">@Language.GetString("SeoDescription")</label>
-                        <textarea dir="rtl" asp-for="SeoDescription" class="form-control" rows="3"></textarea>
+                        <textarea dir="rtl" asp-for="SeoDescription" class="form-control" rows="3">@Model.SeoDescription</textarea>
                         <span data-val-result="SeoDescription" class="text-danger"></span>
                     </div>
                 </div>
@@ -300,8 +349,8 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <label for="tagKeyWords">@Language.GetString("TagKeywords")</label>
-                        <input type="text" class="form-control" id="tagKeyWordsyz" name="tagKeyWords" />
+                        <label for="tagKeywords">@Language.GetString("TagKeywords")</label>
+                        <input type="text" class="form-control" id="tagKeyWords"  name="tagKeyWords" />
                     </div>
                 </div>
                 <div class="row">
@@ -314,9 +363,10 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <textarea id="editorCk" name="editorCk" class="form-control" rows="10" cols="80">
-                                            This is my textarea to be replaced with CKEditor 4.
+                                           @Model.Contents
                                         </textarea>
                                     </div>
+                                    <span data-val-result="editorCk" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
@@ -341,6 +391,7 @@
     <script src="~/js/bootstrap-select/bootstrap-select.js"></script>
     <script src="~/plugins/TagInput/jquery.amsify.suggestags.js"></script>
     <script src="~/plugins/ckeditor4/ckeditor.js"></script>
+    @*<script src="~/plugins/ckeditor4/adapters/jquery.js"></script>*@
 
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
@@ -353,11 +404,12 @@
         <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
         @*<script src="~/plugins/ckeditor5/translations/en-au.js"></script>*@
     }
+    @*icheckbox*@
     @if (dir == "rtl")
     {
         <script src="~/plugins/iCheck/icheck.min.js"></script>
     }
-    <script>
+<script>
         var fileName;
         var fileContent;
         var cropper;
@@ -378,198 +430,267 @@
             lan = "en";
         }
 
-            $(document).ready(function () {
-            debugger;
-            //icheckboxes radiobuttons
-            if ("@dir" == "rtl") {
-            $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-            checkboxClass: 'icheckbox_minimal-blue',
-            radioClass: 'iradio_minimal-blue'
-            });
-            }
+        $(document).ready(function () {
+        debugger;
+        //icheckboxes radiobuttons
+        if ("@dir" == "rtl") {
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+        checkboxClass: 'icheckbox_minimal-blue',
+        radioClass: 'iradio_minimal-blue'
+        });
+        }
 
-            //TagInput
-            $("input[name='tagKeyWords']").amsifySuggestags();
+        //TagInput
+        $("input[name='tagKeyWords']").amsifySuggestags();
 
-            //datetimepicker
-            if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
-            {
-            kamaDatepicker('dtpStartShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
-            kamaDatepicker('dtpEndShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
-            }
-            else
-            {
-            $('#dtpStartDate').datetimepicker({
-            format: 'L'
-            });
-            $('#dtpEndShowDate').datetimepicker({
-            format: 'L'
-            });
-            }
+        //datetimepicker
+        if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
+        {
+        kamaDatepicker('dtpStartShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+        kamaDatepicker('dtpEndShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+        }
+        else
+        {
+        $('#dtpStartDate').datetimepicker({
+        format: 'L'
+        });
+        $('#dtpEndShowDate').datetimepicker({
+        format: 'L'
+        });
+        }
 
-            $("#LanguageId").val('@ViewBag.LangId');
-                if ("@Model.ContentId" != "") {
-                    if ("@Model.ContentCategoryId" != "") {
-                $("#ContentCategoryId").val("@Model.ContentCategoryId");
-            }
-            if ("@Model.PersianStartShowDate" != "") {
-                $("#dtpStartShowDate").val("@Model.PersianStartShowDate");
-            }
-            if ("@Model.PersianEndShowDate" != "") {
+
+            if ("@Model.ContentId" != "") {
+                $("#LanguageId").val('@Model.LanguageId');
+                if ("@Model.PersianStartShowDate" != "") {
+                    $("#dtpStartShowDate").val("@Model.PersianStartShowDate");
+                }
+                if ("@Model.PersianEndShowDate" != "") {
                     $("#dtpEndShowDate").val("@Model.PersianEndShowDate");
                 }
-                }
+            } else {
+                 $("#LanguageId").val('@ViewBag.LangId');
+            }
 
-           //ckEditor5
-           @*ClassicEditor.create(document.querySelector('#editorBody'),
+        //ckEditor5
+        @*ClassicEditor.create(document.querySelector('#editorBody'),
+        {
+            toolbar: {
+                items: [
+                    'heading',
+                    '|',
+                    'bold',
+                    'italic',
+                    'link',
+                    'bulletedList',
+                    'numberedList',
+                    '|',
+                    'outdent',
+                    'indent',
+                    '|',
+                    'imageUpload',
+                    'blockQuote',
+                    'insertTable',
+                    'undo',
+                    'redo',
+                    'imageInsert'
+                ]
+            },
+            language: lan,
+            image: {
+                toolbar: [
+                    'imageTextAlternative',
+                    'imageStyle:inline',
+                    'imageStyle:block',
+                    'imageStyle:side'
+                ]
+            },
+            table: {
+                contentToolbar: [
+                    'tableColumn',
+                    'tableRow',
+                    'mergeTableCells'
+                ]
+            },
+            licenseKey: '',
+        }
+    ).then(editor =>
             {
-                toolbar: {
-                    items: [
-                        'heading',
-                        '|',
-                        'bold',
-                        'italic',
-                        'link',
-                        'bulletedList',
-                        'numberedList',
-                        '|',
-                        'outdent',
-                        'indent',
-                        '|',
-                        'imageUpload',
-                        'blockQuote',
-                        'insertTable',
-                        'undo',
-                        'redo',
-                        'imageInsert'
-                    ]
-                },
-                language: lan,
-                image: {
-                    toolbar: [
-                        'imageTextAlternative',
-                        'imageStyle:inline',
-                        'imageStyle:block',
-                        'imageStyle:side'
-                    ]
-                },
-                table: {
-                    contentToolbar: [
-                        'tableColumn',
-                        'tableRow',
-                        'mergeTableCells'
-                    ]
-                },
-                licenseKey: '',
-            }
-        ).then(editor =>
-                {
-                    editor.setData('@Html.Raw(Model.Contents)');
-                    editorBodyVar = editor;
-                }).catch(err => {
-                    console.error(err.stack);
-                });*@
+                editor.setData('@Html.Raw(Model.Contents)');
+                editorBodyVar = editor;
+            }).catch(err => {
+                console.error(err.stack);
+            });*@
 
-                //ckEditor4
-                CKEDITOR.replace("editorCk");
-                //, {
-                //    customConfig: '/plugins/ckeditor/config.js'
-                //});
+            //ckEditor4
+            /* CKEDITOR.replace('editorCk');*/
 
-                $("#btnAddContent").click(function () {
-                    debugger;
-                    var flag = false;
-                    if ("@Model.ContentId" != "" && $("#ModificationReason").val() == "") {
-                        $("span[data-val-result='ModificationReason']").html('@Language.GetString("AlertAndMessage_ModificationReason")');
-                        flag = true;
-                    }
-
-                    if (!flag) {
-                        var dto = FillDataToSend();
-                        $.ajax({
-                            url: "@Model.ContentId" != "" ? "/Content/Edit" : "/Content/Add",
-                            contentType: 'application/json',
-                            data: JSON.stringify(dto),
-                            type: 'Post',
-                            beforeSend: function () {
-                                debugger;
-                                AddLoading($("#addContentCardBody"));
-                            },
-                            success: function (result) {
-                                debugger;
-                                if (result.status === "Success") {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        text: result.message,
-                                        showConfirmButton: false,
-                                        timer: 3000
-                                    });
-                                    window.location.href = '@Url.Action("List")';
-                                }
-                                else
-                                    if (result.status === "ModelError") {
-                                        var spanErrorList = $('span[data-val-result]');
-                                        if (spanErrorList.length > 1) {
-                                            spanErrorList.each(function () {
-                                                $(this).html("");
-                                                $(this).parent().removeClass("has-error");
-                                            });
-                                        }
-                                        else {
-                                            spanErrorList.html("");
-                                            spanErrorList.parent().removeClass("has-error");
-                                        }
-                                        if (result.modelStateErrors !== null) {
-                                            $('[data-val-result=' + value.key + ']').html(value.errorMessage);
-                                            $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
-                                        }
-                                    }
-                            },
-                @*error: function (xhr, ajaxOptions, thrownError) {
-                        alert("@error");
-                        alert(xhr.status);
-                        alert(thrownError);
-                    },*@
-                            complete: function () {
-                                removeLoading($("#addContentCardBody"));
-                            }
-                        });
-                    }
-                });
-
-            $("#LanguageId").change(function () {
-            debugger;
-            var langId = $("#LanguageId").val();
-            if (langId != "-1") {
-                $.ajax({
-                    url: "/ContentCategory/GetContentCategoryList/" + langId,
-                    type: 'Get',
-                    dataType: 'json',
-                    success: function (result) {
-                        debugger;
-                        var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
-                        if (result.status === "success") {
+            $("#btnAddContent").click(function () {
+                debugger;
+                var flag = false;
+                if ($("#LanguageId").val() == "" || $("#LanguageId").val() == "-1") {
+                    $("span[data-val-result='LanguageId']").html('@Language.GetString("AlertAndMessage_OptionEssential")');
+                    flag = true;
+                }
+                if ($("#ContentCategoryId").val() == "" || $("#ContentCategoryId").val() == "-1") {
+                    $("span[data-val-result='ContentCategoryId']").html('@Language.GetString("AlertAndMessage_OptionEssential")');
+                    flag = true;
+                }
+                if ($("#Title").val() == "") {
+                    $("span[data-val-result='Title']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+                }
+                if ($("#SubTitle").val() == "") {
+                    $("span[data-val-result='SubTitle']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+                }
+                if ($("#editorCk").val() == "") {
+                    $("span[data-val-result='editorCk']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+                }
+                if ($("#dtpStartShowDate").val() == "") {
+                    $("span[data-val-result='dtpStartShowDate']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+                }
+                 if ($("#dtpEndShowDate").val() == "") {
+                     $("span[data-val-result='dtpEndShowDate']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+                }
+                if ($("#SourceType").val() == "" || $("#SourceType").val() == "-1") {
+                       $("span[data-val-result='dtpEndShowDate']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                }
+                 if ($("#ContentProviderName").val() == "") {
+                     $("span[data-val-result='ContentProviderName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                }
+                if (!flag) {
+                    var dto = FillDataToSend();
+                    $.ajax({
+                        url: "@Model.ContentId" != "" ? "/Content/Edit" : "/Content/Add",
+                        contentType: 'application/json',
+                        data: JSON.stringify(dto),
+                        type: 'Post',
+                        beforeSend: function () {
                             debugger;
-                            if (result.data.length != 0) {
-                                (result.data).forEach(function (item) {
-                                    var op = "<option value='" + item.value + "'>" + item.text + "</option>";
-                                    options += op;
+                            AddLoading($("#addContentCardBody"));
+                        },
+                        success: function (result) {
+                            debugger;
+                            if (result.status === "Success") {
+                                Swal.fire({
+                                    icon: 'success',
+                                    text: result.message,
+                                    showConfirmButton: false,
+                                    timer: 3000
                                 });
-
-                                $("#ContentCategoryId").html(options);
-                                $("#ContentCategoryId").val('@Model.ContentCategoryId');
+                                window.location.href = '@Url.Action("List")';
                             }
+                            else
+                                if (result.status === "ModelError") {
+                                    var spanErrorList = $('span[data-val-result]');
+                                    if (spanErrorList.length > 1) {
+                                        spanErrorList.each(function () {
+                                            $(this).html("");
+                                            $(this).parent().removeClass("has-error");
+                                        });
+                                    }
+                                    else {
+                                        spanErrorList.html("");
+                                        spanErrorList.parent().removeClass("has-error");
+                                    }
+                                    if (result.modelStateErrors !== null) {
+                                        $('[data-val-result=' + result.key + ']').html(result.errorMessage);
+                                        $('[data-val-result=' + result.key + ']').parent().addClass("has-error");
+                                    }
+                                }
+                                else if (result.status === "Error") {
+
+                                        Swal.fire({
+                                            icon: 'error',
+                                            text: result.message,
+                                            showConfirmButton: false,
+                                            timer: 3000
+                                        });
+                                }
+                        },
+            @*error: function (xhr, ajaxOptions, thrownError) {
+                    alert("@error");
+                    alert(xhr.status);
+                    alert(thrownError);
+                },*@
+                        complete: function () {
+                            removeLoading($("#addContentCardBody"));
                         }
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        alert("@error");
-                        alert(xhr.status);
-                        alert(thrownError);
+                    });
+                }
+            });
+
+        $("#LanguageId").change(function () {
+        debugger;
+        var langId = $("#LanguageId").val();
+        if (langId != "-1") {
+            $.ajax({
+                url: "/ContentCategory/GetContentCategoryList/" + langId,
+                type: 'Get',
+                dataType: 'json',
+                success: function (result) {
+                    debugger;
+                    var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
+                    if (result.status === "success") {
+                        debugger;
+                        if (result.data.length != 0) {
+                            (result.data).forEach(function (item) {
+                                var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                options += op;
+                            });
+
+                            $("#ContentCategoryId").html(options);
+                            $("#ContentCategoryId").val('@Model.ContentCategoryId');
+                        }
                     }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert("@error");
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+        }
+        });
+
+         $("#send_pic").click(function () {
+            debugger;
+            $("#uploadModal").modal("hide");
+            var url = $("#galleryPic").attr("src");
+            var model = {};
+            model.ImageId = counter;
+            model.Content = url;
+            images.push(model);
+            var tr = "";
+            if ('@dir' == "rtl") {
+                tr = "<tr><td><img imgId='img_" + counter + "' src='" + model.Content +
+                    "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
+                    "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
+                    "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
+                    "'/></td><td style='vertical-align:middle;'><input type='radio'  name='isMainImage' class='minimal rdbIsMain'></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger btn-circle' onclick='deleteFromImageList(this);'><i class='fa fa-minus' style='position:relative;padding: 3px;'></i></button></td></tr>";
+            } else {
+                 tr = "<tr><td><img imgId='img_" + counter + "' src='" + model.Content +
+                    "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
+                    "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
+                    "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
+                    "'/></td><td style='vertical-align:middle;'><div class='icheck-primary d-inline'><input type='radio'  name='isMainImage' class='rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger btn-circle' onclick='deleteFromImageList(this);'><i class='fa fa-minus' style='position:relative;padding: 3px;'></i></button></td></tr>";
+
+            }
+            $("#imageList").append(tr);
+            counter += 1;
+            if ("@dir" == "rtl") {
+                $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+                    checkboxClass: 'icheckbox_minimal-blue',
+                    radioClass: 'iradio_minimal-blue'
                 });
             }
         });
-        });
+
+    });
 
         function deleteFromImageList(sender) {
             debugger;
@@ -582,30 +703,53 @@
             $(sender).parent().remove();
         }
 
-        function FillDataToSend() {
+    function FillDataToSend() {
         debugger;
         var obj = {};
-        obj.CategoryNames = [];
+        obj.Images = [];
+        obj.Comments = [];
+        obj.TagKeywords = [];
+        obj.ContentId = $("#ContentId").val();
         obj.ContentCategoryId = $("#ContentCategoryId").val();
-        if ($("#ParentCategoryId").val() != "-1") {
-        obj.ParentCategoryId = $("#ParentCategoryId").val();
-        }
-
-        if ($("#ModificationReason").length > 0) {
-        obj.ModificationReason = $("#ModificationReason").val();
-        }
-        obj.CategoryTypeId = parseInt($("#categoryTypeId").val());
-        $("#multiLingualList tr").each(function () {
-        debugger;
-        var innerModel = {};
-        innerModel.Name = $(this).find("td:eq(0)").text();
-        innerModel.LanguageName = $(this).find("td:eq(1)").text();
-        innerModel.LanguageId = $(this).find("td:eq(2)").text();
-
-        obj.CategoryNames.push(innerModel);
+        obj.ContentCategoryName = $("#ContentCategoryId option:selected").text();
+        obj.Title = $("#Title").val();
+        obj.SubTitle = $("#SubTitle").val();
+        obj.LanguageId = $("#LanguageId").val();
+        obj.LanguageName = $("#LanguageId  option:selected").text();
+        obj.Description = $("#Description").val();
+        obj.SeoTitle = $("#SeoTitle").val();
+        obj.SeoDescription = $("#SeoDescription").val();
+        obj.UrlFriend = $("#UrlFriend").val();
+        obj.Contents = $("#editorCk").val();
+        var commaseperatedTags = $("#tagKeyWords").val();
+        var arr = commaseperatedTags.split(",");
+        $.each(arr, function (key, value) {
+            obj.TagKeywords.push(value);
         });
+        obj.SourceTypeId = $("#SourceType").val();
+        obj.ContentProviderName = $("#ContentProviderName").val();
+
+        //pictures
+        $("#imageList tr").each(function () {
+
+            var id = $(this).find("td:eq(1)").text();
+            var item = images.find(_ => _.ImageId == id);
+            index = images.indexOf(item);
+
+            item.IsMain = $(this).find("td:eq(4) .rdbIsMain").prop("checked") === 'true';
+            item.Title = $(this).find("td:eq(2) .txtTitle").val();
+            item.Description = $(this).find("td:eq(3) .txtDesc").val();
+            item.ImageId = item.ImageId.toString();
+            obj.Images.push(item);
+        });
+        obj.PersianStartShowDate = $("#dtpStartShowDate").val();
+        obj.PersianEndShowDate = $("#dtpEndShowDate").val();
         return obj;
-        }
+    }
+
+
+
+
 
 
         $('#uploadModal').on('hidden.bs.modal',
@@ -621,6 +765,7 @@
         }
 
         function upRiseModal() {
+            debugger;
         $("#send_pic").attr("disabled", true);
         $("#uploadModal").modal("show");
         }
@@ -662,6 +807,7 @@
 
         function getURL(input)
         {
+            debugger;
         $("#cropped_result").remove();
         if (input.files && input.files[0]) {
         var file = input.files[0];
@@ -725,7 +871,9 @@
         }
         }
         }
-    </script>
+
+
+</script>
 }
 
 

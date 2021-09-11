@@ -44,11 +44,15 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             {
                 var equallentModel = _mapper.Map<Entities.General.Content.Content>(dto);
 
-                equallentModel.CreationDate = DateTime.Now;
+                equallentModel.StartShowDate = dto.PersianStartShowDate.ToEnglishDate().ToUniversalTime();
+                equallentModel.EndShowDate = dto.PersianEndShowDate.ToEnglishDate().ToUniversalTime();
+                equallentModel.CreationDate = DateTime.Now.ToUniversalTime();
                 equallentModel.CreatorUserId = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
                 equallentModel.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+                equallentModel.IsActive = true;
+                equallentModel.ContentId = Guid.NewGuid().ToString();
 
                 await _contentContext.Collection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;
@@ -199,10 +203,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                        ContentProviderName = _.ContentProviderName,
                        Description = _.Description,
                        SeoTitle = _.SeoTitle,
-                       PersianEndShowDate = DateHelper.ToPersianDdate(_.EndShowDate),
-                       PersianStartShowDate = DateHelper.ToPersianDdate(_.StartShowDate),
-                       SourceType = _.SourceType,
                        StartShowDate = _.StartShowDate,
+                       //PersianEndShowDate = _.EndShowDate,
+                       //PersianStartShowDate = DateHelper.ToPersianDdate(_.StartShowDate),
+                       SourceType = _.SourceType,
                        SubTitle = _.SubTitle,
                        TagKeywords = _.TagKeywords,
                        Title = _.Title,
@@ -254,9 +258,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             var result = new RepositoryOperationResult();
 
             var equallentModel = _mapper.Map<Entities.General.Content.Content>(dto);
-
+            var userName = _httpContextAccessor.HttpContext.User.Claims
+                   .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+            var userId = _httpContextAccessor.HttpContext.User.Claims
+                   .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+            equallentModel.CreatorUserName = userName;
             #region add modification
-            var mod = GetCurrentModification(dto.ModificationReason);
+            var mod = GetCurrentModification($"update this content by userId:'{userId}' and userName:'{userName}' in date:'{DateTime.Now.ToPersianLetDateTime()}'");
             equallentModel.Modifications.Add(mod);
             #endregion
 

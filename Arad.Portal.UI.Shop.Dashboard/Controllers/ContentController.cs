@@ -173,7 +173,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                 
                 var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
-                var path = "Images/Contents";
+                var path = "Images\\Contents";
                 foreach (var pic in dto.Images)
                 {
                     var res = ImageFunctions.SaveImageModel(pic, path, staticFileStorageURL, _webHostEnvironment.WebRootPath);

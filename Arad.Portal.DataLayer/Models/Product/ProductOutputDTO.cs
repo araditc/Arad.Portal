@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Models.Promotion;
+﻿using Arad.Portal.DataLayer.Entities.General.Comment;
+using Arad.Portal.DataLayer.Models.Promotion;
 using Arad.Portal.DataLayer.Models.Shared;
 using System;
 using System.Collections.Generic;
@@ -54,7 +55,7 @@ namespace Arad.Portal.DataLayer.Models.Product
 
         public int VisitCount { get; set; }
 
-        public List<Comment.Comment> Comments { get; set; }
+        public List<Comment> Comments { get; set; }
 
         public bool IsPublishedOnMainDomain { get; set; }
 

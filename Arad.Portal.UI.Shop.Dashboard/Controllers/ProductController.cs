@@ -223,7 +223,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.SDate = DateHelper.ToEnglishDate(item.StartDate);
                 }
                 var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
-                var path = "Images/Products";
+                var path = "Images\\Products";
                 foreach (var pic in dto.Pictures)
                 {
                     var res = ImageFunctions.SaveImageModel(pic, path, staticFileStorageURL, _webHostEnvironment.WebRootPath);

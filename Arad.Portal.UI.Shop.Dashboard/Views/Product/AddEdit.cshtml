@@ -1129,11 +1129,12 @@
             item.Description = $(this).find("td:eq(3) .txtDesc").val();
             item.ImageId = item.ImageId.toString();
             images[index] = item;
-        });
-        for (var i = 0; i < images.length; i++) {
-            debugger;
             dto.Pictures.push(images[i]);
-        }
+        });
+        //for (var i = 0; i < images.length; i++) {
+        //    debugger;
+        //    dto.Pictures.push(images[i]);
+        //}
         dto.UniqueCode = $("#UniqueCode").val();
         dto.Inventory = $("#Inventory").val();
         dto.MinimumCount = $("#MinimumCount").val();

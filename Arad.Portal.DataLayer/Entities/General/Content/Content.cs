@@ -1,5 +1,4 @@
-﻿using Arad.Portal.DataLayer.Models.Comment;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,8 +48,10 @@ namespace Arad.Portal.DataLayer.Entities.General.Content
 
         public List<Models.Shared.Image> Images { get; set; }
 
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime StartShowDate { get; set; }
 
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime EndShowDate { get; set; }
 
         public int VisitCount { get; set; }
@@ -59,7 +60,7 @@ namespace Arad.Portal.DataLayer.Entities.General.Content
 
         public int PopularityRate { get; set; }
 
-        public List<Comment> Comments { get; set; }
+        public List<Comment.Comment> Comments { get; set; }
 
         public SourceType SourceType { get; set; }
 

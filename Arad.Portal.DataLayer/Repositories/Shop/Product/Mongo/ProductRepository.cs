@@ -1,5 +1,4 @@
 ﻿using Arad.Portal.DataLayer.Contracts.Shop.Product;
-using Arad.Portal.DataLayer.Models.Comment;
 using Arad.Portal.DataLayer.Models.Product;
 using Arad.Portal.DataLayer.Models.ProductSpecification;
 using Arad.Portal.DataLayer.Models.Shared;
@@ -22,6 +21,7 @@ using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Entities.General.User;
+using Arad.Portal.DataLayer.Entities.General.Comment;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 {
