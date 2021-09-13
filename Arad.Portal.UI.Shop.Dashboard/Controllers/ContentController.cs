@@ -140,6 +140,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.AllSourceType = _contentRepository.GetAllSourceType();
 
             ViewBag.PicSize = imageSize;
+            if(string.IsNullOrWhiteSpace(model.FileLogo))
+            {
+                model.FileLogo = $"/imgs/NoImage.png";
+            }
             return View(model);
         }
 

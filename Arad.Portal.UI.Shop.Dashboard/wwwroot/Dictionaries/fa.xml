@@ -1297,6 +1297,12 @@
 	<string key="Active">
 		<value>فعال</value>
 	</string>
+	<string key="ChangeLogo">
+		<value>تغییر لوگو</value>
+	</string>
+	<string key="FileLogo">
+		<value>لوگوی محتوا</value>
+	</string>
 	<string key="LikeCount">
 		<value>تعداد پسندها</value>
 	</string>

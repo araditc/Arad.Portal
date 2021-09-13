@@ -106,6 +106,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 model = await _commentRepository.CommentFetch(id);
             }
+           
             ViewBag.ReferenceTypes = _commentRepository.GetAllReferenceType();
 
             return View(model);

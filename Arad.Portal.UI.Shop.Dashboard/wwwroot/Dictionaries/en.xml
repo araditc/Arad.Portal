@@ -1257,6 +1257,12 @@
   <string key="Active">
     <value>Active</value>
   </string>
+	<string key="ChangeLogo">
+		<value>ChangeLogo</value>
+	</string>
+ <string key="FileLogo">
+    <value>Content Logo</value>
+  </string>
 	<string key="LikeCount">
 		<value>Like Count</value>
 	</string>

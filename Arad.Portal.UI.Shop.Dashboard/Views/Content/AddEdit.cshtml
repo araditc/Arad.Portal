@@ -61,6 +61,31 @@
             margin-top: 1%;
         }
 
+        #bd-root-userBirthDate {
+            width: 100%
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .cropper-container {
+            width: 100%
+        }
+
+        .iti__flag-container {
+            direction: ltr
+        }
+
+        .modal {
+            z-index: 100001 !important;
+        }
+
+        .lightColored {
+            background-color: aliceblue
+        }
+
         .amsify-suggestags-input-area {
             text-align: @(dir == "rtl" ? "right" : "left");
             height: auto;
@@ -158,7 +183,8 @@
                 <div>
                     <button class="btn btn-success" id="send_pic" type="button"><i style="margin-left: 5px;font-size:13px" class="fas fa-check"></i>@Language.GetString("btn_Approve")</button>
                     <button class="btn btn-primary" id="crop_button"><i style="margin-left: 5px;font-size:13px" class="fas fa-cut"></i>@Language.GetString("btn_Crop")</button>
-                    <button class="btn btn-default" style="background-color: crimson;color: white;border: 1px solid crimson" onclick="rotatePic()"> <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i> @Language.GetString("btn_Rotate")</button>
+                    <button class="btn btn-default" style="background-color: crimson;color: white;border: 1px solid crimson" onclick="rotatePic()"> 
+                    <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i> @Language.GetString("btn_Rotate")</button>
 
                 </div>
             </div>
@@ -272,6 +298,24 @@
                 </div>
                 <div class="row">
                     <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-header lightColored">
+                                @Language.GetString("FileLogo")
+                            </div>
+                            <div class="card-body">
+                                <div class="text-center form-group">
+                                    <img id="fileLogo" onclick="ViewImage('@Model.FileLogo')" style="cursor: pointer" class="profile-user-img img-fluid img-circle" src="@Model.FileLogo" alt="content logo">
+                                </div>
+                                <hr>
+                                <div class="custom-file">
+                                    <input style="width: -webkit-fill-available;" accept="image/x-png,image/jpeg" type="file" class="btn btn-sm" name="image" id="image" onchange="getURL(this)">
+                                    <label class="custom-file-label" for="image">@Language.GetString("ChangeLogo")</label>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                    </div>
+                    <div class="col-md-3">
                         <label asp-for="SeoTitle">@Language.GetString("SeoTitle")</label>
                         <input type="text" class="form-control" asp-for="@Model.SeoTitle" placeholder=" ">
                         <span data-val-result="SeoTitle" class="text-danger"></span>
@@ -281,6 +325,7 @@
                         <input type="text" class="form-control" asp-for="@Model.UrlFriend" placeholder=" ">
                         <span data-val-result="UrlFriend" class="text-danger"></span>
                     </div>
+
                 </div>
                 <div class="row">
                     <div class="col-md-12">
@@ -691,6 +736,16 @@
         });
 
     });
+
+    function ViewImage(address) {
+        var tag = '<img src="' + address + '" width="500px" />';
+        Swal.fire({
+            html: tag,
+            width: 'auto',
+            showConfirmButton: true,
+            confirmButtonText: 'بستن'
+        });
+    }
 
         function deleteFromImageList(sender) {
             debugger;
