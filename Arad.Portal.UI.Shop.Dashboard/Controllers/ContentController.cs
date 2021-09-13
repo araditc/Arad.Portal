@@ -33,7 +33,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        //private readonly IHttpClientFactory _clientFactory;
         private readonly string imageSize = "";
         public ContentController(IContentRepository contentRepository, IWebHostEnvironment webHostEnvironment,
                                     IContentCategoryRepository contentCategoryRepository, IPermissionView permissionView,

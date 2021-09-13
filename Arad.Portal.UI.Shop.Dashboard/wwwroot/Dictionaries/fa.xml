@@ -1162,6 +1162,12 @@
 	<string key="EditPromotion_Title">
 		<value>ویرایش تخفیفات و جشنواره ها</value>
 	</string>
+	<string key="EditComment_Title">
+		<value>ویرایش نظر</value>
+	</string>
+	<string key="AddComment_Title">
+		<value>افزودن نظر</value>
+	</string>
 	<string key="AddProSpecGroupPart_Title">
 		<value>افزودن گروه مشخصات محصول</value>
 	</string>
@@ -1282,11 +1288,29 @@
 	<string key="Title">
 		<value>عنوان</value>
 	</string>
+	<string key="CommentTitle">
+		<value>عنوان نظر</value>
+	</string>
 	<string key="Description">
 		<value>توضیحات</value>
 	</string>
 	<string key="Active">
 		<value>فعال</value>
+	</string>
+	<string key="LikeCount">
+		<value>تعداد پسندها</value>
+	</string>
+	<string key="DisLikeCount">
+		<value>DisLike Count</value>
+	</string>
+	<string key="ReferenceType">
+		<value>نوع نظر</value>
+	</string>
+	<string key="ReferenceTitle">
+		<value>عنوان مرجع</value>
+	</string>
+	<string key="IsApproved">
+		<value>تایید</value>
 	</string>
 	<string key="SourceType">
 		<value>نوع صاحب محتوا</value>
@@ -1347,6 +1371,12 @@
 	</string>
 	<string key="ParentGroup">
 		<value>گروه والد</value>
+	</string>
+	<string key="ParentComment">
+		<value>نظر والد</value>
+	</string>
+	<string key="ContentComment">
+		<value>محتوای نظر</value>
 	</string>
 	<string key="ParentCategoryName">
 		<value>نام دسته بندی والد</value>
@@ -1450,6 +1480,15 @@
 	<string key="Filter">
 		<value>فیلتر</value>
 	</string>
+	<string key="ContentTitle">
+		<value>عنوان محتوا</value>
+	</string>
+	<string key="Menu_ProductComments">
+		<value>نظرات محصولات</value>
+	</string>
+	<string key="Menu_ContentComments">
+		<value>نظرات محتوا</value>
+	</string>
 	<string key="Menu_Promotion">
 		<value>تخفیفات و جشنواره ها</value>
 	</string>
@@ -1461,6 +1500,9 @@
 	</string>
 	<string key="Menu_Products">
 		<value>محصولات</value>
+	</string>
+	<string key="Menu_Product">
+		<value>محصول</value>
 	</string>
 	<string key="Menu_ProductUnits">
 		<value>واحدهای محصول</value>

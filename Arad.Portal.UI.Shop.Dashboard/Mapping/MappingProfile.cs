@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Entities.General.Content;
+﻿using Arad.Portal.DataLayer.Entities.General.Comment;
+using Arad.Portal.DataLayer.Entities.General.Content;
 using Arad.Portal.DataLayer.Entities.General.ContentCategory;
 using Arad.Portal.DataLayer.Entities.General.Currency;
 using Arad.Portal.DataLayer.Entities.General.Domain;
@@ -14,6 +15,7 @@ using Arad.Portal.DataLayer.Entities.Shop.ProductSpecificationGroup;
 using Arad.Portal.DataLayer.Entities.Shop.ProductUnit;
 using Arad.Portal.DataLayer.Entities.Shop.Promotion;
 using Arad.Portal.DataLayer.Entities.Shop.ShoppingCart;
+using Arad.Portal.DataLayer.Models.Comment;
 using Arad.Portal.DataLayer.Models.Content;
 using Arad.Portal.DataLayer.Models.ContentCategory;
 using Arad.Portal.DataLayer.Models.Currency;
@@ -60,6 +62,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Mapping
             CreateMap<NotificationDTO, Notification>();
             CreateMap<ContentCategory, ContentCategoryDTO>().ReverseMap();
             CreateMap<Content, ContentDTO>().ReverseMap();
+            CreateMap<Comment, CommentDTO>().ReverseMap();
         }
         
     }

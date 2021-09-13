@@ -1118,6 +1118,12 @@
 	<string key="AddPromotion_Title">
 		<value>Add Promotion</value>
 	</string>
+	<string key="EditComment_Title">
+		<value>Edit Comment</value>
+	</string>
+	<string key="AddComment_Title">
+		<value>Add Comment</value>
+	</string>
 	<string key="EditPromotion_Title">
 		<value>Edit Promotion</value>
 	</string>
@@ -1242,12 +1248,30 @@
 	<string key="Title">
 		<value>Title</value>
 	</string>
+	<string key="CommentTitle">
+		<value>Comment Title</value>
+	</string>
 	<string key="Description">
 		<value>Description</value>
 	</string>
   <string key="Active">
     <value>Active</value>
   </string>
+	<string key="LikeCount">
+		<value>Like Count</value>
+	</string>
+	<string key="DisLikeCount">
+		<value>DisLike Count</value>
+	</string>
+	<string key="ReferenceType">
+		<value>Comment Type</value>
+	</string>
+	<string key="ReferenceTitle">
+		<value>Reference Title</value>
+	</string>
+	<string key="IsApproved">
+		<value>Approve</value>
+	</string>
 	<string key="SourceType">
 		<value>Content Owner Type</value>
 	</string>
@@ -1309,6 +1333,12 @@
 	</string>
 	<string key="ParentGroup">
 		<value>Parent Group</value>
+	</string>
+	<string key="ParentComment">
+		<value>Parent Comment</value>
+	</string>
+	<string key="ContentComment">
+		<value>Content Comment</value>
 	</string>
 	<string key="ParentCategoryName">
 		<value>Parent Category Name</value>
@@ -1412,6 +1442,15 @@
 	<string key="Filter">
 		<value>Filter</value>
 	</string>
+	<string key="ContentTitle">
+		<value>Content Title</value>
+	</string>
+	<string key="Menu_ProductComments">
+		<value>Product Comments</value>
+	</string>
+	<string key="Menu_ContentComments">
+		<value>Content Comments</value>
+	</string>
 	<string key="Menu_Promotion">
 		<value>Promotions</value>
 	</string>
@@ -1423,6 +1462,9 @@
 	</string>
 	<string key="Menu_Products">
 		<value>Products</value>
+	</string>
+	<string key="Menu_Product">
+		<value>Product</value>
 	</string>
 	<string key="Menu_ProductUnits">
 		<value>Product Units</value>

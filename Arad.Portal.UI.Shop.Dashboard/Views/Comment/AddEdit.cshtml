@@ -1,0 +1,174 @@
+﻿@model Arad.Portal.DataLayer.Models.Comment.CommentDTO;
+@using Arad.Portal.DataLayer.Models.Shared;
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    var alert = Language.GetString("AlertAndMessage_GotIt");
+    var error = Language.GetString("AlertAndMessage_Error");
+    var dir = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        dir = "rtl";
+    }
+    else
+    {
+        dir = "ltr";
+    }
+}
+@section Styles{
+    <link href="~/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css" rel="stylesheet" />
+    <style>
+        .text-danger {
+            font-size: 12px;
+        }
+
+        .btn-circle {
+            width: 30px;
+            height: 30px;
+            padding: 6px 0px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.42857;
+        }
+
+        .card-header {
+            background-color: #e0dcdf;
+        }
+    </style>
+}
+
+<h4>  @Language.GetString(@ViewBag.Title) </h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <div class="card" id="addEditCommentCard">
+            <form asp-controller="Comment" asp-action="ApproveComment" id="approveCommentFrm">
+                <div class="card-header">
+                    <h3 class="card-title" data-toggle="tab">@($"!string.IsNullOrWhiteSpace(Model.CommentId) ? Language.GetString('EditCommen_Title') : Language.GetString('AddComment_Title'){ViewBag.Name}") </h3>
+                </div>
+
+                <div class="card-body" id="addEditCommentCardBody">
+                    <div class="row">
+                        <input type="hidden" value="@Model.CommentId" asp-for="CommentId" />
+                        <input type="hidden" value="@Model.ParentCommentId" asp-for="@Model.ParentCommentId" />
+                        <div class="form-group col-md-3">
+                            <label asp-for="@Model.ReferenceTitle">@Language.GetString(ViewBag.lbl)</label>
+                            <input type="text" asp-for="@Model.ReferenceTitle" value="@Model.ReferenceTitle" class="form-control" readonly="readonly" />
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            @if (dir == "rtl")
+                            {
+                                <label>
+                                    <input type="checkbox" asp-for="@Model.IsApproved" class="minimal">
+                                    @Language.GetString("IsApproved")
+                                </label>
+                            }
+                            else
+                            {
+                                <div class="icheck-primary d-inline">
+                                    <input type="checkbox" asp-for="@Model.IsApproved">
+                                    <label for="chbExistentProducts">
+                                        @Language.GetString("IsApproved")
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                        @*<div class="form-group col-md-3">
+                            <label asp-for="@Model.ParentCommentId">@Language.GetString("CommentTitle")</label>
+                            <input type="text" asp-for="@Model.ti" value="@Model.ParentCommentContent" class="form-control" readonly="readonly" />
+                        </div>*@
+
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label asp-for="@Model.ParentCommentId">@Language.GetString("ParentComment")</label>
+                                <input type="text" asp-for="@Model.ParentCommentContent" value="@Model.ParentCommentContent" class="form-control" readonly="readonly" />
+                                <span data-val-result="ParentCommentContent" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label asp-for="@Model.Content">@Language.GetString("ContentComment")</label>
+                                <input type="text" asp-for="@Model.Content" value="@Model.Content" class="form-control" readonly="readonly" />
+                                <span data-val-result="Content" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                <div class="card-footer">
+                    <div class="row">
+                        <input type="button" id="btnApproveComment" value="@Language.GetString("btn_Approved")" class="btn btn-block btn-success" />
+                        <a asp-action="List" class="btn btn-block btn-default">@Language.GetString("btn_Back")</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    @if (dir == "rtl")
+    {
+        <script src="~/plugins/iCheck/icheck.min.js"></script>
+    }
+    <script>
+
+        $(document).ready(function () {
+            debugger;
+            if ("@dir" == "rtl") {
+            $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+            checkboxClass: 'icheckbox_minimal-blue',
+            radioClass: 'iradio_minimal-blue'
+            });
+            }
+            if ("@Model.CommentId" != "") {
+                $("#IsApproved").prop('checked', '@Model.IsApproved');
+            }
+            $("#btnApproveComment").click(function () {
+            debugger;
+            var commenId = $("#CommentId").val();
+            var isApproved = $("input[type=checkbox][id='IsApproved']").is(":checked");
+
+                $.ajax({
+                    url: "/Comment/ApproveComment?commentId=" + commenId + "&isApproved=" + isApproved ,
+                    type: 'Get',
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function () {
+                        debugger;
+                        AddLoading($("#addEditCommentCardBody"));
+                    },
+                    success: function (result) {
+                    debugger;
+                        if (result.status === "Success") {
+                            Swal.fire({
+                                icon: 'success',
+                                text: result.message,
+                                showConfirmButton: false,
+                                timer: 3000
+                            }).then(() => {
+                                window.location.href = '@Url.Action("List")';
+                            });
+                        } else
+                            if (result.status === "Error")
+                            {
+                                Swal.fire({
+                                    icon: 'error',
+                                    text: result.message,
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                })
+                            }
+                    },
+                    complete: function () {
+                        removeLoading($("#addEditCommentCardBody"));
+                    }
+                });
+
+            });
+        });
+    </script>
+}
+
+
+
+

@@ -55,6 +55,8 @@ using Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.ContentCategory;
 using Arad.Portal.DataLayer.Contracts.General.Content;
 using Arad.Portal.DataLayer.Repositories.General.Content.Mongo;
+using Arad.Portal.DataLayer.Contracts.General.Comment;
+using Arad.Portal.DataLayer.Repositories.General.Comment.Mongo;
 
 namespace Arad.Portal.UI.Shop.Dashboard
 {
@@ -146,10 +148,21 @@ namespace Arad.Portal.UI.Shop.Dashboard
 
             app.UseEndpoints(endpoints =>
             {
-                //if (env.IsDevelopment())
-                //    endpoints.MapControllers().WithMetadata(new AllowAnonymousAttribute());
-                //else
-                //    endpoints.MapControllers();
+                if (env.IsDevelopment())
+                    endpoints.MapControllers().WithMetadata(new AllowAnonymousAttribute());
+                else
+                    endpoints.MapControllers();
+
+              //endpoints.MapControllerRoute(
+              //     name: "ProductComments",
+              //     pattern: "ProductComments/{action}/{id?}",
+              //     defaults: new { controller = "Comments" , t = "product"});
+
+              //  endpoints.MapControllerRoute(
+              //    name: "ContentComments",
+              //    pattern: "ContentComments/{action}/{id?}",
+              //    defaults: new { controller = "Comments", t = "content"});
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
@@ -204,6 +217,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<IMessageTemplateRepository, MessageTemplateRepository>();
             services.AddTransient<IContentCategoryRepository, ContentCategoryRepository>();
             services.AddTransient<IContentRepository, ContentRepository>();
+            services.AddTransient<ICommentRepository, CommentRepository>();
 
             #region contexes
             services.AddTransient<CurrencyContext>();
@@ -221,6 +235,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<NotificationContext>();
             services.AddTransient<ContentCategoryContext>();
             services.AddTransient<ContentContext>();
+            services.AddTransient<CommentContext>();
                 
             #endregion
 

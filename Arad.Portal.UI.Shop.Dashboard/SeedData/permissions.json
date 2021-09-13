@@ -28,7 +28,7 @@
   {
     "PermissionId": "8cae0481-d040-4ea2-94b3-486af69aa9dc",
     "Title": "ProductManagement",
-    "Routes": [ "ProductUnit/List", "ProductSpecificationGroup/List", "ProductSpecification/List", "ProductGroup/List", "Product/List", "Promotion/List" ],
+    "Routes": [ "ProductUnit/List", "ProductSpecificationGroup/List", "ProductSpecification/List", "ProductGroup/List", "Product/List", "Promotion/List", "ProductComments/List" ],
     "ClientAddress": "",
     "IsActive": true,
     "Type": 2,

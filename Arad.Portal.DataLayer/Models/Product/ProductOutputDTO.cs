@@ -55,7 +55,7 @@ namespace Arad.Portal.DataLayer.Models.Product
 
         public int VisitCount { get; set; }
 
-        public List<Comment> Comments { get; set; }
+        public List<Entities.General.Comment.Comment> Comments { get; set; }
 
         public bool IsPublishedOnMainDomain { get; set; }
 

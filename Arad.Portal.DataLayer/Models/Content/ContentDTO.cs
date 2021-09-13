@@ -58,7 +58,7 @@ namespace Arad.Portal.DataLayer.Models.Content
 
         public int? PopularityRate { get; set; }
 
-        public List<Comment> Comments { get; set; }
+        public List<Entities.General.Comment.Comment> Comments { get; set; }
 
         public Entities.General.Content.SourceType? SourceType { get; set; }
 

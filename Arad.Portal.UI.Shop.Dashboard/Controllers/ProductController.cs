@@ -82,7 +82,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
                 var contentRoot = _webHostEnvironment.ContentRootPath;
                 ViewBag.Path = contentRoot;
-                var groupList = _productGroupRepository.GetAlActiveProductGroup(defLangId, currentUserId);
+                var groupList = await _productGroupRepository.GetAlActiveProductGroup(defLangId, currentUserId);
                 ViewBag.ProductGroupList = groupList;
                
                 var unitList = _unitRepository.GetAllActiveProductUnit(defLangId);

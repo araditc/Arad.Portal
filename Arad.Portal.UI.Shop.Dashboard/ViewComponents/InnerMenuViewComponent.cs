@@ -19,23 +19,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
 {
     public class InnerMenuViewComponent : ViewComponent
     {
-        //private readonly IHttpContextAccessor _accessor;
-        //private readonly UserManager<ApplicationUser> _userManager;
-        //private readonly IPermissionRepository _permissionRepository;
-        //private readonly IUserRepository _userRepository;
-
-        //public InnerMenuViewComponent(
-        //    IHttpContextAccessor accessor,
-        //    IPermissionRepository permissionRepository,
-        //    UserManager<ApplicationUser> userManager,
-        //    IUserRepository userRepository)
-        //{
-        //    _accessor = accessor;
-        //    _permissionRepository = permissionRepository;
-        //    _userManager = userManager;
-        //    _userRepository = userRepository;
-        //}
-
+        
         public  IViewComponentResult Invoke(MenuLinkModel model)
         {
             return  View(model);
