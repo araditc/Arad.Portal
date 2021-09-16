@@ -90,6 +90,10 @@
             text-align: @(dir == "rtl" ? "right" : "left");
             height: auto;
         }
+        img, svg, .SimpleUploadsTmpWrapper {
+            height: auto;
+            max-width: 100%;
+        }
     </style>
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
@@ -102,6 +106,7 @@
             .ck-button__label {
                 font-family: IRANSansWeb !important;
             }
+
             .text-danger {
                 font-size: 12px;
             }
@@ -183,8 +188,9 @@
                 <div>
                     <button class="btn btn-success" id="send_pic" type="button"><i style="margin-left: 5px;font-size:13px" class="fas fa-check"></i>@Language.GetString("btn_Approve")</button>
                     <button class="btn btn-primary" id="crop_button"><i style="margin-left: 5px;font-size:13px" class="fas fa-cut"></i>@Language.GetString("btn_Crop")</button>
-                    <button class="btn btn-default" style="background-color: crimson;color: white;border: 1px solid crimson" onclick="rotatePic()"> 
-                    <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i> @Language.GetString("btn_Rotate")</button>
+                    <button class="btn btn-default" style="background-color: crimson;color: white;border: 1px solid crimson" onclick="rotatePic()">
+                        <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i> @Language.GetString("btn_Rotate")
+                    </button>
 
                 </div>
             </div>
@@ -204,7 +210,7 @@
                 <div class="row">
                     <div class="col-md-3">
                         <label asp-for="@Model.LanguageId">@Language.GetString("RelatedLanguage")</label>
-                        <select class="form-control" asp-for="@Model.LanguageId"  asp-items="@(new SelectList(ViewBag.LangList,"Value","Text", Model.LanguageId))" >
+                        <select class="form-control" asp-for="@Model.LanguageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text", Model.LanguageId))">
                         </select>
                         <span data-val-result="LanguageId" class="text-danger"></span>
                     </div>
@@ -230,7 +236,7 @@
 
                     <div class="form-group col-md-6">
                         <label asp-for="Description">@Language.GetString("Description")</label>
-                        <textarea dir="rtl" asp-for="Description" class="form-control" rows="3" >@Model.Description</textarea>
+                        <textarea dir="rtl" asp-for="Description" class="form-control" rows="3">@Model.Description</textarea>
                         <span data-val-result="Description" class="text-danger"></span>
                     </div>
                     <div class="col-md-6">
@@ -395,7 +401,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <label for="tagKeywords">@Language.GetString("TagKeywords")</label>
-                        <input type="text" class="form-control" id="tagKeyWords"  name="tagKeyWords" />
+                        <input type="text" class="form-control" id="tagKeyWords" name="tagKeyWords" />
                     </div>
                 </div>
                 <div class="row">
@@ -408,7 +414,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <textarea id="editorCk" name="editorCk" class="form-control" rows="10" cols="80">
-                                           @Model.Contents
+                                               @Model.Contents
                                         </textarea>
                                     </div>
                                     <span data-val-result="editorCk" class="text-danger"></span>
@@ -431,12 +437,12 @@
 </div>
 @section Scripts{
     <script src="~/lib/cropperjs/cropper.js"></script>
-    @*<script src="~/plugins/ckeditor5/ckeditor.js"></script>*@
+    @*<script src="~/plugins/ckeditor5/build/ckeditor.js"></script>*@
     <script src="~/js/plugins/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/js/bootstrap-select/bootstrap-select.js"></script>
     <script src="~/plugins/TagInput/jquery.amsify.suggestags.js"></script>
-    <script src="~/plugins/ckeditor4/ckeditor.js"></script>
-    @*<script src="~/plugins/ckeditor4/adapters/jquery.js"></script>*@
+    @*<script src="~/plugins/ckeditor4/ckeditor.js"></script>*@
+    <script src="~/ckeditor/ckeditor.js"></script>
 
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
@@ -454,7 +460,7 @@
     {
         <script src="~/plugins/iCheck/icheck.min.js"></script>
     }
-<script>
+    <script>
         var fileName;
         var fileContent;
         var cropper;
@@ -517,50 +523,49 @@
                  $("#LanguageId").val('@ViewBag.LangId');
             }
 
-        //ckEditor5
-        @*ClassicEditor.create(document.querySelector('#editorBody'),
-        {
-            toolbar: {
-                items: [
-                    'heading',
-                    '|',
-                    'bold',
-                    'italic',
-                    'link',
-                    'bulletedList',
-                    'numberedList',
-                    '|',
-                    'outdent',
-                    'indent',
-                    '|',
-                    'imageUpload',
-                    'blockQuote',
-                    'insertTable',
-                    'undo',
-                    'redo',
-                    'imageInsert'
-                ]
-            },
-            language: lan,
-            image: {
-                toolbar: [
-                    'imageTextAlternative',
-                    'imageStyle:inline',
-                    'imageStyle:block',
-                    'imageStyle:side'
-                ]
-            },
-            table: {
-                contentToolbar: [
-                    'tableColumn',
-                    'tableRow',
-                    'mergeTableCells'
-                ]
-            },
-            licenseKey: '',
-        }
-    ).then(editor =>
-            {
+            //ckEditor5
+            @*ClassicEditor.create(document.querySelector('.editor'),
+                {
+                    toolbar: {
+                        items: [
+                            'heading',
+                            '|',
+                            'bold',
+                            'italic',
+                            'link',
+                            'bulletedList',
+                            'numberedList',
+                            '|',
+                            'outdent',
+                            'indent',
+                            '|',
+                            'imageUpload',
+                            'blockQuote',
+                            'insertTable',
+                            'mediaEmbed',
+                            'undo',
+                            'redo'
+                        ]
+                    },
+                    language: lan,
+                     image: {
+                         toolbar: [
+                             'imageTextAlternative',
+                             'imageStyle:inline',
+                             'imageStyle:block',
+                             'imageStyle:side'
+                         ]
+                     },
+                     table: {
+                         contentToolbar: [
+                             'tableColumn',
+                             'tableRow',
+                             'mergeTableCells'
+                         ]
+                     },
+                     licenseKey: '',
+                 }).
+            then(editor => {
                 editor.setData('@Html.Raw(Model.Contents)');
                 editorBodyVar = editor;
             }).catch(err => {
@@ -568,7 +573,17 @@
             });*@
 
             //ckEditor4
-            /* CKEDITOR.replace('editorCk');*/
+            const config = {
+                filebrowserImageBrowseUrl: "/imagebrowser",
+                filebrowserImageWindowWidth: 780,
+                filebrowserImageWindowHeight: 720,
+                filebrowserBrowseUrl: "/linkbrowser",
+                filebrowserWindowWidth: 350,
+                filebrowserWindowHeight: 500,
+
+            };
+            const editor = document.getElementById("editorCk");
+            CKEDITOR.replace(editor, config);
 
             $("#btnAddContent").click(function () {
                 debugger;
@@ -803,10 +818,6 @@
     }
 
 
-
-
-
-
         $('#uploadModal').on('hidden.bs.modal',
         function () {
         debugger;
@@ -928,9 +939,6 @@
         }
 
 
-</script>
+    </script>
 }
-
-
-
 

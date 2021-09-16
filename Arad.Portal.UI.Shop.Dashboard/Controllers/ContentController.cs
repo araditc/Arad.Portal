@@ -87,7 +87,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 return result;
             }
 
-            var fileName = Guid.NewGuid().ToString()/* + Path.GetExtension(upload.FileName).ToLower()*/;
+            var fileName = Guid.NewGuid().ToString()+".jpg"/* + Path.GetExtension(upload.FileName).ToLower()*/;
 
             System.Drawing.Image image = System.Drawing.Image.FromStream(upload.OpenReadStream());
             var arr = imageSize.Split(" * ");

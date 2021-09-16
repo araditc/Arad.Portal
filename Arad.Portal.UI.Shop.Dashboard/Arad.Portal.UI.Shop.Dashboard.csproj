@@ -9,6 +9,8 @@
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="Flurl" Version="3.0.2" />
     <PackageReference Include="Flurl.Http" Version="3.2.0" />
+    <PackageReference Include="Imageflow.NativeRuntime.win-x86_64" Version="1.5.8-rc62" />
+    <PackageReference Include="Imageflow.Net" Version="0.7.24" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.9" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
@@ -23,6 +25,7 @@
     <Folder Include="wwwroot\css\siteTemplate\permissionTree\" />
     <Folder Include="wwwroot\Images\Contents\CkEditor\" />
     <Folder Include="wwwroot\lib\bootstrap-select\" />
+    <Folder Include="wwwroot\Files\" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
