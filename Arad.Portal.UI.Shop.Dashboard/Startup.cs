@@ -100,7 +100,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
               {
                   opt.Cookie.HttpOnly = true;
               });
-
+            services.AddRazorPages();
             services.AddTransient<IAuthorizationHandler, RoleHandler>();
             services.AddAuthorization(options =>
             {
@@ -117,6 +117,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
 
             AddRepositoryServices(services);
             services.AddProgressiveWebApp();
+            
         }
 
        
@@ -145,27 +146,31 @@ namespace Arad.Portal.UI.Shop.Dashboard
             app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
-
+            
             app.UseEndpoints(endpoints =>
             {
-                if (env.IsDevelopment())
-                    endpoints.MapControllers().WithMetadata(new AllowAnonymousAttribute());
-                else
-                    endpoints.MapControllers();
+                //if (env.IsDevelopment())
+                //    endpoints.MapControllers().WithMetadata(new AllowAnonymousAttribute());
+                //else
+                //    endpoints.MapControllers();
 
-              //endpoints.MapControllerRoute(
-              //     name: "ProductComments",
-              //     pattern: "ProductComments/{action}/{id?}",
-              //     defaults: new { controller = "Comments" , t = "product"});
+                //endpoints.MapControllerRoute(
+                //     name: "ProductComments",
+                //     pattern: "ProductComments/{action}/{id?}",
+                //     defaults: new { controller = "Comments" , t = "product"});
 
-              //  endpoints.MapControllerRoute(
-              //    name: "ContentComments",
-              //    pattern: "ContentComments/{action}/{id?}",
-              //    defaults: new { controller = "Comments", t = "content"});
+                //  endpoints.MapControllerRoute(
+                //    name: "ContentComments",
+                //    pattern: "ContentComments/{action}/{id?}",
+                //    defaults: new { controller = "Comments", t = "content"});
+
+                endpoints.MapRazorPages();
 
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
             });
             app.UseSeedDatabase(ApplicationPath);
         }

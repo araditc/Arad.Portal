@@ -11,12 +11,13 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Pages
 {
     public class ImageBrowserModel : PageModel
     {
-        public ImageBrowserModel(IConfiguration config, IHostingEnvironment env)
+        public ImageBrowserModel(IConfiguration config, IWebHostEnvironment env)
         {
             _config = config;
             _env = env;
@@ -24,7 +25,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Pages
 
         //properties
         private IConfiguration _config;
-        private IHostingEnvironment _env;
+        private IWebHostEnvironment _env;
 
         [BindProperty]
         public string ResizeMessage { get; set; }
@@ -79,22 +80,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Pages
         /// </summary>
         private string FileImageFolder => Path.Combine(FileImageFolderRoot, ImageFolder ?? "") + "\\";
 
-        // Methods
-
-        public Task OnGetAsync()
-        {
-            ResizeMessage = "";
-            return OnPostChangeDirectoryAsync();
-        }
-
         public IEnumerable<SelectListItem> DirectoryList =>
-            new[] { new SelectListItem { Text = "Root", Value = "" } }.Concat(
-                Directory.GetDirectories(FileImageFolderRoot)
-                    .Select(d => Path.GetFileName(d))
-                    .Select(d => new SelectListItem { Text = d, Value = d })
-            );
+           new[] { new SelectListItem { Text = "Root", Value = "" } }.Concat(
+               Directory.GetDirectories(FileImageFolderRoot)
+                   .Select(d => Path.GetFileName(d))
+                   .Select(d => new SelectListItem { Text = d, Value = d })
+           );
 
-        public IEnumerable<SelectListItem> ImageList {
+        public IEnumerable<SelectListItem> ImageList
+        {
             get
             {
                 var files = Directory.GetFiles(FileImageFolder, "*" + SearchTerms?.Replace(" ", "*") + "*")
@@ -105,6 +99,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Pages
                     ImageListValue = files.First().Text;
                 return files;
             }
+        }
+
+        // Methods
+        public Task OnGetAsync()
+        {
+            ResizeMessage = "";
+            return OnPostChangeDirectoryAsync();
         }
 
         public Task OnPostChangeDirectoryAsync()
@@ -165,9 +166,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Pages
         {
             uint width = Convert.ToUInt32(ResizeWidth);
             uint height = Convert.ToUInt32(ResizeHeight);
-
-            byte[] image = System.IO.File.ReadAllBytes(FileImageFolder + ImageListValue);
-            image = await ResizeImageBytes(image, width, height);
+            byte[] image;
+            //byte[] image = System.IO.File.ReadAllBytes(FileImageFolder + ImageListValue);
+            var img = Image.FromFile(FileImageFolder + ImageListValue);
+            image = await ResizeImageBytes(img, width, height);
             System.IO.File.WriteAllBytes(FileImageFolder + ImageListValue, image);
 
             ResizeMessage = "Image successfully resized!";
@@ -181,9 +183,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Pages
                 string filename = UniqueFilename(UploadedImageFile.FileName);
                 var stream = new MemoryStream();
                 UploadedImageFile.CopyTo(stream);
-                byte[] image = await ResizeImageBytes(stream.ToArray(), 1024, 1024); //make 1024x1024 the largest image size
-                System.IO.File.WriteAllBytes(FileImageFolder + filename, image);
-
+                using (var ms = new MemoryStream())
+                {
+                    UploadedImageFile.CopyTo(ms);
+                    using (var img = Image.FromStream(ms))
+                    {
+                        byte[] image = await ResizeImageBytes(img, 1024, 1024); //make 1024x1024 the largest image size
+                        System.IO.File.WriteAllBytes(FileImageFolder + filename, image);
+                    }
+                }
+               
                 ImageListValue = filename;
                 await OnPostSelectImageAsync();
             }
@@ -193,7 +202,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Pages
         private bool IsImage(string file)
         {
             return file.EndsWith(".jpg", StringComparison.CurrentCultureIgnoreCase) ||
-                file.EndsWith(".gif", StringComparison.CurrentCultureIgnoreCase) ||
+                file.EndsWith(".jpeg", StringComparison.CurrentCultureIgnoreCase) ||
                 file.EndsWith(".png", StringComparison.CurrentCultureIgnoreCase);
         }
 
@@ -221,7 +230,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Pages
             return newdirectoryname;
         }
 
-        protected async Task<byte[]> ResizeImageBytes(byte[] imageData, uint? desiredWidth, uint? desiredHeight)
+        protected async Task<byte[]> ResizeImageBytes(Image image, uint? desiredWidth, uint? desiredHeight)
         {
             //using (var job = new FluentBuildJob())
             //{
@@ -230,16 +239,49 @@ namespace Arad.Portal.UI.Shop.Dashboard.Pages
             //    var bytes = res.First.TryGetBytes();
             //    return bytes.HasValue ? bytes.Value.Array : new byte[] { };
             //}
-            using (var b = new ImageJob())
-            {
-                var res = await b.Decode(imageData).ResizerCommands($"width={desiredWidth}&height={desiredHeight}2&mode=stretch&scale=both")
-                   .EncodeToBytes(new GifEncoder()).Finish().InProcessAsync();
-                var bytes = res.First.TryGetBytes();
-                return bytes.HasValue ? bytes.Value.Array : new byte[] { };
-            }
-        }
+            //try
+            //{
+            //    using (var b = new ImageJob())
+            //    {
+            //        var res = await b.Decode(imageData).ResizerCommands($"width={desiredWidth}&height={desiredHeight}2&mode=stretch&scale=both")
+            //           .EncodeToBytes(new MozJpegEncoder(1)).Finish().InProcessAsync();
+            //        var bytes = res.First.TryGetBytes();
+            //        return bytes.HasValue ? bytes.Value.Array : new byte[] { };
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
 
-        protected async Task<(int Width, int Height)> GetImageSize(string filename)
+            //    throw;
+            //}
+            if(desiredHeight == null)
+            {
+                desiredHeight = 1024;
+            }
+            return ScaleImage(image, Convert.ToInt32(desiredHeight.Value));
+
+        }
+        public byte[] ScaleImage(Image image, int height)
+        {
+            double ratio = (double)height / image.Height;
+            int newWidth = (int)(image.Width * ratio);
+            int newHeight = (int)(image.Height * ratio);
+            Bitmap newImage = new Bitmap(newWidth, newHeight);
+            using (Graphics g = Graphics.FromImage(newImage))
+            {
+                g.DrawImage(image, 0, 0, newWidth, newHeight);
+            }
+            image.Dispose();
+            
+            using (var stream = new MemoryStream())
+            {
+                newImage.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                return stream.ToArray();
+            }
+           
+        }
+       
+       protected async Task<(int Width, int Height)> GetImageSize(string filename)
         {
 
             //using (var job = new FluentBuildJob())
@@ -249,7 +291,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Pages
             //        .EncodeToBytes(new LibJpegTurboEncoder()).FinishAsync();
             //    return (res.First.Width, res.First.Height);
             //}
-            System.Drawing.Image img = System.Drawing.Image.FromFile(filename);
+            Image img = Image.FromFile(filename);
             //MessageBox.Show("Width: " + img.Width + ", Height: " + img.Height);
             return (img.Width, img.Height);
         }

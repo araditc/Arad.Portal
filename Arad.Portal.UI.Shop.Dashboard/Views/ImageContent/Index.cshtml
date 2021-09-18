@@ -1,0 +1,431 @@
+﻿
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    var alert = Language.GetString("AlertAndMessage_GotIt");
+    var error = Language.GetString("AlertAndMessage_Error");
+    var dir = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        dir = "rtl";
+    }
+    else
+    {
+        dir = "ltr";
+    }
+}
+@section Styles{
+    <link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
+
+
+    <style>
+
+        .btn-circle {
+            width: 30px;
+            height: 30px;
+            padding: 6px 0px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.42857;
+        }
+
+        .card-header {
+            background-color: #e0dcdf;
+        }
+
+        .ck-editor .ck-editor__main .ck-content {
+            height: 280px;
+            min-height: 250px;
+        }
+
+        .removeImage {
+            display: inline-block;
+            position: absolute;
+            top: -7px;
+            right: -5px;
+            width: 20px;
+            height: 21px;
+            background: #dc3545;
+            text-align: center;
+            border-radius: 50%;
+            color: white !important;
+            cursor: pointer;
+        }
+        .row{
+            margin-top: 1%;
+        }
+
+        #bd-root-userBirthDate {
+            width: 100%
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .cropper-container {
+            width: 100%
+        }
+
+        .iti__flag-container {
+            direction: ltr
+        }
+
+        .modal {
+            z-index: 100001 !important;
+        }
+
+        .lightColored {
+            background-color: aliceblue
+        }
+
+        .amsify-suggestags-input-area {
+            text-align: @(dir == "rtl" ? "right" : "left");
+            height: auto;
+        }
+        img, svg, .SimpleUploadsTmpWrapper {
+            height: auto;
+            max-width: 100%;
+        }
+    </style>
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
+        <style>
+            .ck-tooltip__text {
+                font-family: IRANSansWeb !important;
+            }
+
+            .ck-button__label {
+                font-family: IRANSansWeb !important;
+            }
+
+            .text-danger {
+                font-size: 12px;
+            }
+
+            .btn-circle {
+                width: 30px;
+                height: 30px;
+                padding: 6px 0px;
+                border-radius: 15px;
+                text-align: center;
+                font-size: 12px;
+                line-height: 1.42857;
+            }
+
+            .card-header {
+                background-color: #e0dcdf;
+            }
+
+            .removeImage {
+                display: inline-block;
+                position: absolute;
+                top: -7px;
+                right: -5px;
+                width: 20px;
+                height: 21px;
+                background: #dc3545;
+                text-align: center;
+                border-radius: 50%;
+                color: white !important;
+                cursor: pointer;
+            }
+
+            .divCenter {
+                text-align: center;
+                border: 1px solid;
+            }
+
+            table tr {
+                text-align: center;
+            }
+
+            tbody tr td {
+                vertical-align: middle;
+            }
+
+            .valign {
+                vertical-align: middle;
+            }
+        </style>
+    }
+}
+<div class="row">
+    <div class="card">
+        <div class="card-header">
+            <div class="col-md-12" style="text-align: center">
+                <h5 class="modal-title align-content-center" id="exampleModalLongTitle">@Language.GetString("CropImage")</h5>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="rowContainer" class="row justify-content-center align-items-center">
+                <div id="container" style="position: relative;display: inline; height: 400px; width: 400px;max-width:100%;">
+                    <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="blah" src="#" alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div>
+                <button class="btn btn-success" id="send_pic" type="button"><i style="margin-left: 5px;font-size:13px" class="fas fa-check"></i>@Language.GetString("btn_Approve")</button>
+                <button class="btn btn-primary" id="crop_button"><i style="margin-left: 5px;font-size:13px" class="fas fa-cut"></i>@Language.GetString("btn_Crop")</button>
+                <button class="btn btn-default" style="background-color: crimson;color: white;border: 1px solid crimson" onclick="rotatePic()">
+                    <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i> @Language.GetString("btn_Rotate")
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/lib/cropperjs/cropper.js"></script>
+    <script>
+        var fileName;
+        var fileContent;
+        var cropper;
+        var currentFileSize;
+        var currentFileName;
+        var images = [];
+        var lan = "";
+        var counter = 1000;
+        var active = '@Language.GetString("Active")';
+        var inActive = '@Language.GetString("InActive")';
+        var editorBodyVar;
+        if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
+        {
+            lan = "fa";
+        }
+        else
+        {
+            lan = "en";
+        }
+
+        $(document).ready(function () {
+        debugger;
+       
+      
+         $("#send_pic").click(function () {
+            debugger;
+            $("#uploadModal").modal("hide");
+            var url = $("#galleryPic").attr("src");
+            var model = {};
+            model.ImageId = counter;
+            model.Content = url;
+            images.push(model);
+            var tr = "";
+            if ('@dir' == "rtl") {
+                tr = "<tr><td><img imgId='img_" + counter + "' src='" + model.Content +
+                    "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
+                    "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
+                    "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
+                    "'/></td><td style='vertical-align:middle;'><input type='radio'  name='isMainImage' class='minimal rdbIsMain'></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger btn-circle' onclick='deleteFromImageList(this);'><i class='fa fa-minus' style='position:relative;padding: 3px;'></i></button></td></tr>";
+            } else {
+                 tr = "<tr><td><img imgId='img_" + counter + "' src='" + model.Content +
+                    "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
+                    "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
+                    "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
+                    "'/></td><td style='vertical-align:middle;'><div class='icheck-primary d-inline'><input type='radio'  name='isMainImage' class='rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger btn-circle' onclick='deleteFromImageList(this);'><i class='fa fa-minus' style='position:relative;padding: 3px;'></i></button></td></tr>";
+
+            }
+            $("#imageList").append(tr);
+            counter += 1;
+            if ("@dir" == "rtl") {
+                $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+                    checkboxClass: 'icheckbox_minimal-blue',
+                    radioClass: 'iradio_minimal-blue'
+                });
+            }
+        });
+
+    });
+
+    function ViewImage(address) {
+        var tag = '<img src="' + address + '" width="500px" />';
+        Swal.fire({
+            html: tag,
+            width: 'auto',
+            showConfirmButton: true,
+            confirmButtonText: 'بستن'
+        });
+    }
+
+        function deleteFromImageList(sender) {
+            debugger;
+            var id = $(sender).next().attr("imgId");
+            //removeFromArray
+            var item = images.find(_ => _.ImageId === id);
+            var index = images.indexOf(item);
+            images.splice(index, 1);
+            //remove in view
+            $(sender).parent().remove();
+        }
+
+    function FillDataToSend() {
+        debugger;
+        var obj = {};
+        obj.Images = [];
+        obj.Comments = [];
+        obj.TagKeywords = [];
+        obj.ContentId = $("#ContentId").val();
+        obj.ContentCategoryId = $("#ContentCategoryId").val();
+        obj.ContentCategoryName = $("#ContentCategoryId option:selected").text();
+        obj.Title = $("#Title").val();
+        obj.SubTitle = $("#SubTitle").val();
+        obj.LanguageId = $("#LanguageId").val();
+        obj.LanguageName = $("#LanguageId  option:selected").text();
+        obj.Description = $("#Description").val();
+        obj.SeoTitle = $("#SeoTitle").val();
+        obj.SeoDescription = $("#SeoDescription").val();
+        obj.UrlFriend = $("#UrlFriend").val();
+        obj.Contents = $("#editorCk").val();
+        var commaseperatedTags = $("#tagKeyWords").val();
+        var arr = commaseperatedTags.split(",");
+        $.each(arr, function (key, value) {
+            obj.TagKeywords.push(value);
+        });
+        obj.SourceTypeId = $("#SourceType").val();
+        obj.ContentProviderName = $("#ContentProviderName").val();
+
+        //pictures
+        $("#imageList tr").each(function () {
+
+            var id = $(this).find("td:eq(1)").text();
+            var item = images.find(_ => _.ImageId == id);
+            index = images.indexOf(item);
+
+            item.IsMain = $(this).find("td:eq(4) .rdbIsMain").prop("checked") === 'true';
+            item.Title = $(this).find("td:eq(2) .txtTitle").val();
+            item.Description = $(this).find("td:eq(3) .txtDesc").val();
+            item.ImageId = item.ImageId.toString();
+            obj.Images.push(item);
+        });
+        obj.PersianStartShowDate = $("#dtpStartShowDate").val();
+        obj.PersianEndShowDate = $("#dtpEndShowDate").val();
+        return obj;
+    }
+
+
+        $('#uploadModal').on('hidden.bs.modal',
+        function () {
+        debugger;
+        cropper.destroy();
+        document.getElementById("image").value = "";
+        $("#cropped_result").remove();
+        });
+
+        function rotatePic() {
+        cropper.rotate(90);
+        }
+
+        function upRiseModal() {
+            debugger;
+        $("#send_pic").attr("disabled", true);
+        $("#uploadModal").modal("show");
+        }
+
+        function initCropper() {
+        debugger;
+        var image = document.getElementById('blah');
+        if (cropper !== null && cropper !== undefined) {
+        cropper.destroy();
+        }
+
+        cropper = new Cropper(image,
+        {
+        background: true,
+        aspectRatio: 1,
+        viewMode: 2,
+        responsive: true,
+        rotatable: true
+        });
+
+        document.getElementById('crop_button').addEventListener('click',
+        function () {
+        var imgUrl = cropper.getCroppedCanvas().toDataURL('image/jpeg');
+        var img = document.createElement("img");
+        img.setAttribute("id", "galleryPic");
+        img.setAttribute("class", "img-fluid");
+        var height = document.getElementById("container").getAttribute("width");
+        var croppedContainer = document.createElement("div");
+        croppedContainer.setAttribute("id", "cropped_result");
+        croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
+        document.getElementById("rowContainer").appendChild(croppedContainer);
+        img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
+        img.src = imgUrl;
+        document.getElementById("cropped_result").innerHTML = "";
+        document.getElementById("cropped_result").appendChild(img);
+        $("#send_pic").attr("disabled", false);
+        });
+        }
+
+        function getURL(input)
+        {
+            debugger;
+        $("#cropped_result").remove();
+        if (input.files && input.files[0]) {
+        var file = input.files[0];
+        currentFileName = file.name;
+        currentFileSize = file.size;
+
+        if (currentFileSize <= @ViewBag.PicSize) {
+        var reader = new FileReader();
+        try {
+        reader.readAsDataURL(file);
+        } catch (e) {
+
+        }
+        reader.onload = function (e) {
+        var content = e.target.result;
+        //if file format is incorrect, then the 'content' won't have any src.
+        if (content !== "data:") {
+        var reducedContent = content.slice(5);
+
+        if (reducedContent.startsWith("image")) {
+        $('#blah').attr('src', content);
+        setTimeout(upRiseModal, 100);
+        setTimeout(initCropper, 500);
+        } else {
+
+        Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
+        showConfirmButton: false,
+        timer: 1500
+        });
+
+        document.getElementById("image").value = "";
+        $("#cropped_result").remove();
+        }
+        } else {
+        Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
+        showConfirmButton: false,
+        timer: 1500
+        });
+
+        document.getElementById("image").value = "";
+        $("#cropped_result").remove();
+        }
+        };
+        }
+        else
+        {
+        Swal.fire({
+        icon: 'error',
+        title: '@Language.GetString("AlertAndMessage_InvalidFileSize")',
+        showConfirmButton: false,
+        timer: 1500
+        });
+        document.getElementById("image").value = "";
+        $("#cropped_result").remove();
+        }
+        }
+        }
+
+
+    </script>
+}

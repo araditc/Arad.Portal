@@ -13,6 +13,12 @@
 	<string key="btn_UploadImage">
 		<value>Upload Image</value>
 	</string>
+	<string key="Upload">
+		<value>Upload</value>
+	</string>
+	<string key="PutImage">
+		<value>Put Image</value>
+	</string>
 	<string key="btn_Add">
 		<value>Add</value>
 	</string>
@@ -999,6 +1005,9 @@
 	<string key="AlertAndMessage_AskForConfirm">
 		<value>Are you sure?</value>
 	</string>
+	<string key="AlertAndMessage_AskForConfirmImageDeletion">
+		<value>Are you sure you want to delete this image?</value>
+	</string>
 
 	<string key="AlertAndMessage_PermissionWillBeDeleted">
 		<value>Permission will be deleted.</value>
@@ -1257,6 +1266,18 @@
   <string key="Active">
     <value>Active</value>
   </string>
+	<string key="Rename">
+		<value>Rename</value>
+	</string>
+	<string key="ChooseImageForm">
+		<value>Choose Image Form</value>
+	</string>
+	<string key="ChooseImage">
+		<value>Choose Image</value>
+	</string>
+	<string key="Folders">
+		<value>Folders:</value>
+	</string>
 	<string key="ChangeLogo">
 		<value>ChangeLogo</value>
 	</string>
@@ -1679,6 +1700,12 @@
 	</string>
 	<string key="Delete">
 		<value>Delete</value>
+	</string>
+	<string key="ChangeSize">
+		<value>Change Size</value>
+	</string>
+	<string key="ChangeImageSize">
+		<value>Change Image Size</value>
 	</string>
 	<string key="Search">
 		<value>Search</value>

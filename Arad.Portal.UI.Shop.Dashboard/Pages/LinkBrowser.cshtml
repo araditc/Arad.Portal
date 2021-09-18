@@ -62,7 +62,8 @@
     <script>
 		document.getElementById("fileList").focus();
 
-		function newDirectory() {
+        function newDirectory() {
+            debugger;
 			var name = prompt('Enter name of folder:');
 			if (name == null || name == '') {
 				return false;
@@ -71,7 +72,8 @@
 			return true;
 		}
 
-		function renameFile() {
+        function renameFile() {
+            debugger;
 			var name = prompt('Enter new filename:','@(Model.FileListValue)');
 			if (name == null || name == '')
 				return false;
@@ -79,13 +81,15 @@
 			return true;
 		}
 
-		function ok() {
+        function ok() {
+            debugger;
 			var dialog = window.top.opener.CKEDITOR.dialog.getCurrent();
 			dialog.setValueOf('info', 'url', encodeURI('@(Model.FileUrl)'));
 			closeDialog();
 		}
 
-		function closeDialog() {
+        function closeDialog() {
+            debugger;
 			window.top.close();
 			window.top.opener.focus();
 		}
