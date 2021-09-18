@@ -19,7 +19,7 @@
     @*<link href="~/plugins/ckeditor5/styles.css" rel="stylesheet" />*@
     <link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
     <link href="~/plugins/TagInput/amsify.suggestags.css" rel="stylesheet" />
-
+    <link href="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.css" rel="stylesheet" />
     <style>
         .text-danger {
             font-size: 12px;
@@ -442,7 +442,8 @@
     <script src="~/js/bootstrap-select/bootstrap-select.js"></script>
     <script src="~/plugins/TagInput/jquery.amsify.suggestags.js"></script>
     @*<script src="~/plugins/ckeditor4/ckeditor.js"></script>*@
-    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.js"></script>
+
 
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
@@ -523,63 +524,15 @@
                  $("#LanguageId").val('@ViewBag.LangId');
             }
 
-            //ckEditor5
-            @*ClassicEditor.create(document.querySelector('.editor'),
-                {
-                    toolbar: {
-                        items: [
-                            'heading',
-                            '|',
-                            'bold',
-                            'italic',
-                            'link',
-                            'bulletedList',
-                            'numberedList',
-                            '|',
-                            'outdent',
-                            'indent',
-                            '|',
-                            'imageUpload',
-                            'blockQuote',
-                            'insertTable',
-                            'mediaEmbed',
-                            'undo',
-                            'redo'
-                        ]
-                    },
-                    language: lan,
-                     image: {
-                         toolbar: [
-                             'imageTextAlternative',
-                             'imageStyle:inline',
-                             'imageStyle:block',
-                             'imageStyle:side'
-                         ]
-                     },
-                     table: {
-                         contentToolbar: [
-                             'tableColumn',
-                             'tableRow',
-                             'mergeTableCells'
-                         ]
-                     },
-                     licenseKey: '',
-                 }).
-            then(editor => {
-                editor.setData('@Html.Raw(Model.Contents)');
-                editorBodyVar = editor;
-            }).catch(err => {
-                console.error(err.stack);
-            });*@
-
             //ckEditor4
             const config = {
-                filebrowserImageBrowseUrl: "/ImageContent/Index",
+                filebrowserImageBrowseUrl: "/ImageContent/file-upload",
                 filebrowserImageWindowWidth: 780,
                 filebrowserImageWindowHeight: 720,
                /* filebrowserBrowseUrl: "/linkbrowser",*/
                 //filebrowserWindowWidth: 350,
                 //filebrowserWindowHeight: 500,
+                language = lan
 
             };
             const editor = document.getElementById("editorCk");
