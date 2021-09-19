@@ -100,7 +100,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
               {
                   opt.Cookie.HttpOnly = true;
               });
-            services.AddRazorPages();
+            //services.AddRazorPages();
             services.AddTransient<IAuthorizationHandler, RoleHandler>();
             services.AddAuthorization(options =>
             {
@@ -164,7 +164,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
                 //    pattern: "ContentComments/{action}/{id?}",
                 //    defaults: new { controller = "Comments", t = "content"});
 
-                endpoints.MapRazorPages();
+                //endpoints.MapRazorPages();
 
                 endpoints.MapControllerRoute(
                     name: "default",

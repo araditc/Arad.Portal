@@ -1,23 +1,25 @@
 ﻿using Arad.Portal.UI.Shop.Dashboard.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
-    [Authorize(Policy = "Role")]
+    //[Authorize(Policy = "Role")]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IWebHostEnvironment _env;
+        public HomeController(IWebHostEnvironment env)
         {
-            _logger = logger;
+            _env = env;
         }
 
         [HttpGet]
@@ -36,5 +38,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+       
     }
 }

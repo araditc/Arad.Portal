@@ -50,6 +50,29 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             imageSize = _configuration["ContentImageSize:Size"];
         }
 
+        [HttpPost]
+        [Route("FileUpload")]
+        public IActionResult UploadImage(IFormFile upload)
+        {
+            if (upload.Length <= 0) return null;
+            // < 256 Kb
+            if (upload.Length >= 262144) return null;
+
+            var filename = Guid.NewGuid() + Path.GetExtension(upload.FileName).ToLower();
+            var directory = Path.Combine(_webHostEnvironment.WebRootPath, "ckEditorContentImages");
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+            var path = Path.Combine(_webHostEnvironment.WebRootPath, "ckEditorContentImages", filename);
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                upload.CopyTo(stream);
+            }
+            var url = $"{"/ckEditorContentImages/"}{filename}";
+            return Json(new { uploaded = true, url });
+        }
+
         public async Task<IActionResult> List()
         {
             PagedItems<ContentViewModel> result = new PagedItems<ContentViewModel>();
@@ -114,7 +137,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             result = new JsonResult(new {uploaded = 1, fileName = url, message = Language.GetString("AlertAndMessage_ImageSuccessfullyUploaded") });
             return Json(result);
         }
-
         public async Task<IActionResult> AddEdit(string id = "")
         {
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);

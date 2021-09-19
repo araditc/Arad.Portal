@@ -1,5 +1,5 @@
 
 CKEDITOR.editorConfig = function( config ) {
-	config.language = 'fa';
-	config.filebrowserImageUploadUrl = '/file-upload';
+	/*config.language = 'fa';*/
+	/*config.filebrowserImageUploadUrl = '/ImageContent/file-upload';*/
 };

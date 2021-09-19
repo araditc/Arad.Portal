@@ -1,10 +1,12 @@
 ﻿@model Arad.Portal.DataLayer.Models.Content.ContentDTO
+@using System.Web; 
 @using Arad.Portal.DataLayer.Models.Shared;
 @{
     //Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
     var dir = "";
+    var lan = "";
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
     {
         dir = "rtl";
@@ -12,6 +14,14 @@
     else
     {
         dir = "ltr";
+    }
+    if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        lan = "fa";
+    }
+    else
+    {
+        lan = "en";
     }
 }
 @section Styles{
@@ -162,7 +172,7 @@
 <h4>@Language.GetString("Menu_Content")</h4>
 <hr />
 
-<div class="modal fade" id="uploadModal" role="dialog" aria-hidden="true">
+@*<div class="modal fade" id="uploadModal" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content col-md-12">
             <div class="modal-header">
@@ -172,7 +182,7 @@
                     </button>
                 </div>
                 <div class="col-md-11" style="text-align: center">
-                    <h5 class="modal-title align-content-center" id="exampleModalLongTitle">@Language.GetString("CropImage")</h5>
+                    <h5 class="modal-title align-content-center" id="ModalLongTitle">@Language.GetString("CropImage")</h5>
                 </div>
             </div>
             <div class="modal-body">
@@ -196,7 +206,44 @@
             </div>
         </div>
     </div>
+</div>*@
+
+
+<div class="modal fade" id="uploadlogoModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content col-md-12">
+            <div class="modal-header">
+                <div class="col-md-1">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="col-md-11" style="text-align: center">
+                    <h5 class="modal-title align-content-center" id="logoModalTitle">@Language.GetString("CropImage")</h5>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="upload-modal-body">
+                    <div id="rowContainer" class="row justify-content-center align-items-center">
+                        <div id="container" style="position: relative;display: inline; height: 400px; width: 400px;max-width:100%;">
+                            <img onchange="getLogoURL(this)" class="img-fluid" hidden="hidden" id="imgModalBody" src="#" alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center align-items-center">
+                <div>
+                    <button class="btn btn-success" id="send_Logo" type="button"><i style="margin-left: 5px;font-size:13px" class="fas fa-share-square"></i>@Language.GetString("btn_Approve")</button>
+                    <button class="btn btn-primary" id="logoCrop_button"><i style="margin-left: 5px;font-size:13px" class="fas fa-cut"></i>@Language.GetString("btn_Crop")</button>
+                    <button class="btn btn-default" style="background-color: crimson;color: white;border: 1px solid crimson" onclick="rotatePic()"> <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i>@Language.GetString("btn_Rotate") 
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 <div class="row">
     <div class="col-md-12">
@@ -310,11 +357,11 @@
                             </div>
                             <div class="card-body">
                                 <div class="text-center form-group">
-                                    <img id="fileLogo" onclick="ViewImage('@Model.FileLogo')" style="cursor: pointer" class="profile-user-img img-fluid img-circle" src="@Model.FileLogo" alt="content logo">
+                                    <img id="fileLogoImage" onclick="ViewImage('@Model.FileLogo')" style="cursor: pointer" class="profile-user-img img-fluid img-circle" src="@Model.FileLogo" alt="content logo">
                                 </div>
                                 <hr>
                                 <div class="custom-file">
-                                    <input style="width: -webkit-fill-available;" accept="image/x-png,image/jpeg" type="file" class="btn btn-sm" name="image" id="image" onchange="getURL(this)">
+                                    <input style="width: -webkit-fill-available;" accept="image/x-png,image/jpeg" type="file" class="btn btn-sm" name="image" id="image" onchange="getLogoURL(this)">
                                     <label class="custom-file-label" for="image">@Language.GetString("ChangeLogo")</label>
                                 </div>
                             </div>
@@ -412,11 +459,22 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
+                                   
                                     <div class="col-md-12">
-                                        <textarea id="editorCk" name="editorCk" class="form-control" rows="10" cols="80">
-                                               @Model.Contents
-                                        </textarea>
+                                        <textarea id="editorCk" name="editorCk" class="form-control" rows="40">@Html.Raw(Model.Contents)</textarea>
+                                       
+                                        <script src="~/lib/ckeditor/ckeditor.js"></script>
+                                        <script>
+                                                var config = {
+                                                   /* filebrowserImageUploadUrl: '/Content/FileUpload',*/
+                                                    filebrowserImageUploadUrl : '/ImageContent/file-upload',
+                                                    language: '@lan'
+                                                }
+                                                CKEDITOR.replace("editorCk", config);
+                                          
+                                        </script>
                                     </div>
+                                 
                                     <span data-val-result="editorCk" class="text-danger"></span>
                                 </div>
                             </div>
@@ -437,11 +495,10 @@
 </div>
 @section Scripts{
     <script src="~/lib/cropperjs/cropper.js"></script>
-    @*<script src="~/plugins/ckeditor5/build/ckeditor.js"></script>*@
     <script src="~/js/plugins/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/js/bootstrap-select/bootstrap-select.js"></script>
     <script src="~/plugins/TagInput/jquery.amsify.suggestags.js"></script>
-    @*<script src="~/plugins/ckeditor4/ckeditor.js"></script>*@
+    @*ckeditor4*@
     <script src="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.js"></script>
 
 
@@ -461,7 +518,7 @@
     {
         <script src="~/plugins/iCheck/icheck.min.js"></script>
     }
-    <script>
+<script>
         var fileName;
         var fileContent;
         var cropper;
@@ -473,14 +530,7 @@
         var active = '@Language.GetString("Active")';
         var inActive = '@Language.GetString("InActive")';
         var editorBodyVar;
-        if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
-        {
-            lan = "fa";
-        }
-        else
-        {
-            lan = "en";
-        }
+
 
         $(document).ready(function () {
         debugger;
@@ -520,24 +570,11 @@
                 if ("@Model.PersianEndShowDate" != "") {
                     $("#dtpEndShowDate").val("@Model.PersianEndShowDate");
                 }
-            } else {
+            }
+            else
+            {
                  $("#LanguageId").val('@ViewBag.LangId');
             }
-
-            //ckEditor4
-            const config = {
-                filebrowserImageBrowseUrl: "/ImageContent/file-upload",
-                filebrowserImageWindowWidth: 780,
-                filebrowserImageWindowHeight: 720,
-               /* filebrowserBrowseUrl: "/linkbrowser",*/
-                //filebrowserWindowWidth: 350,
-                //filebrowserWindowHeight: 500,
-                language = lan
-
-            };
-            const editor = document.getElementById("editorCk");
-            CKEDITOR.replace(editor, config);
-
             $("#btnAddContent").click(function () {
                 debugger;
                 var flag = false;
@@ -701,7 +738,17 @@
                     radioClass: 'iradio_minimal-blue'
                 });
             }
-        });
+         });
+
+            $("#send_Logo").click(function () {
+                debugger;
+                $("#uploadlogoModal").modal("hide");
+                var url = $("#imgModalBody").attr("src");
+                debugger;
+                $("#fileLogoImage").attr('src', url);
+                fileContent = url;
+                fileName = currentFileName;
+            });
 
     });
 
@@ -711,7 +758,7 @@
             html: tag,
             width: 'auto',
             showConfirmButton: true,
-            confirmButtonText: 'بستن'
+            confirmButtonText: '@Language.GetString("Close")'
         });
     }
 
@@ -743,7 +790,8 @@
         obj.SeoTitle = $("#SeoTitle").val();
         obj.SeoDescription = $("#SeoDescription").val();
         obj.UrlFriend = $("#UrlFriend").val();
-        obj.Contents = $("#editorCk").val();
+        debugger;
+        obj.Contents = CKEDITOR.instances.editorCk.getData();
         var commaseperatedTags = $("#tagKeyWords").val();
         var arr = commaseperatedTags.split(",");
         $.each(arr, function (key, value) {
@@ -771,12 +819,20 @@
     }
 
 
-        $('#uploadModal').on('hidden.bs.modal',
+     $('#uploadModal').on('hidden.bs.modal',
         function () {
         debugger;
         cropper.destroy();
         document.getElementById("image").value = "";
         $("#cropped_result").remove();
+         });
+
+    $('#uploadlogoModal').on('hidden.bs.modal',
+        function () {
+            debugger;
+            cropper.destroy();
+            document.getElementById("fileLogo").value = "";
+            $("#logoCropped_result").remove();
         });
 
         function rotatePic() {
@@ -787,7 +843,12 @@
             debugger;
         $("#send_pic").attr("disabled", true);
         $("#uploadModal").modal("show");
-        }
+    }
+    function showModal() {
+        debugger;
+        $("#send_Logo").attr("disabled", true);
+        $("#uploadlogoModal").modal("show");
+    }
 
         function initCropper() {
         debugger;
@@ -822,7 +883,44 @@
         document.getElementById("cropped_result").appendChild(img);
         $("#send_pic").attr("disabled", false);
         });
+    }
+
+    function initLogoCropper() {
+        debugger;
+        var image = document.getElementById('imgModalBody');
+        if (cropper !== null && cropper !== undefined) {
+            cropper.destroy();
         }
+
+        cropper = new Cropper(image,
+            {
+                background: true,
+                aspectRatio: 1,
+                viewMode: 2,
+                responsive: true,
+                rotatable: true
+
+            });
+
+        document.getElementById('crop_button').addEventListener('click',
+            function () {
+
+                var imgUrl = cropper.getCroppedCanvas().toDataURL('image/jpeg');
+                var img = document.createElement("img");
+                img.setAttribute("id", "contentLogo");
+                img.setAttribute("class", "img-fluid");
+                var height = document.getElementById("container").getAttribute("width");
+                var croppedContainer = document.createElement("div");
+                croppedContainer.setAttribute("id", "logoCropped_result");
+                croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
+                document.getElementById("rowContainer").appendChild(croppedContainer);
+                img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
+                img.src = imgUrl;
+                document.getElementById("logoCropped_result").innerHTML = "";
+                document.getElementById("logoCropped_result").appendChild(img);
+                $("#send_Logo").attr("disabled", false);
+            });
+    }
 
         function getURL(input)
         {
@@ -891,7 +989,72 @@
         }
         }
 
+    function getLogoURL(input) {
+        debugger;
+            $("#logoCropped_result").remove();
+            if (input.files && input.files[0]) {
+                var file = input.files[0];
+                currentFileName = file.name;
+                currentFileSize = file.size;
 
-    </script>
+                if (currentFileSize <= 500 * 1024) {
+                    var reader = new FileReader();
+                    reader.readAsDataURL(input.files[0]);
+                    reader.onload = function (e) {
+                        var content = e.target.result;
+
+                        //if file format is incorrect, then the 'content' won't have any src.
+                        if (content !== "data:") {
+                            var reducedContent = content.slice(5);
+
+                            if (reducedContent.startsWith("image")) {
+                                $('#contentLogo').attr('src', content);
+                                setTimeout(showModal, 100);
+                                setTimeout(initLogoCropper, 500);
+                            } else {
+
+                                Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'error',
+                                    title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+
+                                document.getElementById("fileLogo").value = "";
+                                $("#logoCropped_result").remove();
+
+
+                            }
+                        } else {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+
+
+                            document.getElementById("fileLogo").value = "";
+                            $("#logoCropped_result").remove();
+                        }
+                    };
+                } else {
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: '@Language.GetString("AlertAndMessage_InvalidFileSize")',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+
+                    document.getElementById("fileLogo").value = "";
+                    $("#logoCropped_result").remove();
+
+                }
+            }
+        }
+</script>
 }
 

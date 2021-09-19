@@ -11,9 +11,11 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
+    //[Authorize(Policy = "Role")]
     public class ImageContentController : Controller
     {
         private readonly IWebHostEnvironment _env;
@@ -27,14 +29,19 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpPost]
-        [Route("file-upload")]
+        [Route("ImageContent/file-upload")]
         public IActionResult UploadImage(IFormFile upload)
         {
             if (upload.Length <= 0) return null;
-            // < 256 Kb
-            if (upload.Length >= 262144) return null;
+            // < 512 Kb
+            if (upload.Length >= 524288) return null;
 
             var filename = Guid.NewGuid() + Path.GetExtension(upload.FileName).ToLower();
+            var directory = Path.Combine(_env.WebRootPath, "ckEditorContentImages");
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
             var path = Path.Combine(_env.WebRootPath, "ckEditorContentImages", filename);
             using (var stream = new FileStream(path, FileMode.Create))
             {
