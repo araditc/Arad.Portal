@@ -22,6 +22,7 @@ using Arad.Portal.GeneralLibrary.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Entities.General.Comment;
+using Microsoft.Extensions.Configuration;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 {
@@ -32,11 +33,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         private readonly TransactionContext _transactionContext;
         private readonly PromotionContext _promotionContext;
         private readonly LanguageContext _languageContext;
+        private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
+        
         public ProductRepository(IHttpContextAccessor httpContextAccessor,
             ProductContext context, IMapper mapper,
             PromotionContext promotionContext,
             OrderContext orderContext,
+            IConfiguration configuration,
             LanguageContext languageContext,
             TransactionContext transactionContext)
             : base(httpContextAccessor)
@@ -47,6 +51,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             _orderContext = orderContext;
             _transactionContext = transactionContext;
             _languageContext = languageContext;
+            _configuration = configuration;
         }
 
         public async Task<RepositoryOperationResult> Add(ProductInputDTO dto)
@@ -469,7 +474,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             if (entity != null)
             {
                 result = _mapper.Map<ProductOutputDTO>(entity);
-                
+                var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
             }
             return result;
         }

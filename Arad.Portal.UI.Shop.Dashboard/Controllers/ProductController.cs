@@ -94,33 +94,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return View(result);
         }
 
-
-        //[HttpPost]
-        //public IActionResult  SaveProductImage(string file)
-        //{
-        //    JsonResult output;
-        //    string webRootPath = _webHostEnvironment.WebRootPath;
-        //    string contentRootPath = _webHostEnvironment.ContentRootPath;
-        //    try
-        //    {
-        //        var path = Path.Combine(webRootPath, )
-        //        if (!Directory.Exists("~/imgs/Products/temp"))
-        //        {
-        //            Directory.CreateDirectory("~/imgs/Products/temp");
-        //        };
-        //        var temporaryFileName = $"{DateTime.Now.Ticks}.jpg";
-        //        var path = $"~/imgs/Products/temp/{temporaryFileName}";
-        //        System.IO.File.Create(path);
-        //        System.IO.File.WriteAllText(path, file);
-        //        output =  Json(new { status = "Succeed", path = path });
-        //    }
-        //    catch (Exception)
-        //    {
-        //        output = Json(new { status = "Error", path = string.Empty });
-        //    }
-        //    return output;
-        //}
-
+        
         
         public async Task<IActionResult> AddEdit(string id = "")
         {
@@ -144,6 +118,31 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = await _productRepository.ProductFetch(id);
+                var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
+                if (string.IsNullOrWhiteSpace(staticFileStorageURL))
+                {
+                    staticFileStorageURL = _webHostEnvironment.WebRootPath;
+                }
+                foreach (var img in model.Images)
+                {
+                    if(string.IsNullOrWhiteSpace(img.Content))
+                    {
+
+                        using (System.Drawing.Image image = System.Drawing.Image.FromFile(Path.Combine(staticFileStorageURL, img.Url)))
+                        {
+                            using (MemoryStream m = new MemoryStream())
+                            {
+                                image.Save(m, image.RawFormat);
+                                byte[] imageBytes = m.ToArray();
+
+                                // Convert byte[] to Base64 String
+                                string base64String = Convert.ToBase64String(imageBytes);
+                                img.Content = $"data:image/png;base64, {base64String}";
+                            }
+                        }
+
+                    }
+                }
                 if (_productRepository.HasActiveProductPromotion(id))
                 {
                     ViewBag.ActivePromotionId = model.Promotion.PromotionId;
@@ -223,7 +222,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.SDate = DateHelper.ToEnglishDate(item.StartDate);
                 }
                 var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
-                var path = "Images\\Products";
+                var path = "Images/Products";
                 foreach (var pic in dto.Pictures)
                 {
                     var res = ImageFunctions.SaveImageModel(pic, path, staticFileStorageURL, _webHostEnvironment.WebRootPath);

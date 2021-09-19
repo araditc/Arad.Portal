@@ -172,7 +172,7 @@
 <h4>@Language.GetString("Menu_Content")</h4>
 <hr />
 
-@*<div class="modal fade" id="uploadModal" role="dialog" aria-hidden="true">
+<div class="modal fade" id="uploadModal" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content col-md-12">
             <div class="modal-header">
@@ -206,7 +206,7 @@
             </div>
         </div>
     </div>
-</div>*@
+</div>
 
 
 <div class="modal fade" id="uploadlogoModal" role="dialog" aria-hidden="true">
@@ -225,7 +225,7 @@
             <div class="modal-body">
                 <div class="modal-body" id="upload-modal-body">
                     <div id="rowContainer" class="row justify-content-center align-items-center">
-                        <div id="container" style="position: relative;display: inline; height: 400px; width: 400px;max-width:100%;">
+                        <div id="containerlg" style="position: relative;display: inline; height: 400px; width: 400px;max-width:100%;">
                             <img onchange="getLogoURL(this)" class="img-fluid" hidden="hidden" id="imgModalBody" src="#" alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
                         </div>
                     </div>
@@ -361,8 +361,8 @@
                                 </div>
                                 <hr>
                                 <div class="custom-file">
-                                    <input style="width: -webkit-fill-available;" accept="image/x-png,image/jpeg" type="file" class="btn btn-sm" name="image" id="image" onchange="getLogoURL(this)">
-                                    <label class="custom-file-label" for="image">@Language.GetString("ChangeLogo")</label>
+                                    <input style="width: -webkit-fill-available;" accept="image/x-png,image/jpeg" type="file" class="btn btn-sm" name="image2" id="image2" onchange="getLogoURL(this)">
+                                    <label class="custom-file-label" for="image2">@Language.GetString("ChangeLogo")</label>
                                 </div>
                             </div>
                             <!-- /.card-body -->
@@ -448,7 +448,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <label for="tagKeywords">@Language.GetString("TagKeywords")</label>
-                        <input type="text" class="form-control" id="tagKeyWords" name="tagKeyWords" />
+                        <input type="text" class="form-control" id="tagKeyWords" name="tagKeyWords" value="@(string.Join(',', @Model.TagKeywords))" />
                     </div>
                 </div>
                 <div class="row">
@@ -461,8 +461,9 @@
                                 <div class="row">
                                    
                                     <div class="col-md-12">
+                                        <span data-val-result="editorCk" class="text-danger"></span>
                                         <textarea id="editorCk" name="editorCk" class="form-control" rows="40">@Html.Raw(Model.Contents)</textarea>
-                                       
+
                                         <script src="~/lib/ckeditor/ckeditor.js"></script>
                                         <script>
                                                 var config = {
@@ -471,11 +472,11 @@
                                                     language: '@lan'
                                                 }
                                                 CKEDITOR.replace("editorCk", config);
-                                          
+
                                         </script>
                                     </div>
                                  
-                                    <span data-val-result="editorCk" class="text-danger"></span>
+                                  
                                 </div>
                             </div>
                         </div>
@@ -594,7 +595,7 @@
                     $("span[data-val-result='SubTitle']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                     flag = true;
                 }
-                if ($("#editorCk").val() == "") {
+                if (CKEDITOR.instances.editorCk.getData() == "") {
                     $("span[data-val-result='editorCk']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                     flag = true;
                 }
@@ -743,7 +744,7 @@
             $("#send_Logo").click(function () {
                 debugger;
                 $("#uploadlogoModal").modal("hide");
-                var url = $("#imgModalBody").attr("src");
+                var url = $("#contentLogo").attr("src");
                 debugger;
                 $("#fileLogoImage").attr('src', url);
                 fileContent = url;
@@ -753,6 +754,7 @@
     });
 
     function ViewImage(address) {
+        debugger;
         var tag = '<img src="' + address + '" width="500px" />';
         Swal.fire({
             html: tag,
@@ -799,7 +801,14 @@
         });
         obj.SourceTypeId = $("#SourceType").val();
         obj.ContentProviderName = $("#ContentProviderName").val();
-
+        if (fileContent != "") {
+            debugger;
+            obj.LogoContent = fileContent;
+        }
+        if (fileName != "") {
+            debugger;
+            obj.LogoName = fileName;
+        }
         //pictures
         $("#imageList tr").each(function () {
 
@@ -831,7 +840,7 @@
         function () {
             debugger;
             cropper.destroy();
-            document.getElementById("fileLogo").value = "";
+            document.getElementById("image2").value = "";
             $("#logoCropped_result").remove();
         });
 
@@ -873,10 +882,12 @@
         img.setAttribute("id", "galleryPic");
         img.setAttribute("class", "img-fluid");
         var height = document.getElementById("container").getAttribute("width");
+       /* var height = modal.getElementById("container").getAttribute("width");*/
+       /* var height = $("#uploadModal #container").attr("width");*/
         var croppedContainer = document.createElement("div");
         croppedContainer.setAttribute("id", "cropped_result");
         croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
-        document.getElementById("rowContainer").appendChild(croppedContainer);
+        $("#uploadModal #rowContainer").append(croppedContainer);
         img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
         img.src = imgUrl;
         document.getElementById("cropped_result").innerHTML = "";
@@ -902,18 +913,20 @@
 
             });
 
-        document.getElementById('crop_button').addEventListener('click',
+        document.getElementById('logoCrop_button').addEventListener('click',
             function () {
-
+                debugger;
                 var imgUrl = cropper.getCroppedCanvas().toDataURL('image/jpeg');
                 var img = document.createElement("img");
                 img.setAttribute("id", "contentLogo");
                 img.setAttribute("class", "img-fluid");
-                var height = document.getElementById("container").getAttribute("width");
+                var height = document.getElementById("containerlg").getAttribute("width");
+               /* var height = modal.getElementById("container").getAttribute("width");*/
+              /*  var height = $("#uploadlogoModal #container").attr("width");*/
                 var croppedContainer = document.createElement("div");
                 croppedContainer.setAttribute("id", "logoCropped_result");
                 croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
-                document.getElementById("rowContainer").appendChild(croppedContainer);
+                $("#uploadlogoModal #rowContainer").append(croppedContainer);
                 img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
                 img.src = imgUrl;
                 document.getElementById("logoCropped_result").innerHTML = "";
@@ -993,9 +1006,9 @@
         debugger;
             $("#logoCropped_result").remove();
             if (input.files && input.files[0]) {
-                var file = input.files[0];
-                currentFileName = file.name;
-                currentFileSize = file.size;
+                //var file = input.files[0];
+                //currentFileName = file.name;
+                //currentFileSize = file.size;
 
                 if (currentFileSize <= 500 * 1024) {
                     var reader = new FileReader();
@@ -1008,7 +1021,7 @@
                             var reducedContent = content.slice(5);
 
                             if (reducedContent.startsWith("image")) {
-                                $('#contentLogo').attr('src', content);
+                                $('#imgModalBody').attr('src', content);
                                 setTimeout(showModal, 100);
                                 setTimeout(initLogoCropper, 500);
                             } else {
@@ -1021,7 +1034,7 @@
                                     timer: 1500
                                 });
 
-                                document.getElementById("fileLogo").value = "";
+                                document.getElementById("image2").value = "";
                                 $("#logoCropped_result").remove();
 
 
@@ -1036,7 +1049,7 @@
                             });
 
 
-                            document.getElementById("fileLogo").value = "";
+                            document.getElementById("image2").value = "";
                             $("#logoCropped_result").remove();
                         }
                     };
@@ -1049,7 +1062,7 @@
                         timer: 1500
                     });
 
-                    document.getElementById("fileLogo").value = "";
+                    document.getElementById("image2").value = "";
                     $("#logoCropped_result").remove();
 
                 }

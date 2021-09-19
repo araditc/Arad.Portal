@@ -50,29 +50,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             imageSize = _configuration["ContentImageSize:Size"];
         }
 
-        [HttpPost]
-        [Route("FileUpload")]
-        public IActionResult UploadImage(IFormFile upload)
-        {
-            if (upload.Length <= 0) return null;
-            // < 256 Kb
-            if (upload.Length >= 262144) return null;
-
-            var filename = Guid.NewGuid() + Path.GetExtension(upload.FileName).ToLower();
-            var directory = Path.Combine(_webHostEnvironment.WebRootPath, "ckEditorContentImages");
-            if (!Directory.Exists(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
-            var path = Path.Combine(_webHostEnvironment.WebRootPath, "ckEditorContentImages", filename);
-            using (var stream = new FileStream(path, FileMode.Create))
-            {
-                upload.CopyTo(stream);
-            }
-            var url = $"{"/ckEditorContentImages/"}{filename}";
-            return Json(new { uploaded = true, url });
-        }
-
         public async Task<IActionResult> List()
         {
             PagedItems<ContentViewModel> result = new PagedItems<ContentViewModel>();
@@ -99,44 +76,45 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return View(result);
         }
 
-        [HttpPost]
-        public IActionResult UploadImage(IFormFile upload, string CKEditorFuncNum, string CKEditor, string langCode)
-        {
-            JsonResult result;
-            if (upload.Length <= 0) return null;
-            if (!upload.IsImage())
-            {
-                result = new JsonResult(new {uplaoded = 0, message = Language.GetString("AlertAndMessage_NotImageMessage") });
-                return result;
-            }
+        //[HttpPost]
+        //public IActionResult UploadImage(IFormFile upload, string CKEditorFuncNum, string CKEditor, string langCode)
+        //{
+        //    JsonResult result;
+        //    if (upload.Length <= 0) return null;
+        //    if (!upload.IsImage())
+        //    {
+        //        result = new JsonResult(new {uplaoded = 0, message = Language.GetString("AlertAndMessage_NotImageMessage") });
+        //        return result;
+        //    }
 
-            var fileName = Guid.NewGuid().ToString()+".jpg"/* + Path.GetExtension(upload.FileName).ToLower()*/;
+        //    var fileName = Guid.NewGuid().ToString()+".jpg"/* + Path.GetExtension(upload.FileName).ToLower()*/;
 
-            System.Drawing.Image image = System.Drawing.Image.FromStream(upload.OpenReadStream());
-            var arr = imageSize.Split(" * ");
-            int width = image.Width;
-            int height = image.Height;
-            if ((width > int.Parse(arr[0].Trim())) || (height > int.Parse(arr[1].Trim())) || upload.Length > int.Parse(arr[0].Trim()) * int.Parse(arr[1].Trim()))
-            {
-                result = new JsonResult(new { uploaded = 0, message = Language.GetString("AlertAndMessage_InvalidFileSize") });
-                return result;
-            }
+        //    System.Drawing.Image image = System.Drawing.Image.FromStream(upload.OpenReadStream());
+        //    var arr = imageSize.Split(" * ");
+        //    int width = image.Width;
+        //    int height = image.Height;
+        //    if ((width > int.Parse(arr[0].Trim())) || (height > int.Parse(arr[1].Trim())) || upload.Length > int.Parse(arr[0].Trim()) * int.Parse(arr[1].Trim()))
+        //    {
+        //        result = new JsonResult(new { uploaded = 0, message = Language.GetString("AlertAndMessage_InvalidFileSize") });
+        //        return result;
+        //    }
 
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "/Images/Contents/CkEditor");
-            if(!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            path = Path.Combine(path, fileName);
-            using (var stream = new FileStream(path, FileMode.Create))
-            {
-                upload.CopyTo(stream);
-            }
+        //    var path = Path.Combine(Directory.GetCurrentDirectory(), "/Images/Contents/CkEditor");
+        //    if(!Directory.Exists(path))
+        //    {
+        //        Directory.CreateDirectory(path);
+        //    }
+        //    path = Path.Combine(path, fileName);
+        //    using (var stream = new FileStream(path, FileMode.Create))
+        //    {
+        //        upload.CopyTo(stream);
+        //    }
 
-            var url = $"{"/Images/Contents/CkEditor/"}{fileName}";
-            result = new JsonResult(new {uploaded = 1, fileName = url, message = Language.GetString("AlertAndMessage_ImageSuccessfullyUploaded") });
-            return Json(result);
-        }
+        //    var url = $"{"/Images/Contents/CkEditor/"}{fileName}";
+        //    result = new JsonResult(new {uploaded = 1, fileName = url, message = Language.GetString("AlertAndMessage_ImageSuccessfullyUploaded") });
+        //    return Json(result);
+        //}
+
         public async Task<IActionResult> AddEdit(string id = "")
         {
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -146,6 +124,31 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = await _contentRepository.ContentFetch(id);
+                var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
+                if (string.IsNullOrWhiteSpace(staticFileStorageURL))
+                {
+                    staticFileStorageURL = _webHostEnvironment.WebRootPath;
+                }
+                foreach (var img in model.Images)
+                {
+                    if (string.IsNullOrWhiteSpace(img.Content))
+                    {
+
+                        using (System.Drawing.Image image = System.Drawing.Image.FromFile(Path.Combine(staticFileStorageURL, img.Url)))
+                        {
+                            using (MemoryStream m = new MemoryStream())
+                            {
+                                image.Save(m, image.RawFormat);
+                                byte[] imageBytes = m.ToArray();
+
+                                // Convert byte[] to Base64 String
+                                string base64String = Convert.ToBase64String(imageBytes);
+                                img.Content = $"data:image/png;base64, {base64String}";
+                            }
+                        }
+
+                    }
+                }
             }
 
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
@@ -198,7 +201,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                 
                 var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
-                var path = "Images\\Contents";
+                var path = "Images/Contents";
                 foreach (var pic in dto.Images)
                 {
                     var res = ImageFunctions.SaveImageModel(pic, path, staticFileStorageURL, _webHostEnvironment.WebRootPath);
@@ -209,6 +212,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         pic.Content = "";
                     }
                 }
+                dto.FileLogo = dto.LogoContent;
                 RepositoryOperationResult saveResult = await _contentRepository.Add(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });

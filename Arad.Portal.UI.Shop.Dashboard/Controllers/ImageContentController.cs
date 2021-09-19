@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
-    //[Authorize(Policy = "Role")]
+    [Authorize(Policy = "Role")]
     public class ImageContentController : Controller
     {
         private readonly IWebHostEnvironment _env;

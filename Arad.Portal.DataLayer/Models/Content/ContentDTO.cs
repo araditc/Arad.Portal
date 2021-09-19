@@ -42,6 +42,10 @@ namespace Arad.Portal.DataLayer.Models.Content
 
         public string FileLogo { get; set; }
 
+        public string LogoContent { get; set; }
+
+        public string LogoName { get; set; }
+
         public List<Shared.Image> Images { get; set; }
 
         public DateTime? StartShowDate { get; set; }
