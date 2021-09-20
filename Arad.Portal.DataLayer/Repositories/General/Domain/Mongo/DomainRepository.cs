@@ -1,10 +1,12 @@
 ﻿using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Entities;
+using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Models.Domain;
 using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Repositories.General.User.Mongo;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -19,15 +21,16 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
     public class DomainRepository : BaseRepository, IDomainRepository
     {
         private readonly DomainContext _context;
-        private readonly UserContext _userContext;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
         public DomainRepository(DomainContext context,
                                 UserContext user,
                                 IHttpContextAccessor httpContextAccessor,
+                                UserManager<ApplicationUser> userManager,
                                 IMapper mapper): base(httpContextAccessor)
         {
             _context = context;
-            _userContext = user;
+            _userManager = userManager;
             _mapper = mapper;
         }
         public async Task<RepositoryOperationResult> AddDomain(DomainDTO dto)
@@ -46,11 +49,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                     equallentEntity.DomainId = Guid.NewGuid().ToString();
                     if (!string.IsNullOrWhiteSpace(dto.OwnerUserId))
                     {
-                        var ownerUser = _userContext.Collection.Find(_ => _.Id.ToString() == dto.OwnerUserId).FirstOrDefault();
+                        var ownerUser = await _userManager.FindByIdAsync(dto.OwnerUserId);
                         if (ownerUser != null)
                             equallentEntity.Owner = ownerUser;
                     }
-
                     if (dto.DomainPrice != null)
                     {
                         dto.DomainPrice.PriceId = Guid.NewGuid().ToString();
