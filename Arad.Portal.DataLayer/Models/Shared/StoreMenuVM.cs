@@ -1,43 +1,28 @@
 ﻿using Arad.Portal.DataLayer.Entities.General.Menu;
-using Arad.Portal.DataLayer.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arad.Portal.DataLayer.Models.Menu
+namespace Arad.Portal.DataLayer.Models.Shared
 {
-    public class MenuDTO
+    public class StoreMenuVM
     {
-        public MenuDTO()
+        public StoreMenuVM()
         {
-            MenuTitles = new();
-            ParentTitles = new();
+            Childrens = new();
         }
         public string MenuId { get; set; }
-
         /// <summary>
         /// LanguageId and Title will be filled here
         /// </summary>
-        public List<MultiLingualProperty> MenuTitles { get; set; }
-
+        public MultiLingualProperty MenuTitle { get; set; }
         public MenuType MenuType { get; set; }
-
         public int Order { get; set; }
-
         public string ParentId { get; set; }
-
-        public List<MultiLingualProperty> ParentTitles { get; set; }
-
         public string Icon { get; set; }
-
         public string Url { get; set; }
-
-        public string CreatorUserName { get; set; }
-
-        public string CreatorUserId { get; set; }
-
-        //public string LanguageId { get; set; }
+        public List<StoreMenuVM> Childrens { get; set; }
     }
 }

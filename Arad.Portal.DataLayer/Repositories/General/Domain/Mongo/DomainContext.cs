@@ -14,7 +14,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
         {
             _configuration = configuration;
              client = new MongoClient(_configuration["Database:ConnectionString"]);
-           db = client.GetDatabase(_configuration["Database:DbName"]);
+            db = client.GetDatabase(_configuration["Database:DbName"]);
             Collection = db.GetCollection<Entities.General.Domain.Domain>("Domain");
         }
     }

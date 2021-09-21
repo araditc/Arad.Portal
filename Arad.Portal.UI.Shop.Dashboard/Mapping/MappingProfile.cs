@@ -32,11 +32,12 @@ using Arad.Portal.DataLayer.Models.Role;
 using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Models.ShoppingCart;
 using Arad.Portal.DataLayer.Models.User;
+using Arad.Portal.DataLayer.Entities.General.Menu;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Arad.Portal.DataLayer.Models.Menu;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Mapping
 {
@@ -63,6 +64,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Mapping
             CreateMap<ContentCategory, ContentCategoryDTO>().ReverseMap();
             CreateMap<Content, ContentDTO>().ReverseMap();
             CreateMap<Comment, CommentDTO>().ReverseMap();
+            CreateMap<Menu, MenuDTO>().ReverseMap();
         }
         
     }

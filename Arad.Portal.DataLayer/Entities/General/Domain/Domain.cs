@@ -23,6 +23,8 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
         public string DomainName { get; set; }
        
         public ApplicationUser Owner { get; set; }
+      
+        public string DefaultLanguageId { get; set; }
 
         public List<Price> Prices { get; set; }
     }
