@@ -19,6 +19,8 @@ using System.Collections.Specialized;
 using System.Web;
 using Arad.Portal.DataLayer.Entities.General.Menu;
 using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
+using Arad.Portal.DataLayer.Repositories.General.Content.Mongo;
+
 
 namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
 {
@@ -26,12 +28,14 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
     {
         private readonly MenuContext _context;
         private readonly ProductContext _productContext;
+        private readonly ContentContext _contentContext;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
         private readonly DomainContext _domainContext;
         public MenuRepository(MenuContext context,
                                 UserManager<ApplicationUser> userManager,
                                 DomainContext domainContext,
+                                ContentContext contentContext,
                                 IHttpContextAccessor httpContextAccessor,
                                 ProductContext productContext,
                                 IMapper mapper) : base(httpContextAccessor)
@@ -41,6 +45,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             _mapper = mapper;
             _domainContext = domainContext;
             _productContext = productContext;
+            _contentContext = contentContext;
         }
         public async Task<RepositoryOperationResult> AddMenu(MenuDTO dto)
         {
@@ -54,6 +59,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                     .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
                 equallentModel.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+                equallentModel.IsActive = true;
                 await _context.Collection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;
                 result.Message = ConstMessages.SuccessfullyDone;
@@ -97,15 +103,15 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                     .Project(_ =>
                         new MenuDTO()
                         {
-                            MenuId = _.MenuId,
-                            Icon = _.Icon,
-                            MenuTitles = _.MenuTitles,
-                            MenuType = _.MenuType,
-                            Order = _.Order,
-                            //????
-                            //ParentTitles = _context.Collection.Find(b => b.MenuId == _.MenuId).First().MenuTitles,
-                            ParentId = _.ParentId,
-                            Url = _.Url
+                            //MenuId = _.MenuId,
+                            //Icon = _.Icon,
+                            //MenuTitles = _.MenuTitles.First(a => a.LanguageId == domainEntity.DefaultLanguageId),
+                            //MenuType = _.MenuType,
+                            //Order = _.Order,
+                            
+                            //ParentTitles = ,
+                            //ParentId = _.ParentId,
+                            //Url = _.Url
                         }).Sort(Builders<Entities.General.Menu.Menu>.Sort.Ascending(a => a.Order)).ToList();
                 result.CurrentPage = page;
                 result.Items = lst;
@@ -145,15 +151,56 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                     MenuType = _.MenuType,
                     Order = _.Order,
                     Url = _.Url,
+                    SubId = _.SubId,
                     Childrens = GetChildren(_.MenuId,finalLangId, domainEntity)
                 }).ToList();
-            
+            //those menues which have isFull = true will be shown in UI
+            #region check isFull
+            var productGroupsMenu = result.Where(_ => _.MenuType == MenuType.ProductGroup);
+            var prodctGroupMenuLeaves = productGroupsMenu.Where(_ => _.Childrens.Count() == 0);
+            foreach (var leaf in prodctGroupMenuLeaves)
+            {
+                var tmp = new StoreMenuVM();
+                var productsInGroupCounts = _productContext.ProductCollection.Find(_ => _.GroupIds.Contains(leaf.SubId)).CountDocuments();
+                if(productsInGroupCounts == 0)
+                {
+                    leaf.IsFull = false;
+                    tmp = leaf;
+                    while (tmp.ParentId != null)
+                    {
+                        tmp.IsFull = false;
+                        tmp = result.FirstOrDefault(_ => _.MenuId == tmp.ParentId);
+                    }
+                    tmp.IsFull = false;
+                }
+            }
+            var contentCategoryMenu = result.Where(_ => _.MenuType == MenuType.CategoryContent);
+            var contentCategoryLeaves = contentCategoryMenu.Where(_ => _.Childrens.Count() == 0);
+            foreach (var leaf in contentCategoryLeaves)
+            {
+                var tmp = new StoreMenuVM();
+                var contentsInCategoryCounts = _contentContext.Collection.Find(_ => _.ContentCategoryId == leaf.SubId).CountDocuments();
+                if(contentsInCategoryCounts == 0)
+                {
+                    leaf.IsFull = false;
+                    tmp = leaf;
+                    while(tmp.ParentId != null)
+                    {
+                        tmp.IsFull = false;
+                        tmp = result.FirstOrDefault(_ => _.MenuId == tmp.ParentId);
+                    }
+                    tmp.IsFull = false;
+                }
+            }
+            #endregion
+
             return result;
         }
 
         public List<StoreMenuVM> GetChildren(string menuId, string finalLangId, Entities.General.Domain.Domain domainEntity)
         {
             var result = new List<StoreMenuVM>();
+            var menuEntity = _context.Collection.Find(_ => _.MenuId == menuId).First();
             if (_context.Collection.Find(_ => _.ParentId == menuId).CountDocuments() > 0)
             {
                 result = _context.Collection.Find(_=>_.AssociatedDomainId == domainEntity.DomainId && _.ParentId == menuId)
@@ -258,6 +305,83 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 result.Message = ConstMessages.ExceptionOccured;
             }
 
+            return result;
+        }
+
+        public List<SelectListModel> GetAllMenuType()
+        {
+            var result = new List<SelectListModel>();
+            foreach (int i in Enum.GetValues(typeof(MenuType)))
+            {
+                string name = Enum.GetName(typeof(MenuType), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("Choose"), Value = "-1" });
+            return result;
+        }
+
+        public async Task<RepositoryOperationResult> EditMenu(MenuDTO dto)
+        {
+            var result = new RepositoryOperationResult();
+            var entity = _context.Collection
+                .Find(_ => _.MenuId == dto.MenuId).FirstOrDefault();
+            var userId = this.GetUserId();
+            var userName = this.GetUserName();
+            if (entity != null)
+            {
+                entity.ParentId = dto.ParentId;
+                #region Add Modification
+                var currentModifications = entity.Modifications;
+                var mod = GetCurrentModification($"Update menu by UserId={userId} and userName={userName} at Date={DateTime.Now.ToPersianDdate()}");
+                currentModifications.Add(mod);
+                #endregion
+
+                entity.Modifications = currentModifications;
+                entity.MenuTitles = dto.MenuTitles;
+                entity.Url = dto.Url;
+                entity.ParentId = dto.ParentId;
+                entity.MenuType = dto.MenuType;
+                entity.ParentId = dto.ParentId;
+                entity.SubId = dto.SubId;
+                entity.Order = dto.Order;
+                entity.Icon = dto.Icon;
+
+
+                var updateResult = await _context.Collection
+               .ReplaceOneAsync(_ => _.MenuId == dto.MenuId, entity);
+                if (updateResult.IsAcknowledged)
+                {
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                }
+                else
+                {
+                    result.Succeeded = false;
+                    result.Message = ConstMessages.ErrorInSaving;
+                }
+            }
+            else
+            {
+                result.Succeeded = false;
+                result.Message = ConstMessages.ObjectNotFound;
+            }
+            return result;
+        }
+
+        public List<SelectListModel> AllActiveMenues(string domainId, string langId)
+        {
+            var result = new List<SelectListModel>();
+            result = _context.Collection.Find(_ => _.AssociatedDomainId == domainId)
+                .Project(_=> new SelectListModel()
+                {
+                    Value = _.MenuId,
+                    Text = _.MenuTitles.First( a => a.LanguageId == langId).Name
+                }).ToList();
             return result;
         }
     }

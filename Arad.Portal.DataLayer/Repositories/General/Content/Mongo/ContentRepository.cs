@@ -16,7 +16,7 @@ using System.Web;
 using MongoDB.Driver.Linq;
 using Arad.Portal.GeneralLibrary.Utilities;
 using System.Linq;
-
+using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
 {
@@ -24,9 +24,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
     {
         private readonly IMapper _mapper;
         private readonly ContentContext _contentContext;
+        private readonly DomainContext _domainContext;
         private readonly ContentCategoryContext _categoryContext;
         private readonly LanguageContext _languageContext;
-        public ContentRepository(IHttpContextAccessor httpContextAccessor,
+        public ContentRepository(IHttpContextAccessor httpContextAccessor,DomainContext domainContext,
            IMapper mapper, ContentCategoryContext categoryContext, ContentContext contentContext, LanguageContext langContext)
             : base(httpContextAccessor)
         {
@@ -34,6 +35,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             _categoryContext = categoryContext;
             _contentContext = contentContext;
             _languageContext = langContext;
+            _domainContext = domainContext;
         }
 
         public async Task<RepositoryOperationResult> Add(ContentDTO dto)
@@ -136,6 +138,33 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                 result.Add(obj);
             }
             result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("Choose"), Value = "-1" });
+            return result;
+        }
+
+        public List<SelectListModel> GetContentsList(string domainId, string currentUserId, string categoryId)
+        {
+            var result = new List<SelectListModel>();
+            var domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).First();
+            if (currentUserId == Guid.Empty.ToString())//systemAccount
+            {
+                result = _contentContext.Collection.Find(_ => _.ContentCategoryId == categoryId && _.IsActive &&_.LanguageId == domainEntity.DefaultLanguageId)
+                  .Project(_ => new SelectListModel()
+                  {
+                      Text = _.Title,
+                      Value = _.ContentId
+                  }).ToList();
+            }
+            else
+            {
+                result = _contentContext.Collection
+                    .Find(_ => _.ContentCategoryId == categoryId && _.AssociatedDomainId == domainId 
+                                 && _.IsActive && _.LanguageId == domainEntity.DefaultLanguageId)
+                  .Project(_ => new SelectListModel()
+                  {
+                      Text = _.Title,
+                      Value = _.ContentId
+                  }).ToList();
+            }
             return result;
         }
 

@@ -58,10 +58,10 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         bool HasActiveProductPromotion(string productId);
 
         List<SelectListModel> GetAllActiveProductList(string langId, string currentUserId, string productGroupId, string vendorId);
-
+        List<SelectListModel> GetAllProductList(string currentUserId,string productGroupId, string langId);
         List<SelectListModel> GetAlActiveProductGroup(string langId);
 
-        List<SelectListModel> GetGroupsOfThisVendor(string vendorId, string langId);
+        List<SelectListModel> GetGroupsOfThisVendor(string vendorId, string domainId);
         List<SelectListModel> GetProductsOfThesVendor(string langId, string currentUserId);
     }
 }

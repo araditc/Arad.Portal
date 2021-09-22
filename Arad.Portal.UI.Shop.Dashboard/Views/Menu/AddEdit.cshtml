@@ -1,0 +1,435 @@
+﻿@model Arad.Portal.DataLayer.Models.Menu.MenuDTO
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    var alert = Language.GetString("AlertAndMessage_GotIt");
+    var error = Language.GetString("AlertAndMessage_Error");
+}
+@section Styles{
+    <link href="~/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css" rel="stylesheet" />
+    <style>
+        .text-danger {
+            font-size: 12px;
+        }
+
+        .btn-circle {
+            width: 30px;
+            height: 30px;
+            padding: 6px 0px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.42857;
+        }
+
+        .card-header {
+            background-color: #e0dcdf;
+        }
+    </style>
+}
+
+<h4>  @Language.GetString("Menu_StoreMenues") </h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <div class="card" id="addStoreMenuCard">
+            <form>
+                <div class="card-header">
+                    <h3 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.MenuId) ? Language.GetString("EditMenu_Title") : Language.GetString("AddMenu_Title"))</h3>
+                </div>
+
+                <div class="card-body" id="addEditMenuCard">
+                    <input type="hidden" value="@Model.MenuId" asp-for="MenuId" />
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label asp-for="@Model.ParentId">@Language.GetString("ParentMenu")</label>
+                            <select class="form-control" asp-for="@Model.ParentId" asp-items="@(new SelectList(ViewBag.Menues,"Value","Text"))">
+                            </select>
+                            <span data-val-result="ParentId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="@Model.MenuType">@Language.GetString("MenuType")</label>
+                            <select class="form-control" asp-for="@Model.MenuType" asp-items="@(new SelectList(ViewBag.MenuTypes,"Value","Text"))">
+                            </select>
+                            <span data-val-result="MenuType" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3 invisible" id="groupSection">
+                            <label>@Language.GetString("tbl_GroupName")</label>
+                            <select class="form-control" id="categoryId">
+                            </select>
+                            <span data-val-result="categoryId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3 invisible" id="productOrContentSection">
+                            <label></label>
+                            <select class="form-control" id="ContentOrProductId">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <input type="hidden" value="@(string.IsNullOrWhiteSpace(Model.Icon) ? "fas fa-bomb" : Model.Icon)" asp-for="Icon" id="iconPick" />
+
+                            <label>@Language.GetString("Menu_Icon")</label>
+                            <button id="iconPicktarget" class="form-control btn btn-default"></button>
+                        </div>
+                        <div class="form-group col-md-3 invisible" id="urlSection">
+                            <label>@Language.GetString("Url")</label>
+                            <input type="text" class="form-control" asp-for="@Model.Url" />
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>@Language.GetString("Order")</label>
+                            <input type="number" class="form-control" asp-for="@Model.Order"/>
+                        </div>
+                    </div>
+
+
+                    <div class="row" style="background-color: #f0f0f5;">
+                        <div class="form-group col-md-3">
+                            <label for="languageId">@Language.GetString("LanguageName")</label><br />
+                            <select class="form-control" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                            </select>
+                            <span data-val-result="languageId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="groupName">@Language.GetString("tbl_MenuTitle")</label><br />
+                            <input type="text" class="form-control" id="menuTitle" placeholder=" ">
+                            <span data-val-result="menuTitle" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3" style="text-align:center;margin:auto;">
+                            <span data-val-result="MultiLingualProperties" class="text-danger"></span>
+                            <div style="margin:auto;display:inline-block;">
+                                <button type="button" class="btn btn-info btn-circle" onclick="addToTable();">
+                                    <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row" style="margin-top:1%;">
+                        <div class="card-body table-bordered  table-responsive p-0">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr style="text-align:center;">
+                                        <th>@Language.GetString("tbl_MenuTitle")</th>
+                                        <th>@Language.GetString("LanguageName")</th>
+                                        <th style="display:none"></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="multiLingualList">
+                                    @foreach (var item in Model.MenuTitles)
+                                    {
+                                        <tr style="text-align:center;">
+                                            <td>@item.Name</td>
+                                            <td>@item.LanguageName</td>
+                                            <td style="display:none;">@item.LanguageId</td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromTable(this);">
+                                                    <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <input type="button" id="btnAddMenu" value="@Language.GetString("btn_Save")" class="btn btn-block btn-success" />
+                        <a asp-action="List" class="btn btn-block btn-default">@Language.GetString("btn_Back")</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/lib/bootstrap-iconpicker/js/bootstrap-iconpicker.bundle.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            debugger;
+            if ("@Model.MenuId" != "" && "@Model.ParentId" != "") {
+                $("#ParentId").val("@Model.ParentId");
+            }
+
+             $('#iconPicktarget').iconpicker({
+                align: 'center', // Only in div tag
+                arrowClass: 'btn-info',
+                arrowPrevIconClass: 'fas fa-angle-right',
+                arrowNextIconClass: 'fas fa-angle-left',
+                cols: 10,
+                footer: true,
+                header: true,
+                icon: '@(!string.IsNullOrWhiteSpace(Model.Icon) ? Model.Icon: "fas fa-bomb")',
+                iconset: 'fontawesome5',
+                
+                placement: 'bottom', // Only in button tag
+                rows: 5,
+                search: true,
+                searchText: '@(Language.GetString("Search"))',
+                selectedClass: 'btn-warning',
+                unselectedClass: ''
+            });
+
+
+            $('#iconPicktarget').on('change',
+                function(e) {
+                    $('#iconPick').val(e.icon);
+                });
+
+
+            $("#MenuType").change(function () {
+                debugger;
+                var options = "";
+                var type = $("#MenuType").val();
+                if (type != "-1") {
+                    switch (type) {
+                        case "0":
+                        case "1":
+                            //productGroup and product
+                            var list = @Json.Serialize(ViewBag.ProductGroupList) ;
+                            (list).forEach(function (item) {
+                                var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                options += op;
+                            });
+                            $("#categoryId").html(options);
+                            $("#groupSection").removeClass("invisible");
+                            $("#productOrContentSection").addClass("invisible");
+                            break;
+                        case "2":
+                        case "3":
+                            //content and contentCtaegory
+                            var list = @Json.Serialize(ViewBag.ContentCategoryList);
+                            (list).forEach(function (item) {
+                                var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                options += op;
+                            });
+                            $("#categoryId").html(options);
+                            $("#groupSection").removeClass("invisible");
+                            $("#productOrContentSection").addClass("invisible");
+                        case "4":
+                        case "5":
+                            //link and module
+                            $("#groupSection").addClass("invisible");
+                            $("#productOrContentSection").addClass("invisible");
+                            break;
+                    }
+                }
+            });
+            $("#categoryId").change(function () {
+                if ($("#categoryId").val() != "-1")
+                {
+                    if ($("#MenuType").val() == "1")
+                    {
+                        fillProductList($("#categoryId").val());
+                    }
+                    else if ($("#MenuType").val() == "3")
+                    {
+                        fillContentList($("#categoryId").val());
+                    }
+                }
+            });
+            $("#btnAddMenu").click(function () {
+            debugger;
+                var flag = false;
+                if ($("#multiLingualList tr").length == 0) {
+                    $("span[data-val-result='MultiLingualProperties']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
+                    flag = true;
+                }
+                if (!flag) {
+                    var dto = FillDataToSend();
+                    $.ajax({
+                        url: "@Model.MenuId" != "" ? "/Menu/Edit" : "/Menu/Add",
+                            /*data: dataModel,*/
+                            contentType: 'application/json',
+                            data: JSON.stringify(dto),
+                        type: 'Post',
+                        beforeSend: function () {
+                            debugger;
+                            AddLoading($("#addEditProductGroupCard"));
+                        },
+                        success: function (result) {
+                            debugger;
+                            if (result.status === "Success") {
+                                Swal.fire({
+                                    icon: 'success',
+                                    text: result.message,
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                }).then(() => {
+                                    window.location.href = '@Url.Action("List")';
+                                });
+                            }else
+                            if (result.status === "ModelError") {
+                                var spanErrorList = $('span[data-val-result]');
+                                if (spanErrorList.length > 1) {
+                                    spanErrorList.each(function() {
+                                        $(this).html("");
+                                        $(this).parent().removeClass("has-error");
+                                    });
+                                } else {
+                                    spanErrorList.html("");
+                                    spanErrorList.parent().removeClass("has-error");
+                                }
+                                if (result.modelStateErrors !== null) {
+                                        $('[data-val-result=' + value.key + ']').html(value.errorMessage);
+                                        $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                    }
+                                }
+                            },
+                        @*error: function (xhr, ajaxOptions, thrownError) {
+                            alert("@error");
+                            alert(xhr.status);
+                            alert(thrownError);
+                        },*@
+                        complete: function () {
+                            removeLoading($("#addEditProductGroupCard"));
+                        }
+                        });
+                }
+            });
+        });
+
+        function fillContentList(categoryId) {
+            $.ajax({
+                url: "/Menu/GetContentList/?categoryId=" + categoryId,
+                type: 'Get',
+                dataType : 'json',
+                success: function (result) {
+                    debugger;
+                    var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
+                    if (result.status === "success") {
+                        debugger;
+                        if (result.data.length != 0) {
+                            (result.data).forEach(function (item) {
+                                var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                options += op;
+                            });
+
+                            $("#ContentOrProductId").html(options);
+                            $("#ParentId").val('@Model.SubId');
+                            $("#productOrContentSection").removeClass("invisible");
+                        }
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert("@error");
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+                });
+        }
+
+        function fillProductList(groupId) {
+             $.ajax({
+                 url: "/Menu/GetProductList/?groupId=" + groupId,
+                    type: 'Get',
+                    dataType : 'json',
+                    success: function (result) {
+                        debugger;
+                        var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
+                        if (result.status === "success") {
+                            debugger;
+                            if (result.data.length != 0) {
+                                (result.data).forEach(function (item) {
+                                    var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                    options += op;
+                                });
+
+                                $("#ContentOrProductId").html(options);
+                                $("#ParentId").val('@Model.SubId');
+                                $("#productOrContentSection").removeClass("invisible");
+                            }
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert("@error");
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+                    });
+        }
+
+
+        function FillDataToSend() {
+            debugger;
+
+           obj.MultiLingualProperties = [];
+            obj.ProductGroupId = $("#ProductGroupId").val();
+            if ($("#ParentId").val() != "-1") {
+                obj.ParentId = $("#ParentId").val();
+            }
+
+            if ($("#ModificationReason").length > 0) {
+                obj.ModificationReason = $("#ModificationReason").val();
+            }
+            $("#multiLingualList tr").each(function () {
+                debugger;
+                var innerModel = {};
+                innerModel.Name = $(this).find("td:eq(0)").text();
+                innerModel.SeoTitle = $(this).find("td:eq(6)").text();
+                innerModel.SeoDescription = $(this).find("td:eq(7)").text();
+                innerModel.Description = $(this).find("td:eq(8)").text();
+                innerModel.LanguageId = $(this).find("td:eq(2)").text();
+                innerModel.CurrencyId = $(this).find("td:eq(3)").text();
+                innerModel.UrlFriend = $(this).find("td:eq(5)").text();
+                obj.MultiLingualProperties.push(innerModel);
+        });
+            return obj;
+        }
+
+        function deleteFromTable(sender) {
+            debugger;
+            var tr = $(sender).parent().parent();
+            $(tr).remove();
+        }
+        function addToTable() {
+            var flag = false;
+            debugger;
+
+            if ($("#groupName").val() == "") {
+                $("span[data-val-result='groupName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                flag = true;
+            }
+            if ($("#languageId").val() == "-1") {
+                 $("span[data-val-result='languageId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                flag = true;
+            }
+            if ($("#currencyId").val() == "-1") {
+                 $("span[data-val-result='currencyId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                flag = true;
+            }
+            if (!flag) {
+                var tr = "<tr style='text-align:center;'><td>" + $("#groupName").val() +
+                    "</td><td>" + $('#languageId option:selected').text() +
+                    "</td><td style='display:none;'>" + $("#languageId").val() +
+                    "</td><td style='display:none;'>" + $("#currencyId").val() +
+                    "</td><td>" + $("#currencyId option:selected").text() +
+                    "</td><td>" + $("#urlFriend").val() +
+                    "</td><td>" + $("#seoTitle").val() +
+                    "</td><td>" + $("#seoDescription").val() +
+                    "</td><td>" + $("#description").val() +
+                    "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' onclick='deleteFromTable(this);'>" +
+                    "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
+
+                $("#multiLingualList").append(tr);
+                $("#groupName").val("");
+                $("#languageId").val("-1");
+                $("#currencyId").val("-1");
+                $("#urlFriend").val("");
+                $("#seoTitle").val("");
+                $("#seoDescription").val("");
+                $("#description").val("");
+            }
+        }
+    </script>
+}
+
+
+
+

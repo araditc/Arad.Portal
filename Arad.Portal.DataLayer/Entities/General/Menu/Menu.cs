@@ -20,7 +20,7 @@ namespace Arad.Portal.DataLayer.Entities.General.Menu
         public string MenuId { get; set; }
 
         /// <summary>
-        /// LanguageId and Title will be filled here
+        /// LanguageId and Name will be filled here
         /// </summary>
         public List<MultiLingualProperty> MenuTitles { get; set; }
 
@@ -30,18 +30,26 @@ namespace Arad.Portal.DataLayer.Entities.General.Menu
 
         public string ParentId { get; set; }
 
+        public string ParentName { get; set; }
+
         public string Icon { get; set; }
 
         public string Url { get; set; }
+
+        /// <summary>
+        /// based on menutype fill if menutype is productGroup then subId is productgroupId if menutype is product then subId is productId
+        /// if menuType is contentCategory then subtype is content categoryId and if its content then subtype is contentId
+        /// </summary>
+        public string SubId { get; set; }
     }
 
 
     public enum MenuType
     {
-        Content, 
-        CategoryContent,
-        ProductGroup,
-        Product,
+        ProductGroup,//0
+        Product,//1
+        CategoryContent,//2
+        Content, //3
         DirectLink,
         Module
     }

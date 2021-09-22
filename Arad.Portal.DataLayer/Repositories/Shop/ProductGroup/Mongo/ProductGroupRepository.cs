@@ -315,9 +315,6 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                 result.Succeeded = false;
                 result.Message = ConstMessages.ObjectNotFound;
             }
-            
-
-           
             return result;
         }
 

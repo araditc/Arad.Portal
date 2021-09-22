@@ -12,6 +12,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public StoreMenuVM()
         {
             Childrens = new();
+            IsFull = true;
         }
         public string MenuId { get; set; }
         /// <summary>
@@ -23,6 +24,9 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public string ParentId { get; set; }
         public string Icon { get; set; }
         public string Url { get; set; }
+
+        public string SubId { get; set; }
+        public bool IsFull { get; set; }
         public List<StoreMenuVM> Childrens { get; set; }
     }
 }

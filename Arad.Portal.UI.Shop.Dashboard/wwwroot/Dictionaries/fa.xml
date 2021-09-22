@@ -325,6 +325,9 @@
 	<string key="tbl_GroupName">
 		<value>نام گروه</value>
 	</string>
+	<string key="tbl_MenuTitle">
+		<value>عنوان منو</value>
+	</string>
 	<string key="tbl_CategoryName">
 		<value>نام گروه محتوا</value>
 	</string>
@@ -1189,6 +1192,9 @@
 	<string key="AddProductGroupPart_Title">
 		<value>افزودن گروه محصول</value>
 	</string>
+	<string key="AddMenu_Title">
+		<value>Add Menu</value>
+	</string>
 	<string key="EditProductGroupPart_Title">
 		<value>ویرایش گروه محصول</value>
 	</string>
@@ -1197,6 +1203,9 @@
 	</string>
 	<string key="EditContentCategory_Title">
 		<value>ویرایش گروه محتوا</value>
+	</string>
+	<string key="EditMenu_Title">
+		<value>Edit StoreMenu</value>
 	</string>
 	<string key="AddContentCategory_Title">
 		<value>افزودن گروه محتوا</value>
@@ -1399,6 +1408,12 @@
 	<string key="ParentGroup">
 		<value>گروه والد</value>
 	</string>
+	<string key="ParentMenu">
+		<value>منوی والد</value>
+	</string>
+	<string key="MenuType">
+		<value>نوع منو</value>
+	</string>
 	<string key="ParentComment">
 		<value>نظر والد</value>
 	</string>
@@ -1443,6 +1458,9 @@
 	</string>
 	<string key="UrlFriend">
 		<value>UrlFriend</value>
+	</string>
+	<string key="Url">
+		<value>Url</value>
 	</string>
 	<string key="Currency">
 		<value>واحد پول</value>
@@ -1509,6 +1527,9 @@
 	</string>
 	<string key="ContentTitle">
 		<value>عنوان محتوا</value>
+	</string>
+	<string key="Menu_StoreMenues">
+		<value>منوهای فروشگاه</value>
 	</string>
 	<string key="Menu_ProductComments">
 		<value>نظرات محصولات</value>
@@ -1723,6 +1744,9 @@
 	</string>
 	<string key="Ok">
 		<value>تائید</value>
+	</string>
+	<string key="Order">
+		<value>ترتیب</value>
 	</string>
 	<string key="Return">
 		<value>برگشت</value>

@@ -331,6 +331,9 @@
 	<string key="tbl_GroupName">
 		<value>Group Name</value>
 	</string>
+	<string key="tbl_MenuTitle">
+		<value>Menu Title</value>
+	</string>
 	<string key="tbl_CategoryName">
 		<value>ContentCategory Name</value>
 	</string>
@@ -1148,6 +1151,9 @@
 	<string key="AddProductGroupPart_Title">
 		<value>Add ProductGroup</value>
 	</string>
+	<string key="AddMenu_Title">
+		<value>Add StoreMenu</value>
+	</string>
 	<string key="EditProductGroupPart_Title">
 		<value>Edit ProductGroup</value>
 	</string>
@@ -1156,6 +1162,9 @@
 	</string>
 	<string key="EditContentCategory_Title">
 		<value>Edit ContentCategory</value>
+	</string>
+	<string key="EditMenu_Title">
+		<value>Edit StoreMenu</value>
 	</string>
 	<string key="AddContentCategory_Title">
 		<value>Add ContentCategory</value>
@@ -1361,6 +1370,12 @@
 	<string key="ParentGroup">
 		<value>Parent Group</value>
 	</string>
+	<string key="ParentMenu">
+		<value>Parent Menu</value>
+	</string>
+	<string key="MenuType">
+		<value>Menu Type</value>
+	</string>
 	<string key="ParentComment">
 		<value>Parent Comment</value>
 	</string>
@@ -1405,6 +1420,9 @@
 	</string>
 	<string key="UrlFriend">
 		<value>UrlFriend</value>
+	</string>
+	<string key="Url">
+		<value>Url</value>
 	</string>
 	<string key="Currency">
 		<value>Currency</value>
@@ -1471,6 +1489,9 @@
 	</string>
 	<string key="ContentTitle">
 		<value>Content Title</value>
+	</string>
+	<string key="Menu_StoreMenues">
+		<value>Store Menues</value>
 	</string>
 	<string key="Menu_ProductComments">
 		<value>Product Comments</value>
@@ -1685,6 +1706,9 @@
 	</string>
 	<string key="Ok">
 		<value>Ok</value>
+	</string>
+	<string key="Order">
+		<value>Order</value>
 	</string>
 	<string key="Return">
 		<value>Go back</value>

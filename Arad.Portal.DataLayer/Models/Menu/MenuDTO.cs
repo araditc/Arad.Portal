@@ -13,7 +13,6 @@ namespace Arad.Portal.DataLayer.Models.Menu
         public MenuDTO()
         {
             MenuTitles = new();
-            ParentTitles = new();
         }
         public string MenuId { get; set; }
 
@@ -22,13 +21,19 @@ namespace Arad.Portal.DataLayer.Models.Menu
         /// </summary>
         public List<MultiLingualProperty> MenuTitles { get; set; }
 
+        public string MenuTitle { get; set; }
+
+        public string LanguageId { get; set; }
+
+        public string ParentMenuTitle { get; set; }
+
         public MenuType MenuType { get; set; }
 
         public int Order { get; set; }
 
         public string ParentId { get; set; }
 
-        public List<MultiLingualProperty> ParentTitles { get; set; }
+        public string ParentName { get; set; }
 
         public string Icon { get; set; }
 
@@ -38,6 +43,8 @@ namespace Arad.Portal.DataLayer.Models.Menu
 
         public string CreatorUserId { get; set; }
 
-        //public string LanguageId { get; set; }
+        public string SubId { get; set; }
+
+        public string SubGroupId { get; set; }
     }
 }
