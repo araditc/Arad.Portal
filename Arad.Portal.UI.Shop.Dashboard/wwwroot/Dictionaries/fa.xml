@@ -84,7 +84,7 @@
 	</string>
 	<!--End [buttons text]-->
 	<!--Start[JustForTesting]-->
-	<string key="PermissionTitle_Menu11">
+	<!--<string key="PermissionTitle_Menu11">
 		<value>منوی 1-1</value>
 	</string>
 	<string key="PermissionTitle_Menu12">
@@ -101,7 +101,7 @@
 	</string>
 	<string key="PermissionTitle_Menu11111">
 		<value>منوی 1-1-1-1-1</value>
-	</string>
+	</string>-->
 	<!--End[JustForTesting]-->
 	<!--Start [PermissionTitle]-->
 	<string key="PermissionTitle_MainPage">
@@ -280,6 +280,12 @@
 	</string>
 	<string key="PermissionTitle_ContentComments">
 		<value>نظرات محتوا</value>
+	</string>
+	<string key="PermissionTitle_StoreSettings">
+		<value>تنظیمات فروشگاه</value>
+	</string>
+	<string key="PermissionTitle_StoreMenues">
+		<value>منوهای فروشگاه</value>
 	</string>
 	<!--End [PermissionTitle]-->
 	<!--Start [tables]-->
@@ -1193,7 +1199,7 @@
 		<value>افزودن گروه محصول</value>
 	</string>
 	<string key="AddMenu_Title">
-		<value>Add Menu</value>
+		<value>افزودن منوهای فروشگاه</value>
 	</string>
 	<string key="EditProductGroupPart_Title">
 		<value>ویرایش گروه محصول</value>
@@ -1205,7 +1211,7 @@
 		<value>ویرایش گروه محتوا</value>
 	</string>
 	<string key="EditMenu_Title">
-		<value>Edit StoreMenu</value>
+		<value>ویرایش منوهای فروشگاه</value>
 	</string>
 	<string key="AddContentCategory_Title">
 		<value>افزودن گروه محتوا</value>
@@ -1305,6 +1311,12 @@
 	</string>
 	<string key="Title">
 		<value>عنوان</value>
+	</string>
+	<string key="SubName">
+		<value>محصول/محتوا</value>
+	</string>
+	<string key="SubGroupName">
+		<value>گروه محصول/محتوا</value>
 	</string>
 	<string key="CommentTitle">
 		<value>عنوان نظر</value>
@@ -1410,6 +1422,9 @@
 	</string>
 	<string key="ParentMenu">
 		<value>منوی والد</value>
+	</string>
+	<string key="ParentMenuTitle">
+		<value>عنوان منوی والد</value>
 	</string>
 	<string key="MenuType">
 		<value>نوع منو</value>
@@ -1524,6 +1539,9 @@
 	</string>
 	<string key="Filter">
 		<value>فیلتر</value>
+	</string>
+	<string key="Content">
+		<value>محتوا</value>
 	</string>
 	<string key="ContentTitle">
 		<value>عنوان محتوا</value>

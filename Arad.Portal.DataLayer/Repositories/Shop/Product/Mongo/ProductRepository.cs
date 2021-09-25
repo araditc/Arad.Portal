@@ -37,6 +37,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         private readonly LanguageContext _languageContext;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
+        private readonly UserManager<ApplicationUser> _userManager;
         
         public ProductRepository(IHttpContextAccessor httpContextAccessor,
             ProductContext context, IMapper mapper,
@@ -55,6 +56,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             _transactionContext = transactionContext;
             _languageContext = languageContext;
             _configuration = configuration;
+            _domainContext = domainContext;
         }
 
         public async Task<RepositoryOperationResult> Add(ProductInputDTO dto)
@@ -781,23 +783,24 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public List<SelectListModel> GetAllProductList(string currentUserId, string productGroupId, string domainId)
+        public List<SelectListModel> GetAllProductList(ApplicationUser user, string productGroupId, string domainId)
         {
             var result = new List<SelectListModel>();
-            var domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).First();
-            if (currentUserId == Guid.Empty.ToString())//systemAccount
+            var domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).CountDocuments() > 0 
+                ? _domainContext.Collection.Find(_ => _.DomainId == domainId).First() : new Entities.General.Domain.Domain();
+            if (user.IsSystemAccount)//systemAccount
             {
                 result = _context.ProductCollection.Find(_ => _.GroupIds.Contains(productGroupId) && _.IsActive)
                   .Project(_ => new SelectListModel()
                   {
-                      Text = _.MultiLingualProperties.Where(a => a.LanguageId == domainEntity.DefaultLanguageId).Count() != 0 ?
-                         _.MultiLingualProperties.First(a => a.LanguageId == domainEntity.DefaultLanguageId).Name : _.MultiLingualProperties.First().Name,
+                      Text = _.MultiLingualProperties.Where(a => a.LanguageId == user.Profile.DefaultLanguageId).Count() != 0 ?
+                         _.MultiLingualProperties.First(a => a.LanguageId == user.Profile.DefaultLanguageId).Name : _.MultiLingualProperties.First().Name,
                       Value = _.ProductId
                   }).ToList();
             }
             else
             {
-                result = _context.ProductCollection.Find(_ => _.GroupIds.Contains(productGroupId) && _.IsActive && _.CreatorUserId == currentUserId)
+                result = _context.ProductCollection.Find(_ => _.GroupIds.Contains(productGroupId) && _.IsActive && _.CreatorUserId == user.Id)
                   .Project(_ => new SelectListModel()
                   {
                       Text = _.MultiLingualProperties.Where(a => a.LanguageId == domainEntity.DefaultLanguageId).Count() != 0 ?

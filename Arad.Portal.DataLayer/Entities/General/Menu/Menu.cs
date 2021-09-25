@@ -37,10 +37,16 @@ namespace Arad.Portal.DataLayer.Entities.General.Menu
         public string Url { get; set; }
 
         /// <summary>
-        /// based on menutype fill if menutype is productGroup then subId is productgroupId if menutype is product then subId is productId
-        /// if menuType is contentCategory then subtype is content categoryId and if its content then subtype is contentId
+        /// based on menutype fill if menutype is productGroup then subgroupId is productgroupId if menutype is product then subId is productId and SubGroupId is productGroupId
+        /// if menuType is contentCategory then subGroupId is content categoryId and if its content then subId is contentId and SubGroupId is contentCategoryId
         /// </summary>
         public string SubId { get; set; }
+
+        public string SubName { get; set; }
+
+        public string SubGroupId { get; set; }
+
+        public string SubGroupName { get; set; }
     }
 
 

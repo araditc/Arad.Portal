@@ -59,7 +59,7 @@
                             <span data-val-result="categoryId" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-3 invisible" id="productOrContentSection">
-                            <label></label>
+                            <label id="lblProductOrContent"></label>
                             <select class="form-control" id="ContentOrProductId">
                             </select>
                         </div>
@@ -153,9 +153,13 @@
 
         $(document).ready(function () {
             debugger;
+            @*alert("@Model.MenuId");*@
             if ("@Model.MenuId" != "" && "@Model.ParentId" != "") {
                 $("#ParentId").val("@Model.ParentId");
+            } else if("@Model.MenuId" == ""){
+                $("#MenuType").val("-1");
             }
+
 
              $('#iconPicktarget').iconpicker({
                 align: 'center', // Only in div tag
@@ -167,7 +171,7 @@
                 header: true,
                 icon: '@(!string.IsNullOrWhiteSpace(Model.Icon) ? Model.Icon: "fas fa-bomb")',
                 iconset: 'fontawesome5',
-                
+
                 placement: 'bottom', // Only in button tag
                 rows: 5,
                 search: true,
@@ -221,7 +225,8 @@
                     }
                 }
             });
-            $("#categoryId").change(function () {
+            $(document).on("change", "#categoryId", function () {
+                debugger;
                 if ($("#categoryId").val() != "-1")
                 {
                     if ($("#MenuType").val() == "1")
@@ -312,7 +317,10 @@
                             });
 
                             $("#ContentOrProductId").html(options);
-                            $("#ParentId").val('@Model.SubId');
+                            $("#lblProductOrContent").val('@Language.GetString("Content")');
+                            if ('@Model.SubGroupId' != '') {
+                                $("#ParentId").val('@Model.SubId');
+                            }
                             $("#productOrContentSection").removeClass("invisible");
                         }
                     }
@@ -326,6 +334,7 @@
         }
 
         function fillProductList(groupId) {
+            debugger;
              $.ajax({
                  url: "/Menu/GetProductList/?groupId=" + groupId,
                     type: 'Get',
@@ -342,7 +351,10 @@
                                 });
 
                                 $("#ContentOrProductId").html(options);
-                                $("#ParentId").val('@Model.SubId');
+                                $("#lblProductOrContent").val('@Language.GetString("Product")');
+                                if ('@Model.SubGroupId' != '') {
+                                    $("#ParentId").val('@Model.SubGroupId');
+                                }
                                 $("#productOrContentSection").removeClass("invisible");
                             }
                         }

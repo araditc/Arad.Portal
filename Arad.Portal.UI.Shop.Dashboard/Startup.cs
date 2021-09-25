@@ -57,6 +57,8 @@ using Arad.Portal.DataLayer.Contracts.General.Content;
 using Arad.Portal.DataLayer.Repositories.General.Content.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.Comment;
 using Arad.Portal.DataLayer.Repositories.General.Comment.Mongo;
+using Arad.Portal.DataLayer.Contracts.General.Menu;
+using Arad.Portal.DataLayer.Repositories.General.Menu.Mongo;
 
 namespace Arad.Portal.UI.Shop.Dashboard
 {
@@ -223,6 +225,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<IContentCategoryRepository, ContentCategoryRepository>();
             services.AddTransient<IContentRepository, ContentRepository>();
             services.AddTransient<ICommentRepository, CommentRepository>();
+            services.AddTransient<IMenuRepository, MenuRepository>();
 
             #region contexes
             services.AddTransient<CurrencyContext>();
@@ -241,6 +244,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<ContentCategoryContext>();
             services.AddTransient<ContentContext>();
             services.AddTransient<CommentContext>();
+            services.AddTransient<MenuContext>();
                 
             #endregion
 

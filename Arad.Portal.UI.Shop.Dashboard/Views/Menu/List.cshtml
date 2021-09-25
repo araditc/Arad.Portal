@@ -1,10 +1,10 @@
 ﻿@using System.Web
 @using Arad.Portal.DataLayer.Models.Shared;
 @using Arad.Portal.GeneralLibrary.Utilities;
-@using Arad.Portal.DataLayer.Models.ProductGroup;
+@using Arad.Portal.DataLayer.Models.Menu
 @using Arad.Portal.UI.Shop.Dashboard.ViewComponents;
 
-@model PagedItems<ProductGroupViewModel>
+@model PagedItems<MenuDTO>
 @{
     var i = ((Model.CurrentPage - 1) * Model.PageSize);
     bool isSearch = false;
@@ -73,78 +73,74 @@
 </div>
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">@Language.GetString("Menu_ProductGroups")</h3>
+        <h3 class="card-title">@Language.GetString("Menu_StoreMenues")</h3>
         <div class="card-tools" style='@(dir=="rtl" ? "float:left;" : "float:right;")'>
             @if (ViewBag.Permissions["Add"])
             {
-                <a asp-action="AddEdit" asp-controller="ProductGroup"  class="btn btn-success btn-sm">
+                <a asp-action="AddEdit" asp-controller="Menu"  class="btn btn-success btn-sm">
                     <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus"></i>&nbsp; @Language.GetString("btn_Add")
                 </a>
             }
         </div>
     </div>
-    <div class="card-body table-bordered  table-responsive p-0" id="productGroupListCard">
+    <div class="card-body table-bordered  table-responsive p-0" id="MenuListCard">
         <table class="table table-hover">
             <thead>
                 <tr style="text-align:center;">
                     <th>@Language.GetString("tbl_RowName")</th>
-                    <th>@Language.GetString("tbl_GroupName")</th>
-                    <th>@Language.GetString("SeoDescription")</th>
-                    <th>@Language.GetString("Description")</th>
-                    <th>@Language.GetString("SeoTitle")</th>
-                    <th>@Language.GetString("UrlFriend")</th>
-                    <th>@Language.GetString("RelatedLanguage")</th>
-                    <th>@Language.GetString("Currency")</th>
+                    <th>@Language.GetString("tbl_MenuTitle")</th>
+                    <th>@Language.GetString("ParentMenuTitle")</th>
+                    <th>@Language.GetString("MenuType")</th>
+                    <th>@Language.GetString("Order")</th>
+                    <th>@Language.GetString("Url")</th>
+                    <th>@Language.GetString("Menu_Icon")</th>
+                    <th>@Language.GetString("Role_CreatorUserName")</th>
+                    <th>@Language.GetString("SubGroupName")</th>
+                    <th>@Language.GetString("SubName")</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 @if (Model.Items.Any())
                 {
-
-                    @foreach (var item in Model.Items)
-                    {
-                <tr>
-                    <td class="ListCell">@(++i)</td>
-                    <td class="ListCell">@item.MultiLingualProperty.Name</td>
-                    <td class="ListCell">@item.MultiLingualProperty.SeoDescription</td>
-                    <td class="ListCell">@item.MultiLingualProperty.Description</td>
-                    <td class="ListCell">@item.MultiLingualProperty.SeoTitle</td>
-                    <td class="ListCell">@item.MultiLingualProperty.UrlFriend</td>
-                    <td class="ListCell">@item.MultiLingualProperty.LanguageName</td>
-                    <td class="ListCell">@item.MultiLingualProperty.CurrencyName</td>
-                    <td>
-                        @if (ViewBag.Permissions["Edit"])
+                        @foreach (var item in Model.Items)
                         {
-                            <a asp-action="AddEdit" asp-controller="ProductGroup" asp-route-id="@item.ProductGroupId" class="btn btn-sm btn-info">
-                                <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
-                            </a>
+                            <tr>
+                                <td class="ListCell">@(++i)</td>
+                                <td class="ListCell">@(item.MenuTitles.FirstOrDefault(_=>_.LanguageId == langId).Name)</td>
+                                <td class="ListCell">@item.ParentName</td>
+                                <td class="ListCell">@item.MenuType</td>
+                                <td class="ListCell">@item.Order</td>
+                                <td class="ListCell">@item.Url</td>
+                                <td class="ListCell">@item.Icon</td>
+                                <td class="ListCell">@item.CreatorUserName</td>
+                                <td class="ListCell">@item.SubGroupName</td>
+                                <td class="ListCell">@item.SubName</td>
+                                <td>
+                                    @if (ViewBag.Permissions["Edit"])
+                                    {
+                                        <a asp-action="AddEdit" asp-controller="Menu" asp-route-id="@item.MenuId" class="btn btn-sm btn-info">
+                                            <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
+                                        </a>
+                                    }
+                                    @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
+                                    {
+                                        <button onclick="EntityDelete('@item.MenuId')" class="btn btn-sm btn-danger">
+                                            <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
+                                        </button>
+                                    }
+                                </td>
+                            </tr>
                         }
-                        @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
-                        {
-                            <button onclick="EntityDelete('@item.ProductGroupId')" class="btn btn-sm btn-danger">
-                                <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
-                            </button>
-                        }
-                        @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
-                        {
-                            <button id="restoreRecord" data-id="@item.ProductGroupId" onclick="EntityRestore('@item.ProductGroupId')" class="btn btn-sm btn-warning">
-                                <i style="position: relative;left: 5px;top: 2px;" class="fa fa-refresh"></i>
-                                @Language.GetString("btn_Restore")
-                            </button>
-                        }
-                    </td>
-                </tr>
                     }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="9" class="ListCell">
-                            <h6>@Language.GetString("AlertAndMessage_NoDataToShow")</h6>
-                        </td>
-                    </tr>
-                }
+                    else
+                    {
+                                <tr>
+                                    <td colspan="11" class="ListCell">
+                                        <h6>@Language.GetString("AlertAndMessage_NoDataToShow")</h6>
+                                    </td>
+                                </tr>
+                    }
             </tbody>
         </table>
     </div>
@@ -154,7 +150,7 @@
           CurrentPage = Model.CurrentPage,
           ItemsCount = Model.ItemsCount,
           PageSize = Model.PageSize,
-          Navigation = Url.Action("List", "ProductGroup"),
+          Navigation = Url.Action("List", "Menu"),
           QueryParams = Model.QueryString 
       })
     </div>
@@ -171,10 +167,10 @@
            $("#cmbLangIdFilter").change(function () {
             debugger;
                var queryString = '?LanguageId=' + $("#cmbLangIdFilter").val();
-               window.location.href = '@Url.Action("List", "ProductGroup")' + queryString;
+               window.location.href = '@Url.Action("List", "Menu")' + queryString;
             });
         });
-        function EntityDelete(id) {
+   function EntityDelete(id) {
             debugger;
         Swal.fire({
             title: '@Language.GetString("AlertAndMessage_AreYouSure")',
@@ -188,79 +184,38 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     debugger;
-            $.ajax({
-                type: 'Get',
-                url: '@Url.Action("Delete", "ProductGroup")' + "/" + id,
-            beforeSend: function() {
-                AddLoading($("#productGroupListCard"));
-            },
-                success: function (resultData) {
-                    debugger;
-                removeLoading($("productGroupListCard"))
-            if (resultData.status === "Success") {
-            Swal.fire({
-            icon: 'success',
-            text: resultData.message,
-            showConfirmButton: false,
-            timer: 3000
-            }).then(() => {
-            window.location.reload();
-            });
-            }
+                    $.ajax({
+                        type: 'Get',
+                        url: '@Url.Action("Delete", "Menu")' + "/" + id,
+                        beforeSend: function() {
+                            AddLoading($("#MenuListCard"));
+                        },
+                            success: function (resultData) {
+                                debugger;
+                                removeLoading($("MenuListCard"))
+                        if (resultData.status === "Success") {
+                        Swal.fire({
+                        icon: 'success',
+                        text: resultData.message,
+                        showConfirmButton: false,
+                        timer: 3000
+                        }).then(() => {
+                        window.location.reload();
+                        });
+                        }
 
-            if (resultData.status === "Error") {
-            Swal.fire({
-            icon: 'error',
-            text: resultData.message,
-            showConfirmButton: false,
-            timer: 1500
-            });
-            }
-            }
-            });
-            }
+                        if (resultData.status === "Error") {
+                        Swal.fire({
+                        icon: 'error',
+                        text: resultData.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                        });
+                        }
+                        }
+                   });
+                }
             });
         }
-
-        function EntityRestore(id) {
-            debugger;
-                Swal.fire({
-                    title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-                    text: '@Language.GetString("AlertAndMessage_EntityRestoreText")',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d51c1c',
-                    cancelButtonColor: '#009c09db',
-                    confirmButtonText: '@Language.GetString("btn_Confirm")',
-                    cancelButtonText: '@Language.GetString("btn_NotConfirm")'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            type: 'Get',
-                            url:  '@Url.Action("Restore", "ProductGroup")' + '?id=' + id,
-                            success: function(resultData) {
-                                if (resultData.status === "success") {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        text: resultData.message,
-                                        showConfirmButton: false,
-                                        timer: 2000
-                                    }).then(() => {
-                                        window.location.reload();
-                                    });
-                                }
-                                if (resultData.status === "error") {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        text: resultData.message,
-                                        showConfirmButton: false,
-                                        timer: 2000
-                                    });
-                                }
-                            }
-                        });
-                    }
-                });
-            }
     </script>
 }

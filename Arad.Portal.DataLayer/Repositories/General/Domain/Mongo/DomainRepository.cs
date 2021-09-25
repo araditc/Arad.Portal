@@ -212,13 +212,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             return result;
         }
 
-        public RepositoryOperationResult<DomainDTO> FetchDomain(string domainId)
+        public RepositoryOperationResult<DomainDTO> FetchByName(string domainName)
         {
             RepositoryOperationResult<DomainDTO> result
-                = new RepositoryOperationResult<DomainDTO>();
+                 = new RepositoryOperationResult<DomainDTO>();
             try
             {
-                var dbEntity = _context.Collection.AsQueryable().FirstOrDefault(_ => _.DomainId == domainId);
+                var dbEntity = _context.Collection.Find(_ => _.DomainName == domainName).First();
                 if (dbEntity == null)
                 {
                     result.Message = ConstMessages.ObjectNotFound;
@@ -237,5 +237,47 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
 
             return result;
         }
+
+        public RepositoryOperationResult<DomainDTO> FetchDomain(string domainId)
+        {
+            RepositoryOperationResult<DomainDTO> result
+                = new RepositoryOperationResult<DomainDTO>();
+            try
+            {
+                var dbEntity = _context.Collection.Find(_ => _.DomainId == domainId).First();
+                if (dbEntity == null)
+                {
+                    result.Message = ConstMessages.ObjectNotFound;
+                }
+
+                var dto = _mapper.Map<DomainDTO>(dbEntity);
+                result.Succeeded = true;
+                result.Message = ConstMessages.SuccessfullyDone;
+                result.ReturnValue = dto;
+
+            }
+            catch (Exception)
+            {
+                result.Message = ConstMessages.ExceptionOccured;
+            }
+
+            return result;
+        }
+
+
+        public async Task InsertMany(List<Entities.General.Domain.Domain> domains)
+        {
+           await _context.Collection.InsertManyAsync(domains);
+        }
+        public bool HasAny()
+        {
+            var result = false;
+            if (_context.Collection.AsQueryable().Any())
+            {
+                result = true;
+            }
+            return result;
+        }
+
     }
 }

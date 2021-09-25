@@ -25,8 +25,6 @@ namespace Arad.Portal.DataLayer.Models.Menu
 
         public string LanguageId { get; set; }
 
-        public string ParentMenuTitle { get; set; }
-
         public MenuType MenuType { get; set; }
 
         public int Order { get; set; }
@@ -45,6 +43,12 @@ namespace Arad.Portal.DataLayer.Models.Menu
 
         public string SubId { get; set; }
 
+        public string SubName { get; set; }
+
         public string SubGroupId { get; set; }
+
+        public string SubGroupName { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

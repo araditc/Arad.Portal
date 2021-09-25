@@ -17,6 +17,7 @@ using Arad.Portal.DataLayer.Contracts.Shop.Product;
 using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Contracts.General.Content;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -30,12 +31,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IProductRepository _productRepository;
         private readonly IContentRepository _contentRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IDomainRepository _domainRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly string domainId;
         public MenuController(IMenuRepository menuRepository,IContentRepository contentRepository,
             IPermissionView permissionView, ILanguageRepository lanRepository,IHttpContextAccessor httpContextAccessor,
             IProductGroupRepository productGroupRepository, IContentCategoryRepository contentCategoryRepository,
-            IProductRepository productRepository, UserManager<ApplicationUser> userManager)
+            IProductRepository productRepository, UserManager<ApplicationUser> userManager,
+            IDomainRepository domainRepository)
         {
             _menuRepository = menuRepository;
             _permissionViewManager = permissionView;
@@ -44,6 +47,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _contentCategoryRepository = contentCategoryRepository;
             _httpContextAccessor = httpContextAccessor;
             _productRepository = productRepository;
+            _domainRepository = domainRepository;
             _userManager = userManager;
             _contentRepository = contentRepository;
             domainId = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
@@ -55,14 +59,25 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             PagedItems<MenuDTO> result = new PagedItems<MenuDTO>();
             var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
+            var res = _domainRepository.FetchByName(domainName);
+            var domainId = res.Succeeded ? _domainRepository.FetchByName(domainName).ReturnValue.DomainId : Guid.Empty.ToString();
             ViewBag.Permissions = dicKey;
             try
             {
-                result = await _menuRepository.AdminList(Request.QueryString.ToString());
+                var qs = Request.QueryString.ToString();
+                if(!string.IsNullOrWhiteSpace(qs))
+                {
+                    qs += $"&domainId={domainId}";
+                }else
+                {
+                    qs = $"?domainId={domainId}";
+                }
                 ViewBag.DefLangId = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
                 ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
+                result = await _menuRepository.AdminList(qs);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
             }
             return View(result);
@@ -98,13 +113,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             JsonResult result;
             List<SelectListModel> lst;
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var userDb = await _userManager.FindByIdAsync(currentUserId);
-            if(userDb.IsSystemAccount)
-            {
-                currentUserId = Guid.Empty.ToString();
-            }
-           
-            lst = _productRepository.GetAllProductList(currentUserId, groupId, domainId);
+            var dbUser = await _userManager.FindByIdAsync(currentUserId);
+            lst = _productRepository.GetAllProductList(dbUser, groupId, domainId);
             if (lst.Count() > 0)
             {
                 result = new JsonResult(new { Status = "success", Data = lst });

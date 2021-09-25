@@ -20,7 +20,7 @@ using System.Web;
 using Arad.Portal.DataLayer.Entities.General.Menu;
 using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Content.Mongo;
-
+using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
 {
@@ -29,6 +29,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
         private readonly MenuContext _context;
         private readonly ProductContext _productContext;
         private readonly ContentContext _contentContext;
+        private readonly LanguageContext _languageContext;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
         private readonly DomainContext _domainContext;
@@ -36,6 +37,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                                 UserManager<ApplicationUser> userManager,
                                 DomainContext domainContext,
                                 ContentContext contentContext,
+                                LanguageContext languageContext,
                                 IHttpContextAccessor httpContextAccessor,
                                 ProductContext productContext,
                                 IMapper mapper) : base(httpContextAccessor)
@@ -46,6 +48,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             _domainContext = domainContext;
             _productContext = productContext;
             _contentContext = contentContext;
+            _languageContext = languageContext;
         }
         public async Task<RepositoryOperationResult> AddMenu(MenuDTO dto)
         {
@@ -74,6 +77,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
         public async Task<PagedItems<MenuDTO>> AdminList(string queryString)
         {
             PagedItems<MenuDTO> result = new PagedItems<MenuDTO>();
+            var lan = new Entities.General.Language.Language();
+            string languageId = "";
             try
             {
                 var userId = this.GetUserId();
@@ -93,25 +98,44 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 var page = Convert.ToInt32(filter["CurrentPage"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
                 var domainId = filter["domainId"].ToString();
+                if (string.IsNullOrWhiteSpace(filter["LanguageId"]))
+                {
+                    lan = _languageContext.Collection.Find(_ => _.IsDefault).FirstOrDefault();
+                    languageId = lan.LanguageId;
+                    filter.Set("LanguageId", lan.LanguageId);
+                    
+                }else
+                {
+                    languageId = filter["LanguageId"].ToString();
+                }
                 var domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
 
-                long totalCount = await _context.Collection.Find(_ => _.AssociatedDomainId == domainEntity.DomainId).CountDocumentsAsync();
+                //true
+                long totalCount = await _context.Collection.Find(_ => true).CountDocumentsAsync();
+                //long totalCount = await _context.Collection.Find(_ => _.AssociatedDomainId == domainEntity.DomainId).CountDocumentsAsync();
                 var lst = _context.Collection
                   //  .Find(_ => _.AssociatedDomainId == domainId && _.ParentId == null)
-                  .Find(Builders<Entities.General.Menu.Menu>.Filter.And(Builders< Entities.General.Menu.Menu>.Filter.Eq(x=>x.AssociatedDomainId, domainId),
-                                                                       Builders<Entities.General.Menu.Menu>.Filter.Eq(x => x.ParentId, null)))
+                  .Find(Builders<Entities.General.Menu.Menu>.Filter.And(Builders<Entities.General.Menu.Menu>.Filter.Eq(x => x.AssociatedDomainId, domainId)))
                     .Project(_ =>
                         new MenuDTO()
                         {
-                            //MenuId = _.MenuId,
-                            //Icon = _.Icon,
-                            //MenuTitles = _.MenuTitles.First(a => a.LanguageId == domainEntity.DefaultLanguageId),
-                            //MenuType = _.MenuType,
-                            //Order = _.Order,
-                            
-                            //ParentTitles = ,
-                            //ParentId = _.ParentId,
-                            //Url = _.Url
+                            MenuId = _.MenuId,
+                            Icon = _.Icon,
+                            MenuTitle = _.MenuTitles.FirstOrDefault(_=>_.LanguageId == languageId).Name,
+                            LanguageId = languageId,
+                            MenuTitles = _.MenuTitles,
+                            MenuType = _.MenuType,
+                            Order = _.Order,
+                            ParentName = _.ParentName,
+                            ParentId = _.ParentId,
+                            Url = _.Url,
+                            SubId = _.SubId,
+                            SubName = _.SubName,
+                            SubGroupId = _.SubGroupId,
+                            SubGroupName = _.SubGroupName,
+                            CreatorUserName = _.CreatorUserName,
+                            CreatorUserId = _.CreatorUserId,
+                            IsDeleted = _.IsDeleted
                         }).Sort(Builders<Entities.General.Menu.Menu>.Sort.Ascending(a => a.Order)).ToList();
                 result.CurrentPage = page;
                 result.Items = lst;

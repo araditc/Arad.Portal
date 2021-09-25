@@ -84,7 +84,7 @@
 	</string>
 	<!--End [buttons text]-->
 	<!--Start[JustForTesting]-->
-	<string key="PermissionTitle_Menu11">
+	<!--<string key="PermissionTitle_Menu11">
 		<value>Menu1-1</value>
 	</string>
 	<string key="PermissionTitle_Menu12">
@@ -101,7 +101,7 @@
 	</string>
 	<string key="PermissionTitle_Menu11111">
 		<value>Menu1-1-1-1-1</value>
-	</string>
+	</string>-->
 	<!--End[JustForTesting]-->
 	<!--Start [PermissionTitle]-->
 	<string key="PermissionTitle_MainPage">
@@ -177,8 +177,6 @@
   <string key="PermissionTitle_Products">
     <value>Products</value>
   </string>
-	
-	
 	<string key="PermissionTitle_Role">
 		<value>Roles</value>
 	</string>
@@ -286,6 +284,12 @@
 	</string>
 	<string key="PermissionTitle_ContentComments">
 		<value>Content Comments</value>
+	</string>
+	<string key="PermissionTitle_StoreSettings">
+		<value>Store Settings</value>
+	</string>
+	<string key="PermissionTitle_StoreMenues">
+		<value>Store Menues</value>
 	</string>
 	<!--End [PermissionTitle]-->
 	<!--Start [tables]-->
@@ -1266,6 +1270,12 @@
 	<string key="Title">
 		<value>Title</value>
 	</string>
+	<string key="SubName">
+		<value>Content/Product</value>
+	</string>
+	<string key="SubGroupName">
+		<value>Content/Product GroupName</value>
+	</string>
 	<string key="CommentTitle">
 		<value>Comment Title</value>
 	</string>
@@ -1372,6 +1382,9 @@
 	</string>
 	<string key="ParentMenu">
 		<value>Parent Menu</value>
+	</string>
+	<string key="ParentMenuTitle">
+		<value>Parent Menu Title</value>
 	</string>
 	<string key="MenuType">
 		<value>Menu Type</value>
@@ -1486,6 +1499,9 @@
 	</string>
 	<string key="Filter">
 		<value>Filter</value>
+	</string>
+	<string key="Content">
+		<value>Content</value>
 	</string>
 	<string key="ContentTitle">
 		<value>Content Title</value>

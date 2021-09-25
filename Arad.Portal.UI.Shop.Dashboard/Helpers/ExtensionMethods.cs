@@ -29,6 +29,9 @@ using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using Arad.Portal.DataLayer.Contracts.General.Currency;
 using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
+using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
+using Arad.Portal.DataLayer.Entities.General.Domain;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 {
@@ -178,6 +181,24 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                 {
                     roleRepository.InsertMany(items).Wait();
                 }
+            }
+
+            //domain
+
+            using var domainScope = app.ApplicationServices.CreateScope();
+            var domainRepository =
+               (DomainRepository)domainScope.ServiceProvider.GetService(typeof(IDomainRepository));
+            if(!domainRepository.HasAny())
+            {
+                var dom = new Domain()
+                {
+                    DomainId = Guid.NewGuid().ToString(),
+                    DomainName = "https://localhost:44361/",
+                    IsActive = true,
+                    IsDefault = true
+                };
+
+                domainRepository.InsertMany(new List<Domain>() { dom }).Wait();
             }
 
             //MessageTemplate
