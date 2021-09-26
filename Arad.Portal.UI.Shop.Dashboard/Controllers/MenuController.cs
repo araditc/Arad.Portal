@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Contracts.General.Content;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
+using Arad.Portal.DataLayer.Entities.General.Menu;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -34,6 +35,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IDomainRepository _domainRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly string domainId;
+        private readonly string domainName;
         public MenuController(IMenuRepository menuRepository,IContentRepository contentRepository,
             IPermissionView permissionView, ILanguageRepository lanRepository,IHttpContextAccessor httpContextAccessor,
             IProductGroupRepository productGroupRepository, IContentCategoryRepository contentCategoryRepository,
@@ -50,7 +52,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _domainRepository = domainRepository;
             _userManager = userManager;
             _contentRepository = contentRepository;
-            domainId = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
+            domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
+            domainId = _domainRepository.FetchByName(domainName).ReturnValue.DomainId;
+            
         }
 
         [HttpGet]
@@ -59,9 +63,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             PagedItems<MenuDTO> result = new PagedItems<MenuDTO>();
             var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+          
             var domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
             var res = _domainRepository.FetchByName(domainName);
-            var domainId = res.Succeeded ? _domainRepository.FetchByName(domainName).ReturnValue.DomainId : Guid.Empty.ToString();
+            var domainId = res.Succeeded ? res.ReturnValue.DomainId : Guid.Empty.ToString();
             ViewBag.Permissions = dicKey;
             try
             {
@@ -93,7 +98,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
-            ViewBag.LangId = lan.LanguageId;
+            ViewBag.DefLangId = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
             ViewBag.ProductGroupList = await _productGroupRepository.GetAlActiveProductGroup(lan.LanguageId, currentUserId);
             ViewBag.ContentCategoryList = await _contentCategoryRepository.AllActiveContentCategory(lan.LanguageId, currentUserId);
             ViewBag.Menues = _menuRepository.AllActiveMenues(domainId, lan.LanguageId);
@@ -175,7 +180,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.LanguageName = lan.LanguageName;
                     item.LanguageSymbol = lan.Symbol;
                 }
-
+                dto.AssociatedDomainId = domainId;
+                dto.MenuType = (MenuType)Convert.ToInt32(dto.MenuTypeId);
                 RepositoryOperationResult saveResult = await _menuRepository.AddMenu(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
@@ -217,7 +223,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 item.LanguageName = lan.LanguageName;
                 item.LanguageSymbol = lan.Symbol;
             }
-
+            dto.MenuType = (MenuType)Convert.ToInt32(dto.MenuTypeId);
             RepositoryOperationResult saveResult = await _menuRepository.EditMenu(dto);
 
             result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }

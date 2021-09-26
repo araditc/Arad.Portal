@@ -56,7 +56,7 @@ namespace Arad.Portal.DataLayer.Entities.General.Menu
         Product,//1
         CategoryContent,//2
         Content, //3
-        DirectLink,
-        Module
+        DirectLink,//4
+        Module//5
     }
 }

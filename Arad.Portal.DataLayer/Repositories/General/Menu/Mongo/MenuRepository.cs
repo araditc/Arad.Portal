@@ -57,6 +57,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             {
                 var equallentModel = _mapper.Map<Entities.General.Menu.Menu>(dto);
 
+
+                equallentModel.MenuId = Guid.NewGuid().ToString();
                 equallentModel.CreationDate = DateTime.Now;
                 equallentModel.CreatorUserId = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
@@ -110,9 +112,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 }
                 var domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
 
-                //true
-                long totalCount = await _context.Collection.Find(_ => true).CountDocumentsAsync();
-                //long totalCount = await _context.Collection.Find(_ => _.AssociatedDomainId == domainEntity.DomainId).CountDocumentsAsync();
+                //test
+                //long totalCount = await _context.Collection.Find(_ => true).CountDocumentsAsync();
+                long totalCount = await _context.Collection.Find(_ => _.AssociatedDomainId == domainEntity.DomainId).CountDocumentsAsync();
                 var lst = _context.Collection
                   //  .Find(_ => _.AssociatedDomainId == domainId && _.ParentId == null)
                   .Find(Builders<Entities.General.Menu.Menu>.Filter.And(Builders<Entities.General.Menu.Menu>.Filter.Eq(x => x.AssociatedDomainId, domainId)))
@@ -406,6 +408,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                     Value = _.MenuId,
                     Text = _.MenuTitles.First( a => a.LanguageId == langId).Name
                 }).ToList();
+            result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
             return result;
         }
     }

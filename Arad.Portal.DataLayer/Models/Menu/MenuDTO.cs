@@ -17,7 +17,7 @@ namespace Arad.Portal.DataLayer.Models.Menu
         public string MenuId { get; set; }
 
         /// <summary>
-        /// LanguageId and Title will be filled here
+        /// LanguageId and Name will be filled here
         /// </summary>
         public List<MultiLingualProperty> MenuTitles { get; set; }
 
@@ -26,6 +26,8 @@ namespace Arad.Portal.DataLayer.Models.Menu
         public string LanguageId { get; set; }
 
         public MenuType MenuType { get; set; }
+
+        public string MenuTypeId { get; set; }
 
         public int Order { get; set; }
 
@@ -46,6 +48,8 @@ namespace Arad.Portal.DataLayer.Models.Menu
         public string SubName { get; set; }
 
         public string SubGroupId { get; set; }
+
+        public string AssociatedDomainId { get; set; }
 
         public string SubGroupName { get; set; }
 

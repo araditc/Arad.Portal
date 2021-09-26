@@ -17,6 +17,9 @@
         if(isSearch)
         {
             langId = queryString["LanguageId"].ToString();
+        }else
+        {
+            langId = ViewBag.DefLangId;
         }
         queryString.Remove("page");
     }

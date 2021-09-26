@@ -193,7 +193,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                 var dom = new Domain()
                 {
                     DomainId = Guid.NewGuid().ToString(),
-                    DomainName = "https://localhost:44361/",
+                    DomainName = "https://localhost:44361",
                     IsActive = true,
                     IsDefault = true
                 };
