@@ -21,6 +21,10 @@ namespace Arad.Portal.DataLayer.Models.Domain
 
         public string OwnerUserName { get; set; }
 
+        public string DefaultLanguageId { get; set; }
+
+        public bool IsDefault { get; set; }
+
         public Price  DomainPrice { get; set; }
 
         public List<Price> Prices { get; set; }

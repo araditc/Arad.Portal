@@ -21,9 +21,11 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
         public string DomainId { get; set; }
 
         public string DomainName { get; set; }
-       
-        public ApplicationUser Owner { get; set; }
-      
+
+        public string OwnerUserId { get; set; }
+
+        public string OwnerUserName { get; set; }
+
         public string DefaultLanguageId { get; set; }
 
         public bool IsDefault { get; set; }

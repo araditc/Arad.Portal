@@ -15,6 +15,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+using Arad.Portal.GeneralLibrary.Utilities;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
 {
@@ -47,12 +48,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
 
                     var equallentEntity = _mapper.Map<Entities.General.Domain.Domain>(dto);
                     equallentEntity.DomainId = Guid.NewGuid().ToString();
-                    if (!string.IsNullOrWhiteSpace(dto.OwnerUserId))
-                    {
-                        var ownerUser = await _userManager.FindByIdAsync(dto.OwnerUserId);
-                        if (ownerUser != null)
-                            equallentEntity.Owner = ownerUser;
-                    }
+                    //if (!string.IsNullOrWhiteSpace(dto.OwnerUserId))
+                    //{
+                    //    var ownerUser = await _userManager.FindByIdAsync(dto.OwnerUserId);
+                    //    if (ownerUser != null)
+                    //        equallentEntity.Owner = ownerUser;
+                    //}
                     if (dto.DomainPrice != null)
                     {
                         dto.DomainPrice.PriceId = Guid.NewGuid().ToString();
@@ -63,10 +64,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
 
                     equallentEntity.Modifications = new List<Modification>();
                     equallentEntity.CreationDate = DateTime.Now;
-                    equallentEntity.CreatorUserId = _httpContextAccessor.HttpContext.User.Claims
-                        .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-                    equallentEntity.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
-                        .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+                    equallentEntity.CreatorUserId = this.GetUserId();
+                    equallentEntity.CreatorUserName = this.GetUserName();
 
 
                     await _context.Collection.InsertOneAsync(equallentEntity);
@@ -109,8 +108,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                        DomainId = _.DomainId,
                        DomainName = _.DomainName,
                        DomainPrice  = _.Prices.FirstOrDefault(_=>_.IsActive),
-                       OwnerUserId = _.Owner.Id.ToString(),
-                       OwnerUserName = _.Owner.UserName,
+                       OwnerUserId = _.CreatorUserId.ToString(),
+                       OwnerUserName = _.CreatorUserName,
                        Prices = _.Prices
                    }).ToList();
 
@@ -264,7 +263,26 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             return result;
         }
 
-
+        public async Task<RepositoryOperationResult> Restore(string id)
+        {
+            var result = new RepositoryOperationResult();
+            var entity = _context.Collection
+              .Find(_ => _.DomainId == id).FirstOrDefault();
+            entity.IsDeleted = false;
+            var updateResult = await _context.Collection
+               .ReplaceOneAsync(_ => _.DomainId == id, entity);
+            if (updateResult.IsAcknowledged)
+            {
+                result.Succeeded = true;
+                result.Message = ConstMessages.SuccessfullyDone;
+            }
+            else
+            {
+                result.Succeeded = false;
+                result.Message = ConstMessages.ErrorInSaving;
+            }
+            return result;
+        }
         public async Task InsertMany(List<Entities.General.Domain.Domain> domains)
         {
            await _context.Collection.InsertManyAsync(domains);
@@ -279,5 +297,44 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             return result;
         }
 
+        public async Task<RepositoryOperationResult> EditDomain(DomainDTO dto)
+        {
+            var result = new RepositoryOperationResult();
+            var entity = _context.Collection
+                .Find(_ => _.DomainId == dto.DomainId).FirstOrDefault();
+            if (entity != null)
+            {
+                
+                #region Add Modification
+                var currentModifications = entity.Modifications;
+                var mod = GetCurrentModification($"Change domain by userId={this.GetUserId()} and UserName={this.GetUserName()} at datetime={DateTime.Now.ToPersianDdate()}");
+                currentModifications.Add(mod);
+                #endregion
+
+                entity.Modifications = currentModifications;
+                entity.DomainName = dto.DomainName;
+                entity.OwnerUserId = dto.OwnerUserId;
+                entity.OwnerUserName = dto.OwnerUserName;
+                entity.Prices = dto.Prices;
+                var updateResult = await _context.Collection
+               .ReplaceOneAsync(_ => _.DomainId == dto.DomainId, entity);
+                if (updateResult.IsAcknowledged)
+                {
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                }
+                else
+                {
+                    result.Succeeded = false;
+                    result.Message = ConstMessages.ErrorInSaving;
+                }
+            }
+            else
+            {
+                result.Succeeded = false;
+                result.Message = ConstMessages.ObjectNotFound;
+            }
+            return result;
+        }
     }
 }

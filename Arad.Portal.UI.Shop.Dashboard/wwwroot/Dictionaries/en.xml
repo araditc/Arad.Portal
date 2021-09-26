@@ -1161,6 +1161,9 @@
 	<string key="EditProductGroupPart_Title">
 		<value>Edit ProductGroup</value>
 	</string>
+	<string key="EditDomain_Title">
+		<value>Edit Domain</value>
+	</string>
 	<string key="EditProductPart_Title">
 		<value>Edit Product</value>
 	</string>
@@ -1190,6 +1193,9 @@
 	</string>
 	<string key="AddProductUnitPart_Title">
 		<value>Add ProductUnit</value>
+	</string>
+	<string key="AddDomain_Title">
+		<value>Add Domain</value>
 	</string>
 	<string key="EditProductUnitPart_Title">
 		<value>Edit ProductUnit</value>
@@ -1285,6 +1291,12 @@
   <string key="Active">
     <value>Active</value>
   </string>
+	<string key="DomainOwner">
+		<value>Domain Owner</value>
+	</string>
+	<string key="DomainName">
+		<value>Domain Name</value>
+	</string>
 	<string key="Rename">
 		<value>Rename</value>
 	</string>
@@ -1458,6 +1470,9 @@
 	<string key="DefaultCurrency">
 		<value>default currency</value>
 	</string>
+	<string key="DefaultDomain">
+		<value>default domain</value>
+	</string>
 	<string key="PriceValue">
 		<value>Price</value>
 	</string>
@@ -1538,6 +1553,9 @@
 	</string>
 	<string key="Menu_ProductGroups">
 		<value>Product Groups</value>
+	</string>
+	<string key="Menu_domains">
+		<value>Domains</value>
 	</string>
 	<string key="Menu_ContentCategory">
 		<value>Content Category</value>

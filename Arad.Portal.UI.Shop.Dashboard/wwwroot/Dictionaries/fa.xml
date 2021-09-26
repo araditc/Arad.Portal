@@ -1204,6 +1204,9 @@
 	<string key="EditProductGroupPart_Title">
 		<value>ویرایش گروه محصول</value>
 	</string>
+	<string key="EditDomain_Title">
+		<value>ویرایش دامنه</value>
+	</string>
 	<string key="EditProductPart_Title">
 		<value>ویرایش محصول</value>
 	</string>
@@ -1233,6 +1236,9 @@
 	</string>
 	<string key="AddProductUnitPart_Title">
 		<value>افزودن واحد محصول</value>
+	</string>
+	<string key="AddDomain_Title">
+		<value>افزودن دامنه</value>
 	</string>
 	<string key="EditProductUnitPart_Title">
 		<value>ویرایش واحد محصول</value>
@@ -1326,6 +1332,12 @@
 	</string>
 	<string key="Active">
 		<value>فعال</value>
+	</string>
+	<string key="DomainOwner">
+		<value>مالک دامنه</value>
+	</string>
+	<string key="DomainName">
+		<value>نام دامنه</value>
 	</string>
 	<string key="Rename">
 		<value>تغییر نام</value>
@@ -1498,6 +1510,9 @@
 	<string key="DefaultCurrency">
 		<value>واحد پول پیش فرض</value>
 	</string>
+	<string key="DefaultDomain">
+		<value>دامنه پیش فرض</value>
+	</string>
 	<string key="PriceValue">
 		<value>قیمت</value>
 	</string>
@@ -1578,6 +1593,9 @@
 	</string>
 	<string key="Menu_ProductGroups">
 		<value>گروه های محصول</value>
+	</string>
+	<string key="Menu_domains">
+		<value>دامنه ها</value>
 	</string>
 	<string key="Menu_ContentCategory">
 		<value>گروه محتوا</value>
