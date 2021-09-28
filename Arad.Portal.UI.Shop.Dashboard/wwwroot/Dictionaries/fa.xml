@@ -287,6 +287,9 @@
 	<string key="PermissionTitle_StoreMenues">
 		<value>منوهای فروشگاه</value>
 	</string>
+	<string key="PermissionTitle_Domains">
+		<value>دامنه ها</value>
+	</string>
 	<!--End [PermissionTitle]-->
 	<!--Start [tables]-->
 	<string key="tbl_RowName">
@@ -1489,6 +1492,12 @@
 	<string key="Url">
 		<value>Url</value>
 	</string>
+	<string key="Yes">
+		<value>بله</value>
+	</string>
+	<string key="No">
+		<value>خیر</value>
+	</string>
 	<string key="Currency">
 		<value>واحد پول</value>
 	</string>
@@ -1810,6 +1819,9 @@
 	</string>
 	<string key="RelatedLanguage">
 		<value>زبان مربوطه</value>
+	</string>
+	<string key="CurrentDomainPrice">
+		<value>قیمت جاری دامنه</value>
 	</string>
 	<string key="DefaultLanguage">
 		<value>زبان پیش فرض</value>

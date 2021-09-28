@@ -194,7 +194,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                 {
                     DomainId = Guid.NewGuid().ToString(),
                     DomainName = "https://localhost:44361",
+                    OwnerUserName ="superadmin",
                     IsActive = true,
+                    DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
+                    DefaultLanguageName = "فارسی",
                     IsDefault = true
                 };
 

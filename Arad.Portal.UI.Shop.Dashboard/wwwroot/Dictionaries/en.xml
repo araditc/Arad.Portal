@@ -291,6 +291,9 @@
 	<string key="PermissionTitle_StoreMenues">
 		<value>Store Menues</value>
 	</string>
+	<string key="PermissionTitle_Domains">
+		<value>Domains</value>
+	</string>
 	<!--End [PermissionTitle]-->
 	<!--Start [tables]-->
 	<string key="tbl_RowName">
@@ -1449,6 +1452,12 @@
 	<string key="Url">
 		<value>Url</value>
 	</string>
+	<string key="Yes">
+		<value>Yes</value>
+	</string>
+	<string key="No">
+		<value>No</value>
+	</string>
 	<string key="Currency">
 		<value>Currency</value>
 	</string>
@@ -1768,9 +1777,13 @@
 	<string key="Search">
 		<value>Search</value>
 	</string>
-	<string key="RelatedLanguage">
+	<string key="RelatedLanguage">Essential
 		<value>Related Language</value>
 	</string>
+	<string key="CurrentDomainPrice">
+		<value>Current Domain Price</value>
+	</string>
+	
 	<string key="DefaultLanguage">
 		<value>Default Language</value>
 	</string>

@@ -65,7 +65,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Mapping
             CreateMap<Content, ContentDTO>().ReverseMap();
             CreateMap<Comment, CommentDTO>().ReverseMap();
             CreateMap<Menu, MenuDTO>().ReverseMap();
+            CreateMap<Price, PriceDTO>().ReverseMap();
+
         }
-        
+
     }
 }

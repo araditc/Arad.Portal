@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Models.Domain
 {
-    public class DomainDTO
+    public class DomainViewModel
     {
-        public DomainDTO()
+        public DomainViewModel()
         {
             Prices = new();
         }
@@ -31,6 +31,6 @@ namespace Arad.Portal.DataLayer.Models.Domain
 
         public bool IsDeleted { get; set; }
 
-        public List<PriceDTO> Prices { get; set; }
+        public List<Price> Prices { get; set; }
     }
 }

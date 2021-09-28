@@ -16,6 +16,10 @@
 }
 @section Styles{
     <link href="~/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css" rel="stylesheet" />
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
+    }
     <style>
         .text-danger {
             font-size: 12px;
@@ -30,6 +34,7 @@
             font-size: 12px;
             line-height: 1.42857;
         }
+
         .card-header {
             background-color: #e0dcdf;
         }
@@ -47,18 +52,18 @@
 
             <div class="card-body">
                 <input type="hidden" value="@Model.DomainId" asp-for="DomainId" />
-                
-               
+
+
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <label for="languageId">@Language.GetString("LanguageName")</label><br />
+                        <label for="languageId">@Language.GetString("DefaultLanguage")</label><br />
                         <select class="form-control" asp-for="DefaultLanguageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text", Model.DefaultLanguageId))">
                         </select>
                         <span data-val-result="DefaultLanguageId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="groupName">@Language.GetString("DomainName")</label><br />
-                        <input type="text" class="form-control" asp-for="DomainName" value="DomainName">
+                        <input type="text" class="form-control" asp-for="DomainName">
                         <span data-val-result="DomainName" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
@@ -191,7 +196,7 @@
                         </div>
                     </div>
                 </div>
-             
+
 
             </div>
             <div class="card-footer">
@@ -205,16 +210,58 @@
     </div>
 </div>
 @section Scripts{
-    <script>
-
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <script src="~/plugins/datePicker/kamadatepicker.min.js"></script>
+    }
+    else
+    {
+        <script src="~/js/moment.min.js"></script>
+        <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
+    }
+    @if (dir == "rtl")
+    {
+        <script src="~/plugins/iCheck/icheck.min.js"></script>
+    }
+<script>
+        var active = '@Language.GetString("Active")';
+        var inActive = '@Language.GetString("InActive")';
         $(document).ready(function () {
             debugger;
-            
+            $("#DefaultLanguageId").val('@ViewBag.LangId');
+
+             //icheckboxes radiobuttons
+            if ("@dir" == "rtl") {
+                $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+                    checkboxClass: 'icheckbox_minimal-blue',
+                    radioClass: 'iradio_minimal-blue'
+                });
+            }
+
+             //datetimepicker
+            if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
+            {
+                kamaDatepicker('dtpStartDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+            }
+            else
+            {
+                $('#dtpStartDate').datetimepicker({
+                    format: 'L'
+                });
+            }
             $("#btnAddDomain").click(function () {
             debugger;
                 var flag = false;
-
-                if ($("#multiLingualList tr").length == 0) {
+                if ($("#DefaultLanguageId").val() == "" || $("#DefaultLanguageId").val() == "-1" )
+                {
+                    $("span[data-val-result='DefaultLanguageId']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
+                    flag = true;
+                }
+                if ($("#OwnerUserId").val() == "-1") {
+                    $("span[data-val-result='OwnerUserId']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
+                    flag = true;
+                }
+                if ($("#priceList tr").length == 0) {
                     $("span[data-val-result='MultiLingualProperties']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
                     flag = true;
                 }
@@ -276,14 +323,15 @@
 
         function FillDataToSend() {
             debugger;
-            var dto = {};
+            var obj = {};
             obj.Prices = [];
             obj.DomainId = $("#DomainId").val();
             obj.DomainName = $("#DomainName").val();
             obj.OwnerUserId = $("#OwnerUserId").val();
-            obj.OwnerUserName = $("#OwnerUserName option:selected").text();
+            obj.OwnerUserName = $("#OwnerUserId option:selected").text();
             obj.DefaultLanguageId = $("#DefaultLanguageId").val();
-            obj.IsDefault = $("#chbDefaultDomain").prop("checked");
+            obj.DefaultLanguageName = $("#DefaultLanguageId option:selected").text();
+            obj.IsDefault = $("#chbDefaultDomain").prop("checked") ;
             //prices
             $("#priceList tr").each(function () {
 
@@ -301,7 +349,7 @@
                 innerModel.Symbol = "";
                 innerModel.Prefix = "";
 
-                dto.Prices.push(innerModel);
+                obj.Prices.push(innerModel);
 
             });
             return obj;
@@ -378,7 +426,7 @@
         var tr = $(sender).parent().parent();
         $(tr).remove();
     }
-    </script>
+</script>
 }
 
 

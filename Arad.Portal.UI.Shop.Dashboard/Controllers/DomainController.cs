@@ -37,7 +37,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> List()
         {
-            PagedItems<DomainDTO> result = new PagedItems<DomainDTO>();
+            PagedItems<DomainViewModel> result = new PagedItems<DomainViewModel>();
             var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             ViewBag.Permissions = dicKey;
@@ -60,11 +60,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             if (userDB.IsSystemAccount)
             {
                 var vendorList = await _userManager.GetUsersForClaimAsync(new Claim("AppRole", "True"));
-                ViewBag.Vendors = vendorList.ToList().Select(_ => new SelectListModel()
+                var vendors = vendorList.Select(_ => new SelectListModel()
                 {
                     Text = _.Profile.FullName,
                     Value = _.Id
-                });
+                }).ToList();
+                vendors.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
+                ViewBag.Vendors = vendors;
             }
             if (!string.IsNullOrWhiteSpace(id))
             {
@@ -100,6 +102,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
+                foreach (var item in dto.Prices)
+                {
+                    var cur = _curRepository.FetchCurrency(item.CurrencyId);
+
+                    item.PriceId = Guid.NewGuid().ToString();
+                    item.Symbol = cur.ReturnValue.Symbol;
+                    item.Prefix = cur.ReturnValue.Symbol;
+                    item.SDate = DateHelper.ToEnglishDate(item.StartDate);
+                }
                 RepositoryOperationResult saveResult = await _domainRepository.AddDomain(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
@@ -174,6 +185,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
+                foreach (var item in dto.Prices)
+                {
+                    var cur = _curRepository.FetchCurrency(item.CurrencyId);
+
+                    item.PriceId = Guid.NewGuid().ToString();
+                    item.Symbol = cur.ReturnValue.Symbol;
+                    item.Prefix = cur.ReturnValue.Symbol;
+                    item.SDate = DateHelper.ToEnglishDate(item.StartDate);
+                }
                 model = _domainRepository.FetchDomain(dto.DomainId).ReturnValue;
                 if (model == null)
                 {

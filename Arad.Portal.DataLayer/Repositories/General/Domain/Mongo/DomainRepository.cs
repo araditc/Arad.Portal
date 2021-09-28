@@ -48,20 +48,42 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
 
                     var equallentEntity = _mapper.Map<Entities.General.Domain.Domain>(dto);
                     equallentEntity.DomainId = Guid.NewGuid().ToString();
-                    //if (!string.IsNullOrWhiteSpace(dto.OwnerUserId))
-                    //{
-                    //    var ownerUser = await _userManager.FindByIdAsync(dto.OwnerUserId);
-                    //    if (ownerUser != null)
-                    //        equallentEntity.Owner = ownerUser;
-                    //}
-                    if (dto.DomainPrice != null)
+                    foreach (var price in dto.Prices)
                     {
-                        dto.DomainPrice.PriceId = Guid.NewGuid().ToString();
+                        price.PriceId = Guid.NewGuid().ToString();
                     }
-                    equallentEntity.Prices = new List<Models.Shared.Price>();
-                    equallentEntity.Prices.Add(dto.DomainPrice);
+                    #region Prices
+                    equallentEntity.Prices = new List<Price>();
+                    foreach (var price in dto.Prices.OrderBy(_ => _.StartDate))
+                    {
+                        if (price.IsActive && string.IsNullOrWhiteSpace(price.EndDate))//price is valid from client
+                        {
+                            if (equallentEntity.Prices.Any(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive))
+                            {
+                                var exist = equallentEntity.Prices.First(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive);
+                                equallentEntity.Prices.Remove(exist);
+                                exist.IsActive = false;
+                                exist.EndDate = DateTime.UtcNow;
+                                equallentEntity.Prices.Add(exist);
 
+                            }
+                        }
 
+                        var p = new Price()
+                        {
+                            PriceId = !string.IsNullOrWhiteSpace(price.PriceId) ? price.PriceId : Guid.NewGuid().ToString(),
+                            CurrencyId = price.CurrencyId,
+                            CurrencyName = price.CurrencyName,
+                            IsActive = !string.IsNullOrWhiteSpace(price.PriceId) ? price.IsActive : true,
+                            Prefix = price.Prefix,
+                            PriceValue = price.PriceValue,
+                            StartDate = DateHelper.ToEnglishDate(price.StartDate).ToUniversalTime(),
+                            EndDate = !string.IsNullOrWhiteSpace(price.EndDate) ?
+                            GeneralLibrary.Utilities.DateHelper.ToEnglishDate(price.EndDate).ToUniversalTime() : null
+                        };
+                        equallentEntity.Prices.Add(p);
+                    }
+                    #endregion
                     equallentEntity.Modifications = new List<Modification>();
                     equallentEntity.CreationDate = DateTime.Now;
                     equallentEntity.CreatorUserId = this.GetUserId();
@@ -80,10 +102,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             return result;
         }
        
-        public async Task<PagedItems<DomainDTO>> AllDomainList(string queryString)
+        public async Task<PagedItems<DomainViewModel>> AllDomainList(string queryString)
         {
 
-            PagedItems<DomainDTO> result = new PagedItems<DomainDTO>();
+            PagedItems<DomainViewModel> result = new PagedItems<DomainViewModel>();
             try
             {
                 NameValueCollection filter = HttpUtility.ParseQueryString(queryString);
@@ -103,14 +125,18 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
 
                 long totalCount = await _context.Collection.Find(c => true).CountDocumentsAsync();
                 var list = _context.Collection.AsQueryable().Skip((page - 1) * pageSize)
-                   .Take(pageSize).Select(_ => new DomainDTO()
+                   .Take(pageSize).Select(_ => new DomainViewModel()
                    {
                        DomainId = _.DomainId,
                        DomainName = _.DomainName,
-                       DomainPrice  = _.Prices.FirstOrDefault(_=>_.IsActive),
-                       OwnerUserId = _.CreatorUserId.ToString(),
-                       OwnerUserName = _.CreatorUserName,
-                       Prices = _.Prices
+                       Prices = _.Prices, 
+                       //DomainPrice  = _.Prices.FirstOrDefault(_=>_.IsActive),
+                       OwnerUserId = _.OwnerUserId.ToString(),
+                       OwnerUserName = _.OwnerUserName,
+                       DefaultLanguageId = _.DefaultLanguageId,
+                       DefaultLanguageName =_.DefaultLanguageName,
+                       IsDefault = _.IsDefault
+                      
                    }).ToList();
 
                 result.CurrentPage = page;
@@ -123,7 +149,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             catch (Exception ex)
             {
                 result.CurrentPage = 1;
-                result.Items = new List<DomainDTO>();
+                result.Items = new List<DomainViewModel>();
                 result.ItemsCount = 0;
                 result.PageSize = 10;
                 result.QueryString = queryString;
@@ -315,7 +341,42 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 entity.DomainName = dto.DomainName;
                 entity.OwnerUserId = dto.OwnerUserId;
                 entity.OwnerUserName = dto.OwnerUserName;
-                entity.Prices = dto.Prices;
+                foreach (var price in dto.Prices)
+                {
+                    price.PriceId = Guid.NewGuid().ToString();
+                }
+                #region Prices
+                entity.Prices = new List<Price>();
+                foreach (var price in dto.Prices.OrderBy(_ => _.StartDate))
+                {
+                    if (price.IsActive && string.IsNullOrWhiteSpace(price.EndDate))//price is valid from client
+                    {
+                        if (entity.Prices.Any(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive))
+                        {
+                            var exist = entity.Prices.First(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive);
+                            entity.Prices.Remove(exist);
+                            exist.IsActive = false;
+                            exist.EndDate = DateTime.UtcNow;
+                            entity.Prices.Add(exist);
+
+                        }
+                    }
+
+                    var p = new Price()
+                    {
+                        PriceId = !string.IsNullOrWhiteSpace(price.PriceId) ? price.PriceId : Guid.NewGuid().ToString(),
+                        CurrencyId = price.CurrencyId,
+                        CurrencyName = price.CurrencyName,
+                        IsActive = !string.IsNullOrWhiteSpace(price.PriceId) ? price.IsActive : true,
+                        Prefix = price.Prefix,
+                        PriceValue = price.PriceValue,
+                        StartDate = DateHelper.ToEnglishDate(price.StartDate).ToUniversalTime(),
+                        EndDate = !string.IsNullOrWhiteSpace(price.EndDate) ?
+                        GeneralLibrary.Utilities.DateHelper.ToEnglishDate(price.EndDate).ToUniversalTime() : null
+                    };
+                    entity.Prices.Add(p);
+                }
+                #endregion
                 var updateResult = await _context.Collection
                .ReplaceOneAsync(_ => _.DomainId == dto.DomainId, entity);
                 if (updateResult.IsAcknowledged)
