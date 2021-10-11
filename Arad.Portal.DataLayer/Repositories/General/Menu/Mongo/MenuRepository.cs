@@ -178,6 +178,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                     Order = _.Order,
                     Url = _.Url,
                     SubId = _.SubId,
+                    SubName = _.SubName,
+                    SubGroupId = _.SubGroupId,
+                    SubGroupName = _.SubGroupName,
                     Childrens = GetChildren(_.MenuId,finalLangId, domainEntity)
                 }).ToList();
             //those menues which have isFull = true will be shown in UI
@@ -243,6 +246,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                         MenuType = _.MenuType,
                         Order = _.Order,
                         Url = _.Url,
+                        SubId = _.SubId,
+                        SubName = _.SubName,
+                        SubGroupId = _.SubGroupId,
+                        SubGroupName = _.SubGroupName,
                         Childrens = GetChildren(_.MenuId, finalLangId, domainEntity)
                     }).ToList();
             }

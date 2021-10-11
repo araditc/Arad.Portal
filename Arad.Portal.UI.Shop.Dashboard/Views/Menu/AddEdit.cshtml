@@ -436,10 +436,10 @@
             obj.MenuTypeId = $("#MenuType").val();
             obj.Order = parseInt($("#Order").val());
             obj.Icon = $("#iconPick").val();
-            if ($("MenuType").val() == "4") {
+            if ($("#MenuType").val() == "4") {
                 obj.Url = $("#Url").val();
             }
-            if ($("MenuType").val() != "4" && $("MenuType").val() != "5") {
+            if ($("#MenuType").val() != "4" && $("#MenuType").val() != "5") {
                 obj.SubGroupId = $("#categoryId").val();
                 obj.SubGroupName = $("#categoryId option:selected").text();
                 if ($("MenuType").val() != "1" || $("MenuType").val() != "3") {

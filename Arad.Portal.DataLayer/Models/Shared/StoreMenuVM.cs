@@ -13,6 +13,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
         {
             Childrens = new();
             IsFull = true;
+            MenuTitle = new MultiLingualProperty();
         }
         public string MenuId { get; set; }
         /// <summary>
@@ -26,6 +27,12 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public string Url { get; set; }
 
         public string SubId { get; set; }
+
+        public string SubName { get; set; }
+
+        public string SubGroupId { get; set; }
+
+        public string SubGroupName { get; set; }
         public bool IsFull { get; set; }
         public List<StoreMenuVM> Childrens { get; set; }
     }
