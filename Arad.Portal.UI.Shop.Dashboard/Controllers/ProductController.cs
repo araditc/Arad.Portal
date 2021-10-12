@@ -25,6 +25,7 @@ using Arad.Portal.DataLayer.Entities.Shop.Promotion;
 using Microsoft.AspNetCore.Hosting;
 using System.Net.Http;
 using Arad.Portal.UI.Shop.Dashboard.Helpers;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -44,6 +45,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IHttpClientFactory _clientFactory;
         private readonly string imageSize = "";
+        
         public ProductController(UserManager<ApplicationUser> userManager,
             IProductRepository productRepository, IPermissionView permissionView,
             ILanguageRepository languageRepository, IProductGroupRepository productGroupRepository,
@@ -233,7 +235,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         pic.Content = "";
                     }
                 }
-
+                
                 RepositoryOperationResult saveResult = await _productRepository.Add(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });

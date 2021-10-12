@@ -190,7 +190,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             foreach (var leaf in prodctGroupMenuLeaves)
             {
                 var tmp = new StoreMenuVM();
-                var productsInGroupCounts = _productContext.ProductCollection.Find(_ => _.GroupIds.Contains(leaf.SubId)).CountDocuments();
+                var productsInGroupCounts = _productContext.ProductCollection.Find(_ => _.GroupIds.Contains(leaf.SubGroupId)).CountDocuments();
                 if(productsInGroupCounts == 0)
                 {
                     leaf.IsFull = false;
@@ -208,7 +208,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             foreach (var leaf in contentCategoryLeaves)
             {
                 var tmp = new StoreMenuVM();
-                var contentsInCategoryCounts = _contentContext.Collection.Find(_ => _.ContentCategoryId == leaf.SubId).CountDocuments();
+                var contentsInCategoryCounts = _contentContext.Collection.Find(_ => _.ContentCategoryId == leaf.SubGroupId).CountDocuments();
                 if(contentsInCategoryCounts == 0)
                 {
                     leaf.IsFull = false;

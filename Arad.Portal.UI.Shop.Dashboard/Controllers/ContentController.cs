@@ -1,5 +1,6 @@
 ﻿using Arad.Portal.DataLayer.Contracts.General.Content;
 using Arad.Portal.DataLayer.Contracts.General.ContentCategory;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Models.Content;

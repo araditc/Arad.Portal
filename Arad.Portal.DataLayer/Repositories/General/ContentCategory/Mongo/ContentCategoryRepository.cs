@@ -20,6 +20,8 @@ using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Microsoft.AspNetCore.Identity;
 
+
+
 namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
 {
     public class ContentCategoryRepository : BaseRepository, IContentCategoryRepository
@@ -93,7 +95,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
                 }).ToList();
                // .Sort(Builders<SelectListModel>.Sort.Ascending(x => x.Text))
             }
-            
+            result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
             return result; ;
         }
 

@@ -29,6 +29,7 @@ using System.Collections.Specialized;
 using System.Web;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using Arad.Portal.DataLayer.Contracts.General.Currency;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -46,6 +47,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IMessageTemplateRepository _messageTemplateRepository;
         private readonly ILanguageRepository _languageRepository;
         private readonly ICurrencyRepository _currencyRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IDomainRepository _domainRepository;
         
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
@@ -56,8 +59,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ILanguageRepository languageRepository,
             IConfiguration configuration,
             IOptions<MessageCenter> smsSettings,
+            IHttpContextAccessor httpContextAccessor,
             INotificationRepository notificationRepository,
             ICurrencyRepository currencyRepository,
+            IDomainRepository domainRepository,
             IMessageTemplateRepository messageTemplateRepository)
         {
             _userManager = userManager;
@@ -72,6 +77,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _currencyRepository = currencyRepository;
             _notificationRepository = notificationRepository;
             _messageTemplateRepository = messageTemplateRepository;
+            _httpContextAccessor = httpContextAccessor;
+            _domainRepository = domainRepository;
         }
 
         [HttpGet]
@@ -131,7 +138,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             //    ViewBag.Message = Language.GetString("AlertAndMessage_InActiveUserAccount");
             //    return View(model);
             //}
-            ApplicationUser user = await _userManager.FindByNameAsync("superAdmin");
+            ApplicationUser user = await _userManager.FindByNameAsync(model.Username);
             await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
 
             user.LastLoginDate = DateTime.Now;
@@ -290,7 +297,18 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var model = new RegisterUserModel();
             var list = await _roleRepository.List("");
             ViewBag.LangList = _languageRepository.GetAllActiveLanguage();
-           
+            var currentUserId = _httpContextAccessor.HttpContext.User
+                .Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            var currentUser = await _userManager.FindByIdAsync(currentUserId);
+            if(currentUser.IsSystemAccount)
+            {
+                ViewBag.IsSystem = true;
+                ViewBag.DomainList = _domainRepository.GetAllActiveDomains();
+
+            }else
+            {
+                ViewBag.IsSystem = false;
+            }
             model.Roles = list.Items.Select(_ => new RoleListView()
             {
                 Title = _.RoleName,
@@ -344,6 +362,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                 model.DefaultCurrencyId = currencyDto.CurrencyId;
                 model.DefaultCurrencyName = currencyDto.CurrencyName;
+                var currentDomain = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
+                string associatedDomainId = "";
+                if (!string.IsNullOrWhiteSpace(model.DomainId))
+                {
+                    associatedDomainId = model.DomainId;
+                }
+                else
+                {
+                    associatedDomainId = _domainRepository.FetchByName(currentDomain).ReturnValue.DomainId;
+                }
                 if (existUser == null)
                 {
                     var user = new ApplicationUser()
@@ -374,6 +402,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                             ClaimValue = true.ToString()
                         });
                     }
+                    //add domain to its claims
+                    user.Claims.Add(new IdentityUserClaim<string> 
+                    {
+                        ClaimType = "RelatedDomain",
+                        ClaimValue = associatedDomainId
+                    });
                     var res = await _userManager.CreateAsync(user, model.Password);
 
                     if (!res.Succeeded)

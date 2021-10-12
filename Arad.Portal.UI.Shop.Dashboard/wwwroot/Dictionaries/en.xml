@@ -1783,6 +1783,9 @@
 	<string key="CurrentDomainPrice">
 		<value>Current Domain Price</value>
 	</string>
+	<string key="AssociatedDomain">
+		<value>Associated Domain</value>
+	</string>
 	
 	<string key="DefaultLanguage">
 		<value>Default Language</value>

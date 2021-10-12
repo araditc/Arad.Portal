@@ -1823,6 +1823,9 @@
 	<string key="CurrentDomainPrice">
 		<value>قیمت جاری دامنه</value>
 	</string>
+	<string key="AssociatedDomain">
+		<value>دامنه مربوطه</value>
+	</string>
 	<string key="DefaultLanguage">
 		<value>زبان پیش فرض</value>
 	</string>

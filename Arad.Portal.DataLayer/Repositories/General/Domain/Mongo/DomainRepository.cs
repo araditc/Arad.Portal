@@ -246,14 +246,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 var dbEntity = _context.Collection.Find(_ => _.DomainName == domainName).First();
                 if (dbEntity == null)
                 {
-                    result.Message = ConstMessages.ObjectNotFound;
+                    dbEntity = _context.Collection.Find(_ => _.IsDefault).First();
                 }
 
                 var dto = _mapper.Map<DomainDTO>(dbEntity);
                 result.Succeeded = true;
                 result.Message = ConstMessages.SuccessfullyDone;
                 result.ReturnValue = dto;
-
             }
             catch (Exception)
             {
@@ -395,6 +394,18 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 result.Succeeded = false;
                 result.Message = ConstMessages.ObjectNotFound;
             }
+            return result;
+        }
+
+        public List<SelectListModel> GetAllActiveDomains()
+        {
+            var result = new List<SelectListModel>();
+            result = _context.Collection.Find(_ => _.IsActive && !_.IsDeleted)
+              .Project(_ => new SelectListModel()
+              {
+                  Text = _.DomainName,
+                  Value = _.DomainId
+              }).ToList();
             return result;
         }
     }

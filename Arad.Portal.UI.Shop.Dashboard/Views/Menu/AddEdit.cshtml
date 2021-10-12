@@ -303,22 +303,23 @@
                             $("#productOrContentSection").addClass("invisible");
                             break;
                         case "2":
-                        case "3":
-                            //content and contentCtaegory
-                            var list = @Json.Serialize(ViewBag.ContentCategoryList);
-                            (list).forEach(function (item) {
-                                var op = "<option value='" + item.value + "'>" + item.text + "</option>";
-                                options += op;
-                            });
-                            $("#categoryId").html(options);
-                            $("#groupSection").removeClass("invisible");
-                            $("#productOrContentSection").addClass("invisible");
-                        case "4":
-                        case "5":
-                            //link and module
-                            $("#groupSection").addClass("invisible");
-                            $("#productOrContentSection").addClass("invisible");
-                            break;
+                case "3":
+                    //content and contentCtaegory
+                    var list = @Json.Serialize(ViewBag.ContentCategoryList);
+                    (list).forEach(function (item) {
+                        var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                        options += op;
+                    });
+                    $("#categoryId").html(options);
+                    $("#groupSection").removeClass("invisible");
+                    $("#productOrContentSection").addClass("invisible");
+                    break;
+                case "4":
+                case "5":
+                    //link and module
+                    $("#groupSection").addClass("invisible");
+                    $("#productOrContentSection").addClass("invisible");
+                    break;
                     }
         }
         function LoadData() {
@@ -344,6 +345,7 @@
             $("#iconPicker").iconpicker("setIcon", "@Model.Icon");
         }
         function fillContentList(categoryId, selectedVal) {
+            debugger;
             $.ajax({
                 url: "/Menu/GetContentList/?categoryId=" + categoryId,
                 type: 'Get',

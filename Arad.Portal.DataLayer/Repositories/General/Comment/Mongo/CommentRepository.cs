@@ -19,6 +19,7 @@ using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Content.Mongo;
 using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Entities.General.User;
+using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
 {
@@ -28,6 +29,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
         private readonly CommentContext _commentContext;
         private readonly ProductContext _productContext;
         private readonly ContentContext _contentContext;
+       
         private readonly UserManager<ApplicationUser> _userManager;
         public CommentRepository(IHttpContextAccessor httpContextAccessor,
             IMapper mapper, CommentContext commentContext,
@@ -56,7 +58,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
                     .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
                 equallentModel.IsActive = true;
                 equallentModel.CommentId = Guid.NewGuid().ToString();
-
+                
                 await _commentContext.Collection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;
                 result.Message = ConstMessages.SuccessfullyDone;

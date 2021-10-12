@@ -27,6 +27,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
         private readonly DomainContext _domainContext;
         private readonly ContentCategoryContext _categoryContext;
         private readonly LanguageContext _languageContext;
+       
         public ContentRepository(IHttpContextAccessor httpContextAccessor,DomainContext domainContext,
            IMapper mapper, ContentCategoryContext categoryContext, ContentContext contentContext, LanguageContext langContext)
             : base(httpContextAccessor)
@@ -54,6 +55,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                     .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
                 equallentModel.IsActive = true;
                 equallentModel.ContentId = Guid.NewGuid().ToString();
+
+                var domain = this.GetCurrentDomain();
+                var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domain).First();
+                equallentModel.AssociatedDomainId = domainEntity.DomainId;
 
                 await _contentContext.Collection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;

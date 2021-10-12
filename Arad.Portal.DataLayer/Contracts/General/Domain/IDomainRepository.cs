@@ -18,5 +18,6 @@ namespace Arad.Portal.DataLayer.Contracts.General.Domain
         RepositoryOperationResult<DomainDTO> FetchDomain(string domainId);
         RepositoryOperationResult<DomainDTO> FetchByName(string domainName);
         Task<RepositoryOperationResult> Restore(string id);
+        List<SelectListModel> GetAllActiveDomains();
     }
 }

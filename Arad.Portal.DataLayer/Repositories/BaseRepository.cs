@@ -35,6 +35,12 @@ namespace Arad.Portal.DataLayer.Repositories
                  .FirstOrDefault(_ => _.Type == ClaimTypes.Name).Value;
         }
 
+        protected string GetCurrentDomain()
+        {
+            var domain = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
+            return domain;
+            
+        }
         protected string GetUserId()
         {
             return _httpContextAccessor.HttpContext.User.Claims
