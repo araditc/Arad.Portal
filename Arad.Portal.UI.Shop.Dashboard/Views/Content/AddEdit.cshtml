@@ -448,7 +448,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <label for="tagKeywords">@Language.GetString("TagKeywords")</label>
-                        <input type="text" class="form-control" id="tagKeyWords" name="tagKeyWords" value="@(string.Join(',', @Model.TagKeywords))" />
+                        <input type="text" class="form-control" id="tagKeyWords" name="tagKeyWords" value="@(Model.TagKeywords.Count > 0 ? string.Join(',', @Model.TagKeywords) : "")" />
                     </div>
                 </div>
                 <div class="row">

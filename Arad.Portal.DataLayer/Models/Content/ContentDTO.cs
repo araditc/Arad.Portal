@@ -13,6 +13,7 @@ namespace Arad.Portal.DataLayer.Models.Content
         {
             Images = new();
             Comments = new();
+            TagKeywords = new();
         }
         public string ContentId { get; set; }
 

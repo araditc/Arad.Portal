@@ -23,10 +23,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             _env = env;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
 
         [HttpPost]
         [Route("ImageContent/file-upload")]
