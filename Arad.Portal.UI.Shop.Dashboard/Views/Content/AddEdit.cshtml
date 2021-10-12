@@ -189,7 +189,8 @@
                 <div class="modal-body" id="upload-modal-body">
                     <div id="rowContainer" class="row justify-content-center align-items-center">
                         <div id="container" style="position: relative;display: inline; height: 400px; width: 400px;max-width:100%;">
-                            <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="blah"  alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
+                            <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="blah" 
+                                 alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
                         </div>
                     </div>
                 </div>
@@ -226,7 +227,8 @@
                 <div class="modal-body" id="upload-modal-body">
                     <div id="rowContainer" class="row justify-content-center align-items-center">
                         <div id="containerlg" style="position: relative;display: inline; height: 400px; width: 400px;max-width:100%;">
-                            <img onchange="getLogoURL(this)" class="img-fluid" hidden="hidden" id="imgModalBody"  alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
+                            <img onchange="getLogoURL(this)" class="img-fluid" hidden="hidden" id="imgModalBody"
+                                 alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
                         </div>
                     </div>
                 </div>
@@ -357,7 +359,8 @@
                             </div>
                             <div class="card-body">
                                 <div class="text-center form-group">
-                                    <img id="fileLogoImage" onclick="ViewImage('@Model.FileLogo')" style="cursor: pointer" class="profile-user-img img-fluid img-circle" src="@Model.FileLogo" alt="content logo">
+                                    <img id="fileLogoImage" onclick="ViewImage('@Model.FileLogo')" style="cursor: pointer" 
+                                         class="profile-user-img img-fluid img-circle" src="@Model.FileLogo" alt="content logo">
                                 </div>
                                 <hr>
                                 <div class="custom-file">
@@ -467,7 +470,6 @@
                                         <script src="~/lib/ckeditor/ckeditor.js"></script>
                                         <script>
                                                 var config = {
-                                                   /* filebrowserImageUploadUrl: '/Content/FileUpload',*/
                                                     filebrowserImageUploadUrl : '/ImageContent/file-upload',
                                                     language: '@lan'
                                                 }
@@ -570,6 +572,17 @@
                 }
                 if ("@Model.PersianEndShowDate" != "") {
                     $("#dtpEndShowDate").val("@Model.PersianEndShowDate");
+                }
+                if ('@Model.Images.Any()' == 'True') {
+                    debugger;
+                    var serverImages = @Json.Serialize(@Model.Images);
+                    for (var i = 0; i < serverImages.length; i++) {
+                        var model = {};
+                        model.ImageId = serverImages[i].imageId;
+                        model.Content = serverImages[i].url;
+                        
+                        images.push(model);
+                    }
                 }
             }
             else
@@ -816,10 +829,11 @@
             var item = images.find(_ => _.ImageId == id);
             index = images.indexOf(item);
 
-            item.IsMain = $(this).find("td:eq(4) .rdbIsMain").prop("checked") === 'true';
+            item.IsMain = $(this).find("td:eq(4) .rdbIsMain").prop("checked") == true;
             item.Title = $(this).find("td:eq(2) .txtTitle").val();
             item.Description = $(this).find("td:eq(3) .txtDesc").val();
             item.ImageId = item.ImageId.toString();
+            images[index] = item;
             obj.Images.push(item);
         });
         obj.PersianStartShowDate = $("#dtpStartShowDate").val();

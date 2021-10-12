@@ -193,8 +193,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                 var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
 
-                long totalCount = await _contentContext.Collection.Find(c => true).CountDocumentsAsync();
-                var totalList = _contentContext.Collection.AsQueryable();
+                long totalCount = await _contentContext.Collection.Find(_=>!_.IsDeleted).CountDocumentsAsync();
+                var totalList = _contentContext.Collection.AsQueryable().Where(_=>!_.IsDeleted);
                 if (!string.IsNullOrWhiteSpace(filter["catId"]))
                 {
                     totalList = totalList.Where(_ => _.ContentCategoryId == filter["catId"]);
@@ -286,6 +286,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             var result = new RepositoryOperationResult();
 
             var equallentModel = _mapper.Map<Entities.General.Content.Content>(dto);
+            equallentModel.StartShowDate = DateHelper.ToEnglishDate(dto.PersianStartShowDate);
+            equallentModel.EndShowDate = DateHelper.ToEnglishDate(dto.PersianEndShowDate);
             var userName = _httpContextAccessor.HttpContext.User.Claims
                    .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
             var userId = _httpContextAccessor.HttpContext.User.Claims

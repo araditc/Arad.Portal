@@ -122,7 +122,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             : new { Status = "Error", opResult.Message });
         }
 
-
+        
         [HttpGet]
         public async Task<IActionResult> ApproveComment(string commentId, bool isApproved)
         {

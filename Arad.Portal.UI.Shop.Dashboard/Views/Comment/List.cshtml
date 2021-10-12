@@ -171,7 +171,7 @@
                                 <td>
                                     @if (ViewBag.Permissions["Edit"])
                                     {
-                                        <a asp-action="ApproveComment" asp-controller="Comment" asp-route-id="@item.CommentId" class="btn btn-sm btn-info">
+                                        <a asp-action="ApproveComment" asp-controller="Comment" asp-route-commentId="@item.CommentId" asp-route-isApproved="@item.IsApproved" class="btn btn-sm btn-info">
                                             <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Approved")
                                         </a>
                                     }

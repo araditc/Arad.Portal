@@ -1124,17 +1124,14 @@
             var item = images.find(_ => _.ImageId == id);
             index = images.indexOf(item);
 
-            item.IsMain = $(this).find("td:eq(4) .rdbIsMain").prop("checked") === 'true';
+            item.IsMain = $(this).find("td:eq(4) .rdbIsMain").prop("checked") == true;
             item.Title = $(this).find("td:eq(2) .txtTitle").val();
             item.Description = $(this).find("td:eq(3) .txtDesc").val();
             item.ImageId = item.ImageId.toString();
             images[index] = item;
             dto.Pictures.push(images[index]);
         });
-        //for (var i = 0; i < images.length; i++) {
-        //    debugger;
-        //    dto.Pictures.push(images[i]);
-        //}
+        
         dto.UniqueCode = $("#UniqueCode").val();
         dto.Inventory = $("#Inventory").val();
         dto.MinimumCount = $("#MinimumCount").val();
