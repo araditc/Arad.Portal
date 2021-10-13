@@ -161,89 +161,94 @@
             <script src="~/lib/iCheck/icheck.min.js"></script>
 
             <script type="text/javascript">
-    $(document).ready(function () {
+            $(document).ready(function () {
 
-    var input = document.querySelector("#PhoneNumber");
+            var input = document.querySelector("#PhoneNumber");
 
-    window.intlTelInput(input,
-    {
-    initialCountry: "IR",
-    placeholderNumberType: "MOBILE",
-    separateDialCode: true,
-    utilsScript: "../../lib/intl-tel-input/js/utils.js",
-    nationalMode: true,
-    hiddenInput: "FullMobile"
-    });
+            window.intlTelInput(input,
+            {
+            initialCountry: "IR",
+            placeholderNumberType: "MOBILE",
+            separateDialCode: true,
+            utilsScript: "../../lib/intl-tel-input/js/utils.js",
+            nationalMode: true,
+            hiddenInput: "FullMobile"
+            });
 
 
-    $("#addUserFrm").submit(function (e) {
-        debugger;
-    e.preventDefault();
-    var frm = document.getElementById('addUserFrm');
-    var form = new FormData(frm);
-    /*form.append("FullMobile", $("#hidePhone").val());*/
+            $("#addUserFrm").submit(function (e) {
+                debugger;
+                e.preventDefault();
+                $('span[data-val-result]').each(function () {
+                    $(this).html("");
+                });
+            var frm = document.getElementById('addUserFrm');
+            var form = new FormData(frm);
+            /*form.append("FullMobile", $("#hidePhone").val());*/
 
-    $.ajax({
-    url: $(this).attr('action'),
-    data: form,
-    type: 'Post',
-    processData: false,
-    contentType: false,
-    beforeSend: function() {
-    AddLoading($("#addUserCard"));
-    },
-    success: function (result) {
+            $.ajax({
+            url: $(this).attr('action'),
+            data: form,
+            type: 'Post',
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+            AddLoading($("#addUserCard"));
+            },
+            success: function (result) {
 
-    if(result.status === "success") {
+            if(result.status === "success") {
 
-    Swal.fire({
-    icon: 'success',
-    text: result.message,
-    confirmButtonText:
-    '<i class="fa fa-thumbs-up"></i> @alert',
-    });
-    } else if (result.status === "error") {
-    var spanErrorList = $('span[data-val-result]');
+            Swal.fire({
+            icon: 'success',
+            text: result.message,
+            confirmButtonText:
+            '<i class="fa fa-thumbs-up"></i> @alert',
+            }).then(() => {
+                    window.location.href = '@Url.Action("List")';
+                });
+            } else if (result.status === "error") {
+            var spanErrorList = $('span[data-val-result]');
 
-    if (spanErrorList.length > 0) {
-    spanErrorList.each(function() {
-    $(this).html("");
-    $(this).parent().removeClass("has-error");
-    });
-    } else {
-    spanErrorList.html("");
-    spanErrorList.parent().removeClass("has-error");
-    }
+            if (spanErrorList.length > 0) {
+            spanErrorList.each(function() {
+            $(this).html("");
+            $(this).parent().removeClass("has-error");
+            });
+            } else {
+            spanErrorList.html("");
+            spanErrorList.parent().removeClass("has-error");
+            }
 
-    if (result.modelStateErrors.length > 0) {
-    debugger;
-    result.modelStateErrors.forEach(function(value, index) {
-    $('[data-val-result=' + value.key + ']').html(value.errorMessage);
-    $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
-    });
-    } else {
-    Swal.fire({
-    icon: 'error',
-    text: result.message,
-    confirmButtonText:
-    '<i class="fa fa-thumbs-up"></i> @alert',
-    });
-    }
-    }
+            if (result.modelStateErrors.length > 0) {
+            debugger;
+            result.modelStateErrors.forEach(function(value, index) {
+            $('[data-val-result=' + value.key + ']').html(value.errorMessage);
+            $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+            });
+            } else {
+            Swal.fire({
+            icon: 'error',
+            text: result.message,
+            confirmButtonText:
+            '<i class="fa fa-thumbs-up"></i> @alert',
+            });
+            }
+            }
 
-    },
-    error: function (xhr, ajaxOptions, thrownError) {
-        alert("@error");
-        alert(xhr.status);
-        alert(thrownError);
-    },
-    complete: function () {
-    removeLoading($("#addUserCard"));
-    }
-    });
-    });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert("@error");
+                alert(xhr.status);
+                alert(thrownError);
+            },
+            complete: function () {
+            removeLoading($("#addUserCard"));
+            }
+            });
+            });
 
-    }
-    );
+            }
+            );
             </script>
         }

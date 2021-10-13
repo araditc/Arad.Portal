@@ -50,6 +50,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             _contentContext = contentContext;
             _languageContext = languageContext;
         }
+
         public async Task<RepositoryOperationResult> AddMenu(MenuDTO dto)
         {
             RepositoryOperationResult result = new RepositoryOperationResult();
@@ -65,6 +66,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 equallentModel.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
                 equallentModel.IsActive = true;
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                //Filter specific claim    
+                var domainId = claims?.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+                equallentModel.AssociatedDomainId = domainId;
                 await _context.Collection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;
                 result.Message = ConstMessages.SuccessfullyDone;

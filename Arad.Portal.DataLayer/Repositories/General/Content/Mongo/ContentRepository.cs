@@ -17,6 +17,8 @@ using MongoDB.Driver.Linq;
 using Arad.Portal.GeneralLibrary.Utilities;
 using System.Linq;
 using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
+using Arad.Portal.DataLayer.Entities.General.User;
+using Microsoft.AspNetCore.Identity;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
 {
@@ -25,15 +27,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
         private readonly IMapper _mapper;
         private readonly ContentContext _contentContext;
         private readonly DomainContext _domainContext;
-        private readonly ContentCategoryContext _categoryContext;
         private readonly LanguageContext _languageContext;
-       
         public ContentRepository(IHttpContextAccessor httpContextAccessor,DomainContext domainContext,
-           IMapper mapper, ContentCategoryContext categoryContext, ContentContext contentContext, LanguageContext langContext)
+           IMapper mapper,
+           ContentContext contentContext, LanguageContext langContext)
             : base(httpContextAccessor)
         {
             _mapper = mapper;
-            _categoryContext = categoryContext;
             _contentContext = contentContext;
             _languageContext = langContext;
             _domainContext = domainContext;
@@ -56,9 +56,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                 equallentModel.IsActive = true;
                 equallentModel.ContentId = Guid.NewGuid().ToString();
 
-                var domain = this.GetCurrentDomain();
-                var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domain).First();
-                equallentModel.AssociatedDomainId = domainEntity.DomainId;
+                
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                //Filter specific claim    
+                var domainId = claims?.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+                equallentModel.AssociatedDomainId = domainId;
 
                 await _contentContext.Collection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;

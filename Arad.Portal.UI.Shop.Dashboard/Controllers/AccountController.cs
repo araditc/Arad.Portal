@@ -436,7 +436,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 }
                 else
                 {
-                    result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_DuplicateMobilePhone"), ModelStateErrors = errors });
+                    result = new JsonResult(new { Status = "error", Message = Language.GetString("AlertAndMessage_DuplicatePhoneNumber"), ModelStateErrors = errors });
                 }
             }
             catch (Exception e)
@@ -544,6 +544,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         //user.Profile.DefaultLanguageName
                         user.PhoneNumber = model.FullMobile.Replace("+", "");
                         user.UserRoleId = model.UserRoleId;
+
                         if (model.IsVendor)
                         {
                             user.Claims.Add(new IdentityUserClaim<string>
@@ -580,7 +581,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                                     result = new JsonResult(new { Status = "error", Message = "", ModelStateErrors = errors });
                                 }
                             }
-
                             return View("Index");
                         }
                     }
