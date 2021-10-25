@@ -13,6 +13,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductGroup
         Task<RepositoryOperationResult> Add(ProductGroupDTO dto);
         Task<RepositoryOperationResult> Update(ProductGroupDTO dto);
         ProductGroupDTO ProductGroupFetch(string productGroupId);
+        ProductGroupDTO FetchBySlug(string slug, string domainName);
         bool GroupExistance(string productGroupId);
         Task<PagedItems<ProductGroupViewModel>> List(string queryString);
         Task<RepositoryOperationResult> Delete(string productGroupId, string modificationReason);

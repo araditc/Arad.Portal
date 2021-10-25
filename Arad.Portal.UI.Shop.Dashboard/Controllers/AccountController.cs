@@ -110,6 +110,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return View(viewModel);
         }
 
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([FromForm] LoginViewModel model)
@@ -780,6 +789,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 throw;
             }
             return result;
+        }
+
+        public IActionResult UnAuthorize()
+        {
+            return View();
         }
     }
 }

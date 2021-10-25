@@ -19,8 +19,8 @@ using Arad.Portal.GeneralLibrary.Utilities;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
-    [Route("/ProductComments/[action]/{id?}")]
-    [Route("/ContentComments/[action]/{id?}")]
+    [Route("/Products/[action]/{id?}")]
+    [Route("/Contents/[action]/{id?}")]
     public class CommentController : Controller
     {
         private readonly ICommentRepository _commentRepository;

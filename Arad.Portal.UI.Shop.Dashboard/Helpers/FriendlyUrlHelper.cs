@@ -71,7 +71,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 
             if (prevdash)
             {
-                return stringBuilder.ToString().Substring(0, stringBuilder.Length – 1);
+                return stringBuilder.ToString().Substring(0, stringBuilder.Length - 1);
             }
             else
             {

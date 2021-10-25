@@ -20,6 +20,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 
         Task<ProductOutputDTO> ProductFetch(string productId);
 
+        ProductOutputDTO FetchProductWithSlug(string slug, string domainName);
+
         Task<RepositoryOperationResult> AddCommentToProduct(string productId, Comment comment);
 
         Task<RepositoryOperationResult> ChangeUnitOfProduct(string productId,
@@ -63,6 +65,6 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         List<SelectListModel> GetAlActiveProductGroup(string langId);
 
         List<SelectListModel> GetGroupsOfThisVendor(string vendorId, string domainId);
-        List<SelectListModel> GetProductsOfThesVendor(string langId, string currentUserId);
+        List<SelectListModel> GetProductsOfThisVendor(string langId, string currentUserId);
     }
 }

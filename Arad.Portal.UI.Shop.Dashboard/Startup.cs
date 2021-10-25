@@ -59,16 +59,20 @@ using Arad.Portal.DataLayer.Contracts.General.Comment;
 using Arad.Portal.DataLayer.Repositories.General.Comment.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.Menu;
 using Arad.Portal.DataLayer.Repositories.General.Menu.Mongo;
+using System;
+using Microsoft.AspNetCore.CookiePolicy;
 
 namespace Arad.Portal.UI.Shop.Dashboard
 {
     public class Startup
     {
+        private readonly IWebHostEnvironment _environment;
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
             GeneralLibrary.Utilities.Language._hostingEnvironment = env.WebRootPath;
             ApplicationPath = env.ContentRootPath;
+            _environment = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -77,13 +81,27 @@ namespace Arad.Portal.UI.Shop.Dashboard
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSession();
             services.AddHttpClient();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddDistributedMemoryCache();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<HtmlEncoder>(
                 HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.BasicLatin,
                     UnicodeRanges.Arabic }));
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
+                options.Cookie.Name = ".web.Session";
+
+                if (!_environment.IsDevelopment())
+                {
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.IsEssential = true;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    options.Cookie.SameSite = SameSiteMode.Strict;
+                }
+            });
 
             services.AddIdentityMongoDbProvider<ApplicationUser, ApplicationRole, string>(identityOptions =>
             {
@@ -97,12 +115,36 @@ namespace Arad.Portal.UI.Shop.Dashboard
             {
                 mongoIdentityOptions.ConnectionString = Configuration["Database:ConnectionString"];
             });
+
+            if (!_environment.IsDevelopment())
+            {
+                services.AddAntiforgery(options =>
+                {
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                });
+            }
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-              .AddCookie(opt =>
-              {
-                  opt.Cookie.HttpOnly = true;
-              });
-            //services.AddRazorPages();
+                 .AddCookie(opt =>
+                 {
+                     opt.Cookie.HttpOnly = true;
+                     if (!_environment.IsDevelopment())
+                     {
+                         opt.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                         opt.Cookie.SameSite = SameSiteMode.Strict;
+                         opt.Cookie.HttpOnly = true;
+                         opt.Cookie.IsEssential = true;
+                     }
+                 });
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.AccessDeniedPath = "/Account/unAuthorize";
+                options.LoginPath = "/Account/Login";
+                options.LogoutPath = "/Account/Logout";
+                options.Cookie.Name = "IdentityCookie";
+
+            });
+           
             services.AddTransient<IAuthorizationHandler, RoleHandler>();
             services.AddAuthorization(options =>
             {
@@ -144,11 +186,17 @@ namespace Arad.Portal.UI.Shop.Dashboard
             app.UseRequestLocalization(AddMultilingualSettings());
            
             app.UseRouting();
-
-            app.UseSession();
+            var options = new CookiePolicyOptions()
+            {
+                HttpOnly = HttpOnlyPolicy.Always,
+                MinimumSameSitePolicy = SameSiteMode.Strict
+            };
+            app.UseCookiePolicy(options);
+           
             app.UseAuthentication();
             app.UseAuthorization();
-            
+            app.UseSession();
+
             app.UseEndpoints(endpoints =>
             {
                 if (env.IsDevelopment())

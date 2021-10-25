@@ -16,6 +16,8 @@
 
   <ItemGroup>
     <Folder Include="ViewComponents\" />
+    <Folder Include="Views\ContentCategory\" />
+    <Folder Include="Views\Search\" />
   </ItemGroup>
 
 </Project>

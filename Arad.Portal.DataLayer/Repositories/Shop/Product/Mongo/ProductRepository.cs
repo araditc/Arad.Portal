@@ -730,7 +730,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public List<SelectListModel> GetProductsOfThesVendor(string langId, string currentUserId)
+        public List<SelectListModel> GetProductsOfThisVendor(string langId, string currentUserId)
         {
             var result = new List<SelectListModel>();
             result = _context.ProductCollection.Find(_ =>  _.SellerUserId == currentUserId && _.IsActive)
@@ -811,6 +811,19 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                       Value = _.ProductId
                   }).ToList();
             }
+            return result;
+        }
+
+        public ProductOutputDTO FetchProductWithSlug(string slug, string domainName)
+        {
+            var result = new ProductOutputDTO();
+            var urlFriend = $"{domainName}/product/{slug}";
+            var productEntity = _context.ProductCollection
+                .Find(_ => _.MultiLingualProperties.Any(a => a.UrlFriend == urlFriend)).First();
+
+            result = _mapper.Map<ProductOutputDTO>(productEntity);
+            result.MultiLingualProperties = productEntity.MultiLingualProperties;
+
             return result;
         }
     }

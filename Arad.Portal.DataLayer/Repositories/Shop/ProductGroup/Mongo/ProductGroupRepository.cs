@@ -374,5 +374,16 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             result.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
             return result;
         }
+
+        public ProductGroupDTO FetchBySlug(string slug, string domainName)
+        {
+            var result = new ProductGroupDTO();
+            var urlFriend = $"{domainName}/productcategory/{slug}";
+            var groupEntity = _productContext.ProductGroupCollection
+                .Find(_ => _.MultiLingualProperties.Any(a => a.UrlFriend == urlFriend)).First();
+
+            result = _mapper.Map<ProductGroupDTO>(groupEntity);
+            return result;
+        }
     }
 }

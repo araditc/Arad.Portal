@@ -49,7 +49,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var defaulltLang = _lanRepository.GetDefaultLanguage(currentUserId);
             var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
             ViewBag.Permissions = dicKey;
-            var lst = _productRepositoy.GetProductsOfThesVendor(defaulltLang.LanguageId, currentUserId);
+            var lst = _productRepositoy.GetProductsOfThisVendor(defaulltLang.LanguageId, currentUserId);
             lst.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
             ViewBag.CurrentSellerProductList = lst;
            
@@ -94,7 +94,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.IsSysAcc = userDB.IsSystemAccount;
             if(!userDB.IsSystemAccount)
             {
-                var lst = _productRepositoy.GetProductsOfThesVendor(defaulltLang.LanguageId, currentUserId);
+                var lst = _productRepositoy.GetProductsOfThisVendor(defaulltLang.LanguageId, currentUserId);
                 lst.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
                 ViewBag.CurrentSellerProductList = lst;
             }
