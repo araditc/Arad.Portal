@@ -329,12 +329,12 @@
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label>@Language.GetString("tbl_ProductName")</label>
-                                        <input type="text" class="form-control" id="productName" placeholder=" ">
+                                        <input type="text" class="form-control" id="productName" placeholder="" onblur="BuildUrlFriend();">
                                         <span data-val-result="productName" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label>@Language.GetString("UrlFriend")</label>
-                                        <input type="text" class="form-control" id="urlFriend" placeholder=" ">
+                                        <input type="text" class="form-control" id="urlFriend" readonly placeholder=" " />
                                        
                                     </div>
                                     <div class="form-group col-md-3">
@@ -629,7 +629,7 @@
     var inActive = '@Language.GetString("InActive")';
     $(document).ready(function () {
         debugger;
-      
+
          //icheckboxes radiobuttons
             if ("@dir" == "rtl") {
                 $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
@@ -894,6 +894,56 @@
         });
     });
 
+
+    function BuildUrlFriend() {
+           $.ajax({
+                        url: "@Model.ProductId" != "" ? "/Product/Edit" : "/Product/Add",
+                        contentType: 'application/json',
+                        data:  JSON.stringify(dto),
+                        type: 'Post',
+                        dataType:'json',
+                        beforeSend: function () {
+                            AddLoading($("#addProductCard"));
+                        },
+                        success: function (result) {
+
+                            if (result.status === "Success") {
+                                Swal.fire({
+                                    icon: 'success',
+                                    text: result.message,
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                }).then(() => {
+                                    window.location.href = '@Url.Action("List")';
+                                });
+                            }else
+                            if (result.status === "ModelError") {
+                                var spanErrorList = $('span[data-val-result]');
+                                if (spanErrorList.length > 1) {
+                                    spanErrorList.each(function() {
+                                        $(this).html("");
+                                        $(this).parent().removeClass("has-error");
+                                    });
+                                } else {
+                                    spanErrorList.html("");
+                                    spanErrorList.parent().removeClass("has-error");
+                                }
+                                if (result.modelStateErrors !== null) {
+                                        $('[data-val-result=' + value.key + ']').html(value.errorMessage);
+                                        $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                    }
+                                }
+                            },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert("@error");
+                            alert(xhr.status);
+                            alert(thrownError);
+                        },
+                        complete: function () {
+                            removeLoading($("#addProductCard"));
+                        }
+                });
+    }
     function deleteFromImageList(sender) {
         debugger;
         var id = $(sender).next().attr("imgId");
@@ -1131,7 +1181,7 @@
             images[index] = item;
             dto.Pictures.push(images[index]);
         });
-        
+
         dto.UniqueCode = $("#UniqueCode").val();
         dto.Inventory = $("#Inventory").val();
         dto.MinimumCount = $("#MinimumCount").val();
