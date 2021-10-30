@@ -21,9 +21,11 @@ namespace Arad.Portal.DataLayer.Entities.General.ContentCategory
 
         public string ParentCategoryId { get; set; }
         /// <summary>
-        /// name and languageId
+        /// name and languageId 
         /// </summary>
         public List<MultiLingualProperty> CategoryNames { get; set; }
+
+        public long CategoryCode { get; set; }
 
         public ContentCategoryType CategoryType { get; set; }
     }

@@ -40,6 +40,7 @@ using Arad.Portal.DataLayer.Entities.General.Comment;
 using Arad.Portal.DataLayer.Models.Comment;
 using Arad.Portal.DataLayer.Entities.General.Menu;
 using Arad.Portal.DataLayer.Models.Menu;
+using Arad.Portal.DataLayer.Entities.General.BasicData;
 
 namespace Arad.Portal.UI.Shop.Mapping
 {
@@ -68,6 +69,7 @@ namespace Arad.Portal.UI.Shop.Mapping
             CreateMap<Comment, CommentDTO>().ReverseMap();
             CreateMap<Menu, MenuDTO>().ReverseMap();
             CreateMap<Price, PriceDTO>().ReverseMap();
+            CreateMap<BasicDataModel, BasicData>().ReverseMap();
         }
     }
 }

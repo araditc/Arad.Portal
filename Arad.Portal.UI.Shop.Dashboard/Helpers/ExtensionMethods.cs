@@ -32,6 +32,8 @@ using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Entities.General.Domain;
+using Arad.Portal.DataLayer.Contracts.General.BasicData;
+using Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 {
@@ -282,6 +284,23 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                    IsActive = true
                 };
                 currencyRepository.InsertOne(currency);
+            }
+
+            //BasicData
+            using var basicDataScope = app.ApplicationServices.CreateScope();
+            var basicDataRepository =
+                 (BasicDataRepository)basicDataScope.ServiceProvider.GetService(typeof(IBasicDataRepository));
+            if (!basicDataRepository.HasLastID())
+            {
+                var def = new DataLayer.Entities.General.BasicData.BasicData
+                {
+                    BasicDataId = Guid.NewGuid().ToString(),
+                    GroupKey = "lastid",
+                    Text = "0",
+                    Value = "0",
+                    Order = 1
+                };
+                basicDataRepository.InsertOne(def);
             }
 
         }

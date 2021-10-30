@@ -44,6 +44,8 @@ namespace Arad.Portal.DataLayer.Entities.General.Content
         /// </summary>
         public string Contents { get; set; }
 
+        public long ContentCode { get; set; }
+
         public string FileLogo { get; set; }
 
         public List<Models.Shared.Image> Images { get; set; }

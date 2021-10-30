@@ -126,7 +126,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             return result;
         }
 
-        public ContentDTO FetchWithSlug(string slug, string domainName)
+        public ContentDTO FetchBySlug(string slug, string domainName)
         {
             var result = new ContentDTO();
             var urlFriend = $"{domainName}/blog/{slug}";

@@ -383,6 +383,18 @@
 	<string key="tbl_NextPage">
 		<value>Next</value>
 	</string>
+	<string key="tbl_ProductCode">
+		<value>Product Id</value>
+	</string>
+	<string key="tbl_ProductGroupCode">
+		<value>ProductGroup Id</value>
+	</string>
+   <string key="tbl_ContentCode">
+		<value>Content Id</value>
+	</string>
+    <string key="tbl_ContentCategoryCode">
+		<value>ContentCategory Id</value>
+	</string>
 	<!--End [tables]-->
 	<!--START [Enum Descriptions]-->
 	<string key="EnumDesc_List">

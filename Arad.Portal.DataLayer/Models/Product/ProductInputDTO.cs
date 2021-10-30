@@ -37,7 +37,9 @@ namespace Arad.Portal.DataLayer.Models.Product
         public int Inventory { get; set; }
 
         public int MinimumCount { get; set; }
-        
+
+        public long ProductCode { get; set; }
+
         public bool ShowInLackOfInventory { get; set; }
        
         public string SellerUserId { get; set; }

@@ -52,65 +52,71 @@
                         </select>
                         <span data-val-result="categoryTypeId" class="text-danger"></span>
                     </div>
-                </div>
-               
-                <div class="row" style="background-color: #f0f0f5;">
                     <div class="form-group col-md-3">
-                        <label for="languageId">@Language.GetString("LanguageName")</label><br />
-                        <select class="form-control" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
-                        </select>
-                        <span data-val-result="languageId" class="text-danger"></span>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="categoryName">@Language.GetString("tbl_CategoryName")</label><br />
-                        <input type="text" class="form-control" id="categoryName" placeholder=" ">
-                        <span data-val-result="categoryName" class="text-danger"></span>
+                        <label for="@Model.CategoryCode">@Language.GetString("tbl_ContentCategoryCode")</label>
+                        <input type="text" class="form-control" asp-for="@Model.CategoryCode" value="@Model.CategoryCode" disabled />
+                        <span data-val-result="CategoryCode" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group col-md-1" style="text-align:center;margin:auto;">
-                        <span data-val-result="MultiLingualProperties" class="text-danger"></span>
-                        <div style="margin:auto;display:inline-block;">
-                            <button type="button" class="btn btn-info btn-circle" onclick="addToTable();">
-                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
-                            </button>
+                    </div>
+
+                    <div class="row" style="background-color: #f0f0f5;">
+                        <div class="form-group col-md-3">
+                            <label for="languageId">@Language.GetString("LanguageName")</label><br />
+                            <select class="form-control" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                            </select>
+                            <span data-val-result="languageId" class="text-danger"></span>
                         </div>
-                    </div>
-                    <div class="form-group col-md-5"></div>
+                        <div class="form-group col-md-3">
+                            <label for="categoryName">@Language.GetString("tbl_CategoryName")</label><br />
+                            <input type="text" class="form-control" id="categoryName" placeholder=" ">
+                            <span data-val-result="categoryName" class="text-danger"></span>
+                        </div>
 
-                </div>
-              
-                <div class="row" style="margin-top:1%;">
-                    <div class="card-body table-bordered  table-responsive p-0">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr style="text-align:center;">
-                                    <th>@Language.GetString("tbl_CategoryName")</th>
-                                    <th>@Language.GetString("LanguageName")</th>
-                                    <th style="display:none"></th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody id="multiLingualList">
-                                @foreach (var item in Model.CategoryNames)
-                                {
+                        <div class="form-group col-md-1" style="text-align:center;margin:auto;">
+                            <span data-val-result="MultiLingualProperties" class="text-danger"></span>
+                            <div style="margin:auto;display:inline-block;">
+                                <button type="button" class="btn btn-info btn-circle" onclick="addToTable();">
+                                    <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-5"></div>
+
+                    </div>
+
+                    <div class="row" style="margin-top:1%;">
+                        <div class="card-body table-bordered  table-responsive p-0">
+                            <table class="table table-hover">
+                                <thead>
                                     <tr style="text-align:center;">
-                                        <td>@item.Name</td>
-                                        <td>@item.LanguageName</td>
-                                        <td style="display:none;">@item.LanguageId</td>
-                                        <td>
-                                            <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromTable(this);">
-                                                <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
-                                            </button>
-                                        </td>
+                                        <th>@Language.GetString("tbl_CategoryName")</th>
+                                        <th>@Language.GetString("LanguageName")</th>
+                                        <th style="display:none"></th>
+                                        <th></th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                   
-                </div>
+                                </thead>
+                                <tbody id="multiLingualList">
+                                    @foreach (var item in Model.CategoryNames)
+                                    {
+                                        <tr style="text-align:center;">
+                                            <td>@item.Name</td>
+                                            <td>@item.LanguageName</td>
+                                            <td style="display:none;">@item.LanguageId</td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromTable(this);">
+                                                    <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
 
-            </div>
+                    </div>
+
+                </div>
             <div class="card-footer">
                 <div class="row">
                     <input type="button" id="btnAddContentCategory" value="@Language.GetString("btn_Save")" class="btn btn-block btn-success" />
@@ -207,6 +213,7 @@
                 obj.ModificationReason = $("#ModificationReason").val();
             }
             obj.CategoryTypeId = parseInt($("#categoryTypeId").val());
+            obj.CategoryCode = Number($("#CategoryCode").val());
             $("#multiLingualList tr").each(function () {
                 debugger;
                 var innerModel = {};

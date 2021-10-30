@@ -379,6 +379,18 @@
 	<string key="tbl_NextPage">
 		<value>بعدی</value>
 	</string>
+	<string key="tbl_ProductCode">
+		<value>شناسه محصول</value>
+	</string>
+	<string key="tbl_ProductGroupCode">
+		<value>شناسه گروه محصول</value>
+	</string>
+	<string key="tbl_ContentCode">
+		<value>شناسه محتوا</value>
+	</string>
+	<string key="tbl_ContentCategoryCode">
+		<value>شناسه گروه محتوا</value>
+	</string>
 	<!--End [tables]-->
 	<!--START [Enum Descriptions]-->
 	<string key="EnumDesc_List">

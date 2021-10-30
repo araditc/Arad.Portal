@@ -45,6 +45,11 @@
                         </select>
                         <span data-val-result="ParentId" class="text-danger"></span>
                     </div>
+                    <div class="form-group col-md-3">
+                        <label asp-for="@Model.GroupCode">@Language.GetString("tbl_ProductGroupCode")</label>
+                        <input type="text" class="form-control" asp-for="@Model.GroupCode" value="@Model.GroupCode" placeholder=" " disabled>
+                        <span data-val-result="GroupCode" class="text-danger"></span>
+                    </div>
                 </div>
                
                 <div class="row" style="background-color: #f0f0f5;">
@@ -65,11 +70,11 @@
                         <input type="text" class="form-control" id="groupName" placeholder=" ">
                         <span data-val-result="groupName" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3">
+                    @*<div class="form-group col-md-3">
                         <label>@Language.GetString("UrlFriend")</label>
                         <input type="text" class="form-control" id="urlFriend" placeholder=" ">
                         <span data-val-result="urlFriend" class="text-danger"></span>
-                    </div>
+                    </div>*@
                 </div>
                 <div class="row" style="background-color: #f0f0f5;">
                     <div class="form-group col-md-3">
@@ -262,7 +267,7 @@
             if ($("#ParentId").val() != "-1") {
                 obj.ParentId = $("#ParentId").val();
             }
-            
+            obj.GroupCode = Number($("#GroupCode").val());
             if ($("#ModificationReason").length > 0) {
                 obj.ModificationReason = $("#ModificationReason").val();
             }

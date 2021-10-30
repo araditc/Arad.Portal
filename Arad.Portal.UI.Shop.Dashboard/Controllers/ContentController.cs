@@ -35,9 +35,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly string imageSize = "";
+        private readonly CodeGenerator _codeGenerator;
         public ContentController(IContentRepository contentRepository, IWebHostEnvironment webHostEnvironment,
                                     IContentCategoryRepository contentCategoryRepository, IPermissionView permissionView,
                                     ILanguageRepository languageRepository, UserManager<ApplicationUser> userManager,
+                                    CodeGenerator codeGenerator,
                                     IHttpContextAccessor accessor, IConfiguration configuration)
         {
             _contentRepository = contentRepository;
@@ -49,6 +51,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _configuration = configuration;
             _httpContextAccessor = accessor;
             imageSize = _configuration["ContentImageSize:Size"];
+            _codeGenerator = codeGenerator;
         }
 
         public async Task<IActionResult> List()
@@ -150,6 +153,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                     }
                 }
+            }else
+            {
+                model.ContentCode = _codeGenerator.GetNewId();
             }
 
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
@@ -200,7 +206,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             else
             {
 
-                
                 var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
                 var path = "Images/Contents";
                 foreach (var pic in dto.Images)
@@ -215,6 +220,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 }
                 dto.FileLogo = dto.LogoContent;
                 RepositoryOperationResult saveResult = await _contentRepository.Add(dto);
+                if(saveResult.Succeeded)
+                {
+                    _codeGenerator.SaveToDB(dto.ContentCode);
+                }
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
             }

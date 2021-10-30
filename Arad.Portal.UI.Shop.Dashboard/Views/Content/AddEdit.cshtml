@@ -377,10 +377,15 @@
                         <span data-val-result="SeoTitle" class="text-danger"></span>
                     </div>
                     <div class="col-md-3">
+                        <label asp-for="@Model.ContentCode">@Language.GetString("tbl_ContentCode")</label>
+                        <input type="text" class="form-control" asp-for="@Model.ContentCode" value="@Model.ContentCode" disabled />
+                        <span data-val-result="ContentCode" class="text-danger"></span>
+                    </div>
+                    @*<div class="col-md-3">
                         <label asp-for="UrlFriend">@Language.GetString("UrlFriend")</label>
                         <input type="text" class="form-control" asp-for="@Model.UrlFriend" placeholder=" ">
                         <span data-val-result="UrlFriend" class="text-danger"></span>
-                    </div>
+                    </div>*@
 
                 </div>
                 <div class="row">
@@ -804,7 +809,8 @@
         obj.Description = $("#Description").val();
         obj.SeoTitle = $("#SeoTitle").val();
         obj.SeoDescription = $("#SeoDescription").val();
-        obj.UrlFriend = $("#UrlFriend").val();
+        /* obj.UrlFriend = $("#UrlFriend").val();*/
+        obj.ContentCode = Number($("#ContentCode").val());
         debugger;
         obj.Contents = CKEDITOR.instances.editorCk.getData();
         var commaseperatedTags = $("#tagKeyWords").val();

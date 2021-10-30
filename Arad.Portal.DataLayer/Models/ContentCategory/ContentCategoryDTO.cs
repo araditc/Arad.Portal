@@ -28,6 +28,8 @@ namespace Arad.Portal.DataLayer.Models.ContentCategory
 
         public string ModificationReason { get; set; }
 
+        public long CategoryCode { get; set; }
+
         public bool IsDeleted { get; set; }
     }
 }

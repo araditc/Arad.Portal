@@ -26,7 +26,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         public IActionResult Details(string slug)
         {
             var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
-            var entity = _productRepository.FetchProductWithSlug(slug, domainName);
+            var entity = _productRepository.FetchBySlug(slug, domainName);
             return View(entity);
         }
     }

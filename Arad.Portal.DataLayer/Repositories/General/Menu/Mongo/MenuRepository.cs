@@ -423,5 +423,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
             return result;
         }
+
+        public StoreMenuVM GetByCode(string menuCode)
+        {
+            var entity = _context.Collection
+                .Find(_ => _.MenuCode == Convert.ToInt64(menuCode)).FirstOrDefault();
+        }
     }
 }

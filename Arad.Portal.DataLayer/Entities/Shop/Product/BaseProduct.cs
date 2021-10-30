@@ -40,6 +40,8 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Product
 
         public string UniqueCode { get; set; }
 
+        public long ProductCode { get; set; }
+
         public List<ProductSpecificationValue> Specifications { get; set; }
       
         public List<Image> Images { get; set; }

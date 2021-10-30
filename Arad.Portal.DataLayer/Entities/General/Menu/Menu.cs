@@ -36,6 +36,8 @@ namespace Arad.Portal.DataLayer.Entities.General.Menu
 
         public string Url { get; set; }
 
+        public long  MenuCode { get; set; }
+
         /// <summary>
         /// based on menutype will be filled if menutype is productGroup then subgroupId is productgroupId if menutype is product then subId is productId and SubGroupId is productGroupId
         /// if menuType is contentCategory then subGroupId is content categoryId and if its content then subId is contentId and SubGroupId is contentCategoryId

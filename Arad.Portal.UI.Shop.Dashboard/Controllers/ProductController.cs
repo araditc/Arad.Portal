@@ -45,8 +45,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IHttpClientFactory _clientFactory;
         private readonly string imageSize = "";
+        private readonly CodeGenerator _codeGenerator;
         
-        public ProductController(UserManager<ApplicationUser> userManager,
+        public ProductController(UserManager<ApplicationUser> userManager,CodeGenerator codeGenerator,
             IProductRepository productRepository, IPermissionView permissionView,
             ILanguageRepository languageRepository, IProductGroupRepository productGroupRepository,
             ICurrencyRepository currencyRepository, IProductUnitRepository unitRepository,
@@ -67,6 +68,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _userManager = userManager;
             _promotionRepository = promotionRepository;
             _webHostEnvironment = webHostEnvironment;
+            _codeGenerator = codeGenerator;
             imageSize = _configuration["ProductImageSize:Size"];
         }
         [HttpGet]
@@ -149,6 +151,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     ViewBag.ActivePromotionId = model.Promotion.PromotionId;
                 }
+            }else
+            {
+                model.ProductCode = _codeGenerator.GetNewId();
             }
 
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
@@ -237,6 +242,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 }
                 
                 RepositoryOperationResult saveResult = await _productRepository.Add(dto);
+                if(saveResult.Succeeded)
+                {
+                    _codeGenerator.SaveToDB(dto.ProductCode);
+                }
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
             }

@@ -45,6 +45,8 @@ namespace Arad.Portal.DataLayer.Models.Content
 
         public string LogoContent { get; set; }
 
+        public long ContentCode { get; set; }
+
         public string LogoName { get; set; }
 
         public List<Shared.Image> Images { get; set; }

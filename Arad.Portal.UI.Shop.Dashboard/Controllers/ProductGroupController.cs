@@ -5,6 +5,7 @@ using Arad.Portal.DataLayer.Models.ProductGroup;
 using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.UI.Shop.Dashboard.Authorization;
+using Arad.Portal.UI.Shop.Dashboard.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -23,13 +24,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IPermissionView _permissionViewManager;
         private readonly ILanguageRepository _lanRepository;
         private readonly ICurrencyRepository _curRepository;
-        public ProductGroupController(IProductGroupRepository productGroupRepository,
+        private readonly CodeGenerator _codeGenerator;
+        public ProductGroupController(IProductGroupRepository productGroupRepository,CodeGenerator codeGenerator,
             IPermissionView permissionView, ILanguageRepository lanRepository, ICurrencyRepository currencyRepository)
         {
             _productGroupRepository = productGroupRepository;
             _permissionViewManager = permissionView;
             _lanRepository = lanRepository;
             _curRepository = currencyRepository;
+            _codeGenerator = codeGenerator;
         }
 
         [HttpGet]
@@ -56,6 +59,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = _productGroupRepository.ProductGroupFetch(id);
+            }else
+            {
+                model.GroupCode = _codeGenerator.GetNewId();
             }
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -118,6 +124,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 }
 
                 RepositoryOperationResult saveResult = await _productGroupRepository.Add(dto);
+                if(saveResult.Succeeded)
+                {
+                    _codeGenerator.SaveToDB(dto.GroupCode);
+                }
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
             }

@@ -5,6 +5,7 @@ using Arad.Portal.DataLayer.Models.ContentCategory;
 using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.UI.Shop.Dashboard.Authorization;
+using Arad.Portal.UI.Shop.Dashboard.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -19,13 +20,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IContentCategoryRepository _contentCategoryRepository;
         private readonly IPermissionView _permissionViewManager;
         private readonly ILanguageRepository _lanRepository;
+        private readonly CodeGenerator _codeGenerator;
        
         public ContentCategoryController(IContentCategoryRepository contentCategoryRepository,
+            CodeGenerator codeGenerator,
             IPermissionView permissionView, ILanguageRepository lanRepository)
         {
             _contentCategoryRepository = contentCategoryRepository;
             _permissionViewManager = permissionView;
             _lanRepository = lanRepository;
+            _codeGenerator = codeGenerator;
         }
 
         [HttpGet]
@@ -46,12 +50,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             return View(result);
         }
+
         public async Task<IActionResult> AddEdit(string id = "")
         {
             var model = new ContentCategoryDTO();
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = await _contentCategoryRepository.ContentCategoryFetch(id);
+            }else
+            {
+                model.CategoryCode = _codeGenerator.GetNewId();
             }
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -122,6 +130,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 }
 
                 RepositoryOperationResult saveResult = await _contentCategoryRepository.Add(dto);
+                if(saveResult.Succeeded)
+                {
+                    _codeGenerator.SaveToDB(dto.CategoryCode);
+                }
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
             }

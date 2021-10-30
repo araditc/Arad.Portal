@@ -53,6 +53,8 @@ namespace Arad.Portal.DataLayer.Models.Product
 
         public int SaleCount { get; set; }
 
+        public long ProductCode { get; set; }
+
         public int VisitCount { get; set; }
 
         public List<Entities.General.Comment.Comment> Comments { get; set; }

@@ -22,6 +22,8 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ProductGroup
 
         public List<MultiLingualProperty> MultiLingualProperties { get; set; }
 
+        public long GroupCode { get; set; }
+
         public string ParentId { get; set; }
 
         public Promotion.Promotion Promotion { get; set; }

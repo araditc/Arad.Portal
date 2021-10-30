@@ -61,18 +61,22 @@ using Arad.Portal.DataLayer.Contracts.General.Menu;
 using Arad.Portal.DataLayer.Repositories.General.Menu.Mongo;
 using System;
 using Microsoft.AspNetCore.CookiePolicy;
+using Arad.Portal.DataLayer.Contracts.General.BasicData;
 
 namespace Arad.Portal.UI.Shop.Dashboard
 {
     public class Startup
     {
         private readonly IWebHostEnvironment _environment;
+        private static readonly IBasicDataRepository basicDataRepository;
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
             GeneralLibrary.Utilities.Language._hostingEnvironment = env.WebRootPath;
             ApplicationPath = env.ContentRootPath;
             _environment = env;
+
+
         }
 
         public IConfiguration Configuration { get; }
@@ -160,6 +164,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<RemoteServerConnection>();
 
             AddRepositoryServices(services);
+            services.AddSingleton<CodeGenerator>();
             services.AddProgressiveWebApp();
             
         }

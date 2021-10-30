@@ -19,7 +19,6 @@ namespace Arad.Portal.DataLayer.Contracts.General.Content
         List<ContentViewModel> GetAllContentsInCategory(string contentCategoryId);
         List<SelectListModel> GetContentsList(string domainId, string currentUserId, string categoryId);
         List<SelectListModel> GetAllSourceType();
-
-        ContentDTO FetchWithSlug(string slug, string domainName);
+        ContentDTO FetchBySlug(string slug, string domainName);
     }
 }
