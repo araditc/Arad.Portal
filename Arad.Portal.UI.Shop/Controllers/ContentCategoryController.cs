@@ -22,11 +22,11 @@ namespace Arad.Portal.UI.Shop.Controllers
         {
             return View();
         }
-        [Route("/blogCategory/{slug}")]
-        public IActionResult Details(string slug)
+        [Route("/category/{**slug}")]
+        public IActionResult Details(long slug)
         {
             var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
-            var entity = _categoryRepository.FetchBySlug(slug, domainName);
+            var entity = _categoryRepository.FetchByCode(slug);
             return View(entity);
         }
     }

@@ -111,7 +111,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
 
-        [Authorize]
+        [Authorize(Policy ="Role")]
         [HttpGet]
         public async Task<IActionResult> Logout()
         {

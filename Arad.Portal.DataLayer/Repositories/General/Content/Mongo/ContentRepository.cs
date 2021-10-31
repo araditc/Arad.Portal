@@ -126,6 +126,16 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             return result;
         }
 
+        public ContentDTO FetchByCode(long contentCode)
+        {
+            var result = new ContentDTO();
+            var contentEntity = _contentContext.Collection
+                .Find(_ => _.ContentCode == contentCode).First();
+
+            result = _mapper.Map<ContentDTO>(contentEntity);
+            return result;
+        }
+
         public ContentDTO FetchBySlug(string slug, string domainName)
         {
             var result = new ContentDTO();

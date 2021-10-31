@@ -224,8 +224,6 @@ namespace Arad.Portal.UI.Shop.Dashboard
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-
             });
             app.UseSeedDatabase(ApplicationPath);
         }

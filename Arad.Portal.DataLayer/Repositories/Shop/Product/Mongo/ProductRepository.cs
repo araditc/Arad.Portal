@@ -839,5 +839,17 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 
             return result;
         }
+
+        public ProductOutputDTO FetchByCode(long productCode)
+        {
+            var result = new ProductOutputDTO();
+            
+            var productEntity = _context.ProductCollection
+                .Find(_ => _.ProductCode == productCode).First();
+
+            result = _mapper.Map<ProductOutputDTO>(productEntity);
+            result.MultiLingualProperties = productEntity.MultiLingualProperties;
+            return result;
+        }
     }
 }

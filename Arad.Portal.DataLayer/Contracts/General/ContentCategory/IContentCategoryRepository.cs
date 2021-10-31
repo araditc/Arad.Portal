@@ -28,6 +28,8 @@ namespace Arad.Portal.DataLayer.Contracts.General.ContentCategory
 
         ContentCategoryDTO FetchBySlug(string slug, string domainName);
 
+        ContentCategoryDTO FetchByCode(long categoryCode);
+
         List<SelectListModel> GetAllContentCategoryType();
 
     }

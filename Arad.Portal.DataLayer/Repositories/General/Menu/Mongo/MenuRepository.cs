@@ -186,6 +186,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                     SubName = _.SubName,
                     SubGroupId = _.SubGroupId,
                     SubGroupName = _.SubGroupName,
+                    MenuCode = _.MenuCode,
                     Childrens = GetChildren(_.MenuId,finalLangId, domainEntity)
                 }).ToList();
             //those menues which have isFull = true will be shown in UI
@@ -255,6 +256,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                         SubName = _.SubName,
                         SubGroupId = _.SubGroupId,
                         SubGroupName = _.SubGroupName,
+                        MenuCode = _.MenuCode,
                         Childrens = GetChildren(_.MenuId, finalLangId, domainEntity)
                     }).ToList();
             }
@@ -386,6 +388,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 entity.MenuType = dto.MenuType;
                 entity.ParentId = dto.ParentId;
                 entity.SubId = dto.SubId;
+                entity.SubName = dto.SubName;
+                entity.SubGroupId = dto.SubGroupId;
+                entity.SubGroupName = dto.SubGroupName;
+                entity.MenuCode = dto.MenuCode;
                 entity.Order = dto.Order;
                 entity.Icon = dto.Icon;
 
@@ -426,8 +432,20 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
 
         public StoreMenuVM GetByCode(string menuCode)
         {
+            var result = new StoreMenuVM();
             var entity = _context.Collection
                 .Find(_ => _.MenuCode == Convert.ToInt64(menuCode)).FirstOrDefault();
+            result.MenuId = entity.MenuId;
+            result.Icon = entity.Icon;
+            result.MenuType = entity.MenuType;
+            result.Order = entity.Order;
+            result.Url = entity.Url;
+            result.SubId = entity.SubId;
+            result.SubName = entity.SubName;
+            result.SubGroupId = entity.SubGroupId;
+            result.SubGroupName = entity.SubGroupName;
+            result.MenuCode = entity.MenuCode;
+            return result;
         }
     }
 }

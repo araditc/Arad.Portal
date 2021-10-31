@@ -10,6 +10,10 @@ namespace Arad.Portal.DataLayer.Models.Shared
 {
     public class MultiLingualProperty
     {
+        public MultiLingualProperty()
+        {
+            TagKeywords = new();
+        }
         public string MultiLingualPropertyId { get; set; }
 
         public string Name { get; set; }
@@ -42,6 +46,8 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public string CurrencySymbol { get; set; }
 
         public string CurrencyName { get; set; }
+
+        public List<string> TagKeywords { get; set; }
 
     }
 }

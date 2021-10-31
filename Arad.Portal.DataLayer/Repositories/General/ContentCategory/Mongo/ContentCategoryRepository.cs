@@ -170,10 +170,19 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             return result;
         }
 
+        public ContentCategoryDTO FetchByCode(long categoryCode)
+        {
+            var result = new ContentCategoryDTO();
+            var categoryEntity = _categoryContext.Collection
+                .Find(_ => _.CategoryCode == categoryCode).First();
+            result = _mapper.Map<ContentCategoryDTO>(categoryEntity);
+            return result;
+        }
+
         public ContentCategoryDTO FetchBySlug(string slug, string domainName)
         {
             var result = new ContentCategoryDTO();
-            var urlFriend = $"{domainName}/blogCategory/{slug}";
+            var urlFriend = $"{domainName}/category/{slug}";
             var categoryEntity = _categoryContext.Collection
                 .Find(_ => _.CategoryNames.Any(a => a.UrlFriend == urlFriend)).First();
 

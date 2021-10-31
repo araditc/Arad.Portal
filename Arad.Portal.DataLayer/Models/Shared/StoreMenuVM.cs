@@ -29,6 +29,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public string SubName { get; set; }
         public string SubGroupId { get; set; }
         public string SubGroupName { get; set; }
+        public long MenuCode { get; set; }
         public bool IsFull { get; set; }
         public List<StoreMenuVM> Childrens { get; set; }
     }

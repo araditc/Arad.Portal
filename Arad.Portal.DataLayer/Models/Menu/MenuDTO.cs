@@ -39,6 +39,8 @@ namespace Arad.Portal.DataLayer.Models.Menu
 
         public string Url { get; set; }
 
+        public long MenuCode { get; set; }
+
         public string CreatorUserName { get; set; }
 
         public string CreatorUserId { get; set; }

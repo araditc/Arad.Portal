@@ -182,6 +182,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 }
                 dto.AssociatedDomainId = domainId;
                 dto.MenuType = (MenuType)Convert.ToInt32(dto.MenuTypeId);
+                dto.MenuCode = await GetMenuCodeFromMenu(dto.MenuType, dto.SubId, dto.SubGroupId);
                 RepositoryOperationResult saveResult = await _menuRepository.AddMenu(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
@@ -224,11 +225,43 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 item.LanguageSymbol = lan.Symbol;
             }
             dto.MenuType = (MenuType)Convert.ToInt32(dto.MenuTypeId);
+            dto.MenuCode = await GetMenuCodeFromMenu(dto.MenuType, dto.SubId, dto.SubGroupId);
             RepositoryOperationResult saveResult = await _menuRepository.EditMenu(dto);
 
             result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
             : new { Status = "Error", saveResult.Message });
             return result;
+        }
+
+        private async Task<long> GetMenuCodeFromMenu(MenuType type, string subId,string subGroupId)
+        {
+            long res = 0;
+            switch (type)
+            {
+                case MenuType.ProductGroup:
+                    var grp = _productGroupRepository.ProductGroupFetch(subGroupId);
+                    res =  grp.GroupCode;
+                    break;
+                case MenuType.Product:
+                    var pro = await _productRepository.ProductFetch(subId);
+                    res = pro.ProductCode;
+                    break;
+                case MenuType.CategoryContent:
+                    var category = await _contentCategoryRepository.ContentCategoryFetch(subGroupId);
+                    res =  category.CategoryCode;
+                    break;
+                case MenuType.Content:
+                    var content = await _contentRepository.ContentFetch(subId);
+                    res = content.ContentCode;
+                    break;
+                //case MenuType.DirectLink:
+                //    break;
+                //case MenuType.Module:
+                //    break;
+                //default:
+                //    break;
+            }
+            return res;
         }
         [HttpGet]
         public async Task<IActionResult> Delete(string id)

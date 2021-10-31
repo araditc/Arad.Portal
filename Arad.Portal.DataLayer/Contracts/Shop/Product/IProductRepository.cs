@@ -56,6 +56,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         //Pagination<ProductViewGallery> ListProductsGroup(GalleryPagination modelPagination);
         int GetInventory(string productId);
         ProductOutputDTO FetchBySlug(string slug, string domainName);
+
+        ProductOutputDTO FetchByCode(long productCode);
         bool HasActiveProductPromotion(string productId);
         List<SelectListModel> GetAllActiveProductList(string langId, string currentUserId, string productGroupId, string vendorId);
         List<SelectListModel> GetAllProductList(ApplicationUser user,string productGroupId, string langId);

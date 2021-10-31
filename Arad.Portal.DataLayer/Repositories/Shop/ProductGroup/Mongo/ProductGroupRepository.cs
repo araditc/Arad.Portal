@@ -378,10 +378,19 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
         public ProductGroupDTO FetchBySlug(string slug, string domainName)
         {
             var result = new ProductGroupDTO();
-            var urlFriend = $"{domainName}/productcategory/{slug}";
+            var urlFriend = $"{domainName}/category/{slug}";
             var groupEntity = _productContext.ProductGroupCollection
                 .Find(_ => _.MultiLingualProperties.Any(a => a.UrlFriend == urlFriend)).First();
 
+            result = _mapper.Map<ProductGroupDTO>(groupEntity);
+            return result;
+        }
+
+        public ProductGroupDTO FetchByCode(long groupCode)
+        {
+            var result = new ProductGroupDTO();
+            var groupEntity = _productContext.ProductGroupCollection
+                .Find(_ => _.GroupCode == groupCode).First();
             result = _mapper.Map<ProductGroupDTO>(groupEntity);
             return result;
         }

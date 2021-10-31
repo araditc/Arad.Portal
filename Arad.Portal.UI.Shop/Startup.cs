@@ -1,6 +1,8 @@
+using Arad.Portal.UI.Shop.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -43,7 +45,8 @@ namespace Arad.Portal.UI.Shop
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+           
+           
             app.UseRouting();
 
             app.UseAuthorization();
@@ -53,9 +56,13 @@ namespace Arad.Portal.UI.Shop
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                //endpoints.MapDynamicControllerRoute<ProductRouteTransformer>("product/{**slug}");
+                //endpoints.MapDynamicControllerRoute<ProductGroupRouteTransformer>("group/{**slug}");
+                //endpoints.MapDynamicControllerRoute<ContentRouteTransformer>("blog/{**slug}");
+                //endpoints.MapDynamicControllerRoute<ContentCategoryRouteTransformer>("category/{**slug}");
             });
-
             
+
 
         }
     }
