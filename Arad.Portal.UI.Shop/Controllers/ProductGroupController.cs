@@ -23,7 +23,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
 
-        [Route("/group/{**slug}")]
+        [Route("{language}/group/{**slug}")]
         public IActionResult Details(long slug)
         {
             var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";

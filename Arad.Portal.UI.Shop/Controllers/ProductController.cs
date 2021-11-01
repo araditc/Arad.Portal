@@ -22,7 +22,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             return View();
         }
 
-       [Route("/product/{**slug}")]
+       [Route("{language}/product/{**slug}")]
         public IActionResult Details(long slug)
         {
             var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";

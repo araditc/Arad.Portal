@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Middlewares\" />
     <Folder Include="ViewComponents\" />
     <Folder Include="Views\ContentCategory\" />
     <Folder Include="Views\Search\" />

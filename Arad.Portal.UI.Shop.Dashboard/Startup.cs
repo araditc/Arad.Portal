@@ -62,6 +62,7 @@ using Arad.Portal.DataLayer.Repositories.General.Menu.Mongo;
 using System;
 using Microsoft.AspNetCore.CookiePolicy;
 using Arad.Portal.DataLayer.Contracts.General.BasicData;
+using Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo;
 
 namespace Arad.Portal.UI.Shop.Dashboard
 {
@@ -277,8 +278,9 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<IContentRepository, ContentRepository>();
             services.AddTransient<ICommentRepository, CommentRepository>();
             services.AddTransient<IMenuRepository, MenuRepository>();
+            services.AddTransient<IBasicDataRepository, BasicDataRepository>();
 
-            #region contexes
+            #region contextes
             services.AddTransient<CurrencyContext>();
             services.AddTransient<DomainContext>();
             services.AddTransient<LanguageContext>();
@@ -296,6 +298,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<ContentContext>();
             services.AddTransient<CommentContext>();
             services.AddTransient<MenuContext>();
+            services.AddTransient<BasicDataContext>();
                 
             #endregion
 
