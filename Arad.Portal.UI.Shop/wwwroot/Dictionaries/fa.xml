@@ -1,0 +1,2011 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<dictionary>
+	<!--Start [buttons text]-->
+	<string key="btn_Rotate">
+		<value>چرخش</value>
+	</string>
+	<string key="btn_Login">
+		<value>ورود</value>
+	</string>
+	<string key="btn_Crop">
+		<value>برش</value>
+	</string>
+	<string key="btn_UploadImage">
+		<value>بارگزاری تصویر</value>
+	</string>
+	<string key="Upload">
+		<value>آپلود</value>
+	</string>
+	<string key="PutImage">
+		<value>قراردادن عکس</value>
+	</string>
+	<string key="btn_Add">
+		<value>افزودن</value>
+	</string>
+	<string key="btn_ExcelImport">
+		<value>دریافت داده از فایل اکسل</value>
+	</string>
+	<string key="btn_Save">
+		<value>ذخیره</value>
+	</string>
+	<string key="btn_Edit">
+		<value>ویرایش</value>
+	</string>
+	<string key="btn_Exit">
+		<value>خروج</value>
+	</string>
+	<string key="btn_Send">
+		<value>ارسال</value>
+	</string>
+	<string key="btn_Approve">
+		<value>تایید</value>
+	</string>
+	<string key="btn_Cancel">
+		<value>انصراف</value>
+	</string>
+	<string key="btn_Back">
+		<value>بازگشت</value>
+	</string>
+	<string key="btn_Restore">
+		<value>بازگردانی</value>
+	</string>
+	<string key="btn_Delete">
+		<value>حذف</value>
+	</string>
+	<string key="btn_Detail">
+		<value>جزییات</value>
+	</string>
+	<string key="btn_Show">
+		<value>نمایش</value>
+	</string>
+	<string key="btn_ChangePass">
+		<value>تغییر رمز عبور</value>
+	</string>
+	<string key="btn_Search">
+		<value>جستجو</value>
+	</string>
+	<string key="btn_Find">
+		<value>جستجو</value>
+	</string>
+	<string key="btn_Confirm">
+		<value>بله</value>
+	</string>
+	<string key="btn_NotConfirm">
+		<value>خیر</value>
+	</string>
+	<string key="btn_ChangeActivation">
+		<value>تغییر وضعیت</value>
+	</string>
+	<string key="treeView_Empty">
+		<value>بدون زیرمجموعه</value>
+	</string>
+		<string key="LoginPage">
+		<value>صفحه ورود</value>
+	</string>
+	<!--End [buttons text]-->
+	<!--Start[JustForTesting]-->
+	<!--<string key="PermissionTitle_Menu11">
+		<value>منوی 1-1</value>
+	</string>
+	<string key="PermissionTitle_Menu12">
+		<value>منوی 1-2</value>
+	</string>
+	<string key="PermissionTitle_Menu111">
+		<value>منوی 1-1-1</value>
+	</string>
+	<string key="PermissionTitle_Menu112">
+		<value>منوی 1-1-2</value>
+	</string>
+	<string key="PermissionTitle_Menu1111">
+		<value>منوی 1-1-1-1</value>
+	</string>
+	<string key="PermissionTitle_Menu11111">
+		<value>منوی 1-1-1-1-1</value>
+	</string>-->
+	<!--End[JustForTesting]-->
+	<!--Start [PermissionTitle]-->
+	<string key="PermissionTitle_MainPage">
+		<value>داشبورد</value>
+	</string>
+	<string key="PermissionTitle_UserManagement">
+		<value>مدیریت کاربران</value>
+	</string>
+	<string key="PermissionTitle_Users">
+		<value>کاربران</value>
+	</string>
+  <string key="PermissionTitle_UserDetails">
+    <value>جرییات کاربران</value>
+  </string>
+	<string key="PermissionTitle_AddUser">
+		<value>افزودن کاربر</value>
+	</string>
+  <string key="PermissionTitle_RoleDetails">
+    <value>جزییات نقش</value>
+  </string>
+	<string key="PermissionTitle_EditUser">
+		<value>ویرایش کاربر</value>
+	</string>
+	<string key="PermissionTitle_RoleList">
+		<value>لیست نقش ها</value>
+	</string>
+  <string key="PermissionTitle_SaveRole">
+    <value>ذخیره نقش</value>
+  </string>
+  <string key="PermissionTitle_SavePermission">
+    <value>ذخیره دسترسی</value>
+  </string>
+	<string key="PermissionTitle_Roles">
+		<value>نقش ها</value>
+	</string>
+	<string key="PermissionTitle_ViewUserList">
+		<value>مشاهده لیست کاربران</value>
+	</string>
+	<string key="PermissionTitle_UserDelete">
+		<value>حذف کاربر</value>
+	</string>
+	<string key="PermissionTitle_UserChangePassword">
+		<value>تغییر کلمه عبور</value>
+	</string>
+	<string key="PermissionTitle_UserChangeActivation">
+		<value>فعال یا غیر فعال کردن کاربر</value>
+	</string>
+	<string key="PermissionTitle_UserRestore">
+		<value>بازگردانی کاربر</value>
+	</string>
+	<string key="PermissionTitle_PermissionChangeActivation">
+		<value>فعال یا غیر فعال کردن دسترسی</value>
+	</string>
+	<string key="PermissionTitle_MenuList">
+		<value>لیست منوها</value>
+	</string>
+  <string key="PermissionTitle_ProductManagement">
+    <value>مدیریت محصولات</value>
+  </string>
+  <string key="PermissionTitle_ProductUnit">
+    <value>واحد محصول</value>
+  </string>
+  <string key="PermissionTitle_ProductGroup">
+    <value>گروه محصول</value>
+  </string>
+  <string key="PermissionTitle_ProductSpecification">
+    <value>مشحصات محصول</value>
+  </string>
+  <string key="PermissionTitle_ProductSpecificationGroup">
+    <value>گروه مشخصات محصول</value>
+  </string>
+  <string key="PermissionTitle_Products">
+    <value>محصولات</value>
+  </string>
+	<string key="PermissionTitle_Role">
+		<value>نقش ها</value>
+	</string>
+	<string key="PermissionTitle_ViewRoleList">
+		<value>مشاهده لیست نقش ها</value>
+	</string>
+	<string key="PermissionTitle_TreeViewRoleList">
+		<value>لیست درختی نقش ها</value>
+	</string>
+	<string key="PermissionTitle_RoleEdit">
+		<value>ویرایش نقش</value>
+	</string>
+	<string key="PermissionTitle_RoleDelete">
+		<value>حذف نقش</value>
+	</string>
+	<string key="PermissionTitle_RoleChangeActivation">
+		<value>تغییر وضعیت نقش</value>
+	</string>
+	<string key="PermissionTitle_Permissions">
+		<value>دسترسی ها</value>
+	</string>
+	<string key="PermissionTitle_PermissionList">
+		<value>لیست دسترسی ها</value>
+	</string>
+	<string key="PermissionTitle_AddPermission">
+		<value>افزودن دسترسی</value>
+	</string>
+	<string key="PermissionTitle_EditPermission">
+		<value>ویرایش دسترسی</value>
+	</string>
+	<string key="PermissionTitle_PermissionDelete">
+		<value>حذف دسترسی</value>
+	</string>
+	<string key="PermissionTitle_Promotions">
+		<value>تخفیفات و جشنواره ها</value>
+	</string>
+	<string key="PermissionTitle_PromotionDetails">
+		<value>جزییات تخفیفات و جشنواره ها</value>
+	</string>
+	<string key="PermissionTitle_AddPromotion">
+		<value>افزودن تخفیفات و جشنواره ها</value>
+	</string>
+	<string key="PermissionTitle_EditPromotion">
+		<value>ویرایش تخفیفات و جشنواره ها</value>
+	</string>
+	<string key="PermissionTitle_PromotionDelete">
+		<value>حذف تخفیفات و جشنواره ها</value>
+	</string>
+	<string key="PermissionTitle_PromotionRestore">
+		<value>بازگردانی تخفیفات و جشنواره ها</value>
+	</string>
+	<string key="PermissionTitle_PromotionChangeActivation">
+		<value>تغییر وضعیت تخفیفات و جشنواره ها</value>
+	</string>
+	<string key="PermissionTitle_ContentManagement">
+		<value>مدیریت محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentCategories">
+		<value>گروه های محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentCategory">
+		<value>گروه محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentCategoryDetail">
+		<value>جزییات گروه محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentCategoryAdd">
+		<value>افزودن گروه محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentCategoryEdit">
+		<value>ویرایش گروه محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentCategoryDelete">
+		<value>حذف گروه محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentCategoryRestore">
+		<value>بازگردانی گروه محتوا</value>
+	</string>
+	<string key="PermissionTitle_Contents">
+		<value>محتوا</value>
+	</string>
+	<string key="PermissionTitle_Content">
+		<value>محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentDetail">
+		<value>جزییات محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentAdd">
+		<value>افزودن محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentEdit">
+		<value>ویرایش محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentDelete">
+		<value>حذف محتوا</value>
+	</string>
+	<string key="PermissionTitle_ContentRestore">
+		<value>بازگردانی محتوا</value>
+	</string>
+	<string key="PermissionTitle_ProductComments">
+		<value>نظرات محصولات</value>
+	</string>
+	<string key="PermissionTitle_ContentComments">
+		<value>نظرات محتوا</value>
+	</string>
+	<string key="PermissionTitle_StoreSettings">
+		<value>تنظیمات فروشگاه</value>
+	</string>
+	<string key="PermissionTitle_StoreMenues">
+		<value>منوهای فروشگاه</value>
+	</string>
+	<string key="PermissionTitle_Domains">
+		<value>دامنه ها</value>
+	</string>
+	<!--End [PermissionTitle]-->
+	<!--Start [tables]-->
+	<string key="tbl_RowName">
+		<value>ردیف</value>
+	</string>
+	<string key="tbl_Price">
+		<value>قیمت</value>
+	</string>
+	<string key="tbl_MainImage">
+		<value>تصویر اصلی</value>
+	</string>
+	<string key="specificationName_placeHolder">
+		<value>مقدار ممکن برای این خصیصه</value>
+	</string>
+	<string key="tbl_ProductUnit">
+		<value>واحد محصول</value>
+	</string>
+	<string key="tbl_ProductName">
+		<value>نام محصول</value>
+	</string>
+	<string key="tbl_ProductImages">
+		<value>تصاویر محصول</value>
+	</string>
+	<string key="tbl_ContentImages">
+		<value>تصاویر محتوا</value>
+	</string>
+	<string key="tbl_ProductGroup">
+		<value>گروه محصول</value>
+	</string>
+	<string key="tbl_SpecificationName">
+		<value>نام خصیصه</value>
+	</string>
+	<string key="tbl_SpecificationValues">
+		<value>مقادیر خصیصه</value>
+	</string>
+	<string key="tbl_ParentGroupName">
+		<value>نام گروه</value>
+	</string>
+	<string key="tbl_VendorName">
+		<value>نام فروشنده</value>
+	</string>
+	<string key="tbl_GroupName">
+		<value>نام گروه</value>
+	</string>
+	<string key="tbl_MenuTitle">
+		<value>عنوان منو</value>
+	</string>
+	<string key="tbl_CategoryName">
+		<value>نام گروه محتوا</value>
+	</string>
+	<string key="tbl_Content">
+		<value>محتوا</value>
+	</string>
+	<string key="tbl_GroupNames">
+		<value>نام گروه ها</value>
+	</string>
+	<string key="tbl_UniqeCode">
+		<value>کد انحصاری</value>
+	</string>
+	<string key="tbl_Inventory">
+		<value>موجودی</value>
+	</string>
+	<string key="tbl_RoleName">
+		<value>نام</value>
+	</string>
+	<string key="tbl_PermissionTitle">
+		<value>عنوان دسترسی</value>
+	</string>
+	<string key="tbl_PermissionType">
+		<value>نوع دسترسی</value>
+	</string>
+	<string key="tbl_Routes">
+		<value>مسیرها</value>
+	</string>
+	<string key="tbl_ClientAddress">
+		<value>آدرس کلاینت</value>
+	</string>
+	<string key="tbl_FirstPage">
+		<value>اول</value>
+	</string>
+	<string key="tbl_LastPage">
+		<value>آخر</value>
+	</string>
+	<string key="tbl_PreviousPage">
+		<value>قبلی</value>
+	</string>
+	<string key="tbl_NextPage">
+		<value>بعدی</value>
+	</string>
+	<string key="tbl_ProductCode">
+		<value>شناسه محصول</value>
+	</string>
+	<string key="tbl_ProductGroupCode">
+		<value>شناسه گروه محصول</value>
+	</string>
+	<string key="tbl_ContentCode">
+		<value>شناسه محتوا</value>
+	</string>
+	<string key="tbl_ContentCategoryCode">
+		<value>شناسه گروه محتوا</value>
+	</string>
+	<!--End [tables]-->
+	<!--START [Enum Descriptions]-->
+	<string key="EnumDesc_List">
+		<value>لیست</value>
+	</string>
+	<string key="EnumDesc_Add">
+		<value>افزودن</value>
+	</string>
+	<string key="EnumDesc_Remove">
+		<value>حذف</value>
+	</string>
+	<string key="EnumDesc_Edit">
+		<value>ویرایش</value>
+	</string>
+	<string key="EnumDesc_Password">
+		<value>رمز عبور</value>
+	</string>
+	<string key="EnumDesc_Active">
+		<value>فعال بودن</value>
+	</string>
+	<string key="EnumDesc_Dependency">
+		<value>وابستگی</value>
+	</string>
+	<string key="EnumDesc_Details">
+		<value>جزییات</value>
+	</string>
+	<string key="EnumDesc_Email">
+		<value>ایمیل</value>
+	</string>
+	<string key="EnumDesc_Sms">
+		<value>پیامک</value>
+	</string>
+	<string key="EnumDesc_Notification">
+		<value>اعلان</value>
+	</string>
+	<string key="Enum_ContentCategoryType">
+		<value>نوع گروه</value>
+	</string>
+	<!--End [Enum Descriptions]-->
+	<!--START [Allert And Message]-->
+	<string key="AlertAndMessage_ImageSuccessfullyUploaded">
+		<value>تصوبر با موفقیت بارگزاری شد.</value>
+	</string>
+	<string key="AlertAndMessage_NotImageMessage">
+		<value>لطفا یک عکس انتخاب کنید.</value>
+	</string>
+	<string key="AlertAndMessage_PromotionTypeProduct">
+		<value>ابتدا طبقه بندی را محصول انتخاب کنید سپس محصول با لیست اضافه کنید.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidFormat">
+		<value>فرمت فایل نامعتبر است.</value>
+	</string>
+	<string key="AlertAndMessage_PricePerCurrencyUniqueness">
+		<value>برای این واحد پول قیمت فعال وجود دارد در صورت همپوشانی بازه های زمانی قیمت قبلی غیر فعال خواهد شد</value>
+	</string>
+	<string key="AlertAndMessage_DefaultLanguageRequired">
+		<value>لطفا زبان پیش فرض کاربر را انتخاب کنید.</value>
+	</string>
+	<string key="AlertAndMessage_DefaultCurrencyRequired">
+		<value>لطفا واحد پول پیش فرض کاربر را انتخاب کنید.</value>
+	</string>
+	<string key="AlertAndMessage_Specifications">
+		<value>لطفا حداقل یک سطر برای جدول خصوصیات محصول پرکنید.</value>
+	</string>
+	<string key="AlertAndMessage_IsPublishedOnMainDomain">
+		<value>انتشار در دامنه اصلی</value>
+	</string>
+	<string key="AlertAndMessage_NotifyWhenCountIsLessThan">
+		<value>هشدار برای موجودی کمتر از:</value>
+	</string>
+	<string key="AlertAndMessage_ImageNotSave">
+		<value>تصویر مورد نظر ذخیره نشد لطفا بعدا تلاش کنید.</value>
+	</string>
+	<string key="AlertAndMessage_EnterTheResult">
+		<value>حاصل را وارد کنید</value>
+	</string>
+	<string key="AlertAndMessage_SignInToSite">
+		<value>ورود به سایت</value>
+	</string>
+	<string key="AlertAndMessage_ForgetPassword">
+		<value>رمز عبور را فراموش کرده ام.</value>
+	</string>
+	<string key="AlertAndMessage_EnterUsernameAndPassword">
+		<value>لطفا نام کاربری و کلمه عبور را وارد کنید.</value>
+	</string>
+	<string key="AlertAndMessage_SelectSpecificationGroup">
+		<value>لطفا نام گروه مشخصات را انتخاب کنید.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteSpecificationValue">
+		<value>این مقدار خصیصه حذف خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_FillSpecificationValue">
+		<value>لطفا مقدار خصیصه را وارد کنید.</value>
+	</string>
+	<string key="AlertAndMessage_ChooseLanguage">
+		<value>ابتدا زبان مورد نظر را انتخاب کنید.</value>
+	</string>
+	<string key="AlertAndMessage_FillMultiLingualProperty">
+		<value>لطفا حداقل یک سطر جدول را پرکنید.</value>
+	</string>
+	<string key="AlertAndMessage_FillPriceList">
+		<value>لطفا یک سطر قیمت معتبر و فعال برای محصول وارد کنید.</value>
+	</string>
+	<string key="AlertAndMessage_FillList">
+		<value>لطفا حدااقل یک آیتم به لیست اضافه کنید.</value>
+	</string>
+	<string key="AlertAndMessage_FillLangId">
+		<value>لطفا زبان مربوطه را انتخاب کنید.</value>
+	</string>
+	<string key="AlertAndMessage_SeprateRoutesByComma">
+		<value>مسیرهای مختلف را با , از هم جداکنید.</value>
+	</string>
+	<string key="AlertAndMessage_AlreadyExists">
+		<value>این نام درحال حاضر موجود است.</value>
+	</string>
+	<string key="AlertAndMessage_DeletePermission">
+		<value>دسترسی مربوطه حذف خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteProductUnit">
+		<value>واحد محصول مربوطه حذف خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteProductGroup">
+		<value>گروه محصول حذف خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteProduct">
+		<value>محصول مربوطه حذف خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteProductSpecificationGroup">
+		<value>گروه مشخصات محصول مربوطه حذف خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_DeletePromotion">
+		<value>این موجودیت تخفیفات و جشنواره ها حذف خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteRole">
+		<value>نقش مربوطه حذف خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_FieldEssential">
+		<value>پر کردن این فیلد الزامی است.</value>
+	</string>
+	<string key="AlertAndMessage_OptionEssential">
+		<value>انتخاب یک گزینه الزامی است.</value>
+	</string>
+	<string key="AlertAndMessage_ModificationReason">
+		<value>لطفا دلیل ویرایش را ذکر کنید.</value>
+	</string>
+  <string key="AlertAndMessage_PermissionSelectLimitation">
+    <value>حداقل یک دسترسی باید انتخاب شود.</value>
+  </string>
+	<string key="AlertAndMessage_Error">
+		<value>خطا</value>
+	</string>
+	<string key="AlertAndMessage_Success">
+		<value>موفقیت</value>
+	</string>
+	<string key="AlertAndMessage_ChangePassSureness">
+		<value>برای تغییر رمز اطمینان دارید؟</value>
+	</string>
+	<string key="AlertAndMessage_UserNameRequired">
+		<value>لطفا نام کاربری را وارد کنید.</value>
+	</string>
+	<string key="AlertAndMessage_NameRequired">
+		<value>لطفا نام کاربر را وارد کنید.</value>
+	</string>
+	<string key="AlertAndMessage_LastNameRequired">
+		<value>لطفا نام خانوادگی را وارد کنید.</value>
+	</string>
+	<string key="AlertAndMessage_PhonenumberRequired">
+		<value>لطفا شماره موبایل را وارد نمایید.</value>
+	</string>
+	<string key="AlertAndMessage_UserRoleRequired">
+		<value>لطفانقش کاربر را انتخاب کنید.</value>
+	</string>
+	<string key="AlertAndMessage_PasswordRequired">
+		<value>لطفا کلمه غبور را وارد کنید.</value>
+	</string>
+	<string key="AlertAndMessage_PasswordValidation">
+		<value>پسورد باید ترکیبی از حروف وعدد باشد.</value>
+	</string>
+	<string key="AlertAndMessage_RePasswordRequired">
+		<value> لطفا تکرار پسورد را وارد کنید.</value>
+	</string>
+	<string key="AlertAndMessage_PasswordRepassWordCompare">
+		<value>کلمه عبور و تکرار کلمه عبور باید یکسان باشند.</value>
+	</string>
+
+	<string key="AlertAndMessage_MinLength">
+		<value>طول 0 نیاید کمتر از 1 باشد.</value>
+	</string>
+	<string key="AlertAndMessage_FillEssentialFields">
+		<value>لطفا فیلدهای ضروری تکمیل گردد.</value>
+	</string>
+	<string key="AlertAndMessage_DataWasNotFound">
+		<value>داده مورد نظر یافت نشد</value>
+	</string>
+	<string key="AlertAndMessage_DeletionSureness">
+		<value>آیا برای حذف اطمینان دارید؟</value>
+	</string>
+	<string key="AlertAndMessage_AreYouSure">
+		<value>مطمئن هستید؟</value>
+	</string>
+	<string key="AlertAndMessage_UserDeleteText">
+		<value>کاربر مربوطه حذف خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_UserRestoreText">
+		<value>کاربر مربوطه بازگزدانی خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_EntityRestoreText">
+		<value>موجودیت مورد نظر بازگردانی خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_CaptchaIsExpired">
+		<value>عبارت امنیتی صحیح نیست یا منقضی شده است.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidUsernameOrPassword">
+		<value>نام کاربری یا کلمه عبور اشتباه است.</value>
+	</string>
+	<string key="AlertAndMessage_InActiveUserAccount">
+		<value>حساب کاربری توسط ادمین غیر فعال شده است.</value>
+	</string>
+	<string key="AlertAndMessage_DuplicateUsername">
+		<value>نام کاربری تکراری می باشد.</value>
+	</string>
+	<string key="AlertAndMessage_UserCreatedSuccessfully">
+		<value>کاربر با موفقیت ایجاد شد.</value>
+	</string>
+
+	<string key="AlertAndMessage_DuplicatePhoneNumber">
+		<value>با این شماره موبایل قبلا کاربری ثبت نام شده است.</value>
+	</string>
+	<string key="AlertAndMessage_NoAccess">
+		<value>شما دسترسی انجام فعالیت جاری را ندارید.</value>
+	</string>
+	<string key="AlertAndMessage_NoUserWasFound">
+		<value>کاربر مورد نظر یافت نشد.</value>
+	</string>
+
+	<string key="AlertAndMessage_EntityNotFound">
+		<value>موجودیت مورد نظر یافت نشد.</value>
+	</string>
+
+	<string key="AlertAndMessage_NoRoleWasFound">
+		<value>نقش مورد نظر یافت نشد</value>
+	</string>
+	<string key="AlertAndMessage_NoDataToShow">
+		<value>اطلاعاتی برای نمایش موجود نمیباشد.</value>
+	</string>
+
+	<string key="AlertAndMessage_NotifySendingSMS">
+		<value>با زدن دکمه ارسال کلمه عبور جدید به شماره موبایل کاربر ارسال خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_TryLator">
+		<value>لطفا مجددا امتحان کنید.</value>
+	</string>
+	<string key="AlertAndMessage_lackOfIcon">
+		<value>لطفا فایل آیکون منو را مشخص نمایید.</value>
+	</string>
+	<string key="AlertAndMessage_lackOfPriority">
+		<value>لطفا اولویت را مشخص کنید.</value>
+	</string>
+	<string key="AlertAndMessage_lackOfRoutes">
+		<value>لطفا حداقل یک مسیر مشخص نمایید.</value>
+	</string>
+	<string key="AlertAndMessage_lackOfMenuIdofModule">
+		<value>لطفا منوی ماژول را مشخص نمایید.</value>
+	</string>
+	<string key="AlertAndMessage_EditionDoneSuccessfully">
+		<value>ویرایش یا موفقیت انجام شد.</value>
+	</string>
+	<string key="AlertAndMessage_InsertionDoneSuccessfully">
+		<value>ثبت با موفقیت انجام شد.</value>
+	</string>
+	<string key="AlertAndMessage_DeletionDoneSuccessfully">
+		<value>عملیات حذف با موفقیت انجام گردید.</value>
+	</string>
+	<string key="AlertAndMessage_SendNewPassword">
+		<value>کلمه عبور جدید به تلفن همراه شما پیامک میشود.</value>
+	</string>
+	<string key="AlertAndMessage_UserDeletionSureness">
+		<value>آیا برای حذف این کاربر اطمینان دارید؟</value>
+	</string>
+	<string key="AlertAndMessage_UserRestoreSureness">
+		<value>آیا برای بازگردانی کاربر جاری اطمینان دارید؟</value>
+	</string>
+	<string key="AlertAndMessage_NotifyEmptyList">
+		<value>اطلاعاتی برای نمایش وجود ندارد.</value>
+	</string>
+	<string key="AlertAndMessage_GotIt">
+		<value>متوجه شدم</value>
+	</string>
+	<string key="AlertAndMessage_RequiredErrorMessage">
+		<value>این فیلد الزامی است.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidFileType">
+		<value>نوع فایل اشتباه است.</value>
+	</string>
+	<string key="AlertAndMessage_NewPasswordwordDoesNotMatchWithRepeat">
+		<value>گذرواژه و تکرار آن با هم مطابقت ندارند.</value>
+	</string>
+	<string key="Tariff_Needed">
+		<value>حداقل یک تعرفه باید انتخاب گردد.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidFileSize">
+		<value>سایز فایل بیش از حد مجاز است.</value>
+	</string>
+	<string key="AlertAndMessage_EnterBirthDate">
+		<value>لطفا تاریخ تولد را وارد نمائید.</value>
+	</string>
+
+	<string key="AlertAndMessage_InvalidExpirationDateRange">
+		<value>تاریخ انقضای انتخاب شده مورد قبول نمی باشد.</value>
+	</string>
+
+	<string key="AlertAndMessage_MaxDateTime">
+		<value>حداکثر تاریخ انقضای قابل انتخاب برای این شماره: </value>
+	</string>
+	<string key="AlertAndMessage_ErrorUploadingFile">
+		<value>خطا در بارگذاری فایل.</value>
+	</string>
+	<string key="AlertAndMessage_IdRequired">
+		<value>Id مشخص نشده است.</value>
+	</string>
+	<string key="AlertAndMessage_ObjectNotFound">
+		<value>آیتمی پیدا نشد!</value>
+	</string>
+	<string key="Regex_Not_Match">
+		<value>مقدار وارد شده با الگو مطابقت ندارد.</value>
+	</string>
+	<string key="AlertAndMessage_EnterUsername">
+		<value>لطفا نام کاربری را وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_EnterFirstName">
+		<value>لطفا نام را وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_EnterLastName">
+		<value>لطفا نام خانوادگی را وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_EnterPassword">
+		<value>لطفا گذرواژه را انتخاب نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_SelectGender">
+		<value>لطفا جنسیت را انتخاب نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_Gender">
+		<value>جنسیت</value>
+	</string>
+	<string key="AlertAndMessage_EnterFatherName">
+		<value>لطفا نام پدر را وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_InternalServerErrorMessage">
+		<value>متاسفانه، ظاهرا برخی اطلاعات اشتباه وارد شده است!</value>
+	</string>
+	<string key="AlertAndMessage_ModelHasIdError">
+		<value>مدل ایجاد شده نباید حاوی پارامتر id باشد!</value>
+	</string>
+	<string key="AlertAndMessage_DuplicateClientIdInsertError">
+		<value>این شناسه در سیستم موجود است!</value>
+	</string>
+	<string key="AlertAndMessage_InProperIdFormat">
+		<value>فرمت Id اشتباه است.</value>
+	</string>
+	<string key="AlertAndMessage_ExceptionOccured">
+		<value>خطایی رخ داده است.</value>
+	</string>
+	<string key="AlertAndMessage_ParameterError">
+		<value>لطفا پارامترها را بررسی نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_SuccessfullyDone">
+		<value>با موفقیت انجام شد.</value>
+	</string>
+	<string key="AlertAndMessage_DuplicateError">
+		<value>این آیتم وجود دارد!</value>
+	</string>
+	<string key="AlertAndMessage_GeneralError">
+		<value>خطای نامشخص.</value>
+	</string>
+	<string key="AlertAndMessage_ModelError">
+		<value>خطای مدل!</value>
+	</string>
+	<string key="AlertAndMessage_InvalidPassword">
+		<value>گذرواژه نامعتبر است!</value>
+	</string>
+	<string key="AlertAndMessage_NoServerResponseError">
+		<value>سرور پاسخگوی این عملیات نمی باشد!</value>
+	</string>
+	<string key="AlertAndMessage_BadRequestError">
+		<value>درخواست نامعتبر می باشد!</value>
+	</string>
+	<string key="AlertAndMessage_RangeLimitExceed">
+		<value>بیش از حد مجاز!</value>
+	</string>
+	<string key="AlertAndMessage_OperationDoneSuccessfully">
+		<value>عملیات با موفقیت انجام شد.</value>
+	</string>
+	<string key="AlertAndMessage_OperationFailed">
+		<value>عملیات ناموفق بود!</value>
+	</string>
+	<string key="AlertAndMessage_ErrorInSaving">
+		<value>خطا در ذخیره سازی داده!</value>
+	</string>
+	<string key="AlertAndMessage_InvalidDate">
+		<value>تاریخ نامعتبر است.</value>
+	</string>
+	<string key="AlertAndMessage_EnterFixedPhoneNumber">
+		<value>لطفا شماره تلفن ثابت خود را وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidFixedPhoneNumber">
+		<value>شماره تلفن اشتباه است.</value>
+	</string>
+	<string key="AlertAndMessage_SelectOne">
+		<value>لطفا انتخاب کنید...</value>
+	</string>
+	<string key="AlertAndMessage_YouEnteredMobileNumber">
+		<value>شما، شماره موبایل وارد کرده اید.</value>
+	</string>
+	<string key="AlertAndMessage_EnterMobileNumber">
+		<value>لطفا شماره همراه خود را وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_EnterMobile">
+		<value>لطفا شماره همراه خود را وارد نمائید:</value>
+	</string>
+	<string key="AlertAndMessage_InvalidMobileNumber">
+		<value>شماره همراه وارد شده اشتباه است.</value>
+	</string>
+	<string key="AlertAndMessage_YouEnteredFixPhoneNumber">
+		<value>شما، شماره تلفن ثابت وارد نموده اید.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidNationalId">
+		<value>کد ملی اشتباه است.</value>
+	</string>
+	<string key="AlertAndMessage_EnterPostalCode">
+		<value>لطفا کد پستی را وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidPostalCode">
+		<value>کد پستی اشتباه است.</value>
+	</string>
+
+	<string key="AlertAndMessage_TheAccountHasBeenDisabledByTheAdmin">
+		<value>این اکانت توسط مدیریت مسدود شده است.</value>
+	</string>
+	<string key="AlertAndMessage_Welcome">
+		<value>خوش آمدید.</value>
+	</string>
+	<string key="AlertAndMessage_YouCameInInsteadOf">
+		<value>شما وارد شده اید به جای  </value>
+	</string>
+	<string key="AlertAndMessage_YourOTPIs">
+		<value>کد شما : </value>
+	</string>
+	<string key="AlertAndMessage_ErrorInSendingSMS">
+		<value>خطا در ارسال پیامک.</value>
+	</string>
+	<string key="AlertAndMessage_UserNotFound">
+		<value>کاربر پیدا نشد.</value>
+	</string>
+	<string key="AlertAndMessage_NotAllowed">
+		<value>شما مجاز نیستید.</value>
+	</string>
+	<string key="AlertAndMessage_ErrorTryAgain">
+		<value>خطا، لطفا مجدد تلاش کنید.</value>
+	</string>
+	<string key="AlertAndMessage_ErrorTryAgainLater">
+		<value>خطا، لطفا بعدا تلاش کنید.</value>
+	</string>
+	<string key="AlertAndMessage_ValidityOfOTP">
+		<value>اعتبار یک بار رمز فقط 3 دقیقه می باشد.</value>
+	</string>
+	<string key="AlertAndMessage_YourNewPasswordIs">
+		<value>گذرواژه جدید: </value>
+	</string>
+	<string key="AlertAndMessage_InvalidCaptcha">
+		<value>عبارت امنیتی اشتباه است.</value>
+	</string>
+	<string key="AlertAndMessage_SelectCountry">
+		<value>لطفا کشور را انتخاب نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_SelectState">
+		<value>لطفا استان را انتخاب نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_SelectCity">
+		<value>لطفا شهر را انتخاب نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_SelectCurrency">
+		<value>لطفا واحد پول مربوطه را انتخاب نمایید.</value>
+	</string>
+	<string key="AlertAndMessage_ModificationProfile">
+		<value>تغییرات پروفایل.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidCurrentPassword">
+		<value>گذرواژه فعلی اشتباه است.</value>
+	</string>
+	<string key="AlertAndMessage_ModificationPasswordByUser">
+		<value>تغییر گذرواژه توسط کاربر.</value>
+	</string>
+	<string key="AlertAndMessage_ModificationPasswordByAdmin">
+		<value>تغییر گذرواژه توسط مدیریت.</value>
+	</string>
+	<string key="AlertAndMessage_PasswordChanged">
+		<value>گذرواژه تغییر یافت.</value>
+	</string>
+	<string key="AlertAndMessage_EnterModificationReason">
+		<value>لطفا دلیل ویرایش را بنویسید.</value>
+	</string>
+	<string key="AlertAndMessage_EnterValidNumber">
+		<value>لطفا مقدار عددی وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_EnterValidAlphanumeric">
+		<value>لطفا حرف و اعداد وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_EnterValidAlphanumericRange">
+		<value>لطفا مقادیر عددی یا حرفی را به همراه * یا ؟ وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_SelectAtLeastOneItem">
+		<value>لطفا حداقل یک آیتم را انتخاب نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_SelectOneItem">
+		<value>لطفا یک آیتم را انتخاب کنید.</value>
+	</string>
+	<string key="AlertAndMessage_Choose">
+		<value>انتخاب کنید</value>
+	</string>
+	<string key="AlertAndMessage_Cancel">
+		<value>لغو</value>
+	</string>
+	<string key="AlertAndMessage_FormatIsNotCorrect">
+		<value>فرمت پارامترهای وارد شده، اشتباه است.</value>
+	</string>
+	<string key="AlertAndMessage_UpperAndLowerLimit">
+		<value>مقدار بالا نمی تواند کمتر از مقدار پائین باشد.</value>
+	</string>
+	<string key="AlertAndMessage_UpperAndLowerLimitOverlap">
+		<value>مقادیر وارد شده، با بازه دیگری همپوشانی دارد.</value>
+	</string>
+	<string key="AlertAndMessage_EnterBlockedMobileNumber">
+		<value>لطفا شماره موبایل را وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_EnterChangeRoutedMobileNumber">
+		<value>لطفا شماره موبایل را وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_NotEnoughCredit">
+		<value>موجودی کافی نیست!</value>
+	</string>
+	<string key="AlertAndMessage_FileHasNoInformation">
+		<value>فایل وارد شده، محتوایی ندارد.</value>
+	</string>
+	<string key="AlertAndMessage_UpstreamGatewayNotFound">
+		<value>سرویس دهنده ای یافت نشد.</value>
+	</string>
+	<string key="AlertAndMessage_EditUpstreamGateway">
+		<value>ویرایش سرویس دهنده</value>
+	</string>
+	<string key="AlertAndMessage_ThePriorityIsMandatory">
+		<value>ورود اولویت الزامی است و می بایست بزرگتر از 0 باشد.</value>
+	</string>
+	<string key="AlertAndMessage_Creator">
+		<value>ایجاد کننده</value>
+	</string>
+	<string key="AlertAndMessage_NotFound">
+		<value>پیدا نشد.</value>
+	</string>
+	<string key="AlertAndMessage_DirectUsers">
+		<value>کاربران مستقیم</value>
+	</string>
+	<string key="AlertAndMessage_UsernameExist">
+		<value>این کاربر وجود دارد.</value>
+	</string>
+	<string key="AlertAndMessage_NoSenderIdFoundToAssign">
+		<value>شماره ای برای تخصیص یافت نشد.</value>
+	</string>
+	<string key="AlertAndMessage_ChooseAnotherUsername">
+		<value>لطفا نام کاربری دیگری انتخاب کنید.</value>
+	</string>
+	<string key="AlertAndMessage_MobileExist">
+		<value>این شماره موبایل وجود دارد.</value>
+	</string>
+	<string key="AlertAndMessage_PasswordAndRepetitionNotTheSame">
+		<value>گذرواژه و تکرار آن با هم مطابقت ندارند.</value>
+	</string>
+	<string key="AlertAndMessage_FillAllField">
+		<value>لطفا تمامی فیلدها را پر کنید.</value>
+	</string>
+	<string key="AlertAndMessage_CheckTheInputDataFormat">
+		<value>لطفا فرمت مقادیر ورودی را چک کنید.</value>
+	</string>
+	<string key="AlertAndMessage_AccessDenied">
+		<value>دسترسی محدود شده است.</value>
+	</string>
+	<string key="AlertAndMessage_AccessDeniedToThisPage">
+		<value>شما اجازه دسترسی به این صفحه را ندارید.</value>
+	</string>
+	<string key="AlertAndMessage_ClickMe">
+		<value>اینجا را کلیک کنید</value>
+	</string>
+	<string key="AlertAndMessage_ClickMeToReturn">
+		<value>تا به صفحه اصلی بازگردید.</value>
+	</string>
+	<string key="AlertAndMessage_Inaccessibility">
+		<value>عدم دسترسی</value>
+	</string>
+	<string key="AlertAndMessage_ErrorOccurrence">
+		<value>خطایی رخ داده است.</value>
+	</string>
+	<string key="AlertAndMessage_TheRequestedSubmissionParametersAreIncorrect">
+		<value>پارامترهای ارسال درخواست، نادرست است.</value>
+	</string>
+	<string key="AlertAndMessage_LoginPage">
+		<value>ورود به سامانه</value>
+	</string>
+	<string key="AlertAndMessage_Login">
+		<value>ورود</value>
+	</string>
+	<string key="AlertAndMessage_Logout">
+		<value>خروج</value>
+	</string>
+	<string key="AlertAndMessage_LoginHistory">
+		<value>تاریخچه ورود و خروج</value>
+	</string>
+	<string key="AlertAndMessage_LoginToAccount">
+		<value>ورود به پنل کاربری</value>
+	</string>
+	<string key="AlertAndMessage_EnterUserAndPassword">
+		<value>لطفا نام کاربری و گذرواژه را وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_EnterOTP">
+		<value>یک بار رمز را وارد نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_ChangePassword">
+		<value>تغییر گذرواژه</value>
+	</string>
+
+	<string key="AlertAndMessage_ApiAccessFormatError">
+		<value>فرمت ورودی صحیح نیست.</value>
+	</string>
+	<string key="AlertAndMessage_CurrentPassword">
+		<value>گذرواژه فعلی: </value>
+	</string>
+	<string key="AlertAndMessage_NewPassword">
+		<value>گذرواژه جدید: </value>
+	</string>
+	<string key="AlertAndMessage_ConfirmPassword">
+		<value>تکرار گذرواژه: </value>
+	</string>
+	<string key="AlertAndMessage_CreatePasswordBySyetm">
+		<value>ایجاد گذرواژه توسط سیستم</value>
+	</string>
+	<string key="AlertAndMessage_RandomPassword">
+		<value>گذرواژه تصادفی</value>
+	</string>
+	<string key="AlertAndMessage_CopyToClipboard">
+		<value>کپی در حافظه</value>
+	</string>
+	<string key="AlertAndMessage_SentToUser">
+		<value>اکنون برای کاربر ارسال می شود.</value>
+	</string>
+	<string key="AlertAndMessage_OTP">
+		<value>یک بار رمز: </value>
+	</string>
+	<string key="AlertAndMessage_SendOTP">
+		<value>ارسال یک بار رمز</value>
+	</string>
+	<string key="AlertAndMessage_OTPSentSuccessfully">
+		<value>یک بار رمز ارسال شد</value>
+	</string>
+	<string key="AlertAndMessage_Username">
+		<value>نام کاربری</value>
+	</string>
+	<string key="AlertAndMessage_Password">
+		<value>گذرواژه</value>
+	</string>
+	<string key="AlertAndMessage_RememberMe">
+		<value>مرا به خاطر بسپار</value>
+	</string>
+	<string key="AlertAndMessage_ResetPassword">
+		<value>بازنشانی گذرواژه</value>
+	</string>
+	<string key="AlertAndMessage_PageNotFound">
+		<value>صفحه یافت نشد.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteConfirm">
+		<value>بله، حذف شود!</value>
+	</string>
+	<string key="AlertAndMessage_Deny">
+		<value>خیر</value>
+	</string>
+	<string key="AlertAndMessage_Approve">
+		<value>بله</value>
+	</string>
+	<string key="AlertAndMessage_AskForConfirm">
+		<value>آیا مطمئن هستید؟</value>
+	</string>
+	<string key="AlertAndMessage_AskForConfirmImageDeletion">
+		<value>آیا برای حذف این عکس اطمینان دارید؟</value>
+	</string>
+	<string key="AlertAndMessage_PermissionWillBeDeleted">
+		<value>دسترسی حذف خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_RoleWillBeDeleted">
+		<value>نقش حذف خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_ItemWillBeDeleted">
+		<value>آیتم حذف خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_NothingToShow">
+		<value>چیزی برای نمایش وجود ندارد.</value>
+	</string>
+	<string key="AlertAndMessage_SelectFile">
+		<value>لطفا فایل را انتخاب نمائید.</value>
+	</string>
+	<string key="AlertAndMessage_NoFileSelected">
+		<value>هنوز فایلی انتخاب نشده است.</value>
+	</string>
+	<string key="AlertAndMessage_Succeeded">
+		<value>موفق</value>
+	</string>
+	<string key="AlertAndMessage_Failed">
+		<value>ناموفق</value>
+	</string>
+	<string key="AlertAndMessage_AllFailed">
+		<value>همه، ناموفق</value>
+	</string>
+	<string key="AlertAndMessage_UserIpAddress">
+		<value>آدرس IP</value>
+	</string>
+	<string key="AlertAndMessage_ViewBatchIDs">
+		<value>مشاهده شناسه ها</value>
+	</string>
+	<string key="AlertAndMessage_IncompleteProfile">
+		<value>پروفایل ناقص است.</value>
+	</string>
+	<string key="AlertAndMessage_IncompleteProfileMessage">
+		<value>لطفا قبل از استفاده از امکانات سیستم، پروفایل خود را تکمیل کنید.</value>
+	</string>
+	<string key="AlertAndMessage_IncompleteProfileItems">
+		<value>لطفا آیتم های زیر را تکمیل کنید:</value>
+	</string>
+	<string key="AlertAndMessage_TransferCellphoneBetweenOperatorsList">
+		<value>لیست ترابردها</value>
+	</string>
+	<string key="AlertAndMessage_TransferCellphone">
+		<value>ترابرد شده ها</value>
+	</string>
+	<string key="AlertAndMessage_AddExtraParams">
+		<value>پارامترهای اضافی</value>
+	</string>
+	<string key="AlertAndMessage_OperatorList">
+		<value>لیست اپراتورهای موبایل</value>
+	</string>
+	<string key="AlertAndMessage_NewOperator">
+		<value>اپراتور جدید</value>
+	</string>
+	<string key="AlertAndMessage_SuccessCount">
+		<value>تعداد موفق</value>
+	</string>
+	<string key="AlertAndMessage_FailedCount">
+		<value>تعداد ناموفق</value>
+	</string>
+	<string key="AlertAndMessage_NewRole">
+		<value>نقش جدید</value>
+	</string>
+	<string key="AlertAndMessage_Receivers">
+		<value>دریافت کنندگان</value>
+	</string>
+	<string key="AlertAndMessage_ChangeUserTariff">
+		<value>تغییر تعرفه</value>
+	</string>
+	<string key="AlertAndMessage_SetUserSenderIds">
+		<value>تخصیص شماره</value>
+	</string>
+	<string key="AlertAndMessage_DateFrom">
+		<value>از تاریخ</value>
+	</string>
+	<string key="AlertAndMessage_DateTo">
+		<value>تا تاریخ</value>
+	</string>
+	<string key="AlertAndMessage_Type">
+		<value>نوع</value>
+	</string>
+	<string key="AlertAndMessage_Icon">
+		<value>لطفا آیکون را انتخاب نمایید.</value>
+	</string>
+	<string key="AlertAndMessage_Priority">
+		<value>لطفا الویت را مشخص نمایید.</value>
+	</string>
+	<string key="AlertAndMessage_Route">
+		<value>لطفا آدرس را مشخص نمایید.</value>
+	</string>
+	<string key="AlertAndMessage_MenuOfModule">
+		<value>لطفا منو را انتخاب نمایید.</value>
+	</string>
+	<!--END [Allert And Message]-->
+	<!--START [Dashboard]-->
+	<string key="Choose">
+		<value>انتخاب کنید ...</value>
+	</string>
+	<string key="SpecificationGroupName">
+		<value>نام گروه مشخصات محصول</value>
+	</string>
+	<string key="SpecificationGroup">
+		<value>گروه مشخصات</value>
+	</string>
+	<string key="AddPromotion_Title">
+		<value>افزودن تخفیفات و جشنواره ها</value>
+	</string>
+	<string key="EditPromotion_Title">
+		<value>ویرایش تخفیفات و جشنواره ها</value>
+	</string>
+	<string key="EditComment_Title">
+		<value>ویرایش نظر</value>
+	</string>
+	<string key="AddComment_Title">
+		<value>افزودن نظر</value>
+	</string>
+	<string key="AddProSpecGroupPart_Title">
+		<value>افزودن گروه مشخصات محصول</value>
+	</string>
+	<string key="EditProSpecGroupPart_Title">
+		<value>ویرایش گروه مشخصات محصول</value>
+	</string>
+	<string key="AddPermissionPart_Title">
+		<value>افزودن نقش </value>
+	</string>
+	<string key="AddProductGroupPart_Title">
+		<value>افزودن گروه محصول</value>
+	</string>
+	<string key="AddMenu_Title">
+		<value>افزودن منوهای فروشگاه</value>
+	</string>
+	<string key="EditProductGroupPart_Title">
+		<value>ویرایش گروه محصول</value>
+	</string>
+	<string key="EditDomain_Title">
+		<value>ویرایش دامنه</value>
+	</string>
+	<string key="EditProductPart_Title">
+		<value>ویرایش محصول</value>
+	</string>
+	<string key="EditContentCategory_Title">
+		<value>ویرایش گروه محتوا</value>
+	</string>
+	<string key="EditMenu_Title">
+		<value>ویرایش منوهای فروشگاه</value>
+	</string>
+	<string key="AddContentCategory_Title">
+		<value>افزودن گروه محتوا</value>
+	</string>
+	<string key="EditContent_Title">
+		<value>ویرایش محتوا</value>
+	</string>
+	<string key="AddContent_Title">
+		<value>افزودن محتوا</value>
+	</string>
+	<string key="AddProductPart_Title">
+		<value>افزودن محصول</value>
+	</string>
+	<string key="AddProductSpecificationPart_Title">
+		<value>افزودن خصوصیات محصول</value>
+	</string>
+	<string key="EditProductSpecificationPart_Title">
+		<value>ویرایش خصوصیات محصول</value>
+	</string>
+	<string key="AddProductUnitPart_Title">
+		<value>افزودن واحد محصول</value>
+	</string>
+	<string key="AddDomain_Title">
+		<value>افزودن دامنه</value>
+	</string>
+	<string key="EditProductUnitPart_Title">
+		<value>ویرایش واحد محصول</value>
+	</string>
+	<string key="EditPermissionPart_Title">
+		<value>ویرایش نقش</value>
+	</string>
+	<string key="AddUserPart_Title">
+		<value>افزودن کاربر</value>
+	</string>
+	<string key="AddRolePart_Title">
+		<value>اضافه کردن نقش</value>
+	</string>
+	<string key="EditRolePart_Title">
+		<value>ویرایش نقش</value>
+	</string>
+	<string key="Permission_Delete">
+		<value>حذف دسترسی</value>
+	</string>
+	<string key="Permission_Name">
+		<value>عنوان دسترسی</value>
+	</string>
+	<string key="Permission_Type">
+		<value>نوع</value>
+	</string>
+	<string key="Permission_Method">
+		<value>متود</value>
+	</string>
+	<string key="Permission_Routes">
+		<value>مسیرها</value>
+	</string>
+	<string key="Permission_ClientAddress">
+		<value>آدرس کلاینت</value>
+	</string>
+	<string key="ProductUnit_Name">
+		<value>نام واحد محصول</value>
+	</string>
+	<string key="Role_Name">
+		<value>نام نقش</value>
+	</string>
+	<string key="Role_Edit">
+		<value>ویرایش نقش ها</value>
+	</string>
+	<string key="Role_Delete">
+		<value>حذف نقش</value>
+	</string>
+	<string key="Role_CreatorUserName">
+		<value>کاربر ایجادکننده</value>
+	</string>
+	<string key="User_FirstName">
+		<value>نام</value>
+	</string>
+	<string key="User_LastName">
+		<value>نام خانوادگی</value>
+	</string>
+	<string key="User_PhoneNumber">
+		<value>تلفن همراه</value>
+	</string>
+	<string key="User_UserName">
+		<value>نام کاربری</value>
+	</string>
+	<string key="User_Password">
+		<value>رمز عبور</value>
+	</string>
+	<string key="User_RePassword">
+		<value>تکرار رمز عبور</value>
+	</string>
+	<string key="User_FullName">
+		<value>نام و نام خانوادگی</value>
+	</string>
+	<string key="User_RoleName">
+		<value>نام نقش</value>
+	</string>
+	<string key="ActivationState">
+		<value>وضعیت</value>
+	</string>
+	<string key="Title">
+		<value>عنوان</value>
+	</string>
+	<string key="SubName">
+		<value>محصول/محتوا</value>
+	</string>
+	<string key="SubGroupName">
+		<value>گروه محصول/محتوا</value>
+	</string>
+	<string key="CommentTitle">
+		<value>عنوان نظر</value>
+	</string>
+	<string key="Description">
+		<value>توضیحات</value>
+	</string>
+	<string key="Active">
+		<value>فعال</value>
+	</string>
+	<string key="DomainOwner">
+		<value>مالک دامنه</value>
+	</string>
+	<string key="DomainName">
+		<value>نام دامنه</value>
+	</string>
+	<string key="Rename">
+		<value>تغییر نام</value>
+	</string>
+	<string key="ChooseImageForm">
+		<value>فرم انتخاب عکس</value>
+	</string>
+	<string key="ChooseImage">
+		<value>Choose Image</value>
+	</string>
+	<string key="Folders">
+		<value>پوشه ها:</value>
+	</string>
+	<string key="ChangeLogo">
+		<value>تغییر لوگو</value>
+	</string>
+	<string key="FileLogo">
+		<value>لوگوی محتوا</value>
+	</string>
+	<string key="LikeCount">
+		<value>تعداد پسندها</value>
+	</string>
+	<string key="DisLikeCount">
+		<value>DisLike Count</value>
+	</string>
+	<string key="ReferenceType">
+		<value>نوع نظر</value>
+	</string>
+	<string key="ReferenceTitle">
+		<value>عنوان مرجع</value>
+	</string>
+	<string key="IsApproved">
+		<value>تایید</value>
+	</string>
+	<string key="SourceType">
+		<value>نوع صاحب محتوا</value>
+	</string>
+	<string key="ContentProviderName">
+		<value>نام تولیدکننده محتوا</value>
+	</string>
+	<string key="StartShowDate">
+		<value>تاریخ شروع نمایش</value>
+	</string>
+	<string key="EndShowDate">
+		<value>تاریخ پایان نمایش</value>
+	</string>
+	<string key="TagKeywords">
+		<value>کلمات کلیدی</value>
+	</string>
+	<string key="ProductsInPromotion">
+		<value>محصولات پروموشن دار</value>
+	</string>
+	<string key="Value">
+		<value>مقدار</value>
+	</string>
+	<string key="Product">
+		<value>محصول</value>
+	</string>
+	<string key="BoughtCount">
+		<value>تعداد خرید</value>
+	</string>
+	<string key="PromotedCountofUnit">
+		<value>تعداد محصول رایگان</value>
+	</string>
+	<string key="Image">
+		<value>تصویر</value>
+	</string>
+	<string key="MainPhoto">
+		<value>تصویر اصلی</value>
+	</string>
+	<string key="InActive">
+		<value>غیر فعال</value>
+	</string>
+	<string key="IsVendor">
+		<value>فروشنده است؟</value>
+	</string>
+	<string key="ProductVendor">
+		<value>فروشنده محصول</value>
+	</string>
+	<string key="PriceHistory">
+		<value>تاریخچه قیمت</value>
+	</string>
+	<string key="ShowInLackOfInventory">
+		<value>نمایش در صورت عدم موجودی</value>
+	</string>
+	<string key="ShowHide">
+		<value>نمایش/عدم نمایش</value>
+	</string>
+	<string key="MultiLingualProperty">
+		<value>صفات چند زبانه</value>
+	</string>
+	<string key="ParentGroup">
+		<value>گروه والد</value>
+	</string>
+	<string key="ParentMenu">
+		<value>منوی والد</value>
+	</string>
+	<string key="ParentMenuTitle">
+		<value>عنوان منوی والد</value>
+	</string>
+	<string key="MenuType">
+		<value>نوع منو</value>
+	</string>
+	<string key="ParentComment">
+		<value>نظر والد</value>
+	</string>
+	<string key="ContentComment">
+		<value>محتوای نظر</value>
+	</string>
+	<string key="ParentCategoryName">
+		<value>نام دسته بندی والد</value>
+	</string>
+	<string key="Name">
+		<value>نام</value>
+	</string>
+	<string key="fromCreationDate">
+		<value>از تاریخ ایجاد</value>
+	</string>
+	<string key="toCreationDate">
+		<value>تا تاریخ ایجاد</value>
+	</string>
+	<string key="ProductWithDiscount">
+		<value>محصولات تخفبف دار</value>
+	</string>
+	<string key="ExistentProducts">
+		<value>محصولات موجود</value>
+	</string>
+	<string key="Promotion">
+		<value>تخفیفات و جشنواره ها</value>
+	</string>
+	<string key="ProductsOnPromotion">
+		<value>محصولات دارای ترفیع</value>
+	</string>
+	<string key="ProductInventoryLessThan">
+		<value>موجودی کمتر از</value>
+	</string>
+	<string key="SeoDescription">
+		<value>توضیحات سئو</value>
+	</string>
+	<!--<string key="Description">
+		<value>توضیحات</value>
+	</string>-->
+	<string key="SeoTitle">
+		<value>عنوان سئو</value>
+	</string>
+	<string key="UrlFriend">
+		<value>UrlFriend</value>
+	</string>
+	<string key="Url">
+		<value>Url</value>
+	</string>
+	<string key="Yes">
+		<value>بله</value>
+	</string>
+	<string key="No">
+		<value>خیر</value>
+	</string>
+	<string key="Currency">
+		<value>واحد پول</value>
+	</string>
+	<string key="Type">
+		<value>نوع</value>
+	</string>
+	<string key="AffectedProductName">
+		<value>محصول پروموشن دار</value>
+	</string>
+	<string key="AffectedProductGroupName">
+		<value>گروه محصول پروموشن دار</value>
+	</string>
+	<string key="PromotedProductName">
+		<value>محصول رایگان</value>
+	</string>
+	<string key="Classification">
+		<value>طبقه بندی</value>
+	</string>
+	<string key="DefaultCurrency">
+		<value>واحد پول پیش فرض</value>
+	</string>
+	<string key="DefaultDomain">
+		<value>دامنه پیش فرض</value>
+	</string>
+	<string key="PriceValue">
+		<value>قیمت</value>
+	</string>
+	<string key="User_Roles">
+		<value>نقش های کاربری</value>
+	</string>
+	<string key="User_Filters">
+		<value>فیلتر کاربران</value>
+	</string>
+	<string key="User_Delete">
+		<value>حذف کاربر</value>
+	</string>
+	<string key="User_Restore">
+		<value>بازگردانی کاربر</value>
+	</string>
+	<string key="FromDate">
+		<value>از تاریخ</value>
+	</string>
+	<string key="ToDate">
+		<value>تا تاریخ</value>
+	</string>
+	<string key="Restore">
+		<value>بازگردانی</value>
+	</string>
+	<string key="CreationDate">
+		<value>تاریخ ثبت</value>
+	</string>
+	<string key="User_Add">
+		<value>ثبت کاربر جدید</value>
+	</string>
+	<string key="User_Edit">
+		<value>ویرایش کاربر</value>
+	</string>
+	<string key="User_ChangePass">
+		<value>تغییر کلمه عبور</value>
+	</string>
+	<string key="FormClear">
+		<value>پاک کردن فرم</value>
+	</string>
+	<string key="Filter">
+		<value>فیلتر</value>
+	</string>
+	<string key="Content">
+		<value>محتوا</value>
+	</string>
+	<string key="ContentTitle">
+		<value>عنوان محتوا</value>
+	</string>
+	<string key="Menu_StoreMenues">
+		<value>منوهای فروشگاه</value>
+	</string>
+	<string key="Menu_ProductComments">
+		<value>نظرات محصولات</value>
+	</string>
+	<string key="Menu_ContentComments">
+		<value>نظرات محتوا</value>
+	</string>
+	<string key="Menu_Promotion">
+		<value>تخفیفات و جشنواره ها</value>
+	</string>
+	<string key="Menu_ProductSpecificationGroup">
+		<value>گروه مشخصات محصول</value>
+	</string>
+	<string key="Menu_Permissions">
+		<value>دسترسی ها</value>
+	</string>
+	<string key="Menu_Products">
+		<value>محصولات</value>
+	</string>
+	<string key="Menu_Product">
+		<value>محصول</value>
+	</string>
+	<string key="Menu_ProductUnits">
+		<value>واحدهای محصول</value>
+	</string>
+	<string key="Menu_ProductUnit">
+		<value>واحد محصول</value>
+	</string>
+	<string key="Menu_ProductGroups">
+		<value>گروه های محصول</value>
+	</string>
+	<string key="Menu_domains">
+		<value>دامنه ها</value>
+	</string>
+	<string key="Menu_ContentCategory">
+		<value>گروه محتوا</value>
+	</string>
+	<string key="Menu_Content">
+		<value>محتوا</value>
+	</string>
+	<string key="Menu_ProductSpecifications">
+		<value>خصوصیات محصول</value>
+	</string>
+	<string key="Menu_Roles">
+		<value>نقش ها</value>
+	</string>
+	<string key="Role">
+		<value>نقش</value>
+	</string>
+	<string key="EditPermissions">
+		<value>ویرایش دسترسی ها</value>
+	</string>
+	<string key="Menu_Profile">
+		<value>پروفایل</value>
+	</string>
+	<string key="Menu_Home">
+		<value>خانه</value>
+	</string>
+	<string key="Menu_RoutePlaceHolder">
+		<value>مسیرهای مختلف را با , از هم جداکنید.</value>
+	</string>
+	<string key="Menu_Add">
+		<value>افزودن</value>
+	</string>
+	<string key="Menu_PermissionName">
+		<value>نام دسترسی</value>
+	</string>
+	<string key="Menu_PermissionTitle">
+		<value>عنوان دسترسی</value>
+	</string>
+	<string key="Menu_PermissionType">
+		<value>نوع دسترسی</value>
+	</string>
+	<string key="Menu_Routes">
+		<value>مسیرها</value>
+	</string>
+	<string key="Menu_PermissionMethod">
+		<value>رویه ی دسترسی</value>
+	</string>
+	<string key="Menu_MenuIdOfModule">
+		<value>منوی ماژول</value>
+	</string>
+	<string key="Menu_ParentMenuId">
+		<value>منوی والد</value>
+	</string>
+	<string key="Menu_Icon">
+		<value>آیکان</value>
+	</string>
+	<string key="Menu_Priority">
+		<value>اولویت</value>
+	</string>
+	<string key="Menu_ClientAddress">
+		<value>آدرس کلاینت</value>
+	</string>
+	<string key="Per_PermissionName">
+		<value>نام دسترسی</value>
+	</string>
+	<string key="Per_PermissionTitle">
+		<value>عنوان دسترسی</value>
+	</string>
+	<string key="Per_PermissionType">
+		<value>نوع دسترسی</value>
+	</string>
+	<string key="Per_Routes">
+		<value>مسیرها</value>
+	</string>
+	<string key="Per_PermissionMethod">
+		<value>رویه ی دسترسی</value>
+	</string>
+	<string key="Per_MenuIdOfModule">
+		<value>منوی ماژول</value>
+	</string>
+	<string key="Per_ParentMenuId">
+		<value>منوی والد</value>
+	</string>
+	<string key="Per_Icon">
+		<value>آیکان</value>
+	</string>
+	<string key="Per_Priority">
+		<value>اولویت</value>
+	</string>
+	<string key="Per_ClientAddress">
+		<value>آدرس کلاینت</value>
+	</string>
+	<string key="ModificationReason">
+		<value>دلیل ویرایش</value>
+	</string>
+	<string key="WithoutModification">
+		<value>بدون تغییر</value>
+	</string>
+	<string key="Menu_Dashboard">
+		<value>داشبورد</value>
+	</string>
+	<string key="Menu_Dashboardv1">
+		<value>داشبورد ورژن 1</value>
+	</string>
+	<string key="Menu_Dashboard_Examples">
+		<value>مثال ها</value>
+	</string>
+	<string key="Menu_Dashboard_Invoice">
+		<value>فاکتور</value>
+	</string>
+	<string key="Menu_Dashboard_HomeTitle">
+		<value>سیستم مدیریت پورتال آراد</value>
+	</string>
+	<string key="Menu_Dashboard_Profile">
+		<value>پروفایل</value>
+	</string>
+	<string key="Menu_Dashboard_Gallery">
+		<value>گالری</value>
+	</string>
+	<string key="Menu_Dashboard_Pages">
+		<value>صفحات</value>
+	</string>
+	<string key="Menu_Dashboard_Notification">
+		<value>اعلان</value>
+	</string>
+	<string key="Menu_Dashboard_newMesseges">
+		<value>پیام جدید</value>
+	</string>
+	<string key="Menu_Dashboard_min">
+		<value>دقیقه</value>
+	</string>
+	<string key="Menu_Dashboard_SeeAllNotifications">
+		<value>همه اعلان ها را مشاهده کنید</value>
+	</string>
+	<!--Messege Content of AdminLTE-->
+	<string key="Msg_Content_Test2">
+		<value>ساعت پیش</value>
+	</string>
+	<string key="CompanyName">
+		<value>داشبورد پورتال شرکت آراد</value>
+	</string>
+	<string key="SeeMoreMsgs">
+		<value>همه پیام ها را ببینید</value>
+	</string>
+	<!--/.Messege Content of AdminLTE-->
+	<!--END [Dashboard]-->
+	<!--START [Action]-->
+	<string key="Exit">
+		<value>خروج</value>
+	</string>
+	<string key="StartDate">
+		<value>تاریخ شروع</value>
+	</string>
+	<string key="EndDate">
+		<value>تاریخ پایان</value>
+	</string>
+	<string key="New">
+		<value>جدید</value>
+	</string>
+	<string key="Crop">
+		<value>برش</value>
+	</string>
+	<string key="ChangeImage">
+		<value>تغییر عکس</value>
+	</string>
+	<string key="ProfilePic">
+		<value>عکس پروفایل</value>
+	</string>
+	<string key="ChangeProfilePic">
+		<value>تغییر عکس</value>
+	</string>
+	<string key="EditProfile">
+		<value>ویرایش پروفایل</value>
+	</string>
+	<string key="CropImage">
+		<value>برش عکس</value>
+	</string>
+	<string key="AssignNumber">
+		<value>تخصیص شماره</value>
+	</string>
+	<string key="CreateNew">
+		<value>ایجاد جدید</value>
+	</string>
+	<string key="Ok">
+		<value>تائید</value>
+	</string>
+	<string key="Order">
+		<value>ترتیب</value>
+	</string>
+	<string key="Return">
+		<value>برگشت</value>
+	</string>
+	<string key="Add">
+		<value>افزودن</value>
+	</string>
+	<string key="Edit">
+		<value>ویرایش</value>
+	</string>
+	<string key="Cancel">
+		<value>انصراف</value>
+	</string>
+	<string key="Delete">
+		<value>حذف</value>
+	</string>
+	<string key="ChangeSize">
+		<value>تغییر اندازه</value>
+	</string>
+	<string key="ChangeImageSize">
+		<value>تغییر اندازه عکس</value>
+	</string>
+	<string key="Search">
+		<value>جستجو</value>
+	</string>
+	<string key="RelatedLanguage">
+		<value>زبان مربوطه</value>
+	</string>
+	<string key="CurrentDomainPrice">
+		<value>قیمت جاری دامنه</value>
+	</string>
+	<string key="AssociatedDomain">
+		<value>دامنه مربوطه</value>
+	</string>
+	<string key="DefaultLanguage">
+		<value>زبان پیش فرض</value>
+	</string>
+	<string key="LanguageName">
+		<value>نام زبان</value>
+	</string>
+	<string key="GetFromExcelFile">
+		<value>دریافت از فایل اکسل</value>
+	</string>
+	<string key="Find">
+		<value>پیدا کن</value>
+	</string>
+	<string key="ChangeUserSettings">
+		<value>ویرایش تنظیمات کاربر</value>
+	</string>
+	<string key="ChangeInCreditOfUser">
+		<value>تغییر اعتبار کاربر</value>
+	</string>
+	<string key="ChangePassword">
+		<value>تغییر گذرواژه</value>
+	</string>
+	<string key="Credits">
+		<value>اعتبارات</value>
+	</string>
+	<string key="LoginAsUser">
+		<value>ورود به جای کاربر</value>
+	</string>
+	<string key="View">
+		<value>مشاهده</value>
+	</string>
+	<string key="Copy">
+		<value>کپی</value>
+	</string>
+	<string key="Close">
+		<value>بستن</value>
+	</string>
+	<string key="SendSms">
+		<value>ارسال پیام</value>
+	</string>
+	<string key="Send">
+		<value>ارسال</value>
+	</string>
+	<string key="Sent">
+		<value>ارسال شده</value>
+	</string>
+	<string key="Save">
+		<value>ذخیره</value>
+	</string>
+	<string key="AddExtraParams">
+		<value>پارامترهای اضافه</value>
+	</string>
+	<!--END [Action]-->
+	<!--START [Entities]-->
+	<string key="Entities_Permissions">
+		<value>دسترسی ها</value>
+	</string>
+	<string key="Entities_PermissionIcon">
+		<value>آیکون</value>
+	</string>
+	<string key="Entities_Title">
+		<value>عنوان</value>
+	</string>
+	<string key="Entities_SubTitle">
+		<value>زیرنویس</value>
+	</string>
+	<string key="Entities_PermissionType">
+		<value>PermissionType</value>
+	</string>
+	<string key="Entities_PermissionViewKey">
+		<value>PermissionViewKey</value>
+	</string>
+	<string key="Entities_Priority">
+		<value>الویت</value>
+	</string>
+	<string key="Entities_MenuOfModule">
+		<value>MenuOfModule</value>
+	</string>
+	<string key="Entities_ParentMenu">
+		<value>ParentMenu</value>
+	</string>
+	<string key="Entities_PermissionRoutes">
+		<value>PermissionRoutes</value>
+	</string>
+	<string key="Entities_ModificationReason">
+		<value>ModificationReason</value>
+	</string>
+	<string key="Entities_PermissionClientAddress">
+		<value>PermissionClientAddress</value>
+	</string>
+	<!--END [Entities]-->
+	<!--START [Page Navigation]-->
+	<string key="PageNavigation_showing">
+		<value>showing</value>
+	</string>
+	<string key="PageNavigation_from">
+		<value>from</value>
+	</string>
+	<string key="PageNavigation_to">
+		<value>to</value>
+	</string>
+	<string key="PageNavigation_items">
+		<value>items</value>
+	</string>
+	<string key="PageNavigation_next">
+		<value>next</value>
+	</string>
+	<string key="PageNavigation_previous">
+		<value>previous</value>
+	</string>
+	<string key="PageNavigation_last">
+		<value>last</value>
+	</string>
+	<string key="PageNavigation_first">
+		<value>first</value>
+	</string>
+	<!--END [Page Navigation]-->
+	<!--START [Table headers]-->
+	<string key="TableHeader_BasicInfo">
+		<value>اطلاعات پایه</value>
+	</string>
+	<string key="TableHeader_Male">
+		<value>آقا</value>
+	</string>
+	<string key="TableHeader_Female">
+		<value>خانم</value>
+	</string>
+	<string key="TableHeader_OtherInfo">
+		<value>سایر اطلاعات</value>
+	</string>
+	<string key="TableHeader_UserImage">
+		<value>عکس کاربر</value>
+	</string>
+	<string key="TableHeader_Row">
+		<value>ردیف</value>
+	</string>
+	<string key="TableHeader_Date">
+		<value>تاریخ</value>
+	</string>
+	<string key="TableHeader_PreviousInventory">
+		<value>موجودی قبلی</value>
+	</string>
+	<string key="TableHeader_CurrentInventory">
+		<value>موجودی فعلی</value>
+	</string>
+	<string key="TableHeader_ModificationReason">
+		<value>دلیل تغییرات</value>
+	</string>
+	<string key="TableHeader_Actions">
+		<value>دستورات</value>
+	</string>
+	<string key="TableHeader_Priority">
+		<value>اولویت</value>
+	</string>
+	<string key="TableHeader_Title">
+		<value>عنوان</value>
+	</string>
+	<string key="TableHeader_Creator">
+		<value>ایجاد کننده</value>
+	</string>
+	<string key="TableHeader_CreateDate">
+		<value>تاریخ ایجاد</value>
+	</string>
+	<string key="TableHeader_Modifications">
+		<value>تغییرات</value>
+	</string>
+	<string key="TableHeader_Status">
+		<value>وضعیت</value>
+	</string>
+	<!--END [Table headers]-->
+
+</dictionary>

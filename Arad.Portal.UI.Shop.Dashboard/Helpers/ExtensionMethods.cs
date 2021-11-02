@@ -56,15 +56,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                     UserName = "SuperAdmin",
                     Claims = new List<IdentityUserClaim<string>>()
                     {
-                        new IdentityUserClaim<string>()
-                        {
-                            ClaimType = ClaimTypes.GivenName,
-                            ClaimValue = "ادمین شماره یک"
-                        },
+                        
                         new IdentityUserClaim<string>()
                         {
                             ClaimType = "AppRole",
                             ClaimValue = true.ToString()
+                        },
+                        new IdentityUserClaim<string>()
+                        {
+                            ClaimType = "RelatedDomain",
+                            ClaimValue = "f4dd87ab-cf2f-4711-9e1e-64735aa364de"
                         }
                     },
                     PhoneNumber = "989309910790",

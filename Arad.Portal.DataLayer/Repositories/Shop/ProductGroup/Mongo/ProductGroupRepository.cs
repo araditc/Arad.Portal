@@ -130,10 +130,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                 .Find(_ => _.ProductGroupId == productGroupId).FirstOrDefault();
             if(entity != null)
             {
-                result.ProductGroupId = entity.ProductGroupId;
-                result.ParentId = entity.ParentId;
-                result.MultiLingualProperties = entity.MultiLingualProperties;
-                result.Promotion = entity.Promotion;
+                result = _mapper.Map<ProductGroupDTO>(entity);
+                //result.ProductGroupId = entity.ProductGroupId;
+                //result.ParentId = entity.ParentId;
+                //result.MultiLingualProperties = entity.MultiLingualProperties;
+                //result.Promotion = entity.Promotion;
             }
             return result;
         }

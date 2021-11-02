@@ -1,0 +1,2116 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<dictionary>
+	<!--Start [buttons text]-->
+	<string key="btn_Rotate">
+		<value>Rotate</value>
+	</string>
+	<string key="btn_Login">
+		<value>Login</value>
+	</string>
+	<string key="btn_Crop">
+		<value>Crop</value>
+	</string>
+	<string key="btn_UploadImage">
+		<value>Upload Image</value>
+	</string>
+	<string key="Upload">
+		<value>Upload</value>
+	</string>
+	<string key="PutImage">
+		<value>Put Image</value>
+	</string>
+	<string key="btn_Add">
+		<value>Add</value>
+	</string>
+	<string key="btn_ExcelImport">
+		<value>Get data from excel file</value>
+	</string>
+	<string key="btn_Save">
+		<value>Save</value>
+	</string>
+	<string key="btn_Edit">
+		<value>Edit</value>
+	</string>
+	<string key="btn_Exit">
+		<value>Exit</value>
+	</string>
+	<string key="btn_Send">
+		<value>Send</value>
+	</string>
+	<string key="btn_Approved">
+		<value>Approve</value>
+	</string>
+	<string key="btn_Cancel">
+		<value>Cancel</value>
+	</string>
+	<string key="btn_Back">
+		<value>Back</value>
+	</string>
+	<string key="btn_Restore">
+		<value>Restore</value>
+	</string>
+	<string key="btn_Delete">
+		<value>Delete</value>
+	</string>
+	<string key="btn_Detail">
+		<value>Detail</value>
+	</string>
+	<string key="btn_Show">
+		<value>Show</value>
+	</string>
+	<string key="btn_ChangePass">
+		<value>Change Password</value>
+	</string>
+	<string key="btn_Search">
+		<value>Search</value>
+	</string>
+	<string key="btn_Find">
+		<value>Find</value>
+	</string>
+	<string key="btn_Confirm">
+		<value>Yes</value>
+	</string>
+	<string key="btn_NotConfirm">
+		<value>No</value>
+	</string>
+	<string key="btn_ChangeActivation">
+		<value>Change Activation</value>
+	</string>
+	<string key="treeView_Empty">
+		<value>Without childs</value>
+	</string>
+	<string key="LoginPage">
+		<value>Login Page</value>
+	</string>
+	<!--End [buttons text]-->
+	<!--Start[JustForTesting]-->
+	<!--<string key="PermissionTitle_Menu11">
+		<value>Menu1-1</value>
+	</string>
+	<string key="PermissionTitle_Menu12">
+		<value>Menu1-2</value>
+	</string>
+	<string key="PermissionTitle_Menu111">
+		<value>Menu1-1-1</value>
+	</string>
+	<string key="PermissionTitle_Menu112">
+		<value>Menu1-1-2</value>
+	</string>
+	<string key="PermissionTitle_Menu1111">
+		<value>Menu1-1-1-1</value>
+	</string>
+	<string key="PermissionTitle_Menu11111">
+		<value>Menu1-1-1-1-1</value>
+	</string>-->
+	<!--End[JustForTesting]-->
+	<!--Start [PermissionTitle]-->
+	<string key="PermissionTitle_MainPage">
+		<value>Dashboard</value>
+	</string>
+	<string key="PermissionTitle_UserManagement">
+		<value>User Management</value>
+	</string>
+	<string key="PermissionTitle_Users">
+		<value>Users</value>
+	</string>
+  <string key="PermissionTitle_UserDetails">
+    <value>User detail</value>
+  </string>
+	<string key="PermissionTitle_AddUser">
+		<value>Add User</value>
+	</string>
+  <string key="PermissionTitle_RoleDetails">
+    <value>Role Details</value>
+  </string>
+ 
+	<string key="PermissionTitle_EditUser">
+		<value>Edit User</value>
+	</string>
+	<string key="PermissionTitle_RoleList">
+		<value>Role List</value>
+	</string>
+  <string key="PermissionTitle_SaveRole">
+    <value>Save Role</value>
+  </string>
+  <string key="PermissionTitle_SavePermission">
+    <value>Save Permission</value>
+  </string>
+	<string key="PermissionTitle_Roles">
+		<value>Roles</value>
+	</string>
+	<string key="PermissionTitle_ViewUserList">
+		<value>View User List</value>
+	</string>
+	<string key="PermissionTitle_UserDelete">
+		<value>Delete User</value>
+	</string>
+	<string key="PermissionTitle_UserChangePassword">
+		<value>Change Password</value>
+	</string>
+	<string key="PermissionTitle_UserChangeActivation">
+		<value>Change Activation</value>
+	</string>
+	<string key="PermissionTitle_UserRestore">
+		<value>User Restore</value>
+	</string>
+	<string key="PermissionTitle_PermissionChangeActivation">
+		<value>Change Activation</value>
+	</string>
+	<string key="PermissionTitle_MenuList">
+		<value>Menu List</value>
+	</string>
+  <string key="PermissionTitle_ProductManagement">
+    <value>Product Management</value>
+  </string>
+  <string key="PermissionTitle_ProductUnit">
+    <value>Product Unit</value>
+  </string>
+  <string key="PermissionTitle_ProductGroup">
+    <value>Product Group</value>
+  </string>
+  <string key="PermissionTitle_ProductSpecification">
+    <value>Product Specification</value>
+  </string>
+  <string key="PermissionTitle_ProductSpecificationGroup">
+    <value>Product SpecificationGroup</value>
+  </string>
+  <string key="PermissionTitle_Products">
+    <value>Products</value>
+  </string>
+	<string key="PermissionTitle_Role">
+		<value>Roles</value>
+	</string>
+	<string key="PermissionTitle_ViewRoleList">
+		<value>view role list</value>
+	</string>
+	<string key="PermissionTitle_AddRole">
+		<value>Add Role</value>
+	</string>
+	<string key="PermissionTitle_TreeViewRoleList">
+		<value>treeview role list</value>
+	</string>
+	<string key="PermissionTitle_RoleEdit">
+		<value>Edit Role</value>
+	</string>
+	<string key="PermissionTitle_RoleDelete">
+		<value>Delete Role</value>
+	</string>
+	<string key="PermissionTitle_RoleChangeActivation">
+		<value>change role activation</value>
+	</string>
+	<string key="PermissionTitle_Permissions">
+		<value>Permissions</value>
+	</string>
+	<string key="PermissionTitle_PermissionList">
+		<value>Permissions</value>
+	</string>
+	<string key="PermissionTitle_AddPermission">
+		<value>Add Permission</value>
+	</string>
+	<string key="PermissionTitle_EditPermission">
+		<value>Edit Permission</value>
+	</string>
+	<string key="PermissionTitle_PermissionDelete">
+		<value>Delete Permission</value>
+	</string>
+	<string key="PermissionTitle_Promotions">
+		<value>Promotions</value>
+	</string>
+	<string key="PermissionTitle_PromotionDetails">
+		<value>Promotion Details</value>
+	</string>
+	<string key="PermissionTitle_AddPromotion">
+		<value>Add Promotion</value>
+	</string>
+	<string key="PermissionTitle_EditPromotion">
+		<value>EditPromotion</value>
+	</string>
+	<string key="PermissionTitle_PromotionDelete">
+		<value>Promotion Delete</value>
+	</string>
+	<string key="PermissionTitle_PromotionRestore">
+		<value>Promotion Restore</value>
+	</string>
+	<string key="PermissionTitle_PromotionChangeActivation">
+		<value>Promotion Change Activation</value>
+	</string>
+	<string key="PermissionTitle_ContentManagement">
+		<value>Content Management</value>
+	</string>
+	<string key="PermissionTitle_ContentCategories">
+		<value>Content Categories</value>
+	</string>
+	<string key="PermissionTitle_ContentCategory">
+		<value>Content Category</value>
+	</string>
+	<string key="PermissionTitle_ContentCategoryDetail">
+		<value>Content Category detail</value>
+	</string>
+	<string key="PermissionTitle_ContentCategoryAdd">
+		<value>Content Category Add</value>
+	</string>
+	<string key="PermissionTitle_ContentCategoryEdit">
+		<value>Content Category Edit</value>
+	</string>
+	<string key="PermissionTitle_ContentCategoryDelete">
+		<value>Content Category Delete</value>
+	</string>
+	<string key="PermissionTitle_ContentCategoryRestore">
+		<value>Content Category Restore</value>
+	</string>
+	<string key="PermissionTitle_Contents">
+		<value>Contents</value>
+	</string>
+	<string key="PermissionTitle_Content">
+		<value>Content</value>
+	</string>
+	<string key="PermissionTitle_ContentDetail">
+		<value>Content Detail</value>
+	</string>
+	<string key="PermissionTitle_ContentAdd">
+		<value>Content Add</value>
+	</string>
+	<string key="PermissionTitle_ContentEdit">
+		<value>Content Edit</value>
+	</string>
+	<string key="PermissionTitle_ContentDelete">
+		<value>Content Delete</value>
+	</string>
+	<string key="PermissionTitle_ContentRestore">
+		<value>Content Restore</value>
+	</string>
+	<string key="PermissionTitle_ProductComments">
+		<value>Product Comments</value>
+	</string>
+	<string key="PermissionTitle_ContentComments">
+		<value>Content Comments</value>
+	</string>
+	<string key="PermissionTitle_StoreSettings">
+		<value>Store Settings</value>
+	</string>
+	<string key="PermissionTitle_StoreMenues">
+		<value>Store Menues</value>
+	</string>
+	<string key="PermissionTitle_Domains">
+		<value>Domains</value>
+	</string>
+	<!--End [PermissionTitle]-->
+	<!--Start [tables]-->
+	<string key="tbl_RowName">
+		<value>Row</value>
+	</string>
+	<string key="tbl_Price">
+		<value>Price</value>
+	</string>
+	<string key="tbl_MainImage">
+		<value>Main Image</value>
+	</string>
+	<string key="specificationName_placeHolder">
+		<value>possible value for this specification</value>
+	</string>
+	<string key="tbl_ProductUnit">
+		<value>Product Unit</value>
+	</string>
+	<string key="tbl_ProductName">
+		<value>Product Name</value>
+	</string>
+	<string key="tbl_ProductImages">
+		<value>Product Images</value>
+	</string>
+	<string key="tbl_ContentImages">
+		<value>Content Images</value>
+	</string>
+	<string key="tbl_ProductGroup">
+		<value>Product Group</value>
+	</string>
+	<string key="tbl_SpecificationName">
+		<value>Specification Name</value>
+	</string>
+	<string key="tbl_SpecificationValues">
+		<value>Specification Values</value>
+	</string>
+	<string key="tbl_ParentGroup">
+		<value>Parent Group</value>
+	</string>
+	<string key="tbl_VendorName">
+		<value>Vendor Name</value>
+	</string>
+	<string key="tbl_GroupName">
+		<value>Group Name</value>
+	</string>
+	<string key="tbl_MenuTitle">
+		<value>Menu Title</value>
+	</string>
+	<string key="tbl_CategoryName">
+		<value>ContentCategory Name</value>
+	</string>
+	<string key="tbl_Content">
+		<value>Content</value>
+	</string>
+	<string key="tbl_GroupNames">
+		<value>Group Names</value>
+	</string>
+	<string key="tbl_UniqeCode">
+		<value>Unique Code</value>
+	</string>
+	<string key="tbl_Inventory">
+		<value>Inventory</value>
+	</string>
+	<string key="tbl_RoleName">
+		<value>Name</value>
+	</string>
+	<string key="tbl_PermissionTitle">
+		<value>Permission Title</value>
+	</string>
+	<string key="tbl_PermissionType">
+		<value>Permission Type</value>
+	</string>
+	<string key="tbl_Routes">
+		<value>Routes</value>
+	</string>
+	<string key="tbl_ClientAddress">
+		<value>Client Address</value>
+	</string>
+	<string key="tbl_FirstPage">
+		<value>First</value>
+	</string>
+	<string key="tbl_LastPage">
+		<value>Last</value>
+	</string>
+	<string key="tbl_PreviousPage">
+		<value>Previous</value>
+	</string>
+	<string key="tbl_NextPage">
+		<value>Next</value>
+	</string>
+	<string key="tbl_ProductCode">
+		<value>Product Id</value>
+	</string>
+	<string key="tbl_ProductGroupCode">
+		<value>ProductGroup Id</value>
+	</string>
+   <string key="tbl_ContentCode">
+		<value>Content Id</value>
+	</string>
+    <string key="tbl_ContentCategoryCode">
+		<value>ContentCategory Id</value>
+	</string>
+	<!--End [tables]-->
+	<!--START [Enum Descriptions]-->
+	<string key="EnumDesc_List">
+		<value>List</value>
+	</string>
+	<string key="EnumDesc_Add">
+		<value>Add</value>
+	</string>
+	<string key="EnumDesc_Remove">
+		<value>Remove</value>
+	</string>
+	<string key="EnumDesc_Edit">
+		<value>Edit</value>
+	</string>
+	<string key="EnumDesc_Password">
+		<value>Password</value>
+	</string>
+	<string key="EnumDesc_Active">
+		<value>Active</value>
+	</string>
+	<string key="EnumDesc_Dependency">
+		<value>Dependency</value>
+	</string>
+	<string key="EnumDesc_Details">
+		<value>Details</value>
+	</string>
+	<string key="EnumDesc_Email">
+		<value>Email</value>
+	</string>
+	<string key="EnumDesc_Sms">
+		<value>SMS</value>
+	</string>
+	<string key="EnumDesc_Notification">
+		<value>Notification</value>
+	</string>
+	<string key="Enum_ContentCategoryType">
+		<value>Category Type</value>
+	</string>
+	<!--End [Enum Descriptions]-->
+	<!--START [Allert And Message]-->
+	<string key="AlertAndMessage_ImageSuccessfullyUploaded">
+		<value>image is uploaded successfully.</value>
+	</string>
+	<string key="AlertAndMessage_NotImageMessage">
+		<value>please choose a picture.</value>
+	</string>
+	<string key="AlertAndMessage_PromotionTypeProduct">
+		<value>First choose promotionType as product then you can add product to this promotion.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidFileSize">
+		<value>the file size exceed limitation.</value>
+	</string>
+	<string key="AlertAndMessage_PricePerCurrencyUniqueness">
+		<value>there is already a active price for this currency, if start and end of duration overlapped, then previous price will be deactivated.</value>
+	</string>
+	<string key="AlertAndMessage_DefaultLanguageRequired">
+		<value>Please select default language of user.</value>
+	</string>
+	<string key="AlertAndMessage_DefaultCurrencyRequired">
+		<value>Please select default currency of user.</value>
+	</string>
+	<string key="AlertAndMessage_Specifications">
+		<value>Please fill at least on row for specifications</value>
+	</string>
+	<string key="AlertAndMessage_IsPublishedOnMainDomain">
+		<value>Published on main domain.</value>
+	</string>
+	<string key="AlertAndMessage_NotifyWhenCountIsLessThan">
+		<value>Notify when inventory is:</value>
+	</string>
+	<string key="AlertAndMessage_ImageNotSave">
+		<value>The image have not been saved,please try again later.</value>
+	</string>
+	<string key="AlertAndMessage_EnterTheResult">
+		<value>Enter the result.</value>
+	</string>
+	<string key="AlertAndMessage_SignInToSite">
+		<value>Sign in to site</value>
+	</string>
+	<string key="AlertAndMessage_ForgetPassword">
+		<value>forgot password. </value>
+	</string>
+	<string key="AlertAndMessage_EnterUsernameAndPassword">
+		<value>please enter username and password.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidFormat">
+		<value>invalid format.</value>
+	</string>
+	<string key="AlertAndMessage_SelectSpecificationGroup">
+		<value>please select specificationgroup.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteSpecificationValue">
+		<value>this specification value will be deleted.</value>
+	</string>
+	<string key="AlertAndMessage_FillSpecificationValue">
+		<value>Please fill specification value.</value>
+	</string>
+	<string key="AlertAndMessage_ChooseLanguage">
+		<value>Please choose your desired language.</value>
+	</string>
+	<string key="AlertAndMessage_FillMultiLingualProperty">
+		<value>Please fill at Least one row of table.</value>
+	</string>
+	<string key="AlertAndMessage_FillPriceList">
+		<value>Please fill One valid and active price row</value>
+	</string>
+	<string key="AlertAndMessage_FillList">
+		<value>Please add at Least one item to list.</value>
+	</string>
+	<string key="AlertAndMessage_FillLangId">
+		<value>Please select related language.</value>
+	</string>
+	<string key="AlertAndMessage_SeprateRoutesByComma">
+		<value>Seperate diffrent routes by ,comma.</value>
+	</string>
+	<string key="AlertAndMessage_AlreadyExists">
+		<value>This name already exist.</value>
+	</string>
+	<string key="AlertAndMessage_DeletePermission">
+		<value>This Permission will be deleted.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteProductUnit">
+		<value>This ProductUnit will be deleted.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteProductGroup">
+		<value>This ProductGroup will be deleted.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteProduct">
+		<value>This Product will be deleted.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteProductSpecificationGroup">
+		<value>This Product specification group will be deleted.</value>
+	</string>
+	<string key="AlertAndMessage_DeletePromotion">
+		<value>This Promotion will be deleted.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteRole">
+		<value>This Role will be deleted.</value>
+	</string>
+	<string key="AlertAndMessage_FieldEssential">
+		<value>Filling this field is essential.</value>
+	</string>
+	<string key="AlertAndMessage_OptionEssential">
+		<value>Selecting one option is essential.</value>
+	</string>
+	<string key="AlertAndMessage_ModificationReason">
+		<value>Please fill why you modify this entity.</value>
+	</string>
+  <string key="AlertAndMessage_PermissionSelectLimitation">
+    <value>One permission must be selected at least.</value>
+  </string>
+  <string key="AlertAndMessage_Error">
+    <value>error</value>
+  </string>
+	<string key="AlertAndMessage_Success">
+		<value>success</value>
+	</string>
+	<string key="AlertAndMessage_ChangePassSureness">
+		<value>Are you sure to change password?</value>
+	</string>
+  <string key="AlertAndMessage_UserNameRequired">
+    <value>Please fill username.</value>
+  </string>
+  <string key="AlertAndMessage_NameRequired">
+    <value>Please fill Name.</value>
+  </string>
+  <string key="AlertAndMessage_LastNameRequired">
+    <value>Please fill LastName.</value>
+  </string>
+  <string key="AlertAndMessage_PhonenumberRequired">
+    <value>Please fill PhoneNumber.</value>
+  </string>
+  <string key="AlertAndMessage_UserRoleRequired">
+    <value>Please Select UserRole.</value>
+  </string>
+  <string key="AlertAndMessage_PasswordRequired">
+    <value>Please Fill Password.</value>
+  </string>
+  <string key="AlertAndMessage_PasswordValidation">
+    <value>Password have to be mixed of characters and numbers.</value>
+  </string>
+  <string key="AlertAndMessage_RePasswordRequired">
+    <value>Please fill repassword.</value>
+  </string>
+  <string key="AlertAndMessage_PasswordRepassWordCompare">
+    <value>Password and Repassword should be matched.</value>
+  </string>
+  
+  <string key="AlertAndMessage_MinLength">
+    <value>0 length dont have to be less than 1.</value>
+  </string>
+	<string key="AlertAndMessage_FillEssentialFields">
+		<value>Please Fill Essential Fields.</value>
+	</string>
+	<string key="AlertAndMessage_DataWasNotFound">
+		<value>the data was not found.</value>
+	</string>
+	<string key="AlertAndMessage_DeletionSureness">
+		<value>Are you sure for deleting ?</value>
+	</string>
+	<string key="AlertAndMessage_AreYouSure">
+		<value>Are you sure?</value>
+	</string>
+	<string key="AlertAndMessage_UserDeleteText">
+		<value>The user will be deleted.</value>
+	</string>
+	<string key="AlertAndMessage_UserRestoreText">
+		<value>The user will be restored.</value>
+	</string>
+	<string key="AlertAndMessage_EntityRestoreText">
+		<value>The entity will be restored.</value>
+	</string>
+	<string key="AlertAndMessage_CaptchaIsExpired">
+		<value>The captcha is invalid or expired.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidUsernameOrPassword">
+		<value>The captcha is invalid or expired.</value>
+	</string>
+	<string key="AlertAndMessage_InActiveUserAccount">
+		<value>This Account was deactivated by Admin.</value>
+	</string>
+	<string key="AlertAndMessage_Welcome">
+		<value>Welcome</value>
+	</string>
+	<string key="AlertAndMessage_DuplicateUsername">
+		<value>Duplicate username</value>
+	</string>
+	<string key="AlertAndMessage_UserCreatedSuccessfully">
+		<value>User was created successfully.</value>
+	</string>
+	
+	<string key="AlertAndMessage_DuplicatePhoneNumber">
+		<value>There is a user account with this mobilePhone.</value>
+	</string>
+	<string key="AlertAndMessage_NoAccess">
+		<value>You dont have access to do this action.</value>
+	</string>
+	<string key="AlertAndMessage_NoUserWasFound">
+		<value>No user was found.</value>
+	</string>
+	<string key="AlertAndMessage_EntityNotFound">
+		<value>The entity not found.</value>
+	</string>
+	<string key="AlertAndMessage_NoRoleWasFound">
+		<value>No role was found.</value>
+	</string>
+	<string key="AlertAndMessage_NoDataToShow">
+		<value>no data to show</value>
+	</string>
+	<string key="AlertAndMessage_NotifySendingSMS">
+		<value>Your new password will be sent to your mobilephone if you press send button</value>
+	</string>
+	<string key="AlertAndMessage_SendNewPassword">
+		<value>Your new Pass will be sent to your mobilephone</value>
+	</string>
+	<string key="AlertAndMessage_TryLator">
+		<value>Please try lator again.</value>
+	</string>
+	<string key="AlertAndMessage_lackOfIcon">
+		<value>Please select icon.</value>
+	</string>
+	<string key="AlertAndMessage_lackOfPriority">
+		<value>Please set priority.</value>
+	</string>
+	<string key="AlertAndMessage_lackOfRoutes">
+		<value>Please set at least one route.</value>
+	</string>
+	<string key="AlertAndMessage_lackOfMenuIdofModule">
+		<value>Please set menuId of this module.</value>
+	</string>
+	<string key="AlertAndMessage_EditionDoneSuccessfully">
+		<value>Edition done successfully.</value>
+	</string>
+	<string key="AlertAndMessage_InsertionDoneSuccessfully">
+		<value>Insertion done successfully.</value>
+	</string>
+	<string key="AlertAndMessage_DeletionDoneSuccessfully">
+		<value>Deletion done successfully.</value>
+	</string>
+	<string key="AlertAndMessage_UserRestoreSureness">
+		<value>Are you Sure For Restoring This User?</value>
+	</string>
+	<string key="AlertAndMessage_NotifyEmptyList">
+		<value>No Data To Show</value>
+	</string>
+	<string key="AlertAndMessage_GotIt">
+		<value>Got it</value>
+	</string>
+	<string key="AlertAndMessage_RequiredErrorMessage">
+		<value>This field is required.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidFileType">
+		<value>Invalid file type.</value>
+	</string>
+	<string key="AlertAndMessage_EnterUsername">
+		<value>Please enter username.</value>
+	</string>
+	<string key="AlertAndMessage_EnterFirstName">
+		<value>Please enter first name.</value>
+	</string>
+
+	<string key="AlertAndMessage_EnterLastName">
+		<value>Please enter last name.</value>
+	</string>
+	<string key="AlertAndMessage_EnterPassword">
+		<value>Please enter password.</value>
+	</string>
+	<string key="AlertAndMessage_SelectGender">
+		<value>Please select the gender type.</value>
+	</string>
+	<string key="AlertAndMessage_Gender">
+		<value>Gender</value>
+	</string>
+	<string key="AlertAndMessage_EnterFatherName">
+		<value>Please enter the father name.</value>
+	</string>
+	<string key="AlertAndMessage_InternalServerErrorMessage">
+		<value>Sorry, something went wrong!</value>
+	</string>
+	<string key="AlertAndMessage_ModelHasIdError">
+		<value>Model to be created should not contain id parameter!</value>
+	</string>
+	<string key="AlertAndMessage_ExceptionOccured">
+		<value>Exception occured.</value>
+	</string>
+	<string key="AlertAndMessage_ParameterError">
+		<value>Check query parameters.</value>
+	</string>
+	
+	<string key="AlertAndMessage_DuplicateError">
+		<value>Item aleardy exists!</value>
+	</string>
+	<string key="AlertAndMessage_GeneralError">
+		<value>Unknown error.</value>
+	</string>
+	<string key="AlertAndMessage_ModelError">
+		<value>Model error!</value>
+	</string>
+	<string key="AlertAndMessage_InvalidPassword">
+		<value>Invalid password!</value>
+	</string>
+	<string key="AlertAndMessage_NoServerResponseError">
+		<value>Server is not responding at the moment!</value>
+	</string>
+	<string key="AlertAndMessage_BadRequestError">
+		<value>The request is not valid!</value>
+	</string>
+	<string key="AlertAndMessage_RangeLimitExceed">
+		<value>Range limit exceed!</value>
+	</string>
+	<string key="AlertAndMessage_OperationDoneSuccessfully">
+		<value>Operation done successfully</value>
+	</string>
+	<string key="AlertAndMessage_OperationFailed">
+		<value>Operation failed</value>
+	</string>
+	<string key="AlertAndMessage_ErrorInSaving">
+		<value>Error storing data.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidDate">
+		<value>Invalid date.</value>
+	</string>
+	<string key="AlertAndMessage_EnterFixedPhoneNumber">
+		<value>Please enter your fixed phone number.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidFixedPhoneNumber">
+		<value>Invalid fix phone number.</value>
+	</string>
+	<string key="AlertAndMessage_SelectOne">
+		<value>Select item....</value>
+	</string>
+	<string key="AlertAndMessage_YouEnteredMobileNumber">
+		<value>You entered mobile number.</value>
+	</string>
+	<string key="AlertAndMessage_EnterMobileNumber">
+		<value>Please enter your mobile number.</value>
+	</string>
+	<string key="AlertAndMessage_EnterMobile">
+		<value>Please enter your mobile number:</value>
+	</string>
+	<string key="AlertAndMessage_InvalidMobileNumber">
+		<value>Invalid mobile number.</value>
+	</string>
+	<string key="AlertAndMessage_YouEnteredFixPhoneNumber">
+		<value>You entered fix phone number.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidNationalId">
+		<value>Invalid national id.</value>
+	</string>
+	<string key="AlertAndMessage_EnterPostalCode">
+		<value>Please enter postal code.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidPostalCode">
+		<value>Invalid postal code.</value>
+	</string>
+	<string key="AlertAndMessage_TheAccountHasBeenDisabledByTheAdmin">
+		<value>The account has been disabled by the admin.</value>
+	</string>
+	<string key="AlertAndMessage_YouCameInInsteadOf">
+		<value>You came in instead of </value>
+	</string>
+	<string key="AlertAndMessage_ErrorInSendingSMS">
+		<value>Error in sending SMS.</value>
+	</string>
+	<string key="AlertAndMessage_ErrorTryAgain">
+		<value>Error, please try again</value>
+	</string>
+	<string key="AlertAndMessage_ValidityOfOTP">
+		<value>The validity of the OTP is only 3 minutes</value>
+	</string>
+	<string key="AlertAndMessage_YourNewPasswordIs">
+		<value>Your new password is: </value>
+	</string>
+	<string key="AlertAndMessage_InvalidCaptcha">
+		<value>Invalid captcha.</value>
+	</string>
+	<string key="AlertAndMessage_SelectCountry">
+		<value>Please select country.</value>
+	</string>
+	<string key="AlertAndMessage_SelectState">
+		<value>Please select state.</value>
+	</string>
+	<string key="AlertAndMessage_SelectCity">
+		<value>Please select city.</value>
+	</string>
+	<string key="AlertAndMessage_SelectCurrency">
+		<value>Please select related currency.</value>
+	</string>
+	<string key="AlertAndMessage_ModificationProfile">
+		<value>Modification profile.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidCurrentPassword">
+		<value>Invalid current password.</value>
+	</string>
+	<string key="AlertAndMessage_ModificationPasswordByUser">
+		<value>Modification password by user.</value>
+	</string>
+	<string key="AlertAndMessage_ModificationPasswordByAdmin">
+		<value>Modification password by admin.</value>
+	</string>
+	<string key="AlertAndMessage_PasswordChanged">
+		<value>Password changed.</value>
+	</string>
+	<string key="AlertAndMessage_EnterModificationReason">
+		<value>Please enter modification reason.</value>
+	</string>
+	<string key="AlertAndMessage_EnterValidNumber">
+		<value>The value of this field must be a number.</value>
+	</string>
+	<string key="AlertAndMessage_EnterValidAlphanumeric">
+		<value>The value of this field must be a number and alphanumeric.</value>
+	</string>
+	<string key="AlertAndMessage_EnterValidAlphanumericRange">
+		<value>The value of this field must be a number, alphanumeric and * or ?</value>
+	</string>
+	<string key="AlertAndMessage_SelectAtLeastOneItem">
+		<value>At least one item selection is required</value>
+	</string>
+	<string key="AlertAndMessage_SelectOneItem">
+		<value>one item selection is required</value>
+	</string>
+	<string key="AlertAndMessage_Choose">
+		<value>Choose...</value>
+	</string>
+	<string key="AlertAndMessage_Cancel">
+		<value>Cancel</value>
+	</string>
+	<string key="AlertAndMessage_FormatIsNotCorrect">
+		<value>The format of the entered parameters is not correct</value>
+	</string>
+	<string key="AlertAndMessage_UpperAndLowerLimit">
+		<value>The upper limit cannot be smaller than the lower limit.</value>
+	</string>
+	<string key="AlertAndMessage_UpperAndLowerLimitOverlap">
+		<value>The upper or lower limit values of this package overlap with the other package.</value>
+	</string>
+	<string key="AlertAndMessage_EnterBlockedMobileNumber">
+		<value>Please enter mobile number.</value>
+	</string>
+	<string key="AlertAndMessage_EnterChangeRoutedMobileNumber">
+		<value>Please enter mobile number.</value>
+	</string>
+	<string key="AlertAndMessage_NotEnoughCredit">
+		<value>Not enough credit!</value>
+	</string>
+	<string key="AlertAndMessage_FileHasNoInformation">
+		<value>The imported file has no information.</value>
+	</string>
+	<string key="AlertAndMessage_UpstreamGatewayNotFound">
+		<value>Upstream gateway not found.</value>
+	</string>
+	<string key="AlertAndMessage_EditUpstreamGateway">
+		<value>Edit upstream gateway</value>
+	</string>
+	<string key="AlertAndMessage_ThePriorityIsMandatory">
+		<value>The priority for accessing the menu type is mandatory and must be a number greater than 0.</value>
+	</string>
+	<string key="AlertAndMessage_Creator">
+		<value>Creator</value>
+	</string>
+	<string key="AlertAndMessage_NotFound">
+		<value>Not found.</value>
+	</string>
+	<string key="AlertAndMessage_DirectUsers">
+		<value>Direct users</value>
+	</string>
+	<string key="AlertAndMessage_UsernameExist">
+		<value>the username exists.</value>
+	</string>
+	<string key="AlertAndMessage_NoSenderIdFoundToAssign">
+		<value>No sender id found to assign.</value>
+	</string>
+	<string key="AlertAndMessage_ChooseAnotherUsername">
+		<value>Choose another username.</value>
+	</string>
+	<string key="AlertAndMessage_MobileExist">
+		<value>the mobile exists.</value>
+	</string>
+	<string key="AlertAndMessage_PasswordAndRepetitionNotTheSame">
+		<value>The password and its repetition are not the same.</value>
+	</string>
+	<string key="AlertAndMessage_FillAllField">
+		<value>Please fill all fields.</value>
+	</string>
+	<string key="AlertAndMessage_CheckTheInputDataFormat">
+		<value>Please check the input data format.</value>
+	</string>
+	<string key="AlertAndMessage_AccessDenied">
+		<value>Access denied.</value>
+	</string>
+	<string key="AlertAndMessage_AccessDeniedToThisPage">
+		<value>You do not have permission to access this page.</value>
+	</string>
+	<string key="AlertAndMessage_ClickMe">
+		<value>click here</value>
+	</string>
+	<string key="AlertAndMessage_ClickMeToReturn">
+		<value>To return to the main page.</value>
+	</string>
+	<string key="AlertAndMessage_Inaccessibility">
+		<value>Inaccessibility</value>
+	</string>
+	<string key="AlertAndMessage_ErrorOccurrence">
+		<value>Error occurrence</value>
+	</string>
+	<string key="AlertAndMessage_TheRequestedSubmissionParametersAreIncorrect">
+		<value>The requested submission parameters are incorrect.</value>
+	</string>
+	<string key="AlertAndMessage_LoginPage">
+		<value>Login</value>
+	</string>
+	<string key="AlertAndMessage_Login">
+		<value>Login</value>
+	</string>
+	<string key="AlertAndMessage_Logout">
+		<value>Logout</value>
+	</string>
+	<string key="AlertAndMessage_LoginHistory">
+		<value>login and logout history</value>
+	</string>
+	<string key="AlertAndMessage_LoginToAccount">
+		<value>Login to your account</value>
+	</string>
+	<string key="AlertAndMessage_EnterUserAndPassword">
+		<value>Enter your username and password</value>
+	</string>
+	<string key="AlertAndMessage_EnterOTP">
+		<value>Enter OTP</value>
+	</string>
+	<string key="AlertAndMessage_ChangePassword">
+		<value>ChangePassword:</value>
+	</string>
+	<string key="AlertAndMessage_CurrentPassword">
+		<value>Current password</value>
+	</string>
+	<string key="AlertAndMessage_NewPassword">
+		<value>New password</value>
+	</string>
+	<string key="AlertAndMessage_ConfirmPassword">
+		<value>Confirm password</value>
+	</string>
+	<string key="AlertAndMessage_CreatePasswordBySyetm">
+		<value>Create a password by the system</value>
+	</string>
+	<string key="AlertAndMessage_RandomPassword">
+		<value>Random password</value>
+	</string>
+	<string key="AlertAndMessage_CopyToClipboard">
+		<value>Copy to clipboard</value>
+	</string>
+	<string key="AlertAndMessage_SentToUser">
+		<value>is now sent to user.</value>
+	</string>
+	<string key="AlertAndMessage_OTP">
+		<value>OTP: </value>
+	</string>
+	<string key="AlertAndMessage_SendOTP">
+		<value>Send OTP</value>
+	</string>
+	<string key="AlertAndMessage_OTPSentSuccessfully">
+		<value>OTP sent successfully</value>
+	</string>
+	<string key="AlertAndMessage_Username">
+		<value>Username</value>
+	</string>
+	<string key="AlertAndMessage_Password">
+		<value>Password</value>
+	</string>
+	<string key="AlertAndMessage_RememberMe">
+		<value>Remember Me</value>
+	</string>
+	<string key="AlertAndMessage_ResetPassword">
+		<value>Reset password</value>
+	</string>
+	<string key="AlertAndMessage_PageNotFound">
+		<value>Page not found</value>
+	</string>
+
+	<string key="AlertAndMessage_DeleteConfirm">
+		<value>Yes, Delete!</value>
+	</string>
+    
+	<string key="AlertAndMessage_Deny">
+		<value>No</value>
+	</string>
+
+	<string key="AlertAndMessage_Approve">
+		<value>Yes</value>
+	</string>
+	<string key="AlertAndMessage_AskForConfirm">
+		<value>Are you sure?</value>
+	</string>
+	<string key="AlertAndMessage_AskForConfirmImageDeletion">
+		<value>Are you sure you want to delete this image?</value>
+	</string>
+
+	<string key="AlertAndMessage_PermissionWillBeDeleted">
+		<value>Permission will be deleted.</value>
+	</string>
+
+	<string key="AlertAndMessage_RoleWillBeDeleted">
+		<value>Role will be deleted.</value>
+	</string>
+
+	<string key="AlertAndMessage_ItemWillBeDeleted">
+		<value>Item will be deleted.</value>
+	</string>
+
+	<string key="AlertAndMessage_NothingToShow">
+		<value>Nothing to show.</value>
+	</string>
+	<string key="AlertAndMessage_SelectFile">
+		<value>Please select a file.</value>
+	</string>
+	<string key="AlertAndMessage_NoFileSelected">
+		<value>No file selected yet.</value>
+	</string>
+	<string key="AlertAndMessage_Succeeded">
+		<value>Succeeded</value>
+	</string>
+	<string key="AlertAndMessage_Failed">
+		<value>Failed</value>
+	</string>
+	<string key="AlertAndMessage_AllFailed">
+		<value>All failed</value>
+	</string>
+	<string key="AlertAndMessage_UserIpAddress">
+		<value>Ip address</value>
+	</string>
+	<string key="AlertAndMessage_ViewBatchIDs">
+		<value>View batchId's</value>
+	</string>
+	<string key="AlertAndMessage_IncompleteProfile">
+		<value>Incomplete profile</value>
+	</string>
+	<string key="AlertAndMessage_IncompleteProfileMessage">
+		<value>Please complete your information from the profile menu before accessing the system features.</value>
+	</string>
+	<string key="AlertAndMessage_IncompleteProfileItems">
+		<value>The following items need to be completed:</value>
+	</string>
+	<string key="AlertAndMessage_TransferCellphoneBetweenOperatorsList">
+		<value>Transfered cellphone list</value>
+	</string>
+	<string key="AlertAndMessage_TransferCellphone">
+		<value>Transfered cellphone</value>
+	</string>
+	<string key="AlertAndMessage_AddExtraParams">
+		<value>Add extra params</value>
+	</string>
+
+	<string key="AlertAndMessage_ApiAccessFormatError">
+		<value>Please input api claims in a correct format.</value>
+	</string>
+
+	<string key="AlertAndMessage_OperatorList">
+		<value>Operator list</value>
+	</string>
+	<string key="AlertAndMessage_NewOperator">
+		<value>New operator</value>
+	</string>
+	<string key="AlertAndMessage_SuccessCount">
+		<value>Success count</value>
+	</string>
+	<string key="AlertAndMessage_FailedCount">
+		<value>Failed count</value>
+	</string>
+	<string key="AlertAndMessage_NewRole">
+		<value>New role</value>
+	</string>
+	<string key="AlertAndMessage_Receivers">
+		<value>Receivers</value>
+	</string>
+	<string key="AlertAndMessage_ChangeUserTariff">
+		<value>Change tariff</value>
+	</string>
+	<string key="AlertAndMessage_SetUserSenderIds">
+		<value>Set User Sender Ids</value>
+	</string>
+	<string key="AlertAndMessage_DateFrom">
+		<value>from</value>
+	</string>
+	<string key="AlertAndMessage_DateTo">
+		<value>to</value>
+	</string>
+	<string key="AlertAndMessage_Type">
+		<value>Type</value>
+	</string>
+	<string key="AlertAndMessage_Icon">
+		<value>Set Icon</value>
+	</string>
+	<string key="AlertAndMessage_Priority">
+		<value>Set Priority</value>
+	</string>
+	<string key="AlertAndMessage_Route">
+		<value>Set Route</value>
+	</string>
+	<string key="AlertAndMessage_MenuOfModule">
+		<value>Choose MenuOfModule</value>
+	</string>
+	<!--END [Allert And Message]-->
+	<!--START [Dashboard]-->
+	<string key="Choose">
+		<value>choose ...</value>
+	</string>
+	<string key="SpecificationGroupName">
+		<value>Specification group name</value>
+	</string>
+	<string key="SpecificationGroup">
+		<value>Specification group</value>
+	</string>
+	<string key="AddPromotion_Title">
+		<value>Add Promotion</value>
+	</string>
+	<string key="EditComment_Title">
+		<value>Edit Comment</value>
+	</string>
+	<string key="AddComment_Title">
+		<value>Add Comment</value>
+	</string>
+	<string key="EditPromotion_Title">
+		<value>Edit Promotion</value>
+	</string>
+	<string key="AddProSpecGroupPart_Title">
+		<value>Add New Product Specification Group</value>
+	</string>
+	<string key="EditProSpecGroupPart_Title">
+		<value>Add Product Specification Group</value>
+	</string>
+	<string key="AddPermissionPart_Title">
+		<value>Add New Permission</value>
+	</string>
+	<string key="AddProductGroupPart_Title">
+		<value>Add ProductGroup</value>
+	</string>
+	<string key="AddMenu_Title">
+		<value>Add StoreMenu</value>
+	</string>
+	<string key="EditProductGroupPart_Title">
+		<value>Edit ProductGroup</value>
+	</string>
+	<string key="EditDomain_Title">
+		<value>Edit Domain</value>
+	</string>
+	<string key="EditProductPart_Title">
+		<value>Edit Product</value>
+	</string>
+	<string key="EditContentCategory_Title">
+		<value>Edit ContentCategory</value>
+	</string>
+	<string key="EditMenu_Title">
+		<value>Edit StoreMenu</value>
+	</string>
+	<string key="AddContentCategory_Title">
+		<value>Add ContentCategory</value>
+	</string>
+	<string key="EditContent_Title">
+		<value>Edit Content</value>
+	</string>
+	<string key="AddContent_Title">
+		<value>Add Content</value>
+	</string>
+	<string key="AddProductPart_Title">
+		<value>Add Product</value>
+	</string>
+	<string key="AddProductSpecificationPart_Title">
+		<value>Add ProductSpecification</value>
+	</string>
+	<string key="EditProductSpecificationPart_Title">
+		<value>Edit ProductSpecification</value>
+	</string>
+	<string key="AddProductUnitPart_Title">
+		<value>Add ProductUnit</value>
+	</string>
+	<string key="AddDomain_Title">
+		<value>Add Domain</value>
+	</string>
+	<string key="EditProductUnitPart_Title">
+		<value>Edit ProductUnit</value>
+	</string>
+	<string key="EditPermissionPart_Title">
+		<value>Edit Permission</value>
+	</string>
+	<string key="AddUserPart_Title">
+		<value>Add User</value>
+	</string>
+	<string key="AddRolePart_Title">
+		<value>Add  Role</value>
+	</string>
+	<string key="EditRolePart_Title">
+		<value>Edit Role</value>
+	</string>
+	<string key="Permission_Delete">
+		<value>Delete Permission</value>
+	</string>
+	<string key="Permission_Name">
+		<value>Permission Title</value>
+	</string>
+	<string key="Permission_Type">
+		<value>Permission Type</value>
+	</string>
+	<string key="Permission_Method">
+		<value>Permission Method</value>
+	</string>
+	<string key="Permission_Routes">
+		<value>Routes</value>
+	</string>
+	<string key="Permission_ClientAddress">
+		<value>Client Address</value>
+	</string>
+	<string key="ProductUnit_Name">
+		<value>ProductUnitName</value>
+	</string>
+	<string key="Role_Name">
+		<value>RoleName</value>
+	</string>
+	<string key="Role_Edit">
+		<value>Role Edit</value>
+	</string>
+	<string key="Role_Delete">
+		<value>Role Delete</value>
+	</string>
+	<string key="Role_CreatorUserName">
+		<value>Creator username</value>
+	</string>
+	
+	<string key="User_FirstName">
+		<value>Name</value>
+	</string>
+	<string key="User_LastName">
+		<value>LastName</value>
+	</string>
+	<string key="User_PhoneNumber">
+		<value>PhoneNumber</value>
+	</string>
+	<string key="User_UserName">
+		<value>UserName</value>
+	</string>
+	<string key="User_Password">
+		<value>Password</value>
+	</string>
+	<string key="User_RePassword">
+		<value>RePassword</value>
+	</string>
+	<string key="User_FullName">
+		<value>First and LastName</value>
+	</string>
+	<string key="User_RoleName">
+		<value>Role Name</value>
+	</string>
+	<string key="ActivationState">
+		<value>State</value>
+	</string>
+	<string key="Title">
+		<value>Title</value>
+	</string>
+	<string key="SubName">
+		<value>Content/Product</value>
+	</string>
+	<string key="SubGroupName">
+		<value>Content/Product GroupName</value>
+	</string>
+	<string key="CommentTitle">
+		<value>Comment Title</value>
+	</string>
+	<string key="Description">
+		<value>Description</value>
+	</string>
+  <string key="Active">
+    <value>Active</value>
+  </string>
+	<string key="DomainOwner">
+		<value>Domain Owner</value>
+	</string>
+	<string key="DomainName">
+		<value>Domain Name</value>
+	</string>
+	<string key="Rename">
+		<value>Rename</value>
+	</string>
+	<string key="ChooseImageForm">
+		<value>Choose Image Form</value>
+	</string>
+	<string key="ChooseImage">
+		<value>Choose Image</value>
+	</string>
+	<string key="Folders">
+		<value>Folders:</value>
+	</string>
+	<string key="ChangeLogo">
+		<value>ChangeLogo</value>
+	</string>
+ <string key="FileLogo">
+    <value>Content Logo</value>
+  </string>
+	<string key="LikeCount">
+		<value>Like Count</value>
+	</string>
+	<string key="DisLikeCount">
+		<value>DisLike Count</value>
+	</string>
+	<string key="ReferenceType">
+		<value>Comment Type</value>
+	</string>
+	<string key="ReferenceTitle">
+		<value>Reference Title</value>
+	</string>
+	<string key="IsApproved">
+		<value>Approve</value>
+	</string>
+	<string key="SourceType">
+		<value>Content Owner Type</value>
+	</string>
+	<string key="ContentProviderName">
+		<value>Content ProviderName</value>
+	</string>
+	<string key="StartShowDate">
+		<value>ShowDate Start</value>
+	</string>
+	<string key="EndShowDate">
+		<value>ShowDate End</value>
+	</string>
+	<string key="TagKeywords">
+		<value>Tag Keywords</value>
+	</string>
+  <string key="ProductsInPromotion">
+    <value>Products in Promotion</value>
+  </string>
+	<string key="Value">
+		<value>Value</value>
+	</string>
+	<string key="Product">
+		<value>Product</value>
+	</string>
+	<string key="BoughtCount">
+		<value>Bought Count</value>
+	</string>
+	<string key="PromotedCountofUnit">
+		<value>Count Of FreeProduct</value>
+	</string>
+	
+	<string key="Image">
+		<value>Image</value>
+	</string>
+	<string key="MainPhoto">
+		<value>Main Image</value>
+	</string>
+  <string key="InActive">
+    <value>InActive</value>
+  </string>
+	<string key="IsVendor">
+		<value>Is Vendor?</value>
+	</string>
+	<string key="ProductVendor">
+		<value>Product Vendor</value>
+	</string>
+	<string key="PriceHistory">
+		<value>Price History</value>
+	</string>
+	<string key="ShowInLackOfInventory">
+		<value>Show in lack of inventory</value>
+	</string>
+	
+	<string key="ShowHide">
+		<value>Show/Hide</value>
+	</string>
+	<string key="MultiLingualProperty">
+		<value>Multi lingual property</value>
+	</string>
+	<string key="ParentGroup">
+		<value>Parent Group</value>
+	</string>
+	<string key="ParentMenu">
+		<value>Parent Menu</value>
+	</string>
+	<string key="ParentMenuTitle">
+		<value>Parent Menu Title</value>
+	</string>
+	<string key="MenuType">
+		<value>Menu Type</value>
+	</string>
+	<string key="ParentComment">
+		<value>Parent Comment</value>
+	</string>
+	<string key="ContentComment">
+		<value>Content Comment</value>
+	</string>
+	<string key="ParentCategoryName">
+		<value>Parent Category Name</value>
+	</string>
+	<string key="Name">
+		<value>Name</value>
+	</string>
+	<string key="fromCreationDate">
+		<value>from creation date</value>
+	</string>
+	<string key="toCreationDate">
+		<value>to creation date</value>
+	</string>
+	<string key="ProductWithDiscount">
+		<value>Products With Discount </value>
+	</string>
+	<string key="ExistentProducts">
+		<value>Existent Products</value>
+	</string>
+	<string key="Promotion">
+		<value>Promotions</value>
+	</string>
+	<string key="ProductsOnPromotion">
+		<value>Products on Promotions</value>
+	</string>
+	<string key="ProductInventoryLessThan">
+		<value>Product Inventory Less than</value>
+	</string>
+	<string key="SeoDescription">
+		<value>Seo Description</value>
+	</string>
+	<!--<string key="Description">
+		<value>Description</value>
+	</string>-->
+	<string key="SeoTitle">
+		<value>Seo Title</value>
+	</string>
+	<string key="UrlFriend">
+		<value>UrlFriend</value>
+	</string>
+	<string key="Url">
+		<value>Url</value>
+	</string>
+	<string key="Yes">
+		<value>Yes</value>
+	</string>
+	<string key="No">
+		<value>No</value>
+	</string>
+	<string key="Currency">
+		<value>Currency</value>
+	</string>
+	<string key="Type">
+		<value>Type</value>
+	</string>
+	<string key="AffectedProductName">
+		<value>Product in Promotion</value>
+	</string>
+	<string key="AffectedProductGroupName">
+		<value>ProductGroup in Promotion</value>
+	</string>
+	<string key="PromotedProductName">
+		<value>Free Product</value>
+	</string>
+	<string key="Classification">
+		<value>Classification</value>
+	</string>
+	<string key="DefaultCurrency">
+		<value>default currency</value>
+	</string>
+	<string key="DefaultDomain">
+		<value>default domain</value>
+	</string>
+	<string key="PriceValue">
+		<value>Price</value>
+	</string>
+	<string key="User_Roles">
+		<value>Roles</value>
+	</string>
+	<string key="User_Filters">
+		<value>User Filters</value>
+	</string>
+	<string key="User_Delete">
+		<value>User Delete</value>
+	</string>
+	<string key="User_Restore">
+		<value>User Restore</value>
+	</string>
+	<string key="FromDate">
+		<value>From Date</value>
+	</string>
+	<string key="ToDate">
+		<value>To Date</value>
+	</string>
+	<string key="Restore">
+		<value>Restore</value>
+	</string>
+	<string key="CreationDate">
+		<value>CreationDate</value>
+	</string>
+	<string key="User_Add">
+		<value>Add New User</value>
+	</string>
+	<string key="User_Edit">
+		<value>Edit User</value>
+	</string>
+	<string key="User_ChangePass">
+		<value>change Password</value>
+	</string>
+	<string key="FormClear">
+		<value>Clear Form</value>
+	</string>
+	<string key="Filter">
+		<value>Filter</value>
+	</string>
+	<string key="Content">
+		<value>Content</value>
+	</string>
+	<string key="ContentTitle">
+		<value>Content Title</value>
+	</string>
+	<string key="Menu_StoreMenues">
+		<value>Store Menues</value>
+	</string>
+	<string key="Menu_ProductComments">
+		<value>Product Comments</value>
+	</string>
+	<string key="Menu_ContentComments">
+		<value>Content Comments</value>
+	</string>
+	<string key="Menu_Promotion">
+		<value>Promotions</value>
+	</string>
+	<string key="Menu_ProductSpecificationGroup">
+		<value>Product Specification Groups</value>
+	</string>
+	<string key="Menu_Permissions">
+		<value>Permissions</value>
+	</string>
+	<string key="Menu_Products">
+		<value>Products</value>
+	</string>
+	<string key="Menu_Product">
+		<value>Product</value>
+	</string>
+	<string key="Menu_ProductUnits">
+		<value>Product Units</value>
+	</string>
+	<string key="Menu_ProductUnit">
+		<value>Product Unit</value>
+	</string>
+	<string key="Menu_ProductGroups">
+		<value>Product Groups</value>
+	</string>
+	<string key="Menu_domains">
+		<value>Domains</value>
+	</string>
+	<string key="Menu_ContentCategory">
+		<value>Content Category</value>
+	</string>
+	<string key="Menu_Content">
+		<value>Content</value>
+	</string>
+	<string key="Menu_ProductSpecifications">
+		<value>Product Specifications</value>
+	</string>
+	<string key="Menu_Roles">
+		<value>Roles</value>
+	</string>
+	<string key="Role">
+		<value>نقش</value>
+	</string>
+	<string key="EditPermissions">
+		<value>Edit permissions</value>
+	</string>
+	<string key="Menu_Profile">
+		<value>Profile</value>
+	</string>
+	<string key="Menu_Home">
+		<value>Home</value>
+	</string>
+	<string key="Menu_RoutePlaceHolder">
+		<value>Seprate each route with comma ,</value>
+	</string>
+	<string key="Menu_Add">
+		<value>Add</value>
+	</string>
+	<string key="Menu_PermissionName">
+		<value>PermissionName</value>
+	</string>
+	<string key="Menu_PermissionTitle">
+		<value>Permission Title</value>
+	</string>
+	<string key="Menu_PermissionType">
+		<value>PermissionType</value>
+	</string>
+	<string key="Menu_Routes">
+		<value>Routes</value>
+	</string>
+	<string key="Menu_PermissionMethod">
+		<value>PermissionMethod</value>
+	</string>
+	<string key="Menu_MenuIdOfModule">
+		<value>MenuIdOfModule</value>
+	</string>
+	<string key="Menu_ParentMenuId">
+		<value>ParentMenuId</value>
+	</string>
+	<string key="Menu_Icon">
+		<value>Icon</value>
+	</string>
+	<string key="Menu_Priority">
+		<value>Priority</value>
+	</string>
+	<string key="Menu_ClientAddress">
+		<value>Client Address</value>
+	</string>
+	<string key="Per_PermissionName">
+		<value>PermissionName</value>
+	</string>
+	<string key="Per_PermissionTitle">
+		<value>Permission Title</value>
+	</string>
+	<string key="Per_PermissionType">
+		<value>PermissionType</value>
+	</string>
+	<string key="Per_Routes">
+		<value>Routes</value>
+	</string>
+	<string key="Per_PermissionMethod">
+		<value>PermissionMethod</value>
+	</string>
+	<string key="Per_MenuIdOfModule">
+		<value>MenuIdOfModule</value>
+	</string>
+	<string key="Per_ParentMenuId">
+		<value>ParentMenuId</value>
+	</string>
+	<string key="Per_Icon">
+		<value>Icon</value>
+	</string>
+	<string key="Per_Priority">
+		<value>Priority</value>
+	</string>
+	<string key="Per_ClientAddress">
+		<value>Client Address</value>
+	</string>
+	<string key="ModificationReason">
+		<value>Modification Reason</value>
+	</string>
+	<string key="WithoutModification">
+		<value>without modification</value>
+	</string>
+	<string key="Menu_Dashboard">
+		<value>Dashboard</value>
+	</string>
+	<string key="Menu_Dashboardv1">
+		<value>Dashboard v1</value>
+	</string>
+	<string key="Menu_Dashboard_Examples">
+		<value>EXAMPLES</value>
+	</string>
+	<string key="Menu_Dashboard_Invoice">
+		<value>invoice</value>
+	</string>
+	<string key="Menu_Dashboard_HomeTitle">
+		<value>Arad Portal Management System</value>
+	</string>
+	<string key="Menu_Dashboard_Gallery">
+		<value>Gallery</value>
+	</string>
+	<string key="Menu_Dashboard_Pages">
+		<value>Pages</value>
+	</string>
+	<string key="Menu_Dashboard_Notification">
+		<value>Notification</value>
+	</string>
+	<string key="Menu_Dashboard_newMesseges">
+		<value>new messeges</value>
+	</string>
+	<string key="Menu_Dashboard_min">
+		<value>mins</value>
+	</string>
+	<string key="Menu_Dashboard_SeeAllNotifications">
+		<value>See All Notifications</value>
+	</string>
+	<!--END [Dashboard]-->
+	<!--Messege Content of AdminLTE-->
+	<string key="Msg_Content_Test1">
+		<value></value>
+	</string>
+	<string key="Msg_Content_Test2">
+		<value>Hours Ago</value>
+	</string>
+	<string key="CompanyName">
+		<value>Arad Portal Dashboard</value>
+	</string>
+	<string key="SeeMoreMsgs">
+		<value>See All Messages</value>
+	</string>
+	<!--/.Messege Content of AdminLTE-->
+	<!--START [Action]-->
+	<string key="Exit">
+		<value>Exit</value>
+	</string>
+	<string key="StartDate">
+		<value>Start Date</value>
+	</string>
+	<string key="EndDate">
+		<value>End Date</value>
+	</string>
+	<string key="New">
+		<value>New</value>
+	</string>
+	<string key="Crop">
+		<value>Crop</value>
+	</string>
+	<string key="ChangeImage">
+		<value>Change image</value>
+	</string>
+	<string key="ProfilePic">
+		<value>Profile picture</value>
+	</string>
+	<string key="ChangeProfilePic">
+		<value>Change picture</value>
+	</string>
+	<string key="EditProfile">
+		<value>Edit profile</value>
+	</string>
+	<string key="CropImage">
+		<value>Crop image</value>
+	</string>
+	<string key="AssignNumber">
+		<value>Assign numbers</value>
+	</string>
+	<string key="CreateNew">
+		<value>Create new</value>
+	</string>
+	<string key="Ok">
+		<value>Ok</value>
+	</string>
+	<string key="Order">
+		<value>Order</value>
+	</string>
+	<string key="Return">
+		<value>Go back</value>
+	</string>
+	<string key="Add">
+		<value>Add</value>
+	</string>
+	<string key="Edit">
+		<value>Edit</value>
+	</string>
+	<string key="Cancel">
+		<value>Cancel</value>
+	</string>
+	<string key="Delete">
+		<value>Delete</value>
+	</string>
+	<string key="ChangeSize">
+		<value>Change Size</value>
+	</string>
+	<string key="ChangeImageSize">
+		<value>Change Image Size</value>
+	</string>
+	<string key="Search">
+		<value>Search</value>
+	</string>
+	<string key="RelatedLanguage">Essential
+		<value>Related Language</value>
+	</string>
+	<string key="CurrentDomainPrice">
+		<value>Current Domain Price</value>
+	</string>
+	<string key="AssociatedDomain">
+		<value>Associated Domain</value>
+	</string>
+	
+	<string key="DefaultLanguage">
+		<value>Default Language</value>
+	</string>
+	<string key="LanguageName">
+		<value>Language Name</value>
+	</string>
+	<string key="GetFromExcelFile">
+		<value>get from excel file</value>
+	</string>
+	<string key="Find">
+		<value>Find</value>
+	</string>
+	<string key="ChangePassword">
+		<value>Change password</value>
+	</string>
+	<string key="LoginAsUser">
+		<value>Login as user</value>
+	</string>
+	<string key="View">
+		<value>View</value>
+	</string>
+	<string key="Copy">
+		<value>Copy</value>
+	</string>
+	<string key="Close">
+		<value>Close</value>
+	</string>
+	<string key="SendSms">
+		<value>Send sms</value>
+	</string>
+	<string key="Send">
+		<value>Send</value>
+	</string>
+	<string key="Sent">
+		<value>Sent</value>
+	</string>
+	<string key="Save">
+		<value>Save</value>
+	</string>
+	<!--END [Action]-->
+	<!--START [Entities]-->
+	<string key="Entities_Permissions">
+		<value>Permissions</value>
+	</string>
+	<string key="Entities_PermissionIcon">
+		<value>Icon</value>
+	</string>
+	<string key="Entities_Title">
+		<value>Title</value>
+	</string>
+	<string key="Entities_SubTitle">
+		<value>SubTitle</value>
+	</string>
+	<string key="Entities_PermissionType">
+		<value>PermissionType</value>
+	</string>
+	<string key="Entities_PermissionViewKey">
+		<value>PermissionViewKey</value>
+	</string>
+	<string key="Entities_Priority">
+		<value>Priority</value>
+	</string>
+	<string key="Entities_MenuOfModule">
+		<value>MenuOfModule</value>
+	</string>
+	<string key="Entities_ParentMenu">
+		<value>ParentMenu</value>
+	</string>
+	<string key="Entities_PermissionRoutes">
+		<value>PermissionRoutes</value>
+	</string>
+	<string key="Entities_ModificationReason">
+		<value>ModificationReason</value>
+	</string>
+	<string key="Entities_PermissionClientAddress">
+		<value>PermissionClientAddress</value>
+	</string>
+	<!--END [Entities]-->
+	<!--START [Page Navigation]-->
+	<string key="PageNavigation_showing">
+		<value>showing</value>
+	</string>
+	<string key="PageNavigation_from">
+		<value>from</value>
+	</string>
+	<string key="PageNavigation_to">
+		<value>to</value>
+	</string>
+	<string key="PageNavigation_items">
+		<value>items</value>
+	</string>
+	<string key="PageNavigation_next">
+		<value>next</value>
+	</string>
+	<string key="PageNavigation_previous">
+		<value>previous</value>
+	</string>
+	<string key="PageNavigation_last">
+		<value>last</value>
+	</string>
+	<string key="PageNavigation_first">
+		<value>first</value>
+	</string>
+	<!--END [Page Navigation]-->
+	<!--START [Table headers]-->
+	<string key="TableHeader_BasicInfo">
+		<value>Basic information</value>
+	</string>
+	<string key="TableHeader_Male">
+		<value>Male</value>
+	</string>
+	<string key="TableHeader_Female">
+		<value>Female</value>
+	</string>
+	<string key="TableHeader_OtherInfo">
+		<value>Other information</value>
+	</string>
+	<string key="TableHeader_UserImage">
+		<value>User image</value>
+	</string>
+	<string key="TableHeader_Row">
+		<value>No</value>
+	</string>
+	<string key="TableHeader_Date">
+		<value>Date</value>
+	</string>
+	<string key="TableHeader_PreviousInventory">
+		<value>Previous balance</value>
+	</string>
+	<string key="TableHeader_CurrentInventory">
+		<value>Current balance</value>
+	</string>
+	<string key="TableHeader_ModificationReason">
+		<value>Modification reason</value>
+	</string>
+	<string key="TableHeader_Actions">
+		<value>Actions</value>
+	</string>
+	<string key="TableHeader_Priority">
+		<value>Priority</value>
+	</string>
+	<string key="TableHeader_Title">
+		<value>Title</value>
+	</string>
+	<string key="TableHeader_Creator">
+		<value>Creator</value>
+	</string>
+	<string key="TableHeader_CreateDate">
+		<value>Create date</value>
+	</string>
+	<string key="TableHeader_Modifications">
+		<value>Modifications</value>
+	</string>
+	<string key="TableHeader_Status">
+		<value>Status</value>
+	</string>
+	<!--END [Table headers]-->
+	<!--START [Application User]-->
+	<string key="ApplicationUser_IsSystemAccount">
+		<value>Is System Account</value>
+	</string>
+	<string key="ApplicationUser_Address">
+		<value>Address</value>
+	</string>
+	<string key="ApplicationUser_Profile">
+		<value>Profile</value>
+	</string>
+	<string key="ApplicationUser_FixedPhoneNumber">
+		<value>Fixed PhoneNumber</value>
+	</string>
+	<string key="ApplicationUser_LastLoginDate">
+		<value>Last Login Date</value>
+	</string>
+	<string key="ApplicationUser_Role">
+		<value>Role</value>
+	</string>
+	<string key="ApplicationUser_ReceiveActive">
+		<value>Receive Active</value>
+	</string>
+	<string key="ApplicationUser_ReceiveSettings">
+		<value>Receive Settings</value>
+	</string>
+	<string key="ApplicationUser_DeliverySettings">
+		<value>Delivery Settings</value>
+	</string>
+	<string key="ApplicationUser_Reference">
+		<value>Reference</value>
+	</string>
+	<string key="ApplicationUser_Relay">
+		<value>Relay</value>
+	</string>
+	<string key="ApplicationUser_ReceiveType">
+		<value>Receive Type</value>
+	</string>
+	<string key="ApplicationUser_ReceiveMethod">
+		<value>Receive Method</value>
+	</string>
+	<string key="ApplicationUser_ReceiveSetting">
+		<value>Receive Setting</value>
+	</string>
+	<string key="ApplicationUser_TariffPackage">
+		<value>Tariff Package</value>
+	</string>
+	<string key="ApplicationUser_Credit">
+		<value>Credit</value>
+	</string>
+	<string key="ApplicationUser_IsPostPaid">
+		<value>Is Postpaid</value>
+	</string>
+	<string key="ApplicationUser_SendViaHttp">
+		<value>Send via http</value>
+	</string>
+	<string key="ApplicationUser_SendViaSMPP">
+		<value>Send via SMPP</value>
+	</string>
+	<string key="ApplicationUser_FilterCheck">
+		<value>Filter check</value>
+	</string>
+	<string key="ApplicationUser_BlackListCheck">
+		<value>BlackList check</value>
+	</string>
+	<string key="ApplicationUser_ArchiveAccess">
+		<value>Archive access</value>
+	</string>
+	<string key="ApplicationUser_PostPaid">
+		<value>Post paid</value>
+	</string>
+	<string key="ApplicationUser_Method">
+		<value>Method</value>
+	</string>
+	<string key="ApplicationUser_ChangeType">
+		<value>Change type</value>
+	</string>
+	<string key="ApplicationUser_AssignSenderId">
+		<value>Assign number</value>
+	</string>
+	<string key="ApplicationUser_UserSenderIds">
+		<value>User SenderIds</value>
+	</string>
+	<string key="ApplicationUser_Description">
+		<value>Description</value>
+	</string>
+	<string key="DropdownItems_Management">
+		<value>management</value>
+	</string>
+	<string key="DropdownItems_ChangeAmount">
+		<value>Change amount</value>
+	</string>
+	<string key="ApplicationUser_CreditChanges">
+		<value>Credit Changes</value>
+	</string>
+	<string key="ApplicationUser_MPS">
+		<value>MPS</value>
+	</string>
+	<string key="ApplicationUser_LastSendDate">
+		<value>Last Send Date</value>
+	</string>
+	<string key="ApplicationUser_LastReceiveDate">
+		<value>Last Receive Date</value>
+	</string>
+	<string key="ApplicationUser_DeliveryActive">
+		<value>Delivery Active</value>
+	</string>
+	<string key="ApplicationUser_DeliveryType">
+		<value>Delivery Type</value>
+	</string>
+	<string key="ApplicationUser_DeliveryMethod">
+		<value>Delivery Method</value>
+	</string>
+	<string key="ApplicationUser_DeliverySetting">
+		<value>Delivery Setting</value>
+	</string>
+	<string key="ApplicationUser_APIAccess">
+		<value>API Access</value>
+	</string>
+	<string key="ApplicationUser_SMPPAccess">
+		<value>SMPP Access</value>
+	</string>
+	<string key="ApplicationUser_Priority">
+		<value>Priority</value>
+	</string>
+	<string key="ApplicationUser_ViewOldData">
+		<value>View Old Data</value>
+	</string>
+	<string key="ApplicationUser_AlertCredit">
+		<value>Alert Credit</value>
+	</string>
+	<string key="ApplicationUser_CreditAmountForAlert">
+		<value>Credit Amount For Alert</value>
+	</string>
+	<string key="ApplicationUser_LastSendAlertDate">
+		<value>Last Send Alert Date</value>
+	</string>
+	<string key="ApplicationUser_Ips">
+		<value>Ips</value>
+	</string>
+	<string key="ApplicationUser_User">
+		<value>User</value>
+	</string>
+	<string key="ApplicationUser_UserList">
+		<value>User list</value>
+	</string>
+	<!--END [Application User]-->
+	<!--START [Permission Title]-->
+	<string key="PermissionTitle_Dashboard">
+		<value>Dashboard</value>
+	</string>
+	<string key="PermissionTitle_User_Management">
+		<value>User Management</value>
+	</string>
+	<string key="PermissionTitle_User_Permissions">
+		<value>Permissions</value>
+	</string>
+	<!--END [Permission Title]-->
+</dictionary>

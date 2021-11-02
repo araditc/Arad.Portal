@@ -58,13 +58,13 @@ namespace Arad.Portal.UI.Shop.Helpers
                     {
                         new IdentityUserClaim<string>()
                         {
-                            ClaimType = ClaimTypes.GivenName,
-                            ClaimValue = "ادمین شماره یک"
+                            ClaimType = "AppRole",
+                            ClaimValue = true.ToString()
                         },
                         new IdentityUserClaim<string>()
                         {
-                            ClaimType = "AppRole",
-                            ClaimValue = true.ToString()
+                            ClaimType = "RelatedDomain",
+                            ClaimValue = "f4dd87ab-cf2f-4711-9e1e-64735aa364de"
                         }
                     },
                     PhoneNumber = "989309910790",

@@ -66,9 +66,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 equallentModel.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
                 equallentModel.IsActive = true;
-                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
-                //Filter specific claim    
-                var domainId = claims?.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+                
+                var domainId = _httpContextAccessor.HttpContext.User.FindFirst("RelatedDomain")?.Value;
+                
                 equallentModel.AssociatedDomainId = domainId;
                 await _context.Collection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;

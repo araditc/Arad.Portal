@@ -183,12 +183,26 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 dto.AssociatedDomainId = domainId;
                 dto.MenuType = (MenuType)Convert.ToInt32(dto.MenuTypeId);
                 dto.MenuCode = await GetMenuCodeFromMenu(dto.MenuType, dto.SubId, dto.SubGroupId);
+                switch (dto.MenuType)
+                {
+                    case MenuType.ProductGroup:
+                        dto.Url = $"/group/{dto.MenuCode}";
+                        break;
+                    case MenuType.Product:
+                        dto.Url = $"/product/{dto.MenuCode}";
+                        break;
+                    case MenuType.CategoryContent:
+                        dto.Url = $"/category/{dto.MenuCode}";
+                        break;
+                    case MenuType.Content:
+                        dto.Url = $"/blog/{dto.MenuCode}";
+                        break;
+                }
                 RepositoryOperationResult saveResult = await _menuRepository.AddMenu(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
             }
             return result;
-
         }
 
         [HttpPost]
@@ -226,6 +240,27 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             dto.MenuType = (MenuType)Convert.ToInt32(dto.MenuTypeId);
             dto.MenuCode = await GetMenuCodeFromMenu(dto.MenuType, dto.SubId, dto.SubGroupId);
+            switch (dto.MenuType)
+            {
+                case MenuType.ProductGroup:
+                    dto.Url = $"/group/{dto.MenuCode}";
+                    break;
+                case MenuType.Product:
+                    dto.Url = $"/product/{dto.MenuCode}";
+                    break;
+                case MenuType.CategoryContent:
+                    dto.Url = $"/category/{dto.MenuCode}";
+                    break;
+                case MenuType.Content:
+                    dto.Url = $"/blog/{dto.MenuCode}";
+                    break;
+                //case MenuType.DirectLink:
+                //    break;
+                //case MenuType.Module:
+                //    break;
+                //default:
+                //    break;
+            }
             RepositoryOperationResult saveResult = await _menuRepository.EditMenu(dto);
 
             result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
@@ -240,7 +275,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 case MenuType.ProductGroup:
                     var grp = _productGroupRepository.ProductGroupFetch(subGroupId);
-                    res =  grp.GroupCode;
+                    res = grp.GroupCode;
                     break;
                 case MenuType.Product:
                     var pro = await _productRepository.ProductFetch(subId);
@@ -263,6 +298,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             return res;
         }
+       
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {

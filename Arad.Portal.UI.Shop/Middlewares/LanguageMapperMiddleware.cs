@@ -28,11 +28,25 @@ namespace Arad.Portal.UI.Shop.Middlewares
         }
         public async Task Invoke(HttpContext context)
         {
-
+            string defLang = "";
             string newPath = "";
             var domainName = $"{context.Request.Scheme}://{context.Request.Host}";
-            var result = _domainContext.Collection.Find(_ => _.DomainName == domainName).First();
-            var defLang = result.DefaultLanguageId;
+            //first step checke whether this cookie exist or not
+            var cookieName = $"defLang{domainName}";
+            if(context.Request.Cookies[cookieName] != null)
+            {
+                defLang = context.Request.Cookies[cookieName];
+            }else if(false)
+            {
+                //check the culture of request based on
+                //IP Address and then check if we support this culture or not
+                //defLang =...
+
+            }else
+            {
+                var result = _domainContext.Collection.Find(_ => _.DomainName == domainName).First();
+                defLang = result.DefaultLanguageId;
+            }
 
             var lang = _languageContext.Collection.Find(_ => _.LanguageId == defLang).First();
             var redirectUrl = $"{domainName}/{lang.Symbol}";
@@ -47,11 +61,7 @@ namespace Arad.Portal.UI.Shop.Middlewares
                 newPath = $"/{lang.Symbol.ToLower()}{context.Request.Path}";
                 context.Response.Redirect(newPath, true);
             }
-            
-            //_next = new RequestDelegate((context) => {
-            //    context.Request.Host = new HostString($"{domainName}/{lang.Symbol.ToLower()}");
-            //    return Task.CompletedTask; });
-
+           
             await _next.Invoke(context);
         }
     }
