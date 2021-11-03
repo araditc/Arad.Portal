@@ -24,6 +24,10 @@
         .card-header {
             background-color: #e0dcdf;
         }
+
+        .ltr {
+            direction : ltr;
+        }
     </style>
 }
 
@@ -79,7 +83,7 @@
                         </div>
                         <div class="form-group col-md-3 invisible" id="urlSection">
                             <label>@Language.GetString("Url")</label>
-                            <input type="text" class="form-control" asp-for="@Model.Url" />
+                            <input type="text" class="form-control ltr" asp-for="@Model.Url" />
                             <span data-val-result="Url" class="text-danger"></span>
                         </div>
                     </div>
@@ -190,8 +194,10 @@
             $("#MenuType").change(function () {
                 debugger;
                 var type = $("#MenuType").val();
-                if (type != "-1") {
+                if (type != "-1" && type != "4" && type != "5") {
                     fillCategory(type)
+                } else if (type == "4") {
+                    $("#urlSection").removeClass("invisible");
                 }
             });
             $(document).on("change", "#categoryId", function () {
@@ -203,8 +209,6 @@
                     }
                     else if ($("#MenuType").val() == "3") {
                         fillContentList($("#categoryId").val(), "");
-                    } else if ($("#MenuType").val() == "4") {
-                        $("#urlSection").removeClass("invisible");
                     }
                 }
             });
@@ -229,7 +233,7 @@
                     $("span[data-val-result='ContentOrProductId']").html('@Language.GetString("AlertAndMessage_OptionEssential")');
                     flag = true;
                 }
-                if ($("#MenuType").val() == "4") {
+                if ($("#MenuType").val() == "4" && $("#Url").val() == "") {
                      $("span[data-val-result='Url']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                     flag = true;
                 }
@@ -275,11 +279,11 @@
                                     }
                                 }
                             },
-                        @*error: function (xhr, ajaxOptions, thrownError) {
+                        error: function (xhr, ajaxOptions, thrownError) {
                             alert("@error");
                             alert(xhr.status);
                             alert(thrownError);
-                        },*@
+                        },
                         complete: function () {
                             removeLoading($("#addStoreMenuCard"));
                         }
@@ -303,24 +307,24 @@
                             $("#productOrContentSection").addClass("invisible");
                             break;
                         case "2":
-                case "3":
-                    //content and contentCtaegory
-                    var list = @Json.Serialize(ViewBag.ContentCategoryList);
-                    (list).forEach(function (item) {
-                        var op = "<option value='" + item.value + "'>" + item.text + "</option>";
-                        options += op;
-                    });
-                    $("#categoryId").html(options);
-                    $("#groupSection").removeClass("invisible");
-                    $("#productOrContentSection").addClass("invisible");
-                    break;
-                case "4":
-                case "5":
-                    //link and module
-                    $("#groupSection").addClass("invisible");
-                    $("#productOrContentSection").addClass("invisible");
-                    break;
-                    }
+                        case "3":
+                            //content and contentCtaegory
+                            var list = @Json.Serialize(ViewBag.ContentCategoryList);
+                            (list).forEach(function (item) {
+                                var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                options += op;
+                            });
+                            $("#categoryId").html(options);
+                            $("#groupSection").removeClass("invisible");
+                            $("#productOrContentSection").addClass("invisible");
+                            break;
+                        case "4":
+                        case "5":
+                            //link and module
+                            $("#groupSection").addClass("invisible");
+                            $("#productOrContentSection").addClass("invisible");
+                            break;
+                            }
         }
         function LoadData() {
             debugger;
@@ -420,7 +424,7 @@
             obj.MenuId = $("#MenuId").val();
             if ($("#ParentId").val() != null && $("#ParentId").val() != "-1") {
                 obj.ParentId = $("#ParentId").val();
-                obj.ParentName = $("ParentId option:selected").text();
+                obj.ParentName = $("#ParentId option:selected").text();
             }
 
             if ($("#ModificationReason").length > 0) {
@@ -444,7 +448,7 @@
             if ($("#MenuType").val() != "4" && $("#MenuType").val() != "5") {
                 obj.SubGroupId = $("#categoryId").val();
                 obj.SubGroupName = $("#categoryId option:selected").text();
-                if ($("MenuType").val() != "1" || $("MenuType").val() != "3") {
+                if ($("#MenuType").val() != "1" || $("#MenuType").val() != "3") {
                     obj.SubId = $("#ContentOrProductId").val();
                     obj.SubName = $("#ContentOrProductId option:selected").text();
                 }

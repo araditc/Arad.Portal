@@ -30,13 +30,18 @@ namespace Arad.Portal.UI.Shop.Middlewares
         {
             string defLang = "";
             string newPath = "";
-            var domainName = $"{context.Request.Scheme}://{context.Request.Host}";
+            var domainName = $"{context.Request.Host}";
+            if(domainName.ToString().ToLower().StartsWith("localhost"))
+            {
+                domainName = context.Request.Host.ToString().Substring(0, 9);
+            }
             //first step checke whether this cookie exist or not
             var cookieName = $"defLang{domainName}";
             if(context.Request.Cookies[cookieName] != null)
             {
                 defLang = context.Request.Cookies[cookieName];
-            }else if(false)
+            }
+            else if(false)
             {
                 //check the culture of request based on
                 //IP Address and then check if we support this culture or not
@@ -44,8 +49,14 @@ namespace Arad.Portal.UI.Shop.Middlewares
 
             }else
             {
-                var result = _domainContext.Collection.Find(_ => _.DomainName == domainName).First();
+                var result = _domainContext.Collection.Find(_ => _.DomainName == $"{context.Request.Scheme}://{context.Request.Host}").First();
                 defLang = result.DefaultLanguageId;
+            }
+
+            //if cookie is null we write the cookie
+            if(context.Request.Cookies[cookieName] == null)
+            {
+                context.Response.Cookies.Append(cookieName, defLang, new CookieOptions() { Domain = domainName, Expires = DateTime.Now.AddDays(7) });
             }
 
             var lang = _languageContext.Collection.Find(_ => _.LanguageId == defLang).First();

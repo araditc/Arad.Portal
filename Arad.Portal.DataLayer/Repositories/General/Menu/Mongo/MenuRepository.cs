@@ -122,7 +122,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 long totalCount = await _context.Collection.Find(_ => _.AssociatedDomainId == domainEntity.DomainId).CountDocumentsAsync();
                 var lst = _context.Collection
                   //  .Find(_ => _.AssociatedDomainId == domainId && _.ParentId == null)
-                  .Find(Builders<Entities.General.Menu.Menu>.Filter.And(Builders<Entities.General.Menu.Menu>.Filter.Eq(x => x.AssociatedDomainId, domainId)))
+                  .Find(Builders<Entities.General.Menu.Menu>.Filter.Eq(x => x.AssociatedDomainId, domainId) 
+                        & Builders<Entities.General.Menu.Menu>.Filter.Eq(_=>_.IsActive, true))
                     .Project(_ =>
                         new MenuDTO()
                         {
@@ -187,7 +188,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                     SubGroupId = _.SubGroupId,
                     SubGroupName = _.SubGroupName,
                     MenuCode = _.MenuCode,
-                    Childrens = GetChildren(_.MenuId,finalLangId, domainEntity)
+                    Childrens = GetChildren(_.MenuId, finalLangId, domainEntity)
                 }).ToList();
             //those menues which have isFull = true will be shown in UI
             #region check isFull
@@ -214,7 +215,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             foreach (var leaf in contentCategoryLeaves)
             {
                 var tmp = new StoreMenuVM();
-                var contentsInCategoryCounts = _contentContext.Collection.Find(_ => _.ContentCategoryId == leaf.SubGroupId).CountDocuments();
+                var contentsInCategoryCounts = _contentContext.Collection
+                    .Find(_ => _.ContentCategoryId == leaf.SubGroupId).CountDocuments();
                 if(contentsInCategoryCounts == 0)
                 {
                     leaf.IsFull = false;

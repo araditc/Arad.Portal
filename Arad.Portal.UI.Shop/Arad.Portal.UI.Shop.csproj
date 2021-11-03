@@ -18,8 +18,7 @@
   <ItemGroup>
     <Folder Include="Views\ContentCategory\" />
     <Folder Include="Views\Search\" />
-    <Folder Include="wwwroot\css\siteTemplate\ltr\" />
-    <Folder Include="wwwroot\css\siteTemplate\permissionTree\" />
+    <Folder Include="wwwroot\css\siteTemplate\" />
     <Folder Include="wwwroot\Images\" />
     <Folder Include="wwwroot\Files\" />
   </ItemGroup>

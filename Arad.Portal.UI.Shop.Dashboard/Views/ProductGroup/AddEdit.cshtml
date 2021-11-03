@@ -111,7 +111,7 @@
                                     <th style="display:none"></th>
                                     <th style="display:none"></th>
                                     <th>@Language.GetString("Currency")</th>
-                                    <th>@Language.GetString("UrlFriend")</th>
+                                    @*<th>@Language.GetString("UrlFriend")</th>*@
                                     <th>@Language.GetString("SeoTitle")</th>
                                     <th>@Language.GetString("SeoDescription")</th>
                                     <th>@Language.GetString("Description")</th>
@@ -121,22 +121,22 @@
                             <tbody id="multiLingualList">
                                 @foreach (var item in Model.MultiLingualProperties)
                                 {
-                                    <tr style="text-align:center;">
-                                        <td>@item.Name</td>
-                                        <td>@item.LanguageName</td>
-                                        <td style="display:none;">@item.LanguageId</td>
-                                        <td style="display:none;">@item.CurrencyId</td>
-                                        <td>@item.CurrencyName</td>
-                                        <td>@item.UrlFriend</td>
-                                        <td>@item.SeoTitle</td>
-                                        <td>@item.SeoDescription</td>
-                                        <td>@item.Description</td>
-                                        <td>
-                                            <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromTable(this);">
-                                                <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                <tr style="text-align:center;">
+                                    <td>@item.Name</td>
+                                    <td>@item.LanguageName</td>
+                                    <td style="display:none;">@item.LanguageId</td>
+                                    <td style="display:none;">@item.CurrencyId</td>
+                                    <td>@item.CurrencyName</td>
+                                    @*<td>@item.UrlFriend</td>*@
+                                    <td>@item.SeoTitle</td>
+                                    <td>@item.SeoDescription</td>
+                                    <td>@item.Description</td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromTable(this);">
+                                            <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                        </button>
+                                    </td>
+                                </tr>
                                 }
                             </tbody>
                         </table>
@@ -275,12 +275,12 @@
                 debugger;
                 var innerModel = {};
                 innerModel.Name = $(this).find("td:eq(0)").text();
-                innerModel.SeoTitle = $(this).find("td:eq(6)").text();
-                innerModel.SeoDescription = $(this).find("td:eq(7)").text();
-                innerModel.Description = $(this).find("td:eq(8)").text();
+                innerModel.SeoTitle = $(this).find("td:eq(5)").text();
+                innerModel.SeoDescription = $(this).find("td:eq(6)").text();
+                innerModel.Description = $(this).find("td:eq(7)").text();
                 innerModel.LanguageId = $(this).find("td:eq(2)").text();
                 innerModel.CurrencyId = $(this).find("td:eq(3)").text();
-                innerModel.UrlFriend = $(this).find("td:eq(5)").text();
+               /* innerModel.UrlFriend = $(this).find("td:eq(5)").text();*/
                 obj.MultiLingualProperties.push(innerModel);
         });
             return obj;
@@ -313,7 +313,7 @@
                     "</td><td style='display:none;'>" + $("#languageId").val() +
                     "</td><td style='display:none;'>" + $("#currencyId").val() +
                     "</td><td>" + $("#currencyId option:selected").text() +
-                    "</td><td>" + $("#urlFriend").val() +
+                  /*  "</td><td>" + $("#urlFriend").val() +*/
                     "</td><td>" + $("#seoTitle").val() +
                     "</td><td>" + $("#seoDescription").val() +
                     "</td><td>" + $("#description").val() +
@@ -324,7 +324,7 @@
                 $("#groupName").val("");
                 $("#languageId").val("-1");
                 $("#currencyId").val("-1");
-                $("#urlFriend").val("");
+               /* $("#urlFriend").val("");*/
                 $("#seoTitle").val("");
                 $("#seoDescription").val("");
                 $("#description").val("");

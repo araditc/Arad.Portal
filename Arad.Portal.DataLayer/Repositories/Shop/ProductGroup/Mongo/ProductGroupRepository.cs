@@ -250,11 +250,17 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                     var lan = _languageContext.Collection.Find(_ => _.IsDefault).FirstOrDefault();
                     filter.Set("LanguageId", lan.LanguageId);
                 }
+                if(string.IsNullOrWhiteSpace(filter["Name"]))
+                {
+                    filter.Set("Name", "");
+                }
                 var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
                 var langId = filter["LanguageId"].ToString();
+                var filterName = filter["Name"].ToString();
                 long totalCount = await _productContext.ProductGroupCollection.Find(c => true).CountDocumentsAsync();
-                var lst = _productContext.ProductGroupCollection.AsQueryable().Skip((page - 1) * pageSize)
+                var lst = _productContext.ProductGroupCollection.AsQueryable()
+                    .Where(_=>_.MultiLingualProperties.Any(a => a.Name.Contains(filterName))).Skip((page - 1) * pageSize)
                    .Take(pageSize).Select(_ => new ProductGroupViewModel()
                    {
                        ProductGroupId = _.ProductGroupId,

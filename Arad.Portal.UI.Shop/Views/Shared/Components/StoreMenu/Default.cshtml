@@ -1,0 +1,73 @@
+﻿@using System.Globalization;
+@using Arad.Portal.GeneralLibrary.Utilities;
+@model List<Arad.Portal.DataLayer.Models.Shared.StoreMenuVM>
+@{
+    Layout = null;
+}
+@{
+    var direction = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        direction = "rtl";
+        ViewBag.dir = "rtl";
+    }
+    else
+    {
+        direction = "ltr";
+        ViewBag.dir = "ltr";
+    }
+}
+<div class="row">
+    <div class="col-12">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbar" aria-controls="navbars" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="navbar-nav @(direction == "rtl" ? "mr-auto" : "ml-auto")">
+                    @foreach (var item in Model.Where(_=>_.ParentId == null && _.IsFull))
+                    {
+                        if (item.Childrens.Count() == 0)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="@item.Url">@item.MenuTitle.Name</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item dropdown menu-area">
+                                <a class="nav-link dropdown-toggle" href="@item.Url" id='@($"st_mn_{item.MenuCode}")'
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    @item.MenuTitle.Name
+                                </a>
+                                <div class="dropdown-menu mega-area" aria-labelledby='@($"st_mn_{item.MenuCode}")'>
+                                    <div class="row">
+                                    @for (int i = 0; i < item.Childrens.Count; i++)
+                                       {
+                                            var child = item.Childrens[i];
+                                          <div class="col-sm-6 col-lg-3 @(direction == "rtl" && i != 0 ? "border-right" :
+                                                (direction == "ltr" && i != 0 ? "border-left" : ""))">
+                                            <h5><a class="nav-link" href="@child.Url">@child.MenuTitle.Name</a></h5>
+                                            <div class="dropdown-divider"></div>
+
+                                            @foreach (var leaf in child.Childrens)
+                                            {
+                                                <a class="dropdown-item" href="@leaf.Url">@leaf.MenuTitle.Name</a>
+                                            }
+                                        </div>
+                                        }
+                                    </div>
+                                </div>
+                            </li>
+
+                        }
+                    }
+                </ul>
+
+            </div>
+        </nav>
+    </div>
+</div>
+                                                
