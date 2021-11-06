@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo
         private readonly MongoClient client;
         private readonly IMongoDatabase db;
         public IMongoCollection<Entities.General.MessageTemplate.MessageTemplate> Collection;
+        public IMongoCollection<BsonDocument> BsonCollection;
         private readonly IConfiguration _configuration;
 
         public MessageTemplateContext(IConfiguration configuration)
@@ -22,6 +24,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo
             client = new MongoClient(_configuration["Database:ConnectionString"]);
             db = client.GetDatabase(_configuration["Database:DbName"]);
             Collection = db.GetCollection<Entities.General.MessageTemplate.MessageTemplate>("MessageTemplate");
+            BsonCollection = db.GetCollection<BsonDocument>("MessageTemplate");
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Order.Mongo
         private readonly MongoClient client;
         private readonly IMongoDatabase db;
         public IMongoCollection<Entities.Shop.Order.Order> Collection;
+        public IMongoCollection<BsonDocument> BsonCollection;
         private readonly IConfiguration _configuration;
 
         public OrderContext(IConfiguration configuration)
@@ -21,6 +23,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Order.Mongo
              client = new MongoClient(_configuration["Database:ConnectionString"]);
            db = client.GetDatabase(_configuration["Database:DbName"]);
             Collection = db.GetCollection<Entities.Shop.Order.Order>("Order");
+            BsonCollection = db.GetCollection<BsonDocument>("Order");
         }
     }
 }

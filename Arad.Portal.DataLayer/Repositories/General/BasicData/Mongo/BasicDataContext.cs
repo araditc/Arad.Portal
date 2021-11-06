@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
         private readonly MongoClient client;
         private readonly IMongoDatabase db;
         public IMongoCollection<Entities.General.BasicData.BasicData> Collection;
+        public IMongoCollection<BsonDocument> BsonCollection;
         private readonly IConfiguration _configuration;
 
         public BasicDataContext(IConfiguration configuration)
@@ -21,6 +23,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
             client = new MongoClient(_configuration["Database:ConnectionString"]);
             db = client.GetDatabase(_configuration["Database:DbName"]);
             Collection = db.GetCollection<Entities.General.BasicData.BasicData>("BasicData");
+            BsonCollection = db.GetCollection<BsonDocument>("BasicData");
         }
     }
 }

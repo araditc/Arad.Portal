@@ -21,9 +21,9 @@ namespace Arad.Portal.DataLayer.Contracts.General.Menu
         List<StoreMenuVM> StoreList(string domainId, string langId);
         List<SelectListModel> AllActiveMenues(string domainId, string langId);
         Task<PagedItems<MenuDTO>> AdminList(string queryString);
-        Task<RepositoryOperationResult> DeleteMenu(string menuId);
-        RepositoryOperationResult<MenuDTO> FetchMenu(string menuId);
-        List<SelectListModel> GetAllMenuType();
-        StoreMenuVM GetByCode(string menuCode);
+         Task<RepositoryOperationResult> DeleteMenu(string menuId);
+         RepositoryOperationResult<MenuDTO> FetchMenu(string menuId);
+         List<SelectListModel> GetAllMenuType();
+         StoreMenuVM GetByCode(string menuCode);
     }
 }

@@ -67,18 +67,21 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
             var res = _domainRepository.FetchByName(domainName);
             var domainId = res.Succeeded ? res.ReturnValue.DomainId : Guid.Empty.ToString();
+           
             ViewBag.Permissions = dicKey;
             try
             {
                 var qs = Request.QueryString.ToString();
-                if(!string.IsNullOrWhiteSpace(qs))
+                if(!string.IsNullOrWhiteSpace(qs) && !qs.Contains("domainId"))
                 {
                     qs += $"&domainId={domainId}";
-                }else
+                }else if(!qs.Contains("domainId"))
                 {
                     qs = $"?domainId={domainId}";
                 }
-                ViewBag.DefLangId = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
+                var deflang = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
+                ViewBag.DefLangId = deflang;
+                ViewBag.MenuList = _menuRepository.AllActiveMenues(domainId, deflang);
                 ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
                 result = await _menuRepository.AdminList(qs);
             }

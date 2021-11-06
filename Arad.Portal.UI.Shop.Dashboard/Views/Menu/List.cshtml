@@ -59,7 +59,7 @@
         </div>
     </a>
 
-    <div id="searchCollapse" class="@searchCollapseClass" style="">
+    <div id="searchCollapse" @*class="@searchCollapseClass"*@ style="">
         <div class="card-body">
             <div id="accordion">
                 <div class="row">
@@ -69,8 +69,21 @@
                         <select class="form-control select2" id="cmbLangIdFilter" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                         </select>
                     </div>
+                    <div class="form-group col-md-3">
+                        <label>@Language.GetString("ParentMenu")</label>
+                        <select class="form-control select2" id="cmbParentIdFilter" asp-items="@(new SelectList(ViewBag.MenuList,"Value","Text"))">
+                        </select>
+
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <div class="card-footer">
+            <button id="btnSearch" class="btn btn-primary" type="submit">
+                <i style="position: relative; left: 5px; top: 1px;" class="fa fa-search"></i>
+                @Language.GetString("btn_Search")
+            </button>
         </div>
     </div>
 </div>
@@ -167,9 +180,12 @@
                 $("#cmbLangIdFilter").val("@langId");
             }
 
-           $("#cmbLangIdFilter").change(function () {
-            debugger;
-               var queryString = '?LanguageId=' + $("#cmbLangIdFilter").val();
+
+            $("#btnSearch").click(function () {
+                debugger;
+                var queryString = '?LanguageId=' + $("#cmbLangIdFilter").val();
+                if($("#cmbParentIdFilter").val() != "-1")
+                queryString += "&Id=" + $("#cmbParentIdFilter").val();
                window.location.href = '@Url.Action("List", "Menu")' + queryString;
             });
         });

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
@@ -12,6 +13,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         public IMongoCollection<Entities.Shop.ProductSpecification.ProductSpecification> SpecificationCollection;
         public IMongoCollection<Entities.Shop.ProductSpecificationGroup.ProductSpecGroup> SpecGroupCollection;
         public IMongoCollection<Entities.Shop.ProductUnit.ProductUnit> ProductUnitCollection;
+
+
+        public IMongoCollection<BsonDocument> BsonProductUnitCollection;
+        public IMongoCollection<BsonDocument> BsonProductCollection;
+        public IMongoCollection<BsonDocument> BsonProductGroupCollection;
+        public IMongoCollection<BsonDocument> BsonSpecificationCollection;
+        public IMongoCollection<BsonDocument> BsonSpecGroupCollection;
+       
         private readonly IConfiguration _configuration;
 
         public ProductContext(IConfiguration configuration)
@@ -29,6 +38,16 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 db.GetCollection<Entities.Shop.ProductSpecificationGroup.ProductSpecGroup>("ProductSpecGroup");
             ProductUnitCollection =
                 db.GetCollection<Entities.Shop.ProductUnit.ProductUnit>("ProductUnit");
+
+            BsonProductCollection = db.GetCollection<BsonDocument>("Product");
+            BsonProductGroupCollection =
+                db.GetCollection<BsonDocument>("ProductGroup");
+            BsonSpecificationCollection =
+                db.GetCollection<BsonDocument>("ProductSpecification");
+            BsonSpecGroupCollection =
+                db.GetCollection<BsonDocument>("ProductSpecGroup");
+            BsonProductUnitCollection =
+                db.GetCollection<BsonDocument>("ProductUnit");
         }
     }
 }
