@@ -188,7 +188,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
             {
                 NameValueCollection filter = HttpUtility.ParseQueryString(queryString);
 
-                if (string.IsNullOrWhiteSpace(filter["CurrentPage"]))
+                if (string.IsNullOrWhiteSpace(filter["page"]))
                 {
                     filter.Set("CurrentPage", "1");
                 }
@@ -198,7 +198,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
                     filter.Set("PageSize", "20");
                 }
 
-                var page = Convert.ToInt32(filter["CurrentPage"]);
+                var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
 
                 long totalCount = await _context.Collection.Find(c => true).CountDocumentsAsync();

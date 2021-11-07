@@ -93,16 +93,16 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
 
                 NameValueCollection filter = HttpUtility.ParseQueryString(queryString);
 
-                if (string.IsNullOrWhiteSpace(filter["CurrentPage"]))
+                if (string.IsNullOrWhiteSpace(filter["page"]))
                 {
-                    filter.Set("CurrentPage", "1");
+                    filter.Set("page", "1");
                 }
 
                 if (string.IsNullOrWhiteSpace(filter["PageSize"]))
                 {
                     filter.Set("PageSize", "20");
                 }
-                var page = Convert.ToInt32(filter["CurrentPage"]);
+                var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
                 var domainId = filter["domainId"].ToString();
                 var parentId = "";
@@ -129,9 +129,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 {
                     filterDef = builder.And(filterDef, builder.Eq(nameof(Entities.General.Menu.Menu.ParentId), parentId));
                 }
-
-                //test
-                //long totalCount = await _context.Collection.Find(_ => true).CountDocumentsAsync();
+              
                 long totalCount = 0;
                 if(parentId == "")
                 {
@@ -165,7 +163,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                             CreatorUserName = _.CreatorUserName,
                             CreatorUserId = _.CreatorUserId,
                             IsDeleted = _.IsDeleted
-                        }).Sort(Builders<Entities.General.Menu.Menu>.Sort.Ascending(a => a.Order)).ToList();
+                        }).Sort(Builders<Entities.General.Menu.Menu>.Sort.Ascending(a => a.Order)).Skip((page -1) * pageSize).Limit(pageSize).ToList();
                 result.CurrentPage = page;
                 result.Items = lst;
                 result.ItemsCount = totalCount;

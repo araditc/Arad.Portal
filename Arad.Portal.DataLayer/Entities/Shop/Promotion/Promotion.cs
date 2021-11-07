@@ -35,7 +35,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
 
         public string PromotedProductName { get; set; }
 
-        public string GroupIdOfPromotedProduct { get; set; }
+        public string GroupIdOfPromotedProduct { get; set; }    
 
         public string GroupNameofPromotedProduct { get; set; }
 

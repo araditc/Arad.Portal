@@ -63,7 +63,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Order.Mongo
                 //id = userId
                 if (!string.IsNullOrWhiteSpace(filter["id"]))
                 {
-                    if (string.IsNullOrWhiteSpace(filter["CurrentPage"]))
+                    if (string.IsNullOrWhiteSpace(filter["page"]))
                     {
                         filter.Set("CurrentPage", "1");
                     }
@@ -73,7 +73,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Order.Mongo
                         filter.Set("PageSize", "10");
                     }
 
-                    var page = Convert.ToInt32(filter["CurrentPage"]);
+                    var page = Convert.ToInt32(filter["page"]);
                     var pageSize = Convert.ToInt32(filter["PageSize"]);
                     var userId = Convert.ToInt32(filter["id"]);
 

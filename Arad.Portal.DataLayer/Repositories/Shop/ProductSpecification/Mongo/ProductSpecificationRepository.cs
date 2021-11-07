@@ -196,7 +196,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
             {
                 NameValueCollection filter = HttpUtility.ParseQueryString(queryString);
 
-                if (string.IsNullOrWhiteSpace(filter["CurrentPage"]))
+                if (string.IsNullOrWhiteSpace(filter["page"]))
                 {
                     filter.Set("CurrentPage", "1");
                 }
@@ -210,7 +210,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                     var lan = _languageContext.Collection.Find(_ => _.IsDefault).FirstOrDefault();
                     filter.Set("LanguageId", lan.LanguageId);
                 }
-                var page = Convert.ToInt32(filter["CurrentPage"]);
+                var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
                 var langId = filter["LanguageId"].ToString();
                 long totalCount = await _productContext.SpecificationCollection.Find(c => true).CountDocumentsAsync();

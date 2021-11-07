@@ -59,7 +59,7 @@
         </div>
     </a>
 
-    <div id="searchCollapse" @*class="@searchCollapseClass"*@ style="">
+    <div id="searchCollapse" style="">
         <div class="card-body">
             <div id="accordion">
                 <div class="row">
@@ -179,8 +179,6 @@
             if ("@langId" != "") {
                 $("#cmbLangIdFilter").val("@langId");
             }
-
-
             $("#btnSearch").click(function () {
                 debugger;
                 var queryString = '?LanguageId=' + $("#cmbLangIdFilter").val();
