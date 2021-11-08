@@ -81,7 +81,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 }
                 var deflang = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
                 ViewBag.DefLangId = deflang;
-                ViewBag.MenuList = _menuRepository.AllActiveMenues(domainId, deflang);
+                ViewBag.MenuList = await _menuRepository.AllActiveMenues(domainId, deflang);
                 ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
                 result = await _menuRepository.AdminList(qs);
             }
@@ -104,7 +104,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.DefLangId = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
             ViewBag.ProductGroupList = await _productGroupRepository.GetAlActiveProductGroup(lan.LanguageId, currentUserId);
             ViewBag.ContentCategoryList = await _contentCategoryRepository.AllActiveContentCategory(lan.LanguageId, currentUserId);
-            ViewBag.Menues = _menuRepository.AllActiveMenues(domainId, lan.LanguageId);
+            ViewBag.Menues = await  _menuRepository.AllActiveMenues(domainId, lan.LanguageId);
             ViewBag.MenuTypes = _menuRepository.GetAllMenuType();
             ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
             

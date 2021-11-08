@@ -26,8 +26,8 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbar">
-                <ul class="navbar-nav @(direction == "rtl" ? "mr-auto" : "ml-auto")">
-                    @foreach (var item in Model.Where(_=>_.ParentId == null && _.IsFull))
+                <ul class="navbar-nav @(direction == "rtl" ? "ml-auto" : "mr-auto")">
+                    @foreach (var item in Model.Where(_=>_.ParentId == null && _.IsFull).OrderByDescending(_=>_.Order))
                     {
                         if (item.Childrens.Count() == 0)
                         {

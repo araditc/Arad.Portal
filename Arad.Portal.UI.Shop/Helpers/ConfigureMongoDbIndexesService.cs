@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Arad.Portal.UI.Shop.Dashboard.Helpers
+namespace Arad.Portal.UI.Shop.Helpers
 {
     public class ConfigureMongoDbIndexesService : IHostedService
     {

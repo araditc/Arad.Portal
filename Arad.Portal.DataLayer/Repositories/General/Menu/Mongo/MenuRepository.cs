@@ -123,7 +123,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 var domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
 
                 FilterDefinitionBuilder<Entities.General.Menu.Menu> builder = new();
-                FilterDefinition<Entities.General.Menu.Menu> filterDef = builder.Eq(nameof(Entities.General.Menu.Menu.AssociatedDomainId), domainEntity.DomainId);
+                FilterDefinition<Entities.General.Menu.Menu> filterDef;
+                if (userEntity.IsSystemAccount)
+                    filterDef = builder.Empty;
+                else
+                    filterDef = builder.Eq(nameof(Entities.General.Menu.Menu.AssociatedDomainId), domainEntity.DomainId);
+               
                 filterDef = builder.And(filterDef, builder.Eq(nameof(Entities.General.Menu.Menu.IsActive), true));
                 if(parentId != "")
                 {
@@ -133,15 +138,29 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 long totalCount = 0;
                 if(parentId == "")
                 {
-                    totalCount = await _context.Collection.Find(_ => _.AssociatedDomainId == domainEntity.DomainId).CountDocumentsAsync();
+                    if(userEntity.IsSystemAccount)
+                    {
+                        totalCount = await _context.Collection.Find(new FilterDefinitionBuilder<Entities.General.Menu.Menu>().Empty).CountDocumentsAsync();
+                    }
+                    else
+                    {
+                        totalCount = await _context.Collection.Find(_ => _.AssociatedDomainId == domainEntity.DomainId).CountDocumentsAsync();
+                    }
+                   
                 }
                 else
                 {
-                    totalCount = await _context.Collection.Find(_ => _.AssociatedDomainId == domainEntity.DomainId && _.ParentId == parentId).CountDocumentsAsync();
+                    if (userEntity.IsSystemAccount)
+                    {
+                        totalCount = await _context.Collection.Find(_ => _.ParentId == parentId).CountDocumentsAsync();
+                    }
+                    else
+                    {
+                        totalCount = await _context.Collection.Find(_ => _.AssociatedDomainId == domainEntity.DomainId && _.ParentId == parentId).CountDocumentsAsync();
+                    }
                 }
-                 
+
                 var lst = _context.Collection
-                 
                   .Find(filterDef)
                     .Project(_ =>
                         new MenuDTO()
@@ -181,7 +200,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
         {
             var result = new List<StoreMenuVM>();
             string finalLangId;
-            var domainEntity = _domainContext.Collection.Find(Builders<Entities.General.Domain.Domain>.Filter.Eq(_ => _.AssociatedDomainId, domainId)).First();
+            var domainEntity = _domainContext.Collection.Find(Builders<Entities.General.Domain.Domain>.Filter.Eq(_ => _.DomainId, domainId)).First();
             if(!string.IsNullOrWhiteSpace(langId))
             {
                 finalLangId = langId;
@@ -207,47 +226,48 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                     SubGroupId = _.SubGroupId,
                     SubGroupName = _.SubGroupName,
                     MenuCode = _.MenuCode,
-                    Childrens = GetChildren(_.MenuId, finalLangId, domainEntity)
+                    Childrens = GetChildren(_.MenuId, finalLangId, domainEntity),
+                    IsFull = true
                 }).ToList();
             //those menues which have isFull = true will be shown in UI
             #region check isFull
-            var productGroupsMenu = result.Where(_ => _.MenuType == MenuType.ProductGroup);
-            var prodctGroupMenuLeaves = productGroupsMenu.Where(_ => _.Childrens.Count() == 0);
-            foreach (var leaf in prodctGroupMenuLeaves)
-            {
-                var tmp = new StoreMenuVM();
-                var productsInGroupCounts = _productContext.ProductCollection.Find(_ => _.GroupIds.Contains(leaf.SubGroupId)).CountDocuments();
-                if(productsInGroupCounts == 0)
-                {
-                    leaf.IsFull = false;
-                    tmp = leaf;
-                    while (tmp.ParentId != null)
-                    {
-                        tmp.IsFull = false;
-                        tmp = result.FirstOrDefault(_ => _.MenuId == tmp.ParentId);
-                    }
-                    tmp.IsFull = false;
-                }
-            }
-            var contentCategoryMenu = result.Where(_ => _.MenuType == MenuType.CategoryContent);
-            var contentCategoryLeaves = contentCategoryMenu.Where(_ => _.Childrens.Count() == 0);
-            foreach (var leaf in contentCategoryLeaves)
-            {
-                var tmp = new StoreMenuVM();
-                var contentsInCategoryCounts = _contentContext.Collection
-                    .Find(_ => _.ContentCategoryId == leaf.SubGroupId).CountDocuments();
-                if(contentsInCategoryCounts == 0)
-                {
-                    leaf.IsFull = false;
-                    tmp = leaf;
-                    while(tmp.ParentId != null)
-                    {
-                        tmp.IsFull = false;
-                        tmp = result.FirstOrDefault(_ => _.MenuId == tmp.ParentId);
-                    }
-                    tmp.IsFull = false;
-                }
-            }
+            //var productGroupsMenu = result.Where(_ => _.MenuType == MenuType.ProductGroup);
+            //var prodctGroupMenuLeaves = productGroupsMenu.Where(_ => _.Childrens.Count() == 0);
+            //foreach (var leaf in prodctGroupMenuLeaves)
+            //{
+            //    var tmp = new StoreMenuVM();
+            //    var productsInGroupCounts = _productContext.ProductCollection.Find(_ => _.GroupIds.Contains(leaf.SubGroupId)).CountDocuments();
+            //    if(productsInGroupCounts == 0)
+            //    {
+            //        leaf.IsFull = false;
+            //        tmp = leaf;
+            //        while (tmp.ParentId != null)
+            //        {
+            //            tmp.IsFull = false;
+            //            tmp = result.FirstOrDefault(_ => _.MenuId == tmp.ParentId);
+            //        }
+            //        tmp.IsFull = false;
+            //    }
+            //}
+            //var contentCategoryMenu = result.Where(_ => _.MenuType == MenuType.CategoryContent);
+            //var contentCategoryLeaves = contentCategoryMenu.Where(_ => _.Childrens.Count() == 0);
+            //foreach (var leaf in contentCategoryLeaves)
+            //{
+            //    var tmp = new StoreMenuVM();
+            //    var contentsInCategoryCounts = _contentContext.Collection
+            //        .Find(_ => _.ContentCategoryId == leaf.SubGroupId).CountDocuments();
+            //    if(contentsInCategoryCounts == 0)
+            //    {
+            //        leaf.IsFull = false;
+            //        tmp = leaf;
+            //        while(tmp.ParentId != null)
+            //        {
+            //            tmp.IsFull = false;
+            //            tmp = result.FirstOrDefault(_ => _.MenuId == tmp.ParentId);
+            //        }
+            //        tmp.IsFull = false;
+            //    }
+            //}
             #endregion
 
             return result;
@@ -438,15 +458,32 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             return result;
         }
 
-        public List<SelectListModel> AllActiveMenues(string domainId, string langId)
+        public async Task<List<SelectListModel>> AllActiveMenues(string domainId, string langId)
         {
+            var userId  = _httpContextAccessor.HttpContext.User.Claims
+                    .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            var userEntity = await _userManager.FindByIdAsync(userId);
+
             var result = new List<SelectListModel>();
-            result = _context.Collection.Find(_ => _.AssociatedDomainId == domainId)
-                .Project(_=> new SelectListModel()
+
+            if(userEntity.IsSystemAccount)
+            {
+                result = _context.Collection.Find(_ => _.IsActive)
+                .Project(_ => new SelectListModel()
                 {
                     Value = _.MenuId,
-                    Text = _.MenuTitles.First( a => a.LanguageId == langId).Name
+                    Text = _.MenuTitles.First(a => a.LanguageId == langId).Name
                 }).ToList();
+            }else
+            {
+                result = _context.Collection.Find(_ => _.IsActive && _.AssociatedDomainId == domainId)
+                .Project(_ => new SelectListModel()
+                {
+                    Value = _.MenuId,
+                    Text = _.MenuTitles.First(a => a.LanguageId == langId).Name
+                }).ToList();
+            }
+            
             result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
             return result;
         }
