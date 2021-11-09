@@ -1,9 +1,9 @@
-﻿@import url(fontiran.css); /* لینک فایلی که وظیفه بارگذاری فونت ها را برعهده دارد */
+﻿/*@import url(fontiran.css); *//* لینک فایلی که وظیفه بارگذاری فونت ها را برعهده دارد */
 body {
 	font-family: IRANSansWeb !important;
 	font-weight: 300;
 	direction: rtl;
-	background-color: #E2E2E2;
+	/*background-color: #E2E2E2;*/
 	margin: 0;
 }
 h1, h2, h3, h4, h5, h6, input, textarea {
@@ -67,7 +67,7 @@ blockquote {
 	border: 1px dashed #666666;
 }
 
-.mainbox {
+/*.mainbox {
 	width: 100%;
 	background-color: #EFEFEF;
 	display: table;
@@ -168,9 +168,9 @@ blockquote {
 	text-align: center;
 	font-weight: 500;
 	color: #999999;
-}
+}*/
 
-.alphabet2 {
+/*.alphabet2 {
 	width: 35%;
 	float: left;
 	direction: ltr;
@@ -179,7 +179,7 @@ blockquote {
 	font-weight: 500;
 	color: #333333;
 	margin-top: 100px;
-}
+}*/
 .footer {
 	font-weight: 300;
 	font-size: 0.7em;

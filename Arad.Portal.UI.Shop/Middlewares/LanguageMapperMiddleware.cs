@@ -72,8 +72,11 @@ namespace Arad.Portal.UI.Shop.Middlewares
                 newPath = $"/{lang.Symbol.ToLower()}{context.Request.Path}";
                 context.Response.Redirect(newPath, true);
             }
-           
-            await _next.Invoke(context);
+            else
+            {
+                await _next.Invoke(context);
+            }
+          
         }
     }
 }

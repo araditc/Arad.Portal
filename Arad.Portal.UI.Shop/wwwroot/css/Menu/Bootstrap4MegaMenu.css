@@ -23,12 +23,11 @@
     padding : 15px;
 }
 .dropdown-item{
-    padding : 5px 0;
+   /* padding : 5px 0;*/
 }
-h5{
-   /* font-family :*/
-   letter-spacing : 2px;
-   font-weight : 900;
+h5 {
+    /* letter-spacing : 2px;
+   font-weight : 900;*/
 }
 .navbar{
     margin-top : 2%;

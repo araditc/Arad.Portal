@@ -285,46 +285,40 @@
 
    
     <script>
-     //$(document).ready(function () {
-     //    debugger;
-      @*$("li.nav-item").click(function (e) {
+     $(document).ready(function () {
+         $("li.nav-item.firstLevel").click(function (e) {
 
-          var tag = $(this).find("span.expand-state.pull-left")[0].children[0];
-          var ul = $(this).children().eq(1);
-          if ($(tag).hasClass('@chevron'))
-          {
-            $(tag).removeClass('@chevron').addClass("fa fa-chevron-down");
-           }
-          else
-              if ($(tag).hasClass("fa fa-chevron-down"))
-              {
-                  $(tag).removeClass("fa fa-chevron-down").addClass('@chevron');
-              }
-        /*  e.stopPropagation();*/
-    });
-         $(".nav-item .nav-link").click(function () {
              debugger;
-             if ($(this).attr("data-id") != undefined) {
-                 $(this).addClass("active");
-             }
-             
-         });*@
+          var liID = $(this).attr("id");
+          var siblings = $(this).parent().children();
+          for (var i = 0; i < siblings.length; i++) {
+              debugger;
+              var id = $(siblings[i]).attr("id");
+              if (liID == id)
+                  continue;
+              if ($(siblings[i]).hasClass("menu-open")) {
+                  $(siblings[i]).removeClass("menu-open");
+                  debugger;
+                  var ul = $(siblings[i]).children("ul");
+                  $(ul).css("display", "none");
+              }
+          }
+          });
+     });
 
-   /* });*/
+    function setLang(lang) {
+    var currentCulture = '@CultureInfo.CurrentCulture.Name';
+    if (currentCulture !== lang) {
+        $.ajax({
+            type: "GET",
+            url: '/Account/changeLang?langId=' + lang,
+            success: function () {
+                debugger;
+                window.location.reload();
 
-        function setLang(lang) {
-        var currentCulture = '@CultureInfo.CurrentCulture.Name';
-        if (currentCulture !== lang) {
-            $.ajax({
-                type: "GET",
-                url: '/Account/changeLang?langId=' + lang,
-                success: function () {
-                    debugger;
-                    window.location.reload();
-
-                }
-            });
-        }
+            }
+        });
+    }
     }
     function getLoadingClass() {
             if ("@direction" == "rtl") {
@@ -342,8 +336,6 @@
     function removeLoading(cardElement) {
         $(cardElement).find(".overlay").remove();
     }
-
-
     </script>
 </body>
 </html>

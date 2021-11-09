@@ -46,6 +46,7 @@
     @if (direction == "rtl")
     {
         <link href="~/fonts/IranSans/css/persianfonts.css" rel="stylesheet" />
+        <link href="~/fonts/IranSans/css/style.css" rel="stylesheet" />
     }
     else
     {
@@ -54,6 +55,34 @@
 </head>
 
 <body>
+    <header>
+        <div class="row">
+            <div class="logo"></div>
+            <div class="searchBar"></div>
+            <div class="profile"></div>
+            <div class="col-md-1 language">
+                <ul class="langUl list-group list-group-horizontal">
+                    <li class="list-group-item">
+                        <a >
+                            <img src="~/imgs/IRAN.png" onclick="setLang('fa-IR')" />
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a >
+                            <img src="~/imgs/USA.png" onclick="setLang('en-US')" />
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+
+        </div>
+        
+        
+
+        
+        
+    </header>
     <div class="container navbarMenu">
         @await Component.InvokeAsync("StoreMenu")
     </div>
@@ -70,5 +99,22 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     @*<script src="~/js/site.js" asp-append-version="true"></script>
         @await RenderSectionAsync("Scripts", required: false)*@
+<script>
+    function setLang(lang)
+    {
+        var currentCulture = '@CultureInfo.CurrentCulture.Name';
+        if (currentCulture !== lang) {
+            $.ajax({
+                type: "GET",
+                url: '/Account/changeLang?langId=' + lang,
+                success: function () {
+                    debugger;
+                    window.location.reload();
+
+                }
+            });
+        }
+    }
+</script>
 </body>
 </html>

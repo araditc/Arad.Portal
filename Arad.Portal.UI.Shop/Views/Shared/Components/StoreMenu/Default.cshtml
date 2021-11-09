@@ -17,6 +17,22 @@
         ViewBag.dir = "ltr";
     }
 }
+<style>
+    .rtlTextAlign{
+        text-align : right;
+    }
+    .ltrTextAlign{
+        text-align: left;
+    }
+    .dropdown-menu{
+        font-size : 0.8rem;
+        padding-right: 5px !important;
+        
+    }
+    h5{
+        font-size: 1rem;
+    }
+</style>
 <div class="row">
     <div class="col-12">
         <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
@@ -27,7 +43,7 @@
 
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="navbar-nav @(direction == "rtl" ? "ml-auto" : "mr-auto")">
-                    @foreach (var item in Model.Where(_=>_.ParentId == null && _.IsFull).OrderByDescending(_=>_.Order))
+                    @foreach (var item in Model.Where(_=>_.ParentId == null && _.IsFull).OrderBy(_=>_.Order))
                     {
                         if (item.Childrens.Count() == 0)
                         {
@@ -43,22 +59,27 @@
                                     @item.MenuTitle.Name
                                 </a>
                                 <div class="dropdown-menu mega-area" aria-labelledby='@($"st_mn_{item.MenuCode}")'>
-                                    <div class="row">
-                                    @for (int i = 0; i < item.Childrens.Count; i++)
-                                       {
-                                            var child = item.Childrens[i];
-                                          <div class="col-sm-6 col-lg-3 @(direction == "rtl" && i != 0 ? "border-right" :
-                                                (direction == "ltr" && i != 0 ? "border-left" : ""))">
-                                            <h5><a class="nav-link" href="@child.Url">@child.MenuTitle.Name</a></h5>
-                                            <div class="dropdown-divider"></div>
-
-                                            @foreach (var leaf in child.Childrens)
+                                    
+                                    <div style="height:50vh!important;flex-wrap:wrap">
+                                        <div class="row flex-column">
+                                            @for (int i = 0; i < item.Childrens.Count; i++)
                                             {
-                                                <a class="dropdown-item" href="@leaf.Url">@leaf.MenuTitle.Name</a>
+                                                var child = item.Childrens[i];
+                                                @*@(direction == "rtl" && i != 0 ? "border-right" : (direction == "ltr" && i != 0 ? "border-left" : ""))*@
+
+                                                <div class="col-sm-6 col-lg-3">
+                                                    <h5><a class="nav-link @(direction == "rtl" ? "rtlTextAlign" : "ltrTextAlign")" href="@child.Url">@child.MenuTitle.Name</a></h5>
+                                                    @*<div class="dropdown-divider"></div>*@
+
+                                                    @foreach (var leaf in child.Childrens)
+                                                    {
+                                                        <a class="dropdown-item @(direction == "rtl" ? "rtlTextAlign" : "ltrTextAlign")" href="@leaf.Url">@leaf.MenuTitle.Name</a>
+                                                    }
+                                                </div>
                                             }
                                         </div>
-                                        }
                                     </div>
+                                   
                                 </div>
                             </li>
 
