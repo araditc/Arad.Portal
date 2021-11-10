@@ -689,7 +689,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
        
-        public  List<SelectListModel> GetAllActiveProductList(string langId, string currentUserId, string productGroupId, string vendorId)
+        public  List<SelectListModel> GetAllActiveProductList(string langId, string currentUserId,
+            string productGroupId, string vendorId)
         {
             var result = new List<SelectListModel>();
           

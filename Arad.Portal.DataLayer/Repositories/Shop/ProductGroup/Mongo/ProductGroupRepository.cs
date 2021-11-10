@@ -21,6 +21,7 @@ using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
 using System.Globalization;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Microsoft.AspNetCore.Identity;
+using Arad.Portal.DataLayer.Models.Product;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
 {
@@ -144,8 +145,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             var result = new List<ProductGroupDTO>();
             try
             {
-                var lst = _productContext.ProductGroupCollection.AsQueryable()
-                    .Where(_ => _.ParentId == productGroupId && !_.IsDeleted).ToList();
+                var lst = _productContext.ProductGroupCollection
+                    .Find(_ => _.ParentId == productGroupId && !_.IsDeleted && _.IsActive).ToList();
 
                 result = _mapper.Map<List<ProductGroupDTO>>(lst);
             }
@@ -393,12 +394,35 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             return result;
         }
 
-        public ProductGroupDTO FetchByCode(long groupCode)
+        public ProductGroupViewList FetchByCode(long groupCode)
         {
-            var result = new ProductGroupDTO();
-            var groupEntity = _productContext.ProductGroupCollection
+            var result = new ProductGroupViewList();
+
+            var productEntity = _productContext.ProductGroupCollection
                 .Find(_ => _.GroupCode == groupCode).First();
-            result = _mapper.Map<ProductGroupDTO>(groupEntity);
+
+            result.Childs = GetsDirectChildren(productEntity.ProductGroupId).Skip(0).Take(10).ToList();
+
+            result.Products = GetLatestProductInThisGroup(10, productEntity.ProductGroupId);
+            return result;
+        }
+        
+        //public ProductGroupDTO FetchByCode(long groupCode)
+        //{
+        //    var result = new ProductGroupDTO();
+        //    var groupEntity = _productContext.ProductGroupCollection
+        //        .Find(_ => _.GroupCode == groupCode).First();
+        //    result = _mapper.Map<ProductGroupDTO>(groupEntity);
+        //    return result;
+        //}
+
+        public List<ProductOutputDTO> GetLatestProductInThisGroup(int count, string productGroupId)
+        {
+            var result = new List<ProductOutputDTO>();
+            var list = _productContext.ProductCollection
+                 .Find(_ => _.GroupIds.Contains(productGroupId)).SortByDescending(_ => _.CreationDate).Skip(0).Limit(count);
+
+            result = _mapper.Map<List<ProductOutputDTO>>(list);
             return result;
         }
     }

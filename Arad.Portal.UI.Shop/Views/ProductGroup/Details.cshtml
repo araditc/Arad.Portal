@@ -1,5 +1,19 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Arad.Portal.DataLayer.Models.ProductGroup.ProductGroupViewModel
+@using Arad.Portal.DataLayer.Models.Shared;
 @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var dir = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        dir = "rtl";
+    }
+    else
+    {
+        dir = "ltr";
+    }
+}
+
+
+@section Styles{ 
+
 }

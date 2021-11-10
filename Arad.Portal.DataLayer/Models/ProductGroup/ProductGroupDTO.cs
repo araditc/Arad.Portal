@@ -24,6 +24,8 @@ namespace Arad.Portal.DataLayer.Models.ProductGroup
 
         public long GroupCode { get; set; }
 
+        public string ImagePath { get; set; }
+
         public string ModificationReason { get; set; }
 
         public Entities.Shop.Promotion.Promotion Promotion { get; set; }

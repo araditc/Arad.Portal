@@ -29,6 +29,8 @@ namespace Arad.Portal.DataLayer.Models.Product
 
         public string UniqueCode { get; set; }
 
+        public long ProductCode { get; set; }
+
         public List<ProductSpecificationValue> Specifications { get; set; }
 
         public List<Image> Images { get; set; }
@@ -52,8 +54,6 @@ namespace Arad.Portal.DataLayer.Models.Product
         public int PopularityRate { get; set; }
 
         public int SaleCount { get; set; }
-
-        public long ProductCode { get; set; }
 
         public int VisitCount { get; set; }
 
