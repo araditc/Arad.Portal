@@ -18,6 +18,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Language
         LanguageDTO GetDefaultLanguage(string currentUserId);
         List<SelectListModel> GetAllActiveLanguage();
         LanguageDTO FetchLanguage(string LanguageId);
+        string FetchBySymbol(string symbol);
 
 
     }

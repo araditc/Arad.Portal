@@ -1,4 +1,4 @@
-﻿@model Arad.Portal.DataLayer.Models.ProductGroup.ProductGroupViewModel
+﻿@model Arad.Portal.DataLayer.Models.ProductGroup.ProductGroupViewList
 @using Arad.Portal.DataLayer.Models.Shared;
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -13,7 +13,24 @@
     }
 }
 
-
-@section Styles{ 
+@section Styles{
+    @*<link href="~/lib/Swiper/swiper-bundle.min.css" rel="stylesheet" />*@
 
 }
+
+@section Scripts{
+    @*<script src="~/lib/Swiper/swiper-bundle.min.js"></script>*@
+
+        }
+<div class="row">
+    @foreach (var item in Model.Childs)
+    {
+        <div class="col col-md-auto">
+            <svg class="bd-placeholder-img rounded-circle" width="140" height="140" role="img"
+                 preserveAspectRatio="xMidYMid slice" focusable="false">
+                <title>item</title>
+            </svg>
+
+        </div>
+    }
+</div>

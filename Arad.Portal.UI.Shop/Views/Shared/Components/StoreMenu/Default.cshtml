@@ -58,26 +58,41 @@
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     @item.MenuTitle.Name
                                 </a>
-                                <div class="dropdown-menu mega-area"  aria-labelledby='@($"st_mn_{item.MenuCode}")'>
-
+                                <div class="dropdown-menu mega-area" aria-labelledby='@($"st_mn_{item.MenuCode}")'>
                                     @*<div style="height:50vh!important;flex-wrap:wrap">*@
-                                    <div  @*class="row"*@ style="display:flex; height: 50vh !important; width: 80%; flex-wrap: wrap; flex-direction: column">
-                                        @for (int i = 0; i < item.Childrens.Count; i++)
-                                        {
-                                            var child = item.Childrens[i];
-                                            @*@(direction == "rtl" && i != 0 ? "border-right" : (direction == "ltr" && i != 0 ? "border-left" : ""))*@
+                                   
+                                        <div class="d-none d-lg-flex d-xl-flex" style="height: 50vh !important; width: 80%; flex-wrap: wrap; flex-direction: column">
+                                            @for (int i = 0; i < item.Childrens.Count; i++)
+                                            {
+                                                var child = item.Childrens[i];
+                                                @*@(direction == "rtl" && i != 0 ? "border-right" : (direction == "ltr" && i != 0 ? "border-left" : ""))*@
 
-                                            <div @*class="col-sm-6 col-lg-3"*@ style='flex-shrink : @(child.Childrens.Count== 0 ? "5" : "0")'>
-                                                <h5><a class="nav-link @(direction == "rtl" ? "rtlTextAlign" : "ltrTextAlign")" href="@child.Url">@child.MenuTitle.Name</a></h5>
+                                                <div  style='flex-shrink : @(child.Childrens.Count== 0 ? "5" : "0")'>
+                                                    <h5><a class="nav-link @(direction == "rtl" ? "rtlTextAlign" : "ltrTextAlign")" href="@child.Url">@child.MenuTitle.Name</a></h5>
 
-                                                @foreach (var leaf in child.Childrens)
-                                                {
-                                                    <a class="dropdown-item @(direction == "rtl" ? "rtlTextAlign" : "ltrTextAlign")" href="@leaf.Url">@leaf.MenuTitle.Name</a>
-                                                }
-                                            </div>
-                                        }
-                                    </div>
-                                    @*</div>*@
+                                                    @foreach (var leaf in child.Childrens)
+                                                    {
+                                                        <a class="dropdown-item @(direction == "rtl" ? "rtlTextAlign" : "ltrTextAlign")" href="@leaf.Url">@leaf.MenuTitle.Name</a>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                  
+                                        <div class="row d-block d-lg-none d-xl-none" >
+                                            @for (int i = 0; i < item.Childrens.Count; i++)
+                                            {
+                                                var child = item.Childrens[i];
+                                                <div class="col-sm-6 col-lg-3">
+                                                    <h5><a class="nav-link @(direction == "rtl" ? "rtlTextAlign" : "ltrTextAlign")" href="@child.Url">@child.MenuTitle.Name</a></h5>
+
+                                                    @foreach (var leaf in child.Childrens)
+                                                    {
+                                                        <a class="dropdown-item @(direction == "rtl" ? "rtlTextAlign" : "ltrTextAlign")" href="@leaf.Url">@leaf.MenuTitle.Name</a>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                  
 
                                 </div>
                             </li>

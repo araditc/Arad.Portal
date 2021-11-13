@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Contracts.Shop.ProductGroup;
+﻿using Arad.Portal.DataLayer.Contracts.General.Language;
+using Arad.Portal.DataLayer.Contracts.Shop.ProductGroup;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,11 +12,14 @@ namespace Arad.Portal.UI.Shop.Controllers
     public class ProductGroupController : Controller
     {
         private readonly IProductGroupRepository _groupRepository;
+        private readonly ILanguageRepository _languageRepository;
         private readonly IHttpContextAccessor _accessor;
-        public ProductGroupController(IProductGroupRepository groupRepository, IHttpContextAccessor accessor)
+        public ProductGroupController(IProductGroupRepository groupRepository, IHttpContextAccessor accessor,
+            ILanguageRepository lanRepository)
         {
             _groupRepository = groupRepository;
             _accessor = accessor;
+            _languageRepository = lanRepository;
         }
         public IActionResult Index()
         {
@@ -26,6 +30,11 @@ namespace Arad.Portal.UI.Shop.Controllers
         public IActionResult Details(long slug)
         {
             var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
+            var path = _accessor.HttpContext.Request.Path.ToString();
+            var langCode = path.Split("/")[1].ToLower();
+
+            var langId = _languageRepository.FetchBySymbol(langCode);
+            ViewBag.CurLangId = langId;
             var model = _groupRepository.FetchByCode(slug);
             return View(model);
         }

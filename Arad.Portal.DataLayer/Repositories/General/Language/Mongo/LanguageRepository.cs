@@ -258,5 +258,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
             }
             return result;
         }
+
+        public string FetchBySymbol(string symbol)
+        {
+            var entity = _context.Collection
+                .Find(_ => _.Symbol == symbol).FirstOrDefault();
+
+            return entity.LanguageId;
+        }
     }
 }
