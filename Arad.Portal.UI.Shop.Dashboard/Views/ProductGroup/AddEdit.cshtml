@@ -7,6 +7,7 @@
 }
 @section Styles{
     <link href="~/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css" rel="stylesheet" />
+    <link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
     <style>
         .text-danger {
             font-size: 12px;
@@ -21,14 +22,110 @@
             font-size: 12px;
             line-height: 1.42857;
         }
+
         .card-header {
             background-color: #e0dcdf;
+        }
+
+        .ck-editor .ck-editor__main .ck-content {
+            height: 280px;
+            min-height: 250px;
+        }
+
+        .removeImage {
+            display: inline-block;
+            position: absolute;
+            top: -7px;
+            right: -5px;
+            width: 20px;
+            height: 21px;
+            background: #dc3545;
+            text-align: center;
+            border-radius: 50%;
+            color: white !important;
+            cursor: pointer;
+        }
+        .row{
+            margin-top: 1%;
+        }
+
+        #bd-root-userBirthDate {
+            width: 100%
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .cropper-container {
+            width: 100%
+        }
+
+        .iti__flag-container {
+            direction: ltr
+        }
+
+        .modal {
+            z-index: 100001 !important;
+        }
+
+        .lightColored {
+            background-color: aliceblue
+        }
+
+        @*.amsify-suggestags-input-area {
+            text-align: @(dir == "rtl" ? "right" : "left");
+            height: auto;
+        }*@
+        img, svg, .SimpleUploadsTmpWrapper {
+            height: auto;
+            max-width: 100%;
         }
     </style>
 }
 
 <h4>  @Language.GetString("Menu_ProductGroups") </h4>
 <hr />
+
+<div class="modal fade" id="uploadlogoModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content col-md-12">
+            <div class="modal-header">
+                <div class="col-md-1">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="col-md-11" style="text-align: center">
+                    <h5 class="modal-title align-content-center" id="logoModalTitle">@Language.GetString("CropImage")</h5>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="upload-modal-body">
+                    <div id="rowContainer" class="row justify-content-center align-items-center">
+                        <div id="containerlg" style="position: relative;display: inline; height: 400px; width: 400px;max-width:100%;">
+                            <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="imgModalBody"
+                                 alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center align-items-center">
+                <div>
+                    <button class="btn btn-success" id="send_Logo" type="button"><i style="margin-left: 5px;font-size:13px" class="fas fa-share-square"></i>@Language.GetString("btn_Approve")</button>
+                    <button class="btn btn-primary" id="logoCrop_button"><i style="margin-left: 5px;font-size:13px" class="fas fa-cut"></i>@Language.GetString("btn_Crop")</button>
+                    <button class="btn btn-default" style="background-color: crimson;color: white;border: 1px solid crimson" onclick="rotatePic()">
+                        <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i>@Language.GetString("btn_Rotate")
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="row">
     <div class="col-md-12">
         <div class="card" id="addProductGroupCard">
@@ -39,6 +136,26 @@
             <div class="card-body" id="addEditProductGroupCard">
                 <input type="hidden" value="@Model.ProductGroupId" asp-for="ProductGroupId" />
                 <div class="row">
+                    <div class="form-group col-md-3">
+                        <div class="card">
+                            <div class="card-header lightColored">
+                                @Language.GetString("GroupImage")
+                            </div>
+                            <div class="card-body">
+                                <div class="text-center form-group">
+
+                                    <img id="groupImage" onclick="ViewImage('@Model.GroupImage.Url')" style="cursor: pointer" imgid="@(!string.IsNullOrWhiteSpace(@Model.GroupImage.ImageId) ? @Model.GroupImage.ImageId : "-1")"
+                                         class="profile-user-img img-fluid img-circle" src="@(!string.IsNullOrWhiteSpace(@Model.GroupImage.Content) ? @Model.GroupImage.Content : "/imgs/NoImage.png")" alt="productGroup Image">
+                                </div>
+                                <hr>
+                                <div class="custom-file">
+                                    <input style="width: -webkit-fill-available;" accept="image/x-png,image/jpeg" type="file" class="btn btn-sm" name="image" id="image" onchange="getURL(this)">
+                                    <label class="custom-file-label" for="image">@Language.GetString("ChangeImage")</label>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                    </div>
                     <div class="form-group col-md-3">
                         <label asp-for="@Model.ParentId">@Language.GetString("ParentGroup")</label>
                         <select class="form-control select2" asp-for="@Model.ParentId" asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))">
@@ -51,7 +168,7 @@
                         <span data-val-result="GroupCode" class="text-danger"></span>
                     </div>
                 </div>
-               
+
                 <div class="row" style="background-color: #f0f0f5;">
                     <div class="form-group col-md-3">
                         <label for="languageId">@Language.GetString("LanguageName")</label><br />
@@ -71,10 +188,10 @@
                         <span data-val-result="groupName" class="text-danger"></span>
                     </div>
                     @*<div class="form-group col-md-3">
-                        <label>@Language.GetString("UrlFriend")</label>
-                        <input type="text" class="form-control" id="urlFriend" placeholder=" ">
-                        <span data-val-result="urlFriend" class="text-danger"></span>
-                    </div>*@
+                            <label>@Language.GetString("UrlFriend")</label>
+                            <input type="text" class="form-control" id="urlFriend" placeholder=" ">
+                            <span data-val-result="urlFriend" class="text-danger"></span>
+                        </div>*@
                 </div>
                 <div class="row" style="background-color: #f0f0f5;">
                     <div class="form-group col-md-3">
@@ -121,27 +238,27 @@
                             <tbody id="multiLingualList">
                                 @foreach (var item in Model.MultiLingualProperties)
                                 {
-                                <tr style="text-align:center;">
-                                    <td>@item.Name</td>
-                                    <td>@item.LanguageName</td>
-                                    <td style="display:none;">@item.LanguageId</td>
-                                    <td style="display:none;">@item.CurrencyId</td>
-                                    <td>@item.CurrencyName</td>
-                                    @*<td>@item.UrlFriend</td>*@
-                                    <td>@item.SeoTitle</td>
-                                    <td>@item.SeoDescription</td>
-                                    <td>@item.Description</td>
-                                    <td>
-                                        <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromTable(this);">
-                                            <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                                    <tr style="text-align:center;">
+                                        <td>@item.Name</td>
+                                        <td>@item.LanguageName</td>
+                                        <td style="display:none;">@item.LanguageId</td>
+                                        <td style="display:none;">@item.CurrencyId</td>
+                                        <td>@item.CurrencyName</td>
+                                        @*<td>@item.UrlFriend</td>*@
+                                        <td>@item.SeoTitle</td>
+                                        <td>@item.SeoDescription</td>
+                                        <td>@item.Description</td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromTable(this);">
+                                                <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
                                 }
                             </tbody>
                         </table>
                     </div>
-                   
+
                 </div>
 
             </div>
@@ -155,50 +272,35 @@
         </div>
     </div>
 </div>
-@section Scripts{
-    <script>
 
+@section Scripts{
+    <script src="~/lib/cropperjs/cropper.js"></script>
+    <script>
+        var fileName;
+        var fileContent;
+        var cropper;
+        var currentFileSize;
+        var currentFileName;
         $(document).ready(function () {
             debugger;
             if ("@Model.ProductGroupId" != "" && "@Model.ParentId" != "") {
                 $("#ParentId").val("@Model.ParentId");
             }
-            @*$("#languageId").change(function () {
-                debugger;
-                var langId = $("#languageId").val();
-                if (langId != "-1") {
-                $.ajax({
-                    url: "/ProductGroup/GetProductGroupList/" + langId,
-                    type: 'Get',
-                    dataType : 'json',
-                    success: function (result) {
-                        debugger;
-                        var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
-                        if (result.status === "success") {
-                            debugger;
-                            if (result.data.length != 0) {
-                                (result.data).forEach(function (item) {
-                                    var op = "<option value='" + item.value + "'>" + item.text + "</option>";
-                                    options += op;
-                                });
 
-                                $("#ParentId").html(options);
-                                $("#ParentId").val('@Model.ParentId');
-                            }
-                        }
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        alert("@error");
-                        alert(xhr.status);
-                        alert(thrownError);
-                    }
+            $("#send_Logo").click(function () {
+                debugger;
+                $("#uploadlogoModal").modal("hide");
+                var url = $("#contentLogo").attr("src");
+                debugger;
+                $("#groupImage").attr('src', url);
+                fileContent = url;
+                fileName = currentFileName;
             });
-                }
-            });*@
+
             $("#btnAddProductGroup").click(function () {
             debugger;
                 var flag = false;
-               
+
                 if ($("#multiLingualList tr").length == 0) {
                     $("span[data-val-result='MultiLingualProperties']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
                     flag = true;
@@ -262,7 +364,8 @@
         function FillDataToSend() {
             debugger;
             var obj = {};
-           obj.MultiLingualProperties = [];
+            obj.GroupImage = {};
+            obj.MultiLingualProperties = [];
             obj.ProductGroupId = $("#ProductGroupId").val();
             if ($("#ParentId").val() != "-1") {
                 obj.ParentId = $("#ParentId").val();
@@ -282,7 +385,10 @@
                 innerModel.CurrencyId = $(this).find("td:eq(3)").text();
                /* innerModel.UrlFriend = $(this).find("td:eq(5)").text();*/
                 obj.MultiLingualProperties.push(innerModel);
-        });
+            });
+
+            
+            
             return obj;
         }
 
@@ -290,6 +396,114 @@
             debugger;
             var tr = $(sender).parent().parent();
             $(tr).remove();
+        }
+
+        function initCropper() {
+            debugger;
+            var image = document.getElementById('imgModalBody');
+            if (cropper !== null && cropper !== undefined) {
+                cropper.destroy();
+            }
+
+            cropper = new Cropper(image,
+                {
+                    background: true,
+                    aspectRatio: 1,
+                    viewMode: 2,
+                    responsive: true,
+                    rotatable: true
+
+                });
+
+            document.getElementById('logoCrop_button').addEventListener('click',
+                function () {
+                    debugger;
+                    var imgUrl = cropper.getCroppedCanvas().toDataURL('image/jpeg');
+                    var img = document.createElement("img");
+                    img.setAttribute("id", "contentLogo");
+                    img.setAttribute("class", "img-fluid");
+                    var height = document.getElementById("containerlg").getAttribute("width");
+                    var croppedContainer = document.createElement("div");
+                    croppedContainer.setAttribute("id", "logoCropped_result");
+                    croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
+                    $("#uploadlogoModal #rowContainer").append(croppedContainer);
+                    img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
+                    img.src = imgUrl;
+                    document.getElementById("logoCropped_result").innerHTML = "";
+                    document.getElementById("logoCropped_result").appendChild(img);
+                    $("#send_Logo").attr("disabled", false);
+                });
+        }
+
+        function getURL(input) {
+            $("#logoCropped_result").remove();
+                if (input.files && input.files[0]) {
+                var file = input.files[0];
+                currentFileName = file.name;
+                currentFileSize = file.size;
+
+                if (currentFileSize <= @ViewBag.PicSize) {
+                var reader = new FileReader();
+                try {
+                reader.readAsDataURL(file);
+                } catch (e) {
+                }
+                reader.onload = function (e) {
+                var content = e.target.result;
+                //if file format is incorrect, then the 'content' won't have any src.
+                if (content !== "data:") {
+                var reducedContent = content.slice(5);
+
+                if (reducedContent.startsWith("image")) {
+                    $('#imgModalBody').attr('src', content);
+                    setTimeout(showModal, 100);
+                setTimeout(initCropper, 500);
+                } else {
+
+                Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
+                showConfirmButton: false,
+                timer: 1500
+                });
+
+                document.getElementById("image").value = "";
+                    $("#logoCropped_result").remove();
+                }
+                } else {
+                Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
+                showConfirmButton: false,
+                timer: 1500
+                });
+
+                document.getElementById("image").value = "";
+                    $("#logoCropped_result").remove();
+                }
+                };
+                }
+                else
+                {
+                Swal.fire({
+                icon: 'error',
+                title: '@Language.GetString("AlertAndMessage_InvalidFileSize")',
+                showConfirmButton: false,
+                timer: 1500
+                });
+                document.getElementById("image").value = "";
+                    $("#logoCropped_result").remove();
+                }
+                }
+        }
+        function rotatePic() {
+            cropper.rotate(90);
+        }
+        function showModal() {
+            $("#send_Logo").attr("disabled", true);
+            $("#uploadlogoModal").modal("show");
         }
         function addToTable() {
             var flag = false;
@@ -330,6 +544,17 @@
                 $("#description").val("");
             }
         }
+
+        function ViewImage(address) {
+        debugger;
+        var tag = '<img src="' + address + '" width="500px" />';
+        Swal.fire({
+            html: tag,
+            width: 'auto',
+            showConfirmButton: true,
+            confirmButtonText: '@Language.GetString("Close")'
+        });
+    }
     </script>
 }
 

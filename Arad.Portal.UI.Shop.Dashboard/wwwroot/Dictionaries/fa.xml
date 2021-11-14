@@ -168,7 +168,7 @@
     <value>گروه محصول</value>
   </string>
   <string key="PermissionTitle_ProductSpecification">
-    <value>مشحصات محصول</value>
+    <value>مشخصات محصول</value>
   </string>
   <string key="PermissionTitle_ProductSpecificationGroup">
     <value>گروه مشخصات محصول</value>
@@ -1369,8 +1369,14 @@
 	<string key="ChangeLogo">
 		<value>تغییر لوگو</value>
 	</string>
+	<string key="ChangeImage">
+		<value>تغییر تصویر</value>
+	</string>
 	<string key="FileLogo">
 		<value>لوگوی محتوا</value>
+	</string>
+	<string key="GroupImage">
+		<value>تصویر گروه</value>
 	</string>
 	<string key="LikeCount">
 		<value>تعداد پسندها</value>
@@ -1777,9 +1783,6 @@
 	</string>
 	<string key="Crop">
 		<value>برش</value>
-	</string>
-	<string key="ChangeImage">
-		<value>تغییر عکس</value>
 	</string>
 	<string key="ProfilePic">
 		<value>عکس پروفایل</value>

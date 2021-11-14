@@ -304,7 +304,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                
                 entity.Modifications = currentModifications;
                 entity.MultiLingualProperties = dto.MultiLingualProperties;
-       
+                //if(!string.IsNullOrWhiteSpace(dto.GroupImage))
+                //{
+                //    entity.GroupImage = dto.GroupImage;
+                //}
                
                 var updateResult = await _productContext.ProductGroupCollection
                .ReplaceOneAsync(_ => _.ProductGroupId == dto.ProductGroupId, entity);

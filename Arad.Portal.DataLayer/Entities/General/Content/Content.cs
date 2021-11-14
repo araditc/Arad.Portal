@@ -46,6 +46,7 @@ namespace Arad.Portal.DataLayer.Entities.General.Content
 
         public long ContentCode { get; set; }
 
+        // TODO: we should delete this part 
         public string FileLogo { get; set; }
 
         public List<Models.Shared.Image> Images { get; set; }

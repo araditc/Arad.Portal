@@ -1,6 +1,6 @@
 ﻿@model Arad.Portal.DataLayer.Models.ProductGroup.ProductGroupViewList
 @using Arad.Portal.DataLayer.Models.Shared;
-@{
+@{ 
     Layout = "~/Views/Shared/_Layout.cshtml";
     var dir = "";
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
@@ -28,7 +28,7 @@
         <div class="col col-md-auto">
             <svg class="bd-placeholder-img rounded-circle" width="140" height="140" role="img"
                  preserveAspectRatio="xMidYMid slice" focusable="false">
-                <title>item</title>
+                <title>@(item.MultiLingualProperties.First(_=>_.LanguageId == ViewBag.CurLangId).Name)</title>
             </svg>
 
         </div>

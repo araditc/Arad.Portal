@@ -13,6 +13,7 @@ namespace Arad.Portal.DataLayer.Models.ProductGroup
         public ProductGroupDTO()
         {
             MultiLingualProperties = new List<MultiLingualProperty>();
+            GroupImage = new Image();
         }
         public string ProductGroupId { get; set; }
 
@@ -24,7 +25,11 @@ namespace Arad.Portal.DataLayer.Models.ProductGroup
 
         public long GroupCode { get; set; }
 
-        public string ImagePath { get; set; }
+        public Image GroupImage { get; set; }
+
+        public string FileName { get; set; }
+
+        public string FileContent { get; set; }
 
         public string ModificationReason { get; set; }
 

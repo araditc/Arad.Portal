@@ -174,7 +174,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.PicSize = imageSize;
             if(string.IsNullOrWhiteSpace(model.FileLogo))
             {
-                model.FileLogo = $"/imgs/NoImage.png";
+                model.FileLogo = "/imgs/NoImage.png";
             }
             return View(model);
         }
@@ -218,7 +218,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         pic.Content = "";
                     }
                 }
-                dto.FileLogo = dto.LogoContent;
+                if (dto.LogoContent != "")
+                    dto.FileLogo = dto.LogoContent;
                 RepositoryOperationResult saveResult = await _contentRepository.Add(dto);
                 if(saveResult.Succeeded)
                 {
@@ -247,6 +248,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
+                if (dto.LogoContent != "")
+                    dto.FileLogo = dto.LogoContent;
+
                 RepositoryOperationResult saveResult = await _contentRepository.Update(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });

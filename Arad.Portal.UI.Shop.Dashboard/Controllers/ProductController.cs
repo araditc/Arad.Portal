@@ -229,7 +229,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.SDate = DateHelper.ToEnglishDate(item.StartDate);
                 }
                 var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
-                var path = "\\Images\\Products";
+                var path = "Images\\Products";
                 foreach (var pic in dto.Pictures)
                 {
                     var res = ImageFunctions.SaveImageModel(pic, path, staticFileStorageURL, _webHostEnvironment.WebRootPath);
@@ -240,7 +240,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         pic.Content = "";
                     }
                 }
-                
                 RepositoryOperationResult saveResult = await _productRepository.Add(dto);
                 if(saveResult.Succeeded)
                 {
@@ -285,27 +284,24 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.Prefix = cur.ReturnValue.Symbol;
                     item.IsActive = true;
                 }
-                //foreach (var pic in dto.Pictures)
-                //{
-                //    Guid isGuidKey;
-                //    if (!Guid.TryParse(pic.ImageId, out isGuidKey))
-                //    {
-                //        //its insert and imageId which was int from client replace with guid
-                //        var res = SaveImageModel(pic);
-                //        if (res.Key != Guid.Empty.ToString())
-                //        {
-                //            pic.ImageId = res.Key;
-                //            pic.Url = res.Value;
-                //            pic.Content = "";
-                //        }
-                //        //otherwise its  is update then it has no url ;
-                //    }
-                //    else
-                //    {
-                //        //its update properties exept url imageId and Content
-                //        //it will be done in repository
-                //    }
-                //}
+                var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
+                var path = "Images\\Products";
+                foreach (var pic in dto.Pictures)
+                {
+                    Guid isGuidKey;
+                    if (!Guid.TryParse(pic.ImageId, out isGuidKey))
+                    {
+                        //its insert and imageId which was int from client replace with guid
+                        var res = ImageFunctions.SaveImageModel(pic, path, staticFileStorageURL, _webHostEnvironment.WebRootPath);
+                        if (res.Key != Guid.Empty.ToString())
+                        {
+                            pic.ImageId = res.Key;
+                            pic.Url = res.Value;
+                            pic.Content = "";
+                        }
+                        //otherwise its  is update then it has no url ;
+                    }
+                }
                 RepositoryOperationResult saveResult = await _productRepository.UpdateProduct(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });

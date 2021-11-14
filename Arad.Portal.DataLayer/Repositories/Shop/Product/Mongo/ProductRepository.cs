@@ -444,6 +444,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 equallentModel.Promotion = promotionEntity;
             }
             #endregion Promotion
+
             #region images
             equallentModel.Images = dto.Pictures;
             #endregion

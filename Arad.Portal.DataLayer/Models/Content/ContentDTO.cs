@@ -26,7 +26,7 @@ namespace Arad.Portal.DataLayer.Models.Content
         public string SubTitle { get; set; }
 
         public string LanguageId { get; set; }
-
+    
         public string LanguageName { get; set; }
 
         public string Description { get; set; }
@@ -45,10 +45,10 @@ namespace Arad.Portal.DataLayer.Models.Content
 
         public string LogoContent { get; set; }
 
-        public long ContentCode { get; set; }
-
         public string LogoName { get; set; }
 
+        public long ContentCode { get; set; }
+        
         public List<Shared.Image> Images { get; set; }
 
         public DateTime? StartShowDate { get; set; }

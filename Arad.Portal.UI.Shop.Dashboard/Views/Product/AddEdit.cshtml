@@ -49,21 +49,24 @@
             cursor: pointer;
         }
 
-        .divCenter{
-            text-align:center;
+        .divCenter {
+            text-align: center;
             border: 1px solid;
         }
-        table tr{
+
+        table tr {
             text-align: center;
         }
-        tbody tr td{
-            vertical-align:middle;
+
+        tbody tr td {
+            vertical-align: middle;
         }
-        .valign{
-            vertical-align:middle;
+
+        .valign {
+            vertical-align: middle;
         }
     </style>
-    
+
     <link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
     <link href="~/plugins/select2/css/select2.css" rel="stylesheet" />
     <link href="~/plugins/select2-bootstrap4-theme/select2-bootstrap4.css" rel="stylesheet" />
@@ -162,7 +165,7 @@
                     <div class="form-group col-md-3">
                         <lable> @Language.GetString("AlertAndMessage_NotifyWhenCountIsLessThan")</lable>
                         <input type="number" class="form-control" asp-for="@Model.MinimumCount" value="@Model.MinimumCount" min="0" />
-                        
+
                     </div>
                     <div class="form-group col-md-3" style="text-align:center;margin:auto;">
                         @if (dir == "rtl")
@@ -216,386 +219,386 @@
                         <input type="text" class="form-control" asp-for="@Model.ProductCode" value="@Model.ProductCode" placeholder=" " disabled>
                         <span data-val-result="ProductCode" class="text-danger"></span>
                     </div>
-                        <div class="form-group col-md-3">
-                            <label>@Language.GetString("Promotion")</label>
-                            <select class="form-control" id="PromotionId" asp-items="@(new SelectList(ViewBag.PromotionList,"Value","Text"))">
-                            </select>
-                        </div>
+                    <div class="form-group col-md-3">
+                        <label>@Language.GetString("Promotion")</label>
+                        <select class="form-control" id="PromotionId" asp-items="@(new SelectList(ViewBag.PromotionList,"Value","Text"))">
+                        </select>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="card-title">@Language.GetString("Menu_ProductSpecifications")</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">@Language.GetString("Menu_ProductSpecifications")</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="form-group col-md-2">
+                                        <label>@Language.GetString("LanguageName")</label>
+                                        <select class="form-control" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                                        </select>
+                                        <span data-val-result="languageId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>@Language.GetString("SpecificationGroup")</label>
+                                        <select class="form-control" id="specGroupId" asp-items="@(new SelectList(ViewBag.SpecificationGroupList,"Value","Text"))">
+                                        </select>
+                                        <span data-val-result="specGroupId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>@Language.GetString("tbl_SpecificationName")</label>
+                                        <select class="form-control" id="specificationId">
+                                        </select>
+                                        <span data-val-result="specificationId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>@Language.GetString("tbl_SpecificationValues")</label>
+                                        <select class="form-control select2" multiple="multiple" id="specValues">
+                                        </select>
+                                        <span data-val-result="specValues" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-1" style="text-align:center;margin:auto;">
+                                        <div style="margin:auto;display:inline-block;">
+                                            <button type="button" class="btn btn-info btn-circle" onclick="addSpecToList();">
+                                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="form-group col-md-2">
-                                            <label>@Language.GetString("LanguageName")</label>
-                                            <select class="form-control" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
-                                            </select>
-                                            <span data-val-result="languageId" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label>@Language.GetString("SpecificationGroup")</label>
-                                            <select class="form-control" id="specGroupId" asp-items="@(new SelectList(ViewBag.SpecificationGroupList,"Value","Text"))">
-                                            </select>
-                                            <span data-val-result="specGroupId" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label>@Language.GetString("tbl_SpecificationName")</label>
-                                            <select class="form-control" id="specificationId">
-                                            </select>
-                                            <span data-val-result="specificationId" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label>@Language.GetString("tbl_SpecificationValues")</label>
-                                            <select class="form-control select2" multiple="multiple" id="specValues">
-                                            </select>
-                                            <span data-val-result="specValues" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group col-md-1" style="text-align:center;margin:auto;">
-                                            <div style="margin:auto;display:inline-block;">
-                                                <button type="button" class="btn btn-info btn-circle" onclick="addSpecToList();">
-                                                    <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
-                                                </button>
-                                            </div>
-                                        </div>
+                                <div class="row">
+                                    <div class="col-md-3 offset-md-3">
+                                        <span data-val-result="specifications" class="text-danger"></span>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-3 offset-md-3">
-                                            <span data-val-result="specifications" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="row" style="margin-top:1%;">
-                                        <div class="col-md-12">
-                                            <table class="table table-hover table-bordered">
-                                                <thead>
-                                                    <tr style="text-align:center;">
-                                                        <th>@Language.GetString("LanguageName")</th>
-                                                        <th style="display:none;"></th>
-                                                        <th>@Language.GetString("SpecificationGroup")</th>
-                                                        <th style="display:none;"></th>
-                                                        <th>@Language.GetString("tbl_SpecificationName")</th>
-                                                        <th style="display:none"></th>
-                                                        <th>@Language.GetString("tbl_SpecificationValues")</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="specificationList">
-                                                    @if (Model.Specifications.Any())
-                                                    {
-                                                        @foreach (var item in Model.Specifications)
-                                                        {
-                                                            <tr style="text-align:center;">
-                                                                <td>@item.LanguageName</td>
-                                                                <td style="display:none;">@item.LanguageId</td>
-                                                                <td>@item.SpecificationGroupName</td>
-                                                                <th style="display:none;">@item.SpecificationGroupId</th>
-                                                                <td>@item.SpecificationName</td>
-                                                                <td style="display:none;">@item.SpecificationId</td>
-                                                                <td>@item.Values</td>
-                                                                <td>
-                                                                    <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromList(this);">
-                                                                        <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        }
-                                                    }
-                                                    else
+                                </div>
+                                <div class="row" style="margin-top:1%;">
+                                    <div class="col-md-12">
+                                        <table class="table table-hover table-bordered">
+                                            <thead>
+                                                <tr style="text-align:center;">
+                                                    <th>@Language.GetString("LanguageName")</th>
+                                                    <th style="display:none;"></th>
+                                                    <th>@Language.GetString("SpecificationGroup")</th>
+                                                    <th style="display:none;"></th>
+                                                    <th>@Language.GetString("tbl_SpecificationName")</th>
+                                                    <th style="display:none"></th>
+                                                    <th>@Language.GetString("tbl_SpecificationValues")</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="specificationList">
+                                                @if (Model.Specifications.Any())
+                                                {
+                                                    @foreach (var item in Model.Specifications)
                                                     {
                                                         <tr style="text-align:center;">
-                                                            <td colspan="6">@Language.GetString("AlertAndMessage_NoDataToShow")</td>
-                                                        </tr>
-                                                    }
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="card-title">@Language.GetString("MultiLingualProperty")</div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row" style="background-color: #f0f0f5;">
-                                        <div class="form-group col-md-2">
-                                            <label>@Language.GetString("LanguageName")</label>
-                                            <select class="form-control" id="multiLangId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
-                                            </select>
-                                            <span data-val-result="multiLangId" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label>@Language.GetString("tbl_ProductName")</label>
-                                            <input type="text" class="form-control" id="productName" placeholder="" onblur="BuildUrlFriend();">
-                                            <span data-val-result="productName" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label>@Language.GetString("UrlFriend")</label>
-                                            <input type="text" class="form-control" id="urlFriend" readonly placeholder=" " />
-
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label>@Language.GetString("SeoTitle")</label>
-                                            <input type="text" class="form-control" id="seoTitle" placeholder=" ">
-
-                                        </div>
-                                    </div>
-                                    <div class="row" style="background-color: #f0f0f5;">
-                                        <div class="form-group col-md-3">
-                                            <label>@Language.GetString("SeoDescription")</label>
-                                            <input type="text" class="form-control" id="seoDescription" placeholder=" ">
-
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label>@Language.GetString("Description")</label>
-                                            <input type="text" class="form-control" id="description" placeholder=" ">
-
-                                        </div>
-                                        <div class="form-group col-md-3" style="text-align:center;margin:auto;">
-                                            <div style="margin:auto;display:inline-block;">
-                                                <button type="button" class="btn btn-info btn-circle" onclick="addToTable();">
-                                                    <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-3 offset-md-3">
-                                            <span data-val-result="multiLinguals" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <table class="table table-hover table-bordered">
-                                                <thead>
-                                                    <tr style="text-align:center;">
-                                                        <th>@Language.GetString("LanguageName")</th>
-                                                        <th style="display:none;"></th>
-                                                        <th>@Language.GetString("tbl_ProductName")</th>
-                                                        <th>@Language.GetString("SeoTitle")</th>
-                                                        <th>@Language.GetString("SeoDescription")</th>
-                                                        <th>@Language.GetString("Description")</th>
-                                                        <th>@Language.GetString("UrlFriend")</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="multiLingualList">
-                                                    @if (Model.MultiLingualProperties.Count != 0)
-                                                    {
-                                                        @foreach (var item in Model.MultiLingualProperties)
-                                                        {
-                                                            <tr style="text-align:center;">
-                                                                <td>@item.LanguageName</td>
-                                                                <td style="display:none;">@item.LanguageId</td>
-                                                                <td>@item.Name</td>
-                                                                <td>@item.SeoTitle</td>
-                                                                <td>@item.SeoDescription</td>
-                                                                <td>@item.Description</td>
-                                                                <td>@item.UrlFriend</td>
-                                                                <td>
-                                                                    <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromTable(this);">
-                                                                        <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        <tr style="text-align:center;">
-                                                            <td colspan="7">@Language.GetString("AlertAndMessage_NoDataToShow")</td>
-                                                        </tr>
-                                                    }
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="card-title">@Language.GetString("PriceHistory")</div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="form-group col-md-3">
-                                            <label>@Language.GetString("Currency")</label>
-                                            <select class="form-control" id="currencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
-                                            </select>
-                                            <span data-val-result="currencyId" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group col-md-2">
-                                            <label>@Language.GetString("PriceValue")</label>
-                                            <input type="number" class="form-control" id="priceValue" />
-                                            <span data-val-result="priceValue" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label>@Language.GetString("StartDate")</label>
-                                            @if (CultureInfo.CurrentCulture.Name == "fa-IR")
-                                            {
-                                                <div class="input-group-prepend ">
-                                                    <span class="input-group-text">
-                                                        <i class="fa fa-calendar"></i>
-                                                    </span>
-                                                    <input autocomplete="off" id="dtpStartDate" type="text" class="form-control" />
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                <div class="input-group date" id="dtpStartDate" data-target-input="nearest">
-                                                    <input type="text" class="form-control datetimepicker-input" />
-                                                    <div class="input-group-append" data-toggle="datetimepicker">
-                                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                                    </div>
-                                                </div>
-                                            }
-                                            <span data-val-result="startDate" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group col-md-1" style="text-align:center;margin:auto;">
-                                            <div style="margin:auto;display:inline-block;">
-                                                <button type="button" class="btn btn-info btn-circle" onclick="addPriceToList();">
-                                                    <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-3">
-                                            <span data-val-result="priceList" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <table class="table table-hover table-bordered">
-                                                <thead>
-                                                    <tr style="text-align:center;">
-                                                        <th>@Language.GetString("Currency")</th>
-                                                        <th style="display:none;"></th>
-                                                        <th>@Language.GetString("PriceValue")</th>
-                                                        <th>@Language.GetString("StartDate")</th>
-                                                        <th>@Language.GetString("EndDate")</th>
-                                                        <th>@Language.GetString("ActivationState")</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="priceList">
-                                                    @if (Model.Prices.Count != 0)
-                                                    {
-                                                        @foreach (var price in Model.Prices)
-                                                        {
-                                                            <tr style="text-align:center;">
-                                                                <td>@price.CurrencyName</td>
-                                                                <td style="display:none;">@price.CurrencyId</td>
-                                                                <td>@price.PriceValue</td>
-                                                                <td>@price.StartDate</td>
-                                                                <td>@price.EndDate</td>
-                                                                <td>@(price.IsActive ? Language.GetString("Active") : Language.GetString("InActive")) </td>
-                                                                <td>
-                                                                    <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromPriceList(this);">
-                                                                        <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        <tr style="text-align:center;">
-                                                            <td colspan="6">@Language.GetString("AlertAndMessage_NoDataToShow")</td>
-                                                        </tr>
-                                                    }
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="card-title">@Language.GetString("tbl_ProductImages")</div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="custom-file">
-                                                <input style="width: -webkit-fill-available;" accept="image/x-png,image/jpeg"
-                                                       type="file" class="btn btn-sm" name="image" id="image" onchange="getURL(this)">
-                                                <label class="custom-file-label" for="image">@Language.GetString("btn_UploadImage")</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row" id="proGallery" style="padding:1%;">
-                                        <div class="col-md-12">
-                                            <table class="table table-hover table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th>@Language.GetString("Image")</th>
-                                                        <th style="display:none;"></th>
-                                                        <th>@Language.GetString("Title")</th>
-                                                        <th>@Language.GetString("Description")</th>
-                                                        <th>@Language.GetString("MainPhoto")</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="imageList">
-                                                    @foreach (var pic in Model.Images)
-                                                    {
-                                                        <tr>
-                                                            <td><img src="@pic.Content" width="120" height="120" /></td>
-                                                            <td style="display:none;">@pic.ImageId</td>
-                                                            <td><input type="text" class="form-control txtTitle" value="@pic.Title" /></td>
-                                                            <td><input type="text" class="form-control txtDesc" value="@pic.Description" /></td>
+                                                            <td>@item.LanguageName</td>
+                                                            <td style="display:none;">@item.LanguageId</td>
+                                                            <td>@item.SpecificationGroupName</td>
+                                                            <th style="display:none;">@item.SpecificationGroupId</th>
+                                                            <td>@item.SpecificationName</td>
+                                                            <td style="display:none;">@item.SpecificationId</td>
+                                                            <td>@item.Values</td>
                                                             <td>
-                                                                @if (dir == "rtl")
-                                                                {
-                                                                    <input type="radio" name="isMainImage" checked="@pic.IsMain" class="minimal rdbIsMain">
-                                                                }
-                                                                else
-                                                                {
-                                                                    <div class="icheck-primary d-inline">
-                                                                        <input type="radio" checked="@pic.IsMain" name="isMainImage" class="rdbIsMain">
-                                                                    </div>
-                                                                }
-                                                            </td>
-                                                            <td>
-                                                                <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromImageList(this);">
+                                                                <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromList(this);">
                                                                     <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
                                                                 </button>
                                                             </td>
                                                         </tr>
                                                     }
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                                }
+                                                else
+                                                {
+                                                    <tr style="text-align:center;">
+                                                        <td colspan="6">@Language.GetString("AlertAndMessage_NoDataToShow")</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">@Language.GetString("MultiLingualProperty")</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row" style="background-color: #f0f0f5;">
+                                    <div class="form-group col-md-2">
+                                        <label>@Language.GetString("LanguageName")</label>
+                                        <select class="form-control" id="multiLangId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                                        </select>
+                                        <span data-val-result="multiLangId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>@Language.GetString("tbl_ProductName")</label>
+                                        <input type="text" class="form-control" id="productName" placeholder="" onblur="BuildUrlFriend();">
+                                        <span data-val-result="productName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>@Language.GetString("UrlFriend")</label>
+                                        <input type="text" class="form-control" id="urlFriend" readonly placeholder=" " />
 
                                     </div>
+                                    <div class="form-group col-md-3">
+                                        <label>@Language.GetString("SeoTitle")</label>
+                                        <input type="text" class="form-control" id="seoTitle" placeholder=" ">
+
+                                    </div>
+                                </div>
+                                <div class="row" style="background-color: #f0f0f5;">
+                                    <div class="form-group col-md-3">
+                                        <label>@Language.GetString("SeoDescription")</label>
+                                        <input type="text" class="form-control" id="seoDescription" placeholder=" ">
+
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>@Language.GetString("Description")</label>
+                                        <input type="text" class="form-control" id="description" placeholder=" ">
+
+                                    </div>
+                                    <div class="form-group col-md-3" style="text-align:center;margin:auto;">
+                                        <div style="margin:auto;display:inline-block;">
+                                            <button type="button" class="btn btn-info btn-circle" onclick="addToTable();">
+                                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 offset-md-3">
+                                        <span data-val-result="multiLinguals" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table table-hover table-bordered">
+                                            <thead>
+                                                <tr style="text-align:center;">
+                                                    <th>@Language.GetString("LanguageName")</th>
+                                                    <th style="display:none;"></th>
+                                                    <th>@Language.GetString("tbl_ProductName")</th>
+                                                    <th>@Language.GetString("SeoTitle")</th>
+                                                    <th>@Language.GetString("SeoDescription")</th>
+                                                    <th>@Language.GetString("Description")</th>
+                                                    <th>@Language.GetString("UrlFriend")</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="multiLingualList">
+                                                @if (Model.MultiLingualProperties.Count != 0)
+                                                {
+                                                    @foreach (var item in Model.MultiLingualProperties)
+                                                    {
+                                                        <tr style="text-align:center;">
+                                                            <td>@item.LanguageName</td>
+                                                            <td style="display:none;">@item.LanguageId</td>
+                                                            <td>@item.Name</td>
+                                                            <td>@item.SeoTitle</td>
+                                                            <td>@item.SeoDescription</td>
+                                                            <td>@item.Description</td>
+                                                            <td>@item.UrlFriend</td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromTable(this);">
+                                                                    <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr style="text-align:center;">
+                                                        <td colspan="7">@Language.GetString("AlertAndMessage_NoDataToShow")</td>
+                                                    </tr>
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">@Language.GetString("PriceHistory")</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="form-group col-md-3">
+                                        <label>@Language.GetString("Currency")</label>
+                                        <select class="form-control" id="currencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
+                                        </select>
+                                        <span data-val-result="currencyId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label>@Language.GetString("PriceValue")</label>
+                                        <input type="number" class="form-control" id="priceValue" />
+                                        <span data-val-result="priceValue" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>@Language.GetString("StartDate")</label>
+                                        @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                                        {
+                                            <div class="input-group-prepend ">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-calendar"></i>
+                                                </span>
+                                                <input autocomplete="off" id="dtpStartDate" type="text" class="form-control" />
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="input-group date" id="dtpStartDate" data-target-input="nearest">
+                                                <input type="text" class="form-control datetimepicker-input" />
+                                                <div class="input-group-append" data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                </div>
+                                            </div>
+                                        }
+                                        <span data-val-result="startDate" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-1" style="text-align:center;margin:auto;">
+                                        <div style="margin:auto;display:inline-block;">
+                                            <button type="button" class="btn btn-info btn-circle" onclick="addPriceToList();">
+                                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-3">
+                                        <span data-val-result="priceList" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table table-hover table-bordered">
+                                            <thead>
+                                                <tr style="text-align:center;">
+                                                    <th>@Language.GetString("Currency")</th>
+                                                    <th style="display:none;"></th>
+                                                    <th>@Language.GetString("PriceValue")</th>
+                                                    <th>@Language.GetString("StartDate")</th>
+                                                    <th>@Language.GetString("EndDate")</th>
+                                                    <th>@Language.GetString("ActivationState")</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="priceList">
+                                                @if (Model.Prices.Count != 0)
+                                                {
+                                                    @foreach (var price in Model.Prices)
+                                                    {
+                                                        <tr style="text-align:center;">
+                                                            <td>@price.CurrencyName</td>
+                                                            <td style="display:none;">@price.CurrencyId</td>
+                                                            <td>@price.PriceValue</td>
+                                                            <td>@price.StartDate</td>
+                                                            <td>@price.EndDate</td>
+                                                            <td>@(price.IsActive ? Language.GetString("Active") : Language.GetString("InActive")) </td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromPriceList(this);">
+                                                                    <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr style="text-align:center;">
+                                                        <td colspan="6">@Language.GetString("AlertAndMessage_NoDataToShow")</td>
+                                                    </tr>
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">@Language.GetString("tbl_ProductImages")</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="custom-file">
+                                            <input style="width: -webkit-fill-available;" accept="image/x-png,image/jpeg"
+                                                   type="file" class="btn btn-sm" name="image" id="image" onchange="getURL(this)">
+                                            <label class="custom-file-label" for="image">@Language.GetString("btn_UploadImage")</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="proGallery" style="padding:1%;">
+                                    <div class="col-md-12">
+                                        <table class="table table-hover table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>@Language.GetString("Image")</th>
+                                                    <th style="display:none;"></th>
+                                                    <th>@Language.GetString("Title")</th>
+                                                    <th>@Language.GetString("Description")</th>
+                                                    <th>@Language.GetString("MainPhoto")</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="imageList">
+                                                @foreach (var pic in Model.Images)
+                                                {
+                                                    <tr>
+                                                        <td><img src="@pic.Content" width="120" height="120" /></td>
+                                                        <td style="display:none;">@pic.ImageId</td>
+                                                        <td><input type="text" class="form-control txtTitle" value="@pic.Title" /></td>
+                                                        <td><input type="text" class="form-control txtDesc" value="@pic.Description" /></td>
+                                                        <td>
+                                                            @if (dir == "rtl")
+                                                            {
+                                                                <input type="radio" name="isMainImage" checked="@pic.IsMain" class="minimal rdbIsMain">
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="icheck-primary d-inline">
+                                                                    <input type="radio" checked="@pic.IsMain" name="isMainImage" class="rdbIsMain">
+                                                                </div>
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromImageList(this);">
+                                                                <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
                 </div>
+
+
+            </div>
             <div class="card-footer">
                 <div class="row">
                     <input type="button" id="btnAddProduct" value="@Language.GetString("btn_Save")" class="btn btn-block btn-success" />
@@ -622,7 +625,7 @@
         <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
     }
 
-<script>
+    <script>
     var fileName;
     var fileContent;
     var cropper;
@@ -1362,7 +1365,7 @@
         }
     }
     }
-</script>
+    </script>
 }
 
 

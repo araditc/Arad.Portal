@@ -373,7 +373,7 @@
                     </div>
                     <div class="col-md-3">
                         <label asp-for="SeoTitle">@Language.GetString("SeoTitle")</label>
-                        <input type="text" class="form-control" asp-for="@Model.SeoTitle" placeholder=" ">
+                        <input type="text" class="form-control" asp-for="@Model.SeoTitle" placeholder="">
                         <span data-val-result="SeoTitle" class="text-danger"></span>
                     </div>
                     <div class="col-md-3">
@@ -573,6 +573,7 @@
             if ("@Model.ContentId" != "") {
                 $("#LanguageId").val('@Model.LanguageId');
                 if ("@Model.PersianStartShowDate" != "") {
+                    send_pic
                     $("#dtpStartShowDate").val("@Model.PersianStartShowDate");
                 }
                 if ("@Model.PersianEndShowDate" != "") {
@@ -759,7 +760,7 @@
             }
          });
 
-            $("#send_Logo").click(function () {
+         $("#send_Logo").click(function () {
                 debugger;
                 $("#uploadlogoModal").modal("hide");
                 var url = $("#contentLogo").attr("src");
@@ -879,7 +880,7 @@
         $("#uploadlogoModal").modal("show");
     }
 
-        function initCropper() {
+    function initCropper() {
         debugger;
         var image = document.getElementById('blah');
         if (cropper !== null && cropper !== undefined) {
@@ -958,68 +959,68 @@
         function getURL(input)
         {
             debugger;
-        $("#cropped_result").remove();
-        if (input.files && input.files[0]) {
-        var file = input.files[0];
-        currentFileName = file.name;
-        currentFileSize = file.size;
+                $("#cropped_result").remove();
+                if (input.files && input.files[0]) {
+                var file = input.files[0];
+                currentFileName = file.name;
+                currentFileSize = file.size;
 
-        if (currentFileSize <= @ViewBag.PicSize) {
-        var reader = new FileReader();
-        try {
-        reader.readAsDataURL(file);
-        } catch (e) {
+                if (currentFileSize <= @ViewBag.PicSize) {
+                var reader = new FileReader();
+                try {
+                reader.readAsDataURL(file);
+                } catch (e) {
 
-        }
-        reader.onload = function (e) {
-        var content = e.target.result;
-        //if file format is incorrect, then the 'content' won't have any src.
-        if (content !== "data:") {
-        var reducedContent = content.slice(5);
+                }
+                reader.onload = function (e) {
+                var content = e.target.result;
+                //if file format is incorrect, then the 'content' won't have any src.
+                if (content !== "data:") {
+                var reducedContent = content.slice(5);
 
-        if (reducedContent.startsWith("image")) {
-        $('#blah').attr('src', content);
-        setTimeout(upRiseModal, 100);
-        setTimeout(initCropper, 500);
-        } else {
+                if (reducedContent.startsWith("image")) {
+                $('#blah').attr('src', content);
+                setTimeout(upRiseModal, 100);
+                setTimeout(initCropper, 500);
+                } else {
 
-        Swal.fire({
-        position: 'top-end',
-        icon: 'error',
-        title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
-        showConfirmButton: false,
-        timer: 1500
-        });
+                Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
+                showConfirmButton: false,
+                timer: 1500
+                });
 
-        document.getElementById("image").value = "";
-        $("#cropped_result").remove();
-        }
-        } else {
-        Swal.fire({
-        position: 'top-end',
-        icon: 'error',
-        title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
-        showConfirmButton: false,
-        timer: 1500
-        });
+                document.getElementById("image").value = "";
+                $("#cropped_result").remove();
+                }
+                } else {
+                Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
+                showConfirmButton: false,
+                timer: 1500
+                });
 
-        document.getElementById("image").value = "";
-        $("#cropped_result").remove();
-        }
-        };
-        }
-        else
-        {
-        Swal.fire({
-        icon: 'error',
-        title: '@Language.GetString("AlertAndMessage_InvalidFileSize")',
-        showConfirmButton: false,
-        timer: 1500
-        });
-        document.getElementById("image").value = "";
-        $("#cropped_result").remove();
-        }
-        }
+                document.getElementById("image").value = "";
+                $("#cropped_result").remove();
+                }
+                };
+                }
+                else
+                {
+                Swal.fire({
+                icon: 'error',
+                title: '@Language.GetString("AlertAndMessage_InvalidFileSize")',
+                showConfirmButton: false,
+                timer: 1500
+                });
+                document.getElementById("image").value = "";
+                $("#cropped_result").remove();
+                }
+                }
         }
 
     function getLogoURL(input) {

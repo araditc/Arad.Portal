@@ -1325,11 +1325,17 @@
 		<value>Folders:</value>
 	</string>
 	<string key="ChangeLogo">
-		<value>ChangeLogo</value>
+		<value>Change Logo</value>
+	</string>
+	<string key="ChangeImage">
+		<value>Change Image</value>
 	</string>
  <string key="FileLogo">
     <value>Content Logo</value>
   </string>
+	<string key="GroupImage">
+		<value>Group Image</value>
+	</string>
 	<string key="LikeCount">
 		<value>Like Count</value>
 	</string>
@@ -1737,9 +1743,6 @@
 	</string>
 	<string key="Crop">
 		<value>Crop</value>
-	</string>
-	<string key="ChangeImage">
-		<value>Change image</value>
 	</string>
 	<string key="ProfilePic">
 		<value>Profile picture</value>

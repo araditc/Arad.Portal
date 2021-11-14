@@ -14,6 +14,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ProductGroup
         public ProductGroup()
         {
             MultiLingualProperties = new List<MultiLingualProperty>();
+            GroupImage = new Image();
         }
 
         [BsonId]
@@ -26,7 +27,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ProductGroup
 
         public string ParentId { get; set; }
 
-        public string ImagePath { get; set; }
+        public Image GroupImage { get; set; }
 
         public Promotion.Promotion Promotion { get; set; }
 

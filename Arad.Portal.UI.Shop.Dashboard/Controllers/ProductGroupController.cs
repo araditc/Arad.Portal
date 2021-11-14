@@ -6,11 +6,14 @@ using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.UI.Shop.Dashboard.Authorization;
 using Arad.Portal.UI.Shop.Dashboard.Helpers;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -22,17 +25,24 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
     {
         private readonly IProductGroupRepository _productGroupRepository;
         private readonly IPermissionView _permissionViewManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ILanguageRepository _lanRepository;
         private readonly ICurrencyRepository _curRepository;
+        private readonly IConfiguration _configuration;
         private readonly CodeGenerator _codeGenerator;
+        private readonly string imageSize = "";
         public ProductGroupController(IProductGroupRepository productGroupRepository,CodeGenerator codeGenerator,
-            IPermissionView permissionView, ILanguageRepository lanRepository, ICurrencyRepository currencyRepository)
+            IPermissionView permissionView, ILanguageRepository lanRepository, ICurrencyRepository currencyRepository,
+            IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             _productGroupRepository = productGroupRepository;
             _permissionViewManager = permissionView;
             _lanRepository = lanRepository;
             _curRepository = currencyRepository;
             _codeGenerator = codeGenerator;
+            _configuration = configuration;
+            _webHostEnvironment = webHostEnvironment;
+            imageSize = _configuration["ProductGroupImageSize:Size"];
         }
 
         [HttpGet]
@@ -59,7 +69,31 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = _productGroupRepository.ProductGroupFetch(id);
-            }else
+                var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
+                if (string.IsNullOrWhiteSpace(staticFileStorageURL))
+                {
+                    staticFileStorageURL = _webHostEnvironment.WebRootPath;
+                }
+               
+                if (string.IsNullOrWhiteSpace(model.GroupImage.Url))
+                {
+
+                    using (System.Drawing.Image image = System.Drawing.Image.FromFile(Path.Combine(staticFileStorageURL, model.GroupImage.Url)))
+                    {
+                        using (MemoryStream m = new MemoryStream())
+                        {
+                            image.Save(m, image.RawFormat);
+                            byte[] imageBytes = m.ToArray();
+
+                            // Convert byte[] to Base64 String
+                            string base64String = Convert.ToBase64String(imageBytes);
+                            model.GroupImage.Content = $"data:image/png;base64, {base64String}";
+                        }
+                    }
+                }
+               
+            }
+            else
             {
                 model.GroupCode = _codeGenerator.GetNewId();
             }
@@ -68,9 +102,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
             ViewBag.ProductGroupList = await _productGroupRepository.GetAlActiveProductGroup(lan.LanguageId, currentUserId);
             ViewBag.LangId = lan.LanguageId;
-           
+            ViewBag.PicSize = imageSize;
             ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
             ViewBag.CurrencyList = _curRepository.GetAllActiveCurrency();
+         
             return View(model);
         }
 
@@ -117,10 +152,21 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.MultiLingualPropertyId = Guid.NewGuid().ToString();
                     item.LanguageName = lan.LanguageName;
                     item.LanguageSymbol = lan.Symbol;
-                    var res = _curRepository.FetchCurrency(item.CurrencyId);
-                    item.CurrencyName = res.ReturnValue.CurrencyName;
-                    item.CurrencyPrefix = res.ReturnValue.Prefix;
-                    item.CurrencySymbol = res.ReturnValue.Symbol;
+                    var cur = _curRepository.FetchCurrency(item.CurrencyId);
+                    item.CurrencyName = cur.ReturnValue.CurrencyName;
+                    item.CurrencyPrefix = cur.ReturnValue.Prefix;
+                    item.CurrencySymbol = cur.ReturnValue.Symbol;
+                }
+
+                var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
+                var path = "Images\\ProductGroups";
+               
+                var res = ImageFunctions.SaveImageModel(dto.GroupImage, path, staticFileStorageURL, _webHostEnvironment.WebRootPath);
+                if (res.Key != Guid.Empty.ToString())
+                {
+                    dto.GroupImage.ImageId = res.Key;
+                    dto.GroupImage.Url = res.Value;
+                    dto.GroupImage.Content = "";
                 }
 
                 RepositoryOperationResult saveResult = await _productGroupRepository.Add(dto);
@@ -201,6 +247,23 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
+                var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
+                var path = "Images\\Products";
+               
+                Guid isGuidKey;
+                if (!Guid.TryParse(dto.GroupImage.ImageId, out isGuidKey))
+                {
+                    //its insert and imageId which was int from client replace with guid
+                    var res = ImageFunctions.SaveImageModel(dto.GroupImage, path, staticFileStorageURL, _webHostEnvironment.WebRootPath);
+                    if (res.Key != Guid.Empty.ToString())
+                    {
+                        dto.GroupImage.ImageId = res.Key;
+                        dto.GroupImage.Url = res.Value;
+                        dto.GroupImage.Content = "";
+                    }
+                    //otherwise its  is update then it has no url ;
+                }
+               
                 model = _productGroupRepository.ProductGroupFetch(dto.ProductGroupId);
                 if (model == null)
                 {
