@@ -147,7 +147,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             return result;
         }
 
-        public List<ContentViewModel> GetAllContentsInCategory(string contentCategoryId)
+        public List<ContentViewModel> GetAllContentsInCategory(string contentCategoryId, int? count)
         {
             throw new NotImplementedException();
         }

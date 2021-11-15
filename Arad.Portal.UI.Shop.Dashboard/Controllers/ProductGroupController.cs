@@ -69,15 +69,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = _productGroupRepository.ProductGroupFetch(id);
+                
                 var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
                 if (string.IsNullOrWhiteSpace(staticFileStorageURL))
                 {
                     staticFileStorageURL = _webHostEnvironment.WebRootPath;
                 }
                
-                if (string.IsNullOrWhiteSpace(model.GroupImage.Url))
+                if (!string.IsNullOrWhiteSpace(model.GroupImage.Url))
                 {
-
+                    model.GroupImage.Url = model.GroupImage.Url.Replace("\\", "/");
                     using (System.Drawing.Image image = System.Drawing.Image.FromFile(Path.Combine(staticFileStorageURL, model.GroupImage.Url)))
                     {
                         using (MemoryStream m = new MemoryStream())
@@ -91,7 +92,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         }
                     }
                 }
-               
             }
             else
             {
@@ -157,18 +157,23 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.CurrencyPrefix = cur.ReturnValue.Prefix;
                     item.CurrencySymbol = cur.ReturnValue.Symbol;
                 }
+                var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var lang = _lanRepository.GetDefaultLanguage(currentUserId);
 
                 var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
                 var path = "Images\\ProductGroups";
-               
-                var res = ImageFunctions.SaveImageModel(dto.GroupImage, path, staticFileStorageURL, _webHostEnvironment.WebRootPath);
-                if (res.Key != Guid.Empty.ToString())
+                if(!string.IsNullOrWhiteSpace(dto.GroupImage.Content))
                 {
-                    dto.GroupImage.ImageId = res.Key;
-                    dto.GroupImage.Url = res.Value;
-                    dto.GroupImage.Content = "";
+                    var res = ImageFunctions.SaveImageModel(dto.GroupImage, path, staticFileStorageURL, _webHostEnvironment.WebRootPath);
+                    if (res.Key != Guid.Empty.ToString())
+                    {
+                        dto.GroupImage.ImageId = res.Key;
+                        dto.GroupImage.Url = res.Value;
+                        dto.GroupImage.Content = "";
+                        dto.GroupImage.Title = dto.MultiLingualProperties.Any(_ => _.LanguageId == lang.LanguageId) ?
+                            dto.MultiLingualProperties.First(_ => _.LanguageId == lang.LanguageId).Name : dto.MultiLingualProperties.First().Name;
+                    }
                 }
-
                 RepositoryOperationResult saveResult = await _productGroupRepository.Add(dto);
                 if(saveResult.Succeeded)
                 {
@@ -248,10 +253,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             else
             {
                 var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
-                var path = "Images\\Products";
-               
+                var path = "Images\\ProductGroups";
+                var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var lan = _lanRepository.GetDefaultLanguage(currentUserId);
+
                 Guid isGuidKey;
-                if (!Guid.TryParse(dto.GroupImage.ImageId, out isGuidKey))
+                if (!Guid.TryParse(dto.GroupImage.ImageId, out isGuidKey) && !string.IsNullOrWhiteSpace(dto.GroupImage.Content))
                 {
                     //its insert and imageId which was int from client replace with guid
                     var res = ImageFunctions.SaveImageModel(dto.GroupImage, path, staticFileStorageURL, _webHostEnvironment.WebRootPath);
@@ -260,8 +267,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         dto.GroupImage.ImageId = res.Key;
                         dto.GroupImage.Url = res.Value;
                         dto.GroupImage.Content = "";
+                        //dto.GroupImage.Title = dto.MultiLingualProperties.Any(_ => _.LanguageId == lan.LanguageId) ?
+                        //   dto.MultiLingualProperties.First(_ => _.LanguageId == lan.LanguageId).Name : dto.MultiLingualProperties.First().Name;
+
                     }
-                    //otherwise its  is update then it has no url ;
+                    //otherwise it is update then it doesnt need to change its url
+                }
+                else
+                {
+                   dto.GroupImage.Url = dto.GroupImage.Url.Replace("/", "\\");
                 }
                
                 model = _productGroupRepository.ProductGroupFetch(dto.ProductGroupId);

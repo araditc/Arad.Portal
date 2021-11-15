@@ -488,11 +488,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             return result;
         }
 
-        public StoreMenuVM GetByCode(string menuCode)
+        public StoreMenuVM GetByCode(long menuCode)
         {
             var result = new StoreMenuVM();
             var entity = _context.Collection
-                .Find(_ => _.MenuCode == Convert.ToInt64(menuCode)).FirstOrDefault();
+                .Find(_ => _.MenuCode == menuCode).FirstOrDefault();
             result.MenuId = entity.MenuId;
             result.Icon = entity.Icon;
             result.MenuType = entity.MenuType;

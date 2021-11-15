@@ -144,7 +144,7 @@
                             <div class="card-body">
                                 <div class="text-center form-group">
 
-                                    <img id="groupImage" onclick="ViewImage('@Model.GroupImage.Url')" style="cursor: pointer" imgid="@(!string.IsNullOrWhiteSpace(@Model.GroupImage.ImageId) ? @Model.GroupImage.ImageId : "-1")"
+                                    <img id="groupImage" onclick="ViewImage('@Model.GroupImage.Url')"  style="cursor: pointer" imgid="@(!string.IsNullOrWhiteSpace(@Model.GroupImage.ImageId) ? @Model.GroupImage.ImageId : "-1")"
                                          class="profile-user-img img-fluid img-circle" src="@(!string.IsNullOrWhiteSpace(@Model.GroupImage.Content) ? @Model.GroupImage.Content : "/imgs/NoImage.png")" alt="productGroup Image">
                                 </div>
                                 <hr>
@@ -277,22 +277,25 @@
     <script src="~/lib/cropperjs/cropper.js"></script>
     <script>
         var fileName;
-        var fileContent;
+        var fileContent = "";
         var cropper;
         var currentFileSize;
         var currentFileName;
+        var modelUrl;
         $(document).ready(function () {
             debugger;
+            modelUrl = '@Model.GroupImage';
             if ("@Model.ProductGroupId" != "" && "@Model.ParentId" != "") {
                 $("#ParentId").val("@Model.ParentId");
             }
 
             $("#send_Logo").click(function () {
-                debugger;
+                debugger; 
                 $("#uploadlogoModal").modal("hide");
                 var url = $("#contentLogo").attr("src");
                 debugger;
                 $("#groupImage").attr('src', url);
+                $("#groupImage").attr("imgid", "-1");
                 fileContent = url;
                 fileName = currentFileName;
             });
@@ -306,56 +309,55 @@
                     flag = true;
                 }
                 if (!flag) {
-
-            var dto = FillDataToSend();
-            $.ajax({
-                    url: "@Model.ProductGroupId" != "" ? "/ProductGroup/Edit" : "/ProductGroup/Add",
-                    /*data: dataModel,*/
-                    contentType: 'application/json',
-                    data: JSON.stringify(dto),
-                type: 'Post',
-                beforeSend: function () {
-                    debugger;
-                    AddLoading($("#addEditProductGroupCard"));
-                },
-                success: function (result) {
-                    debugger;
-                    if (result.status === "Success") {
-                        Swal.fire({
-                            icon: 'success',
-                            text: result.message,
-                            showConfirmButton: false,
-                            timer: 3000
-                        }).then(() => {
-                            window.location.href = '@Url.Action("List")';
+                    var dto = FillDataToSend();
+                    $.ajax({
+                            url: "@Model.ProductGroupId" != "" ? "/ProductGroup/Edit" : "/ProductGroup/Add",
+                            /*data: dataModel,*/
+                            contentType: 'application/json',
+                            data: JSON.stringify(dto),
+                        type: 'Post',
+                        beforeSend: function () {
+                            debugger;
+                            AddLoading($("#addEditProductGroupCard"));
+                        },
+                        success: function (result) {
+                            debugger;
+                            if (result.status === "Success") {
+                                Swal.fire({
+                                    icon: 'success',
+                                    text: result.message,
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                }).then(() => {
+                                    window.location.href = '@Url.Action("List")';
+                                });
+                            }else
+                            if (result.status === "ModelError") {
+                                var spanErrorList = $('span[data-val-result]');
+                                if (spanErrorList.length > 1) {
+                                    spanErrorList.each(function() {
+                                        $(this).html("");
+                                        $(this).parent().removeClass("has-error");
+                                    });
+                                } else {
+                                    spanErrorList.html("");
+                                    spanErrorList.parent().removeClass("has-error");
+                                }
+                                if (result.modelStateErrors !== null) {
+                                        $('[data-val-result=' + value.key + ']').html(value.errorMessage);
+                                        $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                    }
+                                }
+                            },
+                        @*error: function (xhr, ajaxOptions, thrownError) {
+                            alert("@error");
+                            alert(xhr.status);
+                            alert(thrownError);
+                        },*@
+                        complete: function () {
+                            removeLoading($("#addEditProductGroupCard"));
+                        }
                         });
-                    }else
-                    if (result.status === "ModelError") {
-                        var spanErrorList = $('span[data-val-result]');
-                        if (spanErrorList.length > 1) {
-                            spanErrorList.each(function() {
-                                $(this).html("");
-                                $(this).parent().removeClass("has-error");
-                            });
-                        } else {
-                            spanErrorList.html("");
-                            spanErrorList.parent().removeClass("has-error");
-                        }
-                        if (result.modelStateErrors !== null) {
-                                $('[data-val-result=' + value.key + ']').html(value.errorMessage);
-                                $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
-                            }
-                        }
-                    },
-                @*error: function (xhr, ajaxOptions, thrownError) {
-                    alert("@error");
-                    alert(xhr.status);
-                    alert(thrownError);
-                },*@
-                complete: function () {
-                    removeLoading($("#addEditProductGroupCard"));
-                }
-                });
                 }
 
             });
@@ -386,7 +388,13 @@
                /* innerModel.UrlFriend = $(this).find("td:eq(5)").text();*/
                 obj.MultiLingualProperties.push(innerModel);
             });
+            obj.GroupImage.ImageId = $("#groupImage").attr("imgid");
+            if (fileContent != "")
+                obj.GroupImage.Content = fileContent;
+            else
+                obj.GroupImage.Url = modelUrl;
 
+            obj.GroupImage.IsMain = true;
             
             
             return obj;

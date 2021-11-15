@@ -41,6 +41,7 @@ using Arad.Portal.DataLayer.Models.Comment;
 using Arad.Portal.DataLayer.Entities.General.Menu;
 using Arad.Portal.DataLayer.Models.Menu;
 using Arad.Portal.DataLayer.Entities.General.BasicData;
+using Arad.Portal.DataLayer.Entities.General.Currency;
 
 namespace Arad.Portal.UI.Shop.Mapping
 {
@@ -66,6 +67,7 @@ namespace Arad.Portal.UI.Shop.Mapping
             CreateMap<NotificationDTO, Notification>();
             CreateMap<ContentCategory, ContentCategoryDTO>().ReverseMap();
             CreateMap<Content, ContentDTO>().ReverseMap();
+            CreateMap<ContentViewModel, Content>().ReverseMap();
             CreateMap<Comment, CommentDTO>().ReverseMap();
             CreateMap<Menu, MenuDTO>().ReverseMap();
             CreateMap<Price, PriceDTO>().ReverseMap();

@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Models.ContentCategory;
+﻿using Arad.Portal.DataLayer.Models.Content;
+using Arad.Portal.DataLayer.Models.ContentCategory;
 using Arad.Portal.DataLayer.Models.ProductSpecificationGroup;
 using Arad.Portal.DataLayer.Models.Shared;
 using System;
@@ -26,9 +27,13 @@ namespace Arad.Portal.DataLayer.Contracts.General.ContentCategory
 
         Task<ContentCategoryDTO> ContentCategoryFetch(string contentCategoryId);
 
+        List<ContentCategoryDTO> GetDirectChildrens(string contentCategoryId, int? count, int skip = 0);
+
+        List<ContentViewModel> GetContentsInCategory(string contentCategoryId, int? count, int skip = 0);
+
         ContentCategoryDTO FetchBySlug(string slug, string domainName);
 
-        ContentCategoryDTO FetchByCode(long categoryCode);
+        CommonViewModel FetchByCode(long categoryCode);
 
         List<SelectListModel> GetAllContentCategoryType();
 

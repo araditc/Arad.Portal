@@ -483,6 +483,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             if (entity != null)
             {
                 result = _mapper.Map<ProductOutputDTO>(entity);
+                //TODO : 
                 var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
             }
             return result;

@@ -19,8 +19,7 @@ using System.Web;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Microsoft.AspNetCore.Identity;
-
-
+using Arad.Portal.DataLayer.Models.Content;
 
 namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
 {
@@ -170,15 +169,19 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             return result;
         }
 
-        public ContentCategoryDTO FetchByCode(long categoryCode)
+        public CommonViewModel FetchByCode(long categoryCode)
         {
-            var result = new ContentCategoryDTO();
+            var result = new CommonViewModel();
             var categoryEntity = _categoryContext.Collection
                 .Find(_ => _.CategoryCode == categoryCode).First();
-            result = _mapper.Map<ContentCategoryDTO>(categoryEntity);
+
+            result.Categories = GetDirectChildrens(categoryEntity.ContentCategoryId,5);
+            result.BlogList = GetContentsInCategory(categoryEntity.ContentCategoryId, 5);
             return result;
         }
 
+
+        
         public ContentCategoryDTO FetchBySlug(string slug, string domainName)
         {
             var result = new ContentCategoryDTO();
@@ -205,6 +208,40 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             }
             result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("Choose"), Value = "-1" });
             return result;
+        }
+
+        public List<ContentViewModel> GetContentsInCategory(string contentCategoryId,int? count, int skip = 0)
+        {
+            var result = new List<ContentViewModel>();
+            List<Entities.General.Content.Content> lst = new List<Entities.General.Content.Content>();
+            if(count != null)
+            {
+               lst = _contentContext.Collection.Find(_ => _.ContentCategoryId == contentCategoryId).Skip(0).Limit(count).ToList();
+            }else
+            {
+                lst = _contentContext.Collection.Find(_ => _.ContentCategoryId == contentCategoryId).ToList();
+            }
+            result = _mapper.Map<List<ContentViewModel>>(lst);
+            return result;
+        }
+
+        public List<ContentCategoryDTO> GetDirectChildrens(string contentCategoryId, int? count, int skip = 0)
+        {
+            var result = new List<ContentCategoryDTO>();
+            List<DataLayer.Entities.General.ContentCategory.ContentCategory> lst;
+            if(count != null)
+            {
+                lst = _categoryContext.Collection.Find(_ => _.ParentCategoryId == contentCategoryId).Skip(skip).Limit(count.Value).ToList();
+            }
+            else
+            {
+                lst = _categoryContext.Collection.Find(_ => _.ParentCategoryId == contentCategoryId).ToList();
+            }
+            var catList = 
+
+            result = _mapper.Map<List<ContentCategoryDTO>>(lst);
+            return result;
+
         }
 
         public async Task<PagedItems<ContentCategoryViewModel>> List(string queryString)

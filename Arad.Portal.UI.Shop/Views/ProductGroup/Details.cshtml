@@ -1,4 +1,4 @@
-﻿@model Arad.Portal.DataLayer.Models.ProductGroup.ProductGroupViewList
+﻿@model Arad.Portal.DataLayer.Models.Shared.CommonViewModel
 @using Arad.Portal.DataLayer.Models.Shared;
 @{ 
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -23,14 +23,23 @@
 
         }
 <div class="row">
-    @foreach (var item in Model.Childs)
+    @foreach (var item in Model.Groups)
     {
-        <div class="col col-md-auto">
-            <svg class="bd-placeholder-img rounded-circle" width="140" height="140" role="img"
-                 preserveAspectRatio="xMidYMid slice" focusable="false">
-                <title>@(item.MultiLingualProperties.First(_=>_.LanguageId == ViewBag.CurLangId).Name)</title>
-            </svg>
+    <div class="col col-md-4">
 
+        @*<img class="rounded-circle" src='@Url.Content(item.GroupImage.Url)' />
+
+        <h3>@(item.MultiLingualProperties.First(_=>_.LanguageId == ViewBag.CurLangId).Name)</h3>*@
+
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top rounded-circle" @*src="@Url.Content(item.GroupImage.Url)"*@ src ="https://www.w3schools.com/bootstrap4/cinqueterre.jpg" alt="@item.GroupImage.Title">
+            <div class="card-body">
+                <a href="/group/@item.GroupCode" class="btn btn-primary">
+                    <h5 class="card-title">@(item.MultiLingualProperties.First(_=>_.LanguageId == ViewBag.CurLangId).Name)</h5>
+                </a>
+            </div>
         </div>
+
+    </div>
     }
 </div>

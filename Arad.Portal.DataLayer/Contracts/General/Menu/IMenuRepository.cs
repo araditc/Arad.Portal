@@ -24,6 +24,6 @@ namespace Arad.Portal.DataLayer.Contracts.General.Menu
          Task<RepositoryOperationResult> DeleteMenu(string menuId);
          RepositoryOperationResult<MenuDTO> FetchMenu(string menuId);
          List<SelectListModel> GetAllMenuType();
-         StoreMenuVM GetByCode(string menuCode);
+         StoreMenuVM GetByCode(long menuCode);
     }
 }

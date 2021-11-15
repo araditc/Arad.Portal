@@ -59,6 +59,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             {
                 equallentModel.ProductGroupId = Guid.NewGuid().ToString();
                 equallentModel.IsActive = true;
+                equallentModel.GroupImage = dto.GroupImage;
                 await _productContext.ProductGroupCollection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;
                 result.Message = ConstMessages.SuccessfullyDone;
@@ -304,10 +305,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                
                 entity.Modifications = currentModifications;
                 entity.MultiLingualProperties = dto.MultiLingualProperties;
-                //if(!string.IsNullOrWhiteSpace(dto.GroupImage))
-                //{
-                //    entity.GroupImage = dto.GroupImage;
-                //}
+                entity.GroupImage = dto.GroupImage;
                
                 var updateResult = await _productContext.ProductGroupCollection
                .ReplaceOneAsync(_ => _.ProductGroupId == dto.ProductGroupId, entity);
@@ -397,16 +395,16 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             return result;
         }
 
-        public ProductGroupViewList FetchByCode(long groupCode)
+        public CommonViewModel FetchByCode(long groupCode)
         {
-            var result = new ProductGroupViewList();
+            var result = new CommonViewModel();
 
             var productEntity = _productContext.ProductGroupCollection
                 .Find(_ => _.GroupCode == groupCode).First();
 
-            result.Childs = GetsDirectChildren(productEntity.ProductGroupId).Skip(0).Take(10).ToList();
+            result.Groups = GetsDirectChildren(productEntity.ProductGroupId).Skip(0).Take(10).ToList();
 
-            result.Products = GetLatestProductInThisGroup(10, productEntity.ProductGroupId);
+            result.ProductList = GetLatestProductInThisGroup(10, productEntity.ProductGroupId);
             return result;
         }
         

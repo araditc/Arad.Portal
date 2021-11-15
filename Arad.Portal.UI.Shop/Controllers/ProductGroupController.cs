@@ -1,4 +1,5 @@
 ﻿using Arad.Portal.DataLayer.Contracts.General.Language;
+using Arad.Portal.DataLayer.Contracts.General.Menu;
 using Arad.Portal.DataLayer.Contracts.Shop.ProductGroup;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,14 +13,16 @@ namespace Arad.Portal.UI.Shop.Controllers
     public class ProductGroupController : Controller
     {
         private readonly IProductGroupRepository _groupRepository;
+        private readonly IMenuRepository _menuRepository;
         private readonly ILanguageRepository _languageRepository;
         private readonly IHttpContextAccessor _accessor;
         public ProductGroupController(IProductGroupRepository groupRepository, IHttpContextAccessor accessor,
-            ILanguageRepository lanRepository)
+            ILanguageRepository lanRepository, IMenuRepository menuRepository)
         {
             _groupRepository = groupRepository;
             _accessor = accessor;
             _languageRepository = lanRepository;
+            _menuRepository = menuRepository;
         }
         public IActionResult Index()
         {
@@ -35,6 +38,7 @@ namespace Arad.Portal.UI.Shop.Controllers
 
             var langId = _languageRepository.FetchBySymbol(langCode);
             ViewBag.CurLangId = langId;
+           
             var model = _groupRepository.FetchByCode(slug);
             return View(model);
         }

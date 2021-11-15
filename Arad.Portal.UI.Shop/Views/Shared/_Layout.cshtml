@@ -43,6 +43,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/Menu/Bootstrap4MegaMenu.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    @RenderSection("Styles", required: false);
+    @await RenderSectionAsync("Scripts", required: false);
     @if (direction == "rtl")
     {
         <link href="~/fonts/IranSans/css/persianfonts.css" rel="stylesheet" />
@@ -83,7 +85,7 @@
         
         
     </header>
-    <div class="container navbarMenu">
+    <div class="navbarMenu">
         @await Component.InvokeAsync("StoreMenu")
     </div>
 
