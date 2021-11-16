@@ -193,8 +193,9 @@ namespace Arad.Portal.UI.Shop
             app.UseRouting();
             var options = new CookiePolicyOptions()
             {
-                HttpOnly = HttpOnlyPolicy.Always,
-                MinimumSameSitePolicy = SameSiteMode.Strict
+                //HttpOnly = HttpOnlyPolicy.Always,
+                
+                //MinimumSameSitePolicy = SameSiteMode.Strict
             };
             app.UseCookiePolicy(options);
 
@@ -208,6 +209,7 @@ namespace Arad.Portal.UI.Shop
                     endpoints.MapControllers().WithMetadata(new AllowAnonymousAttribute());
                 else
                     endpoints.MapControllers();
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "/{language=fa-ir}/{controller=Home}/{action=Index}/{id?}");

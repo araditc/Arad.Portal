@@ -21,9 +21,9 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductGroup
         Task<PagedItems<ProductGroupViewModel>> List(string queryString);
         Task<RepositoryOperationResult> Delete(string productGroupId, string modificationReason);
         Task<RepositoryOperationResult> Restore(string id);
-        List<ProductGroupDTO> GetsDirectChildren(string productGroupId);
+        List<ProductGroupDTO> GetsDirectChildren(string productGroupId, int? count, int skip = 0);
         List<ProductGroupDTO> GetsParents();
-        List<ProductOutputDTO> GetLatestProductInThisGroup(int Count, string productGroupId);
+        List<ProductOutputDTO> GetLatestProductInThisGroup(string productGroupId, int? count, int skip = 0);
         Task<List<SelectListModel>> GetAlActiveProductGroup(string langId, string currentUserId);
         Task<RepositoryOperationResult> AddPromotionToGroup(string productGroupId,
             Models.Promotion.PromotionDTO promotionDto, string modificationReason);

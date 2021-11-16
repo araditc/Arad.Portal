@@ -1,6 +1,6 @@
 ﻿@model Arad.Portal.DataLayer.Models.Shared.CommonViewModel
 @using Arad.Portal.DataLayer.Models.Shared;
-@{ 
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
     var dir = "";
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
@@ -21,25 +21,52 @@
 @section Scripts{
     @*<script src="~/lib/Swiper/swiper-bundle.min.js"></script>*@
 
-        }
-<div class="row">
+}
+<div>
+    @{
+        @await Html.RenderPartialAsync("_groupList", Model.GroupSection)
+    }
+
+
+</div>
+
+   
+
+
+
+
+
+{
+}
+
+@await Html.RenderPartialAsync("_productList", );
+
+
+<!--<div class="row">
     @foreach (var item in Model.Groups)
     {
-    <div class="col col-md-4">
+        <div class="col-md-3">
 
-        @*<img class="rounded-circle" src='@Url.Content(item.GroupImage.Url)' />
-
-        <h3>@(item.MultiLingualProperties.First(_=>_.LanguageId == ViewBag.CurLangId).Name)</h3>*@
-
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top rounded-circle" @*src="@Url.Content(item.GroupImage.Url)"*@ src ="https://www.w3schools.com/bootstrap4/cinqueterre.jpg" alt="@item.GroupImage.Title">
-            <div class="card-body">
-                <a href="/group/@item.GroupCode" class="btn btn-primary">
-                    <h5 class="card-title">@(item.MultiLingualProperties.First(_=>_.LanguageId == ViewBag.CurLangId).Name)</h5>
-                </a>
+            <div class="card align-items-center pgCard"-->
+ @*style="width: 18rem;"*@
+<!-->
+<img class="card-img-top rounded-circle"-->
+ @*src="@Url.Content(item.GroupImage.Url)"*@
+<!--src="https://www.w3schools.com/bootstrap4/cinqueterre.jpg" alt="@item.GroupImage.Title">
+                <div class="card-body">
+                    <a href="/group/@item.GroupCode" class="btn btn-secondary">
+                        <h5 class="card-title">@(item.MultiLingualProperties.First(_=>_.LanguageId == ViewBag.CurLangId).Name)</h5>
+                    </a>
+                </div>
             </div>
-        </div>
 
-    </div>
+        </div>
     }
+</div>-->
+<div class="row">
+    <div class="align-items-center">
+        @*<a href="/group/@item.GroupCode" class="btn btn-secondary">
+            <h5 class="card-title">@(item.MultiLingualProperties.First(_=>_.LanguageId == ViewBag.CurLangId).Name)</h5>
+        </a>*@
+    </div>
 </div>

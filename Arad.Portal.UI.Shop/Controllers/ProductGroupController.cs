@@ -37,10 +37,15 @@ namespace Arad.Portal.UI.Shop.Controllers
             var langCode = path.Split("/")[1].ToLower();
 
             var langId = _languageRepository.FetchBySymbol(langCode);
-            ViewBag.CurLangId = langId;
+            ViewData["CurLangId"] = langId;
            
-            var model = _groupRepository.FetchByCode(slug);
-            return View(model);
+            //var model = _groupRepository.FetchByCode(slug);
+            return View();
+        }
+
+        public Task<IActionResult> _GroupList(long slug, int count, int skip)
+        {
+
         }
     }
 }

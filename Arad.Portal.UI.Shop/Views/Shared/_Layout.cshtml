@@ -43,8 +43,14 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/Menu/Bootstrap4MegaMenu.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    @RenderSection("Styles", required: false);
-    @await RenderSectionAsync("Scripts", required: false);
+    <style>
+        .lan {
+            border: none;
+            padding : 0.5rem 0.25rem;
+        }
+    </style>
+    @RenderSection("Styles", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
     @if (direction == "rtl")
     {
         <link href="~/fonts/IranSans/css/persianfonts.css" rel="stylesheet" />
@@ -54,7 +60,9 @@
     {
 
     }
+
 </head>
+
 
 <body>
     <header>
@@ -64,13 +72,13 @@
             <div class="profile"></div>
             <div class="col-md-1 language">
                 <ul class="langUl list-group list-group-horizontal">
-                    <li class="list-group-item">
-                        <a >
+                    <li class="list-group-item lan">
+                        <a>
                             <img src="~/imgs/IRAN.png" onclick="setLang('fa-IR')" />
                         </a>
                     </li>
-                    <li class="list-group-item">
-                        <a >
+                    <li class="list-group-item lan">
+                        <a>
                             <img src="~/imgs/USA.png" onclick="setLang('en-US')" />
                         </a>
                     </li>
@@ -79,17 +87,17 @@
 
 
         </div>
-        
-        
 
-        
-        
+
+
+
+
     </header>
-    <div class="navbarMenu">
+    <div class="navbarMenu" >
         @await Component.InvokeAsync("StoreMenu")
     </div>
 
-    <div class="container">
+    <div class="container" @*style="min-width: 100%;"*@>
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -101,9 +109,10 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     @*<script src="~/js/site.js" asp-append-version="true"></script>
         @await RenderSectionAsync("Scripts", required: false)*@
-<script>
+    <script>
     function setLang(lang)
     {
+        debugger;
         var currentCulture = '@CultureInfo.CurrentCulture.Name';
         if (currentCulture !== lang) {
             $.ajax({
@@ -112,11 +121,10 @@
                 success: function () {
                     debugger;
                     window.location.reload();
-
                 }
             });
         }
     }
-</script>
+    </script>
 </body>
 </html>

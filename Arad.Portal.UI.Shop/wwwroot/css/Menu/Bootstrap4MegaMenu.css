@@ -22,8 +22,9 @@
     right : 0;
     padding : 15px;
 }
-.dropdown-item{
-   /* padding : 5px 0;*/
+.dropdown-item {
+    /* padding : 5px 0;*/
+    color: #555c62cf;
 }
 h5 {
     /* letter-spacing : 2px;

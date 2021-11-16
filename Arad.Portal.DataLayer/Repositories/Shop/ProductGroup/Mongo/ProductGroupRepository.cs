@@ -141,14 +141,22 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             return result;
         }
 
-        public List<ProductGroupDTO> GetsDirectChildren(string productGroupId)
+        public List<ProductGroupDTO> GetsDirectChildren(string productGroupId, int? count, int skip = 0)
         {
             var result = new List<ProductGroupDTO>();
+            List<Entities.Shop.ProductGroup.ProductGroup> lst;
             try
             {
-                var lst = _productContext.ProductGroupCollection
+                if(count != null)
+                {
+                    lst = _productContext.ProductGroupCollection
+                    .Find(_ => _.ParentId == productGroupId && !_.IsDeleted && _.IsActive).Skip(skip).Limit(count).ToList();
+                }
+                else
+                {
+                    lst = _productContext.ProductGroupCollection
                     .Find(_ => _.ParentId == productGroupId && !_.IsDeleted && _.IsActive).ToList();
-
+                }
                 result = _mapper.Map<List<ProductGroupDTO>>(lst);
             }
             catch (Exception e)
@@ -402,9 +410,13 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             var productEntity = _productContext.ProductGroupCollection
                 .Find(_ => _.GroupCode == groupCode).First();
 
-            result.Groups = GetsDirectChildren(productEntity.ProductGroupId).Skip(0).Take(10).ToList();
+            result.Groups = GetsDirectChildren(productEntity.ProductGroupId, 4, 0);
+            result.NGrpCountToSkip = 4;
+            result.NGrpCountToTake = 4;
 
-            result.ProductList = GetLatestProductInThisGroup(10, productEntity.ProductGroupId);
+            result.ProductList = GetLatestProductInThisGroup(productEntity.ProductGroupId, 4, 0);
+            result.NEntityCntToSkip = 4;
+            result.NEntityCntToTake = 4;
             return result;
         }
         
@@ -417,7 +429,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
         //    return result;
         //}
 
-        public List<ProductOutputDTO> GetLatestProductInThisGroup(int count, string productGroupId)
+        public List<ProductOutputDTO> GetLatestProductInThisGroup(string productGroupId, int? count, int skip = 0)
         {
             var result = new List<ProductOutputDTO>();
             var list = _productContext.ProductCollection

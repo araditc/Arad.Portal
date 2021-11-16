@@ -77,7 +77,7 @@ namespace Arad.Portal.UI.Shop.Middlewares
                 else
                 if (!context.Request.Path.Value.StartsWith($"/{lang.Symbol.ToLower()}"))
                 {
-                    newPath = $"/{lang.Symbol.ToLower()}{context.Request.Path}";
+                    newPath = $"/{lang.Symbol.ToLower()}{context.Request.Path}{context.Request.QueryString}";
                     context.Response.Redirect(newPath, true);
                 }
                 else

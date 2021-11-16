@@ -24,17 +24,23 @@
     .ltrTextAlign{
         text-align: left;
     }
-    .dropdown-menu{
-        font-size : 0.8rem;
-        padding-right: 5px !important;
-        
+    .dropdown-menu {
+       /* font-size: 0.8rem;*/
+        padding-right: @(direction == "rtl" ? "1.5rem" : "0") !important;
+        padding-left: @(direction == "ltr" ? "1.5rem" : "0") !important;
     }
     h5{
-        font-size: 1rem;
+        font-size: 1.1rem;
+    }
+    .mnLink {
+        color: #000204f2 !important;
     }
 </style>
 <div class="row">
-    <div class="col-10">
+    @*<div class="col-1">
+
+    </div>*@
+    <div class="col-12">
         <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
             <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbar" aria-controls="navbars" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,13 +54,13 @@
                         if (item.Childrens.Count() == 0)
                         {
                             <li class="nav-item">
-                                <a class="nav-link" href="@item.Url">@item.MenuTitle.Name</a>
+                                <a class="nav-link mnLink" href="@item.Url">@item.MenuTitle.Name</a>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item dropdown menu-area">
-                                <a class="nav-link dropdown-toggle" href="@item.Url" id='@($"st_mn_{item.MenuCode}")'
+                                <a class="nav-link mnLink dropdown-toggle" href="@item.Url" id='@($"st_mn_{item.MenuCode}")'
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     @item.MenuTitle.Name
                                 </a>
@@ -68,7 +74,7 @@
                                                 @*@(direction == "rtl" && i != 0 ? "border-right" : (direction == "ltr" && i != 0 ? "border-left" : ""))*@
 
                                                 <div  style='flex-shrink : @(child.Childrens.Count== 0 ? "5" : "0")'>
-                                                    <h5><a class="nav-link @(direction == "rtl" ? "rtlTextAlign" : "ltrTextAlign")" href="@child.Url">@child.MenuTitle.Name</a></h5>
+                                                    <h5><a class="nav-link mnLink @(direction == "rtl" ? "rtlTextAlign" : "ltrTextAlign")" href="@child.Url">@child.MenuTitle.Name</a></h5>
 
                                                     @foreach (var leaf in child.Childrens)
                                                     {

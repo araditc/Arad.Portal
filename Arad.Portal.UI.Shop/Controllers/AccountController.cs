@@ -17,8 +17,9 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
         [HttpGet]
-        public IActionResult ChangeLang([FromQuery] string langId)
+        public IActionResult ChangeLang(string langId)
         {
+          
             if (CultureInfo.CurrentCulture.Name != langId)
             {
                 Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
