@@ -28,6 +28,9 @@
 	<string key="btn_Save">
 		<value>Save</value>
 	</string>
+	<string key="GetMore">
+		<value>more</value>
+	</string>
 	<string key="btn_Edit">
 		<value>Edit</value>
 	</string>

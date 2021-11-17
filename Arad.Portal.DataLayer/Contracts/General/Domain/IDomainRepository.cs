@@ -17,7 +17,9 @@ namespace Arad.Portal.DataLayer.Contracts.General.Domain
         Task<RepositoryOperationResult> DeleteDomain(string domainId, string modificationReason);
         RepositoryOperationResult<DomainDTO> FetchDomain(string domainId);
         RepositoryOperationResult<DomainDTO> FetchByName(string domainName);
-        Task<RepositoryOperationResult> Restore(string id);
+        RepositoryOperationResult<DomainDTO> GetDefaultDomain();
+
+       Task<RepositoryOperationResult> Restore(string id);
         List<SelectListModel> GetAllActiveDomains();
     }
 }

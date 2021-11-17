@@ -15,58 +15,71 @@
 
 @section Styles{
     @*<link href="~/lib/Swiper/swiper-bundle.min.css" rel="stylesheet" />*@
-
+    <style>
+        .pgCard {
+            margin: auto;
+        }
+    </style>
 }
 
 @section Scripts{
     @*<script src="~/lib/Swiper/swiper-bundle.min.js"></script>*@
 
 }
-<div>
-    @{
-        @await Html.RenderPartialAsync("_groupList", Model.GroupSection)
-    }
-
-
+<div id="groupSection">
+    @await Component.InvokeAsync("GroupSection", Model.GroupSection)
 </div>
-
-   
-
-
-
-
-
-{
-}
-
-@await Html.RenderPartialAsync("_productList", );
-
-
-<!--<div class="row">
-    @foreach (var item in Model.Groups)
-    {
-        <div class="col-md-3">
-
-            <div class="card align-items-center pgCard"-->
- @*style="width: 18rem;"*@
-<!-->
-<img class="card-img-top rounded-circle"-->
- @*src="@Url.Content(item.GroupImage.Url)"*@
-<!--src="https://www.w3schools.com/bootstrap4/cinqueterre.jpg" alt="@item.GroupImage.Title">
-                <div class="card-body">
-                    <a href="/group/@item.GroupCode" class="btn btn-secondary">
-                        <h5 class="card-title">@(item.MultiLingualProperties.First(_=>_.LanguageId == ViewBag.CurLangId).Name)</h5>
-                    </a>
-                </div>
-            </div>
-
-        </div>
-    }
-</div>-->
-<div class="row">
-    <div class="align-items-center">
-        @*<a href="/group/@item.GroupCode" class="btn btn-secondary">
-            <h5 class="card-title">@(item.MultiLingualProperties.First(_=>_.LanguageId == ViewBag.CurLangId).Name)</h5>
-        </a>*@
+<div class="row" >
+    <div @*class="align-items-center"*@ style="margin: auto;">
+        <button class="btn btn-ligth" id="btnMoreGroups">@Language.GetString("GetMore")</button>
     </div>
 </div>
+
+@*<div id="productSection">
+   @await Component.InvokeAsync("ProductsInGroupSection", Model.ProductInGroupSection)
+</div>
+<div class="row">
+    <div class="align-items-center">
+        <button class="btn btn-ligth" id="btnMoreProducts">@Language.GetString("GetMore")</button>
+    </div>
+</div>*@
+
+<script type="text/javascript">
+    var skip;
+    var take;
+    $(document).ready(function () {
+        debugger;
+        skip = parseInt('@Model.GroupSection.CountToSkip') + 4;
+        take = parseInt('@Model.GroupSection.CountToTake') ;
+
+        $("#btnMoreGroups").click(function () {
+            debugger;
+                var obj = {};
+            obj.ProductGroupId = '@Model.GroupSection.ProductGroupId';
+            obj.GroupsWithProducts = @Json.Serialize(Model.GroupSection.GroupsWithProducts);
+                obj.CountToTake = take;
+                obj.CountToSkip = skip;
+                obj.DefaultLanguageId = '@Model.GroupSection.DefaultLanguageId'
+            var _url = '@Url.Action("GetMyGroupVC", "ProductGroup")';
+                $.ajax({
+                    type: "Post",
+                    dataType: "html",
+                  /*  contentType : "",*/
+                    url: _url,
+                    data: obj ,
+                    success: function (result) {
+                        
+                        if (result != "") {
+                            skip += 4;
+                            debugger;
+                            $("#groupSection").append(result);
+                        } else {
+                            $("#btnMoreProducts").css("display", "none");
+                        }
+
+                    },
+                });
+        });
+    });
+
+</script>

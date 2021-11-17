@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Models.Shared
 {
-    public class ProductSection
+    public class ProductsInGroupSection
     {
         public int CountToTake { get; set; }
 
         public int CountToSkip { get; set; }
 
-        public long Slug { get; set; }
+        public string ProductGroupId { get; set; }
+
+        public string DefaultLanguageId { get; set; }
+
+        public int TotalCount { get; set; }
     }
 }

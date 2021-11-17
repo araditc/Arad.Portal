@@ -22,6 +22,8 @@ using System.Globalization;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Models.Product;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
+using MongoDB.Bson;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
 {
@@ -29,12 +31,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
     {
         private readonly ProductContext _productContext;
         private readonly LanguageContext _languageContext;
+        private readonly IDomainRepository _domainRepository;
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
       
         public ProductGroupRepository(ProductContext context,
             LanguageContext languageContext, 
             IHttpContextAccessor httpContextAccessor,
+            IDomainRepository domainRepository,
             IMapper mapper, UserManager<ApplicationUser> userManager):
             base(httpContextAccessor)
         {
@@ -43,6 +47,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             _languageContext = languageContext;
             _userManager = userManager;
             _mapper = mapper;
+            _domainRepository = domainRepository;
         }
 
         public async Task<RepositoryOperationResult> Add(ProductGroupDTO dto)
@@ -141,7 +146,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             return result;
         }
 
-        public List<ProductGroupDTO> GetsDirectChildren(string productGroupId, int? count, int skip = 0)
+        public List<ProductGroupDTO> GetsDirectChildren(List<string> groupsWithProduct, string domainName, string productGroupId, int? count, int skip = 0)
         {
             var result = new List<ProductGroupDTO>();
             List<Entities.Shop.ProductGroup.ProductGroup> lst;
@@ -150,12 +155,12 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                 if(count != null)
                 {
                     lst = _productContext.ProductGroupCollection
-                    .Find(_ => _.ParentId == productGroupId && !_.IsDeleted && _.IsActive).Skip(skip).Limit(count).ToList();
+                    .Find(_ => _.ParentId == productGroupId && !_.IsDeleted && _.IsActive && groupsWithProduct.Contains(_.ProductGroupId)).Skip(skip).Limit(count).ToList();
                 }
                 else
                 {
                     lst = _productContext.ProductGroupCollection
-                    .Find(_ => _.ParentId == productGroupId && !_.IsDeleted && _.IsActive).ToList();
+                    .Find(_ => _.ParentId == productGroupId && !_.IsDeleted && _.IsActive && groupsWithProduct.Contains(_.ProductGroupId)).ToList();
                 }
                 result = _mapper.Map<List<ProductGroupDTO>>(lst);
             }
@@ -403,22 +408,22 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             return result;
         }
 
-        public CommonViewModel FetchByCode(long groupCode)
-        {
-            var result = new CommonViewModel();
+        //public CommonViewModel FetchByCode(long groupCode)
+        //{
+        //    var result = new CommonViewModel();
 
-            var productEntity = _productContext.ProductGroupCollection
-                .Find(_ => _.GroupCode == groupCode).First();
+        //    var productEntity = _productContext.ProductGroupCollection
+        //        .Find(_ => _.GroupCode == groupCode).First();
 
-            result.Groups = GetsDirectChildren(productEntity.ProductGroupId, 4, 0);
-            result.NGrpCountToSkip = 4;
-            result.NGrpCountToTake = 4;
+        //    result.Groups = GetsDirectChildren(productEntity.ProductGroupId, 4, 0);
+        //    //result.NGrpCountToSkip = 4;
+        //    //result.NGrpCountToTake = 4;
 
-            result.ProductList = GetLatestProductInThisGroup(productEntity.ProductGroupId, 4, 0);
-            result.NEntityCntToSkip = 4;
-            result.NEntityCntToTake = 4;
-            return result;
-        }
+        //    result.ProductList = GetLatestProductInThisGroup(productEntity.ProductGroupId, 4, 0);
+        //    //result.NEntityCntToSkip = 4;
+        //    //result.NEntityCntToTake = 4;
+        //    return result;
+        //}
         
         //public ProductGroupDTO FetchByCode(long groupCode)
         //{
@@ -429,7 +434,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
         //    return result;
         //}
 
-        public List<ProductOutputDTO> GetLatestProductInThisGroup(string productGroupId, int? count, int skip = 0)
+        public List<ProductOutputDTO> GetLatestProductInThisGroup(string domainName, string productGroupId, int? count, int skip = 0)
         {
             var result = new List<ProductOutputDTO>();
             var list = _productContext.ProductCollection
@@ -437,6 +442,90 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
 
             result = _mapper.Map<List<ProductOutputDTO>>(list);
             return result;
+        }
+
+        public string FetchByCode(long groupCode)
+        {
+            string result = "";
+            var entity = _productContext.ProductGroupCollection
+                .Find(_ => _.GroupCode == groupCode).First();
+
+            if(entity != null)
+            {
+                result = entity.ProductGroupId;
+            }
+            return result;
+        }
+
+        public async Task<long> GetDircetChildrenCount(string domainName,string productGroupId, List<string> groupListWithProducts)
+        {
+            
+            var currentDomain = _domainRepository.FetchByName(domainName);
+
+            var count = await  _productContext.ProductGroupCollection
+                    .Find(_ => _.AssociatedDomainId == currentDomain.ReturnValue.DomainId 
+                           && _.ParentId == productGroupId 
+                           && groupListWithProducts.Contains(_.ProductGroupId)).CountDocumentsAsync();
+
+            return count;
+        }
+
+        public long GetProductsInGroupCounts(string domainName, string productGroupId)
+        {
+            long count;
+            var currentDomain = _domainRepository.FetchByName(domainName);
+            var defDomain = _domainRepository.GetDefaultDomain();
+            if(currentDomain.ReturnValue.DomainId != defDomain.ReturnValue.DomainId)
+            {
+                count = _productContext.ProductCollection
+                    .Find(_ =>_.GroupIds.Contains(productGroupId) &&  _.AssociatedDomainId == currentDomain.ReturnValue.DomainId).CountDocuments();
+            }else
+            {
+                count = _productContext.ProductCollection
+                    .Find(_ => _.GroupIds.Contains(productGroupId) && (_.AssociatedDomainId == currentDomain.ReturnValue.DomainId || _.IsPublishedOnMainDomain)).CountDocuments();
+            }
+            return count;
+        }
+
+        public async Task<List<string>> AllGroupIdsWhichEndInProducts(string domainName)
+        {
+            var currentDomain = _domainRepository.FetchByName(domainName);
+            var defDomain = _domainRepository.GetDefaultDomain();
+
+            FilterDefinitionBuilder<Entities.Shop.Product.Product> builder = new();
+            FilterDefinition<Entities.Shop.Product.Product> filterDef;
+            //var filter = new BsonDocument("AssociatedDomainId", currentDomain.ReturnValue.DomainId);
+            filterDef = builder.Eq(nameof(Entities.Shop.Product.Product.AssociatedDomainId), currentDomain.ReturnValue.DomainId);
+            if (currentDomain.ReturnValue.DomainId == defDomain.ReturnValue.DomainId)
+            {
+                filterDef = builder.And(filterDef, builder.Eq(nameof(Entities.Shop.Product.Product.IsPublishedOnMainDomain), true));
+            }
+            //TODO : doesnt work
+            var cursor = await _productContext.ProductCollection.DistinctAsync<string>("GroupIds", filterDef);
+            var lst = await cursor.ToListAsync();
+            
+            //lst.Add("85b8f7f8-3381-44bf-9429-3c3dcd5988c2");
+            //lst.Add("9c27b561-3b95-4e73-a955-0571937d767a");
+            //lst.Add("01ec3195-5498-4e6f-a4c0-9d14ddeced63");
+            //lst.Add("7ca0c66f-2a89-45b9-8d77-a3c7592e7788");
+            var finalList = new List<string>();
+            foreach (var groupId in lst)
+            {
+                finalList.Add(groupId);
+                var entity = _productContext.ProductGroupCollection
+                             .Find(_ => _.ProductGroupId == groupId).First();
+                var tmp = entity;
+                while (tmp.ParentId != null)
+                {
+                    finalList.Add(tmp.ParentId);
+                    tmp = _productContext.ProductGroupCollection
+                         .Find(_ => _.ProductGroupId == tmp.ParentId).First();
+                }
+            }
+            //testing part
+            var groups = _productContext.ProductGroupCollection.AsQueryable().Select(_ => _.ProductGroupId).ToList();
+            finalList = groups;
+            return finalList;
         }
     }
 }

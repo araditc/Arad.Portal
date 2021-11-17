@@ -254,7 +254,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 result.Message = ConstMessages.SuccessfullyDone;
                 result.ReturnValue = dto;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 result.Message = ConstMessages.ExceptionOccured;
             }
@@ -406,6 +406,23 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                   Text = _.DomainName,
                   Value = _.DomainId
               }).ToList();
+            return result;
+        }
+
+        public RepositoryOperationResult<DomainDTO> GetDefaultDomain()
+        {
+            var result = new RepositoryOperationResult<DomainDTO>();
+            var entity = _context.Collection.Find(_ => _.IsDefault).First();
+            if(entity != null)
+            {
+                result.Succeeded = true;
+                result.ReturnValue = _mapper.Map<DomainDTO>(entity);
+                result.Message = ConstMessages.SuccessfullyDone;
+            }else
+            {
+                result.Succeeded = false;
+                result.Message = ConstMessages.ObjectNotFound;
+            }
             return result;
         }
     }

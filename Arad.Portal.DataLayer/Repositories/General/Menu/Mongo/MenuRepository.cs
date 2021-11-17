@@ -231,43 +231,43 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 }).ToList();
             //those menues which have isFull = true will be shown in UI
             #region check isFull
-            //var productGroupsMenu = result.Where(_ => _.MenuType == MenuType.ProductGroup);
-            //var prodctGroupMenuLeaves = productGroupsMenu.Where(_ => _.Childrens.Count() == 0);
-            //foreach (var leaf in prodctGroupMenuLeaves)
-            //{
-            //    var tmp = new StoreMenuVM();
-            //    var productsInGroupCounts = _productContext.ProductCollection.Find(_ => _.GroupIds.Contains(leaf.SubGroupId)).CountDocuments();
-            //    if(productsInGroupCounts == 0)
-            //    {
-            //        leaf.IsFull = false;
-            //        tmp = leaf;
-            //        while (tmp.ParentId != null)
-            //        {
-            //            tmp.IsFull = false;
-            //            tmp = result.FirstOrDefault(_ => _.MenuId == tmp.ParentId);
-            //        }
-            //        tmp.IsFull = false;
-            //    }
-            //}
-            //var contentCategoryMenu = result.Where(_ => _.MenuType == MenuType.CategoryContent);
-            //var contentCategoryLeaves = contentCategoryMenu.Where(_ => _.Childrens.Count() == 0);
-            //foreach (var leaf in contentCategoryLeaves)
-            //{
-            //    var tmp = new StoreMenuVM();
-            //    var contentsInCategoryCounts = _contentContext.Collection
-            //        .Find(_ => _.ContentCategoryId == leaf.SubGroupId).CountDocuments();
-            //    if(contentsInCategoryCounts == 0)
-            //    {
-            //        leaf.IsFull = false;
-            //        tmp = leaf;
-            //        while(tmp.ParentId != null)
-            //        {
-            //            tmp.IsFull = false;
-            //            tmp = result.FirstOrDefault(_ => _.MenuId == tmp.ParentId);
-            //        }
-            //        tmp.IsFull = false;
-            //    }
-            //}
+            var productGroupsMenu = result.Where(_ => _.MenuType == MenuType.ProductGroup);
+            var prodctGroupMenuLeaves = productGroupsMenu.Where(_ => _.Childrens.Count() == 0);
+            foreach (var leaf in prodctGroupMenuLeaves)
+            {
+                var tmp = new StoreMenuVM();
+                var productsInGroupCounts = _productContext.ProductCollection.Find(_ => _.GroupIds.Contains(leaf.SubGroupId)).CountDocuments();
+                if (productsInGroupCounts == 0)
+                {
+                    leaf.IsFull = false;
+                    tmp = leaf;
+                    while (tmp.ParentId != null)
+                    {
+                        tmp.IsFull = false;
+                        tmp = result.FirstOrDefault(_ => _.MenuId == tmp.ParentId);
+                    }
+                    tmp.IsFull = false;
+                }
+            }
+            var contentCategoryMenu = result.Where(_ => _.MenuType == MenuType.CategoryContent);
+            var contentCategoryLeaves = contentCategoryMenu.Where(_ => _.Childrens.Count() == 0);
+            foreach (var leaf in contentCategoryLeaves)
+            {
+                var tmp = new StoreMenuVM();
+                var contentsInCategoryCounts = _contentContext.Collection
+                    .Find(_ => _.ContentCategoryId == leaf.SubGroupId).CountDocuments();
+                if (contentsInCategoryCounts == 0)
+                {
+                    leaf.IsFull = false;
+                    tmp = leaf;
+                    while (tmp.ParentId != null)
+                    {
+                        tmp.IsFull = false;
+                        tmp = result.FirstOrDefault(_ => _.MenuId == tmp.ParentId);
+                    }
+                    tmp.IsFull = false;
+                }
+            }
             #endregion
 
             return result;

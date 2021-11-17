@@ -28,6 +28,9 @@
 	<string key="btn_Save">
 		<value>ذخیره</value>
 	</string>
+	<string key="GetMore">
+		<value>بیشتر</value>
+	</string>
 	<string key="btn_Edit">
 		<value>ویرایش</value>
 	</string>

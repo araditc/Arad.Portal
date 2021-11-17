@@ -19,6 +19,6 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public ProductOutputDTO ProductDetail { get; set; }
         public ContentDTO ContentDetail { get; set; }
         public GroupSection GroupSection { get; set; }
-        public ProductSection ProductSection { get; set; }
+        public ProductsInGroupSection ProductInGroupSection { get; set; }
     }
 }
