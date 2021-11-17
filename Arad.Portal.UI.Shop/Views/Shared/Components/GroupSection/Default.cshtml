@@ -9,7 +9,7 @@
                 <img class="card-img-top rounded-circle" @*src="@Url.Content(item.GroupImage.Url)"*@ src="https://www.w3schools.com/bootstrap4/cinqueterre.jpg" alt="@item.GroupImage.Title">
                 <div class="card-body" style="margin: auto;">
                     <a href="/group/@item.GroupCode" class="btn btn-secondary">
-                        <h5 class="card-title">@(item.MultiLingualProperties.First(_=>_.LanguageId == ViewBag.CurLangId).Name)</h5>
+                        <h6 class="card-title">@(item.MultiLingualProperties.First(_=>_.LanguageId == ViewBag.CurLangId).Name)</h6>
                     </a>
                 </div>
             </div>
