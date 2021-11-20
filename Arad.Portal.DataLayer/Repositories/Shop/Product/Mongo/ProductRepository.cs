@@ -73,7 +73,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
 
                 var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
-                var domainId = claims?.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+                var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
                 equallentModel.AssociatedDomainId = domainId;
 
                 await _context.ProductCollection.InsertOneAsync(equallentModel);

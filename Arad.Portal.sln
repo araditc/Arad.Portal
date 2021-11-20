@@ -19,8 +19,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arad.Portal.UI.Shop", "Arad
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arad.Portal.UI.Shop.Dashboard", "Arad.Portal.UI.Shop.Dashboard\Arad.Portal.UI.Shop.Dashboard.csproj", "{B9EB48DE-3C97-45E6-98B8-2F64F573D781}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{BB1E5640-201A-44A0-BDA0-391D7F8E8C77}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,10 +45,6 @@ Global
 		{B9EB48DE-3C97-45E6-98B8-2F64F573D781}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9EB48DE-3C97-45E6-98B8-2F64F573D781}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9EB48DE-3C97-45E6-98B8-2F64F573D781}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BB1E5640-201A-44A0-BDA0-391D7F8E8C77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BB1E5640-201A-44A0-BDA0-391D7F8E8C77}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BB1E5640-201A-44A0-BDA0-391D7F8E8C77}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BB1E5640-201A-44A0-BDA0-391D7F8E8C77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,7 +56,6 @@ Global
 		{8318CFBA-80B0-4E08-BF98-4968E57C5A95} = {1481896D-F740-4E79-B881-965C51FAC3AE}
 		{A848E74E-BC53-4832-894A-5C740271F028} = {998DA860-4BBD-41EC-B1CE-163AD43098F5}
 		{B9EB48DE-3C97-45E6-98B8-2F64F573D781} = {998DA860-4BBD-41EC-B1CE-163AD43098F5}
-		{BB1E5640-201A-44A0-BDA0-391D7F8E8C77} = {998DA860-4BBD-41EC-B1CE-163AD43098F5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {939D7E94-3BBA-4D26-BDF6-F892F9F5DF31}

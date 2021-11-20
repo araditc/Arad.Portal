@@ -39,7 +39,7 @@
 
             <div class="card-body" id="addEditProductGroupCard">
                 <input type="hidden" value="@Model.SpecificationGroupId" asp-for="SpecificationGroupId" />
-                <div class="row">
+                @*<div class="row">
                     @{
                         if (!string.IsNullOrWhiteSpace(Model.SpecificationGroupId))
                         {
@@ -50,7 +50,7 @@
                             </div>
                         }
                     }
-                </div>
+                </div>*@
                 <div class="row" style="background-color: #f0f0f5;">
                     <div class="form-group col-md-3">
                         <label for="groupName">@Language.GetString("tbl_GroupName")</label><br />
@@ -137,10 +137,7 @@
                 var flag = false;
 
           var dataModel = FillDataToSend();
-          if ("@Model.SpecificationGroupId" != "" && $("#ModificationReason").val() == "") {
-                    $("span[data-val-result='ModificationReason']").html('@Language.GetString("AlertAndMessage_ModificationReason")');
-                    flag = true;
-                }
+         
           if (dataModel.GroupNames.length == 0) {
                     $("span[data-val-result='GroupNames']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
                     flag = true;
@@ -204,7 +201,7 @@
             var obj = {};
             obj.GroupNames = [];
             obj.SpecificationGroupId = $("#SpecificationGroupId").val();
-           obj.ModificationReason = $("#ModificationReason").val();
+          /* obj.ModificationReason = $("#ModificationReason").val();*/
             $("#multiLingualList tr").each(function () {
                 debugger;
                 var innerModel = {};

@@ -231,9 +231,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
 
                 if (string.IsNullOrWhiteSpace(filter["page"]))
                 {
-                    filter.Set("CurrentPage", "1");
+                    filter.Set("page", "1");
                 }
-
                 if (string.IsNullOrWhiteSpace(filter["PageSize"]))
                 {
                     filter.Set("PageSize", "20");

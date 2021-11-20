@@ -39,6 +39,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Arad.Portal.UI.Shop</title>
+    <link rel="stylesheet" href="~/css/font-awesome/font-awesome.min.css">
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/Menu/Bootstrap4MegaMenu.css" />
     <link rel="stylesheet" href="~/css/site.css" />
@@ -60,7 +61,7 @@
 
     }
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    
 </head>
 
 
@@ -84,14 +85,7 @@
                     </li>
                 </ul>
             </div>
-
-
         </div>
-
-
-
-
-
     </header>
     <div class="navbarMenu">
         @await Component.InvokeAsync("StoreMenu")
@@ -104,9 +98,9 @@
     </div>
 
 
-    
     <script src="~/lib/popper.js/umd/popper.min.js"></script>
-    @*<script src="~/lib/bootstrap/js/bootstrap.min.js"></script>*@
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
    
 
     @*<script src="~/js/site.js" asp-append-version="true"></script>

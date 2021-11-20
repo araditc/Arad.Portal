@@ -15,11 +15,151 @@
 
 @section Styles{
     @*<link href="~/lib/Swiper/swiper-bundle.min.css" rel="stylesheet" />*@
-    <style>
+<style>
         .pgCard {
             margin: auto;
         }
-    </style>
+        .bbb_deals {
+            width: 100%;
+            margin-right: 7%;
+            padding-top: 80px;
+            padding-left: 25px;
+            padding-right: 25px;
+            padding-bottom: 34px;
+            box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            margin-top: 0px
+        }
+        .ribbon span {
+            position: absolute;
+            display: block;
+            width: 34px;
+            border-radius: 50%;
+            padding: 8px 0;
+            background-color: #3498db;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, .1);
+            color: #fff;
+            font: 100 18px/1 'Lato', sans-serif;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+            text-transform: uppercase;
+            text-align: center
+        }
+
+        .ribbon-top-right {
+            top: -10px;
+            right: -10px
+        }
+
+            .ribbon-top-right::before,
+            .ribbon-top-right::after {
+                border-top-color: transparent;
+                border-right-color: transparent
+            }
+
+            .ribbon-top-right::before {
+                top: 0;
+                left: 17px
+            }
+
+            .ribbon-top-right::after {
+                bottom: 17px;
+                right: 0
+            }
+            .sold_stars i {
+                color: orange
+            }
+        .ribbon-top-right span {
+            right: 17px;
+            top: 17px
+        }
+        .bbb_deals_title {
+            position: absolute;
+            top: 10px;
+            left: 22px;
+            font-size: 18px;
+            font-weight: 500;
+            color: #000000
+        }
+        .bbb_deals_slider_container{
+            width : 100%;
+        }
+        .bbb_deals_item {
+            width: 100% !important;
+        }
+        .bbb_deals_image {
+            width: 100%
+        }
+        .bbb_deals_image img {
+            width: 100%
+        }
+        .bbb_deals_content {
+            margin-top: 33px
+        }
+        .bbb_deals_item_category a {
+            font-size: 14px;
+            font-weight: 400;
+            color: rgba(0, 0, 0, 0.5)
+        }
+
+        .bbb_deals_item_price_a {
+            font-size: 14px;
+            font-weight: 400;
+            color: rgba(0, 0, 0, 0.6)
+        }
+        .bbb_deals_item_price_a strike {
+            color: red
+        }
+        .bbb_deals_item_name {
+            font-size: 24px;
+            font-weight: 400;
+            color: #000000
+        }
+
+        .bbb_deals_item_price {
+            font-size: 24px;
+            font-weight: 500;
+            color: #6d6e73
+        }
+        .available {
+            margin-top: 19px
+        }
+
+        .available_title {
+            font-size: 16px;
+            color: rgba(0, 0, 0, 0.5);
+            font-weight: 400
+        }
+        .available_title span {
+            font-weight: 700
+        }
+        @@media only screen and (max-width: 991px) {
+        .bbb_deals {
+            width: 100%;
+            margin-right: 0px
+        }
+       }
+
+       @@media only screen and (max-width: 575px) {
+        .bbb_deals {
+            padding-left: 15px;
+            padding-right: 15px
+        }
+
+        .bbb_deals_title {
+            left: 15px;
+            font-size: 16px
+        }
+
+        .bbb_deals_slider_nav_container {
+            right: 5px
+        }
+
+        .bbb_deals_item_name,
+        .bbb_deals_item_price {
+            font-size: 20px
+        }
+        }
+</style>
 }
 
 @section Scripts{
@@ -39,46 +179,72 @@
    @await Component.InvokeAsync("ProductsInGroupSection", Model.ProductInGroupSection)
 </div>
 <div class="row">
-    <div class="align-items-center">
+    <div style="margin: auto;">
         <button class="btn btn-ligth" id="btnMoreProducts">@Language.GetString("GetMore")</button>
     </div>
 </div>*@
 
 <script type="text/javascript">
-    var skip;
-    var take;
+    var grpSkip;
+    var grpTake;
+    var prSkip;
+    var prTake;
     $(document).ready(function () {
         debugger;
-        skip = parseInt('@Model.GroupSection.CountToSkip') + 4;
-        take = parseInt('@Model.GroupSection.CountToTake') ;
+        grpSkip = parseInt('@Model.GroupSection.CountToSkip') + 4;
+        grpTake = parseInt('@Model.GroupSection.CountToTake');
+        prSkip = parseInt('@Model.ProductInGroupSection.CountToSkip') + 4;
+        prTake = parseInt('@Model.ProductInGroupSection.CountToTake');
 
         $("#btnMoreGroups").click(function () {
             debugger;
                 var obj = {};
             obj.ProductGroupId = '@Model.GroupSection.ProductGroupId';
             obj.GroupsWithProducts = @Json.Serialize(Model.GroupSection.GroupsWithProducts);
-                obj.CountToTake = take;
-                obj.CountToSkip = skip;
-                obj.DefaultLanguageId = '@Model.GroupSection.DefaultLanguageId'
+            obj.CountToTake = grpTake;
+            obj.CountToSkip = grpSkip;
+            obj.DefaultLanguageId = '@Model.GroupSection.DefaultLanguageId'
             var _url = '@Url.Action("GetMyGroupVC", "ProductGroup")';
                 $.ajax({
                     type: "Post",
                     dataType: "html",
-                  /*  contentType : "",*/
                     url: _url,
                     data: obj ,
                     success: function (result) {
-                        
                         if (result != "") {
-                            skip += 4;
+                            grpSkip += 4;
                             debugger;
                             $("#groupSection").append(result);
                         } else {
-                            $("#btnMoreProducts").css("display", "none");
+                            $("#btnMoreGroups").css("display", "none");
                         }
-
                     },
                 });
+        });
+
+        $("#btnMoreProducts").click(function () {
+            debugger;
+            var obj = {};
+            obj.ProductGroupId = '@Model.ProductInGroupSection.ProductGroupId';
+            obj.CountToTake = prTake;
+            obj.CountToSkip = prSkip;
+            var url = '@Url.Action("GetProductsInGroupVC", "ProductGroup")';
+            $.ajax({
+                type: "GET",
+                dataType: "html",
+                contentType : false,
+                url: url,
+                data: obj,
+                success: function (result) {
+                    if (result != "") {
+                        prSkip += 4;
+                        debugger;
+                        $("#productSection").append(result);
+                    } else {
+                        $("#btnMoreProducts").css("display", "none");
+                    }
+                },
+            });
         });
     });
 

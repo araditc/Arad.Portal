@@ -1766,6 +1766,9 @@
 	<!--/.Messege Content of AdminLTE-->
 	<!--END [Dashboard]-->
 	<!--START [Action]-->
+	<string key="Available">
+		<value>در دسترس :</value>
+	</string>
 	<string key="Exit">
 		<value>خروج</value>
 	</string>

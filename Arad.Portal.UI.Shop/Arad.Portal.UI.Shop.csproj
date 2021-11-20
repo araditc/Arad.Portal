@@ -19,7 +19,6 @@
   <ItemGroup>
     <Folder Include="Views\ContentCategory\" />
     <Folder Include="Views\Search\" />
-    <Folder Include="Views\Shared\Components\ProductsInGroupSection\" />
     <Folder Include="wwwroot\css\imgs\" />
     <Folder Include="wwwroot\css\siteTemplate\" />
     <Folder Include="wwwroot\Images\" />

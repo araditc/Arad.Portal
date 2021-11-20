@@ -38,15 +38,43 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
             }
             return Convert.ToBase64String(byteImage);
         }
-        public static KeyValuePair<string, string> SaveImageModel(DataLayer.Models.Shared.Image picture, string pathToSave, string staticFileStorageURL, string webRootPath)
+
+        //public static KeyValuePair<string, string> SaveImageModel(DataLayer.Models.Shared.Image picture, string pathToSave, string staticFileStorageURL, string webRootPath)
+        //{
+        //    KeyValuePair<string, string> res;
+        //    if (string.IsNullOrWhiteSpace(staticFileStorageURL))
+        //    {
+        //        staticFileStorageURL = webRootPath;
+        //    }
+        //    picture.ImageId = Guid.NewGuid().ToString();
+        //    var path = Path.Combine(staticFileStorageURL, pathToSave);
+        //    try
+        //    {
+        //        if (!Directory.Exists(path))
+        //        {
+        //            Directory.CreateDirectory(path);
+        //        }
+        //        picture.Url = Path.Combine(pathToSave, $"{picture.ImageId}.jpg");
+        //        byte[] bytes = Convert.FromBase64String(picture.Content.Replace("data:image/jpeg;base64,", ""));
+        //        Image image;
+        //        using MemoryStream ms = new MemoryStream(bytes);
+        //        image = Image.FromStream(ms);
+        //        image.Save(Path.Combine(path, $"{picture.ImageId}.jpg"), System.Drawing.Imaging.ImageFormat.Jpeg);
+        //        res = new KeyValuePair<string, string>(picture.ImageId, picture.Url);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        res = new KeyValuePair<string, string>(Guid.Empty.ToString(), "");
+        //    }
+        //    return res;
+        //}
+
+        public static KeyValuePair<string, string> SaveImageModel(DataLayer.Models.Shared.Image picture, string pathToSave, string localStaticFileStorageURL)
         {
             KeyValuePair<string, string> res;
-            if (string.IsNullOrWhiteSpace(staticFileStorageURL))
-            {
-                staticFileStorageURL = webRootPath;
-            }
+           
             picture.ImageId = Guid.NewGuid().ToString();
-            var path = Path.Combine(staticFileStorageURL, pathToSave);
+            var path = Path.Combine(localStaticFileStorageURL, pathToSave);
             try
             {
                 if (!Directory.Exists(path))
@@ -67,6 +95,19 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
             }
             return res;
         }
+
+        public static string GetMIMEType(string fileName)
+        {
+            var provider =
+                new Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider();
+            string contentType;
+            if (!provider.TryGetContentType(fileName, out contentType))
+            {
+                contentType = "application/octet-stream";
+            }
+            return contentType;
+        }
+
     }
 
     public static class ImageValidator

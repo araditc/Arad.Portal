@@ -102,6 +102,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         
         public async Task<IActionResult> AddEdit(string id = "")
         {
+            System.IO.File.WriteAllText("D:\\logging.txt", $"MethodStart at {DateTime.Now}");
+            System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
+
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userDB = await _userManager.FindByIdAsync(currentUserId);
             if (userDB.IsSystemAccount)
@@ -112,6 +115,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     Text = _.Profile.FullName,
                     Value = _.Id
                 });
+                System.IO.File.AppendAllText("D:\\logging.txt", $"ViewBag.Vendors fill at {DateTime.Now}");
+                System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
             }
             else
             {
@@ -122,17 +127,19 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = await _productRepository.ProductFetch(id);
-                var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
-                if (string.IsNullOrWhiteSpace(staticFileStorageURL))
-                {
-                    staticFileStorageURL = _webHostEnvironment.WebRootPath;
-                }
+                System.IO.File.AppendAllText("D:\\logging.txt", $"Fetch Product at {DateTime.Now}");
+                System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
+                var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
+                //if (string.IsNullOrWhiteSpace(localStaticFileStorageURL))
+                //{
+                //    localStaticFileStorageURL = _webHostEnvironment.WebRootPath;
+                //}
                 foreach (var img in model.Images)
                 {
-                    if(string.IsNullOrWhiteSpace(img.Content))
+                    if (string.IsNullOrWhiteSpace(img.Content))
                     {
 
-                        using (System.Drawing.Image image = System.Drawing.Image.FromFile(Path.Combine(staticFileStorageURL, img.Url)))
+                        using (System.Drawing.Image image = System.Drawing.Image.FromFile(Path.Combine(localStaticFileStorageURL, img.Url)))
                         {
                             using (MemoryStream m = new MemoryStream())
                             {
@@ -147,9 +154,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                     }
                 }
+                System.IO.File.AppendAllText("D:\\logging.txt", $"base64string of images at {DateTime.Now}");
+                System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
                 if (_productRepository.HasActiveProductPromotion(id))
                 {
                     ViewBag.ActivePromotionId = model.Promotion.PromotionId;
+                    System.IO.File.AppendAllText("D:\\logging.txt", $"Active Promotions at {DateTime.Now}");
+                    System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
                 }
             }else
             {
@@ -161,25 +172,39 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var specGroupList = _specGroupRepository.AllActiveSpecificationGroup(lan.LanguageId);
             specGroupList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
             ViewBag.SpecificationGroupList = specGroupList;
+            //System.IO.File.AppendAllText("D:\\logging.txt", $"ViewBag.SpecificationGroupList at {DateTime.Now}");
+            //System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
+
+
 
             var groupList = await _productGroupRepository.GetAlActiveProductGroup(lan.LanguageId, currentUserId);
             groupList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
             ViewBag.ProductGroupList = groupList;
+            //System.IO.File.AppendAllText("D:\\logging.txt", $"ViewBag.ProductGroupList at {DateTime.Now}");
+            //System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
 
             var currencyList = _curRepository.GetAllActiveCurrency();
             ViewBag.CurrencyList = currencyList;
             ViewBag.DefCurrency = _curRepository.GetDefaultCurrency(currentUserId).ReturnValue.CurrencyId;
+            System.IO.File.AppendAllText("D:\\logging.txt", $"ViewBag.DefCurrency at {DateTime.Now}");
+            System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
 
             ViewBag.LangId = lan.LanguageId;
             ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
+            System.IO.File.AppendAllText("D:\\logging.txt", $"ViewBag.LangList at {DateTime.Now}");
+            System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
 
             var unitList = _unitRepository.GetAllActiveProductUnit(lan.LanguageId);
             unitList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
             ViewBag.ProductUnitList = unitList;
+            System.IO.File.AppendAllText("D:\\logging.txt", $"ViewBag.ProductUnitList at {DateTime.Now}");
+            System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
 
 
             ViewBag.PromotionList = _promotionRepository.GetActivePromotionsOfCurrentUser(currentUserId, PromotionType.Product);
-            
+            System.IO.File.AppendAllText("D:\\logging.txt", $"ViewBag.PromotionList at {DateTime.Now}");
+            System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
+
 
             ViewBag.PicSize = imageSize;
             return View(model);
@@ -228,11 +253,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.Prefix = cur.ReturnValue.Symbol;
                     item.SDate = DateHelper.ToEnglishDate(item.StartDate);
                 }
-                var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
+                var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
                 var path = "Images\\Products";
                 foreach (var pic in dto.Pictures)
                 {
-                    var res = ImageFunctions.SaveImageModel(pic, path, staticFileStorageURL, _webHostEnvironment.WebRootPath);
+                    var res = ImageFunctions.SaveImageModel(pic, path, localStaticFileStorageURL);
                     if (res.Key != Guid.Empty.ToString())
                     {
                         pic.ImageId = res.Key;
@@ -284,7 +309,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.Prefix = cur.ReturnValue.Symbol;
                     item.IsActive = true;
                 }
-                var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
+                var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
                 var path = "Images\\Products";
                 foreach (var pic in dto.Pictures)
                 {
@@ -292,7 +317,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     if (!Guid.TryParse(pic.ImageId, out isGuidKey))
                     {
                         //its insert and imageId which was int from client replace with guid
-                        var res = ImageFunctions.SaveImageModel(pic, path, staticFileStorageURL, _webHostEnvironment.WebRootPath);
+                        var res = ImageFunctions.SaveImageModel(pic, path, localStaticFileStorageURL);
                         if (res.Key != Guid.Empty.ToString())
                         {
                             pic.ImageId = res.Key;

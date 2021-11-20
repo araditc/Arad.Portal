@@ -70,5 +70,10 @@ namespace Arad.Portal.UI.Shop.Controllers
             return ViewComponent("GroupSection", groupSection);
         }
 
+        public IActionResult GetProductsInGroupVC(ProductsInGroupSection productsSection)
+        {
+            return ViewComponent("ProductsInGroupSection", productsSection);
+        }
+
     }
 }

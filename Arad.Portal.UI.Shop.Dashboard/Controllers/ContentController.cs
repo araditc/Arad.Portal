@@ -206,11 +206,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             else
             {
 
-                var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
-                var path = "Images/Contents";
+                var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
+                var path = "Images\\Contents";
                 foreach (var pic in dto.Images)
                 {
-                    var res = ImageFunctions.SaveImageModel(pic, path, staticFileStorageURL, _webHostEnvironment.WebRootPath);
+                    var res = ImageFunctions.SaveImageModel(pic, path, localStaticFileStorageURL);
                     if (res.Key != Guid.Empty.ToString())
                     {
                         pic.ImageId = res.Key;

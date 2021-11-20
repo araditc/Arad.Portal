@@ -160,11 +160,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var lang = _lanRepository.GetDefaultLanguage(currentUserId);
 
-                var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
+                var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
                 var path = "Images\\ProductGroups";
                 if(!string.IsNullOrWhiteSpace(dto.GroupImage.Content))
                 {
-                    var res = ImageFunctions.SaveImageModel(dto.GroupImage, path, staticFileStorageURL, _webHostEnvironment.WebRootPath);
+                    var res = ImageFunctions.SaveImageModel(dto.GroupImage, path, localStaticFileStorageURL);
                     if (res.Key != Guid.Empty.ToString())
                     {
                         dto.GroupImage.ImageId = res.Key;
@@ -252,7 +252,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
-                var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
+                var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
                 var path = "Images\\ProductGroups";
                 var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var lan = _lanRepository.GetDefaultLanguage(currentUserId);
@@ -261,7 +261,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 if (!Guid.TryParse(dto.GroupImage.ImageId, out isGuidKey) && !string.IsNullOrWhiteSpace(dto.GroupImage.Content))
                 {
                     //its insert and imageId which was int from client replace with guid
-                    var res = ImageFunctions.SaveImageModel(dto.GroupImage, path, staticFileStorageURL, _webHostEnvironment.WebRootPath);
+                    var res = ImageFunctions.SaveImageModel(dto.GroupImage, path, localStaticFileStorageURL);
                     if (res.Key != Guid.Empty.ToString())
                     {
                         dto.GroupImage.ImageId = res.Key;

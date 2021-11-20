@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Arad.Portal.DataLayer.Models.Product;
 using Arad.Portal.DataLayer.Models.ProductGroup;
 using Arad.Portal.DataLayer.Models.Shared;
-
 namespace Arad.Portal.DataLayer.Contracts.Shop.ProductGroup
 {
     public interface IProductGroupRepository

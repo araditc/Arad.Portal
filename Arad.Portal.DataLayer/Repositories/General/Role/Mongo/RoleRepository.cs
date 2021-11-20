@@ -190,7 +190,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
 
                 if (string.IsNullOrWhiteSpace(filter["page"]))
                 {
-                    filter.Set("CurrentPage", "1");
+                    filter.Set("page", "1");
                 }
 
                 if (string.IsNullOrWhiteSpace(filter["PageSize"]))

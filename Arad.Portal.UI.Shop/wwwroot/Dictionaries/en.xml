@@ -1455,9 +1455,6 @@
 	<string key="SeoDescription">
 		<value>Seo Description</value>
 	</string>
-	<!--<string key="Description">
-		<value>Description</value>
-	</string>-->
 	<string key="SeoTitle">
 		<value>Seo Title</value>
 	</string>
@@ -1726,6 +1723,9 @@
 	</string>
 	<!--/.Messege Content of AdminLTE-->
 	<!--START [Action]-->
+	<string key="Available">
+		<value>Available :</value>
+	</string>
 	<string key="Exit">
 		<value>Exit</value>
 	</string>

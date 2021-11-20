@@ -337,7 +337,7 @@
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label>@Language.GetString("tbl_ProductName")</label>
-                                        <input type="text" class="form-control" id="productName" placeholder="" onblur="BuildUrlFriend();">
+                                        <input type="text" class="form-control" id="productName" placeholder="" @*onblur="BuildUrlFriend();"*@>
                                         <span data-val-result="productName" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-md-3">
@@ -637,6 +637,8 @@
     var inActive = '@Language.GetString("InActive")';
     $(document).ready(function () {
         debugger;
+        var urlFriend = "product/" + '@Model.ProductCode';
+        $("#urlFriend").val(urlFriend);
 
          //icheckboxes radiobuttons
             if ("@dir" == "rtl") {
@@ -903,7 +905,8 @@
     });
 
 
-    function BuildUrlFriend() {
+        @*function BuildUrlFriend() {
+            debugger;
            $.ajax({
                         url: "@Model.ProductId" != "" ? "/Product/Edit" : "/Product/Add",
                         contentType: 'application/json',
@@ -951,7 +954,7 @@
                             removeLoading($("#addProductCard"));
                         }
                 });
-    }
+    }*@
     function deleteFromImageList(sender) {
         debugger;
         var id = $(sender).next().attr("imgId");

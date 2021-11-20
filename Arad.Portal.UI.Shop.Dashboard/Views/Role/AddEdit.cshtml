@@ -72,7 +72,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    @*<div class="row">
                         @{
                             if (!string.IsNullOrWhiteSpace(Model.RoleId))
                             {
@@ -83,7 +83,7 @@
                                 </div>
                             }
                         }
-                    </div>
+                    </div>*@
                   </div>
                         <div class="card-footer">
                             <div class="row">
@@ -95,7 +95,8 @@
                 </div>
             </div>
         </div>
-        @section Scripts
+
+@section Scripts
 {
 
             <script>
@@ -118,83 +119,81 @@
                      }
                  });
 
-
-
-   $("#addEditRoleFrm").submit(function (e) {
-            debugger;
-            e.preventDefault();
-               /* var form = $(this).serialize();*/
-            var myform = document.getElementById('addEditRoleFrm');
-                var form = new FormData(myform);
-                var PermissionIds = [];
-                $("#permissionTreeView span.item").each(function () {
-                    var data = $(this).attr("check-value");
-                    var num = parseInt(data);
-                    if (num > 0) {
-                        PermissionIds.push($(this).attr("data-id"));
-                    }
-                });
-       form.append('PermissionIds', PermissionIds);
-       form.append('IsActive', $("input[name='IsActive']:checked").val());
-       debugger;
-            $.ajax({
-                url: $(this).attr('action'),
-                data: form,
-               /* dataType : "json",*/
-                type: 'Post',
-                processData: false,
-                contentType:false,
-               /* contentType: "application/json; charset=utf-8",*/
-
-                beforeSend: function () {
+                 $("#addEditRoleFrm").submit(function (e) {
+                        debugger;
+                        e.preventDefault();
+                            /* var form = $(this).serialize();*/
+                        var myform = document.getElementById('addEditRoleFrm');
+                            var form = new FormData(myform);
+                            var PermissionIds = [];
+                            $("#permissionTreeView span.item").each(function () {
+                                var data = $(this).attr("check-value");
+                                var num = parseInt(data);
+                                if (num > 0) {
+                                    PermissionIds.push($(this).attr("data-id"));
+                                }
+                            });
+                    form.append('PermissionIds', PermissionIds);
+                    form.append('IsActive', $("input[name='IsActive']:checked").val());
                     debugger;
-                    AddLoading($("#addEditPermissionCard"));
-                },
-                success: function (result) {
-                    debugger;
+                        $.ajax({
+                            url: $(this).attr('action'),
+                            data: form,
+                            /* dataType : "json",*/
+                            type: 'Post',
+                            processData: false,
+                            contentType:false,
+                            /* contentType: "application/json; charset=utf-8",*/
 
-                    if (result.status === "Success") {
-                        Swal.fire({
-                            icon: 'success',
-                            text: result.message,
-                            showConfirmButton: false,
-                            timer: 3000
-                        }).then(() => {
-                            window.location.href = '@Url.Action("List")';
+                            beforeSend: function () {
+                                debugger;
+                                AddLoading($("#addEditPermissionCard"));
+                            },
+                            success: function (result) {
+                                debugger;
+
+                                if (result.status === "Success") {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        text: result.message,
+                                        showConfirmButton: false,
+                                        timer: 3000
+                                    }).then(() => {
+                                        window.location.href = '@Url.Action("List")';
+                                    });
+                                }else
+                                if (result.status === "ModelError") {
+                                    var spanErrorList = $('span[data-val-result]');
+                                    if (spanErrorList.length > 1) {
+                                        spanErrorList.each(function() {
+                                            $(this).html("");
+                                            $(this).parent().removeClass("has-error");
+                                        });
+                                    } else {
+                                        spanErrorList.html("");
+                                        spanErrorList.parent().removeClass("has-error");
+                                    }
+
+                                    if (result.modelStateErrors !== null) {
+                                        result.modelStateErrors.forEach(function(value, index) {
+
+                                            $('[data-val-result=' + value.key + ']').html(value.errorMessage);
+                                            $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                        });
+                                    }
+                                }
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                alert("@error");
+                                alert(xhr.status);
+                                alert(thrownError);
+                            },
+                            complete: function () {
+                                removeLoading($("#addEditPermissionCard"));
+                            }
                         });
-                    }else
-                    if (result.status === "ModelError") {
-                        var spanErrorList = $('span[data-val-result]');
-                        if (spanErrorList.length > 1) {
-                            spanErrorList.each(function() {
-                                $(this).html("");
-                                $(this).parent().removeClass("has-error");
-                            });
-                        } else {
-                            spanErrorList.html("");
-                            spanErrorList.parent().removeClass("has-error");
-                        }
-
-                        if (result.modelStateErrors !== null) {
-                            result.modelStateErrors.forEach(function(value, index) {
-
-                                $('[data-val-result=' + value.key + ']').html(value.errorMessage);
-                                $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
-                            });
-                        }
-                    }
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    alert("@error");
-                    alert(xhr.status);
-                    alert(thrownError);
-                },
-                complete: function () {
-                    removeLoading($("#addEditPermissionCard"));
-                }
-            });
-        });
-        });
+                    });
+                });
             </script>
         }
 
