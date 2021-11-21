@@ -29,7 +29,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
            
             if(!System.IO.File.Exists(finalPath))
             {
-                finalPath = Path.Combine(localStaticFileStorage, "imgs\\NoImage.png");
+                finalPath =  "/imgs/NoImage.png";
             }
             var fileName = Path.GetFileName(finalPath);
             var mimeType = ImageFunctions.GetMIMEType(fileName);

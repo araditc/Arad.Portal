@@ -31,10 +31,6 @@
       "destination": "wwwroot/lib/limonte-sweetalert2/"
     },
     {
-      "library": "bootstrap-iconpicker@1.10.0",
-      "destination": "wwwroot/lib/bootstrap-iconpicker/"
-    },
-    {
       "library": "toastr.js@2.1.4",
       "destination": "wwwroot/lib/toastr.js/"
     },
@@ -53,6 +49,10 @@
     {
       "library": "bootstrap-iconpicker@1.10.0",
       "destination": "wwwroot/lib/bootstrap-iconpicker/"
+    },
+    {
+      "library": "font-awesome@5.15.4",
+      "destination": "wwwroot/lib/font-awesome/"
     }
   ]
 }

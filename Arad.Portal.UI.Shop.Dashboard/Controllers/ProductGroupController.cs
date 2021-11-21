@@ -70,7 +70,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 model = _productGroupRepository.ProductGroupFetch(id);
                 
-                var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
+                var staticFileStorageURL = _configuration["LocalStaticFileStorage"];
                 if (string.IsNullOrWhiteSpace(staticFileStorageURL))
                 {
                     staticFileStorageURL = _webHostEnvironment.WebRootPath;
@@ -161,7 +161,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 var lang = _lanRepository.GetDefaultLanguage(currentUserId);
 
                 var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
-                var path = "Images\\ProductGroups";
+                var path = "ProductGroups";
                 if(!string.IsNullOrWhiteSpace(dto.GroupImage.Content))
                 {
                     var res = ImageFunctions.SaveImageModel(dto.GroupImage, path, localStaticFileStorageURL);
@@ -253,7 +253,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             else
             {
                 var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
-                var path = "Images\\ProductGroups";
+                var path = "ProductGroups";
                 var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var lan = _lanRepository.GetDefaultLanguage(currentUserId);
 

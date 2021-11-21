@@ -85,7 +85,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 ViewBag.DefLangId = defLangId;
                 ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
                 var contentRoot = _webHostEnvironment.ContentRootPath;
-                ViewBag.Path = contentRoot;
+                //ViewBag.Path = contentRoot;
+                var staticFileStorageURL = _configuration["LocalStaticFileStorage"];
+                ViewBag.Path = staticFileStorageURL;
                 var groupList = await _productGroupRepository.GetAlActiveProductGroup(defLangId, currentUserId);
                 ViewBag.ProductGroupList = groupList;
                
@@ -134,26 +136,26 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 //{
                 //    localStaticFileStorageURL = _webHostEnvironment.WebRootPath;
                 //}
-                foreach (var img in model.Images)
-                {
-                    if (string.IsNullOrWhiteSpace(img.Content))
-                    {
+                //foreach (var img in model.Images)
+                //{
+                //    if (string.IsNullOrWhiteSpace(img.Content))
+                //    {
 
-                        using (System.Drawing.Image image = System.Drawing.Image.FromFile(Path.Combine(localStaticFileStorageURL, img.Url)))
-                        {
-                            using (MemoryStream m = new MemoryStream())
-                            {
-                                image.Save(m, image.RawFormat);
-                                byte[] imageBytes = m.ToArray();
+                //        using (System.Drawing.Image image = System.Drawing.Image.FromFile(Path.Combine(localStaticFileStorageURL, img.Url)))
+                //        {
+                //            using (MemoryStream m = new MemoryStream())
+                //            {
+                //                image.Save(m, image.RawFormat);
+                //                byte[] imageBytes = m.ToArray();
 
-                                // Convert byte[] to Base64 String
-                                string base64String = Convert.ToBase64String(imageBytes);
-                                img.Content = $"data:image/png;base64, {base64String}";
-                            }
-                        }
+                //                // Convert byte[] to Base64 String
+                //                string base64String = Convert.ToBase64String(imageBytes);
+                //                img.Content = $"data:image/png;base64, {base64String}";
+                //            }
+                //        }
 
-                    }
-                }
+                //    }
+                //}
                 System.IO.File.AppendAllText("D:\\logging.txt", $"base64string of images at {DateTime.Now}");
                 System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
                 if (_productRepository.HasActiveProductPromotion(id))
@@ -254,7 +256,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.SDate = DateHelper.ToEnglishDate(item.StartDate);
                 }
                 var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
-                var path = "Images\\Products";
+                var path = "Products";
                 foreach (var pic in dto.Pictures)
                 {
                     var res = ImageFunctions.SaveImageModel(pic, path, localStaticFileStorageURL);
@@ -310,7 +312,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.IsActive = true;
                 }
                 var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
-                var path = "Images\\Products";
+                var path = "Products";
                 foreach (var pic in dto.Pictures)
                 {
                     Guid isGuidKey;

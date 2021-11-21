@@ -128,7 +128,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = await _contentRepository.ContentFetch(id);
-                var staticFileStorageURL = _configuration["StaticFilesPlace:APIURL"];
+                var staticFileStorageURL = _configuration["LocalStaticFileStorage"];
                 if (string.IsNullOrWhiteSpace(staticFileStorageURL))
                 {
                     staticFileStorageURL = _webHostEnvironment.WebRootPath;
@@ -207,7 +207,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
 
                 var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
-                var path = "Images\\Contents";
+                var path = "Contents";
                 foreach (var pic in dto.Images)
                 {
                     var res = ImageFunctions.SaveImageModel(pic, path, localStaticFileStorageURL);

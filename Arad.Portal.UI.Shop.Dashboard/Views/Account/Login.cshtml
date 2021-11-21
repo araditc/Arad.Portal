@@ -20,8 +20,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>@Language.GetString("LoginPage")</title>
     <!-- Font Awesome -->
-    @*<link href="~/css/font-awesome/font-awesome.css" rel="stylesheet" />*@
-    <link href="~/css/font-awesome/font-awesome.min.css" rel="stylesheet" />
+    @*<link href="~/css/font-awesome/font-awesome.min.css" rel="stylesheet" />*@
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
 
     <!-- Theme style -->
     <link href="~/css/siteTemplate/shared/AdminLTE/adminlte.min.css" rel="stylesheet" />
@@ -136,7 +136,9 @@
                         </div>
                         <input id="pw_element" dir="ltr" placeholder='@Language.GetString("User_Password")' asp-for="Password" type="password" class="form-control" autocomplete="new-password">
                         <div class="input-group-append">
-                            <span class="fa fa-lock input-group-text"></span>
+                            <span class="input-group-text">
+                                <i class="fas fa-lock"></i>
+                            </span>
                         </div>
 
                     </div>

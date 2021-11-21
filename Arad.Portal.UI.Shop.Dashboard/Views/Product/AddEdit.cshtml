@@ -125,18 +125,7 @@
 
             <div class="card-body" id="addEditProductCard">
                 <input type="hidden" value="@Model.ProductId" asp-for="ProductId" />
-                <div class="row">
-                    @{
-                        if (!string.IsNullOrWhiteSpace(Model.ProductId))
-                        {
-                            <div class="form-group col-md-6">
-                                <label asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
-                                <textarea dir="rtl" asp-for="ModificationReason" class="form-control" rows="3"></textarea>
-                                <span data-val-result="ModificationReason" class="text-danger"></span>
-                            </div>
-                        }
-                    }
-                </div>
+               
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label>@Language.GetString("tbl_ProductGroup")</label>
@@ -564,7 +553,7 @@
                                                 @foreach (var pic in Model.Images)
                                                 {
                                                     <tr>
-                                                        <td><img src="@pic.Content" width="120" height="120" /></td>
+                                                        <td><img src="@pic.Url" width="120" height="120" /></td>
                                                         <td style="display:none;">@pic.ImageId</td>
                                                         <td><input type="text" class="form-control txtTitle" value="@pic.Title" /></td>
                                                         <td><input type="text" class="form-control txtDesc" value="@pic.Description" /></td>
@@ -581,7 +570,7 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                            <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromImageList(this);">
+                                                            <button type="button" class="btn btn-danger btn-circle" imgId="@pic.ImageId" onclick="deleteFromImageList(this);">
                                                                 <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
                                                             </button>
                                                         </td>
@@ -661,15 +650,17 @@
        //multiselect
         $("#GroupIds").select2({ dir: '@dir', theme: 'bootstrap4' });
         $("#specValues").select2({ dir: '@dir', theme: 'bootstrap4' });
-        if ('@Model.Images.Any()'=='True') {
+        if ('@Model.Images.Any()' == 'True') {
+            debugger;
             var serverImages = @Json.Serialize(@Model.Images);
             for (var i = 0; i < serverImages.length; i++) {
                 var model = {};
-                model.ImageId = serverImages[i].ImageId;
-                model.Title = serverImages[i].Title;
-                model.Description = serverImages[i].Description;
-                model.Content = serverImages[i].Content;
-                model.IsMain = serverImages[i].IsMain;
+                model.ImageId = serverImages[i].imageId;
+                model.Title = serverImages[i].title;
+                model.Description = serverImages[i].description;
+                model.Content = serverImages[i].content;
+                model.IsMain = serverImages[i].isMain;
+                model.Url = serverImages[i].url;
 
                 images.push(model);
             }
@@ -957,13 +948,13 @@
     }*@
     function deleteFromImageList(sender) {
         debugger;
-        var id = $(sender).next().attr("imgId");
+        var id = $(sender).attr("imgId");
         //removeFromArray
         var item = images.find(_ => _.ImageId === id);
         var index = images.indexOf(item);
         images.splice(index, 1);
         //remove in view
-        $(sender).parent().remove();
+        $(sender).parent().parent().remove();
      }
 
     function addPriceToList() {
@@ -1247,7 +1238,7 @@
             $("#seoTitle").val("");
             $("#seoDescription").val("");
             $("#description").val("");
-            $("#urlFriend").val("");
+           /* $("#urlFriend").val("");*/
         }
        }
 

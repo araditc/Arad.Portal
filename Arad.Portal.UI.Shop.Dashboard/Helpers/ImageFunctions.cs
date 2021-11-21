@@ -74,19 +74,19 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
             KeyValuePair<string, string> res;
            
             picture.ImageId = Guid.NewGuid().ToString();
-            var path = Path.Combine(localStaticFileStorageURL, pathToSave);
+            var path = Path.Combine(localStaticFileStorageURL, pathToSave).Replace("\\", "/");
             try
             {
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
                 }
-                picture.Url = Path.Combine(pathToSave, $"{picture.ImageId}.jpg");
+                picture.Url = Path.Combine("/Images", pathToSave, $"{picture.ImageId}.jpg").Replace("\\", "/");
                 byte[] bytes = Convert.FromBase64String(picture.Content.Replace("data:image/jpeg;base64,", ""));
                 Image image;
                 using MemoryStream ms = new MemoryStream(bytes);
                 image = Image.FromStream(ms);
-                image.Save(Path.Combine(path, $"{picture.ImageId}.jpg"), System.Drawing.Imaging.ImageFormat.Jpeg);
+                image.Save(Path.Combine(path, $"{picture.ImageId}.jpg").Replace("\\", "/"), System.Drawing.Imaging.ImageFormat.Jpeg);
                 res = new KeyValuePair<string, string>(picture.ImageId, picture.Url);
             }
             catch (Exception ex)

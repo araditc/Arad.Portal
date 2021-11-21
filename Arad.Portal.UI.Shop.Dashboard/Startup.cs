@@ -63,6 +63,8 @@ using System;
 using Microsoft.AspNetCore.CookiePolicy;
 using Arad.Portal.DataLayer.Contracts.General.BasicData;
 using Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace Arad.Portal.UI.Shop.Dashboard
 {
@@ -188,7 +190,13 @@ namespace Arad.Portal.UI.Shop.Dashboard
            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-           
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Configuration["LocalStaticFileStorage"]),
+                RequestPath = new PathString("/Images"),
+                //EnableDirectoryBrowsing = false
+            });
+
             app.UseRequestLocalization(AddMultilingualSettings());
            
             app.UseRouting();
