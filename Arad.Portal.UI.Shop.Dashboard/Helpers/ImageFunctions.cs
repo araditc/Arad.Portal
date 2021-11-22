@@ -107,7 +107,71 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
             }
             return contentType;
         }
+        public static byte[] GetResizedImage(string filePath, int desiredHeight)
+        {
+            var base64String = File.ReadAllText(filePath);
+            byte[] byteArray = Convert.FromBase64String(base64String);
+            Image img;
+            using (MemoryStream ms = new MemoryStream(byteArray))
+            {
+                img = Image.FromStream(ms);
+            }
 
+            double ratio = (double)desiredHeight / img.Height;
+            int newWidth = (int)(img.Width * ratio);
+            int newHeight = (int)(img.Height * ratio);
+            Bitmap bitMapImage = new Bitmap(newWidth, newHeight);
+            using (Graphics g = Graphics.FromImage(bitMapImage))
+            {
+                g.DrawImage(img, 0, 0, newWidth, newHeight);
+            }
+            img.Dispose();
+
+            byte[] byteImage;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bitMapImage.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                byteImage = ms.ToArray();
+            }
+            return byteImage;
+        }
+        public static Image ScaleImage(Image image, int height)
+        {
+            double ratio = (double)height / image.Height;
+            int newWidth = (int)(image.Width * ratio);
+            int newHeight = (int)(image.Height * ratio);
+            Bitmap newImage = new(newWidth, newHeight);
+            using (Graphics g = Graphics.FromImage(newImage))
+            {
+                g.DrawImage(image, 0, 0, newWidth, newHeight);
+            }
+            image.Dispose();
+            return newImage;
+        }
+        //public static bool ThumbnailCallback()
+        //{
+        //    return false;
+        //}
+
+        //public static Image GetReducedImage(int width, int height, Image resourceImage)
+        //{
+        //    try
+        //    {
+        //        Image ReducedImage;
+
+        //        Image.GetThumbnailImageAbort callb = ThumbnailCallback;
+
+        //        ReducedImage = resourceImage.GetThumbnailImage(width, height, callb, IntPtr.Zero);
+
+        //        return ReducedImage;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e);
+        //        return null;
+        //    }
+        //}
+        
     }
 
     public static class ImageValidator

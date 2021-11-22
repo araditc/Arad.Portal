@@ -18,6 +18,7 @@ namespace Arad.Portal.DataLayer.Models.Product
             Specifications = new();
             Prices = new List<Price>();
             MultiLingualProperties = new();
+            Sliders = new();
         }
         public string ProductId { get; set; }
 
@@ -34,6 +35,8 @@ namespace Arad.Portal.DataLayer.Models.Product
         public List<ProductSpecificationValue> Specifications { get; set; }
 
         public List<Image> Images { get; set; }
+
+        public List<PhotoCraddleModel> Sliders { get; set; }
 
         public int Inventory { get; set; }
 

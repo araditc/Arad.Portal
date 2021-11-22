@@ -194,7 +194,7 @@ namespace Arad.Portal.UI.Shop
             var options = new CookiePolicyOptions()
             {
                 //HttpOnly = HttpOnlyPolicy.Always,
-                
+
                 //MinimumSameSitePolicy = SameSiteMode.Strict
             };
             app.UseCookiePolicy(options);

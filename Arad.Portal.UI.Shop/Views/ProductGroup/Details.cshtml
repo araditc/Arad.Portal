@@ -15,10 +15,11 @@
 
 @section Styles{
     @*<link href="~/lib/Swiper/swiper-bundle.min.css" rel="stylesheet" />*@
-<style>
+    <style>
         .pgCard {
             margin: auto;
         }
+
         .bbb_deals {
             width: 100%;
             margin-right: 7%;
@@ -30,6 +31,7 @@
             border-radius: 5px;
             margin-top: 0px
         }
+
         .ribbon span {
             position: absolute;
             display: block;
@@ -65,13 +67,16 @@
                 bottom: 17px;
                 right: 0
             }
-            .sold_stars i {
-                color: orange
-            }
+
+        .sold_stars i {
+            color: orange
+        }
+
         .ribbon-top-right span {
             right: 17px;
             top: 17px
         }
+
         .bbb_deals_title {
             position: absolute;
             top: 10px;
@@ -80,21 +85,27 @@
             font-weight: 500;
             color: #000000
         }
-        .bbb_deals_slider_container{
-            width : 100%;
+
+        .bbb_deals_slider_container {
+            width: 100%;
         }
+
         .bbb_deals_item {
             width: 100% !important;
         }
+
         .bbb_deals_image {
             width: 100%
         }
-        .bbb_deals_image img {
-            width: 100%
-        }
+
+            .bbb_deals_image img {
+                width: 100%
+            }
+
         .bbb_deals_content {
             margin-top: 33px
         }
+
         .bbb_deals_item_category a {
             font-size: 14px;
             font-weight: 400;
@@ -106,9 +117,11 @@
             font-weight: 400;
             color: rgba(0, 0, 0, 0.6)
         }
-        .bbb_deals_item_price_a strike {
-            color: red
-        }
+
+            .bbb_deals_item_price_a strike {
+                color: red
+            }
+
         .bbb_deals_item_name {
             font-size: 24px;
             font-weight: 400;
@@ -120,6 +133,7 @@
             font-weight: 500;
             color: #6d6e73
         }
+
         .available {
             margin-top: 19px
         }
@@ -129,62 +143,64 @@
             color: rgba(0, 0, 0, 0.5);
             font-weight: 400
         }
-        .available_title span {
-            font-weight: 700
-        }
+
+            .available_title span {
+                font-weight: 700
+            }
+
         @@media only screen and (max-width: 991px) {
-        .bbb_deals {
-            width: 100%;
-            margin-right: 0px
-        }
-       }
-
-       @@media only screen and (max-width: 575px) {
-        .bbb_deals {
-            padding-left: 15px;
-            padding-right: 15px
+            .bbb_deals {
+                width: 100%;
+                margin-right: 0px
+            }
         }
 
-        .bbb_deals_title {
-            left: 15px;
-            font-size: 16px
-        }
+        @@media only screen and (max-width: 575px) {
+            .bbb_deals {
+                padding-left: 15px;
+                padding-right: 15px
+            }
 
-        .bbb_deals_slider_nav_container {
-            right: 5px
-        }
+            .bbb_deals_title {
+                left: 15px;
+                font-size: 16px
+            }
 
-        .bbb_deals_item_name,
-        .bbb_deals_item_price {
-            font-size: 20px
+            .bbb_deals_slider_nav_container {
+                right: 5px
+            }
+
+            .bbb_deals_item_name,
+            .bbb_deals_item_price {
+                font-size: 20px
+            }
         }
-        }
-</style>
+    </style>
 }
 
-@section Scripts{
-    @*<script src="~/lib/Swiper/swiper-bundle.min.js"></script>*@
 
-}
+@*<script src="~/lib/Swiper/swiper-bundle.min.js"></script>*@
+
+
 <div id="groupSection">
     @await Component.InvokeAsync("GroupSection", Model.GroupSection)
 </div>
-<div class="row" >
+<div class="row">
     <div @*class="align-items-center"*@ style="margin: auto;">
         <button class="btn btn-ligth" id="btnMoreGroups">@Language.GetString("GetMore")</button>
     </div>
 </div>
 
 <div id="productSection">
-   @await Component.InvokeAsync("ProductsInGroupSection", Model.ProductInGroupSection)
+    @await Component.InvokeAsync("ProductsInGroupSection", Model.ProductInGroupSection)
 </div>
 <div class="row">
     <div style="margin: auto;">
         <button class="btn btn-ligth" id="btnMoreProducts">@Language.GetString("GetMore")</button>
     </div>
 </div>
-
-<script type="text/javascript">
+@section Scripts{
+    <script type="text/javascript">
     var grpSkip;
     var grpTake;
     var prSkip;
@@ -236,11 +252,14 @@
                 url: url,
                 data: obj,
                 success: function (result) {
-                    if (result != "") {
+                    if (result != "" && result.length > 40)
+                    {
                         prSkip += 4;
                         debugger;
                         $("#productSection").append(result);
-                    } else {
+                    }
+                    else
+                    {
                         $("#btnMoreProducts").css("display", "none");
                     }
                 },
@@ -248,4 +267,5 @@
         });
     });
 
-</script>
+    </script>
+}

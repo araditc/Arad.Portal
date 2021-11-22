@@ -49,8 +49,6 @@
             padding: 0.5rem 0.25rem;
         }
     </style>
-    @RenderSection("Styles", required: false)
-    @await RenderSectionAsync("Scripts", required: false)
     @if (direction == "rtl")
     {
         <link href="~/fonts/IranSans/css/persianfonts.css" rel="stylesheet" />
@@ -61,7 +59,9 @@
 
     }
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    
+    @RenderSection("Styles", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
+
 </head>
 
 

@@ -1,5 +1,44 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Arad.Portal.DataLayer.Models.Product.ProductOutputDTO
 @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var dir = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        dir = "rtl";
+    }
+    else
+    {
+        dir = "ltr";
+    }
 }
+@section Styles{
+    <link href="~/ImageSlider/skins/darkglass/skin.css" rel="stylesheet" />
+}
+@section Scripts{
+    <script src="~/ImageSlider/js/jquery-1.6.1.js"></script>
+    <script src="~/ImageSlider/js/jquery.easing.1.3.js"></script>
+    <script src="~/ImageSlider/js/jquery.photocradle-0.4.3.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            debugger;
+            var options = {
+                firstImageIndex: 5,
+                borderWeight: 4
+            },
+
+            params = { sources: @Json.Serialize(Model.Sliders) };
+            $('.photocradle').photocradle(params, options);
+
+        });
+    </script>
+}
+<div class="row">
+    <div class="col-4">
+        <div style="margin:auto;">
+            <div class="photocradle" style="width:90%;height:35%;"></div>
+        </div>
+    </div>
+    <div class="col-8">
+
+    </div>
+</div>
