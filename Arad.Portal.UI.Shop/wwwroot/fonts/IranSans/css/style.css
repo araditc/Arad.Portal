@@ -6,7 +6,7 @@ body {
 	/*background-color: #E2E2E2;*/
 	margin: 0;
 }
-h1, h2, h3, h4, h5, h6, input, textarea {
+/*h1, h2, h3, h4, h5, h6, input, textarea {
 	font-family: IRANSansWeb !important;
 }
 h1 {
@@ -66,7 +66,7 @@ blockquote {
 	padding: 10px;
 	border: 1px dashed #666666;
 }
-
+*/
 /*.mainbox {
 	width: 100%;
 	background-color: #EFEFEF;
@@ -179,7 +179,7 @@ blockquote {
 	font-weight: 500;
 	color: #333333;
 	margin-top: 100px;
-}*/
+}
 .footer {
 	font-weight: 300;
 	font-size: 0.7em;
@@ -188,3 +188,4 @@ blockquote {
 	margin-bottom: 0px;
 	padding-bottom: 0px;
 }
+*/

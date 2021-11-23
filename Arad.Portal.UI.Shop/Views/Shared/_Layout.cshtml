@@ -52,16 +52,14 @@
     @if (direction == "rtl")
     {
         <link href="~/fonts/IranSans/css/persianfonts.css" rel="stylesheet" />
-        <link href="~/fonts/IranSans/css/style.css" rel="stylesheet" />
+        @*<link href="~/fonts/IranSans/css/style.css" rel="stylesheet" />*@
     }
     else
     {
 
     }
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     @RenderSection("Styles", required: false)
-    @await RenderSectionAsync("Scripts", required: false)
-
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
 </head>
 
 
@@ -91,20 +89,19 @@
         @await Component.InvokeAsync("StoreMenu")
     </div>
 
-    <div class="container" @*style="min-width: 100%;"*@>
+    <div class="container" >
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
 
-    <script src="~/lib/popper.js/umd/popper.min.js"></script>
+    <script src="~/ImageSlider/popper.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
    
-
-    @*<script src="~/js/site.js" asp-append-version="true"></script>
-        @await RenderSectionAsync("Scripts", required: false)*@
+   
+    @await RenderSectionAsync("Scripts", required: false)
     <script>
     function setLang(lang)
     {

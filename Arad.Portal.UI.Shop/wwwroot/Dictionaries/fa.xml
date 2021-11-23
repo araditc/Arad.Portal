@@ -34,6 +34,9 @@
 	<string key="btn_Edit">
 		<value>ویرایش</value>
 	</string>
+	<string key="btn_AddToShoppingCard">
+		<value>افزودن به سبد خرید</value>
+	</string>
 	<string key="btn_Exit">
 		<value>خروج</value>
 	</string>

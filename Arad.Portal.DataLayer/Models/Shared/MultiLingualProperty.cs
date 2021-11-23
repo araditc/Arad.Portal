@@ -22,6 +22,8 @@ namespace Arad.Portal.DataLayer.Models.Shared
 
         public string Description { get; set; }
 
+        public string BodyText { get; set; }
+
         public string SeoTitle { get; set; }
 
         public string SeoDescription { get; set; }

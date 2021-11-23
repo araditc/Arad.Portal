@@ -6,3 +6,13 @@
 	src: url('/fonts/IranSans/eot/IRANSansWeb.eot');
 	src: url('/fonts/IranSans/eot/IRANSansWeb.eot?#iefix') format('embedded-opentype'), url('/fonts/Iransans/woff2/IRANSansWeb.woff2') format('woff2'), url('/fonts/IranSans/woff/IRANSansWeb.woff') format('woff'), url('/fonts/IranSans/ttf/IRANSansWeb.ttf') format('truetype');
 }
+
+
+body {
+	font-family: IRANSansWeb !important;
+	font-weight: 300;
+	direction: rtl;
+	/*background-color: #E2E2E2;*/
+	margin: 0;
+}
+

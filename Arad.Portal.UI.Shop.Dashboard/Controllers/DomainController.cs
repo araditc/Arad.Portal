@@ -25,7 +25,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
        
         public DomainController(IDomainRepository domainRepository,UserManager<ApplicationUser> userManager,
-            IPermissionView permissionView, ILanguageRepository lanRepository, ICurrencyRepository currencyRepository)
+            IPermissionView permissionView, ILanguageRepository lanRepository,
+            ICurrencyRepository currencyRepository)
         {
             _domainRepository = domainRepository;
             _permissionViewManager = permissionView;

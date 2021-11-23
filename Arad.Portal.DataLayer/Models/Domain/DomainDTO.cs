@@ -25,6 +25,10 @@ namespace Arad.Portal.DataLayer.Models.Domain
 
         public string DefaultLanguageName { get; set; }
 
+        public string DefaultCurrencyName { get; set; }
+
+        public string DefaultCurrencyId { get; set; }
+
         public bool IsDefault { get; set; }
 
         //public Price  DomainPrice { get; set; }

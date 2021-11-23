@@ -47,7 +47,8 @@
     <div class="col-md-12">
         <div class="card" id="addDomainCard">
             <div class="card-header">
-                <h3 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.DomainId) ? Language.GetString("EditDomain_Title") : Language.GetString("AddDomain_Title"))</h3>
+                <h3 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.DomainId) ? 
+                     Language.GetString("EditDomain_Title") : Language.GetString("AddDomain_Title"))</h3>
             </div>
 
             <div class="card-body">
@@ -56,7 +57,7 @@
 
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <label for="languageId">@Language.GetString("DefaultLanguage")</label><br />
+                        <label for="DefaultLanguageId">@Language.GetString("DefaultLanguage")</label><br />
                         <select class="form-control" asp-for="DefaultLanguageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text", Model.DefaultLanguageId))">
                         </select>
                         <span data-val-result="DefaultLanguageId" class="text-danger"></span>
@@ -90,7 +91,14 @@
                             </div>
                         }
                     </div>
-
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label for="DefaultCurrencyId">@Language.GetString("DefaultCurrency")</label><br />
+                        <select class="form-control" asp-for="DefaultCurrencyId" asp-items="@(new SelectList( ViewBag.CurrencyList,"Value","Text", Model.DefaultCurrencyId))">
+                        </select>
+                        <span data-val-result="DefaultCurrencyId" class="text-danger"></span>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
@@ -331,6 +339,8 @@
             obj.OwnerUserName = $("#OwnerUserId option:selected").text();
             obj.DefaultLanguageId = $("#DefaultLanguageId").val();
             obj.DefaultLanguageName = $("#DefaultLanguageId option:selected").text();
+            obj.DefaultCurrencyId = $("#DefaultCurrencyId").val();
+            obj.DefaultCurrencyName = $("#DefaultCurrencyId option:selected").text();
             obj.IsDefault = $("#chbDefaultDomain").prop("checked") ;
             //prices
             $("#priceList tr").each(function () {

@@ -96,7 +96,7 @@
                     <th>@Language.GetString("DomainOwner")</th>
                     <th>@Language.GetString("DefaultLanguage")</th>
                     <th>@Language.GetString("CurrentDomainPrice")</th>
-                    <th>@Language.GetString("Currency")</th>
+                    <th>@Language.GetString("DefaultCurrency")</th>
                     <th>@Language.GetString("DefaultDomain")</th>
                     <th></th>
                 </tr>
@@ -112,8 +112,9 @@
                             <td class="ListCell">@item.DomainName</td>
                             <td class="ListCell">@item.OwnerUserName</td>
                             <td class="ListCell">@item.DefaultLanguageName</td>
-                            <td class="ListCell">@(item.Prices.Count() > 0 ? item.Prices.FirstOrDefault(_ => _.IsActive && _.EndDate == null).PriceValue : "")</td>
-                            <td class="ListCell">@(item.Prices.Count() > 0 ? item.Prices.FirstOrDefault(_ => _.IsActive && _.EndDate == null).CurrencyName : "")</td>
+                            <td class="ListCell">@(item.Prices.Any(_ => _.IsActive && _.EndDate == null && _.CurrencyId == item.DefaultCurrencyId) ? item.Prices
+                            .FirstOrDefault(_ => _.IsActive && _.EndDate == null && _.CurrencyId == item.DefaultCurrencyId).PriceValue : "")</td>
+                            <td class="ListCell">@item.DefaultCurrencyName</td>
                             <td class="ListCell">@(item.IsDefault ? Language.GetString("Yes") : Language.GetString("No"))</td>
                             <td>
                                 @if (ViewBag.Permissions["Edit"])

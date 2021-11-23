@@ -13,7 +13,7 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
     {
         public Domain()
         {
-            Prices = new ();
+            Prices = new();
         }
 
         [BsonId]
@@ -29,6 +29,10 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
         public string DefaultLanguageId { get; set; }
 
         public string DefaultLanguageName { get; set; }
+
+        public string DefaultCurrencyId { get; set; }
+
+        public string DefaultCurrencyName { get; set; }
 
         public bool IsDefault { get; set; }
 

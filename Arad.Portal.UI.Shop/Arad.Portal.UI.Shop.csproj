@@ -49,7 +49,6 @@
     <Folder Include="Views\Search\" />
     <Folder Include="wwwroot\css\imgs\" />
     <Folder Include="wwwroot\css\siteTemplate\" />
-    <Folder Include="wwwroot\ImageSlider\css\" />
     <Folder Include="wwwroot\Images\" />
     <Folder Include="wwwroot\Files\" />
   </ItemGroup>

@@ -135,7 +135,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                        OwnerUserName = _.OwnerUserName,
                        DefaultLanguageId = _.DefaultLanguageId,
                        DefaultLanguageName =_.DefaultLanguageName,
-                       IsDefault = _.IsDefault
+                       IsDefault = _.IsDefault,
+                       DefaultCurrencyId = _.DefaultCurrencyId,
+                       DefaultCurrencyName = _.DefaultCurrencyName
                       
                    }).ToList();
 
