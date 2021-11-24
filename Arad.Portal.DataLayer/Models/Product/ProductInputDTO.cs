@@ -62,7 +62,7 @@ namespace Arad.Portal.DataLayer.Models.Product
 
         public bool IsPublishedOnMainDomain { get; set; }
 
-        public string ModificationReason { get; set; }
+        //public string ModificationReason { get; set; }
 
         //public List<Comment.Comment> Comments { get; set; }
     }

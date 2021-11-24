@@ -1,10 +1,11 @@
 ﻿@model Arad.Portal.DataLayer.Models.Product.ProductOutputDTO
-@using Arad.Portal.DataLayer.Models.Shared;
-@{
-    //Layout = "~/Views/Shared/_Layout.cshtml";
+@{ 
+    Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
     var dir = "";
+    var lan = "";
+    var cnt = 1;
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
     {
         dir = "rtl";
@@ -13,6 +14,15 @@
     {
         dir = "ltr";
     }
+    if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        lan = "fa";
+    }
+    else
+    {
+        lan = "en";
+    }
+
 }
 
 @section Styles{
@@ -70,6 +80,7 @@
     <link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
     <link href="~/plugins/select2/css/select2.css" rel="stylesheet" />
     <link href="~/plugins/select2-bootstrap4-theme/select2-bootstrap4.css" rel="stylesheet" />
+    <link href="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.css" rel="stylesheet" />
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
         <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
@@ -125,7 +136,7 @@
 
             <div class="card-body" id="addEditProductCard">
                 <input type="hidden" value="@Model.ProductId" asp-for="ProductId" />
-               
+
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label>@Language.GetString("tbl_ProductGroup")</label>
@@ -214,6 +225,7 @@
                         </select>
                     </div>
                 </div>
+             
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -318,6 +330,21 @@
                             </div>
                             <div class="card-body">
                                 <div class="row" style="background-color: #f0f0f5;">
+                                    <div class="form-group col-md-12">
+                                        <label>@Language.GetString("ProductSpecs")</label>
+                                        <textarea id="editorCk" name="editorCk" class="form-control" rows="30"></textarea>
+
+                                        <script src="~/lib/ckeditor/ckeditor.js"></script>
+                                        <script>
+                                                var config = {
+                                                    filebrowserImageUploadUrl: 'Image/ProductFileUpload',
+                                                    language: '@lan'
+                                                }
+                                                CKEDITOR.replace("editorCk", config);
+                                        </script>
+                                    </div>
+                                </div>
+                                <div class="row" style="background-color: #f0f0f5;">
                                     <div class="form-group col-md-2">
                                         <label>@Language.GetString("LanguageName")</label>
                                         <select class="form-control" id="multiLangId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
@@ -351,6 +378,9 @@
                                         <input type="text" class="form-control" id="description" placeholder=" ">
 
                                     </div>
+                                    <div class="form-group col-md-3">
+                                        <span data-val-result="multiLinguals" class="text-danger"></span>
+                                    </div>
                                     <div class="form-group col-md-3" style="text-align:center;margin:auto;">
                                         <div style="margin:auto;display:inline-block;">
                                             <button type="button" class="btn btn-info btn-circle" onclick="addToTable();">
@@ -358,12 +388,11 @@
                                             </button>
                                         </div>
                                     </div>
+
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-3 offset-md-3">
-                                        <span data-val-result="multiLinguals" class="text-danger"></span>
-                                    </div>
-                                </div>
+
+
+
                                 <div class="row">
                                     <div class="col-md-12">
                                         <table class="table table-hover table-bordered">
@@ -393,17 +422,18 @@
                                                             <td>@item.Description</td>
                                                             <td>@item.UrlFriend</td>
                                                             <td>
-                                                                <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromTable(this);">
+                                                                <button type="button" class="btn btn-danger btn-circle btnDel" cnt="@cnt" onclick="deleteFromTable(this);">
                                                                     <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
                                                                 </button>
                                                             </td>
                                                         </tr>
+                                                        @(cnt++)
                                                     }
                                                 }
                                                 else
                                                 {
                                                     <tr style="text-align:center;">
-                                                        <td colspan="7">@Language.GetString("AlertAndMessage_NoDataToShow")</td>
+                                                        <td colspan="8">@Language.GetString("AlertAndMessage_NoDataToShow")</td>
                                                     </tr>
                                                 }
 
@@ -597,7 +627,7 @@
         </div>
     </div>
 </div>
-@section Scripts{
+
     <script src="~/lib/cropperjs/cropper.js"></script>
     <script src="~/plugins/select2/js/select2.js"></script>
     @if (dir == "rtl")
@@ -614,20 +644,61 @@
         <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
     }
 
-    <script>
+<script>
     var fileName;
     var fileContent;
     var cropper;
     var currentFileSize;
     var currentFileName;
     var images = [];
+    var cnt ;
+    var multiLingualArr = [];
     var counter = 1000;
     var active = '@Language.GetString("Active")';
     var inActive = '@Language.GetString("InActive")';
     $(document).ready(function () {
-        debugger;
+    
+        cnt = @cnt;
         var urlFriend = "product/" + '@Model.ProductCode';
         $("#urlFriend").val(urlFriend);
+        var multiLingualList = @Json.Serialize(@Model.MultiLingualProperties);
+        for (var i = 0; i < multiLingualList.length; i++) {
+            var obj = {};
+            obj.Tag = cnt;
+            obj.MultiLingualPropertyId = multiLingualList[i].multiLingualPropertyId;
+            obj.Name = multiLingualList[i].name;
+            obj.LanguageId = multiLingualList[i].languageId;
+            obj.SeoTitle = multiLingualList[i].seoTitle;
+            obj.SeoDescription = multiLingualList[i].seoDescription;
+            obj.Description = multiLingualList[i].description;
+            obj.UrlFriend = multiLingualList[i].urlFriend;
+            obj.BodyContent = multiLingualList[i].bodyContent;
+
+
+            cnt = cnt + 1;
+            multiLingualArr.push(obj);
+        }
+
+        //$("#multiLangId").change(function () {
+        //    var lan = $("multiLangId option:selected").text();
+        //    if (lan == "فارسی") {
+        //        lan = "fa";
+        //          var config = {
+        //                filebrowserImageUploadUrl: 'Image/ProductFileUpload',
+        //                language: lan
+        //          }
+        //          CKEDITOR.replace("editorCk", config);
+        //    } else {
+        //        //if just we have two language english and persian
+        //        lan = "en";
+        //        var config = {
+        //            filebrowserImageUploadUrl: 'Image/ProductFileUpload',
+        //            language: lan
+        //        }
+        //        CKEDITOR.replace("editorCk", config);
+        //    }
+        //});
+
 
          //icheckboxes radiobuttons
             if ("@dir" == "rtl") {
@@ -651,7 +722,7 @@
         $("#GroupIds").select2({ dir: '@dir', theme: 'bootstrap4' });
         $("#specValues").select2({ dir: '@dir', theme: 'bootstrap4' });
         if ('@Model.Images.Any()' == 'True') {
-            debugger;
+        
             var serverImages = @Json.Serialize(@Model.Images);
             for (var i = 0; i < serverImages.length; i++) {
                 var model = {};
@@ -674,16 +745,13 @@
         }
 
         $("#btnAddProduct").click(function () {
+            debugger;
             var flag = false;
             if ($("#GroupIds").val().length == 0) {
                 $("span[data-val-result='GroupIds']").html('@Language.GetString("AlertAndMessage_SelectAtLeastOneItem")');
                 flag = true;
             }
-            if ($("#UniqueCode").val() == "")
-            {
-                $("span[data-val-result='UniqueCode']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-                flag = true;
-            }
+            
             if ($("#Inventory").val() == "0")
             {
                 $("span[data-val-result='UniqueCode']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
@@ -712,8 +780,9 @@
                 flag = true;
             }
 
-          var dto = FillDataToSend();
-            debugger;
+            var dto = FillDataToSend();
+            console.log(dto);
+     
 
                 if (!flag) {
                     $.ajax({
@@ -767,7 +836,7 @@
       });
 
         $("#send_pic").click(function () {
-            debugger;
+        
             $("#uploadModal").modal("hide");
             var url = $("#galleryPic").attr("src");
             var model = {};
@@ -790,7 +859,7 @@
 
             }
             $("#imageList").append(tr);
-            counter += 1;
+            counter = counter + 1;
             if ("@dir" == "rtl") {
                 $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
                     checkboxClass: 'icheckbox_minimal-blue',
@@ -830,7 +899,7 @@
        });
 
         $("#specGroupId").change(function () {
-            debugger;
+          
         var langId = $("#languageId").val();
         var groupId = $("#specGroupId").val();
         if (groupId != "") {
@@ -896,58 +965,9 @@
     });
 
 
-        @*function BuildUrlFriend() {
-            debugger;
-           $.ajax({
-                        url: "@Model.ProductId" != "" ? "/Product/Edit" : "/Product/Add",
-                        contentType: 'application/json',
-                        data:  JSON.stringify(dto),
-                        type: 'Post',
-                        dataType:'json',
-                        beforeSend: function () {
-                            AddLoading($("#addProductCard"));
-                        },
-                        success: function (result) {
 
-                            if (result.status === "Success") {
-                                Swal.fire({
-                                    icon: 'success',
-                                    text: result.message,
-                                    showConfirmButton: false,
-                                    timer: 3000
-                                }).then(() => {
-                                    window.location.href = '@Url.Action("List")';
-                                });
-                            }else
-                            if (result.status === "ModelError") {
-                                var spanErrorList = $('span[data-val-result]');
-                                if (spanErrorList.length > 1) {
-                                    spanErrorList.each(function() {
-                                        $(this).html("");
-                                        $(this).parent().removeClass("has-error");
-                                    });
-                                } else {
-                                    spanErrorList.html("");
-                                    spanErrorList.parent().removeClass("has-error");
-                                }
-                                if (result.modelStateErrors !== null) {
-                                        $('[data-val-result=' + value.key + ']').html(value.errorMessage);
-                                        $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
-                                    }
-                                }
-                            },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            alert("@error");
-                            alert(xhr.status);
-                            alert(thrownError);
-                        },
-                        complete: function () {
-                            removeLoading($("#addProductCard"));
-                        }
-                });
-    }*@
     function deleteFromImageList(sender) {
-        debugger;
+   
         var id = $(sender).attr("imgId");
         //removeFromArray
         var item = images.find(_ => _.ImageId === id);
@@ -958,7 +978,7 @@
      }
 
     function addPriceToList() {
-        debugger;
+     
         var flag = false;
         $("span[data-val-result='priceValue']").html("");
         $("span[data-val-result='startDate']").html("");
@@ -978,7 +998,7 @@
             var tr = "";
             if ($("#priceList").find("td:eq(1)").length > 0) {
                 $("#priceList").find("td:eq(1)").each(function () {
-                    debugger;
+                 
                     if ($(this).text() == currencyId && $(this).parent().find("td:eq(4)").text() == "" &&
                         $(this).parent().find("td:eq(5)").text() == active) {
                         /*confirm = false;*/
@@ -993,7 +1013,7 @@
                             cancelButtonText: '@Language.GetString("btn_NotConfirm")'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                debugger;
+                           
                                 /*confirm = true;*/
                                 $(this).parent().find("td:eq(5)").text(inActive);
                                 appendToPriceList(tr);
@@ -1081,7 +1101,7 @@
             $("#languageId").val("@ViewBag.LangId");
             $("#specGroupId").val("-1");
             $("#specificationId").val("-1");
-            debugger;
+         
             $("#specValues").empty();
             /*$('#specValues').select2('data', null);*/
         }
@@ -1093,7 +1113,7 @@
     }
 
     function FillDataToSend() {
-
+       
         var dto = {};
         dto.GroupNames = [];
         dto.GroupIds = [];
@@ -1102,7 +1122,6 @@
         dto.Pictures = [];
         dto.Prices = [];
         dto.ProductId = $("#ProductId").val();
-        dto.ModificationReason = $("#ModificationReason").val();
         dto.IsActive = true;
         dto.ProductCode = Number($("#ProductCode").val());
 
@@ -1118,20 +1137,9 @@
         }
 
         //multilingualProperties
-        $("#multiLingualList tr").each(function () {
-
-            var innerModel = {};
-
-            innerModel.Name = $(this).find("td:eq(2)").text();
-            innerModel.LanguageId = $(this).find("td:eq(1)").text();
-            innerModel.SeoTitle = $(this).find("td:eq(3)").text();
-            innerModel.SeoDescription = $(this).find("td:eq(4)").text();
-            innerModel.Description = $(this).find("td:eq(5)").text();
-            innerModel.UrlFriend = $(this).find("td:eq(6)").text();
-
-            dto.MultiLingualProperties.push(innerModel);
-        });
-
+        debugger;
+        dto.MultiLingualProperties = multiLingualArr;
+       
         //prices
         $("#priceList tr").each(function () {
 
@@ -1170,7 +1178,7 @@
 
         //pictures
         $("#imageList tr").each(function () {
-            debugger;
+         
             var id = $(this).find("td:eq(1)").text();
             var item = images.find(_ => _.ImageId == id);
             index = images.indexOf(item);
@@ -1184,8 +1192,8 @@
         });
 
         dto.UniqueCode = $("#UniqueCode").val();
-        dto.Inventory = $("#Inventory").val();
-        dto.MinimumCount = $("#MinimumCount").val();
+        dto.Inventory = parseInt($("#Inventory").val());
+        dto.MinimumCount = parseInt($("#MinimumCount").val());
         dto.ShowInLackOfInventory = $("#chbNotifyInventory").prop("checked");
         if ("@ViewBag.Vendors" != "-1") {
             dto.SellerUserId = $("#SellerUserId").val();
@@ -1199,11 +1207,17 @@
     }
 
     function deleteFromTable(sender) {
+        var tag = $(sender).attr("cnt");
+        var item = multiLingualArr.find(_ => _.Tag == tag);
+        var index = multiLingualArr.indexOf(item);
+        multiLingualArr.splice(index, 1);
+
         var tr = $(sender).parent().parent();
         $(tr).remove();
     }
 
     function addToTable() {
+      
         var flag = false;
         $("span[data-val-result='multiLangId']").html("");
         $("span[data-val-result='productName']").html("");
@@ -1218,6 +1232,18 @@
             flag = true;
         }
         if (!flag) {
+            var obj = {};
+            obj.LanguageId = $('#multiLangId').val();
+            obj.Name = $('#productName').val();
+            obj.SeoTitle = $("#seoTitle").val();
+            obj.SeoDescription = $("#seoDescription").val();
+            obj.Description = $("#description").val();
+            obj.UrlFriend = $("#urlFriend").val();
+            obj.BodyContent = CKEDITOR.instances.editorCk.getData();
+            obj.Tag = cnt.toString();
+
+            multiLingualArr.push(obj);
+
             var tr = "<tr style='text-align:center;'><td>" + $("#multiLangId option:selected").text() +
                 "</td><td style='display:none;'>" + $('#multiLangId').val() +
                 "</td><td>" + $('#productName').val() +
@@ -1225,14 +1251,15 @@
                 "</td><td>" + $("#seoDescription").val() +
                 "</td><td>" + $("#description").val() +
                 "</td><td>" + $("#urlFriend").val() +
-                "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' onclick='deleteFromTable(this);'>" +
+                "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' cnt='" + cnt + "' onclick='deleteFromTable(this);'>" +
                 "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
-            debugger;
+    
             if ($("#multiLingualList tr").length == 1 && $("#multiLingualList tr")[0].children.length == 1) {
                 $("#multiLingualList tr")[0].remove();
             }
 
             $("#multiLingualList").append(tr);
+            cnt = cnt + 1;
             $("#multiLangId").val("@ViewBag.LangId");
             $("#productName").val("");
             $("#seoTitle").val("");
@@ -1244,7 +1271,7 @@
 
     $('#uploadModal').on('hidden.bs.modal',
         function () {
-            debugger;
+       
             cropper.destroy();
             document.getElementById("image").value = "";
             $("#cropped_result").remove();
@@ -1260,7 +1287,7 @@
     }
 
     function initCropper() {
-        debugger;
+      
         var image = document.getElementById('blah');
         if (cropper !== null && cropper !== undefined) {
             cropper.destroy();
@@ -1359,8 +1386,8 @@
         }
     }
     }
-    </script>
-}
+</script>
+
 
 
 

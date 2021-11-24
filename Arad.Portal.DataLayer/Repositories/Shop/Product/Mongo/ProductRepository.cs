@@ -630,11 +630,6 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
            
                 var equallentModel = MappingProduct(dto);
 
-                #region add modification
-                var mod = GetCurrentModification(dto.ModificationReason);
-                equallentModel.Modifications.Add(mod);
-                #endregion
-
                 var updateResult = await _context.ProductCollection
                     .ReplaceOneAsync(_ => _.ProductId == dto.ProductId, equallentModel);
 

@@ -122,13 +122,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> AddEdit(string id = "")
         {
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-          
-
+            var staticFileStorageURL = _configuration["LocalStaticFileStorage"];
             var model = new ContentDTO();
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = await _contentRepository.ContentFetch(id);
-                var staticFileStorageURL = _configuration["LocalStaticFileStorage"];
+                
                 if (string.IsNullOrWhiteSpace(staticFileStorageURL))
                 {
                     staticFileStorageURL = _webHostEnvironment.WebRootPath;
@@ -158,8 +157,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 model.ContentCode = _codeGenerator.GetNewId();
             }
 
+            ViewBag.StaticFileStorage = staticFileStorageURL;
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
-
             var categoryList = await _contentCategoryRepository.AllActiveContentCategory(lan.LanguageId, currentUserId);
             categoryList = categoryList.OrderBy(_ => _.Text).ToList();
             categoryList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });

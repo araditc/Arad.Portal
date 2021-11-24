@@ -21,8 +21,10 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public string GroupName { get; set; }
 
         public string Description { get; set; }
-
-        public string BodyText { get; set; }
+        /// <summary>
+        /// this property comes from ckeditor
+        /// </summary>
+        public string BodyContent { get; set; }
 
         public string SeoTitle { get; set; }
 
@@ -48,6 +50,8 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public string CurrencySymbol { get; set; }
 
         public string CurrencyName { get; set; }
+
+        public string Tag { get; set; }
 
         public List<string> TagKeywords { get; set; }
 

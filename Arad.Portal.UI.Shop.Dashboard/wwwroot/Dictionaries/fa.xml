@@ -1588,6 +1588,9 @@
 	<string key="ContentTitle">
 		<value>عنوان محتوا</value>
 	</string>
+	<string key="ProductSpecs">
+		<value>ویژگیهای محصول</value>
+	</string>
 	<string key="Menu_StoreMenues">
 		<value>منوهای فروشگاه</value>
 	</string>
