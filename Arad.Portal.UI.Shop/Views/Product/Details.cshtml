@@ -16,6 +16,14 @@
     <link href="~/lib/slick-carousel/slick.css" rel="stylesheet" />
     <link href="~/lib/fancybox/jquery.fancybox.min.css" rel="stylesheet" />
     <link href="~/ImageSlider/ImageSlider.css" rel="stylesheet" />
+    <style>
+    .card-title{
+       text-align : @(@dir == "rtl" ?  "right" : "left") ;
+    }
+    .txtAlign{
+         text-align : @(@dir == "rtl" ?  "right" : "left") ;
+    }
+    </style>
 }
 
 @section Scripts{
@@ -27,30 +35,36 @@
    
 }
 <div class="row">
-        <div class="col-4" style="direction:ltr;">
-            <div id="detail">
-                <div class="product-images demo-gallery">
-                    <div class="main-img-slider">
-                        @foreach (var item in Model.Images)
-                        {
-                            <a data-fancybox="gallery" href=@($"../filemanager/getscaledimage?path={item.Url}&height={1000}")>
-                                <img src=@($"../filemanager/getscaledimage?path={item.Url}&height={500}") class="img-fluid">
-                            </a>
-                        }
-                    </div>
-
-                    <ul class="thumb-nav">
-                        @foreach (var item in Model.Images)
-                        {
-                            <li><img src=@($"../filemanager/getscaledimage?path={item.Url}&height={75}")></li>
-                        }
-                    </ul>
+    <div class="col-4" style="direction:ltr;">
+        <div id="detail">
+            <div class="product-images demo-gallery">
+                <div class="main-img-slider">
+                    @foreach (var item in Model.Images)
+                    {
+                        <a data-fancybox="gallery" href=@($"../filemanager/getscaledimage?path={item.Url}&height={1000}")>
+                            <img src=@($"../filemanager/getscaledimage?path={item.Url}&height={500}") class="img-fluid">
+                        </a>
+                    }
                 </div>
+
+                <ul class="thumb-nav">
+                    @foreach (var item in Model.Images)
+                    {
+                        <li><img src=@($"../filemanager/getscaledimage?path={item.Url}&height={75}")></li>
+                    }
+                </ul>
             </div>
         </div>
+        <div class="sold_stars ml-auto">
+            @for (int i = 1; i <= Model.PopularityRate; i++)
+            {
+                <i class="fa fa-star"></i>
+            }
+        </div>
+    </div>
         <div class="col-8">
-            <div class="card">
-                <div class="card-header"></div>
+            <div class="card" style="border: none;">
+                @*<div class="card-header"></div>*@
                 <div class="card-body">
                     <h5 class="card-title">
                         @(Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
@@ -61,18 +75,21 @@
                      Model.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLanguageId).Description : "")
                     </p>
                     <div class="row">
-                        <div class="col-md-6">
-                            <h4 class="card-title pricing-card-title">
-                                @{
-                                    var price = Model.Prices.Any(_ => _.CurrencyId == ViewBag.CurCurrencyId) ?
-                                 Model.Prices.First(_ => _.CurrencyId == ViewBag.CurCurrencyId && _.IsActive && _.EndDate == null) : null;
-                                    var finalPrice = price.PriceValue + price.Symbol;
-                                }
-                                @finalPrice
-                            </h4>
+                        <div class="col-md-2">
+                            <span>@Language.GetString("PriceValue")</span>
+                            <span> : </span></div>
+                        <div class="col-md-4">
+                                <h5 class="card-title pricing-card-title">
+                                    @{
+                                        var price = Model.Prices.Any(_ => _.CurrencyId == ViewBag.CurCurrencyId) ?
+                                     Model.Prices.First(_ => _.CurrencyId == ViewBag.CurCurrencyId && _.IsActive && _.EndDate == null) : null;
+                                        var finalPrice = price.PriceValue + price.Prefix;
+                                    }
+                                    @finalPrice
+                                </h5>
                         </div>
-                        <div class="col-md-6">
-                            <span>@Language.GetString("tbl_Inventory")</span>
+                        <div class="col-md-3 txtAlign">
+                            <span>@Language.GetString("InventoryInStore")</span>
                             <span>@Model.Inventory</span>
                         </div>
                     </div>

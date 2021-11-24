@@ -359,6 +359,9 @@
 	<string key="tbl_UniqeCode">
 		<value>Unique Code</value>
 	</string>
+	<string key="InventoryInStore">
+		<value>Inventory :</value>
+	</string>
 	<string key="tbl_Inventory">
 		<value>Inventory</value>
 	</string>

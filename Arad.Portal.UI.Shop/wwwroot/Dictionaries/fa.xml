@@ -355,6 +355,9 @@
 	<string key="tbl_UniqeCode">
 		<value>کد انحصاری</value>
 	</string>
+	<string key="InventoryInStore">
+		<value>موجودی :</value>
+	</string>
 	<string key="tbl_Inventory">
 		<value>موجودی</value>
 	</string>
