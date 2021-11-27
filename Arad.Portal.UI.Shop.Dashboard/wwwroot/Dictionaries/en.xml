@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <dictionary>
 	<!--Start [buttons text]-->
+	<string key="btn_InformMe">
+		<value>Inform me when available</value>
+	</string>
 	<string key="btn_Rotate">
 		<value>Rotate</value>
 	</string>
@@ -1734,6 +1737,15 @@
 	<!--START [Action]-->
 	<string key="Exit">
 		<value>Exit</value>
+	</string>
+	<string key="byBuying">
+		<value>purchase</value>
+	</string>
+	<string key="UnAvailable">
+		<value>Unavailable</value>
+	</string>
+	<string key="AsGift">
+		<value>Gift :</value>
 	</string>
 	<string key="StartDate">
 		<value>Start Date</value>

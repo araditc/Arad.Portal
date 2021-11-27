@@ -37,7 +37,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
             var domainEntity = _domainRepository.FetchByName(domainName);
             var lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
-            var entity = _productRepository.FetchByCode(slug);
+            var entity = _productRepository.FetchByCode(slug, domainEntity.ReturnValue);
             var lanId = _lanRepository.FetchBySymbol(lanIcon);
             ViewBag.CurCurrencyId = domainEntity.ReturnValue.DefaultCurrencyId;
             ViewBag.CurLanguageId = lanId;

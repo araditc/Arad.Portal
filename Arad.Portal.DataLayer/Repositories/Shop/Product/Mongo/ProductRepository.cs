@@ -24,6 +24,7 @@ using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Entities.General.Comment;
 using Microsoft.Extensions.Configuration;
 using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
+using Arad.Portal.DataLayer.Models.Domain;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 {
@@ -838,7 +839,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public ProductOutputDTO FetchByCode(long productCode)
+        public ProductOutputDTO FetchByCode(long productCode, DomainDTO dto)
         {
             var result = new ProductOutputDTO();
             
@@ -847,6 +848,88 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 
             result = _mapper.Map<ProductOutputDTO>(productEntity);
             result.MultiLingualProperties = productEntity.MultiLingualProperties;
+
+            #region evaluate finalPrice
+            var activePrice = productEntity.Prices.Where(_ => _.IsActive && _.CurrencyId == dto.DefaultCurrencyId && _.EndDate != null).First();
+            //check whether this product has any valid promotion
+            Entities.Shop.Promotion.Promotion promotionOnAll = null;
+            Entities.Shop.Promotion.Promotion promotionOnProductGroup = null;
+            Entities.Shop.Promotion.Promotion promotionOnThisProduct = null;
+            Entities.Shop.Promotion.Promotion newestPromotion = null;
+
+            var promotionList = new List<Entities.Shop.Promotion.Promotion>();
+            promotionOnAll = _promotionContext.Collection.Find(_ => _.PromotionType ==
+            Entities.Shop.Promotion.PromotionType.All && _.EndDate == null && _.StartDate <= DateTime.Now) != null ?
+            _promotionContext.Collection.Find(_ => _.PromotionType ==
+            Entities.Shop.Promotion.PromotionType.All && _.EndDate == null && _.StartDate <= DateTime.Now).First() : null;
+            promotionOnProductGroup = _promotionContext.Collection.Find(_ => _.PromotionType ==
+            Entities.Shop.Promotion.PromotionType.Group && _.StartDate <= DateTime.Now && _.EndDate == null && _.Infoes.Any(a => productEntity.GroupIds.Contains(a.AffectedProductGroupId))) != null ?
+            _promotionContext.Collection.Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group && _.StartDate <= DateTime.Now &&
+                           _.EndDate == null && _.Infoes.Any(a => productEntity.GroupIds.Contains(a.AffectedProductGroupId))).First() : null;
+            if (productEntity.Promotion != null)
+            {
+                promotionOnThisProduct = _promotionContext.Collection.Find(_ => _.PromotionType ==
+                 Entities.Shop.Promotion.PromotionType.Product && _.StartDate <= DateTime.Now && _.EndDate == null
+                   && _.Infoes.Any(a => a.AffectedProductId == productEntity.ProductId)) != null ?
+                    _promotionContext.Collection.Find(_ => _.PromotionType ==
+                 Entities.Shop.Promotion.PromotionType.Product && _.StartDate <= DateTime.Now && _.EndDate == null &&
+                   _.Infoes.Any(a => a.AffectedProductId == productEntity.ProductId)).First() : null;
+            }
+            promotionList.Add(promotionOnAll);
+            promotionList.Add(promotionOnProductGroup);
+            promotionList.Add(promotionOnThisProduct);
+            decimal finalPrice = 0;
+            for (int i = 0; i < promotionList.Count; i++)
+            {
+                if(newestPromotion == null)
+                {
+                    if(promotionList[i] != null)
+                    {
+                        newestPromotion = promotionList[i];
+                    }
+                }
+                else
+                {
+                    if(promotionList[i].StartDate > newestPromotion.StartDate)
+                    {
+                        //this promotion is newer than current promotion
+                        newestPromotion = promotionList[i];
+                    }
+                }
+            }
+            if(newestPromotion != null)
+            {
+                switch (newestPromotion.DiscountType)
+                {
+                    case Entities.Shop.Promotion.DiscountType.Fixed:
+                        finalPrice = activePrice.PriceValue - newestPromotion.Value.Value; 
+                        break;
+                    case Entities.Shop.Promotion.DiscountType.Percentage:
+                        var percentage = (activePrice.PriceValue * newestPromotion.Value.Value) / 100;
+                        finalPrice = activePrice.PriceValue - percentage;
+                        break;
+                    case Entities.Shop.Promotion.DiscountType.Product:
+                        finalPrice = activePrice.PriceValue;
+                        var giftProduct = _context.ProductCollection.Find(_ => _.ProductId == newestPromotion.PromotedProductId).First();
+                        result.GiftProduct = _mapper.Map<ProductOutputDTO>(giftProduct);
+                        break;
+                }
+
+                result.Promotion = newestPromotion;
+            }
+            if(finalPrice == 0)
+            {
+                result.PriceValWithPromotion = activePrice.PriceValue;
+            }else
+            {
+                result.PriceValWithPromotion = finalPrice;
+            }
+            var distinctSpecGroupIds = result.Specifications.GroupBy(_ => new { _.SpecificationGroupId, _.SpecificationGroupName }).Select(_ => _.Key).ToList();
+            
+            #endregion
+
+
+           
             return result;
         }
     }

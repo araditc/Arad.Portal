@@ -34,6 +34,7 @@ namespace Arad.Portal.DataLayer.Models.Product
         public List<ProductSpecificationValue> Specifications { get; set; }
 
         public List<Image> Images { get; set; }
+
         public int Inventory { get; set; }
 
         public int MinimumCount { get; set; }
@@ -47,6 +48,10 @@ namespace Arad.Portal.DataLayer.Models.Product
         public Entities.Shop.ProductUnit.ProductUnit Unit { get; set; }
 
         public List<Price> Prices { get; set; }
+
+        public decimal PriceValWithPromotion { get; set; }
+
+        public ProductOutputDTO GiftProduct { get; set; }
 
         public Entities.Shop.Promotion.Promotion Promotion { get; set; }
 

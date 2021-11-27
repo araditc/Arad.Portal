@@ -254,6 +254,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.Symbol = cur.ReturnValue.Symbol;
                     item.Prefix = cur.ReturnValue.Symbol;
                     item.SDate = DateHelper.ToEnglishDate(item.StartDate);
+                    item.IsActive = true;
                 }
                 var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
                 var path = "Products";
@@ -309,6 +310,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.PriceId = Guid.NewGuid().ToString();
                     item.Symbol = cur.ReturnValue.Symbol;
                     item.Prefix = cur.ReturnValue.Symbol;
+                    item.SDate = DateHelper.ToEnglishDate(item.StartDate.Split(" ")[0]).ToUniversalTime();
                     item.IsActive = true;
                 }
                 var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];

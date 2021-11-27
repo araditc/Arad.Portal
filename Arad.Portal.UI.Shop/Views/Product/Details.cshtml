@@ -10,6 +10,9 @@
     {
         dir = "ltr";
     }
+    var price = Model.Prices.Any(_ => _.StartDate <= DateTime.UtcNow && _.CurrencyId == ViewBag.CurCurrencyId && _.IsActive && _.EndDate == null) ?
+                                        Model.Prices.First(_ => _.StartDate <= DateTime.UtcNow && _.CurrencyId == ViewBag.CurCurrencyId && _.IsActive && _.EndDate == null) : null;
+    var realPrice = price.PriceValue;
 }
 @section Styles
 {
@@ -74,40 +77,113 @@
                         @(Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
                      Model.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLanguageId).Description : "")
                     </p>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <span>@Language.GetString("PriceValue")</span>
-                            <span> : </span></div>
-                        <div class="col-md-4">
-                                <h5 class="card-title pricing-card-title">
-                                    @{
-                                        var price = Model.Prices.Any(_ => _.CurrencyId == ViewBag.CurCurrencyId) ?
-                                     Model.Prices.First(_ => _.CurrencyId == ViewBag.CurCurrencyId && _.IsActive && _.EndDate == null) : null;
-                                        var finalPrice = price.PriceValue + price.Prefix;
-                                    }
-                                    @finalPrice
-                                </h5>
-                        </div>
-                        <div class="col-md-3 txtAlign">
-                            <span>@Language.GetString("InventoryInStore")</span>
-                            <span>@Model.Inventory</span>
-                        </div>
-                    </div>
+                   @{ 
+                       if(Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) &&
+                           !string.IsNullOrEmpty(Model.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLanguageId).BodyContent))
+                       {
+                           <div class="row">
+                               <div class="col-md-6 offset-md-3">
+                                   @Html.Raw(Model.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLanguageId).BodyContent)
+                               </div>
+                           </div>
 
-                    <button class="btn btn-light">@Language.GetString("btn_AddToShoppingCard")</button>
+                       }
+                    }
+                    
+                    @{
+                        if (Model.Inventory > 0)
+                        {
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <span>@Language.GetString("PriceValue")</span>
+                                                <span> : </span>
+                                            </div>
+                                            @if (realPrice == Model.PriceValWithPromotion && Model.GiftProduct == null)
+                                            {
+                                                <div class="col-md-3">
+                                                    <p>
+                                                        <mark>
+                                                            @Model.PriceValWithPromotion + @price.Prefix
+                                                        </mark>
+                                                    <p>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                @if (Model.GiftProduct == null)
+                                                {
+                                                    <div class="col-md-2">
+                                                        <p>
+                                                            <mark>
+                                                                @Model.PriceValWithPromotion + @price.Prefix;
+                                                            </mark>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <p>
+                                                            <s>
+                                                                @realPrice + @price.Prefix ;
+                                                            </s>
+                                                        </p>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-md-2">
+                                                        <p>
+                                                            <mark>
+                                                                @Model.PriceValWithPromotion + @price.Prefix;
+                                                            </mark>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <p>@Language.GetString("byBuying")</p>
+                                                        <span>@Model.Promotion.BoughtCount.Value</span>
+                                                        <p>@Language.GetString("AsGift")</p>
+                                                        <span>@Model.Promotion.PromotedCountofUnit.Value</span>
+                                                        <a class="bbb_deals_item_name" href="/product/@Model.GiftProduct.ProductCode">
+                                                            @(Model.GiftProduct.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
+                                                             Model.GiftProduct.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLanguageId).Name : Model.GiftProduct.MultiLingualProperties.First().Name )
+                                                        </a>
+                                                    </div>
+                                                }
 
+                                            }
+
+                                            <div class="col-md-3 txtAlign">
+                                                <span>@Language.GetString("InventoryInStore")</span>
+                                                <span>@Model.Inventory</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 offset-3">
+                                                <button class="btn btn-light">@Language.GetString("btn_AddToShoppingCard")</button>
+                                            </div>
+                                        </div>
+                        }
+                        else
+                        {
+                            <div class="row">
+                                <div class="col-md-3 offset-3">
+                                    <button class="btn btn-light" disabled>@Language.GetString("UnAvailable")</button>
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="btn btn-danger">@Language.GetString("btn_InformMe")</button>
+                                </div>
+                            </div>
+                        }
+                    }
                 </div>
             </div>
         </div>
  </div>
 <div class="row">
-    <table class="table">
-        <thead>
-
-        </thead>
-        <tbody>
-
-        </tbody>
-
-    </table>
+    <div class="col-md-4"></div>
+    <div class="col-md-8">
+        <table class="table">
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    
 </div>

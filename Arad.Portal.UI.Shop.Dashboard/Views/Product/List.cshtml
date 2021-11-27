@@ -252,8 +252,8 @@
                             <td>@(string.Join("|", item.GroupNames))</td>
                             <td>@item.UniqueCode</td>
                             <td>@item.Inventory</td>
-                            <td>@(item.Prices.Any(_ => _.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate)) 
-                            ? item.Prices.First(_ => _.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate)).PriceValue : "")</td>
+                            <td>@(item.Prices.Any(_ =>_.StartDate <= DateTime.UtcNow && _.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate))
+                            ? item.Prices.First(_ => _.StartDate <= DateTime.UtcNow && _.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate)).PriceValue : "")</td>
                             <td>@item.CreationDate</td>
                             <td>
                                 <button class="btn btn-sm btn-dark">

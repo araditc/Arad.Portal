@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <dictionary>
 	<!--Start [buttons text]-->
+	<string key="btn_InformMe">
+		<value>موجود شد خبرم کن</value>
+	</string>
 	<string key="btn_Rotate">
 		<value>چرخش</value>
 	</string>
@@ -1774,6 +1777,15 @@
 	<!--START [Action]-->
 	<string key="Exit">
 		<value>خروج</value>
+	</string>
+	<string key="byBuying">
+		<value>با خرید</value>
+	</string>
+	<string key="UnAvailable">
+		<value>ناموجود</value>
+	</string>
+	<string key="AsGift">
+		<value>هدیه :</value>
 	</string>
 	<string key="StartDate">
 		<value>تاریخ شروع</value>

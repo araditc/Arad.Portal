@@ -400,7 +400,6 @@
      });
 
       $(document).on("change", "#productVendor", function () {
-
           debugger;
           if ($("#productVendor").val() != "-1") {
                     $.ajax({
@@ -436,9 +435,10 @@
                             alert(thrownError);
                         }
                     });
-                } else {
+          }
+          else {
                     $("#productGroupId").remove();
-                }
+               }
       });
        $(document).on("change", "#productGroupId", function () {
                if ($("#productGroupId").val() != "-1" && $("#promotionTypeId").val() == "2")
@@ -487,8 +487,8 @@
 
 
      $("#btnAddPromotion").click(function () {
-            debugger;
-                var flag = false;
+        debugger;
+        var flag = false;
 
 
          if ("@Model.PromotionId" != "" && $("#ModificationReason").val() == "") {
@@ -636,6 +636,7 @@
             obj.PersianStartDate = $("#dtpFromDate").val();
             obj.PersianEndDate = $("#dtpToDate").val();
         if ($("#promotionTypeId").val() == "1") {
+            //productGroup
             var model = {};
             model.AffectedProductGroupId = $("#productGroupId").val();
             model.AffectedProductGroupName = $("#productGroupId option:selected").text();
@@ -645,6 +646,7 @@
             }
             else
             if ($("#promotionTypeId").val() == "2") {
+                //Product
                 //multiselect
                 $("#infoList tr").each(function () {
                     var model = {}

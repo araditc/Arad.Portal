@@ -29,6 +29,10 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
 
         public string CurrencyName { get; set; }
 
+        /// <summary>
+        /// this promotion is assigned to a product ,
+        /// or list of products or a productGroup or list of productGroups
+        /// </summary>
         public List<PromotionInfo> Infoes { get; set; }
 
         public string PromotedProductId { get; set; }
@@ -39,10 +43,12 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
 
         public string GroupNameofPromotedProduct { get; set; }
 
-        public int? BoughtCount { get; set; }
-
+        /// <summary>
+        /// how many units of promotedProduct with assign to this promotion as praise
+        /// </summary>
         public int? PromotedCountofUnit { get; set; }
 
+        public int? BoughtCount { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime StartDate { get; set; }

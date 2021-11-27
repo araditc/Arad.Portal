@@ -341,7 +341,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
         {
             decimal discountPerUnit = 0;
             var promotion = product.Promotion;
-            var isValid = promotion.StartDate >= DateTime.UtcNow && promotion.EndDate == null;
+            var isValid = promotion.StartDate <= DateTime.UtcNow && promotion.EndDate == null;
             if (isValid)
             {
                 switch (promotion.DiscountType)
