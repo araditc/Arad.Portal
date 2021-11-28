@@ -429,7 +429,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     IsActive = !string.IsNullOrWhiteSpace(price.PriceId) ? price.IsActive : true,
                     Prefix = price.Prefix,
                     PriceValue = price.PriceValue,
-                    StartDate = GeneralLibrary.Utilities.DateHelper.ToEnglishDate(price.StartDate).ToUniversalTime(),
+                    StartDate = DateHelper.ToEnglishDate(price.StartDate.Split(" ")[0]).ToUniversalTime(),
                     EndDate = !string.IsNullOrWhiteSpace(price.EndDate) ? 
                     GeneralLibrary.Utilities.DateHelper.ToEnglishDate(price.EndDate).ToUniversalTime() : null
                 };
@@ -628,8 +628,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         public async Task<RepositoryOperationResult> UpdateProduct(ProductInputDTO dto)
         {
             var result = new RepositoryOperationResult();
+            var product = _context.ProductCollection.Find(_ => _.ProductId == dto.ProductId).First();
            
                 var equallentModel = MappingProduct(dto);
+                equallentModel.CreationDate = product.CreationDate;
 
                 var updateResult = await _context.ProductCollection
                     .ReplaceOneAsync(_ => _.ProductId == dto.ProductId, equallentModel);
@@ -850,7 +852,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             result.MultiLingualProperties = productEntity.MultiLingualProperties;
 
             #region evaluate finalPrice
-            var activePrice = productEntity.Prices.Where(_ => _.IsActive && _.CurrencyId == dto.DefaultCurrencyId && _.EndDate != null).First();
+            var activePrice = productEntity.Prices.Where(_ => _.IsActive && _.CurrencyId == dto.DefaultCurrencyId 
+            && _.StartDate <= DateTime.Now && (_.EndDate == null || _.EndDate.Value >= DateTime.Now)).First();
             //check whether this product has any valid promotion
             Entities.Shop.Promotion.Promotion promotionOnAll = null;
             Entities.Shop.Promotion.Promotion promotionOnProductGroup = null;
@@ -858,22 +861,29 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             Entities.Shop.Promotion.Promotion newestPromotion = null;
 
             var promotionList = new List<Entities.Shop.Promotion.Promotion>();
-            promotionOnAll = _promotionContext.Collection.Find(_ => _.PromotionType ==
-            Entities.Shop.Promotion.PromotionType.All && _.EndDate == null && _.StartDate <= DateTime.Now) != null ?
-            _promotionContext.Collection.Find(_ => _.PromotionType ==
-            Entities.Shop.Promotion.PromotionType.All && _.EndDate == null && _.StartDate <= DateTime.Now).First() : null;
-            promotionOnProductGroup = _promotionContext.Collection.Find(_ => _.PromotionType ==
-            Entities.Shop.Promotion.PromotionType.Group && _.StartDate <= DateTime.Now && _.EndDate == null && _.Infoes.Any(a => productEntity.GroupIds.Contains(a.AffectedProductGroupId))) != null ?
-            _promotionContext.Collection.Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group && _.StartDate <= DateTime.Now &&
-                           _.EndDate == null && _.Infoes.Any(a => productEntity.GroupIds.Contains(a.AffectedProductGroupId))).First() : null;
-            if (productEntity.Promotion != null)
+            if(_promotionContext.Collection.Find(_ => _.PromotionType ==
+            Entities.Shop.Promotion.PromotionType.All && (_.EndDate == null || _.EndDate.Value >= DateTime.Now) && _.StartDate <= DateTime.Now).Any())
+            {
+                promotionOnAll = _promotionContext.Collection
+                    .Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.All && (_.EndDate == null || _.EndDate.Value >= DateTime.Now) && _.StartDate <= DateTime.Now).First();
+            }
+           if(_promotionContext.Collection.Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group && 
+           _.StartDate <= DateTime.Now && (_.EndDate == null || _.EndDate.Value >= DateTime.Now) && _.Infoes.Any(a => productEntity.GroupIds.Contains(a.AffectedProductGroupId))).Any())
+            {
+                promotionOnProductGroup =
+                     _promotionContext.Collection.Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group && _.StartDate <= DateTime.Now &&
+                          ( _.EndDate == null ||_.EndDate.Value >= DateTime.Now) && _.Infoes.Any(a => productEntity.GroupIds.Contains(a.AffectedProductGroupId))).First();
+            }
+             
+        
+            if (_promotionContext.Collection.Find(_ => _.PromotionType ==
+                 Entities.Shop.Promotion.PromotionType.Product && _.StartDate <= DateTime.Now && (_.EndDate == null || _.EndDate.Value >= DateTime.Now)
+                   && _.Infoes.Any(a => a.AffectedProductId == productEntity.ProductId)).Any())
             {
                 promotionOnThisProduct = _promotionContext.Collection.Find(_ => _.PromotionType ==
-                 Entities.Shop.Promotion.PromotionType.Product && _.StartDate <= DateTime.Now && _.EndDate == null
-                   && _.Infoes.Any(a => a.AffectedProductId == productEntity.ProductId)) != null ?
-                    _promotionContext.Collection.Find(_ => _.PromotionType ==
-                 Entities.Shop.Promotion.PromotionType.Product && _.StartDate <= DateTime.Now && _.EndDate == null &&
-                   _.Infoes.Any(a => a.AffectedProductId == productEntity.ProductId)).First() : null;
+                 Entities.Shop.Promotion.PromotionType.Product && _.StartDate <= DateTime.Now && (_.EndDate == null || _.EndDate.Value >= DateTime.Now)
+                   && _.Infoes.Any(a => a.AffectedProductId == productEntity.ProductId)).First();
+                   
             }
             promotionList.Add(promotionOnAll);
             promotionList.Add(promotionOnProductGroup);
@@ -924,12 +934,23 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             {
                 result.PriceValWithPromotion = finalPrice;
             }
-            var distinctSpecGroupIds = result.Specifications.GroupBy(_ => new { _.SpecificationGroupId, _.SpecificationGroupName }).Select(_ => _.Key).ToList();
-            
             #endregion
 
-
-           
+            foreach (var item in result.Specifications)
+            {
+                var lst = item.Values.Split("|").ToList();
+                var i = 1;
+                foreach (var str in lst)
+                {
+                    var obj = new SelectListModel()
+                    {
+                        Text = str,
+                        Value = i.ToString()
+                    };
+                    i += 1;
+                    item.ValueList.Add(obj);
+                }
+            }
             return result;
         }
     }

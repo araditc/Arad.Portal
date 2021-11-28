@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Arad.Portal.DataLayer.Models.Shared;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,10 @@ namespace Arad.Portal.DataLayer.Models.Product
 {
     public class ProductSpecificationValue
     {
+        public ProductSpecificationValue()
+        {
+            ValueList = new List<SelectListModel>();
+        }
 
         public string LanguageId { get; set; }
         public string SpecificationId { get; set; }
@@ -19,5 +24,7 @@ namespace Arad.Portal.DataLayer.Models.Product
         ///  | seperated values
         /// </summary>
         public string Values { get; set; }
+
+        public List<SelectListModel> ValueList { get; set; }
     }
 }

@@ -21,10 +21,10 @@
     <link href="~/ImageSlider/ImageSlider.css" rel="stylesheet" />
     <style>
     .card-title{
-       text-align : @(@dir == "rtl" ?  "right" : "left") ;
+       text-align : @(@dir == "rtl" ? "right" : "left") ;
     }
     .txtAlign{
-         text-align : @(@dir == "rtl" ?  "right" : "left") ;
+         text-align : @(@dir == "rtl" ? "right" : "left") ;
     }
     </style>
 }
@@ -71,14 +71,14 @@
                 <div class="card-body">
                     <h5 class="card-title">
                         @(Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
-                          Model.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLanguageId).Name : "")
+      Model.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLanguageId).Name : "")
                     </h5>
                     <p class="card-text">
                         @(Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
-                     Model.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLanguageId).Description : "")
+ Model.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLanguageId).Description : "")
                     </p>
                    @{ 
-                       if(Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) &&
+                       if (Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) &&
                            !string.IsNullOrEmpty(Model.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLanguageId).BodyContent))
                        {
                            <div class="row">
@@ -103,7 +103,7 @@
                                                 <div class="col-md-3">
                                                     <p>
                                                         <mark>
-                                                            @Model.PriceValWithPromotion + @price.Prefix
+                                                            @($"{@Model.PriceValWithPromotion} {@price.Prefix}")
                                                         </mark>
                                                     <p>
                                                 </div>
@@ -143,7 +143,7 @@
                                                         <span>@Model.Promotion.PromotedCountofUnit.Value</span>
                                                         <a class="bbb_deals_item_name" href="/product/@Model.GiftProduct.ProductCode">
                                                             @(Model.GiftProduct.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
-                                                             Model.GiftProduct.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLanguageId).Name : Model.GiftProduct.MultiLingualProperties.First().Name )
+     Model.GiftProduct.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLanguageId).Name : Model.GiftProduct.MultiLingualProperties.First().Name )
                                                         </a>
                                                     </div>
                                                 }
@@ -180,10 +180,26 @@
 <div class="row">
     <div class="col-md-4"></div>
     <div class="col-md-8">
-        <table class="table">
-            <tbody>
-            </tbody>
-        </table>
-    </div>
+        @{
+            var specList = Model.Specifications.Where(_ => _.LanguageId == ViewBag.CurLanguageId).OrderBy(_ => _.SpecificationGroupId).ToList();
+                <ul class="list-group">
+                    @for (int i = 1; i <= specList.Count(); i++)
+                    {
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    @specList[i - 1].SpecificationName
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-control" id="@($"SpecList{i-1}")" asp-items="@(new SelectList(specList[i-1].ValueList, "Value", "Text"))">
+                                    </select>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+
+                }
+            </div>
     
 </div>

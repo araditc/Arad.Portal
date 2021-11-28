@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.Net.Http;
 using Arad.Portal.UI.Shop.Dashboard.Helpers;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
+using System.Globalization;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -104,8 +105,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         
         public async Task<IActionResult> AddEdit(string id = "")
         {
-            System.IO.File.WriteAllText("D:\\logging.txt", $"MethodStart at {DateTime.Now}");
-            System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
+            //System.IO.File.WriteAllText("D:\\logging.txt", $"MethodStart at {DateTime.Now}");
+            //System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
 
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userDB = await _userManager.FindByIdAsync(currentUserId);
@@ -117,8 +118,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     Text = _.Profile.FullName,
                     Value = _.Id
                 });
-                System.IO.File.AppendAllText("D:\\logging.txt", $"ViewBag.Vendors fill at {DateTime.Now}");
-                System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
+                //System.IO.File.AppendAllText("D:\\logging.txt", $"ViewBag.Vendors fill at {DateTime.Now}");
+                //System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
             }
             else
             {
@@ -129,40 +130,23 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = await _productRepository.ProductFetch(id);
-                System.IO.File.AppendAllText("D:\\logging.txt", $"Fetch Product at {DateTime.Now}");
-                System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
+                //System.IO.File.AppendAllText("D:\\logging.txt", $"Fetch Product at {DateTime.Now}");
+                //System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
                 var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
                 //if (string.IsNullOrWhiteSpace(localStaticFileStorageURL))
                 //{
                 //    localStaticFileStorageURL = _webHostEnvironment.WebRootPath;
                 //}
-                //foreach (var img in model.Images)
-                //{
-                //    if (string.IsNullOrWhiteSpace(img.Content))
-                //    {
-
-                //        using (System.Drawing.Image image = System.Drawing.Image.FromFile(Path.Combine(localStaticFileStorageURL, img.Url)))
-                //        {
-                //            using (MemoryStream m = new MemoryStream())
-                //            {
-                //                image.Save(m, image.RawFormat);
-                //                byte[] imageBytes = m.ToArray();
-
-                //                // Convert byte[] to Base64 String
-                //                string base64String = Convert.ToBase64String(imageBytes);
-                //                img.Content = $"data:image/png;base64, {base64String}";
-                //            }
-                //        }
-
-                //    }
-                //}
-                System.IO.File.AppendAllText("D:\\logging.txt", $"base64string of images at {DateTime.Now}");
-                System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
+                var cnt = 1;
+                foreach (var item in model.MultiLingualProperties)
+                {
+                    item.Tag = cnt.ToString();
+                    cnt += 1;
+                }
+                
                 if (_productRepository.HasActiveProductPromotion(id))
                 {
                     ViewBag.ActivePromotionId = model.Promotion.PromotionId;
-                    System.IO.File.AppendAllText("D:\\logging.txt", $"Active Promotions at {DateTime.Now}");
-                    System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
                 }
             }else
             {
@@ -174,40 +158,29 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var specGroupList = _specGroupRepository.AllActiveSpecificationGroup(lan.LanguageId);
             specGroupList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
             ViewBag.SpecificationGroupList = specGroupList;
-            //System.IO.File.AppendAllText("D:\\logging.txt", $"ViewBag.SpecificationGroupList at {DateTime.Now}");
-            //System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
-
-
+         
 
             var groupList = await _productGroupRepository.GetAlActiveProductGroup(lan.LanguageId, currentUserId);
             groupList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
             ViewBag.ProductGroupList = groupList;
-            //System.IO.File.AppendAllText("D:\\logging.txt", $"ViewBag.ProductGroupList at {DateTime.Now}");
-            //System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
+           
 
             var currencyList = _curRepository.GetAllActiveCurrency();
             ViewBag.CurrencyList = currencyList;
             ViewBag.DefCurrency = _curRepository.GetDefaultCurrency(currentUserId).ReturnValue.CurrencyId;
-            System.IO.File.AppendAllText("D:\\logging.txt", $"ViewBag.DefCurrency at {DateTime.Now}");
-            System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
+           
 
             ViewBag.LangId = lan.LanguageId;
             ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
-            System.IO.File.AppendAllText("D:\\logging.txt", $"ViewBag.LangList at {DateTime.Now}");
-            System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
+            
 
             var unitList = _unitRepository.GetAllActiveProductUnit(lan.LanguageId);
             unitList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
             ViewBag.ProductUnitList = unitList;
-            System.IO.File.AppendAllText("D:\\logging.txt", $"ViewBag.ProductUnitList at {DateTime.Now}");
-            System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
-
+         
 
             ViewBag.PromotionList = _promotionRepository.GetActivePromotionsOfCurrentUser(currentUserId, PromotionType.Product);
-            System.IO.File.AppendAllText("D:\\logging.txt", $"ViewBag.PromotionList at {DateTime.Now}");
-            System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
-
-
+            
             ViewBag.PicSize = imageSize;
             return View(model);
         }
@@ -302,7 +275,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.LanguageSymbol = lan.Symbol;
                     item.MultiLingualPropertyId = Guid.NewGuid().ToString();
                 }
-
+            
+                //var changeCulture = false;
                 foreach (var item in dto.Prices)
                 {
                     var cur = _curRepository.FetchCurrency(item.CurrencyId);
@@ -310,9 +284,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.PriceId = Guid.NewGuid().ToString();
                     item.Symbol = cur.ReturnValue.Symbol;
                     item.Prefix = cur.ReturnValue.Symbol;
-                    item.SDate = DateHelper.ToEnglishDate(item.StartDate.Split(" ")[0]).ToUniversalTime();
                     item.IsActive = true;
                 }
+                //if(changeCulture)
+                //{
+                //    CultureInfo.CurrentCulture = new CultureInfo("fa-IR");
+                //}
                 var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
                 var path = "Products";
                 foreach (var pic in dto.Pictures)

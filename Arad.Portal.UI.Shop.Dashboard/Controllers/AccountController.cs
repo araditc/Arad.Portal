@@ -174,7 +174,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     {
                         Expires = DateTimeOffset.Now.AddYears(1)
                     });
-
+                CultureInfo.CurrentCulture.DateTimeFormat = new CultureInfo("en-US").DateTimeFormat;
                 return Ok(true);
             }
 

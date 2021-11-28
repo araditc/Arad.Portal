@@ -455,8 +455,10 @@ namespace Arad.Portal.GeneralLibrary.Utilities
                 var year = int.Parse(daytttt[0]);
                 var month = int.Parse(daytttt[1]);
                 var day = int.Parse(daytttt[2]);
+                //var dt = DateTime.Parse(new DateTime(year, month, day, new PersianCalendar()).ToString(), null, DateTimeStyles.None);
+                var dt = new DateTime(year, month, day, new PersianCalendar());
 
-                DateTime dt = new DateTime(year, month, day, new PersianCalendar());
+
                 return dt;
             }
             catch (Exception e)

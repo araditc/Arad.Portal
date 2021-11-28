@@ -18,6 +18,7 @@ namespace Arad.Portal.DataLayer.Models.Product
             Specifications = new();
             Prices = new List<Price>();
             MultiLingualProperties = new();
+            //SpecificationVms = new();
         }
         public string ProductId { get; set; }
 
@@ -32,6 +33,8 @@ namespace Arad.Portal.DataLayer.Models.Product
         public long ProductCode { get; set; }
 
         public List<ProductSpecificationValue> Specifications { get; set; }
+
+        //public List<ProductSpecViewModel> SpecificationVms { get; set; }
 
         public List<Image> Images { get; set; }
 

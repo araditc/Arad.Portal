@@ -5,7 +5,7 @@
     var error = Language.GetString("AlertAndMessage_Error");
     var dir = "";
     var lan = "";
-    var cnt = 1;
+
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
     {
         dir = "rtl";
@@ -22,7 +22,7 @@
     {
         lan = "en";
     }
-
+    var count = @Model.MultiLingualProperties.Count + 1;
 }
 
 @section Styles{
@@ -295,7 +295,7 @@
                                                             <td>@item.LanguageName</td>
                                                             <td style="display:none;">@item.LanguageId</td>
                                                             <td>@item.SpecificationGroupName</td>
-                                                            <th style="display:none;">@item.SpecificationGroupId</th>
+                                                            <td style="display:none;">@item.SpecificationGroupId</td>
                                                             <td>@item.SpecificationName</td>
                                                             <td style="display:none;">@item.SpecificationId</td>
                                                             <td>@item.Values</td>
@@ -422,12 +422,12 @@
                                                             <td>@item.Description</td>
                                                             <td>@item.UrlFriend</td>
                                                             <td>
-                                                                <button type="button" class="btn btn-danger btn-circle btnDel" cnt="@cnt" onclick="deleteFromTable(this);">
+                                                                <button type="button" class="btn btn-danger btn-circle btnDel" cnt="@item.Tag"  onclick="deleteFromTable(this);">
                                                                     <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
                                                                 </button>
                                                             </td>
                                                         </tr>
-                                                        @(cnt++)
+                                                     
                                                     }
                                                 }
                                                 else
@@ -651,32 +651,31 @@
     var currentFileSize;
     var currentFileName;
     var images = [];
-    var cnt ;
+    var cnt = @count ;
     var multiLingualArr = [];
     var counter = 1000;
     var active = '@Language.GetString("Active")';
     var inActive = '@Language.GetString("InActive")';
     $(document).ready(function () {
     
-        cnt = @cnt;
+      
         var urlFriend = "product/" + '@Model.ProductCode';
         $("#urlFriend").val(urlFriend);
         var multiLingualList = @Json.Serialize(@Model.MultiLingualProperties);
         for (var i = 0; i < multiLingualList.length; i++) {
             debugger;
             var obj = {};
-            obj.Tag = cnt.toString();
+            obj.Tag = multiLingualList[i].tag;
             obj.MultiLingualPropertyId = multiLingualList[i].multiLingualPropertyId;
             obj.Name = multiLingualList[i].name;
             obj.LanguageId = multiLingualList[i].languageId;
+            obj.LanguageName = multiLingualList[i].languageName;
             obj.SeoTitle = multiLingualList[i].seoTitle;
             obj.SeoDescription = multiLingualList[i].seoDescription;
             obj.Description = multiLingualList[i].description;
             obj.UrlFriend = multiLingualList[i].urlFriend;
             obj.BodyContent = multiLingualList[i].bodyContent;
-
-
-            cnt = cnt + 1;
+          
             multiLingualArr.push(obj);
         }
 
@@ -1089,7 +1088,7 @@
                 "</td><td style='display:none;'>" + $('#specGroupId').val() +
                 "</td><td>" + $("#specificationId option:selected").text() +
                 "</td><td style='display:none;'>" + $("#specificationId").val() +
-                "</td><td>" + vals +
+                "</td><td>" + vals 
                 "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' onclick='deleteFromSpecList(this)'>" +
                 "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
 
@@ -1234,6 +1233,7 @@
         if (!flag) {
             var obj = {};
             obj.LanguageId = $('#multiLangId').val();
+            obj.LanguageName = $("#multiLangId option:selected").text();
             obj.Name = $('#productName').val();
             obj.SeoTitle = $("#seoTitle").val();
             obj.SeoDescription = $("#seoDescription").val();
@@ -1251,7 +1251,7 @@
                 "</td><td>" + $("#seoDescription").val() +
                 "</td><td>" + $("#description").val() +
                 "</td><td>" + $("#urlFriend").val() +
-                "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' cnt='" + cnt + "' onclick='deleteFromTable(this);'>" +
+                "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' cnt='" + obj.Tag + "' onclick='deleteFromTable(this);'>" +
                 "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
     
             if ($("#multiLingualList tr").length == 1 && $("#multiLingualList tr")[0].children.length == 1) {
