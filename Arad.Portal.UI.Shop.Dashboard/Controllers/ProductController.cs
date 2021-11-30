@@ -118,8 +118,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     Text = _.Profile.FullName,
                     Value = _.Id
                 });
-                //System.IO.File.AppendAllText("D:\\logging.txt", $"ViewBag.Vendors fill at {DateTime.Now}");
-                //System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
+              
             }
             else
             {

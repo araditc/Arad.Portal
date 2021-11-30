@@ -16,7 +16,7 @@ $('#detail .main-img-slider').slick({
 
 // Thumbnail/alternates slider for product page
 $('.thumb-nav').slick({
-    slidesToShow: 4,
+    slidesToShow: 6,
     slidesToScroll: 1,
     infinite: true,
     centerPadding: '0px',
@@ -29,8 +29,6 @@ $('.thumb-nav').slick({
     prevArrow: '<div class="slick-prev"><i class="i-prev"></i><span class="sr-only sr-only-focusable"><</span></div>',
     nextArrow: '<div class="slick-next"><i class="i-next"></i><span class="sr-only sr-only-focusable">></span></div>'
 });
-
-
 
 //keeps thumbnails active when changing main image, via mouse/touch drag/swipe
 $('.main-img-slider').on('afterChange', function (event, slick, currentSlide, nextSlide) {

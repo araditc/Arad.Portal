@@ -849,6 +849,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 .Find(_ => _.ProductCode == productCode).First();
 
             result = _mapper.Map<ProductOutputDTO>(productEntity);
+            result.Comments = CreateNestedTreeComment(productEntity.Comments);
             result.MultiLingualProperties = productEntity.MultiLingualProperties;
 
             #region evaluate finalPrice
@@ -953,5 +954,51 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             }
             return result;
         }
+
+        private List<CommentVM> CreateNestedTreeComment(List<Comment> comments)
+        {
+            var result = new List<CommentVM>();
+            result = comments.Where(_ => _.ParentId == null).Select(_ => new CommentVM()
+            {
+                CommentId = _.CommentId,
+                Content = _.Content,
+                CreationDate = _.CreationDate,
+                CreatorUserId = _.CreatorUserId,
+                CreatorUserName = _.CreatorUserName,
+                DislikeCount = _.DislikeCount,
+                LikeCount = _.LikeCount,
+                Childrens = GetChildren(comments, _.CommentId)
+
+            }).ToList();
+            return result;
+        }
+
+        private List<CommentVM>  GetChildren(List<Comment> list , string currentCommentId)
+        {
+            List<CommentVM> result;
+            if(!list.Any(_=>_.ParentId == currentCommentId))
+            {
+                result = new List<CommentVM>();
+            }
+            else
+            {
+                result = list.Where(_ => _.ParentId == currentCommentId).Select(_ => new CommentVM()
+                {
+                    CommentId = _.CommentId,
+                    Content = _.Content,
+                    CreationDate = _.CreationDate,
+                    CreatorUserId = _.CreatorUserId,
+                    CreatorUserName = _.CreatorUserName,
+                    DislikeCount = _.DislikeCount,
+                    LikeCount = _.LikeCount,
+                    Childrens = GetChildren(list, currentCommentId)
+                }).ToList();
+            }
+            return result;
+        }
+           
+
+      
+
     }
 }

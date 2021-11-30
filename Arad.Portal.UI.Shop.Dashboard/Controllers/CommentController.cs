@@ -157,7 +157,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return result;
         }
 
-
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CommentDTO dto)
         {

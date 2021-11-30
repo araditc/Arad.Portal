@@ -41,7 +41,7 @@ using Arad.Portal.DataLayer.Models.Comment;
 using Arad.Portal.DataLayer.Entities.General.Menu;
 using Arad.Portal.DataLayer.Models.Menu;
 using Arad.Portal.DataLayer.Entities.General.BasicData;
-using Arad.Portal.DataLayer.Entities.General.Currency;
+
 
 namespace Arad.Portal.UI.Shop.Mapping
 {

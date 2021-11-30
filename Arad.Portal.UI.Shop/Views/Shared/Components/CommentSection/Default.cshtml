@@ -1,0 +1,47 @@
+﻿@*https://bbbootstrap.com/snippets/bootstrap-nested-comment-section-reply-72244546*@
+@model Arad.Portal.DataLayer.Models.Shared.CommentVM
+<div class="media mt-4">
+    <div class="media-body">
+        <div class="row">
+            <div class="col-md-8 d-flex">
+                <h5>
+                    @Model.CreatorUserName
+                </h5>
+                <span>@Model.CreationDate</span>
+            </div>
+            <div class="col-md-1">
+                <div class="pull-right reply">
+                    <a data-toggle="collapse" href="@($"#bx_{Model.CommentId}")"
+                       role="button" aria-expanded="false" aria-controls="@($"bx_{Model.CommentId}")"><i class="fa fa-reply"></i></a>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div>
+                    <a  href="#"
+                       role="button" aria-expanded="false" ><i class="fas fa-thumbs-up"></i></a>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div>
+                    <a  href="#"
+                       role="button" aria-expanded="false" ><i class="fas fa-thumbs-down"></i></a>
+                </div>
+            </div>
+        </div>
+        @Model.Content
+        <div class="row collapse" id="@($"bx_{Model.CommentId}")">
+            <div class="col-md-10">
+                <input type="text" class="cmt form-control" value="" />
+            </div>
+            <div class="col-md-2">
+                <a href="#"
+                   role="button" aria-expanded="false" onclick="submitComment(this);"><i class="fas fa-check"></i></a>
+            </div>
+        </div>
+        @foreach (var item in Model.Childrens)
+        {
+            @await Component.InvokeAsync("CommentSection", item)
+        }
+
+    </div>
+</div>

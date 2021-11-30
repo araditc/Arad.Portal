@@ -3,10 +3,6 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "library": "popper.js@2.10.2",
-      "destination": "wwwroot/lib/popper.js/"
-    },
-    {
       "library": "Swiper@7.2.0",
       "destination": "wwwroot/lib/Swiper/"
     },
@@ -25,6 +21,10 @@
     {
       "library": "popper.js@2.10.2",
       "destination": "wwwroot/lib/popper.js/"
+    },
+    {
+      "library": "font-awesome@5.15.4",
+      "destination": "wwwroot/lib/font-awesome/"
     }
   ]
 }
