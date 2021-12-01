@@ -23,7 +23,6 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly IHttpContextAccessor _accessor;
         private readonly ILanguageRepository _lanRepository;
         private readonly IDomainRepository _domainRepository;
-        private readonly ICommentRepository _commentRepository;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public ProductController(IProductRepository productRepository, IHttpContextAccessor accessor,
@@ -34,7 +33,6 @@ namespace Arad.Portal.UI.Shop.Controllers
             _accessor = accessor;
             _lanRepository = lanRepository;
             _domainRepository = domainRepository;
-            _commentRepository = commentRepository;
             _userManager = userManager;
         }
         public IActionResult Index()
@@ -46,51 +44,52 @@ namespace Arad.Portal.UI.Shop.Controllers
         public IActionResult Details(long slug)
         {
             var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
+            var isLoggedUser = HttpContext.User.Identity.IsAuthenticated;
+            ViewBag.LoggedUser = isLoggedUser;
+            
             var domainEntity = _domainRepository.FetchByName(domainName);
             var lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
             var entity = _productRepository.FetchByCode(slug, domainEntity.ReturnValue);
+            #region check cookiepart for loggedUser
+            if(isLoggedUser)
+            {
+                var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+                var userProductRateCookieName = $"{userId}_p{entity.ProductId}";
+                if(HttpContext.Request.Cookies[userProductRateCookieName] != null)
+                {
+                    ViewBag.HasRate = true;
+                }else
+                {
+                    ViewBag.HasRate = false;
+                }
+            }
+           
+            #endregion
+
             var lanId = _lanRepository.FetchBySymbol(lanIcon);
             ViewBag.CurCurrencyId = domainEntity.ReturnValue.DefaultCurrencyId;
             ViewBag.CurLanguageId = lanId;
             return View(entity);
         }
 
-
         [HttpPost]
-        public async Task<IActionResult> SubmitComment([FromBody] AddComment model)
+        public async Task<IActionResult> RateProduct([FromHeader]string productId, [FromHeader]int score)
         {
-            JsonResult result;
-            var dto = new CommentDTO();
-            var loginStatus = HttpContext.User.Identity.IsAuthenticated;
-            if (!loginStatus)
+            var res = await _productRepository.RateProduct(productId, score);
+            if(res.Succeeded)
             {
-                var url = Url.Action("Login", "Account", new { area = "" });
-                result = Json(new { status = "auth", data = url });
-            }
-            else
+                //set its related cookie
+                return
+                    Json(new { status = "Succeed", like = res.ReturnValue.LikeRate,
+                        dislike = res.ReturnValue.DisikeRate, half = res.ReturnValue.halfLikeRate });
+            }else
             {
-                //var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                //var dbUser = await _userManager.FindByIdAsync(userId);
-                if (model.ReferenceId.StartsWith("p*"))
-                {
-                    dto.ReferenceType = DataLayer.Entities.General.Comment.ReferenceType.Product;
-                }
-                else if (model.ReferenceId.StartsWith("c*"))
-                {
-                    dto.ReferenceType = DataLayer.Entities.General.Comment.ReferenceType.Content;
-                }
-                dto.Content = model.Content;
-                dto.ParentCommentId = model.ParentId;
-                dto.ReferenceId = model.ReferenceId.Substring(2);
-
-                RepositoryOperationResult saveResult = await _commentRepository.Add(dto);
-                result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
-                : new { Status = "Error", saveResult.Message });
+                return Json(new { status = "error" });
             }
-
-            return result;
 
         }
+
+       
 
     }
 }

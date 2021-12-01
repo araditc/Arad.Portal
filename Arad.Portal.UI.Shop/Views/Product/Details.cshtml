@@ -29,30 +29,30 @@
     .smlImg{
         border-radius : 10%;
     }
-        .card {
-            position: relative;
-            display: flex;
-            padding: 20px;
-            flex-direction: column;
-            min-width: 0;
-            word-wrap: break-word;
-            background-color: #fff;
-            background-clip: border-box;
-            border: 1px solid #d2d2dc;
-            border-radius: 11px;
-            -webkit-box-shadow: 0px 0px 5px 0px rgb(249, 249, 250);
-            -moz-box-shadow: 0px 0px 5px 0px rgba(212, 182, 212, 1);
-            box-shadow: 0px 0px 5px 0px rgb(161, 163, 164)
-        }
+    .card {
+        position: relative;
+        display: flex;
+        padding: 20px;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid #d2d2dc;
+        border-radius: 11px;
+        -webkit-box-shadow: 0px 0px 5px 0px rgb(249, 249, 250);
+        -moz-box-shadow: 0px 0px 5px 0px rgba(212, 182, 212, 1);
+        box-shadow: 0px 0px 5px 0px rgb(161, 163, 164)
+    }
 
-        .media img {
-            width: 60px;
-            height: 60px
-        }
+    .media img {
+        width: 60px;
+        height: 60px
+    }
 
-        .reply a {
-            text-decoration: none
-        }
+    .reply a {
+        text-decoration: none
+    }
     </style>
 }
 
@@ -86,9 +86,26 @@
             </div>
         </div>
         <div class="sold_stars ml-auto">
-            @for (int i = 1; i <= Model.PopularityRate; i++)
+            @for (int i = 1; i <= Model.LikeRate; i++)
             {
-                <i class="fa fa-star"></i>
+                <a href="#"
+                   role="button" aria-expanded="false" onclick="Rate(i, @Model.ProductId);">
+                    <i class="fas fa-star"></i>
+                </a>
+            }
+            @if (Model.halfLikeRate)
+            {
+                <a href="#"
+                   role="button" aria-expanded="false" onclick="Rate(Model.LikeRate+1, @Model.ProductId);">
+                    <i class="fas fa-star-half-alt"></i>
+                </a>
+            }
+            @for (int i = (Model.halfLikeRate ? Model.LikeRate + 2 : Model.LikeRate + 1); i <= Model.DisikeRate; i++)
+            {
+                <a href="#"
+                   role="button" aria-expanded="false" onclick="Rate(i, @Model.ProductId);">
+                    <i class="far fa-star"></i>
+                </a>
             }
         </div>
     </div>
@@ -221,8 +238,24 @@
     </div>
 </div>
 
-
+<script src="~/js/CommentSection/cmt.js"></script>
 <script type="text/javascript">
-   
+    function Rate(score, id) {
+        if ('@ViewBag.LoggedUser' == 'True') {
+            $.ajax({
+                url: "/Product/RateProduct?productId=" + id + "&score=" + score,
+                contentType: 'application/json',
+                type: 'Post',
+                dataType: 'json',
+                beforeSend: function () {
+                },
+                success: function (result) {
+                    if (result.status == "Success") {
+                       //refresh rate part with attribute disabled 
+                    }
+                }
+            });
+        }
+    }
 
 </script>

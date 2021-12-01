@@ -21,6 +21,8 @@ namespace Arad.Portal.DataLayer.Models.Shared
 
         public int DislikeCount { get; set; }
 
+        public string ReferenceId { get; set; }
+
         public string CreatorUserId { get; set; }
 
         public string CreatorUserName { get; set; }

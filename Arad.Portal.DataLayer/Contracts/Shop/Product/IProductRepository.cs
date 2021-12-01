@@ -42,6 +42,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 
         Task<RepositoryOperationResult> DeleteProduct(string productId, string modificationReason);
 
+
+        Task<RepositoryOperationResult<ProductRate>> RateProduct(string productId, int score);
         List<Image> GetPictures(string productId);
 
         List<string> GetProductGroups(string productId);

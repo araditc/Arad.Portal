@@ -17,14 +17,16 @@
             </div>
             <div class="col-md-1">
                 <div>
-                    <a  href="#"
-                       role="button" aria-expanded="false" ><i class="fas fa-thumbs-up"></i></a>
+                    <a href="#"
+                       role="button" aria-expanded="false" onclick="likeDisLike(this,  @Model.CommentId, true);"><i class="far fa-thumbs-up"></i><i class="d-none fas fa-thumbs-up"></i></a>
+                    <span>@Model.LikeCount</span>
                 </div>
             </div>
             <div class="col-md-1">
                 <div>
-                    <a  href="#"
-                       role="button" aria-expanded="false" ><i class="fas fa-thumbs-down"></i></a>
+                    <a href="#"
+                       role="button" aria-expanded="false" onclick="likeDisLike(this, @Model.CommentId, false);"><i class="far fa-thumbs-down"></i><i class="d-none fas fa-thumbs-down"></i></a>
+                    <span>@Model.DislikeCount</span>
                 </div>
             </div>
         </div>
@@ -35,7 +37,7 @@
             </div>
             <div class="col-md-2">
                 <a href="#"
-                   role="button" aria-expanded="false" onclick="submitComment(this);"><i class="fas fa-check"></i></a>
+                   role="button" aria-expanded="false" onclick="submitComment(this, @Model.ReferenceId);"><i class="fas fa-check"></i></a>
             </div>
         </div>
         @foreach (var item in Model.Childrens)
@@ -45,3 +47,7 @@
 
     </div>
 </div>
+@*<i class="far fa-thumbs-up"></i> empty
+  <i class="fas fa-thumbs-up"></i> full
+  <i class="far fa-thumbs-down"></i> empty
+  <i class="fas fa-thumbs-down"></i> full*@

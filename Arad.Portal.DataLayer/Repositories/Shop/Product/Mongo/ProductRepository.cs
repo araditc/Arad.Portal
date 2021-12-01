@@ -952,7 +952,46 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     item.ValueList.Add(obj);
                 }
             }
+            var r = ConvertPopularityRate(productEntity.TotalScore, productEntity.ScoredCount);
+            result.LikeRate = r.LikeRate;
+            result.DisikeRate = r.DisikeRate;
+            result.halfLikeRate = r.halfLikeRate;
             return result;
+        }
+
+
+        public ProductRate ConvertPopularityRate(long totalScore, int scoredCount)
+        {
+            var res = new ProductRate();
+            float[] arr = { 0.0f, 0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f };
+            //float[] intNumbers = { 0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f };
+            float[] halfNumbers = { 0.5f, 1.5f, 2.5f, 3.5f, 4.5f };
+            float popularityRate = totalScore / scoredCount;
+            var rounded = Math.Round(popularityRate, 1, MidpointRounding.AwayFromZero);
+            float tmp = 0;
+            bool hasHalf = false;
+            for (int i = 0; i <= 9; i++)
+            {
+                if (rounded > arr[i] && rounded <= arr[i + 1])
+                {
+                    tmp = arr[i + 1];
+                    if (halfNumbers.Contains(tmp))
+                        hasHalf = true;
+                    else
+                        hasHalf = false;
+                    break;
+                }
+            }
+            res.LikeRate = Convert.ToInt32(Math.Floor(tmp));
+
+            if (hasHalf)
+                res.DisikeRate = 5 - (Convert.ToInt32(Math.Floor(tmp)) + 1);
+            else
+                res.DisikeRate = 5 - Convert.ToInt32(Math.Floor(tmp));
+
+            res.halfLikeRate = hasHalf;
+
+            return res;
         }
 
         private List<CommentVM> CreateNestedTreeComment(List<Comment> comments)
@@ -966,6 +1005,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 CreatorUserId = _.CreatorUserId,
                 CreatorUserName = _.CreatorUserName,
                 DislikeCount = _.DislikeCount,
+                ReferenceId = _.ReferenceId,
                 LikeCount = _.LikeCount,
                 Childrens = GetChildren(comments, _.CommentId)
 
@@ -990,15 +1030,31 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     CreatorUserId = _.CreatorUserId,
                     CreatorUserName = _.CreatorUserName,
                     DislikeCount = _.DislikeCount,
+                    ReferenceId = _.ReferenceId,
                     LikeCount = _.LikeCount,
                     Childrens = GetChildren(list, currentCommentId)
                 }).ToList();
             }
             return result;
         }
-           
 
-      
-
+        public async Task<RepositoryOperationResult<ProductRate>> RateProduct(string productId, int score)
+        {
+            var result = new RepositoryOperationResult<ProductRate>();
+            var entity = _context.ProductCollection.Find(_ => _.ProductId == productId).First();
+            entity.TotalScore += score;
+            entity.ScoredCount += 1;
+            var updateResult = await _context.ProductCollection.ReplaceOneAsync(_ => _.ProductId == productId, entity);
+            var res = ConvertPopularityRate(entity.TotalScore, entity.ScoredCount);
+            if (updateResult.IsAcknowledged)
+            {
+                result.Succeeded = true;
+                result.ReturnValue = res;
+            }else
+            {
+                result.Succeeded = false;
+            }
+            return result;
+        }
     }
 }
