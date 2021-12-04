@@ -10,7 +10,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Comment
 {
     public interface ICommentRepository
     {
-        Task<RepositoryOperationResult> Add(CommentDTO dto);
+        Task<RepositoryOperationResult<Entities.General.Comment.Comment>> Add(CommentDTO dto);
         Task<PagedItems<CommentViewModel>> List(string queryString);
         Task<CommentDTO> CommentFetch(string commentId);
         Task<RepositoryOperationResult> Update(CommentDTO dto);

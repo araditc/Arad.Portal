@@ -176,7 +176,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             else
             {
                
-                RepositoryOperationResult saveResult = await _commentRepository.Add(dto);
+                RepositoryOperationResult<
+                    Comment> saveResult = await _commentRepository.Add(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
             }

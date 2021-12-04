@@ -117,9 +117,9 @@
             </div>
         </div>
         <div class="row">
-            <form>
-                <textarea class="form-group dir" id="commentPart" rows="3" placeholder="@Language.GetString("AlertAndMessage_WriteComment")"></textarea>
-                <input type="button" value="btn btn-success" id="btnAddComment" />
+            <form class="w-100 mt-2">
+                <textarea class="form-control dir w-100 bg-light" id="commentPart" rows="3" placeholder="@Language.GetString("AlertAndMessage_WriteComment")"></textarea>
+                <input type="button" class="btn btn-info mt-2" id="btnAddComment" value="@Language.GetString("btn_Insert")" />
             </form>
             
         </div>
@@ -256,6 +256,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $("#btnAddComment").click(function () {
+            debugger;
             if ('@ViewBag.LoggedUser' == 'True') {
                 if ($("#commentPart").val() != "") {
                     var obj = {};

@@ -63,13 +63,19 @@
 </head>
 
 
-<body>
+<body dir="@direction">
     <header>
         <div class="row">
             <div class="logo"></div>
             <div class="searchBar"></div>
             <div class="profile"></div>
-            <div class="col-md-1 language">
+            <div class="col-md-2 offset-8">
+                <i class="far fa-user"></i>
+                <a href="/account/login" >@Language.GetString("btn_Login")</a>
+                <span>/</span>
+                <a href="/account/register">@Language.GetString("btn_Register")</a>
+            </div>
+            <div class="col-md-2  language">
                 <ul class="langUl list-group list-group-horizontal">
                     <li class="list-group-item lan">
                         <a>

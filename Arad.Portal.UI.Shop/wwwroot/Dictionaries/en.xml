@@ -7,6 +7,9 @@
 	<string key="btn_Login">
 		<value>Login</value>
 	</string>
+	<string key="btn_Register">
+		<value>Register</value>
+	</string>
 	<string key="btn_Crop">
 		<value>Crop</value>
 	</string>
@@ -81,6 +84,9 @@
 	</string>
 	<string key="btn_ChangeActivation">
 		<value>Change Activation</value>
+	</string>
+	<string key="btn_Insert">
+		<value>Add</value>
 	</string>
 	<string key="treeView_Empty">
 		<value>Without childs</value>

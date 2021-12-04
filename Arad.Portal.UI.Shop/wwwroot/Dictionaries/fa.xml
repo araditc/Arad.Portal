@@ -7,6 +7,9 @@
 	<string key="btn_Login">
 		<value>ورود</value>
 	</string>
+	<string key="btn_Register">
+		<value>ثبت نام</value>
+	</string>
 	<string key="btn_Crop">
 		<value>برش</value>
 	</string>
@@ -81,6 +84,9 @@
 	</string>
 	<string key="btn_ChangeActivation">
 		<value>تغییر وضعیت</value>
+	</string>
+	<string key="btn_Insert">
+		<value>ثبت</value>
 	</string>
 	<string key="treeView_Empty">
 		<value>بدون زیرمجموعه</value>
@@ -1507,9 +1513,6 @@
 	<string key="SeoDescription">
 		<value>توضیحات سئو</value>
 	</string>
-	<!--<string key="Description">
-		<value>توضیحات</value>
-	</string>-->
 	<string key="SeoTitle">
 		<value>عنوان سئو</value>
 	</string>

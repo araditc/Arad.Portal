@@ -43,9 +43,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
             _userManager = userManager;
         }
 
-        public async Task<RepositoryOperationResult> Add(CommentDTO dto)
+        public async Task<RepositoryOperationResult<Entities.General.Comment.Comment>> Add(CommentDTO dto)
         {
-            RepositoryOperationResult result = new RepositoryOperationResult();
+            var result = new RepositoryOperationResult<Entities.General.Comment.Comment>();
             try
             {
                 var equallentModel = _mapper.Map<Entities.General.Comment.Comment>(dto);
@@ -60,6 +60,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
                 equallentModel.CommentId = Guid.NewGuid().ToString();
                 
                 await _commentContext.Collection.InsertOneAsync(equallentModel);
+                var comment = _commentContext.Collection.Find(_ => _.CommentId == equallentModel.CommentId).First();
+                result.ReturnValue = comment;
                 result.Succeeded = true;
                 result.Message = ConstMessages.SuccessfullyDone;
 
