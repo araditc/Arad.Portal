@@ -43,7 +43,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         Task<RepositoryOperationResult> DeleteProduct(string productId, string modificationReason);
 
 
-        Task<RepositoryOperationResult<ProductRate>> RateProduct(string productId, int score);
+        Task<RepositoryOperationResult<ProductRate>> RateProduct(string productId, int score, bool isNew, int prevScore);
         List<Image> GetPictures(string productId);
 
         List<string> GetProductGroups(string productId);
@@ -60,7 +60,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         int GetInventory(string productId);
         ProductOutputDTO FetchBySlug(string slug, string domainName);
 
-        ProductOutputDTO FetchByCode(long productCode, DomainDTO dto);
+        ProductOutputDTO FetchByCode(long productCode, DomainDTO dto, string userId);
         bool HasActiveProductPromotion(string productId);
         List<SelectListModel> GetAllActiveProductList(string langId, string currentUserId, string productGroupId, string vendorId);
         List<SelectListModel> GetAllProductList(ApplicationUser user,string productGroupId, string langId);

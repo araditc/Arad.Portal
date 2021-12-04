@@ -447,6 +447,9 @@
 	<string key="AlertAndMessage_ImageSuccessfullyUploaded">
 		<value>image is uploaded successfully.</value>
 	</string>
+	<string key="AlertAndMessage_WriteComment">
+		<value>Add your comment here.</value>
+	</string>
 	<string key="AlertAndMessage_NotImageMessage">
 		<value>please choose a picture.</value>
 	</string>
@@ -634,8 +637,12 @@
 	<string key="AlertAndMessage_UserCreatedSuccessfully">
 		<value>User was created successfully.</value>
 	</string>
-	
-	<string key="AlertAndMessage_DuplicatePhoneNumber">
+	<string key="AlertAndMessage_SubmitComment">
+		<value>Sent Successfully.</value>
+	</string>
+
+
+<string key="AlertAndMessage_DuplicatePhoneNumber">
 		<value>There is a user account with this mobilePhone.</value>
 	</string>
 	<string key="AlertAndMessage_NoAccess">
@@ -1544,6 +1551,12 @@
 	</string>
 	<string key="Content">
 		<value>Content</value>
+	</string>
+	<string key="ProductScore">
+		<value>Product Score</value>
+	</string>
+	<string key="CommentOnProduct">
+		<value>Comment On Product</value>
 	</string>
 	<string key="ContentTitle">
 		<value>Content Title</value>

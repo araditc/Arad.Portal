@@ -53,6 +53,12 @@
     .reply a {
         text-decoration: none
     }
+    .sold_stars i {
+        color: orange
+    }
+    .dir{
+        direction : @(dir == "rtl" ? "rtl" : "ltr");
+    }
     </style>
 }
 
@@ -85,29 +91,39 @@
                 </ul>
             </div>
         </div>
-        <div class="sold_stars ml-auto">
-            @for (int i = 1; i <= Model.LikeRate; i++)
-            {
-                <a href="#"
-                   role="button" aria-expanded="false" onclick="Rate(i, @Model.ProductId);">
-                    <i class="fas fa-star"></i>
-                </a>
-            }
-            @if (Model.halfLikeRate)
-            {
-                <a href="#"
-                   role="button" aria-expanded="false" onclick="Rate(Model.LikeRate+1, @Model.ProductId);">
-                    <i class="fas fa-star-half-alt"></i>
-                </a>
-            }
-            @for (int i = (Model.halfLikeRate ? Model.LikeRate + 2 : Model.LikeRate + 1); i <= Model.DisikeRate; i++)
-            {
-                <a href="#"
-                   role="button" aria-expanded="false" onclick="Rate(i, @Model.ProductId);">
-                    <i class="far fa-star"></i>
-                </a>
-            }
+        <div class="row">
+            <div class="sold_stars ratePart col-md-4">
+                @for (int i = 1; i <= Model.LikeRate; i++)
+                {
+                    <a href="#"
+                       role="button" aria-expanded="false" title="@Language.GetString("ProductScore")" onclick="Rate(@i);">
+                        <i class="fas fa-star"></i>
+                    </a>
+                }
+                @if (Model.halfLikeRate)
+                {
+                    <a href="#"
+                       role="button" aria-expanded="false" title="@Language.GetString("ProductScore")" onclick="Rate(@Model.LikeRate+1);">
+                        <i class="fas fa-star-half-alt"></i>
+                    </a>
+                }
+                @for (int i = (Model.halfLikeRate ? Model.LikeRate + 2 : Model.LikeRate + 1); i <= Model.DisikeRate; i++)
+                {
+                    <a href="#"
+                       role="button" aria-expanded="false" onclick="Rate(i);" title=@($"{@Language.GetString("ProductScore")}_{i}")>
+                        <i class="far fa-star"></i>
+                    </a>
+                }
+            </div>
         </div>
+        <div class="row">
+            <form>
+                <textarea class="form-group dir" id="commentPart" rows="3" placeholder="@Language.GetString("AlertAndMessage_WriteComment")"></textarea>
+                <input type="button" value="btn btn-success" id="btnAddComment" />
+            </form>
+            
+        </div>
+       
     </div>
     <div class="col-6">
         <div class="card" style="border: none;">
@@ -125,74 +141,74 @@
                 @{
                     if (Model.Inventory > 0)
                     {
-                                    <div class="row">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <span>@Language.GetString("PriceValue")</span>
+                                    <span> : </span>
+                                </div>
+                                @if (realPrice == Model.PriceValWithPromotion && Model.GiftProduct == null)
+                                {
+                                    <div class="col-md-3">
+                                        <p>
+                                            <mark>
+                                                @($"{@Model.PriceValWithPromotion} {@price.Prefix}")
+                                            </mark>
+                                        <p>
+                                    </div>
+                                }
+                                else
+                                {
+                                    @if (Model.GiftProduct == null)
+                                    {
                                         <div class="col-md-2">
-                                            <span>@Language.GetString("PriceValue")</span>
-                                            <span> : </span>
+                                            <p>
+                                                <mark>
+                                                    @Model.PriceValWithPromotion + @price.Prefix;
+                                                </mark>
+                                            </p>
                                         </div>
-                                        @if (realPrice == Model.PriceValWithPromotion && Model.GiftProduct == null)
-                                        {
-                                            <div class="col-md-3">
-                                                <p>
-                                                    <mark>
-                                                        @($"{@Model.PriceValWithPromotion} {@price.Prefix}")
-                                                    </mark>
-                                                <p>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            @if (Model.GiftProduct == null)
-                                            {
-                                                <div class="col-md-2">
-                                                    <p>
-                                                        <mark>
-                                                            @Model.PriceValWithPromotion + @price.Prefix;
-                                                        </mark>
-                                                    </p>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <p>
-                                                        <s>
-                                                            @realPrice + @price.Prefix ;
-                                                        </s>
-                                                    </p>
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                <div class="col-md-2">
-                                                    <p>
-                                                        <mark>
-                                                            @Model.PriceValWithPromotion + @price.Prefix;
-                                                        </mark>
-                                                    </p>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <p>@Language.GetString("byBuying")</p>
-                                                    <span>@Model.Promotion.BoughtCount.Value</span>
-                                                    <p>@Language.GetString("AsGift")</p>
-                                                    <span>@Model.Promotion.PromotedCountofUnit.Value</span>
-                                                    <a class="bbb_deals_item_name" href="/product/@Model.GiftProduct.ProductCode">
-                                                        @(Model.GiftProduct.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
-                                                            Model.GiftProduct.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLanguageId).Name :
-                                                            Model.GiftProduct.MultiLingualProperties.First().Name )
-                                                    </a>
-                                                </div>
-                                            }
+                                        <div class="col-md-2">
+                                            <p>
+                                                <s>
+                                                    @realPrice + @price.Prefix ;
+                                                </s>
+                                            </p>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-md-2">
+                                            <p>
+                                                <mark>
+                                                    @Model.PriceValWithPromotion + @price.Prefix;
+                                                </mark>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <p>@Language.GetString("byBuying")</p>
+                                            <span>@Model.Promotion.BoughtCount.Value</span>
+                                            <p>@Language.GetString("AsGift")</p>
+                                            <span>@Model.Promotion.PromotedCountofUnit.Value</span>
+                                            <a class="bbb_deals_item_name" href="/product/@Model.GiftProduct.ProductCode">
+                                                @(Model.GiftProduct.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
+                                                    Model.GiftProduct.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLanguageId).Name :
+                                                    Model.GiftProduct.MultiLingualProperties.First().Name )
+                                            </a>
+                                        </div>
+                                    }
 
-                                        }
+                                }
 
-                                        <div class="col-md-3 txtAlign">
-                                            <span>@Language.GetString("InventoryInStore")</span>
-                                            <span>@Model.Inventory</span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6 offset-3">
-                                            <button class="btn btn-light">@Language.GetString("btn_AddToShoppingCard")</button>
-                                        </div>
-                                    </div>
+                                <div class="col-md-3 txtAlign">
+                                    <span>@Language.GetString("InventoryInStore")</span>
+                                    <span>@Model.Inventory</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 offset-3">
+                                    <button class="btn btn-light">@Language.GetString("btn_AddToShoppingCard")</button>
+                                </div>
+                            </div>
                     }
                     else
                     {
@@ -218,16 +234,14 @@
 
                     @foreach (var item in Model.Comments)
                     {
-                        @await Component.InvokeAsync("CommentSection", item)
+                       @await Component.InvokeAsync("CommentSection", item);
                     }
 
                 </div>
             </div>
-
         </div>
     </div>
     <div class="col-md-6 txtAlign">
-        @*text-truncate*@
         @{
             if (Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) &&
                 !string.IsNullOrEmpty(Model.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLanguageId).BodyContent))
@@ -240,22 +254,76 @@
 
 <script src="~/js/CommentSection/cmt.js"></script>
 <script type="text/javascript">
-    function Rate(score, id) {
+    $(document).ready(function () {
+        $("#btnAddComment").click(function () {
+            if ('@ViewBag.LoggedUser' == 'True') {
+                if ($("#commentPart").val() != "") {
+                    var obj = {};
+                    obj.ReferenceId = '@Model.ProductId';
+                    obj.Content = $("#commentPart").val();
+                    obj.ParentId = null;
+                    $.ajax({
+                        url: "/Comment/SubmitComment",
+                        contentType: 'application/json',
+                        data: JSON.stringify(dto),
+                        type: 'Post',
+                        dataType: 'json',
+                        beforeSend: function () {
+                        },
+                        success: function (result) {
+                            if (result.status === "Success") {
+                                $("#commentPart").val("@Language.GetString("AlertAndMessage_SubmitComment")");
+                                location.reload();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
+
+    function Rate(score) {
+        debugger;
+        var isAllow = false;
         if ('@ViewBag.LoggedUser' == 'True') {
+            if ('@ViewBag.HasRateBefore' == 'True') {
+                if (score != parseInt('@ViewBag.PreRate'))
+                    isAllow = true;
+            }
+            else {
+                isAllow = true;
+            }
+        }
+        if (isAllow)
+        {
             $.ajax({
-                url: "/Product/RateProduct?productId=" + id + "&score=" + score,
-                contentType: 'application/json',
-                type: 'Post',
-                dataType: 'json',
-                beforeSend: function () {
-                },
-                success: function (result) {
-                    if (result.status == "Success") {
-                       //refresh rate part with attribute disabled 
+                url: "/Product/RateProduct?productId=" + '@Model.ProductId' + "&score=" + score + '&hasrate=' + '@ViewBag.HasRateBefore',
+            contentType: 'application/json',
+            type: 'Post',
+            dataType: 'json',
+            beforeSend: function () {
+            },
+            success: function (result) {
+                if (result.status == "Success") {
+                    //refresh rate part
+                    $("div.ratePart").html("");
+                    for (var i = 1; i <= result.like; i++) {
+                        $("div.ratePart")
+                        .append('<a href="#" role = "button" aria-expanded="false" onclick="Rate('+i+');"><i class="fas fa-star"></i></a>');
+                    }
+                    if (result.half == 'True') {
+                        $("div.ratePart")
+                            .append('<a href="#" role="button" aria-expanded="false" onclick="Rate(' + result.like + 1+');"><i class="fas fa-star-half-alt"></i></a>');
+                    }
+                    var initiali = result.half == 'True' ? result.like + 2 : result.like + 1;
+                    for (var i = initiali; i <= result.dislike; i++) {
+                        $("div.ratePart")
+                            .append('<a href="#" role="button" aria-expanded="false" onclick="Rate('+i+');"><i class="far fa-star"></i></a>');
                     }
                 }
+            }
             });
         }
-    }
+   }
 
 </script>

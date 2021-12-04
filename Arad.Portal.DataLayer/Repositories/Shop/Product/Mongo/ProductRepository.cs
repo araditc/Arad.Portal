@@ -38,6 +38,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         private readonly LanguageContext _languageContext;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _accessor;
         private readonly UserManager<ApplicationUser> _userManager;
         
         public ProductRepository(IHttpContextAccessor httpContextAccessor,
@@ -47,6 +48,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             IConfiguration configuration,
             LanguageContext languageContext,
             DomainContext domainContext,
+            IHttpContextAccessor accessor,
             TransactionContext transactionContext)
             : base(httpContextAccessor)
         {
@@ -58,6 +60,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             _languageContext = languageContext;
             _configuration = configuration;
             _domainContext = domainContext;
+            _accessor = accessor;
         }
 
         public async Task<RepositoryOperationResult> Add(ProductInputDTO dto)
@@ -841,7 +844,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public ProductOutputDTO FetchByCode(long productCode, DomainDTO dto)
+        public ProductOutputDTO FetchByCode(long productCode, DomainDTO dto, string userId)
         {
             var result = new ProductOutputDTO();
             
@@ -849,7 +852,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 .Find(_ => _.ProductCode == productCode).First();
 
             result = _mapper.Map<ProductOutputDTO>(productEntity);
-            result.Comments = CreateNestedTreeComment(productEntity.Comments);
+            result.Comments = CreateNestedTreeComment(productEntity.Comments, userId);
             result.MultiLingualProperties = productEntity.MultiLingualProperties;
 
             #region evaluate finalPrice
@@ -966,7 +969,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             float[] arr = { 0.0f, 0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f };
             //float[] intNumbers = { 0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f };
             float[] halfNumbers = { 0.5f, 1.5f, 2.5f, 3.5f, 4.5f };
-            float popularityRate = totalScore / scoredCount;
+            float popularityRate = 0;
+
+            if (scoredCount != 0)
+                popularityRate = totalScore / scoredCount;
+
             var rounded = Math.Round(popularityRate, 1, MidpointRounding.AwayFromZero);
             float tmp = 0;
             bool hasHalf = false;
@@ -994,7 +1001,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return res;
         }
 
-        private List<CommentVM> CreateNestedTreeComment(List<Comment> comments)
+        private List<CommentVM> CreateNestedTreeComment(List<Comment> comments, string currentUserId)
         {
             var result = new List<CommentVM>();
             result = comments.Where(_ => _.ParentId == null).Select(_ => new CommentVM()
@@ -1007,13 +1014,16 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 DislikeCount = _.DislikeCount,
                 ReferenceId = _.ReferenceId,
                 LikeCount = _.LikeCount,
-                Childrens = GetChildren(comments, _.CommentId)
+                userStatus = !string.IsNullOrWhiteSpace(currentUserId) ? ( _httpContextAccessor.HttpContext.Request.Cookies[$"{currentUserId}_cmt{_.CommentId}"] != null ?
+                ( _httpContextAccessor.HttpContext.Request.Cookies[$"{currentUserId}_cmt{_.CommentId}"] == "true" ? userStatus.Like : userStatus.Dislike ) :
+                     userStatus.NoAction ) : userStatus.UnAuthorized,
+                Childrens = GetChildren(comments, _.CommentId, currentUserId)
 
             }).ToList();
             return result;
         }
 
-        private List<CommentVM>  GetChildren(List<Comment> list , string currentCommentId)
+        private List<CommentVM>  GetChildren(List<Comment> list , string currentCommentId, string currentUserId)
         {
             List<CommentVM> result;
             if(!list.Any(_=>_.ParentId == currentCommentId))
@@ -1032,27 +1042,52 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     DislikeCount = _.DislikeCount,
                     ReferenceId = _.ReferenceId,
                     LikeCount = _.LikeCount,
-                    Childrens = GetChildren(list, currentCommentId)
+                    userStatus = !string.IsNullOrWhiteSpace(currentUserId) ? (_httpContextAccessor.HttpContext.Request.Cookies[$"{currentUserId}_cmt{_.CommentId}"] != null ?
+                      (_httpContextAccessor.HttpContext.Request.Cookies[$"{currentUserId}_cmt{_.CommentId}"] == "true" ? userStatus.Like : userStatus.Dislike) :
+                     userStatus.NoAction) : userStatus.UnAuthorized,
+                    Childrens = GetChildren(list, currentCommentId, currentUserId)
                 }).ToList();
             }
             return result;
         }
 
-        public async Task<RepositoryOperationResult<ProductRate>> RateProduct(string productId, int score)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <param name="score"></param>
+        /// <param name="isNew">it means this is the first time which this user rate this product otherweise user rated product again</param>
+        /// <param name="prevScore"></param>
+        /// <returns></returns>
+        public async Task<RepositoryOperationResult<ProductRate>> RateProduct(string productId, int score, bool isNew, int prevScore)
         {
             var result = new RepositoryOperationResult<ProductRate>();
             var entity = _context.ProductCollection.Find(_ => _.ProductId == productId).First();
-            entity.TotalScore += score;
-            entity.ScoredCount += 1;
-            var updateResult = await _context.ProductCollection.ReplaceOneAsync(_ => _.ProductId == productId, entity);
-            var res = ConvertPopularityRate(entity.TotalScore, entity.ScoredCount);
-            if (updateResult.IsAcknowledged)
+            if(isNew)
             {
-                result.Succeeded = true;
-                result.ReturnValue = res;
-            }else
+                entity.TotalScore += score;
+                entity.ScoredCount += 1;
+            }
+            else if(score != prevScore) //if user change the score of product
             {
-                result.Succeeded = false;
+                entity.TotalScore -= prevScore;
+                entity.TotalScore += score;
+                //scoredCount doesnt change cause this user rated before just change its score
+            }
+           
+            if (score != prevScore)
+            {
+                var updateResult = await _context.ProductCollection.ReplaceOneAsync(_ => _.ProductId == productId, entity);
+                var res = ConvertPopularityRate(entity.TotalScore, entity.ScoredCount);
+                if (updateResult.IsAcknowledged)
+                {
+                    result.Succeeded = true;
+                    result.ReturnValue = res;
+                }
+                else
+                {
+                    result.Succeeded = false;
+                }
             }
             return result;
         }

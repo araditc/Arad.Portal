@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Arad.Portal.UI.Shop.Controllers
@@ -59,6 +60,9 @@ namespace Arad.Portal.UI.Shop.Controllers
             JsonResult result;
             //set cookie for related user
             var res = await _commentRepository.AddLikeDislike(commentId, isLike);
+            var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+            HttpContext.Response.Cookies.Append($"{userId}_cmt{commentId}", isLike.ToString());
+
             result = Json(res.Succeeded ? new { Status = "Success", IsLike = isLike }
                 : new { Status = "Error", IsLike = isLike });
             return result;

@@ -18,7 +18,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Comment
         Task<RepositoryOperationResult> Restore(string commentId);
         List<SelectListModel> GetAllReferenceType();
         Task<RepositoryOperationResult> ChangeApproval(string commentId, bool isApproved);
-        Task<RepositoryOperationResult> AddLikeDislike(string commentId, bool isLike);
+        Task<RepositoryOperationResult<Entities.General.Comment.Comment>> AddLikeDislike(string commentId, bool isLike);
        
     }
 }

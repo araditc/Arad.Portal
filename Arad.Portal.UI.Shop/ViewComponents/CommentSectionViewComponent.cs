@@ -27,7 +27,7 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             _accessor = accessor;
         }
 
-        public  IViewComponentResult InvokeAsync(CommentVM comment)
+        public  IViewComponentResult Invoke(CommentVM comment)
         {
             return View(comment);
         }

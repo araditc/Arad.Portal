@@ -45,26 +45,34 @@ namespace Arad.Portal.UI.Shop.Controllers
         {
             var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
             var isLoggedUser = HttpContext.User.Identity.IsAuthenticated;
+            string userId = "";
             ViewBag.LoggedUser = isLoggedUser;
-            
+            userId = isLoggedUser ? HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value : "";
             var domainEntity = _domainRepository.FetchByName(domainName);
             var lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
-            var entity = _productRepository.FetchByCode(slug, domainEntity.ReturnValue);
-            #region check cookiepart for loggedUser
-            if(isLoggedUser)
+            var entity = _productRepository.FetchByCode(slug, domainEntity.ReturnValue, userId);
+            if (isLoggedUser)
             {
-                var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+                
+            #region check cookiepart for loggedUser
+            
+                
                 var userProductRateCookieName = $"{userId}_p{entity.ProductId}";
                 if(HttpContext.Request.Cookies[userProductRateCookieName] != null)
                 {
-                    ViewBag.HasRate = true;
-                }else
-                {
-                    ViewBag.HasRate = false;
+                    ViewBag.HasRateBefore = true;
+                    ViewBag.PreRate = HttpContext.Request.Cookies[userProductRateCookieName];
                 }
+                else
+                {
+                    ViewBag.HasRateBefore = false;
+                }
+               
+                
+                #endregion
             }
-           
-            #endregion
+
+
 
             var lanId = _lanRepository.FetchBySymbol(lanIcon);
             ViewBag.CurCurrencyId = domainEntity.ReturnValue.DefaultCurrencyId;
@@ -73,24 +81,36 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RateProduct([FromHeader]string productId, [FromHeader]int score)
+        public async Task<IActionResult> RateProduct([FromHeader]string productId, [FromHeader]int score, [FromHeader]bool isNew)
         {
-            var res = await _productRepository.RateProduct(productId, score);
-            if(res.Succeeded)
+            var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+            string prevRate = ""; 
+            var userProductRateCookieName = $"{userId}_p{productId}";
+            if (!isNew)//the user has rated before
+            {
+                 prevRate = HttpContext.Request.Cookies[userProductRateCookieName];
+            }
+            int preS = !string.IsNullOrWhiteSpace(prevRate) ? Convert.ToInt32(prevRate) : 0;
+           
+            var res = await _productRepository.RateProduct(productId, score,
+                    isNew, preS);
+            if (res.Succeeded)
             {
                 //set its related cookie
                 return
-                    Json(new { status = "Succeed", like = res.ReturnValue.LikeRate,
-                        dislike = res.ReturnValue.DisikeRate, half = res.ReturnValue.halfLikeRate });
-            }else
+                    Json(new
+                    {
+                        status = "Succeed",
+                        like = res.ReturnValue.LikeRate,
+                        dislike = res.ReturnValue.DisikeRate,
+                        half = res.ReturnValue.halfLikeRate
+                    });
+            }
+            else
             {
                 return Json(new { status = "error" });
             }
-
         }
-
-       
-
     }
 }
 

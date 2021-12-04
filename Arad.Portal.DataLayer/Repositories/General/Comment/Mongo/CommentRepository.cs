@@ -71,9 +71,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> AddLikeDislike(string commentId, bool isLike)
+        public async Task<RepositoryOperationResult<Entities.General.Comment.Comment>> AddLikeDislike(string commentId, bool isLike)
         {
-            var result = new RepositoryOperationResult();
+            var result = new RepositoryOperationResult<Entities.General.Comment.Comment>();
             bool finalRes = false;
             ReplaceOneResult res;
             var cmtEntity = _commentContext.Collection.Find(_ => _.CommentId == commentId).First();
@@ -85,49 +85,57 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
             {
                 cmtEntity.DislikeCount += 1;
             }
-            switch (cmtEntity.ReferenceType)
+
+            var commentEntityUpdate = await _commentContext.Collection.ReplaceOneAsync(_=>_.CommentId == commentId, cmtEntity);
+            if(commentEntityUpdate.IsAcknowledged)
             {
-                case ReferenceType.Product:
-                    var proEntity = _productContext.ProductCollection.Find(_ => _.ProductId == cmtEntity.ReferenceId).First();
-                    var cmt = proEntity.Comments.Where(_ => _.CommentId == commentId).First();
-                    if(isLike)
-                    {
-                        cmt.LikeCount += 1;
-                    }else
-                    {
-                        cmt.DislikeCount += 1;
-                    }
-                    var index = proEntity.Comments.IndexOf(cmt);
-                    proEntity.Comments[index] = cmt;
-                    res = await _productContext.ProductCollection
-                       .ReplaceOneAsync(_ => _.ProductId == cmtEntity.ReferenceId, proEntity);
-                    if(res.IsAcknowledged)
-                    {
-                        finalRes = await UpdateComment(cmtEntity);
-                    }
-                    break;
-                case ReferenceType.Content:
-                    var contentEntity = _contentContext.Collection.Find(_ => _.ContentId == cmtEntity.ReferenceId).First();
-                    var cmnt = contentEntity.Comments.Where(_ => _.CommentId == commentId).First();
-                    if(isLike)
-                    {
-                        cmnt.LikeCount += 1;
-                    }else
-                    {
-                        cmnt.DislikeCount += 1;
-                    }
-                    var cmtIndex = contentEntity.Comments.IndexOf(cmnt);
-                    contentEntity.Comments[cmtIndex] = cmnt;
-                    res = await _contentContext.Collection
-                       .ReplaceOneAsync(_ => _.ContentId == cmtEntity.ReferenceId, contentEntity);
-                    if(res.IsAcknowledged)
-                    {
-                        finalRes = await UpdateComment(cmtEntity);
-                    }
-                    break;
-                default:
-                    break;
+                switch (cmtEntity.ReferenceType)
+                {
+                    case ReferenceType.Product:
+                        var proEntity = _productContext.ProductCollection.Find(_ => _.ProductId == cmtEntity.ReferenceId).First();
+                        var cmt = proEntity.Comments.Where(_ => _.CommentId == commentId).First();
+                        if (isLike)
+                        {
+                            cmt.LikeCount += 1;
+                        }
+                        else
+                        {
+                            cmt.DislikeCount += 1;
+                        }
+                        var index = proEntity.Comments.IndexOf(cmt);
+                        proEntity.Comments[index] = cmt;
+                        res = await _productContext.ProductCollection
+                           .ReplaceOneAsync(_ => _.ProductId == cmtEntity.ReferenceId, proEntity);
+                        if (res.IsAcknowledged)
+                        {
+                            finalRes = await UpdateComment(cmtEntity);
+                        }
+                        break;
+                    case ReferenceType.Content:
+                        var contentEntity = _contentContext.Collection.Find(_ => _.ContentId == cmtEntity.ReferenceId).First();
+                        var cmnt = contentEntity.Comments.Where(_ => _.CommentId == commentId).First();
+                        if (isLike)
+                        {
+                            cmnt.LikeCount += 1;
+                        }
+                        else
+                        {
+                            cmnt.DislikeCount += 1;
+                        }
+                        var cmtIndex = contentEntity.Comments.IndexOf(cmnt);
+                        contentEntity.Comments[cmtIndex] = cmnt;
+                        res = await _contentContext.Collection
+                           .ReplaceOneAsync(_ => _.ContentId == cmtEntity.ReferenceId, contentEntity);
+                        if (res.IsAcknowledged)
+                        {
+                            finalRes = await UpdateComment(cmtEntity);
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
+             
             if (finalRes)
             {
                 result.Succeeded = true;

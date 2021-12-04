@@ -443,6 +443,9 @@
 	<string key="AlertAndMessage_ImageSuccessfullyUploaded">
 		<value>تصوبر با موفقیت بارگزاری شد.</value>
 	</string>
+	<string key="AlertAndMessage_WriteComment">
+		<value>نظر خود را اینجا اضافه کنید.</value>
+	</string>
 	<string key="AlertAndMessage_NotImageMessage">
 		<value>لطفا یک عکس انتخاب کنید.</value>
 	</string>
@@ -623,6 +626,9 @@
 	</string>
 	<string key="AlertAndMessage_UserCreatedSuccessfully">
 		<value>کاربر با موفقیت ایجاد شد.</value>
+	</string>
+	<string key="AlertAndMessage_SubmitComment">
+		<value>با موفقیت ارسال شد.</value>
 	</string>
 
 	<string key="AlertAndMessage_DuplicatePhoneNumber">
@@ -1587,6 +1593,12 @@
 	</string>
 	<string key="Content">
 		<value>محتوا</value>
+	</string>
+	<string key="ProductScore">
+		<value>امتیاز محصول</value>
+	</string>
+	<string key="CommentOnProduct">
+		<value>نظر برای محصول</value>
 	</string>
 	<string key="ContentTitle">
 		<value>عنوان محتوا</value>

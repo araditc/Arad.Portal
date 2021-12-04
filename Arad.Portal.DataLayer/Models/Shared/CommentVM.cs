@@ -27,8 +27,18 @@ namespace Arad.Portal.DataLayer.Models.Shared
 
         public string CreatorUserName { get; set; }
 
+        public userStatus userStatus { get; set; }
+
         public DateTime CreationDate { get; set; }
 
         public List<CommentVM> Childrens { get; set; }
+    }
+
+    public enum userStatus
+    {
+        Like,
+        Dislike,
+        NoAction,
+        UnAuthorized
     }
 }
