@@ -67,7 +67,6 @@ namespace Arad.Portal.UI.Shop.Controllers
                 {
                     ViewBag.HasRateBefore = false;
                 }
-               
                 
                 #endregion
             }
@@ -81,7 +80,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RateProduct([FromHeader]string productId, [FromHeader]int score, [FromHeader]bool isNew)
+        public async Task<IActionResult> RateProduct([FromQuery]string productId, [FromQuery]int score, [FromQuery]bool isNew)
         {
             var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
             string prevRate = ""; 

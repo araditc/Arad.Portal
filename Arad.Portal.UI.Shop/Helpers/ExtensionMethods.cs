@@ -200,6 +200,7 @@ namespace Arad.Portal.UI.Shop.Helpers
                     IsActive = true,
                     DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
                     DefaultLanguageName = "فارسی",
+                    DefaultLangSymbol = "fa-IR",
                     IsDefault = true
                 };
                 var dom2 = new Domain()
@@ -210,6 +211,7 @@ namespace Arad.Portal.UI.Shop.Helpers
                     IsActive = true,
                     DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
                     DefaultLanguageName = "فارسی",
+                    DefaultLangSymbol = "fa-IR",
                     IsDefault = true
                 };
                 var dom3 = new Domain()
@@ -220,6 +222,7 @@ namespace Arad.Portal.UI.Shop.Helpers
                     IsActive = true,
                     DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
                     DefaultLanguageName = "فارسی",
+                    DefaultLangSymbol = "fa-IR",
                     IsDefault = true
                 };
 

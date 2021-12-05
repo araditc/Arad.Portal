@@ -16,6 +16,7 @@
     <ProjectReference Include="..\Arad.Portal.Abstraction\Arad.Portal.Abstraction.csproj" />
     <ProjectReference Include="..\Arad.Portal.DataLayer\Arad.Portal.DataLayer.csproj" />
     <ProjectReference Include="..\Arad.Portal.GeneralLibrary\Arad.Portal.GeneralLibrary.csproj" />
+	  <PackageReference Include="IdentityModel" Version="5.1.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -441,6 +441,9 @@
 	<string key="AlertAndMessage_ImageSuccessfullyUploaded">
 		<value>image is uploaded successfully.</value>
 	</string>
+	<string key="AlertAndMessage_CaptchaIncorrectOrExpired">
+		<value>The security statement is incorrect or has expired.</value>
+	</string>
 	<string key="AlertAndMessage_NotImageMessage">
 		<value>please choose a picture.</value>
 	</string>

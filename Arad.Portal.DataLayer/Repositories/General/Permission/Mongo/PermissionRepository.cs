@@ -305,7 +305,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
                         Icon = _.Icon,
                         Link = _.ClientAddress,
                         Priority = _.Priority,
-                        IsActive = (!string.IsNullOrWhiteSpace(_.ClientAddress)  && _.ClientAddress.Contains(address)) || (_.ClientAddress == "" && _.Routes.Contains(address)),
+                        IsActive = (!string.IsNullOrWhiteSpace(_.ClientAddress)  && _.ClientAddress.Contains(address)) || (_.ClientAddress == "" 
+                        && _.Routes.Contains(address)),
                         Children = GetChildren(allMenues, _.PermissionId, address, domain)
                     }).ToList().OrderBy(_ => _.Priority).ToList();
                 }
@@ -323,7 +324,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
                         Icon = _.Icon,
                         Link = _.ClientAddress,
                         Priority = _.Priority,
-                        IsActive = (!string.IsNullOrWhiteSpace(_.ClientAddress) && _.ClientAddress.Contains(address)) || (_.ClientAddress == "" && _.Routes.Contains(address)),
+                        IsActive = (!string.IsNullOrWhiteSpace(_.ClientAddress) && _.ClientAddress.Contains(address)) || (_.ClientAddress == "" 
+                        && _.Routes.Contains(address)),
                         Children = GetChildren(menues, _.PermissionId, address, domain)
                     }).OrderBy(o => o.Priority).ToList();
                 }

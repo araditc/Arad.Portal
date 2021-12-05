@@ -45,7 +45,7 @@ namespace Arad.Portal.DataLayer.Models.User
 
         [CustomErrorMessage("AlertAndMessage_UserRoleRequired")]
         public string UserRoleId { get; set; }
-        public OneTimePass Otp { get; set; }
+        public OTP Otp { get; set; }
         public bool IsDeleted { get; set; }
         public List<string> FavoriteList { get; set; }
         public List<string> DomainId { get; set; }

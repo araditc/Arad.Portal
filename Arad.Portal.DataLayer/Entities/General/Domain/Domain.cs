@@ -28,6 +28,8 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
 
         public string DefaultLanguageId { get; set; }
 
+        public string DefaultLangSymbol { get; set; }
+
         public string DefaultLanguageName { get; set; }
 
         public string DefaultCurrencyId { get; set; }

@@ -61,7 +61,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddLikeDisLike([FromHeader] string commentId, [FromHeader] bool isLike)
+        public async Task<IActionResult> AddLikeDisLike([FromQuery] string commentId, [FromQuery] bool isLike)
         {
             JsonResult result;
             //set cookie for related user

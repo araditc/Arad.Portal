@@ -21,6 +21,7 @@ using Arad.Portal.DataLayer.Contracts.Shop.Promotion;
 using Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart;
 using Arad.Portal.DataLayer.Contracts.Shop.Transaction;
 using Arad.Portal.DataLayer.Entities.General.User;
+using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Comment.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Content.Mongo;
@@ -60,6 +61,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -74,6 +76,8 @@ namespace Arad.Portal.UI.Shop
         private readonly IWebHostEnvironment _environment;
         private static readonly IBasicDataRepository basicDataRepository;
         public IConfiguration Configuration { get; }
+
+        public static ConcurrentDictionary<string, OTP> OTP = new();
         public static string ApplicationPath { get; set; }
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
@@ -164,7 +168,7 @@ namespace Arad.Portal.UI.Shop
 
             services.AddTransient<IPermissionView, PermissionView>();
             services.AddTransient<RemoteServerConnection>();
-
+            services.AddLocalization();
             AddRepositoryServices(services);
             //services.AddProgressiveWebApp();
 
@@ -187,7 +191,6 @@ namespace Arad.Portal.UI.Shop
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRequestLocalization(AddMultilingualSettings());
 
             app.UseRouting();
@@ -203,6 +206,7 @@ namespace Arad.Portal.UI.Shop
             app.UseAuthorization();
             app.UseSession();
             app.ApplyLanguageMapper();
+           
             app.UseEndpoints(endpoints =>
             {
                 if (env.IsDevelopment())
@@ -212,22 +216,16 @@ namespace Arad.Portal.UI.Shop
 
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "/{language=fa-ir}/{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{language?}/{controller=Home}/{action=Index}/{id?}");
             });
             app.UseSeedDatabase(ApplicationPath);
         }
 
         private RequestLocalizationOptions AddMultilingualSettings()
         {
-            string[] supportedCulturesStrings = Configuration.GetSection("SupportedCultures")
-               .Get<string[]>();
+            var supportedCultures = Configuration.GetSection("SupportedCultures")
+                .Get<string[]>().Select(x => new CultureInfo(x)).ToList();
 
-            List<CultureInfo> supportedCultures = new();
-
-            foreach (string item in supportedCulturesStrings)
-            {
-                supportedCultures.Add(new CultureInfo(item));
-            }
 
             RequestLocalizationOptions options = new RequestLocalizationOptions()
             {

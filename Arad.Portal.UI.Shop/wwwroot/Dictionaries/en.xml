@@ -1162,6 +1162,12 @@
 	<string key="Choose">
 		<value>choose ...</value>
 	</string>
+	<string key="Persian">
+		<value>persian</value>
+	</string>
+	<string key="English">
+		<value>english</value>
+	</string>
 	<string key="SpecificationGroupName">
 		<value>Specification group name</value>
 	</string>

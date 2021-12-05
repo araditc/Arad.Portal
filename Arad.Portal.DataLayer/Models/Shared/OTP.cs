@@ -3,12 +3,14 @@ using System;
 
 namespace Arad.Portal.DataLayer.Models.Shared
 {
-    public class OneTimePass
+    public class OTP
     {
-        public string Content { get; set; }
+        public string Code { get; set; }
 
-
-        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime ExpirationDate { get; set; }
+
+        public string Mobile { get; set; }
+
+        public bool IsSent { get; set; }
     }
 }

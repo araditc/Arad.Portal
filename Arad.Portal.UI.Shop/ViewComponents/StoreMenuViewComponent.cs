@@ -5,6 +5,7 @@ using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Models.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using System;
@@ -45,8 +46,11 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             }
             try
             {
-                var defLangId = _accessor.HttpContext.Request.Cookies[$"defLang{domainName}"];
-                menues = _menuRepository.StoreList(domainEntity.DomainId, defLangId);
+                var cookieVal = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
+                string symbol = cookieVal.Split("|")[0].Substring(2);
+                var langId = _languageRepository.FetchBySymbol(symbol.ToLower());
+
+                menues = _menuRepository.StoreList(domainEntity.DomainId, langId);
             }
             catch (Exception e)
             {

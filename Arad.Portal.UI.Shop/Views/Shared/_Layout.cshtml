@@ -48,6 +48,9 @@
             border: none;
             padding: 0.5rem 0.25rem;
         }
+        .profile{
+            border : none;
+        }
     </style>
     @if (direction == "rtl")
     {
@@ -66,24 +69,34 @@
 <body dir="@direction">
     <header>
         <div class="row">
-            <div class="logo"></div>
-            <div class="searchBar"></div>
-            <div class="profile"></div>
-            <div class="col-md-2 offset-8">
-                <i class="far fa-user"></i>
-                <a href="/account/login" >@Language.GetString("btn_Login")</a>
-                <span>/</span>
-                <a href="/account/register">@Language.GetString("btn_Register")</a>
+            @*<div class="logo"></div>
+            <div class="searchBar"></div>*@
+            <div class="offset-9"></div>
+            <div class="col-md-1">
+                <div class="profile m-2">
+                    @*<ul class="list-group list-group-horizontal">
+                    <li class="list-group-item profile">*@
+                    <a href="/account/register"  title="@Language.GetString("btn_Register")" @*data-toggle="tooltip" data-placement="bottom"*@>
+                        <i class="fas fa-user-plus"></i>
+                    </a>
+                    @*</li>
+                    <li class="list-group-item profile">*@
+                    <a href="/account/login"  title="@Language.GetString("btn_Login")" @*data-toggle="tooltip" data-placement="bottom"*@>
+                        <i class="fas fa-sign-in-alt"></i>
+                    </a>
+                    @*</li>
+                    </ul>*@
+                </div>
             </div>
             <div class="col-md-2  language">
                 <ul class="langUl list-group list-group-horizontal">
                     <li class="list-group-item lan">
-                        <a>
+                        <a title="@Language.GetString("Persian")">
                             <img src="~/imgs/IRAN.png" onclick="setLang('fa-IR')" />
                         </a>
                     </li>
                     <li class="list-group-item lan">
-                        <a>
+                        <a title="@Language.GetString("English")">
                             <img src="~/imgs/USA.png" onclick="setLang('en-US')" />
                         </a>
                     </li>
@@ -101,14 +114,17 @@
         </main>
     </div>
 
-
-    <script src="~/ImageSlider/popper.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    @*<script src="~/lib/popper.js/umd/popper.min.js"></script>*@
+    @*<script src="~/ImageSlider/popper.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>*@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
    
    
     @await RenderSectionAsync("Scripts", required: false)
     <script>
+        //$(document).ready(function () {
+        //    $('[data-toggle="tooltip"]').tooltip();
+        //});
     function setLang(lang)
     {
         debugger;

@@ -6,6 +6,7 @@ $('#detail .main-img-slider').slick({
     arrows: true,
     fade: true,
     autoplay: true,
+    rtl: true,
     autoplaySpeed: 4000,
     speed: 300,
     lazyLoad: 'ondemand',
@@ -25,6 +26,7 @@ $('.thumb-nav').slick({
     centerMode: false,
     draggable: true,
     speed: 200,
+    rtl: true,
     focusOnSelect: true,
     prevArrow: '<div class="slick-prev"><i class="i-prev"></i><span class="sr-only sr-only-focusable"><</span></div>',
     nextArrow: '<div class="slick-next"><i class="i-next"></i><span class="sr-only sr-only-focusable">></span></div>'

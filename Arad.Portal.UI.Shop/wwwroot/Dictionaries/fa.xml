@@ -1204,6 +1204,12 @@
 	<string key="Choose">
 		<value>انتخاب کنید ...</value>
 	</string>
+	<string key="Persian">
+		<value>فارسی</value>
+	</string>
+	<string key="English">
+		<value>انگلیسی</value>
+	</string>
 	<string key="SpecificationGroupName">
 		<value>نام گروه مشخصات محصول</value>
 	</string>

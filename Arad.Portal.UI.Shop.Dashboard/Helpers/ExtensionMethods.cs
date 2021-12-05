@@ -202,6 +202,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                     IsActive = true,
                     DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
                     DefaultLanguageName = "فارسی",
+                    DefaultLangSymbol = "fa-IR",
                     IsDefault = true
                 };
 

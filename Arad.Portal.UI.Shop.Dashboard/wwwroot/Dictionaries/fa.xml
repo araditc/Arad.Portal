@@ -437,6 +437,9 @@
 	<string key="AlertAndMessage_ImageSuccessfullyUploaded">
 		<value>تصوبر با موفقیت بارگزاری شد.</value>
 	</string>
+	<string key="AlertAndMessage_CaptchaIncorrectOrExpired">
+		<value>عبارت امنیتی صحیح نیست یا منقضی شده است.</value>
+	</string>
 	<string key="AlertAndMessage_NotImageMessage">
 		<value>لطفا یک عکس انتخاب کنید.</value>
 	</string>
