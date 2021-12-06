@@ -31,11 +31,13 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly IErrorLogRepository _errorLogRepository;
         public AccountController(UserManager<ApplicationUser> userManager,
             CreateNotification createNotification,
+            IErrorLogRepository errorLogRepository,
             SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _createNotification = createNotification;
+            _errorLogRepository = errorLogRepository;
                     
         }
         public IActionResult Index()
@@ -43,27 +45,121 @@ namespace Arad.Portal.UI.Shop.Controllers
             return View();
         }
 
-        [AllowAnonymous]
+        //[AllowAnonymous]
+        //[HttpGet]
+        //public IActionResult Login(string returnUrl)
+        //{
+        //    if (HttpContext.User.Identity != null &&
+        //        HttpContext.User.Identity.IsAuthenticated)
+        //    {
+        //        if (!string.IsNullOrEmpty(returnUrl))
+        //        {
+        //            return Redirect(returnUrl);
+        //        }
+        //    }
+        //    var viewModel = new LoginViewModel
+        //    {
+        //        ReturnUrl = string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl,
+        //        RememberMe = false
+        //    };
+        //    ViewBag.Message = string.Empty;
+        //    return View(viewModel);
+        //}
+
+
         [HttpGet]
         public IActionResult Login(string returnUrl)
         {
-            if (HttpContext.User.Identity != null &&
-                HttpContext.User.Identity.IsAuthenticated)
+            if (HttpContext.User.Identity is { IsAuthenticated: true })
             {
                 if (!string.IsNullOrEmpty(returnUrl))
                 {
                     return Redirect(returnUrl);
                 }
             }
-            var viewModel = new LoginViewModel
-            {
-                ReturnUrl = string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl,
-                RememberMe = false
-            };
-            ViewBag.Message = string.Empty;
-            return View(viewModel);
+
+            LoginDTO loginDto = new() { ReturnUrl = string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl, RememberMe = false };
+
+            return View(loginDto);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login([FromForm] LoginDTO model)
+        {
+            if (!HttpContext.Session.ValidateCaptcha(model.Captcha))
+            {
+                ModelState.AddModelError("Captcha", Language.GetString("AlertAndMessage_CaptchaIncorrectOrExpired"));
+            }
+
+            if (string.IsNullOrWhiteSpace(model.Username))
+            {
+                ModelState.AddModelError("Username", Language.GetString("Validation_Username"));
+            }
+
+            if (string.IsNullOrWhiteSpace(model.Password))
+            {
+                ModelState.AddModelError("Password", Language.GetString("Validation_Password"));
+            }
+
+            await HttpContext.SignOutAsync();
+            ApplicationUser user = await _userManager.FindByNameAsync(model.Username);
+
+            if (user != null)
+            {
+                if (await _userManager.CheckPasswordAsync(user, model.Password) != true)
+                {
+                    ModelState.AddModelError("Password", Language.GetString("AlertAndMessage_PasswordIncorrect"));
+                }
+
+                if (!user.IsActive)
+                {
+                    ModelState.AddModelError("Username", Language.GetString("AlertAndMessage_AccountHasDeactivated"));
+                }
+
+                //List<User> upAdmins = await _userExtension.GetUpUsers(user.Id);
+
+                //if (upAdmins.Any(x => !x.IsActive))
+                //{
+                //    ModelState.AddModelError("Username", Language.GetString("AlertAndMessage_AccountHasDeactivated"));
+                //}
+            }
+            else
+            {
+                ModelState.AddModelError("Username", Language.GetString("AlertAndMessage_UsernameIncorrect"));
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if (user == null)
+            {
+                return View(model);
+            }
+
+           
+            await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
+
+            user.LastLoginDate = DateTime.Now;
+            await _userManager.UpdateAsync(user);
+
+            if (!string.IsNullOrWhiteSpace(model.ReturnUrl) && model.ReturnUrl != "/")
+            {
+                return Redirect(model.ReturnUrl);
+            }
+
+            //???
+            //if (CultureInfo.CurrentCulture.Name != user.DefaultLanguage)
+            //{
+            //    Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName, CookieRequestCultureProvider.MakeCookieValue(new(user.DefaultLanguage)), new() { Expires = DateTimeOffset.Now.AddYears(1) });
+            //}
+
+            //TempData["LoginUser"] = string.Format(Language.GetString("AlertAndMessage_WelcomeUser"), user.FullName);
+
+            return RedirectToAction("index", "Home");
+        }
 
         [HttpGet]
         public IActionResult Register()
@@ -211,47 +307,47 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login([FromForm] LoginViewModel model)
-        {
-            if (!HttpContext.Session.ValidateCaptcha(model.Captcha))
-            {
-                ModelState.AddModelError("Captcha", Language.GetString("AlertAndMessage_CaptchaIsExpired"));
-            }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Login([FromForm] LoginViewModel model)
+        //{
+        //    if (!HttpContext.Session.ValidateCaptcha(model.Captcha))
+        //    {
+        //        ModelState.AddModelError("Captcha", Language.GetString("AlertAndMessage_CaptchaIsExpired"));
+        //    }
 
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(model);
+        //    }
 
-            await HttpContext.SignOutAsync();
-            ApplicationUser user = await _userManager.FindByNameAsync(model.Username);
+        //    await HttpContext.SignOutAsync();
+        //    ApplicationUser user = await _userManager.FindByNameAsync(model.Username);
 
-            if (user == null || await _userManager.CheckPasswordAsync(user, model.Password) != true)
-            {
-                ViewBag.Message = Language.GetString("AlertAndMessage_InvalidUsernameOrPassword");
-                return View(model);
-            }
+        //    if (user == null || await _userManager.CheckPasswordAsync(user, model.Password) != true)
+        //    {
+        //        ViewBag.Message = Language.GetString("AlertAndMessage_InvalidUsernameOrPassword");
+        //        return View(model);
+        //    }
 
-            if (!user.IsActive)
-            {
-                ViewBag.Message = Language.GetString("AlertAndMessage_InActiveUserAccount");
-                return View(model);
-            }
-            await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
+        //    if (!user.IsActive)
+        //    {
+        //        ViewBag.Message = Language.GetString("AlertAndMessage_InActiveUserAccount");
+        //        return View(model);
+        //    }
+        //    await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
 
-            user.LastLoginDate = DateTime.Now;
-            await _userManager.UpdateAsync(user);
+        //    user.LastLoginDate = DateTime.Now;
+        //    await _userManager.UpdateAsync(user);
 
-            if (!string.IsNullOrWhiteSpace(model.ReturnUrl) && model.ReturnUrl != "/")
-            {
-                return Redirect(model.ReturnUrl);
-            }
+        //    if (!string.IsNullOrWhiteSpace(model.ReturnUrl) && model.ReturnUrl != "/")
+        //    {
+        //        return Redirect(model.ReturnUrl);
+        //    }
 
-            TempData["LoginUser"] = $"{user.Profile.FirstName} {user.Profile.LastName} {Language.GetString("AlertAndMessage_Welcome")}";
-            return RedirectToAction("Index", "Home");
-        }
+        //    TempData["LoginUser"] = $"{user.Profile.FirstName} {user.Profile.LastName} {Language.GetString("AlertAndMessage_Welcome")}";
+        //    return RedirectToAction("Index", "Home");
+        //}
 
 
         [HttpGet]
@@ -271,6 +367,100 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
 
             return Ok(false);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPassword()
+        {
+            ResetPassword model = new();
+            return View("ResetPassword", model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword([FromForm] ResetPassword model)
+        {
+            #region validate
+            if (!HttpContext.Session.ValidateCaptcha(model.Captcha))
+            {
+                ModelState.AddModelError("Captcha", Language.GetString("AlertAndMessage_CaptchaIncorrectOrExpired"));
+            }
+
+            if (string.IsNullOrWhiteSpace(model.UserName))
+            {
+                ModelState.AddModelError("UserName", Language.GetString("Validation_EnterUsername"));
+            }
+
+            if (string.IsNullOrWhiteSpace(model.FullCellPhoneNumber))
+            {
+                ModelState.AddModelError("CellPhoneNumber", Language.GetString("Validation_EnterMobileNumber"));
+            }
+            else
+            {
+                PhoneNumberUtil phoneUtil = PhoneNumberUtil.GetInstance();
+
+                PhoneNumber phoneNumber = phoneUtil.Parse(model.FullCellPhoneNumber, "IR");
+
+                if (!phoneUtil.IsValidNumber(phoneNumber))
+                {
+                    ModelState.AddModelError("CellPhoneNumber", Language.GetString("Validation_MobileNumberInvalid1"));
+                }
+                else
+                {
+                    PhoneNumberType numberType = phoneUtil.GetNumberType(phoneNumber); // Produces Mobile , FIXED_LINE 
+
+                    if (numberType != PhoneNumberType.MOBILE)
+                    {
+                        ModelState.AddModelError("CellPhoneNumber", Language.GetString("Validation_MobileNumberInvalid2"));
+                    }
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                List<AjaxValidationErrorModel> errors = new();
+
+                foreach (string modelStateKey in ModelState.Keys)
+                {
+                    ModelStateEntry modelStateVal = ModelState[modelStateKey];
+                    errors.AddRange(modelStateVal.Errors.Select(error => 
+                    new AjaxValidationErrorModel { Key = modelStateKey, ErrorMessage = error.ErrorMessage }));
+                }
+
+                return Ok(new { Status = "ModelError", ModelStateErrors = errors });
+            }
+
+            #endregion
+
+            ApplicationUser user = await _userManager.FindByNameAsync(model.UserName);
+
+            if (user == null)
+            {
+                return Ok(new { Status = "Error", Message = Language.GetString("AlertAndMessage_NotFoundUser") });
+            }
+
+            if (user.PhoneNumber != model.FullCellPhoneNumber)
+            {
+                return Ok(new { Status = "Error", Message = Language.GetString("AlertAndMessage_NotFoundUser") });
+            }
+
+            string otp = Utilities.GenerateOtp();
+            HttpContext.Session.SetString("Otp", otp);
+            HttpContext.Session.SetString("UserName", user.UserName);
+            HttpContext.Session.SetString("OtpTime", DateTime.Now.ToString(CultureInfo.CurrentCulture));
+
+            Result result = await _createNotification.SendOtp("SendOtpForResetPassword", user, otp);
+
+            if (!result.Succeeded)
+            {
+                ErrorLog errorLog = new() { Error = result.Message, Source = @"Account\ResetPassword", 
+                    Ip = Request.HttpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString() };
+                await _errorLogRepository.Add(errorLog);
+            }
+
+            return Ok(result.Succeeded ? new { Status = "Success", result.Message } : new { Status = "Error", result.Message });
         }
 
     }
