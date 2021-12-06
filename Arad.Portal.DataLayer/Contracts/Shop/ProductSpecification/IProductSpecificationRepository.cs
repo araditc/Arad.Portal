@@ -10,14 +10,14 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductSpecification
 {
     public interface IProductSpecificationRepository
     {
-        Task<RepositoryOperationResult> Add(ProductSpecificationDTO dto);
+        Task<Result> Add(ProductSpecificationDTO dto);
         Task<PagedItems<ProductSpecificationViewModel>> List(string queryString);
         Task<ProductSpecificationDTO> SpecificationFetch(string specId);
-        RepositoryOperationResult<Entities.Shop.ProductSpecification.ProductSpecification> GetEntity(string specId);
-        Task<RepositoryOperationResult> Update(ProductSpecificationDTO spec);
-        Task<RepositoryOperationResult> Delete(string specificationId, string modificationReason);
-        Task<RepositoryOperationResult> Restore(string specificationId);
-        RepositoryOperationResult<List<MultiLingualProperty>> GetSpecificationValues(string productSpecificationId);
+        Result<Entities.Shop.ProductSpecification.ProductSpecification> GetEntity(string specId);
+        Task<Result> Update(ProductSpecificationDTO spec);
+        Task<Result> Delete(string specificationId, string modificationReason);
+        Task<Result> Restore(string specificationId);
+        Result<List<MultiLingualProperty>> GetSpecificationValues(string productSpecificationId);
         List<SelectListModel> GetSpcificationValuesInLanguage(string specificationId, string languageId);
         List<ProductSpecificationDTO> GetAllSpecificationsInGroup(string specificationGroupId);
         List<SelectListModel> GetSpecInGroupAndLanguage(string specificationGroupId, string languageId);

@@ -107,10 +107,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Order.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> InsertNewOrder(string currentUserId,
+        public async Task<Result> InsertNewOrder(string currentUserId,
             OrderStatus orderStatus )
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             //currentUserId should be equall to return value of GetUserId()
             decimal totalOrderAmount = 0;
             var userCartEntity = await _shoppingCartContext.Collection

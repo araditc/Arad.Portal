@@ -30,6 +30,11 @@ using System.Web;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using Arad.Portal.DataLayer.Contracts.General.Currency;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
+using PhoneNumbers;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Arad.Portal.DataLayer.Helpers;
+using Arad.Portal.DataLayer.Entities.General.Error;
+using Arad.Portal.DataLayer.Contracts.General.Error;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -49,12 +54,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly ICurrencyRepository _currencyRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IDomainRepository _domainRepository;
+        private readonly IErrorLogRepository _errorLogRepository;
+        private readonly CreateNotification _createNotification;
         
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IPermissionView permissionView,
             UserExtensions userExtension,
             IRoleRepository roleRepository,
+            CreateNotification createNotification,
             IPermissionRepository permissionRepository,
             ILanguageRepository languageRepository,
             IConfiguration configuration,
@@ -63,6 +71,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             INotificationRepository notificationRepository,
             ICurrencyRepository currencyRepository,
             IDomainRepository domainRepository,
+            IErrorLogRepository errorLogRepository,
             IMessageTemplateRepository messageTemplateRepository)
         {
             _userManager = userManager;
@@ -79,6 +88,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _messageTemplateRepository = messageTemplateRepository;
             _httpContextAccessor = httpContextAccessor;
             _domainRepository = domainRepository;
+            _createNotification = createNotification;
+            _errorLogRepository = errorLogRepository;
         }
 
         [HttpGet]
@@ -746,55 +757,96 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ChangePassword(string id)
+        [AllowAnonymous]
+        public IActionResult ResetPassword()
         {
-            JsonResult result;
-            try
-            {
-                var user = await _userManager.FindByIdAsync(id);
-                if (user == null)
-                {
-                    return Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_NoUserWasFound") });
-                }
+            ResetPassword model = new();
+            return View("ResetPassword", model);
+        }
 
-                var pass = Password.GeneratePassword(true, true, true,
-                    true, false, 8);
-                while (!Password.PasswordIsValid(true, true, true,
-                    true, false, pass))
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword([FromForm] ResetPassword model)
+        {
+            #region validate
+            if (!HttpContext.Session.ValidateCaptcha(model.Captcha))
+            {
+                ModelState.AddModelError("Captcha", Language.GetString("AlertAndMessage_CaptchaIncorrectOrExpired"));
+            }
+
+            if (string.IsNullOrWhiteSpace(model.UserName))
+            {
+                ModelState.AddModelError("UserName", Language.GetString("Validation_EnterUsername"));
+            }
+
+            if (string.IsNullOrWhiteSpace(model.FullCellPhoneNumber))
+            {
+                ModelState.AddModelError("CellPhoneNumber", Language.GetString("Validation_EnterMobileNumber"));
+            }
+            else
+            {
+                PhoneNumberUtil phoneUtil = PhoneNumberUtil.GetInstance();
+
+                PhoneNumber phoneNumber = phoneUtil.Parse(model.FullCellPhoneNumber, "IR");
+
+                if (!phoneUtil.IsValidNumber(phoneNumber))
                 {
-                    pass = Password.GeneratePassword(true, true, true,
-                        true, false, 8);
-                }
-                //add new record in notify table and declare user that I send the codes
-                var template = _messageTemplateRepository.FetchTemplateByName("ChangePassword");
-                var body = template.Body.Replace("[0]", pass);
-                var notify = new NotificationDTO()
-                {
-                    NotificationId = Guid.NewGuid().ToString(),
-                    CreationDate = DateTime.UtcNow,
-                    CreatorUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier),
-                    CreatorUserName = HttpContext.User.FindFirstValue(ClaimTypes.Name),
-                    MessageText = body,
-                    To = user.PhoneNumber,
-                    TemplateName = "ChangePassword",
-                    Type = Enums.NotificationType.Sms
-                };
-                var res = _notificationRepository.AddNewNotification(notify);
-                if (res.Succeeded)
-                {
-                    result = Json(new { Status = "success", Message = Language.GetString("AlertAndMessage_SendNewPassword") });
+                    ModelState.AddModelError("CellPhoneNumber", Language.GetString("Validation_MobileNumberInvalid1"));
                 }
                 else
                 {
-                    result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
+                    PhoneNumberType numberType = phoneUtil.GetNumberType(phoneNumber); // Produces Mobile , FIXED_LINE 
+
+                    if (numberType != PhoneNumberType.MOBILE)
+                    {
+                        ModelState.AddModelError("CellPhoneNumber", Language.GetString("Validation_MobileNumberInvalid2"));
+                    }
                 }
             }
-            catch (Exception e)
+
+            if (!ModelState.IsValid)
             {
-                Console.WriteLine(e);
-                throw;
+                List<AjaxValidationErrorModel> errors = new();
+
+                foreach (string modelStateKey in ModelState.Keys)
+                {
+                    ModelStateEntry modelStateVal = ModelState[modelStateKey];
+                    errors.AddRange(modelStateVal.Errors.Select(error => new AjaxValidationErrorModel 
+                    { Key = modelStateKey, ErrorMessage = error.ErrorMessage }));
+                }
+
+                return Ok(new { Status = "ModelError", ModelStateErrors = errors });
             }
-            return result;
+
+            #endregion
+
+            ApplicationUser user = await _userManager.FindByNameAsync(model.UserName);
+
+            if (user == null)
+            {
+                return Ok(new { Status = "Error", Message = Language.GetString("AlertAndMessage_NotFoundUser") });
+            }
+
+            if (user.PhoneNumber != model.FullCellPhoneNumber)
+            {
+                return Ok(new { Status = "Error", Message = Language.GetString("AlertAndMessage_NotFoundUser") });
+            }
+
+            string otp = Utilities.GenerateOtp();
+            HttpContext.Session.SetString("Otp", otp);
+            HttpContext.Session.SetString("UserName", user.UserName);
+            HttpContext.Session.SetString("OtpTime", DateTime.Now.ToString(CultureInfo.CurrentCulture));
+
+            Result result = await _createNotification.SendOtp("SendOtpForResetPassword", user, otp);
+
+            if (!result.Succeeded)
+            {
+                ErrorLog errorLog = new() { Error = result.Message, Source = @"Account\ResetPassword", Ip = Request.HttpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString() };
+                await _errorLogRepository.Add(errorLog);
+            }
+
+            return Ok(result.Succeeded ? new { Status = "Success", result.Message } : new { Status = "Error", result.Message });
         }
 
         public IActionResult UnAuthorize()

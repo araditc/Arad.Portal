@@ -112,7 +112,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.Prefix = cur.ReturnValue.Symbol;
                     item.SDate = DateHelper.ToEnglishDate(item.StartDate);
                 }
-                RepositoryOperationResult saveResult = await _domainRepository.AddDomain(dto);
+                Result saveResult = await _domainRepository.AddDomain(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
             }
@@ -201,7 +201,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     return RedirectToAction("PageOrItemNotFound", "Account");
                 }
             }
-            RepositoryOperationResult saveResult = await _domainRepository.EditDomain(dto);
+            Result saveResult = await _domainRepository.EditDomain(dto);
 
             result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
             : new { Status = "Error", saveResult.Message });
@@ -210,7 +210,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
-            RepositoryOperationResult opResult = await _domainRepository.DeleteDomain(id, "delete");
+            Result opResult = await _domainRepository.DeleteDomain(id, "delete");
             return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
             : new { Status = "Error", opResult.Message });
         }

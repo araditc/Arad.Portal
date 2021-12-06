@@ -34,9 +34,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
             _languageContext = languageContext;
             _productContext = productContext;
         }
-        public async Task<RepositoryOperationResult> AddProductUnit(ProductUnitDTO dto)
+        public async Task<Result> AddProductUnit(ProductUnitDTO dto)
         {
-            RepositoryOperationResult result = new RepositoryOperationResult();
+            Result result = new Result();
             var equallentModel = _mapper.Map<Entities.Shop.ProductUnit.ProductUnit>(dto);
 
             equallentModel.Modifications = new List<Modification>();
@@ -63,9 +63,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Delete(string productUnitId)
+        public async Task<Result> Delete(string productUnitId)
         {
-            RepositoryOperationResult result = new RepositoryOperationResult();
+            Result result = new Result();
 
             try
             {
@@ -102,9 +102,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> EditProductUnit(ProductUnitDTO dto)
+        public async Task<Result> EditProductUnit(ProductUnitDTO dto)
         {
-            RepositoryOperationResult result = new RepositoryOperationResult();
+            Result result = new Result();
             var equallentModel = _mapper.Map<Entities.Shop.ProductUnit.ProductUnit>(dto);
 
             var availableEntity = await _productContext.ProductUnitCollection
@@ -225,9 +225,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Restore(string productUnitId)
+        public async Task<Result> Restore(string productUnitId)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var entity = _productContext.ProductUnitCollection
               .Find(_ => _.ProductUnitId == productUnitId).FirstOrDefault();
             entity.IsDeleted = false;

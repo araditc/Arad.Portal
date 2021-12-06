@@ -10,8 +10,8 @@ namespace Arad.Portal.DataLayer.Contracts.General.Menu
 {
     public interface IMenuRepository
     {
-        Task<RepositoryOperationResult> AddMenu(MenuDTO dto);
-        Task<RepositoryOperationResult> EditMenu(MenuDTO dto);
+        Task<Result> AddMenu(MenuDTO dto);
+        Task<Result> EditMenu(MenuDTO dto);
         /// <summary>
         /// if langId is null or empty then content will show in default languageId of domain
         /// </summary>
@@ -21,8 +21,8 @@ namespace Arad.Portal.DataLayer.Contracts.General.Menu
         List<StoreMenuVM> StoreList(string domainId, string langId);
         Task<List<SelectListModel>> AllActiveMenues(string domainId, string langId);
         Task<PagedItems<MenuDTO>> AdminList(string queryString);
-         Task<RepositoryOperationResult> DeleteMenu(string menuId);
-         RepositoryOperationResult<MenuDTO> FetchMenu(string menuId);
+         Task<Result> DeleteMenu(string menuId);
+         Result<MenuDTO> FetchMenu(string menuId);
          List<SelectListModel> GetAllMenuType();
          StoreMenuVM GetByCode(long menuCode);
     }

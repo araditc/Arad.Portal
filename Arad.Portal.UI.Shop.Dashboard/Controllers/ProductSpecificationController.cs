@@ -157,7 +157,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         group.GroupNames.First(_ => _.LanguageId == lan.LanguageId).Name : "";
                 }
 
-                RepositoryOperationResult saveResult = await _specificationRepository.Add(dto);
+                Result saveResult = await _specificationRepository.Add(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
             }
@@ -249,7 +249,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
             }
 
-            RepositoryOperationResult saveResult = await _specificationRepository.Update(dto);
+            Result saveResult = await _specificationRepository.Update(dto);
 
             result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
             : new { Status = "Error", saveResult.Message });
@@ -258,7 +258,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
-            RepositoryOperationResult opResult = await _specificationRepository.Delete(id, "delete");
+            Result opResult = await _specificationRepository.Delete(id, "delete");
             return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
             : new { Status = "Error", opResult.Message });
         }

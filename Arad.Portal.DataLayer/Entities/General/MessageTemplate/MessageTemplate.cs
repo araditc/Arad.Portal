@@ -16,12 +16,17 @@
 //  limitations under the License.
 //  --------------------------------------------------------------------
 using MongoDB.Bson.Serialization.Attributes;
+using System.Collections.Generic;
 using static Arad.Portal.DataLayer.Models.Shared.Enums;
 
 namespace Arad.Portal.DataLayer.Entities.General.MessageTemplate
 {
     public class MessageTemplate : BaseEntity
     {
+        public MessageTemplate()
+        {
+            MessageTemplateMultiLingual = new();
+        }
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string MessageTemplateId { get; set; }
@@ -29,13 +34,23 @@ namespace Arad.Portal.DataLayer.Entities.General.MessageTemplate
         public string TemplateName { get; set; }
 
         public string TemplateDescription { get; set; }
-
-        public string SubjectLine { get; set; }
-
-        public string Body { get; set; }
-
+       
         public bool IsSystemTemplate { get; set; }
 
         public NotificationType NotificationType { get; set; }
+
+        public List<MessageTemplateMultiLingual> MessageTemplateMultiLingual { get; set; }
+    }
+
+    public class MessageTemplateMultiLingual
+    {
+        /// <summary>
+        /// this is symbol in languageTemplate
+        /// </summary>
+        public string LanguageName { get; set; }
+
+        public string Subject { get; set; }
+
+        public string Body { get; set; }
     }
 }

@@ -28,7 +28,6 @@ using Arad.Portal.DataLayer.Entities.Shop.Product;
 using Arad.Portal.DataLayer.Entities.Shop.ShoppingCart;
 using Arad.Portal.DataLayer.Models.ShoppingCart;
 using Arad.Portal.DataLayer.Models.Notification;
-using Arad.Portal.DataLayer.Entities.General.Notification;
 using Arad.Portal.DataLayer.Entities.Shop.Promotion;
 using Arad.Portal.DataLayer.Models.Promotion;
 using Arad.Portal.DataLayer.Models.Shared;
@@ -41,7 +40,7 @@ using Arad.Portal.DataLayer.Models.Comment;
 using Arad.Portal.DataLayer.Entities.General.Menu;
 using Arad.Portal.DataLayer.Models.Menu;
 using Arad.Portal.DataLayer.Entities.General.BasicData;
-
+using Arad.Portal.DataLayer.Entities.General.Notify;
 
 namespace Arad.Portal.UI.Shop.Mapping
 {
@@ -63,8 +62,8 @@ namespace Arad.Portal.UI.Shop.Mapping
             CreateMap<Product, ProductOutputDTO>().ReverseMap();
             CreateMap<Promotion, PromotionDTO>().ReverseMap();
             CreateMap<Price, PriceDTO>().ReverseMap();
-            CreateMap<ShoppingCart, ShoppingCartDTO>();
-            CreateMap<NotificationDTO, Notification>();
+            CreateMap<ShoppingCart, ShoppingCartDTO>().ReverseMap();
+            CreateMap<NotificationDTO, Notification>().ReverseMap();
             CreateMap<ContentCategory, ContentCategoryDTO>().ReverseMap();
             CreateMap<Content, ContentDTO>().ReverseMap();
             CreateMap<ContentViewModel, Content>().ReverseMap();

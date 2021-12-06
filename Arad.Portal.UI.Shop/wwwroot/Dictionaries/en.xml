@@ -450,6 +450,46 @@
 	</string>
 	<!--End [Enum Descriptions]-->
 	<!--START [Allert And Message]-->
+	<string key="Validation_EnterUsername">
+		<value>Please select a username.</value>
+	</string>
+	<string key="Validation_MobileNumberAlreadyRegistered">
+		<value>The entered mobile number is already registered.</value>
+	</string>
+	<string key="Validation_EnterMobileNumber">
+		<value>Enter the mobile phone.</value>
+	</string>
+	<string key="Validation_MobileNumberInvalid1">
+		<value>The entered mobile number is not valid.</value>
+	</string>
+	<string key="Validation_MobileNumberInvalid2">
+		<value>Enter the number of fixed phone.</value>
+	</string>
+	<string key="AlertAndMessage_ProfileConfirmPhoneTimeOut">
+		<value>The verification code has expired.</value>
+	</string>
+	<string key="AlertAndMessage_ProfileConfirmPhoneError">
+		<value>Confirmation of number with error encountered.</value>
+	</string>
+
+	<string key="AlertAndMessage_CaptchaIncorrectOrExpired">
+		<value>The security statement is incorrect or has expired.</value>
+	</string>
+	<string key="AlertAndMessage_OperationSuccess">
+		<value>The operation was successful.</value>
+	</string>
+	<string key="AlertAndMessage_NotFound">
+		<value>Not Found.</value>
+	</string>
+	<string key="AlertAndMessage_NotFoundMessageTemplate">
+		<value>Not found message template.</value>
+	</string>
+	<string key="AlertAndMessage_NotFoundSmsSetting">
+		<value>Not found sms setting.</value>
+	</string>
+	<string key="AlertAndMessage_NotFoundSmtp">
+		<value>Not found smtp setting.</value>
+	</string>
 	<string key="AlertAndMessage_ImageSuccessfullyUploaded">
 		<value>image is uploaded successfully.</value>
 	</string>
@@ -1159,6 +1199,7 @@
 	</string>
 	<!--END [Allert And Message]-->
 	<!--START [Dashboard]-->
+	
 	<string key="Choose">
 		<value>choose ...</value>
 	</string>

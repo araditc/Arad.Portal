@@ -11,7 +11,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Order
 {
     public interface IOrderRepository
     {
-        Task<RepositoryOperationResult> InsertNewOrder(string userId, OrderStatus orderStatus);
+        Task<Result> InsertNewOrder(string userId, OrderStatus orderStatus);
 
         Task<List<OrderDetail>> GetOrderDetails(string orderId);
 

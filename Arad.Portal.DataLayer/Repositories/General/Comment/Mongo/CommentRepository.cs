@@ -43,9 +43,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
             _userManager = userManager;
         }
 
-        public async Task<RepositoryOperationResult<Entities.General.Comment.Comment>> Add(CommentDTO dto)
+        public async Task<Result<Entities.General.Comment.Comment>> Add(CommentDTO dto)
         {
-            var result = new RepositoryOperationResult<Entities.General.Comment.Comment>();
+            var result = new Result<Entities.General.Comment.Comment>();
             try
             {
                 var equallentModel = _mapper.Map<Entities.General.Comment.Comment>(dto);
@@ -73,9 +73,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult<Entities.General.Comment.Comment>> AddLikeDislike(string commentId, bool isLike)
+        public async Task<Result<Entities.General.Comment.Comment>> AddLikeDislike(string commentId, bool isLike)
         {
-            var result = new RepositoryOperationResult<Entities.General.Comment.Comment>();
+            var result = new Result<Entities.General.Comment.Comment>();
             bool finalRes = false;
             ReplaceOneResult res;
             var cmtEntity = _commentContext.Collection.Find(_ => _.CommentId == commentId).First();
@@ -155,9 +155,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
             var res = await _commentContext.Collection.ReplaceOneAsync(_ => _.CommentId == comment.CommentId, comment);
             return res.IsAcknowledged;
         }
-        public async Task<RepositoryOperationResult> ChangeApproval(string commentId, bool isApproved)
+        public async Task<Result> ChangeApproval(string commentId, bool isApproved)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             
             var entity = _commentContext.Collection.Find(_ => _.CommentId == commentId).First();
             entity.IsApproved = isApproved;
@@ -189,9 +189,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Delete(string commentId, string modificationReason)
+        public async Task<Result> Delete(string commentId, string modificationReason)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var entity = await _commentContext.Collection.Find(_ => _.CommentId == commentId).FirstOrDefaultAsync();
             if (entity != null)
             {
@@ -330,9 +330,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Restore(string commentId)
+        public async Task<Result> Restore(string commentId)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var entity = _commentContext.Collection
               .Find(_ => _.CommentId == commentId).FirstOrDefault();
             entity.IsDeleted = false;
@@ -351,9 +351,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Update(CommentDTO dto)
+        public async Task<Result> Update(CommentDTO dto)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
 
             var equallentModel = _mapper.Map<Entities.General.Comment.Comment>(dto);
             var userName = _httpContextAccessor.HttpContext.User.Claims

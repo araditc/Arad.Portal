@@ -44,9 +44,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
             _userRepository = userRepository;
             _roleRepository = roleRepository;
         }
-        public async Task<RepositoryOperationResult> Delete(string permissionId)
+        public async Task<Result> Delete(string permissionId)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             try
             {
                 var permissionEntity = _context.Collection
@@ -79,9 +79,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
             
         }
 
-        public RepositoryOperationResult<PermissionDTO> GetForEdit(string permissionId)
+        public Result<PermissionDTO> GetForEdit(string permissionId)
         {
-            var result = new RepositoryOperationResult<PermissionDTO>();
+            var result = new Result<PermissionDTO>();
             try
             {
                 var per = _context.Collection.AsQueryable().FirstOrDefault(c => c.PermissionId == permissionId);
@@ -104,9 +104,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
             return result;
         }
 
-        public RepositoryOperationResult<List<Modification>> GetModifications(string permissionId)
+        public Result<List<Modification>> GetModifications(string permissionId)
         {
-            var result = new RepositoryOperationResult<List<Modification>>();
+            var result = new Result<List<Modification>>();
             var entity = _context.Collection.AsQueryable().FirstOrDefault(c => c.PermissionId == permissionId);
             if (entity != null)
             {
@@ -373,9 +373,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Save(PermissionDTO dto)
+        public async Task<Result> Save(PermissionDTO dto)
         {
-            RepositoryOperationResult result;
+            Result result;
 
             //mapping the input model to equallent object of database
             var equallentModel = _mapper.Map<Entities.General.Permission.Permission>(dto);
@@ -392,10 +392,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
 
             return result;
         }
-        private async Task<RepositoryOperationResult> UpdatePermissionAsync
+        private async Task<Result> UpdatePermissionAsync
             (Entities.General.Permission.Permission equallentModel, string modificationReason)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
 
             var availableEntity = await _context.Collection
                     .Find(_ => _.PermissionId.Equals(equallentModel.PermissionId)).FirstOrDefaultAsync();
@@ -448,10 +448,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
 
             return _userRepository.GetPermissionsOfUser(user).Select(_ => _.PermissionId).ToList();
         }
-        private async Task<RepositoryOperationResult> InsertPermissionAsync(
+        private async Task<Result> InsertPermissionAsync(
             Entities.General.Permission.Permission equallentModel)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             equallentModel.Modifications = new List<Modification>();
 
             equallentModel.CreationDate = DateTime.Now;
@@ -474,9 +474,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult<string>> GetPermissionType(string permissionId)
+        public async Task<Result<string>> GetPermissionType(string permissionId)
         {
-            var result = new RepositoryOperationResult<string>();
+            var result = new Result<string>();
            if (!string.IsNullOrWhiteSpace(permissionId))
             {
                 var per = await _context.Collection
@@ -613,9 +613,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> ChangeActivation(string permissionId, bool isActive, string modificationReason)
+        public async Task<Result> ChangeActivation(string permissionId, bool isActive, string modificationReason)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             try
             {
 

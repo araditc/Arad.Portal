@@ -46,7 +46,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 dto.ParentCommentId = model.ParentId;
                 dto.ReferenceId = model.ReferenceId.Substring(2);
 
-                RepositoryOperationResult<DataLayer.Entities.General.Comment.Comment> saveResult = await _commentRepository.Add(dto);
+                Result<DataLayer.Entities.General.Comment.Comment> saveResult = await _commentRepository.Add(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message,
                     username = HttpContext.User.Claims.FirstOrDefault(_=>_.Type == ClaimTypes.NameIdentifier).Value, 
                     date = Arad.Portal.GeneralLibrary.Utilities.DateHelper.ToPersianDdate(saveResult.ReturnValue.CreationDate),

@@ -10,24 +10,24 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart
 {
     public interface IShoppingCartRepository
     {
-        Task<RepositoryOperationResult> AddProductToUserCart(ShoppingCartProductDTO productDto);
+        Task<Result> AddProductToUserCart(ShoppingCartProductDTO productDto);
 
-        RepositoryOperationResult InsertUserShoppingCart(string userId);
+        Result InsertUserShoppingCart(string userId);
 
-        Task<RepositoryOperationResult> ChangeProductCountInUserCart(string userId, string productId, int newCount);
+        Task<Result> ChangeProductCountInUserCart(string userId, string productId, int newCount);
 
-        Task<RepositoryOperationResult<ShoppingCartDTO>> FetchUserShopCart(string userId);
+        Task<Result<ShoppingCartDTO>> FetchUserShopCart(string userId);
 
-        Task<RepositoryOperationResult> DeleteProductFromUserShoppingCart(string userId, string productId);
+        Task<Result> DeleteProductFromUserShoppingCart(string userId, string productId);
 
-        Task<RepositoryOperationResult> DeleteWholeUserShoppingCart(string userId);
+        Task<Result> DeleteWholeUserShoppingCart(string userId);
 
         /// <summary>
         /// the return type Of repositoryOperationResult is UserCartId
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        RepositoryOperationResult<string> FindCurrentUserShoppingCart(string userId);
+        Result<string> FindCurrentUserShoppingCart(string userId);
 
         
     }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo
 {
-    public class MessageTemplateContext
+    public class ErrorLogContext
     {
         private readonly MongoClient client;
         private readonly IMongoDatabase db;
@@ -18,7 +18,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo
         public IMongoCollection<BsonDocument> BsonCollection;
         private readonly IConfiguration _configuration;
 
-        public MessageTemplateContext(IConfiguration configuration)
+        public ErrorLogContext(IConfiguration configuration)
         {
             _configuration = configuration;
             client = new MongoClient(_configuration["Database:ConnectionString"]);

@@ -15,15 +15,19 @@ namespace Arad.Portal.DataLayer.Models.Shared
         {
             [Description(" ایران کیش")]
             IranKish,
-
             [Description("  سامان کیش")]
             Saman,
-
             [Description(" به پرداخت")]
             BehPardakht,
-
             [Description(" پارسیان")]
             Parsian
+        }
+
+        public enum EmailEncryptionType
+        {
+            None = 1,
+            TLS,
+            SSL
         }
 
         /// <summary>
@@ -37,23 +41,28 @@ namespace Arad.Portal.DataLayer.Models.Shared
             FixedForAll = 4
         }
 
+        public enum DefaultEncoding
+        {
+            ASCII,
+            Default,
+            Latin1,
+            BigEndianUnicode,
+            UTF32,
+            UTF8,
+            Unicode
+        }
         public enum PaymentStage
         {
             [Description("ثبت اولیه تراکنش")]
             Initialized,
-
             [Description("ایجاد توکن.")]
             GenerateToken,
-
             [Description("هدایت به درگاه پرداخت.")]
             RedirectToIPG,
-
             [Description("در حال انتظار برای تایید تراکنش ")]
             DoneButNotConfirmed,
-
             [Description("موفق")]
             DoneAndConfirmed,
-
             [Description("ناموفق")]
             Failed
         }
@@ -63,10 +72,8 @@ namespace Arad.Portal.DataLayer.Models.Shared
         {
             [CustomDescription("EnumDesc_Email")]
             Email = 1,
-
             [CustomDescription("EnumDesc_Sms")]
             Sms,
-
             [CustomDescription("EnumDesc_Notification")]
             Notification
         }

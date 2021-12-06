@@ -174,7 +174,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                             dto.MultiLingualProperties.First(_ => _.LanguageId == lang.LanguageId).Name : dto.MultiLingualProperties.First().Name;
                     }
                 }
-                RepositoryOperationResult saveResult = await _productGroupRepository.Add(dto);
+                Result saveResult = await _productGroupRepository.Add(dto);
                 if(saveResult.Succeeded)
                 {
                     _codeGenerator.SaveToDB(dto.GroupCode);
@@ -297,7 +297,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 item.CurrencySymbol = res.ReturnValue.Symbol;
             }
 
-            RepositoryOperationResult saveResult = await _productGroupRepository.Update(dto);
+            Result saveResult = await _productGroupRepository.Update(dto);
 
             result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
             : new { Status = "Error", saveResult.Message });
@@ -306,7 +306,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
-            RepositoryOperationResult opResult = await _productGroupRepository.Delete(id, "delete");
+            Result opResult = await _productGroupRepository.Delete(id, "delete");
             return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
             : new { Status = "Error", opResult.Message });
         }

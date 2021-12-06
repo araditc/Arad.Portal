@@ -187,7 +187,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
-            RepositoryOperationResult opResult = await _productRepository.DeleteProduct(id, "delete");
+            Result opResult = await _productRepository.DeleteProduct(id, "delete");
             return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
             : new { Status = "Error", opResult.Message });
         }
@@ -240,7 +240,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         pic.Content = "";
                     }
                 }
-                RepositoryOperationResult saveResult = await _productRepository.Add(dto);
+                Result saveResult = await _productRepository.Add(dto);
                 if(saveResult.Succeeded)
                 {
                     _codeGenerator.SaveToDB(dto.ProductCode);
@@ -307,7 +307,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         //otherwise its  is update then it has no url ;
                     }
                 }
-                RepositoryOperationResult saveResult = await _productRepository.UpdateProduct(dto);
+                Result saveResult = await _productRepository.UpdateProduct(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
             }

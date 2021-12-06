@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Models.Shared
 {
-    public class RepositoryOperationResult
+    public class Result
     {
         public bool Succeeded { get; set; } = false;
         public string Message { get; set; }
     }
-    public class RepositoryOperationResult<TReturnType> where TReturnType : class
+    public class Result<TReturnType> where TReturnType : class
     {
         public bool Succeeded { get; set; } = false;
         public string Message { get; set; }

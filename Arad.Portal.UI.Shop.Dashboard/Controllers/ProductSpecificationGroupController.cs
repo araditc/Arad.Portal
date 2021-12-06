@@ -93,7 +93,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.CurrencyPrefix = res.ReturnValue.Prefix;
                     item.CurrencySymbol = res.ReturnValue.Symbol;
                 }
-                RepositoryOperationResult saveResult = await _productSpecGrpRepository.Add(dto);
+                Result saveResult = await _productSpecGrpRepository.Add(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
             }
@@ -197,7 +197,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 item.CurrencyPrefix = res.ReturnValue.Prefix;
                 item.CurrencySymbol = res.ReturnValue.Symbol;
             }
-            RepositoryOperationResult saveResult = await _productSpecGrpRepository.Update(dto);
+            Result saveResult = await _productSpecGrpRepository.Update(dto);
 
             result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
             : new { Status = "Error", saveResult.Message });
@@ -206,7 +206,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
-            RepositoryOperationResult opResult = await _productSpecGrpRepository.Delete(id, "delete");
+            Result opResult = await _productSpecGrpRepository.Delete(id, "delete");
             return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
             : new { Status = "Error", opResult.Message });
         }

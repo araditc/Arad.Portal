@@ -36,9 +36,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
             _languageContext = langContext;
         }
 
-        public async Task<RepositoryOperationResult> Add(SpecificationGroupDTO dto)
+        public async Task<Result> Add(SpecificationGroupDTO dto)
         {
-            RepositoryOperationResult result = new RepositoryOperationResult();
+            Result result = new Result();
             try
             {
                 var equallentEntity = _mapper.Map<ProductSpecGroup>(dto);
@@ -74,10 +74,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Delete(string productSpecificationGroupId,
+        public async Task<Result> Delete(string productSpecificationGroupId,
             string modificationReason)
         {
-            RepositoryOperationResult result = new RepositoryOperationResult();
+            Result result = new Result();
 
             try
             {
@@ -199,9 +199,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Restore(string productSpecificationGroupId)
+        public async Task<Result> Restore(string productSpecificationGroupId)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var entity = _productContext.SpecGroupCollection
               .Find(_ => _.SpecificationGroupId == productSpecificationGroupId).FirstOrDefault();
             entity.IsDeleted = false;
@@ -220,9 +220,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Update(SpecificationGroupDTO dto)
+        public async Task<Result> Update(SpecificationGroupDTO dto)
         {
-            RepositoryOperationResult result = new RepositoryOperationResult();
+            Result result = new Result();
             //var equallentModel = _mapper.Map<ProductSpecGroup>(dto);
 
             var availableEntity = await _productContext.SpecGroupCollection

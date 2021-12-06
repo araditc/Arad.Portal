@@ -117,7 +117,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userName = HttpContext.User.FindFirstValue(ClaimTypes.Name);
-            RepositoryOperationResult opResult = await _commentRepository.Delete(id, $"delete the comment by userId={userId} and userName={userName} in date={DateTime.UtcNow.ToPersianDdate()}");
+            Result opResult = await _commentRepository.Delete(id, $"delete the comment by userId={userId} and userName={userName} in date={DateTime.UtcNow.ToPersianDdate()}");
             return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
             : new { Status = "Error", opResult.Message });
         }
@@ -127,7 +127,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> ApproveComment(string commentId, bool isApproved)
         {
             JsonResult result;
-            RepositoryOperationResult saveResult = await _commentRepository.ChangeApproval(commentId, isApproved);
+            Result saveResult = await _commentRepository.ChangeApproval(commentId, isApproved);
             result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
             : new { Status = "Error", saveResult.Message });
             return result;
@@ -150,7 +150,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
-                RepositoryOperationResult saveResult = await _commentRepository.Update(dto);
+                Result saveResult = await _commentRepository.Update(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
             }
@@ -176,7 +176,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             else
             {
                
-                RepositoryOperationResult<
+                Result<
                     Comment> saveResult = await _commentRepository.Add(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });

@@ -63,9 +63,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             _accessor = accessor;
         }
 
-        public async Task<RepositoryOperationResult> Add(ProductInputDTO dto)
+        public async Task<Result> Add(ProductInputDTO dto)
         {
-            RepositoryOperationResult result = new RepositoryOperationResult();
+            Result result = new Result();
             try
             {
                 var equallentModel = MappingProduct(dto);
@@ -99,9 +99,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> AddCommentToProduct(string productId, Comment comment)
+        public async Task<Result> AddCommentToProduct(string productId, Comment comment)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var entity = await _context.ProductCollection.Find(_ => _.ProductId == productId)
                 .FirstOrDefaultAsync();
             if (entity != null)
@@ -132,10 +132,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> AddMultilingualProperty(string productId,
+        public async Task<Result> AddMultilingualProperty(string productId,
             MultiLingualProperty multiLingualProperty)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var entity = await _context.ProductCollection.Find(_ => _.ProductId == productId)
                 .FirstOrDefaultAsync();
             if (entity != null)
@@ -165,9 +165,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> AddPictureToProduct(string productId, Image picture)
+        public async Task<Result> AddPictureToProduct(string productId, Image picture)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var entity = await _context.ProductCollection.Find(_ => _.ProductId == productId)
                 .FirstOrDefaultAsync();
             if (entity != null)
@@ -197,9 +197,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> AddProductSpecifications(string productId, ProductSpecificationValue specValues)
+        public async Task<Result> AddProductSpecifications(string productId, ProductSpecificationValue specValues)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var entity = await _context.ProductCollection.Find(_ => _.ProductId == productId)
                 .FirstOrDefaultAsync();
             if (entity != null)
@@ -238,9 +238,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> ChangeActivation(string productId, string modificationReason)
+        public async Task<Result> ChangeActivation(string productId, string modificationReason)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var entity = _context.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
 
             if (entity != null)
@@ -271,9 +271,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> ChangeUnitOfProduct(string productId, string unitId, string modificationReason)
+        public async Task<Result> ChangeUnitOfProduct(string productId, string unitId, string modificationReason)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var entity = _context.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
             if (entity != null)
             {
@@ -316,9 +316,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> DeleteProduct(string productId, string modificationReason)
+        public async Task<Result> DeleteProduct(string productId, string modificationReason)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var entity = await _context.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefaultAsync();
             if(entity != null)
             {
@@ -628,9 +628,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> UpdateProduct(ProductInputDTO dto)
+        public async Task<Result> UpdateProduct(ProductInputDTO dto)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var product = _context.ProductCollection.Find(_ => _.ProductId == dto.ProductId).First();
            
                 var equallentModel = MappingProduct(dto);
@@ -652,9 +652,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Restore(string productId)
+        public async Task<Result> Restore(string productId)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var entity = _context.ProductCollection
               .Find(_ => _.ProductId == productId).FirstOrDefault();
             entity.IsDeleted = false;
@@ -1059,9 +1059,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         /// <param name="isNew">it means this is the first time which this user rate this product otherweise user rated product again</param>
         /// <param name="prevScore"></param>
         /// <returns></returns>
-        public async Task<RepositoryOperationResult<ProductRate>> RateProduct(string productId, int score, bool isNew, int prevScore)
+        public async Task<Result<ProductRate>> RateProduct(string productId, int score, bool isNew, int prevScore)
         {
-            var result = new RepositoryOperationResult<ProductRate>();
+            var result = new Result<ProductRate>();
             var entity = _context.ProductCollection.Find(_ => _.ProductId == productId).First();
             if(isNew)
             {

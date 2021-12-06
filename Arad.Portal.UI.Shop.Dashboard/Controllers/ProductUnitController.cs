@@ -80,7 +80,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.LanguageSymbol = lan.Symbol;
                 }
               
-                RepositoryOperationResult saveResult = await _unitRepository.AddProductUnit(dto);
+                Result saveResult = await _unitRepository.AddProductUnit(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
             }
@@ -154,7 +154,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 item.LanguageName = lan.LanguageName;
                 item.LanguageSymbol = lan.Symbol;
             }
-            RepositoryOperationResult saveResult = await _unitRepository.EditProductUnit(dto);
+            Result saveResult = await _unitRepository.EditProductUnit(dto);
             result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
             : new { Status = "Error", saveResult.Message });
             return result;
@@ -163,7 +163,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
-            RepositoryOperationResult opResult = await _unitRepository.Delete(id);
+            Result opResult = await _unitRepository.Delete(id);
             return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
             : new { Status = "Error", opResult.Message });
         }

@@ -14,9 +14,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo
 {
     public class MessageTemplateRepository : BaseRepository, IMessageTemplateRepository
     {
-        private readonly MessageTemplateContext _context;
+        private readonly ErrorLogContext _context;
         private readonly IMapper _mapper;
-        public MessageTemplateRepository(MessageTemplateContext context, IMapper mapper,
+        public MessageTemplateRepository(ErrorLogContext context, IMapper mapper,
             IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _context = context;
@@ -51,5 +51,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo
             }
             return res;
         }
+
+        public async Task<List<Entities.General.MessageTemplate.MessageTemplate>> GetAllByName(string templateName)
+        {
+            return await _context.Collection.Find(m => m.TemplateName.Equals(templateName)).ToListAsync();
+        }
     }
+
+    
+
 }

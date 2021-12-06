@@ -42,9 +42,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
             Counties = roleContext.Counties;
         }
 
-        public async Task<RepositoryOperationResult> Add(RoleDTO dto)
+        public async Task<Result> Add(RoleDTO dto)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var equallentModel = _mapper.Map<Entities.General.Role.Role>(dto);
 
             equallentModel.CreationDate = DateTime.Now;
@@ -74,9 +74,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
             await _context.Collection.InsertManyAsync(roles);
         }
 
-        public async Task<RepositoryOperationResult> ChangeActivation(string roleId)
+        public async Task<Result> ChangeActivation(string roleId)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             try
             {
                 var roleEntity = _context.Collection.Find(_ => _.RoleId == roleId).First();
@@ -108,9 +108,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Delete(string roleId, string modificationReason)
+        public async Task<Result> Delete(string roleId, string modificationReason)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             try
             {
 
@@ -283,9 +283,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Update(RoleDTO dto)
+        public async Task<Result> Update(RoleDTO dto)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
 
             var equallentModel = _mapper.Map<Entities.General.Role.Role>(dto);
 

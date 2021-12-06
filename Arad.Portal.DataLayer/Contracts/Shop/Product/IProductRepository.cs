@@ -17,33 +17,33 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
     {
         Task<PagedItems<ProductViewModel>> List(string queryString);
 
-        Task<RepositoryOperationResult> Add(ProductInputDTO dto);
+        Task<Result> Add(ProductInputDTO dto);
 
         Task<ProductOutputDTO> ProductFetch(string productId);
 
         ProductOutputDTO FetchProductWithSlug(string slug, string domainName);
 
-        Task<RepositoryOperationResult> AddCommentToProduct(string productId, Comment comment);
+        Task<Result> AddCommentToProduct(string productId, Comment comment);
 
-        Task<RepositoryOperationResult> ChangeUnitOfProduct(string productId,
+        Task<Result> ChangeUnitOfProduct(string productId,
             string unitId, string modificationReason);
 
-        Task<RepositoryOperationResult> AddMultilingualProperty(string productId,
+        Task<Result> AddMultilingualProperty(string productId,
             MultiLingualProperty multiLingualProperty);
 
 
-        Task<RepositoryOperationResult> AddPictureToProduct(string productId,
+        Task<Result> AddPictureToProduct(string productId,
             Image picture);
 
-        Task<RepositoryOperationResult> Restore(string productId);
-        Task<RepositoryOperationResult> AddProductSpecifications(string productId,
+        Task<Result> Restore(string productId);
+        Task<Result> AddProductSpecifications(string productId,
             ProductSpecificationValue specValues);
-        Task<RepositoryOperationResult> UpdateProduct(ProductInputDTO dto);
+        Task<Result> UpdateProduct(ProductInputDTO dto);
 
-        Task<RepositoryOperationResult> DeleteProduct(string productId, string modificationReason);
+        Task<Result> DeleteProduct(string productId, string modificationReason);
 
 
-        Task<RepositoryOperationResult<ProductRate>> RateProduct(string productId, int score, bool isNew, int prevScore);
+        Task<Result<ProductRate>> RateProduct(string productId, int score, bool isNew, int prevScore);
         List<Image> GetPictures(string productId);
 
         List<string> GetProductGroups(string productId);
@@ -54,7 +54,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         //ProductFav GetProductFav(string id);
         //Task<bool> UpdateViewersCount(string id);
         //Task<bool> UpdateSaleCount(string id);
-        Task<RepositoryOperationResult> ChangeActivation(string productId, string modificationReason);
+        Task<Result> ChangeActivation(string productId, string modificationReason);
 
         //Pagination<ProductViewGallery> ListProductsGroup(GalleryPagination modelPagination);
         int GetInventory(string productId);

@@ -16,11 +16,11 @@ namespace Arad.Portal.DataLayer.Contracts.General.Currency
         /// </summary>
         /// <param name="dto"> dto referes to : Data Transfer Object</param>
         /// <returns></returns>
-        Task<RepositoryOperationResult> SaveCurrency(CurrencyDTO dto);
+        Task<Result> SaveCurrency(CurrencyDTO dto);
         Task<PagedItems<CurrencyDTO>> AllCurrencyList(string queryString);
-        Task<RepositoryOperationResult> DeleteCurrency(string currencyId);
-        RepositoryOperationResult<CurrencyDTO> FetchCurrency(string currencyId);
-        RepositoryOperationResult<CurrencyDTO> GetDefaultCurrency(string userId);
+        Task<Result> DeleteCurrency(string currencyId);
+        Result<CurrencyDTO> FetchCurrency(string currencyId);
+        Result<CurrencyDTO> GetDefaultCurrency(string userId);
         CurrencyDTO GetCurrencyByItsPrefix(string prefix);
         List<SelectListModel> GetAllActiveCurrency();
 

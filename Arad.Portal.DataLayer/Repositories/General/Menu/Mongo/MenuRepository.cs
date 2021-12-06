@@ -51,9 +51,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             _languageContext = languageContext;
         }
 
-        public async Task<RepositoryOperationResult> AddMenu(MenuDTO dto)
+        public async Task<Result> AddMenu(MenuDTO dto)
         {
-            RepositoryOperationResult result = new RepositoryOperationResult();
+            Result result = new Result();
             try
             {
                 var equallentModel = _mapper.Map<Entities.General.Menu.Menu>(dto);
@@ -304,9 +304,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> DeleteMenu(string menuId)
+        public async Task<Result> DeleteMenu(string menuId)
         {
-            RepositoryOperationResult result = new RepositoryOperationResult();
+            Result result = new Result();
             try
             {
                 var userId = this.GetUserId();
@@ -361,10 +361,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             return result;
         }
 
-        public RepositoryOperationResult<MenuDTO> FetchMenu(string menuId)
+        public Result<MenuDTO> FetchMenu(string menuId)
         {
-            RepositoryOperationResult<MenuDTO> result
-               = new RepositoryOperationResult<MenuDTO>();
+            Result<MenuDTO> result
+               = new Result<MenuDTO>();
             var entity = _context.Collection
                 .Find(_ => _.MenuId == menuId).First();
             try
@@ -406,9 +406,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> EditMenu(MenuDTO dto)
+        public async Task<Result> EditMenu(MenuDTO dto)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var entity = _context.Collection
                 .Find(_ => _.MenuId == dto.MenuId).FirstOrDefault();
             var userId = this.GetUserId();

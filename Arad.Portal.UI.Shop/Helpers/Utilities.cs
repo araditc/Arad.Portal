@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using IdentityModel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -80,6 +81,14 @@ namespace Arad.Portal.UI.Shop.Helpers
             }
 
             return new(chars.ToArray());
+        }
+
+        public static string GenerateOtp()
+        {
+            Random generator = new();
+            string generateOtp = generator.Next(0, 999999).ToString("D6");
+
+            return generateOtp;
         }
     }
 }

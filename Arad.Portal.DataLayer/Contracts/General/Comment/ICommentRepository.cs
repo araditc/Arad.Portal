@@ -10,15 +10,15 @@ namespace Arad.Portal.DataLayer.Contracts.General.Comment
 {
     public interface ICommentRepository
     {
-        Task<RepositoryOperationResult<Entities.General.Comment.Comment>> Add(CommentDTO dto);
+        Task<Result<Entities.General.Comment.Comment>> Add(CommentDTO dto);
         Task<PagedItems<CommentViewModel>> List(string queryString);
         Task<CommentDTO> CommentFetch(string commentId);
-        Task<RepositoryOperationResult> Update(CommentDTO dto);
-        Task<RepositoryOperationResult> Delete(string commentId, string modificationReason);
-        Task<RepositoryOperationResult> Restore(string commentId);
+        Task<Result> Update(CommentDTO dto);
+        Task<Result> Delete(string commentId, string modificationReason);
+        Task<Result> Restore(string commentId);
         List<SelectListModel> GetAllReferenceType();
-        Task<RepositoryOperationResult> ChangeApproval(string commentId, bool isApproved);
-        Task<RepositoryOperationResult<Entities.General.Comment.Comment>> AddLikeDislike(string commentId, bool isLike);
+        Task<Result> ChangeApproval(string commentId, bool isApproved);
+        Task<Result<Entities.General.Comment.Comment>> AddLikeDislike(string commentId, bool isLike);
        
     }
 }

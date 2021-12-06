@@ -181,7 +181,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
-            RepositoryOperationResult opResult = await _contentRepository.Delete(id, "delete");
+            Result opResult = await _contentRepository.Delete(id, "delete");
             return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
             : new { Status = "Error", opResult.Message });
         }
@@ -219,7 +219,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 }
                 if (dto.LogoContent != "")
                     dto.FileLogo = dto.LogoContent;
-                RepositoryOperationResult saveResult = await _contentRepository.Add(dto);
+                Result saveResult = await _contentRepository.Add(dto);
                 if(saveResult.Succeeded)
                 {
                     _codeGenerator.SaveToDB(dto.ContentCode);
@@ -250,7 +250,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 if (dto.LogoContent != "")
                     dto.FileLogo = dto.LogoContent;
 
-                RepositoryOperationResult saveResult = await _contentRepository.Update(dto);
+                Result saveResult = await _contentRepository.Update(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
             }

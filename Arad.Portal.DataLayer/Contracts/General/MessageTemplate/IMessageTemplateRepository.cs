@@ -11,5 +11,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.MessageTemplate
     {
         //RepositoryOperationResult InsertOne(Entities.General.MessageTemplate.MessageTemplate entity);
         Entities.General.MessageTemplate.MessageTemplate FetchTemplateByName(string templateName);
+
+        Task<List<Entities.General.MessageTemplate.MessageTemplate>> GetAllByName(string templateName);
     }
 }

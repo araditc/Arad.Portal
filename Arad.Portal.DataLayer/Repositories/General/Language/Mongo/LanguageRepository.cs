@@ -31,9 +31,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
             _mapper = mapper;
             _userManager = userManager;
         }
-        public async Task<RepositoryOperationResult> AddNewLanguage(LanguageDTO dto)
+        public async Task<Result> AddNewLanguage(LanguageDTO dto)
         {
-            RepositoryOperationResult result = new RepositoryOperationResult();
+            Result result = new Result();
             var equallentModel = _mapper.Map<Entities.General.Language.Language>(dto);
 
             equallentModel.CreationDate = DateTime.Now;
@@ -65,9 +65,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
         {
             _context.Collection.InsertOne(entity);
         }
-        public async Task<RepositoryOperationResult> EditLanguage(LanguageDTO dto)
+        public async Task<Result> EditLanguage(LanguageDTO dto)
         {
-            RepositoryOperationResult result = new RepositoryOperationResult();
+            Result result = new Result();
             var equallentModel = _mapper.Map<Entities.General.Language.Language>(dto);
 
             var availableEntity = await _context.Collection
@@ -112,9 +112,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
             }
             return result;
         }
-        public async Task<RepositoryOperationResult> Delete(string languageId, string modificationReason)
+        public async Task<Result> Delete(string languageId, string modificationReason)
         {
-            RepositoryOperationResult result = new RepositoryOperationResult();
+            Result result = new Result();
 
             try
             {

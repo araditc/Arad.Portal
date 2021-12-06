@@ -236,6 +236,18 @@ namespace Arad.Portal.UI.Shop.Helpers
 
             if(!messageTemplateRepository.HasAny())
             {
+                var lan1 = new MessageTemplateMultiLingual()
+                {
+                    LanguageName = "en-US",
+                    Body = "Your New Password will be : [0]",
+                    Subject = "ChangePassword"
+                };
+                var lan2 = new MessageTemplateMultiLingual()
+                {
+                    LanguageName = "fa-IR",
+                    Body = "رمز عبور جدید شما : [0]",
+                    Subject = "تغییر رمز عبور"
+                };
                 var changePasswordTemplate = new MessageTemplate()
                 {
                     MessageTemplateId = Guid.NewGuid().ToString(),
@@ -244,9 +256,12 @@ namespace Arad.Portal.UI.Shop.Helpers
                     IsSystemTemplate = true,
                     NotificationType = DataLayer.Models.Shared.Enums.NotificationType.Sms,
                     TemplateDescription = "this template is used when user request to change password",
-                    TemplateName = "ChangePassword",
-                    Body = "Your New Password will be : [0]"
+                    TemplateName = "ChangePassword"
                 };
+                changePasswordTemplate.MessageTemplateMultiLingual.Add(lan1);
+                changePasswordTemplate.MessageTemplateMultiLingual.Add(lan2);
+
+
                 messageTemplateRepository.InsertOne(changePasswordTemplate);
             }
 

@@ -34,9 +34,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             _userManager = userManager;
             _mapper = mapper;
         }
-        public async Task<RepositoryOperationResult> AddDomain(DomainDTO dto)
+        public async Task<Result> AddDomain(DomainDTO dto)
         {
-            RepositoryOperationResult result = new RepositoryOperationResult();
+            Result result = new Result();
             try
             {
                 if (_context.Collection.Find(_ => _.DomainName == dto.DomainName).Any())
@@ -159,9 +159,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> DeleteDomain(string domainId, string modificationReason)
+        public async Task<Result> DeleteDomain(string domainId, string modificationReason)
         {
-            RepositoryOperationResult result = new RepositoryOperationResult();
+            Result result = new Result();
 
             try
             {
@@ -209,9 +209,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> DomainChangePrice(DomainPrice dto)
+        public async Task<Result> DomainChangePrice(DomainPrice dto)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
 
 
             var dbEntity = _context.Collection.Find(_ => _.DomainId == dto.DomainId).FirstOrDefault();
@@ -239,10 +239,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             return result;
         }
 
-        public RepositoryOperationResult<DomainDTO> FetchByName(string domainName)
+        public Result<DomainDTO> FetchByName(string domainName)
         {
-            RepositoryOperationResult<DomainDTO> result
-                 = new RepositoryOperationResult<DomainDTO>();
+            Result<DomainDTO> result
+                 = new Result<DomainDTO>();
             try
             {
                 var dbEntity = _context.Collection.Find(_ => _.DomainName == domainName).First();
@@ -264,10 +264,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             return result;
         }
 
-        public RepositoryOperationResult<DomainDTO> FetchDomain(string domainId)
+        public Result<DomainDTO> FetchDomain(string domainId)
         {
-            RepositoryOperationResult<DomainDTO> result
-                = new RepositoryOperationResult<DomainDTO>();
+            Result<DomainDTO> result
+                = new Result<DomainDTO>();
             try
             {
                 var dbEntity = _context.Collection.Find(_ => _.DomainId == domainId).First();
@@ -290,9 +290,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Restore(string id)
+        public async Task<Result> Restore(string id)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var entity = _context.Collection
               .Find(_ => _.DomainId == id).FirstOrDefault();
             entity.IsDeleted = false;
@@ -324,9 +324,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> EditDomain(DomainDTO dto)
+        public async Task<Result> EditDomain(DomainDTO dto)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var entity = _context.Collection
                 .Find(_ => _.DomainId == dto.DomainId).FirstOrDefault();
             if (entity != null)
@@ -411,9 +411,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             return result;
         }
 
-        public RepositoryOperationResult<DomainDTO> GetDefaultDomain()
+        public Result<DomainDTO> GetDefaultDomain()
         {
-            var result = new RepositoryOperationResult<DomainDTO>();
+            var result = new Result<DomainDTO>();
             var entity = _context.Collection.Find(_ => _.IsDefault).First();
             if(entity != null)
             {

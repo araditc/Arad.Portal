@@ -12,17 +12,17 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Promotion
     public interface IPromotionRepository
     {
 
-        Task<RepositoryOperationResult> InsertPromotion(PromotionDTO dto);
+        Task<Result> InsertPromotion(PromotionDTO dto);
 
-        Task<RepositoryOperationResult> UpdatePromotion(PromotionDTO dto);
+        Task<Result> UpdatePromotion(PromotionDTO dto);
 
-        Task<RepositoryOperationResult> AssingPromotionToProductGroup(string promotionId, string ProductGroupId);
+        Task<Result> AssingPromotionToProductGroup(string promotionId, string ProductGroupId);
 
-        Task<RepositoryOperationResult> AssignPromotionToProduct(string promotionId, string productId);
+        Task<Result> AssignPromotionToProduct(string promotionId, string productId);
 
-        Task<RepositoryOperationResult> SetPromotionExpirationDate(string promotionId, DateTime? dateTime);
+        Task<Result> SetPromotionExpirationDate(string promotionId, DateTime? dateTime);
 
-        Task<RepositoryOperationResult> DeletePromotion(string promotionId, string modificationReason);
+        Task<Result> DeletePromotion(string promotionId, string modificationReason);
 
         Task<PagedItems<PromotionDTO>> ListPromotions(string queryString);
 
@@ -34,6 +34,6 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Promotion
 
         List<SelectListModel> GetAllDiscountType();
 
-        Task<RepositoryOperationResult> Restore(string promotionId);
+        Task<Result> Restore(string promotionId);
     }
 }

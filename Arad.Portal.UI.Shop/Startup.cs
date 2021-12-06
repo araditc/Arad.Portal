@@ -278,7 +278,7 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<PromotionContext>();
             services.AddTransient<ShoppingCartContext>();
             services.AddTransient<TransactionContext>();
-            services.AddTransient<MessageTemplateContext>();
+            services.AddTransient<ErrorLogContext>();
             services.AddTransient<NotificationContext>();
             services.AddTransient<ContentCategoryContext>();
             services.AddTransient<ContentContext>();

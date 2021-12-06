@@ -33,9 +33,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
             _mapper = mapper;
         }
 
-        public async Task<RepositoryOperationResult> AssignPromotionToProduct(string promotionId, string productId)
+        public async Task<Result> AssignPromotionToProduct(string promotionId, string productId)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var promotionEntity = _context.Collection
                 .Find(_ => _.PromotionId == promotionId &&
                 _.StartDate <= DateTime.UtcNow && _.EndDate == null)
@@ -70,9 +70,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> AssingPromotionToProductGroup(string promotionId, string ProductGroupId)
+        public async Task<Result> AssingPromotionToProductGroup(string promotionId, string ProductGroupId)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var promotionEntity = _context.Collection
                 .Find(_ => _.PromotionId == promotionId &&
                 _.StartDate <= DateTime.UtcNow && _.EndDate == null)
@@ -108,9 +108,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> DeletePromotion(string promotionId, string modificationReason)
+        public async Task<Result> DeletePromotion(string promotionId, string modificationReason)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var promotionEntity = _context.Collection
                 .Find(_ => _.PromotionId == promotionId).FirstOrDefault();
             //bool isValid = (promotionEntity.EndDate != null && promotionEntity.EndDate.Value >= DateTime.UtcNow)
@@ -153,9 +153,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> InsertPromotion(PromotionDTO dto)
+        public async Task<Result> InsertPromotion(PromotionDTO dto)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             try
             {
             var equallentModel = _mapper.Map<Entities.Shop.Promotion.Promotion>(dto);
@@ -179,9 +179,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
             }
             return result;
         }
-        public async Task<RepositoryOperationResult> UpdatePromotion(PromotionDTO dto)
+        public async Task<Result> UpdatePromotion(PromotionDTO dto)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var oldEntity = _context.Collection
                 .Find(_ => _.PromotionId == dto.PromotionId).FirstOrDefault();
             if(oldEntity != null)
@@ -318,9 +318,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> SetPromotionExpirationDate(string promotionId, DateTime? dateTime)
+        public async Task<Result> SetPromotionExpirationDate(string promotionId, DateTime? dateTime)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var promotionEntity = _context.Collection
                 .Find(_ => _.PromotionId == promotionId).FirstOrDefault();
             if(promotionEntity != null)
@@ -409,9 +409,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Restore(string promotionId)
+        public async Task<Result> Restore(string promotionId)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var entity = _context.Collection
               .Find(_ => _.PromotionId == promotionId).FirstOrDefault();
             entity.IsDeleted = false;

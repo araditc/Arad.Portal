@@ -39,9 +39,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             _domainContext = domainContext;
         }
 
-        public async Task<RepositoryOperationResult> Add(ContentDTO dto)
+        public async Task<Result> Add(ContentDTO dto)
         {
-            RepositoryOperationResult result = new RepositoryOperationResult();
+            Result result = new Result();
             try
             {
                 var equallentModel = _mapper.Map<Entities.General.Content.Content>(dto);
@@ -96,9 +96,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Delete(string contentId, string modificationReason)
+        public async Task<Result> Delete(string contentId, string modificationReason)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var entity = await _contentContext.Collection.Find(_ => _.ContentId == contentId).FirstOrDefaultAsync();
             if (entity != null)
             {
@@ -288,9 +288,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Restore(string contentId)
+        public async Task<Result> Restore(string contentId)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var entity = _contentContext.Collection
               .Find(_ => _.ContentId == contentId).FirstOrDefault();
             entity.IsDeleted = false;
@@ -309,9 +309,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Update(ContentDTO dto)
+        public async Task<Result> Update(ContentDTO dto)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
 
             var equallentModel = _mapper.Map<Entities.General.Content.Content>(dto);
             equallentModel.StartShowDate = DateHelper.ToEnglishDate(dto.PersianStartShowDate);

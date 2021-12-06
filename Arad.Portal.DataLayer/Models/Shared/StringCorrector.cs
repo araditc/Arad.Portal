@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Arad.Portal.DataLayer.Models.Shared
 { 
@@ -40,6 +41,11 @@ namespace Arad.Portal.DataLayer.Models.Shared
                 .Replace("۷", "7")
                 .Replace("۸", "8");
             return result;
+        }
+
+        public static string ClearHtml(this string input)
+        {
+            return Regex.Replace(input, "<.*?>", string.Empty);
         }
     }
 }

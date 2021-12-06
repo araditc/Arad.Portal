@@ -33,9 +33,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
             _mapper = mapper;
             _userManager = userManager;
         }
-        public async Task<RepositoryOperationResult> SaveCurrency(CurrencyDTO dto)
+        public async Task<Result> SaveCurrency(CurrencyDTO dto)
         {
-            RepositoryOperationResult result;
+            Result result;
 
             //mapping the input model to equallent object of database
             var equallentModel = _mapper.Map<Entities.General.Currency.Currency>(dto);
@@ -69,9 +69,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
         {
             _context.Collection.InsertOne(entity);
         }
-        private async Task<RepositoryOperationResult> UpdateCurrencyAsync(Entities.General.Currency.Currency equallentModel, string modificationReason)
+        private async Task<Result> UpdateCurrencyAsync(Entities.General.Currency.Currency equallentModel, string modificationReason)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
 
             var availableEntity = await _context.Collection
                     .Find(_ => _.CurrencyId.Equals(equallentModel.CurrencyId)).FirstOrDefaultAsync();
@@ -110,10 +110,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
             return result;
         }
 
-        private async Task<RepositoryOperationResult> InsertCurrencyAsync(
+        private async Task<Result> InsertCurrencyAsync(
             Entities.General.Currency.Currency equallentModel)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             equallentModel.Modifications = new List<Modification>();
 
             equallentModel.CreationDate = DateTime.Now;
@@ -187,9 +187,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> DeleteCurrency(string currencyId)
+        public async Task<Result> DeleteCurrency(string currencyId)
         {
-            RepositoryOperationResult result = new RepositoryOperationResult();
+            Result result = new Result();
 
             try
             {
@@ -224,10 +224,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
             return result;
         }
 
-        public RepositoryOperationResult<CurrencyDTO> FetchCurrency(string currencyId)
+        public Result<CurrencyDTO> FetchCurrency(string currencyId)
         {
-            RepositoryOperationResult<CurrencyDTO> result
-                = new RepositoryOperationResult<CurrencyDTO>(); 
+            Result<CurrencyDTO> result
+                = new Result<CurrencyDTO>(); 
             try
             {
                 var dbEntity = _context.Collection.AsQueryable().FirstOrDefault(_=>_.CurrencyId == currencyId);
@@ -250,10 +250,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
             return result;
         }
 
-        public RepositoryOperationResult<CurrencyDTO> GetDefaultCurrency(string userId)
+        public Result<CurrencyDTO> GetDefaultCurrency(string userId)
         {
-            RepositoryOperationResult<CurrencyDTO> result
-                 = new RepositoryOperationResult<CurrencyDTO>();
+            Result<CurrencyDTO> result
+                 = new Result<CurrencyDTO>();
             try
             {
                 Entities.General.Currency.Currency dbEntity;

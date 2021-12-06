@@ -19,20 +19,20 @@ namespace Arad.Portal.DataLayer.Contracts.General.Permission
         /// </summary>
         Task<List<MenuLinkModel>> ListOfMenues(string currentUserId, string address, string domain);
 
-        Task<RepositoryOperationResult<string>> GetPermissionType(string permissionId);
+        Task<Result<string>> GetPermissionType(string permissionId);
         List<MenuLinkModel> GetChildren(List<Entities.General.Permission.Permission> context,
            string permissionId, string address, string domain);
         Task<List<PermissionDTO>> MenusPermission(Enums.PermissionType typeMenu);
-        Task<RepositoryOperationResult> Save(PermissionDTO permission);
-        RepositoryOperationResult<PermissionDTO> GetForEdit(string permissionId);
-        Task<RepositoryOperationResult> Delete(string permissionId);
-        RepositoryOperationResult<List<Modification>> GetModifications(string permissionId);
+        Task<Result> Save(PermissionDTO permission);
+        Result<PermissionDTO> GetForEdit(string permissionId);
+        Task<Result> Delete(string permissionId);
+        Result<List<Modification>> GetModifications(string permissionId);
         Task<List<string>> GetUserPermissionsAsync();
         Task<Entities.General.Permission.Permission> FetchPermission(string permissionId);
         Task<List<TreeviewModel>> ListPermissions(string currentUserId, string currentRoleId);
         List<Entities.General.Permission.Permission> GetAllPermissions();
 
-        Task<RepositoryOperationResult> ChangeActivation(string permissionId, bool isActive, string modificationReason);
+        Task<Result> ChangeActivation(string permissionId, bool isActive, string modificationReason);
 
 
 

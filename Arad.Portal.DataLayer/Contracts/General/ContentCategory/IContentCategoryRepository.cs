@@ -16,14 +16,14 @@ namespace Arad.Portal.DataLayer.Contracts.General.ContentCategory
 
         Task<List<SelectListModel>> AllActiveContentCategory(string langId, string currentUserId);
 
-        Task<RepositoryOperationResult> Add(ContentCategoryDTO dto);
+        Task<Result> Add(ContentCategoryDTO dto);
 
-        Task<RepositoryOperationResult> Update(ContentCategoryDTO dto);
+        Task<Result> Update(ContentCategoryDTO dto);
 
-        Task<RepositoryOperationResult> Delete(string contentCategoryId,
+        Task<Result> Delete(string contentCategoryId,
             string modificationReason);
 
-        Task<RepositoryOperationResult> Restore(string contentCategoryId);
+        Task<Result> Restore(string contentCategoryId);
 
         Task<ContentCategoryDTO> ContentCategoryFetch(string contentCategoryId);
 

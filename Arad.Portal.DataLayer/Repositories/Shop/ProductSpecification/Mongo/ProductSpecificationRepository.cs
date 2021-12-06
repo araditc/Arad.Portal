@@ -33,9 +33,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
             _productContext = productContext;
             _languageContext = languageContext;     
         }
-        public async Task<RepositoryOperationResult> Add(ProductSpecificationDTO dto)
+        public async Task<Result> Add(ProductSpecificationDTO dto)
         {
-            RepositoryOperationResult result = new RepositoryOperationResult();
+            Result result = new Result();
             try
             {
 
@@ -62,9 +62,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Delete(string specificationId, string modificationReason)
+        public async Task<Result> Delete(string specificationId, string modificationReason)
         {
-            RepositoryOperationResult result = new RepositoryOperationResult();
+            Result result = new Result();
 
             try
             {
@@ -138,10 +138,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
             return result;
         }
 
-        public RepositoryOperationResult<Entities.Shop.ProductSpecification.ProductSpecification> GetEntity(string specId)
+        public Result<Entities.Shop.ProductSpecification.ProductSpecification> GetEntity(string specId)
         {
-            RepositoryOperationResult<Entities.Shop.ProductSpecification.ProductSpecification> result =
-               new RepositoryOperationResult<Entities.Shop.ProductSpecification.ProductSpecification>();
+            Result<Entities.Shop.ProductSpecification.ProductSpecification> result =
+               new Result<Entities.Shop.ProductSpecification.ProductSpecification>();
             var entity = _productContext.SpecificationCollection
                 .Find(_ => _.ProductSpecificationId == specId).FirstOrDefault();
             if (entity != null)
@@ -170,9 +170,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
         }
 
         
-        public RepositoryOperationResult<List<MultiLingualProperty>> GetSpecificationValues(string productSpecificationId)
+        public Result<List<MultiLingualProperty>> GetSpecificationValues(string productSpecificationId)
         {
-            var result = new RepositoryOperationResult<List<MultiLingualProperty>>();
+            var result = new Result<List<MultiLingualProperty>>();
             var lst = _productContext.SpecificationCollection.AsQueryable()
                 .Where(_ => _.ProductSpecificationId == productSpecificationId);
             if(lst != null && lst.Count() > 0)
@@ -241,9 +241,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Update(ProductSpecificationDTO dto)
+        public async Task<Result> Update(ProductSpecificationDTO dto)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
 
             var availableEntity = await _productContext.SpecificationCollection
                     .Find(_ => _.ProductSpecificationId.Equals(dto.ProductSpecificationId)).FirstOrDefaultAsync();
@@ -278,9 +278,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Restore(string specificationId)
+        public async Task<Result> Restore(string specificationId)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var entity = _productContext.SpecificationCollection
               .Find(_ => _.ProductSpecificationId == specificationId).FirstOrDefault();
             entity.IsDeleted = false;

@@ -14,14 +14,14 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductSpecificationGroup
 
         List<SelectListModel> AllActiveSpecificationGroup(string langId);
 
-        Task<RepositoryOperationResult> Add(SpecificationGroupDTO dto);
+        Task<Result> Add(SpecificationGroupDTO dto);
 
-        Task<RepositoryOperationResult> Update(SpecificationGroupDTO dto);
+        Task<Result> Update(SpecificationGroupDTO dto);
 
-        Task<RepositoryOperationResult> Delete(string productSpecificationGroupId,
+        Task<Result> Delete(string productSpecificationGroupId,
             string modificationReason);
 
-        Task<RepositoryOperationResult> Restore(string productSpecificationGroupId);
+        Task<Result> Restore(string productSpecificationGroupId);
             
 
         Task<SpecificationGroupDTO> GroupSpecificationFetch(string productSpecificationGroupId);

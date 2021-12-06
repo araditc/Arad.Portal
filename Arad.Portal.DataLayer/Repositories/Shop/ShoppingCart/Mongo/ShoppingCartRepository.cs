@@ -30,9 +30,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             _productContext = productContext;
             _mapper = mapper;
         }
-        public RepositoryOperationResult<string> FindCurrentUserShoppingCart(string userId)
+        public Result<string> FindCurrentUserShoppingCart(string userId)
         {
-            var result = new RepositoryOperationResult<string>();
+            var result = new Result<string>();
             var entity = _context.Collection
                 .Find(_ => _.CreatorUserId == userId && !_.IsDeleted).FirstOrDefault();
 
@@ -49,9 +49,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             }
             return result;
         }
-        public async Task<RepositoryOperationResult> AddProductToUserCart(ShoppingCartProductDTO productDto)
+        public async Task<Result> AddProductToUserCart(ShoppingCartProductDTO productDto)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var productEntity = _productContext.ProductCollection
                 .Find(_ => _.ProductId == productDto.ProductId).FirstOrDefault();
 
@@ -121,9 +121,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> ChangeProductCountInUserCart(string userId, string productId, int newCount)
+        public async Task<Result> ChangeProductCountInUserCart(string userId, string productId, int newCount)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var userCartEntity = _context.Collection
                 .Find(_ => _.CreatorUserId == userId && !_.IsDeleted).FirstOrDefault();
             if (userCartEntity != null)
@@ -171,9 +171,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> DeleteProductFromUserShoppingCart(string userId, string productId)
+        public async Task<Result> DeleteProductFromUserShoppingCart(string userId, string productId)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var userCartEntity = _context.Collection
                 .Find(_ => _.CreatorUserId == userId && !_.IsDeleted).FirstOrDefault();
             if (userCartEntity != null)
@@ -211,9 +211,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> DeleteWholeUserShoppingCart(string userId)
+        public async Task<Result> DeleteWholeUserShoppingCart(string userId)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var userCartEntity = _context.Collection
                  .Find(_ => _.CreatorUserId == userId && !_.IsDeleted).FirstOrDefault();
             if(userCartEntity != null)
@@ -239,9 +239,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult<ShoppingCartDTO>> FetchUserShopCart(string userId)
+        public async Task<Result<ShoppingCartDTO>> FetchUserShopCart(string userId)
         {
-            var result = new RepositoryOperationResult<ShoppingCartDTO>();
+            var result = new Result<ShoppingCartDTO>();
             var userCartEntity = _context.Collection
                 .Find(_ => _.CreatorUserId == userId && !_.IsDeleted).FirstOrDefault();
             if(userCartEntity != null)
@@ -301,9 +301,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             return result;
         }
 
-        public RepositoryOperationResult InsertUserShoppingCart(string userId)
+        public Result InsertUserShoppingCart(string userId)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var userCartModel = new Entities.Shop.ShoppingCart.ShoppingCart()
             {
                 CreationDate = DateTime.UtcNow,

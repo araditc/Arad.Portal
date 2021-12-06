@@ -129,7 +129,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.LanguageSymbol = lan.Symbol;
                 }
 
-                RepositoryOperationResult saveResult = await _contentCategoryRepository.Add(dto);
+                Result saveResult = await _contentCategoryRepository.Add(dto);
                 if(saveResult.Succeeded)
                 {
                     _codeGenerator.SaveToDB(dto.CategoryCode);
@@ -222,7 +222,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 item.LanguageSymbol = lan.Symbol;
             }
 
-            RepositoryOperationResult saveResult = await _contentCategoryRepository.Update(dto);
+            Result saveResult = await _contentCategoryRepository.Update(dto);
 
             result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
             : new { Status = "Error", saveResult.Message });
@@ -231,7 +231,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
-            RepositoryOperationResult opResult = await _contentCategoryRepository.Delete(id, "delete");
+            Result opResult = await _contentCategoryRepository.Delete(id, "delete");
             return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
             : new { Status = "Error", opResult.Message });
         }

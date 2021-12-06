@@ -1,4 +1,7 @@
-﻿using Arad.Portal.DataLayer.Entities.General.User;
+﻿using Arad.Portal.DataLayer.Contracts.General.Error;
+using Arad.Portal.DataLayer.Entities.General.Error;
+using Arad.Portal.DataLayer.Entities.General.User;
+using Arad.Portal.DataLayer.Helpers;
 using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Models.User;
 using Arad.Portal.GeneralLibrary.Utilities;
@@ -24,11 +27,15 @@ namespace Arad.Portal.UI.Shop.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly CreateNotification _createNotification;
+        private readonly IErrorLogRepository _errorLogRepository;
         public AccountController(UserManager<ApplicationUser> userManager,
+            CreateNotification createNotification,
             SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _createNotification = createNotification;
                     
         }
         public IActionResult Index()
@@ -146,7 +153,8 @@ namespace Arad.Portal.UI.Shop.Controllers
                 foreach (string modelStateKey in ModelState.Keys)
                 {
                     ModelStateEntry modelStateVal = ModelState[modelStateKey];
-                    errors.AddRange(modelStateVal.Errors.Select(error => new AjaxValidationErrorModel { Key = modelStateKey, ErrorMessage = error.ErrorMessage }));
+                    errors.AddRange(modelStateVal.Errors
+                        .Select(error => new AjaxValidationErrorModel { Key = modelStateKey, ErrorMessage = error.ErrorMessage }));
                 }
 
                 return Ok(new { Status = "ModelError", ModelStateErrors = errors });
@@ -182,7 +190,8 @@ namespace Arad.Portal.UI.Shop.Controllers
                 Claims = claims,
             };
 
-            string pass = AppUtil.GenerateRandomPassword(new() { RequireDigit = true, RequireLowercase = true, RequireNonAlphanumeric = false, RequireUppercase = true, RequiredLength = 6, RequiredUniqueChars = 0 });
+            string pass = Utilities.GenerateRandomPassword(new() { RequireDigit = true, RequireLowercase = true, 
+                RequireNonAlphanumeric = false, RequireUppercase = true, RequiredLength = 6, RequiredUniqueChars = 0 });
             IdentityResult insertResult = await _userManager.CreateAsync(user, pass);
 
             if (insertResult.Succeeded)

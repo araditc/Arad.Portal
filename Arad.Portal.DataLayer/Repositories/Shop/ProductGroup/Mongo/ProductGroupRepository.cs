@@ -50,9 +50,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             _domainRepository = domainRepository;
         }
 
-        public async Task<RepositoryOperationResult> Add(ProductGroupDTO dto)
+        public async Task<Result> Add(ProductGroupDTO dto)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var equallentModel = _mapper.Map<Entities.Shop.ProductGroup.ProductGroup>(dto);
 
             equallentModel.CreationDate = DateTime.Now;
@@ -77,9 +77,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             return result;
         }
         
-        public async Task<RepositoryOperationResult> Delete(string productGroupId, string modificationReason)
+        public async Task<Result> Delete(string productGroupId, string modificationReason)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             try
             {
                 var allowDeletion = false;
@@ -199,10 +199,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> AddPromotionToGroup(string productGroupId,
+        public async Task<Result> AddPromotionToGroup(string productGroupId,
             PromotionDTO promotionDto, string modificationReason)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var groupEntity = await _productContext.ProductGroupCollection
                 .Find(_ => _.ProductGroupId == productGroupId).FirstOrDefaultAsync();
             if(groupEntity != null)
@@ -300,9 +300,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Update(ProductGroupDTO dto)
+        public async Task<Result> Update(ProductGroupDTO dto)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var entity = _productContext.ProductGroupCollection
                 .Find(_ => _.ProductGroupId == dto.ProductGroupId).FirstOrDefault();
             if(entity != null)
@@ -340,9 +340,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Restore(string id)
+        public async Task<Result> Restore(string id)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var entity = _productContext.ProductGroupCollection
               .Find(_ => _.ProductGroupId == id).FirstOrDefault();
             entity.IsDeleted = false;

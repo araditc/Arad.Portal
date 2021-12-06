@@ -201,7 +201,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         dto.Url = $"/blog/{dto.MenuCode}";
                         break;
                 }
-                RepositoryOperationResult saveResult = await _menuRepository.AddMenu(dto);
+                Result saveResult = await _menuRepository.AddMenu(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
             }
@@ -264,7 +264,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 //default:
                 //    break;
             }
-            RepositoryOperationResult saveResult = await _menuRepository.EditMenu(dto);
+            Result saveResult = await _menuRepository.EditMenu(dto);
 
             result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
             : new { Status = "Error", saveResult.Message });
@@ -305,7 +305,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
-            RepositoryOperationResult opResult = await _menuRepository.DeleteMenu(id);
+            Result opResult = await _menuRepository.DeleteMenu(id);
             return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
             : new { Status = "Error", opResult.Message });
         }

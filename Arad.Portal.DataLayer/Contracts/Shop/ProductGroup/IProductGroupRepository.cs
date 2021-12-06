@@ -10,8 +10,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductGroup
 {
     public interface IProductGroupRepository
     {
-        Task<RepositoryOperationResult> Add(ProductGroupDTO dto);
-        Task<RepositoryOperationResult> Update(ProductGroupDTO dto);
+        Task<Result> Add(ProductGroupDTO dto);
+        Task<Result> Update(ProductGroupDTO dto);
         ProductGroupDTO ProductGroupFetch(string productGroupId);
         ProductGroupDTO FetchBySlug(string slug, string domainName);
         //ProductGroupDTO FetchByCode(long groupCode);
@@ -19,8 +19,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductGroup
         string FetchByCode(long groupCode);
         bool GroupExistance(string productGroupId);
         Task<PagedItems<ProductGroupViewModel>> List(string queryString);
-        Task<RepositoryOperationResult> Delete(string productGroupId, string modificationReason);
-        Task<RepositoryOperationResult> Restore(string id);
+        Task<Result> Delete(string productGroupId, string modificationReason);
+        Task<Result> Restore(string id);
         List<ProductGroupDTO> GetsDirectChildren(List<string> groupsWithProduct, 
             string domainName, string productGroupId, int? count, int skip = 0);
         Task<long> GetDircetChildrenCount(string domainName, string productGroupId, List<string> groupsWithProduct);
@@ -28,7 +28,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductGroup
         List<ProductGroupDTO> GetsParents();
         List<ProductOutputDTO> GetLatestProductInThisGroup(string domainName, string productGroupId, int? count, int skip = 0);
         Task<List<SelectListModel>> GetAlActiveProductGroup(string langId, string currentUserId);
-        Task<RepositoryOperationResult> AddPromotionToGroup(string productGroupId,
+        Task<Result> AddPromotionToGroup(string productGroupId,
             Models.Promotion.PromotionDTO promotionDto, string modificationReason);
 
         Task<List<string>> AllGroupIdsWhichEndInProducts(string domainName);

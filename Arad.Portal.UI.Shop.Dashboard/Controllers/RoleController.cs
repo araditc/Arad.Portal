@@ -110,7 +110,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     return RedirectToAction("PageOrItemNotFound", "Account");
                 }
             }
-            RepositoryOperationResult saveResult;
+            Result saveResult;
             if (!string.IsNullOrWhiteSpace(model.RoleId))
             {
                 saveResult = await _roleRepository.Update(model);

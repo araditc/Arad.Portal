@@ -43,9 +43,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             _contentContext = contentContext;
             _userManager = userManager;
         }
-        public async Task<RepositoryOperationResult> Add(ContentCategoryDTO dto)
+        public async Task<Result> Add(ContentCategoryDTO dto)
         {
-            RepositoryOperationResult result = new RepositoryOperationResult();
+            Result result = new Result();
             try
             {
                 var equallentEntity = _mapper.Map<Entities.General.ContentCategory.ContentCategory>(dto);
@@ -114,9 +114,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Delete(string contentCategoryId, string modificationReason)
+        public async Task<Result> Delete(string contentCategoryId, string modificationReason)
         {
-            RepositoryOperationResult result = new RepositoryOperationResult();
+            Result result = new Result();
 
             try
             {
@@ -297,9 +297,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Restore(string contentCategoryId)
+        public async Task<Result> Restore(string contentCategoryId)
         {
-            var result = new RepositoryOperationResult();
+            var result = new Result();
             var entity = _categoryContext.Collection
               .Find(_ => _.ContentCategoryId == contentCategoryId).FirstOrDefault();
             entity.IsDeleted = false;
@@ -318,9 +318,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             return result;
         }
 
-        public async Task<RepositoryOperationResult> Update(ContentCategoryDTO dto)
+        public async Task<Result> Update(ContentCategoryDTO dto)
         {
-            RepositoryOperationResult result = new RepositoryOperationResult();
+            Result result = new Result();
             //var equallentModel = _mapper.Map<ProductSpecGroup>(dto);
 
             var availableEntity = await _categoryContext.Collection

@@ -10,16 +10,16 @@ namespace Arad.Portal.DataLayer.Contracts.General.Domain
 {
     public interface IDomainRepository
     {
-        Task<RepositoryOperationResult> AddDomain(DomainDTO dto);
-        Task<RepositoryOperationResult> EditDomain(DomainDTO dto);
-        Task<RepositoryOperationResult> DomainChangePrice(DomainPrice dto);
+        Task<Result> AddDomain(DomainDTO dto);
+        Task<Result> EditDomain(DomainDTO dto);
+        Task<Result> DomainChangePrice(DomainPrice dto);
         Task<PagedItems<DomainViewModel>> AllDomainList(string queryString);
-        Task<RepositoryOperationResult> DeleteDomain(string domainId, string modificationReason);
-        RepositoryOperationResult<DomainDTO> FetchDomain(string domainId);
-        RepositoryOperationResult<DomainDTO> FetchByName(string domainName);
-        RepositoryOperationResult<DomainDTO> GetDefaultDomain();
+        Task<Result> DeleteDomain(string domainId, string modificationReason);
+        Result<DomainDTO> FetchDomain(string domainId);
+        Result<DomainDTO> FetchByName(string domainName);
+        Result<DomainDTO> GetDefaultDomain();
 
-       Task<RepositoryOperationResult> Restore(string id);
+       Task<Result> Restore(string id);
         List<SelectListModel> GetAllActiveDomains();
     }
 }
