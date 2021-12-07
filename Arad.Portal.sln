@@ -19,6 +19,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arad.Portal.UI.Shop", "Arad
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arad.Portal.UI.Shop.Dashboard", "Arad.Portal.UI.Shop.Dashboard\Arad.Portal.UI.Shop.Dashboard.csproj", "{B9EB48DE-3C97-45E6-98B8-2F64F573D781}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackgroundWorkers", "BackgroundWorkers", "{2F795895-7B24-485C-805D-7D5BBA3375AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arad.Portal.EmailNotificationService", "Arad.Portal.EmailNotificationService\Arad.Portal.EmailNotificationService.csproj", "{A8634386-E1E1-4B3B-AFFE-228BFE99EE14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arad.Portal.SmsNotificationService", "Arad.Portal.SmsNotificationService\Arad.Portal.SmsNotificationService.csproj", "{6119C0EC-83AA-45A3-A65E-904C2D6AD2CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +51,14 @@ Global
 		{B9EB48DE-3C97-45E6-98B8-2F64F573D781}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9EB48DE-3C97-45E6-98B8-2F64F573D781}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9EB48DE-3C97-45E6-98B8-2F64F573D781}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8634386-E1E1-4B3B-AFFE-228BFE99EE14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8634386-E1E1-4B3B-AFFE-228BFE99EE14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8634386-E1E1-4B3B-AFFE-228BFE99EE14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8634386-E1E1-4B3B-AFFE-228BFE99EE14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6119C0EC-83AA-45A3-A65E-904C2D6AD2CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6119C0EC-83AA-45A3-A65E-904C2D6AD2CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6119C0EC-83AA-45A3-A65E-904C2D6AD2CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6119C0EC-83AA-45A3-A65E-904C2D6AD2CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,6 +70,8 @@ Global
 		{8318CFBA-80B0-4E08-BF98-4968E57C5A95} = {1481896D-F740-4E79-B881-965C51FAC3AE}
 		{A848E74E-BC53-4832-894A-5C740271F028} = {998DA860-4BBD-41EC-B1CE-163AD43098F5}
 		{B9EB48DE-3C97-45E6-98B8-2F64F573D781} = {998DA860-4BBD-41EC-B1CE-163AD43098F5}
+		{A8634386-E1E1-4B3B-AFFE-228BFE99EE14} = {2F795895-7B24-485C-805D-7D5BBA3375AC}
+		{6119C0EC-83AA-45A3-A65E-904C2D6AD2CC} = {2F795895-7B24-485C-805D-7D5BBA3375AC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {939D7E94-3BBA-4D26-BDF6-F892F9F5DF31}

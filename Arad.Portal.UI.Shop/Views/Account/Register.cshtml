@@ -1,13 +1,12 @@
-﻿@inject ISystemSettingRepository _systemSettingRepository
-@using Arad.Ticket.DataLayer.Data.Repositories.Interfaces.Common
-@using Arad.Ticket.DataLayer.Entities.Common
-@using Arad.Ticket.DataLayer.Helpers
+﻿@inject Arad.Portal.DataLayer.Contracts.General.SystemSetting.ISystemSettingRepository _systemSettingRepository
+
 @using System.Globalization
-@model Arad.Ticket.Dashboard.Models.dto.User.RegisterDto
+@model Arad.Portal.DataLayer.Models.User.RegisterDTO
 
 @{
     Layout = null;
-    SystemSetting systemSetting = (await _systemSettingRepository.GetAll()).FirstOrDefault();
+    Arad.Portal.DataLayer.Entities.General.SystemSetting.SystemSetting systemSetting =
+        (await _systemSettingRepository.GetAll()).FirstOrDefault();
 }
 <!DOCTYPE html>
 <html>
@@ -17,7 +16,8 @@
           content="IE=edge">
 
     <link rel="shortcut icon"
-          href="~/@(string.IsNullOrWhiteSpace(systemSetting?.CompanyLogoUrl) ? "favicon.ico" : $"SystemIcon/{systemSetting.SystemIcon}")"
+          href="~/@(string.IsNullOrWhiteSpace(systemSetting?.CompanyLogoUrl) ? "favicon.ico"
+        : $"SystemIcon/{systemSetting.SystemIcon}")"
           type="image/x-icon" />
 
     <title>@systemSetting?.SystemTitle - @Language.GetString("Action_Register")</title>
@@ -26,21 +26,13 @@
           content="width=device-width, initial-scale=1">
 
     <!-- Font Awesome -->
-    <link href="~/dashboardAsset/plugins/fontawesome/css/all.min.css"
-          rel="stylesheet" />
-
-    <!-- Theme style -->
-    <link rel="stylesheet"
-          href="~/dashboardAsset/css/adminlte.min.css">
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
 
     <!-- template rtl version -->
-    <link rel="stylesheet"
-          href="~/dashboardAsset/css/customfa.css">
-
-    <link href="~/dashboardAsset/plugins/intl-tel-input/css/intlTelInput.css"
-          rel="stylesheet" />
-    <link href="~/dashboardAsset/plugins/sweetalert2/sweetalert2.css"
-          rel="stylesheet" />
+    <!--<link rel="stylesheet"
+          href="~/dashboardAsset/css/customfa.css">-->
+    <link href="~/lib/intl-tel-input/css/intlTelInput.css" rel="stylesheet" />
+    <link href="~/lib/limonte-sweetalert2/sweetalert2.css" rel="stylesheet" />
 
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
@@ -48,17 +40,12 @@
               rel="stylesheet" />
     }
 
-    <link href="~/dashboardAsset/css/loader-double.css"
-          rel="stylesheet" />
+    <link href="~/css/loader-double.css" rel="stylesheet" />
 
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <link rel="stylesheet"
-              href="~/dashboardAsset/css/bootstrap-rtl.min.css">
-        <link rel="stylesheet"
-              href="~/dashboardAsset/css/customFa.css">
-        <link href="~/Fonts/IranSans/css/fontiran.css"
-              rel="stylesheet" />
+        <link href="~/css/siteTemplate/rtl/bootstrap-rtl.min.css" rel="stylesheet" />
+       
     }
     <style>
         input::placeholder { text-align: center; }
@@ -101,144 +88,145 @@
 
 <body>
 
-<div class="loader loader-double"
-     id="loading">
-</div>
+    <div class="loader loader-double"
+         id="loading">
+    </div>
 
-<div style="width: 400px;">
-    <div class="card card-outline">
-        <!-- /.login-logo -->
-        <div class="card-body">
+    <div style="width: 400px;">
+        <div class="card card-outline">
+            <!-- /.login-logo -->
+            <div class="card-body">
 
-            <div class="text-center">
-                <img src="~/@(string.IsNullOrWhiteSpace(systemSetting?.CompanyLogoUrl) ? "logo.jpg" : $"Logo/{systemSetting.CompanyLogoUrl}")"
-                     height="100"
-                     width="100" />
-            </div>
-            <br />
+                <div class="text-center">
+                    <img src="~/@(string.IsNullOrWhiteSpace(systemSetting?.CompanyLogoUrl)
+                            ? "logo.jpg" : $"Logo/{systemSetting.CompanyLogoUrl}")"
+                         height="100"
+                         width="100" />
+                </div>
+                <br />
 
-            <form id="register"
-                  role="form"
-                  method="post"
-                  asp-action="Register">
+                <form id="register"
+                      role="form"
+                      method="post"
+                      asp-action="Register">
 
-                <div class="input-group mb-3 step1"
-                     style="margin-bottom: 12px !important;">
-                    <input placeholder="@Language.GetString("TextAndPlaceholder_Mobile_UserName")"
-                           type="tel"
-                           class="form-control"
-                           id="CellPhone"
-                           style="width: 319px !important"
-                           dir="ltr">
+                    <div class="input-group mb-3 step1"
+                         style="margin-bottom: 12px !important;">
+                        <input placeholder="@Language.GetString("TextAndPlaceholder_Mobile_UserName")"
+                               type="tel"
+                               class="form-control"
+                               id="CellPhone"
+                               style="width: 319px !important"
+                               dir="ltr">
 
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-mobile-alt"
-                                  style="width: 16px;">
-                            </span>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-mobile-alt"
+                                      style="width: 16px;">
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div style="text-align: center">
+                        <span data-val-result="CellPhoneNumber"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <div class="input-group mb-3 step2">
+                        <input type="text"
+                               class="form-control"
+                               id="SecurityCode"
+                               oninput="onChangeSecurityCode()"
+                               placeholder="@Language.GetString("TextAndPlaceholder_SecurityCode")"
+                               autocomplete="off"
+                               asp-for="SecurityCode">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                            <button type="button"
+                                    onclick="resendCode()"
+                                    id="btnResendCode"
+                                    style="width: 165px;"
+                                    class="btn btn-primary btn-block">
+                                @Language.GetString("Action_ResendCode")
+                            </button>
                         </div>
                     </div>
 
-                </div>
+                    <div style="text-align: center">
+                        <span data-val-result="SecurityCode"
+                              class="text-danger">
+                        </span>
+                    </div>
 
-                <div style="text-align: center">
-                    <span data-val-result="CellPhoneNumber"
-                          class="text-danger">
-                    </span>
-                </div>
+                    <div class="input-group mb-3"
+                         style="margin-bottom: 12px !important; margin-top: 15px;">
 
-                <div class="input-group mb-3 step2">
-                    <input type="text"
-                           class="form-control"
-                           id="SecurityCode"
-                           oninput="onChangeSecurityCode()"
-                           placeholder="@Language.GetString("TextAndPlaceholder_SecurityCode")"
-                           autocomplete="off"
-                           asp-for="SecurityCode">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-envelope"></span>
+                        <img alt="Captcha"
+                             id="imgcpatcha"
+                             src="@Url.Action("CaptchaImage", "Captcha")"
+                             style="border: 1px solid #9e9e9e" />
+                        <input asp-for="Captcha"
+                               type="text"
+                               class="form-control"
+                               id="inlineFormInputGroup"
+                               placeholder="@Language.GetString("TextAndPlaceholder_Captcha")"
+                               style="text-align: center">
+
+                        <div style="cursor: pointer"
+                             class="input-group-prepend">
+                            <div class="input-group-text">
+                                <i onclick="refreshCaptcha()"
+                                   class="fas fa-sync-alt">
+                                </i>
+                            </div>
                         </div>
+
+                        <span id="captValidation"
+                              data-val-result="Captcha"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <div class="row step1">
                         <button type="button"
-                                onclick="resendCode()"
-                                id="btnResendCode"
-                                style="width: 165px;"
+                                onclick="receiveCode()"
+                                id="btnReceiveCode"
                                 class="btn btn-primary btn-block">
-                            @Language.GetString("Action_ResendCode")
+                            @Language.GetString("Action_Next")
                         </button>
                     </div>
-                </div>
 
-                <div style="text-align: center">
-                    <span data-val-result="SecurityCode"
-                          class="text-danger">
-                    </span>
-                </div>
-
-                <div class="input-group mb-3"
-                     style="margin-bottom: 12px !important; margin-top: 15px;">
-
-                    <img alt="Captcha"
-                         id="imgcpatcha"
-                         src="@Url.Action("CaptchaImage", "Captcha")"
-                         style="border: 1px solid #9e9e9e" />
-                    <input asp-for="Captcha"
-                           type="text"
-                           class="form-control"
-                           id="inlineFormInputGroup"
-                           placeholder="@Language.GetString("TextAndPlaceholder_Captcha")"
-                           style="text-align: center">
-
-                    <div style="cursor: pointer"
-                         class="input-group-prepend">
-                        <div class="input-group-text">
-                            <i onclick="refreshCaptcha()"
-                               class="fas fa-sync-alt">
-                            </i>
-                        </div>
+                    <div class="row step2">
+                        <button type="submit"
+                                class="btn btn-primary btn-block"
+                                disabled="disabled"
+                                id="btnSubmit">
+                            @Language.GetString("Action_Register")
+                        </button>
                     </div>
-
-                    <span id="captValidation"
-                          data-val-result="Captcha"
-                          class="text-danger">
-                    </span>
+                </form>
+                <div class="loginSignUpSeparator">
+                    <span class="textInSeparator">@Language.GetString("TextAndPlaceholder_Or")</span>
                 </div>
-
-                <div class="row step1">
-                    <button type="button"
-                            onclick="receiveCode()"
-                            id="btnReceiveCode"
-                            class="btn btn-primary btn-block">
-                        @Language.GetString("Action_Next")
-                    </button>
-                </div>
-
-                <div class="row step2">
-                    <button type="submit"
-                            class="btn btn-primary btn-block"
-                            disabled="disabled"
-                            id="btnSubmit">
-                        @Language.GetString("Action_Register")
-                    </button>
-                </div>
-            </form>
-            <div class="loginSignUpSeparator">
-                <span class="textInSeparator">@Language.GetString("TextAndPlaceholder_Or")</span>
+                <a asp-action="Login"
+                   class="btn btn-default btn-block">
+                    @Language.GetString("Action_AlreadyUserName")
+                </a>
             </div>
-            <a asp-action="Login"
-               class="btn btn-default btn-block">
-                @Language.GetString("Action_AlreadyUserName")
-            </a>
         </div>
     </div>
-</div>
-<script src="~/dashboardAsset/plugins/jquery/jquery.min.js"></script>
-<script src="~/dashboardAsset/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="~/dashboardAsset/plugins/intl-tel-input/js/intlTelInput.js"></script>
-<script src="~/dashboardAsset/plugins/intl-tel-input/js/utils.js"></script>
-<script src="~/DashboardAsset/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <script src="~/js/plugins/jquery/jquery.min.js"></script>
+    <script src="~/js/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/intl-tel-input/js/intlTelInput.js"></script>
+    <script src="~/lib/intl-tel-input/js/utils.js"></script>
+    <script src="~/lib/limonte-sweetalert2/sweetalert2.js"></script>
 
-<script>
+    <script>
 
     var cell = document.querySelector("#CellPhone");
     var cellPhoneInit = window.intlTelInput(cell,
@@ -511,6 +499,6 @@
                 }
             });
         });
-</script>
+    </script>
 </body>
 </html>

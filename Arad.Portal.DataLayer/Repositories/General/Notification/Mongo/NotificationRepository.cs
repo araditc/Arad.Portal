@@ -16,6 +16,7 @@ using static Arad.Portal.DataLayer.Models.Shared.Enums;
 using Arad.Portal.DataLayer.Entities.General.Notify;
 using Arad.Portal.DataLayer.Entities;
 using Arad.Portal.DataLayer.Entities.General.Email;
+using Arad.Portal.GeneralLibrary.Utilities;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Notification.Mongo
 {
@@ -82,7 +83,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Notification.Mongo
 
             foreach (Entities.General.Notify.Notification notification in notifications)
             {
-                notification.SendStatus = NotificationSendStatus.Send;
+                notification.SendStatus = NotificationSendStatus.Sending;
                 await _context.Collection.ReplaceOneAsync(c => c.NotificationId == notification.NotificationId, notification);
             }
 
@@ -119,6 +120,22 @@ namespace Arad.Portal.DataLayer.Repositories.General.Notification.Mongo
             }
         }
 
+
+        public  async Task<Result> Update(Entities.General.Notify.Notification entity, string modificationReason = "", bool isWorker = false)
+        {
+            try
+            {
+                entity.Modifications.Add(new() { UserName = this.GetUserName(), DateTime = DateTime.Now, ModificationReason = modificationReason, UserId = this.GetUserId() });
+                await _context.Collection.ReplaceOneAsync(c => c.NotificationId == entity.NotificationId, entity);
+
+                return new() { Succeeded = true, Message = isWorker ? "Operation success" : GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_OperationSuccess") };
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return new() { Succeeded = false, Message = isWorker ? "Operation Failed" : GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_OperationError") };
+            }
+        }
         public async Task UpdateSmtp(SMTP smtp)
         {
             List<Entities.General.Notify.Notification> notifications = await _context.Collection.Find(t => t.SMTP.SMTPId.Equals(smtp.SMTPId)).ToListAsync();

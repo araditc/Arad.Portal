@@ -10,6 +10,7 @@ using Arad.Portal.DataLayer.Contracts.General.MessageTemplate;
 using Arad.Portal.DataLayer.Contracts.General.Notification;
 using Arad.Portal.DataLayer.Contracts.General.Permission;
 using Arad.Portal.DataLayer.Contracts.General.Role;
+using Arad.Portal.DataLayer.Contracts.General.SystemSetting;
 using Arad.Portal.DataLayer.Contracts.General.User;
 using Arad.Portal.DataLayer.Contracts.Shop.Order;
 using Arad.Portal.DataLayer.Contracts.Shop.Product;
@@ -21,6 +22,7 @@ using Arad.Portal.DataLayer.Contracts.Shop.Promotion;
 using Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart;
 using Arad.Portal.DataLayer.Contracts.Shop.Transaction;
 using Arad.Portal.DataLayer.Entities.General.User;
+using Arad.Portal.DataLayer.Helpers;
 using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Comment.Mongo;
@@ -34,6 +36,7 @@ using Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Notification.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Permission.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Role.Mongo;
+using Arad.Portal.DataLayer.Repositories.General.SystemSetting.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.User.Mongo;
 using Arad.Portal.DataLayer.Repositories.Shop.Order.Mongo;
 using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
@@ -98,6 +101,18 @@ namespace Arad.Portal.UI.Shop
             services.AddSingleton<HtmlEncoder>(
                 HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.BasicLatin,
                     UnicodeRanges.Arabic }));
+
+            DatabaseConfig databaseConfig = new();
+            Configuration.Bind(nameof(DatabaseConfig), databaseConfig);
+            services.AddSingleton(databaseConfig);
+
+            Setting setting = new();
+            Configuration.Bind(nameof(Setting), setting);
+            services.AddSingleton(setting);
+
+            SendSmsConfig sendSmsConfig = new();
+            Configuration.Bind(nameof(SendSmsConfig), sendSmsConfig);
+            services.AddSingleton(sendSmsConfig);
 
             services.AddSession(options =>
             {
@@ -168,6 +183,7 @@ namespace Arad.Portal.UI.Shop
 
             services.AddTransient<IPermissionView, PermissionView>();
             services.AddTransient<RemoteServerConnection>();
+            services.AddTransient<CreateNotification>();
             services.AddLocalization();
             AddRepositoryServices(services);
             //services.AddProgressiveWebApp();
@@ -265,6 +281,7 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<ICommentRepository, CommentRepository>();
             services.AddTransient<IMenuRepository, MenuRepository>();
             services.AddTransient<IBasicDataRepository, BasicDataRepository>();
+            services.AddTransient<ISystemSettingRepository, SystemSettingRepository>();
 
             #region contexes
             services.AddTransient<CurrencyContext>();
@@ -285,6 +302,7 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<CommentContext>();
             services.AddTransient<MenuContext>();
             services.AddTransient<BasicDataContext>();
+            services.AddTransient<SystemSettingContext>();
 
             #endregion
 

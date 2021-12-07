@@ -81,9 +81,11 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public enum NotificationSendStatus
         {
             Store = 1,
-            Send,
-            Error
+            Posted,
+            Error,
+            Sending
         }
+  
 
         public enum PermissionType
         {

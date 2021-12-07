@@ -15,37 +15,41 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //  --------------------------------------------------------------------
+//                if (Logger.LogFlag)
+//                {
+//                    Logger.WriteLogFile(ServiceName, logPath);
+//                }
 
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace Arad.Portal.GeneralLibrary.Utilities
 {
     public static class Logger
     {
+        public static ConcurrentQueue<string> LogQueue = new ConcurrentQueue<string>();
         public static bool LogFlag = true;
-        public static void WriteLogFile(this ConcurrentQueue<string> queue, string sourceName, string logDir)
+        public static string LogFileName = "";
+
+        public static void WriteLogFile(string ServiceName, string logPath)
         {
+            //log = log + ServiceName;
             LogFlag = false;
 
             try
             {
-                if (queue.Count > 0)
+                if (LogQueue.Count > 0)
                 {
                     string l = "";
-                    while (queue.TryDequeue(out l))
+                    while (LogQueue.TryDequeue(out l))
                     {
-
-                        logDir = Path.Combine(logDir, $"{sourceName}_{DateTime.Now:yyyyMMdd}.txt");
-
-                        using var sw = new StreamWriter(
-                            logDir, true);
-                        sw.WriteLine($"{DateTime.Now.ToString("G")}\t\t{l}");
+                        using (StreamWriter sw =
+                            new StreamWriter(string.Format("{0}_{1:yyyyMMdd}.txt", logPath + ServiceName, DateTime.Now), true))
+                        {
+                            sw.WriteLine(l);
+                        }
                     }
                 }
             }
@@ -53,67 +57,75 @@ namespace Arad.Portal.GeneralLibrary.Utilities
             {
 
             }
-
             LogFlag = true;
-        }
-        public static void WriteLogFile(this ConcurrentQueue<KeyValuePair<TimeSpan, string>> queue, string sourceName, string logDir)
+        } //WriteLogFile()
+
+        public static void WriteLogFile(string uMessage)
         {
-            LogFlag = false;
+            try
+            {
+                LogQueue.Enqueue(string.Format("{0:HH:mm:ss.fff}\t{1}",
+                    DateTime.Now, uMessage.Replace("\r", "\\r").Replace("\n", "\\n")));
+            }
+            catch
+            {
+
+            }
+        } //WriteLogFile(string uMessage)
+
+
+        public static string ReplaceInvalidChars(string uText)
+        {
+            string ret = "";
 
             try
             {
-                if (queue.Count > 0)
+
+                for (int i = 0; i < uText.Length; i++)
                 {
-                    var l = new KeyValuePair<TimeSpan, string>();
-                    while (queue.TryDequeue(out l))
+                    int c = (int)uText[i];
+                    if (c < 32 && c != 10)
                     {
-
-                        logDir = Path.Combine(logDir, $"{sourceName}_{DateTime.Now:yyyyMMdd}.txt");
-
-                        using var sw = new StreamWriter(
-                            logDir, true);
-                        sw.WriteLine($"{DateTime.Now.ToString("G")}\t\t{l.Value}");
+                        ret += (char)32;
+                    }
+                    else
+                    {
+                        ret += (char)c;
                     }
                 }
             }
             catch
             {
-
             }
+            return ret;
+        } //ReplaceInvalidChars
 
-            LogFlag = true;
-        }
-        public static void WriteLogFile(string logText, string sourceName, string logDir)
+        public static int GetSmsLength(string message, bool farsi)
         {
-            LogFlag = false;
-
             try
             {
-                logDir = Path.Combine(logDir, $"{sourceName}_{DateTime.Now:yyyyMMdd}.txt");
+                if (farsi)
+                    if (message.Length <= 70)
+                        return 1;
+                    else
+                        return (message.Length / 66) + ((message.Length % 66 == 0) ? 0 : 1);
+                else
+                if (message.Length <= 160)
+                    return 1;
+                else
+                    return (message.Length / 152) + ((message.Length % 152 == 0) ? 0 : 1);
 
-                using var sw = new StreamWriter(
-                    logDir, true);
-                sw.WriteLine($"{DateTime.Now.ToString("G")}\t\t{logText}");
             }
             catch
             {
 
             }
+            return 1;
+        } //GetSmsLength
 
-            LogFlag = true;
-        }
-        public static void WriteLogFile(this ConcurrentQueue<string> queue, string uMessage)
+        public static bool HasUniCodeCharacter(string text)
         {
-            LogFlag = false;
-            try
-            {
-                queue.Enqueue($"{DateTime.Now:HH:mm:ss.fff}\t{uMessage.Replace("\r", "\\r").Replace("\n", "\\n")}");
-            }
-            catch
-            {
-
-            }
-            LogFlag = true;
+            return Regex.IsMatch(text, "[^\u0000-\u00ff]");
         }
     }
 }

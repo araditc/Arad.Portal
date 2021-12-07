@@ -20,6 +20,8 @@ namespace Arad.Portal.DataLayer.Contracts.General.Notification
 
         Task<Result> Update(Entities.General.Notify.Notification entity, string modificationReason, CancellationToken cancellationToken);
 
+        Task<Result> Update(Entities.General.Notify.Notification entity, string modificationReason = "", bool isWorker = false);
+
         Task<Result> AddRange(IEnumerable<Entities.General.Notify.Notification> entities);
     }
 }

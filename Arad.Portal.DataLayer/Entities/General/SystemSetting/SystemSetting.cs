@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,10 @@ namespace Arad.Portal.DataLayer.Entities.General.SystemSetting
 {
     public class SystemSetting : BaseEntity
     {
+        [BsonId]
+        [BsonRepresentation(MongoDB.Bson.BsonType.String)]
+        public string SystemSettingId { get; set; }
+
         public string SystemTitle { get; set; }
 
         public string SystemIcon { get; set; }

@@ -25,6 +25,14 @@
     {
       "library": "font-awesome@5.15.4",
       "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "library": "intl-tel-input@17.0.15",
+      "destination": "wwwroot/lib/intl-tel-input/"
+    },
+    {
+      "library": "limonte-sweetalert2@11.3.0",
+      "destination": "wwwroot/lib/limonte-sweetalert2/"
     }
   ]
 }

@@ -115,6 +115,35 @@
 		<value>منوی 1-1-1-1-1</value>
 	</string>-->
 	<!--End[JustForTesting]-->
+	<!--Start [TextAndPlaceholder]=========================================-->
+	<string key="TextAndPlaceholder_LogIn">
+		<value>ورود</value>
+	</string>
+	<string key="TextAndPlaceholder_UserName">
+		<value>نام کاربری</value>
+	</string>
+	<string key="TextAndPlaceholder_UserName_Mobile_Email">
+		<value>نام کاربری، ایمیل، شماره همراه</value>
+	</string>
+	<string key="TextAndPlaceholder_Password">
+		<value>رمز عبور</value>
+	</string>
+	<string key="TextAndPlaceholder_Captcha">
+		<value>حاصل را وارد کنید</value>
+	</string>
+	<string key="TextAndPlaceholder_Or">
+		<value>یا</value>
+	</string>
+	<string key="TextAndPlaceholder_Mobile_UserName">
+		<value>شماره همراه(نام کاربری)</value>
+	</string>
+	<string key="TextAndPlaceholder_SecurityCode">
+		<value>یکبار رمز</value>
+	</string>
+	<string key="TextAndPlaceholder_Mobile">
+		<value>شماره همراه</value>
+	</string>
+	<!--End[TextAndPlaceholder]===========================================================-->
 	<!--Start [PermissionTitle]-->
 	<string key="PermissionTitle_MainPage">
 		<value>داشبورد</value>
@@ -460,6 +489,16 @@
 	</string>
 	<string key="Validation_MobileNumberInvalid2">
 		<value>شماره وارد شده مربوط به تلفن ثابت می باشد.</value>
+	</string>
+	<!--====================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_SubmitOtpPleaseTryAgainLater">
+		<value>خطا، لطفا بعدا دوباره تلاش نمایید.</value>
+	</string>
+	<string key="AlertAndMessage_SendSecurityCode">
+		<value>کد امنیتی به شماره موبایل {0} ارسال شود.</value>
+	</string>
+	<string key="AlertAndMessage_ProfileConfirmPhoneSending">
+		<value>کد تایید برای شما ارسال شده است.</value>
 	</string>
 
 	<string key="AlertAndMessage_ProfileConfirmPhoneTimeOut">
@@ -1008,9 +1047,7 @@
 	<string key="AlertAndMessage_Creator">
 		<value>ایجاد کننده</value>
 	</string>
-	<string key="AlertAndMessage_NotFound">
-		<value>پیدا نشد.</value>
-	</string>
+	
 	<string key="AlertAndMessage_DirectUsers">
 		<value>کاربران مستقیم</value>
 	</string>
@@ -1961,10 +1998,32 @@
 	<string key="Save">
 		<value>ذخیره</value>
 	</string>
-	<string key="AddExtraParams">
-		<value>پارامترهای اضافه</value>
+	<!--START [Actions]=========================================================-->
+	<string key="Action_ResetPassword">
+		<value>رمز عبورم را فراموش کرده ام</value>
 	</string>
-	<!--END [Action]-->
+	<string key="Action_SignIn">
+		<value>ورود</value>
+	</string>
+	<string key="Action_Register">
+		<value>ثبت نام</value>
+	</string>
+	<string key="Action_ResendCode">
+		<value>ارسال دوباره کد</value>
+	</string>
+	<string key="Action_Next">
+		<value>مرحله بعد</value>
+	</string>
+	<string key="Action_AlreadyUserName">
+		<value>پیش از این ثبت نام کرده ام</value>
+	</string>
+	<string key="Action_YesSend">
+		<value>بله، ارسال شود.</value>
+	</string>
+	<string key="Action_No">
+		<value>خیر</value>
+	</string>
+	<!--END [Action]==========================================================-->
 	<!--START [Entities]-->
 	<string key="Entities_Permissions">
 		<value>دسترسی ها</value>

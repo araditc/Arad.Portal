@@ -65,6 +65,10 @@ using Arad.Portal.DataLayer.Contracts.General.BasicData;
 using Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using Arad.Portal.DataLayer.Models.Shared;
+using Arad.Portal.DataLayer.Helpers;
+using Arad.Portal.DataLayer.Contracts.General.SystemSetting;
+using Arad.Portal.DataLayer.Repositories.General.SystemSetting.Mongo;
 
 namespace Arad.Portal.UI.Shop.Dashboard
 {
@@ -95,6 +99,18 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddSingleton<HtmlEncoder>(
                 HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.BasicLatin,
                     UnicodeRanges.Arabic }));
+
+            DatabaseConfig databaseConfig = new();
+            Configuration.Bind(nameof(DatabaseConfig), databaseConfig);
+            services.AddSingleton(databaseConfig);
+
+            Setting setting = new();
+            Configuration.Bind(nameof(Setting), setting);
+            services.AddSingleton(setting);
+
+            SendSmsConfig sendSmsConfig = new();
+            Configuration.Bind(nameof(SendSmsConfig), sendSmsConfig);
+            services.AddSingleton(sendSmsConfig);
 
             services.AddSession(options =>
             {
@@ -165,7 +181,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
 
             services.AddTransient<IPermissionView, PermissionView>();
             services.AddTransient<RemoteServerConnection>();
-
+            services.AddTransient<CreateNotification>();
             AddRepositoryServices(services);
             services.AddSingleton<CodeGenerator>();
             services.AddProgressiveWebApp();
@@ -287,6 +303,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<ICommentRepository, CommentRepository>();
             services.AddTransient<IMenuRepository, MenuRepository>();
             services.AddTransient<IBasicDataRepository, BasicDataRepository>();
+            services.AddTransient<ISystemSettingRepository, SystemSettingRepository>();
 
             #region contextes
             services.AddTransient<CurrencyContext>();
@@ -307,6 +324,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<CommentContext>();
             services.AddTransient<MenuContext>();
             services.AddTransient<BasicDataContext>();
+            services.AddTransient<SystemSettingContext>();
                 
             #endregion
 

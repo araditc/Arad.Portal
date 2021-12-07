@@ -307,6 +307,93 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
 
+        [HttpGet]
+        public IActionResult AlreadyRegisteredCellPhoneNumber(string cellPhoneNumber)
+        {
+            #region validate
+            cellPhoneNumber = cellPhoneNumber.Replace("+", "");
+            cellPhoneNumber = cellPhoneNumber.Replace(" ", "");
+
+            if (string.IsNullOrWhiteSpace(cellPhoneNumber))
+            {
+                return Ok(new { Status = "Error", Message = Language.GetString("Validation_EnterMobileNumber") });
+            }
+
+            PhoneNumberUtil phoneUtil = PhoneNumberUtil.GetInstance();
+
+            PhoneNumber phoneNumber = phoneUtil.Parse(cellPhoneNumber, "IR");
+
+            if (!phoneUtil.IsValidNumber(phoneNumber))
+            {
+                return Ok(new { Status = "Error", Message = Language.GetString("Validation_MobileNumberInvalid1") });
+            }
+
+            PhoneNumberType numberType = phoneUtil.GetNumberType(phoneNumber); // Produces Mobile , FIXED_LINE 
+
+            if (numberType != PhoneNumberType.MOBILE)
+            {
+                return Ok(new { Status = "Error", Message = Language.GetString("Validation_MobileNumberInvalid2") });
+            }
+
+            if (_userManager.Users.Any(c => c.PhoneNumber == cellPhoneNumber))
+            {
+                return Ok(new { Status = "Error", Message = Language.GetString("Validation_MobileNumberAlreadyRegistered") });
+            }
+            #endregion
+
+            return Ok(new { Status = "Success", Message = "" });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SendSecurityCode(string cellPhoneNumber)
+        {
+            #region validate
+            cellPhoneNumber = cellPhoneNumber.Replace("+", "");
+            cellPhoneNumber = cellPhoneNumber.Replace(" ", "");
+
+            if (string.IsNullOrWhiteSpace(cellPhoneNumber))
+            {
+                return Ok(new { Status = "Error", Message = Language.GetString("Validation_EnterMobileNumber") });
+            }
+
+            PhoneNumberUtil phoneUtil = PhoneNumberUtil.GetInstance();
+
+            PhoneNumber phoneNumber = phoneUtil.Parse(cellPhoneNumber, "IR");
+
+            if (!phoneUtil.IsValidNumber(phoneNumber))
+            {
+                return Ok(new { Status = "Error", Message = Language.GetString("Validation_MobileNumberInvalid1") });
+            }
+
+            PhoneNumberType numberType = phoneUtil.GetNumberType(phoneNumber); // Produces Mobile , FIXED_LINE 
+
+            if (numberType != PhoneNumberType.MOBILE)
+            {
+                return Ok(new { Status = "Error", Message = Language.GetString("Validation_MobileNumberInvalid2") });
+            }
+
+            OTP process = OtpHelper.Process(new() { Mobile = cellPhoneNumber, Code = Utilities.GenerateOtp(),
+                ExpirationDate = DateTime.Now.AddMinutes(3), IsSent = false });
+
+            if (process.IsSent)
+            {
+                return Ok(new { Status = "Error", Message = Language.GetString("AlertAndMessage_ProfileConfirmPhoneSending") });
+            }
+            #endregion
+
+            Result result = await _createNotification.SendOtp("SendOtp", cellPhoneNumber, process.Code);
+
+            if (!result.Succeeded)
+            {
+                ErrorLog errorLog = new() { Error = result.Message, Source = @"Account\SendSecurityCode", Ip = Request.HttpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString() };
+                await _errorLogRepository.Add(errorLog);
+
+                return Ok(new { Status = "Error", Message = Language.GetString("AlertAndMessage_SubmitOtpPleaseTryAgainLater") });
+            }
+
+            return Ok(new { Status = "Success", result.Message });
+        }
+
         //[HttpPost]
         //[ValidateAntiForgeryToken]
         //public async Task<IActionResult> Login([FromForm] LoginViewModel model)

@@ -115,6 +115,36 @@
 		<value>Menu1-1-1-1-1</value>
 	</string>-->
 	<!--End[JustForTesting]-->
+	<!--Start [TextAndPlaceholder]=================================================-->
+	<string key="TextAndPlaceholder_LogIn">
+		<value>Log In</value>
+	</string>
+	<string key="TextAndPlaceholder_UserName">
+		<value>UserName</value>
+	</string>
+	<string key="TextAndPlaceholder_UserName_Mobile_Email">
+		<value>UserName, Email or Mobile</value>
+	</string>
+	<string key="TextAndPlaceholder_Password">
+		<value>Password</value>
+	</string>
+	<string key="TextAndPlaceholder_Captcha">
+		<value>Enter result</value>
+	</string>
+	<string key="TextAndPlaceholder_Or">
+		<value>Or</value>
+	</string>
+	<string key="TextAndPlaceholder_Mobile_UserName">
+		<value>Mobile(UserName)</value>
+	</string>
+	<string key="TextAndPlaceholder_SecurityCode">
+		<value>Security code</value>
+	</string>
+	<string key="TextAndPlaceholder_Mobile">
+		<value>Mobile</value>
+	</string>
+	
+	<!--End[TextAndPlaceholder]=========================================-->
 	<!--Start [PermissionTitle]-->
 	<string key="PermissionTitle_MainPage">
 		<value>Dashboard</value>
@@ -464,6 +494,16 @@
 	</string>
 	<string key="Validation_MobileNumberInvalid2">
 		<value>Enter the number of fixed phone.</value>
+	</string>
+	<!--====================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_SubmitOtpPleaseTryAgainLater">
+		<value>Error, Please try again later</value>
+	</string>
+	<string key="AlertAndMessage_SendSecurityCode">
+		<value>Send security code to mobile number {0}.</value>
+	</string>
+	<string key="AlertAndMessage_ProfileConfirmPhoneSending">
+		<value>A verification code has been sent to you.</value>
 	</string>
 	<string key="AlertAndMessage_ProfileConfirmPhoneTimeOut">
 		<value>The verification code has expired.</value>
@@ -956,9 +996,6 @@
 	</string>
 	<string key="AlertAndMessage_Creator">
 		<value>Creator</value>
-	</string>
-	<string key="AlertAndMessage_NotFound">
-		<value>Not found.</value>
 	</string>
 	<string key="AlertAndMessage_DirectUsers">
 		<value>Direct users</value>
@@ -1913,7 +1950,33 @@
 	<string key="Save">
 		<value>Save</value>
 	</string>
-	<!--END [Action]-->
+	<!--START [Actions]=========================================================-->
+	<string key="Action_ResetPassword">
+		<value>I forgot my password</value>
+	</string>
+	<string key="Action_SignIn">
+		<value>Sign In</value>
+	</string>
+	<string key="Action_Register">
+		<value>Register</value>
+	</string>
+	<string key="Action_ResendCode">
+		<value>Resend code</value>
+	</string>
+	<string key="Action_Next">
+		<value>Next</value>
+	</string>
+	<string key="Action_AlreadyUserName">
+		<value>I already have a membership</value>
+	</string>
+	<string key="Action_YesSend">
+		<value>Yes, Sending.</value>
+	</string>
+	<string key="Action_No">
+		<value>No</value>
+	</string>
+
+	<!--END [Action]===================================================-->
 	<!--START [Entities]-->
 	<string key="Entities_Permissions">
 		<value>Permissions</value>
