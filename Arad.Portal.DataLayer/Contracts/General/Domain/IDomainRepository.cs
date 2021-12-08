@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Arad.Portal.DataLayer.Models.Domain;
+using Arad.Portal.DataLayer.Entities.General.Email;
 
 namespace Arad.Portal.DataLayer.Contracts.General.Domain
 {
@@ -18,8 +19,8 @@ namespace Arad.Portal.DataLayer.Contracts.General.Domain
         Result<DomainDTO> FetchDomain(string domainId);
         Result<DomainDTO> FetchByName(string domainName);
         Result<DomainDTO> GetDefaultDomain();
-
-       Task<Result> Restore(string id);
+        SMTP GetSMTPAccount(string domainName);
+        Task<Result> Restore(string id);
         List<SelectListModel> GetAllActiveDomains();
     }
 }

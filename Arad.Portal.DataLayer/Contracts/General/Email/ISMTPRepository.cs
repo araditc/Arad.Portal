@@ -9,8 +9,8 @@ namespace Arad.Portal.DataLayer.Contracts.General.Email
 {
     public interface ISMTPRepository
     {
-        Task<SMTP> GetDefault();
+        //Task<SMTP> GetDefault();
 
-        Task<bool> ExistsDefault(string id);
+        //Task<bool> ExistsDefault(string id);
     }
 }

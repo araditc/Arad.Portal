@@ -490,6 +490,9 @@
 	<string key="Validation_MobileNumberInvalid2">
 		<value>شماره وارد شده مربوط به تلفن ثابت می باشد.</value>
 	</string>
+	<string key="Title_AreYouSure">
+		<value>مطمئن هستید؟</value>
+	</string>
 	<!--====================ALERTANDMESSAGES====================================================================-->
 	<string key="AlertAndMessage_SubmitOtpPleaseTryAgainLater">
 		<value>خطا، لطفا بعدا دوباره تلاش نمایید.</value>

@@ -14,9 +14,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo
 {
     public class MessageTemplateRepository : BaseRepository, IMessageTemplateRepository
     {
-        private readonly ErrorLogContext _context;
+        private readonly MessageTemplateContext _context;
         private readonly IMapper _mapper;
-        public MessageTemplateRepository(ErrorLogContext context, IMapper mapper,
+        public MessageTemplateRepository(MessageTemplateContext context, IMapper mapper,
             IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _context = context;
@@ -41,6 +41,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo
             return result;
         }
 
+        public  void InsertMany(List<Entities.General.MessageTemplate.MessageTemplate> templates)
+        {
+             _context.Collection.InsertMany(templates);
+        }
         public Entities.General.MessageTemplate.MessageTemplate FetchTemplateByName(string templateName)
         {
             var res = new Entities.General.MessageTemplate.MessageTemplate();

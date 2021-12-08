@@ -195,24 +195,48 @@ namespace Arad.Portal.UI.Shop.Helpers
                 var dom = new Domain()
                 {
                     DomainId = Guid.NewGuid().ToString(),
-                    DomainName = "https://localhost:44361",
-                    OwnerUserName ="superadmin",
-                    IsActive = true,
-                    DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
-                    DefaultLanguageName = "فارسی",
-                    DefaultLangSymbol = "fa-IR",
-                    IsDefault = true
-                };
-                var dom2 = new Domain()
-                {
-                    DomainId = Guid.NewGuid().ToString(),
-                    DomainName = "https://localhost:44303",
+                    DomainName = "https://localhost:3214",//store
                     OwnerUserName = "superadmin",
                     IsActive = true,
                     DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
                     DefaultLanguageName = "فارسی",
                     DefaultLangSymbol = "fa-IR",
-                    IsDefault = true
+                    IsDefault = true,
+                    CreationDate = DateTime.Now,
+                    SMTPAccount = new DataLayer.Entities.General.Email.SMTP()
+                    {
+                        EmailAddress = "azizi@arad-itc.com",
+                        Encryption = DataLayer.Models.Shared.Enums.EmailEncryptionType.None,
+                        IgnoreSSLWarning = true,
+                        IsDefault = true,
+                        Server = "https://mail.arad-itc.org/",
+                        SMTPAuthPassword = "Sa15861136664",
+                        SMTPAuthUsername = "azizi",
+                        ServerPort = 465
+                    }
+                };
+                var dom2 = new Domain()
+                {
+                    DomainId = Guid.NewGuid().ToString(),
+                    DomainName = "http://localhost:17951/",//dashboard
+                    OwnerUserName = "superadmin",
+                    IsActive = true,
+                    DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
+                    DefaultLanguageName = "فارسی",
+                    DefaultLangSymbol = "fa-IR",
+                    IsDefault = true,
+                    CreationDate = DateTime.Now,
+                    SMTPAccount = new DataLayer.Entities.General.Email.SMTP()
+                    {
+                        EmailAddress = "azizi@arad-itc.com",
+                        Encryption = DataLayer.Models.Shared.Enums.EmailEncryptionType.None,
+                        IgnoreSSLWarning = true,
+                        IsDefault = true,
+                        Server = "https://mail.arad-itc.org/",
+                        SMTPAuthPassword = "Sa15861136664",
+                        SMTPAuthUsername = "azizi",
+                        ServerPort = 465
+                    }
                 };
                 var dom3 = new Domain()
                 {
@@ -223,7 +247,8 @@ namespace Arad.Portal.UI.Shop.Helpers
                     DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
                     DefaultLanguageName = "فارسی",
                     DefaultLangSymbol = "fa-IR",
-                    IsDefault = true
+                    IsDefault = true,
+                    CreationDate = DateTime.Now,
                 };
 
                 domainRepository.InsertMany(new List<Domain>() { dom, dom2, dom3 }).Wait();
@@ -234,36 +259,54 @@ namespace Arad.Portal.UI.Shop.Helpers
             var messageTemplateRepository =
                 (MessageTemplateRepository)stateScope.ServiceProvider.GetService(typeof(IMessageTemplateRepository));
 
-            if(!messageTemplateRepository.HasAny())
+            if (!messageTemplateRepository.HasAny())
             {
-                var lan1 = new MessageTemplateMultiLingual()
-                {
-                    LanguageName = "en-US",
-                    Body = "Your New Password will be : [0]",
-                    Subject = "ChangePassword"
-                };
-                var lan2 = new MessageTemplateMultiLingual()
-                {
-                    LanguageName = "fa-IR",
-                    Body = "رمز عبور جدید شما : [0]",
-                    Subject = "تغییر رمز عبور"
-                };
-                var changePasswordTemplate = new MessageTemplate()
-                {
-                    MessageTemplateId = Guid.NewGuid().ToString(),
-                    CreationDate = DateTime.UtcNow,
-                    IsActive = true,
-                    IsSystemTemplate = true,
-                    NotificationType = DataLayer.Models.Shared.Enums.NotificationType.Sms,
-                    TemplateDescription = "this template is used when user request to change password",
-                    TemplateName = "ChangePassword"
-                };
-                changePasswordTemplate.MessageTemplateMultiLingual.Add(lan1);
-                changePasswordTemplate.MessageTemplateMultiLingual.Add(lan2);
+                using StreamReader r = new(Path.Combine(applicationPath, "SeedData", "MessageTemplate.json"));
+                string json = r.ReadToEnd();
+                List<MessageTemplate> messageTemplates = JsonConvert.DeserializeObject<List<MessageTemplate>>(json);
 
-
-                messageTemplateRepository.InsertOne(changePasswordTemplate);
+                if (messageTemplates != null && messageTemplates.Any())
+                {
+                    foreach (MessageTemplate messageTemplate in messageTemplates)
+                    {
+                        messageTemplate.CreationDate = DateTime.Now;
+                        messageTemplate.CreatorUserId = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa";
+                        messageTemplate.CreatorUserName = "superAdmin";
+                    }
+                    messageTemplateRepository.InsertMany(messageTemplates);
+                }
             }
+
+            //if(!messageTemplateRepository.HasAny())
+            //{
+            //    var lan1 = new MessageTemplateMultiLingual()
+            //    {
+            //        LanguageName = "en-US",
+            //        Body = "Your New Password will be : [0]",
+            //        Subject = "ChangePassword"
+            //    };
+            //    var lan2 = new MessageTemplateMultiLingual()
+            //    {
+            //        LanguageName = "fa-IR",
+            //        Body = "رمز عبور جدید شما : [0]",
+            //        Subject = "تغییر رمز عبور"
+            //    };
+            //    var changePasswordTemplate = new MessageTemplate()
+            //    {
+            //        MessageTemplateId = Guid.NewGuid().ToString(),
+            //        CreationDate = DateTime.UtcNow,
+            //        IsActive = true,
+            //        IsSystemTemplate = true,
+            //        NotificationType = DataLayer.Models.Shared.Enums.NotificationType.Sms,
+            //        TemplateDescription = "this template is used when user request to change password",
+            //        TemplateName = "ChangePassword"
+            //    };
+            //    changePasswordTemplate.MessageTemplateMultiLingual.Add(lan1);
+            //    changePasswordTemplate.MessageTemplateMultiLingual.Add(lan2);
+
+
+            //    messageTemplateRepository.InsertOne(changePasswordTemplate);
+            //}
 
             //Language
             using var languageScope = app.ApplicationServices.CreateScope();

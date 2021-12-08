@@ -255,7 +255,8 @@
     </main>
     <!-- /.login-box -->
     <!-- jQuery -->
-    <script src="~/js/plugins/jquery/jquery.min.js"></script>
+    @*<script src="~/js/plugins/jquery/jquery.min.js"></script>*@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="~/js/plugins/bootstrap/js/bootstrap.bundle.js"></script>
     <!-- iCheck -->
@@ -273,7 +274,7 @@
         <script src="~/plugins/iCheck/icheck.min.js"></script>
     }
 
-<script>
+    <script>
         $(document).ready(function () {
             debugger;
                 $('[data-toggle="tooltip"]').tooltip();
@@ -295,7 +296,7 @@
             });
     });
 
-    
+
     function refreshCaptcha()
     {
         $("#imgcpatcha").attr('src', `@Url.Action("CaptchaImage", "Captcha")?${new Date().getTime()}`);
@@ -320,6 +321,6 @@
             }
         });
     }
-</script>
+    </script>
 </body>
 </html>

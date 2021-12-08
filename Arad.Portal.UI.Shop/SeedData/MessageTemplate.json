@@ -1,0 +1,726 @@
+[
+  {
+    "MessageTemplateId": "807db3ef-f190-40c6-8377-ea68ac1e7d80",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "SupportTicketOpened",
+    "TemplateDescription": "ثبت درخواست پشتیبانی جدید",
+    "IsSystemTemplate": true,
+    "NotificationType": "1",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "درخواست پشتیبانی جدید ثبت شد",
+        "Body": "<p>{$client_name},</p><p>از تماس شما با تیم پشتیبانی ما سپاس گذاریم. اکنون یک درخواست پشتیبانی برای درخواست شما باز شده است. در صورت پاسخگویی از طریق ایمیل به شما خبر داده می شود. جزئیات درخواست شما در زیر نشان داده شده است.</p><p>موضوع: {$ticket_subject}<br>اولویت: {$ticket_priority}<br>وضیعت: {$ticket_status}</p><p>در هر زمان می توانید درخواست را ببینید {$ticket_link}</p><p>{$signature}</p>"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "New Support Ticket Opened",
+        "Body": "<p>{$client_name},</p><p>Thank you for contacting our support team. A support ticket has now been opened for your request. You will be notified when a response is made by email. The details of your ticket are shown below.</p><p>Subject: {$ticket_subject}<br>Priority: {$ticket_priority}<br>Status: {$ticket_status}</p><p>You can view the ticket at any time at {$ticket_link}</p><p>{$signature}</p>"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "dc655a4c-2d8c-4e83-a84b-3a80c83d185e",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "SupportTicketOpenedByAdmin",
+    "TemplateDescription": "ثبت درخواست پشتیبانی جدید به وسیله آدمین",
+    "IsSystemTemplate": true,
+    "NotificationType": "1",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "{$ticket_subject}",
+        "Body": "<p><span style=\"background-color:rgb(255,255,255);color:rgb(0,0,0);\">{$ticket_message}</span></p>"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "{$ticket_subject}",
+        "Body": "<p><span style=\"background-color:rgb(255,255,255);color:rgb(0,0,0);\">{$ticket_message}</span></p>"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "5dcf0937-1d30-4449-ac8a-7aa5fc004a2f",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "SupportTicketReply",
+    "TemplateDescription": "پاسخ درخواست از سوی پشتیبانی",
+    "IsSystemTemplate": true,
+    "NotificationType": "1",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "پاسخ درخواست از سوی پشتیبانی",
+        "Body": "<p>{$ticket_message}</p><p>----------------------------------------------<br>شناسه درخواست: #{$ticket_id}<br>موضوع: {$ticket_subject}<br>وضیعت: {$ticket_status}<br>نشانی نمایش درخواست: {$ticket_link}<br>----------------------------------------------</p>"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "Support Ticket Response",
+        "Body": "<p>{$ticket_message}</p><p>----------------------------------------------<br>Ticket ID: #{$ticket_id}<br>Subject: {$ticket_subject}<br>Status: {$ticket_status}<br>Ticket URL: {$ticket_link}<br>----------------------------------------------</p>"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "115863c1-86a9-45bf-98c8-cbb1a2c488d8",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "SupportTicketAutoCloseNotification",
+    "TemplateDescription": "آگاهی رسانی بسته شدن خودکار درخواست از سوی پشتیبانی ",
+    "IsSystemTemplate": true,
+    "NotificationType": "1",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "آگاهی رسانی بسته شدن خودکار درخواست از سوی پشتیبانی",
+        "Body": "<p>{$client_name},</p><p>این یک اعلان است تا به شما آگاهی دهیم که ما وضعیت درخواست #{$ ticket_id} شما را به (بسته شده) تغییر می دهیم زیرا بیش از {$ ticket_auto_close_time} ساعت از شما پاسخی دریافت نکرده ایم.</p><p>موضوع: {$ticket_subject}<br>واحد: {$ticket_department}<br>اولویت: {$ticket_priority}<br>وضیعت: {$ticket_status}</p><p>اگر پرسش دیگری دارید ، لطفاً برای باز کردن دوباره درخواست پاسخ دهید.</p><p>{$signature}</p>"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "Support Ticket Resolved",
+        "Body": "<p>{$client_name},</p><p>This is a notification to let you know that we are changing the status of your ticket #{$ticket_id} to Closed as we have not received a response from you in over {$ticket_auto_close_time} hours.</p><p>Subject: {$ticket_subject}<br>Department: {$ticket_department}<br>Priority: {$ticket_priority}<br>Status: {$ticket_status}</p><p>If you have any further questions then please just reply to re-open the ticket.</p><p>{$signature}</p>"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "4b22947a-9a2a-4c31-810d-174835266601",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "AutomatedPasswordReset",
+    "TemplateDescription": "بازنشانی خودکار گذر واژه",
+    "IsSystemTemplate": true,
+    "NotificationType": "1",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "گذر واژه جدید شما برای {$company_name}",
+        "Body": "<p>Dear {$client_name},</p><p>همانگونه که درخواست کرده اید ، رمز عبور شما بازنشانی شده است. اطلاعات ورود به سیستم جدید شما به شرح زیر است:</p><p><span style=\"background-color:rgb(255,255,255);color:rgb(33,37,41);\">{$system_url}</span><br>نام کاربری: <span style=\"background-color:rgb(255,255,255);color:rgb(33,37,41);\">{$client_name}</span><br>گذر واژه: {$client_password}</p><p>برای تغییر گذر واژه خود به چیزی به یاد ماندنی ، پس از ورود به سیستم ، به پروفایل/تغییر گذر واژه بروید.</p><p>{$signature}</p>"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "Your new password for {$company_name}",
+        "Body": "<p>Dear {$client_name},</p><p>As you requested, your password for our client area has now been reset. Your new login details are as follows:</p><p>{$whmcs_link}<br>Email: {$client_email}<br>Password: {$client_password}</p><p>To change your password to something more memorable, after logging in go to Profile &gt; Change Password.</p><p>{$signature}</p>"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "16442c47-637f-49d0-bc71-7f6b4fc291f3",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "ClientEmailAddressVerification",
+    "TemplateDescription": "تأیید آدرس ایمیل کاربر",
+    "IsSystemTemplate": true,
+    "NotificationType": "1",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "تأیید آدرس ایمیل",
+        "Body": "<p>{$client_name} گرامی,</p><p>از ایجاد حساب {$company_name} سپاسگذاریم.</p><p>خواهشمندیم از پیوند زیر دیدن کرده و وارد حساب خود شوید تا آدرس ایمیل خود را تأیید کرده و ثبت نام خود را تکمیل کنید.</p><p>{$client_email_verification_link}</p><p>شما این ایمیل را به این دلیل دریافت می کنید که اخیراً یک حساب ایجاد کرده اید یا آدرس ایمیل خود را تغییر داده اید. اگر این کار را نکرده اید ، لطفاً با ما تماس بگیرید.</p><p>{$signature}</p>"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "Confirm Your Registration",
+        "Body": "<p>Dear {$client_name},</p><p>Thank you for creating a {$companyname} account.</p><p>Please visit the link below and sign into your account to verify your email address and complete your registration.</p><p>{$client_email_verification_link}</p><p>You are receiving this email because you recently created an account or changed your email address. If you did not do this, please contact us.</p><p>{$signature}</p>"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "7c8c24e5-aecc-4480-bafe-f013e07e0caf",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "ClientSignupEmail",
+    "TemplateDescription": "ایمیل ثبت نام مشتری",
+    "IsSystemTemplate": true,
+    "NotificationType": "1",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "خوش آمدید",
+        "Body": "<p>{$client_first_name} گرامی,</p><p>از ایجاد حساب {$company_name} سپاسگذاریم. خواهشمندیم این ایمیل را به طور کامل مرور کنید زیرا حاوی اطلاعات مهمی است.</p><p><strong>ورود به سیستم</strong></p><p>در <span style=\"background-color:rgb(255,255,255);color:rgb(33,37,41);\">{$system_url}</span> می توانید به منطقه مشتری ما دسترسی داشته باشید</p><p>برای ورود به سیستم به آدرس ایمیل و رمز عبوری که هنگام ثبت نام انتخاب کرده اید نیاز دارید.</p><p>اگر به عنوان بخشی از ثبت سفارش جدید با ما یک حساب ایجاد کرده اید ، به زودی یک ایمیل تأیید سفارش دریافت خواهید کرد.</p><p><strong>دریافت پشتیبانی</strong></p><p>در صورت نیاز به کمک یا کمک ، می توانید به منابع پشتیبانی ما در زیر دسترسی پیدا کنید.</p><ul><li><a href=\"https://cp.arad-itc.com/admin/%7B$whmcs_url%7D/knowledgebase.php\">Knowledgebase</a></li><li><a href=\"https://cp.arad-itc.com/admin/%7B$whmcs_url%7D/submitticket.php\">Submit a Ticket</a></li></ul><p>{$signature}</p>"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "Welcome",
+        "Body": "<p>Dear {$client_first_name},</p><p>Thank you for creating a {$companyname} account. Please review this email in its entirety as it contains important information.</p><p><strong>Logging In</strong></p><p>You can access our client area at {$whmcs_link}</p><p>You will need your email address and the password you chose during signup to login.</p><p>If you created an account as part of placing a new order with us, you will shortly receive an order confirmation email.</p><p><strong>Getting Support</strong></p><p>If you need any help or assistance, you can access our support resources below.</p><ul><li><a href=\"https://cp.arad-itc.com/admin/%7B$whmcs_url%7D/knowledgebase.php\">Knowledgebase</a></li><li><a href=\"https://cp.arad-itc.com/admin/%7B$whmcs_url%7D/submitticket.php\">Submit a Ticket</a></li></ul><p>{$signature}</p>"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "fad2f6bd-1caa-4fa5-9b72-44176f5f8e30",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "PasswordResetValidation",
+    "TemplateDescription": "اعتبار سنجی بازنشانی گذر واژه",
+    "IsSystemTemplate": true,
+    "NotificationType": "1",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "جزئیات ورود شما برای {$company_name}",
+        "Body": "<p>{$client_name} گرامی,</p><p>اخیراً درخواستی مبنی بر بازنشانی گذرواژه برای شما&nbsp; ارسال شده است. اگر شما این را درخواست نکرده اید ، خواهشمندیم این ایمیل را نادیده بگیرید. منقضی می شود و در مدت 2 ساعت بی فایده می شود.</p><p>برای بازنشانی گذرواژه خود ، خواهشمندیم&nbsp;از آدرس اینترنتی زیر دیدن کنید:<br><a href=\"https://cp.arad-itc.com/admin/%7B$pw_reset_url%7D\">{$pw_reset_url}</a></p><p>همنگامی که از پیوند بالا دیدن می کنید ، این فرصت را خواهید داشت که رمز جدیدی را انتخاب کنید.</p><p>{$signature}</p>"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "Your login details for {$company_name}",
+        "Body": "<p>Dear {$client_name},</p><p>Recently a request was submitted to reset your password for our client area. If you did not request this, please ignore this email. It will expire and become useless in 2 hours time.</p><p>To reset your password, please visit the url below:<br><a href=\"https://cp.arad-itc.com/admin/%7B$pw_reset_url%7D\">{$pw_reset_url}</a></p><p>When you visit the link above, you will have the opportunity to choose a new password.</p><p>{$signature}</p>"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "72dc390b-5657-4243-bb2c-9f760c0af38c",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "PasswordResetConfirmation",
+    "TemplateDescription": "تأیید بازنشانی گذر واژه",
+    "IsSystemTemplate": true,
+    "NotificationType": "1",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "گذرواژه شما برای {$company_name} بازنشانی شده است",
+        "Body": "<p>{$client_name} گرامی,</p><p>همانطور که درخواست کرده اید ، رمز عبور شما برای منطقه مشتری ما بازنشانی شده است.</p><p>اگر به درخواست شما نبود ، لطفاً بلافاصله با پشتیبانی تماس بگیرید.</p><p>{$signature}</p>"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "Your password has been reset for {$company_name}",
+        "Body": "<p>Dear {$client_name},</p><p>As you requested, your password for our client area has now been reset.</p><p>If it was not at your request, then please contact support immediately.</p><p>{$signature}</p>"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "1fd227b9-a23e-4c62-bf44-f679610ad7e9",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "SupportTicketOpened",
+    "TemplateDescription": "ثبت درخواست پشتیبانی جدید",
+    "IsSystemTemplate": true,
+    "NotificationType": "2",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "درخواست پشتیبانی جدید ثبت شد",
+        "Body": "<p>{$client_name},</p><p>از تماس شما با تیم پشتیبانی ما سپاس گذاریم. اکنون یک درخواست پشتیبانی برای درخواست شما باز شده است. در صورت پاسخگویی از طریق ایمیل به شما خبر داده می شود. جزئیات درخواست شما در زیر نشان داده شده است.</p><p>موضوع: {$ticket_subject}<br>اولویت: {$ticket_priority}<br>وضیعت: {$ticket_status}</p><p>در هر زمان می توانید درخواست را ببینید {$ticket_link}</p><p>{$signature}</p>"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "New Support Ticket Opened",
+        "Body": "<p>{$client_name},</p><p>Thank you for contacting our support team. A support ticket has now been opened for your request. You will be notified when a response is made by email. The details of your ticket are shown below.</p><p>Subject: {$ticket_subject}<br>Priority: {$ticket_priority}<br>Status: {$ticket_status}</p><p>You can view the ticket at any time at {$ticket_link}</p><p>{$signature}</p>"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "41fdc2cc-089e-4028-80d9-a1c1894a7bb7",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "SupportTicketOpenedByAdmin",
+    "TemplateDescription": "ثبت درخواست پشتیبانی جدید به وسیله آدمین",
+    "IsSystemTemplate": true,
+    "NotificationType": "2",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "{$ticket_subject}",
+        "Body": "<p><span style=\"background-color:rgb(255,255,255);color:rgb(0,0,0);\">{$ticket_message}</span></p>"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "{$ticket_subject}",
+        "Body": "<p><span style=\"background-color:rgb(255,255,255);color:rgb(0,0,0);\">{$ticket_message}</span></p>"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "c5ca1bb4-a8f9-429c-934a-2939d341bb79",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "SupportTicketReply",
+    "TemplateDescription": "پاسخ درخواست از سوی پشتیبانی",
+    "IsSystemTemplate": true,
+    "NotificationType": "2",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "پاسخ درخواست از سوی پشتیبانی",
+        "Body": "<p>{$ticket_message}</p><p>----------------------------------------------<br>شناسه درخواست: #{$ticket_id}<br>موضوع: {$ticket_subject}<br>وضیعت: {$ticket_status}<br>نشانی نمایش درخواست: {$ticket_link}<br>----------------------------------------------</p>"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "Support Ticket Response",
+        "Body": "<p>{$ticket_message}</p><p>----------------------------------------------<br>Ticket ID: #{$ticket_id}<br>Subject: {$ticket_subject}<br>Status: {$ticket_status}<br>Ticket URL: {$ticket_link}<br>----------------------------------------------</p>"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "b337e5a0-6bae-4017-b20f-5dc1be762b9c",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "SupportTicketAutoCloseNotification",
+    "TemplateDescription": "آگاهی رسانی بسته شدن خودکار درخواست از سوی پشتیبانی ",
+    "IsSystemTemplate": true,
+    "NotificationType": "2",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "آگاهی رسانی بسته شدن خودکار درخواست از سوی پشتیبانی",
+        "Body": "<p>{$client_name},</p><p>این یک اعلان است تا به شما آگاهی دهیم که ما وضعیت درخواست #{$ ticket_id} شما را به (بسته شده) تغییر می دهیم زیرا بیش از {$ ticket_auto_close_time} ساعت از شما پاسخی دریافت نکرده ایم.</p><p>موضوع: {$ticket_subject}<br>واحد: {$ticket_department}<br>اولویت: {$ticket_priority}<br>وضیعت: {$ticket_status}</p><p>اگر پرسش دیگری دارید ، لطفاً برای باز کردن دوباره درخواست پاسخ دهید.</p><p>{$signature}</p>"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "Support Ticket Resolved",
+        "Body": "<p>{$client_name},</p><p>This is a notification to let you know that we are changing the status of your ticket #{$ticket_id} to Closed as we have not received a response from you in over {$ticket_auto_close_time} hours.</p><p>Subject: {$ticket_subject}<br>Department: {$ticket_department}<br>Priority: {$ticket_priority}<br>Status: {$ticket_status}</p><p>If you have any further questions then please just reply to re-open the ticket.</p><p>{$signature}</p>"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "676134c1-86a0-42c6-9bf0-2f304fb9b064",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "AutomatedPasswordReset",
+    "TemplateDescription": "بازنشانی خودکار گذر واژه",
+    "IsSystemTemplate": true,
+    "NotificationType": "2",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "گذر واژه جدید شما برای {$company_name}",
+        "Body": "<p>Dear {$client_name},</p><p>همانگونه که درخواست کرده اید ، رمز عبور شما بازنشانی شده است. اطلاعات ورود به سیستم جدید شما به شرح زیر است:</p><p><span style=\"background-color:rgb(255,255,255);color:rgb(33,37,41);\">{$system_url}</span><br>نام کاربری: <span style=\"background-color:rgb(255,255,255);color:rgb(33,37,41);\">{$client_name}</span><br>گذر واژه: {$client_password}</p><p>برای تغییر گذر واژه خود به چیزی به یاد ماندنی ، پس از ورود به سیستم ، به پروفایل/تغییر گذر واژه بروید.</p><p>{$signature}</p>"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "Your new password for {$company_name}",
+        "Body": "<p>Dear {$client_name},</p><p>As you requested, your password for our client area has now been reset. Your new login details are as follows:</p><p>{$whmcs_link}<br>Email: {$client_email}<br>Password: {$client_password}</p><p>To change your password to something more memorable, after logging in go to Profile &gt; Change Password.</p><p>{$signature}</p>"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "2a40288e-ef62-487a-9802-1064094ecf86",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "ClientEmailAddressVerification",
+    "TemplateDescription": "تأیید آدرس ایمیل کاربر",
+    "IsSystemTemplate": true,
+    "NotificationType": "2",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "تأیید آدرس ایمیل",
+        "Body": "<p>{$client_name} گرامی,</p><p>از ایجاد حساب {$company_name} سپاسگذاریم.</p><p>خواهشمندیم از پیوند زیر دیدن کرده و وارد حساب خود شوید تا آدرس ایمیل خود را تأیید کرده و ثبت نام خود را تکمیل کنید.</p><p>{$client_email_verification_link}</p><p>شما این ایمیل را به این دلیل دریافت می کنید که اخیراً یک حساب ایجاد کرده اید یا آدرس ایمیل خود را تغییر داده اید. اگر این کار را نکرده اید ، لطفاً با ما تماس بگیرید.</p><p>{$signature}</p>"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "Confirm Your Registration",
+        "Body": "<p>Dear {$client_name},</p><p>Thank you for creating a {$companyname} account.</p><p>Please visit the link below and sign into your account to verify your email address and complete your registration.</p><p>{$client_email_verification_link}</p><p>You are receiving this email because you recently created an account or changed your email address. If you did not do this, please contact us.</p><p>{$signature}</p>"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "98e900e1-6be5-4623-b71a-acfe5605c69d",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+    ],
+    "IsActive": true,
+    "TemplateName": "ClientSignupEmail",
+    "TemplateDescription": "ایمیل ثبت نام مشتری",
+    "IsSystemTemplate": true,
+    "NotificationType": "2",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": null,
+        "Body": "{$client_first_name} گرامی,\nاز ایجاد حساب {$company_name} سپاسگذاریم. \nنام کاربری :{$client_name}\nگذر واژه:{$client_password}"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": null,
+        "Body": "&lt;p&gt;Dear {$client_first_name},&lt;/p&gt;&lt;p&gt;Thank you for creating a {$companyname} account. Please review this email in its entirety as it contains important information.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Logging In&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;You can access our client area at {$whmcs_link}&lt;/p&gt;&lt;p&gt;You will need your email address and the password you chose during signup to login.&lt;/p&gt;&lt;p&gt;If you created an account as part of placing a new order with us, you will shortly receive an order confirmation email.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Getting Support&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;If you need any help or assistance, you can access our support resources below.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;https://cp.arad-itc.com/admin/%7B$whmcs_url%7D/knowledgebase.php&quot;&gt;Knowledgebase&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;https://cp.arad-itc.com/admin/%7B$whmcs_url%7D/submitticket.php&quot;&gt;Submit a Ticket&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;{$signature}&lt;/p&gt;"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "ad78bfe4-3539-49f3-a199-6623459a1ab3",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "PasswordResetValidation",
+    "TemplateDescription": "اعتبار سنجی بازنشانی گذر واژه",
+    "IsSystemTemplate": true,
+    "NotificationType": "2",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "جزئیات ورود شما برای {$company_name}",
+        "Body": "<p>{$client_name} گرامی,</p><p>اخیراً درخواستی مبنی بر بازنشانی گذرواژه برای شما&nbsp; ارسال شده است. اگر شما این را درخواست نکرده اید ، خواهشمندیم این ایمیل را نادیده بگیرید. منقضی می شود و در مدت 2 ساعت بی فایده می شود.</p><p>برای بازنشانی گذرواژه خود ، خواهشمندیم&nbsp;از آدرس اینترنتی زیر دیدن کنید:<br><a href=\"https://cp.arad-itc.com/admin/%7B$pw_reset_url%7D\">{$pw_reset_url}</a></p><p>همنگامی که از پیوند بالا دیدن می کنید ، این فرصت را خواهید داشت که رمز جدیدی را انتخاب کنید.</p><p>{$signature}</p>"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "Your login details for {$company_name}",
+        "Body": "<p>Dear {$client_name},</p><p>Recently a request was submitted to reset your password for our client area. If you did not request this, please ignore this email. It will expire and become useless in 2 hours time.</p><p>To reset your password, please visit the url below:<br><a href=\"https://cp.arad-itc.com/admin/%7B$pw_reset_url%7D\">{$pw_reset_url}</a></p><p>When you visit the link above, you will have the opportunity to choose a new password.</p><p>{$signature}</p>"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "8d721f37-e1d7-44dd-95f0-fd508ddf6092",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "PasswordResetConfirmation",
+    "TemplateDescription": "تأیید بازنشانی گذر واژه",
+    "IsSystemTemplate": true,
+    "NotificationType": "2",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "گذرواژه شما برای {$company_name} بازنشانی شده است",
+        "Body": "<p>{$client_name} گرامی,</p><p>همانطور که درخواست کرده اید ، رمز عبور شما برای منطقه مشتری ما بازنشانی شده است.</p><p>اگر به درخواست شما نبود ، لطفاً بلافاصله با پشتیبانی تماس بگیرید.</p><p>{$signature}</p>"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "Your password has been reset for {$company_name}",
+        "Body": "<p>Dear {$client_name},</p><p>As you requested, your password for our client area has now been reset.</p><p>If it was not at your request, then please contact support immediately.</p><p>{$signature}</p>"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "ec734992-c679-443d-b18f-36a2b4688509",
+    "CreationDate": "2021-09-01T05:22:07.268+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [],
+    "IsActive": true,
+    "TemplateName": "SendOtp",
+    "TemplateDescription": "ارسال کد امنیتی",
+    "IsSystemTemplate": true,
+    "NotificationType": "2",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": null,
+        "Body": "{$company_name}\\nکد شما : {$otp}"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": null,
+        "Body": "{$company_name}\\nYour code : {$otp}"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "8e3014b1-3127-4486-920a-56b13c28328e",
+    "CreationDate": "2021-09-01T05:23:43.424+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [],
+    "IsActive": true,
+    "TemplateName": "SendOtp",
+    "TemplateDescription": "ارسال کد امنیتی",
+    "IsSystemTemplate": true,
+    "NotificationType": "1",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "ارسال کد امنیتی",
+        "Body": "<p><span style=\"background-color:rgb(255,255,255);color:rgb(33,37,41);\">{$company_name}</span></p><p>کد شما : {$otp}</p>"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "send code",
+        "Body": "<p><span style=\"background-color:rgb(255,255,255);color:rgb(33,37,41);\">{$company_name}</span></p><p>کد شما : {$otp}</p>"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "ec2ca75d-2ae1-4206-b21f-a47a9b73bf0c",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "SupportTicketOpenedSendNotificationForStuff",
+    "TemplateDescription": "ثبت درخواست پشتیبانی جدید - اطلاع رسانی به کارمندان",
+    "IsSystemTemplate": true,
+    "NotificationType": "1",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "{$ticket_subject}",
+        "Body": "<p><span style=\"background-color:rgb(255,255,255);color:rgb(0,0,0);\">{$ticket_message}</span></p>"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "{$ticket_subject}",
+        "Body": "<p><span style=\"background-color:rgb(255,255,255);color:rgb(0,0,0);\">{$ticket_message}</span></p>"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "21e48557-3062-42a2-a7da-1f2a0aaa8304",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "SupportTicketOpenedSendNotificationForStuff",
+    "TemplateDescription": "ثبت درخواست پشتیبانی جدید - اطلاع رسانی به کارمندان",
+    "IsSystemTemplate": true,
+    "NotificationType": "2",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "{$ticket_subject}",
+        "Body": "<p><span style=\"background-color:rgb(255,255,255);color:rgb(0,0,0);\">{$ticket_message}</span></p>"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "{$ticket_subject}",
+        "Body": "<p><span style=\"background-color:rgb(255,255,255);color:rgb(0,0,0);\">{$ticket_message}</span></p>"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "5da13276-d9e8-48dc-8af0-7e075ce3cbcf",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "SupportTicketAutoLockNotification",
+    "TemplateDescription": "آگاهی رسانی مسدود شدن خودکار درخواست از سوی پشتیبانی ",
+    "IsSystemTemplate": true,
+    "NotificationType": 1,
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "آگاهی رسانی مسدود شدن خودکار درخواست از سوی پشتیبانی",
+        "Body": "<p>{$client_name},</p><p>این یک اعلان است تا به شما آگاهی دهیم که ما درخواست #{$ ticket_id} شما را مسدود کردیم، زیرا بیش از {$ ticket_auto_lock_time}.</p><p>موضوع: {$ticket_subject}<br>واحد: {$ticket_department}<br>اولویت: {$ticket_priority}<br>وضیعت: {$ticket_status}</p><p>اگر پرسش دیگری دارید ، لطفاً برای رفع مسدودی دوباره درخواست پاسخ دهید.</p><p>{$signature}</p>"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "Support Ticket Resolved",
+        "Body": "<p>{$client_name},</p><p>This is a notification to let you know that we are changing the status of your ticket #{$ticket_id} to Closed as we have not received a response from you in over {ticket_auto_lock_time} hours.</p><p>Subject: {$ticket_subject}<br>Department: {$ticket_department}<br>Priority: {$ticket_priority}<br>Status: {$ticket_status}</p><p>If you have any further questions then please just reply to re-open the ticket.</p><p>{$signature}</p>"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "a4a626f4-d3c8-40a9-a146-de64ccc276af",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "SupportTicketAutoLockNotification",
+    "TemplateDescription": "آگاهی رسانی مسدود شدن خودکار درخواست از سوی پشتیبانی ",
+    "IsSystemTemplate": true,
+    "NotificationType": 2,
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": null,
+        "Body": "{$client_name}\nاین یک اعلان است تا به شما آگاهی دهیم که ما درخواست #{$ ticket_id} شما را مسدود کردیم، زیرا بیش از {$ ticket_auto_lock_time} ساعت از شما پاسخی دریافت نکرده ایم."
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": null,
+        "Body": "{$client_name}\nThis is a notification to let you know that we are changing the status of your ticket #{$ticket_id} to Closed as we have not received a response from you in over {ticket_auto_lock_time} hours."
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "662c37a1-d03e-4eec-a4b8-4486a6aae52b",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "SupportTicketAutoCloseNotification",
+    "TemplateDescription": "آگاهی رسانی حذف کردن خودکار درخواست از سوی پشتیبانی ",
+    "IsSystemTemplate": true,
+    "NotificationType": 1,
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "آگاهی رسانی حذف کردن خودکار درخواست از سوی پشتیبانی",
+        "Body": "<p>{$client_name},</p><p>این یک اعلان است تا به شما آگاهی دهیم که ما درخواست #{$ ticket_id} شما را حذف کردیم، زیرا بیش از {$ ticket_auto_close_time} ساعت از شما پاسخی دریافت نکرده ایم.</p><p>موضوع: {$ticket_subject}<br>واحد: {$ticket_department}<br>اولویت: {$ticket_priority}<br>وضیعت: {$ticket_status}</p><p>اگر پرسش دیگری دارید ، لطفاً برای رفع مسدودی دوباره درخواست پاسخ دهید.</p><p>{$signature}</p>"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "Support Ticket Resolved",
+        "Body": "<p>{$client_name},</p><p>This is a notification to let you know that we are changing the status of your ticket #{$ticket_id} to Closed as we have not received a response from you in over {ticket_auto_lock_time} hours.</p><p>Subject: {$ticket_subject}<br>Department: {$ticket_department}<br>Priority: {$ticket_priority}<br>Status: {$ticket_status}</p><p>If you have any further questions then please just reply to re-open the ticket.</p><p>{$signature}</p>"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "89a93df5-c73b-41ba-8e52-6a3e0bfd9e3a",
+    "CreationDate": "2021-08-30T04:45:03.881+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "SupportTicketAutoCloseNotification",
+    "TemplateDescription": "آگاهی رسانی حذف کردن خودکار درخواست از سوی پشتیبانی ",
+    "IsSystemTemplate": true,
+    "NotificationType": 2,
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": null,
+        "Body": "{$client_name}\nاین یک اعلان است تا به شما آگاهی دهیم که ما درخواست #{$ ticket_id} شما را حذف کردیم، زیرا بیش از {$ ticket_auto_close_time} ساعت از شما پاسخی دریافت نکرده ایم."
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": null,
+        "Body": "{$client_name}\nThis is a notification to let you know that we are changing the status of your ticket #{$ticket_id} to Closed as we have not received a response from you in over {ticket_auto_lock_time} hours."
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "2022ee1a-57b9-48a8-ab03-a46329136031",
+    "CreationDate": "2021-12-01T09:03:09.093+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "DocumentUploadCompleteWaitConfirm",
+    "TemplateDescription": "در انتظار تایید مدارک",
+    "IsSystemTemplate": true,
+    "NotificationType": "2",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": null,
+        "Body": "کاربر {$client_first_name} {$client_last_name} در انتظار مدارک است."
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": null,
+        "Body": "User {$ client_first_name. Client $ client_last_name. Is waiting for documents."
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "31bd7614-23ff-449e-94cd-1ef3397894da",
+    "CreationDate": "2021-12-01T09:15:17.306+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsActive": true,
+    "TemplateName": "SupportTicketOpenedNotificationToAdmin",
+    "TemplateDescription": "ثبت درخواست پشتیبانی جدید - اطلاع رسانی به مدیران سیستم",
+    "IsSystemTemplate": true,
+    "NotificationType": "2",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": null,
+        "Body": "درخواستی با موضوع {$ticket_subject} و شماره {$ticket_id} ثبت شد."
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": null,
+        "Body": "The request was submitted with the subject {$ ticket_subject} and the number {$ ticket_id}"
+      }
+    ]
+  }
+
+]

@@ -495,6 +495,9 @@
 	<string key="Validation_MobileNumberInvalid2">
 		<value>Enter the number of fixed phone.</value>
 	</string>
+	<string key="Title_AreYouSure">
+		<value>Are you sure?</value>
+	</string>
 	<!--====================ALERTANDMESSAGES====================================================================-->
 	<string key="AlertAndMessage_SubmitOtpPleaseTryAgainLater">
 		<value>Error, Please try again later</value>

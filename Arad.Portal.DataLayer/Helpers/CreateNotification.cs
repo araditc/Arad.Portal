@@ -32,10 +32,12 @@ using Arad.Portal.DataLayer.Entities.General.Notify;
 using Arad.Portal.DataLayer.Entities.General.SystemSetting;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Models.Shared;
+using Arad.Portal.DataLayer.Entities.General.Domain;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using static Arad.Portal.DataLayer.Models.Shared.Enums;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
 
 namespace Arad.Portal.DataLayer.Helpers
 {
@@ -47,34 +49,38 @@ namespace Arad.Portal.DataLayer.Helpers
         private readonly IMessageTemplateRepository _messageTemplateRepository;
         private readonly ISystemSettingRepository _systemSettingRepository;
         private readonly INotificationRepository _notificationRepository;
-        private readonly ISMTPRepository _smtpRepository;
+        //private readonly ISMTPRepository _smtpRepository;
+        private readonly IDomainRepository _domainRepository;
         //private readonly IUserRepository _userManager;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public CreateNotification(IMessageTemplateRepository messageTemplateRepository,
                                   ISystemSettingRepository systemSettingRepository,
                                   INotificationRepository notificationRepository,
-                                  ISMTPRepository smtpRepository,
+                                  //ISMTPRepository smtpRepository,
                                   UserManager<ApplicationUser> userManager,
                                   IHttpContextAccessor httpContextAccessor,
                                   Setting setting,
-                                  SendSmsConfig sendSmsConfig)
+                                  SendSmsConfig sendSmsConfig,
+                                  IDomainRepository domainRepository)
         {
             _messageTemplateRepository = messageTemplateRepository;
             _systemSettingRepository = systemSettingRepository;
             _notificationRepository = notificationRepository;
-            _smtpRepository = smtpRepository;
+            //_smtpRepository = smtpRepository;
             _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
             _setting = setting;
             _sendSmsConfig = sendSmsConfig;
+            _domainRepository = domainRepository;
         }
 
 
 
         public async Task<Result> ClientSignUp(string templateName, ApplicationUser user, string password)
         {
-            SMTP smtp = await _smtpRepository.GetDefault();
+            var domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
+            SMTP smtp = _domainRepository.GetSMTPAccount(domainName);
 
             if (smtp == null)
             {
@@ -208,7 +214,9 @@ namespace Arad.Portal.DataLayer.Helpers
 
         public async Task<Result> Send(string templateName, ApplicationUser user, string password)
         {
-            SMTP smtp = await _smtpRepository.GetDefault();
+            //SMTP smtp = await _smtpRepository.GetDefault();
+            var domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
+            SMTP smtp = _domainRepository.GetSMTPAccount(domainName);
 
             if (smtp == null)
             {
@@ -289,8 +297,9 @@ namespace Arad.Portal.DataLayer.Helpers
 
         public async Task<Result> SendConfirmEmail(string templateName, ApplicationUser user, string callbackUrl)
         {
-            SMTP smtp = await _smtpRepository.GetDefault(); 
-            
+            //SMTP smtp = await _smtpRepository.GetDefault(); 
+            var domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
+            SMTP smtp = _domainRepository.GetSMTPAccount(domainName);
             if (smtp == null)
             {
                 return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_NotFoundSmtp") };
@@ -368,7 +377,9 @@ namespace Arad.Portal.DataLayer.Helpers
         
         public async Task<Result> SendOtp(string templateName, ApplicationUser user, string otp)
         {
-            SMTP smtp = await _smtpRepository.GetDefault();
+            //SMTP smtp = await _smtpRepository.GetDefault();
+            var domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
+            SMTP smtp = _domainRepository.GetSMTPAccount(domainName);
 
             if (smtp == null)
             {
@@ -448,83 +459,93 @@ namespace Arad.Portal.DataLayer.Helpers
 
         public async Task<Result> SendOtp(string templateName, string phoneNumber, string otp)
         {
-            SMTP smtp = await _smtpRepository.GetDefault();
-
-            if (smtp == null)
+            try
             {
-                return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_NotFoundSmtp") };
-            }
+                //SMTP smtp = await _smtpRepository.GetDefault();
+                var domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
+                SMTP smtp = _domainRepository.GetSMTPAccount(domainName);
 
-            if (_sendSmsConfig == null)
-            {
-                return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_NotFoundSmsSetting") };
-            }
-
-            List<MessageTemplate> messageTemplates = await _messageTemplateRepository.GetAllByName(templateName);
-
-            if (!messageTemplates.Any())
-            {
-                return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_NotFoundMessageTemplate") };
-            }
-
-            List<NotificationType> notificationTypes = new() { NotificationType.Sms };
-            List<Notification> notifications = new();
-
-            foreach (NotificationType notificationType in notificationTypes)
-            {
-                MessageTemplate messageTemplate = messageTemplates.FirstOrDefault(m => m.NotificationType == notificationType 
-                && m.MessageTemplateMultiLingual.Any(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)));
-
-                if (messageTemplate == null)
+                if (smtp == null)
                 {
-                    continue;
+                    return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_NotFoundSmtp") };
                 }
 
-                string title = await GenerateText(notificationType, 
-                    messageTemplate.MessageTemplateMultiLingual.First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Subject, null);
-                string messageText = await GenerateText(notificationType, messageTemplate.MessageTemplateMultiLingual.First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body, null, null, "", otp);
-
-                ApplicationUser user = _userManager.Users.FirstOrDefault(_ => _.IsSystemAccount);
-
-                Notification notification = new()
+                if (_sendSmsConfig == null)
                 {
-                    Type = notificationType,
-                    ScheduleDate = DateTime.Now,
-                    SendStatus = NotificationSendStatus.Store,
-                    Title = title,
-                    Body = messageText,
-                    CreationDate = DateTime.Now,
-                    CreatorUserId = user.Id,
-                    CreatorUserName = user.UserName,
-                    TemplateName = templateName,
-                    UserFullName = "",
-                    SendSmsConfig = _sendSmsConfig
-                };
-
-                switch (notificationType)
-                {
-                    case NotificationType.Email:
-                        notification.SMTP = smtp;
-                        //todo notification.UserEmail = user.Email;
-
-                        break;
-
-                    case NotificationType.Sms:
-                        notification.SendSmsConfig = _sendSmsConfig;
-                        notification.UserPhoneNumber = phoneNumber;
-
-                        break;
+                    return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_NotFoundSmsSetting") };
                 }
 
-                notifications.Add(notification);
-            }
+                List<MessageTemplate> messageTemplates = await _messageTemplateRepository.GetAllByName(templateName);
 
-            if (notifications.Any())
+                if (!messageTemplates.Any())
+                {
+                    return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_NotFoundMessageTemplate") };
+                }
+
+                List<NotificationType> notificationTypes = new() { NotificationType.Sms };
+                List<Notification> notifications = new();
+
+                foreach (NotificationType notificationType in notificationTypes)
+                {
+                    MessageTemplate messageTemplate = messageTemplates.FirstOrDefault(m => m.NotificationType == notificationType
+                    && m.MessageTemplateMultiLingual.Any(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)));
+
+                    if (messageTemplate == null)
+                    {
+                        continue;
+                    }
+
+                    string title = await GenerateText(notificationType,
+                        messageTemplate.MessageTemplateMultiLingual.First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Subject, null);
+                    string messageText = await GenerateText(notificationType, messageTemplate.MessageTemplateMultiLingual.First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body, null, null, "", otp);
+
+                    ApplicationUser user = _userManager.Users.FirstOrDefault(_ => _.IsSystemAccount);
+
+                    Notification notification = new()
+                    {
+                        Type = notificationType,
+                        ScheduleDate = DateTime.Now,
+                        SendStatus = NotificationSendStatus.Store,
+                        Title = title,
+                        Body = messageText,
+                        CreationDate = DateTime.Now,
+                        CreatorUserId = user.Id,
+                        CreatorUserName = user.UserName,
+                        TemplateName = templateName,
+                        UserFullName = "",
+                        SendSmsConfig = _sendSmsConfig
+                    };
+
+                    switch (notificationType)
+                    {
+                        case NotificationType.Email:
+                            notification.SMTP = smtp;
+                            //todo notification.UserEmail = user.Email;
+
+                            break;
+
+                        case NotificationType.Sms:
+                            notification.SendSmsConfig = _sendSmsConfig;
+                            notification.UserPhoneNumber = phoneNumber;
+
+                            break;
+                    }
+
+                    notifications.Add(notification);
+                }
+
+                if (notifications.Any())
+                {
+                    await _notificationRepository.AddRange(notifications);
+                }
+
+                return new() { Succeeded = true, Message = Language.GetString("AlertAndMessage_OperationSuccess") };
+            }
+            catch (Exception ex)
             {
-                await _notificationRepository.AddRange(notifications);
+                return new() {Succeeded = false , Message = Language.GetString("AlertAndMessage_Error") };
             }
-
-            return new() { Succeeded = true, Message = Language.GetString("AlertAndMessage_OperationSuccess") };
+            
         }
 
         private async Task<string> GenerateText(NotificationType notificationType, string text,

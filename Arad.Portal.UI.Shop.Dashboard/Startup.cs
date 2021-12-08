@@ -69,13 +69,19 @@ using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Helpers;
 using Arad.Portal.DataLayer.Contracts.General.SystemSetting;
 using Arad.Portal.DataLayer.Repositories.General.SystemSetting.Mongo;
+using Arad.Portal.DataLayer.Contracts.General.Email;
+using Arad.Portal.DataLayer.Repositories.General.Mongo;
+using Arad.Portal.DataLayer.Repositories.General.Email.Mongo;
+using Arad.Portal.DataLayer.Contracts.General.Error;
+using Arad.Portal.DataLayer.Repositories.General.Error.Mongo;
+using System.Linq;
 
 namespace Arad.Portal.UI.Shop.Dashboard
 {
     public class Startup
     {
         private readonly IWebHostEnvironment _environment;
-        private static readonly IBasicDataRepository basicDataRepository;
+        //private static readonly IBasicDataRepository basicDataRepository;
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
@@ -254,15 +260,8 @@ namespace Arad.Portal.UI.Shop.Dashboard
         }
         private RequestLocalizationOptions AddMultilingualSettings()
         {
-            string[] supportedCulturesStrings = Configuration.GetSection("SupportedCultures")
-               .Get<string[]>();
-
-            List<CultureInfo> supportedCultures = new();
-
-            foreach (string item in supportedCulturesStrings)
-            {
-                supportedCultures.Add(new CultureInfo(item));
-            }
+            var supportedCultures = Configuration.GetSection("SupportedCultures")
+               .Get<string[]>().Select(x => new CultureInfo(x)).ToList();
 
             RequestLocalizationOptions options = new RequestLocalizationOptions()
             {
@@ -304,6 +303,10 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<IMenuRepository, MenuRepository>();
             services.AddTransient<IBasicDataRepository, BasicDataRepository>();
             services.AddTransient<ISystemSettingRepository, SystemSettingRepository>();
+            services.AddTransient<ISMTPRepository, SMTPRepository>();
+            services.AddTransient<IPOPRepository, POPRepository>();
+            services.AddTransient<IEmailOptionRepository, EmailOptionRepository>();
+            services.AddTransient<IErrorLogRepository, ErrorLogRepository>();
 
             #region contextes
             services.AddTransient<CurrencyContext>();
@@ -317,15 +320,19 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<PromotionContext>();
             services.AddTransient<ShoppingCartContext>();
             services.AddTransient<TransactionContext>();
-            services.AddTransient<ErrorLogContext>();
             services.AddTransient<NotificationContext>();
             services.AddTransient<ContentCategoryContext>();
+            services.AddTransient<MessageTemplateContext>();
             services.AddTransient<ContentContext>();
             services.AddTransient<CommentContext>();
             services.AddTransient<MenuContext>();
             services.AddTransient<BasicDataContext>();
             services.AddTransient<SystemSettingContext>();
-                
+            services.AddTransient<SMTPContext>();
+            services.AddTransient<POPContext>();
+            services.AddTransient<EmailOptionContext>();
+            services.AddTransient<ErrorLogContext>();
+
             #endregion
 
         }

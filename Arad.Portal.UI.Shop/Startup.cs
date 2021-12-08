@@ -4,6 +4,8 @@ using Arad.Portal.DataLayer.Contracts.General.Content;
 using Arad.Portal.DataLayer.Contracts.General.ContentCategory;
 using Arad.Portal.DataLayer.Contracts.General.Currency;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
+using Arad.Portal.DataLayer.Contracts.General.Email;
+using Arad.Portal.DataLayer.Contracts.General.Error;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using Arad.Portal.DataLayer.Contracts.General.Menu;
 using Arad.Portal.DataLayer.Contracts.General.MessageTemplate;
@@ -30,9 +32,12 @@ using Arad.Portal.DataLayer.Repositories.General.Content.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
+using Arad.Portal.DataLayer.Repositories.General.Email.Mongo;
+using Arad.Portal.DataLayer.Repositories.General.Error.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Menu.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo;
+using Arad.Portal.DataLayer.Repositories.General.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Notification.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Permission.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Role.Mongo;
@@ -259,6 +264,7 @@ namespace Arad.Portal.UI.Shop
         private void AddRepositoryServices(IServiceCollection services)
         {
             services.AddTransient<ICurrencyRepository, CurrencyRepository>();
+            services.AddTransient<IErrorLogRepository, ErrorLogRepository>();
             services.AddTransient<IDomainRepository, DomainRepository>();
             services.AddTransient<ILanguageRepository, LanguageRepository>();
             services.AddTransient<IPermissionRepository, PermissionRepository>();
@@ -282,6 +288,9 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<IMenuRepository, MenuRepository>();
             services.AddTransient<IBasicDataRepository, BasicDataRepository>();
             services.AddTransient<ISystemSettingRepository, SystemSettingRepository>();
+            services.AddTransient<ISMTPRepository, SMTPRepository>();
+            services.AddTransient<IPOPRepository, POPRepository>();
+            services.AddTransient<IEmailOptionRepository, EmailOptionRepository>();
 
             #region contexes
             services.AddTransient<CurrencyContext>();
@@ -298,11 +307,15 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<ErrorLogContext>();
             services.AddTransient<NotificationContext>();
             services.AddTransient<ContentCategoryContext>();
+            services.AddTransient<MessageTemplateContext>();
             services.AddTransient<ContentContext>();
             services.AddTransient<CommentContext>();
             services.AddTransient<MenuContext>();
             services.AddTransient<BasicDataContext>();
             services.AddTransient<SystemSettingContext>();
+            services.AddTransient<SMTPContext>();
+            services.AddTransient<POPContext>();
+            services.AddTransient<EmailOptionContext>();
 
             #endregion
 

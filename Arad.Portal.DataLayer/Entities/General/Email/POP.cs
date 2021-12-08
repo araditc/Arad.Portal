@@ -24,6 +24,8 @@ namespace Arad.Portal.DataLayer.Entities.General.Email
 {
     public class POP : BaseEntity
     {
+        public string POPId { get; set; }
+
         public string Server { get; set; }
 
         public string EmailAddress { get; set; }

@@ -296,7 +296,8 @@ namespace Arad.Portal.UI.Shop.Controllers
 
                 if (!result.Succeeded)
                 {
-                    ErrorLog errorLog = new() { Error = result.Message, Source = @"Account\Register", Ip = Request.HttpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString() };
+                    ErrorLog errorLog = new() { Error = result.Message, Source = @"Account\Register",
+                        Ip = Request.HttpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString() };
                     await _errorLogRepository.Add(errorLog);
                 }
 

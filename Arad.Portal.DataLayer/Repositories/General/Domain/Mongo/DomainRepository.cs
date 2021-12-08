@@ -16,6 +16,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using Arad.Portal.GeneralLibrary.Utilities;
+using Arad.Portal.DataLayer.Entities.General.Email;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
 {
@@ -424,6 +425,17 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             {
                 result.Succeeded = false;
                 result.Message = ConstMessages.ObjectNotFound;
+            }
+            return result;
+        }
+
+        public SMTP GetSMTPAccount(string domainName)
+        {
+            SMTP result = null;
+            var domainEntity = _context.Collection.Find(_ => _.DomainName == domainName).First();
+            if(domainEntity != null && domainEntity.SMTPAccount != null)
+            {
+                return domainEntity.SMTPAccount;
             }
             return result;
         }

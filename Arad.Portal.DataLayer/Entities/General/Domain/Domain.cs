@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Entities.General.User;
+﻿using Arad.Portal.DataLayer.Entities.General.Email;
+using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Models.Shared;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
@@ -37,6 +38,10 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
         public string DefaultCurrencyName { get; set; }
 
         public bool IsDefault { get; set; }
+
+        public SMTP SMTPAccount  { get; set; }
+
+        public POP POPAccount { get; set; }
 
         public List<Price> Prices { get; set; }
     }

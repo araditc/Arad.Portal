@@ -22,7 +22,7 @@ using static Arad.Portal.DataLayer.Models.Shared.Enums;
 
 namespace Arad.Portal.DataLayer.Entities.General.Email
 {
-    public class SMTP : BaseEntity
+    public class SMTP 
     {
         public string SMTPId { get; set; }
 

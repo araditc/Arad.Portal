@@ -31,6 +31,8 @@
     <!-- template rtl version -->
     <!--<link rel="stylesheet"
           href="~/dashboardAsset/css/customfa.css">-->
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/lib/intl-tel-input/css/intlTelInput.css" rel="stylesheet" />
     <link href="~/lib/limonte-sweetalert2/sweetalert2.css" rel="stylesheet" />
 
@@ -38,6 +40,7 @@
     {
         <link href="~/Fonts/IranSans/css/fontiran.css"
               rel="stylesheet" />
+        <link href="~/fonts/IranSans/css/persianfonts.css" rel="stylesheet" />
     }
 
     <link href="~/css/loader-double.css" rel="stylesheet" />
@@ -45,7 +48,7 @@
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
         <link href="~/css/siteTemplate/rtl/bootstrap-rtl.min.css" rel="stylesheet" />
-       
+
     }
     <style>
         input::placeholder { text-align: center; }
@@ -98,8 +101,8 @@
             <div class="card-body">
 
                 <div class="text-center">
-                    <img src="~/@(string.IsNullOrWhiteSpace(systemSetting?.CompanyLogoUrl)
-                            ? "logo.jpg" : $"Logo/{systemSetting.CompanyLogoUrl}")"
+                    <img src="@(string.IsNullOrWhiteSpace(systemSetting?.CompanyLogoUrl)
+                            ? "/imgs/logo.png" : $"~/Logo/{systemSetting.CompanyLogoUrl}")"
                          height="100"
                          width="100" />
                 </div>
@@ -116,7 +119,7 @@
                                type="tel"
                                class="form-control"
                                id="CellPhone"
-                               style="width: 319px !important"
+                               style="width: 317px !important"
                                dir="ltr">
 
                         <div class="input-group-append">
@@ -220,7 +223,8 @@
             </div>
         </div>
     </div>
-    <script src="~/js/plugins/jquery/jquery.min.js"></script>
+    @*<script src="~/js/plugins/jquery/jquery.min.js"></script>*@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/intl-tel-input/js/intlTelInput.js"></script>
     <script src="~/lib/intl-tel-input/js/utils.js"></script>
@@ -295,6 +299,7 @@
 
     function receiveCode()
     {
+        debugger;
         const cellPhone = cellPhoneInit.getNumber(intlTelInputUtils.numberFormat.E164);
 
         if (!cellPhone)
@@ -420,6 +425,7 @@
     $("#register")
         .submit(function(e)
         {
+            debugger;
             e.preventDefault();
             const myForm = document.getElementById('register');
             const form = new FormData(myForm);
