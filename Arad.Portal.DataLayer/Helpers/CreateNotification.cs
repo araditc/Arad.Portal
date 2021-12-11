@@ -53,6 +53,7 @@ namespace Arad.Portal.DataLayer.Helpers
         private readonly IDomainRepository _domainRepository;
         //private readonly IUserRepository _userManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly string _domainName;
 
         public CreateNotification(IMessageTemplateRepository messageTemplateRepository,
                                   ISystemSettingRepository systemSettingRepository,
@@ -62,7 +63,8 @@ namespace Arad.Portal.DataLayer.Helpers
                                   IHttpContextAccessor httpContextAccessor,
                                   Setting setting,
                                   SendSmsConfig sendSmsConfig,
-                                  IDomainRepository domainRepository)
+                                  IDomainRepository domainRepository
+                                  )
         {
             _messageTemplateRepository = messageTemplateRepository;
             _systemSettingRepository = systemSettingRepository;
@@ -73,14 +75,15 @@ namespace Arad.Portal.DataLayer.Helpers
             _setting = setting;
             _sendSmsConfig = sendSmsConfig;
             _domainRepository = domainRepository;
+            _domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
         }
 
 
 
         public async Task<Result> ClientSignUp(string templateName, ApplicationUser user, string password)
         {
-            var domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
-            SMTP smtp = _domainRepository.GetSMTPAccount(domainName);
+            
+            SMTP smtp = _domainRepository.GetSMTPAccount(_domainName);
 
             if (smtp == null)
             {
@@ -113,24 +116,28 @@ namespace Arad.Portal.DataLayer.Helpers
                     continue;
                 }
                 
-                string title = await GenerateText(notificationType, messageTemplate.MessageTemplateMultiLingual
+                string title = await GenerateText(notificationType,
+                    messageTemplate.MessageTemplateMultiLingual
                     .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Subject,  user);
                 string messageText = await GenerateText(notificationType, messageTemplate.MessageTemplateMultiLingual
                     .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body,  user, "", "", password);
-                
+
                 Notification notification = new()
                 {
                     Type = notificationType,
-                    ScheduleDate = DateTime.Now,
+                    NotificationId = Guid.NewGuid().ToString(),
+                    IsActive = true,
+                    ScheduleDate = DateTime.Now.ToUniversalTime(),
                     SendStatus = NotificationSendStatus.Store,
                     Title = title,
                     Body = messageText,
-                    CreationDate = DateTime.Now,
+                    CreationDate = DateTime.Now.ToUniversalTime(),
                     CreatorUserId = user.Id,
                     CreatorUserName = user.UserName,
                     TemplateName = templateName,
                     UserFullName = "",
-                    SendSmsConfig = _sendSmsConfig
+                    SendSmsConfig = _sendSmsConfig,
+                    AssociatedDomainId = _domainRepository.FetchByName(_domainName).ReturnValue.DomainId
                 };
 
                 switch (notificationType)
@@ -173,17 +180,20 @@ namespace Arad.Portal.DataLayer.Helpers
             {
                 Notification notification = new()
                 {
+                    NotificationId = Guid.NewGuid().ToString(),
+                    IsActive = true,
                     Type = notificationType,
-                    ScheduleDate = DateTime.Now,
+                    ScheduleDate = DateTime.Now.ToUniversalTime(),
                     SendStatus = NotificationSendStatus.Store,
                     Title = "",
                     Body = messageText,
-                    CreationDate = DateTime.Now,
+                    CreationDate = DateTime.Now.ToUniversalTime(),
                     CreatorUserId = user.Id,
                     CreatorUserName = user.UserName,
                     TemplateName = "",
                     UserFullName = "",
-                    SendSmsConfig = _sendSmsConfig
+                    SendSmsConfig = _sendSmsConfig,
+                    AssociatedDomainId = _domainRepository.FetchByName(_domainName).ReturnValue.DomainId
                 };
 
                 switch (notificationType)
@@ -215,8 +225,8 @@ namespace Arad.Portal.DataLayer.Helpers
         public async Task<Result> Send(string templateName, ApplicationUser user, string password)
         {
             //SMTP smtp = await _smtpRepository.GetDefault();
-            var domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
-            SMTP smtp = _domainRepository.GetSMTPAccount(domainName);
+          
+            SMTP smtp = _domainRepository.GetSMTPAccount(_domainName);
 
             if (smtp == null)
             {
@@ -256,17 +266,20 @@ namespace Arad.Portal.DataLayer.Helpers
 
                 Notification notification = new()
                 {
+                    NotificationId = Guid.NewGuid().ToString(),
+                    IsActive = true,
                     Type = notificationType,
-                    ScheduleDate = DateTime.Now,
+                    ScheduleDate = DateTime.Now.ToUniversalTime(),
                     SendStatus = NotificationSendStatus.Store,
                     Title = title,
                     Body = messageText,
-                    CreationDate = DateTime.Now,
+                    CreationDate = DateTime.Now.ToUniversalTime(),
                     CreatorUserId = user.Id,
                     CreatorUserName = user.UserName,
                     TemplateName = templateName,
                     UserFullName = "",
-                    SendSmsConfig = _sendSmsConfig
+                    SendSmsConfig = _sendSmsConfig,
+                    AssociatedDomainId = _domainRepository.FetchByName(_domainName).ReturnValue.DomainId
                 };
 
                 switch (notificationType)
@@ -298,8 +311,8 @@ namespace Arad.Portal.DataLayer.Helpers
         public async Task<Result> SendConfirmEmail(string templateName, ApplicationUser user, string callbackUrl)
         {
             //SMTP smtp = await _smtpRepository.GetDefault(); 
-            var domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
-            SMTP smtp = _domainRepository.GetSMTPAccount(domainName);
+         
+            SMTP smtp = _domainRepository.GetSMTPAccount(_domainName);
             if (smtp == null)
             {
                 return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_NotFoundSmtp") };
@@ -337,16 +350,19 @@ namespace Arad.Portal.DataLayer.Helpers
                 
                 Notification notification = new()
                 {
+                    NotificationId = Guid.NewGuid().ToString(),
+                    IsActive = true,
                     Type = notificationType,
-                    ScheduleDate = DateTime.Now,
+                    ScheduleDate = DateTime.Now.ToUniversalTime(),
                     SendStatus = NotificationSendStatus.Store,
                     Title = title,
                     Body = messageText,
-                    CreationDate = DateTime.Now,
+                    CreationDate = DateTime.Now.ToUniversalTime(),
                     CreatorUserId = user.Id,
                     CreatorUserName = user.UserName,
                     TemplateName = templateName,
-                    UserFullName = user.Profile.FullName
+                    UserFullName = user.Profile.FullName,
+                    AssociatedDomainId = _domainRepository.FetchByName(_domainName).ReturnValue.DomainId
                 };
 
                 switch (notificationType)
@@ -378,8 +394,8 @@ namespace Arad.Portal.DataLayer.Helpers
         public async Task<Result> SendOtp(string templateName, ApplicationUser user, string otp)
         {
             //SMTP smtp = await _smtpRepository.GetDefault();
-            var domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
-            SMTP smtp = _domainRepository.GetSMTPAccount(domainName);
+           
+            SMTP smtp = _domainRepository.GetSMTPAccount(_domainName);
 
             if (smtp == null)
             {
@@ -413,22 +429,31 @@ namespace Arad.Portal.DataLayer.Helpers
 
                 string title = await GenerateText(notificationType, messageTemplate.MessageTemplateMultiLingual
                     .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Subject, user);
-                string messageText = await GenerateText(notificationType, messageTemplate.MessageTemplateMultiLingual
-                    .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body, user, "", otp);
+                string messageText = await GenerateText(
+                    notificationType,
+                    messageTemplate.MessageTemplateMultiLingual
+                    .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body,
+                    user,
+                    "",
+                    otp,
+                    "");
                 
                 Notification notification = new()
                 {
+                    NotificationId = Guid.NewGuid().ToString(),
+                    IsActive = true,
                     Type = notificationType,
-                    ScheduleDate = DateTime.Now,
+                    ScheduleDate = DateTime.Now.ToUniversalTime(),
                     SendStatus = NotificationSendStatus.Store,
                     Title = title,
                     Body = messageText,
-                    CreationDate = DateTime.Now,
+                    CreationDate = DateTime.Now.ToUniversalTime(),
                     CreatorUserId = user.Id,
                     CreatorUserName = user.UserName,
                     TemplateName = templateName,
                     UserFullName = user.Profile.FullName,
-                    SendSmsConfig = _sendSmsConfig
+                    SendSmsConfig = _sendSmsConfig,
+                    AssociatedDomainId = _domainRepository.FetchByName(_domainName).ReturnValue.DomainId
                 };
 
                 switch (notificationType)
@@ -462,8 +487,8 @@ namespace Arad.Portal.DataLayer.Helpers
             try
             {
                 //SMTP smtp = await _smtpRepository.GetDefault();
-                var domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
-                SMTP smtp = _domainRepository.GetSMTPAccount(domainName);
+            
+                SMTP smtp = _domainRepository.GetSMTPAccount(_domainName);
 
                 if (smtp == null)
                 {
@@ -497,23 +522,33 @@ namespace Arad.Portal.DataLayer.Helpers
 
                     string title = await GenerateText(notificationType,
                         messageTemplate.MessageTemplateMultiLingual.First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Subject, null);
-                    string messageText = await GenerateText(notificationType, messageTemplate.MessageTemplateMultiLingual.First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body, null, null, "", otp);
+                    string messageText = await GenerateText
+                        (notificationType,
+                        messageTemplate.MessageTemplateMultiLingual
+                        .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body,
+                        null,
+                        null, 
+                        otp, 
+                        null);
 
                     ApplicationUser user = _userManager.Users.FirstOrDefault(_ => _.IsSystemAccount);
 
                     Notification notification = new()
                     {
+                        NotificationId = Guid.NewGuid().ToString(),
+                        IsActive = true,
                         Type = notificationType,
-                        ScheduleDate = DateTime.Now,
+                        ScheduleDate = DateTime.Now.ToUniversalTime(),
                         SendStatus = NotificationSendStatus.Store,
                         Title = title,
                         Body = messageText,
-                        CreationDate = DateTime.Now,
+                        CreationDate = DateTime.Now.ToUniversalTime(),
                         CreatorUserId = user.Id,
                         CreatorUserName = user.UserName,
                         TemplateName = templateName,
                         UserFullName = "",
-                        SendSmsConfig = _sendSmsConfig
+                        SendSmsConfig = _sendSmsConfig,
+                        AssociatedDomainId = _domainRepository.FetchByName(_domainName).ReturnValue.DomainId
                     };
 
                     switch (notificationType)
@@ -565,6 +600,8 @@ namespace Arad.Portal.DataLayer.Helpers
             text = text.Replace("{$date}", CultureInfo.CurrentCulture.Name == "fa-IR" ? DateTime.Now.ToPersianLetDateTime() : DateTime.Now.ToString(_setting.DateFormat));
             text = text.Replace("{$time}", DateTime.Now.ToString("HH:mm"));
             text = text.Replace("{$otp}", IsNullOrEmpty(otp));
+            text = text.Replace("{$company_name}", _domainName);
+
 
             if (!string.IsNullOrWhiteSpace(callbackUrl))
             {
@@ -607,28 +644,28 @@ namespace Arad.Portal.DataLayer.Helpers
                 //}
             }
 
-            SystemSetting setting = (await _systemSettingRepository.GetAll()).FirstOrDefault();
+            //SystemSetting setting = (await _systemSettingRepository.GetAll()).FirstOrDefault();
 
-            if (setting != null)
-            {
-                text = text.Replace("{$company_name}", IsNullOrEmpty(setting.CompanyName));
-                text = text.Replace("{$company_logo_url}", IsNullOrEmpty(setting.CompanyLogoUrl));
-                text = text.Replace("{$company_domain}", IsNullOrEmpty(setting.CompanyDomain));
-                text = text.Replace("{$company_tax_code}", IsNullOrEmpty(setting.CompanyTaxId));
+            //if (setting != null)
+            //{
+            //text = text.Replace("{$company_name}", IsNullOrEmpty(setting.CompanyName));
+            //text = text.Replace("{$company_logo_url}", IsNullOrEmpty(setting.CompanyLogoUrl));
+            //text = text.Replace("{$company_domain}", IsNullOrEmpty(setting.CompanyDomain));
+            //text = text.Replace("{$company_tax_code}", IsNullOrEmpty(setting.CompanyTaxId));
 
-                if (!string.IsNullOrWhiteSpace(setting.CompanyDomain))
-                {
-                    string url = $"<a href='{setting.CompanyDomain}'>{setting.CompanyName}</a>";
-                    text = text.Replace("{$company_domain}", url);
-                }
+            //if (!string.IsNullOrWhiteSpace(setting.CompanyDomain))
+            //{
+            //    string url = $"<a href='{setting.CompanyDomain}'>{setting.CompanyName}</a>";
+            //    text = text.Replace("{$company_domain}", url);
+            //}
 
-                if (!string.IsNullOrWhiteSpace(setting.CompanyLogoUrl))
-                {
-                    string url = $"<img src='{setting.CompanyLogoUrl}'/>";
-                    text = text.Replace("{$company_logo_url}", url);
-                }
-            }
-
+            //if (!string.IsNullOrWhiteSpace(setting.CompanyLogoUrl))
+            //{
+            //    string url = $"<img src='{setting.CompanyLogoUrl}'/>";
+            //    text = text.Replace("{$company_logo_url}", url);
+            //}
+            //}
+            
             return text;
 
             string IsNullOrEmpty(string value) => string.IsNullOrWhiteSpace(value) ? "" : value;

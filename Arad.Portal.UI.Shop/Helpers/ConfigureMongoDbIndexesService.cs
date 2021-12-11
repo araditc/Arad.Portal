@@ -19,8 +19,8 @@ namespace Arad.Portal.UI.Shop.Helpers
         public ConfigureMongoDbIndexesService(IConfiguration configuration, ILogger<ConfigureMongoDbIndexesService> logger)
         {
             _configuration = configuration;
-            _client = new MongoClient(_configuration["Database:ConnectionString"]);
-            db = _client.GetDatabase(_configuration["Database:DbName"]);
+            _client = new MongoClient(_configuration["DatabaseConfig:ConnectionString"]);
+            db = _client.GetDatabase(_configuration["DatabaseConfig:DbName"]);
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)

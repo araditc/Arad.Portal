@@ -25,6 +25,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
         private readonly DomainContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _accessor;
+
         public DomainRepository(DomainContext context,
                                 UserContext user,
                                 IHttpContextAccessor httpContextAccessor,
@@ -34,6 +36,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             _context = context;
             _userManager = userManager;
             _mapper = mapper;
+            _accessor = httpContextAccessor;
         }
         public async Task<Result> AddDomain(DomainDTO dto)
         {
@@ -438,6 +441,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 return domainEntity.SMTPAccount;
             }
             return result;
+        }
+
+        public string GetDomainName()
+        {
+            return $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
         }
     }
 }

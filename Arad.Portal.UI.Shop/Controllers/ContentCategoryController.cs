@@ -8,15 +8,14 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
-    public class ContentCategoryController : Controller
+    public class ContentCategoryController : BaseController
     {
         private readonly IContentCategoryRepository _categoryRepository;
-        private readonly IHttpContextAccessor _accessor;
+      
         public ContentCategoryController(IContentCategoryRepository categoryRepository,
-            IHttpContextAccessor accessor)
+            IHttpContextAccessor accessor):base(accessor)
         {
             _categoryRepository = categoryRepository;
-            _accessor = accessor;
         }
         public IActionResult Index()
         {
@@ -25,7 +24,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         [Route("{language}/category/{**slug}")]
         public IActionResult Details(long slug)
         {
-            var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
+            
             var entity = _categoryRepository.FetchByCode(slug);
             return View(entity);
         }

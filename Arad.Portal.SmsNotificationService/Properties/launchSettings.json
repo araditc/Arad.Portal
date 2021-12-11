@@ -1,6 +1,6 @@
 ﻿{
   "profiles": {
-    "SmsNotificationService": {
+    "Arad.Portal.SmsNotificationService": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "environmentVariables": {

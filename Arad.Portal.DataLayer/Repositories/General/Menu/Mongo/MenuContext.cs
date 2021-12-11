@@ -15,8 +15,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
         public MenuContext(IConfiguration configuration)
         {
             _configuration = configuration;
-            client = new MongoClient(_configuration["Database:ConnectionString"]);
-            db = client.GetDatabase(_configuration["Database:DbName"]);
+            client = new MongoClient(_configuration["DatabaseConfig:ConnectionString"]);
+            db = client.GetDatabase(_configuration["DatabaseConfig:DbName"]);
             BsonCollection = db.GetCollection<BsonDocument>("Menu");
             Collection = db.GetCollection<Entities.General.Menu.Menu>("Menu");
         }

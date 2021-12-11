@@ -20,8 +20,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Order.Mongo
         public OrderContext(IConfiguration configuration)
         {
             _configuration = configuration;
-             client = new MongoClient(_configuration["Database:ConnectionString"]);
-           db = client.GetDatabase(_configuration["Database:DbName"]);
+             client = new MongoClient(_configuration["DatabaseConfig:ConnectionString"]);
+           db = client.GetDatabase(_configuration["DatabaseConfig:DbName"]);
             Collection = db.GetCollection<Entities.Shop.Order.Order>("Order");
             BsonCollection = db.GetCollection<BsonDocument>("Order");
         }

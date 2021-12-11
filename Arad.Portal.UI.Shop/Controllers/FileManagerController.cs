@@ -1,4 +1,5 @@
 ﻿using Arad.Portal.UI.Shop.Helpers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -9,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
-    public class FileManagerController : Controller
+    public class FileManagerController : BaseController
     {
         private readonly IConfiguration _configuration;
-        public FileManagerController(IConfiguration configuration)
+        public FileManagerController(IConfiguration configuration, IHttpContextAccessor accessor):base(accessor)
         {
             _configuration = configuration;
         }

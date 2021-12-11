@@ -20,8 +20,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.SystemSetting.Mongo
         public SystemSettingContext(IConfiguration configuration)
         {
             _configuration = configuration;
-            client = new MongoClient(_configuration["Database:ConnectionString"]);
-            db = client.GetDatabase(_configuration["Database:DbName"]);
+            client = new MongoClient(_configuration["DatabaseConfig:ConnectionString"]);
+            db = client.GetDatabase(_configuration["DatabaseConfig:DbName"]);
             Collection = db.GetCollection<Entities.General.SystemSetting.SystemSetting>("SystemSetting");
             BsonCollection = db.GetCollection<BsonDocument>("SystemSetting");
         }

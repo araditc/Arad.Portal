@@ -21,8 +21,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo
         public MessageTemplateContext(IConfiguration configuration)
         {
             _configuration = configuration;
-            client = new MongoClient(_configuration["Database:ConnectionString"]);
-            db = client.GetDatabase(_configuration["Database:DbName"]);
+            client = new MongoClient(_configuration["DatabaseConfig:ConnectionString"]);
+            db = client.GetDatabase(_configuration["DatabaseConfig:DbName"]);
             Collection = db.GetCollection<Entities.General.MessageTemplate.MessageTemplate>("MessageTemplate");
             BsonCollection = db.GetCollection<BsonDocument>("MessageTemplate");
         }

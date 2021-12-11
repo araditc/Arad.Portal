@@ -9,18 +9,23 @@ using MongoDB.Driver;
 
 using System.Text;
 using System.Threading.Tasks;
+using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo
 {
     public class MessageTemplateRepository : BaseRepository, IMessageTemplateRepository
     {
         private readonly MessageTemplateContext _context;
+        private readonly DomainContext _domainContext;
         private readonly IMapper _mapper;
-        public MessageTemplateRepository(MessageTemplateContext context, IMapper mapper,
+        public MessageTemplateRepository(MessageTemplateContext context,
+            IMapper mapper,
+            DomainContext domainContext,
             IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _context = context;
             _mapper = mapper;
+            _domainContext = domainContext;
         }
         /// <summary>
         /// this method is used just in seedData
@@ -58,7 +63,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo
 
         public async Task<List<Entities.General.MessageTemplate.MessageTemplate>> GetAllByName(string templateName)
         {
-            return await _context.Collection.Find(m => m.TemplateName.Equals(templateName)).ToListAsync();
+            //???
+            //var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == this.GetCurrentDomain()).FirstOrDefault();
+            return await _context.Collection
+                .Find(m => m.TemplateName.Equals(templateName) /*&& m.AssociatedDomainId == domainEntity.DomainId*/).ToListAsync();
         }
     }
 

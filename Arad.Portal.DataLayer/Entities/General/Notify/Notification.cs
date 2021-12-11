@@ -41,6 +41,8 @@ namespace Arad.Portal.DataLayer.Entities.General.Notify
 
         public string UpStreamGatewayId { get; set; }
 
+        public string BatchId { get; set; }
+
         public List<Attachment> Attachments { get; set; }
 
         public string TemplateName { get; set; }

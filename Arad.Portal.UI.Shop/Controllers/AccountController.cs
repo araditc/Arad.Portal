@@ -23,22 +23,23 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly CreateNotification _createNotification;
         private readonly IErrorLogRepository _errorLogRepository;
+        
         public AccountController(UserManager<ApplicationUser> userManager,
             CreateNotification createNotification,
             IErrorLogRepository errorLogRepository,
-            SignInManager<ApplicationUser> signInManager)
+            IHttpContextAccessor accessor,
+            SignInManager<ApplicationUser> signInManager):base(accessor)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _createNotification = createNotification;
             _errorLogRepository = errorLogRepository;
-                    
         }
         public IActionResult Index()
         {

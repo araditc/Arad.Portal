@@ -1,6 +1,7 @@
 ﻿using Arad.Portal.DataLayer.Entities.General.Email;
 using Arad.Portal.DataLayer.Models.Notification;
 using Arad.Portal.DataLayer.Models.Shared;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,5 +24,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Notification
         Task<Result> Update(Entities.General.Notify.Notification entity, string modificationReason = "", bool isWorker = false);
 
         Task<Result> AddRange(IEnumerable<Entities.General.Notify.Notification> entities);
+
+        Task<Result> UpdateMany(List<string> notificationIds, UpdateDefinition<Entities.General.Notify.Notification> definitions);
     }
 }

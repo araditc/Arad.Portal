@@ -22,5 +22,6 @@ namespace Arad.Portal.DataLayer.Contracts.General.Domain
         SMTP GetSMTPAccount(string domainName);
         Task<Result> Restore(string id);
         List<SelectListModel> GetAllActiveDomains();
+        string GetDomainName();
     }
 }

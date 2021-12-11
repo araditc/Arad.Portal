@@ -29,7 +29,7 @@ namespace Arad.Portal.UI.Shop.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync(GroupSection groupSection)
         {
             var result = new CommonViewModel();
-            var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
+            var domainName = _domainRepository.GetDomainName();
             //if(groupSection.GroupsWithProducts == null)
             //{
             //    groupSection.GroupsWithProducts = new List<string>();

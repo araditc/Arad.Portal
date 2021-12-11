@@ -38,7 +38,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Notification.Mongo
         {
             Result result = new Result();
             var equallentModel = _mapper.Map<Entities.General.Notify.Notification>(dto);
-            
+
             equallentModel.CreationDate = DateTime.Now;
             equallentModel.CreatorUserId = _httpContextAccessor.HttpContext.User.Claims
                 .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
@@ -120,7 +120,19 @@ namespace Arad.Portal.DataLayer.Repositories.General.Notification.Mongo
             }
         }
 
-
+        public async Task<Result> UpdateMany(List<string> notificationIds, UpdateDefinition<Entities.General.Notify.Notification> definitions)
+        {
+            UpdateResult updateResult = await _context.Collection.UpdateManyAsync(_ => notificationIds.Contains(_.NotificationId), definitions);
+            if(updateResult.IsAcknowledged)
+            {
+                return new() { Succeeded = true, Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_OperationSuccess") };
+            }
+            else
+            {
+                return new() { Succeeded = false, Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_OperationError") };
+            }
+            
+        }
         public  async Task<Result> Update(Entities.General.Notify.Notification entity, string modificationReason = "", bool isWorker = false)
         {
             try

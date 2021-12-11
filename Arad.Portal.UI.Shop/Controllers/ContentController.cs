@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
-    public class ContentController : Controller
+    public class ContentController : BaseController
     {
         private readonly IContentRepository _contentRepository;
         private readonly IHttpContextAccessor _accessor;
-        public ContentController(IContentRepository contentRepository, IHttpContextAccessor accessor)
+        public ContentController(IContentRepository contentRepository, IHttpContextAccessor accessor):base(accessor)
         {
             _contentRepository = contentRepository;  
         }
@@ -24,7 +24,6 @@ namespace Arad.Portal.UI.Shop.Controllers
         [Route("{language}/blog/{**slug}")]
         public IActionResult Details(long slug)
         {
-            var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
             var entity = _contentRepository.FetchByCode(slug);
             return View(entity);
         }

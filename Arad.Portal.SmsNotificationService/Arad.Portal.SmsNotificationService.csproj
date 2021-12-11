@@ -1,20 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>dotnet-Arad.Portal.SmsNotificationService-DA7E7AA2-6766-4E40-B1B1-65E33B180013</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNetCore.Identity.Mongo" Version="8.3.3" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="6.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+	  <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="5.0.1" />
+	  <PackageReference Include="AspNetCore.Identity.Mongo" Version="8.2.0" />
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Arad.Portal.Abstraction\Arad.Portal.Abstraction.csproj" />
     <ProjectReference Include="..\Arad.Portal.DataLayer\Arad.Portal.DataLayer.csproj" />
   </ItemGroup>
-
 </Project>

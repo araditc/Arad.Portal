@@ -17,23 +17,28 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
-    public class ProductController : Controller
+    public class ProductController : BaseController
     {
         private readonly IProductRepository _productRepository;
         private readonly IHttpContextAccessor _accessor;
         private readonly ILanguageRepository _lanRepository;
         private readonly IDomainRepository _domainRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ICommentRepository _commentRepository;
+        private readonly string _domainName;
 
         public ProductController(IProductRepository productRepository, IHttpContextAccessor accessor,
             UserManager<ApplicationUser> userManager,
             ILanguageRepository lanRepository, IDomainRepository domainRepository, ICommentRepository commentRepository)
+            :base(accessor)
         {
             _productRepository = productRepository;
             _accessor = accessor;
             _lanRepository = lanRepository;
             _domainRepository = domainRepository;
             _userManager = userManager;
+            _commentRepository = commentRepository;
+            _domainName = this.domainName;
         }
         public IActionResult Index()
         {
@@ -43,12 +48,11 @@ namespace Arad.Portal.UI.Shop.Controllers
         [Route("{language}/product/{**slug}")]
         public IActionResult Details(long slug)
         {
-            var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
             var isLoggedUser = HttpContext.User.Identity.IsAuthenticated;
             string userId = "";
             ViewBag.LoggedUser = isLoggedUser;
             userId = isLoggedUser ? HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value : "";
-            var domainEntity = _domainRepository.FetchByName(domainName);
+            var domainEntity = _domainRepository.FetchByName(_domainName);
             var lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
             var entity = _productRepository.FetchByCode(slug, domainEntity.ReturnValue, userId);
             if (isLoggedUser)

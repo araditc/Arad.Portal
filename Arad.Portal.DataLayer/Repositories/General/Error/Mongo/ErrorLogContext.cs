@@ -21,8 +21,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Error.Mongo
         public ErrorLogContext(IConfiguration configuration)
         {
             _configuration = configuration;
-            client = new MongoClient(_configuration["Database:ConnectionString"]);
-            db = client.GetDatabase(_configuration["Database:DbName"]);
+            client = new MongoClient(_configuration["DatabaseConfig:ConnectionString"]);
+            db = client.GetDatabase(_configuration["DatabaseConfig:DbName"]);
             Collection = db.GetCollection<Entities.General.Error.ErrorLog>("ErrorLog");
             BsonCollection = db.GetCollection<BsonDocument>("ErrorLog");
         }

@@ -26,8 +26,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         public ProductContext(IConfiguration configuration)
         {
             _configuration = configuration;
-             client = new MongoClient(_configuration["Database:ConnectionString"]);
-           db = client.GetDatabase(_configuration["Database:DbName"]);
+             client = new MongoClient(_configuration["DatabaseConfig:ConnectionString"]);
+           db = client.GetDatabase(_configuration["DatabaseConfig:DbName"]);
 
             ProductCollection = db.GetCollection<Entities.Shop.Product.Product>("Product");
             ProductGroupCollection = 

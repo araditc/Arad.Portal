@@ -12,6 +12,7 @@ namespace Arad.Portal.DataLayer.Repositories
     public class BaseRepository 
     {
         protected  IHttpContextAccessor _httpContextAccessor;
+       
         public BaseRepository(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
@@ -35,6 +36,7 @@ namespace Arad.Portal.DataLayer.Repositories
                  .FirstOrDefault(_ => _.Type == ClaimTypes.Name).Value;
         }
 
+    
         protected string GetCurrentDomain()
         {
             var domain = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";

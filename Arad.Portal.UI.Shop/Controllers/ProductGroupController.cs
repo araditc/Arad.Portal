@@ -11,19 +11,21 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
-    public class ProductGroupController : Controller
+    public class ProductGroupController : BaseController
     {
         private readonly IProductGroupRepository _groupRepository;
         private readonly IMenuRepository _menuRepository;
         private readonly ILanguageRepository _languageRepository;
         private readonly IHttpContextAccessor _accessor;
+        private readonly string _domainName ;
         public ProductGroupController(IProductGroupRepository groupRepository, IHttpContextAccessor accessor,
-            ILanguageRepository lanRepository, IMenuRepository menuRepository)
+            ILanguageRepository lanRepository, IMenuRepository menuRepository):base(accessor)
         {
             _groupRepository = groupRepository;
             _accessor = accessor;
             _languageRepository = lanRepository;
             _menuRepository = menuRepository;
+            _domainName = base.domainName;
         }
         public IActionResult Index()
         {

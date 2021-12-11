@@ -2,10 +2,14 @@
 using Arad.Portal.DataLayer.Contracts.General.Notification;
 using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Repositories.General.Notification.Mongo;
+using Arad.Portal.SmsNotificationService.Mapping;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
+
 
 namespace Arad.Portal.SmsNotificationService
 {
@@ -18,6 +22,11 @@ namespace Arad.Portal.SmsNotificationService
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+            IMapper mapper = mapperConfig.CreateMapper();
             return Host.CreateDefaultBuilder(args)
                        .ConfigureAppConfiguration(config => config.AddUserSecrets(Assembly.GetExecutingAssembly()))
                        .ConfigureServices((hostContext, services) =>
@@ -29,14 +38,14 @@ namespace Arad.Portal.SmsNotificationService
                            Setting setting = new();
                            hostContext.Configuration.Bind(nameof(Setting), setting);
                            services.AddSingleton(setting);
-
+                           services.AddSingleton(mapper);
                            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
                            services.AddTransient<NotificationContext, NotificationContext>();
                            services.AddTransient<INotificationRepository, NotificationRepository>();
 
                            services.AddHostedService<SendSmsWorker>();
-                       })
-                       .UseWindowsService();
+                       }).UseWindowsService();
+
         }
     }
 }

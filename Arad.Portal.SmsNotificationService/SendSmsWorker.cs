@@ -3,6 +3,7 @@ using Arad.Portal.DataLayer.Entities.General.Notify;
 using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Microsoft.Extensions.Hosting;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,6 +23,7 @@ namespace Arad.Portal.SmsNotificationService
         private readonly Setting _setting;
         private Timer _timer;
         private bool _flag = true;
+        private static readonly object syncLock = new object();
 
         public SendSmsWorker(INotificationRepository notificationRepository, Setting setting)
         {
@@ -48,99 +50,137 @@ namespace Arad.Portal.SmsNotificationService
             }
         }
 
+        //private async Task ReadAndSend()
+        //{
+        //    _flag = false;
+        //    Stopwatch sw1 = new();
+        //    Stopwatch sw2 = new();
+        //    int sucessCount = 0;
+        //    int failedCount = 0;
+        //    sw1.Start();
+        //    List<Notification> notifications = await _notificationRepository.GetForSend(NotificationType.Sms);
+        //    sw1.Stop();
+        //    if (notifications.Any())
+        //    {
+        //        sw2.Start();
+        //        foreach (Notification notification in notifications)
+        //        {
+        //            try
+        //            {
+        //                string[] resultSms = SendSmsSingle(notification.Body,
+        //                                                   notification.UserPhoneNumber,
+        //                                                   notification.SendSmsConfig.AradVas_Number,
+        //                                                   notification.SendSmsConfig.AradVas_UserName,
+        //                                                   notification.SendSmsConfig.AradVas_Password,
+        //                                                   notification.SendSmsConfig.AradVas_Link_1,
+        //                                                   notification.SendSmsConfig.AradVas_Domain,
+        //                                                   false);
+
+
+        //                if (resultSms[0].Equals("CHECK_OK"))
+        //                {
+        //                    notification.SendStatus = NotificationSendStatus.Posted;
+        //                    notification.SentDate = DateTime.Now;
+        //                    await _notificationRepository.Update(notification, resultSms[1], true);
+        //                    sucessCount++;
+        //                }
+        //                else
+        //                {
+        //                    notification.SendStatus = NotificationSendStatus.Error;
+        //                    notification.ScheduleDate = DateTime.Now.AddMinutes(5);
+        //                    await _notificationRepository.Update(notification, resultSms[1], true);
+        //                    failedCount++;
+        //                }
+        //            }
+        //            catch (Exception e)
+        //            {
+        //                failedCount++;
+        //                notification.SendStatus = NotificationSendStatus.Error;
+        //                notification.ScheduleDate = DateTime.Now.AddMinutes(5);
+        //                await _notificationRepository.Update(notification, e.Message, true);
+        //                Logger.WriteLogFile($"Error in sending SMS. Error is: {e.Message}");
+        //            }
+        //        }
+        //        sw2.Stop();
+        //        Logger.WriteLogFile($"RowCount: " +
+        //            $"{notifications.Count}\t " +
+        //            $"ReadTime: {sw1.ElapsedMilliseconds}\t " +
+        //            $"SendTime: {sw2.ElapsedMilliseconds}\t " +
+        //            $"SuccessCount: {sucessCount}\t " +
+        //            $"FailedCount: {failedCount}");
+        //    }
+
+        //    //string Base64Encode(string plainText)
+        //    //{
+        //    //    byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
+
+        //    //    return Convert.ToBase64String(plainTextBytes);
+        //    //}
+
+        //    _flag = true;
+        //}
+
         private async Task ReadAndSend()
         {
             _flag = false;
             Stopwatch sw1 = new();
             Stopwatch sw2 = new();
-            int sucessCount = 0;
-            int failedCount = 0;
+            //int sucessCount = 0;
+            //int failedCount = 0;
             sw1.Start();
             List<Notification> notifications = await _notificationRepository.GetForSend(NotificationType.Sms);
+         
             sw1.Stop();
             if (notifications.Any())
             {
                 sw2.Start();
-                foreach (Notification notification in notifications)
-                {
+               
                     try
                     {
-                        string[] resultSms = SendSmsSingle(notification.Body,
-                                                           notification.UserPhoneNumber,
-                                                           notification.SendSmsConfig.AradVas_Number,
-                                                           notification.SendSmsConfig.AradVas_UserName,
-                                                           notification.SendSmsConfig.AradVas_Password,
-                                                           notification.SendSmsConfig.AradVas_Link_1,
-                                                           notification.SendSmsConfig.AradVas_Domain,
-                                                           false);
 
-                        //HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(notification.SendSmsConfig.AradVas_Link_1);
-                        //httpWebRequest.ContentType = "application/json; charset=utf-8";
-                        //httpWebRequest.Method = "Post";
-                        //httpWebRequest.Headers.Add("authorization", "Basic " + Base64Encode(notification.SendSmsConfig.AradVas_UserName + ":" + notification.SendSmsConfig.AradVas_Password));
-                        //Sms sms = new()
-                        //{
-                        //    SmsText = notification.Body,
-                        //    Receivers = notification.UserPhoneNumber,
-                        //    AradVas_Link_1 = notification.SendSmsConfig.AradVas_Link_1,
-                        //    AradVas_Number = notification.SendSmsConfig.AradVas_Number,
-                        //    AradVas_Password = notification.SendSmsConfig.AradVas_Password,
-                        //    AradVas_UserName = notification.SendSmsConfig.AradVas_UserName
-                        //};
-                        //await using (StreamWriter streamWriter = new(httpWebRequest.GetRequestStream()))
-                        //{
-                        //    await streamWriter.WriteAsync(JsonConvert.SerializeObject(sms));
-                        //    await streamWriter.FlushAsync();
-                        //}
+                    string[] smsResultArray = SendSMS_LikeToLike(notifications.Select(_ => _.Body).ToArray(),
+                        notifications.Select(_ => _.UserPhoneNumber).ToArray(),
+                        notifications[0].SendSmsConfig.AradVas_Number,
+                        notifications[0].SendSmsConfig.AradVas_UserName,
+                        notifications[0].SendSmsConfig.AradVas_Password,
+                        notifications[0].SendSmsConfig.AradVas_Link_1,
+                        notifications[0].SendSmsConfig.AradVas_Domain);
 
-                        //HttpWebResponse httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
 
-                        //using StreamReader streamReader = new(httpResponse.GetResponseStream());
-
-                        //string result = await streamReader.ReadToEndAsync();
-
-                        //ResultSms resultSms = JsonConvert.DeserializeObject<ResultSms>(result);
-
-                        if (resultSms[0].Equals("CHECK_OK"))
-                        {
-                            notification.SendStatus = NotificationSendStatus.Posted;
-                            notification.SentDate = DateTime.Now;
-                            await _notificationRepository.Update(notification, resultSms[1], true);
-                            sucessCount++;
-                        }
-                        else
-                        {
-                            notification.SendStatus = NotificationSendStatus.Error;
-                            notification.ScheduleDate = DateTime.Now.AddMinutes(5);
-                            await _notificationRepository.Update(notification, resultSms[1], true);
-                            failedCount++;
-                        }
-                    }
-                    catch (Exception e)
+                    if (smsResultArray[0].IndexOf("CHECK_OK") > 0)
                     {
-                        failedCount++;
-                        notification.SendStatus = NotificationSendStatus.Error;
-                        notification.ScheduleDate = DateTime.Now.AddMinutes(5);
-                        await _notificationRepository.Update(notification, e.Message, true);
-                        Logger.WriteLogFile($"Error in sending SMS. Error is: {e.Message}");
+                        UpdateDefinition<Notification> definition = Builders<Notification>.Update.Set(nameof(Notification.SendStatus), NotificationSendStatus.Posted);
+                        definition.AddToSet(nameof(Notification.BatchId), smsResultArray[1]);
+                        definition.AddToSet(nameof(Notification.SentDate), DateTime.Now);
+                       
+                        await _notificationRepository.UpdateMany(notifications.Select(_=>_.NotificationId).ToList(), definition);
+                        //sucessCount++;
                     }
+                    else
+                    {
+                        UpdateDefinition<Notification> definition = Builders<Notification>.Update.Set(nameof(Notification.SendStatus), NotificationSendStatus.Error);
+                        definition.AddToSet(nameof(Notification.ScheduleDate), DateTime.Now);
+                        await _notificationRepository.UpdateMany(notifications.Select(_ => _.NotificationId).ToList(), definition);
+                        //failedCount++;
+                    }
+
                 }
+                catch (Exception e)
+                    {
+                    UpdateDefinition<Notification> definition = Builders<Notification>.Update.Set(nameof(Notification.SendStatus), NotificationSendStatus.Error);
+                    definition.AddToSet(nameof(Notification.ScheduleDate), DateTime.Now);
+                    await _notificationRepository.UpdateMany(notifications.Select(_ => _.NotificationId).ToList(), definition);
+                    //failedCount++;
+                    Logger.WriteLogFile($"Error in sending SMS. Error is: {e.Message}");
+                    }
+               
+
                 sw2.Stop();
                 Logger.WriteLogFile($"RowCount: " +
                     $"{notifications.Count}\t " +
                     $"ReadTime: {sw1.ElapsedMilliseconds}\t " +
-                    $"SendTime: {sw2.ElapsedMilliseconds}\t " +
-                    $"SuccessCount: {sucessCount}\t " +
-                    $"FailedCount: {failedCount}");
+                    $"SendTime: {sw2.ElapsedMilliseconds}");
             }
-
-            //string Base64Encode(string plainText)
-            //{
-            //    byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
-
-            //    return Convert.ToBase64String(plainTextBytes);
-            //}
-
             _flag = true;
         }
 
@@ -209,7 +249,120 @@ namespace Arad.Portal.SmsNotificationService
             return ret;
         }
 
-        public string[] SendSmsSingle(string message, string destinationAddress, string number, string userName, string password, string ipSend, string company, bool isFlash)
+        public string[] SendSMS_LikeToLike(string[] Message, string[] DestinationAddress,
+           string Number, string userName, string password, string IP_Send, string Company)
+        {
+            string[] RetValue = new string[2];
+            RetValue[0] = "False";
+            RetValue[1] = "0";
+            string Identity = string.Empty;
+
+            if (Message.Length != DestinationAddress.Length)
+            {
+                RetValue[1] = "Incorrect array size for Messages and Destinations";
+                return RetValue;
+            }
+
+            int smsSize = DestinationAddress.Length;
+            lock (syncLock)
+            {
+                try
+                {
+                    Random _Random = new Random(Guid.NewGuid().GetHashCode());
+                    Identity = string.Format("{0:yyyyMMddHHmmssfff}", DateTime.Now) + string.Format("{0:000}", _Random.Next(1000));
+                    StringBuilder _StringBuilder = new StringBuilder();
+                    _StringBuilder.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+                    _StringBuilder.Append(Environment.NewLine);
+                    _StringBuilder.Append("<!DOCTYPE smsBatch PUBLIC \"-//PERVASIVE//DTD CPAS 1.0//EN\" \"http://www.ubicomp.ir/dtd/Cpas.dtd\">");
+                    _StringBuilder.Append(Environment.NewLine);
+                    _StringBuilder.Append("<smsBatch company=\"" + Company + "\" batchID=\"" + Company + "+" + Identity + "\">");
+                    _StringBuilder.Append(Environment.NewLine);
+
+                    for (int i = 0; i < smsSize; i++)
+                    {
+                        string strMessage = Message[i];
+                        string strDestinationAddress = DestinationAddress[i];
+
+                        string strIsPersian;
+                        bool IsPersian = FindTxtLanguage(strMessage);
+                        if (IsPersian)
+                        {
+                            strMessage = C2Unicode(strMessage);
+                            strIsPersian = "true";
+                        }
+                        else
+                            strIsPersian = "false";
+                        string dcs = IsPersian ? "8" : "0";
+
+                        _StringBuilder.Append("<sms binary=\"" + strIsPersian + "\" dcs=\"" + dcs + "\"" + ">");
+                        _StringBuilder.Append(Environment.NewLine);
+                        _StringBuilder.Append("<origAddr><![CDATA[" + Validate_Number(Number) + "]]></origAddr>");
+                        _StringBuilder.Append(Environment.NewLine);
+                        _StringBuilder.Append("<destAddr><![CDATA[" + Validate_Number(strDestinationAddress) + "]]></destAddr>");
+                        _StringBuilder.Append(Environment.NewLine);
+                        _StringBuilder.Append("<message><![CDATA[" + strMessage + "]]></message>");
+                        _StringBuilder.Append(Environment.NewLine);
+                        _StringBuilder.Append("</sms>");
+                    }
+
+                    _StringBuilder.Append(Environment.NewLine);
+                    _StringBuilder.Append("</smsBatch>");
+
+                    string dataToPost = _StringBuilder.ToString();
+                    byte[] buf = UTF8Encoding.UTF8.GetBytes(_StringBuilder.ToString());
+                    WebRequest objWebRequest = WebRequest.Create(IP_Send);
+                    objWebRequest.Method = "POST";
+                    objWebRequest.ContentType = "text/xml";
+                    byte[] byt = Encoding.UTF8.GetBytes(userName + ":" + password);
+                    objWebRequest.Headers.Add("authorization", "Basic " + Convert.ToBase64String(byt));
+                    Stream _Stream = objWebRequest.GetRequestStream();
+                    StreamWriter _StreamWriter = new StreamWriter(_Stream);
+                    _StreamWriter.Write(dataToPost);
+                    _StreamWriter.Flush();
+                    _StreamWriter.Close();
+                    _Stream.Close();
+
+                    WebResponse objWebResponse = objWebRequest.GetResponse();
+                    Stream objResponseStream = objWebResponse.GetResponseStream();
+                    StreamReader objStreamReader = new StreamReader(objResponseStream);
+                    string dataToReceive = objStreamReader.ReadToEnd();
+                    objStreamReader.Close();
+                    objResponseStream.Close();
+                    objWebResponse.Close();
+
+                    if (dataToReceive.IndexOf("CHECK_OK") > 0)
+                    {
+                        RetValue[0] = "CHECK_OK";
+                        RetValue[1] = Identity;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            string msg;
+                            int firstIndex = dataToReceive.IndexOf("CDATA[");
+                            int LastIndex = dataToReceive.IndexOf("]");
+                            msg = dataToReceive.Substring(firstIndex, LastIndex - firstIndex);
+                            RetValue[1] = msg;
+                            return RetValue;
+                        }
+                        catch (Exception ex)
+                        {
+                            RetValue[1] = ex.Message;
+                            return RetValue;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    RetValue[1] = ex.Message;
+                    return RetValue;
+                }
+            }
+            return RetValue;
+        }
+        public string[] SendSmsSingle(string message, string destinationAddress, string number,
+            string userName, string password, string ipSend, string company, bool isFlash)
         {
             string strIsPersian;
             string[] retValue = new string[2];

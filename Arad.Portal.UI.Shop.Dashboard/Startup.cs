@@ -142,7 +142,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
 
             }, mongoIdentityOptions =>
             {
-                mongoIdentityOptions.ConnectionString = Configuration["Database:ConnectionString"];
+                mongoIdentityOptions.ConnectionString = Configuration["DatabaseConfig:ConnectionString"];
             });
 
             if (!_environment.IsDevelopment())
