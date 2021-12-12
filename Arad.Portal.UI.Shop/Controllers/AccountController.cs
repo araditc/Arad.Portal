@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Contracts.General.Error;
+﻿using Arad.Portal.DataLayer.Contracts.General.Domain;
+using Arad.Portal.DataLayer.Contracts.General.Error;
 using Arad.Portal.DataLayer.Entities.General.Error;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Helpers;
@@ -28,11 +29,14 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly CreateNotification _createNotification;
+        private readonly IDomainRepository _domainRepository;
         private readonly IErrorLogRepository _errorLogRepository;
+        private readonly string _domainName;
         
         public AccountController(UserManager<ApplicationUser> userManager,
             CreateNotification createNotification,
             IErrorLogRepository errorLogRepository,
+            IDomainRepository domainRepository,
             IHttpContextAccessor accessor,
             SignInManager<ApplicationUser> signInManager):base(accessor)
         {
@@ -40,6 +44,8 @@ namespace Arad.Portal.UI.Shop.Controllers
             _signInManager = signInManager;
             _createNotification = createNotification;
             _errorLogRepository = errorLogRepository;
+            _domainRepository = domainRepository;
+            _domainName = domainName;
         }
         public IActionResult Index()
         {
@@ -265,18 +271,19 @@ namespace Arad.Portal.UI.Shop.Controllers
             {
                 new() { ClaimType = ClaimTypes.GivenName, ClaimValue = model.FullCellPhoneNumber },
                 new() { ClaimType = "IsActive", ClaimValue = true.ToString() },
-                new() { ClaimType = "IsStaff", ClaimValue = false.ToString() },
                 new() { ClaimType = "IsSystemAccount", ClaimValue = false.ToString() }
             };
             #endregion
 
-            //UserGroup userGroup = await _userGroupRepository.GetDefault();
-
+            var domainId = _domainRepository.FetchByName(domainName).ReturnValue.DomainId;
             ApplicationUser user = new()
             {
                 UserName = model.FullCellPhoneNumber,
                 IsSystemAccount = false,
                 Id = id,
+                IsDomainAdmin = false,
+                Profile = new Profile() { UserType = UserType.Customer},
+                IsDeleted = false ,
                 CreatorId = id,
                 CreatorUserName = model.FullCellPhoneNumber,
                 CreationDate = DateTime.Now,
@@ -286,7 +293,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 Modifications = new(),
                 Claims = claims,
             };
-
+            user.DomainId.Add(domainId);
             string pass = Utilities.GenerateRandomPassword(new() { RequireDigit = true, RequireLowercase = true, 
                 RequireNonAlphanumeric = false, RequireUppercase = true, RequiredLength = 6, RequiredUniqueChars = 0 });
             IdentityResult insertResult = await _userManager.CreateAsync(user, pass);
@@ -305,7 +312,9 @@ namespace Arad.Portal.UI.Shop.Controllers
                 await _signInManager.PasswordSignInAsync(user, pass, false, false);
             }
 
-            return Ok(insertResult.Succeeded ? new { Status = "Success", Message = Language.GetString("AlertAndMessage_OperationSuccess") } : new { Status = "Error", Message = insertResult.Errors.First().Description });
+            return Ok(insertResult.Succeeded ?
+                new { Status = "Success", Message = Language.GetString("AlertAndMessage_OperationSuccess") } : 
+                new { Status = "Error", Message = insertResult.Errors.First().Description });
         }
 
 

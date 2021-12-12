@@ -12,6 +12,8 @@ namespace Arad.Portal.DataLayer.Models.Shared
 
         public string LanguageName { get; set; }
 
+        public string LanguageSymbol { get; set; }
+
         public string CurrencyId { get; set; }
 
         public string CurrencyPrefix { get; set; }

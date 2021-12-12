@@ -59,13 +59,19 @@ namespace Arad.Portal.UI.Shop.Helpers
                         new IdentityUserClaim<string>()
                         {
                             ClaimType = "AppRole",
-                            ClaimValue = true.ToString()
-                        },
-                        new IdentityUserClaim<string>()
-                        {
-                            ClaimType = "RelatedDomain",
-                            ClaimValue = "f4dd87ab-cf2f-4711-9e1e-64735aa364de"
+                            ClaimValue = true.ToString(),
+                            //testing
+                            UserId = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa"
                         }
+                        //,
+                        //new IdentityUserClaim<string>()
+                        //{
+                        //    ClaimType = "RelatedDomain",
+                        //    ClaimValue = "f4dd87ab-cf2f-4711-9e1e-64735aa364de",
+                        //    //testing
+                        //    UserId = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa"
+                           
+                        //}
                     },
                     PhoneNumber = "989309910790",
                     IsActive = true,
@@ -175,9 +181,17 @@ namespace Arad.Portal.UI.Shop.Helpers
                     CreationDate = DateTime.UtcNow,
                     IsActive = true
                 };
+                var role3 = new Role()
+                {
+                    RoleId = Guid.NewGuid().ToString(),
+                    RoleName = "مشتری",
+                    CreationDate = DateTime.UtcNow,
+                    IsActive = true
+                };
                 List<Role> items = new List<Role>();
                 items.Add(role);
                 items.Add(role2);
+                items.Add(role3);
 
                 if (items.Any())
                 {

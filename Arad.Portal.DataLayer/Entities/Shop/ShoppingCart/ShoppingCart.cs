@@ -21,11 +21,23 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
 
         public EntityCulture ShoppingCartCulture { get; set; }
 
-
-        public List<ShoppingCartDetail> Details { get; set; }
+        public List<InvoicePerSeller> Details { get; set; }
 
     }
 
+
+    public class InvoicePerSeller
+    {
+        public string SellerId { get; set; }
+
+        public List<ShoppingCartDetail> Details { get; set; }
+
+        public TransferType TransferType { get; set; }
+
+        public decimal TransferExpense { get; set; }
+
+        public decimal  TotalOfDetailsAmountWithTransfer { get; set; }
+    }
     public class ShoppingCartDetail : BaseEntity
     {
         public string ProductId { get; set; }
@@ -39,5 +51,11 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
         public decimal DiscountPricePerUnit { get; set; }
 
         public decimal TotalAmountToPay { get; set; }
+    }
+
+    public enum TransferType
+    {
+        Post,
+        Courier
     }
 }

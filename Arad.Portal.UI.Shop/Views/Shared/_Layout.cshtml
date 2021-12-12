@@ -40,7 +40,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Arad.Portal.UI.Shop</title>
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
-    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    @if (direction == "rtl")
+    {
+        <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    }
+    else
+
+    {
+        <link href="~/css/siteTemplate/rtl/bootstrap-rtl.min.css" rel="stylesheet" />
+    }
     <link rel="stylesheet" href="~/css/Menu/Bootstrap4MegaMenu.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <style>
@@ -48,18 +56,16 @@
             border: none;
             padding: 0.5rem 0.25rem;
         }
-        .profile{
-            border : none;
+
+        .profile {
+            border: none;
+            padding: 0.5rem 1rem;
         }
     </style>
     @if (direction == "rtl")
     {
         <link href="~/fonts/IranSans/css/persianfonts.css" rel="stylesheet" />
         @*<link href="~/fonts/IranSans/css/style.css" rel="stylesheet" />*@
-    }
-    else
-    {
-
     }
     @RenderSection("Styles", required: false)
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -70,35 +76,72 @@
     <header>
         <div class="row">
             @*<div class="logo"></div>
-            <div class="searchBar"></div>*@
-            <div class="offset-9"></div>
-            <div class="col-md-1">
-                <div class="profile m-2">
-                    @*<ul class="list-group list-group-horizontal">
-                    <li class="list-group-item profile">*@
-                    <a href="/account/register"  title="@Language.GetString("btn_Register")" @*data-toggle="tooltip" data-placement="bottom"*@>
-                        <i class="fas fa-user-plus"></i>
-                    </a>
-                    @*</li>
-                    <li class="list-group-item profile">*@
-                    <a href="/account/login"  title="@Language.GetString("btn_Login")" @*data-toggle="tooltip" data-placement="bottom"*@>
-                        <i class="fas fa-sign-in-alt"></i>
-                    </a>
-                    @*</li>
-                    </ul>*@
+                <div class="searchBar"></div>*@
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <div class="offset-9"></div>
+                <div class="col-md-1">
+                    @*<div class="profile m-2">
+                            <div class="row">
+                                <div class="col-3">
+                                    <a href="/account/login" title="@Language.GetString("btn_Login")">
+                                        <i class="fas fa-sign-in-alt"></i>
+                                    </a>
+                                </div>
+                                <div class="col-3">
+                                    <a href="/account/register" title="@Language.GetString("btn_Register")" >
+                                        <i class="fas fa-user-plus"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>*@
+
+                    <ul class="list-group list-group-horizontal">
+                        <li class="list-group-item profile">
+                            <a href="/account/login" title="@Language.GetString("btn_Login")">
+                                <i class="fas fa-sign-in-alt"></i>
+                            </a>
+                        </li>
+                        <li class="list-group-item profile">
+                            <a href="/account/register" title="@Language.GetString("btn_Register")" @*data-toggle="tooltip" data-placement="bottom"*@>
+                                <i class="fas fa-user-plus"></i>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-            </div>
+            }
+            else
+            {
+                <div class="offset-8"></div>
+                <div class="col-md-2">
+                    <ul class="list-group list-group-horizontal">
+                        <li class="list-group-item profile">
+                            <a href="/account/Profile" title="@Language.GetString("User_Profile")">
+                                <i class="far fa-user"></i>
+                            </a>
+                        </li>
+                        <li class="list-group-item profile">
+                            <a href="/bascket/userbascket" title="@Language.GetString("ShoppintCart")">
+                                <i class="fas fa-shopping-cart"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            }
             <div class="col-md-2  language">
                 <ul class="langUl list-group list-group-horizontal">
                     <li class="list-group-item lan">
                         <a title="@Language.GetString("Persian")">
                             <img src="~/imgs/IRAN.png" onclick="setLang('fa-IR')" />
                         </a>
+
                     </li>
                     <li class="list-group-item lan">
                         <a title="@Language.GetString("English")">
                             <img src="~/imgs/USA.png" onclick="setLang('en-US')" />
                         </a>
+
                     </li>
                 </ul>
             </div>
@@ -108,18 +151,15 @@
         @await Component.InvokeAsync("StoreMenu")
     </div>
 
-    <div class="container" >
+    <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    @*<script src="~/lib/popper.js/umd/popper.min.js"></script>*@
-    @*<script src="~/ImageSlider/popper.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>*@
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-   
-   
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
     <script>
         //$(document).ready(function () {

@@ -37,6 +37,9 @@
 	<string key="btn_Edit">
 		<value>Edit</value>
 	</string>
+	<string key="ShoppingCart">
+		<value>Shopping Cart</value>
+	</string>
 	<string key="btn_AddToShoppingCard">
 		<value>Add to basket</value>
 	</string>
@@ -1369,7 +1372,9 @@
 	<string key="Role_CreatorUserName">
 		<value>Creator username</value>
 	</string>
-	
+	<string key="User_Profile">
+		<value>User Profile</value>
+	</string>
 	<string key="User_FirstName">
 		<value>Name</value>
 	</string>

@@ -29,25 +29,13 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
 
         public TransactionUserData UserData { get; set; }
 
-        public List<TransactionItem> TransactionItems { get; set; }
-
+        public ShoppingCart.ShoppingCart BasketForPayment { get; set; }
         public TransactionApportionData ApportionData { get; set; }
 
         public List<Parameter<string, string>> AdditionalData { get; set; }
-
-
     }
 
-    public class TransactionItem
-    {
-        public string ProductId { get; set; }
-        public string ProductName { get; set; }
-        public string UnitPrice { get; set; }
-        public string DiscountAmountPerUnit { get; set; }
-        public int Count { get; set; }
-        public string TotalAmountToPay { get; set; }
-    }
-
+   
     public class TransactionApportionData
     {
         public List<AccountApportion> ProductApportions { get; set; }
@@ -99,7 +87,6 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
         public string UserName { get; set; }
         public string UserFullName { get; set; }
         public bool PayVerifySmsIsSent { get; set; }
-        public string PayVerifySmsText { get; set; }
     }
 
     public class EventData

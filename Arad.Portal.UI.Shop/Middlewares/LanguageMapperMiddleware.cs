@@ -29,14 +29,18 @@ namespace Arad.Portal.UI.Shop.Middlewares
         }
         public async Task Invoke(HttpContext context)
         {
-          
+
             string defLangSymbol = "";
             string pathRequest = "";
             var langSymbolList = _languageContext.Collection.Find(_ => _.IsActive).Project(_ => _.Symbol.ToLower()).ToList();
             string newPath = "";
             var domainName = $"{context.Request.Host}";
             if (context.Request.Path.ToString().Contains("/FileManager/GetScaledImage") ||
-                context.Request.Path.ToString().Contains("/FileManager/GetImage"))
+                context.Request.Path.ToString().Contains("/FileManager/GetImage") ||
+                context.Request.Path.ToString().Contains("/lib/") ||
+                context.Request.Path.ToString().Contains("/css/") ||
+                context.Request.Path.ToString().Contains("/js/") ||
+                context.Request.Path.ToString().Contains("/plugins/"))
             {
                 await _next.Invoke(context);
             }
@@ -85,27 +89,27 @@ namespace Arad.Portal.UI.Shop.Middlewares
                 else
                 if (!context.Request.Path.Value.StartsWith($"/{lang.Symbol.ToLower()}"))
                 {
-                    if(langSymbolList.Contains(context.Request.Path.Value.Substring(1)))
+                    if (langSymbolList.Contains(context.Request.Path.Value.Substring(1)))
                     {
                         foreach (var symbol in langSymbolList)
                         {
                             if (context.Request.Path.Value.StartsWith($"/{symbol}"))
                             {
-                                if(symbol.Length + 2 > context.Request.Path.Value.Length)
+                                if (symbol.Length + 2 > context.Request.Path.Value.Length)
                                 {
                                     pathRequest = "/";
-                                }else
+                                }
+                                else
                                 {
                                     pathRequest = "/" + context.Request.Path.Value.Remove(symbol.Length + 2);
                                 }
-                                
                                 break;
                             }
                         }
                     }
                     newPath = $"/{lang.Symbol.ToLower()}" +
-                   $"{(!string.IsNullOrWhiteSpace(pathRequest) ? pathRequest : context.Request.Path.Value ) + (context.Request.QueryString.Value != "/" ? context.Request.QueryString : "" )}";
-                    if(newPath.EndsWith("/"))
+                   $"{(!string.IsNullOrWhiteSpace(pathRequest) ? pathRequest : context.Request.Path.Value) + (context.Request.QueryString.Value != "/" ? context.Request.QueryString : "")}";
+                    if (newPath.EndsWith("/"))
                     {
                         newPath = newPath.Substring(0, newPath.Length - 1);
                     }
@@ -116,8 +120,6 @@ namespace Arad.Portal.UI.Shop.Middlewares
                     await _next.Invoke(context);
                 }
             }
-
-
         }
     }
 }

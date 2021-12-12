@@ -42,6 +42,25 @@
 
     <!-- Font Awesome -->
     <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/intl-tel-input/css/intlTelInput.css" rel="stylesheet" />
+    <link href="~/lib/limonte-sweetalert2/sweetalert2.css" rel="stylesheet" />
+
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <link href="~/Fonts/IranSans/css/fontiran.css"
+              rel="stylesheet" />
+        <link href="~/fonts/IranSans/css/persianfonts.css" rel="stylesheet" />
+    }
+
+    <link href="~/css/loader-double.css" rel="stylesheet" />
+
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <link href="~/css/siteTemplate/rtl/bootstrap-rtl.min.css" rel="stylesheet" />
+
+    }
 
     <!-- iCheck -->
     <link href="~/plugins/iCheck/all.css" rel="stylesheet" />
@@ -49,17 +68,8 @@
 
 
     <!-- bootstrap rtl -->
-    <link href="~/css/siteTemplate/rtl/bootstrap-rtl.min.css" rel="stylesheet" />
     <!-- template rtl version -->
-    @if (dir == "rtl")
-    {
-        <link href="~/css/siteTemplate/rtl/custom-style.css" rel="stylesheet" />
-        <style>
-            .tooltip {
-                font-family: IransansWeb;
-            }
-        </style>
-    }
+
 
     <style>
         input::placeholder { text-align: center; }
@@ -124,10 +134,10 @@
                     <div class="card-body">
 
                         <div class="text-center">
-                            <img src="~/@(string.IsNullOrWhiteSpace(systemSetting?.CompanyLogoUrl) ? "logo.jpg" : $"Logo/{systemSetting.CompanyLogoUrl}")"
+                            <img src="@(string.IsNullOrWhiteSpace(systemSetting?.CompanyLogoUrl)
+                            ? "/imgs/logo.png" : $"~/Logo/{systemSetting.CompanyLogoUrl}")"
                                  height="100"
-                                 width="100"
-                                 alt="" />
+                                 width="100" alt="CompanyLogo" />
                         </div>
                         <br />
                         <input asp-for="ReturnUrl"

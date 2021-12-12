@@ -37,6 +37,9 @@
 	<string key="btn_Edit">
 		<value>ویرایش</value>
 	</string>
+	<string key="ShoppingCart">
+		<value>سبد خرید</value>
+	</string>
 	<string key="btn_AddToShoppingCard">
 		<value>افزودن به سبد خرید</value>
 	</string>
@@ -1411,6 +1414,9 @@
 	</string>
 	<string key="Role_CreatorUserName">
 		<value>کاربر ایجادکننده</value>
+	</string>
+	<string key="User_Profile">
+		<value>حساب کاربری</value>
 	</string>
 	<string key="User_FirstName">
 		<value>نام</value>

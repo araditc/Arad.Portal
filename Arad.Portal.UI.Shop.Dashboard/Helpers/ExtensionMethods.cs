@@ -177,9 +177,17 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                     CreationDate = DateTime.UtcNow,
                     IsActive = true
                 };
+                var role3 = new Role()
+                {
+                    RoleId = Guid.NewGuid().ToString(),
+                    RoleName = "مشتری",
+                    CreationDate = DateTime.UtcNow,
+                    IsActive = true
+                };
                 List<Role> items = new List<Role>();
                 items.Add(role);
                 items.Add(role2);
+                items.Add(role3);
 
                 if (items.Any())
                 {
