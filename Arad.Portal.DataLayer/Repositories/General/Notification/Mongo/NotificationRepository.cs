@@ -122,16 +122,22 @@ namespace Arad.Portal.DataLayer.Repositories.General.Notification.Mongo
 
         public async Task<Result> UpdateMany(List<string> notificationIds, UpdateDefinition<Entities.General.Notify.Notification> definitions)
         {
-            UpdateResult updateResult = await _context.Collection.UpdateManyAsync(_ => notificationIds.Contains(_.NotificationId), definitions);
-            if(updateResult.IsAcknowledged)
+            try
             {
-                return new() { Succeeded = true, Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_OperationSuccess") };
+                UpdateResult updateResult = await _context.Collection.UpdateManyAsync(_ => notificationIds.Contains(_.NotificationId), definitions);
+                if (updateResult.IsAcknowledged)
+                {
+                    return new() { Succeeded = true, Message = "AlertAndMessage_OperationSuccess" };
+                }
+                else
+                {
+                    return new() { Succeeded = false, Message = "AlertAndMessage_OperationError" };
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return new() { Succeeded = false, Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_OperationError") };
+                return new() { Succeeded = false, Message = "AlertAndMessage_OperationError" };
             }
-            
         }
         public  async Task<Result> Update(Entities.General.Notify.Notification entity, string modificationReason = "", bool isWorker = false)
         {

@@ -16,15 +16,13 @@ namespace Arad.Portal.DataLayer.Contracts.General.Notification
     {
         Result AddNewNotification(NotificationDTO model);
         Task<List<Entities.General.Notify.Notification>> GetForSend(NotificationType notificationType);
-
         Task UpdateSmtp(SMTP smtp);
-
-        Task<Result> Update(Entities.General.Notify.Notification entity, string modificationReason, CancellationToken cancellationToken);
-
-        Task<Result> Update(Entities.General.Notify.Notification entity, string modificationReason = "", bool isWorker = false);
-
+        Task<Result> Update(Entities.General.Notify.Notification entity, string modificationReason,
+            CancellationToken cancellationToken);
+        Task<Result> Update(Entities.General.Notify.Notification entity, 
+            string modificationReason = "", bool isWorker = false);
         Task<Result> AddRange(IEnumerable<Entities.General.Notify.Notification> entities);
-
-        Task<Result> UpdateMany(List<string> notificationIds, UpdateDefinition<Entities.General.Notify.Notification> definitions);
+        Task<Result> UpdateMany(List<string> notificationIds, 
+            UpdateDefinition<Entities.General.Notify.Notification> definitions);
     }
 }

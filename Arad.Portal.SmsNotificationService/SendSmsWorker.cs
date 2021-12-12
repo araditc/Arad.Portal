@@ -34,7 +34,7 @@ namespace Arad.Portal.SmsNotificationService
         protected async override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             Logger.WriteLogFile($"Service started at: {DateTime.Now}");
-            _timer = new(OnTimeEvent, null, 1000, 1000);
+            _timer = new(OnTimeEvent, null, 1000, 10000);
         }
 
         private async void OnTimeEvent(object state)
@@ -123,20 +123,21 @@ namespace Arad.Portal.SmsNotificationService
         private async Task ReadAndSend()
         {
             _flag = false;
+            UpdateDefinition<Notification> definition;
             Stopwatch sw1 = new();
             Stopwatch sw2 = new();
             //int sucessCount = 0;
             //int failedCount = 0;
             sw1.Start();
             List<Notification> notifications = await _notificationRepository.GetForSend(NotificationType.Sms);
-         
+
             sw1.Stop();
             if (notifications.Any())
             {
                 sw2.Start();
-               
-                    try
-                    {
+
+                try
+                {
 
                     string[] smsResultArray = SendSMS_LikeToLike(notifications.Select(_ => _.Body).ToArray(),
                         notifications.Select(_ => _.UserPhoneNumber).ToArray(),
@@ -147,33 +148,39 @@ namespace Arad.Portal.SmsNotificationService
                         notifications[0].SendSmsConfig.AradVas_Domain);
 
 
-                    if (smsResultArray[0].IndexOf("CHECK_OK") > 0)
+                    if (smsResultArray[0] == "CHECK_OK")
                     {
-                        UpdateDefinition<Notification> definition = Builders<Notification>.Update.Set(nameof(Notification.SendStatus), NotificationSendStatus.Posted);
+                        definition = Builders<Notification>.Update.Set(nameof(Notification.SendStatus),
+                            NotificationSendStatus.Posted);
                         definition.AddToSet(nameof(Notification.BatchId), smsResultArray[1]);
                         definition.AddToSet(nameof(Notification.SentDate), DateTime.Now);
-                       
-                        await _notificationRepository.UpdateMany(notifications.Select(_=>_.NotificationId).ToList(), definition);
+
+                        await _notificationRepository.UpdateMany
+                            (notifications.Select(_ => _.NotificationId).ToList(), definition);
                         //sucessCount++;
                     }
                     else
                     {
-                        UpdateDefinition<Notification> definition = Builders<Notification>.Update.Set(nameof(Notification.SendStatus), NotificationSendStatus.Error);
+                        definition = Builders<Notification>.Update.Set(nameof(Notification.SendStatus), 
+                            NotificationSendStatus.Error);
                         definition.AddToSet(nameof(Notification.ScheduleDate), DateTime.Now);
-                        await _notificationRepository.UpdateMany(notifications.Select(_ => _.NotificationId).ToList(), definition);
+                        await _notificationRepository.UpdateMany
+                            (notifications.Select(_ => _.NotificationId).ToList(), definition);
                         //failedCount++;
                     }
 
                 }
                 catch (Exception e)
-                    {
-                    UpdateDefinition<Notification> definition = Builders<Notification>.Update.Set(nameof(Notification.SendStatus), NotificationSendStatus.Error);
+                {
+                    definition = Builders<Notification>.Update.Set(nameof(Notification.SendStatus),
+                        NotificationSendStatus.Error);
                     definition.AddToSet(nameof(Notification.ScheduleDate), DateTime.Now);
-                    await _notificationRepository.UpdateMany(notifications.Select(_ => _.NotificationId).ToList(), definition);
+                    await _notificationRepository.UpdateMany
+                        (notifications.Select(_ => _.NotificationId).ToList(), definition);
                     //failedCount++;
                     Logger.WriteLogFile($"Error in sending SMS. Error is: {e.Message}");
-                    }
-               
+                }
+
 
                 sw2.Stop();
                 Logger.WriteLogFile($"RowCount: " +

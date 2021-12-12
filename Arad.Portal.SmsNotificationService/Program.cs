@@ -42,7 +42,6 @@ namespace Arad.Portal.SmsNotificationService
                            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
                            services.AddTransient<NotificationContext, NotificationContext>();
                            services.AddTransient<INotificationRepository, NotificationRepository>();
-
                            services.AddHostedService<SendSmsWorker>();
                        }).UseWindowsService();
 
