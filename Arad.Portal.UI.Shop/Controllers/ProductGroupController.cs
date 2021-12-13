@@ -25,7 +25,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             _accessor = accessor;
             _languageRepository = lanRepository;
             _menuRepository = menuRepository;
-            _domainName = base.domainName;
+            _domainName = base.DomainName;
         }
         public IActionResult Index()
         {

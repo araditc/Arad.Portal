@@ -35,6 +35,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
         /// </summary>
         public List<PromotionInfo> Infoes { get; set; }
 
+        /// <summary>
+        /// productId of which is as praise in this promotion
+        /// </summary>
         public string PromotedProductId { get; set; }
 
         public string PromotedProductName { get; set; }

@@ -12,12 +12,16 @@ namespace Arad.Portal.DataLayer.Models.ShoppingCart
     {
         public ShoppingCartDTO()
         {
-            Details = new List<ShoppingCartDetail>();
+            Details = new List<PurchasePerSellerDTO>();
         }
         public string UserCartId { get; set; }
 
+        public string OwnerId { get; set; }
+
+        public string DomainId { get; set; }
+
         public EntityCulture ShoppingCartCulture { get; set; }
 
-        public List<ShoppingCartDetail> Details { get; set; }
+        public List<PurchasePerSellerDTO> Details { get; set; }
     }
 }

@@ -28,7 +28,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         public IActionResult Index()
         {
             //define current culture of user based on default domain culture
-            var domainDto = _domainRepository.FetchByName(domainName).ReturnValue;
+            var domainDto = _domainRepository.FetchByName(DomainName).ReturnValue;
             if (CultureInfo.CurrentCulture.Name != domainDto.DefaultLangSymbol)
             {
                 Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,

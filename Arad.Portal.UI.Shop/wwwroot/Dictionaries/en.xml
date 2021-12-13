@@ -40,7 +40,7 @@
 	<string key="ShoppingCart">
 		<value>Shopping Cart</value>
 	</string>
-	<string key="btn_AddToShoppingCard">
+	<string key="btn_AddToShoppingCart">
 		<value>Add to basket</value>
 	</string>
 	<string key="btn_Exit">
@@ -502,6 +502,12 @@
 		<value>Are you sure?</value>
 	</string>
 	<!--====================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_ProductDecreaseInventory">
+		<value>Sorry, the inventory of this product decreased to [0].</value>
+	</string>
+	<string key="AlertAndMessage_ProductNullCount">
+		<value>Sorry, this product has not exist any more</value>
+	</string>
 	<string key="AlertAndMessage_SubmitOtpPleaseTryAgainLater">
 		<value>Error, Please try again later</value>
 	</string>

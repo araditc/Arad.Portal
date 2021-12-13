@@ -7,19 +7,11 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
-    public class BasketController : BaseController
+    public class TransactionController : BaseController
     {
-        private readonly IBaske
-        public BasketController(IHttpContextAccessor accessor):base(accessor)
+        public TransactionController(IHttpContextAccessor accessor):base(accessor)
         {
                 
-        }
-
-
-        public IActionResult AddProToBasket(string productId)
-        {
-            var userId = base.CurrentUserId;
-
         }
         public IActionResult Index()
         {

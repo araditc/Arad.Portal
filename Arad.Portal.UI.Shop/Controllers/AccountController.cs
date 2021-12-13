@@ -45,7 +45,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             _createNotification = createNotification;
             _errorLogRepository = errorLogRepository;
             _domainRepository = domainRepository;
-            _domainName = domainName;
+            _domainName = DomainName;
         }
         public IActionResult Index()
         {
@@ -275,7 +275,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             };
             #endregion
 
-            var domainId = _domainRepository.FetchByName(domainName).ReturnValue.DomainId;
+            var domainId = _domainRepository.FetchByName(DomainName).ReturnValue.DomainId;
             ApplicationUser user = new()
             {
                 UserName = model.FullCellPhoneNumber,

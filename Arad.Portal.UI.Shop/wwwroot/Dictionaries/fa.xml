@@ -40,7 +40,7 @@
 	<string key="ShoppingCart">
 		<value>سبد خرید</value>
 	</string>
-	<string key="btn_AddToShoppingCard">
+	<string key="btn_AddToShoppingCart">
 		<value>افزودن به سبد خرید</value>
 	</string>
 	<string key="btn_Exit">
@@ -497,6 +497,12 @@
 		<value>مطمئن هستید؟</value>
 	</string>
 	<!--====================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_ProductDecreaseInventory">
+		<value>با عرض پوزش موجودی محصول به [0] کاهش پیدا کرده است.</value>
+	</string>
+	<string key="AlertAndMessage_ProductNullCount">
+		<value>با عرض پوزش محصول مورد نظر به اتمام رسیده است.</value>
+	</string>
 	<string key="AlertAndMessage_SubmitOtpPleaseTryAgainLater">
 		<value>خطا، لطفا بعدا دوباره تلاش نمایید.</value>
 	</string>

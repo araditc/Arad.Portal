@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Models.Shared;
+﻿using Arad.Portal.DataLayer.Entities.Shop.ShoppingCart;
+using Arad.Portal.DataLayer.Models.Shared;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
@@ -14,59 +15,74 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
         public Transaction()
         {
             EventsData = new();
-            BasicData = new();
-            UserData = new();
-            TransactionItems = new();
+            SubInvoices = new();
         }
 
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string TransactionId { get; set; }
 
+        public string MainInvoiceNumber { get; set; }
+
         public List<EventData> EventsData { get; set; }
 
-        public TransactionBasicData BasicData { get; set; }
+        public PaymentGatewayData BasicData { get; set; }
 
-        public TransactionUserData UserData { get; set; }
+        public bool FinalSettlement { get; set; }
 
-        public ShoppingCart.ShoppingCart BasketForPayment { get; set; }
-        public TransactionApportionData ApportionData { get; set; }
+        public CustomerData CustomerData { get; set; }
 
+        public List<InvoicePerSeller> SubInvoices { get; set; }
+      
         public List<Parameter<string, string>> AdditionalData { get; set; }
     }
 
-   
-    public class TransactionApportionData
+    
+    public class InvoicePerSeller
     {
-        public List<AccountApportion> ProductApportions { get; set; }
-        public string TotalAmountPaid { get; set; }
+        public string SellerInvoiceId { get; set; }
+        /// <summary>
+        /// اطلاعات تسویه با فروشنده
+        /// </summary>
+        public SettlementInfo SettlementInfo { get; set; }
+        
+        public PurchasePerSeller ParchasePerSeller { get; set; }
     }
 
-    public class AccountApportion
+    public class SettlementInfo
     {
-        public string AccountId { get; set; }
-        public string AccountName { get; set; }
-        public string Iban { get; set; }
-        public string Apportion { get; set; }
-        public string PaymentIdentifier { get; set; }
-        public bool IsMain { get; set; }
+        /// <summary>
+        /// شماره پرداخت یا تراکنش واریز وجه به شماره فروشنده
+        /// </summary>
+        public string DepositeNumber { get; set; }
+
+        /// <summary>
+        /// شماره پیگیری تراکنش پرداخت به فروشنده
+        /// </summary>
+        public string ReferenceId { get; set; }
+
+
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
+        public DateTime SettlementDate { get; set; }
+
+        public PaymentType PayementType { get; set; }
+
+        public string AdditionalData { get; set; }
+
     }
-
-    public class TransactionBasicData
+    public class PaymentGatewayData
     {
-        public string InvoiceNumber { get; set; }
-
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime CreationDateTime { get; set; }
 
         /// <summary>
         /// needed in some Psps
+        /// 
         /// </summary>
         public string PaymentId { get; set; }
-        public string OrderId { get; set; }
+        public string ShoppinCartId { get; set; }
         public string TerminalId { get; set; }
         public string TerminalName { get; set; }
-
         //???
         public string InternalTokenIdentifier { get; set; }
         public string OverallConcatDescription { get; set; }
@@ -81,17 +97,15 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
     }
 
 
-    public class TransactionUserData
+    public class CustomerData
     {
         public string UserId { get; set; }
         public string UserName { get; set; }
         public string UserFullName { get; set; }
-        public bool PayVerifySmsIsSent { get; set; }
-    }
+     }
 
     public class EventData
     {
-
         public PspActions ActionType { get; set; }
         public DateTime ActionDateTime { get; set; }
         public string JsonContent { get; set; }
@@ -102,6 +116,19 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
     {
         public T1 Key { get; set; }
         public T2 Value { get; set; }
+    }
+
+    public enum PaymentType
+    {
+        /// <summary>
+        /// واریز به شماره حساب فروشنده
+        /// </summary>
+        CacheToBankAccount,
+        /// <summary>
+        /// انتقال وجه کارت به کارت
+        /// </summary>
+        CardToCard,
+        Others
     }
     public enum PspActions
     {

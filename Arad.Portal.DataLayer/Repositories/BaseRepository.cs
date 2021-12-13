@@ -37,7 +37,7 @@ namespace Arad.Portal.DataLayer.Repositories
         }
 
     
-        protected string GetCurrentDomain()
+        protected string GetCurrentDomainName()
         {
             var domain = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
             return domain;

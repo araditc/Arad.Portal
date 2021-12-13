@@ -359,7 +359,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
             var userName = _httpContextAccessor.HttpContext.User.Claims
                    .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
             var userId = _httpContextAccessor.HttpContext.User.Claims
-                   .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+                   .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             equallentModel.CreatorUserName = userName;
             #region add modification
             var mod = GetCurrentModification($"update this Comment by its owner:'{userId}' and userName:'{userName}' in date:'{DateTime.Now.ToPersianLetDateTime()}'");

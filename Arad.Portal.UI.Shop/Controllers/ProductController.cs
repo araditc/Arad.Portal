@@ -38,7 +38,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             _domainRepository = domainRepository;
             _userManager = userManager;
             _commentRepository = commentRepository;
-            _domainName = this.domainName;
+            _domainName = this.DomainName;
         }
         public IActionResult Index()
         {

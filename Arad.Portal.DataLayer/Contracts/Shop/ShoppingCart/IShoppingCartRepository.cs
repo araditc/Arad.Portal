@@ -14,9 +14,11 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart
 
         Result InsertUserShoppingCart(string userId);
 
+
+
         Task<Result> ChangeProductCountInUserCart(string userId, string productId, int newCount);
 
-        Task<Result<ShoppingCartDTO>> FetchUserShopCart(string userId);
+        Task<Result<ShoppingCartDTO>> FetchActiveUserShoppingCart(string userId);
 
         Task<Result> DeleteProductFromUserShoppingCart(string userId, string productId);
 
