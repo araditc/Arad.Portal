@@ -25,17 +25,19 @@ using Arad.Portal.DataLayer.Entities.General.Comment;
 using Microsoft.Extensions.Configuration;
 using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
 using Arad.Portal.DataLayer.Models.Domain;
+using Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 {
     public class ProductRepository : BaseRepository, IProductRepository
     {
         private readonly ProductContext _context;
-        private readonly OrderContext _orderContext;
+        //private readonly OrderContext _orderContext;
         private readonly DomainContext _domainContext;
         private readonly TransactionContext _transactionContext;
         private readonly PromotionContext _promotionContext;
         private readonly LanguageContext _languageContext;
+        private readonly ShoppingCartContext _shoppingCartContext;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _accessor;
@@ -44,7 +46,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         public ProductRepository(IHttpContextAccessor httpContextAccessor,
             ProductContext context, IMapper mapper,
             PromotionContext promotionContext,
-            OrderContext orderContext,
+            //OrderContext orderContext,
+            UserManager<ApplicationUser> userManager,
+            ShoppingCartContext shoppingCartContext,
             IConfiguration configuration,
             LanguageContext languageContext,
             DomainContext domainContext,
@@ -54,12 +58,13 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         {
             _context = context;
             _mapper = mapper;
+            _userManager = userManager;
             _promotionContext = promotionContext;
-            _orderContext = orderContext;
             _transactionContext = transactionContext;
             _languageContext = languageContext;
             _configuration = configuration;
             _domainContext = domainContext;
+            _shoppingCartContext = shoppingCartContext;
             _accessor = accessor;
         }
 
@@ -324,16 +329,13 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             {
                 bool allowDeletion;
                 bool check;
-                check = _orderContext.Collection.AsQueryable().Any(_ => _.Details.Any(_ => _.ProductId == productId));
-                check &= _transactionContext.Collection.AsQueryable().Any(_ => _.TransactionItems.Any(_ => _.ProductId == productId));
-                if (check)
-                {
-                    allowDeletion = false;
-                }
-                else
-                {
-                    allowDeletion = true;
-                }
+                check = _shoppingCartContext.Collection.Find(_ => _.Details.Any(a => a.Products.Any(b => b.ProductId == productId)) 
+                && !_.IsDeleted && _.IsActive).Any();
+                check &= _transactionContext.Collection
+                    .Find(_ => _.SubInvoices.Any(a => a.ParchasePerSeller.Products.Any(b => b.ProductId == productId))).Any();
+
+                allowDeletion = !check;
+
                 if (allowDeletion)
                 {
                     entity.IsDeleted = true;
@@ -351,7 +353,6 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     else
                     {
                         result.Message = ConstMessages.GeneralError;
-
                     }
                 }
                 else

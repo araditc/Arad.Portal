@@ -1841,6 +1841,9 @@
 	<string key="Order">
 		<value>ترتیب</value>
 	</string>
+	<string key="OrderCnt">
+		<value>تعداد سفارش</value>
+	</string>
 	<string key="Return">
 		<value>برگشت</value>
 	</string>

@@ -1801,6 +1801,9 @@
 	<string key="Order">
 		<value>Order</value>
 	</string>
+	<string key="OrderCnt">
+		<value>order count</value>
+	</string>
 	<string key="Return">
 		<value>Go back</value>
 	</string>

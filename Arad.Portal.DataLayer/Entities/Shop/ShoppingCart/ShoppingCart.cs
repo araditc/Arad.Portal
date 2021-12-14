@@ -49,6 +49,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
 
         public int OrderCount { get; set; }
 
+        /// <summary>
+        /// price without discount
+        /// </summary>
         public decimal PricePerUnit { get; set; }
 
         public decimal DiscountPricePerUnit { get; set; }

@@ -25,8 +25,6 @@ using Arad.Portal.DataLayer.Contracts.General.Permission;
 using Arad.Portal.DataLayer.Repositories.General.Permission.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.Role;
 using Arad.Portal.DataLayer.Repositories.General.Role.Mongo;
-using Arad.Portal.DataLayer.Contracts.Shop.Order;
-using Arad.Portal.DataLayer.Repositories.Shop.Order.Mongo;
 using Arad.Portal.DataLayer.Contracts.Shop.Product;
 using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
 using Arad.Portal.DataLayer.Contracts.Shop.ProductGroup;
@@ -286,7 +284,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<IRoleRepository, RoleRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<UserExtensions, UserExtensions>();
-            services.AddTransient<IOrderRepository, OrderRepository>();
+            //services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IProductGroupRepository, ProductGroupRepository>();
             services.AddTransient<IProductSpecificationRepository, ProductSpecificationRepository>();
@@ -315,7 +313,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<PermissionContext>();
             services.AddTransient<RoleContext>();
             services.AddTransient<UserContext>();
-            services.AddTransient<OrderContext>();
+            //services.AddTransient<OrderContext>();
             services.AddTransient<ProductContext>();
             services.AddTransient<PromotionContext>();
             services.AddTransient<ShoppingCartContext>();

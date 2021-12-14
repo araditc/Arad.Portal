@@ -8,23 +8,23 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Models.Order
 {
-    public class OrderDTO
-    {
-        public OrderDTO()
-        {
-            Details = new();
-        }
-        public string OrderId { get; set; }
+    //public class OrderDTO
+    //{
+    //    public OrderDTO()
+    //    {
+    //        Details = new();
+    //    }
+    //    public string OrderId { get; set; }
 
-        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime OrderDate { get; set; }
+    //    [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
+    //    public DateTime OrderDate { get; set; }
 
-        public string OrderUserId { get; set; }
+    //    public string OrderUserId { get; set; }
 
-        public List<OrderDetail> Details { get; set; }
+    //    public List<OrderDetail> Details { get; set; }
 
-        public OrderStatus OrderStatus { get; set; }
+    //    public OrderStatus OrderStatus { get; set; }
 
-        public decimal TotalAmountOfOrder { get; set; }
-    }
+    //    public decimal TotalAmountOfOrder { get; set; }
+    //}
 }

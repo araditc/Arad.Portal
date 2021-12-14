@@ -78,6 +78,13 @@
         }
     
 }
+
+@*<div class="toast" id="showMessage" role="alert" aria-live="assertive">
+    <div class="toast-header"></div>
+    <div class="toast-body">
+       <p id="msgresult"></p>
+    </div>
+</div>*@
 <div class="row">
     <div class="col-6" @*style="direction:ltr !important;"*@>
         <div id="detail">
@@ -213,9 +220,16 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6 offset-3">
-                                <button class="btn btn-light" id="btnAddToCart" prid="@Model.ProductId">@Language.GetString("btn_AddToShoppingCart")</button>
-                            </div>
+                                <div class="col-md-4">
+                                    <label>@Language.GetString("OrderCnt")</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="number" id="orderCnt" name="orderCnt" min="0" />
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="button" id="btnAddToCart" class="btn btn-light" prid="@Model.ProductId"
+                                           value="@Language.GetString("btn_AddToShoppingCart")"/>
+                                </div>
                         </div>
                     }
                     else
@@ -225,7 +239,7 @@
                                 <button class="btn btn-light" disabled>@Language.GetString("UnAvailable")</button>
                             </div>
                             <div class="col-md-3">
-                                <button class="btn btn-danger">@Language.GetString("btn_InformMe")</button>
+                                <button class="btn btn-danger" >@Language.GetString("btn_InformMe")</button>
                             </div>
                         </div>
                     }
@@ -293,35 +307,36 @@
         $("#btnAddToCart").click(function () {
             if ('@ViewBag.LoggedUser' == 'True')//user is authenticated and can add product to its cart
             {
-                var productId = $(this).attr("prid");
                  $.ajax({
-                url: "/Basket/RateProduct?productId=" + '@Model.ProductId' + "&score=" + score + '&hasrate=' + '@ViewBag.HasRateBefore',
-            contentType: 'application/json',
-            type: 'Post',
-            dataType: 'json',
-            beforeSend: function () {
-            },
-            success: function (result) {
-                if (result.status == "Success") {
-                    //refresh rate part
-                    $("div.ratePart").html("");
-                    for (var i = 1; i <= result.like; i++) {
-                        $("div.ratePart")
-                        .append('<a href="#" role = "button" aria-expanded="false" onclick="Rate('+i+');"><i class="fas fa-star"></i></a>');
+                     url: "/Basket/AddProToBasket?productId=" + '@Model.ProductId' + "&cnt=" + cnt,
+                    contentType: 'application/json',
+                    type: 'Post',
+                    dataType: 'json',
+                    beforeSend: function () {
+                    },
+                    success: function (result) {
+                        if (result.status == "Success") {
+                           /* $("#btnAddToCart").attr("disabled", "disabled");*/
+                            Swal.fire({
+                                icon: 'success',
+                                text: result.message,
+                                showConfirmButton: false,
+                                timer: 2500
+                            });
+                        }
+                        else {
+                             Swal.fire({
+                                 icon: 'error',
+                                 text: result.message,
+                                 showConfirmButton: false,
+                                 timer: 2500
+                                });
+                        }
+                        //$("#msgresult").text(result.message);
+                        //$('.toast').toast({ delay: 3000 });
+                        //$(".toast").toast('show');
                     }
-                    if (result.half == 'True') {
-                        $("div.ratePart")
-                            .append('<a href="#" role="button" aria-expanded="false" onclick="Rate(' + result.like + 1+');"><i class="fas fa-star-half-alt"></i></a>');
-                    }
-                    var initiali = result.half == 'True' ? result.like + 2 : result.like + 1;
-                    for (var i = initiali; i <= result.dislike; i++) {
-                        $("div.ratePart")
-                            .append('<a href="#" role="button" aria-expanded="false" onclick="Rate('+i+');"><i class="far fa-star"></i></a>');
-                    }
-                }
-            }
-            });
-
+                  });
             }
             else
             {

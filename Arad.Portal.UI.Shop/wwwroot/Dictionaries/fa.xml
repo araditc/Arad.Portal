@@ -497,6 +497,15 @@
 		<value>مطمئن هستید؟</value>
 	</string>
 	<!--====================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_ProductCountInCart">
+		<value>[0] واحد از این محصول به سبد خرید شما اضافه گردید.</value>
+	</string>
+	<string key="AlertAndMessage_ProductPriceIncrease">
+		<value>متاسفانه این محصول [0] افزایش قیمت داشته است.</value>
+	</string>
+	<string key="AlertAndMessage_ProductPriceDecrease">
+		<value>قیمت این محصول [0]  کاهش یافته است.</value>
+	</string>
 	<string key="AlertAndMessage_ProductDecreaseInventory">
 		<value>با عرض پوزش موجودی محصول به [0] کاهش پیدا کرده است.</value>
 	</string>

@@ -11,22 +11,22 @@ namespace Arad.Portal.DataLayer.Models.Order
     /// some properties depends on orderCulture of Order Entity
     /// ProductName, DiscountPerUnit, PricePerUnit, ProductAmountToPay
     /// </summary>
-    public class OrderDetail
-    {
-        public OrderDetail()
-        {
-            MultiLingualProperties = new List<MultiLingualProperty>();
-        }
-        public string ProductId { get; set; }
+    //public class OrderDetail
+    //{
+    //    public OrderDetail()
+    //    {
+    //        MultiLingualProperties = new List<MultiLingualProperty>();
+    //    }
+    //    public string ProductId { get; set; }
 
-        public int OrderCount { get; set; }
+    //    public int OrderCount { get; set; }
 
-        public List<MultiLingualProperty> MultiLingualProperties { get; set; }
+    //    public List<MultiLingualProperty> MultiLingualProperties { get; set; }
 
-        public decimal PricePerUnit { get; set; }
+    //    public decimal PricePerUnit { get; set; }
 
-        public decimal DiscountPerUnit { get; set; }
+    //    public decimal DiscountPerUnit { get; set; }
 
-        public decimal ProductAmountToPay { get; set; }
-    }
+    //    public decimal ProductAmountToPay { get; set; }
+    //}
 }

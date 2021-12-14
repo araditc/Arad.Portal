@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Contracts.Shop.Order
 {
-    public interface IOrderRepository
-    {
-        Task<Result> InsertNewOrder(string userId, OrderStatus orderStatus);
+    //public interface IOrderRepository
+    //{
+    //    Task<Result> InsertNewOrder(string userId, OrderStatus orderStatus);
 
-        Task<List<OrderDetail>> GetOrderDetails(string orderId);
+    //    Task<List<OrderDetail>> GetOrderDetails(string orderId);
 
-        Task<OrderDTO> FetchOrder(string orderId);
+    //    Task<OrderDTO> FetchOrder(string orderId);
 
-        Task<PagedItems<OrderDTO>> GetAllOrdersOfUser(string queryString);
-    }
+    //    Task<PagedItems<OrderDTO>> GetAllOrdersOfUser(string queryString);
+    //}
 }

@@ -502,6 +502,15 @@
 		<value>Are you sure?</value>
 	</string>
 	<!--====================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_ProductCountInCart">
+		<value>[0] units of this product added to your cart.</value>
+	</string>
+	<string key="AlertAndMessage_ProductPriceIncrease">
+		<value>Unfortunatelly, the price of product [0] have been increased.</value>
+	</string>
+	<string key="AlertAndMessage_ProductPriceDecrease">
+		<value>the price of product [0] have been decreased.</value>
+	</string>
 	<string key="AlertAndMessage_ProductDecreaseInventory">
 		<value>Sorry, the inventory of this product decreased to [0].</value>
 	</string>
