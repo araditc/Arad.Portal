@@ -68,7 +68,6 @@ namespace Arad.Portal.UI.Shop.Controllers
         [HttpPost]
         public IActionResult GetMyGroupVC(GroupSection groupSection)
         {
-
             return ViewComponent("GroupSection", groupSection);
         }
 

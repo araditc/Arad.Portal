@@ -850,7 +850,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             var result = new ProductOutputDTO();
             
             var productEntity = _context.ProductCollection
-                .Find(_ => _.ProductCode == productCode).First();
+                .Find(_ => _.ProductCode == productCode).FirstOrDefault();
 
             result = _mapper.Map<ProductOutputDTO>(productEntity);
             result.Comments = CreateNestedTreeComment(productEntity.Comments, userId);
@@ -858,7 +858,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 
             #region evaluate finalPrice
             var activePrice = productEntity.Prices.Where(_ => _.IsActive && _.CurrencyId == dto.DefaultCurrencyId 
-            && _.StartDate <= DateTime.Now && (_.EndDate == null || _.EndDate.Value >= DateTime.Now)).First();
+            && _.StartDate <= DateTime.Now && (_.EndDate == null || _.EndDate.Value >= DateTime.Now)).FirstOrDefault();
             //check whether this product has any valid promotion
             Entities.Shop.Promotion.Promotion promotionOnAll = null;
             Entities.Shop.Promotion.Promotion promotionOnProductGroup = null;

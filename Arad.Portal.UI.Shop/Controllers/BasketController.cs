@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart;
+﻿using Arad.Portal.DataLayer.Contracts.General.Domain;
+using Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,20 +15,53 @@ namespace Arad.Portal.UI.Shop.Controllers
     public class BasketController : BaseController
     {
         private readonly IShoppingCartRepository _shoppingCartRepository;
+        private readonly IDomainRepository _domainRepository;
         public BasketController(IHttpContextAccessor accessor,
-            IShoppingCartRepository shoppingCartRepository):base(accessor)
+            IShoppingCartRepository shoppingCartRepository,
+            IDomainRepository domainRepository) : base(accessor)
         {
-            _shoppingCartRepository = shoppingCartRepository;   
+            _shoppingCartRepository = shoppingCartRepository;
+            _domainRepository = domainRepository;
         }
 
 
         [HttpPost]
         public async Task<IActionResult> AddProToBasket([FromQuery]string productId, [FromQuery]int cnt)
         {
-            var res = await _shoppingCartRepository.AddOrChangeProductToUserCart(productId, cnt);
-            return Json(new { status = res.Succeeded ? "Success" : "Error", 
-                message = res.Succeeded ? Language.GetString("AlertAndMessage_ProductCountInCart") : res.Message
-            });
+            if(User != null && User.Identity.IsAuthenticated)
+            {
+                var res = await _shoppingCartRepository.AddOrChangeProductToUserCart(productId, cnt);
+                return Json(new
+                {
+                    status = res.Succeeded ? "Success" : "Error",
+                    message = res.Succeeded ? Language.GetString("AlertAndMessage_ProductCountInCart") : res.Message,
+                    cnt = res.ReturnValue.ItemsCount
+                });
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account", new { returnUrl = "/basket/AddProToBasket" });
+            }
+            
+
+        }
+
+        [HttpGet]
+        public IActionResult Get()
+        {
+            if(User != null && User.Identity.IsAuthenticated)
+            {
+                var domainName = base.DomainName;
+                var currentUserId = base.CurrentUserId;
+                var domain = _domainRepository.FetchByName(domainName);
+                var model = _shoppingCartRepository.FetchActiveUserShoppingCart(currentUserId, domain.ReturnValue.DomainId);
+
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account", new { returnUrl = "/basket/getbasket" });
+            }
 
         }
         public IActionResult Index()

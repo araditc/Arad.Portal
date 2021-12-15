@@ -54,12 +54,17 @@
     <style>
         .lan {
             border: none;
-            padding: 0.5rem 0.25rem;
+            padding: 1rem 0.25rem;
         }
 
         .profile {
             border: none;
-            padding: 0.5rem 1rem;
+            padding: 1rem 1rem;
+        }
+        .notifyBadge {
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: transparent;
+            color : black;
         }
     </style>
     @if (direction == "rtl")
@@ -116,13 +121,14 @@
                 <div class="col-md-2">
                     <ul class="list-group list-group-horizontal">
                         <li class="list-group-item profile">
-                            <a href="/account/Profile" title="@Language.GetString("User_Profile")">
+                            <a href="/account/Profile" id="userProfileId" title="@Language.GetString("User_Profile")">
                                 <i class="far fa-user"></i>
                             </a>
                         </li>
                         <li class="list-group-item profile">
-                            <a href="/bascket/userbascket" title="@Language.GetString("ShoppintCart")">
+                            <a href="/basket/get" id="userBasketId" title="@Language.GetString("ShoppingCart")">
                                 <i class="fas fa-shopping-cart"></i>
+                                <span class="badge notifyBadge"></span>
                             </a>
                         </li>
                     </ul>
@@ -179,7 +185,10 @@
                 }
             });
         }
-    }
+        }
+        function setProductCountInCart(number) {
+            $("#userBasketId .notifyBadge").html(number);
+        }
     </script>
 </body>
 </html>

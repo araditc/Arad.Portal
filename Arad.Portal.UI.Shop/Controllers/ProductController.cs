@@ -57,9 +57,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             var entity = _productRepository.FetchByCode(slug, domainEntity.ReturnValue, userId);
             if (isLoggedUser)
             {
-                
-            #region check cookiepart for loggedUser
-            
+                 #region check cookiepart for loggedUser
                 
                 var userProductRateCookieName = $"{userId}_p{entity.ProductId}";
                 if(HttpContext.Request.Cookies[userProductRateCookieName] != null)

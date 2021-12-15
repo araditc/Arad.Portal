@@ -215,6 +215,8 @@ namespace Arad.Portal.UI.Shop.Helpers
                     DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
                     DefaultLanguageName = "فارسی",
                     DefaultLangSymbol = "fa-IR",
+                    DefaultCurrencyId = "f6a41b2d-3ed5-412b-b511-68498a7b62f3",
+                    DefaultCurrencyName = "ریال",
                     IsDefault = true,
                     CreationDate = DateTime.Now,
                     SMTPAccount = new DataLayer.Entities.General.Email.SMTP()
@@ -238,6 +240,8 @@ namespace Arad.Portal.UI.Shop.Helpers
                     DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
                     DefaultLanguageName = "فارسی",
                     DefaultLangSymbol = "fa-IR",
+                    DefaultCurrencyId = "f6a41b2d-3ed5-412b-b511-68498a7b62f3",
+                    DefaultCurrencyName = "ریال",
                     IsDefault = true,
                     CreationDate = DateTime.Now,
                     SMTPAccount = new DataLayer.Entities.General.Email.SMTP()
@@ -261,6 +265,8 @@ namespace Arad.Portal.UI.Shop.Helpers
                     DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
                     DefaultLanguageName = "فارسی",
                     DefaultLangSymbol = "fa-IR",
+                    DefaultCurrencyId = "f6a41b2d-3ed5-412b-b511-68498a7b62f3",
+                    DefaultCurrencyName = "ریال",
                     IsDefault = true,
                     CreationDate = DateTime.Now,
                 };

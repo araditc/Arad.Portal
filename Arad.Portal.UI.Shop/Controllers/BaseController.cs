@@ -19,7 +19,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         {
             _accessor = accessor;
             DomainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
-            if(User.Identity.IsAuthenticated)
+            if( User != null && User.Identity.IsAuthenticated)
             {
                 CurrentUserId = accessor.HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
                 CurrentUserName = accessor.HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.Name).Value;

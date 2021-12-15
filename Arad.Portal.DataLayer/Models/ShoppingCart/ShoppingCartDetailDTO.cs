@@ -1,4 +1,5 @@
 ﻿using Arad.Portal.DataLayer.Entities.Shop.ShoppingCart;
+using Arad.Portal.DataLayer.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +14,15 @@ namespace Arad.Portal.DataLayer.Models.ShoppingCart
         {
             Notifications = new();
         }
-        public int PreviousOrderCount { get; set; }
 
+        public int RowNumber { get; set; }
+        public int PreviousOrderCount { get; set; }
         /// <summary>
         /// finalPricePerUnit means discountPerUnit subtract From PricePerUnit
         /// </summary>
         public decimal PreviousFinalPricePerUnit { get; set; }
+
+        public Image ProductImage { get; set; }
 
         public List<string> Notifications { get; set; }
     }

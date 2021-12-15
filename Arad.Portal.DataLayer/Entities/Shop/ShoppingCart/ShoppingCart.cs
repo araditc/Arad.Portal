@@ -31,13 +31,15 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
     {
         public string SellerId { get; set; }
 
+        public string SellerUserName { get; set; }
+
         public List<ShoppingCartDetail> Products { get; set; }
 
-        public TransferType TransferType { get; set; }
+        public ShippingType ShippingType { get; set; }
 
-        public decimal TransferExpense { get; set; }
+        public decimal ShippingExpense { get; set; }
 
-        public decimal  TotalDetailsAmountWithTransfer { get; set; }
+        public decimal  TotalDetailsAmountWithShipping { get; set; }
     }
     public class ShoppingCartDetail : BaseEntity
     {
@@ -56,10 +58,13 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
 
         public decimal DiscountPricePerUnit { get; set; }
 
+        /// <summary>
+        /// (PricePerUnit - DiscountPerUnit ) * OrderCount
+        /// </summary>
         public decimal TotalAmountToPay { get; set; }
     }
 
-    public enum TransferType
+    public enum ShippingType
     {
         Post,
         Courier

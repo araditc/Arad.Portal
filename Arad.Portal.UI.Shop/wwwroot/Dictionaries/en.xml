@@ -1498,6 +1498,9 @@
 	<string key="Product">
 		<value>Product</value>
 	</string>
+	<string key="Count">
+		<value>Count</value>
+	</string>
 	<string key="BoughtCount">
 		<value>Bought Count</value>
 	</string>
@@ -1622,6 +1625,27 @@
 	</string>
 	<string key="PriceValue">
 		<value>Price</value>
+	</string>
+	<string key="OrderCnt">
+		<value>Order Count</value>
+	</string>
+	<string key="ShippingExpense">
+		<value>Shipping Expense</value>
+	</string>
+	<string key="PricePerUnit">
+		<value>price per unit</value>
+	</string>
+	<string key="FinalPricePerSeller">
+		<value>Final Price</value>
+	</string>
+	<string key="FinalPriceForPayment">
+		<value>final price for payment </value>
+	</string>
+	<string key="SumOfAmount">
+		<value>sum of amount</value>
+	</string>
+	<string key="FinalPrice">
+		<value>final price</value>
 	</string>
 	<string key="User_Roles">
 		<value>Roles</value>

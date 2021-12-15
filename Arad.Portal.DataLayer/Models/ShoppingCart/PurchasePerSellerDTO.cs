@@ -11,12 +11,14 @@ namespace Arad.Portal.DataLayer.Models.ShoppingCart
     {
         public string SellerId { get; set; }
 
+        public string SellerUserName { get; set; }
+
         public List<ShoppingCartDetailDTO> Products { get; set; }
 
-        public TransferType TransferType { get; set; }
+        public ShippingType ShippingType { get; set; }
 
-        public decimal TransferExpense { get; set; }
+        public decimal ShippingExpense { get; set; }
 
-        public decimal TotalDetailsAmountWithTransfer { get; set; }
+        public decimal TotalDetailsAmountWithShipping { get; set; }
     }
 }

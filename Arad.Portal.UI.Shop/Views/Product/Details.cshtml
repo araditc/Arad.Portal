@@ -224,10 +224,10 @@
                                     <label>@Language.GetString("OrderCnt")</label>
                                 </div>
                                 <div class="col-md-4">
-                                    <input type="number" id="orderCnt" name="orderCnt" min="0" />
+                                    <input type="number" class="form-control" id="orderCnt" name="orderCnt" min="0" value="1" />
                                 </div>
                                 <div class="col-md-4">
-                                    <input type="button" id="btnAddToCart" class="btn btn-light" prid="@Model.ProductId"
+                                    <input type="button" id="btnAddToCart" class="btn btn-dark" prid="@Model.ProductId"
                                            value="@Language.GetString("btn_AddToShoppingCart")"/>
                                 </div>
                         </div>
@@ -316,7 +316,8 @@
                     },
                     success: function (result) {
                         if (result.status == "Success") {
-                           /* $("#btnAddToCart").attr("disabled", "disabled");*/
+
+                            setProductCountInCart(result.cnt);
                             Swal.fire({
                                 icon: 'success',
                                 text: result.message,
@@ -338,10 +339,7 @@
                     }
                   });
             }
-            else
-            {
-
-            }
+           
         });
     });
 
@@ -360,7 +358,8 @@
         if (isAllow)
         {
             $.ajax({
-                url: "/Product/RateProduct?productId=" + '@Model.ProductId' + "&score=" + score + '&hasrate=' + '@ViewBag.HasRateBefore',
+                url: "/Product/RateProduct?productId=" +
+                    '@Model.ProductId' + "&score=" + score + '&hasrate=' + '@ViewBag.HasRateBefore',
             contentType: 'application/json',
             type: 'Post',
             dataType: 'json',

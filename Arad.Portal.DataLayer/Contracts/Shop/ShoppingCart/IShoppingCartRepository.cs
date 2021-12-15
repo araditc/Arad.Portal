@@ -10,7 +10,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart
 {
     public interface IShoppingCartRepository
     {
-        Task<Result> AddOrChangeProductToUserCart(string productId, int orderCount);
+        Task<Result<CartItemsCount>> AddOrChangeProductToUserCart(string productId, int orderCount);
 
         Task<Result> InsertUserShoppingCart(string userId);
 

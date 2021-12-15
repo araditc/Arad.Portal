@@ -1541,6 +1541,9 @@
 	<string key="Product">
 		<value>محصول</value>
 	</string>
+	<string key="Count">
+		<value>تعداد</value>
+	</string>
 	<string key="BoughtCount">
 		<value>تعداد خرید</value>
 	</string>
@@ -1663,6 +1666,27 @@
 	</string>
 	<string key="PriceValue">
 		<value>قیمت</value>
+	</string>
+	<string key="OrderCnt">
+		<value>تعداد سفارش</value>
+	</string>
+	<string key="ShippingExpense">
+		<value>هزینه حمل و نقل</value>
+	</string>
+	<string key="PricePerUnit">
+		<value>قیمت واحد</value>
+	</string>
+	<string key="FinalPricePerSeller">
+		<value>مبلغ نهایی</value>
+	</string>
+	<string key="SumOfAmount">
+		<value>جمع مبالغ</value>
+	</string>
+	<string key="FinalPriceForPayment">
+		<value>مبلغ نهایی پرداخت</value>
+	</string>
+	<string key="FinalPrice">
+		<value>قیمت نهایی</value>
 	</string>
 	<string key="User_Roles">
 		<value>نقش های کاربری</value>
