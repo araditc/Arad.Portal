@@ -28,7 +28,11 @@
   {
     "PermissionId": "8cae0481-d040-4ea2-94b3-486af69aa9dc",
     "Title": "ProductManagement",
-    "Routes": [ "ProductUnit/List", "ProductSpecificationGroup/List", "ProductSpecification/List", "ProductGroup/List", "Product/List", "Promotion/List", "ProductComments/List" ],
+    "Routes": [ "ProductUnit/List", "ProductSpecificationGroup/List",
+      "ProductSpecification/List",
+      "ProductGroup/List",
+      "Product/List", 
+      "Promotion/List", "ProductComments/List" ],
     "ClientAddress": "",
     "IsActive": true,
     "Type": 2,
@@ -1011,6 +1015,19 @@
     "MenuIdOfModule": null,
     "ParentMenuId": "923a54be-abe1-4190-9634-dd7f36ee0615",
     "Priority": 2,
+    "Icon": null
+  },
+  {
+    "PermissionId": "acd3534a-1586-4b64-80fb-19b6127fa322",
+    "Title": "ShippingSetting",
+    "Routes": [ "Shipping/List", "Shipping/AddEdit", "Shipping/Add", "Shipping/Edit", "Shipping/Delete" ],
+    "ClientAddress": "Shipping/List",
+    "IsActive": true,
+    "Type": 1,
+    "Method": 0,
+    "MenuIdOfModule": null,
+    "ParentMenuId": "923a54be-abe1-4190-9634-dd7f36ee0615",
+    "Priority": 3,
     "Icon": null
   }
 

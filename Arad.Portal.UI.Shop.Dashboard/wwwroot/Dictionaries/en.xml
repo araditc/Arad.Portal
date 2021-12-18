@@ -106,7 +106,7 @@
 		<value>Menu1-1-1-1-1</value>
 	</string>-->
 	<!--End[JustForTesting]-->
-	<!--Start [PermissionTitle]-->
+	<!--============================================START [Admin Menues]======================================-->
 	<string key="PermissionTitle_MainPage">
 		<value>Dashboard</value>
 	</string>
@@ -297,7 +297,10 @@
 	<string key="PermissionTitle_Domains">
 		<value>Domains</value>
 	</string>
-	<!--End [PermissionTitle]-->
+	<string key="PermissionTitle_ShippingSetting">
+		<value>Shipping Setting</value>
+	</string>
+	<!--============================================End [Admin Menues]======================================-->
 	<!--Start [tables]-->
 	<string key="tbl_RowName">
 		<value>Row</value>
@@ -536,6 +539,9 @@
 	</string>
 	<string key="AlertAndMessage_DeletePermission">
 		<value>This Permission will be deleted.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteEntity">
+		<value>This entity will be deleted.</value>
 	</string>
 	<string key="AlertAndMessage_DeleteProductUnit">
 		<value>This ProductUnit will be deleted.</value>
@@ -1607,6 +1613,9 @@
 	</string>
 	<string key="Menu_domains">
 		<value>Domains</value>
+	</string>
+	<string key="Menu_shippingSetting">
+		<value>Shipping Setting</value>
 	</string>
 	<string key="Menu_ContentCategory">
 		<value>Content Category</value>

@@ -15,7 +15,7 @@ namespace Arad.Portal.DataLayer.Models.ShoppingCart
 
         public List<ShoppingCartDetailDTO> Products { get; set; }
 
-        public ShippingType ShippingType { get; set; }
+        public int ShippingTypeId { get; set; }
 
         public decimal ShippingExpense { get; set; }
 

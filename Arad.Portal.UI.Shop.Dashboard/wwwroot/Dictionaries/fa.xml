@@ -106,7 +106,7 @@
 		<value>منوی 1-1-1-1-1</value>
 	</string>-->
 	<!--End[JustForTesting]-->
-	<!--Start [PermissionTitle]-->
+	<!--============================================START [Admin Menues]======================================-->
 	<string key="PermissionTitle_MainPage">
 		<value>داشبورد</value>
 	</string>
@@ -293,7 +293,10 @@
 	<string key="PermissionTitle_Domains">
 		<value>دامنه ها</value>
 	</string>
-	<!--End [PermissionTitle]-->
+	<string key="PermissionTitle_ShippingSetting">
+		<value>تنظیمات حمل و نقل کالا</value>
+	</string>
+	<!--============================================End[Admin Menues]======================================-->
 	<!--Start [tables]-->
 	<string key="tbl_RowName">
 		<value>ردیف</value>
@@ -529,6 +532,9 @@
 	</string>
 	<string key="AlertAndMessage_DeletePermission">
 		<value>دسترسی مربوطه حذف خواهد شد.</value>
+	</string>
+	<string key="AlertAndMessage_DeleteEntity">
+		<value>موجودیت مربوطه حذف خواهد شد.</value>
 	</string>
 	<string key="AlertAndMessage_DeleteProductUnit">
 		<value>واحد محصول مربوطه حذف خواهد شد.</value>
@@ -1647,6 +1653,9 @@
 	</string>
 	<string key="Menu_domains">
 		<value>دامنه ها</value>
+	</string>
+	<string key="Menu_shippingSetting">
+		<value>تنظیمات حمل بار</value>
 	</string>
 	<string key="Menu_ContentCategory">
 		<value>گروه محتوا</value>

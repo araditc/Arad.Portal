@@ -356,7 +356,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                     var obj = new PurchasePerSellerDTO();
                     obj.SellerId = sellerPurchase.SellerId;
                     obj.SellerUserName = sellerPurchase.SellerUserName;
-                    obj.ShippingType = sellerPurchase.ShippingType;
+                    obj.ShippingTypeId = sellerPurchase.ShippingTypeId;
                     //??? update shippingExpense if seller change it
                     //TODO
                     finalPaymentPrice += sellerPurchase.ShippingExpense;

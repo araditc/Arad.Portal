@@ -1,0 +1,444 @@
+﻿@model Arad.Portal.DataLayer.Models.Domain.DomainDTO
+@using Arad.Portal.DataLayer.Models.Shared;
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    var alert = Language.GetString("AlertAndMessage_GotIt");
+    var error = Language.GetString("AlertAndMessage_Error");
+    var dir = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        dir = "rtl";
+    }
+    else
+    {
+        dir = "ltr";
+    }
+}
+@section Styles{
+    <link href="~/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css" rel="stylesheet" />
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
+    }
+    <style>
+        .text-danger {
+            font-size: 12px;
+        }
+
+        .btn-circle {
+            width: 30px;
+            height: 30px;
+            padding: 6px 0px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.42857;
+        }
+
+        .card-header {
+            background-color: #e0dcdf;
+        }
+    </style>
+}
+
+<h4>  @Language.GetString("Menu_domains") </h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <div class="card" id="addDomainCard">
+            <div class="card-header">
+                <h3 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.DomainId) ? 
+                     Language.GetString("EditDomain_Title") : Language.GetString("AddDomain_Title"))</h3>
+            </div>
+
+            <div class="card-body">
+                <input type="hidden" value="@Model.DomainId" asp-for="DomainId" />
+
+
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label for="DefaultLanguageId">@Language.GetString("DefaultLanguage")</label><br />
+                        <select class="form-control" asp-for="DefaultLanguageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text", Model.DefaultLanguageId))">
+                        </select>
+                        <span data-val-result="DefaultLanguageId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="groupName">@Language.GetString("DomainName")</label><br />
+                        <input type="text" class="form-control" asp-for="DomainName">
+                        <span data-val-result="DomainName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="languageId">@Language.GetString("DomainOwner")</label><br />
+                        <select class="form-control" asp-for="OwnerUserId" asp-items="@(new SelectList(ViewBag.Vendors,"Value","Text", Model.OwnerUserId))">
+                        </select>
+                        <span data-val-result="OwnerUserId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3" style="text-align:center;margin:auto;">
+                        @if (dir == "rtl")
+                        {
+                            <label style="font-weight:700;">
+                                <input type="checkbox" id="chbDefaultDomain" class="minimal">
+                                @Language.GetString("DefaultDomain")
+                            </label>
+                        }
+                        else
+                        {
+                            <div class="icheck-primary d-inline">
+                                <input type="checkbox" id="chbDefaultDomain">
+                                <label for="chbDefaultDomain">
+                                    @Language.GetString("DefaultDomain")
+                                </label>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label for="DefaultCurrencyId">@Language.GetString("DefaultCurrency")</label><br />
+                        <select class="form-control" asp-for="DefaultCurrencyId" asp-items="@(new SelectList( ViewBag.CurrencyList,"Value","Text", Model.DefaultCurrencyId))">
+                        </select>
+                        <span data-val-result="DefaultCurrencyId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">@Language.GetString("PriceHistory")</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="form-group col-md-3">
+                                        <label>@Language.GetString("Currency")</label>
+                                        <select class="form-control" id="currencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
+                                        </select>
+                                        <span data-val-result="currencyId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label>@Language.GetString("PriceValue")</label>
+                                        <input type="number" class="form-control" id="priceValue" />
+                                        <span data-val-result="priceValue" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>@Language.GetString("StartDate")</label>
+                                        @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                                        {
+                                            <div class="input-group-prepend ">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-calendar"></i>
+                                                </span>
+                                                <input autocomplete="off" id="dtpStartDate" type="text" class="form-control" />
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="input-group date" id="dtpStartDate" data-target-input="nearest">
+                                                <input type="text" class="form-control datetimepicker-input" />
+                                                <div class="input-group-append" data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                </div>
+                                            </div>
+                                        }
+                                        <span data-val-result="startDate" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-1" style="text-align:center;margin:auto;">
+                                        <div style="margin:auto;display:inline-block;">
+                                            <button type="button" class="btn btn-info btn-circle" onclick="addPriceToList();">
+                                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-3">
+                                        <span data-val-result="priceList" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table table-hover table-bordered">
+                                            <thead>
+                                                <tr style="text-align:center;">
+                                                    <th>@Language.GetString("Currency")</th>
+                                                    <th style="display:none;"></th>
+                                                    <th>@Language.GetString("PriceValue")</th>
+                                                    <th>@Language.GetString("StartDate")</th>
+                                                    <th>@Language.GetString("EndDate")</th>
+                                                    <th>@Language.GetString("ActivationState")</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="priceList">
+                                                @if (Model.Prices.Count != 0)
+                                                {
+                                                    @foreach (var price in Model.Prices)
+                                                    {
+                                                        <tr style="text-align:center;">
+                                                            <td>@price.CurrencyName</td>
+                                                            <td style="display:none;">@price.CurrencyId</td>
+                                                            <td>@price.PriceValue</td>
+                                                            <td>@price.StartDate</td>
+                                                            <td>@price.EndDate</td>
+                                                            <td>@(price.IsActive ? Language.GetString("Active") : Language.GetString("InActive")) </td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromPriceList(this);">
+                                                                    <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr style="text-align:center;">
+                                                        <td colspan="6">@Language.GetString("AlertAndMessage_NoDataToShow")</td>
+                                                    </tr>
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <input type="button" id="btnAddDomain" value="@Language.GetString("btn_Save")" class="btn btn-block btn-success" />
+                    <a asp-action="List" class="btn btn-block btn-default">@Language.GetString("btn_Back")</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <script src="~/plugins/datePicker/kamadatepicker.min.js"></script>
+    }
+    else
+    {
+        <script src="~/js/moment.min.js"></script>
+        <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
+    }
+    @if (dir == "rtl")
+    {
+        <script src="~/plugins/iCheck/icheck.min.js"></script>
+    }
+<script>
+        var active = '@Language.GetString("Active")';
+        var inActive = '@Language.GetString("InActive")';
+        $(document).ready(function () {
+            debugger;
+            $("#DefaultLanguageId").val('@ViewBag.LangId');
+
+             //icheckboxes radiobuttons
+            if ("@dir" == "rtl") {
+                $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+                    checkboxClass: 'icheckbox_minimal-blue',
+                    radioClass: 'iradio_minimal-blue'
+                });
+            }
+
+             //datetimepicker
+            if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
+            {
+                kamaDatepicker('dtpStartDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+            }
+            else
+            {
+                $('#dtpStartDate').datetimepicker({
+                    format: 'L'
+                });
+            }
+            $("#btnAddDomain").click(function () {
+            debugger;
+                var flag = false;
+                if ($("#DefaultLanguageId").val() == "" || $("#DefaultLanguageId").val() == "-1" )
+                {
+                    $("span[data-val-result='DefaultLanguageId']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
+                    flag = true;
+                }
+                if ($("#OwnerUserId").val() == "-1") {
+                    $("span[data-val-result='OwnerUserId']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
+                    flag = true;
+                }
+                if ($("#priceList tr").length == 0) {
+                    $("span[data-val-result='MultiLingualProperties']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
+                    flag = true;
+                }
+                if (!flag) {
+
+            var dto = FillDataToSend();
+                    $.ajax({
+                        url: "@Model.DomainId" != "" ? "/Domain/Edit" : "/Domain/Add",
+                    /*data: dataModel,*/
+                    contentType: 'application/json',
+                    data: JSON.stringify(dto),
+                type: 'Post',
+                beforeSend: function () {
+                    debugger;
+                    AddLoading($("#addDomainCard"));
+                },
+                success: function (result) {
+                    debugger;
+                    if (result.status === "Success") {
+                        Swal.fire({
+                            icon: 'success',
+                            text: result.message,
+                            showConfirmButton: false,
+                            timer: 3000
+                        }).then(() => {
+                            window.location.href = '@Url.Action("List")';
+                        });
+                    }else
+                    if (result.status === "ModelError") {
+                        var spanErrorList = $('span[data-val-result]');
+                        if (spanErrorList.length > 1) {
+                            spanErrorList.each(function() {
+                                $(this).html("");
+                                $(this).parent().removeClass("has-error");
+                            });
+                        } else {
+                            spanErrorList.html("");
+                            spanErrorList.parent().removeClass("has-error");
+                        }
+                        if (result.modelStateErrors !== null) {
+                                $('[data-val-result=' + value.key + ']').html(value.errorMessage);
+                                $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                            }
+                        }
+                    },
+                @*error: function (xhr, ajaxOptions, thrownError) {
+                    alert("@error");
+                    alert(xhr.status);
+                    alert(thrownError);
+                },*@
+                complete: function () {
+                    removeLoading($("#addDomainCard"));
+                }
+                });
+                }
+
+            });
+        });
+
+        function FillDataToSend() {
+            debugger;
+            var obj = {};
+            obj.Prices = [];
+            obj.DomainId = $("#DomainId").val();
+            obj.DomainName = $("#DomainName").val();
+            obj.OwnerUserId = $("#OwnerUserId").val();
+            obj.OwnerUserName = $("#OwnerUserId option:selected").text();
+            obj.DefaultLanguageId = $("#DefaultLanguageId").val();
+            obj.DefaultLanguageName = $("#DefaultLanguageId option:selected").text();
+            obj.DefaultCurrencyId = $("#DefaultCurrencyId").val();
+            obj.DefaultCurrencyName = $("#DefaultCurrencyId option:selected").text();
+            obj.IsDefault = $("#chbDefaultDomain").prop("checked") ;
+            //prices
+            $("#priceList tr").each(function () {
+
+                var innerModel = {};
+                innerModel.CurrencyId = $(this).find("td:eq(1)").text();
+                innerModel.CurrencyName = $(this).find("td:eq(0)").text();
+                innerModel.PriceValue = parseFloat($(this).find("td:eq(2)").text());
+                innerModel.StartDate = $(this).find("td:eq(3)").text();
+                innerModel.EndDate = $(this).find("td:eq(4)").text();
+                if ($(this).find("td:eq(5)").text() == active)
+                    innerModel.IsActive = true;
+                else
+                    innerModel.IsActive = false;
+                innerModel.PriceId = "";
+                innerModel.Symbol = "";
+                innerModel.Prefix = "";
+
+                obj.Prices.push(innerModel);
+
+            });
+            return obj;
+        }
+
+       function addPriceToList() {
+        debugger;
+        var flag = false;
+        $("span[data-val-result='priceValue']").html("");
+        $("span[data-val-result='startDate']").html("");
+        $("span[data-val-result='endDate']").html("");
+        if ($("#priceValue").val() == "") {
+            $("span[data-val-result='priceValue']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+            flag = true;
+        }
+        if ($("#dtpStartDate").val() == "") {
+            $("span[data-val-result='startDate']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+            flag = true;
+        }
+
+        if (!flag) {
+            var currencyId = $('#currencyId').val();
+
+            var tr = "";
+            if ($("#priceList").find("td:eq(1)").length > 0) {
+                $("#priceList").find("td:eq(1)").each(function () {
+                    debugger;
+                    if ($(this).text() == currencyId && $(this).parent().find("td:eq(4)").text() == "" &&
+                        $(this).parent().find("td:eq(5)").text() == active) {
+                        /*confirm = false;*/
+                        Swal.fire({
+                            title: '@Language.GetString("AlertAndMessage_AreYouSure")',
+                            text: '@Language.GetString("AlertAndMessage_PricePerCurrencyUniqueness")',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#d51c1c',
+                            cancelButtonColor: '#009c09db',
+                            confirmButtonText: '@Language.GetString("btn_Confirm")',
+                            cancelButtonText: '@Language.GetString("btn_NotConfirm")'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                debugger;
+                                /*confirm = true;*/
+                                $(this).parent().find("td:eq(5)").text(inActive);
+                                appendToPriceList(tr);
+                            }
+                        });
+                    }
+                });
+            } else {
+                appendToPriceList(tr);
+            }
+        }
+    }
+
+    function appendToPriceList(tr) {
+         tr = "<tr style='text-align:center;'><td>" + $("#currencyId option:selected").text() +
+                    "</td><td style='display:none;'>" + $('#currencyId').val() +
+                    "</td><td>" + $('#priceValue').val() +
+                    "</td><td>" + $("#dtpStartDate").val() +
+                    "</td><td></td><td>" + active +
+                    "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' onclick='deleteFromPriceList(this);'>" +
+                    "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
+                if ($("#priceList tr").length == 1 && $("#priceList tr")[0].children.length == 1) {
+                       $("#priceList tr")[0].remove();
+                     }
+                    $("#priceList").append(tr);
+                    $("#currencyId").val('@ViewBag.DefCurrency');
+                    $("#priceValue").val("0");
+                    $("#dtpStartDate").val("");
+    }
+
+    function deleteFromPriceList(sender) {
+        var tr = $(sender).parent().parent();
+        $(tr).remove();
+    }
+</script>
+}
+
+
+
+

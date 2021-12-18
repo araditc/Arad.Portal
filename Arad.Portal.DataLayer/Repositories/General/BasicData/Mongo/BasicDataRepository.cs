@@ -9,6 +9,10 @@ using MongoDB.Driver.Linq;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Arad.Portal.DataLayer.Entities.General.User;
+using Microsoft.AspNetCore.Identity;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
+using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
 {
@@ -16,11 +20,22 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
     {
         private readonly IMapper _mapper;
         private readonly BasicDataContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly DomainContext _domainContext;
         public BasicDataRepository(IHttpContextAccessor httpContextAccessor,
+            UserManager<ApplicationUser> userManager,
+            DomainContext domainContext,
             IMapper mapper, BasicDataContext basicDataContext):base(httpContextAccessor)
         {
             _mapper = mapper;
             _context = basicDataContext;
+            _userManager = userManager;
+            _domainContext = domainContext;
+        }
+
+        public string GetDomainName()
+        {
+            return GetDomainName();
         }
 
         public List<BasicDataModel> GetList(string groupKey)
@@ -32,11 +47,35 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
             result = _mapper.Map<List<BasicDataModel>>(lst);
             return result;
         }
-       
+
+        public List<BasicDataModel> GetListPerDomain(string groupKey)
+        {
+            var result = new List<BasicDataModel>();
+           var domainName = base.GetCurrentDomainName();
+            var domainEntity = _domainContext.Collection
+                .Find(_ => _.DomainName == domainName).FirstOrDefault();
+
+            var lst = _context.Collection
+                  .Find(_ => _.GroupKey.ToLower() == groupKey.ToLower() && _.AssociatedDomainId == domainEntity.DomainId).ToList();
+
+            result = _mapper.Map<List<BasicDataModel>>(lst);
+            return result;
+        }
+
         public bool HasLastID()
         {
             var result = false;
             if (_context.Collection.Find(_ => _.GroupKey.ToLower() == "lastid").Any())
+            {
+                result = true;
+            }
+            return result;
+        }
+
+        public bool HasShippingType()
+        {
+            var result = false;
+            if (_context.Collection.Find(_ => _.GroupKey.ToLower() == "shippingtype").Any())
             {
                 result = true;
             }

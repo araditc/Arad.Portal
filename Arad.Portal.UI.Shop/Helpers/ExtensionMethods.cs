@@ -404,6 +404,33 @@ namespace Arad.Portal.UI.Shop.Helpers
                 basicDataRepository.InsertOne(def);
             }
 
+            if(!basicDataRepository.HasShippingType())
+            {
+                var post = new DataLayer.Entities.General.BasicData.BasicData
+                {
+                    BasicDataId = Guid.NewGuid().ToString(),
+                    GroupKey = "ShippingType",
+                    Text = "Post",
+                    Value = "1",
+                    Order = 1
+                };
+                basicDataRepository.InsertOne(post);
+
+
+                var courier = new DataLayer.Entities.General.BasicData.BasicData
+                {
+                    BasicDataId = Guid.NewGuid().ToString(),
+                    GroupKey = "ShippingType",
+                    Text = "Courier",
+                    Value = "2",
+                    Order = 2
+
+                };
+                basicDataRepository.InsertOne(courier);
+            }
+
+            //providers diffrenet Types
+
         }
     }
 }

@@ -35,7 +35,10 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
 
         public List<ShoppingCartDetail> Products { get; set; }
 
-        public ShippingType ShippingType { get; set; }
+        /// <summary>
+        /// the value property of basicData class with groupkey equal to  'ShippingType'
+        /// </summary>
+        public int ShippingTypeId { get; set; }
 
         public decimal ShippingExpense { get; set; }
 
@@ -64,9 +67,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
         public decimal TotalAmountToPay { get; set; }
     }
 
-    public enum ShippingType
-    {
-        Post,
-        Courier
-    }
+    //public enum ShippingType
+    //{
+    //    Post,
+    //    Courier
+    //}
 }

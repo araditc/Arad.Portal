@@ -293,37 +293,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                 }
             }
 
-            //if(!messageTemplateRepository.HasAny())
-            //{
-            //    var lan1 = new MessageTemplateMultiLingual()
-            //    {
-            //        LanguageName = "en-US",
-            //        Body = "Your New Password will be : [0]",
-            //        Subject = "ChangePassword"
-            //    };
-            //    var lan2 = new MessageTemplateMultiLingual()
-            //    {
-            //        LanguageName = "fa-IR",
-            //        Body = "رمز عبور جدید شما : [0]",
-            //        Subject = "تغییر رمز عبور"
-            //    };
-            //    var changePasswordTemplate = new MessageTemplate()
-            //    {
-            //        MessageTemplateId = Guid.NewGuid().ToString(),
-            //        CreationDate = DateTime.UtcNow,
-            //        IsActive = true,
-            //        IsSystemTemplate = true,
-            //        NotificationType = DataLayer.Models.Shared.Enums.NotificationType.Sms,
-            //        TemplateDescription = "this template is used when user request to change password",
-            //        TemplateName = "ChangePassword"
-            //    };
-            //    changePasswordTemplate.MessageTemplateMultiLingual.Add(lan1);
-            //    changePasswordTemplate.MessageTemplateMultiLingual.Add(lan2);
-
-
-            //    messageTemplateRepository.InsertOne(changePasswordTemplate);
-            //}
-
             //Language
             using var languageScope = app.ApplicationServices.CreateScope();
             var languageRepository =
@@ -399,6 +368,32 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                 };
                 basicDataRepository.InsertOne(def);
             }
+            if (!basicDataRepository.HasShippingType())
+            {
+                var post = new DataLayer.Entities.General.BasicData.BasicData
+                {
+                    BasicDataId = Guid.NewGuid().ToString(),
+                    GroupKey = "ShippingType",
+                    Text = "Post",
+                    Value = "1",
+                    Order = 1
+                };
+                basicDataRepository.InsertOne(post);
+
+
+                var courier = new DataLayer.Entities.General.BasicData.BasicData
+                {
+                    BasicDataId = Guid.NewGuid().ToString(),
+                    GroupKey = "ShippingType",
+                    Text = "Courier",
+                    Value = "2",
+                    Order = 2
+
+                };
+                basicDataRepository.InsertOne(courier);
+            }
+
+            //providers diffrenet Types
 
         }
     }

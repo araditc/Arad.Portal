@@ -1,10 +1,10 @@
 ﻿@using System.Web
 @using Arad.Portal.DataLayer.Models.Shared;
 @using Arad.Portal.GeneralLibrary.Utilities;
-@using Arad.Portal.DataLayer.Models.Domain;
+@using Arad.Portal.DataLayer.Models.Setting;
 @using Arad.Portal.UI.Shop.Dashboard.ViewComponents;
 
-@model PagedItems<DomainViewModel>
+@model PagedItems<ShippingSettingDTO>
 @{
     var i = ((Model.CurrentPage - 1) * Model.PageSize);
     bool isSearch = false;
@@ -32,7 +32,7 @@
 }
 @section Styles
 {
-   
+
     <style>
         .ListCell {
             text-align: center;
@@ -41,59 +41,26 @@
     </style>
 }
 
-<!--<div class="card card-dark">
-    <a data-toggle="collapse" data-parent="#accordion" href="#searchCollapse"
-       aria-expanded="@(!isSearch ? "false" : "true" )" class="@(!isSearch ? " collapsed" : null)">
 
-        <div class="card-header">
-            <h3 class="card-title">
-                <i class="fas fa-search"></i>
-                <span style="margin-right: 5px">@Language.GetString("btn_Search")</span>
-            </h3>
-        </div>
-    </a>
-
-    <div id="searchCollapse"-->
-@*class="@searchCollapseClass"*@
-<!--style="">
-        <div class="card-body">
-            <div id="accordion">
-                <div class="row">
-
-                    <div class="form-group col-md-3">
-                        <label>@Language.GetString("DomainName")</label>
-                        <input type="text" id="txtDomainNameFilter" class="form-control" placeholder='@Language.GetString("DomainName")' />
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card-footer">
-            <button id="btnSearch" class="btn btn-primary" type="submit">
-                <i style="position: relative; left: 5px; top: 1px;" class="fa fa-search"></i>
-                @Language.GetString("btn_Search")
-            </button>
-        </div>
-    </div>
-</div>-->
-<div class="card" id="domainListCard">
+<div class="card" id="shippingSettingListCard">
     <div class="card-header">
-        <h3 class="card-title">@Language.GetString("Menu_domains")</h3>
+        <h3 class="card-title">@Language.GetString("Menu_shippingSetting")</h3>
         <div class="card-tools" style='@(dir=="rtl" ? "float:left;" : "float:right;")'>
             @if (ViewBag.Permissions["Add"])
             {
-                <a asp-action="AddEdit" asp-controller="Domain" class="btn btn-success btn-sm">
+                <a asp-action="AddEdit" asp-controller="ShippingSetting" class="btn btn-success btn-sm">
                     <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus"></i>&nbsp; @Language.GetString("btn_Add")
                 </a>
             }
         </div>
     </div>
-    <div class="card-body table-bordered  table-responsive p-0">
+    @*<div class="card-body table-bordered  table-responsive p-0">
         <table class="table table-hover">
             <thead>
                 <tr style="text-align:center;">
                     <th>@Language.GetString("tbl_RowName")</th>
                     <th>@Language.GetString("DomainName")</th>
-                    <th>@Language.GetString("DomainOwner")</th>
+                    <th>@Language.GetString("")</th>
                     <th>@Language.GetString("DefaultLanguage")</th>
                     <th>@Language.GetString("CurrentDomainPrice")</th>
                     <th>@Language.GetString("DefaultCurrency")</th>
@@ -112,8 +79,10 @@
                             <td class="ListCell">@item.DomainName</td>
                             <td class="ListCell">@item.OwnerUserName</td>
                             <td class="ListCell">@item.DefaultLanguageName</td>
-                            <td class="ListCell">@(item.Prices.Any(_ => _.StartDate <= DateTime.UtcNow && _.IsActive && _.EndDate == null && _.CurrencyId == item.DefaultCurrencyId) ? item.Prices
-                            .FirstOrDefault(_ =>_.StartDate <= DateTime.UtcNow && _.IsActive && _.EndDate == null && _.CurrencyId == item.DefaultCurrencyId).PriceValue : "")</td>
+                            <td class="ListCell">
+                                @(item.Prices.Any(_ => _.StartDate <= DateTime.UtcNow && _.IsActive && _.EndDate == null && _.CurrencyId == item.DefaultCurrencyId) ? item.Prices
+                            .FirstOrDefault(_ =>_.StartDate <= DateTime.UtcNow && _.IsActive && _.EndDate == null && _.CurrencyId == item.DefaultCurrencyId).PriceValue : "")
+                            </td>
                             <td class="ListCell">@item.DefaultCurrencyName</td>
                             <td class="ListCell">@(item.IsDefault ? Language.GetString("Yes") : Language.GetString("No"))</td>
                             <td>
@@ -150,14 +119,14 @@
                 }
             </tbody>
         </table>
-    </div>
+    </div>*@
     <div class="card-footer">
         @await Component.InvokeAsync("Pagination", new PageViewModel
         {
             CurrentPage = Model.CurrentPage,
             ItemsCount = Model.ItemsCount,
             PageSize = Model.PageSize,
-            Navigation = Url.Action("List", "Domain"),
+            Navigation = Url.Action("List", "ShippingSetting"),
             QueryParams = Model.QueryString
         })
     </div>

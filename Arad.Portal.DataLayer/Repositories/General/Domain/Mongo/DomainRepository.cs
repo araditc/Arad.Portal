@@ -28,7 +28,6 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
         private readonly IHttpContextAccessor _accessor;
 
         public DomainRepository(DomainContext context,
-                                UserContext user,
                                 IHttpContextAccessor httpContextAccessor,
                                 UserManager<ApplicationUser> userManager,
                                 IMapper mapper): base(httpContextAccessor)
@@ -92,6 +91,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                     equallentEntity.CreationDate = DateTime.Now;
                     equallentEntity.CreatorUserId = this.GetUserId();
                     equallentEntity.CreatorUserName = this.GetUserName();
+                    equallentEntity.IsActive = true;
 
 
                     await _context.Collection.InsertOneAsync(equallentEntity);
