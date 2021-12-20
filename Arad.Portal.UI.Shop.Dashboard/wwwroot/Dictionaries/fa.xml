@@ -301,6 +301,27 @@
 	<string key="tbl_RowName">
 		<value>ردیف</value>
 	</string>
+	<string key="tbl_ShippingTypes">
+		<value>روش های حمل بار</value>
+	</string>
+	<string key="tbl_ShippingType">
+		<value>روش حمل بار</value>
+	</string>
+	<string key="tbl_HasFixedExpense">
+		<value>آیا هزینه ثابت است؟</value>
+	</string>
+	<string key="tbl_FixedExpenseValue">
+		<value>مقدار هزینه ثابت</value>
+	</string>
+	<string key="tbl_Provider">
+		<value>سرویس دهنده</value>
+	</string>
+	<string key="tbl_FromInvoiceExpense">
+		<value>از فاکتور با هزینه</value>
+	</string>
+	<string key="tbl_ShippingExpense">
+		<value>هزینه حمل</value>
+	</string>
 	<string key="tbl_Price">
 		<value>قیمت</value>
 	</string>
@@ -396,6 +417,15 @@
 	</string>
 	<string key="tbl_ContentCategoryCode">
 		<value>شناسه گروه محتوا</value>
+	</string>
+	<string key="tbl_ShippingWays">
+		<value>روش های حمل بار</value>
+	</string>
+	<string key="tbl_FreeShipping">
+		<value>ارسال رایگان برای خرید بالای</value>
+	</string>
+	<string key="tbl_ShippingCoupon">
+		<value>برای سفارش از [0] هزینه ارسال [1]</value>
 	</string>
 	<!--End [tables]-->
 	<!--START [Enum Descriptions]-->
@@ -513,6 +543,9 @@
 		<value>ابتدا زبان مورد نظر را انتخاب کنید.</value>
 	</string>
 	<string key="AlertAndMessage_FillMultiLingualProperty">
+		<value>لطفا حداقل یک سطر جدول را پرکنید.</value>
+	</string>
+	<string key="AlertAndMessage_FillShippingWay">
 		<value>لطفا حداقل یک سطر جدول را پرکنید.</value>
 	</string>
 	<string key="AlertAndMessage_FillPriceList">
@@ -1249,6 +1282,12 @@
 	<string key="EditDomain_Title">
 		<value>ویرایش دامنه</value>
 	</string>
+	<string key="EditShippingSetting">
+		<value>ویرایش تنظیمات حمل بار</value>
+	</string>
+	<string key="Add_ShippingSetting">
+		<value>افزودن تنظیمات حمل بار</value>
+	</string>
 	<string key="EditProductPart_Title">
 		<value>ویرایش محصول</value>
 	</string>
@@ -1654,7 +1693,7 @@
 	<string key="Menu_domains">
 		<value>دامنه ها</value>
 	</string>
-	<string key="Menu_shippingSetting">
+	<string key="Menu_ShippingSetting">
 		<value>تنظیمات حمل بار</value>
 	</string>
 	<string key="Menu_ContentCategory">

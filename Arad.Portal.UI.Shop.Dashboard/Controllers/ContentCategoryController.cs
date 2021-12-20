@@ -6,6 +6,7 @@ using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.UI.Shop.Dashboard.Authorization;
 using Arad.Portal.UI.Shop.Dashboard.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
+    [Authorize(Policy = "Role")]
     public class ContentCategoryController : Controller
     {
         private readonly IContentCategoryRepository _contentCategoryRepository;

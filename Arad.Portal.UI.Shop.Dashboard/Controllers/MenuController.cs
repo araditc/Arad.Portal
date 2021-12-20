@@ -19,9 +19,11 @@ using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Contracts.General.Content;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Entities.General.Menu;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
+    [Authorize(Policy = "Role")]
     public class MenuController : Controller
     {
         private readonly IMenuRepository _menuRepository;

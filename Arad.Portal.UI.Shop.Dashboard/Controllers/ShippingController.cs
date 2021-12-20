@@ -1,11 +1,14 @@
 ﻿using Arad.Portal.DataLayer.Contracts.General.BasicData;
+using Arad.Portal.DataLayer.Contracts.General.Currency;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Contracts.General.Services;
+using Arad.Portal.DataLayer.Contracts.Shop.Setting;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Models.Setting;
 using Arad.Portal.DataLayer.Models.Shared;
-using Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo;
 using Arad.Portal.GeneralLibrary.Utilities;
+using Arad.Portal.UI.Shop.Dashboard.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,19 +20,24 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
+    [Authorize(Policy = "Role")]
     public class ShippingController : Controller
     {
         private readonly IHttpContextAccessor _accessor;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IBasicDataRepository _basicDataRepository;
         private readonly IProviderRepository _providerRepository;
-        private readonly ShippingSettingRepository _shippingSettingRepository;
+        private readonly IShippingSettingRepository _shippingSettingRepository;
         private readonly IDomainRepository _domainRepository;
+        private readonly IPermissionView _permissionViewManager;
+        private readonly ICurrencyRepository _currencyRepository;
         public ShippingController(IHttpContextAccessor accessor,
-            ShippingSettingRepository shippingSettingRepository,
+            IShippingSettingRepository shippingSettingRepository,
             UserManager<ApplicationUser> userManager,
             IDomainRepository domainRepository,
             IProviderRepository providerRepository,
+            ICurrencyRepository currencyRepository,
+            IPermissionView permissionViewManager,
             IBasicDataRepository basicDataRepository)
         {
             _shippingSettingRepository = shippingSettingRepository;
@@ -37,6 +45,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _basicDataRepository = basicDataRepository;
             _domainRepository = domainRepository;
             _providerRepository = providerRepository;
+            _currencyRepository = currencyRepository;
+            _permissionViewManager = permissionViewManager;
             _accessor = accessor;
         }
         public async Task<IActionResult> List()
@@ -44,6 +54,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             PagedItems<ShippingSettingDTO> result;
             try
             {
+                var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
+                ViewBag.Permissions = dicKey;
                 result = await _shippingSettingRepository.List(this.Request.QueryString.ToString());
                 foreach (var item in result.Items)
                 {
@@ -60,22 +72,53 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> AddEdit(string id = "")
         {
             var model = new ShippingSettingDTO();
-            //var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //var userDB = await _userManager.FindByIdAsync(currentUserId);
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
+            var domainEntity = _domainRepository.FetchByName(domainName).ReturnValue;
 
+            model.CurrencyId = domainEntity.DefaultCurrencyId;
+            var defCurrency = _currencyRepository.FetchCurrency(domainEntity.DefaultCurrencyId).ReturnValue;
+            model.CurrencySymbol = defCurrency.Symbol;
+            var userEntity = await _userManager.FindByIdAsync(currentUserId);
+            ViewBag.IsSystem = userEntity.IsSystemAccount;
+            
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = _shippingSettingRepository.FetchById(id);
+                foreach (var item in model.AllowedShippingTypes)
+                {
+                    //TODO if HasFixedExpense = false get data from provider with providerId
+                    //get expense from that provider and generate floating expense
+                    //item.FloatingExpense = 
+                }
             }
-            foreach (var item in model.AllowedShippingTypes)
+            if(!userEntity.IsSystemAccount)
             {
-                //TODO if shippingType get data from an api we should request to
-                //that api based on our inputs and the get the floatingExpense
-                //item.FloatingExpense = 
+                model.AssociatedDomainId = domainEntity.DomainId;
             }
+           
+
             ViewBag.Providers = _providerRepository.GetProvidersPerType(DataLayer.Entities.General.Service.ProviderType.Shipping);
             ViewBag.ShippngTypes = _basicDataRepository.GetListPerDomain("ShippingType");
+            ViewBag.CurrencyList = _currencyRepository.GetAllActiveCurrency();
+            ViewBag.DomainList = _domainRepository.GetAllActiveDomains();
             return View(model);
+        }
+
+
+        [HttpGet]
+        public IActionResult GetSymbolOfCurrency(string currencyId)
+        {
+            var currencyEntity = _currencyRepository.FetchCurrency(currencyId);
+
+            if(currencyEntity.ReturnValue != null)
+            {
+                return Json( new { symbol = currencyEntity.ReturnValue.Symbol });
+            }else
+            {
+                return Json(new { symbol = "" });
+            }
+
         }
 
         [HttpPost]
@@ -97,21 +140,25 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
-                if(!string.IsNullOrWhiteSpace(dto.ShippingCoupon.PersianStartDate))
+                if (!string.IsNullOrWhiteSpace(dto.ShippingCoupon.PersianStartDate))
                 {
                     dto.ShippingCoupon.StartDate = DateHelper.ToEnglishDate(dto.ShippingCoupon.PersianStartDate);
                 }
-                if(!string.IsNullOrWhiteSpace(dto.ShippingCoupon.PersianEndDate))
+                if (!string.IsNullOrWhiteSpace(dto.ShippingCoupon.PersianEndDate))
                 {
                     dto.ShippingCoupon.EndDate = DateHelper.ToEnglishDate(dto.ShippingCoupon.PersianEndDate);
                 }
                 dto.ShippingSettingId = Guid.NewGuid().ToString();
                 var domainName = _basicDataRepository.GetDomainName();
                 var currentDomain = _domainRepository.FetchByName(domainName).ReturnValue;
-                dto.AssociatedDomainId = currentDomain.DomainId;
+                //dto.AssociatedDomainId = currentDomain.DomainId;
+                if (string.IsNullOrWhiteSpace(dto.CurrencyId))
+                {
+                    dto.CurrencyId = currentDomain.DefaultCurrencyId;
+                }
+                var currencyEntity = _currencyRepository.FetchCurrency(dto.CurrencyId).ReturnValue;
+                dto.CurrencySymbol = currencyEntity.Symbol;
 
-                dto.ShippingCoupon.ShippingCouponId = Guid.NewGuid().ToString();
-               
                 Result saveResult = await _shippingSettingRepository.AddShippingSetting(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });

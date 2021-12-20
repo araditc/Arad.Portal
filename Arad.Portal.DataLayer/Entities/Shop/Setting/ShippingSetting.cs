@@ -23,6 +23,10 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Setting
 
         public ShippingCoupon ShippingCoupon { get; set; }
 
+        public string CurrencyId { get; set; }
+
+        public string CurrencySymbol { get; set; }
+
     }
 
     public class ShippingTypeDetail
@@ -33,7 +37,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Setting
         public int ShippingTypeId { get; set; }
 
         /// <summary>
-        /// the text propert of BasicData class with groupkey equals to 'ShippingType'
+        /// the text property of BasicData class with groupkey equals to 'ShippingType'
         /// </summary>
         public string ShippingTypeText { get; set; }
 
@@ -42,7 +46,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Setting
         public decimal FixedExpenseValue { get; set; }
 
         public string ProviderId { get; set; }
-        
+
+        public string ProviderName { get; set; }
+
     }
 
     public class ShippingCoupon
@@ -50,7 +56,6 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Setting
         //public string ShippingCouponId { get; set; }
 
         public decimal FromInvoiceExpense { get; set; }
-
         /// <summary>
         /// if shipping expense equal zero it means shipping is free
         /// </summary>

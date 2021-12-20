@@ -305,6 +305,27 @@
 	<string key="tbl_RowName">
 		<value>Row</value>
 	</string>
+	<string key="tbl_ShippingTypes">
+		<value>Shipping types</value>
+	</string>
+	<string key="tbl_ShippingType">
+		<value>Shipping type</value>
+	</string>
+	<string key="tbl_HasFixedExpense">
+		<value>Is Expense Fixed?</value>
+	</string>
+	<string key="tbl_FixedExpenseValue">
+		<value>Fixed Expense Value</value>
+	</string>
+	<string key="tbl_Provider">
+		<value>Provider</value>
+	</string>
+	<string key="tbl_FromInvoiceExpense">
+		<value>From Invoice With Price</value>
+	</string>
+	<string key="tbl_ShippingExpense">
+		<value>Shipping Expense</value>
+	</string>
 	<string key="tbl_Price">
 		<value>Price</value>
 	</string>
@@ -401,6 +422,16 @@
     <string key="tbl_ContentCategoryCode">
 		<value>ContentCategory Id</value>
 	</string>
+	<string key="tbl_ShippingWays">
+		<value>shipping ways</value>
+	</string>
+	<string key="tbl_FreeShipping">
+		<value>free shipping for purchase upper than</value>
+	</string>
+	<string key="tbl_ShippingCoupon">
+		<value>Orders from [0] shipping expense [1]</value>
+	</string>
+	
 	<!--End [tables]-->
 	<!--START [Enum Descriptions]-->
 	<string key="EnumDesc_List">
@@ -472,7 +503,7 @@
 		<value>the file size exceed limitation.</value>
 	</string>
 	<string key="AlertAndMessage_PricePerCurrencyUniqueness">
-		<value>there is already a active price for this currency, if start and end of duration overlapped, then previous price will be deactivated.</value>
+		<value>there is already an active price for this currency,if start and end of duration overlapped, then previous price will be deactivated.</value>
 	</string>
 	<string key="AlertAndMessage_DefaultLanguageRequired">
 		<value>Please select default language of user.</value>
@@ -522,6 +553,10 @@
 	<string key="AlertAndMessage_FillMultiLingualProperty">
 		<value>Please fill at Least one row of table.</value>
 	</string>
+	<string key="AlertAndMessage_FillShippingWay">
+		<value>Please fill at Least one row of table.</value>
+	</string>
+	
 	<string key="AlertAndMessage_FillPriceList">
 		<value>Please fill One valid and active price row</value>
 	</string>
@@ -1206,6 +1241,12 @@
 	<string key="EditDomain_Title">
 		<value>Edit Domain</value>
 	</string>
+	<string key="Edit_ShippingSetting">
+		<value>Edit Shipping Setting</value>
+	</string>
+	<string key="Add_ShippingSetting">
+		<value>Add Shipping Setting</value>
+	</string>
 	<string key="EditProductPart_Title">
 		<value>Edit Product</value>
 	</string>
@@ -1614,7 +1655,7 @@
 	<string key="Menu_domains">
 		<value>Domains</value>
 	</string>
-	<string key="Menu_shippingSetting">
+	<string key="Menu_ShippingSetting">
 		<value>Shipping Setting</value>
 	</string>
 	<string key="Menu_ContentCategory">

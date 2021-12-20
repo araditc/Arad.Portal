@@ -35,6 +35,8 @@ using Arad.Portal.DataLayer.Models.User;
 using Arad.Portal.DataLayer.Entities.General.Menu;
 using Arad.Portal.DataLayer.Models.Menu;
 using Arad.Portal.DataLayer.Entities.General.BasicData;
+using Arad.Portal.DataLayer.Entities.Shop.Setting;
+using Arad.Portal.DataLayer.Models.Setting;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Mapping
 {
@@ -65,6 +67,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Mapping
             CreateMap<Menu, MenuDTO>().ReverseMap();
             CreateMap<Price, PriceDTO>().ReverseMap();
             CreateMap<BasicDataModel, BasicData>().ReverseMap();
+            CreateMap<ShippingSetting, ShippingSettingDTO>().ReverseMap();
+            CreateMap<ShippingTypeDetail, ShippingTypeDetailDTO>().ReverseMap();
+            CreateMap<ShippingCoupon, ShippingCouponDTO>().ReverseMap();
 
         }
 

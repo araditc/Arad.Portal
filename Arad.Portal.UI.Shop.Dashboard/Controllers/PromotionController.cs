@@ -15,9 +15,11 @@ using System.Linq;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.DataLayer.Contracts.Shop.Product;
 using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
+    [Authorize(Policy = "Role")]
     public class PromotionController : Controller
     {
         private readonly IPromotionRepository _promotionRepository;

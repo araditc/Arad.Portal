@@ -38,6 +38,7 @@ using Arad.Portal.DataLayer.Contracts.General.Error;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
+    [Authorize(Policy = "Role")]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

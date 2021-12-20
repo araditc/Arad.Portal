@@ -412,6 +412,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                   Text = _.DomainName,
                   Value = _.DomainId
               }).ToList();
+            result.Insert(0, new SelectListModel()
+            { 
+                Text = GeneralLibrary.Utilities.Language.GetString("Choose"), 
+                Value = "-1" 
+            });
             return result;
         }
 

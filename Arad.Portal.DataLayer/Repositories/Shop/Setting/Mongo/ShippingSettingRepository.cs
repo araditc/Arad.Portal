@@ -103,6 +103,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo
                 .Find(_ => _.ShippingSettingId == shippingSettingId).FirstOrDefault();
 
             result = _mapper.Map<ShippingSettingDTO>(entity);
+            if(entity.ShippingCoupon != null)
+            {
+                result.ShippingCoupon.PersianStartDate = DateHelper.ToPersianDdate(entity.ShippingCoupon.StartDate);
+                if(entity.ShippingCoupon.EndDate != null)
+                {
+                    result.ShippingCoupon.PersianEndDate = DateHelper.ToPersianDdate(entity.ShippingCoupon.EndDate.Value);
+                }
+            }
             return result;
         }
 
@@ -134,28 +142,32 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo
                 if(userEntity.IsSystemAccount)
                 {
                     totalCount = await _context.Collection.Find(c => true).CountDocumentsAsync();
-                    list = _context.Collection.AsQueryable().Skip((page - 1) * pageSize)
-                      .Take(pageSize).Select(_ => new ShippingSettingDTO()
-                      {
-                          ShippingSettingId = _.ShippingSettingId,
-                          AssociatedDomainId = _.AssociatedDomainId,
-                          DomainName = "",
-                          ShippingCoupon = _mapper.Map<ShippingCouponDTO>(_.ShippingCoupon),
-                          AllowedShippingTypes = _mapper.Map<List<ShippingTypeDetailDTO>>(_.AllowedShippingTypes)
-                      }).ToList();
+                    var lst = _context.Collection.AsQueryable().Skip((page - 1) * pageSize)
+                      .Take(pageSize).ToList();
+                    //.Select(_ => new ShippingSettingDTO()
+                    //  {
+                    //      ShippingSettingId = _.ShippingSettingId,
+                    //      AssociatedDomainId = _.AssociatedDomainId,
+                    //      DomainName = "",
+                    //      ShippingCoupon = _mapper.Map<ShippingCouponDTO>(_.ShippingCoupon),
+                    //      AllowedShippingTypes = _mapper.Map<List<ShippingTypeDetailDTO>>(_.AllowedShippingTypes)
+                    //  }).ToList();
+                    list = _mapper.Map<List<ShippingSettingDTO>>(lst);
                 }
                 else
                 {
                     totalCount = await _context.Collection
                         .Find(_ => userEntity.DomainId.Contains(_.AssociatedDomainId)).CountDocumentsAsync();
-                    list = _context.Collection.AsQueryable()
-                        .Where(_=>userEntity.DomainId.Contains(_.AssociatedDomainId)).Skip((page - 1) * pageSize)
-                     .Take(pageSize).Select(_ => new ShippingSettingDTO()
-                     {
-                         ShippingSettingId = _.ShippingSettingId,
-                         ShippingCoupon = _mapper.Map<ShippingCouponDTO>(_.ShippingCoupon),
-                         AllowedShippingTypes = _mapper.Map<List<ShippingTypeDetailDTO>>(_.AllowedShippingTypes)
-                     }).ToList();
+                    var lst = _context.Collection.AsQueryable()
+                        .Where(_ => userEntity.DomainId.Contains(_.AssociatedDomainId)).Skip((page - 1) * pageSize)
+                        .Take(pageSize).ToList();
+                     //_ => new ShippingSettingDTO()
+                     //{
+                     //    ShippingSettingId = _.ShippingSettingId,
+                     //    ShippingCoupon = _mapper.Map<ShippingCouponDTO>(_.ShippingCoupon),
+                     //    AllowedShippingTypes = _mapper.Map<List<ShippingTypeDetailDTO>>(_.AllowedShippingTypes)
+                     //}).ToList();
+                    list = _mapper.Map<List<ShippingSettingDTO>>(lst);
                 }
 
                 result.CurrentPage = page;

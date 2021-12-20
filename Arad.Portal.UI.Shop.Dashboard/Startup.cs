@@ -73,6 +73,10 @@ using Arad.Portal.DataLayer.Repositories.General.Email.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.Error;
 using Arad.Portal.DataLayer.Repositories.General.Error.Mongo;
 using System.Linq;
+using Arad.Portal.DataLayer.Contracts.Shop.Setting;
+using Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo;
+using Arad.Portal.DataLayer.Contracts.General.Services;
+using Arad.Portal.DataLayer.Repositories.General.Service.Mongo;
 
 namespace Arad.Portal.UI.Shop.Dashboard
 {
@@ -186,10 +190,11 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<IPermissionView, PermissionView>();
             services.AddTransient<RemoteServerConnection>();
             services.AddTransient<CreateNotification>();
-            AddRepositoryServices(services);
-            services.AddSingleton<CodeGenerator>();
-            services.AddProgressiveWebApp();
             
+            services.AddProgressiveWebApp();
+            AddRepositoryServices(services);
+            services.AddTransient<CodeGenerator>();
+
         }
 
        
@@ -277,6 +282,37 @@ namespace Arad.Portal.UI.Shop.Dashboard
 
         private void AddRepositoryServices(IServiceCollection services)
         {
+
+            #region contextes
+            services.AddTransient<CurrencyContext>();
+            services.AddTransient<DomainContext>();
+            services.AddTransient<LanguageContext>();
+            services.AddTransient<PermissionContext>();
+            services.AddTransient<RoleContext>();
+            services.AddTransient<UserContext>();
+            //services.AddTransient<OrderContext>();
+            services.AddTransient<ProductContext>();
+            services.AddTransient<PromotionContext>();
+            services.AddTransient<ShoppingCartContext>();
+            services.AddTransient<TransactionContext>();
+            services.AddTransient<NotificationContext>();
+            services.AddTransient<ContentCategoryContext>();
+            services.AddTransient<MessageTemplateContext>();
+            services.AddTransient<ContentContext>();
+            services.AddTransient<CommentContext>();
+            services.AddTransient<MenuContext>();
+            services.AddTransient<BasicDataContext>();
+            services.AddTransient<SystemSettingContext>();
+            services.AddTransient<SMTPContext>();
+            services.AddTransient<POPContext>();
+            services.AddTransient<EmailOptionContext>();
+            services.AddTransient<ErrorLogContext>();
+            services.AddTransient<ShippingSettingContext>();
+            services.AddTransient<ProviderContext>();
+
+            #endregion
+
+
             services.AddTransient<ICurrencyRepository, CurrencyRepository>();
             services.AddTransient<IDomainRepository, DomainRepository>();
             services.AddTransient<ILanguageRepository, LanguageRepository>();
@@ -305,33 +341,11 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<IPOPRepository, POPRepository>();
             services.AddTransient<IEmailOptionRepository, EmailOptionRepository>();
             services.AddTransient<IErrorLogRepository, ErrorLogRepository>();
+            services.AddTransient<IShippingSettingRepository, ShippingSettingRepository>();
+            services.AddTransient<IProviderRepository, ProviderRepository>();
+           
 
-            #region contextes
-            services.AddTransient<CurrencyContext>();
-            services.AddTransient<DomainContext>();
-            services.AddTransient<LanguageContext>();
-            services.AddTransient<PermissionContext>();
-            services.AddTransient<RoleContext>();
-            services.AddTransient<UserContext>();
-            //services.AddTransient<OrderContext>();
-            services.AddTransient<ProductContext>();
-            services.AddTransient<PromotionContext>();
-            services.AddTransient<ShoppingCartContext>();
-            services.AddTransient<TransactionContext>();
-            services.AddTransient<NotificationContext>();
-            services.AddTransient<ContentCategoryContext>();
-            services.AddTransient<MessageTemplateContext>();
-            services.AddTransient<ContentContext>();
-            services.AddTransient<CommentContext>();
-            services.AddTransient<MenuContext>();
-            services.AddTransient<BasicDataContext>();
-            services.AddTransient<SystemSettingContext>();
-            services.AddTransient<SMTPContext>();
-            services.AddTransient<POPContext>();
-            services.AddTransient<EmailOptionContext>();
-            services.AddTransient<ErrorLogContext>();
-
-            #endregion
+         
 
         }
     }

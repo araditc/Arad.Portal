@@ -35,7 +35,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
 
         public string GetDomainName()
         {
-            return GetDomainName();
+            return base.GetCurrentDomainName();
         }
 
         public List<BasicDataModel> GetList(string groupKey)
@@ -56,7 +56,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
                 .Find(_ => _.DomainName == domainName).FirstOrDefault();
 
             var lst = _context.Collection
-                  .Find(_ => _.GroupKey.ToLower() == groupKey.ToLower() && _.AssociatedDomainId == domainEntity.DomainId).ToList();
+                  .Find(_ => _.GroupKey.ToLower() == groupKey.ToLower() 
+                          && ( _.AssociatedDomainId == domainEntity.DomainId || _.AssociatedDomainId ==null)).ToList();
 
             result = _mapper.Map<List<BasicDataModel>>(lst);
             return result;

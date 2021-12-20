@@ -44,27 +44,24 @@
 
 <div class="card" id="shippingSettingListCard">
     <div class="card-header">
-        <h3 class="card-title">@Language.GetString("Menu_shippingSetting")</h3>
+        <h3 class="card-title">@Language.GetString("Menu_ShippingSetting")</h3>
         <div class="card-tools" style='@(dir=="rtl" ? "float:left;" : "float:right;")'>
             @if (ViewBag.Permissions["Add"])
             {
-                <a asp-action="AddEdit" asp-controller="ShippingSetting" class="btn btn-success btn-sm">
+                <a asp-action="AddEdit" asp-controller="Shipping" class="btn btn-success btn-sm">
                     <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus"></i>&nbsp; @Language.GetString("btn_Add")
                 </a>
             }
         </div>
     </div>
-    @*<div class="card-body table-bordered  table-responsive p-0">
+    <div class="card-body table-bordered  table-responsive p-0">
         <table class="table table-hover">
             <thead>
                 <tr style="text-align:center;">
                     <th>@Language.GetString("tbl_RowName")</th>
                     <th>@Language.GetString("DomainName")</th>
-                    <th>@Language.GetString("")</th>
-                    <th>@Language.GetString("DefaultLanguage")</th>
-                    <th>@Language.GetString("CurrentDomainPrice")</th>
-                    <th>@Language.GetString("DefaultCurrency")</th>
-                    <th>@Language.GetString("DefaultDomain")</th>
+                    <th>@Language.GetString("tbl_ShippingWays")</th>
+                    <th>@Language.GetString("tbl_FreeShipping")</th>
                     <th></th>
                 </tr>
             </thead>
@@ -77,34 +74,31 @@
                         <tr>
                             <td class="ListCell">@(++i)</td>
                             <td class="ListCell">@item.DomainName</td>
-                            <td class="ListCell">@item.OwnerUserName</td>
-                            <td class="ListCell">@item.DefaultLanguageName</td>
+                            <td class="ListCell">@(string.Join("|", @item.AllowedShippingTypes.Select(_ => _.ShippingTypeText)))</td>
                             <td class="ListCell">
-                                @(item.Prices.Any(_ => _.StartDate <= DateTime.UtcNow && _.IsActive && _.EndDate == null && _.CurrencyId == item.DefaultCurrencyId) ? item.Prices
-                            .FirstOrDefault(_ =>_.StartDate <= DateTime.UtcNow && _.IsActive && _.EndDate == null && _.CurrencyId == item.DefaultCurrencyId).PriceValue : "")
+                               @(item.ShippingCoupon != null ?
+                            (item.ShippingCoupon.ShippingExpense == 0 ? 
+                            item.ShippingCoupon.FromInvoiceExpense : 
+                            (Language.GetString("tbl_ShippingCoupon")
+                            .Replace("[0]", $"{item.ShippingCoupon.FromInvoiceExpense} {item.CurrencyId}")
+                            .Replace("[1]", $"{item.ShippingCoupon.ShippingExpense} {item.CurrencyId}"))) 
+                            : "")
                             </td>
-                            <td class="ListCell">@item.DefaultCurrencyName</td>
-                            <td class="ListCell">@(item.IsDefault ? Language.GetString("Yes") : Language.GetString("No"))</td>
+                           
                             <td>
                                 @if (ViewBag.Permissions["Edit"])
                                 {
-                                    <a asp-action="AddEdit" asp-controller="Domain" asp-route-id="@item.DomainId" class="btn btn-sm btn-info">
+                                    <a asp-action="AddEdit" asp-controller="Shipping" asp-route-id="@item.ShippingSettingId" class="btn btn-sm btn-info">
                                         <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                                     </a>
                                 }
-                                @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
+                                @if (ViewBag.Permissions["Remove"])
                                 {
-                                    <button onclick="EntityDelete('@item.DomainId')" class="btn btn-sm btn-danger">
+                                    <button onclick="EntityDelete('@item.ShippingSettingId')" class="btn btn-sm btn-danger">
                                         <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
                                     </button>
                                 }
-                                @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
-                                {
-                                    <button id="restoreRecord" onclick="EntityRestore('@item.DomainId')" class="btn btn-sm btn-warning">
-                                        <i style="position: relative;left: 5px;top: 2px;" class="fa fa-refresh"></i>
-                                        @Language.GetString("btn_Restore")
-                                    </button>
-                                }
+                              
                             </td>
                         </tr>
                     }
@@ -112,21 +106,21 @@
                 else
                 {
                     <tr>
-                        <td colspan="9" class="ListCell">
+                        <td colspan="5" class="ListCell">
                             <h6>@Language.GetString("AlertAndMessage_NoDataToShow")</h6>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
-    </div>*@
+    </div>
     <div class="card-footer">
         @await Component.InvokeAsync("Pagination", new PageViewModel
         {
             CurrentPage = Model.CurrentPage,
             ItemsCount = Model.ItemsCount,
             PageSize = Model.PageSize,
-            Navigation = Url.Action("List", "ShippingSetting"),
+            Navigation = Url.Action("List", "Shipping"),
             QueryParams = Model.QueryString
         })
     </div>
@@ -160,13 +154,13 @@
                     debugger;
             $.ajax({
                 type: 'Get',
-                url: '@Url.Action("Delete", "Domain")' + "/" + id,
+                url: '@Url.Action("Delete", "Shipping")' + "/" + id,
             beforeSend: function() {
-                AddLoading($("#domainListCard"));
+                AddLoading($("#shippingSettingListCard"));
             },
                 success: function (resultData) {
                     debugger;
-                    removeLoading($("domainListCard"))
+                    removeLoading($("shippingSettingListCard"))
             if (resultData.status === "Success") {
             Swal.fire({
             icon: 'success',
@@ -191,46 +185,5 @@
             }
             });
         }
-
-        function EntityRestore(id) {
-            debugger;
-                Swal.fire({
-                    title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-                    text: '@Language.GetString("AlertAndMessage_EntityRestoreText")',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d51c1c',
-                    cancelButtonColor: '#009c09db',
-                    confirmButtonText: '@Language.GetString("btn_Confirm")',
-                    cancelButtonText: '@Language.GetString("btn_NotConfirm")'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            type: 'Get',
-                            url:  '@Url.Action("Restore", "Domain")' + '?id=' + id,
-                            success: function(resultData) {
-                                if (resultData.status === "success") {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        text: resultData.message,
-                                        showConfirmButton: false,
-                                        timer: 2000
-                                    }).then(() => {
-                                        window.location.reload();
-                                    });
-                                }
-                                if (resultData.status === "error") {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        text: resultData.message,
-                                        showConfirmButton: false,
-                                        timer: 2000
-                                    });
-                                }
-                            }
-                        });
-                    }
-                });
-            }
     </script>
 }

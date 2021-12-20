@@ -23,6 +23,5 @@ namespace Arad.Portal.DataLayer.Contracts.General.Currency
         Result<CurrencyDTO> GetDefaultCurrency(string userId);
         CurrencyDTO GetCurrencyByItsPrefix(string prefix);
         List<SelectListModel> GetAllActiveCurrency();
-
     }
 }

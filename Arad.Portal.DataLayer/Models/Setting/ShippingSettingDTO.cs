@@ -21,6 +21,10 @@ namespace Arad.Portal.DataLayer.Models.Setting
 
         public string DomainName { get; set; }
 
+        public string CurrencyId { get; set; }
+
+        public string CurrencySymbol { get; set; }
+
         public List<ShippingTypeDetailDTO> AllowedShippingTypes { get; set; }
 
         public ShippingCouponDTO ShippingCoupon { get; set; }
@@ -44,6 +48,8 @@ namespace Arad.Portal.DataLayer.Models.Setting
 
         public string ProviderId { get; set; }
 
+        public string ProviderName { get; set; }
+
         public decimal FloatingExpense { get; set; }
 
     }
@@ -51,8 +57,13 @@ namespace Arad.Portal.DataLayer.Models.Setting
 
     public class ShippingCouponDTO
     {
-        public string ShippingCouponId { get; set; }
+        public ShippingCouponDTO()
+        {
+            FromInvoiceExpense = 0;
+            ShippingExpense = 0;
 
+        }
+        //public string ShippingCouponId { get; set; }
         public decimal FromInvoiceExpense { get; set; }
 
         /// <summary>
@@ -61,7 +72,7 @@ namespace Arad.Portal.DataLayer.Models.Setting
         public decimal ShippingExpense { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime? EndDate { get; set; }

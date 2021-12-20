@@ -40,7 +40,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> List()
         {
-            var claims = User.Claims;
+            //var claims = User.Claims;
             var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
             ViewBag.Permissions = dicKey;
             PagedItems<RoleListViewModel> list = await _roleRepository.RoleList(Request.QueryString.ToString());

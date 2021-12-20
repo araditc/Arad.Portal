@@ -12,6 +12,7 @@ using Arad.Portal.DataLayer.Contracts.General.MessageTemplate;
 using Arad.Portal.DataLayer.Contracts.General.Notification;
 using Arad.Portal.DataLayer.Contracts.General.Permission;
 using Arad.Portal.DataLayer.Contracts.General.Role;
+using Arad.Portal.DataLayer.Contracts.General.Services;
 using Arad.Portal.DataLayer.Contracts.General.SystemSetting;
 using Arad.Portal.DataLayer.Contracts.General.User;
 using Arad.Portal.DataLayer.Contracts.Shop.Product;
@@ -20,6 +21,7 @@ using Arad.Portal.DataLayer.Contracts.Shop.ProductSpecification;
 using Arad.Portal.DataLayer.Contracts.Shop.ProductSpecificationGroup;
 using Arad.Portal.DataLayer.Contracts.Shop.ProductUnit;
 using Arad.Portal.DataLayer.Contracts.Shop.Promotion;
+using Arad.Portal.DataLayer.Contracts.Shop.Setting;
 using Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart;
 using Arad.Portal.DataLayer.Contracts.Shop.Transaction;
 using Arad.Portal.DataLayer.Entities.General.User;
@@ -40,6 +42,7 @@ using Arad.Portal.DataLayer.Repositories.General.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Notification.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Permission.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Role.Mongo;
+using Arad.Portal.DataLayer.Repositories.General.Service.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.SystemSetting.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.User.Mongo;
 using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
@@ -48,6 +51,7 @@ using Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo;
 using Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mongo;
 using Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo;
 using Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo;
+using Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo;
 using Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo;
 using Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo;
 using Arad.Portal.UI.Shop.Authorization;
@@ -187,6 +191,7 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<IPermissionView, PermissionView>();
             services.AddTransient<RemoteServerConnection>();
             services.AddTransient<CreateNotification>();
+            //services.AddSingleton<CodeGenerator>();
             services.AddLocalization();
             AddRepositoryServices(services);
             //services.AddProgressiveWebApp();
@@ -261,6 +266,36 @@ namespace Arad.Portal.UI.Shop
         }
         private void AddRepositoryServices(IServiceCollection services)
         {
+            #region contexes
+            services.AddTransient<CurrencyContext>();
+            services.AddTransient<DomainContext>();
+            services.AddTransient<LanguageContext>();
+            services.AddTransient<PermissionContext>();
+            services.AddTransient<RoleContext>();
+            services.AddTransient<UserContext>();
+            //services.AddTransient<OrderContext>();
+            services.AddTransient<ProductContext>();
+            services.AddTransient<PromotionContext>();
+            services.AddTransient<ShoppingCartContext>();
+            services.AddTransient<TransactionContext>();
+            services.AddTransient<ErrorLogContext>();
+            services.AddTransient<NotificationContext>();
+            services.AddTransient<ContentCategoryContext>();
+            services.AddTransient<MessageTemplateContext>();
+            services.AddTransient<ContentContext>();
+            services.AddTransient<CommentContext>();
+            services.AddTransient<MenuContext>();
+            services.AddTransient<BasicDataContext>();
+            services.AddTransient<SystemSettingContext>();
+            services.AddTransient<SMTPContext>();
+            services.AddTransient<POPContext>();
+            services.AddTransient<EmailOptionContext>();
+            services.AddTransient<ShippingSettingContext>();
+            services.AddTransient<ProviderContext>();
+
+            #endregion
+
+
             services.AddTransient<ICurrencyRepository, CurrencyRepository>();
             services.AddTransient<IErrorLogRepository, ErrorLogRepository>();
             services.AddTransient<IDomainRepository, DomainRepository>();
@@ -289,33 +324,10 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<ISMTPRepository, SMTPRepository>();
             services.AddTransient<IPOPRepository, POPRepository>();
             services.AddTransient<IEmailOptionRepository, EmailOptionRepository>();
+            services.AddTransient<IShippingSettingRepository, ShippingSettingRepository>();
+            services.AddTransient<IProviderRepository, ProviderRepository>();
 
-            #region contexes
-            services.AddTransient<CurrencyContext>();
-            services.AddTransient<DomainContext>();
-            services.AddTransient<LanguageContext>();
-            services.AddTransient<PermissionContext>();
-            services.AddTransient<RoleContext>();
-            services.AddTransient<UserContext>();
-            //services.AddTransient<OrderContext>();
-            services.AddTransient<ProductContext>();
-            services.AddTransient<PromotionContext>();
-            services.AddTransient<ShoppingCartContext>();
-            services.AddTransient<TransactionContext>();
-            services.AddTransient<ErrorLogContext>();
-            services.AddTransient<NotificationContext>();
-            services.AddTransient<ContentCategoryContext>();
-            services.AddTransient<MessageTemplateContext>();
-            services.AddTransient<ContentContext>();
-            services.AddTransient<CommentContext>();
-            services.AddTransient<MenuContext>();
-            services.AddTransient<BasicDataContext>();
-            services.AddTransient<SystemSettingContext>();
-            services.AddTransient<SMTPContext>();
-            services.AddTransient<POPContext>();
-            services.AddTransient<EmailOptionContext>();
-
-            #endregion
+         
 
         }
     }

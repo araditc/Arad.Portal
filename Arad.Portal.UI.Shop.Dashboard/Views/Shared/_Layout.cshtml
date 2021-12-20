@@ -86,9 +86,14 @@
     <script src="~/js/siteTemplate/Adminlte/adminlte.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/lib/limonte-sweetalert2/sweetalert2.all.min.js"></script>
+
+
+    <style>
+        .lanFlag {
+            cursor: pointer;
+        }
+    </style>
     @await RenderSectionAsync("Scripts", required: false);
-
-
 </head>
 <body class="@bodyClass" dir="@direction">
     <div class="wrapper">
@@ -108,13 +113,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link">
+                    <a class="nav-link lanFlag" >
                         <img src="/imgs/IRAN.png" onclick="setLang('fa-IR')" />
                     </a>
 
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link">
+                    <a class="nav-link lanFlag">
                         <img src="/imgs/USA.png" onclick="setLang('en-US')" />
                     </a>
                 </li>

@@ -11,9 +11,11 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.DataLayer.Contracts.General.Language;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
+    [Authorize(Policy = "Role")]
     public class ProductUnitController : Controller
     {
         private readonly IProductUnitRepository _unitRepository;

@@ -16,9 +16,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Arad.Portal.GeneralLibrary.Utilities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
+    [Authorize(Policy = "Role")]
     [Route("/Products/[action]/{id?}")]
     [Route("/Contents/[action]/{id?}")]
     public class CommentController : Controller
