@@ -14,6 +14,7 @@ using Arad.Portal.DataLayer.Entities.General.User;
 using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Contracts.General.Currency;
 using Microsoft.AspNetCore.Authorization;
+using Arad.Portal.DataLayer.Contracts.General.Services;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -22,11 +23,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
     {
         private readonly IDomainRepository _domainRepository;
         private readonly IPermissionView _permissionViewManager;
+        private readonly IProviderRepository _providerRepository;
         private readonly ILanguageRepository _lanRepository;
         private readonly ICurrencyRepository _curRepository;
         private readonly UserManager<ApplicationUser> _userManager;
        
-        public DomainController(IDomainRepository domainRepository,UserManager<ApplicationUser> userManager,
+        public DomainController(IDomainRepository domainRepository, UserManager<ApplicationUser> userManager,
+            IProviderRepository providerRepository,
             IPermissionView permissionView, ILanguageRepository lanRepository,
             ICurrencyRepository currencyRepository)
         {
@@ -35,6 +38,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _lanRepository = lanRepository;
             _userManager = userManager;
             _curRepository = currencyRepository;
+            _providerRepository = providerRepository;
         }
 
         [HttpGet]
@@ -71,6 +75,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 vendors.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
                 ViewBag.Vendors = vendors;
             }
+            var paymentProviders = _providerRepository.GetProvidersPerType(DataLayer.Entities.General.Service.ProviderType.Payment);
+            ViewBag.Providers = paymentProviders;
+
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = _domainRepository.FetchDomain(id).ReturnValue;

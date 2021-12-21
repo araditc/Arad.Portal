@@ -44,5 +44,35 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
         public POP POPAccount { get; set; }
 
         public List<Price> Prices { get; set; }
+
+        public List<ProviderDetail> DomainPaymentProviders { get; set; }
+
+        public InvoiceNumberProcedure InvoiceNumberProcedure { get; set; }
+
+        /// <summary>
+        /// if InvoiceNumberProcedure=CustomFromMyInstance owner should fill this prop
+        /// otherwise main domain will generate the invoice number for this domain
+        /// </summary>
+        public string InvoiceNumberInitializer { get; set; }
+    }
+
+
+    public class ProviderDetail
+    {
+        public string ProviderId { get; set; }
+
+        public List<Parameter> DomainValueProvider { get; set; }
+    }
+    public class Parameter
+    {
+        public string Key { get; set; }
+
+        public int Value { get; set; }
+    }
+
+    public enum InvoiceNumberProcedure
+    {
+        FromMainDomain,
+        CustomFromMyInstance
     }
 }

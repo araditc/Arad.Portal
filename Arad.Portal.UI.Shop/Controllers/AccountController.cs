@@ -319,6 +319,12 @@ namespace Arad.Portal.UI.Shop.Controllers
 
 
         [HttpGet]
+        public IActionResult PageOrItemNotFound()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public IActionResult AlreadyRegisteredCellPhoneNumber(string cellPhoneNumber)
         {
             #region validate

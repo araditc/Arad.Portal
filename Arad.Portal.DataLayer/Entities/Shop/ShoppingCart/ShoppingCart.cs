@@ -19,9 +19,11 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
 
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.String)]
-        public string UserCartId { get; set; }
+        public string ShoppingCartId { get; set; }
       
         public EntityCulture ShoppingCartCulture { get; set; }
+
+        public decimal FinalPriceToPay { get; set; }
 
         public List<PurchasePerSeller> Details { get; set; }
     }

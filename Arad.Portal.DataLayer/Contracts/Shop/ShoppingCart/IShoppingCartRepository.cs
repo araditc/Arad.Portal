@@ -20,6 +20,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart
 
         Task<Result<ShoppingCartDTO>> FetchActiveUserShoppingCart(string userId, string domainId);
 
+        Task<Result<Entities.Shop.ShoppingCart.ShoppingCart>> FetchUserShoppingCart(string userCartId);
+
         Task<Result> DeleteProductFromUserShoppingCart(string userId, string productId);
 
         Task<Result> DeleteWholeUserShoppingCart(string userId);

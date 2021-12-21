@@ -21,9 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arad.Portal.UI.Shop.Dashboa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackgroundWorkers", "BackgroundWorkers", "{2F795895-7B24-485C-805D-7D5BBA3375AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arad.Portal.SmsNotificationService", "Arad.Portal.SmsNotificationService\Arad.Portal.SmsNotificationService.csproj", "{75D87AAA-B27C-4540-84FB-8BBAE28B9C56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arad.Portal.SmsNotificationService", "Arad.Portal.SmsNotificationService\Arad.Portal.SmsNotificationService.csproj", "{75D87AAA-B27C-4540-84FB-8BBAE28B9C56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arad.Portal.EmailNotificationService", "Arad.Portal.EmailNotificationService\Arad.Portal.EmailNotificationService.csproj", "{F81FB79C-F52E-41E7-85FD-48D4969DEAA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arad.Portal.EmailNotificationService", "Arad.Portal.EmailNotificationService\Arad.Portal.EmailNotificationService.csproj", "{F81FB79C-F52E-41E7-85FD-48D4969DEAA9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

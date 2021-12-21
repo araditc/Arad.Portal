@@ -10,10 +10,16 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
 {
     public class TransactionRepository : BaseRepository, ITransationRepository
     {
-        public TransactionRepository(IHttpContextAccessor httpContextAccessor)
+        private readonly TransactionContext _context;
+        public TransactionRepository(IHttpContextAccessor httpContextAccessor,
+            TransactionContext context)
             : base(httpContextAccessor)
         {
-
+            _context = context;
+        }
+        public async Task InsertTransaction(Entities.Shop.Transaction.Transaction transaction)
+        {
+            await _context.Collection.InsertOneAsync(transaction);
         }
     }
 }

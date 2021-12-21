@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Models.Shared;
+﻿using Arad.Portal.DataLayer.Entities.General.Domain;
+using Arad.Portal.DataLayer.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,5 +39,15 @@ namespace Arad.Portal.DataLayer.Models.Domain
         public bool IsDeleted { get; set; }
 
         public List<PriceDTO> Prices { get; set; }
+
+        public List<ProviderDetail> DomainPaymentProviders { get; set; }
+
+        public InvoiceNumberProcedure InvoiceNumberProcedure { get; set; }
+
+        /// <summary>
+        /// if InvoiceNumberProcedure=CustomFromMyInstance owner should fill this prop
+        /// otherwise main domain will generate the invoice number for this domain
+        /// </summary>
+        public string InvoiceNumberInitializer { get; set; }
     }
 }

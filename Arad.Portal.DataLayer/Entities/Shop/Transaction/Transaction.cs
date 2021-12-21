@@ -40,6 +40,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
     
     public class InvoicePerSeller
     {
+        /// <summary>
+        /// شماره فاکتور فروشنده
+        /// </summary>
         public string SellerInvoiceId { get; set; }
         /// <summary>
         /// اطلاعات تسویه با فروشنده
@@ -52,7 +55,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
     public class SettlementInfo
     {
         /// <summary>
-        /// شماره پرداخت یا تراکنش واریز وجه به شماره فروشنده
+        /// شماره پرداخت یا تراکنش واریز وجه به حساب فروشنده
         /// </summary>
         public string DepositeNumber { get; set; }
 
@@ -60,7 +63,6 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
         /// شماره پیگیری تراکنش پرداخت به فروشنده
         /// </summary>
         public string ReferenceId { get; set; }
-
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime SettlementDate { get; set; }
@@ -72,21 +74,21 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
     }
     public class PaymentGatewayData
     {
-        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime CreationDateTime { get; set; }
-
         /// <summary>
         /// needed in some Psps
-        /// 
         /// </summary>
         public string PaymentId { get; set; }
+
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
+        public DateTime CreationDateTime { get; set; }
         public string ShoppinCartId { get; set; }
-        public string TerminalId { get; set; }
-        public string TerminalName { get; set; }
-        //???
-        public string InternalTokenIdentifier { get; set; }
         public string OverallConcatDescription { get; set; }
-        //public Enums.PaymentIdentifierMethod PaymentIdentifierMethod { get; set; }
+
+        /// <summary>
+        /// ????
+        /// </summary>
+        public string InternalTokenIdentifier { get; set; }
+
         /// <summary>
         /// شماره پیگیری تراکنش
         /// </summary>

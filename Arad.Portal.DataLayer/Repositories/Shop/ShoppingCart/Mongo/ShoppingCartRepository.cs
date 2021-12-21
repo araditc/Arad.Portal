@@ -20,6 +20,7 @@ using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
 
+
 namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
 {
     public class ShoppingCartRepository : BaseRepository, IShoppingCartRepository
@@ -62,7 +63,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             {
                 result.Succeeded = true;
                 result.Message = ConstMessages.SuccessfullyDone;
-                result.ReturnValue = entity.UserCartId;
+                result.ReturnValue = entity.ShoppingCartId;
             }
             else
             {
@@ -144,7 +145,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                         }
 
                         var updateResult = await _context.Collection
-                            .ReplaceOneAsync(_ => _.UserCartId == userCartEntity.UserCartId, userCartEntity);
+                            .ReplaceOneAsync(_ => _.ShoppingCartId == userCartEntity.ShoppingCartId, userCartEntity);
                         if (updateResult.IsAcknowledged)
                         {
                             result.Succeeded = true;
@@ -218,7 +219,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                             sellerObj.Products[index] = productRow;
 
                             var updateResult = await _context.Collection
-                                .ReplaceOneAsync(_ => _.UserCartId == userCartEntity.UserCartId, userCartEntity);
+                                .ReplaceOneAsync(_ => _.ShoppingCartId == userCartEntity.ShoppingCartId, userCartEntity);
                             if (updateResult.IsAcknowledged)
                             {
                                 result.Succeeded = true;
@@ -282,7 +283,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                     }
                    
                     var updateResult = await _context.Collection
-                                .ReplaceOneAsync(_ => _.UserCartId == userCartEntity.UserCartId, userCartEntity);
+                                .ReplaceOneAsync(_ => _.ShoppingCartId == userCartEntity.ShoppingCartId, userCartEntity);
                     if (updateResult.IsAcknowledged)
                     {
                         result.Succeeded = true;
@@ -314,7 +315,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             {
                 userCartEntity.IsDeleted = true;
                 var updateResult = await _context.Collection
-                                .ReplaceOneAsync(_ => _.UserCartId == userCartEntity.UserCartId, userCartEntity);
+                                .ReplaceOneAsync(_ => _.ShoppingCartId == userCartEntity.ShoppingCartId, userCartEntity);
                 if (updateResult.IsAcknowledged)
                 {
                     result.Succeeded = true;
@@ -343,7 +344,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             if(userCartEntity != null)
             {
                 dto.ShoppingCartCulture = userCartEntity.ShoppingCartCulture;
-                dto.UserCartId = userCartEntity.UserCartId;
+                dto.UserCartId = userCartEntity.ShoppingCartId;
                 dto.DomainId = domainId;
                 dto.OwnerId = userCartEntity.CreatorUserId;
                 var perSellerList = new List<PurchasePerSeller>();
@@ -355,11 +356,13 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                 {
                     var obj = new PurchasePerSellerDTO();
                     obj.SellerId = sellerPurchase.SellerId;
+                    decimal sellerFactor = 0;
                     obj.SellerUserName = sellerPurchase.SellerUserName;
                     obj.ShippingTypeId = sellerPurchase.ShippingTypeId;
                     //??? update shippingExpense if seller change it
                     //TODO
                     finalPaymentPrice += sellerPurchase.ShippingExpense;
+                    sellerFactor += sellerPurchase.ShippingExpense;
                     foreach (var pro in sellerPurchase.Products)
                     {
                         var productId = pro.ProductId;
@@ -387,6 +390,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                                                productEntity.Images.First(_ => _.IsMain) : productEntity.Images.First()
                             };
                             finalPaymentPrice += det.TotalAmountToPay;
+                            sellerFactor += det.TotalAmountToPay;
 
                             #region changing in final amount pre unit
                             decimal previousAmountPerUnit = pro.PricePerUnit - pro.DiscountPricePerUnit;
@@ -443,6 +447,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                         rowNumber += 1;
                         obj.Products.Add(det);
                     }
+                    obj.TotalDetailsAmountWithShipping = sellerFactor;
                     dto.Details.Add(obj);
                 }
 
@@ -450,7 +455,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                 userCartEntity.Details = _mapper.Map<List<PurchasePerSeller>>(dto.Details);
                 dto.FinalPriceForPay = finalPaymentPrice;
                 var updateResult =await _context.Collection
-                    .ReplaceOneAsync(_ => _.UserCartId == userCartEntity.UserCartId, userCartEntity);
+                    .ReplaceOneAsync(_ => _.ShoppingCartId == userCartEntity.ShoppingCartId, userCartEntity);
                 if (updateResult.IsAcknowledged)
                 {
                     result.Succeeded = true;
@@ -486,7 +491,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                 CreationDate = DateTime.UtcNow,
                 CreatorUserId = userId,
                 CreatorUserName = GetUserName(),
-                UserCartId = Guid.NewGuid().ToString(),
+                ShoppingCartId = Guid.NewGuid().ToString(),
                 ShoppingCartCulture = new EntityCulture()
                 {
                     CurrencyId = defCurrencyEntity != null ? defCurrencyEntity.CurrencyId :
@@ -626,6 +631,97 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
         public bool AddProductToCart(string productId)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<Result<Entities.Shop.ShoppingCart.ShoppingCart>> FetchUserShoppingCart(string userCartId)
+        {
+            var result = new Result<Entities.Shop.ShoppingCart.ShoppingCart>();
+            var model = new Entities.Shop.ShoppingCart.ShoppingCart();
+            var userCartEntity = _context.Collection
+                .Find(_ => _.ShoppingCartId == userCartId).FirstOrDefault();
+            if (userCartEntity != null)
+            {
+                model.ShoppingCartCulture = userCartEntity.ShoppingCartCulture;
+                model.ShoppingCartId = userCartEntity.ShoppingCartId;
+                model.AssociatedDomainId = userCartEntity.AssociatedDomainId;
+                model.CreatorUserId = userCartEntity.CreatorUserId;
+                var perSellerList = new List<PurchasePerSeller>();
+                result.ReturnValue.Details = new List<PurchasePerSeller>();
+                int rowNumber = 1;
+                decimal finalPaymentPrice = 0;
+                //each time we fetch cartshopping data should be updated in it
+                foreach (var sellerPurchase in userCartEntity.Details)
+                {
+                    var purchasePerSeller = new PurchasePerSeller();
+                    decimal sellerFactor = 0;
+                    purchasePerSeller.SellerId = sellerPurchase.SellerId;
+                    purchasePerSeller.SellerUserName = sellerPurchase.SellerUserName;
+                    purchasePerSeller.ShippingTypeId = sellerPurchase.ShippingTypeId;
+                    //??? update shippingExpense if seller change it
+                    //TODO
+                    finalPaymentPrice += sellerPurchase.ShippingExpense;
+                    sellerFactor += sellerPurchase.ShippingExpense;
+                    foreach (var pro in sellerPurchase.Products)
+                    {
+                        var productId = pro.ProductId;
+                        var productEntity = _productContext.ProductCollection
+                       .Find(_ => _.ProductId == productId).FirstOrDefault();
+                        //ShoppingCartDetail det = new ShoppingCartDetail();
+                        if (productEntity != null && productEntity.IsActive
+                            && !productEntity.IsDeleted && productEntity.Inventory > 0)
+                        {
+                            var activePriceValue = GetCurrentPrice(productEntity);
+                            var discountPerUnit = await GetCurrentDiscountPerUnit(productEntity, activePriceValue);
+
+                            pro.PricePerUnit = activePriceValue;
+                            pro.DiscountPricePerUnit = discountPerUnit.DiscountPerUnit;
+                            pro.TotalAmountToPay = (activePriceValue - discountPerUnit.DiscountPerUnit) * pro.OrderCount;
+                            
+                            finalPaymentPrice += pro.TotalAmountToPay;
+                            sellerFactor += pro.TotalAmountToPay;
+                            //check inventory if it is less than orderCount then change our order Count to our inventory
+                            if (pro.OrderCount > productEntity.Inventory)
+                            {
+                                pro.OrderCount = productEntity.Inventory;
+                            }
+                        }
+                        else
+                        if (productEntity.IsDeleted || productEntity.Inventory == 0)
+                        {
+                            pro.OrderCount = 0;
+                            pro.DiscountPricePerUnit = 0;
+                            pro.PricePerUnit = 0;
+                            pro.TotalAmountToPay = 0;
+                        }
+                        
+                        purchasePerSeller.Products.Add(pro);
+                        rowNumber += 1;
+                    }
+                    purchasePerSeller.TotalDetailsAmountWithShipping = sellerFactor;
+                    model.FinalPriceToPay += sellerFactor;
+                    model.Details.Add(purchasePerSeller);
+                }
+
+               
+                //model.FinalPriceForPay = finalPaymentPrice;
+                var updateResult = await _context.Collection
+                    .ReplaceOneAsync(_ => _.ShoppingCartId == userCartEntity.ShoppingCartId, model);
+                if (updateResult.IsAcknowledged)
+                {
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                    result.ReturnValue = model;
+                }
+                else
+                {
+                    result.Message = ConstMessages.GeneralError;
+                }
+            }
+            else
+            {
+                result.Message = ConstMessages.ObjectNotFound;
+            }
+            return result;
         }
     }
 }
