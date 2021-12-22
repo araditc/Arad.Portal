@@ -99,19 +99,6 @@
                     
                 </div>
 
-                <div class="row">
-                    @{
-                        if (!string.IsNullOrWhiteSpace(Model.ProductSpecificationId))
-                        {
-                            <div class="form-group col-md-6">
-                                <label asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
-                                <textarea dir="rtl" asp-for="ModificationReason" class="form-control" rows="3"></textarea>
-                                <span data-val-result="ModificationReason" class="text-danger"></span>
-                            </div>
-                        }
-                    }
-                </div>
-
                 <div class="row" style="margin-top:1%;">
                     <div class="card-body table-bordered  table-responsive p-0">
                         <table class="table table-hover">

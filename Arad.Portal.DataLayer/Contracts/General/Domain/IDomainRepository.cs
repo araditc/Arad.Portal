@@ -23,5 +23,6 @@ namespace Arad.Portal.DataLayer.Contracts.General.Domain
         Task<Result> Restore(string id);
         List<SelectListModel> GetAllActiveDomains();
         string GetDomainName();
+        List<SelectListModel> GetInvoiceNumberProcedureEnum();
     }
 }

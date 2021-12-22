@@ -11,5 +11,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Services
     public interface IProviderRepository
     {
         List<SelectListModel> GetProvidersPerType(ProviderType type);
+
+        void InsertOne(Entities.General.Service.Provider entity);
     }
 }

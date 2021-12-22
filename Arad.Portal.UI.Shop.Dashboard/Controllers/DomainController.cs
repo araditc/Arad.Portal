@@ -91,6 +91,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.CurrencyList = currencyList;
             ViewBag.DefCurrency = _curRepository.GetDefaultCurrency(currentUserId).ReturnValue.CurrencyId;
 
+            var invoiceNumberEnum = _domainRepository.GetInvoiceNumberProcedureEnum();
+            ViewBag.InvoiceNumberEnum = invoiceNumberEnum;
+
             return View(model);
         }
         

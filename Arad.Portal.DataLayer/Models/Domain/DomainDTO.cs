@@ -13,6 +13,7 @@ namespace Arad.Portal.DataLayer.Models.Domain
         public DomainDTO()
         {
             Prices = new();
+            DomainPaymentProviders = new();
         }
         public string DomainId { get; set; }
 

@@ -302,6 +302,30 @@
 	</string>
 	<!--============================================End [Admin Menues]======================================-->
 	<!--Start [tables]-->
+	<string key="tbl_PaymentGateways">
+		<value>Payment gateways</value>
+	</string>
+	<string key="tbl_ParameterName">
+		<value>Parameter name</value>
+	</string>
+	<string key="tbl_ParameterValue">
+		<value>Parameter value</value>
+	</string>
+	<string key="tbl_ProviderName">
+		<value>Provider Name</value>
+	</string>
+	<string key="tbl_InvoiceNumberCreationWay">
+		<value>Invoice number creation way</value>
+	</string>
+	<string key="FirstInvoiceNumberPattern">
+		<value>First invoice number</value>
+	</string>
+	<string key="tbl_GatewayInformation">
+		<value>Gateway Information</value>
+	</string>
+	<string key="tbl_DomainPaymentGatewaysInfoes">
+		<value>Domain Payment Gateways Informations</value>
+	</string>
 	<string key="tbl_RowName">
 		<value>Row</value>
 	</string>

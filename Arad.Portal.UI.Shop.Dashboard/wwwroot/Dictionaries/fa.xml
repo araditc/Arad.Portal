@@ -298,6 +298,30 @@
 	</string>
 	<!--============================================End[Admin Menues]======================================-->
 	<!--Start [tables]-->
+	<string key="tbl_PaymentGateways">
+		<value>درگاه های پرداخت</value>
+	</string>
+	<string key="tbl_ParameterName">
+		<value>نام پارامتر</value>
+	</string>
+	<string key="tbl_ParameterValue">
+		<value>مقدار پارامتر</value>
+	</string>
+	<string key="tbl_ProviderName">
+		<value>نام سرویس دهنده</value>
+	</string>
+	<string key="tbl_InvoiceNumberCreationWay">
+		<value>روش ایجاد شماره فاکتور فروشگاه</value>
+	</string>
+	<string key="FirstInvoiceNumberPattern">
+		<value>اولین شماره فاکتور</value>
+	</string>
+	<string key="tbl_GatewayInformation">
+		<value>اطلاعات درگاه</value>
+	</string>
+	<string key="tbl_DomainPaymentGatewaysInfoes">
+		<value>اطلاعات درگاه های پرداخت دامنه</value>
+	</string>
 	<string key="tbl_RowName">
 		<value>ردیف</value>
 	</string>

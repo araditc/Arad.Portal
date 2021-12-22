@@ -33,5 +33,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Service.Mongo
 
             return res;
         }
+
+        public void InsertOne(Entities.General.Service.Provider entity)
+        {
+            _context.Collection.InsertOne(entity);
+        }
     }
 }

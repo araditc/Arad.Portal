@@ -15,6 +15,7 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
         public Domain()
         {
             Prices = new();
+            DomainPaymentProviders = new();
         }
 
         [BsonId]
@@ -60,6 +61,8 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
     public class ProviderDetail
     {
         public string ProviderId { get; set; }
+
+        public string ProviderName { get; set; }
 
         public List<Parameter> DomainValueProvider { get; set; }
     }

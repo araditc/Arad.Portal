@@ -34,6 +34,8 @@ using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Entities.General.Domain;
 using Arad.Portal.DataLayer.Contracts.General.BasicData;
 using Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo;
+using Arad.Portal.DataLayer.Repositories.General.Service.Mongo;
+using Arad.Portal.DataLayer.Contracts.General.Services;
 
 namespace Arad.Portal.UI.Shop.Helpers
 {
@@ -41,9 +43,9 @@ namespace Arad.Portal.UI.Shop.Helpers
     {
         public static void UseSeedDatabase(this IApplicationBuilder app, string applicationPath)
         {
-            using var userScope = app.ApplicationServices.CreateScope();
+            using var scope = app.ApplicationServices.CreateScope();
             var userManager =
-                (UserManager<ApplicationUser>)userScope.ServiceProvider
+                (UserManager<ApplicationUser>)scope.ServiceProvider
                     .GetService(typeof(UserManager<ApplicationUser>));
 
             if (userManager != null && !userManager.Users.Any())
@@ -95,9 +97,9 @@ namespace Arad.Portal.UI.Shop.Helpers
                 userManager.CreateAsync(user, "Sa@12345").Wait();
             }
 
-            using var permissionScope = app.ApplicationServices.CreateScope();
+          
             var permissionRepository =
-                (PermissionRepository)permissionScope.ServiceProvider.GetService(typeof(IPermissionRepository));
+                (PermissionRepository)scope.ServiceProvider.GetService(typeof(IPermissionRepository));
 
             if (!permissionRepository.HasAny())
             {
@@ -111,9 +113,9 @@ namespace Arad.Portal.UI.Shop.Helpers
                 }
             }
 
-            using var stateScope = app.ApplicationServices.CreateScope();
+           
             var roleRepository =
-                (RoleRepository)stateScope.ServiceProvider.GetService(typeof(IRoleRepository));
+                (RoleRepository)scope.ServiceProvider.GetService(typeof(IRoleRepository));
 
             if (!roleRepository.States.AsQueryable().Any())
             {
@@ -201,9 +203,8 @@ namespace Arad.Portal.UI.Shop.Helpers
 
             //domain
 
-            using var domainScope = app.ApplicationServices.CreateScope();
             var domainRepository =
-               (DomainRepository)domainScope.ServiceProvider.GetService(typeof(IDomainRepository));
+               (DomainRepository)scope.ServiceProvider.GetService(typeof(IDomainRepository));
             if(!domainRepository.HasAny())
             {
                 var dom = new Domain()
@@ -275,9 +276,9 @@ namespace Arad.Portal.UI.Shop.Helpers
             }
 
             //MessageTemplate
-            using var messageTemplateScope = app.ApplicationServices.CreateScope();
+          
             var messageTemplateRepository =
-                (MessageTemplateRepository)stateScope.ServiceProvider.GetService(typeof(IMessageTemplateRepository));
+                (MessageTemplateRepository)scope.ServiceProvider.GetService(typeof(IMessageTemplateRepository));
 
             if (!messageTemplateRepository.HasAny())
             {
@@ -329,9 +330,9 @@ namespace Arad.Portal.UI.Shop.Helpers
             //}
 
             //Language
-            using var languageScope = app.ApplicationServices.CreateScope();
+          
             var languageRepository =
-                (LanguageRepository)languageScope.ServiceProvider.GetService(typeof(ILanguageRepository));
+                (LanguageRepository)scope.ServiceProvider.GetService(typeof(ILanguageRepository));
             if(!languageRepository.HasAny())
             {
                 var lan = new DataLayer.Entities.General.Language.Language()
@@ -358,9 +359,9 @@ namespace Arad.Portal.UI.Shop.Helpers
 
 
             //Currency
-            using var currencyScope = app.ApplicationServices.CreateScope();
+          
             var currencyRepository =
-                 (CurrencyRepository)languageScope.ServiceProvider.GetService(typeof(ICurrencyRepository));
+                 (CurrencyRepository)scope.ServiceProvider.GetService(typeof(ICurrencyRepository));
             if (!currencyRepository.HasAny())
             {
                 var currencyDef = new DataLayer.Entities.General.Currency.Currency
@@ -388,9 +389,9 @@ namespace Arad.Portal.UI.Shop.Helpers
             }
 
             //BasicData
-            using var basicDataScope = app.ApplicationServices.CreateScope();
+          
             var basicDataRepository =
-                 (BasicDataRepository)basicDataScope.ServiceProvider.GetService(typeof(IBasicDataRepository));
+                 (BasicDataRepository)scope.ServiceProvider.GetService(typeof(IBasicDataRepository));
             if (!basicDataRepository.HasLastID())
             {
                 var def = new DataLayer.Entities.General.BasicData.BasicData
@@ -430,6 +431,48 @@ namespace Arad.Portal.UI.Shop.Helpers
             }
 
             //providers diffrenet Types
+
+            var providerRepository =
+              (ProviderRepository)scope.ServiceProvider.GetService(typeof(IProviderRepository));
+            if (providerRepository.GetProvidersPerType(DataLayer.Entities.General.Service.ProviderType.Payment).Count() == 0)
+            {
+                var parsianGateway = new DataLayer.Entities.General.Service.Provider()
+                {
+                    ProviderId = Guid.NewGuid().ToString(),
+                    CreationDate = DateTime.Now,
+                    IsActive = true,
+                    Template = "{'BaseUrl','UserName','PINCode', 'TerminalId'}",
+                    ProviderType = DataLayer.Entities.General.Service.ProviderType.Payment,
+                    ProviderName = "درگاه  پرداخت پارسیان",
+                    AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf"
+                };
+                providerRepository.InsertOne(parsianGateway);
+
+                var iranKishGateway = new DataLayer.Entities.General.Service.Provider()
+                {
+                    ProviderId = Guid.NewGuid().ToString(),
+                    CreationDate = DateTime.Now,
+                    IsActive = true,
+                    Template = "{'BaseUrl','UserName', 'Password', 'MerchantId','TerminalId','AcceptorId', 'AccountIban', 'Sha1'}",
+                    ProviderType = DataLayer.Entities.General.Service.ProviderType.Payment,
+                    ProviderName = "درگاه  پرداخت ایران کیش",
+                    AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf"
+                };
+                providerRepository.InsertOne(iranKishGateway);
+
+                var samanGateway = new DataLayer.Entities.General.Service.Provider()
+                {
+                    ProviderId = Guid.NewGuid().ToString(),
+                    CreationDate = DateTime.Now,
+                    IsActive = true,
+                    Template = "{'BaseAddress', 'TokenEndPoint', 'GatewayEndPoint', 'VerifyEndpoint'}",
+                    ProviderType = DataLayer.Entities.General.Service.ProviderType.Payment,
+                    ProviderName = "درگاه  پرداخت ایران کیش",
+                    AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf"
+                };
+                providerRepository.InsertOne(samanGateway);
+
+            }
 
         }
     }

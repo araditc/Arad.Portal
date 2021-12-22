@@ -17,7 +17,7 @@ namespace Arad.Portal.DataLayer.Entities.General.Service
 
         public string ProviderName { get; set; }
 
-        public string JsonContent { get; set; }
+        public string Template { get; set; }
     }
 
     public enum ProviderType

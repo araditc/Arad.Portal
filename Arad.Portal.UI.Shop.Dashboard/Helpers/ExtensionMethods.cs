@@ -34,6 +34,8 @@ using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Entities.General.Domain;
 using Arad.Portal.DataLayer.Contracts.General.BasicData;
 using Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo;
+using Arad.Portal.DataLayer.Contracts.General.Services;
+using Arad.Portal.DataLayer.Repositories.General.Service.Mongo;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 {
@@ -41,9 +43,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
     {
         public static void UseSeedDatabase(this IApplicationBuilder app, string applicationPath)
         {
-            using var userScope = app.ApplicationServices.CreateScope();
+            using var scope = app.ApplicationServices.CreateScope();
             var userManager =
-                (UserManager<ApplicationUser>)userScope.ServiceProvider
+                (UserManager<ApplicationUser>)scope.ServiceProvider
                     .GetService(typeof(UserManager<ApplicationUser>));
 
             if (userManager != null && !userManager.Users.Any())
@@ -57,7 +59,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                     UserName = "SuperAdmin",
                     Claims = new List<IdentityUserClaim<string>>()
                     {
-                        
+
                         new IdentityUserClaim<string>()
                         {
                             ClaimType = "AppRole",
@@ -91,9 +93,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                 userManager.CreateAsync(user, "Sa@12345").Wait();
             }
 
-            using var permissionScope = app.ApplicationServices.CreateScope();
+
             var permissionRepository =
-                (PermissionRepository)permissionScope.ServiceProvider.GetService(typeof(IPermissionRepository));
+                (PermissionRepository)scope.ServiceProvider.GetService(typeof(IPermissionRepository));
 
             if (!permissionRepository.HasAny())
             {
@@ -107,9 +109,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                 }
             }
 
-            using var stateScope = app.ApplicationServices.CreateScope();
+
             var roleRepository =
-                (RoleRepository)stateScope.ServiceProvider.GetService(typeof(IRoleRepository));
+                (RoleRepository)scope.ServiceProvider.GetService(typeof(IRoleRepository));
 
             if (!roleRepository.States.AsQueryable().Any())
             {
@@ -196,15 +198,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
             }
 
             //domain
-
-            using var domainScope = app.ApplicationServices.CreateScope();
             var domainRepository =
-               (DomainRepository)domainScope.ServiceProvider.GetService(typeof(IDomainRepository));
-            if(!domainRepository.HasAny())
+               (DomainRepository)scope.ServiceProvider.GetService(typeof(IDomainRepository));
+            if (!domainRepository.HasAny())
             {
                 var dom = new Domain()
                 {
-                    DomainId = Guid.NewGuid().ToString(),
+                    //TODO change these two lines
+                    //this is for developing
+                    // DomainId = Guid.NewGuid().ToString(),
+                    DomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf",
                     DomainName = "https://localhost:3214",//store
                     OwnerUserName = "superadmin",
                     IsActive = true,
@@ -229,7 +232,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                 };
                 var dom2 = new Domain()
                 {
-                    DomainId = Guid.NewGuid().ToString(),
+                    //DomainId = Guid.NewGuid().ToString(),
+                    DomainId = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004",
                     DomainName = "https://localhost:17951",//dashboard
                     OwnerUserName = "superadmin",
                     IsActive = true,
@@ -254,7 +258,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                 };
                 var dom3 = new Domain()
                 {
-                    DomainId = Guid.NewGuid().ToString(),
+                    //DomainId = Guid.NewGuid().ToString(),
+                    DomainId = "94a444a8-c002-4ca8-a353-612f2d7249fb",
                     DomainName = "https://www.hajibazar.com",
                     OwnerUserName = "superadmin",
                     IsActive = true,
@@ -271,9 +276,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
             }
 
             //MessageTemplate
-            using var messageTemplateScope = app.ApplicationServices.CreateScope();
             var messageTemplateRepository =
-                (MessageTemplateRepository)stateScope.ServiceProvider.GetService(typeof(IMessageTemplateRepository));
+                (MessageTemplateRepository)scope.ServiceProvider.GetService(typeof(IMessageTemplateRepository));
 
             if (!messageTemplateRepository.HasAny())
             {
@@ -294,10 +298,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
             }
 
             //Language
-            using var languageScope = app.ApplicationServices.CreateScope();
             var languageRepository =
-                (LanguageRepository)languageScope.ServiceProvider.GetService(typeof(ILanguageRepository));
-            if(!languageRepository.HasAny())
+                (LanguageRepository)scope.ServiceProvider.GetService(typeof(ILanguageRepository));
+            if (!languageRepository.HasAny())
             {
                 var lan = new DataLayer.Entities.General.Language.Language()
                 {
@@ -323,9 +326,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 
 
             //Currency
-            using var currencyScope = app.ApplicationServices.CreateScope();
             var currencyRepository =
-                 (CurrencyRepository)languageScope.ServiceProvider.GetService(typeof(ICurrencyRepository));
+                 (CurrencyRepository)scope.ServiceProvider.GetService(typeof(ICurrencyRepository));
             if (!currencyRepository.HasAny())
             {
                 var currencyDef = new DataLayer.Entities.General.Currency.Currency
@@ -342,20 +344,19 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 
                 var currency = new DataLayer.Entities.General.Currency.Currency
                 {
-                   CurrencyId = Guid.NewGuid().ToString(),
-                   CurrencyName = "American Dollar",
-                   Prefix = "USD",
-                   Symbol = "$",
-                   IsDefault = false,
-                   IsActive = true
+                    CurrencyId = Guid.NewGuid().ToString(),
+                    CurrencyName = "American Dollar",
+                    Prefix = "USD",
+                    Symbol = "$",
+                    IsDefault = false,
+                    IsActive = true
                 };
                 currencyRepository.InsertOne(currency);
             }
 
             //BasicData
-            using var basicDataScope = app.ApplicationServices.CreateScope();
             var basicDataRepository =
-                 (BasicDataRepository)basicDataScope.ServiceProvider.GetService(typeof(IBasicDataRepository));
+                 (BasicDataRepository)scope.ServiceProvider.GetService(typeof(IBasicDataRepository));
             if (!basicDataRepository.HasLastID())
             {
                 var def = new DataLayer.Entities.General.BasicData.BasicData
@@ -394,6 +395,48 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
             }
 
             //providers diffrenet Types
+
+            var providerRepository =
+               (ProviderRepository)scope.ServiceProvider.GetService(typeof(IProviderRepository));
+            if (providerRepository.GetProvidersPerType(DataLayer.Entities.General.Service.ProviderType.Payment).Count() == 0)
+            {
+                var parsianGateway = new DataLayer.Entities.General.Service.Provider()
+                {
+                    ProviderId = Guid.NewGuid().ToString(),
+                    CreationDate = DateTime.Now,
+                    IsActive = true,
+                    Template = "{'BaseUrl','UserName','PINCode', 'TerminalId'}",
+                    ProviderType = DataLayer.Entities.General.Service.ProviderType.Payment,
+                    ProviderName = "درگاه  پرداخت پارسیان",
+                    AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf"
+                };
+                providerRepository.InsertOne(parsianGateway);
+
+                var iranKishGateway = new DataLayer.Entities.General.Service.Provider()
+                {
+                    ProviderId = Guid.NewGuid().ToString(),
+                    CreationDate = DateTime.Now,
+                    IsActive = true,
+                    Template = "{'BaseUrl','UserName', 'Password', 'MerchantId','TerminalId','AcceptorId', 'AccountIban', 'Sha1'}",
+                    ProviderType = DataLayer.Entities.General.Service.ProviderType.Payment,
+                    ProviderName = "درگاه  پرداخت ایران کیش",
+                    AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf"
+                };
+                providerRepository.InsertOne(iranKishGateway);
+
+                var samanGateway = new DataLayer.Entities.General.Service.Provider()
+                {
+                    ProviderId = Guid.NewGuid().ToString(),
+                    CreationDate = DateTime.Now,
+                    IsActive = true,
+                    Template = "{'BaseAddress', 'TokenEndPoint', 'GatewayEndPoint', 'VerifyEndpoint'}",
+                    ProviderType = DataLayer.Entities.General.Service.ProviderType.Payment,
+                    ProviderName = "درگاه  پرداخت ایران کیش",
+                    AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf"
+                };
+                providerRepository.InsertOne(samanGateway);
+
+            }
 
         }
     }

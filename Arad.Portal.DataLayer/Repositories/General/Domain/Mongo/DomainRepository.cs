@@ -17,6 +17,9 @@ using System.Threading.Tasks;
 using System.Web;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.DataLayer.Entities.General.Email;
+using Arad.Portal.DataLayer.Entities.General.Domain;
+
+
 
 namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
 {
@@ -452,5 +455,24 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
         {
             return $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
         }
+
+        public List<SelectListModel> GetInvoiceNumberProcedureEnum()
+        {
+            var result = new List<SelectListModel>();
+            foreach (int i in Enum.GetValues(typeof(InvoiceNumberProcedure)))
+            {
+                string name = Enum.GetName(typeof(InvoiceNumberProcedure), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("Choose"), Value = "-1" });
+            return result;
+        }
+
+        
     }
 }

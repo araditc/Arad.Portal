@@ -99,6 +99,18 @@
                         </select>
                         <span data-val-result="DefaultCurrencyId" class="text-danger"></span>
                     </div>
+                    <div class="form-group col-md-3">
+                        <label for="DefaultCurrencyId">@Language.GetString("tbl_InvoiceNumberCreationWay")</label><br />
+                        <select class="form-control" asp-for="@Model.InvoiceNumberProcedure" asp-items="@(new SelectList( ViewBag.InvoiceNumberEnum,"Value","Text", Model.DefaultCurrencyId))">
+                        </select>
+                        <span data-val-result="InvoiceNumberProcedure" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3 invoiceInitialise">
+                        <label for="DefaultCurrencyId">@Language.GetString("FirstInvoiceNumberPattern")</label><br />
+                        <input type="text" class="form-control" asp-for="@Model.InvoiceNumberInitializer" />
+                        <span data-val-result="InvoiceNumberInitializer" class="text-danger"></span>
+                    </div>
+
                 </div>
                 <div class="row">
                     <div class="col-md-12">
@@ -205,8 +217,95 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">@Language.GetString("tbl_DomainPaymentGatewaysInfoes")</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row" style="background-color: #f0f0f5;">
+                                    <div class="form-group col-md-3">
+                                        <label for="languageId">@Language.GetString("tbl_PaymentGateways")</label><br />
+                                        <select class="form-control select2" id="providerId" asp-items="@(new SelectList(ViewBag.Providers, "Value","Text"))">
+                                        </select>
+                                        <span data-val-result="providerId" class="text-danger"></span>
+                                    </div>
+                                   
+                                    <div class="form-group col-md-2" style="text-align:center;margin:auto;">
 
-            </div>
+                                        <div style="margin:auto;display:inline-block;">
+                                            <button type="button" class="btn btn-primary" onclick="addToTable();">
+                                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                                                @Language.GetString("btn_Add")
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" style="background-color: #bfd1e4;">
+                                    <div class="form-group col-md-3">
+                                        <label>@Language.GetString("tbl_ParameterName")</label>
+                                        <input type="text" class="form-control" id="parameterKey" />
+                                        <span data-val-result="parameterKey" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>@Language.GetString("tbl_ParameterValue")</label><br />
+                                        <input type="text" class="form-control" id="parameterValue" placeholder=" ">
+                                        <span data-val-result="parameterValue" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-1" style="text-align:center;margin:auto;">
+                                        <div style="margin:auto;display:inline-block;">
+                                            <button type="button" class="btn btn-info btn-circle" onclick="addProviderInfoList();">
+                                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-5">
+                                        <span data-val-result="ParamValueList" class="text-danger"></span>
+                                        <ul class="list-group" id="ParamValueList"></ul>
+                                    </div>
+                                </div>
+
+                                <div class="row" style="margin-top:1%;">
+                                    <span data-val-result="gatewayInfoes" class="text-danger"></span>
+                                    <div class="card-body table-bordered  table-responsive p-0">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr style="text-align:center;">
+                                                    <th>@Language.GetString("tbl_ProviderName")</th>
+                                                    <th class="d-none"></th>
+                                                    <th>@Language.GetString("tbl_GatewayInformation")</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="gatewayInfoes">
+                                                @foreach (var item in Model.DomainPaymentProviders)
+                                                {
+                                                    <tr style="text-align:center;">
+                                                        <td>@item.ProviderName</td>
+                                                        <td class="d-none">@item.ProviderId</td>
+                                                        <td>@(string.Join('|',@item.DomainValueProvider.Select(_=> _.Key +":"+ _.Value)))</td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromTable(this);">
+                                                                <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="card-footer"></div>*@
+                        </div>
+                        </div>
+                    </div>
+
+
+                </div>
             <div class="card-footer">
                 <div class="row">
                     <input type="button" id="btnAddDomain" value="@Language.GetString("btn_Save")" class="btn btn-block btn-success" />
@@ -246,6 +345,10 @@
                 });
             }
 
+
+            if ('@Model.DomainId' == "") {
+                $("#InvoiceNumberProcedure").val("-1");
+            }
              //datetimepicker
             if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
             {
@@ -257,6 +360,16 @@
                     format: 'L'
                 });
             }
+
+            $("#InvoiceNumberProcedure").change(function () {
+
+                if ($(this).val() == "0") {
+                    $(".invoiceInitialise").addClass("d-none");
+                }
+                else if ($(this).val() == "1") {
+                    $(".invoiceInitialise").removeClass("d-none");
+                }
+            });
             $("#btnAddDomain").click(function () {
             debugger;
                 var flag = false;
@@ -273,57 +386,69 @@
                     $("span[data-val-result='MultiLingualProperties']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
                     flag = true;
                 }
+                if ($("#gatewayInfoes tr").length == 0) {
+                    $("span[data-val-result='gatewayInfoes']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
+                    flag = true;
+                }
+                if ($("#InvoiceNumberProcedure").val() == "" || $("#InvoiceNumberProcedure").val() == "-1") {
+                    $("span[data-val-result='InvoiceNumberProcedure']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
+                    flag == true;
+                }
+                if ($("#InvoiceNumberProcedure").val() == "1" && $("#InvoiceNumberInitializer").val() == "") {
+                    $("span[data-val-result='InvoiceNumberInitializer']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+                }
                 if (!flag) {
 
-            var dto = FillDataToSend();
-                    $.ajax({
-                        url: "@Model.DomainId" != "" ? "/Domain/Edit" : "/Domain/Add",
-                    /*data: dataModel,*/
-                    contentType: 'application/json',
-                    data: JSON.stringify(dto),
-                type: 'Post',
-                beforeSend: function () {
-                    debugger;
-                    AddLoading($("#addDomainCard"));
-                },
-                success: function (result) {
-                    debugger;
-                    if (result.status === "Success") {
-                        Swal.fire({
-                            icon: 'success',
-                            text: result.message,
-                            showConfirmButton: false,
-                            timer: 3000
-                        }).then(() => {
-                            window.location.href = '@Url.Action("List")';
-                        });
-                    }else
-                    if (result.status === "ModelError") {
-                        var spanErrorList = $('span[data-val-result]');
-                        if (spanErrorList.length > 1) {
-                            spanErrorList.each(function() {
-                                $(this).html("");
-                                $(this).parent().removeClass("has-error");
-                            });
-                        } else {
-                            spanErrorList.html("");
-                            spanErrorList.parent().removeClass("has-error");
-                        }
-                        if (result.modelStateErrors !== null) {
-                                $('[data-val-result=' + value.key + ']').html(value.errorMessage);
-                                $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                        var dto = FillDataToSend();
+                        $.ajax({
+                            url: "@Model.DomainId" != "" ? "/Domain/Edit" : "/Domain/Add",
+                            /*data: dataModel,*/
+                            contentType: 'application/json',
+                            data: JSON.stringify(dto),
+                            type: 'Post',
+                            beforeSend: function () {
+                                debugger;
+                                AddLoading($("#addDomainCard"));
+                            },
+                            success: function (result) {
+                                debugger;
+                                if (result.status === "Success") {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        text: result.message,
+                                        showConfirmButton: false,
+                                        timer: 3000
+                                    }).then(() => {
+                                        window.location.href = '@Url.Action("List")';
+                                    });
+                                }else
+                                if (result.status === "ModelError") {
+                                    var spanErrorList = $('span[data-val-result]');
+                                    if (spanErrorList.length > 1) {
+                                        spanErrorList.each(function() {
+                                            $(this).html("");
+                                            $(this).parent().removeClass("has-error");
+                                        });
+                                    } else {
+                                        spanErrorList.html("");
+                                        spanErrorList.parent().removeClass("has-error");
+                                    }
+                                    if (result.modelStateErrors !== null) {
+                                            $('[data-val-result=' + value.key + ']').html(value.errorMessage);
+                                            $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                        }
+                                    }
+                                },
+                            @*error: function (xhr, ajaxOptions, thrownError) {
+                                alert("@error");
+                                alert(xhr.status);
+                                alert(thrownError);
+                            },*@
+                            complete: function () {
+                                removeLoading($("#addDomainCard"));
                             }
-                        }
-                    },
-                @*error: function (xhr, ajaxOptions, thrownError) {
-                    alert("@error");
-                    alert(xhr.status);
-                    alert(thrownError);
-                },*@
-                complete: function () {
-                    removeLoading($("#addDomainCard"));
-                }
-                });
+                    });
                 }
 
             });
@@ -333,6 +458,7 @@
             debugger;
             var obj = {};
             obj.Prices = [];
+            obj.DomainPaymentProviders = [];
             obj.DomainId = $("#DomainId").val();
             obj.DomainName = $("#DomainName").val();
             obj.OwnerUserId = $("#OwnerUserId").val();
@@ -341,7 +467,14 @@
             obj.DefaultLanguageName = $("#DefaultLanguageId option:selected").text();
             obj.DefaultCurrencyId = $("#DefaultCurrencyId").val();
             obj.DefaultCurrencyName = $("#DefaultCurrencyId option:selected").text();
-            obj.IsDefault = $("#chbDefaultDomain").prop("checked") ;
+            obj.IsDefault = $("#chbDefaultDomain").prop("checked");
+
+
+
+            obj.InvoiceNumberProcedure = $("#InvoiceNumberProcedure").val();
+            if ($("#InvoiceNumberProcedure").val() == "1") {
+                obj.InvoiceNumberInitializer = $("#InvoiceNumberInitializer").val();
+            }
             //prices
             $("#priceList tr").each(function () {
 
@@ -361,6 +494,23 @@
 
                 obj.Prices.push(innerModel);
 
+            });
+
+            //paymentproviders
+            $("#gatewayInfoes tr").each(function () {
+                var innerModel = {};
+                innerModel.DomainValueProvider = [];
+                innerModel.ProviderId = $(this).find("td:eq(1)").text();
+                innerModel.ProviderName = $(this).find("td:eq(0)").text();
+                var arr = $(this).find("td:eq(0)").text().split("|");
+                for (var i = 0; i < arr.length; i++) {
+                    var innerArr = arr[i].split(":");
+                    var obj = {};
+                    obj.Key = innerArr[0];
+                    obj.Value = innerArr[1];
+                    innerModel.DomainValueProvider.push(obj);
+                }
+                obj.DomainPaymentProviders.push(innerModel);
             });
             return obj;
         }
