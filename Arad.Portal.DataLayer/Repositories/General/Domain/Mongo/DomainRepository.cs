@@ -18,8 +18,7 @@ using System.Web;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.DataLayer.Entities.General.Email;
 using Arad.Portal.DataLayer.Entities.General.Domain;
-
-
+using static Arad.Portal.DataLayer.Models.Shared.Enums;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
 {
@@ -90,11 +89,18 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                         equallentEntity.Prices.Add(p);
                     }
                     #endregion
+
+                   
+                    equallentEntity.InvoiceNumberProcedure = (InvoiceNumberProcedure)Convert.ToInt32(dto.InvoiceNumberProcedure);
+
+
+
                     equallentEntity.Modifications = new List<Modification>();
                     equallentEntity.CreationDate = DateTime.Now;
                     equallentEntity.CreatorUserId = this.GetUserId();
                     equallentEntity.CreatorUserName = this.GetUserName();
                     equallentEntity.IsActive = true;
+                    
 
 
                     await _context.Collection.InsertOneAsync(equallentEntity);
@@ -385,6 +391,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                     entity.Prices.Add(p);
                 }
                 #endregion
+                entity.InvoiceNumberProcedure = (InvoiceNumberProcedure)Convert.ToInt32(dto.InvoiceNumberProcedure);
                 var updateResult = await _context.Collection
                .ReplaceOneAsync(_ => _.DomainId == dto.DomainId, entity);
                 if (updateResult.IsAcknowledged)
@@ -473,6 +480,25 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             return result;
         }
 
-        
+        public List<SelectListModel> GetPspTypesEnum()
+        {
+            var result = new List<SelectListModel>();
+            foreach (int i in Enum.GetValues(typeof(PspType)))
+            {
+                string name = Enum.GetName(typeof(PspType), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            result.Insert(0, new SelectListModel() 
+            { 
+              Text = GeneralLibrary.Utilities.Language.GetString("Choose"),
+              Value = "-1" 
+            });
+            return result;
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Arad.Portal.DataLayer.Models.Shared.Enums;
 
 namespace Arad.Portal.DataLayer.Models.Domain
 {
@@ -41,14 +42,23 @@ namespace Arad.Portal.DataLayer.Models.Domain
 
         public List<PriceDTO> Prices { get; set; }
 
-        public List<ProviderDetail> DomainPaymentProviders { get; set; }
+        public List<ProviderDetailDTO> DomainPaymentProviders { get; set; }
 
-        public InvoiceNumberProcedure InvoiceNumberProcedure { get; set; }
+        public string InvoiceNumberProcedure { get; set; }
 
         /// <summary>
         /// if InvoiceNumberProcedure=CustomFromMyInstance owner should fill this prop
         /// otherwise main domain will generate the invoice number for this domain
         /// </summary>
         public string InvoiceNumberInitializer { get; set; }
+
+        public int? IncreasementValue { get; set; }
+    }
+
+    public class ProviderDetailDTO
+    {
+        public string Type { get; set; }
+        public PspType PspType { get; set; }
+        public string DomainValueProvider { get; set; }
     }
 }

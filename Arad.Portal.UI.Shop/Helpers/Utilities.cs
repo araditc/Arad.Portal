@@ -99,5 +99,10 @@ namespace Arad.Portal.UI.Shop.Helpers
             var base64EncodedBytes = Convert.FromBase64String(base64EncodedData);
             return Encoding.UTF8.GetString(base64EncodedBytes);
         }
+
+        public static dynamic ConvertDynamic(dynamic source, Type dest)
+        {
+            return Convert.ChangeType(source, dest);
+        }
     }
 }

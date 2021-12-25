@@ -15,6 +15,9 @@ using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Contracts.General.Currency;
 using Microsoft.AspNetCore.Authorization;
 using Arad.Portal.DataLayer.Contracts.General.Services;
+using static Arad.Portal.DataLayer.Models.Shared.Enums;
+using System.Reflection;
+using Arad.Portal.DataLayer.Entities.General.Domain;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -75,7 +78,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 vendors.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
                 ViewBag.Vendors = vendors;
             }
-            var paymentProviders = _providerRepository.GetProvidersPerType(DataLayer.Entities.General.Service.ProviderType.Payment);
+            //var paymentProviders = _providerRepository.GetProvidersPerType(DataLayer.Entities.General.Service.ProviderType.Payment);
+            var paymentProviders = _domainRepository.GetPspTypesEnum();
             ViewBag.Providers = paymentProviders;
 
             if (!string.IsNullOrWhiteSpace(id))
@@ -96,10 +100,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
             return View(model);
         }
-        
+       
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] DomainDTO dto)
         {
+
             JsonResult result;
             if (!ModelState.IsValid)
             {
@@ -115,6 +120,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
+                foreach (var item in dto.DomainPaymentProviders)
+                {
+                    item.PspType = (PspType)Enum.Parse(typeof(PspType), item.Type);
+                } 
                 foreach (var item in dto.Prices)
                 {
                     var cur = _curRepository.FetchCurrency(item.CurrencyId);
@@ -130,6 +139,37 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             return result;
 
+        }
+
+        [HttpPost]
+        public IActionResult GetProviderParams([FromQuery] int pspVal)
+        {
+            var htmlResult = "";
+            var psp = (PspType)pspVal;
+            switch (psp)
+            {
+                case PspType.IranKish:
+                    htmlResult = GenerateForm(typeof(IrankishModel).GetProperties());
+                    break;
+                case PspType.Saman:
+                    htmlResult = GenerateForm(typeof(SamanModel).GetProperties());
+                    break;
+                case PspType.Parsian:
+                    htmlResult = GenerateForm(typeof(ParsianModel).GetProperties());
+                    break;
+            }
+            return Content(htmlResult);
+        }
+
+        private string GenerateForm(PropertyInfo[] properties)
+        {
+            var finalHTML = "";
+            foreach (var prop in properties)
+            {
+                finalHTML += $"<div class='form-group col-md-3'><label for='{prop.Name}'>{prop.Name}</label><br/><input type='text' id='{prop.Name}' class='form-control gatewayPar' value='' /></div>";
+            }
+            
+            return finalHTML;
         }
 
         [HttpGet]
@@ -198,6 +238,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
+                foreach (var item in dto.DomainPaymentProviders)
+                {
+                    item.PspType = (PspType)Enum.Parse(typeof(PspType), item.Type);
+                }
                 foreach (var item in dto.Prices)
                 {
                     var cur = _curRepository.FetchCurrency(item.CurrencyId);

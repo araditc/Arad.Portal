@@ -320,6 +320,9 @@
 	<string key="FirstInvoiceNumberPattern">
 		<value>First invoice number</value>
 	</string>
+	<string key="IncreasementLevel">
+		<value>Increasement Value Per Invoice</value>
+	</string>
 	<string key="tbl_GatewayInformation">
 		<value>Gateway Information</value>
 	</string>

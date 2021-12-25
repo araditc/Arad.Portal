@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Arad.Portal.GeneralLibrary.Utilities;
+
 
 namespace Arad.Portal.DataLayer.Repositories.General.Service.Mongo
 {
@@ -31,10 +33,15 @@ namespace Arad.Portal.DataLayer.Repositories.General.Service.Mongo
                 Value = _.ProviderId
             }).ToList();
 
+            res.Insert(0, new SelectListModel()
+            { 
+                Value = "-1", 
+                Text = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_Choose") 
+            });
             return res;
         }
 
-        public void InsertOne(Entities.General.Service.Provider entity)
+        public void InsertOne(Provider entity)
         {
             _context.Collection.InsertOne(entity);
         }

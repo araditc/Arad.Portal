@@ -497,6 +497,9 @@
 		<value>مطمئن هستید؟</value>
 	</string>
 	<!--====================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_PaymentGatewayInfoes">
+		<value>لطفا اطلاعات درگاه پرداخت را بطور کامل وارد کنید.</value>
+	</string>
 	<string key="AlertAndMessage_ProductCountInCart">
 		<value>[0] واحد از این محصول به سبد خرید شما اضافه گردید.</value>
 	</string>

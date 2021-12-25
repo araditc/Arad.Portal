@@ -17,10 +17,11 @@ namespace Arad.Portal.DataLayer.Models.Shared
             IranKish,
             [Description("  سامان کیش")]
             Saman,
-            [Description(" به پرداخت")]
-            BehPardakht,
             [Description(" پارسیان")]
-            Parsian
+            Parsian,
+            //[Description(" به پرداخت")]
+            //BehPardakht,
+           
         }
 
         public enum EmailEncryptionType

@@ -53,12 +53,12 @@ namespace Arad.Portal.UI.Shop.Controllers
             ViewBag.LoggedUser = isLoggedUser;
             userId = isLoggedUser ? HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value : "";
             var domainEntity = _domainRepository.FetchByName(_domainName);
+            ViewBag.Providers = domainEntity.ReturnValue.DomainPaymentProviders.Select(_ => new SelectListModel() { Text = _.PspType.ToString(), Value = ((int)_.PspType).ToString() });
             var lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
             var entity = _productRepository.FetchByCode(slug, domainEntity.ReturnValue, userId);
             if (isLoggedUser)
             {
                  #region check cookiepart for loggedUser
-                
                 var userProductRateCookieName = $"{userId}_p{entity.ProductId}";
                 if(HttpContext.Request.Cookies[userProductRateCookieName] != null)
                 {
@@ -69,11 +69,8 @@ namespace Arad.Portal.UI.Shop.Controllers
                 {
                     ViewBag.HasRateBefore = false;
                 }
-                
                 #endregion
             }
-
-
 
             var lanId = _lanRepository.FetchBySymbol(lanIcon);
             ViewBag.CurCurrencyId = domainEntity.ReturnValue.DefaultCurrencyId;

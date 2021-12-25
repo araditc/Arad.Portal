@@ -12,6 +12,6 @@ namespace Arad.Portal.DataLayer.Contracts.General.Services
     {
         List<SelectListModel> GetProvidersPerType(ProviderType type);
 
-        void InsertOne(Entities.General.Service.Provider entity);
+        void InsertOne(Provider entity);
     }
 }

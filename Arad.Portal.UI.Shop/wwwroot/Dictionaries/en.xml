@@ -502,6 +502,9 @@
 		<value>Are you sure?</value>
 	</string>
 	<!--====================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_PaymentGatewayInfoes">
+		<value>please fill all paymentGateway information compeletely;</value>
+	</string>
 	<string key="AlertAndMessage_ProductCountInCart">
 		<value>[0] units of this product added to your cart.</value>
 	</string>
@@ -701,7 +704,6 @@
   <string key="AlertAndMessage_PasswordRepassWordCompare">
     <value>Password and Repassword should be matched.</value>
   </string>
-  
   <string key="AlertAndMessage_MinLength">
     <value>0 length dont have to be less than 1.</value>
   </string>
@@ -747,9 +749,7 @@
 	<string key="AlertAndMessage_SubmitComment">
 		<value>Sent Successfully.</value>
 	</string>
-
-
-<string key="AlertAndMessage_DuplicatePhoneNumber">
+    <string key="AlertAndMessage_DuplicatePhoneNumber">
 		<value>There is a user account with this mobilePhone.</value>
 	</string>
 	<string key="AlertAndMessage_NoAccess">

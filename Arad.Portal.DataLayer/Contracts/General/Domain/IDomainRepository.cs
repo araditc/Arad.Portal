@@ -24,5 +24,6 @@ namespace Arad.Portal.DataLayer.Contracts.General.Domain
         List<SelectListModel> GetAllActiveDomains();
         string GetDomainName();
         List<SelectListModel> GetInvoiceNumberProcedureEnum();
+        List<SelectListModel> GetPspTypesEnum();
     }
 }

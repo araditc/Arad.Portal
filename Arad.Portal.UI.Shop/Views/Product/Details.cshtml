@@ -220,13 +220,16 @@
                             </div>
                         </div>
                         <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <label>@Language.GetString("OrderCnt")</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <input type="number" class="form-control" id="orderCnt" name="orderCnt" min="0" value="1" />
                                 </div>
-                                <div class="col-md-4">
+                               <div class="col-md-3">
+                                   <select class="form-control"  asp-items="@(new SelectList(ViewBag.Providers,"Value","Text"))" ></select>
+                               </div>
+                                <div class="col-md-3">
                                     <input type="button" id="btnAddToCart" class="btn btn-dark" prid="@Model.ProductId"
                                            value="@Language.GetString("btn_AddToShoppingCart")"/>
                                 </div>

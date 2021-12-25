@@ -316,6 +316,9 @@
 	<string key="FirstInvoiceNumberPattern">
 		<value>اولین شماره فاکتور</value>
 	</string>
+	<string key="IncreasementLevel">
+		<value>مقدار افزایشی برای هر فاکتور</value>
+	</string>
 	<string key="tbl_GatewayInformation">
 		<value>اطلاعات درگاه</value>
 	</string>

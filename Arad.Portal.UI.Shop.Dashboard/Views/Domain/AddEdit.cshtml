@@ -1,4 +1,5 @@
 ﻿@model Arad.Portal.DataLayer.Models.Domain.DomainDTO
+@using Arad.Portal.UI.Shop.Dashboard.Helpers;
 @using Arad.Portal.DataLayer.Models.Shared;
 @{
     //Layout = "~/Views/Shared/_Layout.cshtml";
@@ -108,6 +109,11 @@
                     <div class="form-group col-md-3 invoiceInitialise">
                         <label for="DefaultCurrencyId">@Language.GetString("FirstInvoiceNumberPattern")</label><br />
                         <input type="text" class="form-control" asp-for="@Model.InvoiceNumberInitializer" />
+                        <span data-val-result="InvoiceNumberInitializer" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3 invoiceInitialise">
+                        <label for="DefaultCurrencyId">@Language.GetString("IncreasementLevel")</label><br />
+                        <input type="text" class="form-control" asp-for="@Model.IncreasementValue" />
                         <span data-val-result="InvoiceNumberInitializer" class="text-danger"></span>
                     </div>
 
@@ -232,10 +238,10 @@
                                         <span data-val-result="providerId" class="text-danger"></span>
                                     </div>
                                    
-                                    <div class="form-group col-md-2" style="text-align:center;margin:auto;">
+                                    <div class="form-group col-md-2"  style="text-align:center;margin:auto;">
 
-                                        <div style="margin:auto;display:inline-block;">
-                                            <button type="button" class="btn btn-primary" onclick="addToTable();">
+                                        <div id="btnAddSection" style="margin:auto;display:inline-block;">
+                                            <button type="button" id="addProviderParam" class="btn btn-primary d-none" >
                                                 <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
                                                 @Language.GetString("btn_Add")
                                             </button>
@@ -243,29 +249,9 @@
                                     </div>
                                 </div>
 
-                                <div class="row" style="background-color: #bfd1e4;">
-                                    <div class="form-group col-md-3">
-                                        <label>@Language.GetString("tbl_ParameterName")</label>
-                                        <input type="text" class="form-control" id="parameterKey" />
-                                        <span data-val-result="parameterKey" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label>@Language.GetString("tbl_ParameterValue")</label><br />
-                                        <input type="text" class="form-control" id="parameterValue" placeholder=" ">
-                                        <span data-val-result="parameterValue" class="text-danger"></span>
-                                    </div>
+                                <div class="row" id="paymentGatewayParameters" style="background-color: #bfd1e4;">
+                                    <span data-val-result="paymentGatewayParameters" class="text-danger"></span>
 
-                                    <div class="col-md-1" style="text-align:center;margin:auto;">
-                                        <div style="margin:auto;display:inline-block;">
-                                            <button type="button" class="btn btn-info btn-circle" onclick="addProviderInfoList();">
-                                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-5">
-                                        <span data-val-result="ParamValueList" class="text-danger"></span>
-                                        <ul class="list-group" id="ParamValueList"></ul>
-                                    </div>
                                 </div>
 
                                 <div class="row" style="margin-top:1%;">
@@ -275,7 +261,6 @@
                                             <thead>
                                                 <tr style="text-align:center;">
                                                     <th>@Language.GetString("tbl_ProviderName")</th>
-                                                    <th class="d-none"></th>
                                                     <th>@Language.GetString("tbl_GatewayInformation")</th>
                                                     <th></th>
                                                 </tr>
@@ -284,16 +269,15 @@
                                                 @foreach (var item in Model.DomainPaymentProviders)
                                                 {
                                                     <tr style="text-align:center;">
-                                                        <td>@item.ProviderName</td>
-                                                        <td class="d-none">@item.ProviderId</td>
-                                                        <td>@(string.Join('|',@item.DomainValueProvider.Select(_=> _.Key +":"+ _.Value)))</td>
+                                                        <td>@item.PspType</td>
+                                                        <td>@item.DomainValueProvider</td>
                                                         <td>
                                                             <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromTable(this);">
                                                                 <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
                                                             </button>
                                                         </td>
                                                     </tr>
-                                                }
+                                                            }
                                             </tbody>
                                         </table>
                                     </div>
@@ -367,8 +351,55 @@
                     $(".invoiceInitialise").addClass("d-none");
                 }
                 else if ($(this).val() == "1") {
+                  
                     $(".invoiceInitialise").removeClass("d-none");
                 }
+            });
+
+            $("#providerId").change(function () {
+                if ($(this).val() != "" && $(this).val() != "-1") {
+
+                    $.ajax({
+                        url: "/Domain/GetProviderParams?pspVal=" + $(this).val(),
+                        contentType: 'application/json',
+                        type: 'Post',
+                        dataType: 'html',
+                        beforeSend: function () {
+                        },
+                        success: function (result) {
+                            $("#paymentGatewayParameters").html(result);
+                            $("#addProviderParam").removeClass("d-none");
+                        }
+                    });
+                } else
+                    if ($(this).val() == "-1") {
+                        $("#addProviderParam").addClass("d-none");
+                        $("#paymentGatewayParameters").html("");
+                }
+            });
+
+            $("#addProviderParam").click(function () {
+                debugger;
+                $("#paymentGatewayParameters .gatewayPar").each(function () {
+                    if ($(this).val() == "") {
+                        $("span[data-val-result=='paymentGatewayParameters']").html('@Language.GetString("AlertAndMessage_PaymentGatewayInfoes")');
+                        return;
+                    }
+                });
+
+                var data = "";
+                $("#paymentGatewayParameters .gatewayPar").each(function () {
+                    var name = $(this).attr("id");
+                    var value = $(this).val();
+
+                    data += `'${name}':'${value}', `;
+                });
+
+                data = `{ ${data.substring(0, data.length - 2)} }`;
+                var btn = "<button type='button' class='btn btn-danger btn-circle' onclick='deleteFromTable(this);'><i class='fa fa-minus' style='position: relative;padding:3px;'></i></botton>";
+                var tr = `<tr style='text-align:center;'><td>${$("#providerId option:selected").text()}</td><td>${data}</td><td>${btn}</td></tr>`;
+
+                $("#gatewayInfoes").append(tr);
             });
             $("#btnAddDomain").click(function () {
             debugger;
@@ -400,7 +431,8 @@
                 }
                 if (!flag) {
 
-                        var dto = FillDataToSend();
+                    var dto = FillDataToSend();
+                    debugger;
                         $.ajax({
                             url: "@Model.DomainId" != "" ? "/Domain/Edit" : "/Domain/Add",
                             /*data: dataModel,*/
@@ -452,6 +484,8 @@
                 }
 
             });
+
+            
         });
 
         function FillDataToSend() {
@@ -474,6 +508,7 @@
             obj.InvoiceNumberProcedure = $("#InvoiceNumberProcedure").val();
             if ($("#InvoiceNumberProcedure").val() == "1") {
                 obj.InvoiceNumberInitializer = $("#InvoiceNumberInitializer").val();
+                obj.IncreasementValue = parseInt($("#IncreasementValue").val());
             }
             //prices
             $("#priceList tr").each(function () {
@@ -499,18 +534,11 @@
             //paymentproviders
             $("#gatewayInfoes tr").each(function () {
                 var innerModel = {};
-                innerModel.DomainValueProvider = [];
-                innerModel.ProviderId = $(this).find("td:eq(1)").text();
-                innerModel.ProviderName = $(this).find("td:eq(0)").text();
-                var arr = $(this).find("td:eq(0)").text().split("|");
-                for (var i = 0; i < arr.length; i++) {
-                    var innerArr = arr[i].split(":");
-                    var obj = {};
-                    obj.Key = innerArr[0];
-                    obj.Value = innerArr[1];
-                    innerModel.DomainValueProvider.push(obj);
-                }
+                innerModel.Type = $(this).find("td:eq(0)").text();
+                innerModel.DomainValueProvider = $(this).find("td:eq(1)").text();
+
                 obj.DomainPaymentProviders.push(innerModel);
+                
             });
             return obj;
         }

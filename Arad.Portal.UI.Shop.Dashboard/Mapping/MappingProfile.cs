@@ -70,6 +70,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Mapping
             CreateMap<ShippingSetting, ShippingSettingDTO>().ReverseMap();
             CreateMap<ShippingTypeDetail, ShippingTypeDetailDTO>().ReverseMap();
             CreateMap<ShippingCoupon, ShippingCouponDTO>().ReverseMap();
+            CreateMap<ProviderDetail, ProviderDetailDTO>().ReverseMap();
 
         }
 
