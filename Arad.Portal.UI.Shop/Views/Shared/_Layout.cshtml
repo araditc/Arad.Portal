@@ -55,11 +55,14 @@
         .lan {
             border: none;
             padding: 1rem 0.25rem;
+            cursor: pointer;
+            
         }
 
         .profile {
             border: none;
-            padding: 1rem 1rem;
+            padding: 1rem 0.5rem;
+            cursor: pointer;
         }
         .notifyBadge {
             border: 1px solid rgba(0, 0, 0, 0.1);
@@ -84,8 +87,8 @@
                 <div class="searchBar"></div>*@
             @if (!User.Identity.IsAuthenticated)
             {
-                <div class="offset-9"></div>
-                <div class="col-md-1">
+                <div class="offset-8"></div>
+                <div class="col-md-2">
                     @*<div class="profile m-2">
                             <div class="row">
                                 <div class="col-3">
@@ -102,6 +105,7 @@
                         </div>*@
 
                     <ul class="list-group list-group-horizontal">
+                        <li class="list-group-item" style="border:none;"></li>
                         <li class="list-group-item profile">
                             <a href="/account/login" title="@Language.GetString("btn_Login")">
                                 <i class="fas fa-sign-in-alt"></i>

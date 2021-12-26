@@ -3,6 +3,7 @@ using Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart;
 using Arad.Portal.DataLayer.Contracts.Shop.Transaction;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Entities.Shop.Transaction;
+using Arad.Portal.GeneralLibrary.Utilities;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -39,51 +40,70 @@ namespace Arad.Portal.UI.Shop.Controllers
 
         public async Task<IActionResult> InitializePay(string userCartId, PspType type)
         {
-            var result = await _shoppingCartRepository.FetchUserShoppingCart(userCartId);
-            if (!result.Succeeded)
+            if(_shoppingCartRepository.UserCartShoppingValidation(userCartId))
             {
-                return RedirectToAction("PageOrItemNotFound", "Account");
-            }
-            var userEntity = await _userManager.FindByIdAsync(base.CurrentUserId);
-
-            var transaction = new Transaction()
-            {
-                //???
-                MainInvoiceNumber = Guid.NewGuid().ToString(),
-                CustomerData = new CustomerData()
+                var result = await _shoppingCartRepository.FetchUserShoppingCart(userCartId);
+                if (!result.Succeeded)
                 {
-                    UserId = base.CurrentUserId,
-                    UserName = base.CurrentUserName,
-                    UserFullName = userEntity.Profile.FullName
-                },
-                BasicData = new PaymentGatewayData()
-                {
-                    //???
-                    PaymentId = Guid.NewGuid().ToString(),
-                    CreationDateTime = DateTime.Now,
-                    Stage = PaymentStage.Initialized,
-                    PspType = type,
-                    ShoppinCartId = result.ReturnValue.ShoppingCartId,
-                    InternalTokenIdentifier = Guid.NewGuid().ToString()
+                    return RedirectToAction("PageOrItemNotFound", "Account");
                 }
-            };
-            foreach (var invoice in result.ReturnValue.Details)
-            {
-                var obj = new InvoicePerSeller()
+                else
                 {
-                    ParchasePerSeller = invoice,
-                    SellerInvoiceId = Guid.NewGuid().ToString(),
-                    SettlementInfo = new SettlementInfo()
-                };
-                transaction.SubInvoices.Add(obj);
+                    var subtractResult = await _shoppingCartRepository.SubtractUserCartOrderCntFromInventory(result.ReturnValue);
+
+                    if(subtractResult.Succeeded)
+                    {
+                        var userEntity = await _userManager.FindByIdAsync(base.CurrentUserId);
+
+                        var transaction = new Transaction()
+                        {
+                            //???
+                            MainInvoiceNumber = Guid.NewGuid().ToString(),
+                            CustomerData = new CustomerData()
+                            {
+                                UserId = base.CurrentUserId,
+                                UserName = base.CurrentUserName,
+                                UserFullName = userEntity.Profile.FullName
+                            },
+                            BasicData = new PaymentGatewayData()
+                            {
+                                //???
+                                PaymentId = Guid.NewGuid().ToString(),
+                                CreationDateTime = DateTime.Now,
+                                Stage = PaymentStage.Initialized,
+                                PspType = type,
+                                ShoppinCartId = result.ReturnValue.ShoppingCartId,
+                                InternalTokenIdentifier = Guid.NewGuid().ToString()
+                            }
+                        };
+                        foreach (var invoice in result.ReturnValue.Details)
+                        {
+                            var obj = new InvoicePerSeller()
+                            {
+                                ParchasePerSeller = invoice,
+                                SellerInvoiceId = Guid.NewGuid().ToString(),
+                                SettlementInfo = new SettlementInfo()
+                            };
+                            transaction.SubInvoices.Add(obj);
+                        }
+
+                        await _transactionRepository.InsertTransaction(transaction);
+
+                        var redirectAddress =
+                            $"/{transaction.BasicData.PspType}/HandlePayRequest?identifierToken={Helpers.Utilities.Base64Encode(transaction.BasicData.InternalTokenIdentifier)}";
+
+                        return Redirect(redirectAddress);
+                    }
+                    else
+                    {
+                        return Json(Language.GetString("AlertAndMessage_InternalServerErrorMessage"));
+                    }
+                }
             }
-
-            await _transactionRepository.InsertTransaction(transaction);
-           
-            var redirectAddress =
-                $"/{transaction.BasicData.PspType}/HandlePayRequest?identifierToken={Helpers.Utilities.Base64Encode(transaction.BasicData.InternalTokenIdentifier)}";
-
-            return Redirect(redirectAddress);
+            else
+            {
+                return Json("ShoppingCart is invalid");
+            }
         }
 
         public IActionResult PaymentError()

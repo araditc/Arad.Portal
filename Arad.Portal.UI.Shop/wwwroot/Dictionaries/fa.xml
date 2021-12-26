@@ -438,6 +438,9 @@
 	<string key="tbl_ContentCategoryCode">
 		<value>شناسه گروه محتوا</value>
 	</string>
+	<string key="tbl_PaymenyGateways">
+		<value>درگاه های پرداخت</value>
+	</string>
 	<!--End [tables]-->
 	<!--START [Enum Descriptions]-->
 	<string key="EnumDesc_List">

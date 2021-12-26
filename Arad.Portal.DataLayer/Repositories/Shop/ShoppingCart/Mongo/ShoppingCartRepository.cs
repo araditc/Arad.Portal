@@ -701,7 +701,6 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                     model.FinalPriceToPay += sellerFactor;
                     model.Details.Add(purchasePerSeller);
                 }
-
                
                 //model.FinalPriceForPay = finalPaymentPrice;
                 var updateResult = await _context.Collection
@@ -720,6 +719,60 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             else
             {
                 result.Message = ConstMessages.ObjectNotFound;
+            }
+            return result;
+        }
+
+        public bool UserCartShoppingValidation(string userCartId)
+        {
+            bool result = true;
+            var entity = _context.Collection.Find(_ => _.ShoppingCartId == userCartId).FirstOrDefault();
+            foreach (var seller in entity.Details)
+            {
+                foreach (var product in seller.Products)
+                {
+                   //check the quantity and price if no quantity and
+                   //price change shopping card is ready to go to paymentGateway
+                    var proEntity = _productContext.ProductCollection
+                        .Find(_ => _.ProductId == product.ProductId).FirstOrDefault();
+                    if(proEntity.IsDeleted || 
+                        proEntity.Inventory < product.OrderCount || 
+                        GetCurrentPrice(proEntity) != product.PricePerUnit )
+                    {
+                        result = false;
+                        break;
+                    }
+                }
+            }
+            return result;
+        }
+
+        public async Task<Result> SubtractUserCartOrderCntFromInventory(Entities.Shop.ShoppingCart.ShoppingCart shoppingCart)
+        {
+            var result = new Result();
+            try
+            {
+                foreach (var seller in shoppingCart.Details)
+                {
+                    foreach (var product in seller.Products)
+                    {
+                        var productEntity = _productContext.ProductCollection
+                            .Find(_ => _.ProductId == product.ProductId).FirstOrDefault();
+
+                        if (productEntity != null)
+                        {
+                            productEntity.Inventory -= product.OrderCount;
+                            var upDateResult = await _productContext.ProductCollection
+                                .ReplaceOneAsync(_ => _.ProductId == product.ProductId, productEntity);
+                        }
+                    }
+                }
+                result.Succeeded = true;
+            }
+            catch (Exception ex)
+            {
+                result.Succeeded = false;
+                result.Message = Language.GetString("AlertAndMessage_ExceptionOccured");
             }
             return result;
         }

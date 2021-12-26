@@ -58,6 +58,7 @@ using Arad.Portal.UI.Shop.Authorization;
 using Arad.Portal.UI.Shop.Helpers;
 using Arad.Portal.UI.Shop.Middlewares;
 using AspNetCore.Identity.Mongo;
+using Enyim.Caching.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -101,9 +102,17 @@ namespace Arad.Portal.UI.Shop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddHttpClient();
+
+            services.AddMemoryCache();
+            services.AddEnyimMemcached(setup => {
+                setup.Servers.Add(new Server { Address = "127.0.0.1", Port = 11211 });
+            });
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            services.AddDistributedMemoryCache();
+            services.AddMemoryCache();
+            //services.AddDistributedMemoryCache();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<HtmlEncoder>(
                 HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.BasicLatin,
@@ -196,6 +205,8 @@ namespace Arad.Portal.UI.Shop
             AddRepositoryServices(services);
             //services.AddProgressiveWebApp();
 
+           
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -212,8 +223,8 @@ namespace Arad.Portal.UI.Shop
                 app.UseHsts();
             }
 
-
             app.UseHttpsRedirection();
+            app.UseEnyimMemcached();
             app.UseStaticFiles();
             app.UseRequestLocalization(AddMultilingualSettings());
 

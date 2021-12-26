@@ -59,6 +59,10 @@
     .dir{
         direction : @(dir == "rtl" ? "rtl" : "ltr");
     }
+
+    .lblMdl{
+        padding: 0.5rem 0rem;
+    }
     </style>
 }
 @*<script src="~/ImageSlider/popper.min.js"></script>*@
@@ -220,19 +224,25 @@
                             </div>
                         </div>
                         <div class="row">
-                                <div class="col-md-3">
-                                    <label>@Language.GetString("OrderCnt")</label>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="number" class="form-control" id="orderCnt" name="orderCnt" min="0" value="1" />
-                                </div>
-                               <div class="col-md-3">
-                                   <select class="form-control"  asp-items="@(new SelectList(ViewBag.Providers,"Value","Text"))" ></select>
-                               </div>
-                                <div class="col-md-3">
-                                    <input type="button" id="btnAddToCart" class="btn btn-dark" prid="@Model.ProductId"
-                                           value="@Language.GetString("btn_AddToShoppingCart")"/>
-                                </div>
+                            <div class="col-md-3">
+                                <label class="lblMdl">@Language.GetString("OrderCnt")</label>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="number" class="form-control" id="orderCnt" name="orderCnt" min="0" value="1" />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="lblMdl">@Language.GetString("tbl_PaymenyGateways")</label>
+                            </div>
+                            <div class="col-md-4">
+                                <select class="form-control" asp-items="@(new SelectList(ViewBag.Providers,"Value","Text"))"></select>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 offset-md-8">
+                                <input type="button" id="btnAddToCart" class="btn btn-dark" prid="@Model.ProductId"
+                                       value="@Language.GetString("btn_AddToShoppingCart")" />
+                            </div>
                         </div>
                     }
                     else

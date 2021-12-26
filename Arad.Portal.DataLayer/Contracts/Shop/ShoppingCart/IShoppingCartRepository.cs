@@ -25,6 +25,12 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart
         Task<Result> DeleteProductFromUserShoppingCart(string userId, string productId);
 
         Task<Result> DeleteWholeUserShoppingCart(string userId);
+        /// <summary>
+        /// checking the price and inventory of products 
+        /// </summary>
+        /// <param name="userCartId"></param>
+        /// <returns></returns>
+        bool UserCartShoppingValidation(string userCartId);
 
         /// <summary>
         /// the return type Of rResult is UserCartId
@@ -32,6 +38,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart
         /// <param name="userId"></param>
         /// <returns></returns>
         Result<string> FindCurrentUserShoppingCart(string userId, string domainId);
+
+        Task<Result> SubtractUserCartOrderCntFromInventory(Entities.Shop.ShoppingCart.ShoppingCart shoppingCart);
 
         
     }

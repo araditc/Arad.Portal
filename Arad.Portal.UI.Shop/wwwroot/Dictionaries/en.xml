@@ -443,6 +443,9 @@
     <string key="tbl_ContentCategoryCode">
 		<value>ContentCategory Id</value>
 	</string>
+	<string key="tbl_PaymenyGateways">
+		<value>Payment Gateways</value>
+	</string>
 	<!--End [tables]-->
 	<!--START [Enum Descriptions]-->
 	<string key="EnumDesc_List">
