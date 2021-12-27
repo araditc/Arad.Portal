@@ -200,6 +200,8 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<IPermissionView, PermissionView>();
             services.AddTransient<RemoteServerConnection>();
             services.AddTransient<CreateNotification>();
+            services.AddTransient(typeof(EnyimMemcachedMethods<>));
+            services.AddTransient<HttpClientHelper>();
             //services.AddSingleton<CodeGenerator>();
             services.AddLocalization();
             AddRepositoryServices(services);
@@ -323,7 +325,7 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<IProductUnitRepository, ProductUnitRepository>();
             services.AddTransient<IPromotionRepository, PromotionRepository>();
             services.AddTransient<IShoppingCartRepository, ShoppingCartRepository>();
-            services.AddTransient<ITransationRepository, TransactionRepository>();
+            services.AddTransient<ITransactionRepository, TransactionRepository>();
             services.AddTransient<INotificationRepository, NotificationRepository>();
             services.AddTransient<IMessageTemplateRepository, MessageTemplateRepository>();
             services.AddTransient<IContentCategoryRepository, ContentCategoryRepository>();

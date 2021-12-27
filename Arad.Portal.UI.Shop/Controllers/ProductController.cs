@@ -6,6 +6,7 @@ using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Models.Comment;
 using Arad.Portal.DataLayer.Models.Product;
 using Arad.Portal.DataLayer.Models.Shared;
+using Arad.Portal.UI.Shop.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,14 +24,15 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly IHttpContextAccessor _accessor;
         private readonly ILanguageRepository _lanRepository;
         private readonly IDomainRepository _domainRepository;
+        private readonly EnyimMemcachedMethods<DataLayer.Entities.Shop.Transaction.Transaction> _enyimMemcachedMethods;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ICommentRepository _commentRepository;
         private readonly string _domainName;
 
         public ProductController(IProductRepository productRepository, IHttpContextAccessor accessor,
             UserManager<ApplicationUser> userManager,
-            ILanguageRepository lanRepository, IDomainRepository domainRepository, ICommentRepository commentRepository)
-            :base(accessor)
+            EnyimMemcachedMethods<DataLayer.Entities.Shop.Transaction.Transaction> enyimMemcachedMethods,
+            ILanguageRepository lanRepository, IDomainRepository domainRepository, ICommentRepository commentRepository):base(accessor)
         {
             _productRepository = productRepository;
             _accessor = accessor;
@@ -39,6 +41,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             _userManager = userManager;
             _commentRepository = commentRepository;
             _domainName = this.DomainName;
+            _enyimMemcachedMethods = enyimMemcachedMethods;
         }
         public IActionResult Index()
         {

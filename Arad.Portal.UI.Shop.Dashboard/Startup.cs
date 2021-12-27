@@ -328,7 +328,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<IProductUnitRepository, ProductUnitRepository>();
             services.AddTransient<IPromotionRepository, PromotionRepository>();
             services.AddTransient<IShoppingCartRepository, ShoppingCartRepository>();
-            services.AddTransient<ITransationRepository, TransactionRepository>();
+            services.AddTransient<ITransactionRepository, TransactionRepository>();
             services.AddTransient<INotificationRepository, NotificationRepository>();
             services.AddTransient<IMessageTemplateRepository, MessageTemplateRepository>();
             services.AddTransient<IContentCategoryRepository, ContentCategoryRepository>();

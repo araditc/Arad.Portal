@@ -500,5 +500,25 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             });
             return result;
         }
+
+        public Entities.General.Domain.Domain FetchDomainByName(string domainName)
+        {
+            Entities.General.Domain.Domain result
+                 = new Entities.General.Domain.Domain();
+            try
+            {
+                var dbEntity = _context.Collection.Find(_ => _.DomainName == domainName).First();
+                if (dbEntity == null)
+                {
+                    dbEntity = _context.Collection.Find(_ => _.IsDefault).First();
+                }
+            }
+            catch (Exception ex)
+            {
+                result = null;
+            }
+
+            return result;
+        }
     }
 }

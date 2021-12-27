@@ -22,12 +22,12 @@ namespace Arad.Portal.UI.Shop.Controllers
     {
         private readonly IProductRepository _productRepository;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ITransationRepository _transactionRepository;
+        private readonly ITransactionRepository _transactionRepository;
         private readonly IMapper _mapper;
         private readonly IShoppingCartRepository _shoppingCartRepository;
 
         public IPGController(IProductRepository productRepository, IHttpContextAccessor accessor,
-            UserManager<ApplicationUser> userManager, ITransationRepository transationRepository,
+            UserManager<ApplicationUser> userManager, ITransactionRepository transationRepository,
             IMapper mapper, IShoppingCartRepository shoppingCartRepository):base(accessor)
         {
             _productRepository = productRepository;
@@ -57,6 +57,7 @@ namespace Arad.Portal.UI.Shop.Controllers
 
                         var transaction = new Transaction()
                         {
+                            TransactionId = Guid.NewGuid().ToString(),
                             //???
                             MainInvoiceNumber = Guid.NewGuid().ToString(),
                             CustomerData = new CustomerData()
@@ -67,8 +68,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                             },
                             BasicData = new PaymentGatewayData()
                             {
-                                //???
-                                PaymentId = Guid.NewGuid().ToString(),
+                                //PaymentId = Guid.NewGuid().ToString(),
                                 CreationDateTime = DateTime.Now,
                                 Stage = PaymentStage.Initialized,
                                 PspType = type,

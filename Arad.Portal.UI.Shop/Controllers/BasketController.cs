@@ -42,8 +42,6 @@ namespace Arad.Portal.UI.Shop.Controllers
             {
                 return RedirectToAction("Login", "Account", new { returnUrl = "/basket/AddProToBasket" });
             }
-            
-
         }
 
         [HttpGet]
@@ -60,7 +58,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
             else
             {
-                return RedirectToAction("Login", "Account", new { returnUrl = "/basket/getbasket" });
+                return RedirectToAction("Login", "Account", new { returnUrl = "/basket/get" });
             }
 
         }
