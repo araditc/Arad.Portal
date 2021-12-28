@@ -1,4 +1,5 @@
 ﻿using Arad.Portal.DataLayer.Contracts.Shop.Transaction;
+using Arad.Portal.DataLayer.Models.Shared;
 using Microsoft.AspNetCore.Http;
 using MongoDB.Driver;
 using System;
@@ -19,6 +20,28 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
             _context = context;
         }
 
+        public TransactionItems CreateTransactionItemsModel(string transactionId)
+        {
+            var model = new TransactionItems();
+            var entity = _context.Collection
+               .Find(_ => _.TransactionId == transactionId).FirstOrDefault();
+            foreach (var seller in entity.SubInvoices)
+            {
+                foreach (var pro in seller.ParchasePerSeller.Products)
+                {
+                    var obj = new ProductOrder()
+                    {
+                        ProductId = pro.ProductId,
+                        OrderCount = pro.OrderCount
+                    };
+                    model.Orders.Add(obj);
+                }
+            }
+            model.CreatedDate = DateTime.Now;
+
+            return model;
+        }
+
         public Entities.Shop.Transaction.Transaction FetchById(string transactionId)
         {
             var entity = _context.Collection
@@ -31,6 +54,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
         {
             var entity = _context.Collection
                 .Find(_ => _.BasicData.InternalTokenIdentifier == identifierToken).FirstOrDefault();
+
             return entity;
         }
 

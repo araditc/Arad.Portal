@@ -57,6 +57,7 @@ using Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo;
 using Arad.Portal.UI.Shop.Authorization;
 using Arad.Portal.UI.Shop.Helpers;
 using Arad.Portal.UI.Shop.Middlewares;
+using Arad.Portal.UI.Shop.Scheduling;
 using AspNetCore.Identity.Mongo;
 using Enyim.Caching.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -104,13 +105,13 @@ namespace Arad.Portal.UI.Shop
         {
             
             services.AddHttpClient();
-
-            services.AddMemoryCache();
+          
             services.AddEnyimMemcached(setup => {
                 setup.Servers.Add(new Server { Address = "127.0.0.1", Port = 11211 });
             });
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+           
             services.AddMemoryCache();
             //services.AddDistributedMemoryCache();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
@@ -202,7 +203,8 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<CreateNotification>();
             services.AddTransient(typeof(EnyimMemcachedMethods<>));
             services.AddTransient<HttpClientHelper>();
-            //services.AddSingleton<CodeGenerator>();
+            services.AddSingleton<SharedRuntimeData>();
+            services.AddSingleton<IHostedService, CacheCleanerService>();
             services.AddLocalization();
             AddRepositoryServices(services);
             //services.AddProgressiveWebApp();

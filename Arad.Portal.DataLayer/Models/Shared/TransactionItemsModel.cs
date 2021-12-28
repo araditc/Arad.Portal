@@ -12,12 +12,14 @@ namespace Arad.Portal.DataLayer.Models.Shared
         {
             Orders = new();
         }
+
+        public DateTime CreatedDate { get; set; }
         public List<ProductOrder> Orders { get; set; }
     }
     public class ProductOrder
     {
         public string ProductId { get; set; }
 
-        public string OrderCount { get; set; }
+        public int OrderCount { get; set; }
     }
 }

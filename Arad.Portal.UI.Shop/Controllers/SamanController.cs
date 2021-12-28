@@ -56,18 +56,18 @@ namespace Arad.Portal.UI.Shop.Controllers
 
             var domainName = base.DomainName;
             var domainEntity = _domainRepository.FetchDomainByName(domainName);
-            
+
             try
             {
                 SamanModel samanModel = null;
                 var samanData =
                    domainEntity.DomainPaymentProviders.FirstOrDefault(_ => _.PspType == Enums.PspType.Saman);
-               
+
                 samanModel = JsonConvert.DeserializeObject<SamanModel>(samanData.DomainValueProvider);
                 userName = samanModel.UserName;
                 password = samanModel.Password;
                 merchantId = samanModel.MerchantId;
-               
+
             }
             catch (Exception e)
             {
@@ -75,377 +75,380 @@ namespace Arad.Portal.UI.Shop.Controllers
                 TempData["PaymentErrorMessage"] = "پارامترهای درگاه پرداخت سامان یافت نشد.";
                 return RedirectToAction("PaymentError", "Ipg");
             }
-
-
-            var client = new TechnoIPGWSClient();
-
-            string invoiceNumber = DateTime.Now.Ticks.ToString();
-            string paymentId = "";
-
-            var loginParam = new LoginParam()
-            {
-                UserName = userName,
-                Password = password
-            };
-
-            transaction.EventsData.Add(new EventData()
-            {
-                ActionDataJson = JsonConvert.SerializeObject(loginParam),
-                ActionDateTime = DateTime.Now,
-                ActionType = PspActions.ClientRequestToLogin,
-                ActionDescription = PspActions.ClientRequestToLogin.GetDescription()
-            });
-
-            await _paymentRepository.UpdateTransaction(transaction);
-
-            try
-            {
-
-                MerchantLoginResponse loginResult = await client.MerchantLoginAsync(new MerchantLoginRequest(loginParam));
-
-                var error = new SamanDtoResultApi()
-                {
-                    IsSuccess = false,
-                    Message = Enums.ResponseCodes.CanNotConnectToPG.GetDescription(),
-                    StatusCode = (int)Enums.ResponseCodes.CanNotConnectToPG
-                };
-
-                transaction.EventsData.Add(new EventData()
-                {
-                    ActionDataJson = JsonConvert.SerializeObject(loginResult?.@return),
-                    ActionDateTime = DateTime.Now,
-                    ActionType = PspActions.PspLoginResponse,
-                    ActionDescription = PspActions.PspLoginResponse.GetDescription()
-                });
-
-
-                if (loginResult?.@return.Result == "erSucceed" &&
-                    !string.IsNullOrEmpty(loginResult.@return.SessionId))
-                {
-
-
-                    var list = new List<EApportionmentAccount>();
-
-                    foreach (var item in transaction.ApportionData.ProductApportions)
-                    {
-                        EApportionmentAccount info = new EApportionmentAccount()
-                        {
-                            Amount = Convert.ToDecimal(item.Apportion),
-                            AccountIBAN = item.Iban,
-                            AmountSpecified = true,
-                            ApportionmentAccountType = item.IsMain ? enApportionmentAccountType.enMain : enApportionmentAccountType.enOther,
-                            ApportionmentAccountTypeSpecified = true,
-                            SettelmentPayID = item.PaymentIdentifier
-                        };
-
-                        list.Add(info);
-                    }
-
-                    list.Add(new EApportionmentAccount()
-                    {
-                        Amount = Convert.ToDecimal(transaction.ApportionData.CommissionApportion.Apportion),
-                        AccountIBAN = transaction.ApportionData.CommissionApportion.Iban,
-                        AmountSpecified = true,
-                        ApportionmentAccountType = enApportionmentAccountType.enOther,
-                        ApportionmentAccountTypeSpecified = true,
-                        SettelmentPayID = "000000000000000000000000000000"
-                    });
-
-                    var param = new RequestParam
-                    {
-                        IsGovermentPay = true,
-                        IsGovermentPaySpecified = true,
-                        TransTypeSpecified = true,
-                        AmountSpecified = true,
-                        WSContext =
-                            new WSContext()
-                            {
-                                UserId = userName,
-                                Password = password,
-                                SessionId = loginResult.@return.SessionId
-                            },
-                        ReserveNum = invoiceNumber,
-                        TerminalId = terminalId,
-                        Amount = list.Sum(x => x.Amount),
-                        RedirectUrl = $"{Request.Scheme}://{Request.Host}/saman/verify",
-                        MerchantId = merchantId,
-                        ApportionmentAccountList = list.ToArray(),
-                        TransType = enTransType.enGoods
-                    };
-
-                    transaction.EventsData.Add(new EventData()
-                    {
-                        ActionDataJson = JsonConvert.SerializeObject(param),
-                        ActionDateTime = DateTime.Now,
-                        ActionType = PspActions.ClientRequestGenerateTransactionDataToSign,
-                        ActionDescription = PspActions.ClientRequestGenerateTransactionDataToSign.GetDescription()
-                    });
-
-                    await _paymentRepository.UpdateTransaction(transaction);
-
-                    GenerateTransactionDataToSignResponse generateTransactionDataToSignResponse =
-                        await client.GenerateTransactionDataToSignAsync(new GenerateTransactionDataToSignRequest(param));
-
-                    transaction.EventsData.Add(new EventData()
-                    {
-                        ActionDataJson = JsonConvert.SerializeObject(generateTransactionDataToSignResponse?.@return),
-                        ActionDateTime = DateTime.Now,
-                        ActionType = PspActions.PspResponseGenerateTransactionDataToSign,
-                        ActionDescription = PspActions.PspResponseGenerateTransactionDataToSign.GetDescription()
-                    });
-
-                    await _paymentRepository.UpdateTransaction(transaction);
-
-                    if (!string.IsNullOrEmpty(generateTransactionDataToSignResponse?.@return.Result))
-                    {
-                        var generateSignedDataTokenParam = new GenerateSignedDataTokenParam()
-                        {
-                            UniqueId = generateTransactionDataToSignResponse.@return.UniqueId,
-                            WSContext = new WSContext()
-                            {
-                                UserId = userName,
-                                Password = password,
-                                SessionId = loginResult.@return.SessionId
-                            },
-
-                            Signature = generateTransactionDataToSignResponse.@return.DataToSign
-                        };
-
-                        transaction.EventsData.Add(new EventData()
-                        {
-                            ActionDataJson = JsonConvert.SerializeObject(generateSignedDataTokenParam),
-                            ActionDateTime = DateTime.Now,
-                            ActionType = PspActions.ClientTokenRequest,
-                            ActionDescription = PspActions.ClientTokenRequest.GetDescription()
-                        });
-
-                        await _paymentRepository.UpdateTransaction(transaction);
-
-                        GenerateSignedDataTokenResponse generateSignedDataTokenResult =
-                            await client.GenerateSignedDataTokenAsync(new GenerateSignedDataTokenRequest(generateSignedDataTokenParam));
-
-                        transaction.EventsData.Add(new EventData()
-                        {
-                            ActionDataJson = JsonConvert.SerializeObject(generateSignedDataTokenResult?.@return),
-                            ActionDateTime = DateTime.Now,
-                            ActionType = PspActions.PspTokenResponse,
-                            ActionDescription = PspActions.PspTokenResponse.GetDescription()
-                        });
-
-                        await _paymentRepository.UpdateTransaction(transaction);
-
-                        if (generateSignedDataTokenResult?.@return.Result == "erSucceed" &&
-                            !string.IsNullOrEmpty(generateSignedDataTokenResult.@return.Token))
-                        {
-                            transaction.BasicData.InvoiceNumber = invoiceNumber;
-                            transaction.BasicData.Stage = Enums.PaymentStage.GenerateToken;
-
-                            await _paymentRepository.UpdateTransaction(transaction);
-
-                            return View("SamanPay", generateSignedDataTokenResult.@return.Token);
-                        }
-                    }
-                }
-
-                TempData["Psp"] = transaction.BasicData.PspType.GetDescription();
-                TempData["PaymentErrorMessage"] = "خطا در اتصال به درگاه.";
-                return RedirectToAction("PaymentError", "Ipg");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            //test
+            return Json(true);
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        public async Task<IActionResult> Verify([FromForm] SamanResult result)
-        {
-            try
-            {
-                if (result.State.Equals("OK"))
-                {
-                    var transaction = _paymentRepository.GetTransactionByInvoiceNumber(result.ResNum);
 
-                    if (transaction == null)
-                    {
-                        TempData["Psp"] = "Saman";
-                        TempData["PaymentErrorMessage"] = "خطای تایید تراکنش : تراکنش یافت نشد.";
-                        return RedirectToAction("PaymentError", "Ipg");
-                    }
+        //    var client = new TechnoIPGWSClient();
 
-                    transaction.EventsData.Add(new EventData()
-                    {
-                        ActionDataJson = JsonConvert.SerializeObject(result),
-                        ActionDateTime = DateTime.Now,
-                        ActionType = PspActions.PspSendCallback,
-                        ActionDescription = PspActions.PspSendCallback.GetDescription()
-                    });
+        //    string invoiceNumber = DateTime.Now.Ticks.ToString();
+        //    string paymentId = "";
 
-                    await _paymentRepository.UpdateTransaction(transaction);
+        //    var loginParam = new LoginParam()
+        //    {
+        //        UserName = userName,
+        //        Password = password
+        //    };
 
-                    var terId = transaction.BasicData.TerminalId;
-                    var ter = _bankRepository.GetTerminalById(terId);
-                    var provider = ter.ServiceProviders.FirstOrDefault(c => c.Type == transaction.BasicData.PspType);
+        //    transaction.EventsData.Add(new EventData()
+        //    {
+        //        ActionDataJson = JsonConvert.SerializeObject(loginParam),
+        //        ActionDateTime = DateTime.Now,
+        //        ActionType = PspActions.ClientRequestToLogin,
+        //        ActionDescription = PspActions.ClientRequestToLogin.GetDescription()
+        //    });
 
-                    if (provider.Type != Enums.PSPType.Saman)
-                    {
-                        TempData["Psp"] = "Saman";
-                        TempData["PaymentErrorMessage"] = "خطای تایید تراکنش : تراکنش مربوط به درگاه سامان نمی باشد.";
-                        return RedirectToAction("PaymentError", "Ipg");
-                    }
+        //    await _paymentRepository.UpdateTransaction(transaction);
 
-                    var userName = provider.Parameters.FirstOrDefault(c => c.Key == "Username").Value;
-                    var password = provider.Parameters.FirstOrDefault(c => c.Key == "Password").Value;
+        //    try
+        //    {
 
-                    var originalAmount = $"{Convert.ToDecimal(transaction.ApportionData.TotalAmountPaid)}";
+        //        MerchantLoginResponse loginResult = await client.MerchantLoginAsync(new MerchantLoginRequest(loginParam));
 
-                    var client = new TechnoIPGWSClient();
-                    var param = new VerifyMerchantTransParam()
-                    {
-                        RefNum = result.RefNum,
-                        Token = result.token,
-                        WSContext = new WSContext()
-                        {
-                            Password = password,
-                            UserId = userName
-                        }
-                    };
+        //        var error = new SamanDtoResultApi()
+        //        {
+        //            IsSuccess = false,
+        //            Message = Enums.ResponseCodes.CanNotConnectToPG.GetDescription(),
+        //            StatusCode = (int)Enums.ResponseCodes.CanNotConnectToPG
+        //        };
 
-                    if (transaction.BasicData.Stage == Enums.PaymentStage.DoneAndConfirmed)
-                    {
-                        TempData["Psp"] = "Saman";
-                        TempData["PaymentErrorMessage"] = "خطای تایید تراکنش : تراکنش قبلا تایید شده است.";
-                        return RedirectToAction("PaymentError", "Ipg");
-                    }
-
-                    transaction.BasicData.ReferenceId = result.CustomerRefNum;
-                    transaction.BasicData.Stage = Enums.PaymentStage.DoneButNotConfirmed;
-                    await _paymentRepository.UpdateTransaction(transaction);
-
-                    transaction.EventsData.Add(new EventData()
-                    {
-                        ActionDataJson = JsonConvert.SerializeObject(param),
-                        ActionDateTime = DateTime.Now,
-                        ActionType = PspActions.ClientVerifyRequest,
-                        ActionDescription = PspActions.ClientVerifyRequest.GetDescription()
-                    });
-
-                    await _paymentRepository.UpdateTransaction(transaction);
+        //        transaction.EventsData.Add(new EventData()
+        //        {
+        //            ActionDataJson = JsonConvert.SerializeObject(loginResult?.@return),
+        //            ActionDateTime = DateTime.Now,
+        //            ActionType = PspActions.PspLoginResponse,
+        //            ActionDescription = PspActions.PspLoginResponse.GetDescription()
+        //        });
 
 
-                    var verifyMerchantTrans = await client.VerifyMerchantTransAsync(new VerifyMerchantTransRequest(param));
-                    DateTime callVerify = DateTime.Now;
+        //        if (loginResult?.@return.Result == "erSucceed" &&
+        //            !string.IsNullOrEmpty(loginResult.@return.SessionId))
+        //        {
 
-                    transaction.EventsData.Add(new EventData()
-                    {
-                        ActionDataJson = JsonConvert.SerializeObject(verifyMerchantTrans?.@return),
-                        ActionDateTime = callVerify,
-                        ActionType = PspActions.PspVerifyResponse,
-                        ActionDescription = PspActions.PspVerifyResponse.GetDescription()
-                    });
 
-                    await _paymentRepository.UpdateTransaction(transaction);
+        //            var list = new List<EApportionmentAccount>();
 
-                    if (result.transactionAmount == originalAmount)
-                    {
-                        if (verifyMerchantTrans?.@return.Result == "erSucceed")
-                        {
-                            try
-                            {
-                                //sendSms
-                                transaction.UserData.PayVerifySmsIsSent = false;
+        //            foreach (var item in transaction.ApportionData.ProductApportions)
+        //            {
+        //                EApportionmentAccount info = new EApportionmentAccount()
+        //                {
+        //                    Amount = Convert.ToDecimal(item.Apportion),
+        //                    AccountIBAN = item.Iban,
+        //                    AmountSpecified = true,
+        //                    ApportionmentAccountType = item.IsMain ? enApportionmentAccountType.enMain : enApportionmentAccountType.enOther,
+        //                    ApportionmentAccountTypeSpecified = true,
+        //                    SettelmentPayID = item.PaymentIdentifier
+        //                };
 
-                            }
-                            catch (Exception e)
-                            {
-                                transaction.UserData.PayVerifySmsIsSent = false;
-                            }
+        //                list.Add(info);
+        //            }
 
-                            transaction.BasicData.Stage = Enums.PaymentStage.DoneAndConfirmed;
-                            await _paymentRepository.UpdateTransaction(transaction);
+        //            list.Add(new EApportionmentAccount()
+        //            {
+        //                Amount = Convert.ToDecimal(transaction.ApportionData.CommissionApportion.Apportion),
+        //                AccountIBAN = transaction.ApportionData.CommissionApportion.Iban,
+        //                AmountSpecified = true,
+        //                ApportionmentAccountType = enApportionmentAccountType.enOther,
+        //                ApportionmentAccountTypeSpecified = true,
+        //                SettelmentPayID = "000000000000000000000000000000"
+        //            });
 
-                            var order = _paymentRepository.GetOrderByCompleteNumber(transaction.BasicData.OrderId);
+        //            var param = new RequestParam
+        //            {
+        //                IsGovermentPay = true,
+        //                IsGovermentPaySpecified = true,
+        //                TransTypeSpecified = true,
+        //                AmountSpecified = true,
+        //                WSContext =
+        //                    new WSContext()
+        //                    {
+        //                        UserId = userName,
+        //                        Password = password,
+        //                        SessionId = loginResult.@return.SessionId
+        //                    },
+        //                ReserveNum = invoiceNumber,
+        //                TerminalId = terminalId,
+        //                Amount = list.Sum(x => x.Amount),
+        //                RedirectUrl = $"{Request.Scheme}://{Request.Host}/saman/verify",
+        //                MerchantId = merchantId,
+        //                ApportionmentAccountList = list.ToArray(),
+        //                TransType = enTransType.enGoods
+        //            };
 
-                            var shopParameter = order?.ShopParameters.FirstOrDefault(x =>
-                                x.UniqueId == transaction.BasicData.UniqueIdInOrder);
+        //            transaction.EventsData.Add(new EventData()
+        //            {
+        //                ActionDataJson = JsonConvert.SerializeObject(param),
+        //                ActionDateTime = DateTime.Now,
+        //                ActionType = PspActions.ClientRequestGenerateTransactionDataToSign,
+        //                ActionDescription = PspActions.ClientRequestGenerateTransactionDataToSign.GetDescription()
+        //            });
 
-                            if (shopParameter is not null)
-                            {
-                                shopParameter.IsPaid = true;
-                                shopParameter.PaymentReferenceNumber = transaction.BasicData.ReferenceId;
+        //            await _paymentRepository.UpdateTransaction(transaction);
 
-                                await _paymentRepository.UpdateOrder(order);
-                            }
+        //            GenerateTransactionDataToSignResponse generateTransactionDataToSignResponse =
+        //                await client.GenerateTransactionDataToSignAsync(new GenerateTransactionDataToSignRequest(param));
 
-                            TempData["Psp"] = "Saman";
-                            TempData["ReferenceNumber"] = result.CustomerRefNum;
-                            TempData["InvoiceNumber"] = result.ResNum;
-                            TempData["OrderId"] = transaction.BasicData.OrderId;
-                            return RedirectToAction("PaymentSuccess", "Ipg");
-                        }
+        //            transaction.EventsData.Add(new EventData()
+        //            {
+        //                ActionDataJson = JsonConvert.SerializeObject(generateTransactionDataToSignResponse?.@return),
+        //                ActionDateTime = DateTime.Now,
+        //                ActionType = PspActions.PspResponseGenerateTransactionDataToSign,
+        //                ActionDescription = PspActions.PspResponseGenerateTransactionDataToSign.GetDescription()
+        //            });
 
-                        transaction.BasicData.Stage = Enums.PaymentStage.Failed;
-                        await _paymentRepository.UpdateTransaction(transaction);
+        //            await _paymentRepository.UpdateTransaction(transaction);
 
-                        TempData["Psp"] = "Saman";
-                        TempData["PaymentErrorMessage"] = "خطای تایید تراکنش : تراکنش تایید نشد.";
-                        return RedirectToAction("PaymentError", "Ipg");
-                    }
+        //            if (!string.IsNullOrEmpty(generateTransactionDataToSignResponse?.@return.Result))
+        //            {
+        //                var generateSignedDataTokenParam = new GenerateSignedDataTokenParam()
+        //                {
+        //                    UniqueId = generateTransactionDataToSignResponse.@return.UniqueId,
+        //                    WSContext = new WSContext()
+        //                    {
+        //                        UserId = userName,
+        //                        Password = password,
+        //                        SessionId = loginResult.@return.SessionId
+        //                    },
 
-                    ReverseMerchantTransParam cancelTransParam = new ReverseMerchantTransParam()
-                    {
-                        Token = result.token,
-                        RefNum = result.RefNum,
-                        WSContext = new WSContext()
-                        {
-                            Password = userName,
-                            UserId = password
-                        }
-                    };
+        //                    Signature = generateTransactionDataToSignResponse.@return.DataToSign
+        //                };
 
-                    transaction.EventsData.Add(new EventData()
-                    {
-                        ActionDataJson = JsonConvert.SerializeObject(cancelTransParam),
-                        ActionDateTime = callVerify,
-                        ActionType = PspActions.ClientRequestReverseTransaction,
-                        ActionDescription = PspActions.ClientRequestReverseTransaction.GetDescription()
-                    });
+        //                transaction.EventsData.Add(new EventData()
+        //                {
+        //                    ActionDataJson = JsonConvert.SerializeObject(generateSignedDataTokenParam),
+        //                    ActionDateTime = DateTime.Now,
+        //                    ActionType = PspActions.ClientTokenRequest,
+        //                    ActionDescription = PspActions.ClientTokenRequest.GetDescription()
+        //                });
 
-                    await _paymentRepository.UpdateTransaction(transaction);
-                    var cancelTransactionResponse = await client.ReverseMerchantTransAsync(new ReverseMerchantTransRequest(cancelTransParam));
+        //                await _paymentRepository.UpdateTransaction(transaction);
 
-                    transaction.EventsData.Add(new EventData()
-                    {
-                        ActionDataJson = JsonConvert.SerializeObject(cancelTransactionResponse?.@return),
-                        ActionDateTime = callVerify,
-                        ActionType = PspActions.PspResponseReverseTransaction,
-                        ActionDescription = PspActions.PspResponseReverseTransaction.GetDescription()
-                    });
+        //                GenerateSignedDataTokenResponse generateSignedDataTokenResult =
+        //                    await client.GenerateSignedDataTokenAsync(new GenerateSignedDataTokenRequest(generateSignedDataTokenParam));
 
-                    await _paymentRepository.UpdateTransaction(transaction);
+        //                transaction.EventsData.Add(new EventData()
+        //                {
+        //                    ActionDataJson = JsonConvert.SerializeObject(generateSignedDataTokenResult?.@return),
+        //                    ActionDateTime = DateTime.Now,
+        //                    ActionType = PspActions.PspTokenResponse,
+        //                    ActionDescription = PspActions.PspTokenResponse.GetDescription()
+        //                });
 
-                    Log.Fatal($"Error in payment before verification. invoice number :{result.ResNum}, state:{result.State}");
-                    TempData["Psp"] = "Saman";
-                    TempData["PaymentErrorMessage"] = "خطای درگاه بعد از پرداخت.";
-                    return RedirectToAction("PaymentError", "Ipg");
-                }
-            }
-            catch (Exception e)
-            {
-                //error in payment
-                Log.Fatal($"Error in payment before verification. invoice number :{result.ResNum}, state:{result.State}");
-                TempData["Psp"] = "Saman";
-                TempData["PaymentErrorMessage"] = "خطای درگاه بعد از پرداخت.";
-                return RedirectToAction("PaymentError", "Ipg");
-            }
+        //                await _paymentRepository.UpdateTransaction(transaction);
 
-            Log.Fatal($"Error in payment before verification. invoice number :{result.ResNum}, state:{result.State}");
-            TempData["Psp"] = "Saman";
-            TempData["PaymentErrorMessage"] = "خطای درگاه بعد از پرداخت.";
-            return RedirectToAction("PaymentError", "Ipg");
-        }
+        //                if (generateSignedDataTokenResult?.@return.Result == "erSucceed" &&
+        //                    !string.IsNullOrEmpty(generateSignedDataTokenResult.@return.Token))
+        //                {
+        //                    transaction.BasicData.InvoiceNumber = invoiceNumber;
+        //                    transaction.BasicData.Stage = Enums.PaymentStage.GenerateToken;
+
+        //                    await _paymentRepository.UpdateTransaction(transaction);
+
+        //                    return View("SamanPay", generateSignedDataTokenResult.@return.Token);
+        //                }
+        //            }
+        //        }
+
+        //        TempData["Psp"] = transaction.BasicData.PspType.GetDescription();
+        //        TempData["PaymentErrorMessage"] = "خطا در اتصال به درگاه.";
+        //        return RedirectToAction("PaymentError", "Ipg");
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e);
+        //        throw;
+        //    }
+        //}
+
+        //[HttpPost]
+        //[AllowAnonymous]
+        //public async Task<IActionResult> Verify([FromForm] SamanResult result)
+        //{
+        //    try
+        //    {
+        //        if (result.State.Equals("OK"))
+        //        {
+        //            var transaction = _paymentRepository.GetTransactionByInvoiceNumber(result.ResNum);
+
+        //            if (transaction == null)
+        //            {
+        //                TempData["Psp"] = "Saman";
+        //                TempData["PaymentErrorMessage"] = "خطای تایید تراکنش : تراکنش یافت نشد.";
+        //                return RedirectToAction("PaymentError", "Ipg");
+        //            }
+
+        //            transaction.EventsData.Add(new EventData()
+        //            {
+        //                ActionDataJson = JsonConvert.SerializeObject(result),
+        //                ActionDateTime = DateTime.Now,
+        //                ActionType = PspActions.PspSendCallback,
+        //                ActionDescription = PspActions.PspSendCallback.GetDescription()
+        //            });
+
+        //            await _paymentRepository.UpdateTransaction(transaction);
+
+        //            var terId = transaction.BasicData.TerminalId;
+        //            var ter = _bankRepository.GetTerminalById(terId);
+        //            var provider = ter.ServiceProviders.FirstOrDefault(c => c.Type == transaction.BasicData.PspType);
+
+        //            if (provider.Type != Enums.PSPType.Saman)
+        //            {
+        //                TempData["Psp"] = "Saman";
+        //                TempData["PaymentErrorMessage"] = "خطای تایید تراکنش : تراکنش مربوط به درگاه سامان نمی باشد.";
+        //                return RedirectToAction("PaymentError", "Ipg");
+        //            }
+
+        //            var userName = provider.Parameters.FirstOrDefault(c => c.Key == "Username").Value;
+        //            var password = provider.Parameters.FirstOrDefault(c => c.Key == "Password").Value;
+
+        //            var originalAmount = $"{Convert.ToDecimal(transaction.ApportionData.TotalAmountPaid)}";
+
+        //            var client = new TechnoIPGWSClient();
+        //            var param = new VerifyMerchantTransParam()
+        //            {
+        //                RefNum = result.RefNum,
+        //                Token = result.token,
+        //                WSContext = new WSContext()
+        //                {
+        //                    Password = password,
+        //                    UserId = userName
+        //                }
+        //            };
+
+        //            if (transaction.BasicData.Stage == Enums.PaymentStage.DoneAndConfirmed)
+        //            {
+        //                TempData["Psp"] = "Saman";
+        //                TempData["PaymentErrorMessage"] = "خطای تایید تراکنش : تراکنش قبلا تایید شده است.";
+        //                return RedirectToAction("PaymentError", "Ipg");
+        //            }
+
+        //            transaction.BasicData.ReferenceId = result.CustomerRefNum;
+        //            transaction.BasicData.Stage = Enums.PaymentStage.DoneButNotConfirmed;
+        //            await _paymentRepository.UpdateTransaction(transaction);
+
+        //            transaction.EventsData.Add(new EventData()
+        //            {
+        //                ActionDataJson = JsonConvert.SerializeObject(param),
+        //                ActionDateTime = DateTime.Now,
+        //                ActionType = PspActions.ClientVerifyRequest,
+        //                ActionDescription = PspActions.ClientVerifyRequest.GetDescription()
+        //            });
+
+        //            await _paymentRepository.UpdateTransaction(transaction);
+
+
+        //            var verifyMerchantTrans = await client.VerifyMerchantTransAsync(new VerifyMerchantTransRequest(param));
+        //            DateTime callVerify = DateTime.Now;
+
+        //            transaction.EventsData.Add(new EventData()
+        //            {
+        //                ActionDataJson = JsonConvert.SerializeObject(verifyMerchantTrans?.@return),
+        //                ActionDateTime = callVerify,
+        //                ActionType = PspActions.PspVerifyResponse,
+        //                ActionDescription = PspActions.PspVerifyResponse.GetDescription()
+        //            });
+
+        //            await _paymentRepository.UpdateTransaction(transaction);
+
+        //            if (result.transactionAmount == originalAmount)
+        //            {
+        //                if (verifyMerchantTrans?.@return.Result == "erSucceed")
+        //                {
+        //                    try
+        //                    {
+        //                        //sendSms
+        //                        transaction.UserData.PayVerifySmsIsSent = false;
+
+        //                    }
+        //                    catch (Exception e)
+        //                    {
+        //                        transaction.UserData.PayVerifySmsIsSent = false;
+        //                    }
+
+        //                    transaction.BasicData.Stage = Enums.PaymentStage.DoneAndConfirmed;
+        //                    await _paymentRepository.UpdateTransaction(transaction);
+
+        //                    var order = _paymentRepository.GetOrderByCompleteNumber(transaction.BasicData.OrderId);
+
+        //                    var shopParameter = order?.ShopParameters.FirstOrDefault(x =>
+        //                        x.UniqueId == transaction.BasicData.UniqueIdInOrder);
+
+        //                    if (shopParameter is not null)
+        //                    {
+        //                        shopParameter.IsPaid = true;
+        //                        shopParameter.PaymentReferenceNumber = transaction.BasicData.ReferenceId;
+
+        //                        await _paymentRepository.UpdateOrder(order);
+        //                    }
+
+        //                    TempData["Psp"] = "Saman";
+        //                    TempData["ReferenceNumber"] = result.CustomerRefNum;
+        //                    TempData["InvoiceNumber"] = result.ResNum;
+        //                    TempData["OrderId"] = transaction.BasicData.OrderId;
+        //                    return RedirectToAction("PaymentSuccess", "Ipg");
+        //                }
+
+        //                transaction.BasicData.Stage = Enums.PaymentStage.Failed;
+        //                await _paymentRepository.UpdateTransaction(transaction);
+
+        //                TempData["Psp"] = "Saman";
+        //                TempData["PaymentErrorMessage"] = "خطای تایید تراکنش : تراکنش تایید نشد.";
+        //                return RedirectToAction("PaymentError", "Ipg");
+        //            }
+
+        //            ReverseMerchantTransParam cancelTransParam = new ReverseMerchantTransParam()
+        //            {
+        //                Token = result.token,
+        //                RefNum = result.RefNum,
+        //                WSContext = new WSContext()
+        //                {
+        //                    Password = userName,
+        //                    UserId = password
+        //                }
+        //            };
+
+        //            transaction.EventsData.Add(new EventData()
+        //            {
+        //                ActionDataJson = JsonConvert.SerializeObject(cancelTransParam),
+        //                ActionDateTime = callVerify,
+        //                ActionType = PspActions.ClientRequestReverseTransaction,
+        //                ActionDescription = PspActions.ClientRequestReverseTransaction.GetDescription()
+        //            });
+
+        //            await _paymentRepository.UpdateTransaction(transaction);
+        //            var cancelTransactionResponse = await client.ReverseMerchantTransAsync(new ReverseMerchantTransRequest(cancelTransParam));
+
+        //            transaction.EventsData.Add(new EventData()
+        //            {
+        //                ActionDataJson = JsonConvert.SerializeObject(cancelTransactionResponse?.@return),
+        //                ActionDateTime = callVerify,
+        //                ActionType = PspActions.PspResponseReverseTransaction,
+        //                ActionDescription = PspActions.PspResponseReverseTransaction.GetDescription()
+        //            });
+
+        //            await _paymentRepository.UpdateTransaction(transaction);
+
+        //            Log.Fatal($"Error in payment before verification. invoice number :{result.ResNum}, state:{result.State}");
+        //            TempData["Psp"] = "Saman";
+        //            TempData["PaymentErrorMessage"] = "خطای درگاه بعد از پرداخت.";
+        //            return RedirectToAction("PaymentError", "Ipg");
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        //error in payment
+        //        Log.Fatal($"Error in payment before verification. invoice number :{result.ResNum}, state:{result.State}");
+        //        TempData["Psp"] = "Saman";
+        //        TempData["PaymentErrorMessage"] = "خطای درگاه بعد از پرداخت.";
+        //        return RedirectToAction("PaymentError", "Ipg");
+        //    }
+
+        //    Log.Fatal($"Error in payment before verification. invoice number :{result.ResNum}, state:{result.State}");
+        //    TempData["Psp"] = "Saman";
+        //    TempData["PaymentErrorMessage"] = "خطای درگاه بعد از پرداخت.";
+        //    return RedirectToAction("PaymentError", "Ipg");
+        //}
     }
 }
 

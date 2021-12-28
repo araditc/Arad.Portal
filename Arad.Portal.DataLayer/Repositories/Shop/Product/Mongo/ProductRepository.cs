@@ -1092,5 +1092,22 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             }
             return result;
         }
+
+        public async Task<Result> UpdateProductInventory(string productId, bool isIncreament, int count)
+        {
+            var result = new Result();
+            var entity = _context.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
+            if (isIncreament)
+                entity.Inventory += count;
+            else
+                entity.Inventory -= count;
+
+            var updateResult = await _context.ProductCollection.ReplaceOneAsync(_ => _.ProductId == productId, entity);
+            if(updateResult.IsAcknowledged)
+            {
+                result.Succeeded = true;
+            }
+            return result;
+        }
     }
 }

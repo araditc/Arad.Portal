@@ -4,6 +4,7 @@ using Arad.Portal.DataLayer.Contracts.Shop.Transaction;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Entities.Shop.Transaction;
 using Arad.Portal.GeneralLibrary.Utilities;
+using Arad.Portal.UI.Shop.Helpers;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -25,9 +26,11 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly ITransactionRepository _transactionRepository;
         private readonly IMapper _mapper;
         private readonly IShoppingCartRepository _shoppingCartRepository;
+        private readonly SharedRuntimeData _sharedRuntimeData;
 
         public IPGController(IProductRepository productRepository, IHttpContextAccessor accessor,
             UserManager<ApplicationUser> userManager, ITransactionRepository transationRepository,
+            SharedRuntimeData sharedRuntimeData,
             IMapper mapper, IShoppingCartRepository shoppingCartRepository):base(accessor)
         {
             _productRepository = productRepository;
@@ -35,6 +38,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             _transactionRepository = transationRepository;
             _mapper = mapper;
             _shoppingCartRepository = shoppingCartRepository;
+            _sharedRuntimeData = sharedRuntimeData;
         }
 
 
@@ -88,6 +92,8 @@ namespace Arad.Portal.UI.Shop.Controllers
                         }
 
                         await _transactionRepository.InsertTransaction(transaction);
+                        var modelToStoreInSharedData = _transactionRepository.CreateTransactionItemsModel(transaction.TransactionId);
+                        _sharedRuntimeData.AddToPayingOrders($"ar_{transaction.TransactionId}", modelToStoreInSharedData);
 
                         var redirectAddress =
                             $"/{transaction.BasicData.PspType}/HandlePayRequest?identifierToken={Helpers.Utilities.Base64Encode(transaction.BasicData.InternalTokenIdentifier)}";
