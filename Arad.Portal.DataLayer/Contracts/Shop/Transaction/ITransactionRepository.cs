@@ -17,5 +17,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Transaction
         Entities.Shop.Transaction.Transaction FetchByIdentifierToken(string identifierToken);
 
         TransactionItems CreateTransactionItemsModel(string transactionId);
+
+        Task UpdateTransaction(Entities.Shop.Transaction.Transaction transaction);
     }
 }

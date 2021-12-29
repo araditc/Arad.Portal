@@ -22,6 +22,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
         [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string TransactionId { get; set; }
 
+        /// <summary>
+        /// this property wouald be worked as ResNumber In saman gateway
+        /// </summary>
         public string MainInvoiceNumber { get; set; }
 
         public List<EventData> EventsData { get; set; }
@@ -29,6 +32,8 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
         public PaymentGatewayData BasicData { get; set; }
 
         public bool FinalSettlement { get; set; }
+
+        public long FinalPriceToPay { get; set; }
 
         public CustomerData CustomerData { get; set; }
 
@@ -83,14 +88,10 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
         public DateTime CreationDateTime { get; set; }
         public string ShoppinCartId { get; set; }
         public string OverallConcatDescription { get; set; }
-
+        
+        public string ReservationNumber { get; set; }
         /// <summary>
-        /// ????
-        /// </summary>
-        public string InternalTokenIdentifier { get; set; }
-
-        /// <summary>
-        /// شماره پیگیری تراکنش
+       ///شماره پیگیری تراکنش که از درگاه بانکی دریافت میشود
         /// </summary>
         public string ReferenceId { get; set; }
         public Enums.PaymentStage Stage { get; set; }
@@ -111,7 +112,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
         public PspActions ActionType { get; set; }
         public DateTime ActionDateTime { get; set; }
         public string JsonContent { get; set; }
-        public string ActionDescription { get; set; }
+        public string additionalData { get; set; }
     }
 
     public class Parameter<T1, T2>

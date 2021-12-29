@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.UI.Shop.Scheduling
 {
-    public class CacheCleanerService : HostedService
+    public class CacheCleanerService : HostedService , IDisposable
     {
         private readonly SharedRuntimeData _provider;
 
@@ -17,20 +17,28 @@ namespace Arad.Portal.UI.Shop.Scheduling
         {
             _provider = provider; 
         }
-        protected  override async Task ExecuteAsync(CancellationToken cancellationToken)
+
+        public void Dispose()
         {
-            _timer = new Timer(Task.Run(_provider.DeleteAllUnusedData(),cancellationToken), null, 1000, 20 * 1000 * 60);
-            while (!cancellationToken.IsCancellationRequested)
-            {
-              
-                await Task.Delay(TimeSpan.FromSeconds(20), cancellationToken);
-            }
+            _timer?.Dispose();
         }
 
-        private void DeleteAll(object state, CancellationToken cancellationToken)
+        protected  override Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            if(!can)
-            _provider.DeleteAllUnusedData();
+           
+            TimerCallback cb = new(DictionaryReview);
+            _timer = new Timer(cb, null, 1000, 20 * 1000 * 60);
+
+            return Task.CompletedTask;
+            //while (!cancellationToken.IsCancellationRequested)
+            //{
+            //    await Task.Delay(TimeSpan.FromSeconds(20), cancellationToken);
+            //}
+        }
+
+        private  void DictionaryReview(object state)
+        {
+          _provider.DeleteAllUnusedData();
         }
     }
 }

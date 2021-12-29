@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using static Arad.Portal.DataLayer.Models.Shared.Enums;
 
@@ -64,6 +66,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                             TransactionId = Guid.NewGuid().ToString(),
                             //???
                             MainInvoiceNumber = Guid.NewGuid().ToString(),
+                            FinalPriceToPay = result.ReturnValue.FinalPriceToPay,
                             CustomerData = new CustomerData()
                             {
                                 UserId = base.CurrentUserId,
@@ -77,7 +80,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                                 Stage = PaymentStage.Initialized,
                                 PspType = type,
                                 ShoppinCartId = result.ReturnValue.ShoppingCartId,
-                                InternalTokenIdentifier = Guid.NewGuid().ToString()
+                                ReservationNumber =  $"{GetLocalIPAddress()}{DateTime.Now.Ticks}"
                             }
                         };
                         foreach (var invoice in result.ReturnValue.Details)
@@ -96,7 +99,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                         _sharedRuntimeData.AddToPayingOrders($"ar_{transaction.TransactionId}", modelToStoreInSharedData);
 
                         var redirectAddress =
-                            $"/{transaction.BasicData.PspType}/HandlePayRequest?identifierToken={Helpers.Utilities.Base64Encode(transaction.BasicData.InternalTokenIdentifier)}";
+                            $"/{transaction.BasicData.PspType}/GetToken?identifierToken={Utilities.Base64Encode(transaction.BasicData.ReservationNumber)}";
 
                         return Redirect(redirectAddress);
                     }
@@ -127,6 +130,19 @@ namespace Arad.Portal.UI.Shop.Controllers
             ViewBag.OrderId = TempData["OrderId"];
 
             return View();
+        }
+
+        public string GetLocalIPAddress()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString().Replace(".", "");
+                }
+            }
+            return "0001112345";
         }
     }
 }

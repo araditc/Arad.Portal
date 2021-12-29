@@ -23,7 +23,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
       
         public EntityCulture ShoppingCartCulture { get; set; }
 
-        public decimal FinalPriceToPay { get; set; }
+        public long FinalPriceToPay { get; set; }
 
         public List<PurchasePerSeller> Details { get; set; }
     }
@@ -42,9 +42,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
         /// </summary>
         public int ShippingTypeId { get; set; }
 
-        public decimal ShippingExpense { get; set; }
+        public long ShippingExpense { get; set; }
 
-        public decimal  TotalDetailsAmountWithShipping { get; set; }
+        public long  TotalDetailsAmountWithShipping { get; set; }
     }
     public class ShoppingCartDetail : BaseEntity
     {
@@ -59,14 +59,14 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
         /// <summary>
         /// price without discount
         /// </summary>
-        public decimal PricePerUnit { get; set; }
+        public long PricePerUnit { get; set; }
 
-        public decimal DiscountPricePerUnit { get; set; }
+        public long DiscountPricePerUnit { get; set; }
 
         /// <summary>
         /// (PricePerUnit - DiscountPerUnit ) * OrderCount
         /// </summary>
-        public decimal TotalAmountToPay { get; set; }
+        public long TotalAmountToPay { get; set; }
     }
 
     //public enum ShippingType

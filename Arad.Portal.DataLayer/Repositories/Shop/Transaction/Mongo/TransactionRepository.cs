@@ -50,10 +50,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
             return entity;
         }
 
-        public Entities.Shop.Transaction.Transaction FetchByIdentifierToken(string identifierToken)
+        public Entities.Shop.Transaction.Transaction FetchByIdentifierToken(string reservationNumber)
         {
             var entity = _context.Collection
-                .Find(_ => _.BasicData.InternalTokenIdentifier == identifierToken).FirstOrDefault();
+                .Find(_ => _.BasicData.ReservationNumber == reservationNumber).FirstOrDefault();
 
             return entity;
         }
@@ -61,6 +61,16 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
         public async Task InsertTransaction(Entities.Shop.Transaction.Transaction transaction)
         {
             await _context.Collection.InsertOneAsync(transaction);
+        }
+
+        public async Task UpdateTransaction(Entities.Shop.Transaction.Transaction transaction)
+        {
+            var entity
+                = _context.Collection.Find(_ => _.TransactionId== transaction.TransactionId);
+            if (entity != null)
+            {
+                await _context.Collection.ReplaceOneAsync(_ => _.TransactionId == transaction.TransactionId, transaction);
+            }
         }
     }
 }

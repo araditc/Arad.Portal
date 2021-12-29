@@ -43,7 +43,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
         }
 
         public enum DefaultEncoding
-        {
+        { 
             ASCII,
             Default,
             Latin1,
@@ -62,9 +62,9 @@ namespace Arad.Portal.DataLayer.Models.Shared
             RedirectToIPG,
             [Description("در حال انتظار برای تایید تراکنش ")]
             DoneButNotConfirmed,
-            [Description("موفق")]
+            [Description("موفق و تایید شده")]
             DoneAndConfirmed,
-            [Description("ناموفق")]
+            [Description("ناموفق و تایید شده")]
             Failed
         }
 

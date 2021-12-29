@@ -1,4 +1,5 @@
 using Arad.Portal.UI.Shop.Helpers;
+using Arad.Portal.UI.Shop.Scheduling;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,7 @@ namespace Arad.Portal.UI.Shop
                 .ConfigureServices(services =>
                 {
                     services.AddHostedService<ConfigureMongoDbIndexesService>();
+                    services.AddHostedService<CacheCleanerService>();
                 });
     }
 }
