@@ -23,7 +23,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
         public string TransactionId { get; set; }
 
         /// <summary>
-        /// this property wouald be worked as ResNumber In saman gateway
+        /// this property would be worked as ResNumber In saman gateway
         /// </summary>
         public string MainInvoiceNumber { get; set; }
 

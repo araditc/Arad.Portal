@@ -43,15 +43,22 @@ namespace Arad.Portal.UI.Shop.Helpers
         public async Task<bool> DeleteDataWithRollBack(string transactionId)
         {
             bool result = true;
-            var node = PayingOrders.TryGetValue($"ar_{transactionId}", out var transactionItems);
-            foreach (var order in node.Orders)
+            var canGet = PayingOrders.TryGetValue($"ar_{transactionId}", out var transactionItemsObj);
+            if(canGet)
             {
-                 result &= (await _productRepository.UpdateProductInventory(order.ProductId, true, order.OrderCount)).Succeeded;
+                foreach (var order in transactionItemsObj.Orders)
+                {
+                    result &= (await _productRepository.UpdateProductInventory(order.ProductId, true, order.OrderCount)).Succeeded;
+                }
+            }
+            else
+            {
+                result = false; 
             }
 
             if(result)
             {
-                PayingOrders.TryRemove($"ar_{transactionId}", out node);
+                PayingOrders.TryRemove($"ar_{transactionId}", out transactionItemsObj);
             }
             return result;
         }

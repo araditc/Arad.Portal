@@ -1,5 +1,6 @@
 ﻿using Arad.Portal.DataLayer.Contracts.Shop.Transaction;
 using Arad.Portal.DataLayer.Models.Shared;
+using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
 using Microsoft.AspNetCore.Http;
 using MongoDB.Driver;
 using System;
@@ -7,17 +8,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Arad.Portal.DataLayer.Models.Shared.Enums;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
 {
     public class TransactionRepository : BaseRepository, ITransactionRepository
     {
         private readonly TransactionContext _context;
+        private readonly DomainContext _domainContext;
+       
         public TransactionRepository(IHttpContextAccessor httpContextAccessor,
+            DomainContext domainContext,
             TransactionContext context)
             : base(httpContextAccessor)
         {
             _context = context;
+            _domainContext = domainContext;
         }
 
         public TransactionItems CreateTransactionItemsModel(string transactionId)
@@ -61,6 +67,20 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
         public async Task InsertTransaction(Entities.Shop.Transaction.Transaction transaction)
         {
             await _context.Collection.InsertOneAsync(transaction);
+        }
+
+        public bool IsRefNumberUnique(string referenceNumber, PspType pspType)
+        {
+            var result = false;
+            var domainName = base.GetCurrentDomainName();
+            var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
+            if(!_context.Collection.Find(_=>_.BasicData.ReferenceId == referenceNumber 
+                                           && _.BasicData.PspType == pspType
+                                           /*&& _.AssociatedDomainId == domainEntity.DomainId*/).Any())
+            {
+                result = true;
+            }
+            return result;
         }
 
         public async Task UpdateTransaction(Entities.Shop.Transaction.Transaction transaction)

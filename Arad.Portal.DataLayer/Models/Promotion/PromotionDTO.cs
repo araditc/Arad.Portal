@@ -25,7 +25,7 @@ namespace Arad.Portal.DataLayer.Models.Promotion
 
         public DiscountType DiscountType { get; set; }
 
-        public decimal? Value { get; set; }
+        public long? Value { get; set; }
 
         public List<PromotionInfo> Infoes { get; set; }
 

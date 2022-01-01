@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Arad.Portal.DataLayer.Entities.Shop.Transaction;
 using Arad.Portal.DataLayer.Models.Shared;
+using static Arad.Portal.DataLayer.Models.Shared.Enums;
 
 namespace Arad.Portal.DataLayer.Contracts.Shop.Transaction
 {
@@ -17,6 +18,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Transaction
         Entities.Shop.Transaction.Transaction FetchByIdentifierToken(string identifierToken);
 
         TransactionItems CreateTransactionItemsModel(string transactionId);
+
+        bool IsRefNumberUnique(string referenceNumber, PspType pspType);
 
         Task UpdateTransaction(Entities.Shop.Transaction.Transaction transaction);
     }

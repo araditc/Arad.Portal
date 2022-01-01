@@ -8,7 +8,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
 {
     public class DiscountModel
     {
-        public decimal DiscountPerUnit { get; set; }
+        public long DiscountPerUnit { get; set; }
 
         public string PraisedProductId { get; set; }
 

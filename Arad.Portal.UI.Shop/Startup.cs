@@ -56,6 +56,7 @@ using Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo;
 using Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo;
 using Arad.Portal.UI.Shop.Authorization;
 using Arad.Portal.UI.Shop.Helpers;
+using Arad.Portal.UI.Shop.LifeTimeApplicationEvents;
 using Arad.Portal.UI.Shop.Middlewares;
 using Arad.Portal.UI.Shop.Scheduling;
 using AspNetCore.Identity.Mongo;
@@ -205,6 +206,7 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<HttpClientHelper>();
             services.AddSingleton<SharedRuntimeData>();
             services.AddSingleton<IHostedService, CacheCleanerService>();
+            services.AddSingleton<IHostedService, LifetimeEventsHostedService>();
             services.AddLocalization();
             AddRepositoryServices(services);
             //services.AddProgressiveWebApp();

@@ -517,7 +517,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             return result;
         }
 
-        private decimal GetCurrentPrice(Entities.Shop.Product.Product product)
+        private long GetCurrentPrice(Entities.Shop.Product.Product product)
         {
             var availablePrice = product.Prices.Any(_ => _.IsActive &&
                 _.StartDate <= DateTime.Now && (_.EndDate == null || _.EndDate <= DateTime.Now)) ?
@@ -525,14 +525,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                 _.StartDate <= DateTime.Now && (_.EndDate == null || _.EndDate <= DateTime.Now)) : null;
             if(availablePrice != null)
             {
-                return Convert.ToDecimal(availablePrice.PriceValue);
+                return Convert.ToInt64(availablePrice.PriceValue);
             }else
             {
                 return 0;
             }
         }
         private async Task<DiscountModel> GetCurrentDiscountPerUnit(Entities.Shop.Product.Product product,
-            decimal priceValue)
+            long priceValue)
         {
             var res = new DiscountModel();
             var activePromotion = await GetActivePromotionOfThisProduct(product);
@@ -653,7 +653,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                 foreach (var sellerPurchase in userCartEntity.Details)
                 {
                     var purchasePerSeller = new PurchasePerSeller();
-                    decimal sellerFactor = 0;
+                    long sellerFactor = 0;
                     purchasePerSeller.SellerId = sellerPurchase.SellerId;
                     purchasePerSeller.SellerUserName = sellerPurchase.SellerUserName;
                     purchasePerSeller.ShippingTypeId = sellerPurchase.ShippingTypeId;

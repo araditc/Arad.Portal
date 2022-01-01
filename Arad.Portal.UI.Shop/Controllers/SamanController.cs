@@ -3,7 +3,6 @@ using Arad.Portal.UI.Shop.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -13,7 +12,6 @@ using Arad.Portal.DataLayer.Models.Shared;
 using Microsoft.AspNetCore.Http;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Newtonsoft.Json;
-using Arad.Portal.DataLayer.Models.Transaction;
 using System.Net.Http;
 using System.Text;
 using System.Net.Mime;
@@ -22,17 +20,20 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
-    public class AAAController : BaseController
+    public class SamanController : BaseController
     {
         private readonly ITransactionRepository _transactionRepository;
         private readonly HttpClientHelper _httpClientHelper;
         private readonly IConfiguration _configuration;
+        private readonly SharedRuntimeData _sharedRuntimeData;
         private readonly IHttpContextAccessor _accessor;
         private readonly IDomainRepository _domainRepository;
-        public AAAController(ITransactionRepository transactionRepository,
+        private SamanModel _samanModel = null;
+        public SamanController(ITransactionRepository transactionRepository,
             IHttpContextAccessor accessor,
             IDomainRepository domainRepository,
-            HttpClientHelper httpClientHelper, IConfiguration configuration):base(accessor)
+             SharedRuntimeData sharedRuntimeData,
+            HttpClientHelper httpClientHelper, IConfiguration configuration) : base(accessor)
         {
             _domainRepository = domainRepository;
             MethodInfo method = typeof(XmlSerializer)
@@ -42,6 +43,8 @@ namespace Arad.Portal.UI.Shop.Controllers
             _transactionRepository = transactionRepository;
             _httpClientHelper = httpClientHelper;
             _configuration = configuration;
+            _sharedRuntimeData = sharedRuntimeData;
+            _accessor = accessor;
         }
 
         [HttpGet]
@@ -55,25 +58,25 @@ namespace Arad.Portal.UI.Shop.Controllers
                 return RedirectToAction("PaymentError", "Ipg");
             }
 
-            var senderModel = new GetTokenRequestModel() 
+            var senderModel = new GetTokenRequestModel()
             {
                 ResNum = reservationNumber,
                 Action = "token",
                 TotalAmount = transaction.FinalPriceToPay,
                 RedirectURL = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}/Saman/Verify"
             };
-           
+
             var domainName = base.DomainName;
             var domainEntity = _domainRepository.FetchDomainByName(domainName);
             SamanModel samanModel = null;
             try
             {
-                
+
                 var samanData =
                    domainEntity.DomainPaymentProviders.FirstOrDefault(_ => _.PspType == Enums.PspType.Saman);
 
-                samanModel = JsonConvert.DeserializeObject<SamanModel>(samanData.DomainValueProvider);
-                senderModel.TerminalId = samanModel.TerminalId;
+                _samanModel = JsonConvert.DeserializeObject<SamanModel>(samanData.DomainValueProvider);
+                senderModel.TerminalId = _samanModel.TerminalId;
             }
             catch (Exception e)
             {
@@ -118,7 +121,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                     if (tokenResponse.Status == 1)
                     {
                         transaction.BasicData.Stage = Enums.PaymentStage.RedirectToIPG;
-                        
+
                         await _transactionRepository.UpdateTransaction(transaction);
 
                         return Redirect(System.IO.Path.Combine(samanModel.BaseAddress, samanModel.GatewayEndPoint) + "?token=" +
@@ -134,9 +137,9 @@ namespace Arad.Portal.UI.Shop.Controllers
                         TempData["PaymentErrorMessage"] = "خطا در اتصال به درگاه.";
                         return RedirectToAction("PaymentError", "Ipg");
                     }
-                    
+
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
                     await _transactionRepository.UpdateTransaction(transaction);
                     //Log.Error($"overal error : {e.Message}");
@@ -155,315 +158,274 @@ namespace Arad.Portal.UI.Shop.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Verify()
         {
-            var callbackTime = DateTime.Now;
-            var initialData = new IpgOutputModel()
+            Transaction transaction = null;
+            try
             {
-                Amount = Request.Form["Amount"].ToString(),
-                RefNum = Request.Form["RefNum"].ToString(),
-                State = Request.Form["State"].ToString(),
-                HashedCardNumber = Request.Form["HashedCardNumber"].ToString(),
-                MID = Request.Form["MID"].ToString(),
-                ResNum = Request.Form["ResNum"].ToString(),
-                SecurePan = Request.Form["SecurePan"].ToString(),
-                Status = Request.Form["Status"].ToString(),
-                TerminalId = Request.Form["TerminalId"].ToString(),
-                Wage = Request.Form["Wage"].ToString()
-            };
+                var callbackTime = DateTime.Now;
+                var initialData = new GatewayResponseModel()
+                {
+                    Amount = Convert.ToInt64(Request.Form["Amount"].ToString()),
+                    State = Request.Form["State"].ToString(),
+                    Status = Convert.ToInt32(Request.Form["Status"].ToString()),
+                    HashedCardNumber = Request.Form["HashedCardNumber"].ToString(),
+                    MID = Request.Form["MID"].ToString(),
+                    ResNum = Request.Form["ResNum"].ToString(),
+                    SecurePan = Request.Form["SecurePan"].ToString(),
+                    TerminalId = Request.Form["TerminalId"].ToString(),
+                    Wage = Convert.ToInt64(Request.Form["Wage"].ToString()),
+                    RRN = Request.Form["RRN"].ToString(),
+                    TraceNo = Request.Form["TraceNo"].ToString()
+                };
 
-            var transaction = _paymentRepository.GetTransactionByInvoiceNumber(initialData.ResNum);
-            if (transaction == null)
-            {
-                TempData["Psp"] = "Saman";
-                TempData["PaymentErrorMessage"] = "تراکنش مورد نظر یافت نشد.";
-                return RedirectToAction("PaymentError", "Ipg");
-            }
-
-            transaction.EventsData.Add(new EventData()
-            {
-                ActionDateTime = callbackTime,
-                ActionDescription = PspActions.PspSendCallback.GetDescription(),
-                ActionType = PspActions.PspSendCallback,
-                ActionDataJson = JsonConvert.SerializeObject(initialData)
-            });
-
-            if (initialData.Status == "2" && initialData.State == "OK")
-            {
-                if (transaction.BasicData.Stage != Enums.PaymentStage.RedirectToIPG)
+                transaction = _transactionRepository.FetchByIdentifierToken(initialData.ResNum);
+                if (transaction == null)
                 {
                     TempData["Psp"] = "Saman";
-                    TempData["PaymentErrorMessage"] = "تراکنش تکراری.";
+                    TempData["PaymentErrorMessage"] = "تراکنش مورد نظر یافت نشد.";
+                    await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
+                    return RedirectToAction("PaymentError", "Ipg");
+                }
+
+                if (!string.IsNullOrWhiteSpace(Request.Form["RefNum"]))
+                {
+                    initialData.RefNum = Request.Form["RefNum"].ToString();
+
+                    #region checking for uniqueness of referencenumber
+                    if(initialData.State == "OK")
+                    {
+                        bool isUnique = _transactionRepository.IsRefNumberUnique(initialData.RefNum, Enums.PspType.Saman);
+                        transaction.EventsData.Add(new EventData()
+                        {
+                            JsonContent = JsonConvert.SerializeObject(initialData),
+                            ActionDateTime = callbackTime,
+                            ActionType = PspActions.PspSendCallback,
+                            additionalData = PspActions.PspSendCallback.GetDescription()
+                        });
+                        transaction.BasicData.ReferenceId = initialData.RefNum;
+                        await _transactionRepository.UpdateTransaction(transaction);
+
+                        if (!isUnique)
+                        {
+                            TempData["Psp"] = "Saman";
+                            TempData["PaymentErrorMessage"] = "کد رهگیری تکراری میباشد.";
+                            await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
+                            return RedirectToAction("PaymentError", "Ipg");
+                        }
+                    }
+                    
+                    #endregion
+
+                }
+                else
+                {
+                    TempData["Psp"] = "Saman";
+                    TempData["PaymentErrorMessage"] = "مشکلی در تراکنش توسط خریدار به وجود آمده است";
+                    await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
                     return RedirectToAction("PaymentError", "Ipg");
                 }
 
 
-                transaction.BasicData.Stage = Enums.PaymentStage.DoneButNotConfirmed;
-                await _paymentRepository.UpdateTransaction(transaction);
-
-                var baseAddress = _samanPspBasAddress;
-                var verifyEndPoint = _samanVerifyEndPoint;
-
-                var inputModel = new IpgInputModel()
+                if (initialData.Status == 2 && initialData.State == "OK")
                 {
-                    RefNum = initialData.RefNum,
-                    TerminalNumber = Convert.ToInt32(initialData.TerminalId)
-                };
-
-                var serializedInput = JsonConvert.SerializeObject(inputModel);
-                var inputContent = new StringContent(serializedInput, Encoding.UTF8, MediaTypeNames.Application.Json);
-
-                transaction.EventsData.Add(new EventData()
-                {
-                    ActionDataJson = serializedInput,
-                    ActionDateTime = DateTime.Now,
-                    ActionDescription = PspActions.ClientVerifyRequest.GetDescription(),
-                    ActionType = PspActions.ClientVerifyRequest
-                });
-
-                var client = _httpClientHelper.GetClient();
-                client.BaseAddress = new Uri(baseAddress);
-                var response = await client.PostAsync(verifyEndPoint, inputContent);
-                var stringResponse = await response.Content.ReadAsStringAsync();
-
-                transaction.EventsData.Add(new EventData()
-                {
-                    ActionDataJson = stringResponse,
-                    ActionDateTime = DateTime.Now,
-                    ActionDescription = PspActions.PspVerifyResponse.GetDescription(),
-                    ActionType = PspActions.PspVerifyResponse
-                });
-
-                if (response.IsSuccessStatusCode)
-                {
-                    try
+                    if (transaction.BasicData.Stage != Enums.PaymentStage.RedirectToIPG)
                     {
-                        var verifyResponse =
-                            JsonConvert.DeserializeObject<IpgVerifyOutputModel>(stringResponse);
-                        var paid = Convert.ToInt32(transaction.ApportionData.TotalAmountPaid);
+                        TempData["Psp"] = "Saman";
+                        TempData["PaymentErrorMessage"] = "تراکنش تکراری.";
+                        await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
+                        return RedirectToAction("PaymentError", "Ipg");
+                    }
+                }
+                if(initialData.State == "OK")
+                {
+                    transaction.BasicData.Stage = Enums.PaymentStage.DoneButNotConfirmed;
+                    await _transactionRepository.UpdateTransaction(transaction);
 
-                        if (verifyResponse.Success && verifyResponse.ResultCode >= 0 && verifyResponse.TransactionDetail.OrginalAmount == paid)
+                    //try to verify transaction
+                    var verifyInputModel = new IPGInputModel()
+                    {
+                        ReferenceId = initialData.RefNum,
+                        TerminalNumber = Convert.ToInt32(initialData.TerminalId)
+                    };
+
+                    var serializedInput = JsonConvert.SerializeObject(verifyInputModel);
+                    var verifyContent = new StringContent(serializedInput, Encoding.UTF8, MediaTypeNames.Application.Json);
+
+                    transaction.EventsData.Add(new EventData()
+                    {
+                        JsonContent = serializedInput,
+                        ActionDateTime = DateTime.Now,
+                        additionalData = PspActions.ClientVerifyRequest.GetDescription(),
+                        ActionType = PspActions.ClientVerifyRequest
+                    });
+                    await _transactionRepository.UpdateTransaction(transaction);
+
+                  
+                    var client = _httpClientHelper.GetClient();
+                    client.Timeout = TimeSpan.FromSeconds(60);
+                    client.BaseAddress = new Uri(_samanModel.BaseAddress);
+                  
+                    //try several times to get response from verifyEndpoint
+                    HttpResponseMessage response = null;
+                    for (int i = 0; i < 10; i++)
+                    {
+                        try
                         {
+                            response = await client.PostAsync(_samanModel.VerifyEndpoint, verifyContent);
+                            //get result before timeout
+                            break;
+                        }
+                        catch (Exception ex)
+                        {
+                            //request timeout and didnt get any result then if it is in boundary try again
+                            continue;
+                        }
+                    }
+                    if(response != null)
+                    {
+                        var verifyResponse = await response.Content.ReadAsStringAsync();
+                        var verifyOutPutModel = JsonConvert.DeserializeObject<IPGOutputModel>(verifyResponse);
 
-                            transaction.BasicData.Stage = Enums.PaymentStage.DoneAndConfirmed;
-                            transaction.BasicData.ReferenceId = verifyResponse.TransactionDetail.RefNum;
+                        transaction.EventsData.Add(new EventData()
+                        {
+                            JsonContent = verifyResponse,
+                            ActionDateTime = DateTime.Now,
+                            additionalData = PspActions.PspVerifyResponse.GetDescription(),
+                            ActionType = PspActions.PspVerifyResponse
+                        });
+                        await _transactionRepository.UpdateTransaction(transaction);
+                        if (verifyOutPutModel.Success && verifyOutPutModel.ResultCode >= 0)
+                        {
+                            //check original amount and affected amount
+                            if (verifyOutPutModel.VerifyInfo.OriginalAmount != verifyOutPutModel.VerifyInfo.AffectiveAmount)
+                            {
+                                #region درخواست برگشت تراکنش بعلت عدم تطابق مبالغ
+                                var reverseResponse = await client.PostAsync(_samanModel.ReverseEndPoint, verifyContent);
+                                var reverseResponseContent = await response.Content.ReadAsStringAsync();
+                                //same as verifyoutputmodel
+                                verifyOutPutModel = JsonConvert.DeserializeObject<IPGOutputModel>(reverseResponseContent);
 
-                            await _paymentRepository.UpdateTransaction(transaction);
+                                transaction.EventsData.Add(new EventData()
+                                {
+                                    JsonContent = reverseResponseContent,
+                                    ActionDateTime = DateTime.Now,
+                                    additionalData = PspActions.ClientRequestReverseTransaction.GetDescription(),
+                                    ActionType = PspActions.ClientRequestReverseTransaction
+                                });
 
-                            var order = _paymentRepository.GetOrderByUniqueId(transaction.BasicData.UniqueIdInOrder);
-                            order.ShopParameters.FirstOrDefault(c => c.UniqueId == transaction.BasicData.UniqueIdInOrder)
-                                .IsPaid = true;
+                                if (verifyOutPutModel.Success)
+                                {
+                                    transaction.EventsData.Add(new EventData()
+                                    {
+                                        JsonContent = "transaction successfully been reversed",
+                                        ActionDateTime = DateTime.Now,
+                                        additionalData = PspActions.PspResponseReverseTransaction.GetDescription(),
+                                        ActionType = PspActions.PspResponseReverseTransaction
+                                    });
+                                    transaction.BasicData.Stage = Enums.PaymentStage.Failed;
+                                    await _transactionRepository.UpdateTransaction(transaction);
+                                    TempData["Psp"] = "Saman";
+                                    await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
+                                    TempData["PaymentErrorMessage"] = "تراکنش بعلت عدم تطابق مبلغ قابل پرداخت و موجودی کسر شده از کارت برگشت داده شد و تا 72 ساعت مبلغ کسر شده به کارت شما بازگشت داده میشود.";
+                                    return RedirectToAction("PaymentError", "Ipg");
+                                }
+                                else
+                                {
+                                    transaction.EventsData.Add(new EventData()
+                                    {
+                                        JsonContent = "error happened to response of reversed transaction",
+                                        ActionDateTime = DateTime.Now,
+                                        additionalData = PspActions.PspResponseReverseTransaction.GetDescription(),
+                                        ActionType = PspActions.PspResponseReverseTransaction
+                                    });
+                                    transaction.BasicData.Stage = Enums.PaymentStage.Failed;
+                                    await _transactionRepository.UpdateTransaction(transaction);
+                                    TempData["Psp"] = "Saman";
+                                    await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
+                                    TempData["PaymentErrorMessage"] = "در برگشت تراکنش بعلت عدم تطابق مبلغ قایل پرداخت و مبلغ کسر شده از کارت خطایی بوجود آمده است لطفا با پشتیبانی تماس حاصل فرمایید.";
+                                    return RedirectToAction("PaymentError", "Ipg");
 
-                            await _paymentRepository.UpdateOrder(order);
+                                }
+                                #endregion
+                            }
+                            else
+                            {
+                                transaction.EventsData.Add(new EventData()
+                                {
+                                    JsonContent = "Successfully been verifed by psp and amounts are equal",
+                                    ActionDateTime = DateTime.Now,
+                                    additionalData = PspActions.PspVerifyResponse.GetDescription(),
+                                    ActionType = PspActions.PspVerifyResponse
+                                });
+                                transaction.BasicData.Stage = Enums.PaymentStage.DoneAndConfirmed;
+                                transaction.BasicData.ReferenceId = verifyOutPutModel.VerifyInfo.RefNum;
+                                await _transactionRepository.UpdateTransaction(transaction);
 
-                            TempData["ReferenceNumber"] = verifyResponse.TransactionDetail.RefNum;
-                            TempData["Psp"] = "Saman";
-                            TempData["InvoiceNumber"] = initialData.ResNum;
-                            TempData["OrderId"] = order.OrderId;
+                                //رسید دیجیتالی
+                                TempData["ReferenceNumber"] = verifyOutPutModel.VerifyInfo.RefNum;
+                                TempData["Psp"] = "Saman";
 
-                            return RedirectToAction("PaymentSuccess", "Ipg");
+                                TempData["InvoiceNumber"] = transaction.MainInvoiceNumber;
+                                //شماره خرید
+                                TempData["ReservationNumber"] = transaction.BasicData.ReservationNumber;
+                                //شماره مرجع
+                                TempData["RRN"] = verifyOutPutModel.VerifyInfo.RRN;
+                                //کد رهگیری
+                                TempData["StraceNo"] = verifyOutPutModel.VerifyInfo.StraceNo;
+                                _sharedRuntimeData.DeleteDataWithoutRollBack(transaction.TransactionId);
+                                return RedirectToAction("PaymentSuccess", "Ipg");
+                            }
                         }
                         else
                         {
-                            reversing transaction.
-
-                            transaction.BasicData.Stage = Enums.PaymentStage.Failed;
-                            transaction.BasicData.ReferenceId = verifyResponse.TransactionDetail.RefNum;
-
                             transaction.EventsData.Add(new EventData()
                             {
+                                JsonContent = "Psp failed to verify Transaction",
                                 ActionDateTime = DateTime.Now,
-                                ActionDataJson = serializedInput,
-                                ActionType = PspActions.ClientRequestReverseTransaction,
-                                ActionDescription = PspActions.ClientRequestReverseTransaction.GetDescription()
+                                additionalData = PspActions.PspVerifyResponse.GetDescription(),
+                                ActionType = PspActions.PspVerifyResponse
                             });
-
-                            await _paymentRepository.UpdateTransaction(transaction);
-
-                            await client.PostAsync(_configuration["Ipg:Saman:ReverseEndPoint"], inputContent);
-
+                            transaction.BasicData.Stage = Enums.PaymentStage.Failed;
+                            await _transactionRepository.UpdateTransaction(transaction);
                             TempData["Psp"] = "Saman";
-                            TempData["PaymentErrorMessage"] = "خطا در تایید تراکنش. تراکنش تایید نشد.";
+                            TempData["PaymentErrorMessage"] = "خطا در تایید تراکنش توسط درگاه";
+                            await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
                             return RedirectToAction("PaymentError", "Ipg");
+
                         }
                     }
-                    catch (Exception e)
+                    //when response is null
+                    else
                     {
-                        await _paymentRepository.UpdateTransaction(transaction);
+                        TempData["Psp"] = "Saman";
+                        TempData["PaymentErrorMessage"] = "پاسخی از درگاه برای تایید دریافت نشدودرصورت کسر موجودی تا 72 ساعت به حساب شما بازگشته میشود.";
+                        await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
+                        return RedirectToAction("PaymentError", "Ipg");
                     }
                 }
+                else //initialData.State is not ok
+                {
+                    TempData["Psp"] = "Saman";
+                    TempData["PaymentErrorMessage"] = "خطای درگاه بعد از پرداخت";
+                    await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
+                    return RedirectToAction("PaymentError", "Ipg");
+                }
             }
+            catch (Exception ex)
+            {
 
-            //error in payment
-            transaction.BasicData.Stage = Enums.PaymentStage.Failed;
-            await _paymentRepository.UpdateTransaction(transaction);
-
-            TempData["Psp"] = "Saman";
-            TempData["PaymentErrorMessage"] = "خطای درگاه بعد از پرداخت.";
-            return RedirectToAction("PaymentError", "Ipg");
+                transaction.BasicData.Stage = Enums.PaymentStage.Failed;
+                await _transactionRepository.UpdateTransaction(transaction);
+                TempData["Psp"] = "Saman";
+                TempData["PaymentErrorMessage"] = "خطایی پس از انتقال از درگاه بوجود آمده است";
+                await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
+                return RedirectToAction("PaymentError", "Ipg");
+            }
         }
-
-
-
+          
     }
+}
 
 
 
-
-
-    public class SamanController : Controller
-        {
-            //private readonly IPaymentRepository _paymentRepository;
-            //private readonly IBankRepository _bankRepository;
-            //private readonly HttpClientHelper _httpClientHelper;
-            //private readonly IConfiguration _configuration;
-            //private readonly string _samanPspBasAddress;
-            //private readonly string _samanVerifyEndPoint;
-            //public SamanController(IPaymentRepository paymentRepository, IBankRepository bankRepository, HttpClientHelper httpClientHelper, IConfiguration configuration)
-            //{
-            //    _paymentRepository = paymentRepository;
-            //    _bankRepository = bankRepository;
-            //    _httpClientHelper = httpClientHelper;
-            //    _configuration = configuration;
-            //    _samanPspBasAddress = _configuration["Ipg:Saman:BaseAddress"];
-            //    _samanVerifyEndPoint = _configuration["Ipg:Saman:VerifyEndPoint"];
-            //}
-
-            //[HttpGet]
-            //public async Task<IActionResult> HandlePayRequest(string identifierToken)
-            //{
-            //    Transaction transaction = _paymentRepository.GetTransactionByIdentifierToken(identifierToken);
-            //    if (transaction == null || transaction.BasicData.Stage != Enums.PaymentStage.Initialized)
-            //    {
-            //        TempData["Psp"] = "Saman";
-            //        TempData["PaymentErrorMessage"] = "تراکنش مورد نظر یافت نشد.";
-            //        return RedirectToAction("PaymentError", "Ipg");
-            //    }
-
-            //    List<IBANInfo> ibans = new List<IBANInfo>();
-            //    foreach (var item in transaction.ApportionData.ProductApportions)
-            //    {
-            //        IBANInfo info = new IBANInfo()
-            //        {
-            //            Amount = Convert.ToInt64(item.Apportion),
-            //            IBAN = item.Iban,
-            //            PurchaseID = item.PaymentIdentifier
-            //        };
-
-            //        ibans.Add(info);
-            //    }
-
-            //    ibans.Add(new IBANInfo()
-            //    {
-            //        Amount = Convert.ToInt64(transaction.ApportionData.CommissionApportion.Apportion),
-            //        IBAN = transaction.ApportionData.CommissionApportion.Iban,
-            //        PurchaseID = transaction.ApportionData.CommissionApportion.PaymentIdentifier
-            //    });
-
-            //    var terminal = _bankRepository.GetTerminalById(transaction.BasicData.TerminalId);
-            //    if (terminal is null)
-            //    {
-            //        TempData["Psp"] = "Saman";
-            //        TempData["PaymentErrorMessage"] = "ترمینال پرداخت یافت نشد.";
-            //        return RedirectToAction("PaymentError", "Ipg");
-            //    }
-
-            //    var samanData = terminal.ServiceProviders.FirstOrDefault(c => c.Type == Enums.PSPType.Saman);
-            //    if (samanData is null)
-            //    {
-            //        TempData["Psp"] = "Saman";
-            //        TempData["PaymentErrorMessage"] = "پارامترهای درگاه پرداخت سامان یافت نشد.";
-            //        return RedirectToAction("PaymentError", "Ipg");
-            //    }
-
-            //    var terminalIdData = samanData.Parameters.FirstOrDefault(c => c.Key == "Terminal Id");
-            //    if (terminalIdData is null)
-            //    {
-            //        TempData["Psp"] = "Saman";
-            //        TempData["PaymentErrorMessage"] = "شماره ترمینال درگاه یافت نشد.";
-            //        return RedirectToAction("PaymentError", "Ipg");
-            //    }
-
-            //    var client = _httpClientHelper.GetClient();
-            //    var baseAddress = _configuration["Ipg:Saman:BaseAddress"];
-            //    var tokenEndPoint = _configuration["Ipg:Saman:TokenEndPoint"];
-            //    var gatewayEndpoint = _configuration["Ipg:Saman:GatewayEndPoint"];
-            //    var tokenReq = new TokenRequest()
-            //    {
-            //        Amount = ibans.Sum(x => x.Amount),
-            //        Action = "token",
-            //        RedirectUrl = $"{Request.Scheme}://{Request.Host}/Saman/Verify",
-            //        ResNum = DateTime.Now.Ticks.ToString(),
-            //        SettlementIBANInfo = ibans.ToArray(),
-            //        TerminalId = terminalIdData.Value
-            //    };
-
-            //    var serializedObj = JsonConvert.SerializeObject(tokenReq);
-            //    var content = new StringContent(serializedObj, Encoding.UTF8, MediaTypeNames.Application.Json);
-            //    client.BaseAddress = new Uri(baseAddress);
-
-            //    transaction.EventsData.Add(new EventData()
-            //    {
-            //        ActionDataJson = serializedObj,
-            //        ActionDateTime = DateTime.Now,
-            //        ActionType = PspActions.ClientTokenRequest,
-            //        ActionDescription = PspActions.ClientTokenRequest.GetDescription()
-            //    });
-
-            //    var response = await client.PostAsync(tokenEndPoint, content);
-            //    var tokenResponseTime = DateTime.Now;
-            //    var serializedTokenResponse = await response.Content.ReadAsStringAsync();
-
-            //    transaction.EventsData.Add(new EventData()
-            //    {
-            //        ActionDataJson = serializedTokenResponse,
-            //        ActionDateTime = tokenResponseTime,
-            //        ActionType = PspActions.PspTokenResponse,
-            //        ActionDescription = PspActions.PspTokenResponse.GetDescription()
-            //    });
-
-
-
-            //    if (response.IsSuccessStatusCode)
-            //    {
-            //        try
-            //        {
-            //            var tokenResponse =
-            //                JsonConvert.DeserializeObject<TokenResponse>(serializedTokenResponse);
-
-            //            if (tokenResponse.Status == 1)
-            //            {
-            //                transaction.BasicData.Stage = Enums.PaymentStage.RedirectToIPG;
-            //                transaction.BasicData.InvoiceNumber = tokenReq.ResNum;
-            //                await _paymentRepository.UpdateTransaction(transaction);
-
-            //                return Redirect(Flurl.Url.Combine(baseAddress, gatewayEndpoint) + "?token=" +
-            //                                tokenResponse.Token);
-            //            }
-
-            //            await _paymentRepository.UpdateTransaction(transaction);
-            //            Log.Error($"token error desc : {tokenResponse.ErrorDesc}, errorCode: {tokenResponse.ErrorCode}");
-            //            TempData["Psp"] = transaction.BasicData.PspType.GetDescription();
-            //            TempData["PaymentErrorMessage"] = "خطا در اتصال به درگاه.";
-            //            return RedirectToAction("PaymentError", "Ipg");
-            //        }
-            //        catch (Exception e)
-            //        {
-            //            await _paymentRepository.UpdateTransaction(transaction);
-
-            //            Log.Error($"overal error : {e.Message}");
-            //            TempData["Psp"] = transaction.BasicData.PspType.GetDescription();
-            //            TempData["PaymentErrorMessage"] = "خطا در اتصال به درگاه.";
-            //            return RedirectToAction("PaymentError", "Ipg");
-            //        }
-            //    }
-
-            //    await _paymentRepository.UpdateTransaction(transaction);
-
-            //    Log.Error($"token error statusCode : {response.StatusCode}");
-            //    TempData["Psp"] = transaction.BasicData.PspType.GetDescription();
-            //    TempData["PaymentErrorMessage"] = "خطا در اتصال به درگاه.";
-            //    return RedirectToAction("PaymentError", "Ipg");
-            //}
-
-           
-        }
+    
 

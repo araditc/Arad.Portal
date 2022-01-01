@@ -23,7 +23,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
 
         public DiscountType DiscountType { get; set; }
 
-        public decimal? Value { get; set; }
+        public long? Value { get; set; }
 
         public string CurrencyId { get; set; }
 
