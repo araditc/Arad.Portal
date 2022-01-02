@@ -65,7 +65,9 @@ namespace Arad.Portal.DataLayer.Models.Shared
             [Description("موفق و تایید شده")]
             DoneAndConfirmed,
             [Description("ناموفق و تایید شده")]
-            Failed
+            Failed,
+            [Description("درحین پرداخت اپلیکیشن استاپ شده و پرداخت  رول بک میشود")]
+            ForcedToCancelledBySystem
         }
 
 

@@ -131,7 +131,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.PriceId = Guid.NewGuid().ToString();
                     item.Symbol = cur.ReturnValue.Symbol;
                     item.Prefix = cur.ReturnValue.Symbol;
-                    item.SDate = DateHelper.ToEnglishDate(item.StartDate);
+                    item.SDate = DateHelper.ToEnglishDate(item.StartDate.Split(" ")[0]);
+                }
+
+                if(dto.Prices.Where(_=>_.IsActive = false && _.EDate  == null).Any())
+                {
+                    var incorrectBoundary = dto.Prices.Where(_ => _.IsActive = false && _.EDate == null).FirstOrDefault();
+                    var activePrice = dto.Prices.Where(_ => _.IsActive && _.EDate == null).FirstOrDefault();
+                    incorrectBoundary.EDate = activePrice.SDate.Value.AddDays(-1);
                 }
                 Result saveResult = await _domainRepository.AddDomain(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
@@ -166,7 +173,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var finalHTML = "";
             foreach (var prop in properties)
             {
-                finalHTML += $"<div class='form-group col-md-3'><label for='{prop.Name}'>{prop.Name}</label><br/><input type='text' id='{prop.Name}' class='form-control gatewayPar' value='' /></div>";
+                finalHTML += $"<div class='form-group col-md-3'><label for='{prop.Name}'>{prop.Name}</label><br/><input type='text' id='{prop.Name}' class='form-control gatewayPar ltr' value='' /></div>";
             }
             
             return finalHTML;
@@ -223,6 +230,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> Edit([FromBody] DomainDTO dto)
         {
             JsonResult result;
+            //Result saveResult;
             DomainDTO model;
             if (!ModelState.IsValid)
             {
@@ -249,18 +257,28 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.PriceId = Guid.NewGuid().ToString();
                     item.Symbol = cur.ReturnValue.Symbol;
                     item.Prefix = cur.ReturnValue.Symbol;
-                    item.SDate = DateHelper.ToEnglishDate(item.StartDate);
+                    item.SDate = DateHelper.ToEnglishDate(item.StartDate.Split(" ")[0]);
                 }
                 model = _domainRepository.FetchDomain(dto.DomainId).ReturnValue;
                 if (model == null)
                 {
                     return RedirectToAction("PageOrItemNotFound", "Account");
                 }
-            }
-            Result saveResult = await _domainRepository.EditDomain(dto);
 
-            result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
-            : new { Status = "Error", saveResult.Message });
+                if (dto.Prices.Where(_ => _.IsActive = false && _.EDate == null).Any())
+                {
+                    var incorrectActivation = dto.Prices.Where(_ => _.IsActive = false && _.EDate == null).FirstOrDefault();
+                    var activePrice = dto.Prices.Where(_ => _.IsActive && _.EDate == null).FirstOrDefault();
+                    incorrectActivation.EDate = activePrice.SDate.Value.AddDays(-1);
+                }
+
+
+                Result saveResult = await _domainRepository.EditDomain(dto);
+
+                result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
+                 : new { Status = "Error", saveResult.Message });
+            }
+           
             return result;
         }
         [HttpGet]

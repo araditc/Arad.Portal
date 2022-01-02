@@ -14,11 +14,11 @@ namespace Arad.Portal.UI.Shop.Helpers
         private readonly ConcurrentDictionary<string, TransactionItems> _PayingOrders
                         = new ConcurrentDictionary<string, TransactionItems>();
         private readonly IProductRepository _productRepository;
-        private readonly ITransactionRepository _transactionRepository;
-        public SharedRuntimeData(IProductRepository productRepository, ITransactionRepository transactionRepository)
+        //private readonly ITransactionRepository _transactionRepository;
+        public SharedRuntimeData(IProductRepository productRepository/*, ITransactionRepository transactionRepository*/)
         {
             _productRepository = productRepository;
-            _transactionRepository = transactionRepository;
+            //_transactionRepository = transactionRepository;
         }
       
         public ConcurrentDictionary<string, TransactionItems> PayingOrders => _PayingOrders;
@@ -74,6 +74,16 @@ namespace Arad.Portal.UI.Shop.Helpers
                 {
                     await DeleteDataWithRollBack(order.Key.Replace("ar_", ""));
                 }
+            }
+        }
+        /// <summary>
+        /// this method called when application forced to stopped
+        /// </summary>
+        public async void DeleteAllDataWithRoleBack()
+        {
+            foreach (var order in PayingOrders)
+            {
+                await DeleteDataWithRollBack(order.Key.Replace("ar_", ""));
             }
         }
     }

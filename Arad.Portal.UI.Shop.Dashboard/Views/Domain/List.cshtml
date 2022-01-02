@@ -112,8 +112,8 @@
                             <td class="ListCell">@item.DomainName</td>
                             <td class="ListCell">@item.OwnerUserName</td>
                             <td class="ListCell">@item.DefaultLanguageName</td>
-                            <td class="ListCell">@(item.Prices.Any(_ => _.StartDate <= DateTime.UtcNow && _.IsActive && _.EndDate == null && _.CurrencyId == item.DefaultCurrencyId) ? item.Prices
-                            .FirstOrDefault(_ =>_.StartDate <= DateTime.UtcNow && _.IsActive && _.EndDate == null && _.CurrencyId == item.DefaultCurrencyId).PriceValue : "")</td>
+                            <td class="ListCell">@(item.Prices.Any(_ => _.StartDate <= DateTime.Now && _.IsActive && _.EndDate == null && _.CurrencyId == item.DefaultCurrencyId) ? item.Prices
+                            .FirstOrDefault(_ =>_.StartDate <= DateTime.Now && _.IsActive && _.EndDate == null && _.CurrencyId == item.DefaultCurrencyId).PriceValue : "")</td>
                             <td class="ListCell">@item.DefaultCurrencyName</td>
                             <td class="ListCell">@(item.IsDefault ? Language.GetString("Yes") : Language.GetString("No"))</td>
                             <td>

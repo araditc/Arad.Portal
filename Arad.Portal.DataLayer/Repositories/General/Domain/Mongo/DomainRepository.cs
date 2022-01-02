@@ -290,6 +290,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 }
 
                 var dto = _mapper.Map<DomainDTO>(dbEntity);
+                dto.InvoiceNumberProcedure = ((int)dbEntity.InvoiceNumberProcedure).ToString();
                 result.Succeeded = true;
                 result.Message = ConstMessages.SuccessfullyDone;
                 result.ReturnValue = dto;
@@ -355,10 +356,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 entity.DomainName = dto.DomainName;
                 entity.OwnerUserId = dto.OwnerUserId;
                 entity.OwnerUserName = dto.OwnerUserName;
-                foreach (var price in dto.Prices)
-                {
-                    price.PriceId = Guid.NewGuid().ToString();
-                }
+                //foreach (var price in dto.Prices)
+                //{
+                //    price.PriceId = Guid.NewGuid().ToString();
+                //}
                 #region Prices
                 entity.Prices = new List<Price>();
                 foreach (var price in dto.Prices.OrderBy(_ => _.StartDate))
@@ -392,6 +393,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 }
                 #endregion
                 entity.InvoiceNumberProcedure = (InvoiceNumberProcedure)Convert.ToInt32(dto.InvoiceNumberProcedure);
+                entity.DomainPaymentProviders = _mapper.Map<List<ProviderDetail>>(dto.DomainPaymentProviders);
                 var updateResult = await _context.Collection
                .ReplaceOneAsync(_ => _.DomainId == dto.DomainId, entity);
                 if (updateResult.IsAcknowledged)

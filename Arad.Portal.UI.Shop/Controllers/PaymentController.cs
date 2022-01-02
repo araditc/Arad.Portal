@@ -21,7 +21,7 @@ using static Arad.Portal.DataLayer.Models.Shared.Enums;
 namespace Arad.Portal.UI.Shop.Controllers
 {
     [Authorize(Policy = "Role")]
-    public class IPGController : BaseController
+    public class PaymentController : BaseController
     {
         private readonly IProductRepository _productRepository;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -30,7 +30,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly IShoppingCartRepository _shoppingCartRepository;
         private readonly SharedRuntimeData _sharedRuntimeData;
 
-        public IPGController(IProductRepository productRepository, IHttpContextAccessor accessor,
+        public PaymentController(IProductRepository productRepository, IHttpContextAccessor accessor,
             UserManager<ApplicationUser> userManager, ITransactionRepository transationRepository,
             SharedRuntimeData sharedRuntimeData,
             IMapper mapper, IShoppingCartRepository shoppingCartRepository):base(accessor)

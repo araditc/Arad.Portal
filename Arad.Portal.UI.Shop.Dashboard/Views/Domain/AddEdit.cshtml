@@ -39,6 +39,10 @@
         .card-header {
             background-color: #e0dcdf;
         }
+
+        .ltr{
+            direction : ltr;
+        }
     </style>
 }
 
@@ -78,14 +82,14 @@
                         @if (dir == "rtl")
                         {
                             <label style="font-weight:700;">
-                                <input type="checkbox" id="chbDefaultDomain" class="minimal">
+                                <input type="checkbox" id="chbDefaultDomain" class="minimal" asp-for="IsDefault" >
                                 @Language.GetString("DefaultDomain")
                             </label>
                         }
                         else
                         {
                             <div class="icheck-primary d-inline">
-                                <input type="checkbox" id="chbDefaultDomain">
+                                <input type="checkbox" id="chbDefaultDomain" asp-for="IsDefault">
                                 <label for="chbDefaultDomain">
                                     @Language.GetString("DefaultDomain")
                                 </label>
@@ -102,18 +106,18 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label for="DefaultCurrencyId">@Language.GetString("tbl_InvoiceNumberCreationWay")</label><br />
-                        <select class="form-control" asp-for="@Model.InvoiceNumberProcedure" asp-items="@(new SelectList( ViewBag.InvoiceNumberEnum,"Value","Text", Model.DefaultCurrencyId))">
+                        <select class="form-control" asp-for="@Model.InvoiceNumberProcedure" asp-items="@(new SelectList( ViewBag.InvoiceNumberEnum,"Value","Text", Model.InvoiceNumberProcedure))">
                         </select>
                         <span data-val-result="InvoiceNumberProcedure" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3 invoiceInitialise">
                         <label for="DefaultCurrencyId">@Language.GetString("FirstInvoiceNumberPattern")</label><br />
-                        <input type="text" class="form-control" asp-for="@Model.InvoiceNumberInitializer" />
+                        <input type="text" class="form-control" asp-for="@Model.InvoiceNumberInitializer"  value="@Model.InvoiceNumberInitializer"/>
                         <span data-val-result="InvoiceNumberInitializer" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3 invoiceInitialise">
                         <label for="DefaultCurrencyId">@Language.GetString("IncreasementLevel")</label><br />
-                        <input type="text" class="form-control" asp-for="@Model.IncreasementValue" />
+                        <input type="text" class="form-control" asp-for="@Model.IncreasementValue" value="@Model.IncreasementValue"/>
                         <span data-val-result="InvoiceNumberInitializer" class="text-danger"></span>
                     </div>
 
@@ -180,8 +184,8 @@
                                                     <th>@Language.GetString("Currency")</th>
                                                     <th style="display:none;"></th>
                                                     <th>@Language.GetString("PriceValue")</th>
-                                                    <th>@Language.GetString("StartDate")</th>
-                                                    <th>@Language.GetString("EndDate")</th>
+                                                    <th >@Language.GetString("StartDate")</th>
+                                                    <th >@Language.GetString("EndDate")</th>
                                                     <th>@Language.GetString("ActivationState")</th>
                                                     <th></th>
                                                 </tr>
@@ -195,8 +199,8 @@
                                                             <td>@price.CurrencyName</td>
                                                             <td style="display:none;">@price.CurrencyId</td>
                                                             <td>@price.PriceValue</td>
-                                                            <td>@price.StartDate</td>
-                                                            <td>@price.EndDate</td>
+                                                            <td class="ltr">@price.StartDate</td>
+                                                            <td class="ltr">@price.EndDate</td>
                                                             <td>@(price.IsActive ? Language.GetString("Active") : Language.GetString("InActive")) </td>
                                                             <td>
                                                                 <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromPriceList(this);">
@@ -332,6 +336,10 @@
 
             if ('@Model.DomainId' == "") {
                 $("#InvoiceNumberProcedure").val("-1");
+            } else {
+                if ('@Model.InvoiceNumberProcedure' == "0") {
+                    $(".invoiceInitialise").addClass("d-none");
+                }
             }
              //datetimepicker
             if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
@@ -519,7 +527,8 @@
                 innerModel.PriceValue = parseFloat($(this).find("td:eq(2)").text());
                 innerModel.StartDate = $(this).find("td:eq(3)").text();
                 innerModel.EndDate = $(this).find("td:eq(4)").text();
-                if ($(this).find("td:eq(5)").text() == active)
+                debugger;
+                if ($(this).find("td:eq(5)").text().trim() == active)
                     innerModel.IsActive = true;
                 else
                     innerModel.IsActive = false;
@@ -596,8 +605,8 @@
     function appendToPriceList(tr) {
          tr = "<tr style='text-align:center;'><td>" + $("#currencyId option:selected").text() +
                     "</td><td style='display:none;'>" + $('#currencyId').val() +
-                    "</td><td>" + $('#priceValue').val() +
-                    "</td><td>" + $("#dtpStartDate").val() +
+                    "</td><td class='ltr'>" + $('#priceValue').val() +
+                    "</td><td class='ltr'>" + $("#dtpStartDate").val() +
                     "</td><td></td><td>" + active +
                     "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' onclick='deleteFromPriceList(this);'>" +
                     "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";

@@ -55,7 +55,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             {
                 TempData["Psp"] = "Saman";
                 TempData["PaymentErrorMessage"] = "تراکنش مورد نظر یافت نشد.";
-                return RedirectToAction("PaymentError", "Ipg");
+                return RedirectToAction("PaymentError", "Payment");
             }
 
             var senderModel = new GetTokenRequestModel()
@@ -82,7 +82,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             {
                 TempData["Psp"] = "Saman";
                 TempData["PaymentErrorMessage"] = "پارامترهای درگاه پرداخت سامان یافت نشد.";
-                return RedirectToAction("PaymentError", "Ipg");
+                return RedirectToAction("PaymentError", "Payment");
             }
 
 
@@ -124,7 +124,7 @@ namespace Arad.Portal.UI.Shop.Controllers
 
                         await _transactionRepository.UpdateTransaction(transaction);
 
-                        return Redirect(System.IO.Path.Combine(samanModel.BaseAddress, samanModel.GatewayEndPoint) + "?token=" +
+                        return Redirect(samanModel.GatewayEndPoint + "?token=" +
                                         tokenResponse.Token);
                     }
                     else
@@ -135,7 +135,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                         //Log.Error($"token error desc : {tokenResponse.ErrorDesc}, errorCode: {tokenResponse.ErrorCode}");
                         TempData["Psp"] = transaction.BasicData.PspType.GetDescription();
                         TempData["PaymentErrorMessage"] = "خطا در اتصال به درگاه.";
-                        return RedirectToAction("PaymentError", "Ipg");
+                        return RedirectToAction("PaymentError", "Payment");
                     }
 
                 }
@@ -145,13 +145,13 @@ namespace Arad.Portal.UI.Shop.Controllers
                     //Log.Error($"overal error : {e.Message}");
                     TempData["Psp"] = transaction.BasicData.PspType.GetDescription();
                     TempData["PaymentErrorMessage"] = "خطا در اتصال به درگاه.";
-                    return RedirectToAction("PaymentError", "Ipg");
+                    return RedirectToAction("PaymentError", "Payment");
                 }
             }
             //Log.Error($"token error statusCode : {response.StatusCode}");
             TempData["Psp"] = transaction.BasicData.PspType.GetDescription();
             TempData["PaymentErrorMessage"] = "خطا در اتصال به درگاه.";
-            return RedirectToAction("PaymentError", "Ipg");
+            return RedirectToAction("PaymentError", "Payment");
         }
 
         [HttpPost]
@@ -183,7 +183,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                     TempData["Psp"] = "Saman";
                     TempData["PaymentErrorMessage"] = "تراکنش مورد نظر یافت نشد.";
                     await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
-                    return RedirectToAction("PaymentError", "Ipg");
+                    return RedirectToAction("PaymentError", "Payment");
                 }
 
                 if (!string.IsNullOrWhiteSpace(Request.Form["RefNum"]))
@@ -209,7 +209,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                             TempData["Psp"] = "Saman";
                             TempData["PaymentErrorMessage"] = "کد رهگیری تکراری میباشد.";
                             await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
-                            return RedirectToAction("PaymentError", "Ipg");
+                            return RedirectToAction("PaymentError", "Payment");
                         }
                     }
                     
@@ -221,7 +221,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                     TempData["Psp"] = "Saman";
                     TempData["PaymentErrorMessage"] = "مشکلی در تراکنش توسط خریدار به وجود آمده است";
                     await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
-                    return RedirectToAction("PaymentError", "Ipg");
+                    return RedirectToAction("PaymentError", "Payment");
                 }
 
 
@@ -232,7 +232,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                         TempData["Psp"] = "Saman";
                         TempData["PaymentErrorMessage"] = "تراکنش تکراری.";
                         await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
-                        return RedirectToAction("PaymentError", "Ipg");
+                        return RedirectToAction("PaymentError", "Payment");
                     }
                 }
                 if(initialData.State == "OK")
@@ -326,7 +326,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                                     TempData["Psp"] = "Saman";
                                     await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
                                     TempData["PaymentErrorMessage"] = "تراکنش بعلت عدم تطابق مبلغ قابل پرداخت و موجودی کسر شده از کارت برگشت داده شد و تا 72 ساعت مبلغ کسر شده به کارت شما بازگشت داده میشود.";
-                                    return RedirectToAction("PaymentError", "Ipg");
+                                    return RedirectToAction("PaymentError", "Payment");
                                 }
                                 else
                                 {
@@ -342,7 +342,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                                     TempData["Psp"] = "Saman";
                                     await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
                                     TempData["PaymentErrorMessage"] = "در برگشت تراکنش بعلت عدم تطابق مبلغ قایل پرداخت و مبلغ کسر شده از کارت خطایی بوجود آمده است لطفا با پشتیبانی تماس حاصل فرمایید.";
-                                    return RedirectToAction("PaymentError", "Ipg");
+                                    return RedirectToAction("PaymentError", "Payment");
 
                                 }
                                 #endregion
@@ -372,7 +372,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                                 //کد رهگیری
                                 TempData["StraceNo"] = verifyOutPutModel.VerifyInfo.StraceNo;
                                 _sharedRuntimeData.DeleteDataWithoutRollBack(transaction.TransactionId);
-                                return RedirectToAction("PaymentSuccess", "Ipg");
+                                return RedirectToAction("PaymentSuccess", "Payment");
                             }
                         }
                         else
@@ -389,17 +389,16 @@ namespace Arad.Portal.UI.Shop.Controllers
                             TempData["Psp"] = "Saman";
                             TempData["PaymentErrorMessage"] = "خطا در تایید تراکنش توسط درگاه";
                             await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
-                            return RedirectToAction("PaymentError", "Ipg");
+                            return RedirectToAction("PaymentError", "Payment");
 
                         }
                     }
-                    //when response is null
-                    else
+                    else //when response is null
                     {
                         TempData["Psp"] = "Saman";
                         TempData["PaymentErrorMessage"] = "پاسخی از درگاه برای تایید دریافت نشدودرصورت کسر موجودی تا 72 ساعت به حساب شما بازگشته میشود.";
                         await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
-                        return RedirectToAction("PaymentError", "Ipg");
+                        return RedirectToAction("PaymentError", "Payment");
                     }
                 }
                 else //initialData.State is not ok
@@ -407,18 +406,17 @@ namespace Arad.Portal.UI.Shop.Controllers
                     TempData["Psp"] = "Saman";
                     TempData["PaymentErrorMessage"] = "خطای درگاه بعد از پرداخت";
                     await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
-                    return RedirectToAction("PaymentError", "Ipg");
+                    return RedirectToAction("PaymentError", "Payment");
                 }
             }
             catch (Exception ex)
             {
-
                 transaction.BasicData.Stage = Enums.PaymentStage.Failed;
                 await _transactionRepository.UpdateTransaction(transaction);
                 TempData["Psp"] = "Saman";
                 TempData["PaymentErrorMessage"] = "خطایی پس از انتقال از درگاه بوجود آمده است";
                 await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
-                return RedirectToAction("PaymentError", "Ipg");
+                return RedirectToAction("PaymentError", "Payment");
             }
         }
           

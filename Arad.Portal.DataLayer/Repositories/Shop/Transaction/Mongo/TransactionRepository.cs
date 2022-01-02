@@ -83,8 +83,37 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
             return result;
         }
 
+        public async Task<Result> RollBackPayingTransaction()
+        {
+            var result = new Result();
+            var list = new List<PaymentStage>() { PaymentStage.Initialized, PaymentStage.GenerateToken, PaymentStage.RedirectToIPG, PaymentStage.DoneButNotConfirmed };
+            FilterDefinitionBuilder<Entities.Shop.Transaction.Transaction> filterDefinition = new(); 
+            var filter = filterDefinition.In(_ => _.BasicData.Stage, list);
+
+
+            UpdateDefinition<Entities.Shop.Transaction.Transaction> updateDefinition = 
+                Builders<Entities.Shop.Transaction.Transaction>.Update.Set(x => x.BasicData.Stage, PaymentStage.ForcedToCancelledBySystem);
+            var entities = _context.Collection.Find(_ => _.BasicData.Stage == PaymentStage.Initialized
+            || _.BasicData.Stage == PaymentStage.GenerateToken
+            || _.BasicData.Stage == PaymentStage.RedirectToIPG
+            || _.BasicData.Stage == PaymentStage.DoneButNotConfirmed);
+
+            var updateResult = await _context.Collection.UpdateManyAsync(filter, updateDefinition);
+            if (updateResult.IsAcknowledged)
+            {
+                result.Succeeded = true;
+                result.Message = ConstMessages.SuccessfullyDone;
+            }
+            else
+            {
+                result.Message = ConstMessages.GeneralError;
+            }
+            return result;
+        }
+
         public async Task UpdateTransaction(Entities.Shop.Transaction.Transaction transaction)
         {
+           
             var entity
                 = _context.Collection.Find(_ => _.TransactionId== transaction.TransactionId);
             if (entity != null)

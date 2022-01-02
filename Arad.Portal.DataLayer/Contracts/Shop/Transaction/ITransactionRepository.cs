@@ -22,5 +22,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Transaction
         bool IsRefNumberUnique(string referenceNumber, PspType pspType);
 
         Task UpdateTransaction(Entities.Shop.Transaction.Transaction transaction);
+
+        Task<Result> RollBackPayingTransaction();
     }
 }

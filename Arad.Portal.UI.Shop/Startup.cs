@@ -204,19 +204,32 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<CreateNotification>();
             services.AddTransient(typeof(EnyimMemcachedMethods<>));
             services.AddTransient<HttpClientHelper>();
-            services.AddSingleton<SharedRuntimeData>();
+            
             services.AddSingleton<IHostedService, CacheCleanerService>();
             services.AddSingleton<IHostedService, LifetimeEventsHostedService>();
+            //services.AddTransient<ServiceResolver>(serviceProvider => key =>
+            //{
+            //    switch (key)
+            //    {
+            //        case "Cache":
+            //            return serviceProvider.GetService<CacheCleanerService>();
+            //        case "LifeTime":
+            //            return serviceProvider.GetService<LifetimeEventsHostedService>();
+            //        default:
+            //            throw null; // or maybe return exception keynotfound
+            //    }
+            //});
             services.AddLocalization();
             AddRepositoryServices(services);
+            services.AddSingleton<SharedRuntimeData>();
             //services.AddProgressiveWebApp();
 
-           
+
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env/*, IHostApplicationLifetime applicationLifetime*/)
         {
             if (env.IsDevelopment())
             {
@@ -228,7 +241,7 @@ namespace Arad.Portal.UI.Shop
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+           
             app.UseHttpsRedirection();
             app.UseEnyimMemcached();
             app.UseStaticFiles();
@@ -347,5 +360,6 @@ namespace Arad.Portal.UI.Shop
          
 
         }
+       
     }
 }

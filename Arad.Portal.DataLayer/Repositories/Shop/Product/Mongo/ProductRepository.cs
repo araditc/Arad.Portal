@@ -41,13 +41,13 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _accessor;
-        private readonly UserManager<ApplicationUser> _userManager;
+        //private readonly UserManager<ApplicationUser> _userManager;
         
         public ProductRepository(IHttpContextAccessor httpContextAccessor,
             ProductContext context, IMapper mapper,
             PromotionContext promotionContext,
             //OrderContext orderContext,
-            UserManager<ApplicationUser> userManager,
+            //UserManager<ApplicationUser> userManager,
             ShoppingCartContext shoppingCartContext,
             IConfiguration configuration,
             LanguageContext languageContext,
@@ -58,7 +58,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         {
             _context = context;
             _mapper = mapper;
-            _userManager = userManager;
+            //_userManager = userManager;
             _promotionContext = promotionContext;
             _transactionContext = transactionContext;
             _languageContext = languageContext;
@@ -419,7 +419,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                         var exist = equallentModel.Prices.First(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive);
                         equallentModel.Prices.Remove(exist);
                         exist.IsActive = false;
-                        exist.EndDate = DateTime.UtcNow;
+                        exist.EndDate = DateTime.Now;
                         equallentModel.Prices.Add(exist);
 
                     }
@@ -433,9 +433,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     IsActive = !string.IsNullOrWhiteSpace(price.PriceId) ? price.IsActive : true,
                     Prefix = price.Prefix,
                     PriceValue = price.PriceValue,
-                    StartDate = DateHelper.ToEnglishDate(price.StartDate.Split(" ")[0]).ToUniversalTime(),
+                    StartDate = DateHelper.ToEnglishDate(price.StartDate.Split(" ")[0]),
                     EndDate = !string.IsNullOrWhiteSpace(price.EndDate) ? 
-                    GeneralLibrary.Utilities.DateHelper.ToEnglishDate(price.EndDate).ToUniversalTime() : null
+                    GeneralLibrary.Utilities.DateHelper.ToEnglishDate(price.EndDate.Split(" ")[0]) : null
                 };
                 equallentModel.Prices.Add(p);
             }
