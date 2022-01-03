@@ -208,45 +208,6 @@
         </div>
     </div>
 </div>
-
-
-<div class="modal fade" id="uploadlogoModal" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-        <div class="modal-content col-md-12">
-            <div class="modal-header">
-                <div class="col-md-1">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="col-md-11" style="text-align: center">
-                    <h5 class="modal-title align-content-center" id="logoModalTitle">@Language.GetString("CropImage")</h5>
-                </div>
-            </div>
-            <div class="modal-body">
-                <div class="modal-body" id="upload-modal-body">
-                    <div id="rowContainer" class="row justify-content-center align-items-center">
-                        <div id="containerlg" style="position: relative;display: inline; height: 400px; width: 400px;max-width:100%;">
-                            <img onchange="getLogoURL(this)" class="img-fluid" hidden="hidden" id="imgModalBody"
-                                 alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer justify-content-center align-items-center">
-                <div>
-                    <button class="btn btn-success" id="send_Logo" type="button"><i style="margin-left: 5px;font-size:13px" class="fas fa-share-square"></i>@Language.GetString("btn_Approve")</button>
-                    <button class="btn btn-primary" id="logoCrop_button"><i style="margin-left: 5px;font-size:13px" class="fas fa-cut"></i>@Language.GetString("btn_Crop")</button>
-                    <button class="btn btn-default" style="background-color: crimson;color: white;border: 1px solid crimson" onclick="rotatePic()"> <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i>@Language.GetString("btn_Rotate") 
-                    </button>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 <div class="row">
     <div class="col-md-12">
         <div class="card" id="addContentCardTitle">
@@ -282,7 +243,6 @@
 
                 </div>
                 <div class="row">
-
                     <div class="form-group col-md-6">
                         <label asp-for="Description">@Language.GetString("Description")</label>
                         <textarea dir="rtl" asp-for="Description" class="form-control" rows="3">@Model.Description</textarea>
@@ -353,25 +313,6 @@
                 </div>
                 <div class="row">
                     <div class="col-md-3">
-                        <div class="card">
-                            <div class="card-header lightColored">
-                                @Language.GetString("FileLogo")
-                            </div>
-                            <div class="card-body">
-                                <div class="text-center form-group">
-                                    <img id="fileLogoImage" onclick="ViewImage('@Model.FileLogo')" style="cursor: pointer" 
-                                         class="profile-user-img img-fluid img-circle" src="@Model.FileLogo" alt="content logo">
-                                </div>
-                                <hr>
-                                <div class="custom-file">
-                                    <input style="width: -webkit-fill-available;" accept="image/x-png,image/jpeg" type="file" class="btn btn-sm" name="image2" id="image2" onchange="getLogoURL(this)">
-                                    <label class="custom-file-label" for="image2">@Language.GetString("ChangeLogo")</label>
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
-                        </div>
-                    </div>
-                    <div class="col-md-3">
                         <label asp-for="SeoTitle">@Language.GetString("SeoTitle")</label>
                         <input type="text" class="form-control" asp-for="@Model.SeoTitle" placeholder="">
                         <span data-val-result="SeoTitle" class="text-danger"></span>
@@ -438,7 +379,7 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                            <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromImageList(this);">
+                                                            <button type="button" class="btn btn-danger btn-circle" imgId="@($"img_{@pic.ImageId}")" onclick="deleteFromImageList(this);">
                                                                 <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
                                                             </button>
                                                         </td>
@@ -570,129 +511,133 @@
         }
 
 
-            if ("@Model.ContentId" != "") {
-                $("#LanguageId").val('@Model.LanguageId');
-                if ("@Model.PersianStartShowDate" != "") {
+        if ("@Model.ContentId" != "") {
+            $("#LanguageId").val('@Model.LanguageId');
+            if ("@Model.PersianStartShowDate" != "") {
 
-                    $("#dtpStartShowDate").val("@Model.PersianStartShowDate");
-                }
-                if ("@Model.PersianEndShowDate" != "") {
-                    $("#dtpEndShowDate").val("@Model.PersianEndShowDate");
-                }
-                if ('@Model.Images.Any()' == 'True') {
-                    debugger;
-                    var serverImages = @Json.Serialize(@Model.Images);
-                    for (var i = 0; i < serverImages.length; i++) {
-                        var model = {};
-                        model.ImageId = serverImages[i].imageId;
-                        model.Content = serverImages[i].url;
-                        
-                        images.push(model);
-                    }
-                }
+                $("#dtpStartShowDate").val("@Model.PersianStartShowDate");
             }
-            else
-            {
-                 $("#LanguageId").val('@ViewBag.LangId');
+            if ("@Model.PersianEndShowDate" != "") {
+                $("#dtpEndShowDate").val("@Model.PersianEndShowDate");
             }
-            $("#btnAddContent").click(function () {
+            if ('@Model.Images.Any()' == 'True') {
                 debugger;
-                var flag = false;
-                if ($("#LanguageId").val() == "" || $("#LanguageId").val() == "-1") {
-                    $("span[data-val-result='LanguageId']").html('@Language.GetString("AlertAndMessage_OptionEssential")');
-                    flag = true;
+                var serverImages = @Json.Serialize(@Model.Images);
+                for (var i = 0; i < serverImages.length; i++) {
+                    var model = {};
+                    model.ImageId = serverImages[i].imageId;
+                    model.Content = serverImages[i].url;
+                        
+                    images.push(model);
                 }
-                if ($("#ContentCategoryId").val() == "" || $("#ContentCategoryId").val() == "-1") {
-                    $("span[data-val-result='ContentCategoryId']").html('@Language.GetString("AlertAndMessage_OptionEssential")');
-                    flag = true;
-                }
-                if ($("#Title").val() == "") {
-                    $("span[data-val-result='Title']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-                    flag = true;
-                }
-                if ($("#SubTitle").val() == "") {
-                    $("span[data-val-result='SubTitle']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-                    flag = true;
-                }
-                if (CKEDITOR.instances.editorCk.getData() == "") {
-                    $("span[data-val-result='editorCk']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-                    flag = true;
-                }
-                if ($("#dtpStartShowDate").val() == "") {
-                    $("span[data-val-result='dtpStartShowDate']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-                    flag = true;
-                }
-                 if ($("#dtpEndShowDate").val() == "") {
-                     $("span[data-val-result='dtpEndShowDate']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-                    flag = true;
-                }
-                if ($("#SourceType").val() == "" || $("#SourceType").val() == "-1") {
-                       $("span[data-val-result='dtpEndShowDate']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-                }
-                 if ($("#ContentProviderName").val() == "") {
-                     $("span[data-val-result='ContentProviderName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-                }
-                if (!flag) {
-                    var dto = FillDataToSend();
-                    $.ajax({
-                        url: "@Model.ContentId" != "" ? "/Content/Edit" : "/Content/Add",
-                        contentType: 'application/json',
-                        data: JSON.stringify(dto),
-                        type: 'Post',
-                        beforeSend: function () {
-                            debugger;
-                            AddLoading($("#addContentCardBody"));
-                        },
-                        success: function (result) {
-                            debugger;
-                            if (result.status === "Success") {
-                                Swal.fire({
-                                    icon: 'success',
-                                    text: result.message,
-                                    showConfirmButton: false,
-                                    timer: 3000
-                                });
-                                window.location.href = '@Url.Action("List")';
-                            }
-                            else
-                                if (result.status === "ModelError") {
-                                    var spanErrorList = $('span[data-val-result]');
-                                    if (spanErrorList.length > 1) {
-                                        spanErrorList.each(function () {
-                                            $(this).html("");
-                                            $(this).parent().removeClass("has-error");
-                                        });
-                                    }
-                                    else {
-                                        spanErrorList.html("");
-                                        spanErrorList.parent().removeClass("has-error");
-                                    }
-                                    if (result.modelStateErrors !== null) {
-                                        $('[data-val-result=' + result.key + ']').html(result.errorMessage);
-                                        $('[data-val-result=' + result.key + ']').parent().addClass("has-error");
-                                    }
-                                }
-                                else if (result.status === "Error") {
-
-                                        Swal.fire({
-                                            icon: 'error',
-                                            text: result.message,
-                                            showConfirmButton: false,
-                                            timer: 3000
-                                        });
-                                }
-                        },
-            @*error: function (xhr, ajaxOptions, thrownError) {
-                    alert("@error");
-                    alert(xhr.status);
-                    alert(thrownError);
-                },*@
-                        complete: function () {
-                            removeLoading($("#addContentCardBody"));
+            }
+        }
+        else
+        {
+                $("#LanguageId").val('@ViewBag.LangId');
+        }
+        $("#btnAddContent").click(function () {
+            debugger;
+            console.log("btnAddContent started");
+            var flag = false;
+            if ($("#LanguageId").val() == "" || $("#LanguageId").val() == "-1") {
+                $("span[data-val-result='LanguageId']").html('@Language.GetString("AlertAndMessage_OptionEssential")');
+                flag = true;
+            }
+            if ($("#ContentCategoryId").val() == "" || $("#ContentCategoryId").val() == "-1") {
+                $("span[data-val-result='ContentCategoryId']").html('@Language.GetString("AlertAndMessage_OptionEssential")');
+                flag = true;
+            }
+            if ($("#Title").val() == "") {
+                $("span[data-val-result='Title']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#SubTitle").val() == "") {
+                $("span[data-val-result='SubTitle']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if (CKEDITOR.instances.editorCk.getData() == "") {
+                $("span[data-val-result='editorCk']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#dtpStartShowDate").val() == "") {
+                $("span[data-val-result='dtpStartShowDate']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+                if ($("#dtpEndShowDate").val() == "") {
+                    $("span[data-val-result='dtpEndShowDate']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#SourceType").val() == "" || $("#SourceType").val() == "-1") {
+                    $("span[data-val-result='dtpEndShowDate']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            }
+                if ($("#ContentProviderName").val() == "") {
+                    $("span[data-val-result='ContentProviderName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            }
+            console.log("validation passed");
+            if (!flag) {
+                var dto = FillDataToSend();
+               
+                console.log(dto);
+                $.ajax({
+                    url: "@Model.ContentId" != "" ? "/Content/Edit" : "/Content/Add",
+                    contentType: 'application/json',
+                    data: JSON.stringify(dto),
+                    type: 'Post',
+                    beforeSend: function () {
+                        debugger;
+                        AddLoading($("#addContentCardBody"));
+                    },
+                    success: function (result) {
+                        debugger;
+                        if (result.status === "Success") {
+                            Swal.fire({
+                                icon: 'success',
+                                text: result.message,
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+                            window.location.href = '@Url.Action("List")';
                         }
-                    });
-                }
-            });
+                        else
+                            if (result.status === "ModelError") {
+                                var spanErrorList = $('span[data-val-result]');
+                                if (spanErrorList.length > 1) {
+                                    spanErrorList.each(function () {
+                                        $(this).html("");
+                                        $(this).parent().removeClass("has-error");
+                                    });
+                                }
+                                else {
+                                    spanErrorList.html("");
+                                    spanErrorList.parent().removeClass("has-error");
+                                }
+                                if (result.modelStateErrors !== null) {
+                                    $('[data-val-result=' + result.key + ']').html(result.errorMessage);
+                                    $('[data-val-result=' + result.key + ']').parent().addClass("has-error");
+                                }
+                            }
+                            else if (result.status === "Error") {
+
+                                    Swal.fire({
+                                        icon: 'error',
+                                        text: result.message,
+                                        showConfirmButton: false,
+                                        timer: 3000
+                                    });
+                            }
+                    },
+                @*error: function (xhr, ajaxOptions, thrownError) {
+                        alert("@error");
+                        alert(xhr.status);
+                        alert(thrownError);
+                    },*@
+                    complete: function () {
+                        removeLoading($("#addContentCardBody"));
+                    }
+                });
+            }
+        });
 
         $("#LanguageId").change(function () {
         debugger;
@@ -741,13 +686,14 @@
                     "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
                     "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
                     "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
-                    "'/></td><td style='vertical-align:middle;'><input type='radio'  name='isMainImage' class='minimal rdbIsMain'></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger btn-circle' onclick='deleteFromImageList(this);'><i class='fa fa-minus' style='position:relative;padding: 3px;'></i></button></td></tr>";
-            } else {
+                    "'/></td><td style='vertical-align:middle;'><input type='radio'  name='isMainImage' class='minimal rdbIsMain'></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger btn-circle' imgId='img_" + counter + "' onclick='deleteFromImageList(this);'><i class='fa fa-minus' style='position:relative;padding: 3px;'></i></button></td></tr>";
+            } else
+            {
                  tr = "<tr><td><img imgId='img_" + counter + "' src='" + model.Content +
                     "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
                     "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
                     "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
-                    "'/></td><td style='vertical-align:middle;'><div class='icheck-primary d-inline'><input type='radio'  name='isMainImage' class='rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger btn-circle' onclick='deleteFromImageList(this);'><i class='fa fa-minus' style='position:relative;padding: 3px;'></i></button></td></tr>";
+                     "'/></td><td style='vertical-align:middle;'><div class='icheck-primary d-inline'><input type='radio'  name='isMainImage' class='rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger btn-circle' imgId='img_" + counter + "' onclick='deleteFromImageList(this);'><i class='fa fa-minus' style='position:relative;padding: 3px;'></i></button></td></tr>";
 
             }
             $("#imageList").append(tr);
@@ -760,19 +706,9 @@
             }
          });
 
-         $("#send_Logo").click(function () {
-                debugger;
-                $("#uploadlogoModal").modal("hide");
-                var url = $("#contentLogo").attr("src");
-                debugger;
-                $("#fileLogoImage").attr('src', url);
-                fileContent = url;
-                fileName = currentFileName;
-            });
-
     });
 
-    function ViewImage(address) {
+        function ViewImage(address) {
         debugger;
         var tag = '<img src="' + address + '" width="500px" />';
         Swal.fire({
@@ -785,17 +721,18 @@
 
         function deleteFromImageList(sender) {
             debugger;
-            var id = $(sender).next().attr("imgId");
+            var id = $(sender).attr("imgId").replace("img_", "");
             //removeFromArray
             var item = images.find(_ => _.ImageId === id);
             var index = images.indexOf(item);
             images.splice(index, 1);
             //remove in view
-            $(sender).parent().remove();
+            $(sender).parent().parent().remove();
         }
 
     function FillDataToSend() {
         debugger;
+        console.log("FillDataToSend started");
         var obj = {};
         obj.Images = [];
         obj.Comments = [];
@@ -821,14 +758,15 @@
         });
         obj.SourceTypeId = $("#SourceType").val();
         obj.ContentProviderName = $("#ContentProviderName").val();
-        if (fileContent != "") {
-            debugger;
-            obj.LogoContent = fileContent;
-        }
-        if (fileName != "") {
-            debugger;
-            obj.LogoName = fileName;
-        }
+        //if (fileContent != "") {
+        //    debugger;
+        //    obj.LogoContent = fileContent;
+        //}
+        //if (fileName != "") {
+        //    debugger;
+        //    obj.LogoName = fileName;
+        //}
+
         //pictures
         $("#imageList tr").each(function () {
 
@@ -845,11 +783,13 @@
         });
         obj.PersianStartShowDate = $("#dtpStartShowDate").val();
         obj.PersianEndShowDate = $("#dtpEndShowDate").val();
+        console.log("FillDataTosend passed");
+        alert(obj);
         return obj;
     }
 
 
-     $('#uploadModal').on('hidden.bs.modal',
+    $('#uploadModal').on('hidden.bs.modal',
         function () {
         debugger;
         cropper.destroy();
@@ -857,28 +797,16 @@
         $("#cropped_result").remove();
          });
 
-    $('#uploadlogoModal').on('hidden.bs.modal',
-        function () {
-            debugger;
-            cropper.destroy();
-            document.getElementById("image2").value = "";
-            $("#logoCropped_result").remove();
-        });
-
-        function rotatePic() {
-        cropper.rotate(90);
-        }
-
-        function upRiseModal() {
-            debugger;
-        $("#send_pic").attr("disabled", true);
-        $("#uploadModal").modal("show");
+    function rotatePic() {
+    cropper.rotate(90);
     }
-    function showModal() {
+
+    function upRiseModal() {
         debugger;
-        $("#send_Logo").attr("disabled", true);
-        $("#uploadlogoModal").modal("show");
+    $("#send_pic").attr("disabled", true);
+    $("#uploadModal").modal("show");
     }
+    
 
     function initCropper() {
         debugger;
@@ -917,178 +845,74 @@
         });
     }
 
-    function initLogoCropper() {
+
+    function getURL(input)
+    {
         debugger;
-        var image = document.getElementById('imgModalBody');
-        if (cropper !== null && cropper !== undefined) {
-            cropper.destroy();
-        }
-
-        cropper = new Cropper(image,
-            {
-                background: true,
-                aspectRatio: 1,
-                viewMode: 2,
-                responsive: true,
-                rotatable: true
-
-            });
-
-        document.getElementById('logoCrop_button').addEventListener('click',
-            function () {
-                debugger;
-                var imgUrl = cropper.getCroppedCanvas().toDataURL('image/jpeg');
-                var img = document.createElement("img");
-                img.setAttribute("id", "contentLogo");
-                img.setAttribute("class", "img-fluid");
-                var height = document.getElementById("containerlg").getAttribute("width");
-               /* var height = modal.getElementById("container").getAttribute("width");*/
-              /*  var height = $("#uploadlogoModal #container").attr("width");*/
-                var croppedContainer = document.createElement("div");
-                croppedContainer.setAttribute("id", "logoCropped_result");
-                croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
-                $("#uploadlogoModal #rowContainer").append(croppedContainer);
-                img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
-                img.src = imgUrl;
-                document.getElementById("logoCropped_result").innerHTML = "";
-                document.getElementById("logoCropped_result").appendChild(img);
-                $("#send_Logo").attr("disabled", false);
-            });
-    }
-
-        function getURL(input)
-        {
-            debugger;
-                $("#cropped_result").remove();
-                if (input.files && input.files[0]) {
-                var file = input.files[0];
-                currentFileName = file.name;
-                currentFileSize = file.size;
-
-                if (currentFileSize <= @ViewBag.PicSize) {
-                var reader = new FileReader();
-                try {
-                reader.readAsDataURL(file);
-                } catch (e) {
-
-                }
-                reader.onload = function (e) {
-                var content = e.target.result;
-                //if file format is incorrect, then the 'content' won't have any src.
-                if (content !== "data:") {
-                var reducedContent = content.slice(5);
-
-                if (reducedContent.startsWith("image")) {
-                $('#blah').attr('src', content);
-                setTimeout(upRiseModal, 100);
-                setTimeout(initCropper, 500);
-                } else {
-
-                Swal.fire({
-                position: 'top-end',
-                icon: 'error',
-                title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
-                showConfirmButton: false,
-                timer: 1500
-                });
-
-                document.getElementById("image").value = "";
-                $("#cropped_result").remove();
-                }
-                } else {
-                Swal.fire({
-                position: 'top-end',
-                icon: 'error',
-                title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
-                showConfirmButton: false,
-                timer: 1500
-                });
-
-                document.getElementById("image").value = "";
-                $("#cropped_result").remove();
-                }
-                };
-                }
-                else
-                {
-                Swal.fire({
-                icon: 'error',
-                title: '@Language.GetString("AlertAndMessage_InvalidFileSize")',
-                showConfirmButton: false,
-                timer: 1500
-                });
-                document.getElementById("image").value = "";
-                $("#cropped_result").remove();
-                }
-                }
-        }
-
-    function getLogoURL(input) {
-        debugger;
-            $("#logoCropped_result").remove();
+            $("#cropped_result").remove();
             if (input.files && input.files[0]) {
-                //var file = input.files[0];
-                //currentFileName = file.name;
-                //currentFileSize = file.size;
+            var file = input.files[0];
+            currentFileName = file.name;
+            currentFileSize = file.size;
 
-                if (currentFileSize <= 500 * 1024) {
-                    var reader = new FileReader();
-                    reader.readAsDataURL(input.files[0]);
-                    reader.onload = function (e) {
-                        var content = e.target.result;
+            if (currentFileSize <= @ViewBag.PicSize) {
+            var reader = new FileReader();
+            try {
+            reader.readAsDataURL(file);
+            } catch (e) {
 
-                        //if file format is incorrect, then the 'content' won't have any src.
-                        if (content !== "data:") {
-                            var reducedContent = content.slice(5);
-
-                            if (reducedContent.startsWith("image")) {
-                                $('#imgModalBody').attr('src', content);
-                                setTimeout(showModal, 100);
-                                setTimeout(initLogoCropper, 500);
-                            } else {
-
-                                Swal.fire({
-                                    position: 'top-end',
-                                    icon: 'error',
-                                    title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                });
-
-                                document.getElementById("image2").value = "";
-                                $("#logoCropped_result").remove();
-
-
-                            }
-                        } else {
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: 'error',
-                                title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
-
-
-                            document.getElementById("image2").value = "";
-                            $("#logoCropped_result").remove();
-                        }
-                    };
-                } else {
-
-                    Swal.fire({
-                        icon: 'error',
-                        title: '@Language.GetString("AlertAndMessage_InvalidFileSize")',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-
-                    document.getElementById("image2").value = "";
-                    $("#logoCropped_result").remove();
-
-                }
             }
-        }
+            reader.onload = function (e) {
+            var content = e.target.result;
+            //if file format is incorrect, then the 'content' won't have any src.
+            if (content !== "data:") {
+            var reducedContent = content.slice(5);
+
+            if (reducedContent.startsWith("image")) {
+            $('#blah').attr('src', content);
+            setTimeout(upRiseModal, 100);
+            setTimeout(initCropper, 500);
+            } else {
+
+            Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
+            showConfirmButton: false,
+            timer: 1500
+            });
+
+            document.getElementById("image").value = "";
+            $("#cropped_result").remove();
+            }
+            } else {
+            Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
+            showConfirmButton: false,
+            timer: 1500
+            });
+
+            document.getElementById("image").value = "";
+            $("#cropped_result").remove();
+            }
+            };
+            }
+            else
+            {
+            Swal.fire({
+            icon: 'error',
+            title: '@Language.GetString("AlertAndMessage_InvalidFileSize")',
+            showConfirmButton: false,
+            timer: 1500
+            });
+            document.getElementById("image").value = "";
+            $("#cropped_result").remove();
+            }
+            }
+    }
+   
 </script>
 }
 

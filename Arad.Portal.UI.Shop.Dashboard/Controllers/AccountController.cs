@@ -834,7 +834,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 return Ok(new { Status = "Error", Message = Language.GetString("AlertAndMessage_NotFoundUser") });
             }
 
-            string otp = Utilities.GenerateOtp();
+            string otp = Arad.Portal.DataLayer.Helpers.Utilities.GenerateOtp();
             HttpContext.Session.SetString("Otp", otp);
             HttpContext.Session.SetString("UserName", user.UserName);
             HttpContext.Session.SetString("OtpTime", DateTime.Now.ToString(CultureInfo.CurrentCulture));

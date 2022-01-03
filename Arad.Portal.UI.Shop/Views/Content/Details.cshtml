@@ -1,5 +1,239 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Arad.Portal.DataLayer.Models.Content.ContentDTO
 @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var dir = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        dir = "rtl";
+    }
+    else
+    {
+        dir = "ltr";
+    }
 }
+@section Styles
+{
+    <link href="~/lib/slick-carousel/slick.css" rel="stylesheet" />
+    <link href="~/lib/fancybox/jquery.fancybox.min.css" rel="stylesheet" />
+    <link href="~/ImageSlider/ImageSlider.css" rel="stylesheet" />
+    <style>
+    .card-title{
+       text-align : @(@dir == "rtl" ? "right" : "left") ;
+    }
+    .txtAlign{
+         text-align : @(@dir == "rtl" ? "right" : "left") ;
+    }
+    .smlImg{
+        border-radius : 10%;
+    }
+    .card {
+        position: relative;
+        display: flex;
+        padding: 20px;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid #d2d2dc;
+        border-radius: 11px;
+        -webkit-box-shadow: 0px 0px 5px 0px rgb(249, 249, 250);
+        -moz-box-shadow: 0px 0px 5px 0px rgba(212, 182, 212, 1);
+        box-shadow: 0px 0px 5px 0px rgb(161, 163, 164)
+    }
+
+    .media img {
+        width: 60px;
+        height: 60px
+    }
+
+    .reply a {
+        text-decoration: none
+    }
+    .sold_stars i {
+        color: orange
+    }
+    .dir{
+        direction : @(dir == "rtl" ? "rtl" : "ltr");
+    }
+
+    .lblMdl{
+        padding: 0.5rem 0rem;
+    }
+    </style>
+}
+@*<script src="~/ImageSlider/popper.min.js"></script>*@
+@section Scripts{
+
+    @*<script src="~/ImageSlider/slick.min.js"></script>*@
+    <script src="~/lib/slick-carousel/slick.min.js"></script>
+    @*<script src="~/ImageSlider/jquery.fancybox.min.js"></script>*@
+    <script src="~/lib/fancybox/jquery.fancybox.min.js"></script>
+    @if (dir == "rtl")
+    {
+        <script src="~/ImageSlider/ImageSlider-rtl.js"></script>
+    }
+    else
+    {
+        <script src="~/ImageSlider/ImageSlider-ltr.js"></script>
+    }
+
+}
+
+
+<div class="row">
+    <div id="carouselImages" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            @foreach (var img in Model.Images)
+            {
+                <div class="carousel-item active">
+                    <img src='@($"../filemanager/getscaledimage?path={img.Url}&height={1000}")' class="d-block w-100" alt="...">
+                </div>
+            }
+        </div>
+        @if (Model.Images.Count > 1)
+        {
+            <a class="carousel-control-prev" href="#carouselImages" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselImages" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        }
+
+    </div>
+</div>
+<div class="row">
+    <div class="sold_stars ratePart col-md-4 offset-md-8">
+        @for (int i = 1; i <= Model.LikeRate; i++)
+        {
+            <a href="#"
+                role="button" aria-expanded="false" title="@Language.GetString("ContentScore")" onclick="Rate(@i);">
+                <i class="fas fa-star"></i>
+            </a>
+        }
+        @if (Model.halfLikeRate)
+        {
+            <a href="#"
+                role="button" aria-expanded="false" title="@Language.GetString("ContentScore")" onclick="Rate(@Model.LikeRate+1);">
+                <i class="fas fa-star-half-alt"></i>
+            </a>
+        }
+        @for (int i = (Model.halfLikeRate ? Model.LikeRate + 2 : Model.LikeRate + 1); i <= Model.DisikeRate; i++)
+        {
+            <a href="#"
+                role="button" aria-expanded="false" onclick="Rate(@i);" title=@($"{@Language.GetString("ContentScore")}_{i}")>
+                <i class="far fa-star"></i>
+            </a>
+        }
+    </div>
+</div>
+<div class="row">
+    @Html.Raw(Model.Contents)
+</div>
+
+<div class="row">
+    <form class="w-100 mt-2">
+        <textarea class="form-control dir w-100 bg-light" id="commentPart" rows="3" placeholder="@Language.GetString("AlertAndMessage_WriteComment")"></textarea>
+        <input type="button" class="btn btn-info mt-2" id="btnAddComment" value="@Language.GetString("btn_Insert")" />
+    </form>
+
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="mb-5 mt-5">
+            <div class="row">
+                <div class="col-md-12">
+
+                    @foreach (var item in Model.Comments)
+                    {
+                        @await Component.InvokeAsync("CommentSection", item);
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<script src="~/js/CommentSection/cmt.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnAddComment").click(function () {
+            debugger;
+            if ('@ViewBag.LoggedUser' == 'True') {
+                if ($("#commentPart").val() != "") {
+                    var obj = {};
+                    obj.ReferenceId = '@Model.ContentId';
+                    obj.Content = $("#commentPart").val();
+                    obj.ParentId = null;
+                    $.ajax({
+                        url: "/Comment/SubmitComment",
+                        contentType: 'application/json',
+                        data: JSON.stringify(dto),
+                        type: 'Post',
+                        dataType: 'json',
+                        beforeSend: function () {
+                        },
+                        success: function (result) {
+                            if (result.status === "Success") {
+                                $("#commentPart").val("@Language.GetString("AlertAndMessage_SubmitComment")");
+                                location.reload();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
+
+    function Rate(score) {
+        debugger;
+        var isAllow = false;
+        if ('@ViewBag.LoggedUser' == 'True') {
+            if ('@ViewBag.HasRateBefore' == 'True') {
+                if (score != parseInt('@ViewBag.PreRate'))
+                    isAllow = true;
+            }
+            else {
+                isAllow = true;
+            }
+        }
+        if (isAllow)
+        {
+            $.ajax({
+                url: "/Content/Rate?contentId=" +
+                    '@Model.ContentId' + "&score=" + score + '&hasrate=' + '@ViewBag.HasRateBefore',
+            contentType: 'application/json',
+            type: 'Post',
+            dataType: 'json',
+            beforeSend: function () {
+            },
+            success: function (result) {
+                if (result.status == "Success") {
+                    //refresh rate part
+                    $("div.ratePart").html("");
+                    for (var i = 1; i <= result.like; i++) {
+                        $("div.ratePart")
+                        .append('<a href="#" role = "button" aria-expanded="false" onclick="Rate('+i+');"><i class="fas fa-star"></i></a>');
+                    }
+                    if (result.half == 'True') {
+                        $("div.ratePart")
+                            .append('<a href="#" role="button" aria-expanded="false" onclick="Rate(' + result.like + 1+');"><i class="fas fa-star-half-alt"></i></a>');
+                    }
+                    var initiali = result.half == 'True' ? result.like + 2 : result.like + 1;
+                    for (var i = initiali; i <= result.dislike; i++) {
+                        $("div.ratePart")
+                            .append('<a href="#" role="button" aria-expanded="false" onclick="Rate('+i+');"><i class="far fa-star"></i></a>');
+                    }
+                }
+            }
+            });
+        }
+   }
+
+</script>

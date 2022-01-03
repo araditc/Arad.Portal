@@ -84,15 +84,23 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
         public async Task<ContentDTO> ContentFetch(string contentId)
         {
             var result = new ContentDTO();
-            var entity = await _contentContext.Collection
+            //try
+            //{
+                var entity = await _contentContext.Collection
                 .Find(_ => _.ContentId == contentId).FirstOrDefaultAsync();
+                if(entity != null)
+                {
+                    result = _mapper.Map<ContentDTO>(entity);
+                    result.PersianStartShowDate = DateHelper.ToPersianDdate(result.StartShowDate.Value);
+                    result.PersianEndShowDate = DateHelper.ToPersianDdate(result.EndShowDate.Value);
+                }
+                
+            //}
+            //catch (Exception ex)
+            //{
 
-            if (entity != null)
-            {
-                result = _mapper.Map<ContentDTO>(entity);
-                result.PersianStartShowDate = DateHelper.ToPersianDdate(result.StartShowDate.Value);
-                result.PersianEndShowDate = DateHelper.ToPersianDdate(result.EndShowDate.Value);
-            }
+            //    throw;
+            //}
             return result;
         }
 
@@ -133,6 +141,43 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                 .Find(_ => _.ContentCode == contentCode).First();
 
             result = _mapper.Map<ContentDTO>(contentEntity);
+            var r = Helpers.Utilities.ConvertPopularityRate(contentEntity.TotalScore, contentEntity.ScoredCount);
+            result.LikeRate = r.LikeRate;
+            result.DisikeRate = r.DisikeRate;
+            result.halfLikeRate = r.halfLikeRate;
+            return result;
+        }
+
+        public async Task<Result<EntityRate>> RateContent(string contentId, int score, bool isNew, int prevScore)
+        {
+            var result = new Result<EntityRate>();
+            var entity = _contentContext.Collection.Find(_ => _.ContentId == contentId).First();
+            if (isNew)
+            {
+                entity.TotalScore += score;
+                entity.ScoredCount += 1;
+            }
+            else if (score != prevScore) //if user change the score of product
+            {
+                entity.TotalScore -= prevScore;
+                entity.TotalScore += score;
+                //scoredCount doesnt change cause this user rated before just change its score
+            }
+
+            if (score != prevScore)
+            {
+                var updateResult = await _contentContext.Collection.ReplaceOneAsync(_ => _.ContentId == contentId, entity);
+                var res = Helpers.Utilities.ConvertPopularityRate(entity.TotalScore, entity.ScoredCount);
+                if (updateResult.IsAcknowledged)
+                {
+                    result.Succeeded = true;
+                    result.ReturnValue = res;
+                }
+                else
+                {
+                    result.Succeeded = false;
+                }
+            }
             return result;
         }
 
@@ -248,11 +293,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                    {
                        ContentId = _.ContentId,
                        SeoDescription = _.SeoDescription,
-                       PopularityRate = _.PopularityRate,
+                       //PopularityRate = _.PopularityRate,
                        LanguageName = _.LanguageName,
                        LanguageId = _.LanguageId,
                        Images = _.Images,
-                       FileLogo = _.FileLogo,
+                       //FileLogo = _.FileLogo,
                        EndShowDate = _.EndShowDate,
                        ContentCategoryId = _.ContentCategoryId,
                        ContentCategoryName = _.ContentCategoryName,

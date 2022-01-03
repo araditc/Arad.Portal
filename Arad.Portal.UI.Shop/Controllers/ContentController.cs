@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Arad.Portal.UI.Shop.Controllers
@@ -26,6 +27,38 @@ namespace Arad.Portal.UI.Shop.Controllers
         {
             var entity = _contentRepository.FetchByCode(slug);
             return View(entity);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Rate([FromQuery] string contentId, [FromQuery] int score, [FromQuery] bool isNew)
+        {
+            var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+            string prevRate = "";
+            var userProductRateCookieName = $"{userId}_cc{contentId}";
+            if (!isNew)//the user has rated before
+            {
+                prevRate = HttpContext.Request.Cookies[userProductRateCookieName];
+            }
+            int preS = !string.IsNullOrWhiteSpace(prevRate) ? Convert.ToInt32(prevRate) : 0;
+
+            var res = await _contentRepository.RateContent(contentId, score,
+                    isNew, preS);
+            if (res.Succeeded)
+            {
+                //set its related cookie
+                return
+                    Json(new
+                    {
+                        status = "Succeed",
+                        like = res.ReturnValue.LikeRate,
+                        dislike = res.ReturnValue.DisikeRate,
+                        half = res.ReturnValue.halfLikeRate
+                    });
+            }
+            else
+            {
+                return Json(new { status = "error" });
+            }
         }
     }
 }

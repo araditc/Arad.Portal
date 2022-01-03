@@ -294,7 +294,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 Claims = claims,
             };
             user.DomainId.Add(domainId);
-            string pass = Utilities.GenerateRandomPassword(new() { RequireDigit = true, RequireLowercase = true, 
+            string pass = Shop.Helpers.Utilities.GenerateRandomPassword(new() { RequireDigit = true, RequireLowercase = true, 
                 RequireNonAlphanumeric = false, RequireUppercase = true, RequiredLength = 6, RequiredUniqueChars = 0 });
             IdentityResult insertResult = await _userManager.CreateAsync(user, pass);
 
@@ -389,7 +389,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 return Ok(new { Status = "Error", Message = Language.GetString("Validation_MobileNumberInvalid2") });
             }
 
-            OTP process = OtpHelper.Process(new() { Mobile = cellPhoneNumber, Code = Utilities.GenerateOtp(),
+            OTP process = OtpHelper.Process(new() { Mobile = cellPhoneNumber, Code = DataLayer.Helpers.Utilities.GenerateOtp(),
                 ExpirationDate = DateTime.Now.AddMinutes(3), IsSent = false });
 
             if (process.IsSent)
@@ -550,7 +550,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 return Ok(new { Status = "Error", Message = Language.GetString("AlertAndMessage_NotFoundUser") });
             }
 
-            string otp = Utilities.GenerateOtp();
+            string otp = DataLayer.Helpers.Utilities.GenerateOtp();
             HttpContext.Session.SetString("Otp", otp);
             HttpContext.Session.SetString("UserName", user.UserName);
             HttpContext.Session.SetString("OtpTime", DateTime.Now.ToString(CultureInfo.CurrentCulture));

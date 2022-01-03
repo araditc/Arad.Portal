@@ -43,7 +43,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         Task<Result> DeleteProduct(string productId, string modificationReason);
 
 
-        Task<Result<ProductRate>> RateProduct(string productId, int score, bool isNew, int prevScore);
+        Task<Result<EntityRate>> RateProduct(string productId, int score, bool isNew, int prevScore);
         List<Image> GetPictures(string productId);
 
         List<string> GetProductGroups(string productId);

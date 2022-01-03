@@ -956,7 +956,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     item.ValueList.Add(obj);
                 }
             }
-            var r = ConvertPopularityRate(productEntity.TotalScore, productEntity.ScoredCount);
+            var r = Helpers.Utilities.ConvertPopularityRate(productEntity.TotalScore, productEntity.ScoredCount);
             result.LikeRate = r.LikeRate;
             result.DisikeRate = r.DisikeRate;
             result.halfLikeRate = r.halfLikeRate;
@@ -964,43 +964,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         }
 
 
-        public ProductRate ConvertPopularityRate(long totalScore, int scoredCount)
-        {
-            var res = new ProductRate();
-            float[] arr = { 0.0f, 0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f };
-            //float[] intNumbers = { 0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f };
-            float[] halfNumbers = { 0.5f, 1.5f, 2.5f, 3.5f, 4.5f };
-            float popularityRate = 0;
-
-            if (scoredCount != 0)
-                popularityRate = totalScore / scoredCount;
-
-            var rounded = Math.Round(popularityRate, 1, MidpointRounding.AwayFromZero);
-            float tmp = 0;
-            bool hasHalf = false;
-            for (int i = 0; i <= 9; i++)
-            {
-                if (rounded > arr[i] && rounded <= arr[i + 1])
-                {
-                    tmp = arr[i + 1];
-                    if (halfNumbers.Contains(tmp))
-                        hasHalf = true;
-                    else
-                        hasHalf = false;
-                    break;
-                }
-            }
-            res.LikeRate = Convert.ToInt32(Math.Floor(tmp));
-
-            if (hasHalf)
-                res.DisikeRate = 5 - (Convert.ToInt32(Math.Floor(tmp)) + 1);
-            else
-                res.DisikeRate = 5 - Convert.ToInt32(Math.Floor(tmp));
-
-            res.halfLikeRate = hasHalf;
-
-            return res;
-        }
+      
 
         private List<CommentVM> CreateNestedTreeComment(List<Comment> comments, string currentUserId)
         {
@@ -1060,9 +1024,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         /// <param name="isNew">it means this is the first time which this user rate this product otherweise user rated product again</param>
         /// <param name="prevScore"></param>
         /// <returns></returns>
-        public async Task<Result<ProductRate>> RateProduct(string productId, int score, bool isNew, int prevScore)
+        public async Task<Result<EntityRate>> RateProduct(string productId, int score, bool isNew, int prevScore)
         {
-            var result = new Result<ProductRate>();
+            var result = new Result<EntityRate>();
             var entity = _context.ProductCollection.Find(_ => _.ProductId == productId).First();
             if(isNew)
             {
@@ -1079,7 +1043,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             if (score != prevScore)
             {
                 var updateResult = await _context.ProductCollection.ReplaceOneAsync(_ => _.ProductId == productId, entity);
-                var res = ConvertPopularityRate(entity.TotalScore, entity.ScoredCount);
+                var res = Helpers.Utilities.ConvertPopularityRate(entity.TotalScore, entity.ScoredCount);
                 if (updateResult.IsAcknowledged)
                 {
                     result.Succeeded = true;

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arad.Portal.DataLayer.Models.Product
+namespace Arad.Portal.DataLayer.Models.Shared
 {
-    public class ProductRate
+    public class EntityRate
     {
         public int LikeRate { get; set; }
 

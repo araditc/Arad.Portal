@@ -10,8 +10,8 @@
     {
         dir = "ltr";
     }
-    var price = Model.Prices.Any(_ => _.StartDate <= DateTime.UtcNow && _.CurrencyId == ViewBag.CurCurrencyId && _.IsActive && _.EndDate == null) ?
-                                        Model.Prices.First(_ => _.StartDate <= DateTime.UtcNow && _.CurrencyId == ViewBag.CurCurrencyId && _.IsActive && _.EndDate == null) : null;
+    var price = Model.Prices.Any(_ => _.StartDate <= DateTime.Now && _.CurrencyId == ViewBag.CurCurrencyId && _.IsActive && _.EndDate == null) ?
+                                        Model.Prices.First(_ => _.StartDate <= DateTime.Now && _.CurrencyId == ViewBag.CurCurrencyId && _.IsActive && _.EndDate == null) : null;
     var realPrice = price.PriceValue;
 }
 @section Styles

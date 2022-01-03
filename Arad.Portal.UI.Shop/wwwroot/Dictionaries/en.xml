@@ -1695,6 +1695,9 @@
 	<string key="ProductScore">
 		<value>Product Score</value>
 	</string>
+	<string key="ContentScore">
+		<value>Content Score</value>
+	</string>
 	<string key="CommentOnProduct">
 		<value>Comment On Product</value>
 	</string>

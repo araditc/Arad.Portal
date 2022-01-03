@@ -41,11 +41,11 @@ namespace Arad.Portal.DataLayer.Models.Content
         /// </summary>
         public string Contents { get; set; }
 
-        public string FileLogo { get; set; }
+        //public string FileLogo { get; set; }
 
-        public string LogoContent { get; set; }
+        //public string LogoContent { get; set; }
 
-        public string LogoName { get; set; }
+        //public string LogoName { get; set; }
 
         public long ContentCode { get; set; }
         
@@ -63,8 +63,12 @@ namespace Arad.Portal.DataLayer.Models.Content
 
         public List<string> TagKeywords { get; set; }
 
-        public int? PopularityRate { get; set; }
-
+        //public int? PopularityRate { get; set; }
+        public long TotalScore { get; set; }
+        public int ScoredCount { get; set; }
+        public int LikeRate { get; set; }
+        public bool halfLikeRate { get; set; }
+        public int DisikeRate { get; set; }
         public List<Entities.General.Comment.Comment> Comments { get; set; }
 
         public Entities.General.Content.SourceType? SourceType { get; set; }

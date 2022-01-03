@@ -45,10 +45,9 @@ namespace Arad.Portal.DataLayer.Entities.General.Content
         public string Contents { get; set; }
 
         public long ContentCode { get; set; }
-
-        // TODO: we should delete this part 
-        public string FileLogo { get; set; }
-
+        /// <summary>
+        /// Ismain = true is for fileLogo
+        /// </summary>
         public List<Models.Shared.Image> Images { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
@@ -61,7 +60,9 @@ namespace Arad.Portal.DataLayer.Entities.General.Content
 
         public List<string> TagKeywords { get; set; }
 
-        public int PopularityRate { get; set; }
+        //public int PopularityRate { get; set; }
+        public long TotalScore { get; set; }
+        public int ScoredCount { get; set; }
 
         public List<Comment.Comment> Comments { get; set; }
 

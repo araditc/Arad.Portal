@@ -81,14 +81,6 @@ namespace Arad.Portal.UI.Shop.Helpers
             return new(chars.ToArray());
         }
 
-        public static string GenerateOtp()
-        {
-            Random generator = new();
-            string generateOtp = generator.Next(0, 999999).ToString("D6");
-
-            return generateOtp;
-        }
-
         public static string Base64Encode(string plainText)
         {
             var plainTextBytes = Encoding.UTF8.GetBytes(plainText);

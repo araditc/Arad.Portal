@@ -30,8 +30,6 @@ namespace Arad.Portal.DataLayer.Models.Content
 
         public string UrlFriend { get; set; }
 
-        public string FileLogo { get; set; }
-
         public List<Shared.Image> Images { get; set; }
 
         public DateTime StartShowDate { get; set; }
@@ -46,7 +44,7 @@ namespace Arad.Portal.DataLayer.Models.Content
 
         public List<string> TagKeywords { get; set; }
 
-        public int PopularityRate { get; set; }
+        //public int PopularityRate { get; set; }
 
         public Entities.General.Content.SourceType SourceType { get; set; }
 

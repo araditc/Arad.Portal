@@ -15,6 +15,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Content
         Task<ContentDTO> ContentFetch(string contentId);
         Task<Result> Update(ContentDTO dto);
         Task<Result> Delete(string contentId, string modificationReason);
+        Task<Result<EntityRate>> RateContent(string contentId, int score, bool isNew, int prevScore);
         Task<Result> Restore(string contentId);
         List<SelectListModel> GetContentsList(string domainId, string currentUserId, string categoryId);
         List<SelectListModel> GetAllSourceType();
