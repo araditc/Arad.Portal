@@ -174,7 +174,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
         [HttpGet]
         public IActionResult ChangeLang([FromQuery] string langId)
         {
@@ -199,6 +198,57 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return Ok(false);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> ChangePassword(string id)
+        {
+            string currentUserId = User.GetUserId();
+
+            string pass = Helpers.Utilities.GenerateRandomPassword
+                (new() { RequireDigit = false, RequireLowercase = true, RequireNonAlphanumeric = true, RequireUppercase = true, 
+                    RequiredLength = 10, RequiredUniqueChars = 1 });
+
+            ApplicationUser user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            if (!user.IsSystemAccount && user.Id != user.CreatorId )
+            {
+                return Forbid();
+            }
+
+            string token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            IdentityResult result = await _userManager.ResetPasswordAsync(user, token, pass);
+            if (!result.Succeeded)
+            {
+                return Ok(new { Result = result.Succeeded });
+            }
+
+            user.Modifications.Add(new() { DateTime = DateTime.Now, 
+                ModificationReason = Language.GetString("User_ModificationPasswordByAdmin"), 
+                UserName = User.GetUserName(), UserId = currentUserId });
+
+            result = await _userManager.UpdateAsync(user);
+
+            return Ok(new { Result = result.Succeeded, Data = pass });
+        }
+
+        [HttpGet]
+        public IActionResult CreateRandomPass()
+        {
+            string pass = Helpers.Utilities.GenerateRandomPassword(new()
+            {
+                RequireDigit = false,
+                RequireLowercase = true,
+                RequireNonAlphanumeric = true,
+                RequireUppercase = true,
+                RequiredLength = 10,
+                RequiredUniqueChars = 1
+            });
+
+            return Ok(new { Status = "Success", Pass = pass });
+        }
 
         [HttpGet]
         public async Task<IActionResult> List()
@@ -479,7 +529,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return result;
         }
 
-        
         [HttpGet]
         public async Task<IActionResult> EditUser(string id)
         {

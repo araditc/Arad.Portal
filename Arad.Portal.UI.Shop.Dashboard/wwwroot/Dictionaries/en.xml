@@ -1704,7 +1704,7 @@
 		<value>Edit permissions</value>
 	</string>
 	<string key="Menu_Profile">
-		<value>Profile</value>
+		<value>User Profile</value>
 	</string>
 	<string key="Menu_Home">
 		<value>Home</value>
@@ -1953,6 +1953,27 @@
 	</string>
 	<string key="Save">
 		<value>Save</value>
+	</string>
+	<string key="AradPortalDashboard">
+		<value>Arad Portal Management System</value>
+	</string>
+		<string key="AddExtraParams">
+		<value>Add Extra Parameters</value>
+	</string>
+	<string key="ChangePassword_CurrentPassword">
+		<value>Current Password</value>
+	</string>
+	<string key="ChangePassword_NewPassword">
+		<value>New Password</value>
+	</string>
+	<string key="ChangePassword_ConfirmPassword">
+		<value>Confirm Password</value>
+	</string>
+	<string key="ChangePassword_CreatePasswordBySystem">
+		<value>Create a password by the system.</value>
+	</string>
+	<string key="ChangePassword_CreatePasswordBySystemCopy">
+		<value>Your created password: {0} Click here to copy.</value>
 	</string>
 	<!--END [Action]-->
 	<!--START [Entities]-->

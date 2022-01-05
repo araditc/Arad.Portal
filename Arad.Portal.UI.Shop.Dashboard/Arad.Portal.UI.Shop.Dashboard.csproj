@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Arad.Portal.DataLayer\Arad.Portal.DataLayer.csproj" />
+	<PackageReference Include="IdentityModel" Version="5.1.0" />
   </ItemGroup>
 
   <ItemGroup>

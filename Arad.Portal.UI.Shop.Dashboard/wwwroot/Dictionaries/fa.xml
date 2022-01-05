@@ -1742,7 +1742,7 @@
 		<value>ویرایش دسترسی ها</value>
 	</string>
 	<string key="Menu_Profile">
-		<value>پروفایل</value>
+		<value>پروفایل کاربری</value>
 	</string>
 	<string key="Menu_Home">
 		<value>خانه</value>
@@ -2000,8 +2000,26 @@
 	<string key="Save">
 		<value>ذخیره</value>
 	</string>
+	<string key="AradPortalDashboard">
+		<value>سیستم مدیریت پورتال آراد</value>
+	</string>
 	<string key="AddExtraParams">
 		<value>پارامترهای اضافه</value>
+	</string>
+	<string key="ChangePassword_CurrentPassword">
+		<value>رمز عبور جاری</value>
+	</string>
+	<string key="ChangePassword_NewPassword">
+		<value>رمز عبور جدید</value>
+	</string>
+	<string key="ChangePassword_ConfirmPassword">
+		<value>تکرار رمز عبور</value>
+	</string>
+	<string key="ChangePassword_CreatePasswordBySystem">
+		<value>ایجاد گذر واژه توسط سیستم</value>
+	</string>
+	<string key="ChangePassword_CreatePasswordBySystemCopy">
+		<value>گذر واژه ایجاد شده شما : {0} برای کپی اینجا را کلیک کنید.</value>
 	</string>
 	<!--END [Action]-->
 	<!--START [Entities]-->

@@ -1,0 +1,46 @@
+﻿@using Arad.Portal.UI.Shop.Dashboard.Helpers;
+@model OperationResult
+@{
+    Layout = null;
+}
+
+@{ bool isSuccess = Model is { Succeeded: true }; }
+
+<div class="position-fixed h-100 w-100 p-5 bg-dark" id="test" style="display: block; left: 0; top: 0; z-index: 11;">
+    <div aria-atomic="true" aria-live="assertive" class="toast" id="liveToast" role="alert">
+        <div class="toast-body alert-@(isSuccess ? "success" : "danger")">
+            <i class="@(isSuccess ? "far fa-check-circle" : "fas fa-exclamation-triangle")"></i>
+            @Model?.Message
+        </div>
+    </div>
+</div>
+
+@{
+    if (Model != null)
+    {
+        <script on-content-loaded="true">
+			$("#test").show();
+			var bsAlert = new bootstrap.Toast(document.getElementById('liveToast'));
+			bsAlert.show();
+
+			if ("@Model.Succeeded" !== "False")
+			{
+				if ("@string.IsNullOrWhiteSpace(Model.Url)" === "False")
+				{
+					setTimeout(function()
+						{
+							window.location.href = '@Model.Url';
+						},
+						2500);
+				}
+			}
+
+        </script>
+    }
+    else
+    {
+        <script on-content-loaded="true">
+            $("#test").hide();
+        </script>
+    }
+}

@@ -1,101 +1,152 @@
 ﻿<!DOCTYPE html>
 @using System.Globalization;
 @using Arad.Portal.GeneralLibrary.Utilities;
+@using Microsoft.AspNetCore.Http;
 @{
     var direction = "";
-    var bodyClass = "";
     var ulNavbarLinkClass = "";
     var bellCls = "";
     var faCls = "";
     var floatlr = "";
-    var chevron = "";
+    var langList = new List<string>() { "fa", "en" };
+    string lang = "";
+    string userName = _accessor.HttpContext?.User.GetUserName();
+
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
     {
         direction = "rtl";
+
         ViewBag.dir = "rtl";
-        bodyClass = "hold-transition sidebar-mini";
         ulNavbarLinkClass = "navbar-nav mr-auto";
         floatlr = "float-sm-left";
         bellCls = "fa fa-bell-o";
         faCls = "fa";
-        chevron = "fa fa-chevron-left";
-
     }
     else
     {
         direction = "ltr";
         ViewBag.dir = "ltr";
-        bodyClass = "hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed";
         ulNavbarLinkClass = "navbar-nav ml-auto";
         floatlr = "float-sm-right";
         bellCls = "far fa-bell";
         faCls = "fas";
-        chevron = "fa fa-chevron-right";
+    }
+
+    switch (CultureInfo.CurrentCulture.Name)
+    {
+        case "fa-IR":
+            lang = "fa";
+            break;
+        case "en-US":
+            lang = "en";
+            break;
     }
 
 }
-<html lang="en">
-<head>
+@inject IHttpContextAccessor _accessor
 
+<html dir="@direction" lang="@lang">
+<head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="Arad Portal" name="description">
     <title>@ViewData["Title"] - Arad.Portal.UI.Dashboard</title>
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/css/siteTemplate/shared/ionicons.css">
-    <!-- Theme style -->
-    <link href="~/css/siteTemplate/shared/AdminLTE/adminlte.css" rel="stylesheet" />
 
-
-    @if (direction == "rtl")
-    {
-
-        <link href="~/fonts/IranSans/css/persianfonts.css" rel="stylesheet" />
-        <link href="~/plugins/iCheck/all.css" rel="stylesheet" />
-        <link href="~/plugins/iCheck/flat/blue.css" rel="stylesheet" />
-        <link href="~/css/siteTemplate/rtl/bootstrap-rtl.min.css" rel="stylesheet" />
-        <link href="~/css/siteTemplate/rtl/custom-style.css" rel="stylesheet" />
-        <link href="~/lib/limonte-sweetalert2/sweetalert2.min.css" rel="stylesheet" />
-        <link href="~/css/persian-datepicker.min.css" rel="stylesheet" />
+    @if (direction == "ltr")
+        {
+        <link href="~/lib/bootstrap5/css/bootstrap.min.css" rel="stylesheet" />
+        @*<link href="~/plugins/icheck-bootstrap/icheck-bootstrap.css" rel="stylesheet" />*@
     }
     else
     {
-        <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="~/plugins/icheck-bootstrap/icheck-bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/bootstrap5/css/bootstrap.rtl.min.css" rel="stylesheet" />
+        <link href="~/Fonts/IranSans/css/fontiran.css" rel="stylesheet" />
+        @*<link href="~/fonts/IranSans/css/persianfonts.css" rel="stylesheet" />
+          <link href="~/plugins/iCheck/all.css" rel="stylesheet" />
+          <link href="~/plugins/iCheck/flat/blue.css" rel="stylesheet" />
+          <link href="~/css/siteTemplate/rtl/custom-style.css" rel="stylesheet" />
+          <link href="~/lib/limonte-sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+          <link href="~/css/persian-datepicker.min.css" rel="stylesheet" />*@
     }
 
+    <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
 
+    @*<link href="~/css/siteTemplate/shared/fontawesome-free/all.min.css" rel="stylesheet"/>
+          <!-- overlayScrollbars -->
+        <link rel="stylesheet" href="~/lib//overlayscrollbars/css/OverlayScrollbars.min.css" />*@
 
-    <link href="~/css/siteTemplate/shared/fontawesome-free/all.min.css" rel="stylesheet" />
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="~/lib//overlayscrollbars/css/OverlayScrollbars.min.css">
+    @await RenderSectionAsync("Styles", required: false)
 
-    @RenderSection("Styles", required: false)
-
-
-
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    @if (direction == "rtl")
-    {
-        <script src="~/js/siteTemplate/jqueryui1.11.4/jquery-ui.min.js"></script>
-        @*<script src="~/lib/iCheck/icheck.min.js"></script>*@
-    }
-
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
-
-    <script src="~/js/siteTemplate/Adminlte/adminlte.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/lib/limonte-sweetalert2/sweetalert2.all.min.js"></script>
-
-
-    <style>
-        .lanFlag {
-            cursor: pointer;
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>
+        @if (direction == "rtl")
+        {
+            <script src="~/js/siteTemplate/jqueryui1.11.4/jquery-ui.min.js"></script>
         }
-    </style>
-    @await RenderSectionAsync("Scripts", required: false);
+
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+
+        <script src="~/js/siteTemplate/Adminlte/adminlte.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/lib/limonte-sweetalert2/sweetalert2.all.min.js"></script>
+
+
+        <style>
+            .lanFlag {
+                cursor: pointer;
+            }
+        </style>
+        @await RenderSectionAsync("Scripts", required: false);*@
 </head>
-<body class="@bodyClass" dir="@direction">
+<body>
+    <header class="navbar navbar-light shadow navbar-expand flex-md-nowrap p-0 m-0">
+
+        <div class="container-fluid">
+            <div class="navbar-brand col-md-3 me-0">
+                <img alt="" class="navbar-logo" height="50" src="/images/Logo.png" width="50" />
+                Language.GetString("AradPortalDashboard")
+            </div>
+            <div class="w-100 text-center fw-semibold" dir="ltr" id="dateTime"></div>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a aria-expanded="false" class="nav-link dropdown-toggle fw-bold" data-bs-toggle="dropdown" href="#" id="navbarDropdownMenuLink" role="button">
+                            @userName
+                        </a>
+                        <ul aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" asp-action="ChangePassword" asp-controller="Account" >
+                                    <i class="fas fa-key"></i>
+                                    @Language.GetString("ChangePassword")
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-action="Profile" asp-controller="Account" >
+                                    <i class="far fa-id-badge"></i>
+                                    @Language.GetString("Menu_Profile")
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" asp-action="Logout" asp-controller="Account" >
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    @Language.GetString("Exit")
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <button aria-controls="bd-docs-nav" aria-expanded="false" aria-label="Toggle docs navigation" class="nav-link btn btn-sm btn-outline-success d-md-flex px-3 ms-3 collapsed" data-bs-target="#bd-docs-nav" data-bs-toggle="collapse" type="button">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
     <div class="wrapper">
         <!--Navbar-->
         <nav class="main-header navbar navbar-expand navbar-white">
@@ -113,7 +164,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link lanFlag" >
+                    <a class="nav-link lanFlag">
                         <img src="/imgs/IRAN.png" onclick="setLang('fa-IR')" />
                     </a>
 
@@ -121,81 +172,6 @@
                 <li class="nav-item">
                     <a class="nav-link lanFlag">
                         <img src="/imgs/USA.png" onclick="setLang('en-US')" />
-                    </a>
-                </li>
-            </ul>
-
-
-            <!-- Right navbar links -->
-            <ul class="@ulNavbarLinkClass">
-                <!-- Messages Dropdown Menu -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="far fa-comments"></i>
-                        <span class="badge badge-danger navbar-badge">3</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <a href="#" class="dropdown-item">
-                            <!-- Message Start -->
-                            <div class="media">
-                                <img src="/imgs/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        John Pierce
-                                        <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">Call me whenever you can...</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 @Language.GetString("Msg_Content_Test2")</p>
-                                </div>
-                            </div>
-                            <!-- Message End -->
-                        </a>
-                        <div class="dropdown-divider"></div>
-
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <!-- Message Start -->
-                            <div class="media">
-                                <img src="/imgs/user1-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        Nora Silvester
-                                        <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">The subject goes here</p>
-                                    <p class="text-sm text-muted">
-                                        <i class="far fa-clock mr-1"></i> 4 @Language.GetString("Msg_Content_Test2")
-                                    </p>
-                                </div>
-                            </div>
-                            <!--Message End-->
-                        </a>
-
-                        <div class="dropdown-divider">
-                        </div>
-                        <a href="#" class="dropdown-item dropdown-footer">@Language.GetString("SeeMoreMsgs")</a>
-                    </div>
-                </li>
-                <!-- Notifications Dropdown Menu -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="@bellCls"></i>
-                        <span class="badge badge-warning navbar-badge">15</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg @(direction == "rtl"? "dropdown-menu-left" : "dropdown-menu-right")">
-                        <span class="dropdown-item dropdown-header">15 @Language.GetString("Menu_Dashboard_Notification")</span>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fa-envelope @(direction == "rtl" ? "fa ml-2" : "fas mr-2")"></i> 4 @Language.GetString("Menu_Dashboard_newMesseges")
-                            <span class="@(direction == "rtl" ? "float-right" : "float-right"  ) text-muted text-sm">3 @Language.GetString("Menu_Dashboard_min")</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer"></a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
-                        <i class="@faCls fa-th-large"></i>
                     </a>
                 </li>
             </ul>
@@ -226,7 +202,7 @@
 
 
                     <!-- Sidebar Menu -->
-                   
+
                     @await Component.InvokeAsync("SidebarMenu")
 
                     <!--/.sidebar menu-->
@@ -279,7 +255,7 @@
 
     <!---------shared----------->
 
-   
+
     <script>
      $(document).ready(function () {
          $("li.nav-item.firstLevel").click(function (e) {
@@ -335,4 +311,6 @@
     </script>
 </body>
 </html>
+
+
 
