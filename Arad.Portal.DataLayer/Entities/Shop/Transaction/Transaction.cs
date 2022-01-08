@@ -126,7 +126,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
         /// <summary>
         /// واریز به شماره حساب فروشنده
         /// </summary>
-        CacheToBankAccount,
+        DepositToBankAccount,
         /// <summary>
         /// انتقال وجه کارت به کارت
         /// </summary>

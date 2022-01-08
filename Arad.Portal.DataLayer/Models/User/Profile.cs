@@ -1,4 +1,5 @@
 ﻿using Arad.Portal.DataLayer.Models.Shared;
+using Arad.Portal.GeneralLibrary.CustomAttributes;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,10 @@ namespace Arad.Portal.DataLayer.Models.User
 {
     public class Profile
     {
+        public Profile()
+        {
+            Addresses = new();
+        }
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -20,8 +25,10 @@ namespace Arad.Portal.DataLayer.Models.User
 
         public Gender Gender { get; set; }
 
+        public List<Address> Addresses { get; set; }
+
         //???
-        public string NationalId { get; set; }
+        public string NationalCode { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime BirthDate { get; set; }
@@ -57,7 +64,7 @@ namespace Arad.Portal.DataLayer.Models.User
     }
     public class BankAccount
     {
-        public string AccountId { get; set; }
+        public string AccountNumber { get; set; }
         public string AccountName { get; set; }
         public string Iban { get; set; }
         public string BankName { get; set; }
@@ -82,7 +89,9 @@ namespace Arad.Portal.DataLayer.Models.User
 
     public enum Gender
     {
-      Men,
-      Women
+        [CustomDescription("EnumDesc_Men")]
+        Male,
+        [CustomDescription("EnumDesc_Female")]
+        Female
     }
 }

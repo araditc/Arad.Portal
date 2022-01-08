@@ -77,6 +77,8 @@ using Arad.Portal.DataLayer.Contracts.Shop.Setting;
 using Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.Services;
 using Arad.Portal.DataLayer.Repositories.General.Service.Mongo;
+using Arad.Portal.DataLayer.Contracts.General.CountryParts;
+using Arad.Portal.DataLayer.Repositories.General.CountryParts.Mongo;
 
 namespace Arad.Portal.UI.Shop.Dashboard
 {
@@ -309,6 +311,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<ErrorLogContext>();
             services.AddTransient<ShippingSettingContext>();
             services.AddTransient<ProviderContext>();
+            services.AddTransient<CountryContext>();
 
             #endregion
 
@@ -343,6 +346,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<IErrorLogRepository, ErrorLogRepository>();
             services.AddTransient<IShippingSettingRepository, ShippingSettingRepository>();
             services.AddTransient<IProviderRepository, ProviderRepository>();
+            services.AddTransient<ICountryRepository, CountryRepository>();
            
 
          

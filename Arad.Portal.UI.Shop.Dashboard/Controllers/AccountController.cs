@@ -35,6 +35,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Arad.Portal.DataLayer.Helpers;
 using Arad.Portal.DataLayer.Entities.General.Error;
 using Arad.Portal.DataLayer.Contracts.General.Error;
+using AutoMapper;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -57,6 +58,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IDomainRepository _domainRepository;
         private readonly IErrorLogRepository _errorLogRepository;
         private readonly CreateNotification _createNotification;
+        private readonly IMapper _mapper;
+
         
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
@@ -73,6 +76,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ICurrencyRepository currencyRepository,
             IDomainRepository domainRepository,
             IErrorLogRepository errorLogRepository,
+            IMapper mapper,
             IMessageTemplateRepository messageTemplateRepository)
         {
             _userManager = userManager;
@@ -91,6 +95,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _domainRepository = domainRepository;
             _createNotification = createNotification;
             _errorLogRepository = errorLogRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -453,7 +458,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     var user = new ApplicationUser()
                     {
-                        Profile = new Profile()
+                        Profile = new DataLayer.Models.User.Profile()
                         {
                             FirstName = model.Name,
                             LastName = model.LastName,
@@ -902,6 +907,115 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public IActionResult UnAuthorize()
         {
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            string userId = User.GetUserId();
+            ApplicationUser user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return RedirectToAction("PageOrItemNotFound", "Account");
+            }
+
+            //await SetViewBag();
+
+            UserProfileDTO dto = _mapper.Map<UserProfileDTO>(user);
+           
+            //await SetViewBag();
+
+            return View(dto);
+        }
+
+        //private async Task SetViewBag()
+        //{
+            //List<Country> countries = await _countryRepository.GetAll();
+            //string iranCountryId = countries.Any(c => c.Iso.Equals("IR")) ? countries.First(c => c.Iso.Equals("IR")).Id : "";
+
+            //ViewBag.IranCountryId = iranCountryId;
+            //ViewBag.Countries = new SelectList(countries, "Id", "Name", iranCountryId);
+            //ViewBag.Roles = new SelectList(await _roleRepository.GetAll(), "Id", "Title");
+       // }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Profile([FromForm] UserProfileDTO model)
+        {
+            if (!ModelState.IsValid)
+            {
+                //await SetViewBag();
+                return View(model);
+            }
+
+            if (_userManager.Users.Any(_ => _.PhoneNumber == model.PhoneNumber && !_.UserName.Equals(model.UserName)))
+            {
+                ViewBag.OperationResult = new OperationResult { Message = Language.GetString("Validation_MobileNumberAlreadyRegistered"), Succeeded = false };
+                //await SetViewBag();
+                return View(model);
+            }
+
+            ApplicationUser user = await _userManager.FindByIdAsync(User.GetUserId());
+            if (user == null)
+            {
+                return RedirectToAction("PageOrItemNotFound", "Account");
+            }
+
+            //updating claims
+            List<IdentityUserClaim<string>> claims = user.Claims;
+            IdentityUserClaim<string> claim = new() { ClaimType = ClaimTypes.GivenName, ClaimValue = user.Profile.FullName };
+            IdentityUserClaim<string> foundClaim = claims.Find(c => c.ClaimType == ClaimTypes.GivenName);
+            if (foundClaim != null)
+            {
+                user.Claims.Remove(foundClaim);
+            }
+
+            string userName = user.UserName;
+            _mapper.Map(model, user);
+            user.UserName = userName;
+            model.UserName = userName;
+            user.Claims.Add(claim);
+
+            // saving image
+            string result = SaveImage(user.Id.ToString());
+            if (!string.IsNullOrWhiteSpace(result))
+            {
+                ViewBag.OperationResult = new OperationResult { Message = result, Succeeded = false };
+                //await SetViewBag();
+                return View(model);
+            }
+
+            IdentityResult updateResult = await _userManager.UpdateAsync(user);
+            ViewBag.OperationResult = new OperationResult
+            {
+                Message = Language.GetString($"AlertAndMessages_{(updateResult.Succeeded ? "OperationDoneSuccessfully" : "OperationFailed")}"),
+                Succeeded = updateResult.Succeeded,
+                Url = Url.Action("Index", "Home", new { Area = "" })
+            };
+            //await SetViewBag();
+            return View(model);
+
+            string SaveImage(string id)
+            {
+                //if (!string.IsNullOrWhiteSpace(model.FileContent) && !string.IsNullOrWhiteSpace(model.FileName) && model.FileContent != "undefined" && model.FileName != "undefined")
+                //{
+                //    UploadPicResult uploadResult = ProfilePic.UploadProfilePic(new() { FileName = model.FileName, ImageBase64 = model.FileContent, Id = id, _env = _env });
+
+                //    if (uploadResult.UploadResult)
+                //    {
+                //        user.Profile.Avatar = uploadResult.UploadedAddress;
+                //        model.ProfileDto.Avatar = uploadResult.UploadedAddress;
+                //    }
+                //    else
+                //    {
+                //        return uploadResult.ErrorMessage;
+                //    }
+                //}
+
+                return "";
+            }
         }
     }
 }

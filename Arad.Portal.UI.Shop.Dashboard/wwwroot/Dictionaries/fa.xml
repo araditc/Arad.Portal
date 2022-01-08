@@ -20,7 +20,7 @@
 		<value>آپلود</value>
 	</string>
 	<string key="PutImage">
-		<value>قراردادن عکس</value>
+		<value>قراردادن تصویر</value>
 	</string>
 	<string key="btn_Add">
 		<value>افزودن</value>
@@ -516,7 +516,7 @@
 		<value>عبارت امنیتی صحیح نیست یا منقضی شده است.</value>
 	</string>
 	<string key="AlertAndMessage_NotImageMessage">
-		<value>لطفا یک عکس انتخاب کنید.</value>
+		<value>لطفا یک تصویر انتخاب کنید.</value>
 	</string>
 	<string key="AlertAndMessage_PromotionTypeProduct">
 		<value>ابتدا طبقه بندی را محصول انتخاب کنید سپس محصول با لیست اضافه کنید.</value>
@@ -1167,7 +1167,7 @@
 		<value>آیا مطمئن هستید؟</value>
 	</string>
 	<string key="AlertAndMessage_AskForConfirmImageDeletion">
-		<value>آیا برای حذف این عکس اطمینان دارید؟</value>
+		<value>آیا برای حذف این تصویر اطمینان دارید؟</value>
 	</string>
 	<string key="AlertAndMessage_PermissionWillBeDeleted">
 		<value>دسترسی حذف خواهد شد.</value>
@@ -1399,6 +1399,9 @@
 	<string key="User_FirstName">
 		<value>نام</value>
 	</string>
+	<string key="User_FatherName">
+		<value>نام پدر</value>
+	</string>
 	<string key="User_LastName">
 		<value>نام خانوادگی</value>
 	</string>
@@ -1419,6 +1422,9 @@
 	</string>
 	<string key="User_RoleName">
 		<value>نام نقش</value>
+	</string>
+	<string key="User_BirthDate">
+		<value>تاریخ تولد</value>
 	</string>
 	<string key="ActivationState">
 		<value>وضعیت</value>
@@ -1451,7 +1457,7 @@
 		<value>تغییر نام</value>
 	</string>
 	<string key="ChooseImageForm">
-		<value>فرم انتخاب عکس</value>
+		<value>فرم انتخاب تصویر</value>
 	</string>
 	<string key="ChooseImage">
 		<value>Choose Image</value>
@@ -1893,16 +1899,22 @@
 		<value>برش</value>
 	</string>
 	<string key="ProfilePic">
-		<value>عکس پروفایل</value>
+		<value>تصویر پروفایل</value>
 	</string>
 	<string key="ChangeProfilePic">
-		<value>تغییر عکس</value>
+		<value>تغییر تصویر</value>
 	</string>
 	<string key="EditProfile">
 		<value>ویرایش پروفایل</value>
 	</string>
+	<string key="EditUserProfile">
+		<value>ویرایش پروفایل کاربری</value>
+	</string>
+	<string key="Title_BasicInfo">
+		<value>اطلاعات پایه</value>
+	</string>
 	<string key="CropImage">
-		<value>برش عکس</value>
+		<value>برش تصویر</value>
 	</string>
 	<string key="AssignNumber">
 		<value>تخصیص شماره</value>
@@ -1938,7 +1950,7 @@
 		<value>تغییر اندازه</value>
 	</string>
 	<string key="ChangeImageSize">
-		<value>تغییر اندازه عکس</value>
+		<value>تغییر اندازه تصویر</value>
 	</string>
 	<string key="Search">
 		<value>جستجو</value>
@@ -2100,7 +2112,7 @@
 		<value>سایر اطلاعات</value>
 	</string>
 	<string key="TableHeader_UserImage">
-		<value>عکس کاربر</value>
+		<value>تصویر کاربر</value>
 	</string>
 	<string key="TableHeader_Row">
 		<value>ردیف</value>
@@ -2139,5 +2151,8 @@
 		<value>وضعیت</value>
 	</string>
 	<!--END [Table headers]-->
+	<string key="ApplicationUser_Gender">
+		<value>جنسیت</value>
+	</string>
 
 </dictionary>

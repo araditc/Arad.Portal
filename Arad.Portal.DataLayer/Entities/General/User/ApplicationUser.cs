@@ -15,7 +15,6 @@ namespace Arad.Portal.DataLayer.Entities.General.User
     {
         public ApplicationUser()
         {
-            Addresses = new();
             FavoriteList = new();
             DomainId = new();
             LoginData = new();
@@ -26,7 +25,6 @@ namespace Arad.Portal.DataLayer.Entities.General.User
         public bool IsDomainAdmin { get; set; }
         public bool IsActive { get; set; }
         public Profile Profile { get; set; }
-        public List<Address> Addresses { get; set; }
         public string UserRoleId { get; set; }
         public OTP Otp { get; set; }
         public bool IsDeleted { get; set; }

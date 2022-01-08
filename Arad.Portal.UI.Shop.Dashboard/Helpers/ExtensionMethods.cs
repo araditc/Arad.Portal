@@ -36,6 +36,8 @@ using Arad.Portal.DataLayer.Contracts.General.BasicData;
 using Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.Services;
 using Arad.Portal.DataLayer.Repositories.General.Service.Mongo;
+using Arad.Portal.DataLayer.Repositories.General.CountryParts.Mongo;
+using Arad.Portal.DataLayer.Contracts.General.CountryParts;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 {
@@ -76,17 +78,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                     IsSystemAccount = true,
                     Profile = new Profile()
                     {
-                        Gender = Gender.Women,
+                        Gender = Gender.Female,
                         FatherName = "نام پدر",
                         FirstName = "ادمین",
                         LastName = "شماره یک",
                         FullName = "ادمین" + " " + "شماره یک",
                         BirthDate = new DateTime(1987, 8, 26).ToUniversalTime(),
-                        NationalId = "1292086734",
+                        NationalCode = "1292086734",
                         CompanyName = "Arad",
                         UserType = UserType.Admin
                     },
-                    Addresses = new List<Address>(),
                     CreationDate = DateTime.UtcNow
                 };
 
@@ -109,57 +110,49 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                 }
             }
 
+            //country, state, city
+            var countryRepository =
+                (CountryRepository)scope.ServiceProvider.GetService(typeof(ICountryRepository));
 
-            var roleRepository =
-                (RoleRepository)scope.ServiceProvider.GetService(typeof(IRoleRepository));
-
-            if (!roleRepository.States.AsQueryable().Any())
+            if (!countryRepository.Countries.AsQueryable().Any())
             {
-                using StreamReader r = new StreamReader(Path.Combine(applicationPath, "SeedData", "States.json"));
+                using StreamReader r = new StreamReader(Path.Combine(applicationPath, "SeedData", "Countries.json"));
                 string json = r.ReadToEnd();
-                List<State> states = JsonConvert.DeserializeObject<List<State>>(json);
+                List<DataLayer.Entities.General.Country.Country> countries = JsonConvert.DeserializeObject<List<DataLayer.Entities.General.Country.Country>>(json);
+
+                if (countries.Any())
+                {
+                    countryRepository.Countries.InsertMany(countries);
+                }
+            }
+
+            if (!countryRepository.States.AsQueryable().Any())
+            {
+                using StreamReader r = new StreamReader(Path.Combine(applicationPath, "SeedData", "Countries.json"));
+                string json = r.ReadToEnd();
+                List<DataLayer.Entities.General.State.State> states = JsonConvert.DeserializeObject<List<DataLayer.Entities.General.State.State>>(json);
 
                 if (states.Any())
                 {
-                    roleRepository.States.InsertMany(states);
+                    countryRepository.States.InsertMany(states);
                 }
             }
 
-            if (!roleRepository.Counties.AsQueryable().Any())
+            if (!countryRepository.Cities.AsQueryable().Any())
             {
-                using StreamReader r = new StreamReader(Path.Combine(applicationPath, "SeedData", "States.json"));
-                string json = r.ReadToEnd();
-                List<County> counties = JsonConvert.DeserializeObject<List<County>>(json);
-
-                if (counties.Any())
-                {
-                    roleRepository.Counties.InsertMany(counties);
-                }
-            }
-
-            if (!roleRepository.Districts.AsQueryable().Any())
-            {
-                using StreamReader r = new StreamReader(Path.Combine(applicationPath, "SeedData", "States.json"));
-                string json = r.ReadToEnd();
-                List<District> districts = JsonConvert.DeserializeObject<List<District>>(json);
-
-                if (districts.Any())
-                {
-                    roleRepository.Districts.InsertMany(districts);
-                }
-            }
-
-            if (!roleRepository.Cities.AsQueryable().Any())
-            {
-                using StreamReader r = new StreamReader(Path.Combine(applicationPath, "SeedData", "States.json"));
+                using StreamReader r = new StreamReader(Path.Combine(applicationPath, "SeedData", "Countries.json"));
                 string json = r.ReadToEnd();
                 List<City> cities = JsonConvert.DeserializeObject<List<City>>(json);
 
                 if (cities.Any())
                 {
-                    roleRepository.Cities.InsertMany(cities);
+                    countryRepository.Cities.InsertMany(cities);
                 }
             }
+
+
+            var roleRepository =
+               (RoleRepository)scope.ServiceProvider.GetService(typeof(IRoleRepository));
 
             //Role
             if (!roleRepository.HasAny())

@@ -1,0 +1,605 @@
+﻿@model Arad.Portal.DataLayer.Models.User.UserProfileDTO
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles
+{
+	<link href="~/lib/intl-tel-input/css/intlTelInput.css" rel="stylesheet" />
+	<link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
+	<link href="~/css/UploadAvatar.css" rel="stylesheet" />
+
+	@if (CultureInfo.CurrentCulture.Name == "fa-IR")
+	{
+		<link href="~/lib/datePicker/kamadatepicker.css" rel="stylesheet" />
+	}
+
+	<style>
+		.iti--separate-dial-code { width: 100% }
+
+		#bd-root-userBirthDate { width: 100% }
+
+		#bd-root-firmEstablishDate { width: 100% }
+
+		#bd-root-ceoBirthDate { width: 100% }
+	</style>
+}
+
+<div aria-hidden="true" aria-labelledby="uploadModalLabel" class="modal fade" id="uploadModal" tabindex="-1">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<div class="modal-header bg-light">
+                <h5 class="modal-title" id="uploadModalLabel">
+                    @Language.GetString("CropImage")
+                </h5>
+				<button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row justify-content-center align-items-center" id="rowContainer">
+					<div id="container" style="display: inline; height: 400px; max-width: 100%; position: relative; width: 400px;">
+						<img alt="your image" class="img-fluid" hidden="hidden" id="blah" onchange="getURL(this)" src="#"
+							 style="border: 1px solid black; height: 356px; max-width: 100%; width: 356px;" />
+					</div>
+				</div>
+			</div>
+            <div class="modal-footer">
+                <button class="btn btn-success" id="send_pic" type="button">
+                    @Language.GetString("btn_Approve")
+                </button>
+                <button class="btn btn-primary" id="crop_button">
+                    @Language.GetString("btn_Crop")
+                </button>
+                <button class="btn btn-default" style="background-color: crimson;color: white;border: 1px solid crimson" onclick="rotatePic()">
+                    <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i>@Language.GetString("btn_Rotate")
+                </button>
+            </div>
+		</div>
+	</div>
+</div>
+
+<div class="card pb-0 rounded-3 shadow-sm">
+	<div class="card-header py-2 bg-secondary bg-gradient bg-opacity-10">
+		<p class="my-0 fw-bold col fs-5">
+			<i class="fa fa-user fs-3"></i>
+		    @Language.GetString("EditUserProfile")
+		</p>
+	</div>
+
+	<div class="card-body px-4 ">
+
+		<form asp-action="Profile" class="row g-3 p-2" id="upsertForm" method="post">
+			
+			<input asp-for="UserID" type="hidden" value="@Model.UserID" />
+
+			@*<input asp-for="IranCountryId" type="hidden" value="@ViewBag.IranCountryId" />*@
+
+			<input asp-for="FileContent" id="fileContent" type="hidden" value="@Model.FileContent" />
+
+			<input asp-for="FileName" id="fileName" type="hidden" value="@Model.FileName" />
+			
+
+			<div class="row">
+				<div class="col-md-3">
+					<div class="card" style="height: 315px !important">
+						<div class="card-header bg-primary bg-gradient bg-opacity-10">
+							@Language.GetString("ProfilePic")
+						</div>
+						<div class="card-body">
+                            <div class="text-center">
+                                <img id="groupImage" onclick="ViewImage('@Model.ProfilePhoto.Url')" style="cursor: pointer"
+									 imgid="@(!string.IsNullOrWhiteSpace(@Model.ProfilePhoto.ImageId) ? @Model.ProfilePhoto.ImageId : "-1")"
+                                     class="img-fluid rounded-circle" src="@(!string.IsNullOrWhiteSpace(@Model.ProfilePhoto.Content) ? @Model.ProfilePhoto.Content : "/imgs/NoImage.png")" alt="user Image">
+                            </div>
+							<div class="text-center pt-4">
+                                <label for="image" style="cursor: pointer;">
+                                    @Language.GetString("ChangeImage")
+                                </label>
+								<input accept="image/x-png,image/jpeg" id="image" name="image" onchange="getURL(this)" style="opacity: 0; 
+                                       position: absolute; z-index: -1;" type="file">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-9">
+					<div class="card">
+						<div class="card-header bg-primary bg-gradient bg-opacity-10">
+							@Language.GetString("Title_BasicInfo")
+						</div>
+						<div class="card-body">
+							<div class="row  g-3">
+
+								<div class="col-md-4">
+									<label asp-for="@Model.Gender" class="form-label">
+										<span class="text-danger pe-1">*</span>@Language.GetString("ApplicationUser_Gender")
+									</label>
+									<select asp-for="@Model.Gender" class="form-select">
+                                        <option selected="@(Model.Gender == Arad.Portal.DataLayer.Models.User.Gender.Male ? null : "selected")" value="@Model.Gender">
+                                            @Arad.Portal.DataLayer.Models.User.Gender.Male.GetDescription()
+                                        </option>
+                                        <option selected="@(Model.Gender == Arad.Portal.DataLayer.Models.User.Gender.Female ? null : "selected")" value="@Model.Gender">
+                                            @Arad.Portal.DataLayer.Models.User.Gender.Female.GetDescription()
+                                        </option>
+									</select>
+								</div>
+
+								<div class="col-md-4">
+									<label asp-for="@Model.FirstName" class="form-label">
+										<span class="text-danger pe-1">*</span>@Language.GetString("User_FirstName")
+									</label>
+									<input asp-for="@Model.FirstName" class="form-control" type="text" value="@Model.FirstName" />
+									<span asp-validation-for="@Model.FirstName" class="text-danger form-validation-alert">
+									</span>
+								</div>
+
+								<div class="col-md-4">
+									<label asp-for="@Model.LastName" class="form-label">
+										<span class="text-danger pe-1">*</span>@Language.GetString("User_LastName")
+									</label>
+									<input asp-for="@Model.LastName" class="form-control" type="text" value="@Model.LastName" />
+									<span asp-validation-for="@Model.LastName" class="text-danger form-validation-alert">
+									</span>
+								</div>
+
+								<div class="col-md-4">
+									<label asp-for="@Model.FatherName" class="form-label">
+										@Language.GetString("User_FatherName")
+									</label>
+									<input asp-for="@Model.FatherName" class="form-control" type="text" value="@Model.FatherName" />
+								</div>
+
+								<div class="col-md-4">
+									<label asp-for="@Model.NationalCode" class="form-label">
+										<span class="text-danger pe-1">*</span>@Language.GetString("User_NationalCode")
+									</label>
+									<input asp-for="@Model.NationalCode" class="form-control" type="text" value="@Model.NationalCode" />
+									<span asp-validation-for="@Model.NationalCode" class="text-danger form-validation-alert">
+									</span>
+								</div>
+
+								@*<div class="col-md-4">
+									<label asp-for="" class="form-label">
+										@Language.GetString("")
+									</label>
+									<input asp-for="" class="form-control" type="text" value="" />
+								</div>*@
+
+								<div class="col-md-4">
+									<label class="form-label" for="userBirthDate">
+										@Language.GetString("User_BirthDate")
+									</label>
+									<div class="input-group flex-nowrap">
+										<span class="input-group-text">
+											<i class="fa fa-calendar"></i>
+										</span>
+										<input asp-for="@Model.BirthDate" autocomplete="off" class=" form-control" id="userBirthDate" type="text" value="@Model.BirthDate" />
+									</div>
+									<span asp-validation-for="@Model.BirthDate" class="text-danger form-validation-alert">
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row pt-2">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-header bg-primary bg-gradient bg-opacity-10">
+							@GetString("User_UserInfo")
+						</div>
+						<div class="card-body">
+							<div class="row">
+								<div class="col-md-4">
+									<label asp-for="UserName" class="form-label">
+										<span class="text-danger pe-1">*</span>@GetString("User_Username")
+									</label>
+									<input asp-for="UserName" autocomplete="off" class="form-control" dir="ltr" disabled="@(Model.IsEditView ? "disabled" : null)" type="text" value="@Model.UserName" />
+									<span asp-validation-for="UserName" class="text-danger form-validation-alert">
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row pt-2">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-header bg-primary bg-gradient bg-opacity-10">
+							@GetString("User_AddressInfo")
+						</div>
+						<div class="card-body">
+							<div class="row g-3">
+								<div class="col-md-4">
+									<label asp-for="AddressDto.CountryId" class="form-label">
+										<span class="text-danger pe-1">*</span>@GetString("Address_Country")
+									</label>
+									<select asp-for="AddressDto.CountryId" asp-items="ViewBag.Countries" class="form-select" id="countrySelector">
+									</select>
+									<span asp-validation-for="AddressDto.CountryId" class="text-danger form-validation-alert">
+									</span>
+								</div>
+								<div class="col-md-4">
+									<label asp-for="AddressDto.StateId" class="form-label">
+										<span class="text-danger pe-1">*</span>@GetString("Address_State")
+									</label>
+									<select asp-for="AddressDto.StateId" class="form-select" id="stateSelector">
+									</select>
+									<span asp-validation-for="AddressDto.StateId" class="text-danger form-validation-alert">
+									</span>
+								</div>
+								<div class="col-md-4">
+									<label asp-for="AddressDto.CityId" class="form-label">
+										<span class="text-danger pe-1">*</span>@GetString("Address_City")
+									</label>
+									<select asp-for="AddressDto.CityId" class="form-select" id="selectCity">
+									</select>
+									<span asp-validation-for="AddressDto.CityId" class="text-danger form-validation-alert">
+									</span>
+								</div>
+								<div class="col-md-4">
+									<label asp-for="AddressDto.MainAddress" class="form-label">
+										<span class="text-danger pe-1">*</span>@GetString("Address_Address")
+									</label>
+									<textarea asp-for="AddressDto.MainAddress" class="form-control" dir="rtl" rows="1"></textarea>
+									<span asp-validation-for="AddressDto.MainAddress" class="text-danger form-validation-alert">
+									</span>
+								</div>
+
+								<div class="col-md-4">
+									<label asp-for="AddressDto.PostalCode" class="form-label">
+										<span class="text-danger pe-1">*</span>@GetString("Address_PostalCode")
+									</label>
+									<input asp-for="AddressDto.PostalCode" class="form-control" type="text" value="@Model.AddressDto.PostalCode" />
+									<span asp-validation-for="AddressDto.PostalCode" class="text-danger form-validation-alert">
+									</span>
+								</div>
+
+								<div class="col-md-4">
+									<label asp-for="PhoneNumber" class="form-label">
+										@GetString("User_PhoneNumber")
+									</label>
+									<div>
+										<input asp-for="PhoneNumber" class="form-control" dir="ltr" id="FixedPhone" type="tel" value="@Model.PhoneNumber" />
+									</div>
+									<span asp-validation-for="PhoneNumber" class="text-danger form-validation-alert">
+									</span>
+
+								</div>
+								<div class="col-md-4">
+									<label asp-for="CellPhoneNumber" class="form-label">
+										<span class="text-danger pe-1">*</span>@GetString("User_CellPhone")
+									</label>
+									<div>
+										<input asp-for="CellPhoneNumber" class="form-control" dir="ltr" id="CellPhone" type="tel" value="@Model.CellPhoneNumber" />
+									</div>
+									<span asp-validation-for="CellPhoneNumber" class="text-danger form-validation-alert">
+									</span>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-12 text-end p-2">
+				<button class="btn btn-success btn-sm pe-3" type="submit">
+					<i class="far fa-save px-1 mt-1">
+					</i>@GetString("Action_Save")
+				</button>
+				<a asp-action="index" asp-controller="Home" asp-area="" class="btn btn-light border border-1 btn-sm">
+					<i class="far fa-share-square px-1 mt-1"></i>
+					@GetString("Action_Return")
+				</a>
+			</div>
+		</form>
+	</div>
+</div>
+
+@await Component.InvokeAsync("Notification", ViewBag.OperationResult)
+
+<div class="position-fixed bottom-0 start-0 p-5" style="z-index: 11">
+	<div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
+		<div class="toast-body alert-danger" id="notificationToastBody">
+		</div>
+	</div>
+</div>
+
+@section scripts
+{
+	<script src="~/lib/intl-tel-input/js/intlTelInput.js"></script>
+	<script src="~/lib/intl-tel-input/js/utils.js"></script>
+	<script src="~/lib/cropperjs/cropper.js"></script>
+
+	@if (CultureInfo.CurrentCulture.Name == "fa-IR")
+	{
+		<script src="~/lib/datePicker/kamadatepicker.min.js"></script>
+		<script>
+			kamaDatepicker('userBirthDate',
+				{ buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+
+			kamaDatepicker('ceoBirthDate',
+				{ buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+
+			kamaDatepicker('firmEstablishDate',
+				{ buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+		</script>
+	}
+	else
+	{
+		<script>
+			$("#userBirthDate").datepicker();
+			$("#ceoBirthDate").datepicker();
+			$("#firmEstablishDate").datepicker();
+		</script>
+	}
+
+	<script>
+
+		$("#userTypeSelector")
+			.change(function()
+			{
+				const selectedValue = $("#userTypeSelector").val();
+				if (selectedValue === "true")
+				{
+					$("#legalInfoDiv").css("display", "block");
+				}
+				else
+				{
+					$("#legalInfoDiv").css("display", "none");
+				}
+			});
+
+		var cropper;
+		var currentFileSize;
+		var currentFileName;
+
+		$('#uploadModal')
+			.on('hidden.bs.modal',
+				function()
+				{
+					cropper.destroy();
+					document.getElementById("image").value = "";
+					$("#cropped_result").remove();
+				});
+
+		$("#send_pic")
+			.click(function()
+			{
+				debugger;
+				$("#uploadModal").modal("hide");
+				const url = $("#dada").attr("src");
+				$("#userPic").attr('src', url);
+				$("#fileContent").val(url);
+				$("#fileName").val(currentFileName);
+			});
+
+		function upRiseModal()
+		{
+			$("#send_pic").attr("disabled", true);
+			$("#uploadModal").modal("show");
+		}
+
+		function initCropper()
+		{
+			const image = document.getElementById('blah');
+			if (cropper !== null && cropper !== undefined)
+			{
+				cropper.destroy();
+			}
+
+			cropper = new Cropper(image,
+				{
+					background: true,
+					aspectRatio: 1,
+					viewMode: 2,
+					responsive: true
+				});
+
+			document.getElementById('crop_button')
+				.addEventListener('click',
+					function()
+					{
+						const imgUrl = cropper.getCroppedCanvas().toDataURL('image/jpeg');
+						const img = document.createElement("img");
+						img.setAttribute("id", "dada");
+						img.setAttribute("class", "img-fluid");
+						const height = document.getElementById("container").getAttribute("width");
+						const croppedContainer = document.createElement("div");
+						croppedContainer.setAttribute("id", "cropped_result");
+						croppedContainer.setAttribute("style", `max-width:100%; max-height:100%; width: 400px; height:${height}; border: none`);
+						document.getElementById("rowContainer").appendChild(croppedContainer);
+						img.setAttribute("style", `max-width:100%;max-height:100%;width: 400px;height: ${height};position: relative;left: 0px;border: 1px solid black`);
+						img.src = imgUrl;
+						document.getElementById("cropped_result").innerHTML = "";
+						document.getElementById("cropped_result").appendChild(img);
+						$("#send_pic").attr("disabled", false);
+					});
+		}
+
+		function getURL(input)
+		{
+			$("#cropped_result").remove();
+			if (input.files && input.files[0])
+			{
+				const file = input.files[0];
+				currentFileName = file.name;
+				currentFileSize = file.size;
+
+				if (currentFileSize <= 500 * 1024)
+				{
+					const reader = new FileReader();
+					reader.readAsDataURL(input.files[0]);
+					reader.onload = function(e)
+					{
+						const content = e.target.result;
+						const reducedContent = content.slice(5);
+
+						if (content === "data:" || !reducedContent.startsWith("image"))
+						{
+							ShowError('@GetString("AlertAndMessages_CheckTheInputDataFormat")');
+						}
+						else
+						{
+							$('#blah').attr('src', content);
+							setTimeout(upRiseModal, 100);
+							setTimeout(initCropper, 500);
+						}
+					};
+				}
+				else
+				{
+					ShowError('@GetString("AlertAndMessages_FileSizeIsMoreThan500KB")');
+				}
+			}
+		}
+
+		function ShowError(message)
+		{
+			const bsAlert = new bootstrap.Toast(document.getElementById('notificationToast'));
+			document.getElementById('notificationToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+			document.getElementById('notificationToastBody').classList.add('alert-danger');
+			bsAlert.show();
+
+			document.getElementById("image").value = "";
+			$("#cropped_result").remove();
+		}
+
+		var cell = document.querySelector("#CellPhone");
+		var fPhone = document.querySelector("#FixedPhone");
+
+		var cellPhoneInit = window.intlTelInput(cell,
+			{
+				initialCountry: "IR",
+				localizedCountries: "fa",
+				placeholderNumberType: "MOBILE",
+				separateDialCode: true,
+				nationalMode: true,
+				hiddenInput: "FullCellPhoneNumber"
+			});
+
+		var fixedPhoneInit = window.intlTelInput(fPhone,
+			{
+				initialCountry: "IR",
+				placeholderNumberType: "FIXED_LINE",
+				separateDialCode: true,
+				nationalMode: true,
+				hiddenInput: "FullPhoneNumber"
+			});
+
+		$(document)
+			.ready(function()
+			{
+				if ('@Model.IsEditView' !== 'True' && $("#fileContent").val() !== "")
+				{
+					$("#userPic").attr('src', $("#fileContent").val());
+				}
+
+				$("#CellPhone")
+					.change(
+						function()
+						{
+							$("#cellPhoneNumberIso").val(cellPhoneInit.selectedCountryData.iso2);
+						});
+
+				$("#FixedPhone")
+					.change(
+						function()
+						{
+							$("#phoneNumberIso").val(fixedPhoneInit.selectedCountryData.iso2);
+						});
+
+				$("#countrySelector").change();
+			});
+
+		$("#countrySelector")
+			.on('change',
+				function()
+				{
+					const countryId = $(this).find(":selected").val();
+
+					$.ajax({
+						type: 'Get',
+						url: `@Url.Action("GetStateByCountryId", "Country", new { Area = "Common" })?countryId=${countryId}`,
+						beforeSend: function()
+						{
+							$("#loading").addClass('is-active');
+						},
+						statusCode: {
+							200: function(resultData)
+							{
+								emptyDropDown("#stateSelector");
+								emptyDropDown("#selectCity");
+								const selectedValue = '@Model.AddressDto.StateId';
+								PopulateDropDown("#stateSelector", resultData, selectedValue);
+								$("#stateSelector").change();
+								$("#loading").removeClass('is-active');
+							},
+							401: function()
+							{
+								$("#loading").removeClass('is-active');
+							}
+						}
+					});
+				});
+
+		$("#stateSelector")
+			.on('change',
+				function()
+				{
+					const stateId = $(this).find(":selected").val();
+
+					$.ajax({
+						type: 'Get',
+						url: `@Url.Action("GetCityByStateId", "Country", new { Area = "Common" })?stateId=${stateId}`,
+						beforeSend: function()
+						{
+							$("#loading").addClass('is-active');
+						},
+						statusCode: {
+							200: function(resultData)
+							{
+								emptyDropDown("#selectCity");
+								//const selectedValue = '@Model.AddressDto.CityId';
+								PopulateDropDown("#selectCity", resultData, selectedValue);
+								$("#loading").removeClass('is-active');
+							},
+							401: function()
+							{
+								$("#loading").removeClass('is-active');
+							}
+						}
+					});
+				});
+
+		function emptyDropDown(dropDownId)
+		{
+			$(dropDownId).empty();
+			$(dropDownId).append("<option value='-4'>@Language.GetString("Common_SelectDefaultValueForm")</option>");
+		}
+
+		function PopulateDropDown(dropDownId, list, selectedValue)
+		{
+			$(dropDownId).empty();
+
+			$.each(list,
+				function(index, row)
+				{
+					if (row.value === selectedValue)
+					{
+						$(dropDownId).append(`<option value='${row.value}' selected='selected'>${row.text}</option>`);
+					}
+					else
+					{
+						$(dropDownId).append(`<option value='${row.value}'>${row.text}</option>`);
+					}
+				});
+		}
+
+	</script>
+
+}

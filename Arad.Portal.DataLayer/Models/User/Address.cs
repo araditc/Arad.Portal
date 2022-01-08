@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,43 +12,29 @@ namespace Arad.Portal.DataLayer.Models.User
     public class Address
     {
         public string Id { get; set; }
-        public bool IsMainAddress { get; set; }
+        public AddressType AddressType { get; set; }
+        public bool IsMain { get; set; }
+        public string CountryId { get; set; }
+        public string CountryName { get; set; }
 
-        public string Province { get; set; }
-
+        [DisplayName("استان")]
+        public string ProvinceId { get; set; }
         public string ProvinceName { get; set; }
 
-        [CustomErrorMessage("AlertAndMessage_SelectCity")]
-        public string TownShip { get; set; }
+        [DisplayName("شهر")]
+        public string CityId { get; set; }
+        public string CityName { get; set; }
 
-        public string TownShipName { get; set; }
+        public string Address1 { get; set; }
 
-        [CustomErrorMessage("AlertAndMessage_RequiredErrorMessage")]
+        public string Address2 { get; set; }
+
+        [DisplayName("کد پستی")]/*ZipCode*/
         public string PostalCode { get; set; }
-
-        public string Street { get; set; }
-
-        public string Street2 { get; set; }
-
-        public string HousePhoneNumber { get; set; }
        
-        //[Range(1, int.MaxValue, ErrorMessage = "لطفا شماره پلاک معتبر وارد نمایید.")]
-        public int? Plaque { get; set; }
-
-        public string Floor { get; set; }
-        /// <summary>
-        /// واحد
-        /// </summary>
-        public string SideFloor { get; set; }
-
-        public string BuildingName { get; set; }
-
-        public string Description { get; set; }
-
-        public AddressType AddressType { get; set; }
     }
     /// <summary>
-    /// بهتر است به جای enum یک آبجکت از دیتابیس باشه
+    /// TODO : بهتر است به جای enum یک آبجکت از دیتابیس باشه
     /// </summary>
     public enum AddressType
     {

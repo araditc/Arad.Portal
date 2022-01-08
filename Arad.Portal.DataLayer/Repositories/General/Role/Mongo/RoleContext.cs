@@ -24,15 +24,6 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
             Collection = db.GetCollection<Entities.General.Role.Role>("Role");
             BsonCollection = db.GetCollection<BsonDocument>("Role");
         }
-
-        public IMongoCollection<State> States => db.GetCollection<State>("States");
-        public IMongoCollection<BsonDocument> BsonStates => db.GetCollection<BsonDocument>("States");
-        public IMongoCollection<City> Cities => db.GetCollection<City>("Cities");
-        public IMongoCollection<BsonDocument> BsonCities => db.GetCollection<BsonDocument>("Cities");
-        public IMongoCollection<District> Districts => db.GetCollection<District>("Districts");
-        public IMongoCollection<BsonDocument> BsonDistricts => db.GetCollection<BsonDocument>("Districts");
-        public IMongoCollection<County> Counties => db.GetCollection<County>("Counties");
-        public IMongoCollection<BsonDocument> BsonCounties => db.GetCollection<BsonDocument>("Counties");
     }
 
 }

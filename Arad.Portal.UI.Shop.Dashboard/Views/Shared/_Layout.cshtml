@@ -103,11 +103,10 @@
 </head>
 <body>
     <header class="navbar navbar-light shadow navbar-expand flex-md-nowrap p-0 m-0">
-
         <div class="container-fluid">
             <div class="navbar-brand col-md-3 me-0">
                 <img alt="" class="navbar-logo" height="50" src="/images/Logo.png" width="50" />
-                Language.GetString("AradPortalDashboard")
+                @Language.GetString("Menu_Dashboard_HomeTitle")
             </div>
             <div class="w-100 text-center fw-semibold" dir="ltr" id="dateTime"></div>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -130,10 +129,21 @@
                                 </a>
                             </li>
                             <li><hr class="dropdown-divider"></li>
+                            <li class="nav-item">
+                                <a class="nav-link lanFlag">
+                                    <img src="/imgs/IRAN.png" onclick="setLang('fa-IR')" />
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link lanFlag">
+                                    <img src="/imgs/USA.png" onclick="setLang('en-US')" />
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
                             <li>
                                 <a class="dropdown-item" asp-action="Logout" asp-controller="Account" >
                                     <i class="fas fa-sign-out-alt"></i>
-                                    @Language.GetString("Exit")
+                                    @Language.GetString("Action_Exit")
                                 </a>
                             </li>
                         </ul>
@@ -147,150 +157,111 @@
             </div>
         </div>
     </header>
-    <div class="wrapper">
-        <!--Navbar-->
-        <nav class="main-header navbar navbar-expand navbar-white">
-            <!-- Left navbar links -->
-            <ul class="navbar-nav">
 
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
-                </li>
+    <div class="container-fluid mt-2">
+        <div class="row h-100">
+            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar shadow collapse shadow-lg" id="bd-docs-nav">
+                @await Component.InvokeAsync("SidebarMenu")
+            </nav>
 
-                <li class="nav-item dropdown">
-                    <a style="position: relative;top: 4px;" asp-action="Logout" asp-controller="Account" class="dropdown-item">
-                        <i class="fa fa-sign-out ml-2"></i>
-                        <span style="position: relative;left: 20%;">@Language.GetString("btn_Exit")</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link lanFlag">
-                        <img src="/imgs/IRAN.png" onclick="setLang('fa-IR')" />
-                    </a>
-
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link lanFlag">
-                        <img src="/imgs/USA.png" onclick="setLang('en-US')" />
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        <!--/navbar-->
-        <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <!-- Brand Logo -->
-            <a href="#" class="brand-link">
-                <img src="/imgs/Logo.png" alt="Arad Group" class="brand-image img-circle elevation-3"
-                     style="opacity: .8">
-                <span class="brand-text font-weight-light">@Language.GetString("CompanyName")</span>
-            </a>
-
-            <!-- Sidebar -->
-            <div class="sidebar" style="@(direction == "rtl" ? "direction :ltr;" : ""  )">
-                <div style="@(direction == "rtl" ? "direction :rtl;" : "")">
-
-                    <!-- Sidebar user panel(optional) -->
-                    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                        <div class="image">
-                            <img src="/imgs/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-                        </div>
-                        <div class="info">
-                            <a href="#" class="d-block">Alexander Pierce</a>
-                        </div>
-                    </div>
-
-
-                    <!-- Sidebar Menu -->
-
-                    @await Component.InvokeAsync("SidebarMenu")
-
-                    <!--/.sidebar menu-->
-                </div>
-            </div>
-            <!--/.sidebars-->
-        </aside>
-
-        <!-- Content Wrapper.Contains page content -->
-        <div class="content-wrapper">
-            <!-- Content Header(Page header) -->
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">@*@Language.GetString("Menu_Dashboard")*@</h1>
-                        </div><!-- /.col -->
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb @floatlr">
-                                <li class="breadcrumb-item"><a href="#">@Language.GetString("Menu_Dashboardv1")</a></li>
-                                <li class="breadcrumb-item active">@Language.GetString("Menu_Home")</li>
-                            </ol>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-                </div>
-            </div>
-            <!-- /.content-header -->
-            <!-- Main content -->
-            @*<section class="content">*@
-            <div class="container-fluid">
-                <section class="container wrapper">
-                    @RenderBody()
-                </section>
-            </div>
-            @*</section>*@
-            <!-- /.content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-2" id="mainContent">
+                @RenderBody()
+            </main>
         </div>
-        <!--/.content wrapper-->
-
-        <footer class="main-footer">
-            <strong>Copyright &copy; 2021 <a href="http://arad-itc.com">Arad.Portal.UI.Shop</a>.</strong>
-            All rights reserved.
-            <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> 1.0.0
-            </div>
-        </footer>
-
     </div>
 
 
-    <!---------shared----------->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 
+<script>
+    $(document).ready(function () {
 
-    <script>
-     $(document).ready(function () {
-         $("li.nav-item.firstLevel").click(function (e) {
+        adjustSidebar();
+        $("li.nav-item.firstLevel").click(function (e) {
 
-             debugger;
-          var liID = $(this).attr("id");
-          var siblings = $(this).parent().children();
-          for (var i = 0; i < siblings.length; i++) {
-              debugger;
-              var id = $(siblings[i]).attr("id");
-              if (liID == id)
-                  continue;
-              if ($(siblings[i]).hasClass("menu-open")) {
-                  $(siblings[i]).removeClass("menu-open");
-                  debugger;
-                  var ul = $(siblings[i]).children("ul");
-                  $(ul).css("display", "none");
-              }
-          }
-          });
-     });
-
-    function setLang(lang) {
-    var currentCulture = '@CultureInfo.CurrentCulture.Name';
-    if (currentCulture !== lang) {
-        $.ajax({
-            type: "GET",
-            url: '/Account/changeLang?langId=' + lang,
-            success: function () {
+            debugger;
+            var liID = $(this).attr("id");
+            var siblings = $(this).parent().children();
+            for (var i = 0; i < siblings.length; i++) {
                 debugger;
-                window.location.reload();
-
+                var id = $(siblings[i]).attr("id");
+                if (liID == id)
+                    continue;
+                if ($(siblings[i]).hasClass("menu-open")) {
+                    $(siblings[i]).removeClass("menu-open");
+                    debugger;
+                    var ul = $(siblings[i]).children("ul");
+                    $(ul).css("display", "none");
+                }
             }
         });
-    }
+    });
+	
+
+	window.addEventListener('resize', adjustSidebar);
+	window.addEventListener('load',
+		() =>
+		{
+			setInterval(function()
+				{
+					const dateTime = new Date();
+					const date = dateTime.toLocaleDateString('@CultureInfo.CurrentCulture.Name') + ' <br/> ' + dateTime.toLocaleTimeString('@CultureInfo.CurrentCulture.Name');
+					$("#dateTime").html(date);
+				},
+				1000);
+		});
+	function adjustSidebar()
+	{
+		var side;
+		side = document.getElementById('bd-docs-nav');
+		if (window.innerWidth >= 576)
+		{
+			if (!side.classList.contains("show"))
+			{
+				side.classList.add('show');
+			}
+		}
+		else
+		{
+			side = document.getElementById('bd-docs-nav');
+			if (side.classList.contains("show"))
+			{
+				side.classList.remove("show");
+			}
+		}
+	}
+	function GetDecoded(stringInput)
+	{
+		var map = { "gt": ">", "&quot;": "\"", "lt": "<", "quot": "\"" /* , … */ };
+		return stringInput.replace(/&(#(?:x[0-9a-f]+|\d+)|[a-z]+);?/gi,
+			function($0, $1)
+			{
+				if ($1[0] === "#")
+				{
+					return String.fromCharCode($1[1].toLowerCase() === "x" ? parseInt($1.substr(2), 16) : parseInt($1.substr(1), 10));
+				}
+				else
+				{
+					return map.hasOwnProperty($1) ? map[$1] : $0;
+				}
+			});
+	};
+    function setLang(lang) {
+        var currentCulture = '@CultureInfo.CurrentCulture.Name';
+        if (currentCulture !== lang) {
+            $.ajax({
+                type: "GET",
+                url: '/Account/changeLang?langId=' + lang,
+                success: function () {
+                    debugger;
+                    window.location.reload();
+
+                }
+            });
+        }
     }
     function getLoadingClass() {
             if ("@direction" == "rtl") {
@@ -299,7 +270,7 @@
                 cls = "fas fa-2x fa-sync-alt";
         }
         return cls;
-        }
+    }
     function AddLoading(cardElement) {
         var cls = getLoadingClass();
         $(cardElement).append("<div class='overlay'>" +
@@ -308,7 +279,8 @@
     function removeLoading(cardElement) {
         $(cardElement).find(".overlay").remove();
     }
-    </script>
+</script>
+
 </body>
 </html>
 

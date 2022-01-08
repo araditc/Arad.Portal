@@ -11,13 +11,17 @@ namespace Arad.Portal.DataLayer.Entities.General.State
     {
         public State()
         {
-            Counties = new();
+            Cities = new();
         }
         [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string Id { get; set; }
 
         public string Name { get; set; }
 
-        public List<County.County> Counties { get; set; }
+        public string CountryId { get; set; }
+
+        public string CountryName { get; set; }
+
+        public List<City.City> Cities { get; set; }
     }
 }

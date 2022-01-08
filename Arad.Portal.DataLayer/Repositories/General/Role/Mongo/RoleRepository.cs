@@ -25,21 +25,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
     {
         private readonly RoleContext _context;
         private readonly IMapper _mapper;
-        public IMongoCollection<State> States { get; set; }
-        public IMongoCollection<City> Cities { get; set; }
-
-        public IMongoCollection<District> Districts { get; set; }
-        public IMongoCollection<County> Counties { get; set; }
-
+       
         public RoleRepository(RoleContext roleContext, 
             IHttpContextAccessor httpContextAccessor, IMapper mapper): base(httpContextAccessor)
         {
             _context = roleContext;
             _mapper = mapper;
-            States = roleContext.States;
-            Cities = roleContext.Cities;
-            Districts = roleContext.Districts;
-            Counties = roleContext.Counties;
         }
 
         public async Task<Result> Add(RoleDTO dto)
@@ -334,48 +325,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
             return result;
         }
 
-        public List<SelectListModel> GetAllState()
-        {
-            var lst = _context.States.AsQueryable().Select(_ => new SelectListModel()
-            {
-                Value = _.Id,
-                Text = _.Name
-            }).ToList();
-            return lst;
-        }
-
-        public List<SelectListModel> GetCounties(string stateId)
-        {
-            var state = _context.States.Find(_ => _.Id == stateId).FirstOrDefault();
-            var lst = state.Counties.Select(_ => new SelectListModel()
-            {
-                Value = _.Id,
-                Text = _.Name
-            }).ToList();
-            return lst;
-        }
-
-        public List<SelectListModel> GetDistricts(string countyId)
-        {
-            var county = _context.Counties.Find(_ => _.Id == countyId).FirstOrDefault();
-            var lst = county.Districts.Select(_ => new SelectListModel()
-            {
-                Value = _.Id,
-                Text = _.Name
-            }).ToList();
-            return lst;
-        }
-
-        public List<SelectListModel> GetCities(string districtId)
-        {
-            var district = _context.Districts.Find(_ => _.Id == districtId).FirstOrDefault();
-            var lst = district.Cities.Select(_ => new SelectListModel()
-            {
-                Value = _.Id,
-                Text = _.Name
-            }).ToList();
-            return lst;
-        }
+        
 
         public async Task<Entities.General.Role.Role> FetchRoleEntity(string roleId)
         {

@@ -870,8 +870,8 @@
 	<string key="AlertAndMessage_YouEnteredFixPhoneNumber">
 		<value>You entered fix phone number.</value>
 	</string>
-	<string key="AlertAndMessage_InvalidNationalId">
-		<value>Invalid national id.</value>
+	<string key="AlertAndMessage_InvalidNationalCode">
+		<value>Invalid national code.</value>
 	</string>
 	<string key="AlertAndMessage_EnterPostalCode">
 		<value>Please enter postal code.</value>
@@ -1355,9 +1355,11 @@
 	<string key="Role_CreatorUserName">
 		<value>Creator username</value>
 	</string>
-	
 	<string key="User_FirstName">
 		<value>Name</value>
+	</string>
+	<string key="User_FatherName">
+		<value>Father name</value>
 	</string>
 	<string key="User_LastName">
 		<value>LastName</value>
@@ -1379,6 +1381,9 @@
 	</string>
 	<string key="User_RoleName">
 		<value>Role Name</value>
+	</string>
+	<string key="User_BirthDate">
+		<value>Birth Date</value>
 	</string>
 	<string key="ActivationState">
 		<value>State</value>
@@ -1863,6 +1868,12 @@
 	<string key="EditProfile">
 		<value>Edit profile</value>
 	</string>
+	<string key="EditUserProfile">
+		<value>Edit user profile</value>
+	</string>
+	<string key="Title_BasicInfo">
+		<value>Basic Informations</value>
+	</string>
 	<string key="CropImage">
 		<value>Crop image</value>
 	</string>
@@ -2103,6 +2114,9 @@
 	<string key="ApplicationUser_Profile">
 		<value>Profile</value>
 	</string>
+	<string key="ApplicationUser_Gender">
+		<value>Gender</value>
+	</string>
 	<string key="ApplicationUser_FixedPhoneNumber">
 		<value>Fixed PhoneNumber</value>
 	</string>
@@ -2234,6 +2248,9 @@
 	</string>
 	<string key="ApplicationUser_User">
 		<value>User</value>
+	</string>
+	<string key="ApplicationUser_UserList">
+		<value>User list</value>
 	</string>
 	<string key="ApplicationUser_UserList">
 		<value>User list</value>
