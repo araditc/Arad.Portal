@@ -18,8 +18,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             _configuration = configuration;
             client = new MongoClient(_configuration["DatabaseConfig:ConnectionString"]);
             db = client.GetDatabase(_configuration["DatabaseConfig:DbName"]);
-            Collection = db.GetCollection<Entities.General.User.ApplicationUser>("User");
-            BsonCollection = db.GetCollection<BsonDocument>("User");
+            Collection = db.GetCollection<Entities.General.User.ApplicationUser>("Users");
+            BsonCollection = db.GetCollection<BsonDocument>("Users");
         }
     }
 }

@@ -36,6 +36,8 @@ using Arad.Portal.DataLayer.Helpers;
 using Arad.Portal.DataLayer.Entities.General.Error;
 using Arad.Portal.DataLayer.Contracts.General.Error;
 using AutoMapper;
+using MongoDB.Driver;
+using MongoDB.Bson;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -58,6 +60,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IDomainRepository _domainRepository;
         private readonly IErrorLogRepository _errorLogRepository;
         private readonly CreateNotification _createNotification;
+        private readonly UserContext _userContext;
         private readonly IMapper _mapper;
 
         
@@ -76,6 +79,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ICurrencyRepository currencyRepository,
             IDomainRepository domainRepository,
             IErrorLogRepository errorLogRepository,
+            UserContext userContext,
             IMapper mapper,
             IMessageTemplateRepository messageTemplateRepository)
         {
@@ -96,6 +100,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _createNotification = createNotification;
             _errorLogRepository = errorLogRepository;
             _mapper = mapper;
+            _userContext = userContext;
         }
 
         [HttpGet]
@@ -265,11 +270,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
             var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
             ViewBag.Permissions = dicKey;
-
+            FilterDefinitionBuilder<ApplicationUser> builder = new();
+            FilterDefinition<ApplicationUser> filterDef = builder.Empty; 
             try
             {
                 var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var query = _userManager.Users.Where(c => c.Id != currentUserId);
+                var userEntity = _userManager.Users.FirstOrDefault(_ => _.Id == currentUserId);
+                filterDef = builder.Ne(nameof(ApplicationUser.Id), currentUserId);
+                    
 
                 NameValueCollection queryParams = HttpUtility.ParseQueryString(Request.QueryString.ToString());
 
@@ -285,47 +293,53 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                 if (!string.IsNullOrWhiteSpace(queryParams["role"]))
                 {
-                    query = query.Where(c => c.UserRoleId == queryParams["role"]);
+                    filterDef = builder.And(filterDef, builder.Eq(nameof(ApplicationUser.UserRoleId), queryParams["role"]));
                 }
 
                 if (!string.IsNullOrWhiteSpace(queryParams["name"]))
                 {
-                    query = query.Where(c => c.Profile.FullName.ToLower().Contains(queryParams["name"].ToLower()));
+                    
+                    filterDef = builder.And(filterDef, builder.Regex(_=>_.Profile.FirstName, new(queryParams["name"].ToLower())));
                 }
 
                 if (!string.IsNullOrWhiteSpace(queryParams["userName"]))
                 {
-                    query = query.Where(c => c.UserName.ToLower().Contains(queryParams["userName"].ToLower()));
+                    //query = query.Where(c => c.UserName.ToLower().Contains(queryParams["userName"].ToLower()));
+                    filterDef = builder.And(filterDef, builder.Regex(_ => _.UserName, new BsonRegularExpression(queryParams["userName"].ToLower())));
                 }
 
 
-                long count = query.Count();
+                long count = _userContext.Collection.Find(filterDef).CountDocuments();
 
-                var lst = query.OrderBy(x => x.CreationDate).ThenBy(x => x.Profile.LastName)
-                    .Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                //var lst = _userManager.Users.fin.OrderBy(x => x.CreationDate).ThenBy(x => x.Profile.LastName)
+                //    .Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+                var lst = _userContext.Collection
+                 .Find(filterDef)
+                   .Project(_ =>
+                       new UserListView()
+                       {
+                           Id = _.Id,
+                           PhoneNumber = _.PhoneNumber,
+                           IsActive = _.IsActive,
+                           Name = _.Profile.FirstName,
+                           IsSystem = _.IsSystemAccount,
+                           LastName = _.Profile.LastName,
+                           UserName = _.UserName,
+                           UserRoleId = _.UserRoleId,
+                           RoleName = !string.IsNullOrWhiteSpace(_.UserRoleId) ? _roleRepository.FetchRole(_.UserRoleId).Result.RoleName : "",
+                           CreateDate = _.CreationDate,
+                           //persianCreateDate = _.CreationDate,
+                           IsDelete = _.IsDeleted
+                       }).Sort(Builders<ApplicationUser>.Sort.Descending(a => a.CreationDate)).Skip((page - 1) * pageSize).Limit(pageSize).ToList();
 
                 result = new PagedItems<UserListView>()
                 {
                     CurrentPage = page,
                     PageSize = pageSize,
                     ItemsCount = count,
-                    Items = lst.Select(_ => new UserListView()
-                    {
-                        Id = _.Id,
-                        PhoneNumber = _.PhoneNumber,
-                        IsActive = _.IsActive,
-                        Name = _.Profile.FirstName,
-                        IsSystem = _.IsSystemAccount,
-                        LastName = _.Profile.LastName,
-                        UserName = _.UserName,
-                        UserRoleId = _.UserRoleId,
-                        RoleName = _roleRepository.FetchRole(_.UserRoleId).Result.RoleName,
-                        CreateDate = _.CreationDate,
-                        //persianCreateDate = _.CreationDate,
-                        IsDelete = _.IsDeleted
-                    }).ToList()
+                    Items = lst
                 };
-
 
                 var list = await _roleRepository.List("");
                 ViewBag.Roles = list.Items.Select(_ => new RoleListView()
@@ -950,12 +964,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 return View(model);
             }
 
-            if (_userManager.Users.Any(_ => _.PhoneNumber == model.PhoneNumber && !_.UserName.Equals(model.UserName)))
-            {
-                ViewBag.OperationResult = new OperationResult { Message = Language.GetString("Validation_MobileNumberAlreadyRegistered"), Succeeded = false };
-                //await SetViewBag();
-                return View(model);
-            }
+            //if (_userManager.Users.Any(_ => _.PhoneNumber == model.PhoneNumber && !_.UserName.Equals(model.UserName)))
+            //{
+            //    ViewBag.OperationResult = new OperationResult { Message = Language.GetString("Validation_MobileNumberAlreadyRegistered"), Succeeded = false };
+            //    //await SetViewBag();
+            //    return View(model);
+            //}
 
             ApplicationUser user = await _userManager.FindByIdAsync(User.GetUserId());
             if (user == null)

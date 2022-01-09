@@ -1,0 +1,30 @@
+﻿body {
+    font-family: IRANSansWeb !important;
+    height: 100vh;
+}
+
+.navbar-profile-pic {
+    width: auto;
+    height: 6.5vh;
+}
+
+.row.h-100 {
+    height: 92vh !important;
+}
+
+.fs-6 {
+    font-size: 14px !important;
+}
+
+
+i span {
+    font-family: IRANSansWeb;
+}
+.filter-option-inner-inner {
+    text-align: start;
+}
+
+.bootstrap-select {
+    border: 1px solid #dee2e6 !important;
+    border-width: 1px !important;
+}

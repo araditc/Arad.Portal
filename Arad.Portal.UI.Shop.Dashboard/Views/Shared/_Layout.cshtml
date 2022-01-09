@@ -51,10 +51,10 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="Arad Portal" name="description">
     <title>@ViewData["Title"] - Arad.Portal.UI.Dashboard</title>
-    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    
 
     @if (direction == "ltr")
-        {
+    {
         <link href="~/lib/bootstrap5/css/bootstrap.min.css" rel="stylesheet" />
         @*<link href="~/plugins/icheck-bootstrap/icheck-bootstrap.css" rel="stylesheet" />*@
     }
@@ -63,16 +63,17 @@
         <link href="~/lib/bootstrap5/css/bootstrap.rtl.min.css" rel="stylesheet" />
         <link href="~/Fonts/IranSans/css/fontiran.css" rel="stylesheet" />
         @*<link href="~/fonts/IranSans/css/persianfonts.css" rel="stylesheet" />
-          <link href="~/plugins/iCheck/all.css" rel="stylesheet" />
-          <link href="~/plugins/iCheck/flat/blue.css" rel="stylesheet" />
-          <link href="~/css/siteTemplate/rtl/custom-style.css" rel="stylesheet" />
-          <link href="~/lib/limonte-sweetalert2/sweetalert2.min.css" rel="stylesheet" />
-          <link href="~/css/persian-datepicker.min.css" rel="stylesheet" />*@
+            <link href="~/plugins/iCheck/all.css" rel="stylesheet" />
+            <link href="~/plugins/iCheck/flat/blue.css" rel="stylesheet" />
+            <link href="~/css/siteTemplate/rtl/custom-style.css" rel="stylesheet" />
+            <link href="~/lib/limonte-sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+            <link href="~/css/persian-datepicker.min.css" rel="stylesheet" />*@
     }
 
     <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    @*<link href="~/css/siteTemplate/shared/AdminLTE/adminlte.css" rel="stylesheet" />*@
 
     @*<link href="~/css/siteTemplate/shared/fontawesome-free/all.min.css" rel="stylesheet"/>
           <!-- overlayScrollbars -->
@@ -86,11 +87,11 @@
             <script src="~/js/siteTemplate/jqueryui1.11.4/jquery-ui.min.js"></script>
         }
 
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
 
 
-        <script src="~/js/siteTemplate/Adminlte/adminlte.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @*<script src="~/js/site.js" asp-append-version="true"></script>
         <script src="~/lib/limonte-sweetalert2/sweetalert2.all.min.js"></script>
 
 
@@ -117,33 +118,33 @@
                         </a>
                         <ul aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
                             <li>
-                                <a class="dropdown-item" asp-action="ChangePassword" asp-controller="Account" >
+                                <a class="dropdown-item" asp-action="ChangePassword" asp-controller="Account">
                                     <i class="fas fa-key"></i>
                                     @Language.GetString("ChangePassword")
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" asp-action="Profile" asp-controller="Account" >
+                                <a class="dropdown-item" asp-action="Profile" asp-controller="Account">
                                     <i class="far fa-id-badge"></i>
                                     @Language.GetString("Menu_Profile")
                                 </a>
                             </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li class="nav-item">
-                                <a class="nav-link lanFlag">
-                                    <img src="/imgs/IRAN.png" onclick="setLang('fa-IR')" />
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link lanFlag">
-                                    <img src="/imgs/USA.png" onclick="setLang('en-US')" />
-                                </a>
-                            </li>
+                            @*<li><hr class="dropdown-divider"></li>
+                                <li class="nav-item">
+                                    <a class="nav-link lanFlag">
+                                        <img src="/imgs/IRAN.png" onclick="setLang('fa-IR')" />
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link lanFlag">
+                                        <img src="/imgs/USA.png" onclick="setLang('en-US')" />
+                                    </a>
+                                </li>*@
                             <li><hr class="dropdown-divider"></li>
                             <li>
-                                <a class="dropdown-item" asp-action="Logout" asp-controller="Account" >
+                                <a class="dropdown-item" asp-action="Logout" asp-controller="Account">
                                     <i class="fas fa-sign-out-alt"></i>
-                                    @Language.GetString("Action_Exit")
+                                    @Language.GetString("btn_Exit")
                                 </a>
                             </li>
                         </ul>
@@ -164,7 +165,7 @@
                 @await Component.InvokeAsync("SidebarMenu")
             </nav>
 
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-2" id="mainContent">
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-2 flex-grow-1" id="mainContent">
                 @RenderBody()
             </main>
         </div>
@@ -172,34 +173,38 @@
 
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap5/js/bootstrap.bundle.js"></script>
+
+
+    @*<script src="~/js/siteTemplate/Adminlte/adminlte.js"></script>*@
+    @*<script src="~/js/site.js" asp-append-version="true"></script>*@
     @await RenderSectionAsync("Scripts", required: false)
 
-<script>
+    <script>
+        adjustSidebar();
     $(document).ready(function () {
 
-        adjustSidebar();
-        $("li.nav-item.firstLevel").click(function (e) {
 
-            debugger;
-            var liID = $(this).attr("id");
-            var siblings = $(this).parent().children();
-            for (var i = 0; i < siblings.length; i++) {
-                debugger;
-                var id = $(siblings[i]).attr("id");
-                if (liID == id)
-                    continue;
-                if ($(siblings[i]).hasClass("menu-open")) {
-                    $(siblings[i]).removeClass("menu-open");
-                    debugger;
-                    var ul = $(siblings[i]).children("ul");
-                    $(ul).css("display", "none");
-                }
-            }
-        });
+        //$("li.nav-item.firstLevel").click(function (e) {
+
+        //    debugger;
+        //    var liID = $(this).attr("id");
+        //    var siblings = $(this).parent().children();
+        //    for (var i = 0; i < siblings.length; i++) {
+        //        debugger;
+        //        var id = $(siblings[i]).attr("id");
+        //        if (liID == id)
+        //            continue;
+        //        if ($(siblings[i]).hasClass("menu-open")) {
+        //            $(siblings[i]).removeClass("menu-open");
+        //            debugger;
+        //            var ul = $(siblings[i]).children("ul");
+        //            $(ul).css("display", "none");
+        //        }
+        //    }
+        //});
     });
-	
+
 
 	window.addEventListener('resize', adjustSidebar);
 	window.addEventListener('load',
@@ -279,7 +284,7 @@
     function removeLoading(cardElement) {
         $(cardElement).find(".overlay").remove();
     }
-</script>
+    </script>
 
 </body>
 </html>

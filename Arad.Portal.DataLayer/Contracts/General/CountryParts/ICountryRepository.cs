@@ -9,8 +9,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.CountryParts
 {
     public interface ICountryRepository
     {
-        //Task InsertMany(List<Entities.General.Country.Country> countries);
-
+       
         List<SelectListModel> GetAllCountries();
 
         List<SelectListModel> GetStates(string countryId);

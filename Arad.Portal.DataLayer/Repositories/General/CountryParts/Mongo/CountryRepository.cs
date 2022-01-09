@@ -21,14 +21,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.CountryParts.Mongo
             _mapper = mapper;
             _context = context;
             Countries = context.CountryCollection;
-            States = context.StateCollection;
-            Cities = context.CityCollection;
+          
         }
 
         public IMongoCollection<Entities.General.Country.Country> Countries { get; set; }
-        public IMongoCollection<Entities.General.State.State> States { get; set; }
-        public IMongoCollection<Entities.General.City.City> Cities { get; set; }
-
+        
 
         //public async Task InsertMany(List<Entities.General.Country.Country> countries)
         //{
@@ -47,18 +44,20 @@ namespace Arad.Portal.DataLayer.Repositories.General.CountryParts.Mongo
 
         public List<SelectListModel> GetStates(string countryId)
         {
-            var states = _context.StateCollection.Find(_ => _.Id == countryId)
-                .Project(_ => new SelectListModel() { Text = _.Name,
-                                                       Value = _.Id}).ToList();
-           
+            var states = _context.CountryCollection.AsQueryable()
+                .Where(_ => _.Id == countryId).SelectMany(_ => _.States).OrderBy(_ => _.Name)
+                .Select(_ => new SelectListModel() { Text = _.Name, Value = _.Id }).ToList();
+               
             return states;
         }
 
         public List<SelectListModel> GetCities(string stateId)
         {
-            var cities = _context.CityCollection.Find(_ => _.StateId == stateId)
-                .Project(_ => new SelectListModel() { Text = _.Name, Value = _.Id}).ToList();
-            return cities;
+            return _context.CountryCollection.AsQueryable()
+               .Where(c => c.States.Any(s => s.Id.Equals(stateId)))
+               .SelectMany(s => s.States).Where(c => c.Id.Equals(stateId))
+               .SelectMany(s => s.Cities).OrderBy(s => s.Name)
+               .Select(_ => new SelectListModel() { Text = _.Name, Value = _.Id }).ToList();
         }
 
     }

@@ -7,21 +7,21 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Entities.General.County
 {
-    public class County : BaseEntity
-    {
-        public County()
-        {
-            Districts = new ();
-        }
-        [BsonRepresentation(MongoDB.Bson.BsonType.String)]
-        public string Id { get; set; }
+    //public class County : BaseEntity
+    //{
+    //    public County()
+    //    {
+    //        Districts = new ();
+    //    }
+    //    [BsonRepresentation(MongoDB.Bson.BsonType.String)]
+    //    public string Id { get; set; }
 
-        public string Name { get; set; }
+    //    public string Name { get; set; }
 
-        public string StateName { get; set; }
+    //    public string StateName { get; set; }
 
-        public string StateId { get; set; }
+    //    public string StateId { get; set; }
 
-        public List<District.District> Districts { get; set; }
-    }
+    //    public List<District.District> Districts { get; set; }
+    //}
 }

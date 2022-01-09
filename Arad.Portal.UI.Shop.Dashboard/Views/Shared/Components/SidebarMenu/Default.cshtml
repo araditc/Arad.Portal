@@ -1,68 +1,69 @@
-﻿@using System.Globalization;
-@using Arad.Portal.GeneralLibrary.Utilities;
+﻿@using  Arad.Portal.DataLayer.Models.Shared;
 @model List<Arad.Portal.DataLayer.Models.Shared.MenuLinkModel>
 @{
     Layout = null;
 }
-@{
-
-    var chevron = "";
-    var dir = "";
-    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-    {
-        chevron = "fa fa-chevron-left";
-        dir = "rtl";
-    }
-    else
-    {
-        chevron = "fa fa-chevron-right";
-        dir = "ltr";
-    }
-}
-<style>
-    .dirClassRtl {
-        direction: rtl;
-    }
-
-    .dirClassLtr {
-        direction: ltr;
-    }
-</style>
-
-@*<div class="sidebar @(dir== "rtl" ? "dirClassLtr" : "")" >
-    <div class="@(dir == "rtl" ? "dirClassRtl" : "")">*@
-<nav class="mt-2">
-    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        @foreach (var item in @Model)
+<div class="position-sticky pt-2">
+    <div class="accordion"
+         id="menu">
+        @foreach (MenuLinkModel item in Model.OrderBy(c => c.Priority))
         {
-            <li class="nav-item firstLevel @(item.IsActive ? "menu-open" : "")" id="@item.MenuId">
-                <a href="#" class="nav-link @(item.IsActive ? "active": "")">
-                    @if (!string.IsNullOrWhiteSpace(item.Icon))
-                    {
-                        <i class="nav-icon @item.Icon"></i>
-                    }
-                    <p>
-                        @item.MenuTitle
-                        <i class="right @(dir =="rtl" ? "fa" : "fas") fa-angle-left"></i>
-                    </p>
-                </a>
-                @if (item.Children.Count != 0)
-                {
-                    <ul class="nav nav-treeview">
-                        @foreach (var menu in item.Children)
-                        {
-                            <li class="nav-item @(menu.Children.Count != 0 ? "menu-open" : "")">
-                                @await Component.InvokeAsync("InnerMenu", menu)
-                            </li>
-                        }
-                    </ul>
-                }
-            </li>
+            @if (item.Children is { Count: 0 })
+            {
+                <div class="accordion-item border-0">
+                    <h2 class="accordion-header py-1"
+                        id="@($"heading{item.MenuId}")">
+                        <a href="/@item.Link"
+                           class="btn btn-sm fs-6 text-start text-nowrap lh-lg @(item.IsActive ? "text-primary" : "")">
+                            <i class="@item.Icon"></i>
+                            @item.MenuTitle
+                        </a>
+                    </h2>
+                </div>
+            }
+            else
+            {
+                <div class="accordion-item border-0">
+                    <h2 class="accordion-header py-2"
+                        id="@($"heading{item.MenuId}")">
 
+                        <button aria-controls="@($"collapse{item.MenuId}")"
+                                aria-expanded="@item.IsActive"
+                                class="accordion-button py-1 px-2 fs-6 @(item.IsActive ? "" : "collapsed")"
+                                data-bs-target="@($"#collapse{item.MenuId}")"
+                                data-bs-toggle="collapse"
+                                type="button">
+                            <i class="@item.Icon pe-1"></i>
+                            @item.MenuTitle
+                        </button>
+
+                    </h2>
+
+                    <div aria-labelledby="@($"heading{item.MenuId}")"
+                         class="accordion-collapse collapse @(item.IsActive ? "show" : "")"
+                         data-bs-parent="#menu"
+                         id="@($"collapse{item.MenuId}")">
+
+                        <div class="accordion-body p-1">
+
+                            <div class="accordion"
+                                 id="@($"subMenu{item.MenuId}")">
+
+                                @foreach (MenuLinkModel child in item.Children.OrderBy(c => c.Priority))
+                                {
+                                    <div class="accordion-item border-0">
+                                        @await Component.InvokeAsync("InnerMenu", child)
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
         }
-    </ul>
-</nav>
-@*</div>
-    </div>*@
+    </div>
 
-
+</div>

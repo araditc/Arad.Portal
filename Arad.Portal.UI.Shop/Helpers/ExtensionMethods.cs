@@ -15,10 +15,6 @@ using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using Newtonsoft.Json;
-using Arad.Portal.DataLayer.Entities.General.City;
-using Arad.Portal.DataLayer.Entities.General.State;
-using Arad.Portal.DataLayer.Entities.General.County;
-using Arad.Portal.DataLayer.Entities.General.District;
 using Arad.Portal.DataLayer.Entities.General.Permission;
 using Arad.Portal.DataLayer.Models.Role;
 using Arad.Portal.DataLayer.Entities.General.Role;
@@ -36,6 +32,8 @@ using Arad.Portal.DataLayer.Contracts.General.BasicData;
 using Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Service.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.Services;
+using Arad.Portal.DataLayer.Repositories.General.CountryParts.Mongo;
+using Arad.Portal.DataLayer.Contracts.General.CountryParts;
 
 namespace Arad.Portal.UI.Shop.Helpers
 {
@@ -44,167 +42,77 @@ namespace Arad.Portal.UI.Shop.Helpers
         public static void UseSeedDatabase(this IApplicationBuilder app, string applicationPath)
         {
             using var scope = app.ApplicationServices.CreateScope();
-            var userManager =
-                (UserManager<ApplicationUser>)scope.ServiceProvider
-                    .GetService(typeof(UserManager<ApplicationUser>));
 
-            if (userManager != null && !userManager.Users.Any())
+            #region Language
+            var languageRepository =
+                (LanguageRepository)scope.ServiceProvider.GetService(typeof(ILanguageRepository));
+            if (!languageRepository.HasAny())
             {
-                var user = new ApplicationUser()
+                var lan = new DataLayer.Entities.General.Language.Language()
                 {
-                    //just for testing
-                    //Id = Guid.NewGuid().ToString(),
-                    Id = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa",
-                    UserName = "SuperAdmin",
-                    Claims = new List<IdentityUserClaim<string>>()
-                    {
-                        new IdentityUserClaim<string>()
-                        {
-                            ClaimType = "AppRole",
-                            ClaimValue = true.ToString(),
-                            //testing
-                            UserId = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa"
-                        }
-                        //,
-                        //new IdentityUserClaim<string>()
-                        //{
-                        //    ClaimType = "RelatedDomain",
-                        //    ClaimValue = "f4dd87ab-cf2f-4711-9e1e-64735aa364de",
-                        //    //testing
-                        //    UserId = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa"
-                           
-                        //}
-                    },
-                    PhoneNumber = "989309910790",
+                    //LanguageId = Guid.NewGuid().ToString(),
+                    LanguageId = "9cbda53a-f5ca-47df-a648-44de1c06c75c",
+                    Direction = DataLayer.Entities.General.Language.Direction.ltr,
                     IsActive = true,
-                    IsSystemAccount = true,
-                    Profile = new Profile()
-                    {
-                        Gender = Gender.Female,
-                        FatherName = "نام پدر",
-                        FirstName = "ادمین",
-                        LastName = "شماره یک",
-                        FullName = "ادمین" + " " + "شماره یک",
-                        BirthDate = new DateTime(1987, 8, 26).ToUniversalTime(),
-                        NationalCode = "1292086734",
-                        CompanyName = "Arad",
-                        UserType = UserType.Admin
-                    },
-                    CreationDate = DateTime.UtcNow
+                    LanguageName = "English",
+                    Symbol = "en-US",
+                    IsDefault = false
                 };
-
-                userManager.CreateAsync(user, "Sa@12345").Wait();
-            }
-
-          
-            var permissionRepository =
-                (PermissionRepository)scope.ServiceProvider.GetService(typeof(IPermissionRepository));
-
-            if (!permissionRepository.HasAny())
-            {
-                using StreamReader r = new StreamReader(Path.Combine(applicationPath, "SeedData", "permissions.json"));
-                string json = r.ReadToEnd();
-                List<Permission> items = JsonConvert.DeserializeObject<List<Permission>>(json);
-
-                if (items.Any())
+                languageRepository.InsertOne(lan);
+                var lanFa = new DataLayer.Entities.General.Language.Language()
                 {
-                    permissionRepository.InsertMany(items).Wait();
-                }
-            }
-
-            //country, state, city
-            var countryRepository =
-                (CountryRepository)scope.ServiceProvider.GetService(typeof(ICountryRepository));
-
-            if (!countryRepository.Countries.AsQueryable().Any())
-            {
-                using StreamReader r = new StreamReader(Path.Combine(applicationPath, "SeedData", "Countries.json"));
-                string json = r.ReadToEnd();
-                List<DataLayer.Entities.General.Country.Country> countries = JsonConvert.DeserializeObject<List<DataLayer.Entities.General.Country.Country>>(json);
-
-                if (countries.Any())
-                {
-                    countryRepository.Countries.InsertMany(countries);
-                }
-            }
-
-            if (!countryRepository.States.AsQueryable().Any())
-            {
-                using StreamReader r = new StreamReader(Path.Combine(applicationPath, "SeedData", "Countries.json"));
-                string json = r.ReadToEnd();
-                List<DataLayer.Entities.General.State.State> states = JsonConvert.DeserializeObject<List<DataLayer.Entities.General.State.State>>(json);
-
-                if (states.Any())
-                {
-                    countryRepository.States.InsertMany(states);
-                }
-            }
-
-            if (!countryRepository.Cities.AsQueryable().Any())
-            {
-                using StreamReader r = new StreamReader(Path.Combine(applicationPath, "SeedData", "Countries.json"));
-                string json = r.ReadToEnd();
-                List<City> cities = JsonConvert.DeserializeObject<List<City>>(json);
-
-                if (cities.Any())
-                {
-                    countryRepository.Cities.InsertMany(cities);
-                }
-            }
-
-
-
-
-
-            //Role
-            var roleRepository =
-                (RoleRepository)scope.ServiceProvider.GetService(typeof(IRoleRepository));
-            
-            
-            if (!roleRepository.HasAny())
-            {
-                var role = new Role()
-                {
-                    RoleId = Guid.NewGuid().ToString(),
-                    RoleName = "سوپر ادمین",
-                    CreationDate = DateTime.UtcNow,
+                    //LanguageId = Guid.NewGuid().ToString(),
+                    LanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
+                    Direction = DataLayer.Entities.General.Language.Direction.rtl,
                     IsActive = true,
-                    PermissionIds = permissionRepository.GetAllPermissionIds()
+                    LanguageName = "فارسی",
+                    Symbol = "fa-IR",
+                    IsDefault = true
                 };
-                var role2 = new Role()
+                languageRepository.InsertOne(lanFa);
+            }
+            #endregion Language
+
+            #region currency
+            var currencyRepository =
+                 (CurrencyRepository)scope.ServiceProvider.GetService(typeof(ICurrencyRepository));
+            if (!currencyRepository.HasAny())
+            {
+                var currencyDef = new DataLayer.Entities.General.Currency.Currency
                 {
-                    RoleId = Guid.NewGuid().ToString(),
-                    RoleName = "مدیریت کاربران",
-                    CreationDate = DateTime.UtcNow,
+                    //CurrencyId = Guid.NewGuid().ToString(),
+                    CurrencyId = "f6a41b2d-3ed5-412b-b511-68498a7b62f3",
+                    CurrencyName = "ریال",
+                    Prefix = "IRR",
+                    Symbol = "ریال",
+                    IsDefault = true,
                     IsActive = true
                 };
-                var role3 = new Role()
+                currencyRepository.InsertOne(currencyDef);
+
+                var currency = new DataLayer.Entities.General.Currency.Currency
                 {
-                    RoleId = Guid.NewGuid().ToString(),
-                    RoleName = "مشتری",
-                    CreationDate = DateTime.UtcNow,
+                    //CurrencyId = Guid.NewGuid().ToString(),
+                    CurrencyId = "9c3138e3-95a0-4b4d-ac2a-07354a090927",
+                    CurrencyName = "American Dollar",
+                    Prefix = "USD",
+                    Symbol = "$",
+                    IsDefault = false,
                     IsActive = true
                 };
-                List<Role> items = new List<Role>();
-                items.Add(role);
-                items.Add(role2);
-                items.Add(role3);
-
-                if (items.Any())
-                {
-                    roleRepository.InsertMany(items).Wait();
-                }
+                currencyRepository.InsertOne(currency);
             }
+            #endregion currency
 
-            //domain
-
+            #region domain
             var domainRepository =
                (DomainRepository)scope.ServiceProvider.GetService(typeof(IDomainRepository));
-            if(!domainRepository.HasAny())
+            if (!domainRepository.HasAny())
             {
                 var dom = new Domain()
                 {
-                    DomainId = Guid.NewGuid().ToString(),
+                    //DomainId = Guid.NewGuid().ToString(),
+                    DomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf",
                     DomainName = "https://localhost:3214",//store
                     OwnerUserName = "superadmin",
                     IsActive = true,
@@ -215,7 +123,7 @@ namespace Arad.Portal.UI.Shop.Helpers
                     DefaultCurrencyName = "ریال",
                     IsDefault = true,
                     CreationDate = DateTime.Now,
-                    SMTPAccount = new DataLayer.Entities.General.Email.SMTP()
+                    SMTPAccount = new DataLayer.Entities.General.Email.SMTP() //testing
                     {
                         EmailAddress = "azizi@arad-itc.com",
                         Encryption = DataLayer.Models.Shared.Enums.EmailEncryptionType.None,
@@ -229,7 +137,8 @@ namespace Arad.Portal.UI.Shop.Helpers
                 };
                 var dom2 = new Domain()
                 {
-                    DomainId = Guid.NewGuid().ToString(),
+                    //DomainId = Guid.NewGuid().ToString(),
+                    DomainId = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004",
                     DomainName = "http://localhost:17951/",//dashboard
                     OwnerUserName = "superadmin",
                     IsActive = true,
@@ -269,9 +178,140 @@ namespace Arad.Portal.UI.Shop.Helpers
 
                 domainRepository.InsertMany(new List<Domain>() { dom, dom2, dom3 }).Wait();
             }
+            #endregion
 
-            //MessageTemplate
-          
+            #region permission
+            var permissionRepository =
+                (PermissionRepository)scope.ServiceProvider.GetService(typeof(IPermissionRepository));
+
+            if (!permissionRepository.HasAny())
+            {
+                using StreamReader r = new StreamReader(Path.Combine(applicationPath, "SeedData", "permissions.json"));
+                string json = r.ReadToEnd();
+                List<Permission> items = JsonConvert.DeserializeObject<List<Permission>>(json);
+
+                if (items.Any())
+                {
+                    permissionRepository.InsertMany(items).Wait();
+                }
+            }
+            #endregion permission
+
+            #region role
+            var roleRepository =
+               (RoleRepository)scope.ServiceProvider.GetService(typeof(IRoleRepository));
+
+
+            if (!roleRepository.HasAny())
+            {
+                var role = new Role()
+                {
+                    // RoleId = Guid.NewGuid().ToString(), it will be changed for publish
+                    RoleId = "0e1643a3-1212-485b-862f-45147532427c",
+                    RoleName = "سوپر ادمین",
+                    CreationDate = DateTime.Now,
+                    IsActive = true,
+                    PermissionIds = permissionRepository.GetAllPermissionIds()
+                };
+                var role2 = new Role()
+                {
+                    RoleId = Guid.NewGuid().ToString(),
+                    RoleName = "مدیریت کاربران",
+                    CreationDate = DateTime.Now,
+                    IsActive = true
+                };
+                var role3 = new Role()
+                {
+                    RoleId = Guid.NewGuid().ToString(),
+                    RoleName = "مشتری",
+                    CreationDate = DateTime.Now,
+                    IsActive = true
+                };
+                var role4 = new Role()
+                {
+                    RoleId = Guid.NewGuid().ToString(),
+                    RoleName = "فروشنده",
+                    CreationDate = DateTime.Now,
+                    IsActive = true
+                };
+                List<Role> items = new List<Role>();
+                items.AddRange(new List<Role> { role, role2, role3, role4 });
+                roleRepository.InsertMany(items).Wait();
+
+            }
+            #endregion role
+
+            #region user
+            var userManager =
+                (UserManager<ApplicationUser>)scope.ServiceProvider
+                    .GetService(typeof(UserManager<ApplicationUser>));
+
+            if (userManager != null && !userManager.Users.Any())
+            {
+                var user = new ApplicationUser()
+                {
+                    //just for testing
+                    //Id = Guid.NewGuid().ToString(),
+                    Id = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa",
+                    UserName = "SuperAdmin",
+                    Claims = new List<IdentityUserClaim<string>>()
+                    {
+                        new IdentityUserClaim<string>()
+                        {
+                            ClaimType = "AppRole",
+                            ClaimValue = true.ToString(),
+                        }
+                        //,
+                        //new IdentityUserClaim<string>()
+                        //{
+                        //    ClaimType = "RelatedDomain",
+                        //    ClaimValue = "f4dd87ab-cf2f-4711-9e1e-64735aa364de",
+                        //    //testing
+                        //    UserId = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa"
+                           
+                        //}
+                    },
+                    PhoneNumber = "989309910790",
+                    IsActive = true,
+                    IsSystemAccount = true,
+                    UserRoleId = "0e1643a3-1212-485b-862f-45147532427c",
+                    Profile = new Profile()
+                    {
+                        Gender = Gender.Female,
+                        FatherName = "نام پدر",
+                        FirstName = "ادمین",
+                        LastName = "شماره یک",
+                        FullName = "ادمین" + " " + "شماره یک",
+                        BirthDate = new DateTime(1987, 8, 26).ToUniversalTime(),
+                        NationalCode = "1292086734",
+                        CompanyName = "Arad",
+                        UserType = UserType.Admin
+                    },
+                    CreationDate = DateTime.UtcNow
+                };
+
+                userManager.CreateAsync(user, "Sa@12345").Wait();
+            }
+            #endregion user
+
+            #region country, state, city
+            var countryRepository =
+                (CountryRepository)scope.ServiceProvider.GetService(typeof(ICountryRepository));
+
+            if (!countryRepository.Countries.AsQueryable().Any())
+            {
+                using StreamReader r = new StreamReader(Path.Combine(applicationPath, "SeedData", "Countries.json"));
+                string json = r.ReadToEnd();
+                List<DataLayer.Entities.General.Country.Country> countries = JsonConvert.DeserializeObject<List<DataLayer.Entities.General.Country.Country>>(json);
+
+                if (countries.Any())
+                {
+                    countryRepository.Countries.InsertMany(countries);
+                }
+            }
+            #endregion country, state, city
+
+            #region messageTemplate
             var messageTemplateRepository =
                 (MessageTemplateRepository)scope.ServiceProvider.GetService(typeof(IMessageTemplateRepository));
 
@@ -292,99 +332,9 @@ namespace Arad.Portal.UI.Shop.Helpers
                     messageTemplateRepository.InsertMany(messageTemplates);
                 }
             }
-
-            //if(!messageTemplateRepository.HasAny())
-            //{
-            //    var lan1 = new MessageTemplateMultiLingual()
-            //    {
-            //        LanguageName = "en-US",
-            //        Body = "Your New Password will be : [0]",
-            //        Subject = "ChangePassword"
-            //    };
-            //    var lan2 = new MessageTemplateMultiLingual()
-            //    {
-            //        LanguageName = "fa-IR",
-            //        Body = "رمز عبور جدید شما : [0]",
-            //        Subject = "تغییر رمز عبور"
-            //    };
-            //    var changePasswordTemplate = new MessageTemplate()
-            //    {
-            //        MessageTemplateId = Guid.NewGuid().ToString(),
-            //        CreationDate = DateTime.UtcNow,
-            //        IsActive = true,
-            //        IsSystemTemplate = true,
-            //        NotificationType = DataLayer.Models.Shared.Enums.NotificationType.Sms,
-            //        TemplateDescription = "this template is used when user request to change password",
-            //        TemplateName = "ChangePassword"
-            //    };
-            //    changePasswordTemplate.MessageTemplateMultiLingual.Add(lan1);
-            //    changePasswordTemplate.MessageTemplateMultiLingual.Add(lan2);
-
-
-            //    messageTemplateRepository.InsertOne(changePasswordTemplate);
-            //}
-
-            //Language
-          
-            var languageRepository =
-                (LanguageRepository)scope.ServiceProvider.GetService(typeof(ILanguageRepository));
-            if(!languageRepository.HasAny())
-            {
-                var lan = new DataLayer.Entities.General.Language.Language()
-                {
-                    LanguageId = Guid.NewGuid().ToString(),
-                    Direction = DataLayer.Entities.General.Language.Direction.ltr,
-                    IsActive = true,
-                    LanguageName = "English",
-                    Symbol = "en-US",
-                    IsDefault = false
-                };
-                languageRepository.InsertOne(lan);
-                var lanFa = new DataLayer.Entities.General.Language.Language()
-                {
-                    LanguageId = Guid.NewGuid().ToString(),
-                    Direction = DataLayer.Entities.General.Language.Direction.rtl,
-                    IsActive = true,
-                    LanguageName = "فارسی",
-                    Symbol = "fa-IR",
-                    IsDefault = true
-                };
-                languageRepository.InsertOne(lanFa);
-            }
-
-
-            //Currency
-          
-            var currencyRepository =
-                 (CurrencyRepository)scope.ServiceProvider.GetService(typeof(ICurrencyRepository));
-            if (!currencyRepository.HasAny())
-            {
-                var currencyDef = new DataLayer.Entities.General.Currency.Currency
-                {
-                    CurrencyId = Guid.NewGuid().ToString(),
-                    CurrencyName = "ریال",
-                    Prefix = "IRR",
-                    Symbol = "ریال",
-                    IsDefault = true,
-                    IsActive = true
-                };
-                currencyRepository.InsertOne(currencyDef);
-
-
-                var currency = new DataLayer.Entities.General.Currency.Currency
-                {
-                   CurrencyId = Guid.NewGuid().ToString(),
-                   CurrencyName = "American Dollar",
-                   Prefix = "USD",
-                   Symbol = "$",
-                   IsDefault = false,
-                   IsActive = true
-                };
-                currencyRepository.InsertOne(currency);
-            }
-
-            //BasicData
-          
+            #endregion
+            
+            #region BasicData
             var basicDataRepository =
                  (BasicDataRepository)scope.ServiceProvider.GetService(typeof(IBasicDataRepository));
             if (!basicDataRepository.HasLastID())
@@ -424,9 +374,9 @@ namespace Arad.Portal.UI.Shop.Helpers
                 };
                 basicDataRepository.InsertOne(courier);
             }
+            #endregion
 
-            //providers diffrenet Types
-
+            #region providers diffrenet Types
             var providerRepository =
               (ProviderRepository)scope.ServiceProvider.GetService(typeof(IProviderRepository));
             if (providerRepository.GetProvidersPerType(DataLayer.Entities.General.Service.ProviderType.Payment).Count() == 0)
@@ -460,14 +410,14 @@ namespace Arad.Portal.UI.Shop.Helpers
                     ProviderId = Guid.NewGuid().ToString(),
                     CreationDate = DateTime.Now,
                     IsActive = true,
-                    Template = "{'BaseAddress', 'TokenEndPoint', 'GatewayEndPoint', 'VerifyEndpoint'}",
+                    Template = "{'BaseAddress', 'TokenEndPoint', 'GatewayEndPoint', 'VerifyEndpoint', 'ReverseEndPoint', 'MerchantId', 'UserName', 'Password', 'TerminalId'}",
                     ProviderType = DataLayer.Entities.General.Service.ProviderType.Payment,
-                    ProviderName = "درگاه  پرداخت ایران کیش",
+                    ProviderName = "درگاه پرداخت سامان",
                     AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf"
                 };
                 providerRepository.InsertOne(samanGateway);
-
             }
+            #endregion
 
         }
     }

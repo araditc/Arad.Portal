@@ -1,7 +1,4 @@
-﻿using Arad.Portal.DataLayer.Entities.General.City;
-using Arad.Portal.DataLayer.Entities.General.County;
-using Arad.Portal.DataLayer.Entities.General.District;
-using Arad.Portal.DataLayer.Entities.General.State;
+﻿
 using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver;

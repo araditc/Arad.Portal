@@ -19,7 +19,7 @@
 
         queryString.Remove("page");
     }
-    var userSearchCollapseClass = isSearch ? "panel-collapse in collapse show" : "panel-collapse in collapse";
+    var userSearchCollapseClass = isSearch ? "collapse show" : "collapse";
     var dir = "";
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
     {
@@ -53,19 +53,19 @@
 
 
 <div class="card card-dark">
-    <a data-toggle="collapse" data-parent="#accordion" href="#changePassCollapse" aria-expanded="@(!isSearch ? "false" : "true" )" class="@(!isSearch ? " collapsed" : null)">
+    <a data-bs-toggle="collapse" role="button" href="#changePassCollapse" aria-expanded="@(!isSearch ? "false" : "true" )" class="@(!isSearch ? " collapsed" : null)">
 
         <div class="card-header">
-            <h3 class="card-title">
-                <i class="fas fa-search"></i>
-                <span style="margin-right: 5px">@Language.GetString("btn_Search")</span>
-            </h3>
+            <h5 class="card-title">
+                <i class="fas fa-search">
+                    <span>@Language.GetString("btn_Search")</span>
+                </i>
+            </h5>
         </div>
     </a>
 
     <div id="changePassCollapse" class="@userSearchCollapseClass" style="">
         <div class="card-body">
-            <div id="accordion">
                 <div class="row">
 
                     <div class="form-group col-md-3">
@@ -97,13 +97,11 @@
                         </select>
                     </div>
                 </div>
-            </div>
-
         </div>
         <div class="card-footer">
             <div class="row">
-                <div class="col-md-3">
-                    <button id="btnLoad" class="btn btn-primary" type="submit">@Language.GetString("btn_Find")</button>
+                <div class="col-md-3 offset-10">
+                    <button id="btnLoad" class="btn btn-primary float-end" type="submit">@Language.GetString("btn_Find")</button>
                 </div>
             </div>
             
@@ -114,15 +112,23 @@
 
 <div class="card">
     <div class="card-header" style='background-color: #F8EDED;'>
-        <h3 class="card-title">@Language.GetString("PermissionTitle_UserManagement")</h3>
-        <div class="card-tools" style='@(dir=="rtl" ? "float:left;" : "float:right;")'>
-            @if (ViewBag.Permissions["Add"])
-            {
-                <a asp-action="AddUser" asp-controller="Account" class="btn btn-success btn-sm">
-                    <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus"></i>&nbsp; @Language.GetString("btn_Add")
-                </a>
-            }
+        <div class="row">
+            <div class="col-md-3">
+                <h5 class="card-title">@Language.GetString("PermissionTitle_UserManagement")</h5>
+            </div>
+            <div class="col-md-3 offset-md-6">
+                <div class="card-tools float-end" >
+                    @if (ViewBag.Permissions["Add"])
+                    {
+                        <a asp-action="AddUser" asp-controller="Account" class="btn btn-success btn-sm">
+                            <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus"></i>&nbsp; @Language.GetString("btn_Add")
+                        </a>
+                    }
+                </div>
+            </div>
         </div>
+       
+       
     </div>
     <div class="card-body" id="userListCard">
         <table id="userListTbl" class="table table-bordered table-striped">

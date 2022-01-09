@@ -2252,9 +2252,7 @@
 	<string key="ApplicationUser_UserList">
 		<value>User list</value>
 	</string>
-	<string key="ApplicationUser_UserList">
-		<value>User list</value>
-	</string>
+	
 	<!--END [Application User]-->
 	<!--START [Permission Title]-->
 	<string key="PermissionTitle_Dashboard">

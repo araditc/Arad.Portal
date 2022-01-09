@@ -1,55 +1,53 @@
-﻿@using System.ComponentModel.Design
-@using Arad.Portal.GeneralLibrary.Utilities;
-@using System.Globalization;
+﻿@using Arad.Portal.DataLayer.Models.Shared; 
 @model Arad.Portal.DataLayer.Models.Shared.MenuLinkModel
 @{
     Layout = null;
 }
-@{
 
-//var chevron = "";
-//if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-//{
-//    chevron = "fa fa-chevron-left";
-//}
-//else
-//{
-//    chevron = "fa fa-chevron-right";
-// }
-}
-
-@if (Model.Children.Count != 0)
+@if (Model.Children != null && Model.Children.Any())
 {
-   
-<a class="nav-link @(Model.IsActive ? "active": "")" href="#" data-id="@Model.MenuId">
-    @if (!string.IsNullOrWhiteSpace(Model.Icon))
-    {
-        <i class="nav-icon @Model.Icon"></i>
-    }
-    <p>
-        @Language.GetString(Model.MenuTitle)
-        <i class="right fa fa-angle-left"></i>
-    </p>
-</a>
-<ul class="nav nav-treeview">
-    @foreach (var menu in Model.Children)
-    {
-        <li class="nav-item @(menu.IsActive ? "menu-open" : "")">
-            @await Component.InvokeAsync("InnerMenu", menu)
-        </li>
-    }
-</ul>
+    <h2 class="accordion-header py-2"
+        id="@($"heading{Model.MenuId}")">
+        <button aria-controls="@($"collapse{Model.MenuId}")"
+                aria-expanded="false"
+                class="accordion-button collapsed py-2 px-2 fs-6"
+                data-bs-target="@($"#collapse{Model.MenuId}")"
+                data-bs-toggle="collapse"
+                type="button">
+            <i class="@Model.Icon"></i>
+            @Model.MenuTitle
+        </button>
+    </h2>
+
+    <div aria-labelledby="@($"heading{Model.MenuId}")"
+         class="accordion-collapse collapse"
+         id="@($"collapse{Model.MenuId}")">
+
+        <div class="accordion-body">
+
+            <div class="accordion"
+                 id="@($"subMenu{Model.MenuId}")">
+
+                @foreach (MenuLinkModel child in Model.Children.OrderBy(c => c.Priority))
+                {
+                    <div class="accordion-item border-0">
+                        @await Component.InvokeAsync("InnerMenu", child)
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 }
 else
 {
-<a class="nav-link @(Model.IsActive ? "active": "")" href="/@Model.Link" data-id="@Model.MenuId">
-    @if (!string.IsNullOrWhiteSpace(Model.Icon))
-    {
-        <i class="nav-icon @Model.Icon"></i>
-    }
-    <p>
-        @Language.GetString(Model.MenuTitle)
-    </p>
-</a>
-
+    <div class="accordion-item  border-0">
+        <h2 class="accordion-header py-1 px-2 fs-6"
+            id="@($"heading{Model.MenuId}")">
+            <a href="/@Model.Link"
+               class="btn btn-sm fs-6 text-start @(Model.IsActive ? "text-primary" : "")">
+                <i class="@Model.Icon"></i>
+                @Model.MenuTitle
+            </a>
+        </h2>
+    </div>
 }
