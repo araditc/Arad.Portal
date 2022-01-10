@@ -555,7 +555,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             try
             {
                 var userDb = await _userManager.FindByIdAsync(id);
-
+                ViewBag.IsSystem = userDb.IsSystemAccount;
+                ViewBag.LangList = _languageRepository.GetAllActiveLanguage();
                 model = new UserEdit()
                 {
                     Id = userDb.Id.ToString(),

@@ -1615,6 +1615,12 @@
 	<string key="User_Restore">
 		<value>User Restore</value>
 	</string>
+	<string key="User_FullMobile">
+		<value>User FullMobile</value>
+	</string>
+	<string key="User_Role">
+		<value>User Role</value>
+	</string>
 	<string key="FromDate">
 		<value>From Date</value>
 	</string>

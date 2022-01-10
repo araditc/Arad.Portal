@@ -29,7 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\lib\bootstrap-select\" />
     <Folder Include="wwwroot\Files\" />
     <Folder Include="wwwroot\ckEditorContentImages\" />
   </ItemGroup>

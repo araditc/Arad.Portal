@@ -14,18 +14,13 @@
     }
 }
 @section Styles{
-    <style>
-        .card-header {
-            background-color: #e0dcdf;
-        }
-    </style>
     <link href="~/lib/intl-tel-input/css/intlTelInput.css" rel="stylesheet" />
 
 }
 
 
 <div class="row">
-    <div class="col-md-10 offset-md1">
+    <div class="col-md-10 offset-md-1">
         <div class="card" id="editUserCard">
             <div class="card-header">
                 <h3 class="card-title">@Language.GetString("User_Edit")</h3>
@@ -34,68 +29,58 @@
                 <div class="card-body">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    @*<div class="form-group">
-                            <label asp-for="UserName" class="control-label"></label>
-                            <input asp-for="UserName" class="form-control" />
-
-                            <span data-val-result="UserName" class="text-danger"></span>
-                        </div>*@
-                    <div class="form-group">
-                        <input asp-for="Id" type="hidden" class="form-control" />
-                        <label asp-for="PhoneNumber" class="control-label"></label>
-                        <input asp-for="PhoneNumber" type="tel" class="form-control" style="direction:ltr;" />
-                        @*<input id="hidePhone" type="hidden" value="" name="FullMobile" />*@
-                        <span data-val-result="PhoneNumber" class="text-danger"></span>
+                    
+                    <div class="row">
+                        <div class="form-group col-12 col-md-4 p-2">
+                            <input asp-for="Id" type="hidden" class="form-control" />
+                            <label asp-for="PhoneNumber" class="form-label"></label>
+                            <input asp-for="PhoneNumber" type="tel" class="form-control" style="direction:ltr;" />
+                            @*<input id="hidePhone" type="hidden" value="" name="FullMobile" />*@
+                            <span data-val-result="PhoneNumber" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-md-4 p-2">
+                            <label asp-for="FirstName" class="form-label"></label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span data-val-result="UserProfile.FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-md-4 p-2">
+                            <label asp-for="LastName" class="form-label"></label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span data-val-result="UserProfile.LastName" class="text-danger"></span>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="FirstName" class="control-label"></label>
-                        <input asp-for="FirstName" class="form-control" />
-                        <span data-val-result="UserProfile.FirstName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="LastName" class="control-label"></label>
-                        <input asp-for="LastName" class="form-control" />
-                        <span data-val-result="UserProfile.LastName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="UserRoleId" class="control-label"></label>
-                        <select class="form-control select2" asp-for="UserRoleId" asp-items="@(new SelectList(ViewBag.Roles,"Id","Title"))">
-                        </select>
-                        <span data-val-result="UserRoleId" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        @if (dir == "rtl")
-                        {
-                            <label>
-                                <input type="checkbox" asp-for="IsVendor" class="minimal">
-                                @Language.GetString("IsVendor")
-                            </label>
-                        }
-                        else
-                        {
-                            <div class="icheck-primary d-inline">
-                                <input type="checkbox" asp-for="IsVendor">
-                                <label asp-for="IsVendor">
+                    <div class="row">
+                        <div class="form-group col-12 col-md-4 p-2">
+                            <label asp-for="UserRoleId" class="form-label"></label>
+                            <select class="form-select" asp-for="UserRoleId" asp-items="@(new SelectList(ViewBag.Roles,"Id","Title"))">
+                            </select>
+                            <span data-val-result="UserRoleId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-md-4 p-2">
+                            <label class="form-label">@Language.GetString("DefaultLanguage")</label>
+                            <select class="form-select form-select-sm" asp-for="DefaultLanguageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                            </select>
+                            <span data-val-result="DefaultLanguageId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4 col-12 pt-4 pb-2" >
+                            <div class="form-check m-auto d-inline-block">
+                                <input class="form-check-input" type="checkbox" value="IsVendor" asp-for="IsVendor">
+                                <label class="form-check-label" for="IsVendor">
                                     @Language.GetString("IsVendor")
                                 </label>
                             </div>
-                        }
-
-                    </div>
-                    <div class="form-group">
-                        <label>@Language.GetString("DefaultLanguage")</label>
-                        <select class="form-control" id="DefaultLanguageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
-                        </select>
-                        <span data-val-result="DefaultLanguageId" class="text-danger"></span>
+                        </div>
                     </div>
                 </div>
                 <div class="card-footer">
-                    <div class="form-group">
-                        <input type="submit" value="@Language.GetString("btn_Edit")" class="btn btn-block btn-success" />
-                        <a asp-action="List" class="btn btn-block btn-default">@Language.GetString("btn_Back")</a>
+                    <div class="row">
+                        <div class="col-md-4 offset-md-8 col-12">
+                            <input type="submit" value="@Language.GetString("btn_Edit")" class="btn btn-success float-end m-2" />
+                            <a asp-action="List" class="btn btn-primary float-end m-2">@Language.GetString("btn_Back")</a>
+                        </div>
                     </div>
-                </div>
-            </form>
+                    </div>
+</form>
         </div>
     </div>
 </div>

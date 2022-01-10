@@ -1654,6 +1654,12 @@
 	<string key="User_Restore">
 		<value>بازگردانی کاربر</value>
 	</string>
+	<string key="User_FullMobile">
+		<value>شماره موبایل کامل</value>
+	</string>
+	<string key="User_Role">
+		<value>نقش کاربر</value>
+	</string>
 	<string key="FromDate">
 		<value>از تاریخ</value>
 	</string>

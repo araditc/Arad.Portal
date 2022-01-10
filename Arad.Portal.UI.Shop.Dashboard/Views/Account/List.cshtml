@@ -64,7 +64,7 @@
         </div>
     </a>
 
-    <div id="changePassCollapse" class="@userSearchCollapseClass" style="">
+    <div id="changePassCollapse" class="@userSearchCollapseClass" >
         <div class="card-body">
                 <div class="row">
 
@@ -100,7 +100,7 @@
         </div>
         <div class="card-footer">
             <div class="row">
-                <div class="col-md-3 offset-10">
+                <div class="col-md-2 offset-md-10 col-12">
                     <button id="btnLoad" class="btn btn-primary float-end" type="submit">@Language.GetString("btn_Find")</button>
                 </div>
             </div>
@@ -111,7 +111,7 @@
 
 
 <div class="card">
-    <div class="card-header" style='background-color: #F8EDED;'>
+    <div class="card-header alert alert-secondary">
         <div class="row">
             <div class="col-md-3">
                 <h5 class="card-title">@Language.GetString("PermissionTitle_UserManagement")</h5>
@@ -130,8 +130,8 @@
        
        
     </div>
-    <div class="card-body" id="userListCard">
-        <table id="userListTbl" class="table table-bordered table-striped">
+    <div class="card-body table-responsive" id="userListCard">
+        <table id="userListTbl" class="table table-bordered table-striped align-middle">
             <thead>
                 <tr>
                     <th class="userListCell">@Language.GetString("tbl_RowName")</th>

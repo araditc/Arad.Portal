@@ -51,7 +51,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="Arad Portal" name="description">
     <title>@ViewData["Title"] - Arad.Portal.UI.Dashboard</title>
-    
+
 
     @if (direction == "ltr")
     {
@@ -70,7 +70,7 @@
             <link href="~/css/persian-datepicker.min.css" rel="stylesheet" />*@
     }
 
-    <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
+    @*<link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />*@
     <link href="~/css/site.css" rel="stylesheet" />
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
     @*<link href="~/css/siteTemplate/shared/AdminLTE/adminlte.css" rel="stylesheet" />*@
@@ -102,7 +102,7 @@
         </style>
         @await RenderSectionAsync("Scripts", required: false);*@
 </head>
-<body>
+<body class="fs-6">
     <header class="navbar navbar-light shadow navbar-expand flex-md-nowrap p-0 m-0">
         <div class="container-fluid">
             <div class="navbar-brand col-md-3 me-0">

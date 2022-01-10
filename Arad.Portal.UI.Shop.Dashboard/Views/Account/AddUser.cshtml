@@ -27,7 +27,7 @@
         }
     </style>
     <link href="~/lib/intl-tel-input/css/intlTelInput.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/lib/iCheck/skins/all.css">
+   
 }
 
 
@@ -42,107 +42,107 @@
             <form role="form" id="addUserFrm" asp-action="Add" asp-controller="Account" method="post">
                 <div class="card-body">
                     <div class="row">
-                        <div class="form-group col-md-3">
-                            <label for="Name">@Language.GetString("User_FirstName")</label>
+                        <div class="form-group col-12 col-md-4 p-2">
+                            <label for="Name" class="form-label">@Language.GetString("User_FirstName")</label>
                             <input asp-for="Name" type="text" class="form-control" placeholder=" ">
                             <span data-val-result="Name" class="text-danger"></span>
                         </div>
-                        <div class="form-group col-md-3">
-                            <label for="LastName">@Language.GetString("User_LastName")</label>
+                        <div class="form-group col-12 col-md-4 p-2">
+                            <label for="LastName" class="form-label">@Language.GetString("User_LastName")</label>
                             <input asp-for="LastName" type="text" class="form-control" placeholder=" ">
                             <span data-val-result="LastName" class="text-danger"></span>
                         </div>
-                        <div class="form-group col-md-3">
-                            <label for="UserName">@Language.GetString("User_UserName")</label>
+                        <div class="form-group col-12 col-md-4 p-2">
+                            <label asp-for="UserName" class="form-label">@Language.GetString("User_UserName")</label>
                             <input asp-for="UserName" type="text" class="form-control" placeholder=" " autocomplete="off">
                             <span data-val-result="UserName" class="text-danger"></span>
                         </div>
-                        <div class="form-group col-md-3">
-                            <label for="PhoneNumber">@Language.GetString("User_PhoneNumber")</label><br />
+                      
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12 col-md-4 p-2">
+                            <label for="Password" class="form-label">@Language.GetString("User_Password")</label>
+                            <input asp-for="Password" type="password" class="form-control" placeholder=" " autocomplete="new-password">
+                            <span data-val-result="Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-md-4 p-2">
+                            <label for="RePassword">@Language.GetString("User_RePassword")</label>
+                            <input asp-for="RePassword" type="password" class="form-control" placeholder=" " autocomplete="new-password">
+                            <span data-val-result="RePassword" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-md-4 p-2">
+                            <label asp-for="PhoneNumber" class="form-label">@Language.GetString("User_PhoneNumber")</label><br />
                             <input asp-for="PhoneNumber" type="tel" class="form-control" placeholder=" "><br />
                             <span data-val-result="PhoneNumber" class="text-danger"></span>
                             <input id="hidePhone" type="hidden" value="" name="FullMobile" />
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group col-md-3">
-                            <label for="Password">@Language.GetString("User_Password")</label>
-                            <input asp-for="Password" type="password" class="form-control" placeholder=" " autocomplete="new-password">
-                            <span data-val-result="Password" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="RePassword">@Language.GetString("User_RePassword")</label>
-                            <input asp-for="RePassword" type="password" class="form-control" placeholder=" " autocomplete="new-password">
-                            <span data-val-result="RePassword" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="IsActive">@Language.GetString("ActivationState")</label><br />
-                            <input @(Model.IsActive ? "checked" : false) asp-for="IsActive" type="radio"
-                                   value="true" class="flat-red"><span>@Language.GetString("Active")</span></input>
-                                <input @(!Model.IsActive ? "checked" : false) asp-for="IsActive" type="radio"
-                                       value="false" class="flat-red"><span>@Language.GetString("InActive")</span></input>
-                                    <span data-val-result="IsActive" class="text-danger"></span>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label for="UserRoleId">@Language.GetString("User_Roles")</label>
-                                    <select class="form-control select2" asp-for="UserRoleId" asp-items="@(new SelectList(Model.Roles, "Id", "Title"))">
-                                    </select>
-                                    <span data-val-result="UserRoleId" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-3" style="text-align:center;margin:auto;">
-                                    <div style="margin:auto;display:inline-block;">
-                                        @if (dir == "rtl")
-                                        {
-                                            <label>
-                                                <input type="checkbox" asp-for="IsVendor" class="minimal">
-                                                @Language.GetString("IsVendor")
-                                            </label>
-                                        }
-                                        else
-                                        {
-                                            <div class="icheck-primary d-inline">
-                                                <input type="checkbox" asp-for="IsVendor">
-                                                <label asp-for="IsVendor">
-                                                    @Language.GetString("IsVendor")
-                                                </label>
-                                            </div>
-                                        }
-                                    </div>
-                                </div>
 
-                                <div class="form-group col-md-3">
-                                    <label>@Language.GetString("DefaultLanguage")</label>
-                                    <select class="form-control" asp-for="DefaultLanguageId" asp-items="@(new SelectList(ViewBag.LangList, "Value", "Text"))">
-                                    </select>
-                                    <span data-val-result="DefaultLanguageId" class="text-danger"></span>
+                    <div class="row">
+                        <div class="form-group col-12 col-md-4 p-2">
+                            <label asp-for="UserRoleId" class="form-label">@Language.GetString("User_Roles")</label>
+                            <select class="form-select" asp-for="UserRoleId" asp-items="@(new SelectList(Model.Roles, "Id", "Title"))">
+                            </select>
+                            <span data-val-result="UserRoleId" class="text-danger"></span>
+                        </div>
+                       
+                        <div class="form-group col-12 col-md-4 p-2">
+                            <div class="row p-2">
+                                <label asp-for="IsActive" class="form-label">@Language.GetString("ActivationState")</label>
+                                <div class="form-check col-4">
+                                    <input class="form-check-input" type="radio" asp-for="IsActive" value="true">
+                                    <label class="form-check-label" asp-for="IsActive">
+                                        @Language.GetString("Active")
+                                    </label>
                                 </div>
-                                @{
-                                    if (Convert.ToBoolean(ViewBag.IsSystem))
-                                    {
-                                        <div class="form-group col-md-3">
-                                            <label>@Language.GetString("AssociatedDomain")</label>
-                                            <select class="form-control" asp-for="DomainId" asp-items="@(new SelectList(ViewBag.DomainList, "Value", "Text"))">
-                                            </select>
-                                            <span data-val-result="DomainId" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="form-group col-md-6">
-                                        </div>
-                                    }
-                                }
+                                <div class="form-check col-12 col-md-4">
+                                    <input class="form-check-input" type="radio" asp-for="IsActive" value="false">
+                                    <label class="form-check-label" asp-for="IsActive">
+                                        @Language.GetString("InActive")
+                                    </label>
+                                </div>
+                                <span data-val-result="IsActive" class="text-danger"></span>
                             </div>
+                        </div>
+
+                        <div class="form-group col-12 col-md-4 pt-4 pb-2" >
+                            <div class="form-check m-auto d-inline-block">
+                                <input class="form-check-input" type="checkbox" value="IsVendor" asp-for="IsVendor">
+                                <label class="form-check-label" for="IsVendor">
+                                    @Language.GetString("IsVendor")
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4 p-2">
+                            <label asp-for="DefaultLanguageId">@Language.GetString("DefaultLanguage")</label>
+                            <select class="form-select" asp-for="DefaultLanguageId" asp-items="@(new SelectList(ViewBag.LangList, "Value", "Text"))">
+                            </select>
+                            <span data-val-result="DefaultLanguageId" class="text-danger"></span>
+                        </div>
+                        @{
+                            if (Convert.ToBoolean(ViewBag.IsSystem))
+                            {
+                                <div class="form-group col-md-4 p-2">
+                                    <label>@Language.GetString("AssociatedDomain")</label>
+                                    <select class="form-select" asp-for="DomainId" asp-items="@(new SelectList(ViewBag.DomainList, "Value", "Text"))">
+                                    </select>
+                                    <span data-val-result="DomainId" class="text-danger"></span>
+                                </div>
+                            }
+
+                        }
+                    </div>
                         </div>
 
                         <div class="card-footer">
                             <div class="row">
-                                <input type="submit" value="@Language.GetString("btn_Add")" class="btn btn-block btn-success" />
-                                <a asp-action="List" class="btn btn-block btn-default">@Language.GetString("btn_Back")</a>
+                                <div class="col-md-4 offset-md-8 col-12">
+                                    <a asp-action="List" class="btn btn-primary float-end m-2">@Language.GetString("btn_Back")</a>
+                                    <input type="submit" value="@Language.GetString("btn_Add")" class="btn btn-success float-end m-2" />
+                                </div>
                             </div>
                         </div>
 
@@ -158,7 +158,6 @@
             <script src="~/lib/intl-tel-input/js/intlTelInput-jquery.min.js"></script>
             <script src="~/lib/intl-tel-input/js/intlTelInput.js"></script>
             <script src="~/lib/MD.BootstrapPersianDateTimePicker/dist/jquery.md.bootstrap.datetimepicker.js"></script>
-            <script src="~/lib/iCheck/icheck.min.js"></script>
 
             <script type="text/javascript">
             $(document).ready(function () {
