@@ -138,7 +138,7 @@
         <div class="row">
             <form class="w-100 mt-2">
                 <textarea class="form-control dir w-100 bg-light" id="commentPart" rows="3" placeholder="@Language.GetString("AlertAndMessage_WriteComment")"></textarea>
-                <input type="button" class="btn btn-info mt-2" id="btnAddComment" value="@Language.GetString("btn_Insert")" />
+                <input type="button" class="btn btn-info bg-gradient mt-2" id="btnAddComment" value="@Language.GetString("btn_Insert")" />
             </form>
 
         </div>
@@ -240,7 +240,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4 offset-md-8">
-                                <input type="button" id="btnAddToCart" class="btn btn-dark" prid="@Model.ProductId"
+                                <input type="button" id="btnAddToCart" class="btn btn-dark bg-gradient" prid="@Model.ProductId"
                                        value="@Language.GetString("btn_AddToShoppingCart")" />
                             </div>
                         </div>
@@ -249,10 +249,10 @@
                     {
                         <div class="row">
                             <div class="col-md-3 offset-3">
-                                <button class="btn btn-light" disabled>@Language.GetString("UnAvailable")</button>
+                                <button class="btn btn-light bg-gradient" disabled>@Language.GetString("UnAvailable")</button>
                             </div>
                             <div class="col-md-3">
-                                <button class="btn btn-danger" >@Language.GetString("btn_InformMe")</button>
+                                <button class="btn btn-danger bg-gradient" >@Language.GetString("btn_InformMe")</button>
                             </div>
                         </div>
                     }

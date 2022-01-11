@@ -43,8 +43,8 @@ else
     <div class="accordion-item  border-0">
         <h2 class="accordion-header py-1 px-2 fs-6"
             id="@($"heading{Model.MenuId}")">
-            <a href="/@Model.Link"
-               class="btn btn-sm fs-6 text-start @(Model.IsActive ? "text-primary" : "")">
+            <a href="@Model.Link"
+               class="btn btn-sm bg-gradient fs-6 text-start @(Model.IsActive ? "text-primary" : "")">
                 <i class="@Model.Icon"></i>
                 @Model.MenuTitle
             </a>

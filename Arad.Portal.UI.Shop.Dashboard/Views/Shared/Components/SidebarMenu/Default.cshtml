@@ -13,8 +13,8 @@
                 <div class="accordion-item border-0">
                     <h2 class="accordion-header py-1"
                         id="@($"heading{item.MenuId}")">
-                        <a href="/@item.Link"
-                           class="btn btn-sm fs-6 text-start text-nowrap lh-lg @(item.IsActive ? "text-primary" : "")">
+                        <a href="@item.Link"
+                           class="btn btn-sm fs-6 bg-gradient text-start text-nowrap lh-lg @(item.IsActive ? "text-primary" : "")">
                             <i class="@item.Icon"></i>
                             @item.MenuTitle
                         </a>

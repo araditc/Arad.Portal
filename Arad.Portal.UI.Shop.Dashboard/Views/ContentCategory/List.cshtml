@@ -24,7 +24,7 @@
     {
         langId = ViewBag.DefLangId;
     }
-    var searchCollapseClass = isSearch ? "panel-collapse in collapse show" : "panel-collapse in collapse";
+    var searchCollapseClass = isSearch ? "collapse show" : "collapse";
     var dir = "";
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
     {
@@ -35,30 +35,22 @@
         dir = "ltr";
     }
 }
-@section Styles
-{
-    <style>
-        .ListCell {
-            text-align: center;
-            vertical-align: middle;
-        }
-    </style>
-}
+
 
 <div class="card card-dark">
-    <a data-toggle="collapse" data-parent="#accordion" href="#searchCollapse" aria-expanded="@(!isSearch ? "false" : "true" )" class="@(!isSearch ? " collapsed" : null)">
+    <a data-bs-toggle="collapse" role="button" href="#searchCollapse" aria-expanded="@(!isSearch ? "false" : "true" )" class="@(!isSearch ? " collapsed" : null)">
 
         <div class="card-header">
-            <h3 class="card-title">
-                <i class="fas fa-search"></i>
-                <span style="margin-right: 5px">@Language.GetString("btn_Search")</span>
-            </h3>
+            <h5 class="card-title">
+                <i class="fas fa-search">
+                    <span>@Language.GetString("btn_Search")</span>
+                </i>
+            </h5>
         </div>
     </a>
 
-    <div id="searchCollapse" @*class="@searchCollapseClass"*@ style="">
+    <div id="searchCollapse" class="@searchCollapseClass" >
         <div class="card-body">
-            <div id="accordion">
                 <div class="row">
 
                     <div class="form-group col-md-3">
@@ -67,24 +59,30 @@
                         </select>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
 </div>
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">@Language.GetString("Menu_ContentCategory")</h3>
-        <div class="card-tools" style='@(dir=="rtl" ? "float:left;" : "float:right;")'>
-            @if (ViewBag.Permissions["Add"])
-            {
-                <a asp-action="AddEdit" asp-controller="ContentCategory"  class="btn btn-success btn-sm">
-                    <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus"></i>&nbsp; @Language.GetString("btn_Add")
-                </a>
-            }
+        <div class="row">
+            <div class="col-md-3">
+                <h5 class="card-title">@Language.GetString("Menu_ContentCategory")</h5>
+            </div>
+            <div class="col-md-3 offset-md-6">
+                <div class="card-tools float-end">
+                    @if (ViewBag.Permissions["Add"])
+                    {
+                        <a asp-action="AddEdit" asp-controller="ContentCategory" class="btn btn-success btn-sm bg-gradient">
+                            <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus"></i>&nbsp; @Language.GetString("btn_Add")
+                        </a>
+                    }
+                </div>
+            </div>
         </div>
+       
     </div>
-    <div class="card-body table-bordered  table-responsive p-0" id="contentCategoryListCard">
-        <table class="table table-hover">
+    <div class="card-body table-responsive" id="contentCategoryListCard">
+        <table class="table table-bordered table-striped align-middle">
             <thead>
                 <tr style="text-align:center;">
                     <th>@Language.GetString("tbl_RowName")</th>
@@ -108,19 +106,19 @@
                     <td>
                         @if (ViewBag.Permissions["Edit"])
                         {
-                            <a asp-action="AddEdit" asp-controller="ContentCategory" asp-route-id="@item.ContentCategoryId" class="btn btn-sm btn-info">
+                            <a asp-action="AddEdit" asp-controller="ContentCategory" asp-route-id="@item.ContentCategoryId" class="btn btn-sm btn-info bg-gradient">
                                 <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                             </a>
                         }
                         @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
                         {
-                            <button onclick="EntityDelete('@item.ContentCategoryId')" class="btn btn-sm btn-danger">
+                            <button onclick="EntityDelete('@item.ContentCategoryId')" class="btn btn-sm btn-danger bg-gradient">
                                 <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
                             </button>
                         }
                         @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
                         {
-                            <button id="restoreRecord" data-id="@item.ContentCategoryId" onclick="EntityRestore('@item.ContentCategoryId')" class="btn btn-sm btn-warning">
+                            <button id="restoreRecord" data-id="@item.ContentCategoryId" onclick="EntityRestore('@item.ContentCategoryId')" class="btn btn-sm btn-warning bg-gradient">
                                 <i style="position: relative;left: 5px;top: 2px;" class="fa fa-refresh"></i>
                                 @Language.GetString("btn_Restore")
                             </button>
@@ -132,7 +130,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="9" class="ListCell">
+                        <td colspan="5" class="ListCell">
                             <h6>@Language.GetString("AlertAndMessage_NoDataToShow")</h6>
                         </td>
                     </tr>

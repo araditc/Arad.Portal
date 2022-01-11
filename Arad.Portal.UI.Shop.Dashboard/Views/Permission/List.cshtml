@@ -21,29 +21,27 @@
         dir = "ltr";
     }
 }
-@section Styles
-{
-    <style>
-        .ListCell {
-            text-align: center;
-            vertical-align: middle;
-        }
-    </style>
-}
+
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">@Language.GetString("Menu_Permissions")</h3>
-        <div class="card-tools" style='@(dir=="rtl" ? "float:left;" : "float:right;")'>
-            @if (ViewBag.Permissions["Add"])
-            {
-                <a asp-action="AddEdit" class="btn btn-success btn-sm">
-                    <i style="position: relative;left: 5px;top: 2px;" class="fa fa-plus"></i>@Language.GetString("btn_Add")
-                </a>
-            }
+        <div class="row">
+            <div class="col-md-3">
+                <h5 class="card-title">@Language.GetString("Menu_Permissions")</h5>
+            </div>
+            <div class="col-md-3 offset-md-6">
+                <div class="card-tools" style='@(dir=="rtl" ? "float:left;" : "float:right;")'>
+                    @if (ViewBag.Permissions["Add"])
+                    {
+                        <a asp-action="AddEdit" class="btn btn-success btn-sm bg-gradient">
+                            <i style="position: relative;left: 5px;top: 2px;" class="fa fa-plus"></i>@Language.GetString("btn_Add")
+                        </a>
+                    }
+                </div>
+            </div>
         </div>
     </div>
-    <div class="card-body table-bordered  table-responsive p-0" id="permissionListCard">
-        <table class="table table-hover">
+    <div class="card-body table-responsive" id="permissionListCard">
+        <table class="table table-bordered table-striped align-middle">
             <thead>
                 <tr style="text-align:center;">
                     <th>@Language.GetString("tbl_RowName")</th>
@@ -51,7 +49,7 @@
                     <th>@Language.GetString("Permission_Type")</th>
                     <th>@Language.GetString("Permission_Method")</th>
                     <th>@Language.GetString("Permission_ClientAddress")</th>
-                    <th>@Language.GetString("Permission_Routes")</th>
+                    @*<th>@Language.GetString("Permission_Routes")</th>*@
                     <th></th>
                 </tr>
             </thead>
@@ -67,25 +65,25 @@
                             <td class="ListCell">@item.Type</td>
                             <td class="ListCell">@item.Method</td>
                             <td class="ListCell">@item.ClientAddress</td>
-                            <td class="ListCell">@item.Routes</td>
+                            @*<td class="ListCell text-break">@item.Routes</td>*@
                             <td>
 
                                 @if (ViewBag.Permissions["Edit"])
                                 {
-                                    <a asp-action="AddEdit" asp-controller="Permission" asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                                    <a asp-action="AddEdit" asp-controller="Permission" asp-route-id="@item.Id" class="btn btn-sm btn-info bg-gradient">
                                         <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                                     </a>
                                 }
                                 @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
                                 {
-                                    <button onclick="PermissionDelete('@item.Id')" class="btn btn-sm btn-danger">
+                                    <button onclick="PermissionDelete('@item.Id')" class="btn btn-sm btn-danger bg-gradient">
                                         <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
                                     </button>
                                 }
 
                                 @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
                                 {
-                                <button id="restoreRecord" data-id="@item.Id" onclick="PermissionRestore('@item.Id')" class="btn btn-sm btn-warning">
+                                <button id="restoreRecord" data-id="@item.Id" onclick="PermissionRestore('@item.Id')" class="btn btn-sm btn-warning bg-gradient">
                                     <i style="position: relative;left: 5px;top: 2px;" class="fa fa-refresh"></i>
                                     @Language.GetString("btn_Restore")
                                 </button>
@@ -97,7 +95,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="7" class="ListCell">
+                        <td colspan="6" class="ListCell">
                             <h6>@Language.GetString("AlertAndMessage_NoDataToShow")</h6>
                         </td>
                     </tr>

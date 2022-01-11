@@ -31,7 +31,7 @@
             font-size: 12px;
         }
 
-        .btn-circle {
+        .rounded-circle {
             width: 30px;
             height: 30px;
             padding: 6px 0px;
@@ -112,9 +112,9 @@
             </div>
             <div class="modal-footer justify-content-center align-items-center">
                 <div>
-                    <button class="btn btn-success" id="send_pic" type="button"><i style="margin-left: 5px;font-size:13px" class="fas fa-check"></i>@Language.GetString("btn_Approve")</button>
-                    <button class="btn btn-primary" id="crop_button"><i style="margin-left: 5px;font-size:13px" class="fas fa-cut"></i>@Language.GetString("btn_Crop")</button>
-                    <button class="btn btn-primary" style="background-color: crimson;color: white;border: 1px solid crimson" onclick="rotatePic()"> <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i> @Language.GetString("btn_Rotate")</button>
+                    <button class="btn btn-success bg-gradient" id="send_pic" type="button"><i style="margin-left: 5px;font-size:13px" class="fas fa-check"></i>@Language.GetString("btn_Approve")</button>
+                    <button class="btn btn-primary bg-gradient" id="crop_button"><i style="margin-left: 5px;font-size:13px" class="fas fa-cut"></i>@Language.GetString("btn_Crop")</button>
+                    <button class="btn btn-primary bg-gradient" style="background-color: crimson;color: white;border: 1px solid crimson" onclick="rotatePic()"> <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i> @Language.GetString("btn_Rotate")</button>
 
                 </div>
             </div>
@@ -260,7 +260,7 @@
                                     </div>
                                     <div class="form-group col-md-1" style="text-align:center;margin:auto;">
                                         <div style="margin:auto;display:inline-block;">
-                                            <button type="button" class="btn btn-info btn-circle" onclick="addSpecToList();">
+                                            <button type="button" class="btn btn-info rounded-circle bg-gradient" onclick="addSpecToList();">
                                                 <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
                                             </button>
                                         </div>
@@ -300,7 +300,7 @@
                                                             <td style="display:none;">@item.SpecificationId</td>
                                                             <td>@item.Values</td>
                                                             <td>
-                                                                <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromSpecList(this)">
+                                                                <button type="button" class="btn btn-danger rounded-circle bg-gradient" onclick="deleteFromSpecList(this)">
                                                                     <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
                                                                 </button>
                                                             </td>
@@ -383,7 +383,7 @@
                                     </div>
                                     <div class="form-group col-md-3" style="text-align:center;margin:auto;">
                                         <div style="margin:auto;display:inline-block;">
-                                            <button type="button" class="btn btn-info btn-circle" onclick="addToTable();">
+                                            <button type="button" class="btn btn-info rounded-circle bg-gradient" onclick="addToTable();">
                                                 <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
                                             </button>
                                         </div>
@@ -422,7 +422,7 @@
                                                             <td>@item.Description</td>
                                                             <td>@item.UrlFriend</td>
                                                             <td>
-                                                                <button type="button" class="btn btn-danger btn-circle btnDel" cnt="@item.Tag"  onclick="deleteFromTable(this);">
+                                                                <button type="button" class="btn btn-danger rounded-circle btnDel bg-gradient" cnt="@item.Tag"  onclick="deleteFromTable(this);">
                                                                     <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
                                                                 </button>
                                                             </td>
@@ -489,7 +489,7 @@
                                     </div>
                                     <div class="form-group col-md-1" style="text-align:center;margin:auto;">
                                         <div style="margin:auto;display:inline-block;">
-                                            <button type="button" class="btn btn-info btn-circle" onclick="addPriceToList();">
+                                            <button type="button" class="btn btn-info rounded-circle bg-gradient" onclick="addPriceToList();">
                                                 <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
                                             </button>
                                         </div>
@@ -527,7 +527,7 @@
                                                             <td>@price.EndDate</td>
                                                             <td>@(price.IsActive ? Language.GetString("Active") : Language.GetString("InActive")) </td>
                                                             <td>
-                                                                <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromPriceList(this);">
+                                                                <button type="button" class="btn btn-danger rounded-circle bg-gradient" onclick="deleteFromPriceList(this);">
                                                                     <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
                                                                 </button>
                                                             </td>
@@ -560,8 +560,8 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="custom-file">
-                                            <input style="width: -webkit-fill-available;" accept="image/x-png,image/jpeg"
-                                                   type="file" class="btn btn-sm" name="image" id="image" onchange="getURL(this)">
+                                            <input  accept="image/x-png,image/jpeg"
+                                                   type="file" class="btn btn-sm bg-gradient" name="image" id="image" onchange="getURL(this)">
                                             <label class="custom-file-label" for="image">@Language.GetString("btn_UploadImage")</label>
                                         </div>
                                     </div>
@@ -600,7 +600,7 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                            <button type="button" class="btn btn-danger btn-circle" imgId="@pic.ImageId" onclick="deleteFromImageList(this);">
+                                                            <button type="button" class="btn btn-danger rounded-circle bg-gradient" imgId="@pic.ImageId" onclick="deleteFromImageList(this);">
                                                                 <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
                                                             </button>
                                                         </td>
@@ -620,8 +620,8 @@
             </div>
             <div class="card-footer">
                 <div class="row">
-                    <input type="button" id="btnAddProduct" value="@Language.GetString("btn_Save")" class="btn btn-block btn-success" />
-                    <a asp-action="List" class="btn btn-block btn-primary">@Language.GetString("btn_Back")</a>
+                    <input type="button" id="btnAddProduct" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient" />
+                    <a asp-action="List" class="btn btn-primary bg-gradient">@Language.GetString("btn_Back")</a>
                 </div>
             </div>
         </div>
@@ -849,13 +849,13 @@
                     "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
                     "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
                     "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
-                    "'/></td><td style='vertical-align:middle;'><input type='radio'  name='isMainImage' class='minimal rdbIsMain'></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger btn-circle' onclick='deleteFromImageList(this);'><i class='fa fa-minus' style='position:relative;padding: 3px;'></i></button></td></tr>";
+                    "'/></td><td style='vertical-align:middle;'><input type='radio'  name='isMainImage' class='minimal rdbIsMain'></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger rounded-circle bg-gradient' onclick='deleteFromImageList(this);'><i class='fa fa-minus' style='position:relative;padding: 3px;'></i></button></td></tr>";
             } else {
                  tr = "<tr><td><img imgId='img_" + counter + "' src='" + model.Content +
                     "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
                     "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
                     "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
-                    "'/></td><td style='vertical-align:middle;'><div class='icheck-primary d-inline'><input type='radio'  name='isMainImage' class='rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger btn-circle' onclick='deleteFromImageList(this);'><i class='fa fa-minus' style='position:relative;padding: 3px;'></i></button></td></tr>";
+                    "'/></td><td style='vertical-align:middle;'><div class='icheck-primary d-inline'><input type='radio'  name='isMainImage' class='rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger rounded-circle bg-gradient' onclick='deleteFromImageList(this);'><i class='fa fa-minus' style='position:relative;padding: 3px;'></i></button></td></tr>";
 
             }
             $("#imageList").append(tr);
@@ -1032,7 +1032,7 @@
                     "</td><td>" + $('#priceValue').val() +
                     "</td><td style='direction:ltr;'>" + $("#dtpStartDate").val() +
                     "</td><td></td><td>" + active +
-                    "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' onclick='deleteFromPriceList(this);'>" +
+                    "</td><td><button type='button' class='btn btn-sm btn-danger rounded-circle bg-gradient' onclick='deleteFromPriceList(this);'>" +
                     "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
                 if ($("#priceList tr").length == 1 && $("#priceList tr")[0].children.length == 1) {
                        $("#priceList tr")[0].remove();
@@ -1089,7 +1089,7 @@
                 "</td><td>" + $("#specificationId option:selected").text() +
                 "</td><td style='display:none;'>" + $("#specificationId").val() +
                 "</td><td>" + vals 
-                "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' onclick='deleteFromSpecList(this)'>" +
+                "</td><td><button type='button' class='btn btn-sm btn-danger rounded-circle bg-gradient' onclick='deleteFromSpecList(this)'>" +
                 "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
 
 
@@ -1251,7 +1251,7 @@
                 "</td><td>" + $("#seoDescription").val() +
                 "</td><td>" + $("#description").val() +
                 "</td><td>" + $("#urlFriend").val() +
-                "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' cnt='" + obj.Tag + "' onclick='deleteFromTable(this);'>" +
+                "</td><td><button type='button' class='btn btn-sm btn-danger rounded-circle bg-gradient' cnt='" + obj.Tag + "' onclick='deleteFromTable(this);'>" +
                 "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
     
             if ($("#multiLingualList tr").length == 1 && $("#multiLingualList tr")[0].children.length == 1) {

@@ -150,7 +150,7 @@
                                     onclick="resendCode()"
                                     id="btnResendCode"
                                     style="width: 165px;"
-                                    class="btn btn-primary">
+                                    class="btn btn-primary bg-gradient">
                                 @Language.GetString("Action_ResendCode")
                             </button>
                         </div>
@@ -195,14 +195,14 @@
                         <button type="button"
                                 onclick="receiveCode()"
                                 id="btnReceiveCode"
-                                class="btn btn-primary btn-block">
+                                class="btn btn-primary bg-gradient">
                             @Language.GetString("Action_Next")
                         </button>
                     </div>
 
                     <div class="row step2">
                         <button type="submit"
-                                class="btn btn-primary btn-block"
+                                class="btn btn-primary bg-gradient"
                                 disabled="disabled"
                                 id="btnSubmit">
                             @Language.GetString("Action_Register")
@@ -213,7 +213,7 @@
                     <span class="textInSeparator">@Language.GetString("TextAndPlaceholder_Or")</span>
                 </div>
                 <a asp-action="Login"
-                   class="btnbtn-primarybtn-block">
+                   class="btn btn-primary bg-gradient">
                     @Language.GetString("Action_AlreadyUserName")
                 </a>
             </div>

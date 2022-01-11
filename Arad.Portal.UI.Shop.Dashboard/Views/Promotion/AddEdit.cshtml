@@ -21,7 +21,7 @@
             font-size: 12px;
         }
 
-        .btn-circle {
+        .rounded-circle {
             width: 30px;
             height: 30px;
             padding: 6px 0px;
@@ -145,7 +145,7 @@
                                             <td>@item.AffectedProductName</td>
                                             <td style="display:none;">@item.AffectedProductId</td>
                                             <td>
-                                                <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromList(this);">
+                                                <button type="button" class="btn btn-danger rounded-circle bg-gradient" onclick="deleteFromList(this);">
                                                     <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
                                                 </button>
                                             </td>
@@ -247,8 +247,8 @@
             </div>
             <div class="card-footer">
                 <div class="row">
-                    <input type="button" id="btnAddPromotion" value="@Language.GetString("btn_Save")" class="btn btn-success" />
-                    <a asp-action="List" class="btn btn-primary">@Language.GetString("btn_Back")</a>
+                    <input type="button" id="btnAddPromotion" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient" />
+                    <a asp-action="List" class="btn btn-primary bg-gradient">@Language.GetString("btn_Back")</a>
                 </div>
             </div>
 
@@ -464,7 +464,7 @@
                           $("#firstRow").append(productSection);
                           $("#productId").selectpicker();
                           $("#firstRow").append("<div class='col-md-1' style='margin-top:1%;' id='addButtonSection'><div style='margin:auto;display:inline-block;'>" +
-                              "<button type='button' class='btn btn-info btn-circle' onclick='addProductToPromotion()'>" +
+                              "<button type='button' class='btn btn-info rounded-circle bg-gradient' onclick='addProductToPromotion()'>" +
                               "<i class='fa fa-plus' style='position: relative;padding: 3px;'></i></botton></div></div>");
                          /* $("#addButtonSection").css("display", "block");*/
                           }
@@ -767,7 +767,7 @@
                     + "</td><td style='display:none;'>" + $("#productGroupId").val()
                     + "</td><td>" + $("#productId option:selected").text()
                     +"</td><td style='display:none;'>" + $("#productId").val()
-                    + "</td><td><button type='button' class='btn btn-danger btn-circle' onclick='deleteFromList(this);'><i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
+                    + "</td><td><button type='button' class='btn btn-danger rounded-circle bg-gradient' onclick='deleteFromList(this);'><i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
                 if ($("#infoList tr").length == 1 && $("#infoList tr")[0].children.length == 1) {
                     $("#infoList tr")[0].remove();
                 }

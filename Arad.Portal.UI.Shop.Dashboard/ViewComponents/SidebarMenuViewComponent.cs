@@ -46,10 +46,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
                 var req = _accessor.HttpContext.Request;
                 var obj = new RequestMenuModel()
                 {
-                    PathString = $"{req.RouteValues["controller"]}/{req.RouteValues["action"]}",
+                    PathString = req.Path,
                     Domain = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}"
                 };
 
+                
                 if (userId != null)
                 {
                     menues = await _permissionRepository.ListOfMenues(userId,obj.PathString, obj.Domain);

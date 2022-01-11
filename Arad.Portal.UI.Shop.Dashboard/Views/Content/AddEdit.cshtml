@@ -35,7 +35,7 @@
             font-size: 12px;
         }
 
-        .btn-circle {
+        .rounded-circle {
             width: 30px;
             height: 30px;
             padding: 6px 0px;
@@ -121,7 +121,7 @@
                 font-size: 12px;
             }
 
-            .btn-circle {
+            .rounded-circle {
                 width: 30px;
                 height: 30px;
                 padding: 6px 0px;
@@ -197,9 +197,9 @@
             </div>
             <div class="modal-footer justify-content-center align-items-center">
                 <div>
-                    <button class="btn btn-success" id="send_pic" type="button"><i style="margin-left: 5px;font-size:13px" class="fas fa-check"></i>@Language.GetString("btn_Approve")</button>
-                    <button class="btn btn-primary" id="crop_button"><i style="margin-left: 5px;font-size:13px" class="fas fa-cut"></i>@Language.GetString("btn_Crop")</button>
-                    <button class="btn btn-primary" style="background-color: crimson;color: white;border: 1px solid crimson" onclick="rotatePic()">
+                    <button class="btn btn-success bg-gradient" id="send_pic" type="button"><i style="margin-left: 5px;font-size:13px" class="fas fa-check"></i>@Language.GetString("btn_Approve")</button>
+                    <button class="btn btn-primary bg-gradient" id="crop_button"><i style="margin-left: 5px;font-size:13px" class="fas fa-cut"></i>@Language.GetString("btn_Crop")</button>
+                    <button class="btn btn-primary bg-gradient" style="background-color: crimson;color: white;border: 1px solid crimson" onclick="rotatePic()">
                         <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i> @Language.GetString("btn_Rotate")
                     </button>
 
@@ -339,8 +339,8 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="custom-file">
-                                            <input style="width: -webkit-fill-available;" accept="image/x-png,image/jpeg"
-                                                   type="file" class="btn btn-sm" name="image" id="image" onchange="getURL(this)">
+                                            <input  accept="image/x-png,image/jpeg"
+                                                   type="file" class="btn btn-sm bg-gradient" name="image" id="image" onchange="getURL(this)">
                                             <label class="custom-file-label" for="image">@Language.GetString("btn_UploadImage")</label>
                                         </div>
                                     </div>
@@ -379,7 +379,7 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                            <button type="button" class="btn btn-danger btn-circle" imgId="@($"img_{@pic.ImageId}")" onclick="deleteFromImageList(this);">
+                                                            <button type="button" class="btn btn-danger bg-gradient rounded-circle" imgId="@($"img_{@pic.ImageId}")" onclick="deleteFromImageList(this);">
                                                                 <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
                                                             </button>
                                                         </td>
@@ -434,8 +434,8 @@
             </div>
             <div class="card-footer">
                 <div class="row">
-                    <input type="button" id="btnAddContent" value="@Language.GetString("btn_Save")" class="btn btn-block btn-success" />
-                    <a asp-action="List" class="btn btn-block btn-primary">@Language.GetString("btn_Back")</a>
+                    <input type="button" id="btnAddContent" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient" />
+                    <a asp-action="List" class="btn btn-primary bg-gradient">@Language.GetString("btn_Back")</a>
                 </div>
             </div>
 
@@ -686,14 +686,14 @@
                     "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
                     "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
                     "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
-                    "'/></td><td style='vertical-align:middle;'><input type='radio'  name='isMainImage' class='minimal rdbIsMain'></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger btn-circle' imgId='img_" + counter + "' onclick='deleteFromImageList(this);'><i class='fa fa-minus' style='position:relative;padding: 3px;'></i></button></td></tr>";
+                    "'/></td><td style='vertical-align:middle;'><input type='radio'  name='isMainImage' class='minimal rdbIsMain'></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger rounded-circle bg-gradient' imgId='img_" + counter + "' onclick='deleteFromImageList(this);'><i class='fa fa-minus' style='position:relative;padding: 3px;'></i></button></td></tr>";
             } else
             {
                  tr = "<tr><td><img imgId='img_" + counter + "' src='" + model.Content +
                     "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
                     "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
                     "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
-                     "'/></td><td style='vertical-align:middle;'><div class='icheck-primary d-inline'><input type='radio'  name='isMainImage' class='rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger btn-circle' imgId='img_" + counter + "' onclick='deleteFromImageList(this);'><i class='fa fa-minus' style='position:relative;padding: 3px;'></i></button></td></tr>";
+                     "'/></td><td style='vertical-align:middle;'><div class='icheck-primary d-inline'><input type='radio'  name='isMainImage' class='rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient rounded-circle' imgId='img_" + counter + "' onclick='deleteFromImageList(this);'><i class='fa fa-minus' style='position:relative;padding: 3px;'></i></button></td></tr>";
 
             }
             $("#imageList").append(tr);

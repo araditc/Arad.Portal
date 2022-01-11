@@ -101,7 +101,7 @@
         <div class="card-footer">
             <div class="row">
                 <div class="col-md-2 offset-md-10 col-12">
-                    <button id="btnLoad" class="btn btn-primary float-end" type="submit">@Language.GetString("btn_Find")</button>
+                    <button id="btnLoad" class="btn btn-primary bg-gradient float-end" type="submit">@Language.GetString("btn_Find")</button>
                 </div>
             </div>
             
@@ -120,15 +120,13 @@
                 <div class="card-tools float-end" >
                     @if (ViewBag.Permissions["Add"])
                     {
-                        <a asp-action="AddUser" asp-controller="Account" class="btn btn-success btn-sm">
+                        <a asp-action="AddUser" asp-controller="Account" class="btn btn-success btn-sm bg-gradient">
                             <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus"></i>&nbsp; @Language.GetString("btn_Add")
                         </a>
                     }
                 </div>
             </div>
         </div>
-       
-       
     </div>
     <div class="card-body table-responsive" id="userListCard">
         <table id="userListTbl" class="table table-bordered table-striped align-middle">
@@ -154,24 +152,24 @@
                     <td class="userListCell">@item.UserName</td>
                     <td class="userListCell">@($"{@item.Name} {@item.LastName}")</td>
                     <td class="userListCell">@item.RoleName</td>
-                    <td class="userListCell">@item.CreateDate</td>
+                    <td class="userListCell ltr">@item.CreateDate</td>
                     <td class="userListCell">@item.PhoneNumber</td>
                     <td id="@("activation" + item.Id)" class="userListCell">
                         @{
                             if (item.IsActive)
                             {
-                                <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-success">@Language.GetString("Active")</button>
+                                <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-success bg-gradient">@Language.GetString("Active")</button>
                             }
                             else
                             {
-                                <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-danger">@Language.GetString("InActive")</button>
+                                <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-danger bg-gradient">@Language.GetString("InActive")</button>
                             }
                         }
                     </td>
                     <td class="userListCell">
                         @if (ViewBag.Permissions["Edit"])
                         {
-                            <a id="editRecord" asp-action="EditUser" asp-controller="Account" asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                            <a id="editRecord" asp-action="EditUser" asp-controller="Account" asp-route-id="@item.Id" class="btn btn-sm btn-info bg-gradient">
                                 @Language.GetString("btn_Edit")
                             </a>
                         }
@@ -179,7 +177,7 @@
                       
                         @if (ViewBag.Permissions["Remove"] && item.IsDelete)
                         {
-                            <button id="restoreRecord" data-id="@item.Id" onclick="restoreUser('@item.Id')" class="btn btn-sm btn-warning">
+                            <button id="restoreRecord" data-id="@item.Id" onclick="restoreUser('@item.Id')" class="btn btn-sm btn-warning bg-gradient">
                                 @Language.GetString("btn_Restore")
                             </button>
                         }
@@ -265,9 +263,9 @@
                             debugger;
                             var html = '';
                             if (resultData.result === true) {
-                                html = '<button onclick="changeActivation(\'' + id + '\')" class="btn btn-sm btn-success"> ' + '@Language.GetString("Active")' +' </button>';
+                                html = '<button onclick="changeActivation(\'' + id + '\')" class="btn btn-sm btn-success bg-gradient"> ' + '@Language.GetString("Active")' +' </button>';
                             } else {
-                                html = '<button onclick="changeActivation(\'' + id + '\')" class="btn btn-sm btn-danger"> '+ '@Language.GetString("InActive")' +' </button>';
+                                html = '<button onclick="changeActivation(\'' + id + '\')" class="btn btn-sm btn-danger bg-gradient"> '+ '@Language.GetString("InActive")' +' </button>';
                             }
                             $('#activation' + id).html(html);
                         }

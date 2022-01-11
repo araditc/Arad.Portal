@@ -287,6 +287,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
         public async Task<List<MenuLinkModel>> ListOfMenues(string currentUserId, string address, string domain)
         {
             var result = new List<MenuLinkModel>();
+            //address = address.Length > 1 ? address.Substring(1, address.Length) : address;
             try
             {
                 var user = await _userManager.FindByIdAsync(currentUserId);

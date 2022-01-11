@@ -19,7 +19,7 @@
     {
         langId = ViewBag.DefLangId;
     }
-    var searchCollapseClass = isSearch ? "panel-collapse in collapse show" : "panel-collapse in collapse";
+    var searchCollapseClass = isSearch ? "collapse show" : "collapse";
     var dir = "";
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
     {
@@ -30,16 +30,7 @@
         dir = "ltr";
     }
 }
-@section Styles
-{
-   
-    <style>
-        .ListCell {
-            text-align: center;
-            vertical-align: middle;
-        }
-    </style>
-}
+
 
 <!--<div class="card card-dark">
     <a data-toggle="collapse" data-parent="#accordion" href="#searchCollapse"
@@ -57,7 +48,7 @@
 @*class="@searchCollapseClass"*@
 <!--style="">
         <div class="card-body">
-            <div id="accordion">
+           
                 <div class="row">
 
                     <div class="form-group col-md-3">
@@ -65,10 +56,10 @@
                         <input type="text" id="txtDomainNameFilter" class="form-control" placeholder='@Language.GetString("DomainName")' />
                     </div>
                 </div>
-            </div>
+            
         </div>
         <div class="card-footer">
-            <button id="btnSearch" class="btn btn-primary" type="submit">
+            <button id="btnSearch" class="btn btn-primary bg-gradient" type="submit">
                 <i style="position: relative; left: 5px; top: 1px;" class="fa fa-search"></i>
                 @Language.GetString("btn_Search")
             </button>
@@ -77,18 +68,24 @@
 </div>-->
 <div class="card" id="domainListCard">
     <div class="card-header">
-        <h3 class="card-title">@Language.GetString("Menu_domains")</h3>
-        <div class="card-tools" style='@(dir=="rtl" ? "float:left;" : "float:right;")'>
-            @if (ViewBag.Permissions["Add"])
-            {
-                <a asp-action="AddEdit" asp-controller="Domain" class="btn btn-success btn-sm">
-                    <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus"></i>&nbsp; @Language.GetString("btn_Add")
-                </a>
-            }
+        <div class="row">
+            <div class="col-md-3">
+                <h5 class="card-title">@Language.GetString("Menu_domains")</h5>
+            </div>
+            <div class="col-md-3 offset-md-6">
+                <div class="card-tools float-end">
+                    @if (ViewBag.Permissions["Add"])
+                    {
+                        <a asp-action="AddEdit" asp-controller="Domain" class="btn btn-success btn-sm bg-gradient">
+                            <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus"></i>&nbsp; @Language.GetString("btn_Add")
+                        </a>
+                    }
+                </div>
+            </div>
         </div>
     </div>
-    <div class="card-body table-bordered  table-responsive p-0">
-        <table class="table table-hover">
+    <div class="card-body table-responsive">
+        <table class="table table-bordered table-striped align-middle">
             <thead>
                 <tr style="text-align:center;">
                     <th>@Language.GetString("tbl_RowName")</th>
@@ -112,26 +109,28 @@
                             <td class="ListCell">@item.DomainName</td>
                             <td class="ListCell">@item.OwnerUserName</td>
                             <td class="ListCell">@item.DefaultLanguageName</td>
-                            <td class="ListCell">@(item.Prices.Any(_ => _.StartDate <= DateTime.Now && _.IsActive && _.EndDate == null && _.CurrencyId == item.DefaultCurrencyId) ? item.Prices
-                            .FirstOrDefault(_ =>_.StartDate <= DateTime.Now && _.IsActive && _.EndDate == null && _.CurrencyId == item.DefaultCurrencyId).PriceValue : "")</td>
+                            <td class="ListCell">
+                                @(item.Prices.Any(_ => _.StartDate <= DateTime.Now && _.IsActive && _.EndDate == null && _.CurrencyId == item.DefaultCurrencyId) ? item.Prices
+                            .FirstOrDefault(_ =>_.StartDate <= DateTime.Now && _.IsActive && _.EndDate == null && _.CurrencyId == item.DefaultCurrencyId).PriceValue : "")
+                            </td>
                             <td class="ListCell">@item.DefaultCurrencyName</td>
                             <td class="ListCell">@(item.IsDefault ? Language.GetString("Yes") : Language.GetString("No"))</td>
                             <td>
                                 @if (ViewBag.Permissions["Edit"])
                                 {
-                                    <a asp-action="AddEdit" asp-controller="Domain" asp-route-id="@item.DomainId" class="btn btn-sm btn-info">
+                                    <a asp-action="AddEdit" asp-controller="Domain" asp-route-id="@item.DomainId" class="btn btn-sm btn-info bg-gradient">
                                         <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                                     </a>
                                 }
                                 @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
                                 {
-                                    <button onclick="EntityDelete('@item.DomainId')" class="btn btn-sm btn-danger">
+                                    <button onclick="EntityDelete('@item.DomainId')" class="btn btn-sm btn-danger bg-gradient">
                                         <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
                                     </button>
                                 }
                                 @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
                                 {
-                                    <button id="restoreRecord" onclick="EntityRestore('@item.DomainId')" class="btn btn-sm btn-warning">
+                                    <button id="restoreRecord" onclick="EntityRestore('@item.DomainId')" class="btn btn-sm btn-warning bg-gradient">
                                         <i style="position: relative;left: 5px;top: 2px;" class="fa fa-refresh"></i>
                                         @Language.GetString("btn_Restore")
                                     </button>
@@ -143,7 +142,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="9" class="ListCell">
+                        <td colspan="8" class="ListCell">
                             <h6>@Language.GetString("AlertAndMessage_NoDataToShow")</h6>
                         </td>
                     </tr>

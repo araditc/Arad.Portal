@@ -19,6 +19,12 @@
 	<string key="Upload">
 		<value>آپلود</value>
 	</string>
+	<string key="ProductCommentDelete">
+		<value>حذف نظر</value>
+	</string>
+	<string key="ProductCommentApprove">
+		<value>تایید نظر</value>
+	</string>
 	<string key="PutImage">
 		<value>قراردادن تصویر</value>
 	</string>
@@ -1481,7 +1487,7 @@
 		<value>تعداد پسندها</value>
 	</string>
 	<string key="DisLikeCount">
-		<value>DisLike Count</value>
+		<value>تعداد ناپسندها</value>
 	</string>
 	<string key="ReferenceType">
 		<value>نوع نظر</value>

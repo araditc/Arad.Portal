@@ -26,7 +26,7 @@
             font-size: 12px;
         }
 
-        .btn-circle {
+        .rounded-circle {
             width: 30px;
             height: 30px;
             padding: 6px 0px;
@@ -165,7 +165,7 @@
                                     </div>
                                     <div class="form-group col-md-1" style="text-align:center;margin:auto;">
                                         <div style="margin:auto;display:inline-block;">
-                                            <button type="button" class="btn btn-info btn-circle" onclick="addPriceToList();">
+                                            <button type="button" class="btn btn-info rounded-circle bg-gradient" onclick="addPriceToList();">
                                                 <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
                                             </button>
                                         </div>
@@ -203,7 +203,7 @@
                                                             <td class="ltr">@price.EndDate</td>
                                                             <td>@(price.IsActive ? Language.GetString("Active") : Language.GetString("InActive")) </td>
                                                             <td>
-                                                                <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromPriceList(this);">
+                                                                <button type="button" class="btn btn-danger rounded-circle bg-gradient" onclick="deleteFromPriceList(this);">
                                                                     <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
                                                                 </button>
                                                             </td>
@@ -245,7 +245,7 @@
                                     <div class="form-group col-md-2"  style="text-align:center;margin:auto;">
 
                                         <div id="btnAddSection" style="margin:auto;display:inline-block;">
-                                            <button type="button" id="addProviderParam" class="btn btn-primary d-none" >
+                                            <button type="button" id="addProviderParam" class="btn btn-primary bg-gradient d-none" >
                                                 <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
                                                 @Language.GetString("btn_Add")
                                             </button>
@@ -276,7 +276,7 @@
                                                         <td>@item.PspType</td>
                                                         <td>@item.DomainValueProvider</td>
                                                         <td>
-                                                            <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromTable(this);">
+                                                            <button type="button" class="btn btn-danger bg-gradient rounded-circle" onclick="deleteFromTable(this);">
                                                                 <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
                                                             </button>
                                                         </td>
@@ -296,8 +296,8 @@
                 </div>
             <div class="card-footer">
                 <div class="row">
-                    <input type="button" id="btnAddDomain" value="@Language.GetString("btn_Save")" class="btn btn-block btn-success" />
-                    <a asp-action="List" class="btn btn-block btn-primary">@Language.GetString("btn_Back")</a>
+                    <input type="button" id="btnAddDomain" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient" />
+                    <a asp-action="List" class="btn btn-primary bg-gradient">@Language.GetString("btn_Back")</a>
                 </div>
             </div>
 
@@ -404,7 +404,7 @@
                 });
 
                 data = `{ ${data.substring(0, data.length - 2)} }`;
-                var btn = "<button type='button' class='btn btn-danger btn-circle' onclick='deleteFromTable(this);'><i class='fa fa-minus' style='position: relative;padding:3px;'></i></botton>";
+                var btn = "<button type='button' class='btn btn-danger rounded-circle bg-gradient' onclick='deleteFromTable(this);'><i class='fa fa-minus' style='position: relative;padding:3px;'></i></botton>";
                 var tr = `<tr style='text-align:center;'><td>${$("#providerId option:selected").text()}</td><td>${data}</td><td>${btn}</td></tr>`;
 
                 $("#gatewayInfoes").append(tr);
@@ -608,7 +608,7 @@
                     "</td><td class='ltr'>" + $('#priceValue').val() +
                     "</td><td class='ltr'>" + $("#dtpStartDate").val() +
                     "</td><td></td><td>" + active +
-                    "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' onclick='deleteFromPriceList(this);'>" +
+                    "</td><td><button type='button' class='btn btn-sm btn-danger rounded-circle bg-gradient' onclick='deleteFromPriceList(this);'>" +
                     "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
                 if ($("#priceList tr").length == 1 && $("#priceList tr")[0].children.length == 1) {
                        $("#priceList tr")[0].remove();

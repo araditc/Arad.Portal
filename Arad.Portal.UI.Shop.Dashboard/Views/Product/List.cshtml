@@ -25,7 +25,7 @@
     {
         langId = ViewBag.DefLangId;
     }
-    var searchCollapseClass = isSearch ? "panel-collapse in collapse show" : "panel-collapse in collapse";
+    var searchCollapseClass = isSearch ? "collapse show" : "collapse";
     var dir = "";
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
     {
@@ -39,11 +39,7 @@
 @section Styles
 {
     <style>
-        .ListCell {
-            text-align: center;
-            vertical-align: middle;
-        }
-
+      
         .contentDiv {
             margin: auto;
         }
@@ -57,20 +53,21 @@
 }
 
 <div class="card card-dark">
-    <a data-toggle="collapse" data-parent="#accordion" href="#searchCollapse"
+    <a data-bs-toggle="collapse" role="button" href="#searchCollapse"
        aria-expanded="@(!isSearch ? "false" : "true" )" class="@(!isSearch ? " collapsed" : null)">
 
         <div class="card-header">
-            <h3 class="card-title">
-                <i class="fas fa-search"></i>
-                <span style="margin-right: 5px">@Language.GetString("btn_Search")</span>
-            </h3>
+            <h5 class="card-title">
+                <i class="fas fa-search">
+                    <span>@Language.GetString("btn_Search")</span>
+                </i>
+            </h5>
         </div>
     </a>
 
-    <div id="searchCollapse" @*class="@searchCollapseClass"*@ style="">
+    <div id="searchCollapse" class="@searchCollapseClass" >
         <div class="card-body">
-            <div id="accordion">
+        
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label>@Language.GetString("tbl_ProductGroup")</label>
@@ -182,10 +179,10 @@
 
                     <div class="col-md-6"></div>
                 </div>
-            </div>
+           
         </div>
         <div class="card-footer">
-            <button id="btnSearch" class="btn btn-primary" type="submit">
+            <button id="btnSearch" class="btn btn-primary bg-gradient" type="submit">
                 <i style="position: relative; left: 5px; top: 1px;" class="fa fa-search"></i>
                 @Language.GetString("btn_Search")
             </button>
@@ -194,18 +191,24 @@
 </div>
 <div class="card" id="productListCard">
     <div class="card-header">
-        <h3 class="card-title">@Language.GetString("Menu_Products")</h3>
-        <div class="card-tools">
-            @if (ViewBag.Permissions["Add"])
-            {
-                <a asp-action="ImportFromExcel" asp-controller="Product" class="btn btn-info btn-sm">
-                    <i style="position: relative; left: 5px; top: 2px;" class="fa fa-file-excel"></i>&nbsp; @Language.GetString("btn_ExcelImport")
-                </a>
+        <div class="row">
+            <div class="col-md-3">
+                <h5 class="card-title">@Language.GetString("Menu_Products")</h5>
+            </div>
+            <div class="col-md-3 offset-md-6">
+                <div class="card-tools float-end">
+                    @if (ViewBag.Permissions["Add"])
+                    {
+                        <a asp-action="ImportFromExcel" asp-controller="Product" class="btn btn-info btn-sm bg-gradient">
+                            <i style="position: relative; left: 5px; top: 2px;" class="fa fa-file-excel"></i>&nbsp; @Language.GetString("btn_ExcelImport")
+                        </a>
 
-                <a asp-action="AddEdit" asp-controller="Product" class="btn btn-success btn-sm">
-                    <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus"></i>&nbsp; @Language.GetString("btn_Add")
-                </a>
-            }
+                        <a asp-action="AddEdit" asp-controller="Product" class="btn btn-success btn-sm bg-gradient">
+                            <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus"></i>&nbsp; @Language.GetString("btn_Add")
+                        </a>
+                    }
+                </div>
+            </div>
         </div>
     </div>
     <div class="card-body table-bordered  p-0" >
@@ -218,82 +221,86 @@
                 </select>
             </div>
         </div>
-        <table class="table table-hover">
-            <thead>
-                <tr style="text-align:center;">
-                    <th>@Language.GetString("tbl_RowName")</th>
-                    <th>@Language.GetString("tbl_MainImage")</th>
-                    <th>@Language.GetString("tbl_ProductName")</th>
-                    <th>@Language.GetString("tbl_ProductUnit")</th>
-                    <th>@Language.GetString("tbl_GroupNames")</th>
-                    <th>@Language.GetString("tbl_UniqeCode")</th>
-                    <th>@Language.GetString("tbl_Inventory")</th>
-                    <th>@Language.GetString("tbl_Price")</th>
-                    <th>@Language.GetString("CreationDate")</th>
-                    <th>@* with urFriends goes to the related link in shop *@</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model.Items.Any())
-                {
-
-                    @foreach (var item in Model.Items)
-                    {
-                        var src = item.Images.Any(_ => _.IsMain) ?
-                            item.Images.First(_ => _.IsMain).Url : "/imgs/NoImage.png";
-
-                        var img = $"<img src='{src}' width='75' height='75' />";
-                        <tr class="ListCell">
-                            <td>@(++i)</td>
-                            <td>@Html.Raw(img)</td>
-                            <td>@(item.MultiLingualProperties.Any(_=>_.LanguageId == langId) ? item.MultiLingualProperties.First(_ => _.LanguageId == langId).Name : "")</td>
-                            <td>@(item.Unit.UnitNames.Any(_=>_.LanguageId == langId) ? item.Unit.UnitNames.First(_ => _.LanguageId == langId).Name : "")</td>
-                            <td>@(string.Join("|", item.GroupNames))</td>
-                            <td>@item.UniqueCode</td>
-                            <td>@item.Inventory</td>
-                            <td>@(item.Prices.Any(_ =>_.StartDate <= DateTime.UtcNow && _.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate))
-                            ? item.Prices.First(_ => _.StartDate <= DateTime.UtcNow && _.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate)).PriceValue : "")</td>
-                            <td>@item.CreationDate</td>
-                            <td>
-                                <button class="btn btn-sm btn-dark">
-                                    <i style="position: relative;left: 5px;top: 2px;" class="fa fa-eye"></i>@Language.GetString("btn_Show")
-                                </button>
-                            </td>
-                            <td>
-                            @if (ViewBag.Permissions["Edit"])
-                            {
-                                <a asp-action="AddEdit" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-info">
-                                    <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
-                                </a>
-                            }
-                            @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
-                            {
-                                <button onclick="EntityDelete('@item.ProductId')" class="btn btn-sm btn-danger">
-                                    <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
-                                </button>
-                            }
-                            @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
-                            {
-                                <button id="restoreRecord" onclick="EntityRestore('@item.ProductId')" class="btn btn-sm btn-warning">
-                                    <i style="position: relative;left: 5px;top: 2px;" class="fa fa-refresh"></i>
-                                    @Language.GetString("btn_Restore")
-                                </button>
-                            }
-                        </td>
-                         </tr>
-                     }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="11" class="ListCell">
-                            <h6>@Language.GetString("AlertAndMessage_NoDataToShow")</h6>
-                        </td>
+        <div class="card-body table-responsive">
+            <table class="table table-bordered table-striped align-middle">
+                <thead>
+                    <tr style="text-align:center;">
+                        <th>@Language.GetString("tbl_RowName")</th>
+                        <th>@Language.GetString("tbl_MainImage")</th>
+                        <th>@Language.GetString("tbl_ProductName")</th>
+                        <th>@Language.GetString("tbl_ProductUnit")</th>
+                        <th>@Language.GetString("tbl_GroupNames")</th>
+                        <th>@Language.GetString("tbl_UniqeCode")</th>
+                        <th>@Language.GetString("tbl_Inventory")</th>
+                        <th>@Language.GetString("tbl_Price")</th>
+                        <th>@Language.GetString("CreationDate")</th>
+                        <th>@* with urFriends goes to the related link in shop *@</th>
+                        <th></th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @if (Model.Items.Any())
+                    {
+
+                        @foreach (var item in Model.Items)
+                        {
+                            var src = item.Images.Any(_ => _.IsMain) ?
+                                item.Images.First(_ => _.IsMain).Url : "/imgs/NoImage.png";
+
+                            var img = $"<img src='{src}' width='75' height='75' />";
+                            <tr class="ListCell">
+                                <td>@(++i)</td>
+                                <td>@Html.Raw(img)</td>
+                                <td>@(item.MultiLingualProperties.Any(_=>_.LanguageId == langId) ? item.MultiLingualProperties.First(_ => _.LanguageId == langId).Name : "")</td>
+                                <td>@(item.Unit.UnitNames.Any(_=>_.LanguageId == langId) ? item.Unit.UnitNames.First(_ => _.LanguageId == langId).Name : "")</td>
+                                <td>@(string.Join("|", item.GroupNames))</td>
+                                <td>@item.UniqueCode</td>
+                                <td>@item.Inventory</td>
+                                <td>
+                                    @(item.Prices.Any(_ =>_.StartDate <= DateTime.UtcNow && _.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate))
+                            ? item.Prices.First(_ => _.StartDate <= DateTime.UtcNow && _.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate)).PriceValue : "")
+                                </td>
+                                <td>@item.CreationDate</td>
+                                <td>
+                                    <button class="btn btn-sm btn-dark bg-gradient">
+                                        <i style="position: relative;left: 5px;top: 2px;" class="fa fa-eye"></i>@Language.GetString("btn_Show")
+                                    </button>
+                                </td>
+                                <td>
+                                    @if (ViewBag.Permissions["Edit"])
+                                    {
+                                        <a asp-action="AddEdit" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-info bg-gradient">
+                                            <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
+                                        </a>
+                                    }
+                                    @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
+                                    {
+                                        <button onclick="EntityDelete('@item.ProductId')" class="btn btn-sm btn-danger bg-gradient">
+                                            <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
+                                        </button>
+                                    }
+                                    @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
+                                    {
+                                        <button id="restoreRecord" onclick="EntityRestore('@item.ProductId')" class="btn btn-sm btn-warning bg-gradient">
+                                            <i style="position: relative;left: 5px;top: 2px;" class="fa fa-refresh"></i>
+                                            @Language.GetString("btn_Restore")
+                                        </button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="11" class="ListCell">
+                                <h6>@Language.GetString("AlertAndMessage_NoDataToShow")</h6>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="card-footer">
         @await Component.InvokeAsync("Pagination", new PageViewModel

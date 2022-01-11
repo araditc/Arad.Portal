@@ -8,7 +8,7 @@
             <div class="card  pgCard" @*style="width: 18rem;"*@>
                 <img class="card-img-top rounded-circle" src="@Url.Action("GetImage", "FileManager", new  { path = item.GroupImage.Url })" @*src="https://www.w3schools.com/bootstrap4/cinqueterre.jpg"*@ alt="@item.GroupImage.Title">
                 <div class="card-body" style="margin: auto;">
-                    <a href="/group/@item.GroupCode" class="btn btn-secondary">
+                    <a href="/group/@item.GroupCode" class="btn btn-secondary bg-gradient">
                         <h6 class="card-title">@(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ? 
                             item.MultiLingualProperties.First(_=>_.LanguageId == ViewBag.CurLangId).Name : item.MultiLingualProperties.First().Name)</h6>
                     </a>

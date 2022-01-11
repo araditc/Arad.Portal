@@ -13,7 +13,7 @@
             font-size: 12px;
         }
 
-        .btn-circle {
+        .rounded-circle {
             width: 30px;
             height: 30px;
             padding: 6px 0px;
@@ -113,9 +113,9 @@
             </div>
             <div class="modal-footer justify-content-center align-items-center">
                 <div>
-                    <button class="btn btn-success" id="send_Logo" type="button"><i style="margin-left: 5px;font-size:13px" class="fas fa-share-square"></i>@Language.GetString("btn_Approve")</button>
-                    <button class="btn btn-primary" id="logoCrop_button"><i style="margin-left: 5px;font-size:13px" class="fas fa-cut"></i>@Language.GetString("btn_Crop")</button>
-                    <button class="btn btn-primary" style="background-color: crimson;color: white;border: 1px solid crimson" onclick="rotatePic()">
+                    <button class="btn btn-success bg-gradient" id="send_Logo" type="button"><i style="margin-left: 5px;font-size:13px" class="fas fa-share-square"></i>@Language.GetString("btn_Approve")</button>
+                    <button class="btn btn-primary bg-gradient" id="logoCrop_button"><i style="margin-left: 5px;font-size:13px" class="fas fa-cut"></i>@Language.GetString("btn_Crop")</button>
+                    <button class="btn btn-primary bg-gradient" style="background-color: crimson;color: white;border: 1px solid crimson" onclick="rotatePic()">
                         <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i>@Language.GetString("btn_Rotate")
                     </button>
 
@@ -149,7 +149,7 @@
                                 </div>
                                 <hr>
                                 <div class="custom-file">
-                                    <input style="width: -webkit-fill-available;" accept="image/x-png,image/jpeg" type="file" class="btn btn-sm" name="image" id="image" onchange="getURL(this)">
+                                    <input  accept="image/x-png,image/jpeg" type="file" class="btn btn-sm" name="image" id="image" onchange="getURL(this)">
                                     <label class="custom-file-label" for="image">@Language.GetString("ChangeImage")</label>
                                 </div>
                             </div>
@@ -212,7 +212,7 @@
                     <div class="form-group col-md-3" style="text-align:center;margin:auto;">
                         <span data-val-result="MultiLingualProperties" class="text-danger"></span>
                         <div style="margin:auto;display:inline-block;">
-                            <button type="button" class="btn btn-info btn-circle" onclick="addToTable();">
+                            <button type="button" class="btn btn-info rounded-circle bg-gradient" onclick="addToTable();">
                                 <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
                             </button>
                         </div>
@@ -249,7 +249,7 @@
                                         <td>@item.SeoDescription</td>
                                         <td>@item.Description</td>
                                         <td>
-                                            <button type="button" class="btn btn-danger btn-circle" onclick="deleteFromTable(this);">
+                                            <button type="button" class="btn btn-danger rounded-circle bg-gradient" onclick="deleteFromTable(this);">
                                                 <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
                                             </button>
                                         </td>
@@ -264,8 +264,8 @@
             </div>
             <div class="card-footer">
                 <div class="row">
-                    <input type="button" id="btnAddProductGroup" value="@Language.GetString("btn_Save")" class="btn btn-block btn-success" />
-                    <a asp-action="List" class="btn btn-primary">@Language.GetString("btn_Back")</a>
+                    <input type="button" id="btnAddProductGroup" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient" />
+                    <a asp-action="List" class="btn btn-primary bg-gradient">@Language.GetString("btn_Back")</a>
                 </div>
             </div>
 
@@ -539,7 +539,7 @@
                     "</td><td>" + $("#seoTitle").val() +
                     "</td><td>" + $("#seoDescription").val() +
                     "</td><td>" + $("#description").val() +
-                    "</td><td><button type='button' class='btn btn-sm btn-danger btn-circle' onclick='deleteFromTable(this);'>" +
+                    "</td><td><button type='button' class='btn btn-sm btn-danger rounded-circle bg-gradient' onclick='deleteFromTable(this);'>" +
                     "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
 
                 $("#multiLingualList").append(tr);

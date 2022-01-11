@@ -12,7 +12,7 @@
             <div class="card align-items-center pgCard" @*style="width: 18rem;"*@>
                 <img class="card-img-top rounded-circle" @*src="@Url.Content(item.GroupImage.Url)"*@ src="https://www.w3schools.com/bootstrap4/cinqueterre.jpg" alt="@item.GroupImage.Title">
                 <div class="card-body">
-                    <a href="/group/@item.GroupCode" class="btn btn-secondary">
+                    <a href="/group/@item.GroupCode" class="btn btn-secondary bg-gradient">
                         <h5 class="card-title">@(item.MultiLingualProperties.First(_=>_.LanguageId == ViewBag.CurLangId).Name)</h5>
                     </a>
                 </div>

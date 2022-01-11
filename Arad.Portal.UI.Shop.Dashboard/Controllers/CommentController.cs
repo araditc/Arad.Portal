@@ -21,8 +21,8 @@ using Microsoft.AspNetCore.Authorization;
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
     [Authorize(Policy = "Role")]
-    [Route("/Products/[action]/{id?}")]
-    [Route("/Contents/[action]/{id?}")]
+    [Route("/ProductComments/[action]/{id?}")]
+    [Route("/ContentComments/[action]/{id?}")]
     public class CommentController : Controller
     {
         private readonly ICommentRepository _commentRepository;

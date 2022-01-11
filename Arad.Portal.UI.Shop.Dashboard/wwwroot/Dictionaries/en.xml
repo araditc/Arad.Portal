@@ -19,6 +19,12 @@
 	<string key="Upload">
 		<value>Upload</value>
 	</string>
+	<string key="ProductCommentDelete">
+		<value>comment delete</value>
+	</string>
+	<string key="ProductCommentApprove">
+		<value>comment approve</value>
+	</string>
 	<string key="PutImage">
 		<value>Put Image</value>
 	</string>
@@ -1440,7 +1446,7 @@
 		<value>Like Count</value>
 	</string>
 	<string key="DisLikeCount">
-		<value>DisLike Count</value>
+		<value>Dislike Count</value>
 	</string>
 	<string key="ReferenceType">
 		<value>Comment Type</value>

@@ -19,29 +19,29 @@
     }
 }
 
-@section Styles
-{
-    <style>
-        .ListCell {
-            text-align: center;
-            vertical-align: middle;
-        }
-    </style>
-}
+
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">@Language.GetString("User_Roles")</h3>
-        <div class="card-tools">
-            @if (ViewBag.Permissions["Add"])
-            {
-                <a asp-action="AddEdit" class="btn btn-success btn-sm">
-                    <i style="position: relative;left: 5px;top: 2px;" class="fa fa-plus"></i>@Language.GetString("btn_Add")
-                </a>
-            }
+        <div class="row">
+            <div class="col-md-3">
+                <h5 class="card-title">@Language.GetString("User_Roles")</h5>
+            </div>
+            <div class="col-md-3 offset-md-6">
+                <div class="card-tools float-end">
+                    @if (ViewBag.Permissions["Add"])
+                    {
+                        <a asp-action="AddEdit" class="btn btn-success btn-sm bg-gradient">
+                            <i style="position: relative;left: 5px;top: 2px;" class="fa fa-plus"></i>@Language.GetString("btn_Add")
+                        </a>
+                    }
+                </div>
+            </div>
         </div>
+
+
     </div>
-    <div class="card-body table-bordered  table-responsive p-0" id="roleListCard">
-        <table class="table table-hover">
+    <div class="card-body table-responsive" id="roleListCard">
+        <table class="table table-bordered table-striped align-middle">
             <thead>
                 <tr style="text-align:center;">
                     <th>@Language.GetString("tbl_RowName")</th>
@@ -62,16 +62,16 @@
                             <td class="ListCell">@(++i)</td>
                             <td class="ListCell">@item.RoleName</td>
                             <td class="ListCell">@item.CreatorUserName</td>
-                            <td class="ListCell">@item.CreationDateTime</td>
+                            <td class="ListCell ltr">@item.CreationDateTime</td>
                             <td id="@("activation" + item.Id)" class="ListCell">
                                 @{
                                     if (item.IsActive)
                                     {
-                                        <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-success">@Language.GetString("Active")</button>
+                                        <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-success bg-gradient">@Language.GetString("Active")</button>
                                     }
                                     else
                                     {
-                                        <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-danger">@Language.GetString("InActive")</button>
+                                        <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-danger bg-gradient">@Language.GetString("InActive")</button>
                                     }
                                 }
                             </td>
@@ -79,7 +79,7 @@
                                 @{
                                     if (item.HasModifications)
                                     {
-                                        <button onclick="getLatestModifications('@item.Id')" class="btn btn-sm btn-primary">@Language.GetString("btn_Show")</button>
+                                        <button onclick="getLatestModifications('@item.Id')" class="btn btn-sm btn-primary bg-gradient">@Language.GetString("btn_Show")</button>
                                     }
                                     else
                                     {
@@ -90,19 +90,19 @@
                             <td class="ListCell">
                                 @if (ViewBag.Permissions["Edit"])
                                 {
-                                    <a asp-action="AddEdit" asp-controller="Role" asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                                    <a asp-action="AddEdit" asp-controller="Role" asp-route-id="@item.Id" class="btn btn-sm btn-info bg-gradient">
                                         <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                                     </a>
                                 }
                                 @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
                                 {
-                                    <button onclick="RoleDelete('@item.Id')" class="btn btn-sm btn-danger">
+                                    <button onclick="RoleDelete('@item.Id')" class="btn btn-sm btn-danger bg-gradient">
                                         <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
                                     </button>
                                 }
                                 @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
                                 {
-                                    <button id="restoreRecord" data-id="@item.Id" onclick="RoleRestore('@item.Id')" class="btn btn-sm btn-warning">
+                                    <button id="restoreRecord" data-id="@item.Id" onclick="RoleRestore('@item.Id')" class="btn btn-sm btn-warning bg-gradient">
                                         <i style="position: relative;left: 5px;top: 2px;" class="fa fa-refresh"></i>
                                         @Language.GetString("btn_Restore")
                                     </button>
@@ -134,8 +134,8 @@
           QueryParams = Model.QueryString
       })
     </div>
- </div>
-@section Scripts{ 
+</div>
+@section Scripts{
     <script>
     function changeActivation(id) {
             debugger;
@@ -147,9 +147,9 @@
                             debugger;
                             var html = '';
                             if (resultData.result === true) {
-                                html = '<button onclick="changeActivation(\'' + id + '\')" class="btn btn-sm btn-success"> ' + '@Language.GetString("Active")' +' </button>';
+                                html = '<button onclick="changeActivation(\'' + id + '\')" class="btn btn-sm btn-success bg-gradient"> ' + '@Language.GetString("Active")' +' </button>';
                             } else {
-                                html = '<button onclick="changeActivation(\'' + id + '\')" class="btn btn-sm btn-danger"> '+ '@Language.GetString("InActive")' +' </button>';
+                                html = '<button onclick="changeActivation(\'' + id + '\')" class="btn btn-sm btn-danger bg-gradient"> '+ '@Language.GetString("InActive")' +' </button>';
                             }
                             $('#activation' + id).html(html);
                         }
@@ -275,9 +275,9 @@
                 });
             }
     </script>
-} 
+}
 
-   
+
 
 
 
