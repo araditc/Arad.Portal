@@ -1,5 +1,4 @@
 ﻿@model Arad.Portal.DataLayer.Models.ProductSpecificationGroup.SpecificationGroupDTO
-@using Arad.Portal.DataLayer.Models.Shared;
 @{
     //Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
@@ -12,15 +11,6 @@
             font-size: 12px;
         }
 
-        .rounded-circle {
-            width: 30px;
-            height: 30px;
-            padding: 6px 0px;
-            border-radius: 15px;
-            text-align: center;
-            font-size: 12px;
-            line-height: 1.42857;
-        }
         .card-header {
             background-color: #e0dcdf;
         }
@@ -33,24 +23,26 @@
     <div class="col-md-12">
         <div class="card" id="addProductSpecificationGroupCard">
             <div class="card-header">
-                <h3 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.SpecificationGroupId) ? 
-               Language.GetString("EditProSpecGroupPart_Title") : Language.GetString("AddProSpecGroupPart_Title"))</h3>
+                <h3 class="card-title" data-toggle="tab">
+                    @(!string.IsNullOrWhiteSpace(Model.SpecificationGroupId) ?
+               Language.GetString("EditProSpecGroupPart_Title") : Language.GetString("AddProSpecGroupPart_Title"))
+                </h3>
             </div>
 
             <div class="card-body" id="addEditProductGroupCard">
                 <input type="hidden" value="@Model.SpecificationGroupId" asp-for="SpecificationGroupId" />
                 @*<div class="row">
-                    @{
-                        if (!string.IsNullOrWhiteSpace(Model.SpecificationGroupId))
-                        {
-                            <div class="form-group col-md-6">
-                                <label asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
-                                <textarea dir="rtl" asp-for="ModificationReason" class="form-control" rows="3"></textarea>
-                                <span data-val-result="ModificationReason" class="text-danger"></span>
-                            </div>
+                        @{
+                            if (!string.IsNullOrWhiteSpace(Model.SpecificationGroupId))
+                            {
+                                <div class="form-group col-md-6">
+                                    <label asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
+                                    <textarea dir="rtl" asp-for="ModificationReason" class="form-control" rows="3"></textarea>
+                                    <span data-val-result="ModificationReason" class="text-danger"></span>
+                                </div>
+                            }
                         }
-                    }
-                </div>*@
+                    </div>*@
                 <div class="row" style="background-color: #f0f0f5;">
                     <div class="form-group col-md-3">
                         <label for="groupName">@Language.GetString("tbl_GroupName")</label><br />
@@ -75,11 +67,11 @@
                                 <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
                             </button>
                         </div>
-                       
+
                     </div>
                 </div>
-                
-              
+
+
                 <div class="row" style="margin-top:1%;">
                     <div class="card-body table-bordered  table-responsive p-0">
                         <table class="table table-hover">
@@ -117,27 +109,61 @@
             </div>
             <div class="card-footer">
                 <div class="row">
-                    <input type="button" id="btnAddProductSpecificationGroup" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient" />
-                    <a asp-action="List" class="btn btn-primary bg-gradient">@Language.GetString("btn_Back")</a>
+                    <div class="col-md-4 offset-md-8 col-12">
+                        <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                        <input type="button" id="btnAddProductSpecificationGroup" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
+                    </div>
                 </div>
             </div>
 
         </div>
     </div>
 </div>
+
+<div aria-hidden="true" aria-labelledby="confirmModalLabel" class="modal fade" id="confirmModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="confirmModalLabel">
+                </h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                </button>
+            </div>
+            <div class="modal-body" id="confirmModalBody">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="onClickYes()" type="button">
+                    @Language.GetString("btn_Confirm")
+                </button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                    @Language.GetString("btn_NotConfirm")
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastAlert" style="display: block; left: 0; top: 0; z-index: 11;">
+    <div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
+        <div class="toast-body p-3 fs-5 rounded-3 text-center" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);" id="notificationToastBody">
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("ConfirmDelete", new ConfirmDeleteDTO { Url = Url.Action("Delete") })
 @section Scripts{
     <script>
 
         $(document).ready(function () {
             debugger;
-           
-           
+            $("#toastAlert").hide();
+
       $("#btnAddProductSpecificationGroup").click(function () {
             debugger;
                 var flag = false;
 
           var dataModel = FillDataToSend();
-         
+
           if (dataModel.GroupNames.length == 0) {
                     $("span[data-val-result='GroupNames']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
                     flag = true;
@@ -209,7 +235,7 @@
                 innerModel.Name = $(this).find("td:eq(0)").text();
                 innerModel.LanguageId = $(this).find("td:eq(2)").text();
                 innerModel.CurrencyId = $(this).find("td:eq(3)").text();
-               
+
                 obj.GroupNames.push(innerModel);
         });
             return obj;

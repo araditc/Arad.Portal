@@ -1,5 +1,4 @@
 ﻿@model Arad.Portal.DataLayer.Models.ContentCategory.ContentCategoryDTO
-@using Arad.Portal.DataLayer.Models.Shared;
 @{
     //Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
@@ -21,6 +20,7 @@
             font-size: 12px;
             line-height: 1.42857;
         }
+
         .card-header {
             background-color: #e0dcdf;
         }
@@ -58,89 +58,103 @@
                         <span data-val-result="CategoryCode" class="text-danger"></span>
                     </div>
 
+                </div>
+
+                <div class="row" style="background-color: #f0f0f5;">
+                    <div class="form-group col-md-3">
+                        <label for="languageId">@Language.GetString("LanguageName")</label><br />
+                        <select class="form-control" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                        </select>
+                        <span data-val-result="languageId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="categoryName">@Language.GetString("tbl_CategoryName")</label><br />
+                        <input type="text" class="form-control" id="categoryName" placeholder=" ">
+                        <span data-val-result="categoryName" class="text-danger"></span>
                     </div>
 
-                    <div class="row" style="background-color: #f0f0f5;">
-                        <div class="form-group col-md-3">
-                            <label for="languageId">@Language.GetString("LanguageName")</label><br />
-                            <select class="form-control" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
-                            </select>
-                            <span data-val-result="languageId" class="text-danger"></span>
+                    <div class="form-group col-md-1" style="text-align:center;margin:auto;">
+                        <span data-val-result="MultiLingualProperties" class="text-danger"></span>
+                        <div style="margin:auto;display:inline-block;">
+                            <button type="button" class="btn btn-info rounded-circle bg-gradient" onclick="addToTable();">
+                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                            </button>
                         </div>
-                        <div class="form-group col-md-3">
-                            <label for="categoryName">@Language.GetString("tbl_CategoryName")</label><br />
-                            <input type="text" class="form-control" id="categoryName" placeholder=" ">
-                            <span data-val-result="categoryName" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group col-md-1" style="text-align:center;margin:auto;">
-                            <span data-val-result="MultiLingualProperties" class="text-danger"></span>
-                            <div style="margin:auto;display:inline-block;">
-                                <button type="button" class="btn btn-info rounded-circle bg-gradient" onclick="addToTable();">
-                                    <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-5"></div>
-
                     </div>
+                    <div class="form-group col-md-5"></div>
 
-                    <div class="row" style="margin-top:1%;">
-                        <div class="card-body table-bordered  table-responsive p-0">
-                            <table class="table table-hover">
-                                <thead>
+                </div>
+
+                <div class="row" style="margin-top:1%;">
+                    <div class="card-body table-bordered  table-responsive p-0">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr style="text-align:center;">
+                                    <th>@Language.GetString("tbl_CategoryName")</th>
+                                    <th>@Language.GetString("LanguageName")</th>
+                                    <th style="display:none"></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="multiLingualList">
+                                @foreach (var item in Model.CategoryNames)
+                                {
                                     <tr style="text-align:center;">
-                                        <th>@Language.GetString("tbl_CategoryName")</th>
-                                        <th>@Language.GetString("LanguageName")</th>
-                                        <th style="display:none"></th>
-                                        <th></th>
+                                        <td>@item.Name</td>
+                                        <td>@item.LanguageName</td>
+                                        <td style="display:none;">@item.LanguageId</td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger rounded-circle bg-gradient" onclick="deleteFromTable(this);">
+                                                <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                            </button>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody id="multiLingualList">
-                                    @foreach (var item in Model.CategoryNames)
-                                    {
-                                        <tr style="text-align:center;">
-                                            <td>@item.Name</td>
-                                            <td>@item.LanguageName</td>
-                                            <td style="display:none;">@item.LanguageId</td>
-                                            <td>
-                                                <button type="button" class="btn btn-danger rounded-circle bg-gradient" onclick="deleteFromTable(this);">
-                                                    <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-
+                                }
+                            </tbody>
+                        </table>
                     </div>
 
                 </div>
+
+            </div>
             <div class="card-footer">
                 <div class="row">
-                    <input type="button" id="btnAddContentCategory" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient" />
-                    <a asp-action="List" class="btn btn-primary bg-gradient">@Language.GetString("btn_Back")</a>
+                    <div class="col-md-4 offset-md-8 col-12">
+                        <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                        <input type="button" id="btnAddContentCategory" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
+                    </div>
                 </div>
             </div>
 
         </div>
     </div>
 </div>
+
+
+
+<div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastAlert" style="display: block; left: 0; top: 0; z-index: 11;">
+    <div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
+        <div class="toast-body p-3 fs-5 rounded-3 text-center" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);" id="notificationToastBody">
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("Notification", ViewBag.OperationResult)
 @section Scripts{
     <script>
 
         $(document).ready(function () {
             debugger;
+            $("#toastAlert").hide();
             $("#languageId").val('@ViewBag.LangId');
             if ("@Model.ContentCategoryId" != "" && "@Model.ParentCategoryId" != "") {
                 $("#ParentCategoryId").val("@Model.ParentCategoryId");
             }
-           
+
             $("#btnAddContentCategory").click(function () {
             debugger;
                 var flag = false;
-               
+
                 if ($("#multiLingualList tr").length == 0) {
                     $("span[data-val-result='MultiLingualProperties']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
                     flag = true;
@@ -208,7 +222,7 @@
             if ($("#ParentCategoryId").val() != "-1") {
                 obj.ParentCategoryId = $("#ParentCategoryId").val();
             }
-            
+
             //if ($("#ModificationReason").length > 0) {
             //    obj.ModificationReason = $("#ModificationReason").val();
             //}

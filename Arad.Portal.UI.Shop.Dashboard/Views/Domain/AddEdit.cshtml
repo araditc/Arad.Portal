@@ -1,6 +1,5 @@
 ﻿@model Arad.Portal.DataLayer.Models.Domain.DomainDTO
 @using Arad.Portal.UI.Shop.Dashboard.Helpers;
-@using Arad.Portal.DataLayer.Models.Shared;
 @{
     //Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
@@ -40,8 +39,8 @@
             background-color: #e0dcdf;
         }
 
-        .ltr{
-            direction : ltr;
+        .ltr {
+            direction: ltr;
         }
     </style>
 }
@@ -52,8 +51,10 @@
     <div class="col-md-12">
         <div class="card" id="addDomainCard">
             <div class="card-header">
-                <h3 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.DomainId) ? 
-                     Language.GetString("EditDomain_Title") : Language.GetString("AddDomain_Title"))</h3>
+                <h3 class="card-title" data-toggle="tab">
+                    @(!string.IsNullOrWhiteSpace(Model.DomainId) ?
+                     Language.GetString("EditDomain_Title") : Language.GetString("AddDomain_Title"))
+                </h3>
             </div>
 
             <div class="card-body">
@@ -82,7 +83,7 @@
                         @if (dir == "rtl")
                         {
                             <label style="font-weight:700;">
-                                <input type="checkbox" id="chbDefaultDomain" class="minimal" asp-for="IsDefault" >
+                                <input type="checkbox" id="chbDefaultDomain" class="minimal" asp-for="IsDefault">
                                 @Language.GetString("DefaultDomain")
                             </label>
                         }
@@ -112,12 +113,12 @@
                     </div>
                     <div class="form-group col-md-3 invoiceInitialise">
                         <label for="DefaultCurrencyId">@Language.GetString("FirstInvoiceNumberPattern")</label><br />
-                        <input type="text" class="form-control" asp-for="@Model.InvoiceNumberInitializer"  value="@Model.InvoiceNumberInitializer"/>
+                        <input type="text" class="form-control" asp-for="@Model.InvoiceNumberInitializer" value="@Model.InvoiceNumberInitializer" />
                         <span data-val-result="InvoiceNumberInitializer" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3 invoiceInitialise">
                         <label for="DefaultCurrencyId">@Language.GetString("IncreasementLevel")</label><br />
-                        <input type="text" class="form-control" asp-for="@Model.IncreasementValue" value="@Model.IncreasementValue"/>
+                        <input type="text" class="form-control" asp-for="@Model.IncreasementValue" value="@Model.IncreasementValue" />
                         <span data-val-result="InvoiceNumberInitializer" class="text-danger"></span>
                     </div>
 
@@ -184,8 +185,8 @@
                                                     <th>@Language.GetString("Currency")</th>
                                                     <th style="display:none;"></th>
                                                     <th>@Language.GetString("PriceValue")</th>
-                                                    <th >@Language.GetString("StartDate")</th>
-                                                    <th >@Language.GetString("EndDate")</th>
+                                                    <th>@Language.GetString("StartDate")</th>
+                                                    <th>@Language.GetString("EndDate")</th>
                                                     <th>@Language.GetString("ActivationState")</th>
                                                     <th></th>
                                                 </tr>
@@ -241,11 +242,11 @@
                                         </select>
                                         <span data-val-result="providerId" class="text-danger"></span>
                                     </div>
-                                   
-                                    <div class="form-group col-md-2"  style="text-align:center;margin:auto;">
+
+                                    <div class="form-group col-md-2" style="text-align:center;margin:auto;">
 
                                         <div id="btnAddSection" style="margin:auto;display:inline-block;">
-                                            <button type="button" id="addProviderParam" class="btn btn-primary bg-gradient d-none" >
+                                            <button type="button" id="addProviderParam" class="btn btn-primary bg-gradient d-none">
                                                 <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
                                                 @Language.GetString("btn_Add")
                                             </button>
@@ -281,7 +282,7 @@
                                                             </button>
                                                         </td>
                                                     </tr>
-                                                            }
+                                                }
                                             </tbody>
                                         </table>
                                     </div>
@@ -289,21 +290,34 @@
                             </div>
                             @*<div class="card-footer"></div>*@
                         </div>
-                        </div>
                     </div>
-
-
                 </div>
+
+
+            </div>
             <div class="card-footer">
                 <div class="row">
-                    <input type="button" id="btnAddDomain" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient" />
-                    <a asp-action="List" class="btn btn-primary bg-gradient">@Language.GetString("btn_Back")</a>
+                    <div class="col-md-4 offset-md-8 col-12">
+                        <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                        <input type="button" id="btnAddDomain" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
+                    </div>
                 </div>
             </div>
 
         </div>
     </div>
 </div>
+
+
+
+<div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastAlert" style="display: block; left: 0; top: 0; z-index: 11;">
+    <div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
+        <div class="toast-body p-3 fs-5 rounded-3 text-center" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);" id="notificationToastBody">
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("Notification", ViewBag.OperationResult)
 @section Scripts{
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
@@ -318,11 +332,12 @@
     {
         <script src="~/plugins/iCheck/icheck.min.js"></script>
     }
-<script>
+    <script>
         var active = '@Language.GetString("Active")';
         var inActive = '@Language.GetString("InActive")';
         $(document).ready(function () {
             debugger;
+            $("#toastAlert").hide();
             $("#DefaultLanguageId").val('@ViewBag.LangId');
 
              //icheckboxes radiobuttons
@@ -359,7 +374,7 @@
                     $(".invoiceInitialise").addClass("d-none");
                 }
                 else if ($(this).val() == "1") {
-                  
+
                     $(".invoiceInitialise").removeClass("d-none");
                 }
             });
@@ -493,7 +508,7 @@
 
             });
 
-            
+
         });
 
         function FillDataToSend() {
@@ -547,7 +562,7 @@
                 innerModel.DomainValueProvider = $(this).find("td:eq(1)").text();
 
                 obj.DomainPaymentProviders.push(innerModel);
-                
+
             });
             return obj;
         }
@@ -623,7 +638,7 @@
         var tr = $(sender).parent().parent();
         $(tr).remove();
     }
-</script>
+    </script>
 }
 
 

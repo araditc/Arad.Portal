@@ -1,9 +1,8 @@
 ﻿@using System.Web
-@using Arad.Portal.DataLayer.Models.Shared;
 @using Arad.Portal.GeneralLibrary.Utilities;
 @using Arad.Portal.DataLayer.Models.Promotion;
 @using Arad.Portal.UI.Shop.Dashboard.ViewComponents;
-@using Arad.Portal.DataLayer.Entities.Shop.Promotion; 
+@using Arad.Portal.DataLayer.Entities.Shop.Promotion;
 @model PagedItems<PromotionDTO>
 @{
     var i = ((Model.CurrentPage - 1) * Model.PageSize);
@@ -72,7 +71,7 @@
 }
 @section Styles
 {
-   
+
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
         <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
@@ -94,97 +93,97 @@
 
     <div id="searchCollapse" class="@searchCollapseClass">
         <div class="card-body">
-           
-                <div class="row" id="firstRow">
 
-                    <div class="form-group col-md-3">
-                        <label for="promotionTypeId">@Language.GetString("Classification")</label><br />
-                        <select class="form-control selectpicker" id="promotionTypeId" data-live-search="true" 
-                                asp-items="@(new SelectList(ViewBag.PromotionTypes,"Value","Text", promotionTypeId))">
-                        </select>
-                    </div>
-                    @if (ViewBag.IsSysAcc)
-                    {
-                        @*<div class="form-group col-md-3" id="vendorSection">
-                                    <label for="productVendor">@Language.GetString("ProductVendor")</label><br />
-                                    <select class="form-control selectpicker" id="productVendor" data-live-search="true" 
-                                            asp-items="@(new SelectList(ViewBag.Vendors, "Value", "Text"))">
-                                    </select>
-                            </div>*@
-                    }
-                    @*<div class="form-group col-md-3" id="groupSection">
-                            <label>@Language.GetString("tbl_ProductGroup")</label>
-                                <select class="form-control selectpicker" id="productGroupId" data-live-search="true" 
-                                        asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))">
+            <div class="row" id="firstRow">
+
+                <div class="form-group col-md-3">
+                    <label for="promotionTypeId">@Language.GetString("Classification")</label><br />
+                    <select class="form-control selectpicker" id="promotionTypeId" data-live-search="true"
+                            asp-items="@(new SelectList(ViewBag.PromotionTypes,"Value","Text", promotionTypeId))">
+                    </select>
+                </div>
+                @if (ViewBag.IsSysAcc)
+                {
+                    @*<div class="form-group col-md-3" id="vendorSection">
+                                <label for="productVendor">@Language.GetString("ProductVendor")</label><br />
+                                <select class="form-control selectpicker" id="productVendor" data-live-search="true"
+                                        asp-items="@(new SelectList(ViewBag.Vendors, "Value", "Text"))">
                                 </select>
                         </div>*@
+                }
+                @*<div class="form-group col-md-3" id="groupSection">
+                        <label>@Language.GetString("tbl_ProductGroup")</label>
+                            <select class="form-control selectpicker" id="productGroupId" data-live-search="true"
+                                    asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))">
+                            </select>
+                    </div>*@
 
 
-                    @*<div class="form-group col-md-3" id="productSection">
-                             <label for="productId">@Language.GetString("Product")</label><br />
-                             <select class="form-control selectpicker" id="productId" data-live-search="true" >
-                             </select>
-                        </div>*@
+                @*<div class="form-group col-md-3" id="productSection">
+                         <label for="productId">@Language.GetString("Product")</label><br />
+                         <select class="form-control selectpicker" id="productId" data-live-search="true" >
+                         </select>
+                    </div>*@
+            </div>
+            <div class="row">
+                <div class="form-group col-md-3">
+                    <label>@Language.GetString("Title")</label>
+                    <input type="text" class="form-control" id="title" placeholder=" ">
                 </div>
-                <div class="row">
-                    <div class="form-group col-md-3">
-                        <label>@Language.GetString("Title")</label>
-                        <input type="text" class="form-control" id="title" placeholder=" ">
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="discountTypeId">@Language.GetString("Type")</label><br />
-                        <select class="form-control selectpicker" id="discountTypeId" data-live-search="true"
-                                asp-items="@(new SelectList(ViewBag.DiscountTypes,"Value","Text", discountTypeId))">
-                        </select>
-                        <span data-val-result="discountTypeId" class="text-danger"></span>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>@Language.GetString("FromDate")</label>
-                        @if (CultureInfo.CurrentCulture.Name == "fa-IR")
-                        {
-                            <div class="input-group-prepend ">
-                                <span class="input-group-text">
-                                    <i class="fa fa-calendar"></i>
-                                </span>
-                                <input autocomplete="off" id="dtpFromDate" type="text" class="form-control" />
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="input-group date" id="dtpFromDate" data-target-input="nearest">
-                                <input type="text" class="form-control datetimepicker-input" />
-                                <div class="input-group-append" data-toggle="datetimepicker">
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                </div>
-                            </div>
-                        }
-
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>@Language.GetString("ToDate")</label>
-                        @if (CultureInfo.CurrentCulture.Name == "fa-IR")
-                        {
-                            <div class="input-group-prepend ">
-                                <span class="input-group-text">
-                                    <i class="fa fa-calendar"></i>
-                                </span>
-                                <input autocomplete="off" id="dtpToDate" type="text" class="form-control" />
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="input-group date" id="dtpToDate" data-target-input="nearest">
-                                <input type="text" class="form-control datetimepicker-input" />
-                                <div class="input-group-append" data-toggle="datetimepicker">
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                </div>
-                            </div>
-                        }
-
-                    </div>
+                <div class="form-group col-md-3">
+                    <label for="discountTypeId">@Language.GetString("Type")</label><br />
+                    <select class="form-control selectpicker" id="discountTypeId" data-live-search="true"
+                            asp-items="@(new SelectList(ViewBag.DiscountTypes,"Value","Text", discountTypeId))">
+                    </select>
+                    <span data-val-result="discountTypeId" class="text-danger"></span>
                 </div>
+                <div class="form-group col-md-3">
+                    <label>@Language.GetString("FromDate")</label>
+                    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                    {
+                        <div class="input-group-prepend ">
+                            <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                            <input autocomplete="off" id="dtpFromDate" type="text" class="form-control" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="input-group date" id="dtpFromDate" data-target-input="nearest">
+                            <input type="text" class="form-control datetimepicker-input" />
+                            <div class="input-group-append" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>
+                    }
 
-          
+                </div>
+                <div class="form-group col-md-3">
+                    <label>@Language.GetString("ToDate")</label>
+                    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                    {
+                        <div class="input-group-prepend ">
+                            <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                            <input autocomplete="off" id="dtpToDate" type="text" class="form-control" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="input-group date" id="dtpToDate" data-target-input="nearest">
+                            <input type="text" class="form-control datetimepicker-input" />
+                            <div class="input-group-append" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+
+
         </div>
         <div class="card-footer">
             <button id="btnSearch" class="btn btn-primary bg-gradient" type="submit">
@@ -255,7 +254,7 @@
                             <td>
                                 @if (ViewBag.Permissions["Edit"])
                                 {
-                                    <a asp-action="AddEdit" asp-controller="Promotion" asp-route-id="@item.PromotionId" class="btn btn-sm btn-info bg-gradient">
+                                    <a asp-action="AddEdit" asp-controller="Promotion" asp-route-id="@item.PromotionId" class="btn btn-sm btn-warning bg-gradient">
                                         <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                                     </a>
                                 }
@@ -267,7 +266,7 @@
                                 }
                                 @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
                                 {
-                                    <button id="restoreRecord" onclick="EntityRestore('@item.PromotionId')" class="btn btn-sm btn-warning bg-gradient">
+                                    <button id="restoreRecord" onclick="EntityRestore('@item.PromotionId')" class="btn btn-sm btn-secondary bg-gradient">
                                         <i style="position: relative;left: 5px;top: 2px;" class="fa fa-refresh"></i>
                                         @Language.GetString("btn_Restore")
                                     </button>
@@ -299,6 +298,38 @@
     </div>
 
 </div>
+
+<div aria-hidden="true" aria-labelledby="confirmModalLabel" class="modal fade" id="confirmModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="confirmModalLabel">
+                </h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                </button>
+            </div>
+            <div class="modal-body" id="confirmModalBody">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="onClickYes()" type="button">
+                    @Language.GetString("btn_Confirm")
+                </button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                    @Language.GetString("btn_NotConfirm")
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastAlert" style="display: block; left: 0; top: 0; z-index: 11;">
+    <div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
+        <div class="toast-body p-3 fs-5 rounded-3 text-center" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);" id="notificationToastBody">
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("ConfirmDelete", new ConfirmDeleteDTO { Url = Url.Action("Delete") })
 @section Scripts
 {
     <script src="~/js/popperjs/popper.min.js"></script>
@@ -313,9 +344,10 @@
         <script src="~/js/moment.min.js"></script>
         <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
     }
-<script type="text/javascript">
+    <script type="text/javascript">
        $(document).ready(function () {
            debugger;
+           $("#toastAlert").hide();
            @*$("#promotionTypeId").val('@promotionTypeId');*@
            @*$("#discountTypeId").val('@discountTypeId');*@
            $("#title").val('@title');
@@ -368,7 +400,7 @@
                             var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
                             if (result.status === "success") {
                                 debugger;
-                               
+
                                 if (result.data.length != 0) {
                                     (result.data).forEach(function (item) {
                                         var op = "<option value='" + item.value + "'>" + item.text + "</option>";
@@ -458,7 +490,7 @@
                             var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
                             if (result.status === "success") {
                                 debugger;
-                               
+
                                 if (result.data.length != 0) {
                                     (result.data).forEach(function (item) {
                                         var op = "<option value='" + item.value + "'>" + item.text + "</option>";
@@ -495,7 +527,7 @@
                       var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
                       if (result.status === "success") {
                           debugger;
-                         
+
                           if (result.data.length != 0) {
                               (result.data).forEach(function (item) {
                                   var op = "<option value='" + item.value + "'>" + item.text + "</option>";
@@ -627,6 +659,6 @@
                     }
                 });
         }
-</script>
+    </script>
 }
 

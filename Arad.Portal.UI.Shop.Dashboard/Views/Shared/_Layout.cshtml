@@ -170,6 +170,10 @@
             </main>
         </div>
     </div>
+    @if (ViewBag.OperationResult != null)
+    {
+        @await Component.InvokeAsync("Notification", ViewBag.OperationResult);
+    }
 
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -182,27 +186,10 @@
 
     <script>
         adjustSidebar();
-    $(document).ready(function () {
-
-
-        //$("li.nav-item.firstLevel").click(function (e) {
-
-        //    debugger;
-        //    var liID = $(this).attr("id");
-        //    var siblings = $(this).parent().children();
-        //    for (var i = 0; i < siblings.length; i++) {
-        //        debugger;
-        //        var id = $(siblings[i]).attr("id");
-        //        if (liID == id)
-        //            continue;
-        //        if ($(siblings[i]).hasClass("menu-open")) {
-        //            $(siblings[i]).removeClass("menu-open");
-        //            debugger;
-        //            var ul = $(siblings[i]).children("ul");
-        //            $(ul).css("display", "none");
-        //        }
-        //    }
-        //});
+        $(document).ready(function () {
+            debugger;
+        $("#deleteToast").hide();
+        $("#notificationToast").hide();
     });
 
 
@@ -263,7 +250,6 @@
                 success: function () {
                     debugger;
                     window.location.reload();
-
                 }
             });
         }

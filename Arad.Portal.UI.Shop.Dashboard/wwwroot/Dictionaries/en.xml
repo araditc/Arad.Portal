@@ -562,6 +562,9 @@
 	<string key="AlertAndMessage_SignInToSite">
 		<value>Sign in to site</value>
 	</string>
+	<string key="AlertAndMessages_NotAllowed">
+		<value>You are not allowed to perform operations.</value>
+	</string>
 	<string key="AlertAndMessage_ForgetPassword">
 		<value>forgot password. </value>
 	</string>
@@ -1220,6 +1223,9 @@
 	</string>
 	<string key="AlertAndMessage_Icon">
 		<value>Set Icon</value>
+	</string>
+	<string key="AlertAndMessages_UserNotFound">
+		<value>User not found</value>
 	</string>
 	<string key="AlertAndMessage_Priority">
 		<value>Set Priority</value>

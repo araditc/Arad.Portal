@@ -557,6 +557,9 @@
 	<string key="AlertAndMessage_SignInToSite">
 		<value>ورود به سایت</value>
 	</string>
+	<string key="AlertAndMessages_NotAllowed">
+		<value>شما مجاز به انجام این عملیات نیستید.</value>
+	</string>
 	<string key="AlertAndMessage_ForgetPassword">
 		<value>رمز عبور را فراموش کرده ام.</value>
 	</string>
@@ -1261,6 +1264,9 @@
 	</string>
 	<string key="AlertAndMessage_Icon">
 		<value>لطفا آیکون را انتخاب نمایید.</value>
+	</string>
+	<string key="AlertAndMessages_UserNotFound">
+		<value>کاربر پیدا نشد.</value>
 	</string>
 	<string key="AlertAndMessage_Priority">
 		<value>لطفا الویت را مشخص نمایید.</value>

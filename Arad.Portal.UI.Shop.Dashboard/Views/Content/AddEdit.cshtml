@@ -1,6 +1,5 @@
 ﻿@model Arad.Portal.DataLayer.Models.Content.ContentDTO
-@using System.Web; 
-@using Arad.Portal.DataLayer.Models.Shared;
+@using System.Web;
 @{
     //Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
@@ -189,7 +188,7 @@
                 <div class="modal-body" id="upload-modal-body">
                     <div id="rowContainer" class="row justify-content-center align-items-center">
                         <div id="container" style="position: relative;display: inline; height: 400px; width: 400px;max-width:100%;">
-                            <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="blah" 
+                            <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="blah"
                                  alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
                         </div>
                     </div>
@@ -323,10 +322,10 @@
                         <span data-val-result="ContentCode" class="text-danger"></span>
                     </div>
                     @*<div class="col-md-3">
-                        <label asp-for="UrlFriend">@Language.GetString("UrlFriend")</label>
-                        <input type="text" class="form-control" asp-for="@Model.UrlFriend" placeholder=" ">
-                        <span data-val-result="UrlFriend" class="text-danger"></span>
-                    </div>*@
+                            <label asp-for="UrlFriend">@Language.GetString("UrlFriend")</label>
+                            <input type="text" class="form-control" asp-for="@Model.UrlFriend" placeholder=" ">
+                            <span data-val-result="UrlFriend" class="text-danger"></span>
+                        </div>*@
 
                 </div>
                 <div class="row">
@@ -339,7 +338,7 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="custom-file">
-                                            <input  accept="image/x-png,image/jpeg"
+                                            <input accept="image/x-png,image/jpeg"
                                                    type="file" class="btn btn-sm bg-gradient" name="image" id="image" onchange="getURL(this)">
                                             <label class="custom-file-label" for="image">@Language.GetString("btn_UploadImage")</label>
                                         </div>
@@ -408,7 +407,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                   
+
                                     <div class="col-md-12">
                                         <span data-val-result="editorCk" class="text-danger"></span>
                                         <textarea id="editorCk" name="editorCk" class="form-control" rows="40">@Html.Raw(Model.Contents)</textarea>
@@ -423,8 +422,8 @@
 
                                         </script>
                                     </div>
-                                 
-                                  
+
+
                                 </div>
                             </div>
                         </div>
@@ -434,14 +433,47 @@
             </div>
             <div class="card-footer">
                 <div class="row">
-                    <input type="button" id="btnAddContent" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient" />
-                    <a asp-action="List" class="btn btn-primary bg-gradient">@Language.GetString("btn_Back")</a>
+                    <div class="col-md-4 offset-md-8 col-12">
+                        <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                        <input type="button" id="btnAddContent" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
+                    </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
+
+<div aria-hidden="true" aria-labelledby="confirmModalLabel" class="modal fade" id="confirmModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="confirmModalLabel">
+                </h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                </button>
+            </div>
+            <div class="modal-body" id="confirmModalBody">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="onClickYes()" type="button">
+                    @Language.GetString("btn_Confirm")
+                </button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                    @Language.GetString("btn_NotConfirm")
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastAlert" style="display: block; left: 0; top: 0; z-index: 11;">
+    <div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
+        <div class="toast-body p-3 fs-5 rounded-3 text-center" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);" id="notificationToastBody">
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("Notification", ViewBag.OperationResult)
 @section Scripts{
     <script src="~/lib/cropperjs/cropper.js"></script>
     <script src="~/js/plugins/bootstrap/js/bootstrap.min.js"></script>
@@ -467,7 +499,7 @@
     {
         <script src="~/plugins/iCheck/icheck.min.js"></script>
     }
-<script>
+    <script>
         var fileName;
         var fileContent;
         var cropper;
@@ -482,7 +514,8 @@
 
 
         $(document).ready(function () {
-        debugger;
+            debugger;
+            $("#toastAlert").hide();
         //icheckboxes radiobuttons
         if ("@dir" == "rtl") {
         $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
@@ -527,7 +560,7 @@
                     var model = {};
                     model.ImageId = serverImages[i].imageId;
                     model.Content = serverImages[i].url;
-                        
+
                     images.push(model);
                 }
             }
@@ -577,7 +610,7 @@
             console.log("validation passed");
             if (!flag) {
                 var dto = FillDataToSend();
-               
+
                 console.log(dto);
                 $.ajax({
                     url: "@Model.ContentId" != "" ? "/Content/Edit" : "/Content/Add",
@@ -806,7 +839,7 @@
     $("#send_pic").attr("disabled", true);
     $("#uploadModal").modal("show");
     }
-    
+
 
     function initCropper() {
         debugger;
@@ -912,7 +945,7 @@
             }
             }
     }
-   
-</script>
+
+    </script>
 }
 

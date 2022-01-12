@@ -144,12 +144,12 @@
                             <div class="card-body">
                                 <div class="text-center form-group">
 
-                                    <img id="groupImage" onclick="ViewImage('@Model.GroupImage.Url')"  style="cursor: pointer" imgid="@(!string.IsNullOrWhiteSpace(@Model.GroupImage.ImageId) ? @Model.GroupImage.ImageId : "-1")"
+                                    <img id="groupImage" onclick="ViewImage('@Model.GroupImage.Url')" style="cursor: pointer" imgid="@(!string.IsNullOrWhiteSpace(@Model.GroupImage.ImageId) ? @Model.GroupImage.ImageId : "-1")"
                                          class="profile-user-img img-fluid img-circle" src="@(!string.IsNullOrWhiteSpace(@Model.GroupImage.Content) ? @Model.GroupImage.Content : "/imgs/NoImage.png")" alt="productGroup Image">
                                 </div>
                                 <hr>
                                 <div class="custom-file">
-                                    <input  accept="image/x-png,image/jpeg" type="file" class="btn btn-sm" name="image" id="image" onchange="getURL(this)">
+                                    <input accept="image/x-png,image/jpeg" type="file" class="btn btn-sm" name="image" id="image" onchange="getURL(this)">
                                     <label class="custom-file-label" for="image">@Language.GetString("ChangeImage")</label>
                                 </div>
                             </div>
@@ -264,14 +264,48 @@
             </div>
             <div class="card-footer">
                 <div class="row">
-                    <input type="button" id="btnAddProductGroup" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient" />
-                    <a asp-action="List" class="btn btn-primary bg-gradient">@Language.GetString("btn_Back")</a>
+                    <div class="col-md-4 offset-md-8 col-12">
+                        <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                        <input type="button" id="btnAddProductGroup" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
+                    </div>
                 </div>
             </div>
 
         </div>
     </div>
 </div>
+
+<div aria-hidden="true" aria-labelledby="confirmModalLabel" class="modal fade" id="confirmModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="confirmModalLabel">
+                </h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                </button>
+            </div>
+            <div class="modal-body" id="confirmModalBody">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="onClickYes()" type="button">
+                    @Language.GetString("btn_Confirm")
+                </button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                    @Language.GetString("btn_NotConfirm")
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastAlert" style="display: block; left: 0; top: 0; z-index: 11;">
+    <div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
+        <div class="toast-body p-3 fs-5 rounded-3 text-center" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);" id="notificationToastBody">
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("ConfirmDelete", new ConfirmDeleteDTO { Url = Url.Action("Delete") })
 
 @section Scripts{
     <script src="~/lib/cropperjs/cropper.js"></script>
@@ -284,13 +318,14 @@
         var modelUrl;
         $(document).ready(function () {
             debugger;
+            $("#toastAlert").hide();
             modelUrl = '@Model.GroupImage';
             if ("@Model.ProductGroupId" != "" && "@Model.ParentId" != "") {
                 $("#ParentId").val("@Model.ParentId");
             }
 
             $("#send_Logo").click(function () {
-                debugger; 
+                debugger;
                 $("#uploadlogoModal").modal("hide");
                 var url = $("#contentLogo").attr("src");
                 debugger;
@@ -395,8 +430,8 @@
                 obj.GroupImage.Url = modelUrl;
 
             obj.GroupImage.IsMain = true;
-            
-            
+
+
             return obj;
         }
 

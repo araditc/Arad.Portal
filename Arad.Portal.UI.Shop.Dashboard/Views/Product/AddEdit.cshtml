@@ -1,5 +1,5 @@
 ﻿@model Arad.Portal.DataLayer.Models.Product.ProductOutputDTO
-@{ 
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
@@ -29,16 +29,6 @@
     <style>
         .text-danger {
             font-size: 12px;
-        }
-
-        .rounded-circle {
-            width: 30px;
-            height: 30px;
-            padding: 6px 0px;
-            border-radius: 15px;
-            text-align: center;
-            font-size: 12px;
-            line-height: 1.42857;
         }
 
         .card-header {
@@ -225,7 +215,7 @@
                         </select>
                     </div>
                 </div>
-             
+
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -422,12 +412,12 @@
                                                             <td>@item.Description</td>
                                                             <td>@item.UrlFriend</td>
                                                             <td>
-                                                                <button type="button" class="btn btn-danger rounded-circle btnDel bg-gradient" cnt="@item.Tag"  onclick="deleteFromTable(this);">
+                                                                <button type="button" class="btn btn-danger rounded-circle btnDel bg-gradient" cnt="@item.Tag" onclick="deleteFromTable(this);">
                                                                     <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
                                                                 </button>
                                                             </td>
                                                         </tr>
-                                                     
+
                                                     }
                                                 }
                                                 else
@@ -560,7 +550,7 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="custom-file">
-                                            <input  accept="image/x-png,image/jpeg"
+                                            <input accept="image/x-png,image/jpeg"
                                                    type="file" class="btn btn-sm bg-gradient" name="image" id="image" onchange="getURL(this)">
                                             <label class="custom-file-label" for="image">@Language.GetString("btn_UploadImage")</label>
                                         </div>
@@ -620,29 +610,63 @@
             </div>
             <div class="card-footer">
                 <div class="row">
-                    <input type="button" id="btnAddProduct" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient" />
-                    <a asp-action="List" class="btn btn-primary bg-gradient">@Language.GetString("btn_Back")</a>
+                    <div class="col-md-4 offset-md-8 col-12">
+                        <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                        <input type="button" id="btnAddProduct" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-    <script src="~/lib/cropperjs/cropper.js"></script>
-    <script src="~/plugins/select2/js/select2.js"></script>
-    @if (dir == "rtl")
-    {
-        <script src="~/plugins/iCheck/icheck.min.js"></script>
-    }
-    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
-    {
-        <script src="~/plugins/datePicker/kamadatepicker.min.js"></script>
-    }
-    else
-    {
-        <script src="~/js/moment.min.js"></script>
-        <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
-    }
+<div aria-hidden="true" aria-labelledby="confirmModalLabel" class="modal fade" id="confirmModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="confirmModalLabel">
+                </h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                </button>
+            </div>
+            <div class="modal-body" id="confirmModalBody">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="onClickYes()" type="button">
+                    @Language.GetString("btn_Confirm")
+                </button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                    @Language.GetString("btn_NotConfirm")
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastAlert" style="display: block; left: 0; top: 0; z-index: 11;">
+    <div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
+        <div class="toast-body p-3 fs-5 rounded-3 text-center" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);" id="notificationToastBody">
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("ConfirmDelete", new ConfirmDeleteDTO { Url = Url.Action("Delete") })
+
+<script src="~/lib/cropperjs/cropper.js"></script>
+<script src="~/plugins/select2/js/select2.js"></script>
+@if (dir == "rtl")
+{
+    <script src="~/plugins/iCheck/icheck.min.js"></script>
+}
+@if (CultureInfo.CurrentCulture.Name == "fa-IR")
+{
+    <script src="~/plugins/datePicker/kamadatepicker.min.js"></script>
+}
+else
+{
+    <script src="~/js/moment.min.js"></script>
+    <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
+}
 
 <script>
     var fileName;
@@ -657,8 +681,8 @@
     var active = '@Language.GetString("Active")';
     var inActive = '@Language.GetString("InActive")';
     $(document).ready(function () {
-    
-      
+        $("#toastAlert").hide();
+
         var urlFriend = "product/" + '@Model.ProductCode';
         $("#urlFriend").val(urlFriend);
         var multiLingualList = @Json.Serialize(@Model.MultiLingualProperties);
@@ -675,7 +699,7 @@
             obj.Description = multiLingualList[i].description;
             obj.UrlFriend = multiLingualList[i].urlFriend;
             obj.BodyContent = multiLingualList[i].bodyContent;
-          
+
             multiLingualArr.push(obj);
         }
 
@@ -722,7 +746,7 @@
         $("#GroupIds").select2({ dir: '@dir', theme: 'bootstrap4' });
         $("#specValues").select2({ dir: '@dir', theme: 'bootstrap4' });
         if ('@Model.Images.Any()' == 'True') {
-        
+
             var serverImages = @Json.Serialize(@Model.Images);
             for (var i = 0; i < serverImages.length; i++) {
                 var model = {};
@@ -751,7 +775,7 @@
                 $("span[data-val-result='GroupIds']").html('@Language.GetString("AlertAndMessage_SelectAtLeastOneItem")');
                 flag = true;
             }
-            
+
             if ($("#Inventory").val() == "0")
             {
                 $("span[data-val-result='UniqueCode']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
@@ -782,7 +806,7 @@
 
             var dto = FillDataToSend();
             console.log(dto);
-     
+
 
                 if (!flag) {
                     $.ajax({
@@ -836,7 +860,7 @@
       });
 
         $("#send_pic").click(function () {
-        
+
             $("#uploadModal").modal("hide");
             var url = $("#galleryPic").attr("src");
             var model = {};
@@ -899,7 +923,7 @@
        });
 
         $("#specGroupId").change(function () {
-          
+
         var langId = $("#languageId").val();
         var groupId = $("#specGroupId").val();
         if (groupId != "") {
@@ -967,7 +991,7 @@
 
 
     function deleteFromImageList(sender) {
-   
+
         var id = $(sender).attr("imgId");
         //removeFromArray
         var item = images.find(_ => _.ImageId === id);
@@ -978,7 +1002,7 @@
      }
 
     function addPriceToList() {
-     
+
         var flag = false;
         $("span[data-val-result='priceValue']").html("");
         $("span[data-val-result='startDate']").html("");
@@ -998,7 +1022,7 @@
             var tr = "";
             if ($("#priceList").find("td:eq(1)").length > 0) {
                 $("#priceList").find("td:eq(1)").each(function () {
-                 
+
                     if ($(this).text() == currencyId && $(this).parent().find("td:eq(4)").text() == "" &&
                         $(this).parent().find("td:eq(5)").text() == active) {
                         /*confirm = false;*/
@@ -1013,7 +1037,7 @@
                             cancelButtonText: '@Language.GetString("btn_NotConfirm")'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                           
+
                                 /*confirm = true;*/
                                 $(this).parent().find("td:eq(5)").text(inActive);
                                 appendToPriceList(tr);
@@ -1088,7 +1112,7 @@
                 "</td><td style='display:none;'>" + $('#specGroupId').val() +
                 "</td><td>" + $("#specificationId option:selected").text() +
                 "</td><td style='display:none;'>" + $("#specificationId").val() +
-                "</td><td>" + vals 
+                "</td><td>" + vals
                 "</td><td><button type='button' class='btn btn-sm btn-danger rounded-circle bg-gradient' onclick='deleteFromSpecList(this)'>" +
                 "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
 
@@ -1101,7 +1125,7 @@
             $("#languageId").val("@ViewBag.LangId");
             $("#specGroupId").val("-1");
             $("#specificationId").val("-1");
-         
+
             $("#specValues").empty();
             /*$('#specValues').select2('data', null);*/
         }
@@ -1113,7 +1137,7 @@
     }
 
     function FillDataToSend() {
-       
+
         var dto = {};
         dto.GroupNames = [];
         dto.GroupIds = [];
@@ -1139,7 +1163,7 @@
         //multilingualProperties
         debugger;
         dto.MultiLingualProperties = multiLingualArr;
-       
+
         //prices
         $("#priceList tr").each(function () {
 
@@ -1177,7 +1201,7 @@
 
         //pictures
         $("#imageList tr").each(function () {
-         
+
             var id = $(this).find("td:eq(1)").text();
             var item = images.find(_ => _.ImageId == id);
             index = images.indexOf(item);
@@ -1216,7 +1240,7 @@
     }
 
     function addToTable() {
-      
+
         var flag = false;
         $("span[data-val-result='multiLangId']").html("");
         $("span[data-val-result='productName']").html("");
@@ -1253,7 +1277,7 @@
                 "</td><td>" + $("#urlFriend").val() +
                 "</td><td><button type='button' class='btn btn-sm btn-danger rounded-circle bg-gradient' cnt='" + obj.Tag + "' onclick='deleteFromTable(this);'>" +
                 "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
-    
+
             if ($("#multiLingualList tr").length == 1 && $("#multiLingualList tr")[0].children.length == 1) {
                 $("#multiLingualList tr")[0].remove();
             }
@@ -1271,7 +1295,7 @@
 
     $('#uploadModal').on('hidden.bs.modal',
         function () {
-       
+
             cropper.destroy();
             document.getElementById("image").value = "";
             $("#cropped_result").remove();
@@ -1287,7 +1311,7 @@
     }
 
     function initCropper() {
-      
+
         var image = document.getElementById('blah');
         if (cropper !== null && cropper !== undefined) {
             cropper.destroy();

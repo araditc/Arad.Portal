@@ -1,9 +1,7 @@
 ﻿@using System.Web
-@using Arad.Portal.DataLayer.Models.Shared;
 @using Arad.Portal.GeneralLibrary.Utilities;
 @using Arad.Portal.DataLayer.Models.Setting;
 @using Arad.Portal.UI.Shop.Dashboard.ViewComponents;
-
 @model PagedItems<ShippingSettingDTO>
 @{
     var i = ((Model.CurrentPage - 1) * Model.PageSize);
@@ -73,19 +71,19 @@
                             <td class="ListCell">@item.DomainName</td>
                             <td class="ListCell">@(string.Join("|", @item.AllowedShippingTypes.Select(_ => _.ShippingTypeText)))</td>
                             <td class="ListCell">
-                               @(item.ShippingCoupon != null ?
-                            (item.ShippingCoupon.ShippingExpense == 0 ? 
-                            item.ShippingCoupon.FromInvoiceExpense : 
+                                @(item.ShippingCoupon != null ?
+                            (item.ShippingCoupon.ShippingExpense == 0 ?
+                            item.ShippingCoupon.FromInvoiceExpense :
                             (Language.GetString("tbl_ShippingCoupon")
                             .Replace("[0]", $"{item.ShippingCoupon.FromInvoiceExpense} {item.CurrencyId}")
-                            .Replace("[1]", $"{item.ShippingCoupon.ShippingExpense} {item.CurrencyId}"))) 
+                            .Replace("[1]", $"{item.ShippingCoupon.ShippingExpense} {item.CurrencyId}")))
                             : "")
                             </td>
-                           
+
                             <td>
                                 @if (ViewBag.Permissions["Edit"])
                                 {
-                                    <a asp-action="AddEdit" asp-controller="Shipping" asp-route-id="@item.ShippingSettingId" class="btn btn-sm btn-info bg-gradient">
+                                    <a asp-action="AddEdit" asp-controller="Shipping" asp-route-id="@item.ShippingSettingId" class="btn btn-sm btn-warning bg-gradient">
                                         <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                                     </a>
                                 }
@@ -95,7 +93,7 @@
                                         <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
                                     </button>
                                 }
-                              
+
                             </td>
                         </tr>
                     }
@@ -123,6 +121,39 @@
     </div>
 
 </div>
+
+<div aria-hidden="true" aria-labelledby="confirmModalLabel" class="modal fade" id="confirmModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="confirmModalLabel">
+                </h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                </button>
+            </div>
+            <div class="modal-body" id="confirmModalBody">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="onClickYes()" type="button">
+                    @Language.GetString("btn_Confirm")
+                </button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                    @Language.GetString("btn_NotConfirm")
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastAlert" style="display: block; left: 0; top: 0; z-index: 11;">
+    <div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
+        <div class="toast-body p-3 fs-5 rounded-3 text-center" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);" id="notificationToastBody">
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("ConfirmDelete", new ConfirmDeleteDTO { Url = Url.Action("Delete") })
+
 @section Scripts{
     @if (dir == "rtl")
     {

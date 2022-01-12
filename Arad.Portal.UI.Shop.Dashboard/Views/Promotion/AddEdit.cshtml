@@ -1,5 +1,4 @@
 ﻿@model Arad.Portal.DataLayer.Models.Promotion.PromotionDTO
-@using Arad.Portal.DataLayer.Models.Shared;
 @{
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
@@ -21,15 +20,6 @@
             font-size: 12px;
         }
 
-        .rounded-circle {
-            width: 30px;
-            height: 30px;
-            padding: 6px 0px;
-            border-radius: 15px;
-            text-align: center;
-            font-size: 12px;
-            line-height: 1.42857;
-        }
         .card-header {
             background-color: #e0dcdf;
         }
@@ -93,30 +83,30 @@
                     </div>
 
                     @*@if (ViewBag.IsSysAcc)
-            {
-                <div class="form-group col-md-3" id="venderSection">
-                    <label for="productVendor">@Language.GetString("ProductVendor")</label><br />
-                    <select class="form-control selectpicker" id="productVendor" data-live-search="true"
-                            asp-items="@(new SelectList(ViewBag.Vendors, "Value", "Text"))">
-                    </select>
-                </div>
-            }
-            <div class="form-group col-md-3" id="">
-                <label for="productGroupId">@Language.GetString("tbl_ProductGroup")</label><br />
-                <select class="form-control selectpicker" id="productGroupId" data-live-search="true" >
-                </select>
-                <span data-val-result="productGroupId" class="text-danger"></span>
-            </div>
+                        {
+                            <div class="form-group col-md-3" id="venderSection">
+                                <label for="productVendor">@Language.GetString("ProductVendor")</label><br />
+                                <select class="form-control selectpicker" id="productVendor" data-live-search="true"
+                                        asp-items="@(new SelectList(ViewBag.Vendors, "Value", "Text"))">
+                                </select>
+                            </div>
+                        }
+                        <div class="form-group col-md-3" id="">
+                            <label for="productGroupId">@Language.GetString("tbl_ProductGroup")</label><br />
+                            <select class="form-control selectpicker" id="productGroupId" data-live-search="true" >
+                            </select>
+                            <span data-val-result="productGroupId" class="text-danger"></span>
+                        </div>
 
-            <div class="form-group col-md-3" id="">
-                <label for="productId">@Language.GetString("Product")</label><br />
-                <select class="form-control selectpicker" id="productId" data-live-search="true" >
-                </select>
-                <span data-val-result="productId" class="text-danger"></span>
-            </div>*@
-                   
+                        <div class="form-group col-md-3" id="">
+                            <label for="productId">@Language.GetString("Product")</label><br />
+                            <select class="form-control selectpicker" id="productId" data-live-search="true" >
+                            </select>
+                            <span data-val-result="productId" class="text-danger"></span>
+                        </div>*@
+
                 </div>
-                <div class="row proSec" style="display:none;"> <div class="col-md-12" ><lable class="form-control" style="background-color: #e0dcdf;">@Language.GetString("ProductsInPromotion")</lable></div></div>
+                <div class="row proSec" style="display:none;"> <div class="col-md-12"><lable class="form-control" style="background-color: #e0dcdf;">@Language.GetString("ProductsInPromotion")</lable></div></div>
 
                 <div class="row proSec" style="display:none;">
                     <div class="col-md-12" style="background-color:">
@@ -180,12 +170,12 @@
 
                 </div>
                 <div class="row type2" style="display:none;">
-                    <div class="col-md-3" >
+                    <div class="col-md-3">
                         <label for="boughtCount">@Language.GetString("BoughtCount")</label><br />
                         <input type="number" class="form-control" id="boughtCount" value="@Model.BoughtCount">
                         <span data-val-result="boughtCount" class="text-danger"></span>
                     </div>
-                    <div class="col-md-3" >
+                    <div class="col-md-3">
                         <label for="promotedCountofUnit">@Language.GetString("PromotedCountofUnit")</label><br />
                         <input type="number" class="form-control" id="promotedCountofUnit" value="@Model.PromotedCountofUnit">
                         <span data-val-result="PromotedCountofUnit" class="text-danger"></span>
@@ -247,14 +237,48 @@
             </div>
             <div class="card-footer">
                 <div class="row">
-                    <input type="button" id="btnAddPromotion" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient" />
-                    <a asp-action="List" class="btn btn-primary bg-gradient">@Language.GetString("btn_Back")</a>
+                    <div class="col-md-4 offset-md-8 col-12">
+                        <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                        <input type="button" id="btnAddPromotion" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
+                    </div>
                 </div>
             </div>
 
         </div>
     </div>
 </div>
+
+<div aria-hidden="true" aria-labelledby="confirmModalLabel" class="modal fade" id="confirmModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="confirmModalLabel">
+                </h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                </button>
+            </div>
+            <div class="modal-body" id="confirmModalBody">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="onClickYes()" type="button">
+                    @Language.GetString("btn_Confirm")
+                </button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                    @Language.GetString("btn_NotConfirm")
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastAlert" style="display: block; left: 0; top: 0; z-index: 11;">
+    <div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
+        <div class="toast-body p-3 fs-5 rounded-3 text-center" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);" id="notificationToastBody">
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("ConfirmDelete", new ConfirmDeleteDTO { Url = Url.Action("Delete") })
 
 @section Scripts{
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
@@ -274,7 +298,7 @@
 
   $(document).ready(function () {
       debugger;
-
+      $("#toastAlert").hide();
        //datetimepicker
             if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
             {
@@ -307,7 +331,7 @@
                    }
                    else
                    {
-                      
+
                        if ($("#vendorSection").length > 0)
                            $("#vendorSection").remove();
 
@@ -686,7 +710,7 @@
                     $("#dtpToDate").val(model.persianEndDate);
                 }
                 debugger;
-              
+
                 if (model.promotionTypeId == "1") {
                     {
                         //vendor
@@ -801,11 +825,11 @@
                                         options += op;
                                     });
                                 }
-                                
+
                                 var productGroupTypeSelect = "<label>" + '@Language.GetString("tbl_ProductGroup")' +"</label>" +
                                     "<select class='form-control selectpicker' id='productGroupType' data-live-search='true' >" + options +
                                     "</select><span data-val-result='productGroupType' class='text-danger'></span>";
-                               
+
                                 $("#productGroupTypeSection").append(productGroupTypeSelect);
 
                                 if (selectedGroupId != "") {

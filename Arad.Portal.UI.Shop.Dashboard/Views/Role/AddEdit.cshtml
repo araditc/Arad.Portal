@@ -31,38 +31,45 @@
     .treeview .item i{
         margin : 10px;
     }
-    .card-header {
-        background-color: #e0dcdf;
-    }
 </style>
 
 
 <h4>  @Language.GetString("Menu_Permissions") </h4>
 <hr />
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 col-12">
         <div class="card" id="addPermissionCard">
             <div class="card-header">
-                <h3 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.RoleId) ? Language.GetString("EditRolePart_Title") : Language.GetString("AddRolePart_Title"))</h3>
+                <h5 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.RoleId) ? Language.GetString("EditRolePart_Title") : Language.GetString("AddRolePart_Title"))</h5>
             </div>
             <form asp-controller="Role" role="form" asp-action="Save" id="addEditRoleFrm" method="post">
                 <input type="hidden" value="@Model.RoleId" data-val="true" asp-for="@Model.RoleId">
                 <div class="card-body" id="addEditPermissionCard">
                     <div class="row">
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4 col-12">
 
                             <label asp-for="RoleName">@Language.GetString("Role_Name")</label>
                             <input type="text" class="form-control" asp-for="RoleName" placeholder=" ">
                             <span data-val-result="RoleName" class="text-danger"></span>
                         </div>
-                        <div class="form-group col-md-3" id="TypeSelect">
-                            <label asp-for="IsActive">@Language.GetString("ActivationState")</label><br />
-                            <input @(Model.IsActive ? "checked" : "") id="IsActive" name="IsActive" type="radio"
-                                   value="true"><span style="margin:0 5px;">@Language.GetString("Active")</span></input>
-                                <input @(!Model.IsActive ? "checked" : "") id="IsActive" name="IsActive" type="radio"
-                                       value="false"><span style="margin:0 5px;">@Language.GetString("InActive")</span></input>
-                                    <span data-val-result="IsActive" class="text-danger"></span>
+                        <div class="form-group col-12 col-md-4">
+                            <div class="row p-2">
+                                <label asp-for="IsActive" class="form-label">@Language.GetString("ActivationState")</label>
+                                <div class="form-check col-4">
+                                    <input class="form-check-input" type="radio" asp-for="IsActive" value="true">
+                                    <label class="form-check-label" asp-for="IsActive">
+                                        @Language.GetString("Active")
+                                    </label>
                                 </div>
+                                <div class="form-check col-12 col-md-4">
+                                    <input class="form-check-input" type="radio" asp-for="IsActive" value="false">
+                                    <label class="form-check-label" asp-for="IsActive">
+                                        @Language.GetString("InActive")
+                                    </label>
+                                </div>
+                                <span data-val-result="IsActive" class="text-danger"></span>
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -71,37 +78,60 @@
                             </div>
                         </div>
                     </div>
-                    @*<div class="row">
-                        @{
-                            if (!string.IsNullOrWhiteSpace(Model.RoleId))
-                            {
-                                <div class="form-group col-md-6">
-                                    <label asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
-                                    <textarea dir="rtl" asp-for="ModificationReason" class="form-control" rows="3"></textarea>
-                                    <span data-val-result="ModificationReason" class="text-danger"></span>
-                                </div>
-                            }
-                        }
-                    </div>*@
-                  </div>
-                        <div class="card-footer">
-                            <div class="row">
-                                <input type="submit" id="savebtn" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient" />
-                                <a asp-action="List" class="btn btn-primary">@Language.GetString("btn_Back")</a>
-                            </div>
-                        </div>
-                    </form>
                 </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-md-4 offset-md-8 col-12">
+                            <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                            <input type="submit" id="savebtn" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div aria-hidden="true" aria-labelledby="confirmModalLabel" class="modal fade" id="confirmModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="confirmModalLabel">
+                </h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                </button>
+            </div>
+            <div class="modal-body" id="confirmModalBody">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="onClickYes()" type="button">
+                    @Language.GetString("btn_Confirm")
+                </button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                    @Language.GetString("btn_NotConfirm")
+                </button>
             </div>
         </div>
+    </div>
+</div>
+
+<div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastAlert" style="display: block; left: 0; top: 0; z-index: 11;">
+    <div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
+        <div class="toast-body p-3 fs-5 rounded-3 text-center" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);" id="notificationToastBody">
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("ConfirmDelete", new ConfirmDeleteDTO { Url = Url.Action("Delete") })
 
 @section Scripts
 {
 
-            <script>
-              
+    <script>
+
                 $(document).ready(function () {
                     debugger;
+                    $("#toastAlert").hide();
                  $.ajax({
                      url: '@Url.Action("ListPermissions")' +"/"+"@Model.RoleId",
                      type: 'Get',
@@ -193,7 +223,7 @@
                         });
                     });
                 });
-            </script>
-        }
+    </script>
+}
 
 

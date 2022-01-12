@@ -1,5 +1,4 @@
 ﻿@model Arad.Portal.DataLayer.Models.Product.ProductUnitDTO
-@using Arad.Portal.DataLayer.Models.Shared;
 @{
     //Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
@@ -11,70 +10,47 @@
         .text-danger {
             font-size: 12px;
         }
-
-        .rounded-circle {
-            width: 30px;
-            height: 30px;
-            padding: 6px 0px;
-            border-radius: 15px;
-            text-align: center;
-            font-size: 12px;
-            line-height: 1.42857;
-        }
-        .card-header {
-            background-color: #e0dcdf;
-        }
     </style>
 }
 
-<h4>  @Language.GetString("Menu_ProductUnits") </h4>
+<h5>  @Language.GetString("Menu_ProductUnits") </h5>
 <hr />
 <div class="row">
     <div class="col-md-12">
         <div class="card" id="addProductUnitCard">
             <div class="card-header">
-                <h3 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.ProductUnitId) ?
-                Language.GetString("EditProductUnitPart_Title") : Language.GetString("AddProductUnitPart_Title"))</h3>
+                <h5 class="card-title" data-toggle="tab">
+                    @(!string.IsNullOrWhiteSpace(Model.ProductUnitId) ?
+                Language.GetString("EditProductUnitPart_Title") : Language.GetString("AddProductUnitPart_Title"))
+                </h5>
             </div>
 
-            <div class="card-body" >
+            <div class="card-body">
                 <input type="hidden" value="@Model.ProductUnitId" asp-for="@Model.ProductUnitId" />
-                <div class="row">
-                    @{
-                        if (!string.IsNullOrWhiteSpace(Model.ProductUnitId))
-                        {
-                            <div class="form-group col-md-6">
-                                <label asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
-                                <textarea dir="rtl" asp-for="ModificationReason" class="form-control" rows="3"></textarea>
-                                <span data-val-result="ModificationReason" class="text-danger"></span>
-                                <span data-val-result="UnitNames" class="text-danger"></span>
-                            </div>
-                        }
-                    }
-                </div>
-                <div class="row" style="background-color: #f0f0f5;">
-                    <div class="form-group col-md-3">
+               
+                <div class="row align-items-center alert alert-secondary">
+                    <div class="form-group col-md-4">
                         <label for="unitName">@Language.GetString("ProductUnit_Name")</label><br />
                         <input type="text" class="form-control" id="unitName" placeholder=" ">
                         <span data-val-result="unitName" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-4">
                         <label for="languageId">@Language.GetString("LanguageName")</label><br />
                         <select class="form-control select2" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                         </select>
                         <span data-val-result="languageId" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3" style="text-align:center;margin:auto;">
+                    <div class="form-group col-md-4" style="text-align:center;margin:auto;">
                         <div style="margin:auto;display:inline-block;">
-                            <button type="button" class="btn btn-info rounded-circle bg-gradient" onclick="addToTable();">
-                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                            <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="@Language.GetString("btn_Add")" class="btn btn-info rounded-circle bg-gradient" onclick="addToTable();">
+                                <i class="fa fa-plus" style="position: relative;"></i>
                             </button>
                         </div>
-                       
+
                     </div>
                 </div>
-                
-              
+
+
                 <div class="row" style="margin-top:1%;">
                     <div class="card-body table-bordered  table-responsive p-0">
                         <table class="table table-hover">
@@ -83,7 +59,6 @@
                                     <th>@Language.GetString("ProductUnit_Name")</th>
                                     <th>@Language.GetString("LanguageName")</th>
                                     <th style="display:none"></th>
-                                    
                                     <th></th>
                                 </tr>
                             </thead>
@@ -95,8 +70,9 @@
                                         <td>@item.LanguageName</td>
                                         <td style="display:none;">@item.LanguageId</td>
                                         <td>
-                                            <button type="button" class="btn btn-danger rounded-circle bg-gradient" onclick="deleteFromTable(this);">
-                                                <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                            <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="@Language.GetString("btn_Delete")"
+                                                    class="btn btn-danger rounded-circle bg-gradient" onclick="deleteFromTable(this);">
+                                                <i class="fa fa-minus" style="position: relative;"></i>
                                             </button>
                                         </td>
                                     </tr>
@@ -109,30 +85,61 @@
             </div>
             <div class="card-footer">
                 <div class="row">
-                    <input type="button" id="btnAddProductUnit" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient" />
-                    <a asp-action="List" class="btn btn-primary bg-gradient">@Language.GetString("btn_Back")</a>
+                    <div class="col-md-4 offset-md-8 col-12">
+                        <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                        <input type="button" id="btnAddProductUnit" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
+                    </div>
                 </div>
             </div>
 
         </div>
     </div>
 </div>
+
+<div aria-hidden="true" aria-labelledby="confirmModalLabel" class="modal fade" id="confirmModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="confirmModalLabel">
+                </h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                </button>
+            </div>
+            <div class="modal-body" id="confirmModalBody">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="onClickYes()" type="button">
+                    @Language.GetString("btn_Confirm")
+                </button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                    @Language.GetString("btn_NotConfirm")
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastAlert" style="display: block; left: 0; top: 0; z-index: 11;">
+    <div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
+        <div class="toast-body p-3 fs-5 rounded-3 text-center" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);" id="notificationToastBody">
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("ConfirmDelete", new ConfirmDeleteDTO { Url = Url.Action("Delete") })
 @section Scripts{
     <script>
 
         $(document).ready(function () {
             debugger;
-           
-           
+            $("#toastAlert").hide();
+
          $("#btnAddProductUnit").click(function () {
             debugger;
                 var flag = false;
 
           var dataModel = FillDataToSend();
-          if ("@Model.ProductUnitId" != "" && $("#ModificationReason").val() == "") {
-                    $("span[data-val-result='ModificationReason']").html('@Language.GetString("AlertAndMessage_ModificationReason")');
-                    flag = true;
-                }
+
           if (dataModel.UnitNames.length == 0) {
                     $("span[data-val-result='UnitNames']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
                     flag = true;
@@ -225,13 +232,14 @@
                  $("span[data-val-result='languageId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
                 flag = true;
             }
-            
+
             if (!flag) {
                 var tr = "<tr style='text-align:center;'><td>" + $("#unitName").val() +
                     "</td><td>" + $('#languageId option:selected').text() +
                     "</td><td style='display:none;'>" + $("#languageId").val() +
-                    "</td><td><button type='button' class='btn btn-sm btn-danger rounded-circle bg-gradient' onclick='deleteFromTable(this);'>" +
-                    "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
+                    "</td><td><button type='button' data-bs-toggle='tooltip' data-bs-placement='top' title='@Language.GetString("btn_Delete")' " +
+                    " class='btn btn-sm btn-danger rounded-circle bg-gradient' onclick='deleteFromTable(this);'>" +
+                    "<i class='fa fa-minus' style='position: relative;'></i></button></td></tr>";
 
                 $("#multiLingualList").append(tr);
                 $("#unitName").val("");

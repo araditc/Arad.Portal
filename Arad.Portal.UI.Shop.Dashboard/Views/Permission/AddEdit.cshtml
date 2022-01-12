@@ -1,5 +1,4 @@
 ﻿@model Arad.Portal.DataLayer.Models.Permission.UserPermissionViewModel
-@using Arad.Portal.DataLayer.Models.Shared;
 @{
     //Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
@@ -13,6 +12,7 @@
         .text-danger {
             font-size: 12px;
         }
+
         .card-header {
             background-color: #e0dcdf;
         }
@@ -39,7 +39,7 @@
                 <div class="card-body" id="addEditPermissionCard">
                     <div class="row">
                         <div class="form-group col-md-3">
-                            
+
                             <label asp-for="Title">@Language.GetString("Per_PermissionTitle")</label>
                             <input type="text" class="form-control" asp-for="Title" placeholder=" ">
                             <span data-val-result="Title" class="text-danger"></span>
@@ -50,7 +50,7 @@
                             </select>
                             <span data-val-result="Type" class="text-danger"></span>
                         </div>
-                        <div  class="form-group col-md-3" id="MethodSelect">
+                        <div class="form-group col-md-3" id="MethodSelect">
                             <label asp-for="Method">@Language.GetString("Per_PermissionMethod")</label>
                             <select asp-for="Method" class="form-control select2" name="Method" asp-items="Html.GetEnumSelectList<Enums.PermissionMethod>()">
                             </select>
@@ -67,8 +67,8 @@
                     <div class="row">
                         <div class="form-group col-md-6" id="RoutePer">
                             <label asp-for="Routes">@Language.GetString("Per_Routes")</label>
-                            <textarea  class="form-control" asp-for="Routes"
-                                   dir="ltr" placeholder="@Language.GetString("Menu_RoutePlaceHolder")">@Model.Routes</textarea>
+                            <textarea class="form-control" asp-for="Routes"
+                                      dir="ltr" placeholder="@Language.GetString("Menu_RoutePlaceHolder")">@Model.Routes</textarea>
                             <span class="text-danger" data-val-result="Routes"></span>
                         </div>
                         <div class="form-group col-md-4" id="ParentMenuSelect" style="display:none;">
@@ -86,7 +86,7 @@
                         </div>
                         <div class="form-group col-md-3" id="PriorityPart">
                             <label asp-for="Priority">@Language.GetString("Per_Priority")</label>
-                            <input type="number" class="form-control"  asp-for="Priority" dir="ltr" value="1" min="1">
+                            <input type="number" class="form-control" asp-for="Priority" dir="ltr" value="1" min="1">
                             <span class="text-danger" data-val-result="Priority"></span>
                         </div>
                         <div class="form-group col-md-3" id="ClientAddressPart">
@@ -94,32 +94,57 @@
                             <input type="tel" class="form-control" asp-for="ClientAddress" dir="ltr">
                             <span class="text-danger" data-val-result="ClientAddress"></span>
                         </div>
-                        @{
-                            if (Model.IsEditView)
-                            {
-                                <div class="orm-group col-md-3">
-                                    <label asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
-                                    <textarea dir="rtl" asp-for="ModificationReason" class="form-control" rows="3"></textarea>
-                                    <span data-val-result="ModificationReason" class="text-danger"></span>
-                                </div>
-                            }
-                        }
                     </div>
                 </div>
                 <div class="card-footer">
                     <div class="row">
-                        <input type="submit" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient" />
-                        <a asp-action="List" class="btn btn-primary bg-gradient">@Language.GetString("btn_Back")</a>
+                        <div class="col-md-4 offset-md-8 col-12">
+                            <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                            <input type="submit" id="btnAddMenu" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
+                        </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-@section Scripts{ 
+
+<div aria-hidden="true" aria-labelledby="confirmModalLabel" class="modal fade" id="confirmModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="confirmModalLabel">
+                </h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                </button>
+            </div>
+            <div class="modal-body" id="confirmModalBody">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="onClickYes()" type="button">
+                    @Language.GetString("btn_Confirm")
+                </button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                    @Language.GetString("btn_NotConfirm")
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastAlert" style="display: block; left: 0; top: 0; z-index: 11;">
+    <div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
+        <div class="toast-body p-3 fs-5 rounded-3 text-center" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);" id="notificationToastBody">
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("ConfirmDelete", new ConfirmDeleteDTO { Url = Url.Action("Delete") })
+@section Scripts{
     <script>
         $(document).ready(function () {
             debugger;
+            $("#toastAlert").hide();
             MenusSelectList(1);
             MenusSelectList(2);
 
@@ -272,5 +297,5 @@
     </script>
 }
 
- 
+
 

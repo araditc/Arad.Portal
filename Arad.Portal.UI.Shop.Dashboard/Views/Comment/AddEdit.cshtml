@@ -1,5 +1,4 @@
 ﻿@model Arad.Portal.DataLayer.Models.Comment.CommentDTO;
-@using Arad.Portal.DataLayer.Models.Shared;
 @{
     //Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
@@ -75,36 +74,48 @@
                             }
                         </div>
                         @*<div class="form-group col-md-3">
-                            <label asp-for="@Model.ParentCommentId">@Language.GetString("CommentTitle")</label>
-                            <input type="text" asp-for="@Model.ti" value="@Model.ParentCommentContent" class="form-control" readonly="readonly" />
-                        </div>*@
+                                <label asp-for="@Model.ParentCommentId">@Language.GetString("CommentTitle")</label>
+                                <input type="text" asp-for="@Model.ti" value="@Model.ParentCommentContent" class="form-control" readonly="readonly" />
+                            </div>*@
 
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="@Model.ParentCommentId">@Language.GetString("ParentComment")</label>
+                            <input type="text" asp-for="@Model.ParentCommentContent" value="@Model.ParentCommentContent" class="form-control" readonly="readonly" />
+                            <span data-val-result="ParentCommentContent" class="text-danger"></span>
                         </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label asp-for="@Model.ParentCommentId">@Language.GetString("ParentComment")</label>
-                                <input type="text" asp-for="@Model.ParentCommentContent" value="@Model.ParentCommentContent" class="form-control" readonly="readonly" />
-                                <span data-val-result="ParentCommentContent" class="text-danger"></span>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label asp-for="@Model.Content">@Language.GetString("ContentComment")</label>
-                                <input type="text" asp-for="@Model.Content" value="@Model.Content" class="form-control" readonly="readonly" />
-                                <span data-val-result="Content" class="text-danger"></span>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="@Model.Content">@Language.GetString("ContentComment")</label>
+                            <input type="text" asp-for="@Model.Content" value="@Model.Content" class="form-control" readonly="readonly" />
+                            <span data-val-result="Content" class="text-danger"></span>
                         </div>
                     </div>
+                </div>
 
                 <div class="card-footer">
                     <div class="row">
-                        <input type="button" id="btnApproveComment" value="@Language.GetString("btn_Approved")" class="btn btn-success bg-gradient" />
-                        <a asp-action="List" class="btn btn-primary bg-gradient">@Language.GetString("btn_Back")</a>
+                        <div class="col-md-4 offset-md-8 col-12">
+                            <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                            <input type="button" id="btnApproveComment" value="@Language.GetString("btn_Approved")" class="btn btn-success bg-gradient float-end m-2" />
+                        </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+
+@*<div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastAlert" style="display: block; left: 0; top: 0; z-index: 11;">
+    <div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
+        <div class="toast-body p-3 fs-5 rounded-3 text-center" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);" id="notificationToastBody">
+        </div>
+    </div>
+</div>*@
+
+@await Component.InvokeAsync("Notification", ViewBag.OperationResult)
 @section Scripts{
     @if (dir == "rtl")
     {
@@ -114,6 +125,7 @@
 
         $(document).ready(function () {
             debugger;
+            $("#toastAlert").hide();
             if ("@dir" == "rtl") {
             $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
             checkboxClass: 'icheckbox_minimal-blue',

@@ -6,7 +6,7 @@
 
 @{ bool isSuccess = Model is { Succeeded: true }; }
 
-<div class="position-fixed h-100 w-100 p-5 bg-dark" id="test" style="display: block; left: 0; top: 0; z-index: 11;">
+<div class="position-fixed h-100 w-100 p-5 bg-dark" id="notificationToast" style="display: block; left: 0; top: 0; z-index: 11;" >
     <div aria-atomic="true" aria-live="assertive" class="toast" id="liveToast" role="alert">
         <div class="toast-body alert-@(isSuccess ? "success" : "danger")">
             <i class="@(isSuccess ? "far fa-check-circle" : "fas fa-exclamation-triangle")"></i>
@@ -19,7 +19,7 @@
     if (Model != null)
     {
         <script on-content-loaded="true">
-			$("#test").show();
+            $("#notificationToast").show();
 			var bsAlert = new bootstrap.Toast(document.getElementById('liveToast'));
 			bsAlert.show();
 
@@ -40,7 +40,7 @@
     else
     {
         <script on-content-loaded="true">
-            $("#test").hide();
+            $("#notificationToast").hide();
         </script>
     }
 }

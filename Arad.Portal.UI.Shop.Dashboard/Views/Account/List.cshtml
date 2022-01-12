@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Http;
 @using Arad.Portal.GeneralLibrary.Utilities;
 @using Arad.Portal.DataLayer.Models.Role;
-@using Arad.Portal.UI.Shop.Dashboard.ViewComponents; 
+@using Arad.Portal.UI.Shop.Dashboard.ViewComponents;
 @model Arad.Portal.DataLayer.Models.Shared.PagedItems<UserListView>
 @{
     var i = ((Model.CurrentPage - 1) * Model.PageSize);
@@ -34,12 +34,7 @@
 @section Styles
 {
     <style>
-        .userListCell {
-            text-align: center;
-            vertical-align: middle;
-        }
 
-      
         .btn {
             margin: 2px
         }
@@ -64,39 +59,39 @@
         </div>
     </a>
 
-    <div id="changePassCollapse" class="@userSearchCollapseClass" >
+    <div id="changePassCollapse" class="@userSearchCollapseClass">
         <div class="card-body">
-                <div class="row">
+            <div class="row">
 
-                    <div class="form-group col-md-3">
-                        <label>@Language.GetString("User_UserName")</label>
-                        <input id="userName" value="@(queryString != null ? @queryString["userName"] : "")" type="text" class="form-control" />
-                    </div>
-
-
-                    <div class="form-group col-md-3">
-                        <label>@Language.GetString("User_FullName")</label>
-                        <input id="name" value="@(queryString != null ? @queryString["name"] : "")" type="text" class="form-control" />
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>@Language.GetString("Role")</label>
-                        <select style="font-size: 14px;" id="roleSelect" class="form-control">
-                            <option value="0" selected="@(queryString != null && string.IsNullOrWhiteSpace(queryString["role"]) ? "selected" : null)">@Language.GetString("AlertAndMessage_SelectOne")</option>
-                            @{
-                                List<RoleListView> roles = ViewBag.Roles;
-
-                                foreach (var role in roles)
-                                {
-                                    <option selected="@(queryString != null && !string.IsNullOrWhiteSpace(queryString["role"])
-                                        && queryString["role"] == role.Id ? "selected" : null)"
-                                            value="@role.Id">
-                                        @role.Title
-                                    </option>
-                                }
-                            }
-                        </select>
-                    </div>
+                <div class="form-group col-md-3">
+                    <label>@Language.GetString("User_UserName")</label>
+                    <input id="userName" value="@(queryString != null ? @queryString["userName"] : "")" type="text" class="form-control" />
                 </div>
+
+
+                <div class="form-group col-md-3">
+                    <label>@Language.GetString("User_FullName")</label>
+                    <input id="name" value="@(queryString != null ? @queryString["name"] : "")" type="text" class="form-control" />
+                </div>
+                <div class="form-group col-md-3">
+                    <label>@Language.GetString("Role")</label>
+                    <select style="font-size: 14px;" id="roleSelect" class="form-control">
+                        <option value="0" selected="@(queryString != null && string.IsNullOrWhiteSpace(queryString["role"]) ? "selected" : null)">@Language.GetString("AlertAndMessage_SelectOne")</option>
+                        @{
+                            List<RoleListView> roles = ViewBag.Roles;
+
+                            foreach (var role in roles)
+                            {
+                                <option selected="@(queryString != null && !string.IsNullOrWhiteSpace(queryString["role"])
+                                        && queryString["role"] == role.Id ? "selected" : null)"
+                                        value="@role.Id">
+                                    @role.Title
+                                </option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
         </div>
         <div class="card-footer">
             <div class="row">
@@ -104,7 +99,7 @@
                     <button id="btnLoad" class="btn btn-primary bg-gradient float-end" type="submit">@Language.GetString("btn_Find")</button>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </div>
@@ -117,7 +112,7 @@
                 <h5 class="card-title">@Language.GetString("PermissionTitle_UserManagement")</h5>
             </div>
             <div class="col-md-3 offset-md-6">
-                <div class="card-tools float-end" >
+                <div class="card-tools float-end">
                     @if (ViewBag.Permissions["Add"])
                     {
                         <a asp-action="AddUser" asp-controller="Account" class="btn btn-success btn-sm bg-gradient">
@@ -132,13 +127,13 @@
         <table id="userListTbl" class="table table-bordered table-striped align-middle">
             <thead>
                 <tr>
-                    <th class="userListCell">@Language.GetString("tbl_RowName")</th>
-                    <th class="userListCell">@Language.GetString("User_UserName")</th>
-                    <th class="userListCell">@Language.GetString("User_FullName")</th>
-                    <th class="userListCell">@Language.GetString("User_RoleName")</th>
-                    <th class="userListCell">@Language.GetString("CreationDate")</th>
-                    <th class="userListCell">@Language.GetString("User_PhoneNumber")</th>
-                    <th class="userListCell">@Language.GetString("ActivationState")</th>
+                    <th class="ListCell">@Language.GetString("tbl_RowName")</th>
+                    <th class="ListCell">@Language.GetString("User_UserName")</th>
+                    <th class="ListCell">@Language.GetString("User_FullName")</th>
+                    <th class="ListCell">@Language.GetString("User_RoleName")</th>
+                    <th class="ListCell">@Language.GetString("CreationDate")</th>
+                    <th class="ListCell">@Language.GetString("User_PhoneNumber")</th>
+                    <th class="ListCell">@Language.GetString("ActivationState")</th>
                     <th></th>
                 </tr>
             </thead>
@@ -147,48 +142,48 @@
                 {
                     @foreach (var item in Model.Items)
                     {
-                <tr>
-                    <td class="userListCell">@(++i)</td>
-                    <td class="userListCell">@item.UserName</td>
-                    <td class="userListCell">@($"{@item.Name} {@item.LastName}")</td>
-                    <td class="userListCell">@item.RoleName</td>
-                    <td class="userListCell ltr">@item.CreateDate</td>
-                    <td class="userListCell">@item.PhoneNumber</td>
-                    <td id="@("activation" + item.Id)" class="userListCell">
-                        @{
-                            if (item.IsActive)
-                            {
-                                <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-success bg-gradient">@Language.GetString("Active")</button>
-                            }
-                            else
-                            {
-                                <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-danger bg-gradient">@Language.GetString("InActive")</button>
-                            }
-                        }
-                    </td>
-                    <td class="userListCell">
-                        @if (ViewBag.Permissions["Edit"])
-                        {
-                            <a id="editRecord" asp-action="EditUser" asp-controller="Account" asp-route-id="@item.Id" class="btn btn-sm btn-info bg-gradient">
-                                @Language.GetString("btn_Edit")
-                            </a>
-                        }
-                       
-                      
-                        @if (ViewBag.Permissions["Remove"] && item.IsDelete)
-                        {
-                            <button id="restoreRecord" data-id="@item.Id" onclick="restoreUser('@item.Id')" class="btn btn-sm btn-warning bg-gradient">
-                                @Language.GetString("btn_Restore")
-                            </button>
-                        }
-                    </td>
-                </tr>
+                        <tr>
+                            <td class="ListCell">@(++i)</td>
+                            <td class="ListCell">@item.UserName</td>
+                            <td class="ListCell">@($"{@item.Name} {@item.LastName}")</td>
+                            <td class="ListCell">@item.RoleName</td>
+                            <td class="ListCell ltr">@item.CreateDate</td>
+                            <td class="ListCell">@item.PhoneNumber</td>
+                            <td id="@("activation" + item.Id)" class="ListCell">
+                                @{
+                                    if (item.IsActive)
+                                    {
+                                        <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-success bg-gradient">@Language.GetString("Active")</button>
+                                    }
+                                    else
+                                    {
+                                        <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-danger bg-gradient">@Language.GetString("InActive")</button>
+                                    }
+                                }
+                            </td>
+                            <td class="ListCell">
+                                @if (ViewBag.Permissions["Edit"])
+                                {
+                                    <a id="editRecord" asp-action="EditUser" asp-controller="Account" asp-route-id="@item.Id" class="btn btn-sm btn-warning bg-gradient">
+                                        @Language.GetString("btn_Edit")
+                                    </a>
+                                }
+
+
+                                @if (ViewBag.Permissions["Remove"] && item.IsDelete)
+                                {
+                                    <button id="restoreRecord" data-id="@item.Id" onclick="restoreUser('@item.Id')" class="btn btn-sm btn-secondary bg-gradient">
+                                        @Language.GetString("btn_Restore")
+                                    </button>
+                                }
+                            </td>
+                        </tr>
                     }
                 }
                 else
                 {
                     <tr>
-                        <td colspan="8" class="userListCell">
+                        <td colspan="8" class="ListCell">
                             <h6>@Language.GetString("AlertAndMessage_NoDataToShow")</h6>
                         </td>
                     </tr>
@@ -209,11 +204,44 @@
     </div>
 </div>
 
+<div aria-hidden="true" aria-labelledby="confirmModalLabel" class="modal fade" id="confirmModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="confirmModalLabel">
+                </h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                </button>
+            </div>
+            <div class="modal-body" id="confirmModalBody">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="onClickYes()" type="button">
+                    @Language.GetString("btn_Confirm")
+                </button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                    @Language.GetString("btn_NotConfirm")
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastAlert" style="display: block; left: 0; top: 0; z-index: 11;">
+    <div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
+        <div class="toast-body p-3 fs-5 rounded-3 text-center" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);" id="notificationToastBody">
+        </div>
+    </div>
+</div>*@
+
+@await Component.InvokeAsync("ConfirmDelete", new ConfirmDeleteDTO { Url = Url.Action("Delete") })
+
 @section Scripts
     {
     <script>
         $(document).ready(function () {
             debugger;
+            $("#toastAlert").hide();
              $("#btnLoad").click(function () {
             debugger;
                 var queryString = '';

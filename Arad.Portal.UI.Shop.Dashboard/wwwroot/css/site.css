@@ -26,6 +26,12 @@
     vertical-align: middle;
 }
 
+.rounded-circle i{
+    font-size: 1rem;
+}
+.btn.rounded-circle{
+    padding-top: 0.55rem;
+}
 i span {
     font-family: IRANSansWeb;
 }
