@@ -2,6 +2,7 @@
 @model LoginViewModel
 @{
     Layout = null;
+    string lang = "";
     var dir = "";
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
     {
@@ -11,244 +12,276 @@
     {
         dir = "ltr";
     }
+
+    switch (CultureInfo.CurrentCulture.Name)
+    {
+        case "fa-IR":
+            lang = "fa";
+            break;
+        case "en-US":
+            lang = "en";
+            break;
+    }
 }
 
 <!DOCTYPE html>
-<html>
+<html dir="@dir" lang="@lang">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>@Language.GetString("LoginPage")</title>
-    <!-- Font Awesome -->
-    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
 
-    <!-- Theme style -->
-    <link href="~/css/siteTemplate/shared/AdminLTE/adminlte.min.css" rel="stylesheet" />
-
-    <!-- iCheck -->
-    <link href="~/plugins/iCheck/all.css" rel="stylesheet" />
-    <link href="~/plugins/iCheck/flat/blue.css" rel="stylesheet" />
-    <!-- bootstrap rtl -->
-    <link href="~/css/siteTemplate/rtl/bootstrap-rtl.min.css" rel="stylesheet" />
-    <!-- template rtl version -->
-    @if (dir == "rtl")
+    @if (dir == "ltr")
     {
-        <link href="~/css/siteTemplate/rtl/custom-style.css" rel="stylesheet" />
-        <style>
-            .tooltip {
-                font-family: IransansWeb;
-            }
-        </style>
-    }
-
-    @*<link href="~/Fonts/IranSans/css/fontiran.css" rel="stylesheet" />
-        <link href="~/dashboardAsset/dist/css/loader-double.css" rel="stylesheet" />*@
-    <style>
-
-        .tooltip-inner {
-            max-width: 200px;
-            padding: 3px 8px;
-            color: black;
-            text-align: center;
-            background-color: yellow;
-            border-radius: 4px;
-            border-color: black;
-            border: 1px solid;
-        }
-
-        input:: placeholder {
-            text-align: right;
-        }
-
-        #imgcpatcha:placeholder {
-            font-size: 12px
-        }
-
-        body {
-            background-color: white !important
-        }
-
-        .card {
-            background-color: #eeeff1;
-        }
-    </style>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    @if (dir == "rtl")
-    {
-        <script src="~/js/siteTemplate/jqueryui1.11.4/jquery-ui.min.js"></script>
-
+        <link href="~/lib/bootstrap5/css/bootstrap.min.css" rel="stylesheet" />
     }
     else
     {
-        <link href="~/plugins/icheck-bootstrap/icheck-bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/bootstrap5/css/bootstrap.rtl.min.css" rel="stylesheet" />
+        <link href="~/Fonts/IranSans/css/fontiran.css" rel="stylesheet" />
+    }
+    <link href="~/css/login.css"
+          rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    @*<style>
+
+            .tooltip-inner {
+                max-width: 200px;
+                padding: 3px 8px;
+                color: black;
+                text-align: center;
+                background-color: yellow;
+                border-radius: 4px;
+                border-color: black;
+                border: 1px solid;
+            }
+
+            input::placeholder {
+                text-align: right;
+            }
+
+            #imgcpatcha::placeholder {
+                font-size: 12px
+            }
+
+            body {
+                background-color: white !important
+            }
+
+           /* .card {
+                background-color: #eeeff1;
+            }*/
+        </style>*@
+</head>
+<body style="font-family: IransansWeb" class="hold-transition login-page">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-4 offset-md-4">
+                <div class="card shadow  mt-5 p-4">
+
+                    <img alt=""
+                         src="~/images/Logo.png"
+                         style="align-self: center"
+                         width="110" />
+
+                    <div class="card-body">
+                        <form asp-action="Login"
+                              class="row g-3"
+                              id="loginForm"
+                              method="post">
+                            <input asp-for="ReturnUrl"
+                                   type="hidden" />
+
+
+                            <div class="col-12 input-group p-0 mb-1">
+
+                                <span class="input-group-text"
+                                      id="basic-addon1">
+                                    <i class="fas fa-user"></i>
+                                </span>
+
+                                <input aria-describedby="basic-addon1"
+                                       asp-for="Username"
+                                       class="form-control"
+                                       placeholder="@Language.GetString("AlertAndMessage_Username")"
+                                       type="text">
+                            </div>
+                            <span asp-validation-for="Username"
+                                  class="text-danger form-validation-alert">
+                            </span>
+                            <div class="col-12 input-group p-0 mb-1">
+
+                                <span class="input-group-text"
+                                      id="basic-addon2">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+
+                                <input aria-describedby="basic-addon2"
+                                       asp-for="Password"
+                                       class="form-control"
+                                       id="pw_element"
+                                       placeholder="@Language.GetString("AlertAndMessage_Password")"
+                                       type="password">
+
+                                <button class="btn btn-outline-secondary"
+                                        onclick="togglePassword()"
+                                        type="button">
+                                    <i class="fas fa-eye-slash"
+                                       id="ic_span">
+                                    </i>
+                                </button>
+                            </div>
+                            <span asp-validation-for="Password"
+                                  class="text-danger form-validation-alert">
+                            </span>
+
+
+                            <a class="link-primary small"
+                               href="#"
+                               style="text-decoration: none">
+                                @Language.GetString("AlertAndMessage_ForgetPassword")
+                            </a>
+
+                            <div class="input-group p-0 mb-1">
+
+                                @if (dir == "rtl")
+                                {
+                                    <button class="btn btn-outline-secondary"
+                                            onclick="refreshCaptcha()"
+                                            type="button">
+                                        <i class="fas fa-sync"></i>
+                                    </button>
+                                    <input asp-for="Captcha"
+                                           class="form-control"
+                                           id="Captcha"
+                                           placeholder="@Language.GetString("User_ResultOfSum")"
+                                           type="text"
+                                           value="">
+
+                                    <span class="form-control p-0">
+                                        <img alt="Captcha"
+                                             id="imgCpatcha"
+                                             src="@Url.Action("CaptchaImage", "Captcha")"
+                                             style="height: 100% !important; width: 100% !important;">
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="form-control p-0">
+                                        <img alt="Captcha"
+                                             id="imgCpatcha"
+                                             src="@Url.Action("CaptchaImage", "Captcha")"
+                                             style="height: 100% !important; width: 100% !important;">
+                                    </span>
+
+                                    <input asp-for="Captcha"
+                                           class="form-control "
+                                           id="Captcha"
+                                           placeholder="@Language.GetString("User_ResultOfSum")"
+                                           type="text"
+                                           value="">
+                                    <button class="btn btn-outline-secondary"
+                                            onclick="refreshCaptcha()"
+                                            type="button">
+                                        <i class="fas fa-sync"></i>
+                                    </button>
+                                }
+
+                            </div>
+                            <span asp-validation-for="Captcha"
+                                  class="text-danger form-validation-alert">
+                            </span>
+
+                            <div class="col-12 p-0">
+                                <button class="btn btn-outline-primary text-bold  w-100"
+                                        type="submit">
+                                    @Language.GetString("btn_Login")
+                                </button>
+                            </div>
+
+                            <div class="loginSignUpSeparator">
+                                <span class="textInSeparator">@Language.GetString("Or")</span>
+                            </div>
+                            <div class="col-12 p-0">
+                                <a class="mt-0 btn btn-outline-secondary  text-bold w-100"
+                                   href="#">
+                                    <span class="text-bold">@Language.GetString("User_Signup")</span>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <ul class="nav mt-3">
+                    <li>
+                        <span class="nav-link p-0 text-secondary small"
+                              style="cursor: pointer;"
+                              onclick="setLang('en-US')">
+                            English
+                        </span>
+                    </li>
+                    <li class="nav-link p-0 text-secondary small">&nbsp;|&nbsp;</li>
+                    <li>
+                        <span class="nav-link p-0 text-secondary small"
+                              style="cursor: pointer;"
+                              onclick="setLang('fa-IR')">
+                            فارسی
+                        </span>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap5/js/bootstrap.bundle.js"></script>
+
+    <script>
+
+    function refreshCaptcha()
+    {
+        $("#imgCpatcha").attr('src', `@Url.Action("CaptchaImage", "Captcha")?${new Date().getTime()}`);
+        $("#inlineFormInputGroup").val('');
+        $("#inlineFormInputGroup").focus();
+        $('#captValidation').empty();
     }
 
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    function togglePassword()
+    {
+        const pwEle = document.getElementById("pw_element");
+        const btn = document.getElementById("ic_span");
 
-</head>
-<body style="font-family: IransansWeb"  class="hold-transition login-page">
-    <div class="loader loader-double" id="loading">
-
-        @*<img style="width:50px;" src="~/25.svg" />*@
-
-    </div>
-    <div class="login-box">
-        <div class="login-logo">
-            <b>@Language.GetString("AlertAndMessage_SignInToSite")</b>
-        </div>
-        <!-- /.login-logo -->
-        <div class="card" style="direction:@dir; font-family: @(dir=="ltr" ? "sans-serif" : "")">
-            <div id="cardHeader" class="card-header" style="text-align: center">
-
-                @{
-                    if (!string.IsNullOrWhiteSpace(ViewBag.Message))
-                    {
-                        <p class="text-danger">@ViewBag.Message</p>
-                    }
-                    else
-                    {
-                        <p>@Language.GetString("AlertAndMessage_EnterUsernameAndPassword")</p>
-                    }
-                }
-            </div>
-            <form id="loginform" onsubmit="clearHeader()" asp-action="Login" asp-area="" asp-controller="Account" method="post">
-                <div class="card-body login-card-body">
-
-                    <input asp-for="ReturnUrl" type="hidden" value="@Model.ReturnUrl" />
-
-                    <div class="input-group mb-3" style="margin-bottom: 12px !important;">
-
-                        <input dir="ltr" placeholder="@Language.GetString("User_UserName")" asp-for="Username" type="text" class="form-control" autocomplete="off">
-
-                        <div class="input-group-append">
-                            <span class="fa fa-user input-group-text"></span>
-                        </div>
-
-                    </div>
-                    <div style="text-align: center">
-                        <span asp-validation-for="Username" class="text-danger"></span>
-                    </div>
-                    <div class="input-group mb-3" style="margin-top: 15px; margin-bottom: 12px !important;">
-
-                        <div onclick="togglePassword();" style="cursor:pointer" data-toggle="tooltip" data-placement="right" title='@Language.GetString("ShowHide")' class="input-group-append">
-                            <span id="ic_span" class="fa fa-eye input-group-text"></span>
-                        </div>
-                        <input id="pw_element" dir="ltr" placeholder='@Language.GetString("User_Password")' asp-for="Password" type="password" class="form-control" autocomplete="new-password">
-                        <div class="input-group-append">
-                            <span class="input-group-text">
-                                <i class="fas fa-lock"></i>
-                            </span>
-                        </div>
-
-                    </div>
-
-                    <div style="text-align: center">
-                        <span asp-validation-for="Password" class="text-danger"></span>
-
-                    </div>
-
-                    <div class="input-group mb-3" style="margin-top: 15px; margin-bottom: 12px !important;">
-                        <div style="cursor: pointer" class="input-group-prepend">
-                            <div class="input-group-text"><i onclick="refreshCaptcha()" class="fa fa-refresh"></i></div>
-                        </div>
-                        <input asp-for="Captcha" type="text" class="form-control" id="inlineFormInputGroup" placeholder='@Language.GetString("AlertAndMessage_EnterTheResult")'>
-                        <img alt="Captcha" id="imgcpatcha" src="@Url.Action("CaptchaImage","Captcha")" style="border: 1px solid #00000033" />
-                        <span id="captValidation" asp-validation-for="Captcha" class="text-danger"></span>
-
-
-                    </div>
-
-                </div>
-                <div class="card-footer">
-                    <div class="row">
-
-                        <button type="submit" class="btn btn-primary btn-sm bg-gradient">@Language.GetString("btn_Login")</button>
-
-                    </div>
-                    <br />
-                    <div class="row">
-                        <div class="col-6">
-                            @if (dir == "rtl")
-                            {
-                                <label>
-                                    <input type="checkbox" id="RememberMe" class="minimal" >
-                                    @Language.GetString("AlertAndMessage_RememberMe")
-                                </label>
-                            }
-                            else
-                            {
-                                <div class="icheck-primary d-inline">
-                                    <input type="checkbox" class="minimal" id="RememberMe">
-                                    <label for="RememberMe" >
-                                        @Language.GetString("AlertAndMessage_RememberMe")
-                                    </label>
-                                </div>
-                            }
-                        </div>
-                        <div class="col-6">
-                            <p class="mb-1">
-                                <a style="font-size:smaller" asp-action="ResetPassword">@Language.GetString("AlertAndMessage_ForgetPassword")</a>
-                            </p>
-                        </div>
-                    </div>
-
-
-                </div>
-            </form>
-            <!-- /.login-card-body -->
-        </div>
-    </div>
-    <!-- /.login-box -->
-   
-        @if (dir == "rtl")
+        if (pwEle.type === "password")
         {
-            <script src="~/plugins/iCheck/icheck.min.js"></script>
+            pwEle.type = "text";
+            btn.className = "fas fa-eye-slash";
         }
-        <script>
+        else
+        {
+            pwEle.type = "password";
+            btn.className = "fas fa-eye";
+        }
+    }
 
-        $(document).ready(function () {
-            debugger;
-                $('[data-toggle="tooltip"]').tooltip();
-                //icheckboxes
-                if ("@dir" == "rtl") {
-                    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-                        checkboxClass: 'icheckbox_minimal-blue',
-                        radioClass: 'iradio_minimal-blue'
-                    })
+    function setLang(lang)
+    {
+        const currentCulture = '@CultureInfo.CurrentCulture.Name';
+        if (currentCulture !== lang)
+        {
+            $.ajax({
+                type: "GET",
+                url: `@Url.Action("ChangeLang")?langId=${lang}`,
+                statusCode: {
+                    200: function()
+                    {
+                        debugger;
+                        window.location.reload();
+                    }
                 }
             });
-
-            function togglePassword() {
-                var pw_ele = document.getElementById("pw_element");
-                var icon = document.getElementById("ic_span");
-
-                if (pw_ele.type === "password") {
-                    pw_ele.type = "text";
-                    icon.className = "fa fa-eye-slash input-group-text"
-                } else {
-                    pw_ele.type = "password";
-                    icon.className = "fa fa-eye input-group-text"
-                }
-            }
-
-        window.addEventListener("beforeunload",
-            function(event) {
-                $("#loading").addClass('is-active');
-            });
-
-        function refreshCaptcha() {
-
-            $("#imgcpatcha").attr('src', '@Url.Action("CaptchaImage", "Captcha")' + '?' + new Date().getTime());
-            $("#inlineFormInputGroup").val('');
-            $("#inlineFormInputGroup").focus();
-            $('#captValidation').empty();
-            }
-
-
-
-            function clearHeader() {
-            $("#cardHeader").html("<p>نام کاربری و رمز عبور را وارد کنید</p>");
-            }
-        </script>
+        }
+    }
+    </script>
 </body>
 </html>

@@ -1,78 +1,68 @@
 ﻿@{
     Layout = null;
+    string lang = "";
+    var dir = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        dir = "rtl";
+    }
+    else
+    {
+        dir = "ltr";
+    }
+
+    switch (CultureInfo.CurrentCulture.Name)
+    {
+        case "fa-IR":
+            lang = "fa";
+            break;
+        case "en-US":
+            lang = "en";
+            break;
+    }
 }
-<html style="height: auto;">
+<html style="height: auto;" dir="@dir" lang="@lang">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>عدم دسترسی</title>
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@Language.GetString("AlertAndMessage_Inaccessibility")</title>
+
+    @if (dir == "ltr")
+    {
+        <link href="~/lib/bootstrap5/css/bootstrap.min.css" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="~/lib/bootstrap5/css/bootstrap.rtl.min.css" rel="stylesheet" />
+        <link href="~/Fonts/IranSans/css/fontiran.css" rel="stylesheet" />
+    }
+    <link href="~/css/login.css"
+          rel="stylesheet" />
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
-    @*<link href="~/Fonts/IranSans/css/fontiran.css" rel="stylesheet" />*@
-    <link rel="stylesheet" href="~/DashboardAsset/dist/css/adminlte.min.css">
-    <!-- iCheck -->
-    <link href="~/DashboardAsset/plugins/iCheck/all.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/DashboardAsset/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
-    <link rel="stylesheet" href="~/DashboardAsset/plugins/datatables/dataTables.bootstrap4.css">
-    <!-- bootstrap rtl -->
-    <link rel="stylesheet" href="~/DashboardAsset/dist/css/bootstrap-rtl.min.css">
-    <!-- template rtl version -->
-    <link rel="stylesheet" href="~/DashboardAsset/dist/css/custom-style.css">
-    <link href="~/dashboardAsset/dist/css/loader-double.css" rel="stylesheet" />
-    <style>
-        .swal2-title {
-            font-family: IRANSansWeb;
-        }
-    </style>
 
 </head>
-<body  style="height: auto;">
+<body style="height: auto;">
     <div class="wrapper">
-     
-            <section class="content">
-                <div class="error-page">
-                    <h2 class="headline text-danger">401</h2>
 
-                    <div class="error-content">
-                        <h3><i class="fa fa-warning text-danger"></i>  عدم تایید دسترسی.</h3>
+        <section class="content">
+            <div class="error-page">
+                <h2 class="headline text-danger">401</h2>
 
-                        <p>
-                            شما مجوز دسترسی به این صفحه را ندارید. با کلیک روی <a href="@Url.Action("Login","Account")"> این لینک </a>می توانید به صفحه اصلی برگردید..
-                        </p>
+                <div class="error-content">
+                    <h3><i class="fa fa-warning text-danger"></i>@Language.GetString("AlertAndMessage_Inaccessibility")</h3>
 
-                       
-                    </div>
+                    <p>
+                        @Language.GetString("AlertAndMessage_AccessDenied")
+                    </p>
+
+
                 </div>
-                <!-- /.error-page -->
+            </div>
+        </section>
 
-            </section>
-            <!-- /.content -->
-        </div>
-     
-
-       
-   
-   
-<script src="~/DashboardAsset/plugins/jquery/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>$.widget.bridge('uibutton', $.ui.button)</script>
-<!-- Bootstrap 4 -->
-<script src="~/DashboardAsset/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-
-<!-- Bootstrap WYSIHTML5 -->
-<script src="~/DashboardAsset/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
-<!-- Slimscroll -->
-<script src="~/DashboardAsset/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-@* <script src="~/DashboardAsset/plugins/fastclick/fastclick.js"></script>*@
-<script src="~/DashboardAsset/plugins/iCheck/icheck.js"></script>
-<!-- AdminLTE App -->
-<script src="~/DashboardAsset/dist/js/adminlte.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="~/DashboardAsset/dist/js/pages/dashboard.js"></script>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap5/js/bootstrap.bundle.js"></script>
 
 </body>
 </html>

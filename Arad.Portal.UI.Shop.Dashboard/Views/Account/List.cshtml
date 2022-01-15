@@ -216,7 +216,7 @@
             <div class="modal-body" id="confirmModalBody">
             </div>
             <div class="modal-footer">
-                <button class="btn btn-success" onclick="onClickYes()" type="button">
+                <button class="btn btn-primary" onclick="onClickYes()" type="button">
                     @Language.GetString("btn_Confirm")
                 </button>
                 <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
@@ -299,146 +299,30 @@
                         }
 
                         if (resultData.status === "error") {
-                            Swal.fire({
-                                icon: 'error',
-                                text: resultData.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
+                            showError(resultData.message);
                         }
                     }
                 });
             }
 
-        function deleteUser(id) {
-            debugger;
-                Swal.fire({
-                    title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-                    text: '@Language.GetString("AlertAndMessage_UserDeleteText")',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d51c1c',
-                    cancelButtonColor: '#009c09db',
-                    confirmButtonText: '@Language.GetString("btn_Confirm")',
-                    cancelButtonText: '@Language.GetString("btn_NotConfirm")'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            type: 'Get',
-                            url: '@Url.Action("Delete", "Account")' + '?id=' + id,
-                            success: function(resultData) {
-                                if (resultData.status === "success") {
-                                    debugger;
-                                    Swal.fire({
-                                        icon: 'success',
-                                        text: resultData.message,
-                                        showConfirmButton: false,
-                                        timer: 1500
-                                    }).then(() => {
-                                        window.location.reload();
-                                    });
-                                }
-
-                                if (resultData.status === "error") {
-                                    debugger;
-                                    Swal.fire({
-                                        icon: 'error',
-                                        text: resultData.message,
-                                        showConfirmButton: false,
-                                        timer: 1500
-                                    });
-                                }
-                            }
-                        });
-                    }
-                });
-        }
         function restoreUser(id) {
-            debugger;
-                Swal.fire({
-                    title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-                    text: '@Language.GetString("AlertAndMessage_UserRestoreText")',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d51c1c',
-                    cancelButtonColor: '#009c09db',
-                    confirmButtonText: '@Language.GetString("btn_Confirm")',
-                    cancelButtonText: '@Language.GetString("btn_NotConfirm")'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            type: 'Get',
-                            url: '@Url.Action("Restore", "Account")' + '?id=' + id,
-                            success: function(resultData) {
-                                if (resultData.status === "success") {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        text: resultData.message,
-                                        showConfirmButton: false,
-                                        timer: 1500
-                                    }).then(() => {
-                                        window.location.reload();
-                                    });
-                                }
-
-                                if (resultData.status === "error") {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        text: resultData.message,
-                                        showConfirmButton: false,
-                                        timer: 1500
-                                    });
-                                }
-                            }
-                        });
-                    }
-                });
-            }
-
-            function changePassword(id) {
-                debugger;
-                Swal.fire({
-                    title: '@Language.GetString("btn_ChangePass")',
-                    text: "@Language.GetString("AlertAndMessage_ChangePassSureness")",
-                    icon: 'warning',
-                    showDenyButton: true,
-                    denyButtonText: '@Language.GetString("btn_NotConfirm")',
-                    denyButtonColor: '#ff8100',
-                    showCancelButton: true,
-                    confirmButtonColor: '#009c09db',
-                    cancelButtonColor: '#d51c1c',
-                    confirmButtonText: '@Language.GetString("btn_Confirm")',
-                    cancelButtonText: '@Language.GetString("btn_Cancel")'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            type: 'Get',
-                            url: '@Url.Action("ChangePassword", "Account")' + '?id=' + id,
-                            success: function(resultData) {
-                                if (resultData.status === "success") {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        text: resultData.message,
-                                        showConfirmButton: false,
-                                        timer: 3000
-                                    }).then(() => {
-                                        window.location.reload();
-                                    });
-                                }
-
-                                if (resultData.status === "error") {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        text: resultData.message,
-                                        showConfirmButton: false,
-                                        timer: 3000
-                                    });
-                                }
-                            }
-                        });
-                    }
-                });
-            }
+            entityId = id;
+			typeOfRequest = 'PUT';
+			confirmUrl = '@Url.Action("Restore", "Account")' + "?id=" + id,
+			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
+			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';
+			$('#confirmModal').modal('show');
+        }
+       
+        function changePassword(id) {
+            entityId = id;
+			typeOfRequest = 'PUT';
+			confirmUrl = '@Url.Action("ChangePassword", "Account")' + "?id=" + id,
+			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_ChangePass")';
+			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_ChangePassSureness")';
+			$('#confirmModal').modal('show');
+        }
+        
     </script>
 }
 

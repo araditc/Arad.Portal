@@ -21,9 +21,6 @@
             line-height: 1.42857;
         }
 
-        .card-header {
-            background-color: #e0dcdf;
-        }
     </style>
 }
 
@@ -60,7 +57,7 @@
 
                 </div>
 
-                <div class="row" style="background-color: #f0f0f5;">
+                <div class="row">
                     <div class="form-group col-md-3">
                         <label for="languageId">@Language.GetString("LanguageName")</label><br />
                         <select class="form-control" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
@@ -130,16 +127,6 @@
     </div>
 </div>
 
-
-
-<div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastAlert" style="display: block; left: 0; top: 0; z-index: 11;">
-    <div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
-        <div class="toast-body p-3 fs-5 rounded-3 text-center" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);" id="notificationToastBody">
-        </div>
-    </div>
-</div>
-
-@await Component.InvokeAsync("Notification", ViewBag.OperationResult)
 @section Scripts{
     <script>
 
@@ -174,14 +161,21 @@
                     success: function (result) {
                         debugger;
                         if (result.status === "Success") {
-                            Swal.fire({
+                            @*Swal.fire({
                                 icon: 'success',
                                 text: result.message,
                                 showConfirmButton: false,
                                 timer: 3000
                             }).then(() => {
                                 window.location.href = '@Url.Action("List")';
-                            });
+                            });*@
+                            document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
+                            document.getElementById('mainToastBody').classList.add('alert-success');
+                            setTimeout(function()
+                            {
+                                 window.location.href = '@Url.Action("List")';
+                            },
+                            1500);
                         }else
                         if (result.status === "ModelError") {
                             var spanErrorList = $('span[data-val-result]');

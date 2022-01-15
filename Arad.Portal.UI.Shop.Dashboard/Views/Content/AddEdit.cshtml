@@ -44,9 +44,7 @@
             line-height: 1.42857;
         }
 
-        .card-header {
-            background-color: #e0dcdf;
-        }
+        
 
         .ck-editor .ck-editor__main .ck-content {
             height: 280px;
@@ -91,10 +89,6 @@
             z-index: 100001 !important;
         }
 
-        .lightColored {
-            background-color: aliceblue
-        }
-
         .amsify-suggestags-input-area {
             text-align: @(dir == "rtl" ? "right" : "left");
             height: auto;
@@ -128,10 +122,6 @@
                 text-align: center;
                 font-size: 12px;
                 line-height: 1.42857;
-            }
-
-            .card-header {
-                background-color: #e0dcdf;
             }
 
             .removeImage {
@@ -198,7 +188,7 @@
                 <div>
                     <button class="btn btn-success bg-gradient" id="send_pic" type="button"><i style="margin-left: 5px;font-size:13px" class="fas fa-check"></i>@Language.GetString("btn_Approve")</button>
                     <button class="btn btn-primary bg-gradient" id="crop_button"><i style="margin-left: 5px;font-size:13px" class="fas fa-cut"></i>@Language.GetString("btn_Crop")</button>
-                    <button class="btn btn-primary bg-gradient" style="background-color: crimson;color: white;border: 1px solid crimson" onclick="rotatePic()">
+                    <button class="btn btn-primary bg-gradient"  onclick="rotatePic()">
                         <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i> @Language.GetString("btn_Rotate")
                     </button>
 
@@ -443,37 +433,7 @@
     </div>
 </div>
 
-<div aria-hidden="true" aria-labelledby="confirmModalLabel" class="modal fade" id="confirmModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-light">
-                <h5 class="modal-title" id="confirmModalLabel">
-                </h5>
-                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
-                </button>
-            </div>
-            <div class="modal-body" id="confirmModalBody">
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-success" onclick="onClickYes()" type="button">
-                    @Language.GetString("btn_Confirm")
-                </button>
-                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
-                    @Language.GetString("btn_NotConfirm")
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastAlert" style="display: block; left: 0; top: 0; z-index: 11;">
-    <div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
-        <div class="toast-body p-3 fs-5 rounded-3 text-center" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);" id="notificationToastBody">
-        </div>
-    </div>
-</div>
-
-@await Component.InvokeAsync("Notification", ViewBag.OperationResult)
 @section Scripts{
     <script src="~/lib/cropperjs/cropper.js"></script>
     <script src="~/js/plugins/bootstrap/js/bootstrap.min.js"></script>
@@ -499,7 +459,7 @@
     {
         <script src="~/plugins/iCheck/icheck.min.js"></script>
     }
-    <script>
+<script>
         var fileName;
         var fileContent;
         var cropper;
@@ -515,7 +475,7 @@
 
         $(document).ready(function () {
             debugger;
-            $("#toastAlert").hide();
+
         //icheckboxes radiobuttons
         if ("@dir" == "rtl") {
         $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
@@ -611,7 +571,7 @@
             if (!flag) {
                 var dto = FillDataToSend();
 
-                console.log(dto);
+               // console.log(dto);
                 $.ajax({
                     url: "@Model.ContentId" != "" ? "/Content/Edit" : "/Content/Add",
                     contentType: 'application/json',
@@ -624,13 +584,18 @@
                     success: function (result) {
                         debugger;
                         if (result.status === "Success") {
-                            Swal.fire({
-                                icon: 'success',
-                                text: result.message,
-                                showConfirmButton: false,
-                                timer: 3000
-                            });
-                            window.location.href = '@Url.Action("List")';
+                            document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
+
+                            if ("data" in resultData)
+                            {
+                                document.getElementById('mainToastBody').innerHTML += `<br/>${result.message}`;
+                            }
+                            document.getElementById('mainToastBody').classList.add('alert-success');
+                            setTimeout(function()
+                            {
+                                 window.location.href = '@Url.Action("List")';
+                            },
+                            1500);
                         }
                         else
                             if (result.status === "ModelError") {
@@ -651,13 +616,7 @@
                                 }
                             }
                             else if (result.status === "Error") {
-
-                                    Swal.fire({
-                                        icon: 'error',
-                                        text: result.message,
-                                        showConfirmButton: false,
-                                        timer: 3000
-                                    });
+                                showError(result.message);
                             }
                     },
                 @*error: function (xhr, ajaxOptions, thrownError) {
@@ -741,7 +700,7 @@
 
     });
 
-        function ViewImage(address) {
+     @*function ViewImage(address) {
         debugger;
         var tag = '<img src="' + address + '" width="500px" />';
         Swal.fire({
@@ -750,7 +709,9 @@
             showConfirmButton: true,
             confirmButtonText: '@Language.GetString("Close")'
         });
-    }
+
+
+    }*@
 
         function deleteFromImageList(sender) {
             debugger;
@@ -907,26 +868,26 @@
             setTimeout(initCropper, 500);
             } else {
 
-            Swal.fire({
+            @*Swal.fire({
             position: 'top-end',
             icon: 'error',
             title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
             showConfirmButton: false,
             timer: 1500
-            });
-
+            });*@
+            showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
             document.getElementById("image").value = "";
             $("#cropped_result").remove();
             }
             } else {
-            Swal.fire({
+            @*Swal.fire({
             position: 'top-end',
             icon: 'error',
             title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
             showConfirmButton: false,
             timer: 1500
-            });
-
+            });*@
+            showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
             document.getElementById("image").value = "";
             $("#cropped_result").remove();
             }
@@ -934,18 +895,19 @@
             }
             else
             {
-            Swal.fire({
+            @*Swal.fire({
             icon: 'error',
             title: '@Language.GetString("AlertAndMessage_InvalidFileSize")',
             showConfirmButton: false,
             timer: 1500
-            });
+            });*@
+            showError("AlertAndMessage_InvalidFileSize");
             document.getElementById("image").value = "";
             $("#cropped_result").remove();
             }
             }
     }
 
-    </script>
+</script>
 }
 

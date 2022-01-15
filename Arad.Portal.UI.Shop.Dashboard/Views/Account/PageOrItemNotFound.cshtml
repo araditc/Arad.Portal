@@ -1,11 +1,31 @@
 ﻿@{
     Layout = null;
+    string lang = "";
+    var dir = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        dir = "rtl";
+    }
+    else
+    {
+        dir = "ltr";
+    }
+
+    switch (CultureInfo.CurrentCulture.Name)
+    {
+        case "fa-IR":
+            lang = "fa";
+            break;
+        case "en-US":
+            lang = "en";
+            break;
+    }
 }
-<html style="height: auto;">
+<html style="height: auto;" dir="@dir" lang="@lang">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>عدم دسترسی</title>
+    <title>@Language.GetString("AlertAndMessage_Inaccessibility")</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 

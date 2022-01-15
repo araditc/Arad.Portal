@@ -566,7 +566,7 @@
 		<value>You are not allowed to perform operations.</value>
 	</string>
 	<string key="AlertAndMessage_ForgetPassword">
-		<value>forgot password. </value>
+		<value>forgot your password?</value>
 	</string>
 	<string key="AlertAndMessage_EnterUsernameAndPassword">
 		<value>please enter username and password.</value>
@@ -632,6 +632,9 @@
 	<string key="AlertAndMessage_DeleteRole">
 		<value>This Role will be deleted.</value>
 	</string>
+	<string key="AlertAndMessage_DeleteRecord">
+		<value>Are you </value>
+	</string>
 	<string key="AlertAndMessage_FieldEssential">
 		<value>Filling this field is essential.</value>
 	</string>
@@ -649,6 +652,9 @@
   </string>
 	<string key="AlertAndMessage_Success">
 		<value>success</value>
+	</string>
+	<string key="AlertAndMessage_DeletionSure">
+		<value>Are you sure for deletion?</value>
 	</string>
 	<string key="AlertAndMessage_ChangePassSureness">
 		<value>Are you sure to change password?</value>
@@ -692,6 +698,9 @@
 	</string>
 	<string key="AlertAndMessage_DeletionSureness">
 		<value>Are you sure for deleting ?</value>
+	</string>
+	<string key="AlertAndMessage_RestorationSureness">
+		<value>Are you sure for restoring ?</value>
 	</string>
 	<string key="AlertAndMessage_AreYouSure">
 		<value>Are you sure?</value>
@@ -1020,9 +1029,9 @@
 	<string key="AlertAndMessage_CheckTheInputDataFormat">
 		<value>Please check the input data format.</value>
 	</string>
-	<string key="AlertAndMessage_AccessDenied">
+	<!--<string key="AlertAndMessage_AccessDenied">
 		<value>Access denied.</value>
-	</string>
+	</string>-->
 	<string key="AlertAndMessage_AccessDeniedToThisPage">
 		<value>You do not have permission to access this page.</value>
 	</string>
@@ -1043,6 +1052,9 @@
 	</string>
 	<string key="AlertAndMessage_LoginPage">
 		<value>Login</value>
+	</string>
+	<string key="AlertAndMessage_AccessDenied">
+		<value>you dont have permission to access this page</value>
 	</string>
 	<string key="AlertAndMessage_Login">
 		<value>Login</value>
@@ -1397,6 +1409,9 @@
 	<string key="User_BirthDate">
 		<value>Birth Date</value>
 	</string>
+	<string key="User_ResultOfSum">
+		<value>Result ?</value>
+	</string>
 	<string key="ActivationState">
 		<value>State</value>
 	</string>
@@ -1418,6 +1433,9 @@
   <string key="Active">
     <value>Active</value>
   </string>
+	<string key="Or">
+		<value>Or</value>
+	</string>
 	<string key="DomainOwner">
 		<value>Domain Owner</value>
 	</string>
@@ -1632,6 +1650,9 @@
 	</string>
 	<string key="User_Role">
 		<value>User Role</value>
+	</string>
+	<string key="User_Signup">
+		<value>sign up</value>
 	</string>
 	<string key="FromDate">
 		<value>From Date</value>
@@ -1861,6 +1882,9 @@
 	</string>
 	<string key="UnAvailable">
 		<value>Unavailable</value>
+	</string>
+	<string key="UnAuthorize">
+		<value>UnAuthorized</value>
 	</string>
 	<string key="AsGift">
 		<value>Gift :</value>

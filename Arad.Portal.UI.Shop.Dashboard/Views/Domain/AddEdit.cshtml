@@ -35,9 +35,6 @@
             line-height: 1.42857;
         }
 
-        .card-header {
-            background-color: #e0dcdf;
-        }
 
         .ltr {
             direction: ltr;
@@ -47,6 +44,30 @@
 
 <h4>  @Language.GetString("Menu_domains") </h4>
 <hr />
+<div aria-hidden="true" aria-labelledby="confirmLabel" class="modal fade" id="showModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="confirmLabel">
+                </h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                </button>
+            </div>
+            <div class="modal-body" id="confirmBody">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="onConfirmDialog();" type="button">
+                    @Language.GetString("btn_Confirm")
+                </button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                    @Language.GetString("btn_NotConfirm")
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="row">
     <div class="col-md-12">
         <div class="card" id="addDomainCard">
@@ -235,7 +256,7 @@
                                 <div class="card-title">@Language.GetString("tbl_DomainPaymentGatewaysInfoes")</div>
                             </div>
                             <div class="card-body">
-                                <div class="row" style="background-color: #f0f0f5;">
+                                <div class="row">
                                     <div class="form-group col-md-3">
                                         <label for="languageId">@Language.GetString("tbl_PaymentGateways")</label><br />
                                         <select class="form-control select2" id="providerId" asp-items="@(new SelectList(ViewBag.Providers, "Value","Text"))">
@@ -254,7 +275,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row" id="paymentGatewayParameters" style="background-color: #bfd1e4;">
+                                <div class="row" id="paymentGatewayParameters">
                                     <span data-val-result="paymentGatewayParameters" class="text-danger"></span>
 
                                 </div>
@@ -309,15 +330,6 @@
 </div>
 
 
-
-<div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastAlert" style="display: block; left: 0; top: 0; z-index: 11;">
-    <div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
-        <div class="toast-body p-3 fs-5 rounded-3 text-center" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);" id="notificationToastBody">
-        </div>
-    </div>
-</div>
-
-@await Component.InvokeAsync("Notification", ViewBag.OperationResult)
 @section Scripts{
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
@@ -332,7 +344,7 @@
     {
         <script src="~/plugins/iCheck/icheck.min.js"></script>
     }
-    <script>
+<script>
         var active = '@Language.GetString("Active")';
         var inActive = '@Language.GetString("InActive")';
         $(document).ready(function () {
@@ -469,14 +481,13 @@
                             success: function (result) {
                                 debugger;
                                 if (result.status === "Success") {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        text: result.message,
-                                        showConfirmButton: false,
-                                        timer: 3000
-                                    }).then(() => {
-                                        window.location.href = '@Url.Action("List")';
-                                    });
+                                   document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
+                                    document.getElementById('mainToastBody').classList.add('alert-success');
+                                    setTimeout(function()
+                                    {
+                                         window.location.href = '@Url.Action("List")';
+                                    },
+                            1500);
                                 }else
                                 if (result.status === "ModelError") {
                                     var spanErrorList = $('span[data-val-result]');
@@ -566,7 +577,10 @@
             });
             return obj;
         }
-
+        function onConfirmDialog() {
+            $(this).parent().find("td:eq(5)").text(inActive);
+            appendToPriceList(tr);
+        }
        function addPriceToList() {
         debugger;
         var flag = false;
@@ -592,7 +606,7 @@
                     if ($(this).text() == currencyId && $(this).parent().find("td:eq(4)").text() == "" &&
                         $(this).parent().find("td:eq(5)").text() == active) {
                         /*confirm = false;*/
-                        Swal.fire({
+                        @*Swal.fire({
                             title: '@Language.GetString("AlertAndMessage_AreYouSure")',
                             text: '@Language.GetString("AlertAndMessage_PricePerCurrencyUniqueness")',
                             icon: 'warning',
@@ -608,7 +622,10 @@
                                 $(this).parent().find("td:eq(5)").text(inActive);
                                 appendToPriceList(tr);
                             }
-                        });
+                        });*@
+                        document.getElementById('confirmLabel').innerHTML = '@Language.GetString("AlertAndMessage_AreYouSure")';
+			            document.getElementById('confirmBody').innerHTML = '@Language.GetString("AlertAndMessage_PricePerCurrencyUniqueness")';
+			            $('#showModal').modal('show');
                     }
                 });
             } else {
@@ -616,7 +633,7 @@
             }
         }
     }
-
+    
     function appendToPriceList(tr) {
          tr = "<tr style='text-align:center;'><td>" + $("#currencyId option:selected").text() +
                     "</td><td style='display:none;'>" + $('#currencyId').val() +
@@ -638,7 +655,7 @@
         var tr = $(sender).parent().parent();
         $(tr).remove();
     }
-    </script>
+</script>
 }
 
 

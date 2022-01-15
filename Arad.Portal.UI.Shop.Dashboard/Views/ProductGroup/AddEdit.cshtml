@@ -23,10 +23,6 @@
             line-height: 1.42857;
         }
 
-        .card-header {
-            background-color: #e0dcdf;
-        }
-
         .ck-editor .ck-editor__main .ck-content {
             height: 280px;
             min-height: 250px;
@@ -70,9 +66,9 @@
             z-index: 100001 !important;
         }
 
-        .lightColored {
+       /* .lightColored {
             background-color: aliceblue
-        }
+        }*/
 
         @*.amsify-suggestags-input-area {
             text-align: @(dir == "rtl" ? "right" : "left");
@@ -115,7 +111,7 @@
                 <div>
                     <button class="btn btn-success bg-gradient" id="send_Logo" type="button"><i style="margin-left: 5px;font-size:13px" class="fas fa-share-square"></i>@Language.GetString("btn_Approve")</button>
                     <button class="btn btn-primary bg-gradient" id="logoCrop_button"><i style="margin-left: 5px;font-size:13px" class="fas fa-cut"></i>@Language.GetString("btn_Crop")</button>
-                    <button class="btn btn-primary bg-gradient" style="background-color: crimson;color: white;border: 1px solid crimson" onclick="rotatePic()">
+                    <button class="btn btn-primary bg-gradient"  onclick="rotatePic()">
                         <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i>@Language.GetString("btn_Rotate")
                     </button>
 
@@ -169,7 +165,7 @@
                     </div>
                 </div>
 
-                <div class="row" style="background-color: #f0f0f5;">
+                <div class="row" >
                     <div class="form-group col-md-3">
                         <label for="languageId">@Language.GetString("LanguageName")</label><br />
                         <select class="form-control" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
@@ -193,7 +189,7 @@
                             <span data-val-result="urlFriend" class="text-danger"></span>
                         </div>*@
                 </div>
-                <div class="row" style="background-color: #f0f0f5;">
+                <div class="row" >
                     <div class="form-group col-md-3">
                         <label>@Language.GetString("SeoTitle")</label>
                         <input type="text" class="form-control" id="seoTitle" placeholder=" ">
@@ -275,37 +271,7 @@
     </div>
 </div>
 
-<div aria-hidden="true" aria-labelledby="confirmModalLabel" class="modal fade" id="confirmModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-light">
-                <h5 class="modal-title" id="confirmModalLabel">
-                </h5>
-                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
-                </button>
-            </div>
-            <div class="modal-body" id="confirmModalBody">
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-success" onclick="onClickYes()" type="button">
-                    @Language.GetString("btn_Confirm")
-                </button>
-                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
-                    @Language.GetString("btn_NotConfirm")
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastAlert" style="display: block; left: 0; top: 0; z-index: 11;">
-    <div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
-        <div class="toast-body p-3 fs-5 rounded-3 text-center" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);" id="notificationToastBody">
-        </div>
-    </div>
-</div>
-
-@await Component.InvokeAsync("ConfirmDelete", new ConfirmDeleteDTO { Url = Url.Action("Delete") })
 
 @section Scripts{
     <script src="~/lib/cropperjs/cropper.js"></script>

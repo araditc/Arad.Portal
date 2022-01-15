@@ -4,10 +4,9 @@
 @using Microsoft.AspNetCore.Http;
 @{
     var direction = "";
-    var ulNavbarLinkClass = "";
-    var bellCls = "";
+
+
     var faCls = "";
-    var floatlr = "";
     var langList = new List<string>() { "fa", "en" };
     string lang = "";
     string userName = _accessor.HttpContext?.User.GetUserName();
@@ -15,20 +14,13 @@
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
     {
         direction = "rtl";
-
         ViewBag.dir = "rtl";
-        ulNavbarLinkClass = "navbar-nav mr-auto";
-        floatlr = "float-sm-left";
-        bellCls = "fa fa-bell-o";
         faCls = "fa";
     }
     else
     {
         direction = "ltr";
         ViewBag.dir = "ltr";
-        ulNavbarLinkClass = "navbar-nav ml-auto";
-        floatlr = "float-sm-right";
-        bellCls = "far fa-bell";
         faCls = "fas";
     }
 
@@ -41,7 +33,9 @@
             lang = "en";
             break;
     }
-
+    //OperationResult operationResult = ViewBag.OperationResult ?? new OperationResult();
+    //bool isNotNullOperationResult = ViewBag.OperationResult is not null;
+    //bool isSuccess = operationResult is { Succeeded: true };
 }
 @inject IHttpContextAccessor _accessor
 
@@ -56,53 +50,32 @@
     @if (direction == "ltr")
     {
         <link href="~/lib/bootstrap5/css/bootstrap.min.css" rel="stylesheet" />
-        @*<link href="~/plugins/icheck-bootstrap/icheck-bootstrap.css" rel="stylesheet" />*@
+
     }
     else
     {
         <link href="~/lib/bootstrap5/css/bootstrap.rtl.min.css" rel="stylesheet" />
         <link href="~/Fonts/IranSans/css/fontiran.css" rel="stylesheet" />
-        @*<link href="~/fonts/IranSans/css/persianfonts.css" rel="stylesheet" />
-            <link href="~/plugins/iCheck/all.css" rel="stylesheet" />
-            <link href="~/plugins/iCheck/flat/blue.css" rel="stylesheet" />
-            <link href="~/css/siteTemplate/rtl/custom-style.css" rel="stylesheet" />
-            <link href="~/lib/limonte-sweetalert2/sweetalert2.min.css" rel="stylesheet" />
-            <link href="~/css/persian-datepicker.min.css" rel="stylesheet" />*@
+
     }
 
-    @*<link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />*@
+
+    <link href="~/css/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
-    @*<link href="~/css/siteTemplate/shared/AdminLTE/adminlte.css" rel="stylesheet" />*@
-
-    @*<link href="~/css/siteTemplate/shared/fontawesome-free/all.min.css" rel="stylesheet"/>
-          <!-- overlayScrollbars -->
-        <link rel="stylesheet" href="~/lib//overlayscrollbars/css/OverlayScrollbars.min.css" />*@
 
     @await RenderSectionAsync("Styles", required: false)
 
-    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>
-        @if (direction == "rtl")
-        {
-            <script src="~/js/siteTemplate/jqueryui1.11.4/jquery-ui.min.js"></script>
-        }
 
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
-
-
-
-    @*<script src="~/js/site.js" asp-append-version="true"></script>
-        <script src="~/lib/limonte-sweetalert2/sweetalert2.all.min.js"></script>
-
-
-        <style>
-            .lanFlag {
-                cursor: pointer;
-            }
-        </style>
-        @await RenderSectionAsync("Scripts", required: false);*@
 </head>
 <body class="fs-6">
+
+    <div id="loading" class="text-center">
+        <div class="spinner-border text-danger" style="width: 4rem; height: 4rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
     <header class="navbar navbar-light shadow navbar-expand flex-md-nowrap p-0 m-0">
         <div class="container-fluid">
             <div class="navbar-brand col-md-3 me-0">
@@ -170,30 +143,116 @@
             </main>
         </div>
     </div>
-    @if (ViewBag.OperationResult != null)
-    {
-        @await Component.InvokeAsync("Notification", ViewBag.OperationResult);
-    }
+
+    <div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastPanel" style="display: block; left: 0; top: 0; z-index: 11;">
+        <div aria-atomic="true" aria-live="assertive" class="toast" id="mainToast" role="alert">
+            <div class="toast-body p-3 fs-5 rounded-3 text-center" id="mainToastBody" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);">
+            </div>
+        </div>
+    </div>
+
+    <div aria-hidden="true" aria-labelledby="confirmModalLabel" class="modal fade" id="confirmModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title" id="confirmModalLabel">
+                    </h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                    </button>
+                </div>
+                <div class="modal-body" id="confirmModalBody">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" onclick="onClickYes()" type="button">
+                        @Language.GetString("btn_Confirm")
+                    </button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                        @Language.GetString("btn_NotConfirm")
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap5/js/bootstrap.bundle.js"></script>
-
-
-    @*<script src="~/js/siteTemplate/Adminlte/adminlte.js"></script>*@
+    <script src="~/lib/bootstrap-select/js/bootstrap-select.min.js"></script>
     @*<script src="~/js/site.js" asp-append-version="true"></script>*@
     @await RenderSectionAsync("Scripts", required: false)
 
-    <script>
+<script>
+
+    //    $(document).ready(function () {
+    //        debugger;
+    //    $("#deleteToast").hide();
+    //    $("#notificationToast").hide();
+    //});
+    var entityId;
+    var confirmUrl;
+    var typeOfRequest;
+    var bsAlert = new bootstrap.Toast(document.getElementById('mainToast'));
+
         adjustSidebar();
-        $(document).ready(function () {
+    function pageLoad() {
+        debugger;
+
+        }
+    window.addEventListener('load',
+        () =>
+        {
             debugger;
-        $("#deleteToast").hide();
-        $("#notificationToast").hide();
-    });
+            $("#loading").removeClass('is-active');
+            $("#deleteToast").hide();
+            $("#toastPanel").hide();
+            setInterval(function()
+                {
+                    const dateTime = new Date();
+                    const date = dateTime.toLocaleDateString('@CultureInfo.CurrentCulture.Name') + ' <br/> ' + dateTime.toLocaleTimeString('@CultureInfo.CurrentCulture.Name');
+                    $("#dateTime").html(date);
+                },
+                1000);
 
+           @* if ('@isNotNullOperationResult' === 'True')
+            {
+                $("#toastPanel").show();
+                bsAlert.show();
 
-	window.addEventListener('resize', adjustSidebar);
+				if ("@isSuccess" === "False")
+                {
+                    document.getElementById('mainToastBody').innerHTML = '<i class="fas fa-exclamation-triangle"></i> @operationResult.Message';
+                    document.getElementById('mainToastBody').classList.add('alert-danger');
+
+                    setTimeout(function()
+                        {
+                            $("#toastPanel").hide();
+                        },
+                        2000);
+                }
+                else
+                {
+                    document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @operationResult.Message';
+                    document.getElementById('mainToastBody').classList.add('alert-success');
+
+                    if ("@string.IsNullOrWhiteSpace(operationResult.Url)" === "False")
+                    {
+                        setTimeout(function()
+                            {
+                                window.location.href = '@operationResult.Url';
+                            },
+                            2500);
+                    }
+                }
+            }*@
+       });
+
+    window.addEventListener('resize', adjustSidebar);
+
+    window.addEventListener("beforeunload",
+        () => {
+            $("#loading").addClass('is-active');
+        });
 	window.addEventListener('load',
 		() =>
 		{
@@ -254,7 +313,7 @@
             });
         }
     }
-    function getLoadingClass() {
+    @*function getLoadingClass() {
             if ("@direction" == "rtl") {
             cls = "fa fa-refresh fa-spin";
         } else {
@@ -269,8 +328,84 @@
     }
     function removeLoading(cardElement) {
         $(cardElement).find(".overlay").remove();
+        }*@
+
+    function onClickYes()
+    {
+        $('#confirmModal').modal('hide');
+        $("#toastPanel").show();
+
+        $.ajax({
+            type: typeOfRequest,
+            url: confirmUrl,
+            success :function(resultData) {
+                if (resultData.status === "success") {
+                    debugger;
+                        document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
+
+                        if ("data" in resultData)
+                        {
+                            document.getElementById('mainToastBody').innerHTML += `<br/>${resultData.message}`;
+                        }
+                        document.getElementById('mainToastBody').classList.add('alert-success');
+                        setTimeout(function()
+                        {
+                            window.location.reload();
+                        },
+                        1500);
+                }
+                if (resultData.status === "error") {
+                    showError(resultData.message);
+                }
+            }
+            @*statusCode: {
+                200: function(resultData)
+                {
+                    if (resultData.result)
+                    {
+                        document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
+
+                        if ("data" in resultData)
+                        {
+                            document.getElementById('mainToastBody').innerHTML += `<br/>${resultData.data}`;
+                        }
+
+                        document.getElementById('mainToastBody').classList.add('alert-success');
+                        setTimeout(function()
+                            {
+                                window.location.reload();
+                            },
+                            1500);
+                    }
+                    else
+                    {
+                        showError(resultData.message);
+                    }
+                    bsAlert.show();
+                },
+                404: function()
+                {
+                    showError('@Language.GetString("AlertAndMessages_UserNotFound")');
+                },
+                403: function()
+                {
+                    showError('@Language.GetString("AlertAndMessages_NotAllowed")');
+                }
+            }*@
+        });
     }
-    </script>
+
+    function showError(msg) {
+        $("#toastPanel").show();
+        document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
+        document.getElementById('mainToastBody').classList.add('alert-danger');
+        bsAlert.show();
+        setTimeout(function () {
+            $("#toastPanel").hide();
+        },
+            1500);
+    }
+</script>
 
 </body>
 </html>

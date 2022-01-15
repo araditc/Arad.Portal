@@ -561,7 +561,7 @@
 		<value>شما مجاز به انجام این عملیات نیستید.</value>
 	</string>
 	<string key="AlertAndMessage_ForgetPassword">
-		<value>رمز عبور را فراموش کرده ام.</value>
+		<value>فراموشی رمز عبور ؟</value>
 	</string>
 	<string key="AlertAndMessage_EnterUsernameAndPassword">
 		<value>لطفا نام کاربری و کلمه عبور را وارد کنید.</value>
@@ -641,6 +641,9 @@
 	<string key="AlertAndMessage_Success">
 		<value>موفقیت</value>
 	</string>
+	<string key="AlertAndMessage_DeletionSure">
+		<value>برای حذف اطمینان دارید؟</value>
+	</string>
 	<string key="AlertAndMessage_ChangePassSureness">
 		<value>برای تغییر رمز اطمینان دارید؟</value>
 	</string>
@@ -683,6 +686,9 @@
 	</string>
 	<string key="AlertAndMessage_DeletionSureness">
 		<value>آیا برای حذف اطمینان دارید؟</value>
+	</string>
+	<string key="AlertAndMessage_RestorationSureness">
+		<value>آیا برای بازگزدانی اطمینان دارید؟</value>
 	</string>
 	<string key="AlertAndMessage_AreYouSure">
 		<value>مطمئن هستید؟</value>
@@ -1093,6 +1099,9 @@
 	<string key="AlertAndMessage_LoginPage">
 		<value>ورود به سامانه</value>
 	</string>
+	<!--<string key="AlertAndMessage_AccessDenied">
+		<value>شما مجوز دسترسی به این صفحه را ندارید.</value>
+	</string>-->
 	<string key="AlertAndMessage_Login">
 		<value>ورود</value>
 	</string>
@@ -1438,6 +1447,9 @@
 	<string key="User_BirthDate">
 		<value>تاریخ تولد</value>
 	</string>
+	<string key="User_ResultOfSum">
+		<value>حاصل ؟</value>
+	</string>
 	<string key="ActivationState">
 		<value>وضعیت</value>
 	</string>
@@ -1458,6 +1470,9 @@
 	</string>
 	<string key="Active">
 		<value>فعال</value>
+	</string>
+	<string key="Or">
+		<value>یا</value>
 	</string>
 	<string key="DomainOwner">
 		<value>مالک دامنه</value>
@@ -1671,6 +1686,9 @@
 	</string>
 	<string key="User_Role">
 		<value>نقش کاربر</value>
+	</string>
+	<string key="User_Signup">
+		<value>ثبت نام</value>
 	</string>
 	<string key="FromDate">
 		<value>از تاریخ</value>
@@ -1900,6 +1918,9 @@
 	</string>
 	<string key="UnAvailable">
 		<value>ناموجود</value>
+	</string>
+	<string key="UnAuthorize">
+		<value>غیرمجاز</value>
 	</string>
 	<string key="AsGift">
 		<value>هدیه :</value>

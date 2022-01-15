@@ -74,8 +74,8 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col-md-4 offset-md-8 col-12">
-                            <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
-                            <input type="submit" value="@Language.GetString("btn_Edit")" class="btn btn-success bg-gradient float-end m-2" />
+                            <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                            <input type="submit" value="@Language.GetString("btn_Edit")" class="btn btn-primary bg-gradient float-end m-2" />
                         </div>
                     </div>
                 </div>
@@ -85,14 +85,6 @@
 </div>
 
 
-@*<div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastAlert" style="display: block; left: 0; top: 0; z-index: 11;">
-    <div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
-        <div class="toast-body p-3 fs-5 rounded-3 text-center" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);" id="notificationToastBody">
-        </div>
-    </div>
-</div>*@
-
-@await Component.InvokeAsync("Notification", ViewBag.OperationResult)
 
 @section Scripts
 {
@@ -117,7 +109,7 @@
             });
 
 
-            $("#editUserFrm").submit(function (e) {
+      $("#editUserFrm").submit(function (e) {
                 debugger;
              e.preventDefault();
              var frm = document.getElementById('editUserFrm');
@@ -139,13 +131,16 @@
             spanErrorList.html("");
             spanErrorList.parent().removeClass("has-error");
             if (result.status === "success") {
-                Swal.fire({
+                @*Swal.fire({
                         icon: 'success',
                         text: result.message,
                         confirmButtonText:
                         '<i class="fa fa-thumbs-up"></i> @alert',
-                        });
-            } else if (result.status === "error") {
+                });*@
+                 document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @alert';
+                 document.getElementById('mainToastBody').classList.add('alert-success');
+            }
+            else if (result.status === "error") {
 
                 if (spanErrorList.length > 1) {
                     spanErrorList.each(function() {
@@ -164,12 +159,7 @@
                             .addClass("has-error");
                     });
                 } else {
-                    Swal.fire({
-                        icon: 'error',
-                        text: result.message,
-                        confirmButtonText:
-                            '<i class="fa fa-thumbs-up"></i> @alert',
-                    });
+                    showError('@alert');
                 }
             }
         },

@@ -179,8 +179,7 @@
                                     }
                                     @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
                                     {
-                                        <button id="restoreRecord" onclick="EntityRestore('@item.CommentId')" class="btn btn-sm btn-secondary
-                                                bg-gradient">
+                                        <button id="restoreRecord" onclick="EntityRestore('@item.CommentId')" class="btn btn-sm btn-secondary bg-gradient">
                                             <i style="position: relative;left: 5px;top: 2px;" class="fa fa-refresh"></i>
                                             @Language.GetString("btn_Restore")
                                         </button>
@@ -214,37 +213,6 @@
     </div>
 </div>
 
-<div aria-hidden="true" aria-labelledby="confirmModalLabel" class="modal fade" id="confirmModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-light">
-                <h5 class="modal-title" id="confirmModalLabel">
-                </h5>
-                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
-                </button>
-            </div>
-            <div class="modal-body" id="confirmModalBody">
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-success" onclick="onClickYes()" type="button">
-                    @Language.GetString("btn_Confirm")
-                </button>
-                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
-                    @Language.GetString("btn_NotConfirm")
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastAlert" style="display: block; left: 0; top: 0; z-index: 11;">
-    <div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
-        <div class="toast-body p-3 fs-5 rounded-3 text-center" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);" id="notificationToastBody">
-        </div>
-    </div>
-</div>
-
-@await Component.InvokeAsync("ConfirmDelete", new ConfirmDeleteDTO { Url = Url.Action("Delete") })
 @section Scripts{
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
@@ -255,7 +223,7 @@
         <script src="~/js/moment.min.js"></script>
         <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
     }
-    <script>
+<script>
         $(document).ready(function () {
             debugger;
             $("#toastAlert").hide();
@@ -278,93 +246,24 @@
                window.location.href = '@Url.Action("List", "Comment")' + queryString;
             });
         });
+
         function EntityDelete(id) {
-            debugger;
-        Swal.fire({
-            title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-            text: '@Language.GetString("AlertAndMessage_DeleteEntity")',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d51c1c',
-            cancelButtonColor: '#009c09db',
-            confirmButtonText: '@Language.GetString("btn_Confirm")',
-            cancelButtonText: '@Language.GetString("btn_NotConfirm")'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    debugger;
-            $.ajax({
-                type: 'Get',
-                url: '@Url.Action("Delete", "Comment")' + "/" + id,
-            beforeSend: function() {
-                AddLoading($("#CommentListCard"));
-            },
-                success: function (resultData) {
-                    debugger;
-                    removeLoading($("CommentListCard"))
-            if (resultData.status === "Success") {
-            Swal.fire({
-            icon: 'success',
-            text: resultData.message,
-            showConfirmButton: false,
-            timer: 3000
-            }).then(() => {
-            window.location.reload();
-            });
-            }
-
-            if (resultData.status === "Error") {
-            Swal.fire({
-            icon: 'error',
-            text: resultData.message,
-            showConfirmButton: false,
-            timer: 1500
-            });
-            }
-            }
-            });
-            }
-            });
+            entityId = id;
+			typeOfRequest = 'Delete';
+			confirmUrl = '@Url.Action("Delete", "Comment")' + "/" + id,
+			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Delete")';
+			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_DeletionSureness")';
+			$('#confirmModal').modal('show');
         }
-
-        function EntityRestore(id) {
-            debugger;
-                Swal.fire({
-                    title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-                    text: '@Language.GetString("AlertAndMessage_EntityRestoreText")',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d51c1c',
-                    cancelButtonColor: '#009c09db',
-                    confirmButtonText: '@Language.GetString("btn_Confirm")',
-                    cancelButtonText: '@Language.GetString("btn_NotConfirm")'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            type: 'Get',
-                            url:  '@Url.Action("Restore", "Comment")' + '?id=' + id,
-                            success: function(resultData) {
-                                if (resultData.status === "success") {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        text: resultData.message,
-                                        showConfirmButton: false,
-                                        timer: 2000
-                                    }).then(() => {
-                                        window.location.reload();
-                                    });
-                                }
-                                if (resultData.status === "error") {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        text: resultData.message,
-                                        showConfirmButton: false,
-                                        timer: 2000
-                                    });
-                                }
-                            }
-                        });
-                    }
-                });
-            }
-    </script>
+       
+    function EntityRestore(id) {
+         entityId = id;
+			typeOfRequest = 'PUT';
+			confirmUrl = '@Url.Action("Restore", "Comment")' + "/" + id,
+			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
+			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';
+			$('#confirmModal').modal('show');
+    }
+       
+</script>
 }

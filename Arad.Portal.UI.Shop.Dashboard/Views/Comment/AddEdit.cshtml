@@ -29,10 +29,6 @@
             font-size: 12px;
             line-height: 1.42857;
         }
-
-        .card-header {
-            background-color: #e0dcdf;
-        }
     </style>
 }
 
@@ -97,8 +93,8 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col-md-4 offset-md-8 col-12">
-                            <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
-                            <input type="button" id="btnApproveComment" value="@Language.GetString("btn_Approved")" class="btn btn-success bg-gradient float-end m-2" />
+                            <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                            <input type="button" id="btnApproveComment" value="@Language.GetString("btn_Approved")" class="btn btn-primary bg-gradient float-end m-2" />
                         </div>
                     </div>
                 </div>
@@ -107,21 +103,12 @@
     </div>
 </div>
 
-
-@*<div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastAlert" style="display: block; left: 0; top: 0; z-index: 11;">
-    <div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
-        <div class="toast-body p-3 fs-5 rounded-3 text-center" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);" id="notificationToastBody">
-        </div>
-    </div>
-</div>*@
-
-@await Component.InvokeAsync("Notification", ViewBag.OperationResult)
 @section Scripts{
     @if (dir == "rtl")
     {
         <script src="~/plugins/iCheck/icheck.min.js"></script>
     }
-    <script>
+<script>
 
         $(document).ready(function () {
             debugger;
@@ -152,23 +139,23 @@
                     success: function (result) {
                     debugger;
                         if (result.status === "Success") {
-                            Swal.fire({
-                                icon: 'success',
-                                text: result.message,
-                                showConfirmButton: false,
-                                timer: 3000
-                            }).then(() => {
-                                window.location.href = '@Url.Action("List")';
-                            });
+                             document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
+
+                            if ("data" in resultData)
+                            {
+                                document.getElementById('mainToastBody').innerHTML += `<br/>${result.message}`;
+                            }
+
+                            document.getElementById('mainToastBody').classList.add('alert-success');
+                            setTimeout(function()
+                                {
+                                    window.location.href = '@Url.Action("List")';
+                                },
+                                1500);
                         } else
                             if (result.status === "Error")
                             {
-                                Swal.fire({
-                                    icon: 'error',
-                                    text: result.message,
-                                    showConfirmButton: false,
-                                    timer: 3000
-                                })
+                                showError(result.message);
                             }
                     },
                     complete: function () {
@@ -178,7 +165,7 @@
 
             });
         });
-    </script>
+</script>
 }
 
 

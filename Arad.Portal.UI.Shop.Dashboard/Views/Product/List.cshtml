@@ -209,9 +209,9 @@
         </div>
     </div>
     <div class="card-body table-bordered  p-0">
-        <div class="row" style="background-color: #cbcdce;">
+        <div class="row" >
             <div class="col-md-1 offset-md-1">
-                <span class="form-control" style="background-color: #f4f4f5;">@Language.GetString("LanguageName")</span>
+                <span class="form-control" >@Language.GetString("LanguageName")</span>
             </div>
             <div class="col-md-2">
                 <select class="form-control" id="cmbLangIdFilter" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
@@ -312,35 +312,6 @@
 
 </div>
 
-<div aria-hidden="true" aria-labelledby="confirmModalLabel" class="modal fade" id="confirmModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-light">
-                <h5 class="modal-title" id="confirmModalLabel">
-                </h5>
-                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
-                </button>
-            </div>
-            <div class="modal-body" id="confirmModalBody">
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-success" onclick="onClickYes()" type="button">
-                    @Language.GetString("btn_Confirm")
-                </button>
-                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
-                    @Language.GetString("btn_NotConfirm")
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastAlert" style="display: block; left: 0; top: 0; z-index: 11;">
-    <div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
-        <div class="toast-body p-3 fs-5 rounded-3 text-center" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);" id="notificationToastBody">
-        </div>
-    </div>
-</div>
 
 @await Component.InvokeAsync("ConfirmDelete", new ConfirmDeleteDTO { Url = Url.Action("Delete") })
 @section Scripts{
