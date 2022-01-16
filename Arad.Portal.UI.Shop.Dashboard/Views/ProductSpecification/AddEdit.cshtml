@@ -25,6 +25,8 @@
 
 <h4>  @Language.GetString("Menu_ProductSpecifications") </h4>
 <hr />
+
+
 <div class="row">
     <div class="col-md-12">
         <div class="card" id="addProductGroupCard">
@@ -38,7 +40,7 @@
 
             <div class="card-body" id="addEditProductSpecificationCard">
                 <input type="hidden" value="@Model.ProductSpecificationId" asp-for="@Model.ProductSpecificationId" />
-                <div class="row" >
+                <div class="row align-items-center p-2" >
                     <div class="form-group col-md-3">
                         <label for="languageId">@Language.GetString("LanguageName")</label><br />
                         <select class="form-control select2" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
@@ -56,27 +58,27 @@
                         <input type="text" class="form-control" id="name" placeholder=" ">
                         <span data-val-result="name" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-2" style="text-align:center;margin:auto;">
+                    <div class="form-group col-md-3" >
 
-                        <div style="margin:auto;display:inline-block;">
-                            <button type="button" class="btn btn-primary bg-gradient" onclick="addToTable();">
-                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                        <div class="float-end">
+                            <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addToTable();">
+                                <i class="fa fa-plus pt-1" ></i>
                                 @Language.GetString("btn_Add")
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="form-group col-md-3 offset-md-3">
+                <div class="row align-items-center alert alert-secondary m-md-4 m-0">
+                    <div class="form-group col-md-3">
                         <label for="nameValuesInput">@Language.GetString("tbl_SpecificationValues")</label>
                         <input type="text" class="form-control" id="nameValuesInput" placeholder='@Language.GetString("specificationName_placeHolder")'>
 
                     </div>
-                    <div class="col-md-1" style="text-align:center;margin:auto;">
-                        <div style="margin:auto;display:inline-block;">
-                            <button type="button" class="btn btn-info rounded-circle bg-gradient" onclick="addToValueList();">
-                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                    <div class=" form-group col-md-1" style="text-align:center;margin:auto;">
+                        <div class="float-end">
+                            <button type="button" class="btn btn-success bg-gradient btn-sm mt-3 mb-3" onclick="addToValueList();">
+                                <i class="fa fa-plus pt-1" ></i>
                             </button>
                         </div>
                     </div>
@@ -88,7 +90,7 @@
 
                 </div>
 
-                <div class="row" style="margin-top:1%;">
+                <div class="row mt-1" >
                     <div class="card-body table-bordered  table-responsive p-0">
                         <table class="table table-hover">
                             <thead>
@@ -111,8 +113,8 @@
                                         <td>@item.Name</td>
                                         <td>@(string.Join('|', item.NameValues))</td>
                                         <td>
-                                            <button type="button" class="btn btn-danger rounded-circle bg-gradient" onclick="deleteFromTable(this);">
-                                                <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                            <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromTable(this);">
+                                                <i class="fa fa-trash" ></i>
                                             </button>
                                         </td>
                                     </tr>
@@ -126,7 +128,7 @@
             <div class="card-footer">
                 <div class="row">
                     <div class="col-md-4 offset-md-8 col-12">
-                        <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                        <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
                         <input type="button" id="btnAddProductSpecification" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
                     </div>
                 </div>
@@ -136,12 +138,37 @@
     </div>
 </div>
 
+
+<div aria-hidden="true" aria-labelledby="confirmLabel" class="modal fade" id="showModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="confirmLabel">
+                </h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                </button>
+            </div>
+            <div class="modal-body" id="confirmBody">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="onConfirmDialog();" type="button">
+                    @Language.GetString("btn_Confirm")
+                </button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                    @Language.GetString("btn_NotConfirm")
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts{
     <script>
-
+        var globalSender;
+        function onConfirmDialog() {
+            $(globalSender).closest("li").remove();
+        }
         $(document).ready(function () {
-            debugger;
-            $("#toastAlert").hide();
+           
             if ('@ViewBag.LangId' != "") {
                 $("#languageId").val('@ViewBag.LangId');
             }
@@ -203,19 +230,26 @@
                    data: JSON.stringify(dataModel),
                 type: 'Post',
                 beforeSend: function () {
-                    AddLoading($("#addEditProductSpecificationCard"));
+                   /* AddLoading($("#addEditProductSpecificationCard"));*/
                 },
                 success: function (result) {
                     debugger;
                     if (result.status === "Success") {
-                        Swal.fire({
+                        @*Swal.fire({
                             icon: 'success',
                             text: result.message,
                             showConfirmButton: false,
                             timer: 3000
                         }).then(() => {
                             window.location.href = '@Url.Action("List")';
-                        });
+                        });*@
+                        document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
+                        document.getElementById('mainToastBody').classList.add('alert-success');
+                        setTimeout(function()
+                        {
+                                window.location.href = '@Url.Action("List")';
+                        },
+                        3000);
                     }else
                     if (result.status === "ModelError") {
                         var spanErrorList = $('span[data-val-result]');
@@ -240,7 +274,7 @@
                     alert(thrownError);
                 },
                 complete: function () {
-                    removeLoading($("#addEditProductSpecificationCard"));
+                   /* removeLoading($("#addEditProductSpecificationCard"));*/
                 }
                 });
                 }
@@ -264,17 +298,19 @@
                 $("#nameValuesList").append(li);
                 $("#nameValuesInput").val("");
             } else {
-                Swal.fire({
+                @*Swal.fire({
                     icon: 'warning',
                     text: '@Language.GetString("AlertAndMessage_FillSpecificationValue")',
                     showConfirmButton: false,
                     timer: 1500
-                });
+                });*@
+                showError('@Language.GetString("AlertAndMessage_FillSpecificationValue")');
             }
         }
         function deleteValue(sender) {
             debugger;
-            Swal.fire({
+            globalSender = sender;
+            @*Swal.fire({
                 title: '@Language.GetString("AlertAndMessage_AreYouSure")',
                 text: '@Language.GetString("AlertAndMessage_DeleteSpecificationValue")',
                 icon: 'warning',
@@ -285,7 +321,10 @@
                 cancelButtonText: '@Language.GetString("btn_NotConfirm")'
             }).then((result) => {
                $(sender).closest("li").remove();
-            });
+            });*@
+            document.getElementById('confirmLabel').innerHTML = '@Language.GetString("AlertAndMessage_AreYouSure")';
+			document.getElementById('confirmBody').innerHTML = '@Language.GetString("AlertAndMessage_DeleteSpecificationValue")';
+			$('#showModal').modal('show');
         }
         function FillDataToSend() {
             debugger;
@@ -346,8 +385,8 @@
                     "</td><td>" + $('#languageId option:selected').text() +
                     "</td><td >" + $("#name").val() +
                     "</td><td>" + joinedValues +
-                    "</td><td><button type='button' class='btn btn-sm btn-danger rounded-circle bg-gradient' onclick='deleteFromTable(this);'>" +
-                    "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
+                    "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromTable(this);'>" +
+                    "<i class='fa fa-trash' ></i></button></td></tr>";
 
                 $("#multiLingualList").append(tr);
                 $("#name").val("");

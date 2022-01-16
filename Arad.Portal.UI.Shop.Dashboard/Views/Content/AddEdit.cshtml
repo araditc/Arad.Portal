@@ -34,18 +34,7 @@
             font-size: 12px;
         }
 
-        .rounded-circle {
-            width: 30px;
-            height: 30px;
-            padding: 6px 0px;
-            border-radius: 15px;
-            text-align: center;
-            font-size: 12px;
-            line-height: 1.42857;
-        }
-
-        
-
+        .
         .ck-editor .ck-editor__main .ck-content {
             height: 280px;
             min-height: 250px;
@@ -114,16 +103,7 @@
                 font-size: 12px;
             }
 
-            .rounded-circle {
-                width: 30px;
-                height: 30px;
-                padding: 6px 0px;
-                border-radius: 15px;
-                text-align: center;
-                font-size: 12px;
-                line-height: 1.42857;
-            }
-
+           
             .removeImage {
                 display: inline-block;
                 position: absolute;
@@ -368,8 +348,8 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                            <button type="button" class="btn btn-danger bg-gradient rounded-circle" imgId="@($"img_{@pic.ImageId}")" onclick="deleteFromImageList(this);">
-                                                                <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                                            <button type="button" class="btn btn-danger bg-gradient" imgId="@($"img_{@pic.ImageId}")" onclick="deleteFromImageList(this);">
+                                                                <i class="fa fa-trash"></i>
                                                             </button>
                                                         </td>
                                                     </tr>
@@ -424,7 +404,7 @@
             <div class="card-footer">
                 <div class="row">
                     <div class="col-md-4 offset-md-8 col-12">
-                        <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                        <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
                         <input type="button" id="btnAddContent" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
                     </div>
                 </div>
@@ -579,13 +559,12 @@
                     type: 'Post',
                     beforeSend: function () {
                         debugger;
-                        AddLoading($("#addContentCardBody"));
+                      /*  AddLoading($("#addContentCardBody"));*/
                     },
                     success: function (result) {
                         debugger;
                         if (result.status === "Success") {
                             document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
-
                             if ("data" in resultData)
                             {
                                 document.getElementById('mainToastBody').innerHTML += `<br/>${result.message}`;
@@ -625,7 +604,7 @@
                         alert(thrownError);
                     },*@
                     complete: function () {
-                        removeLoading($("#addContentCardBody"));
+                        /*removeLoading($("#addContentCardBody"));*/
                     }
                 });
             }
@@ -678,14 +657,14 @@
                     "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
                     "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
                     "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
-                    "'/></td><td style='vertical-align:middle;'><input type='radio'  name='isMainImage' class='minimal rdbIsMain'></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger rounded-circle bg-gradient' imgId='img_" + counter + "' onclick='deleteFromImageList(this);'><i class='fa fa-minus' style='position:relative;padding: 3px;'></i></button></td></tr>";
+                    "'/></td><td style='vertical-align:middle;'><input type='radio'  name='isMainImage' class='minimal rdbIsMain'></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' imgId='img_" + counter + "' onclick='deleteFromImageList(this);'><i class='fa fa-trash' ></i></button></td></tr>";
             } else
             {
                  tr = "<tr><td><img imgId='img_" + counter + "' src='" + model.Content +
                     "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
                     "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
                     "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
-                     "'/></td><td style='vertical-align:middle;'><div class='icheck-primary d-inline'><input type='radio'  name='isMainImage' class='rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient rounded-circle' imgId='img_" + counter + "' onclick='deleteFromImageList(this);'><i class='fa fa-minus' style='position:relative;padding: 3px;'></i></button></td></tr>";
+                     "'/></td><td style='vertical-align:middle;'><div class='icheck-primary d-inline'><input type='radio'  name='isMainImage' class='rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' imgId='img_" + counter + "' onclick='deleteFromImageList(this);'><i class='fa fa-trash'></i></button></td></tr>";
 
             }
             $("#imageList").append(tr);

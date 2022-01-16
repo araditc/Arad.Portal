@@ -26,12 +26,6 @@
     vertical-align: middle;
 }
 
-.rounded-circle i{
-    font-size: 1rem;
-}
-.btn.rounded-circle{
-    padding-top: 0.55rem;
-}
 i span {
     font-family: IRANSansWeb;
 }
@@ -46,3 +40,44 @@ i span {
 .btnBack{
     border : 1px solid black;
 }
+.spinner-border {
+    display: block;
+    border-width: 14px;
+    margin-right: -1.5rem; /* half of the elements widht */
+    margin-top: -1.5rem; /* half of the elements height */
+    position: fixed;
+    right: 50%; /* or: left: 50%; */
+    top: 50%;
+    z-index: 1031; /* High z-index so it is on top of the page */
+}
+
+#loading {
+    box-sizing: border-box;
+    color: #fff;
+    display: none;
+    height: 0;
+    left: -9999px;
+    overflow: hidden;
+    position: fixed;
+    top: -9999px;
+    width: 0;
+    z-index: 999999;
+}
+
+    #loading::after, .loader::before {
+        box-sizing: border-box;
+        display: none
+    }
+
+    #loading.is-active {
+        background-color: rgba(0, 0, 0, .85);
+        display: block;
+        height: 100%;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+
+        #loading.is-active::after, .loader.is-active::before {
+            display: block
+        }

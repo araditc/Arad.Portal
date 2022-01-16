@@ -149,12 +149,7 @@
 </div>
 
 
-@*<div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastAlert" style="display: block; left: 0; top: 0; z-index: 11;">
-        <div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
-            <div class="toast-body p-3 fs-5 rounded-3 text-center" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);" id="notificationToastBody">
-            </div>
-        </div>
-    </div>*@
+
 
 
 
@@ -167,7 +162,7 @@
 
     <script type="text/javascript">
             $(document).ready(function () {
-            $("#toastAlert").hide();
+         
             var input = document.querySelector("#PhoneNumber");
 
             window.intlTelInput(input,
@@ -198,7 +193,7 @@
             processData: false,
             contentType: false,
             beforeSend: function() {
-            AddLoading($("#addUserCard"));
+          /*  AddLoading($("#addUserCard"));*/
             },
             success: function (result)
             {
@@ -256,7 +251,7 @@
                 alert(thrownError);
             },
             complete: function () {
-            removeLoading($("#addUserCard"));
+           /* removeLoading($("#addUserCard"));*/
             }
             });
             });

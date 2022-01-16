@@ -96,7 +96,7 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col-md-4 offset-md-8 col-12">
-                            <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                            <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
                             <input type="submit" id="btnAddMenu" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
                         </div>
                     </div>
@@ -110,8 +110,7 @@
 @section Scripts{
     <script>
         $(document).ready(function () {
-            debugger;
-            $("#toastAlert").hide();
+           
             MenusSelectList(1);
             MenusSelectList(2);
 
@@ -133,20 +132,27 @@
                 type: 'Post',
                 beforeSend: function () {
                     debugger;
-                    AddLoading($("#addEditPermissionCard"));
+                  /*  AddLoading($("#addEditPermissionCard"));*/
                 },
                 success: function (result) {
                     debugger;
                    /* $("#loading").removeClass('is-active');*/
                     if (result.status === "Success") {
-                        Swal.fire({
+                        @*Swal.fire({
                             icon: 'success',
                             title: result.message,
                             showConfirmButton: false,
                             timer: 3000
                         }).then(() => {
                             window.location.href = '@Url.Action("List")';
-                        });
+                        });*@
+                        document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
+                            document.getElementById('mainToastBody').classList.add('alert-success');
+                            setTimeout(function()
+                            {
+                                 window.location.href = '@Url.Action("List")';
+                            },
+                            3000);
                     }
                     if (result.status === "ModelError") {
                         var spanErrorList = $('span[data-val-result]');
@@ -175,7 +181,7 @@
                     alert(thrownError);
                 },
                 complete: function () {
-                    removeLoading($("#addEditPermissionCard"));
+                   /* removeLoading($("#addEditPermissionCard"));*/
                 }
             });
         });
@@ -257,7 +263,7 @@
                         alert(thrownError);
                     },
                     complete: function () {
-                        removeLoading($("#addUserCard"));
+                       /* removeLoading($("#addUserCard"));*/
                     }
                 });
             }

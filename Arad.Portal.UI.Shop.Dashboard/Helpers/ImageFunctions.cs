@@ -109,8 +109,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
         }
         public static byte[] GetResizedImage(string filePath, int desiredHeight)
         {
-            var base64String = File.ReadAllText(filePath);
-            byte[] byteArray = Convert.FromBase64String(base64String);
+            //var base64String = File.ReadAllText(filePath);
+            //byte[] byteArray = Convert.FromBase64String(base64String);
+            byte[] byteArray = File.ReadAllBytes(filePath);
             Image img;
             using (MemoryStream ms = new MemoryStream(byteArray))
             {

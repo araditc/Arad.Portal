@@ -13,16 +13,6 @@
             font-size: 12px;
         }
 
-        .rounded-circle {
-            width: 30px;
-            height: 30px;
-            padding: 6px 0px;
-            border-radius: 15px;
-            text-align: center;
-            font-size: 12px;
-            line-height: 1.42857;
-        }
-
         .ck-editor .ck-editor__main .ck-content {
             height: 280px;
             min-height: 250px;
@@ -83,6 +73,21 @@
 
 <h4>  @Language.GetString("Menu_ProductGroups") </h4>
 <hr />
+<div aria-hidden="true" aria-labelledby="confirmLabel" class="modal fade" id="showModalId" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                </button>
+            </div>
+            <div class="modal-body" id="confirmBody">
+            </div>
+            <div class="modal-footer">
+               
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="uploadlogoModal" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
@@ -208,8 +213,8 @@
                     <div class="form-group col-md-3" style="text-align:center;margin:auto;">
                         <span data-val-result="MultiLingualProperties" class="text-danger"></span>
                         <div style="margin:auto;display:inline-block;">
-                            <button type="button" class="btn btn-info rounded-circle bg-gradient" onclick="addToTable();">
-                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                            <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addToTable();">
+                                <i class="fa fa-plus pt-1" ></i>
                             </button>
                         </div>
                     </div>
@@ -245,8 +250,8 @@
                                         <td>@item.SeoDescription</td>
                                         <td>@item.Description</td>
                                         <td>
-                                            <button type="button" class="btn btn-danger rounded-circle bg-gradient" onclick="deleteFromTable(this);">
-                                                <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                            <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromTable(this);">
+                                                <i class="fa fa-trash" ></i>
                                             </button>
                                         </td>
                                     </tr>
@@ -261,7 +266,7 @@
             <div class="card-footer">
                 <div class="row">
                     <div class="col-md-4 offset-md-8 col-12">
-                        <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                        <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
                         <input type="button" id="btnAddProductGroup" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
                     </div>
                 </div>
@@ -284,7 +289,6 @@
         var modelUrl;
         $(document).ready(function () {
             debugger;
-            $("#toastAlert").hide();
             modelUrl = '@Model.GroupImage';
             if ("@Model.ProductGroupId" != "" && "@Model.ParentId" != "") {
                 $("#ParentId").val("@Model.ParentId");
@@ -319,20 +323,28 @@
                         type: 'Post',
                         beforeSend: function () {
                             debugger;
-                            AddLoading($("#addEditProductGroupCard"));
+                            /*AddLoading($("#addEditProductGroupCard"));*/
                         },
                         success: function (result) {
                             debugger;
                             if (result.status === "Success") {
-                                Swal.fire({
+                                @*Swal.fire({
                                     icon: 'success',
                                     text: result.message,
                                     showConfirmButton: false,
                                     timer: 3000
                                 }).then(() => {
                                     window.location.href = '@Url.Action("List")';
-                                });
-                            }else
+                                });*@
+                            document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
+                            document.getElementById('mainToastBody').classList.add('alert-success');
+                            setTimeout(function()
+                            {
+                                 window.location.href = '@Url.Action("List")';
+                            },
+                            3000);
+                            }
+                            else
                             if (result.status === "ModelError") {
                                 var spanErrorList = $('span[data-val-result]');
                                 if (spanErrorList.length > 1) {
@@ -356,7 +368,7 @@
                             alert(thrownError);
                         },*@
                         complete: function () {
-                            removeLoading($("#addEditProductGroupCard"));
+                            /*removeLoading($("#addEditProductGroupCard"));*/
                         }
                         });
                 }
@@ -469,26 +481,14 @@
                 setTimeout(initCropper, 500);
                 } else {
 
-                Swal.fire({
-                position: 'top-end',
-                icon: 'error',
-                title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
-                showConfirmButton: false,
-                timer: 1500
-                });
 
+                showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
                 document.getElementById("image").value = "";
                     $("#logoCropped_result").remove();
                 }
                 } else {
-                Swal.fire({
-                position: 'top-end',
-                icon: 'error',
-                title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
-                showConfirmButton: false,
-                timer: 1500
-                });
 
+                showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
                 document.getElementById("image").value = "";
                     $("#logoCropped_result").remove();
                 }
@@ -496,12 +496,8 @@
                 }
                 else
                 {
-                Swal.fire({
-                icon: 'error',
-                title: '@Language.GetString("AlertAndMessage_InvalidFileSize")',
-                showConfirmButton: false,
-                timer: 1500
-                });
+
+                showError('@Language.GetString("AlertAndMessage_InvalidFileSize")');
                 document.getElementById("image").value = "";
                     $("#logoCropped_result").remove();
                 }
@@ -540,8 +536,8 @@
                     "</td><td>" + $("#seoTitle").val() +
                     "</td><td>" + $("#seoDescription").val() +
                     "</td><td>" + $("#description").val() +
-                    "</td><td><button type='button' class='btn btn-sm btn-danger rounded-circle bg-gradient' onclick='deleteFromTable(this);'>" +
-                    "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
+                    "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromTable(this);'>" +
+                    "<i class='fa fa-trash' ></i></button></td></tr>";
 
                 $("#multiLingualList").append(tr);
                 $("#groupName").val("");
@@ -557,12 +553,14 @@
         function ViewImage(address) {
         debugger;
         var tag = '<img src="' + address + '" width="500px" />';
-        Swal.fire({
+        @*Swal.fire({
             html: tag,
             width: 'auto',
             showConfirmButton: true,
             confirmButtonText: '@Language.GetString("Close")'
-        });
+        });*@
+		document.getElementById('confirmBody').innerHTML = tag;
+        $('#showModalId').modal('show');
     }
     </script>
 }

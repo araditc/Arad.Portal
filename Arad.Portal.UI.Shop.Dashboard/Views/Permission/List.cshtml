@@ -31,8 +31,8 @@
                 <div class="card-tools" style='@(dir=="rtl" ? "float:left;" : "float:right;")'>
                     @if (ViewBag.Permissions["Add"])
                     {
-                        <a asp-action="AddEdit" class="btn btn-success btn-sm bg-gradient">
-                            <i style="position: relative;left: 5px;top: 2px;" class="fa fa-plus"></i>@Language.GetString("btn_Add")
+                        <a asp-action="AddEdit" class="btn btn-success bg-gradient">
+                            <i  class="fa fa-plus pt-1"></i>@Language.GetString("btn_Add")
                         </a>
                     }
                 </div>
@@ -117,95 +117,25 @@
 
 @section Scripts{
     <script>
-        $(document).ready(function () {
-            $("#toastAlert").hide();
-        });
+       
         function PermissionDelete(id) {
             debugger;
-        Swal.fire({
-            title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-            text: '@Language.GetString("AlertAndMessage_DeletePermission")',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d51c1c',
-            cancelButtonColor: '#009c09db',
-            confirmButtonText: '@Language.GetString("btn_Confirm")',
-            cancelButtonText: '@Language.GetString("btn_NotConfirm")'
-            }).then((result) => {
-            if (result.isConfirmed) {
-            $.ajax({
-            type: 'Get',
-            url: '@Url.Action("Delete", "Permission")' + '?id=' + id,
-            beforeSend: function() {
-                AddLoading($("#permissionListCard"));
-            },
-            success: function (resultData) {
-                removeLoading($("permissionListCard"))
-            if (resultData.status === "Success") {
-            Swal.fire({
-            icon: 'success',
-            text: resultData.message,
-            showConfirmButton: false,
-            timer: 3000
-            }).then(() => {
-            window.location.reload();
-            });
-            }
-
-            if (resultData.status === "Error") {
-            Swal.fire({
-            icon: 'error',
-            text: resultData.message,
-            showConfirmButton: false,
-            timer: 1500
-            });
-            }
-            }
-            });
-            }
-            });
+             entityId = id;
+			typeOfRequest = 'Delete';
+            confirmUrl = '@Url.Action("Delete", "Permission")' + '?id=' + id,
+			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Delete")';
+			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_DeletionSureness")';
+			$('#confirmModal').modal('show');
         }
 
          function PermissionRestore(id) {
-            debugger;
-                Swal.fire({
-                    title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-                    text: '@Language.GetString("AlertAndMessage_EntityRestoreText")',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d51c1c',
-                    cancelButtonColor: '#009c09db',
-                    confirmButtonText: '@Language.GetString("btn_Confirm")',
-                    cancelButtonText: '@Language.GetString("btn_NotConfirm")'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            type: 'Get',
-                            url: '@Url.Action("Restore", "Permission")' + '?id=' + id,
-                            success: function(resultData) {
-                                if (resultData.status === "success") {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        text: resultData.message,
-                                        showConfirmButton: false,
-                                        timer: 2000
-                                    }).then(() => {
-                                        window.location.reload();
-                                    });
-                                }
-
-                                if (resultData.status === "error") {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        text: resultData.message,
-                                        showConfirmButton: false,
-                                        timer: 2000
-                                    });
-                                }
-                            }
-                        });
-                    }
-                });
+             debugger;
+               entityId = id;
+			   typeOfRequest = 'PUT';
+			   confirmUrl = '@Url.Action("Restore", "Permission")' + '?id=' + id,
+			   document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
+			   document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';
+               $('#confirmModal').modal('show');
             }
     </script>
 }

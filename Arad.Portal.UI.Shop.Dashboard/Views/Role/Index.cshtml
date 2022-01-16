@@ -31,7 +31,7 @@
         if (@Model["Add"])
         {
             <a class="action-head add open" data-toggle="collapse" href="#add">
-                <i class="fa fa-plus" aria-hidden="true"></i>
+                <i class="fa fa-plus pt-1" aria-hidden="true"></i>
             </a>
         }
     }
@@ -112,15 +112,15 @@
 
     @if (@Model["Add"])
     {
-        <script>
+<script>
             $(document).ready(function () {
-            
+
                 //$("#add").on('show.bs.collapse',
                 //    function () {
-                     
+
                 //        ListPermissions();
                 //    });
-               
+
                 ListPermissions();
 
                 $("#addRole").submit(function (e) {
@@ -167,12 +167,15 @@
                             if (result.status === "success") {
                                 list(pageSize, 1);
                                 //toastr.success(result.message);
-                                Swal.fire({
+                                @*Swal.fire({
                                     type: 'success',
                                     text: result.message,
                                     confirmButtonText:
                                         '<i class="fa fa-thumbs-up"></i> @alert',
-                                });
+                                });*@
+                                document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>' + result.message;
+                                document.getElementById('mainToastBody').classList.add('alert-success');
+                                  
 
 
                             } else if (result.status === "error") {
@@ -190,12 +193,13 @@
                                         $("#addRole").find('[data-val-result=' + value.key + ']').parent().addClass("has-error");
                                     });
                                 } else {
-                                    Swal.fire({
+                                    @*Swal.fire({
                                         type: 'error',
                                         text: result.message,
                                         confirmButtonText:
                                             '<i class="fa fa-thumbs-up"></i> @alert',
-                                    });
+                                    });*@
+                                    showError(result.message);
                                 }
                             }
 
@@ -212,7 +216,7 @@
                 });
 
             });
-        </script>
+</script>
     }
 
     @if (@Model["Details"])
@@ -332,12 +336,13 @@
                                         .addClass("has-error");
                                 });
                             } else {
-                                Swal.fire({
+                                @*Swal.fire({
                                     type: 'error',
                                     text: result.message,
                                     confirmButtonText:
                                         '<i class="fa fa-thumbs-up"></i> @alert',
-                                });
+                                });*@
+                                showError(result.message);
                             }
                         }
                     },
@@ -356,7 +361,7 @@
 
     @if (@Model["Remove"])
     {
-        <script>
+<script>
             $(document).ready(function() {
                  $(document).on("click",
                 "#deleteRecord",
@@ -387,20 +392,22 @@
                                 list(pageSize, $pagination.twbsPagination('getCurrentPage'));
 
                                 $("#removeModal").modal("hide");
-                                Swal.fire({
+                                @*Swal.fire({
                                     type: 'success',
                                     text: result.message,
                                     confirmButtonText:
                                         '<i class="fa fa-thumbs-up"></i> @alert',
-                                });
-
+                                });*@
+                                document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
+                                document.getElementById('mainToastBody').classList.add('alert-success');
                             } else {
-                                Swal.fire({
+                                @*Swal.fire({
                                     type: 'error',
                                     text: result.message,
                                     confirmButtonText:
                                         '@alert',
-                                });
+                                });*@
+                                showError(result.message);
                             }
                         },
                         error: function(xhr, ajaxOptions, thrownError) {
@@ -413,7 +420,7 @@
                     });
                 });
             });
-        </script>
+</script>
     }
 
 

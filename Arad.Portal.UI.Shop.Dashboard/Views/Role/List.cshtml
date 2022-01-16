@@ -29,8 +29,8 @@
                 <div class="card-tools float-end">
                     @if (ViewBag.Permissions["Add"])
                     {
-                        <a asp-action="AddEdit" class="btn btn-success btn-sm bg-gradient">
-                            <i style="position: relative;left: 5px;top: 2px;" class="fa fa-plus"></i>@Language.GetString("btn_Add")
+                        <a asp-action="AddEdit" class="btn btn-success bg-gradient">
+                            <i  class="fa fa-plus pt-1"></i>@Language.GetString("btn_Add")
                         </a>
                     }
                 </div>
@@ -139,9 +139,7 @@
 @section Scripts{
     <script>
 
-        $(document).ready(function () {
-            $("#toastAlert").hide();
-        });
+      
     function changeActivation(id) {
             debugger;
                 $.ajax({
@@ -160,12 +158,13 @@
                         }
 
                         if (resultData.status === "error") {
-                            Swal.fire({
-                                icon: 'error',
-                                text: resultData.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
+                            //Swal.fire({
+                            //    icon: 'error',
+                            //    text: resultData.message,
+                            //    showConfirmButton: false,
+                            //    timer: 1500
+                            //});
+                            showError(resultData.message);
                         }
                     }
                 });
@@ -176,108 +175,41 @@
                 type: 'Get',
                 url: '@Url.Action("GetLatestModifications", "Role")' + '?id=' + id,
                 beforeSend: function() {
-                    AddLoading($("#roleListCard"));
+                   /* AddLoading($("#roleListCard"));*/
                 },
                 success: function (resultData) {
-                    removeLoading($("#roleListCard"));
-                        Swal.fire({
+                    //removeLoading($("#roleListCard"));
+                        @*Swal.fire({
                             text: resultData.message,
                             html: resultData,
                             width: 'auto',
                             showConfirmButton: true,
                             confirmButtonText: '@Language.GetString("Close")'
-                        });
+                        });*@
+                            document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> ' + resultData.message;
+                            document.getElementById('mainToastBody').classList.add('alert-success');
                     },
             });
         }
 
         function RoleDelete(id) {
             debugger;
-        Swal.fire({
-            title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-            text: '@Language.GetString("AlertAndMessage_DeleteRole")',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d51c1c',
-            cancelButtonColor: '#009c09db',
-            confirmButtonText: '@Language.GetString("btn_Confirm")',
-            cancelButtonText: '@Language.GetString("btn_NotConfirm")'
-            }).then((result) => {
-            if (result.isConfirmed) {
-            $.ajax({
-            type: 'Get',
-            url: '@Url.Action("Delete", "Role")' + '?id=' + id,
-            beforeSend: function() {
-                AddLoading($("#roleListCard"));
-            },
-                success: function (resultData) {
-                    debugger;
-                removeLoading($("#roleListCard"));
-            if (resultData.status === "success") {
-            Swal.fire({
-            icon: 'success',
-            text: resultData.message,
-            showConfirmButton: false,
-            timer: 3000
-            }).then(() => {
-            window.location.reload();
-            });
-            }
-
-            if (resultData.status === "Error") {
-            Swal.fire({
-            icon: 'error',
-            text: resultData.message,
-            showConfirmButton: false,
-            timer: 1500
-            });
-            }
-            }
-            });
-            }
-            });
+             entityId = id;
+			typeOfRequest = 'Delete';
+			confirmUrl = '@Url.Action("Delete", "Role")' + '?id=' + id,
+			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Delete")';
+			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_DeletionSureness")';
+			$('#confirmModal').modal('show');
         }
 
         function RoleRestore(id) {
             debugger;
-                Swal.fire({
-                    title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-                    text: '@Language.GetString("AlertAndMessage_EntityRestoreText")',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d51c1c',
-                    cancelButtonColor: '#009c09db',
-                    confirmButtonText: '@Language.GetString("btn_Confirm")',
-                    cancelButtonText: '@Language.GetString("btn_NotConfirm")'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            type: 'Get',
-                            url: '@Url.Action("Restore", "Role")' + '?id=' + id,
-                            success: function(resultData) {
-                                if (resultData.status === "success") {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        text: resultData.message,
-                                        showConfirmButton: false,
-                                        timer: 3000
-                                    }).then(() => {
-                                        window.location.reload();
-                                    });
-                                }
-
-                                if (resultData.status === "error") {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        text: resultData.message,
-                                        showConfirmButton: false,
-                                        timer: 3000
-                                    });
-                                }
-                            }
-                        });
-                    }
-                });
+              entityId = id;
+			typeOfRequest = 'PUT';
+			confirmUrl = '@Url.Action("Restore", "Role")' + '?id=' + id,
+			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
+			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';
+			$('#confirmModal').modal('show');
             }
     </script>
 }

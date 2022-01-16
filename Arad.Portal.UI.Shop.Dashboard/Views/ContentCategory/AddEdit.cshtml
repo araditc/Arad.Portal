@@ -11,16 +11,6 @@
             font-size: 12px;
         }
 
-        .rounded-circle {
-            width: 30px;
-            height: 30px;
-            padding: 6px 0px;
-            border-radius: 15px;
-            text-align: center;
-            font-size: 12px;
-            line-height: 1.42857;
-        }
-
     </style>
 }
 
@@ -73,8 +63,8 @@
                     <div class="form-group col-md-1" style="text-align:center;margin:auto;">
                         <span data-val-result="MultiLingualProperties" class="text-danger"></span>
                         <div style="margin:auto;display:inline-block;">
-                            <button type="button" class="btn btn-info rounded-circle bg-gradient" onclick="addToTable();">
-                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                            <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addToTable();">
+                                <i class="fa fa-plus pt-1"></i>
                             </button>
                         </div>
                     </div>
@@ -101,8 +91,8 @@
                                         <td>@item.LanguageName</td>
                                         <td style="display:none;">@item.LanguageId</td>
                                         <td>
-                                            <button type="button" class="btn btn-danger rounded-circle bg-gradient" onclick="deleteFromTable(this);">
-                                                <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                            <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromTable(this);">
+                                                <i class="fa fa-trash" ></i>
                                             </button>
                                         </td>
                                     </tr>
@@ -117,7 +107,7 @@
             <div class="card-footer">
                 <div class="row">
                     <div class="col-md-4 offset-md-8 col-12">
-                        <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                        <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
                         <input type="button" id="btnAddContentCategory" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
                     </div>
                 </div>
@@ -131,8 +121,7 @@
     <script>
 
         $(document).ready(function () {
-            debugger;
-            $("#toastAlert").hide();
+          
             $("#languageId").val('@ViewBag.LangId');
             if ("@Model.ContentCategoryId" != "" && "@Model.ParentCategoryId" != "") {
                 $("#ParentCategoryId").val("@Model.ParentCategoryId");
@@ -156,7 +145,7 @@
                     type: 'Post',
                     beforeSend: function () {
                         debugger;
-                        AddLoading($("#addContentCategoryCardBody"));
+                       /* AddLoading($("#addContentCategoryCardBody"));*/
                     },
                     success: function (result) {
                         debugger;
@@ -175,7 +164,7 @@
                             {
                                  window.location.href = '@Url.Action("List")';
                             },
-                            1500);
+                            3000);
                         }else
                         if (result.status === "ModelError") {
                             var spanErrorList = $('span[data-val-result]');
@@ -200,7 +189,7 @@
                         alert(thrownError);
                     },*@
                     complete: function () {
-                        removeLoading($("#addContentCategoryCardBody"));
+                       /* removeLoading($("#addContentCategoryCardBody"));*/
                     }
                     });
                 }
@@ -255,8 +244,8 @@
                 var tr = "<tr style='text-align:center;'><td>" + $("#categoryName").val() +
                     "</td><td>" + $('#languageId option:selected').text() +
                     "</td><td style='display:none;'>" + $("#languageId").val() +
-                    "</td><td><button type='button' class='btn btn-sm btn-danger rounded-circle bg-gradient' onclick='deleteFromTable(this);'>" +
-                    "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
+                    "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromTable(this);'>" +
+                    "<i class='fa fa-trash' ></i></button></td></tr>";
 
                 $("#multiLingualList").append(tr);
                 $("#categoryName").val("");

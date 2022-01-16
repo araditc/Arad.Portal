@@ -89,8 +89,8 @@
                         <div class="form-group col-md-3" style="text-align:center;margin:auto;">
                             <span data-val-result="MultiLingualProperties" class="text-danger"></span>
                             <div style="margin:auto;display:inline-block;">
-                                <button type="button" class="btn btn-info rounded-circle bg-gradient" onclick="addToTable();">
-                                    <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                                <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addToTable();">
+                                    <i class="fa fa-plus pt-1" ></i>
                                 </button>
                             </div>
                         </div>
@@ -116,8 +116,8 @@
                                             <td>@item.LanguageName</td>
                                             <td style="display:none;">@item.LanguageId</td>
                                             <td>
-                                                <button type="button" class="btn btn-danger rounded-circle bg-gradient" onclick="deleteFromTable(this);">
-                                                    <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                                <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromTable(this);">
+                                                    <i class="fa fa-trash" ></i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -132,7 +132,7 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col-md-4 offset-md-8 col-12">
-                            <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                            <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
                             <input type="button" id="btnAddMenu" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
                         </div>
                     </div>
@@ -146,7 +146,7 @@
     <script src="~/lib/bootstrap-iconpicker/js/bootstrap-iconpicker.bundle.min.js"></script>
     <script>
 
-        $(document).ready(function () {            
+        $(document).ready(function () {
             $("#toastAlert").hide();
 
             if ("@Model.MenuId" != "") {
@@ -236,19 +236,18 @@
                         type: 'Post',
                         beforeSend: function () {
                             debugger;
-                            AddLoading($("#addStoreMenuCard"));
+                           /* AddLoading($("#addStoreMenuCard"));*/
                         },
                         success: function (result) {
                             debugger;
                             if (result.status === "Success") {
-                                Swal.fire({
-                                    icon: 'success',
-                                    text: result.message,
-                                    showConfirmButton: false,
-                                    timer: 3000
-                                }).then(() => {
-                                    window.location.href = '@Url.Action("List")';
-                                });
+                                document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
+                                document.getElementById('mainToastBody').classList.add('alert-success');
+                                setTimeout(function()
+                                {
+                                   window.location.href = '@Url.Action("List")';
+                                },
+                                3000);
                             }else
                             if (result.status === "ModelError") {
                                 var spanErrorList = $('span[data-val-result]');
@@ -273,7 +272,7 @@
                             alert(thrownError);
                         },
                         complete: function () {
-                            removeLoading($("#addStoreMenuCard"));
+                            /*removeLoading($("#addStoreMenuCard"));*/
                         }
                         });
                 }
@@ -466,8 +465,8 @@
                 var tr = "<tr style='text-align:center;'><td>" + $("#menuTitle").val() +
                     "</td><td>" + $('#languageId option:selected').text() +
                     "</td><td style='display:none;'>" + $("#languageId").val() +
-                    "</td><td><button type='button' class='btn btn-sm btn-danger rounded-circle' onclick='deleteFromTable(this);'>" +
-                    "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
+                    "</td><td><button type='button' class='btn btn-sm btn-danger' onclick='deleteFromTable(this);'>" +
+                    "<i class='fa fa-trash' ></i></button></td></tr>";
 
                 $("#multiLingualList").append(tr);
                 $("#menuTitle").val("");

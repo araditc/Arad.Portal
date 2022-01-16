@@ -88,8 +88,8 @@
                 <div class="card-tools float-end">
                     @if (ViewBag.Permissions["Add"])
                     {
-                        <a asp-action="AddEdit" asp-controller="Content" class="btn btn-success btn-sm bg-gradient">
-                            <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus"></i>&nbsp; @Language.GetString("btn_Add")
+                        <a asp-action="AddEdit" asp-controller="Content" class="btn btn-success bg-gradient">
+                            <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_Add")
                         </a>
                     }
                 </div>
@@ -186,8 +186,7 @@
 @section Scripts{
     <script>
         $(document).ready(function () {
-            debugger;
-            $("#toastAlert").hide();
+           
             if ("@langId" != "") {
                 $("#cmbLangIdFilter").val("@langId");
             }

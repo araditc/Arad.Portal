@@ -200,8 +200,8 @@
                             <i style="position: relative; left: 5px; top: 2px;" class="fa fa-file-excel"></i>&nbsp; @Language.GetString("btn_ExcelImport")
                         </a>
 
-                        <a asp-action="AddEdit" asp-controller="Product" class="btn btn-success btn-sm bg-gradient">
-                            <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus"></i>&nbsp; @Language.GetString("btn_Add")
+                        <a asp-action="AddEdit" asp-controller="Product" class="btn btn-success bg-gradient">
+                            <i  class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_Add")
                         </a>
                     }
                 </div>
@@ -242,9 +242,9 @@
                         @foreach (var item in Model.Items)
                         {
                             var src = item.Images.Any(_ => _.IsMain) ?
-                                item.Images.First(_ => _.IsMain).Url : "/imgs/NoImage.png";
+                                item.Images.First(_ => _.IsMain).Url : "/images/imgs/NoImage.png";
 
-                            var img = $"<img src='{src}' width='75' height='75' />";
+                            var img = $"<img class='smlImg' src='{$"../filemanager/getscaledimage?path={src}&height={75}"}'>";
                             <tr class="ListCell">
                                 <td>@(++i)</td>
                                 <td>@Html.Raw(img)</td>
@@ -266,7 +266,7 @@
                                 <td>
                                     @if (ViewBag.Permissions["Edit"])
                                     {
-                                        <a asp-action="AddEdit" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-info bg-gradient">
+                                        <a asp-action="AddEdit" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-warning bg-gradient">
                                             <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                                         </a>
                                     }
@@ -313,7 +313,7 @@
 </div>
 
 
-@await Component.InvokeAsync("ConfirmDelete", new ConfirmDeleteDTO { Url = Url.Action("Delete") })
+
 @section Scripts{
     @if (dir == "rtl")
     {
@@ -332,7 +332,7 @@
     <script src="~/plugins/select2/js/select2.js"></script>
     <script>
         $(document).ready(function () {
-            $("#toastAlert").hide();
+           
             //icheckboxes
             if ("@dir" == "rtl") {
                 $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
@@ -403,92 +403,22 @@
             });
         });
         function EntityDelete(id) {
-            debugger;
-            Swal.fire({
-                title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-                text: '@Language.GetString("AlertAndMessage_DeleteEntity")',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d51c1c',
-                cancelButtonColor: '#009c09db',
-                confirmButtonText: '@Language.GetString("btn_Confirm")',
-                cancelButtonText: '@Language.GetString("btn_NotConfirm")'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        debugger;
-                $.ajax({
-                    type: 'Get',
-                    url: '@Url.Action("Delete", "Product")' + "/" + id,
-                beforeSend: function() {
-                    AddLoading($("#productListCard"));
-                },
-                    success: function (resultData) {
-                        debugger;
-                        removeLoading($("productListCard"))
-                if (resultData.status === "Success") {
-                Swal.fire({
-                icon: 'success',
-                text: resultData.message,
-                showConfirmButton: false,
-                timer: 3000
-                }).then(() => {
-                window.location.reload();
-                });
-                }
-
-                if (resultData.status === "Error") {
-                Swal.fire({
-                icon: 'error',
-                text: resultData.message,
-                showConfirmButton: false,
-                timer: 1500
-                });
-                }
-                }
-                });
-                }
-                });
+             entityId = id;
+			typeOfRequest = 'Delete';
+			confirmUrl = '@Url.Action("Delete", "Product")' + "/" + id,
+			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Delete")';
+			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_DeletionSureness")';
+			$('#confirmModal').modal('show');
         }
 
         function EntityRestore(id) {
-            debugger;
-                Swal.fire({
-                    title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-                    text: '@Language.GetString("AlertAndMessage_EntityRestoreText")',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d51c1c',
-                    cancelButtonColor: '#009c09db',
-                    confirmButtonText: '@Language.GetString("btn_Confirm")',
-                    cancelButtonText: '@Language.GetString("btn_NotConfirm")'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            type: 'Get',
-                            url:  '@Url.Action("Restore", "Product")' + '?id=' + id,
-                            success: function(resultData) {
-                                if (resultData.status === "success") {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        text: resultData.message,
-                                        showConfirmButton: false,
-                                        timer: 2000
-                                    }).then(() => {
-                                        window.location.reload();
-                                    });
-                                }
-                                if (resultData.status === "error") {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        text: resultData.message,
-                                        showConfirmButton: false,
-                                        timer: 2000
-                                    });
-                                }
-                            }
-                        });
-                    }
-                });
+             entityId = id;
+			typeOfRequest = 'PUT';
+			confirmUrl = '@Url.Action("Restore", "Product")' + '?id=' + id,
+			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
+			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';
+            $('#confirmModal').modal('show');
+           
             }
     </script>
 }

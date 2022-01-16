@@ -104,7 +104,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         }
             
-        [HttpGet]
+        [HttpPut]
         public async Task<IActionResult> Restore(string id)
         {
             JsonResult result;
@@ -205,7 +205,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             : new { Status = "Error", saveResult.Message });
             return result;
         }
-        [HttpGet]
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             Result opResult = await _productSpecGrpRepository.Delete(id, "delete");

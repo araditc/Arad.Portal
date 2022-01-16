@@ -82,7 +82,7 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col-md-4 offset-md-8 col-12">
-                            <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                            <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
                             <input type="submit" id="savebtn" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
                         </div>
                     </div>
@@ -99,8 +99,7 @@
     <script>
 
                 $(document).ready(function () {
-                    debugger;
-                    $("#toastAlert").hide();
+                  
                  $.ajax({
                      url: '@Url.Action("ListPermissions")' +"/"+"@Model.RoleId",
                      type: 'Get',
@@ -145,20 +144,27 @@
 
                             beforeSend: function () {
                                 debugger;
-                                AddLoading($("#addEditPermissionCard"));
+                            /*    AddLoading($("#addEditPermissionCard"));*/
                             },
                             success: function (result) {
                                 debugger;
 
                                 if (result.status === "Success") {
-                                    Swal.fire({
+                                    @*Swal.fire({
                                         icon: 'success',
                                         text: result.message,
                                         showConfirmButton: false,
                                         timer: 3000
                                     }).then(() => {
                                         window.location.href = '@Url.Action("List")';
-                                    });
+                                    });*@
+                                        document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
+                                        document.getElementById('mainToastBody').classList.add('alert-success');
+                                        setTimeout(function()
+                                        {
+                                             window.location.href = '@Url.Action("List")';
+                                        },
+                                        3000);
                                 }else
                                 if (result.status === "ModelError") {
                                     var spanErrorList = $('span[data-val-result]');
@@ -187,7 +193,7 @@
                                 alert(thrownError);
                             },
                             complete: function () {
-                                removeLoading($("#addEditPermissionCard"));
+                                //removeLoading($("#addEditPermissionCard"));
                             }
                         });
                     });

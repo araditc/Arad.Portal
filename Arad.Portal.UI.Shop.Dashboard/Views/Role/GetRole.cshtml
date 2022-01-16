@@ -50,11 +50,11 @@
         <div class="col-md-4 offset-md-2">
             @if (ViewBag.Edit)
             {
-                <button id="btnEdit" class="btn btn-success bg-gradient">
-                    <i class="fa fa-check" aria-hidden="true"></i>@Language.GetString("btn_Edit")
+                <button id="btnEdit" class="btn btn-warning bg-gradient">
+                    <i class="fa fa-edit" aria-hidden="true"></i>@Language.GetString("btn_Edit")
                 </button>
             }
-            <a asp-action="Index" class="btn btn-info bg-gradient">@Language.GetString("btn_Back")</a>
+            <a asp-action="Index" class="btn btn-secondary btnBack bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
         </div>
     </div>
 </div>
@@ -148,12 +148,13 @@
                                         .addClass("has-error");
                                 });
                             } else {
-                                Swal.fire({
+                                @*Swal.fire({
                                     type: 'error',
                                     text: result.message,
                                     confirmButtonText:
                                         '<i class="fa fa-thumbs-up"></i> @alert',
-                                });
+                                });*@
+                                showError(result.message)
                             }
                         }
                     },

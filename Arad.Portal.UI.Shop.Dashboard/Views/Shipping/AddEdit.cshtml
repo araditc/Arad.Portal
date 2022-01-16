@@ -117,8 +117,8 @@
                                     </div>
                                     <div class="form-group col-md-1" style="text-align:center;margin:auto;">
                                         <div style="margin:auto;display:inline-block;">
-                                            <button type="button" class="btn btn-info rounded-circle bg-gradient" onclick="addToList();">
-                                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                                            <button type="button" class="btn btn-success btn-sm bg-gradient" onclick="addToList();">
+                                                <i class="fa fa-plus pt-1"></i>
                                             </button>
                                         </div>
                                     </div>
@@ -155,8 +155,8 @@
                                                             <td>@item.ProviderName</td>
                                                             <td class="d-none">@item.ProviderId</td>
                                                             <td>
-                                                                <button type="button" class="btn btn-danger rounded-circle bg-gradient" onclick="deleteFromList(this);">
-                                                                    <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                                                <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromList(this);">
+                                                                    <i class="fa fa-trash" style="position: relative;padding:3px;"></i>
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -241,7 +241,7 @@
             <div class="card-footer">
                 <div class="row">
                     <div class="col-md-4 offset-md-8 col-12">
-                        <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                        <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
                         <input type="button" id="btnAddShippingSetting" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
                     </div>
                 </div>
@@ -265,11 +265,10 @@
     {
         <script src="~/plugins/iCheck/icheck.min.js"></script>
     }
-    <script>
+<script>
     var currentCurrencySymbol = "";
         $(document).ready(function () {
-            debugger;
-            $("#toastAlert").hide();
+           
             if ("@Model.ShippingSettingId" != "")
             {
                 LoadData();
@@ -361,19 +360,26 @@
                 type: 'Post',
                 beforeSend: function () {
                     debugger;
-                    AddLoading($("#addShippingSettingCard"));
+                    /*AddLoading($("#addShippingSettingCard"));*/
                 },
                 success: function (result) {
                     debugger;
                     if (result.status === "Success") {
-                        Swal.fire({
+                        @*Swal.fire({
                             icon: 'success',
                             text: result.message,
                             showConfirmButton: false,
                             timer: 3000
                         }).then(() => {
                             window.location.href = '@Url.Action("List")';
-                        });
+                        });*@
+                            document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
+                            document.getElementById('mainToastBody').classList.add('alert-success');
+                            setTimeout(function()
+                            {
+                                 window.location.href = '@Url.Action("List")';
+                            },
+                            1500);
                     }else
                     if (result.status === "ModelError") {
                         var spanErrorList = $('span[data-val-result]');
@@ -398,7 +404,7 @@
                     alert(thrownError);
                 },*@
                 complete: function () {
-                    removeLoading($("#addShippingSettingCard"));
+                    //removeLoading($("#addShippingSettingCard"));
                 }
                 });
                 }
@@ -537,8 +543,8 @@
             "</td><td>" + col +
             "</td><td>" + `${$("#fixedExpenseValue").val()} ${currentCurrencySymbol}` +
             "</td><td>" + $("#ProviderId option:selected").text()+"</td><td class='d-none'>" + $("#ProviderId").val() +
-                    "</td><td><button type='button' class='btn btn-sm btn-danger rounded-circle bg-gradient' onclick='deleteFromList(this);'>" +
-                    "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
+                    "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromList(this);'>" +
+                    "<i class='fa fa-trash' ></i></button></td></tr>";
         if ($("#shippingList tr").length == 1 && $("#shippingList tr")[0].children.length == 1) {
             $("#shippingList tr")[0].remove();
                      }
@@ -551,7 +557,7 @@
         var tr = $(sender).parent().parent();
         $(tr).remove();
     }
-    </script>
+</script>
 }
 
 

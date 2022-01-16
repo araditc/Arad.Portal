@@ -42,8 +42,8 @@
                     </div>
                     <div class="form-group col-md-4" style="text-align:center;margin:auto;">
                         <div style="margin:auto;display:inline-block;">
-                            <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="@Language.GetString("btn_Add")" class="btn btn-info rounded-circle bg-gradient" onclick="addToTable();">
-                                <i class="fa fa-plus" style="position: relative;"></i>
+                            <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="@Language.GetString("btn_Add")" class="btn btn-success btn-sm bg-gradient" onclick="addToTable();">
+                                <i class="fa fa-plus pt-1" ></i>
                             </button>
                         </div>
 
@@ -71,8 +71,8 @@
                                         <td style="display:none;">@item.LanguageId</td>
                                         <td>
                                             <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="@Language.GetString("btn_Delete")"
-                                                    class="btn btn-danger rounded-circle bg-gradient" onclick="deleteFromTable(this);">
-                                                <i class="fa fa-minus" style="position: relative;"></i>
+                                                    class="btn btn-danger bg-gradient" onclick="deleteFromTable(this);">
+                                                <i class="fa fa-trash" ></i>
                                             </button>
                                         </td>
                                     </tr>
@@ -86,7 +86,7 @@
             <div class="card-footer">
                 <div class="row">
                     <div class="col-md-4 offset-md-8 col-12">
-                        <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                        <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
                         <input type="button" id="btnAddProductUnit" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
                     </div>
                 </div>
@@ -101,8 +101,6 @@
     <script>
 
         $(document).ready(function () {
-            debugger;
-            $("#toastAlert").hide();
 
          $("#btnAddProductUnit").click(function () {
             debugger;
@@ -123,19 +121,26 @@
                 type: 'Post',
                 beforeSend: function () {
                     debugger;
-                    AddLoading($("#addProductUnitCard"));
+                   /* AddLoading($("#addProductUnitCard"));*/
                 },
                 success: function (result) {
                     debugger;
                     if (result.status === "Success") {
-                        Swal.fire({
+                        @*Swal.fire({
                             icon: 'success',
                             text: result.message,
                             showConfirmButton: false,
                             timer: 3000
                         }).then(() => {
                             window.location.href = '@Url.Action("List")';
-                        });
+                        });*@
+                          document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
+                            document.getElementById('mainToastBody').classList.add('alert-success');
+                            setTimeout(function()
+                            {
+                                 window.location.href = '@Url.Action("List")';
+                            },
+                            3000);
                     }else
                     if (result.status === "ModelError") {
                         var spanErrorList = $('span[data-val-result]');
@@ -160,7 +165,7 @@
                     alert(thrownError);
                 },*@
                 complete: function () {
-                    removeLoading($("#addProductUnitCard"));
+                    //removeLoading($("#addProductUnitCard"));
                 }
                 });
                 }
@@ -208,8 +213,8 @@
                     "</td><td>" + $('#languageId option:selected').text() +
                     "</td><td style='display:none;'>" + $("#languageId").val() +
                     "</td><td><button type='button' data-bs-toggle='tooltip' data-bs-placement='top' title='@Language.GetString("btn_Delete")' " +
-                    " class='btn btn-sm btn-danger rounded-circle bg-gradient' onclick='deleteFromTable(this);'>" +
-                    "<i class='fa fa-minus' style='position: relative;'></i></button></td></tr>";
+                    " class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromTable(this);'>" +
+                    "<i class='fa fa-trash' ></i></button></td></tr>";
 
                 $("#multiLingualList").append(tr);
                 $("#unitName").val("");

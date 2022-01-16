@@ -41,8 +41,8 @@
                 <div class="card-tools float-end">
                     @if (ViewBag.Permissions["Add"])
                     {
-                        <a asp-action="AddEdit" asp-controller="Shipping" class="btn btn-success btn-sm bg-gradient">
-                            <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus"></i>&nbsp; @Language.GetString("btn_Add")
+                        <a asp-action="AddEdit" asp-controller="Shipping" class="btn btn-success bg-gradient">
+                            <i  class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_Add")
                         </a>
                     }
                 </div>
@@ -128,7 +128,7 @@
     {
         <script src="~/plugins/iCheck/icheck.min.js"></script>
     }
-    <script>
+<script>
         $(document).ready(function () {
             debugger;
 
@@ -137,51 +137,13 @@
         });
         function EntityDelete(id) {
             debugger;
-        Swal.fire({
-            title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-            text: '@Language.GetString("AlertAndMessage_DeleteEntity")',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d51c1c',
-            cancelButtonColor: '#009c09db',
-            confirmButtonText: '@Language.GetString("btn_Confirm")',
-            cancelButtonText: '@Language.GetString("btn_NotConfirm")'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    debugger;
-            $.ajax({
-                type: 'Get',
-                url: '@Url.Action("Delete", "Shipping")' + "/" + id,
-            beforeSend: function() {
-                AddLoading($("#shippingSettingListCard"));
-            },
-                success: function (resultData) {
-                    debugger;
-                    removeLoading($("shippingSettingListCard"))
-            if (resultData.status === "Success") {
-            Swal.fire({
-            icon: 'success',
-            text: resultData.message,
-            showConfirmButton: false,
-            timer: 3000
-            }).then(() => {
-            window.location.reload();
-            });
-            }
-
-            if (resultData.status === "Error") {
-            Swal.fire({
-            icon: 'error',
-            text: resultData.message,
-            showConfirmButton: false,
-            timer: 1500
-            });
-            }
-            }
-            });
-            }
-            });
+             entityId = id;
+			typeOfRequest = 'Delete';
+			confirmUrl = '@Url.Action("Delete", "Shipping")' + "/" + id,
+			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Delete")';
+			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_DeletionSureness")';
+			$('#confirmModal').modal('show');
         }
-    </script>
+</script>
 }
 

@@ -75,8 +75,8 @@
                 <div class="card-tools float-end">
                     @if (ViewBag.Permissions["Add"])
                     {
-                        <a asp-action="AddEdit" asp-controller="Domain" class="btn btn-success btn-sm bg-gradient">
-                            <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus"></i>&nbsp; @Language.GetString("btn_Add")
+                        <a asp-action="AddEdit" asp-controller="Domain" class="btn btn-success bg-gradient">
+                            <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_Add")
                         </a>
                     }
                 </div>
@@ -168,12 +168,7 @@
         <script src="~/plugins/iCheck/icheck.min.js"></script>
     }
 <script>
-        $(document).ready(function () {
-            debugger;
-            $("#toastAlert").hide();
-
-
-        });
+       
         function EntityDelete(id) {
             debugger;
              entityId = id;

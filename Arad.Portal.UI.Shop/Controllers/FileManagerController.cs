@@ -31,7 +31,7 @@ namespace Arad.Portal.UI.Shop.Controllers
 
             if (!System.IO.File.Exists(finalPath))
             {
-                finalPath = "/imgs/NoImage.png";
+                finalPath = "/images/imgs/NoImage.png";
             }
             var fileName = Path.GetFileName(finalPath);
             var mimeType = ImageFunctions.GetMIMEType(fileName);
@@ -47,7 +47,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             var finalPath = Path.Combine(localStaticFileStorage, path).Replace("\\", "/");
             if (!System.IO.File.Exists(finalPath))
             {
-                finalPath = "/imgs/NoImage.png";
+                finalPath = "/images/imgs/NoImage.png";
             }
             var fileName = Path.GetFileName(finalPath);
             var mimeType = ImageFunctions.GetMIMEType(fileName);

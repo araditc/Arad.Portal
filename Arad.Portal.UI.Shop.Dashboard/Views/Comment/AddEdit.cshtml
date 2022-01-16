@@ -19,16 +19,6 @@
         .text-danger {
             font-size: 12px;
         }
-
-        .rounded-circle {
-            width: 30px;
-            height: 30px;
-            padding: 6px 0px;
-            border-radius: 15px;
-            text-align: center;
-            font-size: 12px;
-            line-height: 1.42857;
-        }
     </style>
 }
 
@@ -112,7 +102,6 @@
 
         $(document).ready(function () {
             debugger;
-            $("#toastAlert").hide();
             if ("@dir" == "rtl") {
             $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
             checkboxClass: 'icheckbox_minimal-blue',
@@ -134,7 +123,7 @@
                     contentType: false,
                     beforeSend: function () {
                         debugger;
-                        AddLoading($("#addEditCommentCardBody"));
+                       /* AddLoading($("#addEditCommentCardBody"));*/
                     },
                     success: function (result) {
                     debugger;
@@ -159,7 +148,7 @@
                             }
                     },
                     complete: function () {
-                        removeLoading($("#addEditCommentCardBody"));
+                        /*removeLoading($("#addEditCommentCardBody"));*/
                     }
                 });
 

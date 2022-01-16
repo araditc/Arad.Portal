@@ -38,5 +38,21 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             byte[] fileContent = System.IO.File.ReadAllBytes(finalPath);
             return File(fileContent, mimeType);
         }
+
+        public IActionResult GetScaledImage(string path, int height)
+        {
+            var localStaticFileStorage = _configuration["LocalStaticFileStorage"];
+            if (path.StartsWith("/"))
+                path = path[1..];
+            var finalPath = Path.Combine(localStaticFileStorage, path).Replace("\\", "/");
+            if (!System.IO.File.Exists(finalPath))
+            {
+                finalPath = "/images/imgs/NoImage.png";
+            }
+            var fileName = Path.GetFileName(finalPath);
+            var mimeType = ImageFunctions.GetMIMEType(fileName);
+            byte[] fileContent = ImageFunctions.GetResizedImage(finalPath, height);
+            return File(fileContent, mimeType);
+        }
     }
 }

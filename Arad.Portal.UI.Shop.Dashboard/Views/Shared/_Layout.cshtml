@@ -184,25 +184,21 @@
 
 <script>
 
-    //    $(document).ready(function () {
-    //        debugger;
-    //    $("#deleteToast").hide();
-    //    $("#notificationToast").hide();
-    //});
+        $(document).ready(function () {
+          /*  $(".spinner-border").hide();*/
+       
+    });
     var entityId;
     var confirmUrl;
     var typeOfRequest;
     var bsAlert = new bootstrap.Toast(document.getElementById('mainToast'));
 
-        adjustSidebar();
-    function pageLoad() {
-        debugger;
-
-        }
+    adjustSidebar();
+    
     window.addEventListener('load',
         () =>
         {
-            debugger;
+          
             $("#loading").removeClass('is-active');
             $("#deleteToast").hide();
             $("#toastPanel").hide();
@@ -307,7 +303,7 @@
                 type: "GET",
                 url: '/Account/changeLang?langId=' + lang,
                 success: function () {
-                    debugger;
+                
                     window.location.reload();
                 }
             });
@@ -332,29 +328,33 @@
 
     function onClickYes()
     {
+        debugger;
         $('#confirmModal').modal('hide');
         $("#toastPanel").show();
 
         $.ajax({
             type: typeOfRequest,
             url: confirmUrl,
-            success :function(resultData) {
-                if (resultData.status === "success") {
-                    debugger;
-                        document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
+            success: function (resultData) {
+                debugger;
+                if (resultData.status.toLowerCase() === "success") {
+                   
+                       $('#mainToastBody').html('<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessage_OperationDoneSuccessfully")');
 
-                        if ("data" in resultData)
-                        {
-                            document.getElementById('mainToastBody').innerHTML += `<br/>${resultData.message}`;
-                        }
-                        document.getElementById('mainToastBody').classList.add('alert-success');
-                        setTimeout(function()
-                        {
-                            window.location.reload();
-                        },
-                        1500);
+                        //if ("data" in resultData)
+                        //{
+                        //    document.getElementById('mainToastBody').innerHTML += `<br/>${resultData.message}`;
+                    //}
+                    $('#mainToastBody').addClass('alert-success');
+                    $("#toastPanel").show();
+                    bsAlert.show();
+                    setTimeout(function()
+                    {
+                        window.location.reload();
+                    },
+                    3000);
                 }
-                if (resultData.status === "error") {
+                if (resultData.status.toLowerCase() === "error") {
                     showError(resultData.message);
                 }
             }

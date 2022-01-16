@@ -203,8 +203,8 @@
                 <div class="card-tools float-end">
                     @if (ViewBag.Permissions["Add"])
                     {
-                        <a asp-action="AddEdit" asp-controller="Promotion" class="btn btn-success btn-sm bg-gradient">
-                            <i style="position: relative;left: 5px;top: 2px;" class="fa fa-plus"></i>@Language.GetString("btn_Add")
+                        <a asp-action="AddEdit" asp-controller="Promotion" class="btn btn-success bg-gradient">
+                            <i  class="fa fa-plus pt-1"></i>@Language.GetString("btn_Add")
                         </a>
                     }
                 </div>
@@ -313,10 +313,9 @@
         <script src="~/js/moment.min.js"></script>
         <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
     }
-    <script type="text/javascript">
+<script type="text/javascript">
        $(document).ready(function () {
-           debugger;
-           $("#toastAlert").hide();
+          
            @*$("#promotionTypeId").val('@promotionTypeId');*@
            @*$("#discountTypeId").val('@discountTypeId');*@
            $("#title").val('@title');
@@ -542,92 +541,24 @@
         return vendorSelect;
     }
     function EntityDelete(id) {
-            debugger;
-        Swal.fire({
-            title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-            text: '@Language.GetString("AlertAndMessage_DeletePromotion")',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d51c1c',
-            cancelButtonColor: '#009c09db',
-            confirmButtonText: '@Language.GetString("btn_Confirm")',
-            cancelButtonText: '@Language.GetString("btn_NotConfirm")'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    debugger;
-            $.ajax({
-                type: 'Get',
-                url: '@Url.Action("Delete", "Promotion")' + "/" + id,
-            beforeSend: function() {
-                AddLoading($("#PromotionListCard"));
-            },
-            success: function (resultData) {
-                removeLoading($("PromotionListCard"))
-            if (resultData.status === "Success") {
-            Swal.fire({
-            icon: 'success',
-            text: resultData.message,
-            showConfirmButton: false,
-            timer: 3000
-            }).then(() => {
-            window.location.reload();
-            });
-            }
-
-            if (resultData.status === "Error") {
-            Swal.fire({
-            icon: 'error',
-            text: resultData.message,
-            showConfirmButton: false,
-            timer: 2000
-            });
-            }
-            }
-            });
-            }
-            });
+        debugger;
+          entityId = id;
+			typeOfRequest = 'Delete';
+			confirmUrl = '@Url.Action("Delete", "Promotion")' + "/" + id,
+			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Delete")';
+			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_DeletionSureness")';
+			$('#confirmModal').modal('show');
         }
 
     function EntityRestore(id) {
-            debugger;
-                Swal.fire({
-                    title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-                    text: '@Language.GetString("AlertAndMessage_EntityRestoreText")',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d51c1c',
-                    cancelButtonColor: '#009c09db',
-                    confirmButtonText: '@Language.GetString("btn_Confirm")',
-                    cancelButtonText: '@Language.GetString("btn_NotConfirm")'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            type: 'Get',
-                            url:  '@Url.Action("Restore", "Promotion")' + '?id=' + id,
-                            success: function(resultData) {
-                                if (resultData.status === "success") {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        text: resultData.message,
-                                        showConfirmButton: false,
-                                        timer: 2000
-                                    }).then(() => {
-                                        window.location.reload();
-                                    });
-                                }
-                                if (resultData.status === "error") {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        text: resultData.message,
-                                        showConfirmButton: false,
-                                        timer: 2000
-                                    });
-                                }
-                            }
-                        });
-                    }
-                });
+        debugger;
+          entityId = id;
+			typeOfRequest = 'PUT';
+			confirmUrl = '@Url.Action("Restore", "Promotion")' + '?id=' + id,
+			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
+			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';
+			$('#confirmModal').modal('show');
         }
-    </script>
+</script>
 }
 

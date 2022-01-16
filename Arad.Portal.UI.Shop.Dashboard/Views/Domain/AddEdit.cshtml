@@ -25,17 +25,6 @@
             font-size: 12px;
         }
 
-        .rounded-circle {
-            width: 30px;
-            height: 30px;
-            padding: 6px 0px;
-            border-radius: 15px;
-            text-align: center;
-            font-size: 12px;
-            line-height: 1.42857;
-        }
-
-
         .ltr {
             direction: ltr;
         }
@@ -187,8 +176,8 @@
                                     </div>
                                     <div class="form-group col-md-1" style="text-align:center;margin:auto;">
                                         <div style="margin:auto;display:inline-block;">
-                                            <button type="button" class="btn btn-info rounded-circle bg-gradient" onclick="addPriceToList();">
-                                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                                            <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addPriceToList();">
+                                                <i class="fa fa-plus pt-1" ></i>
                                             </button>
                                         </div>
                                     </div>
@@ -225,8 +214,8 @@
                                                             <td class="ltr">@price.EndDate</td>
                                                             <td>@(price.IsActive ? Language.GetString("Active") : Language.GetString("InActive")) </td>
                                                             <td>
-                                                                <button type="button" class="btn btn-danger rounded-circle bg-gradient" onclick="deleteFromPriceList(this);">
-                                                                    <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                                                <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromPriceList(this);">
+                                                                    <i class="fa fa-trash" ></i>
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -267,8 +256,8 @@
                                     <div class="form-group col-md-2" style="text-align:center;margin:auto;">
 
                                         <div id="btnAddSection" style="margin:auto;display:inline-block;">
-                                            <button type="button" id="addProviderParam" class="btn btn-primary bg-gradient d-none">
-                                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                                            <button type="button" id="addProviderParam" class="btn btn-primary bg-gradient d-none btn-sm">
+                                                <i class="fa fa-plus pt-1" ></i>
                                                 @Language.GetString("btn_Add")
                                             </button>
                                         </div>
@@ -298,8 +287,8 @@
                                                         <td>@item.PspType</td>
                                                         <td>@item.DomainValueProvider</td>
                                                         <td>
-                                                            <button type="button" class="btn btn-danger bg-gradient rounded-circle" onclick="deleteFromTable(this);">
-                                                                <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                                            <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromTable(this);">
+                                                                <i class="fa fa-trash" ></i>
                                                             </button>
                                                         </td>
                                                     </tr>
@@ -319,7 +308,7 @@
             <div class="card-footer">
                 <div class="row">
                     <div class="col-md-4 offset-md-8 col-12">
-                        <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                        <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
                         <input type="button" id="btnAddDomain" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
                     </div>
                 </div>
@@ -346,10 +335,10 @@
     }
 <script>
         var active = '@Language.GetString("Active")';
-        var inActive = '@Language.GetString("InActive")';
+    var inActive = '@Language.GetString("InActive")';
+    var globalSender;
         $(document).ready(function () {
-            debugger;
-            $("#toastAlert").hide();
+           
             $("#DefaultLanguageId").val('@ViewBag.LangId');
 
              //icheckboxes radiobuttons
@@ -431,7 +420,7 @@
                 });
 
                 data = `{ ${data.substring(0, data.length - 2)} }`;
-                var btn = "<button type='button' class='btn btn-danger rounded-circle bg-gradient' onclick='deleteFromTable(this);'><i class='fa fa-minus' style='position: relative;padding:3px;'></i></botton>";
+                var btn = "<button type='button' class='btn btn-danger bg-gradient' onclick='deleteFromTable(this);'><i class='fa fa-trash' ></i></botton>";
                 var tr = `<tr style='text-align:center;'><td>${$("#providerId option:selected").text()}</td><td>${data}</td><td>${btn}</td></tr>`;
 
                 $("#gatewayInfoes").append(tr);
@@ -476,7 +465,7 @@
                             type: 'Post',
                             beforeSend: function () {
                                 debugger;
-                                AddLoading($("#addDomainCard"));
+                              /*  AddLoading($("#addDomainCard"));*/
                             },
                             success: function (result) {
                                 debugger;
@@ -512,7 +501,7 @@
                                 alert(thrownError);
                             },*@
                             complete: function () {
-                                removeLoading($("#addDomainCard"));
+                                /*removeLoading($("#addDomainCard"));*/
                             }
                     });
                 }
@@ -577,9 +566,9 @@
             });
             return obj;
         }
-        function onConfirmDialog() {
-            $(this).parent().find("td:eq(5)").text(inActive);
-            appendToPriceList(tr);
+    function onConfirmDialog() {
+        $(globalSender).parent().find("td:eq(5)").text(inActive);
+         appendToPriceList(tr);
         }
        function addPriceToList() {
         debugger;
@@ -623,9 +612,11 @@
                                 appendToPriceList(tr);
                             }
                         });*@
+                        globalSender = this;
                         document.getElementById('confirmLabel').innerHTML = '@Language.GetString("AlertAndMessage_AreYouSure")';
 			            document.getElementById('confirmBody').innerHTML = '@Language.GetString("AlertAndMessage_PricePerCurrencyUniqueness")';
-			            $('#showModal').modal('show');
+                        $('#showModal').modal('show');
+                       
                     }
                 });
             } else {
@@ -640,8 +631,8 @@
                     "</td><td class='ltr'>" + $('#priceValue').val() +
                     "</td><td class='ltr'>" + $("#dtpStartDate").val() +
                     "</td><td></td><td>" + active +
-                    "</td><td><button type='button' class='btn btn-sm btn-danger rounded-circle bg-gradient' onclick='deleteFromPriceList(this);'>" +
-                    "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
+                    "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromPriceList(this);'>" +
+                    "<i class='fa fa-trash' ></i></button></td></tr>";
                 if ($("#priceList tr").length == 1 && $("#priceList tr")[0].children.length == 1) {
                        $("#priceList tr")[0].remove();
                      }

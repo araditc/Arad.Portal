@@ -64,8 +64,6 @@
     </style>
 
     <link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
-    <link href="~/plugins/select2/css/select2.css" rel="stylesheet" />
-    <link href="~/plugins/select2-bootstrap4-theme/select2-bootstrap4.css" rel="stylesheet" />
     <link href="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.css" rel="stylesheet" />
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
@@ -73,6 +71,29 @@
     }
 }
 <h4>@Language.GetString("Menu_Products")</h4>
+
+<div aria-hidden="true" aria-labelledby="confirmLabel" class="modal fade" id="showModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="confirmLabel">
+                </h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                </button>
+            </div>
+            <div class="modal-body" id="confirmBody">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="onConfirmDialog();" type="button">
+                    @Language.GetString("btn_Confirm")
+                </button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                    @Language.GetString("btn_NotConfirm")
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="uploadModal" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
@@ -153,24 +174,32 @@
                         <input type="number" class="form-control" asp-for="@Model.MinimumCount" value="@Model.MinimumCount" min="0" />
 
                     </div>
-                    <div class="form-group col-md-3" style="text-align:center;margin:auto;">
-                        @if (dir == "rtl")
-                        {
-                            <label style="font-weight:700;">
-                                <input type="checkbox" id="chbNotifyInventory" class="minimal">
+                    <div class="form-group col-12 col-md-3 pt-4 pb-2">
+                        <div class="form-check m-auto d-inline-block pt-3">
+                            <input class="form-check-input" type="checkbox" value="@Model.ShowInLackOfInventory" asp-for="@Model.ShowInLackOfInventory" min="0">
+                            <label class="form-check-label" for="IsVendor">
                                 @Language.GetString("ShowInLackOfInventory")
                             </label>
-                        }
-                        else
-                        {
-                            <div class="icheck-primary d-inline">
-                                <input type="checkbox" id="chbNotifyInventory">
-                                <label for="chbNotifyInventory">
-                                    @Language.GetString("ShowInLackOfInventory")
-                                </label>
-                            </div>
-                        }
+                        </div>
                     </div>
+                    @*<div class="form-group col-md-3" style="text-align:center;margin:auto;">
+            @if (dir == "rtl")
+            {
+                <label style="font-weight:700;">
+                    <input type="checkbox" id="chbNotifyInventory" class="minimal">
+                    @Language.GetString("ShowInLackOfInventory")
+                </label>
+            }
+            else
+            {
+                <div class="icheck-primary d-inline">
+                    <input type="checkbox" id="chbNotifyInventory">
+                    <label for="chbNotifyInventory">
+                        @Language.GetString("ShowInLackOfInventory")
+                    </label>
+                </div>
+            }
+        </div>*@
                     <div class="form-group col-md-3">
                         @if (ViewBag.Vendors != "-1")
                         {
@@ -180,7 +209,15 @@
                             <span data-val-result="sellerUserId" class="text-danger"></span>
                         }
                     </div>
-                    <div class="form-group col-md-3" style="text-align:center;margin:auto;">
+                    <div class="form-group col-12 col-md-3 pt-4 pb-2">
+                        <div class="form-check m-auto d-inline-block pt-3">
+                            <input class="form-check-input" type="checkbox" value="@Model.IsPublishedOnMainDomain" asp-for="@Model.IsPublishedOnMainDomain" min="0">
+                            <label class="form-check-label" for="IsVendor">
+                                @Language.GetString("AlertAndMessage_IsPublishedOnMainDomain")
+                            </label>
+                        </div>
+                    </div>
+                    @*<div class="form-group col-md-3" style="text-align:center;margin:auto;">
                         @if (dir == "rtl")
                         {
                             <label>
@@ -197,7 +234,7 @@
                                 </label>
                             </div>
                         }
-                    </div>
+                    </div>*@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-3">
@@ -211,7 +248,6 @@
                         </select>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -246,8 +282,8 @@
                                     </div>
                                     <div class="form-group col-md-1" style="text-align:center;margin:auto;">
                                         <div style="margin:auto;display:inline-block;">
-                                            <button type="button" class="btn btn-info rounded-circle bg-gradient" onclick="addSpecToList();">
-                                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                                            <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addSpecToList();">
+                                                <i class="fa fa-plus pt-1" ></i>
                                             </button>
                                         </div>
                                     </div>
@@ -286,8 +322,8 @@
                                                             <td style="display:none;">@item.SpecificationId</td>
                                                             <td>@item.Values</td>
                                                             <td>
-                                                                <button type="button" class="btn btn-danger rounded-circle bg-gradient" onclick="deleteFromSpecList(this)">
-                                                                    <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                                                <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromSpecList(this)">
+                                                                    <i class="fa fa-trash" ></i>
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -369,8 +405,8 @@
                                     </div>
                                     <div class="form-group col-md-3" style="text-align:center;margin:auto;">
                                         <div style="margin:auto;display:inline-block;">
-                                            <button type="button" class="btn btn-info rounded-circle bg-gradient" onclick="addToTable();">
-                                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                                            <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addToTable();">
+                                                <i class="fa fa-plus pt-1" ></i>
                                             </button>
                                         </div>
                                     </div>
@@ -408,8 +444,8 @@
                                                             <td>@item.Description</td>
                                                             <td>@item.UrlFriend</td>
                                                             <td>
-                                                                <button type="button" class="btn btn-danger rounded-circle btnDel bg-gradient" cnt="@item.Tag" onclick="deleteFromTable(this);">
-                                                                    <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                                                <button type="button" class="btn btn-danger btnDel bg-gradient" cnt="@item.Tag" onclick="deleteFromTable(this);">
+                                                                    <i class="fa fa-trash" ></i>
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -475,8 +511,8 @@
                                     </div>
                                     <div class="form-group col-md-1" style="text-align:center;margin:auto;">
                                         <div style="margin:auto;display:inline-block;">
-                                            <button type="button" class="btn btn-info rounded-circle bg-gradient" onclick="addPriceToList();">
-                                                <i class="fa fa-plus" style="position: relative;padding: 3px;"></i>
+                                            <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addPriceToList();">
+                                                <i class="fa fa-plus pt-1" ></i>
                                             </button>
                                         </div>
                                     </div>
@@ -513,8 +549,8 @@
                                                             <td>@price.EndDate</td>
                                                             <td>@(price.IsActive ? Language.GetString("Active") : Language.GetString("InActive")) </td>
                                                             <td>
-                                                                <button type="button" class="btn btn-danger rounded-circle bg-gradient" onclick="deleteFromPriceList(this);">
-                                                                    <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                                                <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromPriceList(this);">
+                                                                    <i class="fa fa-trash" ></i>
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -586,8 +622,8 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                            <button type="button" class="btn btn-danger rounded-circle bg-gradient" imgId="@pic.ImageId" onclick="deleteFromImageList(this);">
-                                                                <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                                            <button type="button" class="btn btn-danger bg-gradient" imgId="@pic.ImageId" onclick="deleteFromImageList(this);">
+                                                                <i class="fa fa-trash" ></i>
                                                             </button>
                                                         </td>
                                                     </tr>
@@ -607,7 +643,7 @@
             <div class="card-footer">
                 <div class="row">
                     <div class="col-md-4 offset-md-8 col-12">
-                        <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                        <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
                         <input type="button" id="btnAddProduct" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
                     </div>
                 </div>
@@ -635,6 +671,7 @@ else
 <script>
     var fileName;
     var fileContent;
+    var globalSender;
     var cropper;
     var currentFileSize;
     var currentFileName;
@@ -645,8 +682,7 @@ else
     var active = '@Language.GetString("Active")';
     var inActive = '@Language.GetString("InActive")';
     $(document).ready(function () {
-        $("#toastAlert").hide();
-
+       
         var urlFriend = "product/" + '@Model.ProductCode';
         $("#urlFriend").val(urlFriend);
         var multiLingualList = @Json.Serialize(@Model.MultiLingualProperties);
@@ -688,13 +724,7 @@ else
         //});
 
 
-         //icheckboxes radiobuttons
-            if ("@dir" == "rtl") {
-                $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-                    checkboxClass: 'icheckbox_minimal-blue',
-                    radioClass: 'iradio_minimal-blue'
-                });
-            }
+        
          //datetimepicker
             if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
             {
@@ -707,7 +737,7 @@ else
                 });
             }
        //multiselect
-        $("#GroupIds").select2({ dir: '@dir', theme: 'bootstrap4' });
+        @*$("#GroupIds").select2({ dir: '@dir', theme: 'bootstrap4' });
         $("#specValues").select2({ dir: '@dir', theme: 'bootstrap4' });
         if ('@Model.Images.Any()' == 'True') {
 
@@ -723,7 +753,7 @@ else
 
                 images.push(model);
             }
-        }
+        }*@
 
         $("#languageId").val('@ViewBag.LangId');
         $("#multiLangId").val('@ViewBag.LangId');
@@ -780,19 +810,26 @@ else
                         type: 'Post',
                         dataType:'json',
                         beforeSend: function () {
-                            AddLoading($("#addProductCard"));
+                           /* AddLoading($("#addProductCard"));*/
                         },
                         success: function (result) {
 
                             if (result.status === "Success") {
-                                Swal.fire({
+                                @*Swal.fire({
                                     icon: 'success',
                                     text: result.message,
                                     showConfirmButton: false,
                                     timer: 3000
                                 }).then(() => {
                                     window.location.href = '@Url.Action("List")';
-                                });
+                                });*@
+                                document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
+                                document.getElementById('mainToastBody').classList.add('alert-success');
+                                setTimeout(function()
+                                {
+                                     window.location.href = '@Url.Action("List")';
+                                },
+                                3000);
                             }else
                             if (result.status === "ModelError") {
                                 var spanErrorList = $('span[data-val-result]');
@@ -817,7 +854,7 @@ else
                             alert(thrownError);
                         },
                         complete: function () {
-                            removeLoading($("#addProductCard"));
+                           /* removeLoading($("#addProductCard"));*/
                         }
                 });
                 }
@@ -837,13 +874,13 @@ else
                     "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
                     "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
                     "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
-                    "'/></td><td style='vertical-align:middle;'><input type='radio'  name='isMainImage' class='minimal rdbIsMain'></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger rounded-circle bg-gradient' onclick='deleteFromImageList(this);'><i class='fa fa-minus' style='position:relative;padding: 3px;'></i></button></td></tr>";
+                    "'/></td><td style='vertical-align:middle;'><input type='radio'  name='isMainImage' class='minimal rdbIsMain'></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' onclick='deleteFromImageList(this);'><i class='fa fa-trash'></i></button></td></tr>";
             } else {
                  tr = "<tr><td><img imgId='img_" + counter + "' src='" + model.Content +
                     "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
                     "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
                     "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
-                    "'/></td><td style='vertical-align:middle;'><div class='icheck-primary d-inline'><input type='radio'  name='isMainImage' class='rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger rounded-circle bg-gradient' onclick='deleteFromImageList(this);'><i class='fa fa-minus' style='position:relative;padding: 3px;'></i></button></td></tr>";
+                    "'/></td><td style='vertical-align:middle;'><div class='icheck-primary d-inline'><input type='radio'  name='isMainImage' class='rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' onclick='deleteFromImageList(this);'><i class='fa fa-trash' ></i></button></td></tr>";
 
             }
             $("#imageList").append(tr);
@@ -952,7 +989,10 @@ else
         });
     });
 
-
+    function onConfirmDialog() {
+        $(globalSender).parent().find("td:eq(5)").text(inActive);
+        appendToPriceList(tr);
+    }
 
     function deleteFromImageList(sender) {
 
@@ -990,7 +1030,7 @@ else
                     if ($(this).text() == currencyId && $(this).parent().find("td:eq(4)").text() == "" &&
                         $(this).parent().find("td:eq(5)").text() == active) {
                         /*confirm = false;*/
-                        Swal.fire({
+                        @*Swal.fire({
                             title: '@Language.GetString("AlertAndMessage_AreYouSure")',
                             text: '@Language.GetString("AlertAndMessage_PricePerCurrencyUniqueness")',
                             icon: 'warning',
@@ -1001,12 +1041,15 @@ else
                             cancelButtonText: '@Language.GetString("btn_NotConfirm")'
                         }).then((result) => {
                             if (result.isConfirmed) {
-
-                                /*confirm = true;*/
                                 $(this).parent().find("td:eq(5)").text(inActive);
                                 appendToPriceList(tr);
                             }
-                        });
+                        });*@
+                        globalSender = this;
+                        document.getElementById('confirmLabel').innerHTML = '@Language.GetString("AlertAndMessage_AreYouSure")';
+			            document.getElementById('confirmBody').innerHTML = '@Language.GetString("AlertAndMessage_PricePerCurrencyUniqueness")';
+                        $('#showModal').modal('show');
+                       
                     }
                 });
             } else {
@@ -1020,8 +1063,8 @@ else
                     "</td><td>" + $('#priceValue').val() +
                     "</td><td style='direction:ltr;'>" + $("#dtpStartDate").val() +
                     "</td><td></td><td>" + active +
-                    "</td><td><button type='button' class='btn btn-sm btn-danger rounded-circle bg-gradient' onclick='deleteFromPriceList(this);'>" +
-                    "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
+                    "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromPriceList(this);'>" +
+                    "<i class='fa fa-trash' ></i></button></td></tr>";
                 if ($("#priceList tr").length == 1 && $("#priceList tr")[0].children.length == 1) {
                        $("#priceList tr")[0].remove();
                      }
@@ -1077,8 +1120,8 @@ else
                 "</td><td>" + $("#specificationId option:selected").text() +
                 "</td><td style='display:none;'>" + $("#specificationId").val() +
                 "</td><td>" + vals
-                "</td><td><button type='button' class='btn btn-sm btn-danger rounded-circle bg-gradient' onclick='deleteFromSpecList(this)'>" +
-                "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
+                "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromSpecList(this)'>" +
+                "<i class='fa fa-trash'></i></button></td></tr>";
 
 
             if ($("#specificationList tr").length == 1 && $("#specificationList tr")[0].children.length == 1) {
@@ -1239,8 +1282,8 @@ else
                 "</td><td>" + $("#seoDescription").val() +
                 "</td><td>" + $("#description").val() +
                 "</td><td>" + $("#urlFriend").val() +
-                "</td><td><button type='button' class='btn btn-sm btn-danger rounded-circle bg-gradient' cnt='" + obj.Tag + "' onclick='deleteFromTable(this);'>" +
-                "<i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
+                "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' cnt='" + obj.Tag + "' onclick='deleteFromTable(this);'>" +
+                "<i class='fa fa-trash' ></i></button></td></tr>";
 
             if ($("#multiLingualList tr").length == 1 && $("#multiLingualList tr")[0].children.length == 1) {
                 $("#multiLingualList tr")[0].remove();
@@ -1336,26 +1379,26 @@ else
                         setTimeout(initCropper, 500);
                     } else {
 
-                        Swal.fire({
+                        @*Swal.fire({
                             position: 'top-end',
                             icon: 'error',
                             title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
                             showConfirmButton: false,
                             timer: 1500
-                        });
-
+                        });*@
+                        showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
                         document.getElementById("image").value = "";
                         $("#cropped_result").remove();
                     }
                 } else {
-                    Swal.fire({
+                    @*Swal.fire({
                         position: 'top-end',
                         icon: 'error',
                         title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
                         showConfirmButton: false,
                         timer: 1500
-                    });
-
+                    });*@
+                    showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
                     document.getElementById("image").value = "";
                     $("#cropped_result").remove();
                 }
@@ -1363,12 +1406,13 @@ else
         }
         else
         {
-            Swal.fire({
+            @*Swal.fire({
                 icon: 'error',
                 title: '@Language.GetString("AlertAndMessage_InvalidFileSize")',
                 showConfirmButton: false,
                 timer: 1500
-            });
+            });*@
+            showError('@Language.GetString("AlertAndMessage_InvalidFileSize")');
             document.getElementById("image").value = "";
             $("#cropped_result").remove();
         }

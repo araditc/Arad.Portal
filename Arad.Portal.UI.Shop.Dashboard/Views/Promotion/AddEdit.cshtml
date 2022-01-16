@@ -132,8 +132,8 @@
                                             <td>@item.AffectedProductName</td>
                                             <td style="display:none;">@item.AffectedProductId</td>
                                             <td>
-                                                <button type="button" class="btn btn-danger rounded-circle bg-gradient" onclick="deleteFromList(this);">
-                                                    <i class="fa fa-minus" style="position: relative;padding:3px;"></i>
+                                                <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromList(this);">
+                                                    <i class="fa fa-trash" ></i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -235,7 +235,7 @@
             <div class="card-footer">
                 <div class="row">
                     <div class="col-md-4 offset-md-8 col-12">
-                        <a asp-action="List" class="btn btn-primary bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                        <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
                         <input type="button" id="btnAddPromotion" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
                     </div>
                 </div>
@@ -262,8 +262,7 @@
     <script>
 
   $(document).ready(function () {
-      debugger;
-      $("#toastAlert").hide();
+     
        //datetimepicker
             if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
             {
@@ -453,8 +452,8 @@
                           $("#firstRow").append(productSection);
                           $("#productId").selectpicker();
                           $("#firstRow").append("<div class='col-md-1' style='margin-top:1%;' id='addButtonSection'><div style='margin:auto;display:inline-block;'>" +
-                              "<button type='button' class='btn btn-info rounded-circle bg-gradient' onclick='addProductToPromotion()'>" +
-                              "<i class='fa fa-plus' style='position: relative;padding: 3px;'></i></botton></div></div>");
+                              "<button type='button' class='btn btn-success btn-sm bg-gradient' onclick='addProductToPromotion()'>" +
+                              "<i class='fa fa-plus pt-1' ></i></botton></div></div>");
                          /* $("#addButtonSection").css("display", "block");*/
                           }
                   },
@@ -550,20 +549,27 @@
                 type: 'Post',
                 beforeSend: function () {
                     debugger;
-                    AddLoading($("#addPromotionCard"));
+                    /*AddLoading($("#addPromotionCard"));*/
                 },
                 success: function (result) {
                     debugger;
-                    AddLoading($("#addPromotionCard"));
+                   /* AddLoading($("#addPromotionCard"));*/
                     if (result.status === "Success") {
-                        Swal.fire({
+                        @*Swal.fire({
                             icon: 'success',
                             text: result.message,
                             showConfirmButton: false,
                             timer: 3000
                         }).then(() => {
                             window.location.href = '@Url.Action("List")';
-                        });
+                        });*@
+                          document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
+                            document.getElementById('mainToastBody').classList.add('alert-success');
+                            setTimeout(function()
+                            {
+                                 window.location.href = '@Url.Action("List")';
+                            },
+                            3000);
                     }else
                     if (result.status === "ModelError") {
                         var spanErrorList = $('span[data-val-result]');
@@ -588,7 +594,7 @@
                     alert(thrownError);
                 },*@
                 complete: function () {
-                    removeLoading($("#addProductSpecificationGroupCard"));
+                    //removeLoading($("#addProductSpecificationGroupCard"));
                 }
                 });
                 }
@@ -756,7 +762,7 @@
                     + "</td><td style='display:none;'>" + $("#productGroupId").val()
                     + "</td><td>" + $("#productId option:selected").text()
                     +"</td><td style='display:none;'>" + $("#productId").val()
-                    + "</td><td><button type='button' class='btn btn-danger rounded-circle bg-gradient' onclick='deleteFromList(this);'><i class='fa fa-minus' style='position: relative;padding:3px;'></i></button></td></tr>";
+                    + "</td><td><button type='button' class='btn btn-danger bg-gradient' onclick='deleteFromList(this);'><i class='fa fa-trash' ></i></button></td></tr>";
                 if ($("#infoList tr").length == 1 && $("#infoList tr")[0].children.length == 1) {
                     $("#infoList tr")[0].remove();
                 }
