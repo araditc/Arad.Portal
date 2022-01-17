@@ -7,7 +7,7 @@
 @section Styles{
     <link href="~/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css" rel="stylesheet" />
     <link href="~/lib/intl-tel-input/css/intlTelInput.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/lib/iCheck/skins/all.css">
+    
     <style>
         .text-danger {
             font-size: 12px;
@@ -23,7 +23,7 @@
     <div class="col-md-12">
         <div class="card" id="addPermissionCard">
             <div class="card-header">
-                <h3 class="card-title" data-toggle="tab">@(Model.IsEditView ? Language.GetString("EditPermissionPart_Title") : Language.GetString("AddPermissionPart_Title"))</h3>
+                <h5 class="card-title" data-toggle="tab">@(Model.IsEditView ? Language.GetString("EditPermissionPart_Title") : Language.GetString("AddPermissionPart_Title"))</h5>
             </div>
             <form asp-controller="Permission" role="form" asp-action="Save" id="addEditPermissionFrm" method="post">
                 @{
@@ -43,19 +43,19 @@
                         </div>
                         <div class="form-group col-md-3" id="TypeSelect">
                             <label asp-for="Type">@Language.GetString("Per_PermissionType")</label>
-                            <select asp-for="Type" class="form-control select2" name="Type" asp-items="Html.GetEnumSelectList<Enums.PermissionType>()">
+                            <select asp-for="Type" class="form-control selectpicker" name="Type" asp-items="Html.GetEnumSelectList<Enums.PermissionType>()">
                             </select>
                             <span data-val-result="Type" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-3" id="MethodSelect">
                             <label asp-for="Method">@Language.GetString("Per_PermissionMethod")</label>
-                            <select asp-for="Method" class="form-control select2" name="Method" asp-items="Html.GetEnumSelectList<Enums.PermissionMethod>()">
+                            <select asp-for="Method" class="form-control selectpicker" name="Method" asp-items="Html.GetEnumSelectList<Enums.PermissionMethod>()">
                             </select>
                             <span class="text-danger" data-val-result="Method"></span>
                         </div>
                         <div class="form-group col-md-3" id="MenuIdOfModulePart">
                             <label asp-for="MenuIdOfModule">@Language.GetString("Per_MenuIdOfModule")</label>
-                            <select asp-for="MenuIdOfModule" class="form-control select2" name="MenuIdOfModule">
+                            <select asp-for="MenuIdOfModule" class="form-control selectpicker" name="MenuIdOfModule">
                             </select>
                             <span class="text-danger" data-val-result="MenuIdOfModule"></span>
                         </div>
@@ -70,7 +70,7 @@
                         </div>
                         <div class="form-group col-md-4" id="ParentMenuSelect" style="display:none;">
                             <label asp-for="ParentMenuId">@Language.GetString("Per_ParentMenuId")</label>
-                            <select asp-for="ParentMenuId" class="form-control select2">
+                            <select asp-for="ParentMenuId" class="form-control selectpicker">
                             </select>
                             <span class="text-danger" data-val-result="ParentMenuId"></span>
                         </div>

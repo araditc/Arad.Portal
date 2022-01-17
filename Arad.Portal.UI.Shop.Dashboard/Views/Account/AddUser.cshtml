@@ -18,10 +18,6 @@
         .text-danger {
             font-size: 12px;
         }
-
-        /*.card-header {
-            background-color: #e0dcdf;
-        }*/
     </style>
     <link href="~/lib/intl-tel-input/css/intlTelInput.css" rel="stylesheet" />
 
@@ -34,7 +30,7 @@
     <div class="col-md-12">
         <div class="card" id="addUserCard">
             <div class="card-header">
-                <h3 class="card-title">@Language.GetString("AddUserPart_Title")</h3>
+                <h5 class="card-title">@Language.GetString("AddUserPart_Title")</h5>
             </div>
             <form role="form" id="addUserFrm" asp-action="Add" asp-controller="Account" method="post">
                 <div class="card-body">

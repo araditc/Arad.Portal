@@ -54,7 +54,7 @@
 
                 <div class="form-group col-md-3">
                     <label>@Language.GetString("LanguageName")</label>
-                    <select class="form-control select2" id="cmbLangIdFilter" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                    <select class="form-control selectpicker" id="cmbLangIdFilter" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                     </select>
                 </div>
                 <div class="form-group col-md-3">

@@ -88,10 +88,15 @@
 	<string key="treeView_Empty">
 		<value>بدون زیرمجموعه</value>
 	</string>
-		<string key="LoginPage">
+    <string key="LoginPage">
 		<value>صفحه ورود</value>
 	</string>
 	<!--End [buttons text]-->
+	<!--Start[FileImport]-->
+	<string key="FileImportExport_InvalidContentType">
+		<value>نوع فایل اکسل نیست.</value>
+	</string>
+	<!--End[FileImport]-->
 	<!--Start[JustForTesting]-->
 	<!--<string key="PermissionTitle_Menu11">
 		<value>منوی 1-1</value>
@@ -104,7 +109,7 @@
 	</string>
 	<string key="PermissionTitle_Menu112">
 		<value>منوی 1-1-2</value>
-	</string>
+	</string>نوع فایل اکسل نیست
 	<string key="PermissionTitle_Menu1111">
 		<value>منوی 1-1-1-1</value>
 	</string>

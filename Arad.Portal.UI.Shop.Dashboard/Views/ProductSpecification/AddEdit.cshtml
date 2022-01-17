@@ -31,11 +31,11 @@
     <div class="col-md-12">
         <div class="card" id="addProductGroupCard">
             <div class="card-header">
-                <h3 class="card-title">
+                <h5 class="card-title">
                     @(!string.IsNullOrWhiteSpace(Model.ProductSpecificationId)
                    ? Language.GetString("EditProductSpecificationPart_Title")
                    : Language.GetString("AddProductSpecificationPart_Title"))
-                </h3>
+                </h5>
             </div>
 
             <div class="card-body" id="addEditProductSpecificationCard">
@@ -43,13 +43,13 @@
                 <div class="row align-items-center p-2" >
                     <div class="form-group col-md-3">
                         <label for="languageId">@Language.GetString("LanguageName")</label><br />
-                        <select class="form-control select2" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                        <select class="form-control selectpicker" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                         </select>
                         <span data-val-result="languageId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
                         <label asp-for="@Model.SpecificationGroupId">@Language.GetString("tbl_GroupName")</label>
-                        <select class="form-control select2" asp-for="@Model.SpecificationGroupId" asp-items="@(new SelectList(ViewBag.SpecificationGroupList,"Value","Text"))">
+                        <select class="form-control selectpicker" asp-for="@Model.SpecificationGroupId" asp-items="@(new SelectList(ViewBag.SpecificationGroupList,"Value","Text"))">
                         </select>
                         <span data-val-result="specificationGroupId" class="text-danger"></span>
                     </div>

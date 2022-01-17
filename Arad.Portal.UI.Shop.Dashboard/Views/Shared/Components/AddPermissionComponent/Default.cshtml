@@ -22,7 +22,7 @@
                         </div>
                         <div id="typeSelect" class="form-group col-md-4 col-lg-3">
                             <label for="Type">@Language.GetString("Menu_PermissionType")</label>
-                            <select id="Type" class="form-control select2" name="Type" asp-items="Html.GetEnumSelectList<Enums.PermissionType>()">
+                            <select id="Type" class="form-control selectpicker" name="Type" asp-items="Html.GetEnumSelectList<Enums.PermissionType>()">
                             </select>
                             <span class="field-validation-error" data-val-result="Type"></span>
                         </div>
@@ -34,19 +34,19 @@
                         </div>
                         <div id="keySelect" class="form-group col-md-4 col-lg-3">
                             <label for="Method">@Language.GetString("Menu_PermissionMethod")</label>
-                            <select id="Method" class="form-control select2" name="Method" asp-items="Html.GetEnumSelectList<Enums.PermissionMethod>()">
+                            <select id="Method" class="form-control selectpicker" name="Method" asp-items="Html.GetEnumSelectList<Enums.PermissionMethod>()">
                             </select>
                             <span class="field-validation-error" data-val-result="Method"></span>
                         </div>
                         <div id="MenuIdOfModule" class="form-group col-md-4 col-lg-3">
                             <label for="MenuIdOfModule">@Language.GetString("Menu_MenuIdOfModule")</label>
-                            <select id="MenuIdOfModule" class="form-control select2" name="MenuIdOfModule">
+                            <select id="MenuIdOfModule" class="form-control selectpicker" name="MenuIdOfModule">
                             </select>
                             <span class="field-validation-error" data-val-result="MenuIdOfModule"></span>
                         </div>
                         <div id="parentMenuSelect" class="form-group col-md-4 col-lg-3" style="display: none;">
                             <label for="ParentMenuId">@Language.GetString("Menu_ParentMenuId")</label>
-                            <select id="ParentMenuId" class="form-control select2" name="ParentMenuId">
+                            <select id="ParentMenuId" class="form-control selectpicker" name="ParentMenuId">
                             </select>
                             <span class="field-validation-error" data-val-result="ParentMenuId"></span>
                         </div>

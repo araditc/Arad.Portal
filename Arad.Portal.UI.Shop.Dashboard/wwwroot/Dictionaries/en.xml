@@ -92,6 +92,11 @@
 		<value>Login Page</value>
 	</string>
 	<!--End [buttons text]-->
+	<!--Start[FileImport]-->
+	<string key="FileImportExport_InvalidContentType">
+		<value>file type is not an excel file.</value>
+	</string>
+	<!--End[FileImport]-->
 	<!--Start[JustForTesting]-->
 	<!--<string key="PermissionTitle_Menu11">
 		<value>Menu1-1</value>

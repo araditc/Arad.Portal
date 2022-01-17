@@ -25,21 +25,15 @@
 }
 @section Styles{
     <link href="~/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css" rel="stylesheet" />
-    @*<link href="~/plugins/ckeditor5/styles.css" rel="stylesheet" />*@
     <link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
     <link href="~/plugins/TagInput/amsify.suggestags.css" rel="stylesheet" />
     <link href="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.css" rel="stylesheet" />
     <style>
-        .text-danger {
-            font-size: 12px;
-        }
-
-        .
+       
         .ck-editor .ck-editor__main .ck-content {
             height: 280px;
             min-height: 250px;
         }
-
         .removeImage {
             display: inline-block;
             position: absolute;
@@ -56,28 +50,22 @@
         .row{
             margin-top: 1%;
         }
-
         #bd-root-userBirthDate {
             width: 100%
         }
-
         img {
             max-width: 100%;
             max-height: 100%;
         }
-
         .cropper-container {
             width: 100%
         }
-
         .iti__flag-container {
             direction: ltr
         }
-
         .modal {
             z-index: 100001 !important;
         }
-
         .amsify-suggestags-input-area {
             text-align: @(dir == "rtl" ? "right" : "left");
             height: auto;
@@ -181,7 +169,7 @@
     <div class="col-md-12">
         <div class="card" id="addContentCardTitle">
             <div class="card-header">
-                <h3 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.ContentId) ? Language.GetString("EditContent_Title") : Language.GetString("AddContent_Title"))</h3>
+                <h5 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.ContentId) ? Language.GetString("EditContent_Title") : Language.GetString("AddContent_Title"))</h5>
             </div>
 
             <div class="card-body" id="addContentCardBody">
@@ -336,16 +324,9 @@
                                                         <td><input type="text" class="form-control txtTitle" value="@pic.Title" /></td>
                                                         <td><input type="text" class="form-control txtDesc" value="@pic.Description" /></td>
                                                         <td>
-                                                            @if (dir == "rtl")
-                                                            {
-                                                                <input type="radio" name="isMainImage" checked="@pic.IsMain" class="minimal rdbIsMain">
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="icheck-primary d-inline">
-                                                                    <input type="radio" checked="@pic.IsMain" name="isMainImage" class="rdbIsMain">
-                                                                </div>
-                                                            }
+                                                        <div class="form-check">
+                                                            <input class="form-check-input rdbIsMain" type="radio" checked="@pic.IsMain" name="isMainImage" />
+                                                        </div>
                                                         </td>
                                                         <td>
                                                             <button type="button" class="btn btn-danger bg-gradient" imgId="@($"img_{@pic.ImageId}")" onclick="deleteFromImageList(this);">
@@ -373,7 +354,7 @@
                     <div class="col-md-12">
                         <div class="card" id="ContentCardTitle">
                             <div class="card-header">
-                                <h3 class="card-title" data-toggle="tab">@Language.GetString("Menu_Content")</h3>
+                                <h5 class="card-title" data-toggle="tab">@Language.GetString("Menu_Content")</h5>
                             </div>
                             <div class="card-body">
                                 <div class="row">
@@ -434,11 +415,7 @@
         <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
         @*<script src="~/plugins/ckeditor5/translations/en-au.js"></script>*@
     }
-    @*icheckbox*@
-    @if (dir == "rtl")
-    {
-        <script src="~/plugins/iCheck/icheck.min.js"></script>
-    }
+   
 <script>
         var fileName;
         var fileContent;
@@ -455,14 +432,6 @@
 
         $(document).ready(function () {
             debugger;
-
-        //icheckboxes radiobuttons
-        if ("@dir" == "rtl") {
-        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-        checkboxClass: 'icheckbox_minimal-blue',
-        radioClass: 'iradio_minimal-blue'
-        });
-        }
 
         //TagInput
         $("input[name='tagKeyWords']").amsifySuggestags();
@@ -652,29 +621,16 @@
             model.Content = url;
             images.push(model);
             var tr = "";
-            if ('@dir' == "rtl") {
+         
                 tr = "<tr><td><img imgId='img_" + counter + "' src='" + model.Content +
                     "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
                     "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
                     "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
-                    "'/></td><td style='vertical-align:middle;'><input type='radio'  name='isMainImage' class='minimal rdbIsMain'></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' imgId='img_" + counter + "' onclick='deleteFromImageList(this);'><i class='fa fa-trash' ></i></button></td></tr>";
-            } else
-            {
-                 tr = "<tr><td><img imgId='img_" + counter + "' src='" + model.Content +
-                    "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
-                    "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
-                    "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
-                     "'/></td><td style='vertical-align:middle;'><div class='icheck-primary d-inline'><input type='radio'  name='isMainImage' class='rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' imgId='img_" + counter + "' onclick='deleteFromImageList(this);'><i class='fa fa-trash'></i></button></td></tr>";
-
-            }
+                    "'/></td><td style='vertical-align:middle;'><div class='form-check'><input type='radio'  name='isMainImage' class='form-check-input rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' imgId='img_" + counter + "' onclick='deleteFromImageList(this);'><i class='fa fa-trash' ></i></button></td></tr>";
+           
             $("#imageList").append(tr);
             counter += 1;
-            if ("@dir" == "rtl") {
-                $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-                    checkboxClass: 'icheckbox_minimal-blue',
-                    radioClass: 'iradio_minimal-blue'
-                });
-            }
+          
          });
 
     });

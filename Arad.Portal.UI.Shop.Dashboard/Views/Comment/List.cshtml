@@ -153,21 +153,15 @@
                                 <td class="ListCell">@item.Content</td>
                                 <td class="ListCell">@item.ParentCommentContent</td>
                                 <td class="ListCell">
-                                    @if (dir == "rtl")
-                                    {
-                                        <input type="radio" name="isMainImage" checked="@item.IsApproved" class="minimal rdbIsMain">
-                                    }
-                                    else
-                                    {
-                                        <div class="icheck-primary d-inline">
-                                            <input type="radio" checked="@item.IsApproved" name="isMainImage" class="rdbIsMain">
-                                        </div>
-                                    }
+                                    <div class="form-check">
+                                        <input type="radio" name="isMainImage" checked="@item.IsApproved" class="form-check-input rdbIsMain">
+                                    </div>
                                 </td>
                                 <td>
                                     @if (ViewBag.Permissions["Edit"])
                                     {
-                                        <a asp-action="ApproveComment" asp-controller="Comment" asp-route-commentId="@item.CommentId" asp-route-isApproved="@item.IsApproved" class="btn btn-sm btn-primary bg-gradient">
+                                        <a asp-action="ApproveComment" asp-controller="Comment" asp-route-commentId="@item.CommentId" asp-route-isApproved="@item.IsApproved" 
+                                           class="btn btn-sm btn-primary bg-gradient">
                                             <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Approved")
                                         </a>
                                     }

@@ -24,10 +24,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
             long newId = long.Parse(lst[0].Value) + 1;
             while (!added)
             {
-                newId = long.Parse(lst[0].Value) + 1;
                 added = dict.TryAdd(newId, newId);
+                newId += 1;
             }
-            return newId;
+            return newId - 1;
         }
         public bool SaveToDB(long lastId)
         {

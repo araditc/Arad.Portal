@@ -40,6 +40,9 @@ i span {
 .btnBack{
     border : 1px solid black;
 }
+/*.text-danger {
+    font-size: 12px;
+}*/
 .spinner-border {
     display: block;
     border-width: 14px;
@@ -68,6 +71,7 @@ i span {
         box-sizing: border-box;
         display: none
     }
+
 
     #loading.is-active {
         background-color: rgba(0, 0, 0, .85);

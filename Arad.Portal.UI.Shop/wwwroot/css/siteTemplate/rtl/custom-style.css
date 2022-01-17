@@ -234,13 +234,9 @@ ul {
 
 
 /*------------------------- Form ----------------------------*/
-.select2-container .select2-search--inline {
-    float: right;
-}
 
-.select2-container--default .select2-search--inline .select2-search__field {
-    text-align: right;
-}
+
+
 
 /*----------------------- Extra Page ---------------------------*/
 .error-page>.headline {

@@ -13,6 +13,7 @@ namespace Arad.Portal.DataLayer.Models.Setting
         public ShippingSettingDTO()
         {
             AllowedShippingTypes = new();
+            ShippingCoupon = new();
         }
 
         public string ShippingSettingId { get; set; }

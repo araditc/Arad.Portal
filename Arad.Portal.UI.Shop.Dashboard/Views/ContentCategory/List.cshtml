@@ -53,7 +53,7 @@
 
                 <div class="form-group col-md-3">
                     <label>@Language.GetString("LanguageName")</label>
-                    <select class="form-control select2" id="cmbLangIdFilter" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                    <select class="form-control selectpicker" id="cmbLangIdFilter" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                     </select>
                 </div>
             </div>
@@ -70,7 +70,7 @@
                 <div class="card-tools float-end">
                     @if (ViewBag.Permissions["Add"])
                     {
-                        <a asp-action="AddEdit" asp-controller="ContentCategory" class="btn btn-success bg-gradient">
+                        <a asp-action="AddEdit" asp-controller="ContentCategory" class="btn btn-success btn-sm bg-gradient">
                             <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_Add")
                         </a>
                     }

@@ -135,10 +135,10 @@
     <div class="col-md-12">
         <div class="card" id="addProductCard">
             <div class="card-header">
-                <h3 class="card-title" data-toggle="tab">
+                <h5 class="card-title" data-toggle="tab">
                     @(!string.IsNullOrWhiteSpace(Model.ProductId) ?
                      Language.GetString("EditProductPart_Title") : Language.GetString("AddProductPart_Title"))
-                </h3>
+                </h5>
             </div>
 
             <div class="card-body" id="addEditProductCard">
@@ -147,7 +147,7 @@
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label>@Language.GetString("tbl_ProductGroup")</label>
-                        <select class="form-control select2" multiple="multiple" asp-for="@Model.GroupIds" asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))">
+                        <select class="form-control selectpicker"  asp-for="@Model.GroupIds" asp-items="@(new MultiSelectList(ViewBag.ProductGroupList,"Value","Text"))">
                         </select>
                         <span data-val-result="GroupIds" class="text-danger"></span>
                     </div>
@@ -163,7 +163,7 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>@Language.GetString("Menu_ProductUnit")</label>
-                        <select class="form-control" asp-for="@Model.Unit.ProductUnitId" asp-items="@(new SelectList(ViewBag.ProductUnitList,"Value","Text"))">
+                        <select class="form-control selectpicker" asp-for="@Model.Unit.ProductUnitId" asp-items="@(new SelectList(ViewBag.ProductUnitList,"Value","Text"))">
                         </select>
                         <span data-val-result="productUnitId" class="text-danger"></span>
                     </div>
@@ -174,7 +174,7 @@
                         <input type="number" class="form-control" asp-for="@Model.MinimumCount" value="@Model.MinimumCount" min="0" />
 
                     </div>
-                    <div class="form-group col-12 col-md-3 pt-4 pb-2">
+                    <div class="form-group col-12 col-md-3 pt-1 pb-2">
                         <div class="form-check m-auto d-inline-block pt-3">
                             <input class="form-check-input" type="checkbox" value="@Model.ShowInLackOfInventory" asp-for="@Model.ShowInLackOfInventory" min="0">
                             <label class="form-check-label" for="IsVendor">
@@ -182,29 +182,11 @@
                             </label>
                         </div>
                     </div>
-                    @*<div class="form-group col-md-3" style="text-align:center;margin:auto;">
-            @if (dir == "rtl")
-            {
-                <label style="font-weight:700;">
-                    <input type="checkbox" id="chbNotifyInventory" class="minimal">
-                    @Language.GetString("ShowInLackOfInventory")
-                </label>
-            }
-            else
-            {
-                <div class="icheck-primary d-inline">
-                    <input type="checkbox" id="chbNotifyInventory">
-                    <label for="chbNotifyInventory">
-                        @Language.GetString("ShowInLackOfInventory")
-                    </label>
-                </div>
-            }
-        </div>*@
                     <div class="form-group col-md-3">
                         @if (ViewBag.Vendors != "-1")
                         {
                             <label>@Language.GetString("ProductVendor")</label>
-                            <select class="form-control" asp-for="@Model.SellerUserId" asp-items="@(new SelectList(ViewBag.Vendors,"Value","Text"))">
+                            <select class="form-control selectpicker" asp-for="@Model.SellerUserId" asp-items="@(new SelectList(ViewBag.Vendors,"Value","Text"))">
                             </select>
                             <span data-val-result="sellerUserId" class="text-danger"></span>
                         }
@@ -217,24 +199,6 @@
                             </label>
                         </div>
                     </div>
-                    @*<div class="form-group col-md-3" style="text-align:center;margin:auto;">
-                        @if (dir == "rtl")
-                        {
-                            <label>
-                                <input type="checkbox" id="chbIsPublishedOnMainDomain" class="minimal">
-                                @Language.GetString("AlertAndMessage_IsPublishedOnMainDomain")
-                            </label>
-                        }
-                        else
-                        {
-                            <div class="icheck-primary d-inline">
-                                <input type="checkbox" id="chbIsPublishedOnMainDomain">
-                                <label for="chbIsPublishedOnMainDomain">
-                                    @Language.GetString("AlertAndMessage_IsPublishedOnMainDomain")
-                                </label>
-                            </div>
-                        }
-                    </div>*@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-3">
@@ -244,13 +208,13 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>@Language.GetString("Promotion")</label>
-                        <select class="form-control" id="PromotionId" asp-items="@(new SelectList(ViewBag.PromotionList,"Value","Text"))">
+                        <select class="form-control selectpicker" id="PromotionId" asp-items="@(new SelectList(ViewBag.PromotionList,"Value","Text"))">
                         </select>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="card">
+                        <div class="card border border-dark m-2">
                             <div class="card-header">
                                 <div class="card-title">@Language.GetString("Menu_ProductSpecifications")</div>
                             </div>
@@ -258,25 +222,25 @@
                                 <div class="row">
                                     <div class="form-group col-md-2">
                                         <label>@Language.GetString("LanguageName")</label>
-                                        <select class="form-control" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                                        <select class="form-control selectpicker" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))"  data-live-search="true">
                                         </select>
                                         <span data-val-result="languageId" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label>@Language.GetString("SpecificationGroup")</label>
-                                        <select class="form-control" id="specGroupId" asp-items="@(new SelectList(ViewBag.SpecificationGroupList,"Value","Text"))">
+                                        <select class="form-control selectpicker" id="specGroupId" asp-items="@(new SelectList(ViewBag.SpecificationGroupList,"Value","Text"))" data-live-search="true">
                                         </select>
                                         <span data-val-result="specGroupId" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label>@Language.GetString("tbl_SpecificationName")</label>
-                                        <select class="form-control" id="specificationId">
+                                        <select class="form-control selectpicker" id="specificationId" data-live-search="true">
                                         </select>
                                         <span data-val-result="specificationId" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label>@Language.GetString("tbl_SpecificationValues")</label>
-                                        <select class="form-control select2" multiple="multiple" id="specValues">
+                                        <select class="form-control selectpicker" multiple="multiple" id="specValues" data-live-search="true">
                                         </select>
                                         <span data-val-result="specValues" class="text-danger"></span>
                                     </div>
@@ -369,7 +333,7 @@
                                 <div class="row" >
                                     <div class="form-group col-md-2">
                                         <label>@Language.GetString("LanguageName")</label>
-                                        <select class="form-control" id="multiLangId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                                        <select class="form-control selectpicker" id="multiLangId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                                         </select>
                                         <span data-val-result="multiLangId" class="text-danger"></span>
                                     </div>
@@ -478,7 +442,7 @@
                                 <div class="row">
                                     <div class="form-group col-md-3">
                                         <label>@Language.GetString("Currency")</label>
-                                        <select class="form-control" id="currencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
+                                        <select class="form-control selectpicker" id="currencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
                                         </select>
                                         <span data-val-result="currencyId" class="text-danger"></span>
                                     </div>
@@ -610,16 +574,9 @@
                                                         <td><input type="text" class="form-control txtTitle" value="@pic.Title" /></td>
                                                         <td><input type="text" class="form-control txtDesc" value="@pic.Description" /></td>
                                                         <td>
-                                                            @if (dir == "rtl")
-                                                            {
-                                                                <input type="radio" name="isMainImage" checked="@pic.IsMain" class="minimal rdbIsMain">
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="icheck-primary d-inline">
-                                                                    <input type="radio" checked="@pic.IsMain" name="isMainImage" class="rdbIsMain">
-                                                                </div>
-                                                            }
+                                                            <div class="form-check">
+                                                                <input class="form-check-input rdbIsMain" type="radio" checked="@pic.IsMain" name="isMainImage" />
+                                                            </div>
                                                         </td>
                                                         <td>
                                                             <button type="button" class="btn btn-danger bg-gradient" imgId="@pic.ImageId" onclick="deleteFromImageList(this);">
@@ -653,11 +610,8 @@
 </div>
 
 <script src="~/lib/cropperjs/cropper.js"></script>
-<script src="~/plugins/select2/js/select2.js"></script>
-@if (dir == "rtl")
-{
-    <script src="~/plugins/iCheck/icheck.min.js"></script>
-}
+@*<script src="~/plugins/select2/js/select2.js"></script>*@
+
 @if (CultureInfo.CurrentCulture.Name == "fa-IR")
 {
     <script src="~/plugins/datePicker/kamadatepicker.min.js"></script>
@@ -869,28 +823,15 @@ else
             model.Content = url;
             images.push(model);
             var tr = "";
-            if ('@dir' == "rtl") {
-                tr = "<tr><td><img imgId='img_" + counter + "' src='" + model.Content +
-                    "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
-                    "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
-                    "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
-                    "'/></td><td style='vertical-align:middle;'><input type='radio'  name='isMainImage' class='minimal rdbIsMain'></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' onclick='deleteFromImageList(this);'><i class='fa fa-trash'></i></button></td></tr>";
-            } else {
-                 tr = "<tr><td><img imgId='img_" + counter + "' src='" + model.Content +
-                    "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
-                    "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
-                    "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
-                    "'/></td><td style='vertical-align:middle;'><div class='icheck-primary d-inline'><input type='radio'  name='isMainImage' class='rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' onclick='deleteFromImageList(this);'><i class='fa fa-trash' ></i></button></td></tr>";
-
-            }
+           
+            tr = "<tr><td><img imgId='img_" + counter + "' src='" + model.Content +
+                "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
+                "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
+                "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
+                "'/></td><td style='vertical-align:middle;'><div class='form-check'><input type='radio'  name='isMainImage' class='rdbIsMain form-check-input'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' onclick='deleteFromImageList(this);'><i class='fa fa-trash'></i></button></td></tr>";
+           
             $("#imageList").append(tr);
             counter = counter + 1;
-            if ("@dir" == "rtl") {
-                $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-                    checkboxClass: 'icheckbox_minimal-blue',
-                    radioClass: 'iradio_minimal-blue'
-                });
-            }
         });
 
         $("#languageId").change(function () {
@@ -1106,10 +1047,10 @@ else
 
         if (!flag) {
             var vals = "";
-            for (var i = 0; i < $("#specValues").select2("data").length; i++) {
+            //for (var i = 0; i < $("#specValues").select2("data").length; i++) {
 
-                vals += $("#specValues").select2("data")[i].text + "|";
-            }
+            //    vals += $("#specValues").select2("data")[i].text + "|";
+            //}
             //remove last '|'
             vals = vals.substring(0, vals.length - 1);
 
@@ -1162,10 +1103,10 @@ else
         }
 
         //GroupNames
-        for (var i = 0; i < $("#GroupIds").select2("data").length; i++) {
+        //for (var i = 0; i < $("#GroupIds").select2("data").length; i++) {
 
-            dto.GroupNames.push($("#GroupIds").select2("data")[i].text);
-        }
+        //    dto.GroupNames.push($("#GroupIds").select2("data")[i].text);
+        //}
 
         //multilingualProperties
         debugger;

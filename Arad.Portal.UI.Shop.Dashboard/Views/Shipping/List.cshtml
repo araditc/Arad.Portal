@@ -41,7 +41,7 @@
                 <div class="card-tools float-end">
                     @if (ViewBag.Permissions["Add"])
                     {
-                        <a asp-action="AddEdit" asp-controller="Shipping" class="btn btn-success bg-gradient">
+                        <a asp-action="AddEdit" asp-controller="Shipping" class="btn btn-success btn-sm bg-gradient">
                             <i  class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_Add")
                         </a>
                     }
@@ -124,17 +124,9 @@
 
 
 @section Scripts{
-    @if (dir == "rtl")
-    {
-        <script src="~/plugins/iCheck/icheck.min.js"></script>
-    }
+   
 <script>
-        $(document).ready(function () {
-            debugger;
-
-
-
-        });
+        
         function EntityDelete(id) {
             debugger;
              entityId = id;

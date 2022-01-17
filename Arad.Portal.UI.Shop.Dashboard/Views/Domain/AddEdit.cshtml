@@ -61,17 +61,17 @@
     <div class="col-md-12">
         <div class="card" id="addDomainCard">
             <div class="card-header">
-                <h3 class="card-title" data-toggle="tab">
+                <h5 class="card-title" data-toggle="tab">
                     @(!string.IsNullOrWhiteSpace(Model.DomainId) ?
                      Language.GetString("EditDomain_Title") : Language.GetString("AddDomain_Title"))
-                </h3>
+                </h5>
             </div>
 
             <div class="card-body">
                 <input type="hidden" value="@Model.DomainId" asp-for="DomainId" />
 
 
-                <div class="row">
+                <div class="row m-1">
                     <div class="form-group col-md-3">
                         <label for="DefaultLanguageId">@Language.GetString("DefaultLanguage")</label><br />
                         <select class="form-control" asp-for="DefaultLanguageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text", Model.DefaultLanguageId))">
@@ -89,26 +89,16 @@
                         </select>
                         <span data-val-result="OwnerUserId" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3" style="text-align:center;margin:auto;">
-                        @if (dir == "rtl")
-                        {
-                            <label style="font-weight:700;">
-                                <input type="checkbox" id="chbDefaultDomain" class="minimal" asp-for="IsDefault">
+                    <div class="form-group col-12 col-md-3 pt-1 pb-2">
+                        <div class="form-check m-auto d-inline-block pt-3">
+                            <input class="form-check-input" type="checkbox" value="@Model.IsDefault" asp-for="@Model.IsDefault">
+                            <label class="form-check-label" for="IsDefault">
                                 @Language.GetString("DefaultDomain")
                             </label>
-                        }
-                        else
-                        {
-                            <div class="icheck-primary d-inline">
-                                <input type="checkbox" id="chbDefaultDomain" asp-for="IsDefault">
-                                <label for="chbDefaultDomain">
-                                    @Language.GetString("DefaultDomain")
-                                </label>
-                            </div>
-                        }
+                        </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row m-1">
                     <div class="form-group col-md-3">
                         <label for="DefaultCurrencyId">@Language.GetString("DefaultCurrency")</label><br />
                         <select class="form-control" asp-for="DefaultCurrencyId" asp-items="@(new SelectList( ViewBag.CurrencyList,"Value","Text", Model.DefaultCurrencyId))">
@@ -133,7 +123,7 @@
                     </div>
 
                 </div>
-                <div class="row">
+                <div class="row m-1">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
@@ -248,7 +238,7 @@
                                 <div class="row">
                                     <div class="form-group col-md-3">
                                         <label for="languageId">@Language.GetString("tbl_PaymentGateways")</label><br />
-                                        <select class="form-control select2" id="providerId" asp-items="@(new SelectList(ViewBag.Providers, "Value","Text"))">
+                                        <select class="form-control selectpicker" id="providerId" asp-items="@(new SelectList(ViewBag.Providers, "Value","Text"))">
                                         </select>
                                         <span data-val-result="providerId" class="text-danger"></span>
                                     </div>
@@ -329,10 +319,7 @@
         <script src="~/js/moment.min.js"></script>
         <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
     }
-    @if (dir == "rtl")
-    {
-        <script src="~/plugins/iCheck/icheck.min.js"></script>
-    }
+    
 <script>
         var active = '@Language.GetString("Active")';
     var inActive = '@Language.GetString("InActive")';
@@ -340,15 +327,6 @@
         $(document).ready(function () {
            
             $("#DefaultLanguageId").val('@ViewBag.LangId');
-
-             //icheckboxes radiobuttons
-            if ("@dir" == "rtl") {
-                $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-                    checkboxClass: 'icheckbox_minimal-blue',
-                    radioClass: 'iradio_minimal-blue'
-                });
-            }
-
 
             if ('@Model.DomainId' == "") {
                 $("#InvoiceNumberProcedure").val("-1");

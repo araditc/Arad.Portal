@@ -131,7 +131,7 @@
     <div class="col-md-12">
         <div class="card" id="addProductGroupCard">
             <div class="card-header">
-                <h3 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.ProductGroupId) ? Language.GetString("EditProductGroupPart_Title") : Language.GetString("AddProductGroupPart_Title"))</h3>
+                <h5 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.ProductGroupId) ? Language.GetString("EditProductGroupPart_Title") : Language.GetString("AddProductGroupPart_Title"))</h5>
             </div>
 
             <div class="card-body" id="addEditProductGroupCard">
@@ -159,7 +159,7 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label asp-for="@Model.ParentId">@Language.GetString("ParentGroup")</label>
-                        <select class="form-control select2" asp-for="@Model.ParentId" asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))">
+                        <select class="form-control selectpicker" asp-for="@Model.ParentId" asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))">
                         </select>
                         <span data-val-result="ParentId" class="text-danger"></span>
                     </div>
@@ -179,7 +179,7 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label for="currencyId">@Language.GetString("Currency")</label><br />
-                        <select class="form-control select2" id="currencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
+                        <select class="form-control selectpicker" id="currencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
                         </select>
                         <span data-val-result="currencyId" class="text-danger"></span>
                     </div>

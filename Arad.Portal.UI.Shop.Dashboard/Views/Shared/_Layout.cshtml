@@ -65,7 +65,10 @@
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
 
     @await RenderSectionAsync("Styles", required: false)
-
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap5/js/bootstrap.bundle.js"></script>
+    <script src="~/lib/bootstrap-select/js/bootstrap-select.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 
 </head>
 <body class="fs-6">
@@ -176,17 +179,14 @@
 
 
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap5/js/bootstrap.bundle.js"></script>
-    <script src="~/lib/bootstrap-select/js/bootstrap-select.min.js"></script>
+   
     @*<script src="~/js/site.js" asp-append-version="true"></script>*@
-    @await RenderSectionAsync("Scripts", required: false)
+   
 
 <script>
 
-        $(document).ready(function () {
-          /*  $(".spinner-border").hide();*/
-       
+    $(document).ready(function () {
+         
     });
     var entityId;
     var confirmUrl;

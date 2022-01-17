@@ -36,7 +36,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label for="languageId">@Language.GetString("LanguageName")</label><br />
-                        <select class="form-control select2" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                        <select class="form-control selectpicker" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                         </select>
                         <span data-val-result="languageId" class="text-danger"></span>
                     </div>
