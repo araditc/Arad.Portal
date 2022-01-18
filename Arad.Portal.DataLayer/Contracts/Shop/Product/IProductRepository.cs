@@ -34,7 +34,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 
         Task<Result> AddPictureToProduct(string productId,
             Image picture);
-
+        Task<Result> ImportFromExcel(List<ProductExcelImport> lst);
         Task<Result> Restore(string productId);
         Task<Result> AddProductSpecifications(string productId,
             ProductSpecificationValue specValues);

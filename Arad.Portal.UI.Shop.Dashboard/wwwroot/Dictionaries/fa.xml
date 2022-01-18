@@ -96,6 +96,25 @@
 	<string key="FileImportExport_InvalidContentType">
 		<value>نوع فایل اکسل نیست.</value>
 	</string>
+	<string key="FileImportExport_Help">
+		<value>راهنما</value>
+	</string>
+	<string key="FileImportExport_ProductImages">
+		<value>افزودن پوشه عکس محصولات</value>
+	</string>
+	<string key="FileImportExport_AddProductImageHelp">
+		<value>
+			به ازای هر محصول یک عکس مربعی شکل در ابعاد تعریف شده با نام شماره سطر محصول در فایل اکسل را بصورت تجمیعی در پوشه ای با پسوند.zip  و نام دلخواه  قرار داده و پوشه را در قسمت افزودن عکس های محصولات  بارگزاری کنید.
+			بطور مثال محصولی که در سطر nام فایل اکسل قرار دارد دارای عکس با نام  n.png  یا n.jpg  میباشد.
+
+		</value>
+	</string>
+	<string key="FileImportExport_ProductExcelFile">
+		<value>فایل اکسل محصولات</value>
+	</string>
+	<string key="FileImportExport_NoFileSelected">
+		<value>فایلی انتخاب نشده است.</value>
+	</string>
 	<!--End[FileImport]-->
 	<!--Start[JustForTesting]-->
 	<!--<string key="PermissionTitle_Menu11">
@@ -519,6 +538,12 @@
 	</string>
 	<string key="Validation_MobileNumberInvalid2">
 		<value>شماره وارد شده مربوط به تلفن ثابت می باشد.</value>
+	</string>
+	<string key="AlertAndMessage_DontChangeExcelTemplate">
+		<value>برای جلوگیری از بروز خطا و ثبت اطلاعات محصول در پایگاه داده از هرگونه تغببر در ترتیب و نام ستون های قالب  دریافت محصول خودداری کنید.</value>
+	</string>
+	<string key="AlertAndMessage_ImportProductFromExcel">
+		<value>دریافت محصولات از طریق فایل اکسل</value>
 	</string>
 	<string key="AlertAndMessage_ImageSuccessfullyUploaded">
 		<value>تصوبر با موفقیت بارگزاری شد.</value>

@@ -145,7 +145,7 @@
                     values['IsActive'] = active;
 
                     values['PermissionIds'] = persSelect;
-                    console.log(values);
+                    //console.log(values);
                     $.ajax({
                         url: '@Url.Action("Add")',
                         type: 'Post',
@@ -181,7 +181,7 @@
                                 }
 
                                 if (result.modelStateErrors !== null) {
-                                    console.log(result);
+                                   // console.log(result);
                                     result.modelStateErrors.forEach(function(value, index) {
                                         $("#addRole").find('[data-val-result=' + value.key + ']').html(value.errorMessage);
                                         $("#addRole").find('[data-val-result=' + value.key + ']').parent().addClass("has-error");

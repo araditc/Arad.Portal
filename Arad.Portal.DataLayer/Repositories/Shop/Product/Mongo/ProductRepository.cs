@@ -26,6 +26,7 @@ using Microsoft.Extensions.Configuration;
 using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
 using Arad.Portal.DataLayer.Models.Domain;
 using Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo;
+using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 {
@@ -34,6 +35,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         private readonly ProductContext _context;
         //private readonly OrderContext _orderContext;
         private readonly DomainContext _domainContext;
+        private readonly CurrencyContext _currencyContext;
         private readonly TransactionContext _transactionContext;
         private readonly PromotionContext _promotionContext;
         private readonly LanguageContext _languageContext;
@@ -46,6 +48,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         public ProductRepository(IHttpContextAccessor httpContextAccessor,
             ProductContext context, IMapper mapper,
             PromotionContext promotionContext,
+            CurrencyContext currencyContext,
             //OrderContext orderContext,
             //UserManager<ApplicationUser> userManager,
             ShoppingCartContext shoppingCartContext,
@@ -66,6 +69,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             _domainContext = domainContext;
             _shoppingCartContext = shoppingCartContext;
             _accessor = accessor;
+            _currencyContext = currencyContext;
         }
 
         public async Task<Result> Add(ProductInputDTO dto)
@@ -963,9 +967,6 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-
-      
-
         private List<CommentVM> CreateNestedTreeComment(List<Comment> comments, string currentUserId)
         {
             var result = new List<CommentVM>();
@@ -1070,6 +1071,93 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             if(updateResult.IsAcknowledged)
             {
                 result.Succeeded = true;
+            }
+            return result;
+        }
+
+        public async Task<Result> ImportFromExcel(List<ProductExcelImport> lst)
+        {
+            Result result = new Result();
+            var domainName = base.GetCurrentDomainName();
+            var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
+            var currencyEntity = _currencyContext.Collection.Find(_ => _.CurrencyId == domainEntity.DefaultCurrencyId).FirstOrDefault();
+
+            try
+            {
+                foreach (var pro in lst)
+                {
+                    Entities.Shop.Product.Product product = new Entities.Shop.Product.Product();
+                    var productUnitEntity = _context.ProductUnitCollection
+                   .Find(_ => _.UnitNames.Any(a => a.LanguageId == domainEntity.DefaultLanguageId && a.Name == pro.ProductUnit)).FirstOrDefault();
+
+                    product.ProductId = Guid.NewGuid().ToString();
+                    product.GroupIds = pro.GroupIds;
+                    product.ProductCode = pro.ProductCode;
+                    product.IsActive = true;
+                    product.MultiLingualProperties.Add(new MultiLingualProperty()
+                    {
+                        MultiLingualPropertyId = Guid.NewGuid().ToString(),
+                        CurrencyId = domainEntity.DefaultCurrencyId,
+                        CurrencyName = domainEntity.DefaultCurrencyName,
+                        LanguageId = domainEntity.DefaultLanguageId,
+                        LanguageName = domainEntity.DefaultLanguageName,
+                        Name = pro.ProductName,
+                        SeoDescription = pro.SeoDescription,
+                        SeoTitle = pro.SeoTitle,
+                        TagKeywords = pro.TagKeywords.Split(',').ToList(),
+                        CurrencyPrefix = currencyEntity.Prefix,
+                        CurrencySymbol = currencyEntity.Symbol
+
+
+                    });
+                    product.Prices.Add(new Price()
+                    {
+                        CurrencyId = domainEntity.DefaultCurrencyId,
+                        CurrencyName = domainEntity.DefaultCurrencyName,
+                        StartDate = DateTime.Now,
+                        PriceId = Guid.NewGuid().ToString(),
+                        IsActive = true,
+                        PriceValue = pro.Price,
+                        Symbol = currencyEntity.Symbol
+                    });
+
+                    product.Images.Add(new Image()
+                    {
+                        ImageId = pro.ProductImage.ImageId,
+                        Url = pro.ProductImage.Url
+                    });
+
+                    product.UniqueCode = pro.UniqueCode;
+                    product.Inventory = pro.Inventory;
+                    product.ShowInLackOfInventory = pro.ShowInLackOfInventory;
+                    product.SellerUserId = base.GetUserId();
+                    product.SellerUserName = base.GetUserName();
+                    product.Unit = productUnitEntity;
+                    product.IsPublishedOnMainDomain = pro.IsPublishOnMainDomain;
+
+                    product.CreationDate = DateTime.Now;
+                    product.CreatorUserId = _httpContextAccessor.HttpContext.User.Claims
+                        .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+                    product.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
+                        .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+
+                    //var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                    var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+                    product.AssociatedDomainId = domainId;
+
+                    await _context.ProductCollection.InsertOneAsync(product);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Succeeded = false;
+                result.Message = ConstMessages.ErrorInSaving;
+            }
+            finally
+            {
+                result.Succeeded = true;
+                result.Message = ConstMessages.SuccessfullyDone;
             }
             return result;
         }

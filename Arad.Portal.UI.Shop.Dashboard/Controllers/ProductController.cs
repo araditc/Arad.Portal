@@ -232,7 +232,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.IsActive = true;
                 }
                 var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
-                var path = "Products";
+                var path = "/images/Products";
                 foreach (var pic in dto.Pictures)
                 {
                     var res = ImageFunctions.SaveImageModel(pic, path, localStaticFileStorageURL);

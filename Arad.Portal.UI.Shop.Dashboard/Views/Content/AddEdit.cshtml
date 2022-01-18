@@ -480,7 +480,7 @@
         }
         $("#btnAddContent").click(function () {
             debugger;
-            console.log("btnAddContent started");
+            /*console.log("btnAddContent started");*/
             var flag = false;
             if ($("#LanguageId").val() == "" || $("#LanguageId").val() == "-1") {
                 $("span[data-val-result='LanguageId']").html('@Language.GetString("AlertAndMessage_OptionEssential")');
@@ -516,11 +516,10 @@
                 if ($("#ContentProviderName").val() == "") {
                     $("span[data-val-result='ContentProviderName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
             }
-            console.log("validation passed");
+            //console.log("validation passed");
             if (!flag) {
                 var dto = FillDataToSend();
-
-               // console.log(dto);
+               
                 $.ajax({
                     url: "@Model.ContentId" != "" ? "/Content/Edit" : "/Content/Add",
                     contentType: 'application/json',
@@ -661,7 +660,7 @@
 
     function FillDataToSend() {
         debugger;
-        console.log("FillDataToSend started");
+        //console.log("FillDataToSend started");
         var obj = {};
         obj.Images = [];
         obj.Comments = [];
@@ -712,7 +711,7 @@
         });
         obj.PersianStartShowDate = $("#dtpStartShowDate").val();
         obj.PersianEndShowDate = $("#dtpEndShowDate").val();
-        console.log("FillDataTosend passed");
+        /*console.log("FillDataTosend passed");*/
         alert(obj);
         return obj;
     }

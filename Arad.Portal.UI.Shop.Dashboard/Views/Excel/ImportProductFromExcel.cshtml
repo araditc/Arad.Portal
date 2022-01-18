@@ -1,0 +1,74 @@
+﻿@model Arad.Portal.UI.Shop.Dashboard.Helpers.ProductImportPage
+@{ 
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="card pb-0 rounded-3 shadow-sm">
+    <div class="card-header py-2 bg-secondary bg-gradient bg-opacity-10">
+        <p class="my-0 fw-bold col fs-5">
+            <i class="fas fa-filter fs-3"></i>
+           @Language.GetString("AlertAndMessage_ImportProductFromExcel")
+        </p>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            
+        </div>
+    </div>
+    <div class="card-body">
+        
+        <form asp-action="ImportFromExcel" class="row g-3" enctype="multipart/form-data" method="post" role="form">
+
+            <div class="col-md-4">
+                <label class="form-label" asp-for="ProductImages">
+                    @Language.GetString("FileImportExport_ProductExcelFile")
+                </label>
+                <input accept=".zip,.rar,.7zip" asp-for="ProductImages" class="form-control" id="formFile" name="formFile" type="file" />
+                <span class="text-danger form-validation-alert" asp-validation-for="ProductImages"></span>
+            </div>
+
+
+            <div class="col-md-4">
+
+                <label class="form-label" asp-for="ProductsExcelFile">
+                    @Language.GetString("FileImportExport_ProductExcelFile")
+                </label>
+                <input accept=".xls,.xlsx" class="form-control" id="formFile" asp-for="ProductsExcelFile" name="formFile" type="file" />
+                <span class="text-danger form-validation-alert" asp-validation-for="ProductsExcelFile">
+                </span>
+            </div>
+
+            <div class="col-md-12 text-end">
+                <button class="btn btn-success btn-sm pe-3" type="submit">
+                    <i class="far fa-save px-1 mt-1">
+                    </i>@Language.GetString("btn_Save")
+                </button>
+                <a asp-action="List" class="btn btn-secondary btnBack bg-gradient">
+                    <i class="far fa-share-square px-1 mt-1"></i>
+                    @Language.GetString("btn_Back")
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card pb-0 rounded-3 shadow-sm mt-5">
+    <div class="card-header py-2 bg-info bg-gradient bg-opacity-10">
+        <p class="my-0 fw-bold col fs-5">
+            <i class="fas fa-info-circle fs-3"></i>
+            @Language.GetString("FileImportExport_Help")
+        </p>
+    </div>
+    <div class="card-body px-4 ">
+        @*<h5 class="card-title">
+            @Language.GetString("AlertAndMessage_DontChangeExcelTemplate")
+        </h5>*@
+        <h6 class="card-title text-danger py-2">
+            <i class="fas fa-exclamation-triangle"></i>
+            @Language.GetString("AlertAndMessage_DontChangeExcelTemplate")
+        </h6>
+        <p class="card-title text-danger py-2">
+            <i class="fas fa-exclamation-triangle"></i>
+            @Language.GetString("FileImportExport_AddProductImageHelp")
+        </p>
+    </div>
+</div>

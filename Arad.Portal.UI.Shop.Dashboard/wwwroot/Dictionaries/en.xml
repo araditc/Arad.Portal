@@ -96,6 +96,23 @@
 	<string key="FileImportExport_InvalidContentType">
 		<value>file type is not an excel file.</value>
 	</string>
+	<string key="FileImportExport_Help">
+		<value>Help</value>
+	</string>
+	<string key="FileImportExport_ProductImages">
+		<value>Add Product Images Folder</value>
+	</string>
+	<string key="FileImportExport_AddProductImageHelp">
+		<value>for each product exist in excel file to upload, you could put 
+		an square image in defined pixels with the name of row number of product in excel file and then put all images together in zip folder with optional name and upload in add product Images section.
+	    for example: a product which exists in nth row of excel file has image with the name n.png or n.jpg in desired folder.</value>
+	</string>
+	<string key="FileImportExport_ProductExcelFile">
+		<value>product excel file</value>
+	</string>
+	<string key="FileImportExport_NoFileSelected">
+		<value>No File Selected.</value>
+	</string>
 	<!--End[FileImport]-->
 	<!--Start[JustForTesting]-->
 	<!--<string key="PermissionTitle_Menu11">
@@ -524,6 +541,12 @@
 	</string>
 	<string key="Validation_MobileNumberInvalid2">
 		<value>Enter the number of fixed phone.</value>
+	</string>
+	<string key="AlertAndMessage_DontChangeExcelTemplate">
+		<value>for preventing error occurrence and saving data to database avoid changing the columns order or rename columns.</value>
+	</string>
+	<string key="AlertAndMessage_ImportProductFromExcel">
+		<value>Recieve products from excel file</value>
 	</string>
 	<string key="AlertAndMessage_ImageSuccessfullyUploaded">
 		<value>image is uploaded successfully.</value>

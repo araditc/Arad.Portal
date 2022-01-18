@@ -31,7 +31,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
         }
         public bool SaveToDB(long lastId)
         {
-            return _basicDataRepository.SaveLastId(lastId);
+            long item = 0;
+            var res =  _basicDataRepository.SaveLastId(lastId);
+            dict.TryRemove(lastId,out item);
+            return res;
         }
 
         //public static void ClearOldId(object state)

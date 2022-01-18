@@ -8,237 +8,137 @@ using Arad.Portal.UI.Shop.Dashboard.Helpers;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Arad.Portal.GeneralLibrary.Utilities;
+using Arad.Portal.DataLayer.Models.Product;
+using Microsoft.Extensions.Configuration;
+using Arad.Portal.DataLayer.Contracts.Shop.Product;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
     public class ExcelController : Controller
     {
-        public IActionResult Index()
+        private readonly IConfiguration _configuration;
+        private readonly IProductRepository _productRepository;
+        public ExcelController(IConfiguration configuration, IProductRepository productRepository)
         {
-            return View();
+            _configuration = configuration;
+            _productRepository = productRepository;
         }
+      
 
         [HttpGet]
         public IActionResult ImportProductFromExcel()
         {
-            return View();
+            var model = new ProductImportPage();
+            return View(model);
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> ImportProductFromExcel(FilterWordsDto dto)
-        //{
-        //    if (Request.Form.Files.Count != 1)
-        //    {
-        //        ViewBag.OperationResult = new OperationResult { Message = Language.GetString("FileImportExport_SelectFilesNotSelected"), Succeeded = false };
-        //        return View();
-        //    }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ImportProductFromExcel(ProductImportPage model)
+        {
+            var res = new ProductImportPage();
+            var result = new DataLayer.Models.Shared.Result();
+            var lst = new List<ProductExcelImport>();
+            if (model.ProductsExcelFile == null)
+            {
+                ViewBag.OperationResult = new OperationResult { Message = Language.GetString("FileImportExport_NoFileSelected"), Succeeded = false };
+                return View(res);
+            }
 
-        //    string filePath = "";
-        //    string[] extension = { ".xls", ".xlsx" };
+            #region ImageSection
+            var imageFormFile = model.ProductImages;
+            string tempFolderPath = "";
+            if (model.ProductImages != null)
+            {
+                tempFolderPath = Path.Combine(_configuration["LocalStaticFileStorage"], "Temp", imageFormFile.FileName);
+                using (FileStream inputStream = new(tempFolderPath, FileMode.Create))
+                {
+                    await imageFormFile.CopyToAsync(inputStream);
+                    byte[] array = new byte[inputStream.Length];
+                    inputStream.Seek(0, SeekOrigin.Begin);
+                    inputStream.Read(array, 0, array.Length);
+                    inputStream.Close();
+                }
+            }
 
-        //    foreach (IFormFile formFile in Request.Form.Files)
-        //    {
-        //        if (formFile is not { Length: > 0 })
-        //        {
-        //            continue;
-        //        }
+            #endregion 
+            string[] extension = { ".xls", ".xlsx" };
+            string filePath = "";
+            string productImagePath = Path.Combine(_configuration["LocalStaticFileStorage"] , "images/Products");
+            //foreach (IFormFile formFile in Request.Form.Files)
+            //{
+            var formFile = model.ProductsExcelFile;
+            if (formFile is { Length: > 0 })
+            {
+                if (!extension.Any(e => e.Equals(Path.GetExtension(formFile.FileName))))
+                {
+                    ViewBag.OperationResult = new OperationResult { Message = Language.GetString("FileImportExport_InvalidContentType"), Succeeded = false };
+                    return View();
+                }
 
-        //        if (!extension.Any(e => e.Equals(Path.GetExtension(formFile.FileName))))
-        //        {
-        //            ViewBag.OperationResult = new OperationResult { Message = Language.GetString("FileImportExport_InvalidContentType"), Succeeded = false };
-        //            return View();
-        //        }
+                string fileName = $"{Guid.NewGuid()}{Path.GetExtension(formFile.FileName)}";
+                filePath = Path.Combine(_configuration["LocalStaticFileStorage"], "Excel/Products", fileName);
 
-        //        string fileName = $"{Guid.NewGuid()}{Path.GetExtension(formFile.FileName)}";
-        //        filePath = $"{Startup.RequestMainPath}\\{fileName}";
 
-        //        await using FileStream inputStream = new(filePath, FileMode.Create);
-        //        await formFile.CopyToAsync(inputStream);
-        //        byte[] array = new byte[inputStream.Length];
-        //        inputStream.Seek(0, SeekOrigin.Begin);
-        //        inputStream.Read(array, 0, array.Length);
-        //        inputStream.Close();
-        //    }
+                await using FileStream inputStream = new(filePath, FileMode.Create);
+                await formFile.CopyToAsync(inputStream);
+                byte[] array = new byte[inputStream.Length];
+                inputStream.Seek(0, SeekOrigin.Begin);
+                inputStream.Read(array, 0, array.Length);
+                inputStream.Close();
 
-        //    List<string> words = new();
-        //    using (XLWorkbook wb = new(filePath))
-        //    {
-        //        foreach (IXLWorksheet ws in wb.Worksheets)
-        //        {
-        //            IXLColumn col = ws.FirstColumnUsed();
-        //            words = col.AsRange().CellsUsed().AsEnumerable().Select(x => x.Value.ToString()).ToList();
-        //        }
-        //    }
+                using (XLWorkbook wb = new(filePath))
+                {
+                    var ws = wb.Worksheet("Sheet1");
+                    var titleRow = ws.FirstRowUsed();
+                    //var usedColsInRow = titleRow.RowUsed();
+                    var productRow = titleRow.RowBelow();
+                    int rowNumber = 2;
+                    while (!productRow.IsEmpty())
+                    {
+                        var dto = new ProductExcelImport();
+                        
+                        dto.ProductName = productRow.Cell("A").GetString();
+                        
+                        dto.Inventory = productRow.Cell("B").GetValue<int>();
+                        dto.ProductUnit = productRow.Cell("C").GetString();
+                        dto.IsPublishOnMainDomain = productRow.Cell("D").GetString() == "بله" ? true : false;
+                        dto.ShowInLackOfInventory = productRow.Cell("E").GetString() == "بله" ? true : false;
+                        dto.UniqueCode = productRow.Cell("F").GetString();
+                        dto.SeoTitle = productRow.Cell("G").GetString();
+                        dto.SeoDescription = productRow.Cell("H").GetString();
+                        dto.Price = productRow.Cell("I").GetValue<long>();
+                        dto.TagKeywords = productRow.Cell("J").GetString();
+                        
+                        if(System.IO.File.Exists(tempFolderPath))
+                        {
+                            string sourceFilePath = "";
+                            if(System.IO.File.Exists(Path.Combine(tempFolderPath, $"{rowNumber}.jpg")))
+                            {
+                                sourceFilePath = Path.Combine(tempFolderPath, $"{rowNumber}.jpg");
+                                var imageId = Guid.NewGuid().ToString();
+                                
+                                var filePathForDestinationCopy = Path.Combine(productImagePath, $"{imageId}.jpg");
+                                System.IO.File.Copy(sourceFilePath, filePathForDestinationCopy);
+                                dto.ProductImage = new DataLayer.Models.Shared.Image()
+                                {
+                                    ImageId = imageId,
+                                    Url = "images/products/{imageId}.jpg",
+                                    IsMain = true
+                                };
+                            }
+                        }
+                        lst.Add(dto);
 
-        //    if (!words.Any())
-        //    {
-        //        ViewBag.OperationResult = new OperationResult { Message = Language.GetString("FileImportExport_FileEmpty"), Succeeded = false };
-        //        return View(dto);
-        //    }
+                        productRow = productRow.RowBelow();
+                    }
+                }
 
-        //    int successCount = 0;
-        //    int failedList = 0;
+                result = await _productRepository.ImportFromExcel(lst);
+            }
 
-        //    try
-        //    {
-        //        if (User.IsSystemAccount())
-        //        {
-        //            await SaveFilterWords();
-        //        }
-        //        else
-        //        {
-        //            await SaveUserFilterWords();
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Log.Fatal(e.Message);
-        //        return StatusCode(500, new { Message = ConstMessages.ErrorInSaving });
-        //    }
-
-        //    async Task SaveFilterWords()
-        //    {
-        //        ConcurrentDictionary<string, FilterWords> successList = new();
-        //        ConcurrentDictionary<string, FilterWords> storedWords = new();
-
-        //        foreach (string currentWords in words)
-        //        {
-        //            try
-        //            {
-        //                if (string.IsNullOrEmpty(currentWords))
-        //                {
-        //                    continue;
-        //                }
-
-        //                Stopwatch t1 = Stopwatch.StartNew();
-        //                storedWords.TryGetValue(currentWords, out FilterWords foundInStoredNumbers);
-        //                t1.Stop();
-
-        //                if (foundInStoredNumbers != null)
-        //                {
-        //                    storedWords.TryRemove(currentWords, out FilterWords _);
-
-        //                    successList.TryAdd(currentWords,
-        //                                       new()
-        //                                       {
-        //                                           CreationDate = DateTime.Now,
-        //                                           CreatorId = User.GetUserId(),
-        //                                           CreatorUserName = User.GetUserName(),
-        //                                           Words = currentWords,
-        //                                           Id = ObjectId.GenerateNewId(DateTime.Now).ToString(),
-        //                                           IsActive = true
-        //                                       });
-
-        //                    continue;
-        //                }
-
-        //                successList.TryAdd(currentWords,
-        //                                   new()
-        //                                   {
-        //                                       CreationDate = DateTime.Now,
-        //                                       CreatorId = User.GetUserId(),
-        //                                       CreatorUserName = User.GetUserName(),
-        //                                       Words = currentWords,
-        //                                       Id = ObjectId.GenerateNewId(DateTime.Now).ToString(),
-        //                                       IsActive = true
-        //                                   });
-        //                successCount++;
-        //            }
-        //            catch
-        //            {
-        //                failedList++;
-        //            }
-        //        }
-
-        //        foreach ((string key, FilterWords item) in storedWords)
-        //        {
-        //            successList.TryAdd(key, item);
-        //        }
-
-        //        if (System.IO.File.Exists(filePath))
-        //        {
-        //            System.IO.File.Delete(filePath);
-        //        }
-
-        //        if (successList.Any())
-        //        {
-        //            await _filterWordsRepository.SaveList(successList.Select(x => x.Value).ToList());
-        //        }
-        //    }
-
-        //    async Task SaveUserFilterWords()
-        //    {
-        //        ConcurrentDictionary<string, UserFilterWords> successList = new();
-        //        ConcurrentDictionary<string, UserFilterWords> storedWords = new();
-
-        //        foreach (string currentWords in words)
-        //        {
-        //            try
-        //            {
-        //                if (string.IsNullOrEmpty(currentWords))
-        //                {
-        //                    continue;
-        //                }
-
-        //                Stopwatch t1 = Stopwatch.StartNew();
-        //                storedWords.TryGetValue(currentWords, out UserFilterWords foundInStoredNumbers);
-        //                t1.Stop();
-
-        //                if (foundInStoredNumbers != null)
-        //                {
-        //                    storedWords.TryRemove(currentWords, out UserFilterWords _);
-
-        //                    successList.TryAdd(currentWords,
-        //                                       new()
-        //                                       {
-        //                                           CreationDate = DateTime.Now,
-        //                                           CreatorId = User.GetUserId(),
-        //                                           CreatorUserName = User.GetUserName(),
-        //                                           Words = currentWords,
-        //                                           Id = ObjectId.GenerateNewId(DateTime.Now).ToString(),
-        //                                           IsActive = true
-        //                                       });
-
-        //                    continue;
-        //                }
-
-        //                successList.TryAdd(currentWords,
-        //                                   new()
-        //                                   {
-        //                                       CreationDate = DateTime.Now,
-        //                                       CreatorId = User.GetUserId(),
-        //                                       CreatorUserName = User.GetUserName(),
-        //                                       Words = currentWords,
-        //                                       Id = ObjectId.GenerateNewId(DateTime.Now).ToString(),
-        //                                       IsActive = true
-        //                                   });
-        //                successCount++;
-        //            }
-        //            catch
-        //            {
-        //                failedList++;
-        //            }
-        //        }
-
-        //        foreach ((string key, UserFilterWords item) in storedWords)
-        //        {
-        //            successList.TryAdd(key, item);
-        //        }
-
-        //        if (System.IO.File.Exists(filePath))
-        //        {
-        //            System.IO.File.Delete(filePath);
-        //        }
-
-        //        if (successList.Any())
-        //        {
-        //            await _userFilterWordsRepository.SaveList(successList.Select(x => x.Value).ToList());
-        //        }
-        //    }
-
-        //    ViewBag.OperationResult = new OperationResult { Message = string.Format(GetString("FileImportExport_ResultMessage"), successCount, failedList), Succeeded = true, Url = Url.Action("List") };
-        //    return View(dto);
-        //}
+            ViewBag.OperationResult = new OperationResult { Message = Language.GetString("FileImportExport_ResultMessage"), Succeeded = res, Url = Url.Action("List") };
+            return View();
+        }
     }
 }

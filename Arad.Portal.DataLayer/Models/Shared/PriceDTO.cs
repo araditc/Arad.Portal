@@ -18,7 +18,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
 
         public string Prefix { get; set; }
 
-        public decimal PriceValue { get; set; }
+        public long PriceValue { get; set; }
 
         public bool IsActive { get; set; }
 

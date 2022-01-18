@@ -753,9 +753,7 @@ else
             }
 
             var dto = FillDataToSend();
-            console.log(dto);
-
-
+          
                 if (!flag) {
                     $.ajax({
                         url: "@Model.ProductId" != "" ? "/Product/Edit" : "/Product/Add",

@@ -457,6 +457,7 @@
         }
 
         function getURL(input) {
+            debugger;
             $("#logoCropped_result").remove();
                 if (input.files && input.files[0]) {
                 var file = input.files[0];
@@ -465,9 +466,12 @@
 
                 if (currentFileSize <= @ViewBag.PicSize) {
                 var reader = new FileReader();
-                try {
-                reader.readAsDataURL(file);
-                } catch (e) {
+                try
+                {
+                    reader.readAsDataURL(file);
+                }
+                catch (e)
+                {
                 }
                 reader.onload = function (e) {
                 var content = e.target.result;
@@ -479,27 +483,28 @@
                     $('#imgModalBody').attr('src', content);
                     setTimeout(showModal, 100);
                 setTimeout(initCropper, 500);
-                } else {
-
-
-                showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
-                document.getElementById("image").value = "";
-                    $("#logoCropped_result").remove();
                 }
-                } else {
+                else
+                {
+                    showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
+                    document.getElementById("image").value = "";
+                        $("#logoCropped_result").remove();
+                }
+                }
+                else
+                {
 
-                showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
-                document.getElementById("image").value = "";
-                    $("#logoCropped_result").remove();
+                    showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
+                    document.getElementById("image").value = "";
+                        $("#logoCropped_result").remove();
                 }
                 };
                 }
                 else
                 {
-
-                showError('@Language.GetString("AlertAndMessage_InvalidFileSize")');
-                document.getElementById("image").value = "";
-                    $("#logoCropped_result").remove();
+                    showError('@Language.GetString("AlertAndMessage_InvalidFileSize")');
+                    document.getElementById("image").value = "";
+                        $("#logoCropped_result").remove();
                 }
                 }
         }
