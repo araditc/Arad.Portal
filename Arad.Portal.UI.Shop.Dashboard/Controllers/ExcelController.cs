@@ -11,24 +11,68 @@ using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.DataLayer.Models.Product;
 using Microsoft.Extensions.Configuration;
 using Arad.Portal.DataLayer.Contracts.Shop.Product;
+using Arad.Portal.DataLayer.Contracts.Shop.ProductGroup;
+using Arad.Portal.DataLayer.Models.Shared;
+using System.Security.Claims;
+using Arad.Portal.DataLayer.Contracts.General.Language;
+using System.IO.Compression;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
     public class ExcelController : Controller
     {
         private readonly IConfiguration _configuration;
+        private IHostingEnvironment _Environment;
         private readonly IProductRepository _productRepository;
-        public ExcelController(IConfiguration configuration, IProductRepository productRepository)
+        private readonly ILanguageRepository _languageRepository;
+        private readonly IProductGroupRepository _productGroupRepository;
+        public ExcelController(IConfiguration configuration,
+            IProductRepository productRepository,
+            IHostingEnvironment env,
+            IProductGroupRepository groupRepository,
+            ILanguageRepository languageRepository)
         {
             _configuration = configuration;
             _productRepository = productRepository;
+            _productGroupRepository = groupRepository;
+            _languageRepository = languageRepository;
+            _Environment = env;
         }
       
+        [HttpGet]
+        public  ActionResult GetTemplate()
+        {
+            ViewBag.LangList = _languageRepository.GetAllActiveLanguage();
+            return View();
+        }
 
         [HttpGet]
-        public IActionResult ImportProductFromExcel()
+        public ActionResult DownloadTemplate(string languageId)
+        {
+            var lanEntity = _languageRepository.FetchLanguage(languageId);
+            var lanSymbol = lanEntity.Symbol;
+
+            var filePath =  Path.Combine(_Environment.WebRootPath, $"assets/{lanSymbol}_ProductImportTemplate.xlsx");
+           
+
+            // Calling the ReadAllBytes() function
+            byte[] fileContent = System.IO.File.ReadAllBytes(filePath);
+            return File(fileContent,
+                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                 "Template.xlsx");
+        }
+        [HttpGet]
+        public async Task<IActionResult> ImportProductFromExcel()
         {
             var model = new ProductImportPage();
+
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var lan = _languageRepository.GetDefaultLanguage(currentUserId);
+            var groupList = await _productGroupRepository.GetAlActiveProductGroup(lan.LanguageId, currentUserId);
+            groupList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
+            ViewBag.ProductGroupList = groupList;
+
             return View(model);
         }
 
@@ -41,16 +85,20 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var lst = new List<ProductExcelImport>();
             if (model.ProductsExcelFile == null)
             {
-                ViewBag.OperationResult = new OperationResult { Message = Language.GetString("FileImportExport_NoFileSelected"), Succeeded = false };
+                ViewBag.OperationResult = new OperationResult 
+                { Message = Language.GetString("FileImportExport_NoFileSelected"), 
+                    Succeeded = false 
+                };
                 return View(res);
             }
 
             #region ImageSection
             var imageFormFile = model.ProductImages;
-            string tempFolderPath = "";
+            string tempUnzipFolderPath = "";
             if (model.ProductImages != null)
             {
-                tempFolderPath = Path.Combine(_configuration["LocalStaticFileStorage"], "Temp", imageFormFile.FileName);
+                var tempFolderPath = Path.Combine(_configuration["LocalStaticFileStorage"], "Temp", imageFormFile.FileName).Replace("\\","/");
+                tempUnzipFolderPath = Path.Combine(_configuration["LocalStaticFileStorage"], "Temp").Replace("\\", "/");
                 using (FileStream inputStream = new(tempFolderPath, FileMode.Create))
                 {
                     await imageFormFile.CopyToAsync(inputStream);
@@ -59,12 +107,19 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     inputStream.Read(array, 0, array.Length);
                     inputStream.Close();
                 }
+                var extractedFolderPath = Path.Combine(tempUnzipFolderPath, Path.GetFileNameWithoutExtension(imageFormFile.FileName)).Replace("\\", "/");
+                if (Directory.Exists(extractedFolderPath))
+                {
+                    Directory.Delete(tempUnzipFolderPath);
+                }
+                ZipFile.ExtractToDirectory(tempFolderPath, tempUnzipFolderPath);
+                tempUnzipFolderPath = extractedFolderPath;
             }
 
             #endregion 
             string[] extension = { ".xls", ".xlsx" };
             string filePath = "";
-            string productImagePath = Path.Combine(_configuration["LocalStaticFileStorage"] , "images/Products");
+            string productImagePath = Path.Combine(_configuration["LocalStaticFileStorage"] , "images/Products").Replace("\\", "/");
             //foreach (IFormFile formFile in Request.Form.Files)
             //{
             var formFile = model.ProductsExcelFile;
@@ -102,28 +157,28 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         
                         dto.Inventory = productRow.Cell("B").GetValue<int>();
                         dto.ProductUnit = productRow.Cell("C").GetString();
-                        dto.IsPublishOnMainDomain = productRow.Cell("D").GetString() == "بله" ? true : false;
-                        dto.ShowInLackOfInventory = productRow.Cell("E").GetString() == "بله" ? true : false;
+                        dto.IsPublishOnMainDomain = productRow.Cell("D").GetString() == "بله";
+                        dto.ShowInLackOfInventory = productRow.Cell("E").GetString() == "بله";
                         dto.UniqueCode = productRow.Cell("F").GetString();
                         dto.SeoTitle = productRow.Cell("G").GetString();
                         dto.SeoDescription = productRow.Cell("H").GetString();
                         dto.Price = productRow.Cell("I").GetValue<long>();
                         dto.TagKeywords = productRow.Cell("J").GetString();
                         
-                        if(System.IO.File.Exists(tempFolderPath))
+                        if(Directory.Exists(tempUnzipFolderPath))
                         {
                             string sourceFilePath = "";
-                            if(System.IO.File.Exists(Path.Combine(tempFolderPath, $"{rowNumber}.jpg")))
+                            if(System.IO.File.Exists(Path.Combine(tempUnzipFolderPath, $"{rowNumber}.jpg").Replace("\\","/")))
                             {
-                                sourceFilePath = Path.Combine(tempFolderPath, $"{rowNumber}.jpg");
+                                sourceFilePath = Path.Combine(tempUnzipFolderPath, $"{rowNumber}.jpg").Replace("\\", "/");
                                 var imageId = Guid.NewGuid().ToString();
                                 
-                                var filePathForDestinationCopy = Path.Combine(productImagePath, $"{imageId}.jpg");
+                                var filePathForDestinationCopy = Path.Combine(productImagePath, $"{imageId}.jpg").Replace("\\", "/");
                                 System.IO.File.Copy(sourceFilePath, filePathForDestinationCopy);
-                                dto.ProductImage = new DataLayer.Models.Shared.Image()
+                                dto.ProductImage = new Image()
                                 {
                                     ImageId = imageId,
-                                    Url = "images/products/{imageId}.jpg",
+                                    Url = $"images/products/{imageId}.jpg",
                                     IsMain = true
                                 };
                             }
@@ -136,9 +191,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                 result = await _productRepository.ImportFromExcel(lst);
             }
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var lan = _languageRepository.GetDefaultLanguage(currentUserId);
+            var groupList = await _productGroupRepository.GetAlActiveProductGroup(lan.LanguageId, currentUserId);
+            groupList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
+            ViewBag.ProductGroupList = groupList;
 
-            ViewBag.OperationResult = new OperationResult { Message = Language.GetString("FileImportExport_ResultMessage"), Succeeded = res, Url = Url.Action("List") };
-            return View();
+            ViewBag.OperationResult = new OperationResult { Message = Language.GetString("FileImportExport_ResultMessage"),
+                                                            Succeeded = result.Succeeded, 
+                                                          };
+            return View(model);
         }
     }
 }

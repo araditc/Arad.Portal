@@ -162,7 +162,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return result;
         }
 
-        [HttpGet]
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             Result opResult = await _unitRepository.Delete(id);

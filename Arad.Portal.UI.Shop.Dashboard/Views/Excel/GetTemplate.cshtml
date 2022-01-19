@@ -1,0 +1,56 @@
+﻿@{
+   
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card pb-0 rounded-3 shadow-sm">
+    <div class="card-header py-2 bg-secondary bg-gradient bg-opacity-10">
+        <p class="my-0 fw-bold col fs-5">
+            @*<i class="fas fa-filter fs-3"></i>*@
+           @Language.GetString("FileImportExport_GetProductExcelFileTemplate")
+        </p>
+    </div>
+    <div class="card-body">
+
+        <form  class="row g-3" enctype="multipart/form-data" method="post" role="form">
+
+            <div class="col-md-4">
+
+                <label class="form-label" for="formFile">
+                   @Language.GetString("ProductTemplateLanguage")
+                </label>
+                <select class="form-control selectpicker fs-6" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                </select>
+            </div>
+
+            <div class="col-md-12 text-end">
+                <button class="btn btn-success btn-sm pe-3" id="btnDownloadTemplate">
+                    <i class="fas fa-file-download px-1 mt-1">
+                    </i>@Language.GetString("Download")
+                </button>
+                
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{ 
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#btnDownloadTemplate").click(function () {
+            debugger;
+            $.ajax({
+                url: "/Excel/DownloadTemplate?languageId=" + $("#languageId").val(),
+                contentType: 'application/json',
+                type: 'Get',
+                dataType: 'json',
+                beforeSend: function () {
+                },
+                success: function (result) {
+                }
+            });
+        });
+    });
+</script>
+}

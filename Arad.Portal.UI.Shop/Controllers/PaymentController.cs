@@ -44,7 +44,8 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
 
-        public async Task<IActionResult> InitializePay(string userCartId, PspType type)
+        [HttpPost]
+        public async Task<IActionResult> InitializePay([FromQuery]string userCartId, [FromQuery] PspType type)
         {
             if(_shoppingCartRepository.UserCartShoppingValidation(userCartId))
             {

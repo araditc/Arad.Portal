@@ -8,6 +8,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 {
     public class ProductImportPage
     {
+        public ProductImportPage()
+        {
+            ProductGroupIds = new();
+        }
+        public List<string> ProductGroupIds { get; set; }
         public IFormFile ProductImages { get; set; } = null;
 
         public IFormFile ProductsExcelFile { get; set; } = null;

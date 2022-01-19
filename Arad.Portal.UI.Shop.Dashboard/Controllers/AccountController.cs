@@ -785,7 +785,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         }
 
-        [HttpGet]
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             JsonResult result = new JsonResult(new

@@ -230,7 +230,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             : new { Status = "Error", saveResult.Message });
             return result;
         }
-        [HttpGet]
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             Result opResult = await _contentCategoryRepository.Delete(id, "delete");

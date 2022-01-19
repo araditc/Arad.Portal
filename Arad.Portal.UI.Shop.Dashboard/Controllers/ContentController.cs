@@ -180,7 +180,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return View(model);
         }
 
-        [HttpGet]
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             Result opResult = await _contentRepository.Delete(id, "delete");

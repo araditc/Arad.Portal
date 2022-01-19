@@ -205,6 +205,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             : new { Status = "Error", saveResult.Message });
             return result;
         }
+
+
         [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {

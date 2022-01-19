@@ -93,6 +93,9 @@
 	</string>
 	<!--End [buttons text]-->
 	<!--Start[FileImport]-->
+	<string key="FileImportExport_GetProductExcelFileTemplate">
+		<value>get template for product import via excel file</value>
+	</string>
 	<string key="FileImportExport_InvalidContentType">
 		<value>file type is not an excel file.</value>
 	</string>
@@ -506,6 +509,9 @@
 	</string>
 	<string key="EnumDesc_Active">
 		<value>Active</value>
+	</string>
+	<string key="Download">
+		<value>download</value>
 	</string>
 	<string key="EnumDesc_Dependency">
 		<value>Dependency</value>
@@ -1986,7 +1992,7 @@
 	<string key="Search">
 		<value>Search</value>
 	</string>
-	<string key="RelatedLanguage">Essential
+	<string key="RelatedLanguage">
 		<value>Related Language</value>
 	</string>
 	<string key="CurrentDomainPrice">
@@ -1998,6 +2004,9 @@
 	
 	<string key="DefaultLanguage">
 		<value>Default Language</value>
+	</string>
+	<string key="ProductTemplateLanguage">
+		<value>Product Template File Language</value>
 	</string>
 	<string key="LanguageName">
 		<value>Language Name</value>

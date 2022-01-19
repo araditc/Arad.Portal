@@ -249,7 +249,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         //    return result;
         //}
 
-        [HttpGet]
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             JsonResult result;

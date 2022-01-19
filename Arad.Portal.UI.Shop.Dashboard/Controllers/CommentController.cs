@@ -114,7 +114,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return View(model);
         }
 
-        [HttpGet]
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);

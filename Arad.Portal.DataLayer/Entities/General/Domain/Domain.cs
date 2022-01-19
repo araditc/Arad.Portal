@@ -58,6 +58,10 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
         public string InvoiceNumberInitializer { get; set; }
 
         public int? IncreasementValue { get; set; }
+        /// <summary>
+        /// روش حمل پیش فرض فروشنده
+        /// </summary>
+        public string DefaultShippingTypeId { get; set; }
     }
 
 

@@ -45,6 +45,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Setting
 
         public decimal FixedExpenseValue { get; set; }
 
+        /// <summary>
+        /// if it has any provider then it used that provider for calculating expense
+        /// </summary>
         public string ProviderId { get; set; }
 
         public string ProviderName { get; set; }

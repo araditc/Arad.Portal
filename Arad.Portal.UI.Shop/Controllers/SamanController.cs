@@ -36,10 +36,9 @@ namespace Arad.Portal.UI.Shop.Controllers
             HttpClientHelper httpClientHelper, IConfiguration configuration) : base(accessor)
         {
             _domainRepository = domainRepository;
-            MethodInfo method = typeof(XmlSerializer)
-                .GetMethod("set_Mode", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
-            method.Invoke(null, new object[] { 1 });
-
+            //MethodInfo method = typeof(XmlSerializer)
+            //    .GetMethod("set_Mode", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+            //method.Invoke(null, new object[] { 1 });
             _transactionRepository = transactionRepository;
             _httpClientHelper = httpClientHelper;
             _configuration = configuration;
@@ -99,9 +98,14 @@ namespace Arad.Portal.UI.Shop.Controllers
                 additionalData = PspActions.ClientTokenRequest.GetDescription()
             });
 
-            var response = await httpClient.PostAsync(samanModel.TokenEndPoint, content);
+            var httpResponseMessage = await httpClient.PostAsync(samanModel.TokenEndPoint, content);
+
+
+            //???
+            //httpResponseMessage.EnsureSuccessStatusCode();
+
             var tokenResponseTime = DateTime.Now;
-            var serializedTokenResponse = await response.Content.ReadAsStringAsync();
+            var serializedTokenResponse = await httpResponseMessage.Content.ReadAsStringAsync();
 
             transaction.EventsData.Add(new EventData()
             {
@@ -111,7 +115,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 additionalData = PspActions.PspTokenResponse.GetDescription()
             });
             await _transactionRepository.UpdateTransaction(transaction);
-            if (response.IsSuccessStatusCode)
+            if (httpResponseMessage.IsSuccessStatusCode)
             {
                 try
                 {
