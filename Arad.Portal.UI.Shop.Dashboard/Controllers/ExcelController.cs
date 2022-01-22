@@ -48,16 +48,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpGet]
-        public ActionResult DownloadTemplate(string languageId)
+        public async Task<FileResult> DownloadTemplate(string languageId)
         {
             var lanEntity = _languageRepository.FetchLanguage(languageId);
             var lanSymbol = lanEntity.Symbol;
 
             var filePath =  Path.Combine(_Environment.WebRootPath, $"assets/{lanSymbol}_ProductImportTemplate.xlsx");
-           
-
             // Calling the ReadAllBytes() function
-            byte[] fileContent = System.IO.File.ReadAllBytes(filePath);
+            byte[] fileContent = await System.IO.File.ReadAllBytesAsync(filePath);
             return File(fileContent,
                  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                  "Template.xlsx");
@@ -110,7 +108,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 var extractedFolderPath = Path.Combine(tempUnzipFolderPath, Path.GetFileNameWithoutExtension(imageFormFile.FileName)).Replace("\\", "/");
                 if (Directory.Exists(extractedFolderPath))
                 {
-                    Directory.Delete(tempUnzipFolderPath);
+                    Directory.Delete(extractedFolderPath, true);
                 }
                 ZipFile.ExtractToDirectory(tempFolderPath, tempUnzipFolderPath);
                 tempUnzipFolderPath = extractedFolderPath;
@@ -200,6 +198,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.OperationResult = new OperationResult { Message = Language.GetString("FileImportExport_ResultMessage"),
                                                             Succeeded = result.Succeeded, 
                                                           };
+            
             return View(model);
         }
     }

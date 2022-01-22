@@ -24,7 +24,8 @@
             <div class="row">
                 <div class="form-group col-md-4">
                     <label class="form-label" asp-for="@Model.ProductGroupIds">@Language.GetString("tbl_ProductGroup")</label>
-                    <select class="form-control selectpicker fs-6" asp-for="@Model.ProductGroupIds" multiple="multiple" asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))">
+                    <select class="form-control selectpicker fs-6" multiple="multiple"
+                            asp-for="@Model.ProductGroupIds" asp-items="@(new MultiSelectList(ViewBag.ProductGroupList,"Value","Text"))" data-live-search="true">
                     </select>
                     <span data-val-result="GroupIds" class="text-danger"></span>
                 </div>
@@ -113,7 +114,8 @@
                     {
                         setTimeout(function()
                             {
-                                window.location.href = '@operationResult.Url';
+                            // window.location.href = '@operationResult.Url';
+                            window.location.reload();
                             },
                             2500);
                     }

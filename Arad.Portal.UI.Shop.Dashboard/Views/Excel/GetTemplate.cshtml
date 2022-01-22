@@ -19,12 +19,12 @@
                 <label class="form-label" for="formFile">
                    @Language.GetString("ProductTemplateLanguage")
                 </label>
-                <select class="form-control selectpicker fs-6" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                <select class="form-control selectpicker fs-6" data-live-search="true" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                 </select>
             </div>
 
             <div class="col-md-12 text-end">
-                <button class="btn btn-success btn-sm pe-3" id="btnDownloadTemplate">
+                <button class="btn btn-success btn-sm pe-3" id="btnDownloadTemplate" @*onclick="download();"*@ type="button">
                     <i class="fas fa-file-download px-1 mt-1">
                     </i>@Language.GetString("Download")
                 </button>
@@ -35,22 +35,14 @@
 </div>
 
 @section Scripts{ 
-<script type="text/javascript">
+    <script type="text/javascript">
     $(document).ready(function () {
-
         $("#btnDownloadTemplate").click(function () {
             debugger;
-            $.ajax({
-                url: "/Excel/DownloadTemplate?languageId=" + $("#languageId").val(),
-                contentType: 'application/json',
-                type: 'Get',
-                dataType: 'json',
-                beforeSend: function () {
-                },
-                success: function (result) {
-                }
-            });
+            var lanId = $("#languageId").val();
+            window.location.href = '/Excel/DownloadTemplate?languageId=' + lanId;
+            $("#loading").removeClass('is-active');
         });
     });
-</script>
+    </script>
 }

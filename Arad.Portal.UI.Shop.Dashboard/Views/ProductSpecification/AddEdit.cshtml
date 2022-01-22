@@ -42,19 +42,19 @@
                 <input type="hidden" value="@Model.ProductSpecificationId" asp-for="@Model.ProductSpecificationId" />
                 <div class="row align-items-center p-2" >
                     <div class="form-group col-md-3">
-                        <label for="languageId">@Language.GetString("LanguageName")</label><br />
-                        <select class="form-control selectpicker" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                        <label class="form-label" for="languageId">@Language.GetString("LanguageName")</label><br />
+                        <select class="form-control selectpicker" data-live-search="true" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                         </select>
                         <span data-val-result="languageId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label asp-for="@Model.SpecificationGroupId">@Language.GetString("tbl_GroupName")</label>
-                        <select class="form-control selectpicker" asp-for="@Model.SpecificationGroupId" asp-items="@(new SelectList(ViewBag.SpecificationGroupList,"Value","Text"))">
+                        <label class="form-label" asp-for="@Model.SpecificationGroupId">@Language.GetString("tbl_GroupName")</label>
+                        <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.SpecificationGroupId" asp-items="@(new SelectList(ViewBag.SpecificationGroupList,"Value","Text"))">
                         </select>
                         <span data-val-result="specificationGroupId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="name">@Language.GetString("Name")</label><br />
+                        <label class="form-label" for="name">@Language.GetString("Name")</label><br />
                         <input type="text" class="form-control" id="name" placeholder=" ">
                         <span data-val-result="name" class="text-danger"></span>
                     </div>
@@ -71,7 +71,7 @@
 
                 <div class="row align-items-center alert alert-secondary m-md-4 m-0">
                     <div class="form-group col-md-3">
-                        <label for="nameValuesInput">@Language.GetString("tbl_SpecificationValues")</label>
+                        <label class="form-label" for="nameValuesInput">@Language.GetString("tbl_SpecificationValues")</label>
                         <input type="text" class="form-control" id="nameValuesInput" placeholder='@Language.GetString("specificationName_placeHolder")'>
 
                     </div>

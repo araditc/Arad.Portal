@@ -53,17 +53,17 @@
             <div class="row">
 
                 <div class="form-group col-md-3">
-                    <label>@Language.GetString("LanguageName")</label>
-                    <select class="form-control" id="cmbLangIdFilter" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                    <label class="form-label">@Language.GetString("LanguageName")</label>
+                    <select class="form-control selectpicker" id="cmbLangIdFilter" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))" data-live-search="true">
                     </select>
                 </div>
                 <div class="form-group col-md-3">
-                    <label>@Language.GetString("Menu_ContentCategory")</label>
-                    <select class="form-control" id="contentCategoryId" asp-items="@(new SelectList(ViewBag.CatList,"Value","Text"))">
+                    <label class="form-label">@Language.GetString("Menu_ContentCategory")</label>
+                    <select class="form-control data-live-search="true"" id="contentCategoryId" asp-items="@(new SelectList(ViewBag.CatList,"Value","Text"))" data-live-search="true">
                     </select>
                 </div>
                 <div class="form-group col-md-3">
-                    <label>@Language.GetString("Filter")</label>
+                    <label class="form-label">@Language.GetString("Filter")</label>
                     <input type="text" class="form-control" id="filter" />
                     <span data-val-result="filter" class="text-danger"></span>
                 </div>

@@ -124,6 +124,10 @@
             }
         </style>
     }
+    else
+    {
+            <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css" rel="stylesheet" />
+    }
 }
 
 <h4>@Language.GetString("Menu_Content")</h4>
@@ -176,24 +180,24 @@
                 <input type="hidden" value="@Model.ContentId" asp-for="ContentId" />
                 <div class="row">
                     <div class="col-md-3">
-                        <label asp-for="@Model.LanguageId">@Language.GetString("RelatedLanguage")</label>
-                        <select class="form-control" asp-for="@Model.LanguageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text", Model.LanguageId))">
+                        <label class="form-label" asp-for="@Model.LanguageId">@Language.GetString("RelatedLanguage")</label>
+                        <select class="form-control selectpicker" asp-for="@Model.LanguageId" data-live-search="true" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text", Model.LanguageId))">
                         </select>
                         <span data-val-result="LanguageId" class="text-danger"></span>
                     </div>
                     <div class="col-md-3">
-                        <label asp-for="@Model.ContentCategoryId">@Language.GetString("Menu_ContentCategory")</label>
-                        <select class="form-control" asp-for="@Model.ContentCategoryId" asp-items="@(new SelectList(ViewBag.CatList,"Value","Text", Model.ContentCategoryId))">
+                        <label class="form-label" asp-for="@Model.ContentCategoryId">@Language.GetString("Menu_ContentCategory")</label>
+                        <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.ContentCategoryId" asp-items="@(new SelectList(ViewBag.CatList,"Value","Text", Model.ContentCategoryId))">
                         </select>
                         <span data-val-result="ContentCategoryId" class="text-danger"></span>
                     </div>
                     <div class="col-md-3">
-                        <label asp-for="Title">@Language.GetString("Entities_Title")</label>
+                        <label class="form-label" asp-for="Title">@Language.GetString("Entities_Title")</label>
                         <input type="text" class="form-control" asp-for="@Model.Title" placeholder=" " value="@Model.Title">
                         <span data-val-result="Title" class="text-danger"></span>
                     </div>
                     <div class="col-md-3">
-                        <label asp-for="SubTitle">@Language.GetString("Entities_SubTitle")</label>
+                        <label class="form-label" asp-for="SubTitle">@Language.GetString("Entities_SubTitle")</label>
                         <input type="text" class="form-control" asp-for="@Model.SubTitle" placeholder=" " value="@Model.SubTitle">
                         <span data-val-result="SubTitle" class="text-danger"></span>
                     </div>
@@ -201,22 +205,23 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label asp-for="Description">@Language.GetString("Description")</label>
+                        <label class="form-label" asp-for="Description">@Language.GetString("Description")</label>
                         <textarea dir="rtl" asp-for="Description" class="form-control" rows="3">@Model.Description</textarea>
                         <span data-val-result="Description" class="text-danger"></span>
                     </div>
                     <div class="col-md-6">
-                        <label asp-for="SeoDescription">@Language.GetString("SeoDescription")</label>
+                        <label class="form-label" asp-for="SeoDescription">@Language.GetString("SeoDescription")</label>
                         <textarea dir="rtl" asp-for="SeoDescription" class="form-control" rows="3">@Model.SeoDescription</textarea>
                         <span data-val-result="SeoDescription" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3">
-                        <label>@Language.GetString("StartShowDate")</label>
+                        <label class="form-label">@Language.GetString("StartShowDate")</label>
+                        
                         @if (CultureInfo.CurrentCulture.Name == "fa-IR")
                         {
-                            <div class="input-group-prepend ">
+                            <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fa fa-calendar"></i>
                                 </span>
@@ -225,20 +230,22 @@
                         }
                         else
                         {
-                            <div class="input-group date" id="dtpStartShowDate" data-target-input="nearest">
-                                <input type="text" class="form-control datetimepicker-input" />
-                                <div class="input-group-append" data-toggle="datetimepicker">
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                </div>
+                            <div class="input-group date" data-provide="datepicker">
+                                <input type="text" class="form-control" id="dtpStartShowDate">
+                                <span class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
                             </div>
                         }
+
                         <span data-val-result="StartShowDate" class="text-danger"></span>
                     </div>
                     <div class="col-md-3">
-                        <label>@Language.GetString("EndShowDate")</label>
+                        <label class="form-label">@Language.GetString("EndShowDate")</label>
+                        
                         @if (CultureInfo.CurrentCulture.Name == "fa-IR")
                         {
-                            <div class="input-group-prepend ">
+                            <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fa fa-calendar"></i>
                                 </span>
@@ -247,44 +254,38 @@
                         }
                         else
                         {
-                            <div class="input-group date" id="dtpEndShowDate" data-target-input="nearest">
-                                <input type="text" class="form-control datetimepicker-input" />
-                                <div class="input-group-append" data-toggle="datetimepicker">
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                </div>
+                            <div class="input-group date" data-provide="datepicker">
+                                <input type="text" class="form-control" id="dtpEndShowDate">
+                                <span class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
                             </div>
                         }
                         <span data-val-result="EndShowDate" class="text-danger"></span>
                     </div>
                     <div class="col-md-3">
-                        <label>@Language.GetString("SourceType")</label>
-                        <select class="form-control" asp-for="SourceType" asp-items="@(new SelectList(ViewBag.AllSourceType,"Value","Text"))">
+                        <label class="form-label">@Language.GetString("SourceType")</label>
+                        <select class="form-control selectpicker" asp-for="SourceType" asp-items="@(new SelectList(ViewBag.AllSourceType,"Value","Text"))" data-live-search="true">
                         </select>
                         <span data-val-result="SourceType" class="text-danger"></span>
                     </div>
                     <div class="col-md-3">
-                        <label>@Language.GetString("ContentProviderName")</label>
+                        <label class="form-label">@Language.GetString("ContentProviderName")</label>
                         <input type="text" asp-for="ContentProviderName" class="form-control" />
                         <span data-val-result="ContentProviderName" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3">
-                        <label asp-for="SeoTitle">@Language.GetString("SeoTitle")</label>
+                        <label class="form-label" asp-for="SeoTitle">@Language.GetString("SeoTitle")</label>
                         <input type="text" class="form-control" asp-for="@Model.SeoTitle" placeholder="">
                         <span data-val-result="SeoTitle" class="text-danger"></span>
                     </div>
                     <div class="col-md-3">
-                        <label asp-for="@Model.ContentCode">@Language.GetString("tbl_ContentCode")</label>
+                        <label class="form-label" asp-for="@Model.ContentCode">@Language.GetString("tbl_ContentCode")</label>
                         <input type="text" class="form-control" asp-for="@Model.ContentCode" value="@Model.ContentCode" disabled />
                         <span data-val-result="ContentCode" class="text-danger"></span>
                     </div>
-                    @*<div class="col-md-3">
-                            <label asp-for="UrlFriend">@Language.GetString("UrlFriend")</label>
-                            <input type="text" class="form-control" asp-for="@Model.UrlFriend" placeholder=" ">
-                            <span data-val-result="UrlFriend" class="text-danger"></span>
-                        </div>*@
-
                 </div>
                 <div class="row">
                     <div class="col-md-12">
@@ -298,7 +299,7 @@
                                         <div class="custom-file">
                                             <input accept="image/x-png,image/jpeg"
                                                    type="file" class="btn btn-sm bg-gradient" name="image" id="image" onchange="getURL(this)">
-                                            <label class="custom-file-label" for="image">@Language.GetString("btn_UploadImage")</label>
+                                            <label class="form-label custom-file-label" for="image">@Language.GetString("btn_UploadImage")</label>
                                         </div>
                                     </div>
                                 </div>
@@ -346,7 +347,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <label for="tagKeywords">@Language.GetString("TagKeywords")</label>
+                        <label class="form-label" for="tagKeywords">@Language.GetString("TagKeywords")</label>
                         <input type="text" class="form-control" id="tagKeyWords" name="tagKeyWords" value="@(Model.TagKeywords.Count > 0 ? string.Join(',', @Model.TagKeywords) : "")" />
                     </div>
                 </div>
@@ -397,8 +398,6 @@
 
 @section Scripts{
     <script src="~/lib/cropperjs/cropper.js"></script>
-    <script src="~/js/plugins/bootstrap/js/bootstrap.min.js"></script>
-    <script src="~/js/bootstrap-select/bootstrap-select.js"></script>
     <script src="~/plugins/TagInput/jquery.amsify.suggestags.js"></script>
     @*ckeditor4*@
     <script src="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.js"></script>
@@ -407,13 +406,10 @@
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
         <script src="~/plugins/datePicker/kamadatepicker.min.js"></script>
-        @*<script src="~/plugins/ckeditor5/translations/fa.js"></script>*@
     }
     else
     {
-        <script src="~/js/moment.min.js"></script>
-        <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
-        @*<script src="~/plugins/ckeditor5/translations/en-au.js"></script>*@
+<script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
     }
    
 <script>
@@ -444,12 +440,7 @@
         }
         else
         {
-        $('#dtpStartDate').datetimepicker({
-        format: 'L'
-        });
-        $('#dtpEndShowDate').datetimepicker({
-        format: 'L'
-        });
+            $('.datepicker').datepicker();
         }
 
 

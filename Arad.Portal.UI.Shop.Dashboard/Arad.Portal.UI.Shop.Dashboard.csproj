@@ -32,9 +32,11 @@
   <ItemGroup>
     <Folder Include="wwwroot\Files\" />
     <Folder Include="wwwroot\ckEditorContentImages\" />
+    <Folder Include="wwwroot\lib\bootstrap5\fonts\" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\lib\bootstrap-select\css\bootstrap-select.css.map" />
     <None Include="wwwroot\lib\bootstrap-select\js\bootstrap-select.js" />
     <None Include="wwwroot\lib\bootstrap-select\js\bootstrap-select.js.map" />
     <None Include="wwwroot\lib\bootstrap-select\js\bootstrap-select.min.js" />

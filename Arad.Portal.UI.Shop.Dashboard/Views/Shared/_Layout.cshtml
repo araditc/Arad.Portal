@@ -60,15 +60,16 @@
     }
 
 
-    <link href="~/css/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
 
     @await RenderSectionAsync("Styles", required: false)
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap5/js/bootstrap.bundle.js"></script>
-    <script src="~/lib/bootstrap-select/js/bootstrap-select.min.js"></script>
+    <script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
     <script src="~/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 
 </head>
@@ -87,6 +88,21 @@
                 @Language.GetString("Menu_Dashboard_HomeTitle")
             </div>
             <div class="w-100 text-center fw-semibold" dir="ltr" id="dateTime"></div>
+            <div>
+                <ul class="list-group list-group-horizontal">
+                    <li class="list-group-item border-0 p-0">
+                        <a class="nav-link  p-1" role="button">
+                            <img src="/imgs/USA.png" onclick="setLang('en-US')" />
+                        </a>
+                    </li>
+                    <li class="list-group-item border-0 p-0">
+                        <a class="nav-link p-1" role="button">
+                            <img src="/imgs/IRAN.png" onclick="setLang('fa-IR')" />
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
@@ -180,14 +196,14 @@
 
 
 
-   
-    @*<script src="~/js/site.js" asp-append-version="true"></script>*@
-   
 
-<script>
+    @*<script src="~/js/site.js" asp-append-version="true"></script>*@
+
+    
+    <script>
 
     $(document).ready(function () {
-         
+
     });
     var entityId;
     var confirmUrl;
@@ -195,11 +211,11 @@
     var bsAlert = new bootstrap.Toast(document.getElementById('mainToast'));
 
     adjustSidebar();
-    
+
     window.addEventListener('load',
         () =>
         {
-          
+
             $("#loading").removeClass('is-active');
             $("#deleteToast").hide();
             $("#toastPanel").hide();
@@ -304,7 +320,7 @@
                 type: "GET",
                 url: '/Account/changeLang?langId=' + lang,
                 success: function () {
-                
+
                     window.location.reload();
                 }
             });
@@ -339,7 +355,7 @@
             success: function (resultData) {
                 debugger;
                 if (resultData.status.toLowerCase() === "success") {
-                   
+
                        $('#mainToastBody').html('<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessage_OperationDoneSuccessfully")');
 
                         //if ("data" in resultData)
@@ -406,7 +422,7 @@
         },
             1500);
     }
-</script>
+    </script>
 
 </body>
 </html>

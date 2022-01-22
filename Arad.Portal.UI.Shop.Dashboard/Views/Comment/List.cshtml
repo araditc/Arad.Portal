@@ -34,6 +34,10 @@
     {
         <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
     }
+    else
+    {
+        <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css" rel="stylesheet" />
+    }
 }
 
 <div class="card card-dark">
@@ -52,10 +56,11 @@
         <div class="card-body">
             <div class="row">
                 <div class="form-group col-md-3">
-                    <label>@Language.GetString("StartDate")</label>
+                    <label class="form-label">@Language.GetString("StartDate")</label>
+                    
                     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
                     {
-                        <div class="input-group-prepend ">
+                        <div class="input-group">
                             <span class="input-group-text">
                                 <i class="fa fa-calendar"></i>
                             </span>
@@ -64,16 +69,16 @@
                     }
                     else
                     {
-                        <div class="input-group date" id="dtpStartDate" data-target-input="nearest">
-                            <input type="text" class="form-control datetimepicker-input" />
-                            <div class="input-group-append" data-toggle="datetimepicker">
-                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                            </div>
+                        <div class="input-group date" data-provide="datepicker">
+                            <input type="text" class="form-control" id="dtpStartDate">
+                            <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </span>
                         </div>
                     }
                 </div>
                 <div class="form-group col-md-3">
-                    <label>@Language.GetString("EndDate")</label>
+                    <label class="form-label">@Language.GetString("EndDate")</label>
                     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
                     {
                         <div class="input-group-prepend ">
@@ -160,7 +165,7 @@
                                 <td>
                                     @if (ViewBag.Permissions["Edit"])
                                     {
-                                        <a asp-action="ApproveComment" asp-controller="Comment" asp-route-commentId="@item.CommentId" asp-route-isApproved="@item.IsApproved" 
+                                        <a asp-action="ApproveComment" asp-controller="Comment" asp-route-commentId="@item.CommentId" asp-route-isApproved="@item.IsApproved"
                                            class="btn btn-sm btn-primary bg-gradient">
                                             <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Approved")
                                         </a>
@@ -214,13 +219,18 @@
     }
     else
     {
-        <script src="~/js/moment.min.js"></script>
-        <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
     }
 <script>
         $(document).ready(function () {
-            
-          
+           //datetimepicker
+             if ("@CultureInfo.CurrentCulture.Name" === "fa-IR") {
+                 kamaDatepicker('dtpStartDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+                kamaDatepicker('dtpEndDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+            } else {
+                $('.datepicker').datepicker();
+            }
+
             $("#btnSearch").click(function () {
                 debugger;
                 var queryString = "";
@@ -248,7 +258,7 @@
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_DeletionSureness")';
 			$('#confirmModal').modal('show');
         }
-       
+
     function EntityRestore(id) {
          entityId = id;
 			typeOfRequest = 'PUT';
@@ -257,6 +267,6 @@
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';
 			$('#confirmModal').modal('show');
     }
-       
+
 </script>
 }

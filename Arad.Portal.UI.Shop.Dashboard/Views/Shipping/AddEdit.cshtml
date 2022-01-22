@@ -19,11 +19,14 @@
     {
         <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
     }
+    else
+    {
+        <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css" rel="stylesheet" />
+    }
     <style>
         .text-danger {
             font-size: 12px;
         }
-
     </style>
 }
 
@@ -46,15 +49,15 @@
 
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <label for="CurrencyId">@Language.GetString("Currency")</label><br />
-                        <select class="form-control" asp-for="CurrencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text", Model.CurrencyId))">
+                        <label class="form-label" for="CurrencyId">@Language.GetString("Currency")</label><br />
+                        <select class="form-control selectpicker" asp-for="CurrencyId" data-live-search="true" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text", Model.CurrencyId))">
                         </select>
                         <span data-val-result="currencyId" class="text-danger"></span>
                     </div>
                     @if (!string.IsNullOrWhiteSpace(Model.DomainName) && !ViewBag.IsSystem)
                     {
                         <div class="form-group col-md-3">
-                            <label for="domainName">@Language.GetString("DomainName")</label><br />
+                            <label v for="domainName">@Language.GetString("DomainName")</label><br />
                             <input type="text" asp-for="@Model.DomainName" class="form-control" value="@Model.DomainName" disabled />
                         </div>
                     }
@@ -62,8 +65,8 @@
                     @if (ViewBag.IsSystem)
                     {
                         <div class="form-group col-md-3">
-                            <label for="AssociatedDomainId">@Language.GetString("DomainName")</label><br />
-                            <select class="form-control" asp-for="AssociatedDomainId" asp-items="@(new SelectList(ViewBag.DomainList,"Value","Text", Model.AssociatedDomainId))">
+                            <label class="form-label" for="AssociatedDomainId">@Language.GetString("DomainName")</label><br />
+                            <select class="form-control selectpicker" asp-for="AssociatedDomainId" data-live-search="true" asp-items="@(new SelectList(ViewBag.DomainList,"Value","Text", Model.AssociatedDomainId))">
                             </select>
                         </div>
                     }
@@ -78,13 +81,13 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="form-group col-md-3">
-                                        <label>@Language.GetString("tbl_ShippingType")</label>
-                                        <select class="form-control" id="shippingTypeId" asp-items="@(new SelectList(ViewBag.ShippngTypes,"Value","Text"))">
+                                        <label class="form-label">@Language.GetString("tbl_ShippingType")</label>
+                                        <select class="form-control selectpicker" id="shippingTypeId" data-live-search="true" asp-items="@(new SelectList(ViewBag.ShippngTypes,"Value","Text"))">
                                         </select>
                                         <span data-val-result="shippingTypeId" class="text-danger"></span>
                                     </div>
-                                    <div class="form-group col-md-2" >
-                                       
+                                    <div class="form-group col-md-2">
+
 
                                         <div class="form-group col-12 col-md-4 pt-1 pb-2">
                                             <div class="form-check m-auto d-inline-block pt-3">
@@ -96,13 +99,13 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>@Language.GetString("tbl_FixedExpenseValue")</label>
+                                        <label class="form-label">@Language.GetString("tbl_FixedExpenseValue")</label>
                                         <input type="number" class="form-control" id="fixedExpenseValue" disabled />
                                         <span data-val-result="fixedExpenseValue" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>@Language.GetString("tbl_Provider")</label>
-                                        <select class="form-control" id="ProviderId"
+                                        <label class="form-label">@Language.GetString("tbl_Provider")</label>
+                                        <select class="form-control selectpicker" id="ProviderId" data-live-search="true"
                                                 asp-items="@(new SelectList(ViewBag.Providers,"Value","Text"))">
                                         </select>
                                         <span data-val-result="ProviderId" class="text-danger"></span>
@@ -173,22 +176,23 @@
 
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <label>@Language.GetString("tbl_FromInvoiceExpense")</label>
+                        <label class="form-label">@Language.GetString("tbl_FromInvoiceExpense")</label>
                         <input type="number" class="form-control" asp-for="@Model.ShippingCoupon.FromInvoiceExpense"
                                value="@Model.ShippingCoupon.FromInvoiceExpense" min="0" />
                         <span data-val-result="fromInvoiceExpense" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label>@Language.GetString("tbl_ShippingExpense")</label>
+                        <label class="form-label">@Language.GetString("tbl_ShippingExpense")</label>
                         <input type="number" class="form-control" asp-for="@Model.ShippingCoupon.ShippingExpense"
                                value="@Model.ShippingCoupon.ShippingExpense" min="0" />
                         @*<span data-val-result="shippingExpense" class="text-danger"></span>*@
                     </div>
                     <div class="form-group col-md-3">
-                        <label>@Language.GetString("StartDate")</label>
+                        <label class="form-label">@Language.GetString("StartDate")</label>
+                        
                         @if (CultureInfo.CurrentCulture.Name == "fa-IR")
                         {
-                            <div class="input-group-prepend ">
+                            <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fa fa-calendar"></i>
                                 </span>
@@ -197,20 +201,21 @@
                         }
                         else
                         {
-                            <div class="input-group date" id="dtpStartDate" data-target-input="nearest">
-                                <input type="text" class="form-control datetimepicker-input" />
-                                <div class="input-group-append" data-toggle="datetimepicker">
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                </div>
+                            <div class="input-group date" data-provide="datepicker">
+                                <input type="text" class="form-control" id="dtpStartDate">
+                                <span class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
                             </div>
                         }
                         <span data-val-result="startDate" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label>@Language.GetString("EndDate")</label>
+                        <label class="form-label">@Language.GetString("EndDate")</label>
+                        
                         @if (CultureInfo.CurrentCulture.Name == "fa-IR")
                         {
-                            <div class="input-group-prepend ">
+                            <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fa fa-calendar"></i>
                                 </span>
@@ -219,11 +224,11 @@
                         }
                         else
                         {
-                            <div class="input-group date" id="dtpEndDate" data-target-input="nearest">
-                                <input type="text" class="form-control datetimepicker-input" />
-                                <div class="input-group-append" data-toggle="datetimepicker">
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                </div>
+                            <div class="input-group date" data-provide="datepicker">
+                                <input type="text" class="form-control" id="dtpEndDate">
+                                <span class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
                             </div>
                         }
                         <span data-val-result="endDate" class="text-danger"></span>
@@ -250,19 +255,18 @@
     }
     else
     {
-        <script src="~/js/moment.min.js"></script>
-        <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
+        <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
     }
-   
-<script>
+
+    <script>
     var currentCurrencySymbol = "";
         $(document).ready(function () {
-           
+
             if ("@Model.ShippingSettingId" != "")
             {
                 LoadData();
             }
-            
+
              //datetimepicker
             if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
             {
@@ -271,12 +275,7 @@
             }
             else
             {
-                $('#dtpStartDate').datetimepicker({
-                    format: 'L'
-                });
-                $('#dtpEndDate').datetimepicker({
-                    format: 'L'
-                });
+                $('.datepicker').datepicker();
             }
 
 
@@ -537,7 +536,7 @@
         var tr = $(sender).parent().parent();
         $(tr).remove();
     }
-</script>
+    </script>
 }
 
 

@@ -51,13 +51,13 @@
                     <div class="row">
                         <div class="form-group col-12 col-md-4 p-2">
                             <label asp-for="UserRoleId" class="form-label"></label>
-                            <select class="form-select" asp-for="UserRoleId" asp-items="@(new SelectList(ViewBag.Roles,"Id","Title"))">
+                            <select class="form-select selectpicker" asp-for="UserRoleId" asp-items="@(new SelectList(ViewBag.Roles,"Id","Title"))" data-live-search="true">
                             </select>
                             <span data-val-result="UserRoleId" class="text-danger"></span>
                         </div>
                         <div class="form-group col-12 col-md-4 p-2">
                             <label class="form-label">@Language.GetString("DefaultLanguage")</label>
-                            <select class="form-select form-select-sm" asp-for="DefaultLanguageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                            <select class="form-select form-select-sm selectpicker" asp-for="DefaultLanguageId" data-live-search="true" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                             </select>
                             <span data-val-result="DefaultLanguageId" class="text-danger"></span>
                         </div>

@@ -29,39 +29,39 @@
             <div class="card-body" id="addEditProductGroupCard">
                 <input type="hidden" value="@Model.SpecificationGroupId" asp-for="SpecificationGroupId" />
                 @*<div class="row">
-                        @{
-                            if (!string.IsNullOrWhiteSpace(Model.SpecificationGroupId))
-                            {
-                                <div class="form-group col-md-6">
-                                    <label asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
-                                    <textarea dir="rtl" asp-for="ModificationReason" class="form-control" rows="3"></textarea>
-                                    <span data-val-result="ModificationReason" class="text-danger"></span>
-                                </div>
-                            }
-                        }
-                    </div>*@
+            @{
+                if (!string.IsNullOrWhiteSpace(Model.SpecificationGroupId))
+                {
+                    <div class="form-group col-md-6">
+                        <label class="form-label" asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
+                        <textarea dir="rtl" asp-for="ModificationReason" class="form-control" rows="3"></textarea>
+                        <span data-val-result="ModificationReason" class="text-danger"></span>
+                    </div>
+                }
+            }
+        </div>*@
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <label for="groupName">@Language.GetString("tbl_GroupName")</label><br />
+                        <label class="form-label" for="groupName">@Language.GetString("tbl_GroupName")</label><br />
                         <input type="text" class="form-control" id="groupName" placeholder=" ">
                         <span data-val-result="groupName" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="languageId">@Language.GetString("LanguageName")</label><br />
-                        <select class="form-control selectpicker" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                        <label class="form-label" for="languageId">@Language.GetString("LanguageName")</label><br />
+                        <select class="form-control selectpicker" data-live-search="true" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                         </select>
                         <span data-val-result="languageId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="currencyId">@Language.GetString("Currency")</label><br />
-                        <select class="form-control selectpicker" id="currencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
+                        <label class="form-label" for="currencyId">@Language.GetString("Currency")</label><br />
+                        <select class="form-control selectpicker" data-live-search="true" id="currencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
                         </select>
                         <span data-val-result="currencyId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3" style="text-align:center;margin:auto;">
                         <div style="margin:auto;display:inline-block;">
                             <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addToTable();">
-                                <i class="fa fa-plus pt-1" ></i>
+                                <i class="fa fa-plus pt-1"></i>
                             </button>
                         </div>
 
@@ -93,7 +93,7 @@
                                         <td>@item.CurrencyName</td>
                                         <td>
                                             <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromTable(this);">
-                                                <i class="fa fa-trash" ></i>
+                                                <i class="fa fa-trash"></i>
                                             </button>
                                         </td>
                                     </tr>

@@ -37,25 +37,25 @@
                     <div class="row">
                         <div class="form-group col-md-3">
 
-                            <label asp-for="Title">@Language.GetString("Per_PermissionTitle")</label>
+                            <label class="form-label" asp-for="Title">@Language.GetString("Per_PermissionTitle")</label>
                             <input type="text" class="form-control" asp-for="Title" placeholder=" ">
                             <span data-val-result="Title" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-3" id="TypeSelect">
-                            <label asp-for="Type">@Language.GetString("Per_PermissionType")</label>
-                            <select asp-for="Type" class="form-control selectpicker" name="Type" asp-items="Html.GetEnumSelectList<Enums.PermissionType>()">
+                            <label class="form-label" asp-for="Type">@Language.GetString("Per_PermissionType")</label>
+                            <select asp-for="Type" class="form-control selectpicker" name="Type" asp-items="Html.GetEnumSelectList<Enums.PermissionType>()" data-live-search="true">
                             </select>
                             <span data-val-result="Type" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-3" id="MethodSelect">
-                            <label asp-for="Method">@Language.GetString("Per_PermissionMethod")</label>
-                            <select asp-for="Method" class="form-control selectpicker" name="Method" asp-items="Html.GetEnumSelectList<Enums.PermissionMethod>()">
+                            <label class="form-label" asp-for="Method">@Language.GetString("Per_PermissionMethod")</label>
+                            <select asp-for="Method" class="form-control selectpicker" data-live-search="true" name="Method" asp-items="Html.GetEnumSelectList<Enums.PermissionMethod>()">
                             </select>
                             <span class="text-danger" data-val-result="Method"></span>
                         </div>
                         <div class="form-group col-md-3" id="MenuIdOfModulePart">
-                            <label asp-for="MenuIdOfModule">@Language.GetString("Per_MenuIdOfModule")</label>
-                            <select asp-for="MenuIdOfModule" class="form-control selectpicker" name="MenuIdOfModule">
+                            <label class="form-label" asp-for="MenuIdOfModule">@Language.GetString("Per_MenuIdOfModule")</label>
+                            <select asp-for="MenuIdOfModule" class="form-control selectpicker" name="MenuIdOfModule" data-live-search="true">
                             </select>
                             <span class="text-danger" data-val-result="MenuIdOfModule"></span>
                         </div>
@@ -63,31 +63,31 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-md-6" id="RoutePer">
-                            <label asp-for="Routes">@Language.GetString("Per_Routes")</label>
+                            <label class="form-label" asp-for="Routes">@Language.GetString("Per_Routes")</label>
                             <textarea class="form-control" asp-for="Routes"
                                       dir="ltr" placeholder="@Language.GetString("Menu_RoutePlaceHolder")">@Model.Routes</textarea>
                             <span class="text-danger" data-val-result="Routes"></span>
                         </div>
                         <div class="form-group col-md-4" id="ParentMenuSelect" style="display:none;">
-                            <label asp-for="ParentMenuId">@Language.GetString("Per_ParentMenuId")</label>
-                            <select asp-for="ParentMenuId" class="form-control selectpicker">
+                            <label class="form-label" asp-for="ParentMenuId">@Language.GetString("Per_ParentMenuId")</label>
+                            <select asp-for="ParentMenuId" class="form-control selectpicker" data-live-search="true">
                             </select>
                             <span class="text-danger" data-val-result="ParentMenuId"></span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-3" id="IconPart">
-                            <label asp-for="Icon">@Language.GetString("Per_Icon")</label>
+                            <label class="form-label" asp-for="Icon">@Language.GetString("Per_Icon")</label>
                             <input type="text" class="form-control" asp-for="Icon" dir="ltr">
                             <span class="text-danger" data-val-result="Icon"></span>
                         </div>
                         <div class="form-group col-md-3" id="PriorityPart">
-                            <label asp-for="Priority">@Language.GetString("Per_Priority")</label>
+                            <label class="form-label" asp-for="Priority">@Language.GetString("Per_Priority")</label>
                             <input type="number" class="form-control" asp-for="Priority" dir="ltr" value="1" min="1">
                             <span class="text-danger" data-val-result="Priority"></span>
                         </div>
                         <div class="form-group col-md-3" id="ClientAddressPart">
-                            <label asp-for="ClientAddress">@Language.GetString("Per_ClientAddress")</label>
+                            <label class="form-label" asp-for="ClientAddress">@Language.GetString("Per_ClientAddress")</label>
                             <input type="tel" class="form-control" asp-for="ClientAddress" dir="ltr">
                             <span class="text-danger" data-val-result="ClientAddress"></span>
                         </div>

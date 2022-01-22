@@ -158,55 +158,55 @@
                         </div>
                     </div>
                     <div class="form-group col-md-3">
-                        <label asp-for="@Model.ParentId">@Language.GetString("ParentGroup")</label>
-                        <select class="form-control selectpicker" asp-for="@Model.ParentId" asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))">
+                        <label class="form-label" asp-for="@Model.ParentId">@Language.GetString("ParentGroup")</label>
+                        <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.ParentId" asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))">
                         </select>
                         <span data-val-result="ParentId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label asp-for="@Model.GroupCode">@Language.GetString("tbl_ProductGroupCode")</label>
+                        <label class="form-label" asp-for="@Model.GroupCode">@Language.GetString("tbl_ProductGroupCode")</label>
                         <input type="text" class="form-control" asp-for="@Model.GroupCode" value="@Model.GroupCode" placeholder=" " disabled>
                         <span data-val-result="GroupCode" class="text-danger"></span>
                     </div>
                 </div>
 
-                <div class="row" >
+                <div class="row">
                     <div class="form-group col-md-3">
-                        <label for="languageId">@Language.GetString("LanguageName")</label><br />
-                        <select class="form-control" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                        <label class="form-label" for="languageId">@Language.GetString("LanguageName")</label><br />
+                        <select class="form-control" data-live-search="true" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                         </select>
                         <span data-val-result="languageId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="currencyId">@Language.GetString("Currency")</label><br />
-                        <select class="form-control selectpicker" id="currencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
+                        <label class="form-label" for="currencyId">@Language.GetString("Currency")</label><br />
+                        <select class="form-control selectpicker" data-live-search="true" id="currencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
                         </select>
                         <span data-val-result="currencyId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="groupName">@Language.GetString("tbl_GroupName")</label><br />
+                        <label class="form-label" for="groupName">@Language.GetString("tbl_GroupName")</label><br />
                         <input type="text" class="form-control" id="groupName" placeholder=" ">
                         <span data-val-result="groupName" class="text-danger"></span>
                     </div>
                     @*<div class="form-group col-md-3">
-                            <label>@Language.GetString("UrlFriend")</label>
-                            <input type="text" class="form-control" id="urlFriend" placeholder=" ">
-                            <span data-val-result="urlFriend" class="text-danger"></span>
-                        </div>*@
+            <label class="form-label">@Language.GetString("UrlFriend")</label>
+            <input type="text" class="form-control" id="urlFriend" placeholder=" ">
+            <span data-val-result="urlFriend" class="text-danger"></span>
+        </div>*@
                 </div>
                 <div class="row" >
                     <div class="form-group col-md-3">
-                        <label>@Language.GetString("SeoTitle")</label>
+                        <label class="form-label">@Language.GetString("SeoTitle")</label>
                         <input type="text" class="form-control" id="seoTitle" placeholder=" ">
                         <span data-val-result="seoTitle" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label>@Language.GetString("SeoDescription")</label>
+                        <label class="form-label">@Language.GetString("SeoDescription")</label>
                         <input type="text" class="form-control" id="seoDescription" placeholder=" ">
                         <span data-val-result="seoDescription" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label>@Language.GetString("Description")</label>
+                        <label class="form-label">@Language.GetString("Description")</label>
                         <input type="text" class="form-control" id="description" placeholder=" ">
                         <span data-val-result="description" class="text-danger"></span>
                     </div>

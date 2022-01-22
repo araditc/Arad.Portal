@@ -173,7 +173,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var finalHTML = "";
             foreach (var prop in properties)
             {
-                finalHTML += $"<div class='form-group col-md-3'><label for='{prop.Name}'>{prop.Name}</label><br/><input type='text' id='{prop.Name}' class='form-control gatewayPar ltr' value='' /></div>";
+                finalHTML += $"<div class='form-group col-md-3'><label class='form-label' for='{prop.Name}'>{prop.Name}</label><br/><input type='text' id='{prop.Name}' class='form-control gatewayPar ltr' value='' /></div>";
             }
             
             return finalHTML;

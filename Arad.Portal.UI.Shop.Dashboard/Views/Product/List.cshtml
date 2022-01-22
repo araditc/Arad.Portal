@@ -32,6 +32,7 @@
     {
         dir = "ltr";
     }
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Styles
 {
@@ -41,10 +42,14 @@
             margin: auto;
         }
     </style>
-    
+
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
         <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css" rel="stylesheet" />
     }
 }
 
@@ -66,51 +71,52 @@
 
             <div class="row">
                 <div class="form-group col-md-3">
-                    <label>@Language.GetString("tbl_ProductGroup")</label>
-                    <select class="form-control selectpicker" multiple="multiple" id="cmbProductGroupFilter" asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))">
+                    <label class="form-label">@Language.GetString("tbl_ProductGroup")</label>
+                    <select class="form-control selectpicker fs-6" data-live-search="true"
+                            multiple="multiple" id="cmbProductGroupFilter" asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))" >
                     </select>
                 </div>
                 <div class="form-group col-md-3">
-                    <label>@Language.GetString("tbl_ProductName")</label>
+                    <label class="form-label">@Language.GetString("tbl_ProductName")</label>
                     <input type="text" class="form-control" id="txtProductNameFilter" />
                 </div>
                 <div class="form-group col-md-2">
-                    <label>@Language.GetString("tbl_UniqeCode")</label>
+                    <label class="form-label">@Language.GetString("tbl_UniqeCode")</label>
                     <input type="text" class="form-control" id="txtUniqueCodeFilter" />
                 </div>
                 <div class="form-group col-md-4">
-                    <label>@Language.GetString("Description")</label>
+                    <label class="form-label">@Language.GetString("Description")</label>
                     <input type="text" class="form-control" id="txtDescriptionFilter" />
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-md-3">
-                    <label>@Language.GetString("fromCreationDate")</label>
+                    <label class="form-label">@Language.GetString("fromCreationDate")</label>
                     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
                     {
-                        <div class="input-group-prepend ">
+                        <div class="input-group">
                             <span class="input-group-text">
                                 <i class="fa fa-calendar"></i>
                             </span>
-                            <input autocomplete="off" id="dtpFomCreationDate" type="text" class="form-control" />
+                            <input autocomplete="off" id="dtpFromCreationDate" type="text" class="form-control" />
                         </div>
                     }
                     else
                     {
-                        <div class="input-group date" id="dtpFromCreationDate" data-target-input="nearest">
-                            <input type="text" class="form-control datetimepicker-input" />
-                            <div class="input-group-append" data-toggle="datetimepicker">
-                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                            </div>
+                        <div class="input-group date" data-provide="datepicker">
+                            <input type="text" class="form-control" id="dtpFromCreationDate">
+                            <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </span>
                         </div>
                     }
-
                 </div>
                 <div class="form-group col-md-3">
-                    <label>@Language.GetString("toCreationDate")</label>
+                    <label class="form-label">@Language.GetString("toCreationDate")</label>
+                    
                     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
                     {
-                        <div class="input-group-prepend ">
+                        <div class="input-group">
                             <span class="input-group-text">
                                 <i class="fa fa-calendar"></i>
                             </span>
@@ -119,17 +125,17 @@
                     }
                     else
                     {
-                        <div class="input-group date" id="dtpToCreationDate" data-target-input="nearest">
-                            <input type="text" class="form-control datetimepicker-input" />
-                            <div class="input-group-append" data-toggle="datetimepicker">
-                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                            </div>
+                        <div class="input-group date" data-provide="datepicker">
+                            <input type="text" class="form-control" id="dtpToCreationDate">
+                            <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </span>
                         </div>
                     }
 
                 </div>
                 <div class="form-group col-md-2">
-                    <label>@Language.GetString("ProductInventoryLessThan")</label>
+                    <label class="form-label">@Language.GetString("ProductInventoryLessThan")</label>
                     <input type="number" id="txtLeastProduct" class="form-control" min="0" />
                 </div>
 
@@ -179,7 +185,7 @@
                         </a>
 
                         <a asp-action="AddEdit" asp-controller="Product" class="btn btn-success btn-sm bg-gradient">
-                            <i  class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_Add")
+                            <i class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_Add")
                         </a>
                     }
                 </div>
@@ -187,12 +193,12 @@
         </div>
     </div>
     <div class="card-body table-bordered  p-0">
-        <div class="row" >
-            <div class="col-md-1 offset-md-1">
-                <span class="form-control" >@Language.GetString("LanguageName")</span>
+        <div class="row m-2">
+            <div class="col-md-1 offset-md-1 pt-2 text-center">
+                <label class="form-label">@Language.GetString("LanguageName")</label>
             </div>
             <div class="col-md-2">
-                <select class="form-control" id="cmbLangIdFilter" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                <select class="form-control border fs-6" data-live-search="true" id="cmbLangIdFilter" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                 </select>
             </div>
         </div>
@@ -238,26 +244,26 @@
                                 <td>@item.CreationDate</td>
                                 <td>
                                     <button class="btn btn-sm btn-dark bg-gradient">
-                                        <i style="position: relative;left: 5px;top: 2px;" class="fa fa-eye"></i>@Language.GetString("btn_Show")
+                                        <i class="fa fa-eye"></i>@Language.GetString("btn_Show")
                                     </button>
                                 </td>
                                 <td>
                                     @if (ViewBag.Permissions["Edit"])
                                     {
                                         <a asp-action="AddEdit" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-warning bg-gradient">
-                                            <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
+                                            <i class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                                         </a>
                                     }
                                     @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
                                     {
                                         <button onclick="EntityDelete('@item.ProductId')" class="btn btn-sm btn-danger bg-gradient">
-                                            <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
+                                            <i class="fa fa-trash"></i>@Language.GetString("btn_Delete")
                                         </button>
                                     }
                                     @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
                                     {
                                         <button id="restoreRecord" onclick="EntityRestore('@item.ProductId')" class="btn btn-sm btn-warning bg-gradient">
-                                            <i style="position: relative;left: 5px;top: 2px;" class="fa fa-refresh"></i>
+                                            <i class="fa fa-refresh"></i>
                                             @Language.GetString("btn_Restore")
                                         </button>
                                     }
@@ -293,39 +299,28 @@
 
 
 @section Scripts{
-    
+
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
         <script src="~/plugins/datePicker/kamadatepicker.min.js"></script>
     }
     else
     {
-        <script src="~/js/moment.min.js"></script>
-        <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
+       <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
     }
 
-   
+
     <script>
         $(document).ready(function () {
-           
+
             //datetimepicker
-            if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
-            {
+            if ("@CultureInfo.CurrentCulture.Name" === "fa-IR") {
                 kamaDatepicker('dtpFromCreationDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
                 kamaDatepicker('dtpToCreationDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+            } else {
+                $('.datepicker').datepicker();
             }
-            else
-            {
-                $('#dtpFromCreationDate').datetimepicker({
-                    format: 'L'
-                });
-                $('#dtpToCreationDate').datetimepicker({
-                    format: 'L'
-                });
-            }
-            //multiselect
-            //$("#cmbProductGroupFilter").select2({ dir : '@dir', theme : 'bootstrap4'});
-
+          
             if ("@langId" != "") {
                 $("#cmbLangIdFilter").val("@langId");
             }
@@ -386,7 +381,7 @@
 			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';
             $('#confirmModal').modal('show');
-           
+
             }
     </script>
 }

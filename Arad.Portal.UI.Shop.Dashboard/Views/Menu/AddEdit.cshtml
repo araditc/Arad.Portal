@@ -30,26 +30,26 @@
                     <input type="hidden" value="@Model.MenuId" asp-for="MenuId" />
                     <div class="row">
                         <div class="form-group col-md-3">
-                            <label asp-for="@Model.ParentId">@Language.GetString("ParentMenu")</label>
-                            <select class="form-control" value="@Model.ParentId" asp-for="@Model.ParentId" asp-items="@(new SelectList(ViewBag.Menues,"Value","Text"))">
+                            <label class="form-label" asp-for="@Model.ParentId">@Language.GetString("ParentMenu")</label>
+                            <select class="form-control selectpicker" value="@Model.ParentId" data-live-search="true" asp-for="@Model.ParentId" asp-items="@(new SelectList(ViewBag.Menues,"Value","Text"))">
                             </select>
                             <span data-val-result="ParentId" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-3">
-                            <label asp-for="@Model.MenuType">@Language.GetString("MenuType")</label>
-                            <select class="form-control" value="@Model.MenuType" asp-for="@Model.MenuType" asp-items="@(new SelectList(ViewBag.MenuTypes,"Value","Text"))">
+                            <label class="form-label" asp-for="@Model.MenuType">@Language.GetString("MenuType")</label>
+                            <select class="form-control selectpicker" value="@Model.MenuType" data-live-search="true" asp-for="@Model.MenuType" asp-items="@(new SelectList(ViewBag.MenuTypes,"Value","Text"))">
                             </select>
                             <span data-val-result="MenuType" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-3 invisible" id="groupSection">
-                            <label>@Language.GetString("tbl_GroupName")</label>
-                            <select class="form-control" id="categoryId">
+                            <label class="form-label">@Language.GetString("tbl_GroupName")</label>
+                            <select class="form-control selectpicker" id="categoryId" data-live-search="true">
                             </select>
                             <span data-val-result="categoryId" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-3 invisible" id="productOrContentSection">
-                            <label id="lblProductOrContent"></label>
-                            <select class="form-control" id="ContentOrProductId">
+                            <label class="form-label" id="lblProductOrContent"></label>
+                            <select class="form-control selectpicker" id="ContentOrProductId" data-live-search="true">
                             </select>
                             <span data-val-result="ContentOrProductId" class="text-danger"></span>
                         </div>
@@ -58,16 +58,16 @@
                         <div class="form-group col-md-3">
                             <input type="hidden" value="@(string.IsNullOrWhiteSpace(Model.Icon) ? "fas fa-bomb" : Model.Icon)" asp-for="Icon" id="iconPick" />
 
-                            <label>@Language.GetString("Menu_Icon")</label>
+                            <label class="form-label">@Language.GetString("Menu_Icon")</label>
                             <button id="iconPicktarget" class="btn btn-primary bg-gradient"></button>
                         </div>
                         <div class="form-group col-md-3">
-                            <label>@Language.GetString("Order")</label>
+                            <label class="form-label">@Language.GetString("Order")</label>
                             <input type="number" class="form-control" asp-for="@Model.Order" />
                             <span data-val-result="Order" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-3 invisible" id="urlSection">
-                            <label>@Language.GetString("Url")</label>
+                            <label class="form-label">@Language.GetString("Url")</label>
                             <input type="text" class="form-control ltr" asp-for="@Model.Url" />
                             <span data-val-result="Url" class="text-danger"></span>
                         </div>
@@ -76,13 +76,13 @@
 
                     <div class="row" >
                         <div class="form-group col-md-3">
-                            <label for="languageId">@Language.GetString("LanguageName")</label><br />
-                            <select class="form-control" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                            <label class="form-label" for="languageId">@Language.GetString("LanguageName")</label><br />
+                            <select class="form-control selectpicker" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))" data-live-search="true">
                             </select>
                             <span data-val-result="languageId" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="groupName">@Language.GetString("tbl_MenuTitle")</label><br />
+                            <label class="form-label" for="groupName">@Language.GetString("tbl_MenuTitle")</label><br />
                             <input type="text" class="form-control" id="menuTitle" placeholder=" ">
                             <span data-val-result="menuTitle" class="text-danger"></span>
                         </div>

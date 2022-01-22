@@ -27,20 +27,20 @@
                 <input type="hidden" value="@Model.ContentCategoryId" asp-for="ContentCategoryId" />
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <label asp-for="@Model.ParentCategoryId">@Language.GetString("ParentGroup")</label>
-                        <select class="form-control selectpicker" asp-for="@Model.ParentCategoryId" asp-items="@(new SelectList(ViewBag.CategoryList,"Value","Text"))">
+                        <label class="form-label" asp-for="@Model.ParentCategoryId">@Language.GetString("ParentGroup")</label>
+                        <select class="form-control selectpicker" asp-for="@Model.ParentCategoryId" asp-items="@(new SelectList(ViewBag.CategoryList,"Value","Text"))" data-live-search="true">
                         </select>
                         <span data-val-result="ParentId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="categoryTypeId">@Language.GetString("Enum_ContentCategoryType")</label>
+                        <label class="form-label" for="categoryTypeId">@Language.GetString("Enum_ContentCategoryType")</label>
                         <select class="form-control selectpicker" id="categoryTypeId" data-live-search="true"
                                 asp-items="@(new SelectList(ViewBag.CategoryTypes,"Value","Text", (int)Model.CategoryType))">
                         </select>
                         <span data-val-result="categoryTypeId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="@Model.CategoryCode">@Language.GetString("tbl_ContentCategoryCode")</label>
+                        <label class="form-label" for="@Model.CategoryCode">@Language.GetString("tbl_ContentCategoryCode")</label>
                         <input type="text" class="form-control" asp-for="@Model.CategoryCode" value="@Model.CategoryCode" disabled />
                         <span data-val-result="CategoryCode" class="text-danger"></span>
                     </div>
@@ -49,13 +49,13 @@
 
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <label for="languageId">@Language.GetString("LanguageName")</label><br />
-                        <select class="form-control" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                        <label class="form-label" for="languageId">@Language.GetString("LanguageName")</label><br />
+                        <select class="form-control selectpicker" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))" data-live-search="true">
                         </select>
                         <span data-val-result="languageId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="categoryName">@Language.GetString("tbl_CategoryName")</label><br />
+                        <label class="form-label" for="categoryName">@Language.GetString("tbl_CategoryName")</label><br />
                         <input type="text" class="form-control" id="categoryName" placeholder=" ">
                         <span data-val-result="categoryName" class="text-danger"></span>
                     </div>

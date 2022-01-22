@@ -59,7 +59,7 @@
                             <span data-val-result="Password" class="text-danger"></span>
                         </div>
                         <div class="form-group col-12 col-md-4 p-2">
-                            <label for="RePassword">@Language.GetString("User_RePassword")</label>
+                            <label class="form-label" for="RePassword">@Language.GetString("User_RePassword")</label>
                             <input asp-for="RePassword" type="password" class="form-control" placeholder=" " autocomplete="new-password">
                             <span data-val-result="RePassword" class="text-danger"></span>
                         </div>
@@ -74,7 +74,7 @@
                     <div class="row">
                         <div class="form-group col-12 col-md-4 p-2">
                             <label asp-for="UserRoleId" class="form-label">@Language.GetString("User_Roles")</label>
-                            <select class="form-select" asp-for="UserRoleId" asp-items="@(new SelectList(Model.Roles, "Id", "Title"))">
+                            <select class="form-select selectpicker" asp-for="UserRoleId" asp-items="@(new SelectList(Model.Roles, "Id", "Title"))" data-live-search="true">
                             </select>
                             <span data-val-result="UserRoleId" class="text-danger"></span>
                         </div>
@@ -110,8 +110,8 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-md-4 p-2">
-                            <label asp-for="DefaultLanguageId">@Language.GetString("DefaultLanguage")</label>
-                            <select class="form-select" asp-for="DefaultLanguageId" asp-items="@(new SelectList(ViewBag.LangList, "Value", "Text"))">
+                            <label class="form-label" asp-for="DefaultLanguageId">@Language.GetString("DefaultLanguage")</label>
+                            <select class="form-select selectpicker" asp-for="DefaultLanguageId" asp-items="@(new SelectList(ViewBag.LangList, "Value", "Text"))" data-live-search="true">
                             </select>
                             <span data-val-result="DefaultLanguageId" class="text-danger"></span>
                         </div>
@@ -119,8 +119,8 @@
                             if (Convert.ToBoolean(ViewBag.IsSystem))
                             {
                                 <div class="form-group col-md-4 p-2">
-                                    <label>@Language.GetString("AssociatedDomain")</label>
-                                    <select class="form-select" asp-for="DomainId" asp-items="@(new SelectList(ViewBag.DomainList, "Value", "Text"))">
+                                    <label class="form-label">@Language.GetString("AssociatedDomain")</label>
+                                    <select class="form-select selectpicker" asp-for="DomainId" asp-items="@(new SelectList(ViewBag.DomainList, "Value", "Text"))" data-live-search="true">
                                     </select>
                                     <span data-val-result="DomainId" class="text-danger"></span>
                                 </div>

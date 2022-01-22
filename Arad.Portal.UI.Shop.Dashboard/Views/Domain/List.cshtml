@@ -51,7 +51,7 @@
                 <div class="row">
 
                     <div class="form-group col-md-3">
-                        <label>@Language.GetString("DomainName")</label>
+                        <label class="form-label">@Language.GetString("DomainName")</label>
                         <input type="text" id="txtDomainNameFilter" class="form-control" placeholder='@Language.GetString("DomainName")' />
                     </div>
                 </div>
@@ -163,9 +163,9 @@
 </div>
 
 @section Scripts{
-   
-<script>
-       
+
+    <script>
+
         function EntityDelete(id) {
             debugger;
              entityId = id;
@@ -186,5 +186,5 @@
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';
 			$('#confirmModal').modal('show');
             }
-</script>
+    </script>
 }

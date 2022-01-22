@@ -19,12 +19,15 @@
         .text-danger {
             font-size: 12px;
         }
-
     </style>
     <link rel="stylesheet" href="~/css/bootstrap-select/bootstrap-select.css" />
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
         <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css" rel="stylesheet" />
     }
 }
 
@@ -47,7 +50,7 @@
                         if (!string.IsNullOrWhiteSpace(Model.PromotionId))
                         {
                             <div class="form-group col-md-6">
-                                <label asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
+                                <label class="form-label" asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
                                 <textarea dir="rtl" asp-for="ModificationReason" class="form-control" rows="3"></textarea>
                                 <span data-val-result="ModificationReason" class="text-danger"></span>
                             </div>
@@ -56,12 +59,12 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <label for="title">@Language.GetString("Title")</label><br />
+                        <label class="form-label" for="title">@Language.GetString("Title")</label><br />
                         <input type="text" class="form-control" id="title" asp-for="Title">
                         <span data-val-result="title" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="currencyId">@Language.GetString("Currency")</label><br />
+                        <label class="form-label" for="currencyId">@Language.GetString("Currency")</label><br />
                         <select class="form-control selectpicker" data-live-search="true" id="currencyId" asp-for="CurrencyId"
                                 asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text", Model.CurrencyId ))">
                         </select>
@@ -72,7 +75,7 @@
                 </div>
                 <div class="row" id="firstRow">
                     <div class="form-group col-md-2">
-                        <label for="promotionTypeId">@Language.GetString("Classification")</label><br />
+                        <label class="form-label" for="promotionTypeId">@Language.GetString("Classification")</label><br />
                         <select class="form-control selectpicker" id="promotionTypeId" data-live-search="true"
                                 asp-items="@(new SelectList(ViewBag.PromotionTypes,"Value","Text", (int)Model.PromotionType))">
                         </select>
@@ -82,31 +85,31 @@
                     @*@if (ViewBag.IsSysAcc)
                         {
                             <div class="form-group col-md-3" id="venderSection">
-                                <label for="productVendor">@Language.GetString("ProductVendor")</label><br />
+                                <label class="form-label" for="productVendor">@Language.GetString("ProductVendor")</label><br />
                                 <select class="form-control selectpicker" id="productVendor" data-live-search="true"
                                         asp-items="@(new SelectList(ViewBag.Vendors, "Value", "Text"))">
                                 </select>
                             </div>
                         }
                         <div class="form-group col-md-3" id="">
-                            <label for="productGroupId">@Language.GetString("tbl_ProductGroup")</label><br />
+                            <label class="form-label" for="productGroupId">@Language.GetString("tbl_ProductGroup")</label><br />
                             <select class="form-control selectpicker" id="productGroupId" data-live-search="true" >
                             </select>
                             <span data-val-result="productGroupId" class="text-danger"></span>
                         </div>
 
                         <div class="form-group col-md-3" id="">
-                            <label for="productId">@Language.GetString("Product")</label><br />
+                            <label class="form-label" for="productId">@Language.GetString("Product")</label><br />
                             <select class="form-control selectpicker" id="productId" data-live-search="true" >
                             </select>
                             <span data-val-result="productId" class="text-danger"></span>
                         </div>*@
 
                 </div>
-                <div class="row proSec" style="display:none;"> <div class="col-md-12"><lable class="form-control" >@Language.GetString("ProductsInPromotion")</lable></div></div>
+                <div class="row proSec" style="display:none;"> <div class="col-md-12"><lable class="form-control">@Language.GetString("ProductsInPromotion")</lable></div></div>
 
                 <div class="row proSec" style="display:none;">
-                    <div class="col-md-12" >
+                    <div class="col-md-12">
                         <table class="table table-hover table-bordered">
                             <thead>
                                 <tr style="text-align:center;">
@@ -133,7 +136,7 @@
                                             <td style="display:none;">@item.AffectedProductId</td>
                                             <td>
                                                 <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromList(this);">
-                                                    <i class="fa fa-trash" ></i>
+                                                    <i class="fa fa-trash"></i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -152,7 +155,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <label for="discountTypeId">@Language.GetString("Type")</label><br />
+                        <label class="form-label" for="discountTypeId">@Language.GetString("Type")</label><br />
                         <select class="form-control selectpicker" id="discountTypeId" data-live-search="true"
                                 asp-items="@(new SelectList(ViewBag.DiscountTypes,"Value","Text", (int)Model.DiscountType))">
                         </select>
@@ -168,12 +171,12 @@
                 </div>
                 <div class="row type2" style="display:none;">
                     <div class="col-md-3">
-                        <label for="boughtCount">@Language.GetString("BoughtCount")</label><br />
+                        <label class="form-label" for="boughtCount">@Language.GetString("BoughtCount")</label><br />
                         <input type="number" class="form-control" id="boughtCount" value="@Model.BoughtCount">
                         <span data-val-result="boughtCount" class="text-danger"></span>
                     </div>
                     <div class="col-md-3">
-                        <label for="promotedCountofUnit">@Language.GetString("PromotedCountofUnit")</label><br />
+                        <label class="form-label" for="promotedCountofUnit">@Language.GetString("PromotedCountofUnit")</label><br />
                         <input type="number" class="form-control" id="promotedCountofUnit" value="@Model.PromotedCountofUnit">
                         <span data-val-result="PromotedCountofUnit" class="text-danger"></span>
                     </div>
@@ -181,15 +184,16 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-3" id="PriceOrDiscount">
-                        <label for="value">@Language.GetString("Value")</label><br />
+                        <label class="form-label" for="value">@Language.GetString("Value")</label><br />
                         <input type="number" class="form-control" id="value" placeholder=" " value="@Model.Value">
                         <span data-val-result="value" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-2">
-                        <label>@Language.GetString("FromDate")</label>
+                        <label class="form-label">@Language.GetString("FromDate")</label>
+                        
                         @if (CultureInfo.CurrentCulture.Name == "fa-IR")
                         {
-                            <div class="input-group-prepend">
+                            <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fa fa-calendar"></i>
                                 </span>
@@ -198,17 +202,17 @@
                         }
                         else
                         {
-                            <div class="input-group date" id="dtpFromDate" data-target-input="nearest">
-                                <input type="text" class="form-control datetimepicker-input" />
-                                <div class="input-group-append" data-toggle="datetimepicker">
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                </div>
+                            <div class="input-group date" data-provide="datepicker">
+                                <input type="text" class="form-control" id="dtpFromDate">
+                                <span class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
                             </div>
                         }
                         <span data-val-result="FromDate" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-2">
-                        <label>@Language.GetString("ToDate")</label>
+                        <label class="form-label">@Language.GetString("ToDate")</label>
                         @if (CultureInfo.CurrentCulture.Name == "fa-IR")
                         {
                             <div class="input-group-prepend">
@@ -252,17 +256,16 @@
     }
     else
     {
-        <script src="~/js/moment.min.js"></script>
-        <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
+<script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
     }
-    <script src="~/js/popperjs/popper.min.js"></script>
+    @*<script src="~/js/popperjs/popper.min.js"></script>
     <script src="~/js/plugins/bootstrap/js/bootstrap.min.js"></script>
-    <script src="~/js/bootstrap-select/bootstrap-select.js"></script>
+    <script src="~/js/bootstrap-select/bootstrap-select.js"></script>*@
 
     <script>
 
   $(document).ready(function () {
-     
+
        //datetimepicker
             if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
             {
@@ -271,12 +274,7 @@
             }
             else
             {
-                $('#dtpFromDate').datetimepicker({
-                    format: 'L'
-                });
-                $('#dtpToDate').datetimepicker({
-                    format: 'L'
-                });
+                $('.datepicker').datepicker();
       }
       LoadData();
     $("#promotionTypeId").change(function () {
@@ -344,7 +342,7 @@
                                         options += op;
                                     });
                                 }
-                                var groupSelect = "<div class='form-group col-md-3' id='groupSection'><label>" + '@Language.GetString("tbl_ProductGroup")' +"</label>" +
+                                var groupSelect = "<div class='form-group col-md-3' id='groupSection'><label class='form-label'>" + '@Language.GetString("tbl_ProductGroup")' +"</label>" +
                                     "<select class='form-control selectpicker' id='productGroupId' data-live-search='true'>" + options + "</select></div>";
                                 $("#firstRow").append(groupSelect);
                                 $("#productGroupId").selectpicker();
@@ -405,9 +403,9 @@
                                         options += op;
                                     });
                                 }
-                                var productgroupSelect = "<div class='form-group col-md-3' id='productGroupClassification'><label>" + '@Language.GetString("tbl_ProductGroup")' +"</label>" +
+                                var productgroupSelect = "<div class='form-group col-md-3' id='productGroupClassification'><label class='form-label'>" + '@Language.GetString("tbl_ProductGroup")' +"</label>" +
                                     "<select class='form-control selectpicker' id='productGroupId' data-live-search='true' >" + options + "</select></div>";
-                                var productGroupTypeSelect = "<label>" + '@Language.GetString("tbl_ProductGroup")' +"</label>" +
+                                var productGroupTypeSelect = "<label class='form-label'>" + '@Language.GetString("tbl_ProductGroup")' +"</label>" +
                                     "<select class='form-control selectpicker' id='productGroupType' data-live-search='true' >" + options +
                                     "</select><span data-val-result='productGroupType' class='text-danger'></span>";
                                 $("#firstRow").append(productgroupSelect);
@@ -446,7 +444,7 @@
                                   options += op;
                               });
                           }
-                          var productSection = "<div class='form-group col-md-3' id='productClassification'><label for='productId'>" +'@Language.GetString("Product")'+"</label><br />" +
+                          var productSection = "<div class='form-group col-md-3' id='productClassification'><label class='form-label' for='productId'>" +'@Language.GetString("Product")'+"</label><br />" +
                               "<select class='form-control selectpicker' id='productId' data-live-search='true' >" + options + "</select></div>";
 
                           $("#firstRow").append(productSection);
@@ -606,8 +604,8 @@
         var vendorSelect = "";
         if ('@ViewBag.IsSysAcc' == "True") {
                                 var list = @Json.Serialize(ViewBag.Vendors) ;
-                                 vendorSelect = "<div class='form-group col-md-3' id='vendorSection'><label for='productVendor'>"
-                + '@Language.GetString("ProductVendor")' + "</label><br /><select class='form-control' id='productVendor' data-live-search='true'>";
+            vendorSelect = "<div class='form-group col-md-3' id='vendorSection'><label class='form-label' for='productVendor'>"
+                + '@Language.GetString("ProductVendor")' + "</label><br /><select class='form-control selectpicker' id='productVendor' data-live-search='true'>";
             var options = "<option value='-1'>" + '@Language.GetString("AlertAndMessage_Choose")' + "</option>";
                                 (list).forEach(function (item) {
                                     var op = "<option value='" + item.value + "'>" + item.text + "</option>";
@@ -716,7 +714,7 @@
                                     var groupSelect = "<div class='form-group col-md-3' id='groupSection'><label>" + '@Language.GetString("tbl_ProductGroup")' + "</label>" +
                                         "<select class='form-control selectpicker' id='productGroupId' data-live-search='true'>" + options + "</select></div>";
 
-                                    var productGroupTypeSelect = "<label>" + '@Language.GetString("tbl_ProductGroup")' + "</label>" +
+                                    var productGroupTypeSelect = "<label class='form-label'>" + '@Language.GetString("tbl_ProductGroup")' + "</label>" +
                                         "<select class='form-control selectpicker' id='productGroupType' data-live-search='true' >" + options +
                                         "</select><span data-val-result='productGroupType' class='text-danger'></span>";
                                     $("#firstRow").append(groupSelect);
@@ -797,7 +795,7 @@
                                     });
                                 }
 
-                                var productGroupTypeSelect = "<label>" + '@Language.GetString("tbl_ProductGroup")' +"</label>" +
+                                var productGroupTypeSelect = "<label class='form-label'>" + '@Language.GetString("tbl_ProductGroup")' +"</label>" +
                                     "<select class='form-control selectpicker' id='productGroupType' data-live-search='true' >" + options +
                                     "</select><span data-val-result='productGroupType' class='text-danger'></span>";
 
@@ -843,7 +841,7 @@
                                   options += op;
                               });
                           }
-                          var productTypeSelect = "<label for=ProductIdType>" + '@Language.GetString("Product")' + "</label><br />" +
+                          var productTypeSelect = "<label class='form-label' for=ProductIdType>" + '@Language.GetString("Product")' + "</label><br />" +
                               "<select class=form-control selectpicker id='ProductIdType' data-live-search='true' >" + options +
                               "</select><span data-val-result='ProductIdType' class='text-danger'></span>";
 

@@ -20,6 +20,10 @@
     {
         <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
     }
+    else
+    {
+        <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css" rel="stylesheet" />
+    }
     <style>
         .text-danger {
             font-size: 12px;
@@ -73,19 +77,19 @@
 
                 <div class="row m-1">
                     <div class="form-group col-md-3">
-                        <label for="DefaultLanguageId">@Language.GetString("DefaultLanguage")</label><br />
-                        <select class="form-control" asp-for="DefaultLanguageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text", Model.DefaultLanguageId))">
+                        <label class="form-label" for="DefaultLanguageId">@Language.GetString("DefaultLanguage")</label><br />
+                        <select class="form-control selectpicker" data-live-search="true" asp-for="DefaultLanguageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text", Model.DefaultLanguageId))">
                         </select>
                         <span data-val-result="DefaultLanguageId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="groupName">@Language.GetString("DomainName")</label><br />
+                        <label class="form-label" for="groupName">@Language.GetString("DomainName")</label><br />
                         <input type="text" class="form-control" asp-for="DomainName">
                         <span data-val-result="DomainName" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="languageId">@Language.GetString("DomainOwner")</label><br />
-                        <select class="form-control" asp-for="OwnerUserId" asp-items="@(new SelectList(ViewBag.Vendors,"Value","Text", Model.OwnerUserId))">
+                        <label class="form-label" for="languageId">@Language.GetString("DomainOwner")</label><br />
+                        <select class="form-control selectpicker" data-live-search="true" asp-for="OwnerUserId" asp-items="@(new SelectList(ViewBag.Vendors,"Value","Text", Model.OwnerUserId))">
                         </select>
                         <span data-val-result="OwnerUserId" class="text-danger"></span>
                     </div>
@@ -100,24 +104,24 @@
                 </div>
                 <div class="row m-1">
                     <div class="form-group col-md-3">
-                        <label for="DefaultCurrencyId">@Language.GetString("DefaultCurrency")</label><br />
-                        <select class="form-control" asp-for="DefaultCurrencyId" asp-items="@(new SelectList( ViewBag.CurrencyList,"Value","Text", Model.DefaultCurrencyId))">
+                        <label class="form-label" for="DefaultCurrencyId">@Language.GetString("DefaultCurrency")</label><br />
+                        <select class="form-control selectpicker" data-live-search="true" asp-for="DefaultCurrencyId" asp-items="@(new SelectList( ViewBag.CurrencyList,"Value","Text", Model.DefaultCurrencyId))">
                         </select>
                         <span data-val-result="DefaultCurrencyId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="DefaultCurrencyId">@Language.GetString("tbl_InvoiceNumberCreationWay")</label><br />
-                        <select class="form-control" asp-for="@Model.InvoiceNumberProcedure" asp-items="@(new SelectList( ViewBag.InvoiceNumberEnum,"Value","Text", Model.InvoiceNumberProcedure))">
+                        <label class="form-label" for="DefaultCurrencyId">@Language.GetString("tbl_InvoiceNumberCreationWay")</label><br />
+                        <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.InvoiceNumberProcedure" asp-items="@(new SelectList( ViewBag.InvoiceNumberEnum,"Value","Text", Model.InvoiceNumberProcedure))">
                         </select>
                         <span data-val-result="InvoiceNumberProcedure" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3 invoiceInitialise">
-                        <label for="DefaultCurrencyId">@Language.GetString("FirstInvoiceNumberPattern")</label><br />
+                        <label class="form-label" for="DefaultCurrencyId">@Language.GetString("FirstInvoiceNumberPattern")</label><br />
                         <input type="text" class="form-control" asp-for="@Model.InvoiceNumberInitializer" value="@Model.InvoiceNumberInitializer" />
                         <span data-val-result="InvoiceNumberInitializer" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3 invoiceInitialise">
-                        <label for="DefaultCurrencyId">@Language.GetString("IncreasementLevel")</label><br />
+                        <label class="form-label" for="DefaultCurrencyId">@Language.GetString("IncreasementLevel")</label><br />
                         <input type="text" class="form-control" asp-for="@Model.IncreasementValue" value="@Model.IncreasementValue" />
                         <span data-val-result="InvoiceNumberInitializer" class="text-danger"></span>
                     </div>
@@ -132,21 +136,22 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="form-group col-md-3">
-                                        <label>@Language.GetString("Currency")</label>
-                                        <select class="form-control" id="currencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
+                                        <label class="form-label">@Language.GetString("Currency")</label>
+                                        <select class="form-control selectpicker" data-live-search="true" id="currencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
                                         </select>
                                         <span data-val-result="currencyId" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-md-2">
-                                        <label>@Language.GetString("PriceValue")</label>
+                                        <label class="form-label">@Language.GetString("PriceValue")</label>
                                         <input type="number" class="form-control" id="priceValue" />
                                         <span data-val-result="priceValue" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>@Language.GetString("StartDate")</label>
+                                        <label class="form-label">@Language.GetString("StartDate")</label>
+                                        
                                         @if (CultureInfo.CurrentCulture.Name == "fa-IR")
                                         {
-                                            <div class="input-group-prepend ">
+                                            <div class="input-group">
                                                 <span class="input-group-text">
                                                     <i class="fa fa-calendar"></i>
                                                 </span>
@@ -155,11 +160,11 @@
                                         }
                                         else
                                         {
-                                            <div class="input-group date" id="dtpStartDate" data-target-input="nearest">
-                                                <input type="text" class="form-control datetimepicker-input" />
-                                                <div class="input-group-append" data-toggle="datetimepicker">
-                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                                </div>
+                                            <div class="input-group date" data-provide="datepicker">
+                                                <input type="text" class="form-control" id="dtpStartDate">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-calendar"></i>
+                                                </span>
                                             </div>
                                         }
                                         <span data-val-result="startDate" class="text-danger"></span>
@@ -167,7 +172,7 @@
                                     <div class="form-group col-md-1" style="text-align:center;margin:auto;">
                                         <div style="margin:auto;display:inline-block;">
                                             <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addPriceToList();">
-                                                <i class="fa fa-plus pt-1" ></i>
+                                                <i class="fa fa-plus pt-1"></i>
                                             </button>
                                         </div>
                                     </div>
@@ -205,7 +210,7 @@
                                                             <td>@(price.IsActive ? Language.GetString("Active") : Language.GetString("InActive")) </td>
                                                             <td>
                                                                 <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromPriceList(this);">
-                                                                    <i class="fa fa-trash" ></i>
+                                                                    <i class="fa fa-trash"></i>
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -237,8 +242,8 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="form-group col-md-3">
-                                        <label for="languageId">@Language.GetString("tbl_PaymentGateways")</label><br />
-                                        <select class="form-control selectpicker" id="providerId" asp-items="@(new SelectList(ViewBag.Providers, "Value","Text"))">
+                                        <label class="form-label" for="languageId">@Language.GetString("tbl_PaymentGateways")</label><br />
+                                        <select class="form-control selectpicker" id="providerId" asp-items="@(new SelectList(ViewBag.Providers, "Value","Text"))" data-live-search="true">
                                         </select>
                                         <span data-val-result="providerId" class="text-danger"></span>
                                     </div>
@@ -247,7 +252,7 @@
 
                                         <div id="btnAddSection" style="margin:auto;display:inline-block;">
                                             <button type="button" id="addProviderParam" class="btn btn-primary bg-gradient d-none btn-sm">
-                                                <i class="fa fa-plus pt-1" ></i>
+                                                <i class="fa fa-plus pt-1"></i>
                                                 @Language.GetString("btn_Add")
                                             </button>
                                         </div>
@@ -278,7 +283,7 @@
                                                         <td>@item.DomainValueProvider</td>
                                                         <td>
                                                             <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromTable(this);">
-                                                                <i class="fa fa-trash" ></i>
+                                                                <i class="fa fa-trash"></i>
                                                             </button>
                                                         </td>
                                                     </tr>
@@ -316,16 +321,15 @@
     }
     else
     {
-        <script src="~/js/moment.min.js"></script>
-        <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
+        <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
     }
-    
-<script>
+
+    <script>
         var active = '@Language.GetString("Active")';
     var inActive = '@Language.GetString("InActive")';
     var globalSender;
         $(document).ready(function () {
-           
+
             $("#DefaultLanguageId").val('@ViewBag.LangId');
 
             if ('@Model.DomainId' == "") {
@@ -342,9 +346,7 @@
             }
             else
             {
-                $('#dtpStartDate').datetimepicker({
-                    format: 'L'
-                });
+                $('.datepicker').datepicker();
             }
 
             $("#InvoiceNumberProcedure").change(function () {
@@ -594,7 +596,7 @@
                         document.getElementById('confirmLabel').innerHTML = '@Language.GetString("AlertAndMessage_AreYouSure")';
 			            document.getElementById('confirmBody').innerHTML = '@Language.GetString("AlertAndMessage_PricePerCurrencyUniqueness")';
                         $('#showModal').modal('show');
-                       
+
                     }
                 });
             } else {
@@ -602,7 +604,7 @@
             }
         }
     }
-    
+
     function appendToPriceList(tr) {
          tr = "<tr style='text-align:center;'><td>" + $("#currencyId option:selected").text() +
                     "</td><td style='display:none;'>" + $('#currencyId').val() +
@@ -624,7 +626,7 @@
         var tr = $(sender).parent().parent();
         $(tr).remove();
     }
-</script>
+    </script>
 }
 
 

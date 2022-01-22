@@ -69,6 +69,10 @@
     {
         <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
     }
+    else
+    {
+        <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css" rel="stylesheet" />
+    }
 }
 <h4>@Language.GetString("Menu_Products")</h4>
 
@@ -146,24 +150,24 @@
 
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <label>@Language.GetString("tbl_ProductGroup")</label>
-                        <select class="form-control selectpicker"  asp-for="@Model.GroupIds" asp-items="@(new MultiSelectList(ViewBag.ProductGroupList,"Value","Text"))">
+                        <label class="form-label">@Language.GetString("tbl_ProductGroup")</label>
+                        <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.GroupIds" asp-items="@(new MultiSelectList(ViewBag.ProductGroupList,"Value","Text"))">
                         </select>
                         <span data-val-result="GroupIds" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label>@Language.GetString("tbl_UniqeCode")</label>
+                        <label class="form-label">@Language.GetString("tbl_UniqeCode")</label>
                         <input type="text" class="form-control" asp-for="@Model.UniqueCode" value="@Model.UniqueCode" />
                         <span data-val-result="UniqueCode" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label>@Language.GetString("tbl_Inventory")</label>
+                        <label class="form-label">@Language.GetString("tbl_Inventory")</label>
                         <input type="number" class="form-control" asp-for="@Model.Inventory" value="@Model.Inventory" min="0" />
                         <span data-val-result="Inventory" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label>@Language.GetString("Menu_ProductUnit")</label>
-                        <select class="form-control selectpicker" asp-for="@Model.Unit.ProductUnitId" asp-items="@(new SelectList(ViewBag.ProductUnitList,"Value","Text"))">
+                        <label class="form-label">@Language.GetString("Menu_ProductUnit")</label>
+                        <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.Unit.ProductUnitId" asp-items="@(new SelectList(ViewBag.ProductUnitList,"Value","Text"))">
                         </select>
                         <span data-val-result="productUnitId" class="text-danger"></span>
                     </div>
@@ -185,8 +189,8 @@
                     <div class="form-group col-md-3">
                         @if (ViewBag.Vendors != "-1")
                         {
-                            <label>@Language.GetString("ProductVendor")</label>
-                            <select class="form-control selectpicker" asp-for="@Model.SellerUserId" asp-items="@(new SelectList(ViewBag.Vendors,"Value","Text"))">
+                            <label class="form-label">@Language.GetString("ProductVendor")</label>
+                            <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.SellerUserId" asp-items="@(new SelectList(ViewBag.Vendors,"Value","Text"))">
                             </select>
                             <span data-val-result="sellerUserId" class="text-danger"></span>
                         }
@@ -202,13 +206,13 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <label>@Language.GetString("tbl_ProductCode")</label>
+                        <label class="form-label">@Language.GetString("tbl_ProductCode")</label>
                         <input type="text" class="form-control" asp-for="@Model.ProductCode" value="@Model.ProductCode" placeholder=" " disabled>
                         <span data-val-result="ProductCode" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label>@Language.GetString("Promotion")</label>
-                        <select class="form-control selectpicker" id="PromotionId" asp-items="@(new SelectList(ViewBag.PromotionList,"Value","Text"))">
+                        <label class="form-label">@Language.GetString("Promotion")</label>
+                        <select class="form-control selectpicker" data-live-search="true" id="PromotionId" asp-items="@(new SelectList(ViewBag.PromotionList,"Value","Text"))">
                         </select>
                     </div>
                 </div>
@@ -221,25 +225,25 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="form-group col-md-2">
-                                        <label>@Language.GetString("LanguageName")</label>
-                                        <select class="form-control selectpicker" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))"  data-live-search="true">
+                                        <label class="form-label">@Language.GetString("LanguageName")</label>
+                                        <select class="form-control selectpicker" data-live-search="true" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))" data-live-search="true">
                                         </select>
                                         <span data-val-result="languageId" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>@Language.GetString("SpecificationGroup")</label>
-                                        <select class="form-control selectpicker" id="specGroupId" asp-items="@(new SelectList(ViewBag.SpecificationGroupList,"Value","Text"))" data-live-search="true">
+                                        <label class="form-label">@Language.GetString("SpecificationGroup")</label>
+                                        <select class="form-control selectpicker" data-live-search="true" id="specGroupId" asp-items="@(new SelectList(ViewBag.SpecificationGroupList,"Value","Text"))" data-live-search="true">
                                         </select>
                                         <span data-val-result="specGroupId" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>@Language.GetString("tbl_SpecificationName")</label>
-                                        <select class="form-control selectpicker" id="specificationId" data-live-search="true">
+                                        <label class="form-label">@Language.GetString("tbl_SpecificationName")</label>
+                                        <select class="form-control selectpicker" data-live-search="true" id="specificationId" data-live-search="true">
                                         </select>
                                         <span data-val-result="specificationId" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>@Language.GetString("tbl_SpecificationValues")</label>
+                                        <label class="form-label">@Language.GetString("tbl_SpecificationValues")</label>
                                         <select class="form-control selectpicker" multiple="multiple" id="specValues" data-live-search="true">
                                         </select>
                                         <span data-val-result="specValues" class="text-danger"></span>
@@ -247,7 +251,7 @@
                                     <div class="form-group col-md-1" style="text-align:center;margin:auto;">
                                         <div style="margin:auto;display:inline-block;">
                                             <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addSpecToList();">
-                                                <i class="fa fa-plus pt-1" ></i>
+                                                <i class="fa fa-plus pt-1"></i>
                                             </button>
                                         </div>
                                     </div>
@@ -287,7 +291,7 @@
                                                             <td>@item.Values</td>
                                                             <td>
                                                                 <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromSpecList(this)">
-                                                                    <i class="fa fa-trash" ></i>
+                                                                    <i class="fa fa-trash"></i>
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -315,9 +319,9 @@
                                 <div class="card-title">@Language.GetString("MultiLingualProperty")</div>
                             </div>
                             <div class="card-body">
-                                <div class="row" >
+                                <div class="row">
                                     <div class="form-group col-md-12">
-                                        <label>@Language.GetString("ProductSpecs")</label>
+                                        <label class="form-label">@Language.GetString("ProductSpecs")</label>
                                         <textarea id="editorCk" name="editorCk" class="form-control" rows="30"></textarea>
 
                                         <script src="~/lib/ckeditor/ckeditor.js"></script>
@@ -330,37 +334,37 @@
                                         </script>
                                     </div>
                                 </div>
-                                <div class="row" >
+                                <div class="row">
                                     <div class="form-group col-md-2">
-                                        <label>@Language.GetString("LanguageName")</label>
-                                        <select class="form-control selectpicker" id="multiLangId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                                        <label class="form-label">@Language.GetString("LanguageName")</label>
+                                        <select class="form-control selectpicker" data-live-search="true" id="multiLangId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                                         </select>
                                         <span data-val-result="multiLangId" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>@Language.GetString("tbl_ProductName")</label>
+                                        <label class="form-label">@Language.GetString("tbl_ProductName")</label>
                                         <input type="text" class="form-control" id="productName" placeholder="" @*onblur="BuildUrlFriend();"*@>
                                         <span data-val-result="productName" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>@Language.GetString("UrlFriend")</label>
+                                        <label class="form-label">@Language.GetString("UrlFriend")</label>
                                         <input type="text" class="form-control" id="urlFriend" readonly placeholder=" " />
 
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>@Language.GetString("SeoTitle")</label>
+                                        <label class="form-label">@Language.GetString("SeoTitle")</label>
                                         <input type="text" class="form-control" id="seoTitle" placeholder=" ">
 
                                     </div>
                                 </div>
-                                <div class="row" >
+                                <div class="row">
                                     <div class="form-group col-md-3">
-                                        <label>@Language.GetString("SeoDescription")</label>
+                                        <label class="form-label">@Language.GetString("SeoDescription")</label>
                                         <input type="text" class="form-control" id="seoDescription" placeholder=" ">
 
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>@Language.GetString("Description")</label>
+                                        <label class="form-label">@Language.GetString("Description")</label>
                                         <input type="text" class="form-control" id="description" placeholder=" ">
 
                                     </div>
@@ -370,7 +374,7 @@
                                     <div class="form-group col-md-3" style="text-align:center;margin:auto;">
                                         <div style="margin:auto;display:inline-block;">
                                             <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addToTable();">
-                                                <i class="fa fa-plus pt-1" ></i>
+                                                <i class="fa fa-plus pt-1"></i>
                                             </button>
                                         </div>
                                     </div>
@@ -409,7 +413,7 @@
                                                             <td>@item.UrlFriend</td>
                                                             <td>
                                                                 <button type="button" class="btn btn-danger btnDel bg-gradient" cnt="@item.Tag" onclick="deleteFromTable(this);">
-                                                                    <i class="fa fa-trash" ></i>
+                                                                    <i class="fa fa-trash"></i>
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -441,21 +445,22 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="form-group col-md-3">
-                                        <label>@Language.GetString("Currency")</label>
-                                        <select class="form-control selectpicker" id="currencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
+                                        <label class="form-label">@Language.GetString("Currency")</label>
+                                        <select class="form-control selectpicker" data-live-search="true" id="currencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
                                         </select>
                                         <span data-val-result="currencyId" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-md-2">
-                                        <label>@Language.GetString("PriceValue")</label>
+                                        <label class="form-label">@Language.GetString("PriceValue")</label>
                                         <input type="number" class="form-control" id="priceValue" />
                                         <span data-val-result="priceValue" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>@Language.GetString("StartDate")</label>
+                                        <label class="form-label">@Language.GetString("StartDate")</label>
+                                        
                                         @if (CultureInfo.CurrentCulture.Name == "fa-IR")
                                         {
-                                            <div class="input-group-prepend ">
+                                            <div class="input-group">
                                                 <span class="input-group-text">
                                                     <i class="fa fa-calendar"></i>
                                                 </span>
@@ -464,11 +469,11 @@
                                         }
                                         else
                                         {
-                                            <div class="input-group date" id="dtpStartDate" data-target-input="nearest">
-                                                <input type="text" class="form-control datetimepicker-input" />
-                                                <div class="input-group-append" data-toggle="datetimepicker">
-                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                                </div>
+                                            <div class="input-group date" data-provide="datepicker">
+                                                <input type="text" class="form-control" id="dtpStartDate">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-calendar"></i>
+                                                </span>
                                             </div>
                                         }
                                         <span data-val-result="startDate" class="text-danger"></span>
@@ -476,7 +481,7 @@
                                     <div class="form-group col-md-1" style="text-align:center;margin:auto;">
                                         <div style="margin:auto;display:inline-block;">
                                             <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addPriceToList();">
-                                                <i class="fa fa-plus pt-1" ></i>
+                                                <i class="fa fa-plus pt-1"></i>
                                             </button>
                                         </div>
                                     </div>
@@ -514,7 +519,7 @@
                                                             <td>@(price.IsActive ? Language.GetString("Active") : Language.GetString("InActive")) </td>
                                                             <td>
                                                                 <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromPriceList(this);">
-                                                                    <i class="fa fa-trash" ></i>
+                                                                    <i class="fa fa-trash"></i>
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -580,7 +585,7 @@
                                                         </td>
                                                         <td>
                                                             <button type="button" class="btn btn-danger bg-gradient" imgId="@pic.ImageId" onclick="deleteFromImageList(this);">
-                                                                <i class="fa fa-trash" ></i>
+                                                                <i class="fa fa-trash"></i>
                                                             </button>
                                                         </td>
                                                     </tr>
@@ -618,8 +623,7 @@
 }
 else
 {
-    <script src="~/js/moment.min.js"></script>
-    <script src="~/js/siteTemplate/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 }
 
 <script>
@@ -636,7 +640,7 @@ else
     var active = '@Language.GetString("Active")';
     var inActive = '@Language.GetString("InActive")';
     $(document).ready(function () {
-       
+
         var urlFriend = "product/" + '@Model.ProductCode';
         $("#urlFriend").val(urlFriend);
         var multiLingualList = @Json.Serialize(@Model.MultiLingualProperties);
@@ -676,19 +680,14 @@ else
         //        CKEDITOR.replace("editorCk", config);
         //    }
         //});
-
-
-        
-         //datetimepicker
+            //datetimepicker
             if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
             {
                 kamaDatepicker('dtpStartDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
             }
             else
             {
-                $('#dtpStartDate').datetimepicker({
-                    format: 'L'
-                });
+                $('.datepicker').datepicker();
             }
        //multiselect
         @*$("#GroupIds").select2({ dir: '@dir', theme: 'bootstrap4' });
@@ -753,7 +752,7 @@ else
             }
 
             var dto = FillDataToSend();
-          
+
                 if (!flag) {
                     $.ajax({
                         url: "@Model.ProductId" != "" ? "/Product/Edit" : "/Product/Add",
@@ -821,13 +820,13 @@ else
             model.Content = url;
             images.push(model);
             var tr = "";
-           
+
             tr = "<tr><td><img imgId='img_" + counter + "' src='" + model.Content +
                 "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
                 "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
                 "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
                 "'/></td><td style='vertical-align:middle;'><div class='form-check'><input type='radio'  name='isMainImage' class='rdbIsMain form-check-input'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' onclick='deleteFromImageList(this);'><i class='fa fa-trash'></i></button></td></tr>";
-           
+
             $("#imageList").append(tr);
             counter = counter + 1;
         });
@@ -988,7 +987,7 @@ else
                         document.getElementById('confirmLabel').innerHTML = '@Language.GetString("AlertAndMessage_AreYouSure")';
 			            document.getElementById('confirmBody').innerHTML = '@Language.GetString("AlertAndMessage_PricePerCurrencyUniqueness")';
                         $('#showModal').modal('show');
-                       
+
                     }
                 });
             } else {
