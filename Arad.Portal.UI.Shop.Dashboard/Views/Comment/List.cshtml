@@ -18,15 +18,6 @@
         langId = ViewBag.DefLangId;
     }
     var searchCollapseClass = isSearch ? "collapse show" : "collapse";
-    var dir = "";
-    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-    {
-        dir = "rtl";
-    }
-    else
-    {
-        dir = "ltr";
-    }
 }
 @section Styles
 {
@@ -102,7 +93,7 @@
         </div>
         <div class="card-footer">
             <button id="btnSearch" class="btn btn-primary bg-gradient" type="button">
-                <i style="position: relative; left: 5px; top: 1px;" class="fa fa-search"></i>
+                <i class="fa fa-search"></i>
                 @Language.GetString("btn_Search")
             </button>
         </div>
@@ -158,7 +149,7 @@
                                 <td class="ListCell">@item.Content</td>
                                 <td class="ListCell">@item.ParentCommentContent</td>
                                 <td class="ListCell">
-                                    <div class="form-check">
+                                    <div class="form-check d-flex justify-content-center p-0">
                                         <input type="radio" name="isMainImage" checked="@item.IsApproved" class="form-check-input rdbIsMain">
                                     </div>
                                 </td>
@@ -167,13 +158,13 @@
                                     {
                                         <a asp-action="ApproveComment" asp-controller="Comment" asp-route-commentId="@item.CommentId" asp-route-isApproved="@item.IsApproved"
                                            class="btn btn-sm btn-primary bg-gradient">
-                                            <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Approved")
+                                            <i  class="fa fa-edit"></i>@Language.GetString("btn_Approved")
                                         </a>
                                     }
                                     @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
                                     {
                                         <button onclick="EntityDelete('@item.CommentId')" class="btn btn-sm btn-danger bg-gradient">
-                                            <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
+                                            <i  class="fa fa-trash"></i>@Language.GetString("btn_Delete")
                                         </button>
                                     }
                                     @if (ViewBag.Permissions["Remove"] && item.IsDeleted)

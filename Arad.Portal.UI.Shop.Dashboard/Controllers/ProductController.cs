@@ -108,9 +108,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         
         public async Task<IActionResult> AddEdit(string id = "")
         {
-            //System.IO.File.WriteAllText("D:\\logging.txt", $"MethodStart at {DateTime.Now}");
-            //System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
-
+            
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userDB = await _userManager.FindByIdAsync(currentUserId);
             if (userDB.IsSystemAccount)
@@ -121,7 +119,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     Text = _.Profile.FullName,
                     Value = _.Id
                 });
-              
             }
             else
             {
@@ -132,20 +129,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = await _productRepository.ProductFetch(id);
-                //System.IO.File.AppendAllText("D:\\logging.txt", $"Fetch Product at {DateTime.Now}");
-                //System.IO.File.AppendAllText("D:\\logging.txt", "\\n");
                 var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
-                //if (string.IsNullOrWhiteSpace(localStaticFileStorageURL))
-                //{
-                //    localStaticFileStorageURL = _webHostEnvironment.WebRootPath;
-                //}
                 var cnt = 1;
                 foreach (var item in model.MultiLingualProperties)
                 {
                     item.Tag = cnt.ToString();
                     cnt += 1;
                 }
-                
                 if (_productRepository.HasActiveProductPromotion(id))
                 {
                     ViewBag.ActivePromotionId = model.Promotion.PromotionId;
@@ -156,30 +146,24 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
 
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
-
             var specGroupList = _specGroupRepository.AllActiveSpecificationGroup(lan.LanguageId);
             specGroupList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
             ViewBag.SpecificationGroupList = specGroupList;
-         
 
             var groupList = await _productGroupRepository.GetAlActiveProductGroup(lan.LanguageId, currentUserId);
-            groupList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
+            //groupList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
             ViewBag.ProductGroupList = groupList;
-           
 
             var currencyList = _curRepository.GetAllActiveCurrency();
             ViewBag.CurrencyList = currencyList;
             ViewBag.DefCurrency = _curRepository.GetDefaultCurrency(currentUserId).ReturnValue.CurrencyId;
-           
 
             ViewBag.LangId = lan.LanguageId;
             ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
-            
 
             var unitList = _unitRepository.GetAllActiveProductUnit(lan.LanguageId);
             unitList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
             ViewBag.ProductUnitList = unitList;
-         
 
             ViewBag.PromotionList = _promotionRepository.GetActivePromotionsOfCurrentUser(currentUserId, PromotionType.Product);
             

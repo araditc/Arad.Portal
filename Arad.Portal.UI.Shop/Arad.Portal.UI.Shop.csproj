@@ -7,17 +7,19 @@
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="EnyimMemcachedCore" Version="2.5.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Rewrite" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0">
+      <TreatAsUsed>true</TreatAsUsed>
+    </PackageReference>
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Arad.Portal.Abstraction\Arad.Portal.Abstraction.csproj" />
+    <ProjectReference Include="..\Arad.Portal.Abstraction\Arad.Portal.Abstraction.csproj">
+      <TreatAsUsed>true</TreatAsUsed>
+    </ProjectReference>
     <ProjectReference Include="..\Arad.Portal.DataLayer\Arad.Portal.DataLayer.csproj" />
     <ProjectReference Include="..\Arad.Portal.GeneralLibrary\Arad.Portal.GeneralLibrary.csproj" />
-	  <PackageReference Include="IdentityModel" Version="5.1.0" />
+	  <PackageReference Include="IdentityModel" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +28,8 @@
     <Folder Include="wwwroot\css\imgs\" />
     <Folder Include="wwwroot\Images\" />
     <Folder Include="wwwroot\Files\" />
+    <Folder Include="wwwroot\lib\bootstrap5\fonts\" />
+    <Folder Include="wwwroot\plugins\" />
     <Folder Include="wwwroot\Template\" />
   </ItemGroup>
 

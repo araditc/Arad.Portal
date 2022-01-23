@@ -68,8 +68,6 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Product
 
         public Promotion.Promotion Promotion { get; set; }
 
-        //public float PopularityRate { get; set; }
-
         public int SaleCount { get; set; }
 
         public int VisitCount { get; set; }

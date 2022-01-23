@@ -17,6 +17,8 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
         {
             Prices = new();
             DomainPaymentProviders = new();
+            TemplateParamsValue = new();
+            ModuleParamsWithValues = new();
         }
 
         [BsonId]
@@ -50,30 +52,42 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
         public List<ProviderDetail> DomainPaymentProviders { get; set; }
 
         public InvoiceNumberProcedure InvoiceNumberProcedure { get; set; }
-
         /// <summary>
         /// if InvoiceNumberProcedure = CustomFromMyInstance owner should fill this prop
         /// otherwise main domain will generate the invoice number for this domain
         /// </summary>
         public string InvoiceNumberInitializer { get; set; }
-
         public int? IncreasementValue { get; set; }
         /// <summary>
         /// روش حمل پیش فرض فروشنده
         /// </summary>
         public string DefaultShippingTypeId { get; set; }
+        public MainPageContentType MainPageContentType { get; set; }
+        public string MainPageTemplateId { get; set; }
+
+        /// <summary>
+        /// for example [0] : "moduleId" as one object of keyVal
+        /// </summary>
+        public List<KeyVal> TemplateParamsValue { get; set; }
+
+        /// <summary>
+        /// parameters in  ViewComponents
+        /// </summary>
+        public List<KeyVal> ModuleParamsWithValues { get; set; }
     }
-
-
     public class ProviderDetail
     {
         public PspType PspType { get; set; }
         public string DomainValueProvider { get; set; }
     }
-
     public enum InvoiceNumberProcedure
     {
         FromMainDomain,
         CustomFromMyInstance
+    }
+    public enum MainPageContentType
+    {
+        Content,
+        Product
     }
 }

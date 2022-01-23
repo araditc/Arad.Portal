@@ -4,19 +4,7 @@
 @{
     Layout = null;
 }
-@{
-    var direction = "";
-    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-    {
-        direction = "rtl";
-        ViewBag.dir = "rtl";
-    }
-    else
-    {
-        direction = "ltr";
-        ViewBag.dir = "ltr";
-    }
-}
+
 <style>
     .rtlTextAlign{
         text-align : right;
@@ -26,8 +14,8 @@
     }
     .dropdown-menu {
        /* font-size: 0.8rem;*/
-        padding-right: @(direction == "rtl" ? "1.5rem" : "0") !important;
-        padding-left: @(direction == "ltr" ? "1.5rem" : "0") !important;
+        padding-right: @(ViewBag.dir == "rtl" ? "1.5rem" : "0") !important;
+        padding-left: @(ViewBag.dir == "ltr" ? "1.5rem" : "0") !important;
     }
     h5{
         font-size: 1.1rem;
@@ -48,7 +36,7 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbar">
-                <ul class="navbar-nav @(direction == "rtl" ? "ml-auto" : "mr-auto")">
+                <ul class="navbar-nav @(ViewBag.dir=="rtl" ? "ml-auto" : "mr-auto")">
                     @foreach (var item in Model.Where(_=>_.ParentId == null && _.IsFull).OrderBy(_=>_.Order))
                     {
                         if (item.Childrens.Count() == 0)
@@ -74,11 +62,11 @@
                                                 @*@(direction == "rtl" && i != 0 ? "border-right" : (direction == "ltr" && i != 0 ? "border-left" : ""))*@
 
                                                 <div  style='flex-shrink : @(child.Childrens.Count== 0 ? "5" : "0")'>
-                                                    <h5><a class="nav-link mnLink @(direction == "rtl" ? "rtlTextAlign" : "ltrTextAlign")" href="@child.Url">@child.MenuTitle.Name</a></h5>
+                                                    <h5><a class="nav-link mnLink @(ViewBag.dir == "rtl" ? "rtlTextAlign" : "ltrTextAlign")" href="@child.Url">@child.MenuTitle.Name</a></h5>
 
                                                     @foreach (var leaf in child.Childrens)
                                                     {
-                                                        <a class="dropdown-item @(direction == "rtl" ? "rtlTextAlign" : "ltrTextAlign")" href="@leaf.Url">@leaf.MenuTitle.Name</a>
+                                                        <a class="dropdown-item @(ViewBag.dir == "rtl" ? "rtlTextAlign" : "ltrTextAlign")" href="@leaf.Url">@leaf.MenuTitle.Name</a>
                                                     }
                                                 </div>
                                             }
@@ -89,11 +77,11 @@
                                             {
                                                 var child = item.Childrens[i];
                                                 <div class="col-sm-6 col-lg-3">
-                                                    <h5><a class="nav-link @(direction == "rtl" ? "rtlTextAlign" : "ltrTextAlign")" href="@child.Url">@child.MenuTitle.Name</a></h5>
+                                                    <h5><a class="nav-link @(ViewBag.dir == "rtl" ? "rtlTextAlign" : "ltrTextAlign")" href="@child.Url">@child.MenuTitle.Name</a></h5>
 
                                                     @foreach (var leaf in child.Childrens)
                                                     {
-                                                        <a class="dropdown-item @(direction == "rtl" ? "rtlTextAlign" : "ltrTextAlign")" href="@leaf.Url">@leaf.MenuTitle.Name</a>
+                                                        <a class="dropdown-item @(ViewBag.dir == "rtl" ? "rtlTextAlign" : "ltrTextAlign")" href="@leaf.Url">@leaf.MenuTitle.Name</a>
                                                     }
                                                 </div>
                                             }

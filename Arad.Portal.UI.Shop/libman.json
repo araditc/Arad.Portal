@@ -3,10 +3,6 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "library": "Swiper@7.2.0",
-      "destination": "wwwroot/lib/Swiper/"
-    },
-    {
       "library": "fancybox@3.5.7",
       "destination": "wwwroot/lib/fancybox/"
     },
@@ -15,20 +11,12 @@
       "destination": "wwwroot/lib/slick-carousel/"
     },
     {
-      "library": "popper.js@2.10.2",
-      "destination": "wwwroot/lib/popper.js/"
-    },
-    {
       "library": "font-awesome@5.15.4",
       "destination": "wwwroot/lib/font-awesome/"
     },
     {
       "library": "intl-tel-input@17.0.15",
       "destination": "wwwroot/lib/intl-tel-input/"
-    },
-    {
-      "library": "limonte-sweetalert2@11.3.0",
-      "destination": "wwwroot/lib/limonte-sweetalert2/"
     },
     {
       "library": "bootstrap-select@1.13.18",

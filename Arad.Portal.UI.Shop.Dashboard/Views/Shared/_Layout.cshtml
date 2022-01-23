@@ -5,8 +5,6 @@
 @{
     var direction = "";
 
-
-    var faCls = "";
     var langList = new List<string>() { "fa", "en" };
     string lang = "";
     string userName = _accessor.HttpContext?.User.GetUserName();
@@ -15,13 +13,11 @@
     {
         direction = "rtl";
         ViewBag.dir = "rtl";
-        faCls = "fa";
     }
     else
     {
         direction = "ltr";
         ViewBag.dir = "ltr";
-        faCls = "fas";
     }
 
     switch (CultureInfo.CurrentCulture.Name)
@@ -50,7 +46,6 @@
     @if (direction == "ltr")
     {
         <link href="~/lib/bootstrap5/css/bootstrap.min.css" rel="stylesheet" />
-
     }
     else
     {
@@ -66,7 +61,7 @@
 
     @await RenderSectionAsync("Styles", required: false)
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap5/js/bootstrap.bundle.js"></script>
+    <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
     <script src="~/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js"></script>
 
@@ -348,6 +343,9 @@
         debugger;
         $('#confirmModal').modal('hide');
         $("#toastPanel").show();
+        $('#mainToastBody').removeClass('alert-success');
+        $('#mainToastBody').removeClass('alert-danger');
+
 
         $.ajax({
             type: typeOfRequest,
@@ -356,11 +354,10 @@
                 debugger;
                 if (resultData.status.toLowerCase() === "success") {
 
-                       $('#mainToastBody').html('<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessage_OperationDoneSuccessfully")');
-
-                        //if ("data" in resultData)
-                        //{
-                        //    document.getElementById('mainToastBody').innerHTML += `<br/>${resultData.message}`;
+                    $('#mainToastBody').html('<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessage_OperationDoneSuccessfully")');
+                    //if ("data" in resultData)
+                    //{
+                    //    document.getElementById('mainToastBody').innerHTML += `<br/>${resultData.message}`;
                     //}
                     $('#mainToastBody').addClass('alert-success');
                     $("#toastPanel").show();

@@ -24,15 +24,6 @@
         langId = ViewBag.DefLangId;
     }
     var searchCollapseClass = isSearch ? "collapse show" : "collapse";
-    var dir = "";
-    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-    {
-        dir = "rtl";
-    }
-    else
-    {
-        dir = "ltr";
-    }
 }
 
 <div class="card card-dark">
@@ -131,26 +122,26 @@
                             <td class="ListCell">@item.SeoDescription</td>
                             <td class="ListCell">@item.UrlFriend</td>
                             <td class="ListCell">@item.SourceType</td>
-                            <td class="ListCell" style="direction:ltr">@item.StartShowDate</td>
-                            <td class="ListCell" style="direction:ltr">@item.EndShowDate</td>
+                            <td class="ListCell" dir="ltr">@item.StartShowDate</td>
+                            <td class="ListCell" dir="ltr">@item.EndShowDate</td>
                             <td class="ListCell">@item.ContentProviderName</td>
                             <td>
                                 @if (ViewBag.Permissions["Edit"])
                                 {
                                     <a asp-action="AddEdit" asp-controller="Content" asp-route-id="@item.ContentId" class="btn btn-sm btn-warning bg-gradient">
-                                        <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
+                                        <i  class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                                     </a>
                                 }
                                 @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
                                 {
                                     <button onclick="EntityDelete('@item.ContentId')" class="btn btn-sm btn-danger bg-gradient">
-                                        <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
+                                        <i  class="fa fa-trash"></i>@Language.GetString("btn_Delete")
                                     </button>
                                 }
                                 @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
                                 {
                                     <button id="restoreRecord" data-id="@item.ContentId" onclick="EntityRestore('@item.ContentId')" class="btn btn-sm btn-secondary bg-gradient">
-                                        <i style="position: relative;left: 5px;top: 2px;" class="fa fa-refresh"></i>
+                                        <i  class="fa fa-refresh"></i>
                                         @Language.GetString("btn_Restore")
                                     </button>
                                 }

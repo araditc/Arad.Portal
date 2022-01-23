@@ -2,18 +2,30 @@
 @model Arad.Portal.DataLayer.Models.User.LoginDTO
 @inject Arad.Portal.DataLayer.Contracts.General.SystemSetting.ISystemSettingRepository _systemSettingRepository
 @{
-    Layout = null;
-    Arad.Portal.DataLayer.Entities.General.SystemSetting.SystemSetting systemSetting
-        = (await _systemSettingRepository.GetAll()).FirstOrDefault();
     var dir = "";
+    var langList = new List<string>() { "fa", "en" };
+    string lang = "";
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
     {
         dir = "rtl";
+        ViewBag.dir = "rtl";
     }
     else
     {
         dir = "ltr";
+        ViewBag.dir = "ltr";
     }
+    switch (CultureInfo.CurrentCulture.Name)
+    {
+        case "fa-IR":
+            lang = "fa";
+            break;
+        case "en-US":
+            lang = "en";
+            break;
+    }
+    Arad.Portal.DataLayer.Entities.General.SystemSetting.SystemSetting systemSetting
+        = (await _systemSettingRepository.GetAll()).FirstOrDefault();
 }
 <!DOCTYPE html>
 <html>
@@ -41,36 +53,22 @@
           content="width=device-width, initial-scale=1">
 
     <!-- Font Awesome -->
-    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
-    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
-    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/lib/intl-tel-input/css/intlTelInput.css" rel="stylesheet" />
-    <link href="~/lib/limonte-sweetalert2/sweetalert2.css" rel="stylesheet" />
-
-    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    @if (dir == "rtl")
     {
-        <link href="~/Fonts/IranSans/css/fontiran.css"
-              rel="stylesheet" />
-        <link href="~/fonts/IranSans/css/persianfonts.css" rel="stylesheet" />
+        <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     }
+    else
 
-    <link href="~/css/loader-double.css" rel="stylesheet" />
-
-    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
         <link href="~/css/siteTemplate/rtl/bootstrap-rtl.min.css" rel="stylesheet" />
-
+        <link href="~/Fonts/IranSans/css/fontiran.css" rel="stylesheet" />
     }
-
-    <!-- iCheck -->
-    <link href="~/plugins/iCheck/all.css" rel="stylesheet" />
-    <link href="~/plugins/iCheck/flat/blue.css" rel="stylesheet" />
-
-
-    <!-- bootstrap rtl -->
-    <!-- template rtl version -->
-
-
+    <link rel="stylesheet" href="~/css/Menu/Bootstrap4MegaMenu.css" />
+    <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
     <style>
         input::placeholder { text-align: center; }
 

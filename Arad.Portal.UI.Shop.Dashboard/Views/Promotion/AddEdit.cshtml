@@ -2,25 +2,13 @@
 @{
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
-
-    var dir = "";
-    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-    {
-        dir = "rtl";
-    }
-    else
-    {
-        dir = "ltr";
-    }
 }
 @section Styles{
-    <link href="~/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css" rel="stylesheet" />
     <style>
         .text-danger {
             font-size: 12px;
         }
     </style>
-    <link rel="stylesheet" href="~/css/bootstrap-select/bootstrap-select.css" />
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
         <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
@@ -45,18 +33,6 @@
 
             <div class="card-body" id="addEditProductGroupCard">
                 <input type="hidden" value="@Model.PromotionId" asp-for="PromotionId" />
-                <div class="row">
-                    @{
-                        if (!string.IsNullOrWhiteSpace(Model.PromotionId))
-                        {
-                            <div class="form-group col-md-6">
-                                <label class="form-label" asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
-                                <textarea dir="rtl" asp-for="ModificationReason" class="form-control" rows="3"></textarea>
-                                <span data-val-result="ModificationReason" class="text-danger"></span>
-                            </div>
-                        }
-                    }
-                </div>
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label class="form-label" for="title">@Language.GetString("Title")</label><br />

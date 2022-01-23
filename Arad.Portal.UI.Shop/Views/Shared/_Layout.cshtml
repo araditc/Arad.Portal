@@ -3,41 +3,34 @@
 @using Arad.Portal.GeneralLibrary.Utilities;
 @{
     var direction = "";
-    var bodyClass = "";
-    var ulNavbarLinkClass = "";
-    var bellCls = "";
-    var faCls = "";
-    var floatlr = "";
-    var chevron = "";
+    var langList = new List<string>() { "fa", "en" };
+    string lang = "";
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
     {
         direction = "rtl";
         ViewBag.dir = "rtl";
-        bodyClass = "hold-transition sidebar-mini";
-        ulNavbarLinkClass = "navbar-nav mr-auto";
-        floatlr = "float-sm-left";
-        bellCls = "fa fa-bell-o";
-        faCls = "fa";
-        chevron = "fa fa-chevron-left";
-
     }
     else
     {
         direction = "ltr";
         ViewBag.dir = "ltr";
-        bodyClass = "hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed";
-        ulNavbarLinkClass = "navbar-nav ml-auto";
-        floatlr = "float-sm-right";
-        bellCls = "far fa-bell";
-        faCls = "fas";
-        chevron = "fa fa-chevron-right";
+    }
+    switch (CultureInfo.CurrentCulture.Name)
+    {
+        case "fa-IR":
+            lang = "fa";
+            break;
+        case "en-US":
+            lang = "en";
+            break;
     }
 
 }
-<html lang="en">
+<html dir="@direction" lang="@lang">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="Arad Portal" name="description">
     <title>@ViewData["Title"] - Arad.Portal.UI.Shop</title>
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
     @if (direction == "rtl")
@@ -48,15 +41,17 @@
 
     {
         <link href="~/css/siteTemplate/rtl/bootstrap-rtl.min.css" rel="stylesheet" />
+        <link href="~/Fonts/IranSans/css/fontiran.css" rel="stylesheet" />
     }
     <link rel="stylesheet" href="~/css/Menu/Bootstrap4MegaMenu.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
     <style>
         .lan {
             border: none;
             padding: 1rem 0.25rem;
             cursor: pointer;
-            
         }
 
         .profile {
@@ -64,23 +59,24 @@
             padding: 1rem 0.5rem;
             cursor: pointer;
         }
+
         .notifyBadge {
             border: 1px solid rgba(0, 0, 0, 0.1);
             background-color: transparent;
-            color : black;
+            color: black;
         }
     </style>
-    @if (direction == "rtl")
-    {
-        <link href="~/fonts/IranSans/css/persianfonts.css" rel="stylesheet" />
-        @*<link href="~/fonts/IranSans/css/style.css" rel="stylesheet" />*@
-    }
-    @RenderSection("Styles", required: false)
+    @await RenderSectionAsync("Styles", required: false)
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
 </head>
 
 
-<body dir="@direction">
+<body dir="@direction" class="fs-6">
     <header>
         <div class="row">
             @*<div class="logo"></div>
@@ -172,9 +168,6 @@
 
     @await RenderSectionAsync("Scripts", required: false)
     <script>
-        //$(document).ready(function () {
-        //    $('[data-toggle="tooltip"]').tooltip();
-        //});
     function setLang(lang)
     {
         debugger;
@@ -189,10 +182,10 @@
                 }
             });
         }
-        }
-        function setProductCountInCart(number) {
-            $("#userBasketId .notifyBadge").html(number);
-        }
+    }
+    function setProductCountInCart(number) {
+        $("#userBasketId .notifyBadge").html(number);
+    }
     </script>
 </body>
 </html>

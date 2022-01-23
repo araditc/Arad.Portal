@@ -3,15 +3,6 @@
     //Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
-    var dir = "";
-    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-    {
-        dir = "rtl";
-    }
-    else
-    {
-        dir = "ltr";
-    }
 }
 @section Styles{
     <style>
@@ -287,13 +278,9 @@
             if ($("#nameValuesInput").val() != "") {
                 var val = $("#nameValuesInput").val();
                 var li = "";
-                if ('@dir' == 'rtl') {
+               
                  li = "<li class='list-group-item'>" + val + "<i class='fa fa-times-circle'" +
-                        "onclick='deleteValue(this);' style='font-size:1rem;color:red;float:left;'></i></li>";
-                } else {
-                    li = "<li class='list-group-item'>" + val + "<i class='fa fa-times-circle'" +
-                        "onclick='deleteValue(this);' style='font-size:1rem;color:red;float:right;'></i></li>";
-                }
+                        "onclick='deleteValue(this);' style='font-size:1rem;color:red;' class='float-end'></i></li>";
 
                 $("#nameValuesList").append(li);
                 $("#nameValuesInput").val("");

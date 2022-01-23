@@ -23,15 +23,6 @@
         langId = ViewBag.DefLangId;
     }
     var searchCollapseClass = isSearch ? "collapse show" : "collapse";
-    var dir = "";
-    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-    {
-        dir = "rtl";
-    }
-    else
-    {
-        dir = "ltr";
-    }
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Styles

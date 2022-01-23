@@ -1,5 +1,14 @@
 ﻿@{
     Layout = null;
+    var dir = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        dir = "rtl";
+    }
+    else
+    {
+        dir = "ltr";
+    }
 }
 <html style="height: auto;">
 <head>
@@ -9,22 +18,32 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    <!--<link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />-->
     @*<link href="~/Fonts/IranSans/css/fontiran.css" rel="stylesheet" />*@
     @*<link rel="stylesheet" href="~/DashboardAsset/dist/css/adminlte.min.css">*@
-    <!-- iCheck -->
-    <link href="~/plugins/iCheck/all.css" rel="stylesheet" />
+    <!--<!-- iCheck -->
+    <!--<link href="~/plugins/iCheck/all.css" rel="stylesheet" />-->
     @*<link rel="stylesheet" href="~/DashboardAsset/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
-        <link rel="stylesheet" href="~/DashboardAsset/plugins/datatables/dataTables.bootstrap4.css">*@
+        <link rel="stylesheet" href="~/DashboardAsset/plugins/datatables/dataTables.bootstrap4.css">*@-->
     <!-- bootstrap rtl -->
-    <link href="~/css/siteTemplate/rtl/bootstrap-rtl.min.css" rel="stylesheet" />
+    <!--<link href="~/css/siteTemplate/rtl/bootstrap-rtl.min.css" rel="stylesheet" />-->
     <!-- template rtl version -->
-    <link href="~/css/siteTemplate/rtl/custom-style.css" rel="stylesheet" />
+    <!--<link href="~/css/siteTemplate/rtl/custom-style.css" rel="stylesheet" />
     <style>
         .swal2-title {
             font-family: IRANSansWeb;
         }
-    </style>
+    </style>-->
+    @if (dir == "ltr")
+    {
+        <link href="~/lib/bootstrap5/css/bootstrap.min.css" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="~/lib/bootstrap5/css/bootstrap.rtl.min.css" rel="stylesheet" />
+        <link href="~/Fonts/IranSans/css/fontiran.css" rel="stylesheet" />
+    }
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
 
 </head>
 <body style="height: auto;">

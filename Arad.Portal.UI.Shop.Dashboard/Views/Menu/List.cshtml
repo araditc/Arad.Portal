@@ -28,15 +28,7 @@
         langId = ViewBag.DefLangId;
     }
     var searchCollapseClass = isSearch ? "collapse show" : "collapse";
-    var dir = "";
-    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-    {
-        dir = "rtl";
-    }
-    else
-    {
-        dir = "ltr";
-    }
+    
 }
 
 
@@ -126,7 +118,7 @@
                             <td class="ListCell">@item.ParentName</td>
                             <td class="ListCell">@item.MenuType</td>
                             <td class="ListCell">@item.Order</td>
-                            <td class="ListCell" style="direction:ltr;">@item.Url</td>
+                            <td class="ListCell" dir="ltr">@item.Url</td>
                             <td class="ListCell">@item.Icon</td>
                             <td class="ListCell">@item.CreatorUserName</td>
                             <td class="ListCell">@item.SubGroupName</td>
@@ -135,13 +127,13 @@
                                 @if (ViewBag.Permissions["Edit"])
                                 {
                                     <a asp-action="AddEdit" asp-controller="Menu" asp-route-id="@item.MenuId" class="btn btn-sm btn-warning bg-gradient">
-                                        <i style="position: relative;left: 5px;top: 2px;" class="fa fa-edit"></i>@Language.GetString("btn_Edit")
+                                        <i  class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                                     </a>
                                 }
                                 @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
                                 {
                                     <button onclick="EntityDelete('@item.MenuId')" class="btn btn-sm btn-danger bg-gradient">
-                                        <i style="position: relative; left: 5px; top: 1px;" class="fa fa-trash"></i>@Language.GetString("btn_Delete")
+                                        <i  class="fa fa-trash"></i>@Language.GetString("btn_Delete")
                                     </button>
                                 }
                             </td>

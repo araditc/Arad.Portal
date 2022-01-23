@@ -3,20 +3,12 @@
     //Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
-    var dir = "";
-    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-    {
-        dir = "rtl";
-    }
-    else
-    {
-        dir = "ltr";
-    }
+   
 }
 
 
 <link href="~/css/jquerysctipttop.css" rel="stylesheet" />
-<script src="~/js/plugins/jquery/jquery.min.js"></script>
+@*<script src="~/js/plugins/jquery/jquery.min.js"></script>*@
 <link href="~/css/jqueryTreeview/jquery.treeview.css" rel="stylesheet" />
 <script src="~/js/jqueryTreeview/jquery.treeview.js"></script>
 
@@ -25,7 +17,7 @@
         font-size: 12px;
     }
     p.group {
-        padding-right: @(dir == "rtl" ? "3%" : "0%");
+        padding-right: @(ViewBag.dir == "rtl" ? "3%" : "0%");
 
     }
     .treeview .item i{

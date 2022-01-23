@@ -6,7 +6,6 @@
     var error = Language.GetString("AlertAndMessage_Error");
 }
 @section Styles{
-    <link href="~/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css" rel="stylesheet" />
     <link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
     <style>
         .text-danger {
@@ -59,11 +58,6 @@
        /* .lightColored {
             background-color: aliceblue
         }*/
-
-        @*.amsify-suggestags-input-area {
-            text-align: @(dir == "rtl" ? "right" : "left");
-            height: auto;
-        }*@
         img, svg, .SimpleUploadsTmpWrapper {
             height: auto;
             max-width: 100%;
@@ -94,7 +88,7 @@
         <div class="modal-content col-md-12">
             <div class="modal-header">
                 <div class="col-md-1">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" data-dismiss="modal" class="btn-close" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -149,9 +143,9 @@
                                          class="profile-user-img img-fluid img-circle" src="@(!string.IsNullOrWhiteSpace(@Model.GroupImage.Content) ? @Model.GroupImage.Content : "/imgs/NoImage.png")" alt="productGroup Image">
                                 </div>
                                 <hr>
-                                <div class="custom-file">
-                                    <input accept="image/x-png,image/jpeg" type="file" class="btn btn-sm" name="image" id="image" onchange="getURL(this)">
-                                    <label class="custom-file-label" for="image">@Language.GetString("ChangeImage")</label>
+                                <div class="border">
+                                    <label class="custom-file-label float-start" for="image">@Language.GetString("ChangeImage")</label>
+                                    <input accept="image/x-png,image/jpeg" type="file" class="btn btn-sm float-end" name="image" id="image" onchange="getURL(this)">
                                 </div>
                             </div>
                             <!-- /.card-body -->

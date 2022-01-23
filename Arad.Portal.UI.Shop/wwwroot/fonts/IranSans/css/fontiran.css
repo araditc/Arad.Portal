@@ -60,4 +60,5 @@ This set of fonts are used in this project under the license: (.....)
 	font-weight: normal;
 	src: url('/Fonts/Iransans/eot/IRANSansWeb.eot');
 	src: url('/Fonts/Iransans/eot/IRANSansWeb.eot?#iefix') format('embedded-opentype'), url('/Fonts/Iransans/woff2/IRANSansWeb.woff2') format('woff2'), url('/Fonts/Iransans/woff/IRANSansWeb.woff') format('woff'), url('/Fonts/Iransans/ttf/IRANSansWeb.ttf') format('truetype');
+    font-display: swap;
 }

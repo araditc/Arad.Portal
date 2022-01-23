@@ -4,16 +4,7 @@
     //Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
-    var dir = "";
     var lan = "";
-    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-    {
-        dir = "rtl";
-    }
-    else
-    {
-        dir = "ltr";
-    }
     if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
         lan = "fa";
@@ -24,7 +15,6 @@
     }
 }
 @section Styles{
-    <link href="~/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css" rel="stylesheet" />
     <link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
     <link href="~/plugins/TagInput/amsify.suggestags.css" rel="stylesheet" />
     <link href="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.css" rel="stylesheet" />
@@ -67,7 +57,7 @@
             z-index: 100001 !important;
         }
         .amsify-suggestags-input-area {
-            text-align: @(dir == "rtl" ? "right" : "left");
+            text-align: @(ViewBag.dir == "rtl" ? "right" : "left");
             height: auto;
         }
         img, svg, .SimpleUploadsTmpWrapper {
@@ -138,8 +128,7 @@
         <div class="modal-content col-md-12">
             <div class="modal-header">
                 <div class="col-md-1">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button"  data-dismiss="modal" class="btn-close" aria-label="Close">
                     </button>
                 </div>
                 <div class="col-md-11" style="text-align: center">
@@ -295,12 +284,12 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="custom-file">
+                                    <div class="col-md-4 border">
+                                        @*<div class="border">*@
+                                            <label class="form-label custom-file-label float-start pt-2" for="image">@Language.GetString("btn_UploadImage")</label>
                                             <input accept="image/x-png,image/jpeg"
-                                                   type="file" class="btn btn-sm bg-gradient" name="image" id="image" onchange="getURL(this)">
-                                            <label class="form-label custom-file-label" for="image">@Language.GetString("btn_UploadImage")</label>
-                                        </div>
+                                                   type="file" class="btn btn-sm bg-gradient float-end" name="image" id="image" onchange="getURL(this)"/>
+                                        @*</div>*@
                                     </div>
                                 </div>
                                 <div class="row" id="proGallery" style="padding:1%;">
@@ -325,7 +314,7 @@
                                                         <td><input type="text" class="form-control txtTitle" value="@pic.Title" /></td>
                                                         <td><input type="text" class="form-control txtDesc" value="@pic.Description" /></td>
                                                         <td>
-                                                        <div class="form-check">
+                                                        <div class="form-check d-flex justify-content-center p-0">
                                                             <input class="form-check-input rdbIsMain" type="radio" checked="@pic.IsMain" name="isMainImage" />
                                                         </div>
                                                         </td>
@@ -616,7 +605,7 @@
                     "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
                     "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
                     "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
-                    "'/></td><td style='vertical-align:middle;'><div class='form-check'><input type='radio'  name='isMainImage' class='form-check-input rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' imgId='img_" + counter + "' onclick='deleteFromImageList(this);'><i class='fa fa-trash' ></i></button></td></tr>";
+                    "'/></td><td style='vertical-align:middle;'><div class='form-check d-flex justify-content-center p-0'><input type='radio'  name='isMainImage' class='form-check-input rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' imgId='img_" + counter + "' onclick='deleteFromImageList(this);'><i class='fa fa-trash' ></i></button></td></tr>";
            
             $("#imageList").append(tr);
             counter += 1;
