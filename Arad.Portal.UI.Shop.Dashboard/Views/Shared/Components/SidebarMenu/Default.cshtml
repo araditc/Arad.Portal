@@ -14,7 +14,7 @@
                     <h2 class="accordion-header py-1"
                         id="@($"heading{item.MenuId}")">
                         <a href="@item.Link"
-                           class="btn btn-sm fs-6 bg-gradient text-start text-nowrap lh-lg @(item.IsActive ? "text-primary" : "")">
+                           class="btn btn-sm bg-gradient text-start text-nowrap lh-lg @(item.IsActive ? "text-primary" : "")">
                             <i class="@item.Icon"></i>
                             @item.MenuTitle
                         </a>
@@ -29,7 +29,7 @@
 
                         <button aria-controls="@($"collapse{item.MenuId}")"
                                 aria-expanded="@item.IsActive"
-                                class="accordion-button py-1 px-2 fs-6 @(item.IsActive ? "" : "collapsed")"
+                                class="accordion-button py-1 px-2 @(item.IsActive ? "" : "collapsed")"
                                 data-bs-target="@($"#collapse{item.MenuId}")"
                                 data-bs-toggle="collapse"
                                 type="button">

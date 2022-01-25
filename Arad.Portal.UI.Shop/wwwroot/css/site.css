@@ -8,7 +8,7 @@ a.navbar-brand {
 }
 
 /* Provide sufficient contrast against white background */
-a {
+/*a {
   color: #0366d6;
 }
 
@@ -16,17 +16,17 @@ a {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
-}
+}*/
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+/*.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
-}
+}*/
 
 /* Sticky footer styles
 -------------------------------------------------- */
-html {
+/*html {
   font-size: 14px;
 }
 @media (min-width: 768px) {
@@ -34,7 +34,7 @@ html {
     font-size: 16px;
   }
 }
-
+*/
 .border-top {
   border-top: 1px solid #e5e5e5;
 }
@@ -73,7 +73,7 @@ body {
 /*--------------------------------------------------------------*/
 body {
     font-family: IRANSansWeb !important;
-    height: 100vh;
+   /* height: 100vh;*/
 }
 
 .navbar-profile-pic {
@@ -85,9 +85,9 @@ body {
     height: 92vh !important;
 }
 
-.fs-6 {
+/*.fs-6 {
     font-size: 14px !important;
-}
+}*/
 
 .rtl {
     direction: rtl;

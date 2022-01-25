@@ -24,19 +24,33 @@ namespace Arad.Portal.UI.Shop.Controllers
 
         public IActionResult GetImage(string path)
         {
+            
             var localStaticFileStorage = _configuration["LocalStaticFileStorage"];
-            if (path.StartsWith("/"))
-                path = path.Substring(1);
-            var finalPath = Path.Combine(localStaticFileStorage, path).Replace("\\","/");
-
-            if (!System.IO.File.Exists(finalPath))
+            string finalPath;
+            if(!string.IsNullOrWhiteSpace(path))
             {
-                finalPath = "/images/imgs/NoImage.png";
+                if (path.StartsWith("/"))
+                    path = path[1..];
+                finalPath = Path.Combine(localStaticFileStorage, path).Replace("\\", "/");
+
+                if (!System.IO.File.Exists(finalPath))
+                {
+                    finalPath = Path.Combine(localStaticFileStorage, "images/imgs/NoImage.png").Replace("\\", "/");
+                }
+                var fileName = Path.GetFileName(finalPath);
+                var mimeType = ImageFunctions.GetMIMEType(fileName);
+                byte[] fileContent = System.IO.File.ReadAllBytes(finalPath);
+                return File(fileContent, mimeType);
             }
-            var fileName = Path.GetFileName(finalPath);
-            var mimeType = ImageFunctions.GetMIMEType(fileName);
-            byte[] fileContent = System.IO.File.ReadAllBytes(finalPath);
-            return File(fileContent, mimeType);
+            else
+            {
+                finalPath = Path.Combine(localStaticFileStorage, "images/imgs/NoImage.png").Replace("\\", "/");
+                var fileName = Path.GetFileName(finalPath);
+                var mimeType = ImageFunctions.GetMIMEType(fileName);
+                byte[] fileContent = System.IO.File.ReadAllBytes(finalPath);
+                return File(fileContent, mimeType);
+            }
+           
         }
 
         public IActionResult GetScaledImage(string path, int height)

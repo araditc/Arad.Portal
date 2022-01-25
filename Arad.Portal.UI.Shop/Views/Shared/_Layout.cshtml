@@ -33,14 +33,14 @@
     <meta content="Arad Portal" name="description">
     <title>@ViewData["Title"] - Arad.Portal.UI.Shop</title>
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
-    @if (direction == "rtl")
+    @if (direction == "ltr")
     {
-        <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/lib/bootstrap5/css/bootstrap.min.css" rel="stylesheet" />
     }
     else
-
     {
-        <link href="~/css/siteTemplate/rtl/bootstrap-rtl.min.css" rel="stylesheet" />
+       
+        <link href="~/lib/bootstrap5/css/bootstrap.rtl.min.css" rel="stylesheet" />
         <link href="~/Fonts/IranSans/css/fontiran.css" rel="stylesheet" />
     }
     <link rel="stylesheet" href="~/css/Menu/Bootstrap4MegaMenu.css" />
@@ -49,21 +49,21 @@
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
     <style>
         .lan {
-            border: none;
             padding: 1rem 0.25rem;
-            cursor: pointer;
         }
 
         .profile {
-            border: none;
             padding: 1rem 0.5rem;
-            cursor: pointer;
         }
 
         .notifyBadge {
             border: 1px solid rgba(0, 0, 0, 0.1);
             background-color: transparent;
             color: black;
+        }
+        .dropdown-menu {
+            padding-right: @(ViewBag.dir == "rtl" ? "1.5rem" : "0") !important;
+            padding-left: @(ViewBag.dir == "ltr" ? "1.5rem" : "0") !important;
         }
     </style>
     @await RenderSectionAsync("Styles", required: false)
@@ -76,39 +76,28 @@
 </head>
 
 
-<body dir="@direction" class="fs-6">
+<body>
+    <div id="loading" class="text-center">
+        <div class="spinner-border text-danger" style="width: 4rem; height: 4rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
     <header>
         <div class="row">
-            @*<div class="logo"></div>
-                <div class="searchBar"></div>*@
+            @*<div class="col-4 col-md-8 col-lg-10"></div>*@
             @if (!User.Identity.IsAuthenticated)
             {
-                <div class="offset-8"></div>
-                <div class="col-md-2">
-                    @*<div class="profile m-2">
-                            <div class="row">
-                                <div class="col-3">
-                                    <a href="/account/login" title="@Language.GetString("btn_Login")">
-                                        <i class="fas fa-sign-in-alt"></i>
-                                    </a>
-                                </div>
-                                <div class="col-3">
-                                    <a href="/account/register" title="@Language.GetString("btn_Register")" >
-                                        <i class="fas fa-user-plus"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>*@
-
+                <div class="offset-4 col-4 offset-md-8 col-md-2 offset-lg-10 col-lg-1">
                     <ul class="list-group list-group-horizontal">
-                        <li class="list-group-item" style="border:none;"></li>
-                        <li class="list-group-item profile">
-                            <a href="/account/login" title="@Language.GetString("btn_Login")">
+                        <li class="list-group-item border-0" ></li>
+                        <li class="list-group-item border-0">
+                            <a href="/account/login" title="@Language.GetString("btn_Login")" role="button">
                                 <i class="fas fa-sign-in-alt"></i>
                             </a>
                         </li>
-                        <li class="list-group-item profile">
-                            <a href="/account/register" title="@Language.GetString("btn_Register")" @*data-toggle="tooltip" data-placement="bottom"*@>
+                        <li class="list-group-item border-0">
+                            <a href="/account/register" title="@Language.GetString("btn_Register")" role="button" data-toggle="tooltip" data-placement="bottom">
                                 <i class="fas fa-user-plus"></i>
                             </a>
                         </li>
@@ -117,8 +106,7 @@
             }
             else
             {
-                <div class="offset-8"></div>
-                <div class="col-md-2">
+                <div class="col-4 col-md-2 col-lg-1">
                     <ul class="list-group list-group-horizontal">
                         <li class="list-group-item profile">
                             <a href="/account/Profile" id="userProfileId" title="@Language.GetString("User_Profile")">
@@ -135,22 +123,24 @@
                 </div>
 
             }
-            <div class="col-md-2  language">
+
+            <div class="col-4 col-md-2 col-lg-1  language">
                 <ul class="langUl list-group list-group-horizontal">
-                    <li class="list-group-item lan">
-                        <a title="@Language.GetString("Persian")">
+                    <li class="list-group-item lan border-0">
+                        <a title="@Language.GetString("Persian")" role="button">
                             <img src="~/imgs/IRAN.png" onclick="setLang('fa-IR')" />
                         </a>
 
                     </li>
-                    <li class="list-group-item lan">
-                        <a title="@Language.GetString("English")">
+                    <li class="list-group-item lan border-0">
+                        <a title="@Language.GetString("English")" role="button">
                             <img src="~/imgs/USA.png" onclick="setLang('en-US')" />
                         </a>
 
                     </li>
                 </ul>
             </div>
+
         </div>
     </header>
     <div class="navbarMenu">
@@ -162,11 +152,7 @@
             @RenderBody()
         </main>
     </div>
-
-
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
-
-    @await RenderSectionAsync("Scripts", required: false)
+  
     <script>
     function setLang(lang)
     {
@@ -184,8 +170,60 @@
         }
     }
     function setProductCountInCart(number) {
-        $("#userBasketId .notifyBadge").html(number);
+       $("#userBasketId .notifyBadge").html(number);
     }
+
+    function changeScreen() {
+        var windowSize = $(window).width();
+        console.log(windowSize);
+        if (windowSize <= 974) {
+            $(".nascr").show();
+            $(".wiscr").hide();
+        } else {
+            $(".nascr").hide();
+            $(".wiscr").show();
+        }
+    }
+        $(document).ready(function () {
+            changeScreen();
+            $(window).resize(changeScreen);
+
+            $(".menu-area").mouseover(function () {
+                    var windowSize = $(window).width();
+                    if (windowSize > 975) {
+                        $(this).addClass("show");
+                        $(this).find(".dropdown-toggle").addClass("text-primary");
+                        $(this).find(".mega-area").addClass("show");
+                    }
+            });
+
+            $(".menu-area").mouseleave(function () {
+                var windowSize = $(window).width();
+                if (windowSize > 975) {
+                    $(this).removeClass("show");
+                    $(this).find(".dropdown-toggle").removeClass("text-primary");
+                    $(this).find(".mega-area").removeClass("show");
+                }
+            });
+
+            $(".nav-item .nav-link").mouseover(function () {
+                    $(this).addClass("text-primary");
+            });
+            $(".nav-item .nav-link").mouseleave(function () {
+                    $(this).removeClass("text-primary");
+            });
+
+            $(".custmDrp").click(function () {
+                debugger;
+                var item = $(this).parent().parent().siblings(".mega-area")
+                if (item.hasClass("show")) {
+                    item.removeClass("show");
+                } else {
+                    item.addClass("show");  
+                }
+            })
+        });
     </script>
 </body>
 </html>
+

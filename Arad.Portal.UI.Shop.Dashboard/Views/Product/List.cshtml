@@ -63,7 +63,7 @@
             <div class="row">
                 <div class="form-group col-md-3">
                     <label class="form-label">@Language.GetString("tbl_ProductGroup")</label>
-                    <select class="form-control selectpicker fs-6" data-live-search="true"
+                    <select class="form-control selectpicker" data-live-search="true"
                             multiple="multiple" id="cmbProductGroupFilter" asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))" >
                     </select>
                 </div>
@@ -189,7 +189,7 @@
                 <label class="form-label">@Language.GetString("LanguageName")</label>
             </div>
             <div class="col-md-2">
-                <select class="form-control border fs-6" data-live-search="true" id="cmbLangIdFilter" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                <select class="form-control border" data-live-search="true" id="cmbLangIdFilter" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                 </select>
             </div>
         </div>

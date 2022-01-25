@@ -24,7 +24,7 @@
             <div class="row">
                 <div class="form-group col-md-4">
                     <label class="form-label" asp-for="@Model.ProductGroupIds">@Language.GetString("tbl_ProductGroup")</label>
-                    <select class="form-control selectpicker fs-6" multiple="multiple"
+                    <select class="form-control selectpicker" multiple="multiple"
                             asp-for="@Model.ProductGroupIds" asp-items="@(new MultiSelectList(ViewBag.ProductGroupList,"Value","Text"))" data-live-search="true">
                     </select>
                     <span data-val-result="GroupIds" class="text-danger"></span>
@@ -34,7 +34,7 @@
                     <label class="form-label" asp-for="ProductsExcelFile">
                         @Language.GetString("FileImportExport_ProductExcelFile")
                     </label>
-                    <input accept=".xls,.xlsx" class="form-control fs-6"  asp-for="ProductsExcelFile"  type="file" />
+                    <input accept=".xls,.xlsx" class="form-control"  asp-for="ProductsExcelFile"  type="file" />
                     <span class="text-danger form-validation-alert" asp-validation-for="ProductsExcelFile">
                     </span>
                 </div>

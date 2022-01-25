@@ -19,7 +19,7 @@
                 <label class="form-label" for="formFile">
                    @Language.GetString("ProductTemplateLanguage")
                 </label>
-                <select class="form-control selectpicker fs-6" data-live-search="true" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                <select class="form-control selectpicker" data-live-search="true" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                 </select>
             </div>
 

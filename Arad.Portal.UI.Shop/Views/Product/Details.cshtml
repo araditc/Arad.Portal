@@ -1,6 +1,7 @@
 ﻿@model Arad.Portal.DataLayer.Models.Product.ProductOutputDTO
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = null;
     var dir = "";
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
     {
@@ -14,21 +15,18 @@
                                         Model.Prices.First(_ => _.StartDate <= DateTime.Now && _.CurrencyId == ViewBag.CurCurrencyId && _.IsActive && _.EndDate == null) : null;
     var realPrice = price.PriceValue;
 }
-@section Styles
-{
-    <link href="~/lib/slick-carousel/slick.css" rel="stylesheet" />
-    <link href="~/lib/fancybox/jquery.fancybox.min.css" rel="stylesheet" />
-    <link href="~/ImageSlider/ImageSlider.css" rel="stylesheet" />
-    <style>
-    .card-title{
-       text-align : @(@dir == "rtl" ? "right" : "left") ;
+@*@section Styles
+    {*@
+@*<link href="~/lib/slick-carousel/slick.css" rel="stylesheet" />*@
+<link href="~/ImageSlider/slick.css" rel="stylesheet" />
+@*<link href="~/lib/fancybox/jquery.fancybox.min.css" rel="stylesheet" />*@
+<link href="~/ImageSlider/jquery.fancybox.min.css" rel="stylesheet" />
+<link href="~/ImageSlider/ImageSlider.css" rel="stylesheet" />
+<style>
+    .smlImg {
+        border-radius: 10%;
     }
-    .txtAlign{
-         text-align : @(@dir == "rtl" ? "right" : "left") ;
-    }
-    .smlImg{
-        border-radius : 10%;
-    }
+
     .card {
         position: relative;
         display: flex;
@@ -53,44 +51,44 @@
     .reply a {
         text-decoration: none
     }
+
     .sold_stars i {
         color: orange
     }
-    .dir{
-        direction : @(dir == "rtl" ? "rtl" : "ltr");
-    }
 
-    .lblMdl{
+    .lblMdl {
         padding: 0.5rem 0rem;
     }
-    </style>
-}
-@*<script src="~/ImageSlider/popper.min.js"></script>*@
-@section Scripts{
+</style>
+@*}*@
 
-    @*<script src="~/ImageSlider/slick.min.js"></script>*@
-    <script src="~/lib/slick-carousel/slick.min.js"></script>
-    @*<script src="~/ImageSlider/jquery.fancybox.min.js"></script>*@
-    <script src="~/lib/fancybox/jquery.fancybox.min.js"></script>
-        @if(dir == "rtl")
-         {
-           <script src="~/ImageSlider/ImageSlider-rtl.js"></script>
-         }
-        else
-        {
-            <script src="~/ImageSlider/ImageSlider-ltr.js"></script>
-        }
-    
+@*@section Scripts{*@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+@*<script src="~/ImageSlider/popper.min.js"></script>*@
+<script src="~/lib/bootstrap5/js/bootstrap.bundle.js"></script>
+<script src="~/ImageSlider/slick.min.js"></script>
+@*<script src="~/lib/slick-carousel/slick.min.js"></script>*@
+<script src="~/ImageSlider/jquery.fancybox.min.js"></script>
+@*<script src="~/lib/fancybox/jquery.fancybox.min.js"></script>*@
+@if (dir == "rtl")
+{
+    <script src="~/ImageSlider/ImageSlider-rtl.js"></script>
 }
+else
+{
+    <script src="~/ImageSlider/ImageSlider-ltr.js"></script>
+}
+
+@*}*@
 
 @*<div class="toast" id="showMessage" role="alert" aria-live="assertive">
-    <div class="toast-header"></div>
-    <div class="toast-body">
-       <p id="msgresult"></p>
-    </div>
-</div>*@
+        <div class="toast-header"></div>
+        <div class="toast-body">
+           <p id="msgresult"></p>
+        </div>
+    </div>*@
 <div class="row">
-    <div class="col-6" @*style="direction:ltr !important;"*@>
+    <div class="col-6" style="direction:ltr !important;">
         <div id="detail">
             <div class="product-images demo-gallery">
                 <div class="main-img-slider">
@@ -137,7 +135,7 @@
         </div>
         <div class="row">
             <form class="w-100 mt-2">
-                <textarea class="form-control dir w-100 bg-light" id="commentPart" rows="3" placeholder="@Language.GetString("AlertAndMessage_WriteComment")"></textarea>
+                <textarea class="form-control text-start w-100 bg-light" id="commentPart" rows="3" placeholder="@Language.GetString("AlertAndMessage_WriteComment")"></textarea>
                 <input type="button" class="btn btn-info bg-gradient mt-2" id="btnAddComment" value="@Language.GetString("btn_Insert")" />
             </form>
 
@@ -148,11 +146,11 @@
         <div class="card" style="border: none;">
             <div class="card-header"></div>
             <div class="card-body">
-                <h5 class="card-title">
+                <h5 class="card-title text-start">
                     @(Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
                     Model.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLanguageId).Name : "")
                 </h5>
-                <p class="card-text txtAlign">
+                <p class="card-text text-start">
                     @*text-truncate*@
                     @(Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
                             Model.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLanguageId).Description : "")
@@ -165,7 +163,8 @@
                                 <span>@Language.GetString("PriceValue")</span>
                                 <span> : </span>
                             </div>
-                            @if (realPrice == Model.PriceValWithPromotion && Model.GiftProduct == null)
+                            @if (realPrice == Model.PriceValWithPromotion &&
+                           Model.GiftProduct == null)
                             {
                                 <div class="col-md-3">
                                     <p>
@@ -218,7 +217,7 @@
 
                             }
 
-                            <div class="col-md-3 txtAlign">
+                            <div class="col-md-3 text-start">
                                 <span>@Language.GetString("InventoryInStore")</span>
                                 <span>@Model.Inventory</span>
                             </div>
@@ -231,11 +230,11 @@
                                 <input type="number" class="form-control" id="orderCnt" name="orderCnt" min="0" value="1" />
                             </div>
                             @*<div class="col-md-3">
-                                <label class="lblMdl">@Language.GetString("tbl_PaymenyGateways")</label>
-                            </div>
-                            <div class="col-md-4">
-                                <select class="form-control" asp-items="@(new SelectList(ViewBag.Providers,"Value","Text"))"></select>
-                            </div>*@
+                                    <label class="lblMdl">@Language.GetString("tbl_PaymenyGateways")</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-control" asp-items="@(new SelectList(ViewBag.Providers,"Value","Text"))"></select>
+                                </div>*@
 
                         </div>
                         <div class="row">
@@ -252,7 +251,7 @@
                                 <button class="btn btn-light bg-gradient" disabled>@Language.GetString("UnAvailable")</button>
                             </div>
                             <div class="col-md-3">
-                                <button class="btn btn-danger bg-gradient" >@Language.GetString("btn_InformMe")</button>
+                                <button class="btn btn-danger bg-gradient">@Language.GetString("btn_InformMe")</button>
                             </div>
                         </div>
                     }
@@ -352,7 +351,7 @@
                     }
                   });
             }
-           
+
         });
     });
 

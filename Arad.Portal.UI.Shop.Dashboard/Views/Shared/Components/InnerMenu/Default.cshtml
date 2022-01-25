@@ -10,7 +10,7 @@
         id="@($"heading{Model.MenuId}")">
         <button aria-controls="@($"collapse{Model.MenuId}")"
                 aria-expanded="false"
-                class="accordion-button collapsed py-2 px-2 fs-6"
+                class="accordion-button collapsed py-2 px-2"
                 data-bs-target="@($"#collapse{Model.MenuId}")"
                 data-bs-toggle="collapse"
                 type="button">
@@ -41,10 +41,10 @@
 else
 {
     <div class="accordion-item  border-0">
-        <h2 class="accordion-header py-1 px-2 fs-6"
+        <h2 class="accordion-header py-1 px-2"
             id="@($"heading{Model.MenuId}")">
             <a href="@Model.Link"
-               class="btn btn-sm bg-gradient fs-6 text-start @(Model.IsActive ? "text-primary" : "")">
+               class="btn btn-sm bg-gradient text-start @(Model.IsActive ? "text-primary" : "")">
                 <i class="@Model.Icon"></i>
                 @Model.MenuTitle
             </a>

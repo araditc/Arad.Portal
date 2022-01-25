@@ -15,6 +15,16 @@
     position : static;
 }
 
+
+
+h6 a.nav-link {
+    font-weight: 600;
+}
+
+.dropdown-item {
+    font-size: 0.95rem;
+}
+
 .mega-area{
     position : absolute;
     width : 100%;
@@ -33,3 +43,4 @@ h5 {
 .navbar{
     margin-top : 2%;
 }
+

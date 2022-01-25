@@ -2,7 +2,7 @@
   {
     "outputFileName": "wwwroot/css/site.min.css",
     "inputFiles": [
-      "wwwroot/lib/bootstrap/dist/css/bootstrap.css",
+      "wwwroot/lib/bootstrap5/dist/css/bootstrap.min.css",
       "wwwroot/css/site.css"
     ]
   },

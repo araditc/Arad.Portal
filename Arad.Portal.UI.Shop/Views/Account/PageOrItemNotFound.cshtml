@@ -17,23 +17,6 @@
     <title>عدم دسترسی</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!--<link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />-->
-    @*<link href="~/Fonts/IranSans/css/fontiran.css" rel="stylesheet" />*@
-    @*<link rel="stylesheet" href="~/DashboardAsset/dist/css/adminlte.min.css">*@
-    <!--<!-- iCheck -->
-    <!--<link href="~/plugins/iCheck/all.css" rel="stylesheet" />-->
-    @*<link rel="stylesheet" href="~/DashboardAsset/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
-        <link rel="stylesheet" href="~/DashboardAsset/plugins/datatables/dataTables.bootstrap4.css">*@-->
-    <!-- bootstrap rtl -->
-    <!--<link href="~/css/siteTemplate/rtl/bootstrap-rtl.min.css" rel="stylesheet" />-->
-    <!-- template rtl version -->
-    <!--<link href="~/css/siteTemplate/rtl/custom-style.css" rel="stylesheet" />
-    <style>
-        .swal2-title {
-            font-family: IRANSansWeb;
-        }
-    </style>-->
     @if (dir == "ltr")
     {
         <link href="~/lib/bootstrap5/css/bootstrap.min.css" rel="stylesheet" />
@@ -56,8 +39,8 @@
                 <div class="error-content">
                     <h3><i class="fa fa-warning text-danger"></i>@Language.GetString("AlertAndMessage_NotFound")</h3>
                     @*<p>
-                        صفحه یا آیتمی که درخواست کرده اید پیدا نشد با <a href="@Url.Action("Login","Account")"> این لینک </a>می توانید به صفحه اصلی برگردید..
-                    </p>*@
+                            صفحه یا آیتمی که درخواست کرده اید پیدا نشد با <a href="@Url.Action("Login","Account")"> این لینک </a>می توانید به صفحه اصلی برگردید..
+                     </p>*@
                 </div>
             </div>
             <!-- /.error-page -->
@@ -65,5 +48,9 @@
         </section>
         <!-- /.content -->
     </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js"></script>
 </body>
 </html>

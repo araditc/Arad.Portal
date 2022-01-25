@@ -53,6 +53,7 @@ namespace Arad.Portal.UI.Shop.Middlewares
 
                 //first step checke whether this cookie exist or not
                 var cookieName = $"{CookieRequestCultureProvider.DefaultCookieName}";
+               
                 if (context.Request.Cookies[cookieName] != null)
                 {
                     var cookieValue = context.Request.Cookies[cookieName];
@@ -65,7 +66,7 @@ namespace Arad.Portal.UI.Shop.Middlewares
                     //defLang =...
 
                 }
-                else
+                else if(defLangSymbol == "")
                 {
                     var result = _domainContext.Collection.Find(_ => _.DomainName == $"{context.Request.Scheme}://{context.Request.Host}").First();
                     defLangSymbol = result.DefaultLangSymbol;
@@ -89,7 +90,7 @@ namespace Arad.Portal.UI.Shop.Middlewares
                 else
                 if (!context.Request.Path.Value.StartsWith($"/{lang.Symbol.ToLower()}"))
                 {
-                    if (langSymbolList.Contains(context.Request.Path.Value.Substring(1)))
+                    if (langSymbolList.Contains(context.Request.Path.Value.Split("/")[1]))
                     {
                         foreach (var symbol in langSymbolList)
                         {
@@ -101,7 +102,7 @@ namespace Arad.Portal.UI.Shop.Middlewares
                                 }
                                 else
                                 {
-                                    pathRequest = "/" + context.Request.Path.Value.Remove(symbol.Length + 2);
+                                    pathRequest =  context.Request.Path.Value.Remove(0, symbol.Length+1);
                                 }
                                 break;
                             }

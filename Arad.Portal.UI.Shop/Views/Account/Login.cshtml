@@ -51,19 +51,15 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport"
           content="width=device-width, initial-scale=1">
-
-    <!-- Font Awesome -->
     <link href="~/lib/intl-tel-input/css/intlTelInput.css" rel="stylesheet" />
-    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
-    @if (dir == "rtl")
+   
+    @if (dir == "ltr")
     {
-        <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+       <link href="~/lib/bootstrap5/css/bootstrap.min.css" rel="stylesheet" />
     }
     else
-
     {
-        <link href="~/css/siteTemplate/rtl/bootstrap-rtl.min.css" rel="stylesheet" />
-        <link href="~/Fonts/IranSans/css/fontiran.css" rel="stylesheet" />
+        <link href="~/lib/bootstrap5/css/bootstrap.rtl.min.css" rel="stylesheet" />
     }
     <link rel="stylesheet" href="~/css/Menu/Bootstrap4MegaMenu.css" />
     <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
@@ -115,12 +111,8 @@
             white-space: nowrap;
         }
     </style>
-
 </head>
-
 <body>
-
-
     <main class="container"
           style="padding-top: 150px;">
         <div class="d-flex justify-content-center">
@@ -182,8 +174,7 @@
                                 </span>
                             </div>
 
-                            <div class="mb-1"
-                                 style="text-align: @(dir == "rtl" ? "right" : "left");">
+                            <div class="mb-1 text-start" >
                                 <a asp-action="ResetPassword">@Language.GetString("Action_ResetPassword")</a>
                             </div>
 
@@ -261,27 +252,12 @@
         </div>
 
     </main>
-    <!-- /.login-box -->
-    <!-- jQuery -->
-    @*<script src="~/js/plugins/jquery/jquery.min.js"></script>*@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap 4 -->
-    <script src="~/js/plugins/bootstrap/js/bootstrap.bundle.js"></script>
-    <!-- iCheck -->
-    @if (dir == "rtl")
-    {
-        <script src="~/js/siteTemplate/jqueryui1.11.4/jquery-ui.min.js"></script>
-
-    }
-    else
-    {
-        <link href="~/plugins/icheck-bootstrap/icheck-bootstrap.css" rel="stylesheet" />
-    }
-    @if (dir == "rtl")
-    {
-        <script src="~/plugins/iCheck/icheck.min.js"></script>
-    }
-
+    <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js"></script>
+    <script src="~/lib/intl-tel-input/js/intlTelInput.js"></script>
+    <script src="~/lib/intl-tel-input/js/utils.js"></script>
     <script>
         $(document).ready(function () {
             debugger;
@@ -294,15 +270,15 @@
                     })
                 }
             });
-    $(function()
-    {
-        $('input')
-            .iCheck({
-                checkboxClass: 'icheckbox_square-blue',
-                radioClass: 'iradio_square-blue',
-                increaseArea: '20%' // optional
-            });
-    });
+    //$(function()
+    //{
+    //    $('input')
+    //        .iCheck({
+    //            checkboxClass: 'icheckbox_square-blue',
+    //            radioClass: 'iradio_square-blue',
+    //            increaseArea: '20%' // optional
+    //        });
+    //});
 
 
     function refreshCaptcha()

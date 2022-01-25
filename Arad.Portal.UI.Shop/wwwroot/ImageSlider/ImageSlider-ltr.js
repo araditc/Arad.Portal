@@ -1,5 +1,6 @@
 ﻿// Main/Product image slider for product page
 $('#detail .main-img-slider').slick({
+   
     slidesToShow: 1,
     slidesToScroll: 1,
     infinite: true,

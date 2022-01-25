@@ -1,6 +1,7 @@
 ﻿body {
     font-family: IRANSansWeb !important;
     height: 100vh;
+    font-size:12px;
 }
 
 .navbar-profile-pic {
@@ -12,9 +13,9 @@
     height: 92vh !important;
 }
 
-.fs-6 {
+./*fs-6 {
     font-size: 14px !important;
-}
+}*/
 .rtl{
     direction : rtl;
 }
@@ -25,7 +26,9 @@
     text-align: center;
     vertical-align: middle;
 }
-
+.fs{
+    font-size: 12px !important;
+}
 i span {
     font-family: IRANSansWeb;
 }
@@ -67,21 +70,21 @@ i span {
     z-index: 999999;
 }
 
-    #loading::after, .loader::before {
-        box-sizing: border-box;
-        display: none
-    }
+#loading::after, .loader::before {
+    box-sizing: border-box;
+    display: none
+}
 
 
-    #loading.is-active {
-        background-color: rgba(0, 0, 0, .85);
-        display: block;
-        height: 100%;
-        left: 0;
-        top: 0;
-        width: 100%;
-    }
+#loading.is-active {
+    background-color: rgba(0, 0, 0, .85);
+    display: block;
+    height: 100%;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
 
-        #loading.is-active::after, .loader.is-active::before {
-            display: block
-        }
+#loading.is-active::after, .loader.is-active::before {
+    display: block
+}

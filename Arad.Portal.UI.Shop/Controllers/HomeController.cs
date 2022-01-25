@@ -31,12 +31,12 @@ namespace Arad.Portal.UI.Shop.Controllers
             var domainDto = _domainRepository.FetchByName(DomainName).ReturnValue;
             if (CultureInfo.CurrentCulture.Name != domainDto.DefaultLangSymbol)
             {
-                Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
-                    CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(domainDto.DefaultLangSymbol))
-                    , new CookieOptions()
-                    {
-                        Expires = DateTimeOffset.Now.AddYears(1)
-                    });
+                //Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
+                //    CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(domainDto.DefaultLangSymbol))
+                //    , new CookieOptions()
+                //    {
+                //        Expires = DateTimeOffset.Now.AddYears(1)
+                //    });
             }
             return View();
         }
