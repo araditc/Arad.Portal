@@ -15,19 +15,32 @@ namespace Arad.Portal.DataLayer.Entities.General.DesignStructure
         public string ModuleId { get; set; }
         public ModuleContentType ModuleContentType { get; set; }
         public string ComponentName { get; set; }
-        public List<KeyVal> ParamsWithDefaultValues { get; set; }
+
+        /// <summary>
+        /// this list contains some parameters for executing and designing this component
+        /// for example input parameters for viewcomponent 
+        /// </summary>
+       public List<KeyVal> ParamsWithDefaultValues { get; set; }
 
     }
     public enum ModuleContentType
     {
         MostPopulareProducts,
         MostVisitedProducts,
-        BestSellerProducts,
+        BestSaleProducts,
         NewestProduct,
         ImageSlider,
         MostPopularContent,
         MostVisitedContent,
         NewestContent,
         Advertisement
+    }
+
+    public enum ProductType
+    {
+        Newest,
+        MostPopular,
+        BestSale, 
+        MostVisited
     }
 }

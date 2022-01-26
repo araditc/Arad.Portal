@@ -5,13 +5,12 @@
         @foreach (var item in Model.ProductList)
         {
             <div class="col-md-3">
-                <div class="bbb_deals">
-                    @*<div class="ribbon ribbon-top-right"><span><small class="cross">x </small>4</span></div>*@
+                <div class="bbb_deals w-100 mt-0">
                     @*<div class="bbb_deals_title">Today's Combo Offer</div>*@
-                    <div class="bbb_deals_slider_container">
-                        <div class=" bbb_deals_item">
-                            <div class="bbb_deals_image">
-                                <img  src="@Url.Action("GetImage", "FileManager", new  { path = item.Images.First(_=>_.IsMain).Url })"
+                    <div class="w-100">
+                        <div class="w-100">
+                            <div class="text-center">
+                                <img class="proImg rounded m-2 mt-4" src="@($"../filemanager/getscaledimage?path={item.Images.First(_=>_.IsMain).Url}&height={500}")"  
                                      alt="@(item.Images.Where(_=>_.IsMain).Any() ? item.Images.First(_=>_.IsMain).Title : "ProductImage")" />
                             </div>
                             <div class="bbb_deals_content">
@@ -22,15 +21,15 @@
                                     </div>
                                     @*<div class="bbb_deals_item_price_a ml-auto"><strike>₹30,000</strike></div>*@
                                 </div>
-                                <div class="bbb_deals_info_line d-flex flex-row justify-content-start">
-                                    <a class="bbb_deals_item_name" href="/product/@item.ProductCode">
+                                <div class="bbb_deals_info_line d-flex flex-row justify-content-center">
+                                    <a class="text-decoration-none" href="/product/@item.ProductCode">
                                         @(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ?
                                         item.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLangId).Name : item.MultiLingualProperties.First().Name )
                                     </a>
                                     @*<div class="bbb_deals_item_price ml-auto">₹25,550</div>*@
                                 </div>
                                 <div class="available">
-                                    <div class="available_line d-flex flex-row justify-content-start">
+                                    <div class="available_line d-flex flex-row justify-content-center">
                                         <div class="available_title"> @Language.GetString("Available") <span>@item.Inventory</span></div>
                                         @*<div class="sold_stars ml-auto">
                                             @for (int i = 1; i <= item.LikeStars; i++)

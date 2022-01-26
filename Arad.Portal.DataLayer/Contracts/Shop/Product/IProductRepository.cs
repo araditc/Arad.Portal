@@ -42,7 +42,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 
         Task<Result> DeleteProduct(string productId, string modificationReason);
 
-
+       
         Task<Result<EntityRate>> RateProduct(string productId, int score, bool isNew, int prevScore);
         List<Image> GetPictures(string productId);
 
@@ -69,6 +69,14 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         ProductOutputDTO FetchBySlug(string slug, string domainName);
 
         ProductOutputDTO FetchByCode(long productCode, DomainDTO dto, string userId);
+
+        List<ProductOutputDTO> GetMostPopularProducts(int count);
+
+        List<ProductOutputDTO> GetMostVisitedProduct(int count);
+
+        List<ProductOutputDTO> GetNewestProduct(int count);
+
+        List<ProductOutputDTO> GetBestSaleProduct(int count);
         bool HasActiveProductPromotion(string productId);
         List<SelectListModel> GetAllActiveProductList(string langId, string currentUserId, string productGroupId, string vendorId);
         List<SelectListModel> GetAllProductList(ApplicationUser user,string productGroupId, string langId);

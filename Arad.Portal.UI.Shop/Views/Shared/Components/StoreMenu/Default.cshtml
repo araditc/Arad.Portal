@@ -3,131 +3,132 @@
     Layout = null;
 }
 
+<div class="card">
+    <div class="row">
+        <div class="col-12">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+                @*<button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbar" aria-controls="navbars" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>*@
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-<div class="row">
-    <div class="col-12">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
-            @*<button class="navbar-toggler" type="button" data-toggle="collapse"
-                data-target="#navbar" aria-controls="navbars" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>*@
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbar">
-                <ul class="navbar-nav  @(ViewBag.dir=="rtl" ? "ml-auto" : "mr-auto")">
-                    @foreach (var item in Model.Where(_ => _.ParentId == null && _.IsFull).OrderBy(_ => _.Order))
-                    {
-                        if (item.Childrens.Count() == 0)
+                <div class="collapse navbar-collapse" id="navbar">
+                    <ul class="navbar-nav  @(ViewBag.dir=="rtl" ? "ml-auto" : "mr-auto")">
+                        @foreach (var item in Model.Where(_ => _.ParentId == null && _.IsFull).OrderBy(_ => _.Order))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link" href="@item.Url">@item.MenuTitle.Name</a>
-                            </li>
+                            if (item.Childrens.Count() == 0)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@item.Url">@item.MenuTitle.Name</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item dropdown menu-area wiscr">
+                                    <a class="nav-link dropdown-toggle" href="@item.Url" id='@($"st_mn_{item.MenuCode}")'
+                                       data-toggle="dropdown" @*aria-haspopup="true" aria-expanded="false"*@>
+                                        @item.MenuTitle.Name
+                                    </a>
+                                    <div class="dropdown-menu mega-area" aria-labelledby='@($"st_mn_{item.MenuCode}")'>
+
+                                        <div class="d-none d-lg-flex d-xl-flex" style="height: 50vh !important; width: 80%; flex-wrap: wrap; flex-direction: column">
+                                            @for (int i = 0; i < item.Childrens.Count; i++)
+                                            {
+                                                var child = item.Childrens[i];
+                                                @*@(direction == "rtl" && i != 0 ? "border-right" : (direction == "ltr" && i != 0 ? "border-left" : ""))*@
+
+                                                <div style='flex-shrink : @(child.Childrens.Count== 0 ? "5" : "0")'>
+                                                    <h6><a class="nav-link text-start" href="@child.Url">@child.MenuTitle.Name</a></h6>
+
+                                                    @foreach (var leaf in child.Childrens)
+                                                    {
+                                                        <a class="dropdown-item text-start" href="@leaf.Url">@leaf.MenuTitle.Name</a>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+
+                                        <div class="row d-block d-lg-none d-xl-none">
+                                            @for (int i = 0; i < item.Childrens.Count; i++)
+                                            {
+                                                var child = item.Childrens[i];
+                                                <div class="col-sm-6 col-lg-3">
+                                                    <h6><a class="nav-link" href="@child.Url">@child.MenuTitle.Name</a></h6>
+
+                                                    @foreach (var leaf in child.Childrens)
+                                                    {
+                                                        <a class="dropdown-item" href="@leaf.Url">@leaf.MenuTitle.Name</a>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+
+
+                                    </div>
+                                </li>
+
+                                <li class="nav-item dropdown menu-area nascr">
+                                    <div class="row">
+                                        <div class="col-4 col-sm-3 col-md-3 col-lg-3 col-xl-2">
+                                            <a class="nav-link w-auto" href="@item.Url" id='@($"st_mn_{item.MenuCode}")'
+                                               data-toggle="dropdown" @*aria-haspopup="true" aria-expanded="false"*@>
+                                                @item.MenuTitle.Name
+                                            </a>
+                                        </div>
+                                        <div class="col-8 col-sm-9 col-md-9 col-lg-9 col-xl-10">
+                                            <a class="nav-link dropdown-toggle text-end w-100 pe-4 custmDrp" href="#" data-toggle="dropdown">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-menu mega-area" aria-labelledby='@($"st_mn_{item.MenuCode}")'>
+
+                                        <div class="d-none d-lg-flex d-xl-flex d-xxl-flex" style="height: 50vh !important; width: 80%; flex-wrap: wrap; flex-direction: column">
+                                            @for (int i = 0; i < item.Childrens.Count; i++)
+                                            {
+                                                var child = item.Childrens[i];
+                                                @*@(direction == "rtl" && i != 0 ? "border-right" : (direction == "ltr" && i != 0 ? "border-left" : ""))*@
+
+                                                <div style='flex-shrink : @(child.Childrens.Count== 0 ? "5" : "0")'>
+                                                    <h6><a class="nav-link text-start" href="@child.Url">@child.MenuTitle.Name</a></h6>
+
+                                                    @foreach (var leaf in child.Childrens)
+                                                    {
+                                                        <a class="dropdown-item text-start" href="@leaf.Url">@leaf.MenuTitle.Name</a>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+
+                                        <div class="row d-block d-lg-none d-xl-none">
+                                            @for (int i = 0; i < item.Childrens.Count; i++)
+                                            {
+                                                var child = item.Childrens[i];
+                                                <div class="col-sm-6 col-lg-3">
+                                                    <h6><a class="nav-link" href="@child.Url">@child.MenuTitle.Name</a></h6>
+
+                                                    @foreach (var leaf in child.Childrens)
+                                                    {
+                                                        <a class="dropdown-item" href="@leaf.Url">@leaf.MenuTitle.Name</a>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+
+
+                                    </div>
+                                </li>
+
+                            }
                         }
-                        else
-                        {
-                            <li class="nav-item dropdown menu-area wiscr">
-                                <a class="nav-link dropdown-toggle" href="@item.Url" id='@($"st_mn_{item.MenuCode}")'
-                                   data-toggle="dropdown" @*aria-haspopup="true" aria-expanded="false"*@>
-                                    @item.MenuTitle.Name
-                                </a>
-                                <div class="dropdown-menu mega-area" aria-labelledby='@($"st_mn_{item.MenuCode}")'>
+                    </ul>
 
-                                    <div class="d-none d-lg-flex d-xl-flex" style="height: 50vh !important; width: 80%; flex-wrap: wrap; flex-direction: column">
-                                        @for (int i = 0; i < item.Childrens.Count; i++)
-                                        {
-                                            var child = item.Childrens[i];
-                                            @*@(direction == "rtl" && i != 0 ? "border-right" : (direction == "ltr" && i != 0 ? "border-left" : ""))*@
-
-                                            <div style='flex-shrink : @(child.Childrens.Count== 0 ? "5" : "0")'>
-                                                <h6><a class="nav-link text-start" href="@child.Url">@child.MenuTitle.Name</a></h6>
-
-                                                @foreach (var leaf in child.Childrens)
-                                                {
-                                                    <a class="dropdown-item text-start" href="@leaf.Url">@leaf.MenuTitle.Name</a>
-                                                }
-                                            </div>
-                                        }
-                                    </div>
-
-                                    <div class="row d-block d-lg-none d-xl-none">
-                                        @for (int i = 0; i < item.Childrens.Count; i++)
-                                        {
-                                            var child = item.Childrens[i];
-                                            <div class="col-sm-6 col-lg-3">
-                                                <h6><a class="nav-link" href="@child.Url">@child.MenuTitle.Name</a></h6>
-
-                                                @foreach (var leaf in child.Childrens)
-                                                {
-                                                    <a class="dropdown-item" href="@leaf.Url">@leaf.MenuTitle.Name</a>
-                                                }
-                                            </div>
-                                        }
-                                    </div>
-
-
-                                </div>
-                            </li>
-
-                            <li class="nav-item dropdown menu-area nascr">
-                                <div class="row">
-                                    <div class="col-4 col-sm-3 col-md-3 col-lg-3 col-xl-2">
-                                        <a class="nav-link w-auto" href="@item.Url" id='@($"st_mn_{item.MenuCode}")'
-                                           data-toggle="dropdown" @*aria-haspopup="true" aria-expanded="false"*@>
-                                            @item.MenuTitle.Name
-                                        </a>
-                                    </div>
-                                    <div class="col-8 col-sm-9 col-md-9 col-lg-9 col-xl-10">
-                                        <a class="nav-link dropdown-toggle text-end w-100 pe-4 custmDrp" href="#" data-toggle="dropdown">
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="dropdown-menu mega-area" aria-labelledby='@($"st_mn_{item.MenuCode}")'>
-
-                                    <div class="d-none d-lg-flex d-xl-flex" style="height: 50vh !important; width: 80%; flex-wrap: wrap; flex-direction: column">
-                                        @for (int i = 0; i < item.Childrens.Count; i++)
-                                        {
-                                            var child = item.Childrens[i];
-                                            @*@(direction == "rtl" && i != 0 ? "border-right" : (direction == "ltr" && i != 0 ? "border-left" : ""))*@
-
-                                            <div style='flex-shrink : @(child.Childrens.Count== 0 ? "5" : "0")'>
-                                                <h6><a class="nav-link text-start" href="@child.Url">@child.MenuTitle.Name</a></h6>
-
-                                                @foreach (var leaf in child.Childrens)
-                                                {
-                                                    <a class="dropdown-item text-start" href="@leaf.Url">@leaf.MenuTitle.Name</a>
-                                                }
-                                            </div>
-                                        }
-                                    </div>
-
-                                    <div class="row d-block d-lg-none d-xl-none">
-                                        @for (int i = 0; i < item.Childrens.Count; i++)
-                                        {
-                                            var child = item.Childrens[i];
-                                            <div class="col-sm-6 col-lg-3">
-                                                <h6><a class="nav-link" href="@child.Url">@child.MenuTitle.Name</a></h6>
-
-                                                @foreach (var leaf in child.Childrens)
-                                                {
-                                                    <a class="dropdown-item" href="@leaf.Url">@leaf.MenuTitle.Name</a>
-                                                }
-                                            </div>
-                                        }
-                                    </div>
-
-
-                                </div>
-                            </li>
-
-                        }
-                    }
-                </ul>
-
-            </div>
-        </nav>
+                </div>
+            </nav>
+        </div>
     </div>
 </div>
                                                 

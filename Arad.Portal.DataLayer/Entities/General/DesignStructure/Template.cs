@@ -13,7 +13,7 @@ namespace Arad.Portal.DataLayer.Entities.General.DesignStructure
         [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string TemplateId { get; set; }
         /// <summary>
-        /// htmlContent which contains [] or {} and will be replaced by modules
+        /// htmlContent which contains []  and will be replaced by a modules or combinations of Module
         /// </summary>
         public string HtmlContent { get; set; }
     }

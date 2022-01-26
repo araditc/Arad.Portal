@@ -14,98 +14,33 @@
 }
 
 @section Styles{
-    @*<link href="~/lib/Swiper/swiper-bundle.min.css" rel="stylesheet" />*@
+  
     <style>
-        .pgCard {
-            margin: auto;
-        }
 
         .bbb_deals {
-            width: 100%;
-            margin-right: 7%;
-            padding-top: 80px;
-            padding-left: 25px;
-            padding-right: 25px;
-            padding-bottom: 34px;
+            /*margin-right: 7%;*/
             box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1);
             border-radius: 5px;
-            margin-top: 0px
+          
         }
 
-        .ribbon span {
-            position: absolute;
-            display: block;
-            width: 34px;
-            border-radius: 50%;
-            padding: 8px 0;
-           /* background-color: #3498db;*/
-            box-shadow: 0 5px 10px rgba(0, 0, 0, .1);
-            color: #fff;
-            font: 100 18px/1 'Lato', sans-serif;
-            text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
-            text-transform: uppercase;
-            text-align: center
-        }
-
-        .ribbon-top-right {
-            top: -10px;
-            right: -10px
-        }
-
-            .ribbon-top-right::before,
-            .ribbon-top-right::after {
-                border-top-color: transparent;
-                border-right-color: transparent
-            }
-
-            .ribbon-top-right::before {
-                top: 0;
-                left: 17px
-            }
-
-            .ribbon-top-right::after {
-                bottom: 17px;
-                right: 0
-            }
 
         .sold_stars i {
             color: orange
         }
 
-        .ribbon-top-right span {
-            right: 17px;
-            top: 17px
-        }
-
         .bbb_deals_title {
             position: absolute;
-            top: 10px;
-            left: 22px;
             font-size: 18px;
             font-weight: 500;
             color: #000000
         }
 
-        .bbb_deals_slider_container {
-            width: 100%;
+        .proImg {
+            width: 80%
         }
 
-        .bbb_deals_item {
-            width: 100% !important;
-        }
-
-        .bbb_deals_image {
-            width: 100%
-        }
-
-            .bbb_deals_image img {
-                width: 100%
-            }
-
-        .bbb_deals_content {
-            margin-top: 33px
-        }
-
+      
         .bbb_deals_item_category a {
             font-size: 14px;
             font-weight: 400;
@@ -122,17 +57,17 @@
                 color: red
             }
 
-        .bbb_deals_item_name {
+       /* .bbb_deals_item_name {
             font-size: 24px;
             font-weight: 400;
             color: #000000
         }
-
-        .bbb_deals_item_price {
+*/
+       /* .bbb_deals_item_price {
             font-size: 24px;
             font-weight: 500;
             color: #6d6e73
-        }
+        }*/
 
         .available {
             margin-top: 19px
@@ -157,46 +92,54 @@
 
         @@media only screen and (max-width: 575px) {
             .bbb_deals {
-                padding-left: 15px;
-                padding-right: 15px
+                /*padding-left: 15px;
+                padding-right: 15px*/
             }
 
             .bbb_deals_title {
-                left: 15px;
+               /* left: 15px;*/
                 font-size: 16px
             }
 
-            .bbb_deals_slider_nav_container {
+            /*.bbb_deals_slider_nav_container {
                 right: 5px
-            }
+            }*/
 
             .bbb_deals_item_name,
             .bbb_deals_item_price {
                 font-size: 20px
+            }
+            .card {
+                box-shadow: 0px 0px 5px 0px rgb(161 163 164) !important;
             }
         }
     </style>
 }
 
 
-@*<script src="~/lib/Swiper/swiper-bundle.min.js"></script>*@
-
-
-<div id="groupSection">
-    @await Component.InvokeAsync("GroupSection", Model.GroupSection)
+<div class="card mt-2" style="box-shadow: 0px 0px 5px 0px rgb(199 205 206) !important">
+    <div class="card-body">
+        <div id="groupSection">
+            @await Component.InvokeAsync("GroupSection", Model.GroupSection)
+        </div>
+    </div>
 </div>
-<div class="row">
-    <div @*class="align-items-center"*@ style="margin: auto;">
-        <button class="btn btn-ligth bg-gradient" id="btnMoreGroups">@Language.GetString("GetMore")</button>
+<div class="row text-center">
+    <div >
+        <button class="btn btn-secondary bg-gradient m-4" id="btnMoreGroups">@Language.GetString("GetMore")</button>
     </div>
 </div>
 
-<div id="productSection">
-    @await Component.InvokeAsync("ProductsInGroupSection", Model.ProductInGroupSection)
+<div class="card mt-2 border-0"  >
+    <div class="card-body">
+        <div id="productSection">
+            @await Component.InvokeAsync("ProductsInGroupSection", Model.ProductInGroupSection)
+        </div>
+    </div>
 </div>
-<div class="row">
-    <div style="margin: auto;">
-        <button class="btn btn-ligth bg-gradient" id="btnMoreProducts">@Language.GetString("GetMore")</button>
+<div class="row text-center">
+    <div >
+        <button class="btn btn-secondary bg-gradient m-4" id="btnMoreProducts">@Language.GetString("GetMore")</button>
     </div>
 </div>
 @section Scripts{

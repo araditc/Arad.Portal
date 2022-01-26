@@ -32,6 +32,11 @@ namespace Arad.Portal.DataLayer.Models.Shared
 
         public string UrlFriend { get; set; }
 
+        /// <summary>
+        /// the help for purchasing each product
+        /// </summary>
+        public string PurchaseHelp { get; set; }
+
         ///// <summary>
         ///// all possible values which this Name has
         ///// </summary>

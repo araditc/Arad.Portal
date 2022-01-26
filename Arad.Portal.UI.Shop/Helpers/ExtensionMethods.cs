@@ -419,6 +419,36 @@ namespace Arad.Portal.UI.Shop.Helpers
             }
             #endregion
 
+            #region Template
+            var templateRepository =
+            (TemplateRepository)scope.ServiceProvider.GetService(typeof(ITemplateRepository));
+            if (!templateRepository.HasAny())
+            {
+                var firstTemplate = new DataLayer.Entities.General.DesignStructure.Template()
+                {
+                    TemplateId = "eeef1c0d-31c9-4c93-b894-f4b27f26c8d8",
+                    AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf",
+                    CreationDate = DateTime.Now,
+                    IsActive = true,
+                    HtmlContent = "<div class='row'><div class='col-12 col-md-3'>[0]</div><div class='col-12 col-md-6'>[1]</div><div class='col-12 col-md-3'>[2]</div></div>"
+                };
+                templateRepository.InsertOne(firstTemplate);
+
+                var secondTemplate = new DataLayer.Entities.General.DesignStructure.Template()
+                {
+                    TemplateId = "3b88a057-7686-43b4-a6e8-1a1f64bb0123",
+                    AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf",
+                    CreationDate = DateTime.Now,
+                    IsActive = true,
+                    HtmlContent = "<div class='row'><div class='row'>[0]</div>[1]</div>"
+                };
+                templateRepository.InsertOne(secondTemplate);
+            }
+            #endregion
+
+            #region Module
+            #endregion
+
         }
     }
 }

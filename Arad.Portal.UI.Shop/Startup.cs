@@ -4,6 +4,7 @@ using Arad.Portal.DataLayer.Contracts.General.Content;
 using Arad.Portal.DataLayer.Contracts.General.ContentCategory;
 using Arad.Portal.DataLayer.Contracts.General.CountryParts;
 using Arad.Portal.DataLayer.Contracts.General.Currency;
+using Arad.Portal.DataLayer.Contracts.General.DesignStructure;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Contracts.General.Email;
 using Arad.Portal.DataLayer.Contracts.General.Error;
@@ -34,6 +35,7 @@ using Arad.Portal.DataLayer.Repositories.General.Content.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.CountryParts.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
+using Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Email.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Error.Mongo;
@@ -325,6 +327,8 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<ShippingSettingContext>();
             services.AddTransient<ProviderContext>();
             services.AddTransient<CountryContext>();
+            services.AddTransient<ModuleContext>();
+            services.AddTransient<TemplateContext>();
             #endregion
 
 
@@ -359,6 +363,8 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<IShippingSettingRepository, ShippingSettingRepository>();
             services.AddTransient<IProviderRepository, ProviderRepository>();
             services.AddTransient<ICountryRepository, CountryRepository>();
+            services.AddTransient<ITemplateRepository, TemplateRepository>();
+            services.AddTransient<IModuleRepository, ModuleRepository>();
 
          
 

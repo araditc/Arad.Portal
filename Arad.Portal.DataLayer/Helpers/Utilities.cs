@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Models.Shared;
+﻿using Arad.Portal.DataLayer.Models.Product;
+using Arad.Portal.DataLayer.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +47,6 @@ namespace Arad.Portal.DataLayer.Helpers
 
             return res;
         }
-
         public static string GenerateOtp()
         {
             Random generator = new();

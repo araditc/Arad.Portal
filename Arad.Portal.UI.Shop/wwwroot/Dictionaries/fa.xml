@@ -1927,7 +1927,7 @@
 	<!--END [Dashboard]-->
 	<!--START [Action]-->
 	<string key="Available">
-		<value>در دسترس :</value>
+		<value>تعدادموجود :</value>
 	</string>
 	<string key="Exit">
 		<value>خروج</value>
