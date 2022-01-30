@@ -8,7 +8,9 @@ namespace Arad.Portal.DataLayer.Contracts.General.DesignStructure
 {
     public interface IModuleRepository
     {
-        void InsertOne(Entities.General.DesignStructure.Module module);
-        bool HasAny();
+        void InsertOneModule(Entities.General.DesignStructure.Module module);
+        void InsertOneTemplate(Entities.General.DesignStructure.Template template);
+        bool HasAnyModule();
+        bool HasAnyTemplate();
     }
 }

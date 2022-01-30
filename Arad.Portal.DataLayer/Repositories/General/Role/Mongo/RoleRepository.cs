@@ -315,12 +315,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
 
         public bool HasAny()
         {
-            var result = false;
-            if (_context.Collection.AsQueryable().Any())
-            {
-                result = true;
-            }
-            return result;
+            return _context.Collection.AsQueryable().Any();
         }
 
         

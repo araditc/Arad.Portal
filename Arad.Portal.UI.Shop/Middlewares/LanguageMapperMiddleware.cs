@@ -52,19 +52,18 @@ namespace Arad.Portal.UI.Shop.Middlewares
                 }
 
                 //first step checke whether this cookie exist or not
-                var cookieName = $"{CookieRequestCultureProvider.DefaultCookieName}";
+                var cookieName = CookieRequestCultureProvider.DefaultCookieName;
                
                 if (context.Request.Cookies[cookieName] != null)
                 {
                     var cookieValue = context.Request.Cookies[cookieName];
-                    defLangSymbol = cookieValue.Split("|")[0].Substring(2);
+                    defLangSymbol = cookieValue.Split("|")[0][2..];
                 }
                 else if (false)
                 {
                     //check the culture of request based on
                     //IP Address and then check if we support this culture or not
                     //defLang =...
-
                 }
                 else if(defLangSymbol == "")
                 {

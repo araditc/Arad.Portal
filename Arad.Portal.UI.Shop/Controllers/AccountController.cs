@@ -457,19 +457,24 @@ namespace Arad.Portal.UI.Shop.Controllers
         [HttpGet]
         public IActionResult ChangeLang(string langId)
         {
-          
+            var domainName = $"{HttpContext.Request.Host}";
+            if (domainName.ToString().ToLower().StartsWith("localhost"))
+            {
+                //prevent port of localhost
+                domainName = HttpContext.Request.Host.ToString().Substring(0, 9);
+            }
             if (CultureInfo.CurrentCulture.Name != langId)
             {
                 Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
                     CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(langId))
                     , new CookieOptions()
                     {
-                        Expires = DateTimeOffset.Now.AddYears(1)
+                        Expires = DateTimeOffset.Now.AddYears(1),
+                        Domain = domainName
                     });
-
+                //CultureInfo.CurrentCulture.DateTimeFormat = new CultureInfo("en-US").DateTimeFormat;
                 return Ok(true);
             }
-
             return Ok(false);
         }
 

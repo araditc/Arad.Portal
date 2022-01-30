@@ -1467,6 +1467,18 @@
   <string key="Active">
     <value>Active</value>
   </string>
+	<string key="Show">
+		<value>show</value>
+	</string>
+	<string key="From">
+		<value>from</value>
+	</string>
+	<string key="To">
+		<value>to</value>
+	</string>
+	<string key="Item">
+		<value>items</value>
+	</string>
 	<string key="Or">
 		<value>Or</value>
 	</string>

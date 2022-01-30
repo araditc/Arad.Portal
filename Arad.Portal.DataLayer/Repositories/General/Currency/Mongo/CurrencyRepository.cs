@@ -54,12 +54,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
 
         public bool HasAny()
         {
-            var result = false;
-            if (_context.Collection.AsQueryable().Any())
-            {
-                result = true;
-            }
-            return result;
+            return _context.Collection.AsQueryable().Any();
         }
         /// <summary>
         /// this method is used just in seedData

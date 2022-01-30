@@ -315,7 +315,6 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<ProviderContext>();
             services.AddTransient<CountryContext>();
             services.AddTransient<ModuleContext>();
-            services.AddTransient<TemplateContext>();
 
             #endregion
 
@@ -351,12 +350,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<IShippingSettingRepository, ShippingSettingRepository>();
             services.AddTransient<IProviderRepository, ProviderRepository>();
             services.AddTransient<ICountryRepository, CountryRepository>();
-            services.AddTransient<ITemplateRepository, TemplateRepository>();
             services.AddTransient<IModuleRepository, ModuleRepository>();
-
-
-
-
         }
     }
 }

@@ -33,6 +33,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Product
         public List<string> GroupIds { get; set; }
 
         public List<string> GroupNames { get; set; }
+
         /// <summary>
         /// Name, language, currency, seo
         /// </summary>
@@ -47,6 +48,10 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Product
         public List<Image> Images { get; set; }
 
         public int Inventory { get; set; }
+
+        public int SaleCount { get; set; }
+
+        public int VisitCount { get; set; }
         /// <summary>
         /// درصورتیکه مقدار از این تعداد کمتر شد پیغام هشداربه owner میدهد.
         /// </summary>
@@ -68,18 +73,19 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Product
 
         public Promotion.Promotion Promotion { get; set; }
 
-        public int SaleCount { get; set; }
-
-        public int VisitCount { get; set; }
-
+        /// <summary>
+        /// sum of scores up to now
+        /// </summary>
         public long TotalScore { get; set; }
 
+        /// <summary>
+        /// how many people score this product
+        /// </summary>
         public int ScoredCount { get; set; }
 
         public bool IsPublishedOnMainDomain { get; set; }
 
         public List<Comment> Comments { get; set; }
-
         
     }
 }

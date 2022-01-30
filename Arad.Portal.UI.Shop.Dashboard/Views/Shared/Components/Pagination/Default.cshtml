@@ -80,7 +80,7 @@
                     long fromRecord = ((Model.CurrentPage - 1) * Model.PageSize) + 1;
                     var isLastPage = Model.ItemsCount - ((Model.CurrentPage - 1) * Model.PageSize) <= Model.PageSize ? true : false;
                     long toRecord = !isLastPage ? fromRecord + Model.PageSize - 1 : Model.ItemsCount;
-                    var text = $"نمایش {fromRecord:n0} تا {toRecord:n0} از {Model.ItemsCount:n0} آیتم";
+                    var text = $"{Language.GetString("Show")} {fromRecord:n0} {Language.GetString("From")} {toRecord:n0} {Language.GetString("To")} {Model.ItemsCount:n0} {Language.GetString("Item")}";
 
                     <p style="clear:left;display:block">@(text)</p>
                 }

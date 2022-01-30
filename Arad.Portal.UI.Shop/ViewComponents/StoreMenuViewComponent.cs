@@ -47,9 +47,8 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             try
             {
                 var cookieVal = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
-                string symbol = cookieVal.Split("|")[0].Substring(2);
+                string symbol = cookieVal.Split("|")[0][2..];
                 var langId = _languageRepository.FetchBySymbol(symbol.ToLower());
-
                 menues = _menuRepository.StoreList(domainEntity.DomainId, langId);
             }
             catch (Exception e)

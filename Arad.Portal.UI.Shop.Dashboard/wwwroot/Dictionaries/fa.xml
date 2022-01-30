@@ -1504,6 +1504,18 @@
 	<string key="Active">
 		<value>فعال</value>
 	</string>
+	<string key="Show">
+		<value>نمایش</value>
+	</string>
+	<string key="From">
+		<value>از</value>
+	</string>
+	<string key="To">
+		<value>تا</value>
+	</string>
+	<string key="Item">
+		<value>آیتم</value>
+	</string>
 	<string key="Download">
 		<value>دانلود</value>
 	</string>

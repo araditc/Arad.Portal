@@ -68,5 +68,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             byte[] fileContent = ImageFunctions.GetResizedImage(finalPath, height);
             return File(fileContent, mimeType);
         }
+
+        
     }
 }

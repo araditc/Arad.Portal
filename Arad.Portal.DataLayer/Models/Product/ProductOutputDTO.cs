@@ -1,4 +1,5 @@
 ﻿using Arad.Portal.DataLayer.Entities.General.Comment;
+using Arad.Portal.DataLayer.Entities.Shop.Promotion;
 using Arad.Portal.DataLayer.Models.Promotion;
 using Arad.Portal.DataLayer.Models.Shared;
 using System;
@@ -42,6 +43,8 @@ namespace Arad.Portal.DataLayer.Models.Product
 
         public int MinimumCount { get; set; }
 
+        public string MainImageUrl { get; set; }
+
         public bool ShowInLackOfInventory { get; set; }
 
         public string SellerUserId { get; set; }
@@ -49,18 +52,18 @@ namespace Arad.Portal.DataLayer.Models.Product
         public string SellerUserName { get; set; }
 
         public Entities.Shop.ProductUnit.ProductUnit Unit { get; set; }
-
+        public DiscountType DiscountType { get; set; }
+        public long? DiscountValue { get; set; }
+        public long OldPrice { get; set; }
+        public long PriceValWithPromotion { get; set; }
         public List<Price> Prices { get; set; }
-
-        public decimal PriceValWithPromotion { get; set; }
-
         public ProductOutputDTO GiftProduct { get; set; }
 
         public Entities.Shop.Promotion.Promotion Promotion { get; set; }
 
         public int LikeRate { get; set; }
 
-        public bool halfLikeRate { get; set; }
+        public bool HalfLikeRate { get; set; }
 
         public int DisikeRate { get; set; }
 

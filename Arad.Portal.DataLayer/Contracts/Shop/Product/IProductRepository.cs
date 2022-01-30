@@ -1,5 +1,6 @@
 ﻿
 using Arad.Portal.DataLayer.Entities.General.Comment;
+using Arad.Portal.DataLayer.Entities.General.DesignStructure;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Models.Domain;
 using Arad.Portal.DataLayer.Models.Product;
@@ -70,13 +71,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 
         ProductOutputDTO FetchByCode(long productCode, DomainDTO dto, string userId);
 
-        List<ProductOutputDTO> GetMostPopularProducts(int count);
+        List<ProductOutputDTO> GetSpecialProducts(int count, string currencyId, ProductType type);
 
-        List<ProductOutputDTO> GetMostVisitedProduct(int count);
-
-        List<ProductOutputDTO> GetNewestProduct(int count);
-
-        List<ProductOutputDTO> GetBestSaleProduct(int count);
         bool HasActiveProductPromotion(string productId);
         List<SelectListModel> GetAllActiveProductList(string langId, string currentUserId, string productGroupId, string vendorId);
         List<SelectListModel> GetAllProductList(ApplicationUser user,string productGroupId, string langId);

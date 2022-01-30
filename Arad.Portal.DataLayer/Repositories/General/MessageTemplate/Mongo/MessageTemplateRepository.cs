@@ -38,12 +38,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo
 
         public bool HasAny()
         {
-            var result = false;
-            if (_context.Collection.AsQueryable().Any())
-            {
-                result = true;
-            }
-            return result;
+            return _context.Collection.AsQueryable().Any();
         }
 
         public  void InsertMany(List<Entities.General.MessageTemplate.MessageTemplate> templates)

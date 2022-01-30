@@ -3,7 +3,7 @@
 <div class="row">
     @foreach (var item in Model.Groups)
     {
-        <div class="col-md-3">
+        <div class="col-6 col-md-3">
 
             <div class="card m-4 pgCard border-0" >
                 <img class="card-img-top rounded" src="@($"../filemanager/getscaledimage?path={item.GroupImage.Url}&height={500}")"  alt="@item.GroupImage.Title">

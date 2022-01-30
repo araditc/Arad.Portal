@@ -509,12 +509,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
 
         public bool HasAny()
         {
-            var result = false;
-            if(_context.Collection.AsQueryable().Any())
-            {
-                result = true;
-            }
-            return result;
+            return _context.Collection.AsQueryable().Any();
         }
 
         public async Task InsertMany(List<Entities.General.Permission.Permission> permissions)

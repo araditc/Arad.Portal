@@ -422,9 +422,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
             #endregion
 
             #region Template
-            var templateRepository =
-             (TemplateRepository)scope.ServiceProvider.GetService(typeof(ITemplateRepository));
-            if(!templateRepository.HasAny())
+            var moduleRepository =
+             (ModuleRepository)scope.ServiceProvider.GetService(typeof(IModuleRepository));
+            if (!moduleRepository.HasAnyTemplate())
             {
                 var firstTemplate = new DataLayer.Entities.General.DesignStructure.Template()
                 {
@@ -434,7 +434,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                     IsActive = true,
                     HtmlContent = "<div class='row'><div class='col-12 col-md-3'>[0]</div><div class='col-12 col-md-6'>[1]</div><div class='col-12 col-md-3'>[2]</div></div>"
                 };
-                templateRepository.InsertOne(firstTemplate);
+                moduleRepository.InsertOneTemplate(firstTemplate);
 
                 var secondTemplate = new DataLayer.Entities.General.DesignStructure.Template()
                 {
@@ -444,7 +444,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                     IsActive = true,
                     HtmlContent = "<div class='row'><div class='row'>[0]</div>[1]</div>"
                 };
-                templateRepository.InsertOne(secondTemplate);
+                moduleRepository.InsertOneTemplate(secondTemplate);
 
             }
             #endregion

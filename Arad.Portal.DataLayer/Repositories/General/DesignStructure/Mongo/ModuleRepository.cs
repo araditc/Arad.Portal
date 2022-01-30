@@ -17,20 +17,24 @@ namespace Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo
         {
             _context = context;  
         }
-
-        public bool HasAny()
+        public bool HasAnyModule()
         {
-            var result = false;
-            if (_context.Collection.AsQueryable().Any())
-            {
-                result = true;
-            }
-            return result;
+            return _context.ModuleCollection.AsQueryable().Any();
         }
 
-        public void InsertOne(Module module)
+        public bool HasAnyTemplate()
         {
-            _context.Collection.InsertOne(module);
+            return _context.TemplateCollection.AsQueryable().Any();
+        }
+
+        public void InsertOneModule(Module module)
+        {
+            _context.ModuleCollection.InsertOne(module);
+        }
+
+        public void InsertOneTemplate(Template template)
+        {
+            _context.TemplateCollection.InsertOne(template);
         }
     }
 }

@@ -92,14 +92,14 @@
                         <i class="fas fa-star"></i>
                     </a>
                 }
-                @if (Model.halfLikeRate)
+                @if (Model.HalfLikeRate)
                 {
                     <a href="#"
                        role="button" aria-expanded="false" title="@Language.GetString("ProductScore")" onclick="Rate(@Model.LikeRate+1);">
                         <i class="fas fa-star-half-alt"></i>
                     </a>
                 }
-                @for (int i = (Model.halfLikeRate ? Model.LikeRate + 2 : Model.LikeRate + 1); i <= Model.DisikeRate; i++)
+                @for (int i = (Model.HalfLikeRate ? Model.LikeRate + 2 : Model.LikeRate + 1); i <= Model.DisikeRate; i++)
                 {
                     <a href="#"
                        role="button" aria-expanded="false" onclick="Rate(@i);" title=@($"{@Language.GetString("ProductScore")}_{i}")>

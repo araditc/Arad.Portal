@@ -450,7 +450,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                 #region Fetch currency from language
                 var lan = _languageRepository.FetchLanguage(model.DefaultLanguageId);
-                CultureInfo userCultureInfo = new CultureInfo(lan.Symbol, false);
+                CultureInfo userCultureInfo = new(lan.Symbol, false);
                 var ri = new RegionInfo(userCultureInfo.LCID);
                 var currencyPrefix = ri.ISOCurrencySymbol;
                 var currencyDto = _currencyRepository.GetCurrencyByItsPrefix(currencyPrefix);
@@ -629,7 +629,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                         #region Fetch currency from language
                         var lan = _languageRepository.FetchLanguage(model.DefaultLanguageId);
-                        CultureInfo userCultureInfo = new CultureInfo(lan.Symbol, false);
+                        CultureInfo userCultureInfo = new(lan.Symbol, false);
                         var ri = new RegionInfo(userCultureInfo.LCID);
                         var currencyPrefix = ri.ISOCurrencySymbol;
                         var currencyDto = _currencyRepository.GetCurrencyByItsPrefix(currencyPrefix);
