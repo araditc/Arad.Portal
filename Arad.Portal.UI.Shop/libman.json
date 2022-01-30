@@ -21,6 +21,10 @@
     {
       "library": "bootstrap-select@1.13.18",
       "destination": "wwwroot/lib/bootstrap-select/"
+    },
+    {
+      "library": "OwlCarousel2@2.3.4",
+      "destination": "wwwroot/lib/OwlCarousel2/"
     }
   ]
 }
