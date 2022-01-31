@@ -43,6 +43,8 @@ namespace Arad.Portal.UI.Shop.Controllers
             _domainName = this.DomainName;
             _enyimMemcachedMethods = enyimMemcachedMethods;
         }
+
+        [Route("{language}/product")]
         public IActionResult Index()
         {
             return View();

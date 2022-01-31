@@ -3,7 +3,10 @@
 https://colorlib.com/wp/template/carousel-12/
 https://freefrontend.com/bootstrap-carousels/
 https://colorlib.com/wp/bootstrap-slider/
-https://colorlib.com/wp/bootstrap-slider/
+<!--https://preview.colorlib.com/theme/bootstrap/carousel-04/ content slider-->
+<!--https://preview.colorlib.com/theme/bootstrap/carousel-05/ --content slider-->
+<!--https://preview.colorlib.com/theme/bootstrap/carousel-07/  product or content-->
+
 <head>
     <meta charset="utf-8" />
     <title></title>
@@ -96,19 +99,40 @@ https://colorlib.com/wp/bootstrap-slider/
     <script src="/lib/OwlCarousel2/owl.carousel.js"></script>
     <script>
         $(".owl-carousel").owlCarousel({
+            //loop: true,
+            //margin: 10,
+            //nav: true,
+            //autoplay: true,
+            //responsive: {
+            //    0: {
+            //        items: 1
+            //    },
+            //    600: {
+            //        items: 3
+            //    },
+            //    1000: {
+            //        items: 5
+            //    }
+            //}
             loop: true,
-            margin: 10,
-            nav: true,
             autoplay: true,
+            margin: 30,
+            animateOut: 'fadeOut',
+            animateIn: 'fadeIn',
+            nav: true,
+            dots: true,
+            autoplayHoverPause: false,
+            items: 1,
+            navText: ["<span class='ion-ios-arrow-back'></span>", "<span class='ion-ios-arrow-forward'></span>"],
             responsive: {
                 0: {
                     items: 1
                 },
                 600: {
-                    items: 3
+                    items: 2
                 },
                 1000: {
-                    items: 5
+                    items: 3
                 }
             }
         });

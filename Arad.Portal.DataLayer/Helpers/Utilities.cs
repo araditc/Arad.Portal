@@ -19,7 +19,7 @@ namespace Arad.Portal.DataLayer.Helpers
             float popularityRate = 0;
 
             if (scoredCount != 0)
-                popularityRate = totalScore / scoredCount;
+                popularityRate = (float)totalScore / scoredCount;
 
             var rounded = Math.Round(popularityRate, 1, MidpointRounding.AwayFromZero);
             float tmp = 0;

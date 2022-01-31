@@ -10,7 +10,7 @@
                     <div class="w-100">
                         <div class="w-100">
                             <div class="text-center">
-                                <img class="proImg rounded m-2 mt-4" src="@($"../filemanager/getscaledimage?path={item.Images.First(_=>_.IsMain).Url}&height={500}")"  
+                                <img class="proImg rounded m-2 mt-4 img-fluid" src="@($"../filemanager/getscaledimage?path={item.Images.First(_=>_.IsMain).Url}&height={500}")"  
                                      alt="@(item.Images.Where(_=>_.IsMain).Any() ? item.Images.First(_=>_.IsMain).Title : "ProductImage")" />
                             </div>
                             <div class="bbb_deals_content">
@@ -19,24 +19,33 @@
                                         @*<a href="/product/@item.ProductCode">@(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ?
                                             item.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLangId).Name : item.MultiLingualProperties.First().Name )</a>*@
                                     </div>
-                                    @*<div class="bbb_deals_item_price_a ml-auto"><strike>₹30,000</strike></div>*@
+                                    <div class="bbb_deals_item_price_a ml-auto"><strike>@item.OldPrice</strike></div>
                                 </div>
                                 <div class="bbb_deals_info_line d-flex flex-row justify-content-center">
                                     <a class="text-decoration-none" href="/product/@item.ProductCode">
                                         @(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ?
                                         item.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLangId).Name : item.MultiLingualProperties.First().Name )
                                     </a>
-                                    @*<div class="bbb_deals_item_price ml-auto">₹25,550</div>*@
+                                    <div class="bbb_deals_item_price ml-auto">@($"{@item.PriceValWithPromotion} {ViewBag.CurrencySymbol}")</div>
                                 </div>
                                 <div class="available">
                                     <div class="available_line d-flex flex-row justify-content-center">
                                         <div class="available_title"> @Language.GetString("Available") <span>@item.Inventory</span></div>
-                                        @*<div class="sold_stars ml-auto">
-                                            @for (int i = 1; i <= item.LikeStars; i++)
+                                        <div class="sold_stars ml-auto">
+                                            @for (int i = 1; i <= item.LikeRate; i++)
                                             {
-                                                <i class="fa fa-star"></i>
+                                               <i class="fas fa-star"></i>
                                             }
-                                        </div>*@
+                                            @if (item.HalfLikeRate)
+                                            {
+                                              <i class="fas fa-star-half-alt"></i>
+                                            }
+                                            @for (int i = (item.HalfLikeRate ? item.LikeRate + 2 : item.LikeRate + 1); i <= item.DisikeRate; i++)
+                                            {
+                                                <i class="far fa-star"></i>
+                                               
+                                            }
+                                        </div>
                                     </div>
                                     <div class="available_bar"><span style="width:17%"></span></div>
                                 </div>

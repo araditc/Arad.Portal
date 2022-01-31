@@ -176,11 +176,11 @@
         var windowSize = $(window).width();
         console.log(windowSize);
         if (windowSize <= 974) {
-            $(".nascr").show();
-            $(".wiscr").hide();
+            $(".nascr").removeClass("d-none").addClass("d-block");
+            $(".wiscr").removeClass("d-block").addClass("d-none");
         } else {
-            $(".nascr").hide();
-            $(".wiscr").show();
+            $(".nascr").removeClass("d-block").addClass("d-none");
+            $(".wiscr").removeClass("d-none").addClass("d-block");
         }
     }
         $(document).ready(function () {

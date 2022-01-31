@@ -60,7 +60,8 @@ namespace Arad.Portal.DataLayer.Models.Product
         public ProductOutputDTO GiftProduct { get; set; }
 
         public Entities.Shop.Promotion.Promotion Promotion { get; set; }
-
+        public long? TotalScore { get; set; }
+        public int? ScoredCount { get; set; }
         public int LikeRate { get; set; }
 
         public bool HalfLikeRate { get; set; }

@@ -257,7 +257,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
         public string FetchBySymbol(string symbol)
         {
             var entity = _context.Collection
-                .Find(_ => _.Symbol.ToLower() == symbol).FirstOrDefault();
+                .Find(_ => _.Symbol.ToLower() == symbol.ToLower()).FirstOrDefault();
 
             return entity.LanguageId;
         }

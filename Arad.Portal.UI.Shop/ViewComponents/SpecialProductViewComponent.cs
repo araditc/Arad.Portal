@@ -40,9 +40,11 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             var ri = new RegionInfo(currentCultureInfo.LCID);
             var currencyPrefix = ri.ISOCurrencySymbol;
             var currencyDto = _currencyRepository.GetCurrencyByItsPrefix(currencyPrefix);
-
             ViewBag.CurrencySymbol = currencyDto.Symbol;
 
+            var langId = _lanRepository.FetchBySymbol(defLangSymbol);
+            ViewBag.CurLangId = langId;
+            
             var lst = _productRepository.GetSpecialProducts(count, currencyDto.CurrencyId, productType);
             return View(lst);
         }

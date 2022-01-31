@@ -1221,6 +1221,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                             Promotion = _.Promotion,
                             SaleCount = _.SaleCount,
                             UniqueCode = _.UniqueCode,
+                            TotalScore = _.TotalScore,
+                            ScoredCount = _.ScoredCount,
                             Unit = _.Unit,
                             VisitCount = _.VisitCount
                         }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.CreationDate)).Limit(count).ToList();
@@ -1241,6 +1243,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                             Promotion = _.Promotion,
                             SaleCount = _.SaleCount,
                             UniqueCode = _.UniqueCode,
+                            TotalScore = _.TotalScore,
+                            ScoredCount = _.ScoredCount,
                             Unit = _.Unit,
                             VisitCount = _.VisitCount
                         }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.TotalScore / _.ScoredCount)).Limit(count).ToList();
@@ -1261,6 +1265,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                             Promotion = _.Promotion,
                             SaleCount = _.SaleCount,
                             UniqueCode = _.UniqueCode,
+                            TotalScore = _.TotalScore,
+                            ScoredCount = _.ScoredCount,
                             Unit = _.Unit,
                             VisitCount = _.VisitCount
                         }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.SaleCount)).Limit(count).ToList();
@@ -1281,11 +1287,15 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                             Promotion = _.Promotion,
                             SaleCount = _.SaleCount,
                             UniqueCode = _.UniqueCode,
+                            TotalScore = _.TotalScore,
+                            ScoredCount = _.ScoredCount,
                             Unit = _.Unit,
                             VisitCount = _.VisitCount
                         }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.VisitCount)).Limit(count).ToList();
                     break;
             }
+            //for testing
+            Random ran = new Random();
             
             foreach (var pro in lst)
             {
@@ -1293,12 +1303,19 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 pro.GiftProduct = res.GiftProduct;
                 pro.Promotion = res.Promotion;
                 pro.PriceValWithPromotion = res.PriceValWithPromotion;
-                pro.OldPrice = res.OldPrice;
+                //pro.OldPrice = res.OldPrice;
+                //testing
+                pro.OldPrice = ran.Next(0, 56000);
                 pro.DiscountType = res.DiscountType;
                 pro.DiscountValue = res.DiscountValue;
                 pro.MainImageUrl = pro.Images.Any(_ => _.IsMain) ? pro.Images.First(_ => _.IsMain).Url : "";
+                var r = Helpers.Utilities.ConvertPopularityRate(pro.TotalScore??0, pro.ScoredCount??0);
+                pro.LikeRate = r.LikeRate;
+                pro.DisikeRate = r.DisikeRate;
+                pro.HalfLikeRate = r.halfLikeRate;
             }
 
+            
             return lst;
         }
 

@@ -1,0 +1,58 @@
+﻿@using Arad.Portal.DataLayer.Entities.General.DesignStructure;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <link href="~/lib/owlCarousel/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/lib/owlCarousel/css/owl.theme.default.min.css" rel="stylesheet" />
+    <link href="~/css/SpecialProduct.css" rel="stylesheet" />
+}
+
+
+<div class="card mt-2 border-0">
+    <div class="card-body">
+        <div id="productSection">
+            @await Component.InvokeAsync("SpecialProduct", new { count = 10, productType = ProductType.MostVisited })
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    
+    <script src="~/lib/owlCarousel/js/owl.carousel.min.js"></script>
+   
+    <script>
+        $(document).ready(function () {
+            /* $(".owl-carousel").css("display", "flex");*/
+            $(".owl-carousel").owlCarousel({
+                 loop: true,
+                rtl: true,
+                /*autoplay: true,*/
+                margin:10,
+                animateOut: 'fadeOut',
+                animateIn: 'fadeIn',
+                nav: true,
+                /*dots: true,*/
+                autoplayHoverPause: false,
+                items: 3,
+                navText: ["<i class='fas fa-chevron-right'></i>", "<i class='fas fa-chevron-left'></i>"],
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    600: {
+                        items: 3
+                    },
+                    1000: {
+                        items: 5
+                    }
+                }
+            });
+
+            $(".owl-nav").addClass("text-center");
+            $(".owl-prev").addClass("m-2");
+            $(".owl-next").addClass("m-2");
+        })
+    </script>
+
+}
