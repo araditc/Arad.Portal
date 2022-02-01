@@ -23,11 +23,19 @@
    
     <script>
         $(document).ready(function () {
-            /* $(".owl-carousel").css("display", "flex");*/
+            $(".likeLink i").click(function () {
+                if ($(this).hasClass("far fa-heart")) {
+                    $(this).removeClass("far fa-heart");
+                    $(this).addClass("fas fa-heart");
+                } else {
+                    $(this).removeClass("fas fa-heart");
+                    $(this).addClass("far fa-heart");
+                }
+            });
             $(".owl-carousel").owlCarousel({
                  loop: true,
                 rtl: true,
-                /*autoplay: true,*/
+               /* autoplay: true,*/
                 margin:10,
                 animateOut: 'fadeOut',
                 animateIn: 'fadeIn',

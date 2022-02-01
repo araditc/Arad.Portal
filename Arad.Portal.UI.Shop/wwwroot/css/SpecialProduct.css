@@ -20,11 +20,117 @@
     font-size: 14px;
 }
 
-    .item-price strike {
-        opacity: 0.7;
-        margin-right: 5px;
+.item-price strike {
+    opacity: 0.7;
+    margin-right: 5px;
+}
+.likeLink{
+    color :black;
+}
+.far.fa-heart{
+    color : red;
+}
+.fas.fa-heart {
+    color: red;
+}
+/*.img-overlay-wrap {
+    position: relative;
+    display: inline-block;  <= shrinks container to image size 
+    transition: transform 150ms ease-in-out;
+}
+
+.img-overlay-wrap img {  <= optional, for responsiveness 
+    display: block;
+    max-width: 100%;
+    height: auto;
+}*/
+
+/*.img-overlay-wrap svg {
+    position: absolute;
+    top: 1%;
+    left: 80%;
+}
+svg {
+    margin: 24px auto;
+    display: block;
+}
+
+circle {
+    fill: white;
+    stroke: transparent;
+    stroke-width: 1;
+}
+
+svg text#chk {
+    font-family: 'Font Awesome 5 Free';
+    font-size: 10px;
+    fill: #00f;
+}*/
+/*.img-overlay-wrap {
+    position: relative;
+}
+
+.img-overlay-wrap img {
+    display: block;
+}
+
+    .img-overlay-wrap .likepart {
+        position: absolute;
+        top: 1%;
+        left: 80%;
+    }*/
+
+.img-overlay-wrap {
+    position: relative;
+   /* float: left;*/
+  /*  margin: 5px;*/
+}
+
+    .img-overlay-wrap:hover .likepart {
+        display: block;
     }
 
-.productImage{
-    position : relative;
+    .img-overlay-wrap .likepart {
+        position: absolute;
+        top: 1%;
+        left: 80%;
+        display: none;
+    }
+/*.img-overlay-wrap img {
+    border: 2px solid black;
+}*/
+
+/*.img-overlay-wrap {
+    position: relative;
+}*/
+
+/*.likepart {
+    position: absolute;*/
+   /* top: 1%;
+    left: 80%;*/
+   /* padding: 5px;*/
+   /* background-color: white;*/
+   /* border: 2px solid red;*/
+/*}*/
+/*.imageSection{
+   position: relative;
 }
+
+.actionPart {
+    position: relative;
+    height: 290px;
+    max-height: 290px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}*/
+
+/*.proImg{
+    position : absolute;
+}*/
+
+/*.actionPart {
+    position: absolute;*/*/
+   /* bottom : 1%;
+    left: 2%;*/
+/*}*/
+

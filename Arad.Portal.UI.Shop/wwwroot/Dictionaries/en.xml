@@ -41,7 +41,7 @@
 		<value>Shopping Cart</value>
 	</string>
 	<string key="btn_AddToShoppingCart">
-		<value>Add to basket</value>
+		<value>Add to Cart</value>
 	</string>
 	<string key="btn_Exit">
 		<value>Exit</value>

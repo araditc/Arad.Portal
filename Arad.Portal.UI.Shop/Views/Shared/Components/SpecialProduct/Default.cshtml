@@ -5,63 +5,97 @@
 }
 
 
-        <div class="row">
-            <div class="owl-carousel">
+<div class="row">
+    <div class="owl-carousel">
 
-                @foreach (var item in Model)
-                {
-                    @*col-6 col-md-3 col-xl-2*@
-                    @*<div class="item">*@
-                        <div class="thumb-wrapper m-3">
-                            @*<i class="far fa-heart"></i>*@
-                            <div class="productImage">
-                                <img src="@($"../filemanager/getscaledimage?path={item.MainImageUrl}&height={500}")" class="img-fluid" alt="">
-                            </div>
-                            <div class="thumb-content">
-                                <h6>
-                                    @(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ?
+        @foreach (var item in Model)
+        {
+            @*col-6 col-md-3 col-xl-2*@
+            @*<div class="item">*@
+        <div class="thumb-wrapper m-3">
+            @*<a role="button" class="rounded-circle float-start" href="#">
+                <span class="fa-stack likeLink" style="vertical-align: top;">
+                    <i class="far fa-circle fa-stack-2x"></i>
+                    <i class="far fa-heart fa-stack-1x"></i>
+                </span>
+           </a>*@
+            @*<a role="button" class="likeLink rounded-circle float-start" href="#">
+                <i class="far fa-heart"></i>
+            </a>*@
+
+            <div class="img-overlay-wrap">
+                @*<a role="button" class="brn rounded-circle" href="#">
+            <span class="fa-stack" style="vertical-align: top;">
+                <i class="far fa-circle fa-stack-2x"></i>
+                <i class="far fa-heart fa-stack-1x"></i>
+            </span>
+        </a>*@
+          <div class="likepart float-start border-0 bg-white rounded-circle text-center align-middle ps-2 pe-2 pt-1 ms-2 mt-2">
+              <a>
+                  <i class="far fa-heart"></i>
+              </a>
+          </div>
+                <img src="@($"../filemanager/getscaledimage?path={item.MainImageUrl}&height={500}")" class="img-fluid" alt="">
+                @*<a role="button" class="likeLink rounded-circle float-start" href="#">
+                    <i class="far fa-heart"></i>
+                </a>
+                <div class="actionPart">
+                    <ul>
+                        <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
+                        <li><a href="#"><i class="fas fa-heart"></i></a></li>
+                    </ul>
+                </div>*@
+            </div>
+            @*<div class="likePart float-start">
+            <a href="#" class="likeLink" role="button"><i class="far fa-heart top-0 start-0"></i></a>
+        </div>*@
+            @*<div class="productImage">
+            <img src="@($"../filemanager/getscaledimage?path={item.MainImageUrl}&height={500}")" class="img-fluid" alt="">
+        </div>*@
+            <div class="thumb-content">
+                <h6>
+                    @(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ?
                                 item.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLangId).Name : "")
-                                </h6>
-                                <div class="star-rating">
-                                    <ul class="list-inline">
-                                        @for (int i = 1; i <= item.LikeRate; i++)
-                                        {
-                                            <li class="list-inline-item">
-                                                <a href="#"
-                                                   role="button" aria-expanded="false" title="@Language.GetString(" ProductScore")" onclick="Rate(@i);">
-                                                    <i class="fas fa-star"></i>
-                                                </a>
-                                            </li>
-                                        }
-                                        @if (item.HalfLikeRate)
-                                        {
-                                            <li class="list-inline-item">
-                                                <a href="#"
-                                                   role="button" aria-expanded="false" title="@Language.GetString(" ProductScore")" onclick="Rate(@item.LikeRate+1);">
-                                                    <i class="fas fa-star-half-alt"></i>
-                                                </a>
-                                            </li>
-                                        }
-                                        @for (int i = (item.HalfLikeRate ? item.LikeRate + 2 : item.LikeRate + 1); i <= item.DisikeRate; i++)
-                                        {
-                                            <li class="list-inline-item">
-                                                <a href="#"
-                                                   role="button" aria-expanded="false" onclick="Rate(@i);" title=@($"{@Language.GetString("ProductScore")}_{i}")>
-                                                    <i class="far fa-star"></i>
-                                                </a>
-                                            </li>
-                                        }
+                </h6>
+                <div class="star-rating">
+                    <ul class="list-inline">
+                        @for (int i = 1; i <= item.LikeRate; i++)
+                        {
+                            <li class="list-inline-item">
+                                <a href="#"
+                                   role="button" aria-expanded="false" title="@Language.GetString(" ProductScore")" onclick="Rate(@i);">
+                                    <i class="fas fa-star"></i>
+                                </a>
+                            </li>
+                        }
+                        @if (item.HalfLikeRate)
+                        {
+                            <li class="list-inline-item">
+                                <a href="#"
+                                   role="button" aria-expanded="false" title="@Language.GetString(" ProductScore")" onclick="Rate(@item.LikeRate+1);">
+                                    <i class="fas fa-star-half-alt"></i>
+                                </a>
+                            </li>
+                        }
+                        @for (int i = (item.HalfLikeRate ? item.LikeRate + 2 : item.LikeRate + 1); i <= item.DisikeRate; i++)
+                        {
+                            <li class="list-inline-item">
+                                <a href="#"
+                                   role="button" aria-expanded="false" onclick="Rate(@i);" title=@($"{@Language.GetString("ProductScore")}_{i}")>
+                                    <i class="far fa-star"></i>
+                                </a>
+                            </li>
+                        }
 
-                                    </ul>
-                                </div>
-                                <p class="item-price"><strike class="ps-3 float-start">@item.OldPrice</strike> <b class="float-end"><span>@item.PriceValWithPromotion</span><span class="ps-2">@ViewBag.CurrencySymbol</span></b></p>
-                                <a href="#" class="btn btn-primary">Add to Cart</a>
-                            </div>
-                        </div>
-                    @*</div>*@
-                }
-
+                    </ul>
+                </div>
+                <p class="item-price"><strike class="ps-3 float-start"><span>@item.OldPrice</span><span >@ViewBag.CurrencySymbol</span></strike> <b class="float-end"><span>@item.PriceValWithPromotion</span><span class="ps-2">@ViewBag.CurrencySymbol</span></b></p>
+                <a href="#" role="button" class="btn btn-outline-secondary">@Language.GetString("btn_AddToShoppingCart")</a>
             </div>
         </div>
+            @*</div>*@
+        }
 
- 
+    </div>
+</div>
+
