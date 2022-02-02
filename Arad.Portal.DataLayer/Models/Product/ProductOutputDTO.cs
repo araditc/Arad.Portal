@@ -27,6 +27,8 @@ namespace Arad.Portal.DataLayer.Models.Product
 
         public List<string> GroupNames { get; set; }
 
+
+        public bool IsNew { get; set; }
         public List<MultiLingualProperty> MultiLingualProperties { get; set; }
 
         public string UniqueCode { get; set; }
@@ -52,7 +54,7 @@ namespace Arad.Portal.DataLayer.Models.Product
         public string SellerUserName { get; set; }
 
         public Entities.Shop.ProductUnit.ProductUnit Unit { get; set; }
-        public DiscountType DiscountType { get; set; }
+        public DiscountType? DiscountType { get; set; }
         public long? DiscountValue { get; set; }
         public long OldPrice { get; set; }
         public long PriceValWithPromotion { get; set; }
