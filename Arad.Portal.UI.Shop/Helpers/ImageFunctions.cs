@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+//using System.Drawing;
+//using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -81,35 +82,35 @@ namespace Arad.Portal.UI.Shop.Helpers
             return newImage;
         }
 
-        //public static KeyValuePair<string, string> SaveImageModel(DataLayer.Models.Shared.Image picture, string pathToSave, string staticFileStorageURL, string webRootPath)
-        //{
-        //    KeyValuePair<string, string> res;
-        //    if (string.IsNullOrWhiteSpace(staticFileStorageURL))
-        //    {
-        //        staticFileStorageURL = webRootPath;
-        //    }
-        //    picture.ImageId = Guid.NewGuid().ToString();
-        //    var path = Path.Combine(staticFileStorageURL, pathToSave);
-        //    try
-        //    {
-        //        if (!Directory.Exists(path))
-        //        {
-        //            Directory.CreateDirectory(path);
-        //        }
-        //        picture.Url = Path.Combine(pathToSave, $"{picture.ImageId}.jpg");
-        //        byte[] bytes = Convert.FromBase64String(picture.Content.Replace("data:image/jpeg;base64,", ""));
-        //        Image image;
-        //        using MemoryStream ms = new MemoryStream(bytes);
-        //        image = Image.FromStream(ms);
-        //        image.Save(Path.Combine(path, $"{picture.ImageId}.jpg"), System.Drawing.Imaging.ImageFormat.Jpeg);
-        //        res = new KeyValuePair<string, string>(picture.ImageId, picture.Url);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        res = new KeyValuePair<string, string>(Guid.Empty.ToString(), "");
-        //    }
-        //    return res;
-        //}
+        public static KeyValuePair<string, string> SaveImageModel(DataLayer.Models.Shared.Image picture, string pathToSave, string staticFileStorageURL, string webRootPath)
+        {
+            KeyValuePair<string, string> res;
+            if (string.IsNullOrWhiteSpace(staticFileStorageURL))
+            {
+                staticFileStorageURL = webRootPath;
+            }
+            picture.ImageId = Guid.NewGuid().ToString();
+            var path = Path.Combine(staticFileStorageURL, pathToSave);
+            try
+            {
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                picture.Url = Path.Combine(pathToSave, $"{picture.ImageId}.jpg");
+                byte[] bytes = Convert.FromBase64String(picture.Content.Replace("data:image/jpeg;base64,", ""));
+                Image image;
+                using MemoryStream ms = new MemoryStream(bytes);
+                image = Image.FromStream(ms);
+                image.Save(Path.Combine(path, $"{picture.ImageId}.jpg"), System.Drawing.Imaging.ImageFormat.Jpeg);
+                res = new KeyValuePair<string, string>(picture.ImageId, picture.Url);
+            }
+            catch (Exception ex)
+            {
+                res = new KeyValuePair<string, string>(Guid.Empty.ToString(), "");
+            }
+            return res;
+        }
 
 
 
