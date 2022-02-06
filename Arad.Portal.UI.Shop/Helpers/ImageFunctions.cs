@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-//using System.Drawing;
-//using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Formats;
 
 namespace Arad.Portal.UI.Shop.Helpers
 {
@@ -13,75 +13,103 @@ namespace Arad.Portal.UI.Shop.Helpers
     {
         public static string ResizeImage(string filePath, int desiredHeight/*pixel*/)
         {
-            var base64String = File.ReadAllText(filePath);
-            byte[] byteArray = Convert.FromBase64String(base64String);
-            Image img;
-            using (MemoryStream ms = new MemoryStream(byteArray))
-            {
-                img = Image.FromStream(ms);
-            }
-
+            byte[] byteArray;
+            //Image img;
+            IImageFormat format;
+            Image img = Image.Load(filePath, out format);
+            var imageEncoder = Configuration.Default.ImageFormatsManager.FindEncoder(format);
             double ratio = (double)desiredHeight / img.Height;
             int newWidth = (int)(img.Width * ratio);
             int newHeight = (int)(img.Height * ratio);
-            Bitmap bitMapImage = new Bitmap(newWidth, newHeight);
-            using (Graphics g = Graphics.FromImage(bitMapImage))
-            {
-                g.DrawImage(img, 0, 0, newWidth, newHeight);
-            }
-            img.Dispose();
+            img.Mutate(x => x.Resize(newHeight, newWidth));
 
-            byte[] byteImage;
-            using (MemoryStream ms = new MemoryStream())
+            using (var ms = new MemoryStream())
             {
-                bitMapImage.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                byteImage = ms.ToArray();
+                img.Save(ms, imageEncoder);
+                byteArray = ms.ToArray();
             }
-            return Convert.ToBase64String(byteImage);
+                        
+            return Convert.ToBase64String(byteArray);
+        }
+        public static string ResizeImageBasedOnWidth(string filePath, int desiredWidth/*pixel*/)
+        {
+            byte[] byteArray;
+            //Image img;
+            IImageFormat format;
+            Image img = Image.Load(filePath, out format);
+            var imageEncoder = Configuration.Default.ImageFormatsManager.FindEncoder(format);
+            double ratio = (double)desiredWidth / img.Width;
+            int newWidth = (int)(img.Width * ratio);
+            int newHeight = (int)(img.Height * ratio);
+            img.Mutate(x => x.Resize(newHeight, newWidth));
+
+            using (var ms = new MemoryStream())
+            {
+                img.Save(ms, imageEncoder);
+                byteArray = ms.ToArray();
+            }
+            return Convert.ToBase64String(byteArray);
         }
 
         public static byte[] GetResizedImage(string filePath, int desiredHeight/*pixel*/)
         {
-            byte[] byteArray = File.ReadAllBytes(filePath);
-            Image img;
-            using (MemoryStream ms = new MemoryStream(byteArray))
-            {
-                img = Image.FromStream(ms);
-            }
-
+            byte[] byteArray;
+            //Image img;
+            IImageFormat format;
+            Image img = Image.Load(filePath, out format);
+           
+            var imageEncoder = Configuration.Default.ImageFormatsManager.FindEncoder(format);
             double ratio = (double)desiredHeight / img.Height;
             int newWidth = (int)(img.Width * ratio);
             int newHeight = (int)(img.Height * ratio);
-            Bitmap bitMapImage = new Bitmap(newWidth, newHeight);
-            using (Graphics g = Graphics.FromImage(bitMapImage))
-            {
-                g.DrawImage(img, 0, 0, newWidth, newHeight);
-            }
-            img.Dispose();
-
-            byte[] byteImage;
+            img.Mutate(x => x.Resize(newHeight, newWidth));
             using (MemoryStream ms = new MemoryStream())
             {
-                bitMapImage.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                byteImage = ms.ToArray();
+                img.Save(ms, imageEncoder);
+                byteArray = ms.ToArray();
             }
-            return byteImage;
+            return byteArray;
         }
 
-        public static Image ScaleImage(Image image, int height)
+        public static byte[] GetResizedImageBasedOnWidth(string filePath, int desiredWidth/*pixel*/)
         {
-            double ratio = (double)height / image.Height;
+            byte[] byteArray;
+            //Image img;
+            IImageFormat format;
+            Image img = Image.Load(filePath, out format);
+
+            var imageEncoder = Configuration.Default.ImageFormatsManager.FindEncoder(format);
+            double ratio = (double)desiredWidth / img.Width;
+            int newWidth = (int)(img.Width * ratio);
+            int newHeight = (int)(img.Height * ratio);
+            img.Mutate(x => x.Resize(newHeight, newWidth));
+            using (MemoryStream ms = new())
+            {
+                img.Save(ms, imageEncoder);
+                byteArray = ms.ToArray();
+            }
+            return byteArray;
+        }
+
+        public static Image ScaleImage(Image image, int desiredHeight)
+        {
+            double ratio = (double)desiredHeight / image.Height;
             int newWidth = (int)(image.Width * ratio);
             int newHeight = (int)(image.Height * ratio);
-            Bitmap newImage = new(newWidth, newHeight);
-            using (Graphics g = Graphics.FromImage(newImage))
-            {
-                g.DrawImage(image, 0, 0, newWidth, newHeight);
-            }
-            image.Dispose();
-            return newImage;
+            image.Mutate(x => x.Resize(newHeight, newWidth));
+
+            return image;
         }
 
+        public static Image ScaleImageBasedOnWidth(Image image, int desiredWidth)
+        {
+            double ratio = (double)desiredWidth / image.Width;
+            int newWidth = (int)(image.Width * ratio);
+            int newHeight = (int)(image.Height * ratio);
+            image.Mutate(x => x.Resize(newHeight, newWidth));
+
+            return image;
+        }
         public static KeyValuePair<string, string> SaveImageModel(DataLayer.Models.Shared.Image picture, string pathToSave, string staticFileStorageURL, string webRootPath)
         {
             KeyValuePair<string, string> res;
@@ -99,10 +127,8 @@ namespace Arad.Portal.UI.Shop.Helpers
                 }
                 picture.Url = Path.Combine(pathToSave, $"{picture.ImageId}.jpg");
                 byte[] bytes = Convert.FromBase64String(picture.Content.Replace("data:image/jpeg;base64,", ""));
-                Image image;
-                using MemoryStream ms = new MemoryStream(bytes);
-                image = Image.FromStream(ms);
-                image.Save(Path.Combine(path, $"{picture.ImageId}.jpg"), System.Drawing.Imaging.ImageFormat.Jpeg);
+                Image image = Image.Load(bytes);
+                image.Save(Path.Combine(path, $"{picture.ImageId}.jpg"), new JpegEncoder() { Quality = 100});
                 res = new KeyValuePair<string, string>(picture.ImageId, picture.Url);
             }
             catch (Exception ex)
@@ -111,8 +137,6 @@ namespace Arad.Portal.UI.Shop.Helpers
             }
             return res;
         }
-
-
 
         public static KeyValuePair<string, string> SaveImageModel(DataLayer.Models.Shared.Image picture, string pathToSave, string localStaticFileStorageURL)
         {
@@ -128,10 +152,8 @@ namespace Arad.Portal.UI.Shop.Helpers
                 }
                 picture.Url = Path.Combine("/Images", pathToSave, $"{picture.ImageId}.jpg").Replace("\\", "/");
                 byte[] bytes = Convert.FromBase64String(picture.Content.Replace("data:image/jpeg;base64,", ""));
-                Image image;
-                using MemoryStream ms = new MemoryStream(bytes);
-                image = Image.FromStream(ms);
-                image.Save(Path.Combine(path, $"{picture.ImageId}.jpg").Replace("\\", "/"), System.Drawing.Imaging.ImageFormat.Jpeg);
+                Image image = Image.Load(bytes);
+                image.Save(Path.Combine(path, $"{picture.ImageId}.jpg").Replace("\\", "/"), new JpegEncoder() { Quality = 100 });
                 res = new KeyValuePair<string, string>(picture.ImageId, picture.Url);
             }
             catch (Exception ex)
@@ -155,19 +177,4 @@ namespace Arad.Portal.UI.Shop.Helpers
 
     }
 
-    public static class ImageValidator
-    {
-        public static bool IsImage(this IFormFile file)
-        {
-            try
-            {
-                var img = Image.FromStream(file.OpenReadStream());
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-    }
 }
