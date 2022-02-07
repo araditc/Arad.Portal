@@ -29,7 +29,6 @@
     <Folder Include="wwwroot\css\imgs\" />
     <Folder Include="wwwroot\Images\" />
     <Folder Include="wwwroot\Files\" />
-    <Folder Include="wwwroot\lib\bootstrap5\fonts\" />
     <Folder Include="wwwroot\plugins\" />
     <Folder Include="wwwroot\Template\" />
   </ItemGroup>
