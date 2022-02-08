@@ -19,6 +19,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Content
         Task<Result> Restore(string contentId);
         List<SelectListModel> GetContentsList(string domainId, string currentUserId, string categoryId);
         List<SelectListModel> GetAllSourceType();
+        List<SelectListModel> GetAllImageRatio();
         ContentDTO FetchBySlug(string slug, string domainName);
 
         ContentDTO FetchByCode(long contentCode);

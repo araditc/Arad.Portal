@@ -403,6 +403,9 @@
 	<string key="tbl_ContentImages">
 		<value>تصاویر محتوا</value>
 	</string>
+	<string key="tbl_AspectRatioImage">
+		<value>نسبت ابعاد تصویر</value>
+	</string>
 	<string key="tbl_ProductGroup">
 		<value>گروه محصول</value>
 	</string>

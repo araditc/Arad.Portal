@@ -94,9 +94,7 @@
         <div class="modal-content col-md-12">
             <div class="modal-header">
                 <div class="col-md-1">
-                    <button type="button"data-dismiss="modal" class="btn-close" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="col-md-11" style="text-align: center">
                     <h5 class="modal-title align-content-center" id="exampleModalLongTitle">@Language.GetString("CropImage")</h5>
@@ -1264,11 +1262,12 @@ else
 
         document.getElementById('crop_button').addEventListener('click',
             function () {
-                var imgUrl = cropper.getCroppedCanvas().toDataURL('image/jpeg');
+                 var imgUrl = cropper.getCroppedCanvas({imageSmoothingEnabled: true,
+                         imageSmoothingQuality: 'high' }).toDataURL('image/jpeg', 1);
                 var img = document.createElement("img");
                 img.setAttribute("id", "galleryPic");
                 img.setAttribute("class", "img-fluid");
-                var height = document.getElementById("container").getAttribute("width");
+                var height = $("#container").attr("height");
                 var croppedContainer = document.createElement("div");
                 croppedContainer.setAttribute("id", "cropped_result");
                 croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");

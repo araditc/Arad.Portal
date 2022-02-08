@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -138,12 +140,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     if (string.IsNullOrWhiteSpace(img.Content))
                     {
-
-                        using (System.Drawing.Image image = System.Drawing.Image.FromFile(Path.Combine(staticFileStorageURL, img.Url)))
+                        IImageFormat format;
+                        using (SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(Path.Combine(staticFileStorageURL, img.Url), out format))
                         {
+                            var imageEncoder = Configuration.Default.ImageFormatsManager.FindEncoder(format);
                             using (MemoryStream m = new MemoryStream())
                             {
-                                image.Save(m, image.RawFormat);
+                                image.Save(m, imageEncoder);
                                 byte[] imageBytes = m.ToArray();
 
                                 // Convert byte[] to Base64 String
@@ -165,6 +168,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             categoryList = categoryList.OrderBy(_ => _.Text).ToList();
             categoryList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
             ViewBag.CatList = categoryList;
+
+            var imageRatioList = _contentRepository.GetAllImageRatio();
+            ViewBag.ImageRatio = imageRatioList;
 
             ViewBag.LangId = lan.LanguageId;
             ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
@@ -208,7 +214,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
 
                 var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
-                var path = "Contents";
+                var path = "images/Contents";
                 foreach (var pic in dto.Images)
                 {
                     var res = ImageFunctions.SaveImageModel(pic, path, localStaticFileStorageURL);

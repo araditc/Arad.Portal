@@ -15,7 +15,6 @@ using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.DataLayer.Contracts.Shop.ProductSpecificationGroup;
 using Microsoft.Extensions.Configuration;
 using System.IO;
-using System.Drawing;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
@@ -216,7 +215,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.IsActive = true;
                 }
                 var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
-                var path = "/images/Products";
+                var path = "images/Products";
                 foreach (var pic in dto.Pictures)
                 {
                     var res = ImageFunctions.SaveImageModel(pic, path, localStaticFileStorageURL);
@@ -277,7 +276,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 //    CultureInfo.CurrentCulture = new CultureInfo("fa-IR");
                 //}
                 var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
-                var path = "Products";
+                var path = "images/Products";
                 foreach (var pic in dto.Pictures)
                 {
                     Guid isGuidKey;

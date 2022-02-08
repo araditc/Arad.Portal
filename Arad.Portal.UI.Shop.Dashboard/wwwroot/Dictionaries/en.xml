@@ -405,6 +405,9 @@
 	<string key="tbl_ContentImages">
 		<value>Content Images</value>
 	</string>
+	<string key="tbl_AspectRatioImage">
+		<value>image aspect ratio</value>
+	</string>
 	<string key="tbl_ProductGroup">
 		<value>Product Group</value>
 	</string>

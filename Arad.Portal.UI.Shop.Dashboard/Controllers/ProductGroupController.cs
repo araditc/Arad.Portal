@@ -18,7 +18,9 @@ using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using SixLabors.ImageSharp;
 using System.Web;
+using SixLabors.ImageSharp.Formats;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -81,11 +83,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 if (!string.IsNullOrWhiteSpace(model.GroupImage.Url))
                 {
                     model.GroupImage.Url = model.GroupImage.Url.Replace("\\", "/");
-                    using (System.Drawing.Image image = System.Drawing.Image.FromFile(Path.Combine(staticFileStorageURL, model.GroupImage.Url)))
+                    IImageFormat format;
+                    using (SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(Path.Combine(staticFileStorageURL, model.GroupImage.Url), out format))
                     {
+                        var imageEncoder = Configuration.Default.ImageFormatsManager.FindEncoder(format);
                         using (MemoryStream m = new MemoryStream())
                         {
-                            image.Save(m, image.RawFormat);
+                            image.Save(m, imageEncoder);
                             byte[] imageBytes = m.ToArray();
 
                             // Convert byte[] to Base64 String
@@ -163,7 +167,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 var lang = _lanRepository.GetDefaultLanguage(currentUserId);
 
                 var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
-                var path = "ProductGroups";
+                var path = "Images/ProductGroups";
                 if(!string.IsNullOrWhiteSpace(dto.GroupImage.Content))
                 {
                     var res = ImageFunctions.SaveImageModel(dto.GroupImage, path, localStaticFileStorageURL);
@@ -255,7 +259,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             else
             {
                 var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
-                var path = "ProductGroups";
+                var path = "Images/ProductGroups";
                 var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var lan = _lanRepository.GetDefaultLanguage(currentUserId);
 

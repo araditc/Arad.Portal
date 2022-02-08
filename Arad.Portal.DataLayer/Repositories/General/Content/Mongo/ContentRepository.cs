@@ -386,5 +386,21 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             }
             return result;
         }
+
+        public List<SelectListModel> GetAllImageRatio()
+        {
+            var result = new List<SelectListModel>();
+            foreach (int i in Enum.GetValues(typeof(ImageRatio)))
+            {
+                string name = Enum.GetName(typeof(ImageRatio), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            return result;
+        }
     }
 }

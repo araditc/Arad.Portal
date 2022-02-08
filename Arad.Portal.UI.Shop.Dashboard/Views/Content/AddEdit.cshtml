@@ -43,10 +43,10 @@
         #bd-root-userBirthDate {
             width: 100%
         }
-        img {
+       /* img {
             max-width: 100%;
             max-height: 100%;
-        }
+        }*/
         .cropper-container {
             width: 100%
         }
@@ -128,8 +128,7 @@
         <div class="modal-content col-md-12">
             <div class="modal-header">
                 <div class="col-md-1">
-                    <button type="button"  data-dismiss="modal" class="btn-close" aria-label="Close">
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="col-md-11" style="text-align: center">
                     <h5 class="modal-title align-content-center" id="ModalLongTitle">@Language.GetString("CropImage")</h5>
@@ -138,9 +137,11 @@
             <div class="modal-body">
                 <div class="modal-body" id="upload-modal-body">
                     <div id="rowContainer" class="row justify-content-center align-items-center">
-                        <div id="container" style="position: relative;display: inline; height: 400px; width: 400px;max-width:100%;">
-                            <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="blah"
-                                 alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
+                        <div id="container" class="col-10 offset-1 col-md-6 offset-md-3" style="min-height:300px;">
+                            @*<div id="container" style="position: relative;display: inline;height: 400px; width: 400px;max-width:100%;"*@>
+                                <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="croppedImg"
+                                     alt="your image" style="border: 1px solid black" />
+                           @* </div>*@
                         </div>
                     </div>
                 </div>
@@ -284,12 +285,15 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-4 border">
-                                        @*<div class="border">*@
+                                    <div class="col-md-4 border pt-3">
                                             <label class="form-label custom-file-label float-start pt-2" for="image">@Language.GetString("btn_UploadImage")</label>
                                             <input accept="image/x-png,image/jpeg"
                                                    type="file" class="btn btn-sm bg-gradient float-end" name="image" id="image" onchange="getURL(this)"/>
-                                        @*</div>*@
+                                    </div>
+                                    <div class="col-md-2 mb-1">
+                                       <label class="form-label" >@Language.GetString("tbl_AspectRatioImage")</label>
+                                       <select id="imgAspectRatio" class="form-control selectpicker" data-live-search="true" 
+                                          asp-items="@(new SelectList(ViewBag.ImageRatio,"Value","Text"))"></select>
                                     </div>
                                 </div>
                                 <div class="row" id="proGallery" style="padding:1%;">
@@ -301,6 +305,8 @@
                                                     <th style="display:none;"></th>
                                                     <th>@Language.GetString("Title")</th>
                                                     <th>@Language.GetString("Description")</th>
+                                                    <th class="d-none"></th>
+                                                    <th>@Language.GetString("tbl_AspectRatioImage")</th>
                                                     <th>@Language.GetString("MainPhoto")</th>
                                                     <th></th>
                                                 </tr>
@@ -313,6 +319,10 @@
                                                         <td style="display:none;">@pic.ImageId</td>
                                                         <td><input type="text" class="form-control txtTitle" value="@pic.Title" /></td>
                                                         <td><input type="text" class="form-control txtDesc" value="@pic.Description" /></td>
+                                                        <td class="d-none">(int)@pic.ImageRatio</td>
+                                                        <td>
+                                                            @pic.ImageRatio.GetDescription()
+                                                        </td>
                                                         <td>
                                                         <div class="form-check d-flex justify-content-center p-0">
                                                             <input class="form-check-input rdbIsMain" type="radio" checked="@pic.IsMain" name="isMainImage" />
@@ -416,7 +426,7 @@
 
 
         $(document).ready(function () {
-            debugger;
+         
 
         //TagInput
         $("input[name='tagKeyWords']").amsifySuggestags();
@@ -597,6 +607,19 @@
             var url = $("#galleryPic").attr("src");
             var model = {};
             model.ImageId = counter;
+            var ratio="";
+            switch($("#imgAspectRatio").val())
+            {
+                case "1":
+                ratio ="1*1";
+                break;
+                case "2":
+                ratio = "2*1"
+                break;
+                case "4":
+                ratio="4*1";
+                break;
+            }
             model.Content = url;
             images.push(model);
             var tr = "";
@@ -605,7 +628,7 @@
                     "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
                     "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
                     "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
-                    "'/></td><td style='vertical-align:middle;'><div class='form-check d-flex justify-content-center p-0'><input type='radio'  name='isMainImage' class='form-check-input rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' imgId='img_" + counter + "' onclick='deleteFromImageList(this);'><i class='fa fa-trash' ></i></button></td></tr>";
+                    "'/><td class='d-none'>"+$("#imgAspectRatio").val()+"</td></td>"+ratio+"<td></td><td style='vertical-align:middle;'><div class='form-check d-flex justify-content-center p-0'><input type='radio'  name='isMainImage' class='form-check-input rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' imgId='img_" + counter + "' onclick='deleteFromImageList(this);'><i class='fa fa-trash' ></i></button></td></tr>";
            
             $("#imageList").append(tr);
             counter += 1;
@@ -640,7 +663,7 @@
 
     function FillDataToSend() {
         debugger;
-        //console.log("FillDataToSend started");
+       
         var obj = {};
         obj.Images = [];
         obj.Comments = [];
@@ -677,14 +700,15 @@
 
         //pictures
         $("#imageList tr").each(function () {
-
+            debugger;
             var id = $(this).find("td:eq(1)").text();
             var item = images.find(_ => _.ImageId == id);
             index = images.indexOf(item);
 
-            item.IsMain = $(this).find("td:eq(4) .rdbIsMain").prop("checked") == true;
+            item.IsMain = $(this).find("td:eq(6) .rdbIsMain").prop("checked") == true;
             item.Title = $(this).find("td:eq(2) .txtTitle").val();
             item.Description = $(this).find("td:eq(3) .txtDesc").val();
+            item.ImageRatioId = parseInt($(this).find("td:eq(4)").text);
             item.ImageId = item.ImageId.toString();
             images[index] = item;
             obj.Images.push(item);
@@ -697,13 +721,7 @@
     }
 
 
-    $('#uploadModal').on('hidden.bs.modal',
-        function () {
-        debugger;
-        cropper.destroy();
-        document.getElementById("image").value = "";
-        $("#cropped_result").remove();
-         });
+   
 
     function rotatePic() {
     cropper.rotate(90);
@@ -716,9 +734,9 @@
     }
 
 
-    function initCropper() {
+    function initCropper(ratio = 1) {
         debugger;
-        var image = document.getElementById('blah');
+        var image = document.getElementById('croppedImg');
         if (cropper !== null && cropper !== undefined) {
         cropper.destroy();
         }
@@ -726,7 +744,8 @@
         cropper = new Cropper(image,
         {
         background: true,
-        aspectRatio: 1,
+        autoCropArea : 1,
+        aspectRatio: ratio,
         viewMode: 2,
         responsive: true,
         rotatable: true
@@ -734,13 +753,16 @@
 
         document.getElementById('crop_button').addEventListener('click',
         function () {
-        var imgUrl = cropper.getCroppedCanvas().toDataURL('image/jpeg');
+        var imgUrl = cropper.getCroppedCanvas({imageSmoothingEnabled: true,
+                    imageSmoothingQuality: 'high' }).toDataURL('image/jpeg', 1);
+       
         var img = document.createElement("img");
         img.setAttribute("id", "galleryPic");
         img.setAttribute("class", "img-fluid");
-        var height = document.getElementById("container").getAttribute("width");
+        var height = $("#container").attr("height");
        /* var height = modal.getElementById("container").getAttribute("width");*/
        /* var height = $("#uploadModal #container").attr("width");*/
+       debugger;
         var croppedContainer = document.createElement("div");
         croppedContainer.setAttribute("id", "cropped_result");
         croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
@@ -756,7 +778,8 @@
 
     function getURL(input)
     {
-        debugger;
+        debugger
+        var ratio = $("#imgAspectRatio").val();
             $("#cropped_result").remove();
             if (input.files && input.files[0]) {
             var file = input.files[0];
@@ -777,18 +800,12 @@
             var reducedContent = content.slice(5);
 
             if (reducedContent.startsWith("image")) {
-            $('#blah').attr('src', content);
+            $('#croppedImg').attr('src', content);
             setTimeout(upRiseModal, 100);
-            setTimeout(initCropper, 500);
+            setTimeout(initCropper(ratio), 500);
             } else {
 
-            @*Swal.fire({
-            position: 'top-end',
-            icon: 'error',
-            title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
-            showConfirmButton: false,
-            timer: 1500
-            });*@
+            
             showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
             document.getElementById("image").value = "";
             $("#cropped_result").remove();
