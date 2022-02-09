@@ -43,10 +43,10 @@
         #bd-root-userBirthDate {
             width: 100%
         }
-       /* img {
+        img {
             max-width: 100%;
             max-height: 100%;
-        }*/
+        }
         .cropper-container {
             width: 100%
         }
@@ -128,7 +128,8 @@
         <div class="modal-content col-md-12">
             <div class="modal-header">
                 <div class="col-md-1">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                   <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                </button>
                 </div>
                 <div class="col-md-11" style="text-align: center">
                     <h5 class="modal-title align-content-center" id="ModalLongTitle">@Language.GetString("CropImage")</h5>
@@ -137,12 +138,15 @@
             <div class="modal-body">
                 <div class="modal-body" id="upload-modal-body">
                     <div id="rowContainer" class="row justify-content-center align-items-center">
-                        <div id="container" class="col-10 offset-1 col-md-6 offset-md-3" style="min-height:300px;">
-                            @*<div id="container" style="position: relative;display: inline;height: 400px; width: 400px;max-width:100%;"*@>
-                                <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="croppedImg"
-                                     alt="your image" style="border: 1px solid black" />
-                           @* </div>*@
+                        <div id="container" style="position: relative;display: inline; height: 400px; width: 400px;max-width:100%;">
+                            <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="croppedImg"
+                                 alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
                         </div>
+                        @*<div id="container" class="col-10 col-6">
+                             <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="croppedImg"
+                                 alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
+                        </div>*@
+
                     </div>
                 </div>
             </div>
@@ -321,7 +325,7 @@
                                                         <td><input type="text" class="form-control txtDesc" value="@pic.Description" /></td>
                                                         <td class="d-none">(int)@pic.ImageRatio</td>
                                                         <td>
-                                                            @pic.ImageRatio.GetDescription()
+                                                             @pic.ImageRatio.GetDescription()
                                                         </td>
                                                         <td>
                                                         <div class="form-check d-flex justify-content-center p-0">
@@ -423,14 +427,10 @@
         var active = '@Language.GetString("Active")';
         var inActive = '@Language.GetString("InActive")';
         var editorBodyVar;
-
-
         $(document).ready(function () {
-         
-
+           
         //TagInput
         $("input[name='tagKeyWords']").amsifySuggestags();
-
         //datetimepicker
         if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
         {
@@ -441,8 +441,6 @@
         {
             $('.datepicker').datepicker();
         }
-
-
         if ("@Model.ContentId" != "") {
             $("#LanguageId").val('@Model.LanguageId');
             if ("@Model.PersianStartShowDate" != "") {
@@ -466,7 +464,7 @@
         }
         else
         {
-                $("#LanguageId").val('@ViewBag.LangId');
+          $("#LanguageId").val('@ViewBag.LangId');
         }
         $("#btnAddContent").click(function () {
             debugger;
@@ -523,10 +521,7 @@
                         debugger;
                         if (result.status === "Success") {
                             document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
-                            if ("data" in resultData)
-                            {
-                                document.getElementById('mainToastBody').innerHTML += `<br/>${result.message}`;
-                            }
+                           
                             document.getElementById('mainToastBody').classList.add('alert-success');
                             setTimeout(function()
                             {
@@ -623,47 +618,68 @@
             model.Content = url;
             images.push(model);
             var tr = "";
-         
-                tr = "<tr><td><img imgId='img_" + counter + "' src='" + model.Content +
+                 tr = "<tr><td><img imgId='img_" + counter + "' src='" + model.Content +
                     "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
                     "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
                     "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
-                    "'/><td class='d-none'>"+$("#imgAspectRatio").val()+"</td></td>"+ratio+"<td></td><td style='vertical-align:middle;'><div class='form-check d-flex justify-content-center p-0'><input type='radio'  name='isMainImage' class='form-check-input rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' imgId='img_" + counter + "' onclick='deleteFromImageList(this);'><i class='fa fa-trash' ></i></button></td></tr>";
-           
+                    "'/><td class='d-none'>"+$("#imgAspectRatio").val()+"</td><td>"+ratio+"</td><td style='vertical-align:middle;'><div class='form-check d-flex justify-content-center p-0'><input type='radio'  name='isMainImage' class='form-check-input rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' imgId='img_" 
+                    + counter + "' onclick='deleteFromImageList(this);'><i class='fa fa-trash' ></i></button></td></tr>";
+              
             $("#imageList").append(tr);
             counter += 1;
           
          });
+         $("#uploadModal").on("shown.bs.modal", function() {
+             debugger;
+              var image = document.getElementById('croppedImg');
+              $("#send_pic").attr("disabled", true);
+                var ratio = $("#imgAspectRatio").val();
+                if (cropper !== null && cropper !== undefined) {
+                cropper.destroy();
+               }
 
+                cropper = new Cropper(image,
+                    {
+                        background: true,
+                        aspectRatio: ratio,
+                        viewMode: 1,
+                        responsive: true,
+                        rotatable: true
+
+                    });
+       });
+      $('#uploadModal').on('hidden.bs.modal',
+        function () {
+
+            cropper.destroy();
+            document.getElementById("image").value = "";
+            $("#cropped_result").remove();
+        });
+       $(document).on("click", "#crop_button", 
+       function () 
+       {
+           var imgUrl = cropper.getCroppedCanvas({imageSmoothingEnabled: true,
+                        imageSmoothingQuality: 'high' }).toDataURL('image/jpeg', 1);
+            var img = document.createElement("img");
+            img.setAttribute("id", "galleryPic");
+            img.setAttribute("class", "img-fluid");
+            var height = $("#container").attr("width");
+            var croppedContainer = document.createElement("div");
+            croppedContainer.setAttribute("id", "cropped_result");
+            croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
+            $("#uploadModal #rowContainer").append(croppedContainer);
+            img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
+            img.src = imgUrl;
+            document.getElementById("cropped_result").innerHTML = "";
+            document.getElementById("cropped_result").appendChild(img);
+            $("#send_pic").attr("disabled", false);
+       });
     });
 
-     @*function ViewImage(address) {
-        debugger;
-        var tag = '<img src="' + address + '" width="500px" />';
-        Swal.fire({
-            html: tag,
-            width: 'auto',
-            showConfirmButton: true,
-            confirmButtonText: '@Language.GetString("Close")'
-        });
-
-
-    }*@
-
-        function deleteFromImageList(sender) {
-            debugger;
-            var id = $(sender).attr("imgId").replace("img_", "");
-            //removeFromArray
-            var item = images.find(_ => _.ImageId === id);
-            var index = images.indexOf(item);
-            images.splice(index, 1);
-            //remove in view
-            $(sender).parent().parent().remove();
-        }
-
+     
     function FillDataToSend() {
         debugger;
-       
+        //console.log("FillDataToSend started");
         var obj = {};
         obj.Images = [];
         obj.Comments = [];
@@ -708,7 +724,8 @@
             item.IsMain = $(this).find("td:eq(6) .rdbIsMain").prop("checked") == true;
             item.Title = $(this).find("td:eq(2) .txtTitle").val();
             item.Description = $(this).find("td:eq(3) .txtDesc").val();
-            item.ImageRatioId = parseInt($(this).find("td:eq(4)").text);
+            item.ImageRatioId = parseInt($(this).find("td:eq(4)").text());
+            item.ImageRatio = parseInt($(this).find("td:eq(4)").text());
             item.ImageId = item.ImageId.toString();
             images[index] = item;
             obj.Images.push(item);
@@ -716,70 +733,19 @@
         obj.PersianStartShowDate = $("#dtpStartShowDate").val();
         obj.PersianEndShowDate = $("#dtpEndShowDate").val();
         /*console.log("FillDataTosend passed");*/
-        alert(obj);
+        //alert(obj);
         return obj;
     }
-
-
-   
-
+    
     function rotatePic() {
     cropper.rotate(90);
     }
 
-    function upRiseModal() {
-        debugger;
-    $("#send_pic").attr("disabled", true);
-    $("#uploadModal").modal("show");
-    }
-
-
-    function initCropper(ratio = 1) {
-        debugger;
-        var image = document.getElementById('croppedImg');
-        if (cropper !== null && cropper !== undefined) {
-        cropper.destroy();
-        }
-
-        cropper = new Cropper(image,
-        {
-        background: true,
-        autoCropArea : 1,
-        aspectRatio: ratio,
-        viewMode: 2,
-        responsive: true,
-        rotatable: true
-        });
-
-        document.getElementById('crop_button').addEventListener('click',
-        function () {
-        var imgUrl = cropper.getCroppedCanvas({imageSmoothingEnabled: true,
-                    imageSmoothingQuality: 'high' }).toDataURL('image/jpeg', 1);
-       
-        var img = document.createElement("img");
-        img.setAttribute("id", "galleryPic");
-        img.setAttribute("class", "img-fluid");
-        var height = $("#container").attr("height");
-       /* var height = modal.getElementById("container").getAttribute("width");*/
-       /* var height = $("#uploadModal #container").attr("width");*/
-       debugger;
-        var croppedContainer = document.createElement("div");
-        croppedContainer.setAttribute("id", "cropped_result");
-        croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
-        $("#uploadModal #rowContainer").append(croppedContainer);
-        img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
-        img.src = imgUrl;
-        document.getElementById("cropped_result").innerHTML = "";
-        document.getElementById("cropped_result").appendChild(img);
-        $("#send_pic").attr("disabled", false);
-        });
-    }
-
+   
 
     function getURL(input)
     {
-        debugger
-        var ratio = $("#imgAspectRatio").val();
+        debugger;
             $("#cropped_result").remove();
             if (input.files && input.files[0]) {
             var file = input.files[0];
@@ -800,24 +766,16 @@
             var reducedContent = content.slice(5);
 
             if (reducedContent.startsWith("image")) {
-            $('#croppedImg').attr('src', content);
-            setTimeout(upRiseModal, 100);
-            setTimeout(initCropper(ratio), 500);
-            } else {
-
-            
+                $('#croppedImg').attr('src', content);
+               $("#uploadModal").modal("show");
+            } 
+            else {
             showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
             document.getElementById("image").value = "";
             $("#cropped_result").remove();
             }
             } else {
-            @*Swal.fire({
-            position: 'top-end',
-            icon: 'error',
-            title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
-            showConfirmButton: false,
-            timer: 1500
-            });*@
+            
             showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
             document.getElementById("image").value = "";
             $("#cropped_result").remove();
@@ -826,19 +784,13 @@
             }
             else
             {
-            @*Swal.fire({
-            icon: 'error',
-            title: '@Language.GetString("AlertAndMessage_InvalidFileSize")',
-            showConfirmButton: false,
-            timer: 1500
-            });*@
-            showError("AlertAndMessage_InvalidFileSize");
+                       showError("AlertAndMessage_InvalidFileSize");
             document.getElementById("image").value = "";
             $("#cropped_result").remove();
             }
             }
     }
-
+   
 </script>
 }
 

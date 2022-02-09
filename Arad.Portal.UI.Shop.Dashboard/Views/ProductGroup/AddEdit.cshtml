@@ -320,14 +320,7 @@
                         success: function (result) {
                             debugger;
                             if (result.status === "Success") {
-                                @*Swal.fire({
-                                    icon: 'success',
-                                    text: result.message,
-                                    showConfirmButton: false,
-                                    timer: 3000
-                                }).then(() => {
-                                    window.location.href = '@Url.Action("List")';
-                                });*@
+                               
                             document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
                             document.getElementById('mainToastBody').classList.add('alert-success');
                             setTimeout(function()
@@ -419,7 +412,7 @@
             cropper = new Cropper(image,
                 {
                     background: true,
-                    aspectRatio: 2,
+                    aspectRatio: 1,
                     viewMode: 1,
                     responsive: true,
                     rotatable: true

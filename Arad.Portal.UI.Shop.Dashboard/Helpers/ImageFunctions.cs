@@ -151,7 +151,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                 {
                     Directory.CreateDirectory(path);
                 }
-                picture.Url = Path.Combine("/Images", pathToSave, $"{picture.ImageId}.jpg").Replace("\\", "/");
+                picture.Url = Path.Combine(pathToSave, $"{picture.ImageId}.jpg").Replace("\\", "/");
                 byte[] bytes = Convert.FromBase64String(picture.Content.Replace("data:image/jpeg;base64,", ""));
                 Image image = Image.Load(bytes);
                 image.Save(Path.Combine(path, $"{picture.ImageId}.jpg").Replace("\\", "/"), new JpegEncoder() { Quality = 100 });
