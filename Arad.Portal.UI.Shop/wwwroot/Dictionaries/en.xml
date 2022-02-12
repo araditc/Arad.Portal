@@ -1417,6 +1417,12 @@
 	<string key="User_RoleName">
 		<value>Role Name</value>
 	</string>
+	<string key="User_ResultOfSum">
+		<value>Result ?</value>
+	</string>
+	<string key="User_Signup">
+		<value>sign up</value>
+	</string>
 	<string key="ActivationState">
 		<value>State</value>
 	</string>
@@ -1438,6 +1444,9 @@
   <string key="Active">
     <value>Active</value>
   </string>
+	<string key="Or">
+		<value>Or</value>
+	</string>
 	<string key="DomainOwner">
 		<value>Domain Owner</value>
 	</string>

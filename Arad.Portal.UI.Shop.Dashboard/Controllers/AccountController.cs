@@ -115,14 +115,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public IActionResult Login(string returnUrl)
         {
-            if (HttpContext.User.Identity != null &&
-                HttpContext.User.Identity.IsAuthenticated)
+            if (HttpContext.User.Identity is { IsAuthenticated: true })
             {
                 if (!string.IsNullOrEmpty(returnUrl))
                 {
                     return Redirect(returnUrl);
                 }
             }
+            var captcha = HttpContext.Session.GenerateCaptchaImageString(2);
+            ViewBag.Captcha = captcha;
             var viewModel = new LoginViewModel
             {
                 ReturnUrl = string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl,

@@ -84,7 +84,8 @@ namespace Arad.Portal.UI.Shop.Controllers
                     return Redirect(returnUrl);
                 }
             }
-
+            var captcha = HttpContext.Session.GenerateCaptchaImageString(2);
+            ViewBag.Captcha = $"data:image/png;base64,{captcha}";
             LoginDTO loginDto = new() { ReturnUrl = string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl, RememberMe = false };
 
             return View(loginDto);

@@ -29,7 +29,23 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta property="og:title"
+          content="@Language.GetString("LoginPage")" />
+    <meta property="og:type"
+          content="website" />
+    <meta name="apple-mobile-web-app-title" content="@Language.GetString("LoginPage")" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+   @* <link rel="apple-touch-icon" href="~/@(string.IsNullOrWhiteSpace(systemSetting?.SystemIcon) ? " favicon.ico" : $"SystemIcon/{systemSetting.SystemIcon}")">*@
+
+   @* <link rel="shortcut icon"
+          href="~/@(string.IsNullOrWhiteSpace(systemSetting?.CompanyLogoUrl) ? "favicon.ico" : $"SystemIcon/{systemSetting.SystemIcon}")"
+          type="image/x-icon" />*@
     <title>@Language.GetString("LoginPage")</title>
+     <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+    <link href="~/lib/intl-tel-input/css/intlTelInput.css" rel="stylesheet" />
 
     @if (dir == "ltr")
     {
@@ -43,36 +59,7 @@
     <link href="~/css/login.css"
           rel="stylesheet" />
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
-    @*<style>
-
-            .tooltip-inner {
-                max-width: 200px;
-                padding: 3px 8px;
-                color: black;
-                text-align: center;
-                background-color: yellow;
-                border-radius: 4px;
-                border-color: black;
-                border: 1px solid;
-            }
-
-            input::placeholder {
-                text-align: right;
-            }
-
-            #imgcpatcha::placeholder {
-                font-size: 12px
-            }
-
-            body {
-                background-color: white !important
-            }
-
-           /* .card {
-                background-color: #eeeff1;
-            }*/
-        </style>*@
-</head>
+  </head>
 <body style="font-family: IransansWeb" class="hold-transition login-page">
     <div class="container mt-5">
         <div class="row">

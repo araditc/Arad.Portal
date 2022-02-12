@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +7,12 @@ using Arad.Portal.DataLayer.Models.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using SixLabors.ImageSharp;
+using SixLabors.Fonts;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Drawing.Processing;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Drawing;
 
 namespace Arad.Portal.UI.Shop.Helpers
 { 
@@ -17,6 +20,7 @@ namespace Arad.Portal.UI.Shop.Helpers
     {
         public static FileContentResult GenerateCaptchaImage(this ISession session, int lifeTime, bool noisy = true)
         {
+            byte[] byteArray;
             var rand = new Random((int)DateTime.Now.Ticks);
             //generate new question
             int a = rand.Next(10, 99);
@@ -24,58 +28,109 @@ namespace Arad.Portal.UI.Shop.Helpers
             var captcha = $"{a} + {b} = ?";
 
             //image stream
-            FileContentResult img = null;
+            FileContentResult fileResult = null;
+            var img = new Image<Rgba32>(130, 30);
+            img.Mutate(_ => _.BackgroundColor(Color.White));
 
-            //using (var mem = new MemoryStream())
-                //using (var bmp = new Bitmap(130, 30))
-                //using (var gfx = Graphics.FromImage((System.Drawing.Image)bmp))
-                //{
-                //    gfx.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
-                //    gfx.SmoothingMode = SmoothingMode.AntiAlias;
-                //    gfx.FillRectangle(Brushes.White, new Rectangle(0, 0, bmp.Width, bmp.Height));
+            var font = SystemFonts.CreateFont("Tahoma", 17, FontStyle.Italic);
+            var location = new PointF(10, 5);
+            img.Mutate(_ => _.DrawText(captcha, font, Color.DimGray, location));
 
-                //    //add noise
-                //    if (noisy)
-                //    {
-                //        int i, r, x, y;
-                //        var pen = new Pen(Color.Yellow);
-                //        for (i = 1; i < 10; i++)
-                //        {
-                //            pen.Color = Color.FromArgb(
-                //                (rand.Next(0, 255)),
-                //                (rand.Next(0, 255)),
-                //                (rand.Next(0, 255)));
+            if (noisy)
+            {
+                int i, r, x, y;
+                Color clr;
+                clr = Color.Yellow;
+                for (i = 1; i < 10; i++)
+                {
+                    clr = new Color(new Bgr24(
+                         (byte)rand.Next(0, 255),
+                         (byte)rand.Next(0, 255),
+                         (byte)rand.Next(0, 255)));
 
-                //            r = rand.Next(0, (130 / 3));
-                //            x = rand.Next(0, 130);
-                //            y = rand.Next(0, 30);
+                    r = rand.Next(1, (130 / 3));
+                    x = rand.Next(0, 130);
+                    y = rand.Next(0, 30);
+                    IPath polygon = new EllipsePolygon(new PointF(x-1, y-1), r);
+                    img.Mutate(x => x.Draw(clr, 1f, polygon));
+                }
+            }
+            using (MemoryStream ms = new())
+            {
+                img.SaveAsJpeg(ms);
+                byteArray = ms.ToArray();
+            }
+            fileResult = new FileContentResult(byteArray, "image/Jpeg");
+            img.Dispose();
 
-                //            gfx.DrawEllipse(pen, x - r, y - r, r, r);
-                //        }
-                //    }
+            var captModel = new CaptchaModel()
+            {
+                Code = (a + b).ToString(),
+                ExpirationDate = DateTime.Now.AddMinutes(lifeTime)
+            };
 
-                //    //add question
-                //    gfx.DrawString(captcha, new Font("Tahoma", 15), Brushes.Gray, 2, 3);
-
-                //    //render as Jpeg
-                //    bmp.Save(mem, System.Drawing.Imaging.ImageFormat.Jpeg);
-                //    img = new FileContentResult(mem.GetBuffer(), "image/Jpeg");
-                //}
-
-
-                //var captModel = new CaptchaModel()
-                //{
-                //    Code = (a + b).ToString(),
-                //    ExpirationDate = DateTime.Now.AddMinutes(lifeTime)
-                //};
-
-                //var serializedData = JsonConvert.SerializeObject(captModel);
-                var serializedData = "";
+            var serializedData = JsonConvert.SerializeObject(captModel);
             session.SetString("SystemCaptcha", serializedData);
-
-            return img;
+            return fileResult;
         }
 
+
+        public static string GenerateCaptchaImageString(this ISession session, int lifeTime, bool noisy = true)
+        {
+            byte[] byteArray;
+            var rand = new Random((int)DateTime.Now.Ticks);
+            //generate new question
+            int a = rand.Next(10, 99);
+            int b = rand.Next(0, 9);
+            var captcha = $"{a} + {b} = ?";
+
+            //image stream
+            string base64String = "";
+            var img = new Image<Rgba32>(130, 30);
+            img.Mutate(_ => _.BackgroundColor(Color.White));
+
+            var font = SystemFonts.CreateFont("Tahoma", 17, FontStyle.Italic);
+            var location = new PointF(10, 5);
+            img.Mutate(_ => _.DrawText(captcha, font, Color.DimGray, location));
+
+            if (noisy)
+            {
+                int i, r, x, y;
+                Color clr;
+                clr = Color.Yellow;
+                for (i = 1; i < 10; i++)
+                {
+                    clr = new Color(new Bgr24(
+                         (byte)rand.Next(0, 255),
+                         (byte)rand.Next(0, 255),
+                         (byte)rand.Next(0, 255)));
+
+                    r = rand.Next(1, (130 / 3));
+                    x = rand.Next(0, 130);
+                    y = rand.Next(0, 30);
+                    IPath polygon = new EllipsePolygon(new PointF(x-1, y-1), r);
+                    img.Mutate(x => x.Draw(clr, 1f, polygon));
+                }
+            }
+            using (MemoryStream ms = new())
+            {
+                img.SaveAsJpeg(ms);
+                byteArray = ms.ToArray();
+            }
+            base64String = Convert.ToBase64String(byteArray);
+            img.Dispose();
+
+            var captModel = new CaptchaModel()
+            {
+                Code = (a + b).ToString(),
+                ExpirationDate = DateTime.Now.AddMinutes(lifeTime)
+            };
+
+            var serializedData = JsonConvert.SerializeObject(captModel);
+            session.SetString("SystemCaptcha", serializedData);
+            return base64String;
+
+        }
         public static bool ValidateCaptcha(this ISession session, string code)
         {
 

@@ -1463,6 +1463,12 @@
 	<string key="User_RoleName">
 		<value>نام نقش</value>
 	</string>
+	<string key="User_ResultOfSum">
+		<value>حاصل ؟</value>
+	</string>
+	<string key="User_Signup">
+		<value>ثبت نام</value>
+	</string>
 	<string key="ActivationState">
 		<value>وضعیت</value>
 	</string>
@@ -1483,6 +1489,9 @@
 	</string>
 	<string key="Active">
 		<value>فعال</value>
+	</string>
+	<string key="Or">
+		<value>یا</value>
 	</string>
 	<string key="DomainOwner">
 		<value>مالک دامنه</value>

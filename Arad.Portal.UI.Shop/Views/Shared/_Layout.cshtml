@@ -65,6 +65,10 @@
             padding-right: @(ViewBag.dir == "rtl" ? "1.5rem" : "0") !important;
             padding-left: @(ViewBag.dir == "ltr" ? "1.5rem" : "0") !important;
         }
+        .userPart i{
+           /* font-size : larger;*/
+            color : black;
+        }
     </style>
     @await RenderSectionAsync("Styles", required: false)
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -89,24 +93,29 @@
             @if (!User.Identity.IsAuthenticated)
             {
                 <div class="offset-4 col-4 offset-md-8 col-md-2 offset-lg-10 col-lg-1">
-                    <ul class="list-group list-group-horizontal">
-                        <li class="list-group-item border-0" ></li>
-                        <li class="list-group-item border-0">
-                            <a href="/account/login" title="@Language.GetString("btn_Login")" role="button">
+                    <div class="rounded border border-dark float-end mt-2">
+                    <ul class="list-group list-group-horizontal userPart">
+                        <li class="list-group-item ps-3 pe-2 border-0">
+                            <a href="/account/login" title="@Language.GetString("btn_Login")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
                                 <i class="fas fa-sign-in-alt"></i>
                             </a>
                         </li>
-                        <li class="list-group-item border-0">
-                            <a href="/account/register" title="@Language.GetString("btn_Register")" role="button" data-toggle="tooltip" data-placement="bottom">
+                        <li class="list-group-item border-0 pb-0">
+                            <div class="vr" style="min-height:1.5em;"></div>
+                        </li>
+                        <li class="list-group-item ps-2 pe-3 border-0">
+                           
+                            <a href="/account/register" title="@Language.GetString("btn_Register")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
                                 <i class="fas fa-user-plus"></i>
                             </a>
                         </li>
                     </ul>
+                    </div>
                 </div>
             }
             else
             {
-                <div class="col-4 col-md-2 col-lg-1">
+                <div class="offset-4 col-4 offset-md-8 col-md-2 offset-lg-10 col-lg-1">
                     <ul class="list-group list-group-horizontal">
                         <li class="list-group-item profile">
                             <a href="/account/Profile" id="userProfileId" title="@Language.GetString("User_Profile")">

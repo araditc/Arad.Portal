@@ -17,5 +17,7 @@ namespace Arad.Portal.UI.Shop.Controllers
 
             return captcha;
         }
+
+       
     }
 }
