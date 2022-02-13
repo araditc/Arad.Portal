@@ -1490,6 +1490,9 @@
 	<string key="Active">
 		<value>فعال</value>
 	</string>
+	<string key="All">
+		<value>همه</value>
+	</string>
 	<string key="Or">
 		<value>یا</value>
 	</string>

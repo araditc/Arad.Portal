@@ -55,11 +55,16 @@ namespace Arad.Portal.UI.Shop.Controllers
 
         public IActionResult GetScaledImage(string path, int height)
         {
+            string finalPath = "";
             var localStaticFileStorage = _configuration["LocalStaticFileStorage"];
-            if (path.StartsWith("/"))
-                path = path[1..];
-            var finalPath = Path.Combine(localStaticFileStorage, path).Replace("\\", "/");
-            if (!System.IO.File.Exists(finalPath))
+            if(!string.IsNullOrWhiteSpace(path))
+            {
+                if (path.StartsWith("/"))
+                    path = path[1..];
+                finalPath = Path.Combine(localStaticFileStorage, path).Replace("\\", "/");
+            }
+           
+            if (string.IsNullOrWhiteSpace(finalPath) || !System.IO.File.Exists(finalPath))
             {
                 finalPath = "/images/imgs/NoImage.png";
             }

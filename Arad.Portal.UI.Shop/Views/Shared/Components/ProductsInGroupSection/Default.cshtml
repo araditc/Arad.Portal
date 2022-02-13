@@ -19,7 +19,12 @@
                                         @*<a href="/product/@item.ProductCode">@(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ?
                                             item.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLangId).Name : item.MultiLingualProperties.First().Name )</a>*@
                                     </div>
-                                    <div class="bbb_deals_item_price_a ml-auto"><strike>@item.OldPrice</strike></div>
+                                    <div class="bbb_deals_item_price_a ml-auto">
+                                     @if(item.OldPrice != 0 && item.OldPrice != item.PriceValWithPromotion)
+                                        {
+                                            <strike>@item.OldPrice</strike>
+                                        }
+                                    </div>
                                 </div>
                                 <div class="bbb_deals_info_line d-flex flex-row justify-content-center">
                                     <a class="text-decoration-none" href="/product/@item.ProductCode">

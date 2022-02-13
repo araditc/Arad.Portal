@@ -1470,6 +1470,9 @@
   <string key="Active">
     <value>Active</value>
   </string>
+	<string key="All">
+		<value>All</value>
+	</string>
 	<string key="Show">
 		<value>show</value>
 	</string>
