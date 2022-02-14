@@ -10,7 +10,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
     {
         public int LikeRate { get; set; }
 
-        public bool halfLikeRate { get; set; }
+        public bool HalfLikeRate { get; set; }
 
         public int DisikeRate { get; set; }
     }

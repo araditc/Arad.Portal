@@ -43,7 +43,7 @@ namespace Arad.Portal.DataLayer.Helpers
             else
                 res.DisikeRate = 5 - Convert.ToInt32(Math.Floor(tmp));
 
-            res.halfLikeRate = hasHalf;
+            res.HalfLikeRate = hasHalf;
 
             return res;
         }

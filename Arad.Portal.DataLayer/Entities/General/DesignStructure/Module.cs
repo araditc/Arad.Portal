@@ -19,8 +19,11 @@ namespace Arad.Portal.DataLayer.Entities.General.DesignStructure
         /// <summary>
         /// this list contains some parameters for executing and designing this component
         /// for example input parameters for viewcomponent 
+        /// if componentName = 'ContentTemplate' one parameter should be enum ContentTemplate and its value
+        /// if its enum is equal to forth or fifth count it should also declare
         /// </summary>
        public List<KeyVal> ParamsWithDefaultValues { get; set; }
+       
 
     }
     public enum ModuleContentType
@@ -42,5 +45,21 @@ namespace Arad.Portal.DataLayer.Entities.General.DesignStructure
         MostPopular,
         BestSale, 
         MostVisited
+    }
+
+    public enum ContentType
+    {
+        Newest,
+        MostPopular,   
+        MostVisited
+    }
+
+    public enum ContentTemplate
+    {
+        First,
+        Second,
+        Third,
+        Forth,
+        Fifth
     }
 }

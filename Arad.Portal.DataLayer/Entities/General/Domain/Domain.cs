@@ -18,8 +18,8 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
             Prices = new();
             DomainPaymentProviders = new();
 
-            MainTemplateParamsValue = new();
-            MainModuleParamsWithValues = new();
+            MainPageTemplateParamsValue = new();
+            MainPageModuleParamsWithValues = new();
 
             ContentTemplateParamsValue = new();
             ContentModuleParamsWithValues = new();
@@ -74,29 +74,30 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
         /// <summary>
         /// for example [0] : "moduleId" as one object of keyVal
         /// </summary>
-        public List<KeyVal> MainTemplateParamsValue { get; set; }
+        public List<KeyVal> MainPageTemplateParamsValue { get; set; }
         /// <summary>
-        /// parameters in  ViewComponents
+        /// parameters in  Modules
         /// </summary>
-        public List<KeyVal> MainModuleParamsWithValues { get; set; }
+        public List<ModuleParams> MainPageModuleParamsWithValues { get; set; }
         public string ContentTemplateId { get; set; }
         /// <summary>
         /// for example [0] : "moduleId" as one object of keyVal
         /// </summary>
         public List<KeyVal> ContentTemplateParamsValue { get; set; }
         /// <summary>
-        /// parameters in  ViewComponents
+        /// parameters in  Modules
         /// </summary>
-        public List<KeyVal> ContentModuleParamsWithValues { get; set; }
+        public List<ModuleParams> ContentModuleParamsWithValues { get; set; }
         public string ProductTemplateId { get; set; }
         /// <summary>
         /// for example [0] : "moduleId" as one object of keyVal
         /// </summary>
         public List<KeyVal> ProductTemplateParamsValue { get; set; }
         /// <summary>
-        /// parameters in  ViewComponents
+        /// parameters in  Modules
         /// </summary>
-        public List<KeyVal> ProductModuleParamsWithValues { get; set; }
+        public List<ModuleParams
+            > ProductModuleParamsWithValues { get; set; }
     }
     public class ProviderDetail
     {

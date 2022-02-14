@@ -48,9 +48,11 @@ namespace Arad.Portal.DataLayer.Models.Content
         //public string LogoName { get; set; }
 
         public long ContentCode { get; set; }
-        
-        public List<Shared.Image> Images { get; set; }
 
+        /// <summary>
+        /// Ismain = true is for fileLogo
+        /// </summary>
+        public List<Shared.Image> Images { get; set; }
         public DateTime? StartShowDate { get; set; }
 
         public  string PersianStartShowDate { get; set; }
@@ -67,16 +69,12 @@ namespace Arad.Portal.DataLayer.Models.Content
         public long TotalScore { get; set; }
         public int ScoredCount { get; set; }
         public int LikeRate { get; set; }
-        public bool halfLikeRate { get; set; }
+        public bool HalfLikeRate { get; set; }
         public int DisikeRate { get; set; }
         public List<Entities.General.Comment.Comment> Comments { get; set; }
-
         public Entities.General.Content.SourceType? SourceType { get; set; }
-
         public string SourceTypeId { get; set; }
-
         public string ContentProviderName { get; set; }
-
         
     }
 }

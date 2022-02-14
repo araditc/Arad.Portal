@@ -52,7 +52,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                         status = "Succeed",
                         like = res.ReturnValue.LikeRate,
                         dislike = res.ReturnValue.DisikeRate,
-                        half = res.ReturnValue.halfLikeRate
+                        half = res.ReturnValue.HalfLikeRate
                     });
             }
             else

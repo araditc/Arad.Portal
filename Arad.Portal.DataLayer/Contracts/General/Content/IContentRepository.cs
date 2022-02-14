@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Models.Content;
+﻿using Arad.Portal.DataLayer.Entities.General.DesignStructure;
+using Arad.Portal.DataLayer.Models.Content;
 using Arad.Portal.DataLayer.Models.Shared;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Content
     {
         Task<Result> Add(ContentDTO dto);
         Task<PagedItems<ContentViewModel>> List(string queryString);
+        List<ContentGlance> GetSpecialContent(ContentTemplate template, int count, string language, ContentType contentType);
         Task<ContentDTO> ContentFetch(string contentId);
         Task<Result> Update(ContentDTO dto);
         Task<Result> Delete(string contentId, string modificationReason);
@@ -21,7 +23,6 @@ namespace Arad.Portal.DataLayer.Contracts.General.Content
         List<SelectListModel> GetAllSourceType();
         List<SelectListModel> GetAllImageRatio();
         ContentDTO FetchBySlug(string slug, string domainName);
-
         ContentDTO FetchByCode(long contentCode);
     }
 }

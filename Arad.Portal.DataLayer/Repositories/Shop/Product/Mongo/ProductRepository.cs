@@ -888,7 +888,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             var r = Helpers.Utilities.ConvertPopularityRate(productEntity.TotalScore, productEntity.ScoredCount);
             result.LikeRate = r.LikeRate;
             result.DisikeRate = r.DisikeRate;
-            result.HalfLikeRate = r.halfLikeRate;
+            result.HalfLikeRate = r.HalfLikeRate;
             return result;
         }
         private ProductOutputDTO EvaluateFinalPrice(string productId, List<Price> productPrices, List<string> productGroupIds, string defCurrenyId)
@@ -1247,7 +1247,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                             ScoredCount = _.ScoredCount,
                             Unit = _.Unit,
                             VisitCount = _.VisitCount
-                        }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.TotalScore / _.ScoredCount)).Limit(count).ToList();
+                        }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => (float)_.TotalScore / _.ScoredCount)).Limit(count).ToList();
                     break;
                 case ProductType.BestSale:
                     lst = _context.ProductCollection
@@ -1312,7 +1312,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 var r = Helpers.Utilities.ConvertPopularityRate(pro.TotalScore??0, pro.ScoredCount??0);
                 pro.LikeRate = r.LikeRate;
                 pro.DisikeRate = r.DisikeRate;
-                pro.HalfLikeRate = r.halfLikeRate;
+                pro.HalfLikeRate = r.HalfLikeRate;
             }
 
             

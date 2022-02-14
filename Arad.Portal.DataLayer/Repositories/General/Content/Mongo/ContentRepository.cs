@@ -19,6 +19,7 @@ using System.Linq;
 using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Microsoft.AspNetCore.Identity;
+using Arad.Portal.DataLayer.Entities.General.DesignStructure;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
 {
@@ -144,7 +145,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             var r = Helpers.Utilities.ConvertPopularityRate(contentEntity.TotalScore, contentEntity.ScoredCount);
             result.LikeRate = r.LikeRate;
             result.DisikeRate = r.DisikeRate;
-            result.halfLikeRate = r.halfLikeRate;
+            result.HalfLikeRate = r.HalfLikeRate;
             return result;
         }
 
@@ -401,6 +402,89 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                 result.Add(obj);
             }
             return result;
+        }
+
+        public List<ContentGlance> GetSpecialContent(ContentTemplate template, int count, string language, ContentType contentType)
+        {
+            var domainName = this.GetCurrentDomainName();
+            var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
+            FilterDefinitionBuilder<Entities.General.Content.Content> builder = new();
+            FilterDefinition<Entities.General.Content.Content> filterDef;
+            filterDef = builder.Gte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.Now);
+            filterDef = builder.Lte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.Now);
+            filterDef = builder.And(nameof(Entities.General.Content.Content.AssociatedDomainId), domainEntity.DomainId);
+            List<ContentGlance> lst = new List<ContentGlance>();
+
+            switch (contentType)
+            {
+                case ContentType.Newest:
+                    lst = _contentContext.Collection
+                    .Find(filterDef)
+                    .Project(_ =>
+                        new ContentGlance()
+                        {
+                            TotalScore = _.TotalScore,
+                            ScoredCount = _.ScoredCount,
+                            VisitCount = _.VisitCount,
+                            CategoryName = _.ContentCategoryName,
+                            ContentCategoryId = _.ContentCategoryId,
+                            ContentId = _.ContentId,
+                            ContentProviderName = _.ContentProviderName,
+                            Images = _.Images,
+                            SubTitle = _.SubTitle,
+                            TagKeywords = _.TagKeywords,
+                            Title = _.Title
+                        }).Sort(Builders<Entities.General.Content.Content>.Sort.Descending(_ => _.CreationDate)).Limit(count).ToList();
+                    break;
+                case ContentType.MostPopular:
+                    lst = _contentContext.Collection
+                   .Find(filterDef)
+                   .Project(_ =>
+                       new ContentGlance()
+                       {
+                           TotalScore = _.TotalScore,
+                           ScoredCount = _.ScoredCount,
+                           VisitCount = _.VisitCount,
+                           CategoryName = _.ContentCategoryName,
+                           ContentCategoryId = _.ContentCategoryId,
+                           ContentId = _.ContentId,
+                           ContentProviderName = _.ContentProviderName,
+                           Images = _.Images,
+                           SubTitle = _.SubTitle,
+                           TagKeywords = _.TagKeywords,
+                           Title = _.Title
+                       }).Sort(Builders<Entities.General.Content.Content>.Sort.Descending(_ => (float)_.TotalScore / _.ScoredCount)).Limit(count).ToList();
+                    break;
+                case ContentType.MostVisited:
+                    lst = _contentContext.Collection
+                   .Find(filterDef)
+                   .Project(_ =>
+                       new ContentGlance()
+                       {
+                           TotalScore = _.TotalScore,
+                           ScoredCount = _.ScoredCount,
+                           VisitCount = _.VisitCount,
+                           CategoryName = _.ContentCategoryName,
+                           ContentCategoryId = _.ContentCategoryId,
+                           ContentId = _.ContentId,
+                           ContentProviderName = _.ContentProviderName,
+                           Images = _.Images,
+                           SubTitle = _.SubTitle,
+                           TagKeywords = _.TagKeywords,
+                           Title = _.Title
+                       }).Sort(Builders<Entities.General.Content.Content>.Sort.Descending(_ =>_.VisitCount)).Limit(count).ToList();
+                    break;
+                default:
+                    break;
+            }
+            foreach (var con in lst)
+            {
+                var r = Helpers.Utilities.ConvertPopularityRate(con.TotalScore, con.ScoredCount);
+                con.LikeRate = r.LikeRate;
+                con.HalfLikeRate = r.HalfLikeRate;
+                con.DisikeRate = r.DisikeRate;
+            }
+            return lst;
         }
     }
 }

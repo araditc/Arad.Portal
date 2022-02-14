@@ -50,8 +50,6 @@ namespace Arad.Portal.DataLayer.Entities.General.Content
         /// </summary>
         public List<Models.Shared.Image> Images { get; set; }
 
-        public int MyProperty { get; set; }
-
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime StartShowDate { get; set; }
 
