@@ -1,0 +1,43 @@
+﻿@media ( max-width: 767px ) {
+    .imgBig {
+        /* width: 100%;
+                height: 100%*/
+    }
+
+    .imgSmall {
+        /* width: 49%;*/
+        /*height: 49%;*/
+    }
+}
+/*md*/
+@media (min-width : 768px) {
+    .imgBig {
+        /* width: 100%;
+                height: 100%;
+                border-radius: 0.25rem;*/
+    }
+
+    .imgSmall {
+        /*  width: 100%;
+                height: 50%;
+                border-radius: 0.25rem;*/
+    }
+}
+/*lg*/
+@media (min-width : 992px) {
+    .imgBig {
+        /* width: 100%;
+                height: 100%;
+                border-radius : 0.25rem;*/
+    }
+
+    .imgSmall {
+        /*width: 100%;
+                height: 50%;
+                border-radius: 0.25rem;*/
+    }
+}
+
+img {
+    border-radius: 0.65rem !important;
+}
