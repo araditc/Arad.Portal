@@ -65,21 +65,25 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
         /// </summary>
         public string InvoiceNumberInitializer { get; set; }
         public int? IncreasementValue { get; set; }
+
         /// <summary>
         /// روش حمل پیش فرض فروشنده
         /// </summary>
         public string DefaultShippingTypeId { get; set; }
-        public MainPageContentType MainPageContentType { get; set; }
+      
         public string MainPageTemplateId { get; set; }
+
         /// <summary>
-        /// for example [0] : "moduleId" as one object of keyVal
+        /// for example [0] : "moduleId" or "moduleId1 <br/> moduleId2 <br/>" as one object of keyVal
         /// </summary>
         public List<KeyVal> MainPageTemplateParamsValue { get; set; }
+
         /// <summary>
         /// parameters in  Modules
         /// </summary>
         public List<ModuleParams> MainPageModuleParamsWithValues { get; set; }
         public string ContentTemplateId { get; set; }
+
         /// <summary>
         /// for example [0] : "moduleId" as one object of keyVal
         /// </summary>
@@ -96,8 +100,7 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
         /// <summary>
         /// parameters in  Modules
         /// </summary>
-        public List<ModuleParams
-            > ProductModuleParamsWithValues { get; set; }
+        public List<ModuleParams> ProductModuleParamsWithValues { get; set; }
     }
     public class ProviderDetail
     {
@@ -109,9 +112,5 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
         FromMainDomain,
         CustomFromMyInstance
     }
-    public enum MainPageContentType
-    {
-        Content,
-        Product
-    }
+    
 }

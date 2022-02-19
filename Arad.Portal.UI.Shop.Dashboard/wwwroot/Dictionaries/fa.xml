@@ -1,6 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <dictionary>
 	<!--Start [buttons text]-->
+	<string key="btn_HomePageDesign">
+		<value>طراحی صفحه خانه</value>
+	</string>
+	<string key="btn_ContentPageDesign">
+		<value>طراحی صفحه لیست محتوا</value>
+	</string>
+	<string key="btn_ProductPageDesign">
+		<value>طراحی صفحه لیست محصولات</value>
+	</string>
 	<string key="btn_InformMe">
 		<value>موجود شد خبرم کن</value>
 	</string>

@@ -432,7 +432,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                     AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf",
                     CreationDate = DateTime.Now,
                     IsActive = true,
-                    HtmlContent = "<div class='row'><div class='col-12 col-md-3'>[0]</div><div class='col-12 col-md-6'>[1]</div><div class='col-12 col-md-3'>[2]</div></div>"
+                    HtmlContent = "<div class='container'><div class='row'><div class='col-12 col-md-3'>[0]</div><div class='col-12 col-md-6'>[1]</div><div class='col-12 col-md-3'>[2]</div></div></div>"
                 };
                 moduleRepository.InsertOneTemplate(firstTemplate);
 
@@ -442,7 +442,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                     AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf",
                     CreationDate = DateTime.Now,
                     IsActive = true,
-                    HtmlContent = "<div class='row'><div class='row'>[0]</div>[1]</div>"
+                    HtmlContent = "<div class='container'><div class='row'>[0]</div>[1]</div>"
                 };
                 moduleRepository.InsertOneTemplate(secondTemplate);
 

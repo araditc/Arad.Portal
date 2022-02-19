@@ -9,63 +9,74 @@
 
 <div class="row m-10">
     <div class="col-12 col-md-9 col-lg-4 g-1 ">
-        <picture>
-            <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={535}")" />
-            <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={550}")">
-            <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={440}")">
-            <img class="imgBig rounded-3 ps-lg-1 pt-lg-1 ps-sm-0 p-sm-1" 
-            src="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={440}")" 
-            alt="@(Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title)">
-        </picture>
-        
+        <a href="@($"/blog/{Model[0].ContentCode}")" role="button">
+            <picture>
+                <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={535}")" />
+                <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={550}")">
+                <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={440}")">
+                <img class="imgBig rounded-3 ps-lg-1 pt-lg-1 ps-sm-0 p-sm-1"
+                     src="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={440}")"
+                     alt="@(Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title)">
+            </picture>
+        </a>
+
     </div>
     <div class="col-12 col-md-3 col-lg-2 g-1">
-        <picture>
-            <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[1].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={260}")" />
-            <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[1].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={190}")">
-            <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[1].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={230}")">
-            <img class="pt-lg-1 ps-lg-1 mb-lg-0  ps-md-1 imgSmall mb-sm-1 ms-sm-0 me-sm-0 rounded-3" 
-            src="@($"../filemanager/GetScaledImageOnWidth?path={Model[1].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={230}")"
-            alt="@(Model[1].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title)">
-        </picture>
+        <a href="@($"/blog/{Model[1].ContentCode}")" role="button">
+            <picture>
+                <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[1].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={260}")" />
+                <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[1].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={190}")">
+                <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[1].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={230}")">
+                <img class="pt-lg-1 ps-lg-1 mb-lg-0  ps-md-1 imgSmall mb-sm-1 ms-sm-0 me-sm-0 rounded-3"
+                     src="@($"../filemanager/GetScaledImageOnWidth?path={Model[1].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={230}")"
+                     alt="@(Model[1].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title)">
+            </picture>
+        </a>
 
-        <picture>
-            <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[2].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={260}")" />
-            <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[2].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={190}")">
-            <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[2].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={230}")">
-            <img class="pt-lg-2 ps-lg-1  ms-md-0 pt-md-1 ps-md-1 pb-md-1 imgSmall mb-sm-1 ms-sm-0 ps-sm-1 me-sm-0 rounded-3" 
-            src="@($"../filemanager/GetScaledImageOnWidth?path={Model[2].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={230}")"
-            alt="@(Model[2].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title)">
-        </picture>
+        <a href="@($"/blog/{Model[2].ContentCode}")" role="button">
+            <picture>
+                <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[2].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={260}")" />
+                <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[2].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={190}")">
+                <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[2].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={230}")">
+                <img class="pt-lg-2 ps-lg-1  ms-md-0 pt-md-1 ps-md-1 pb-md-1 imgSmall mb-sm-1 ms-sm-0 ps-sm-1 me-sm-0 rounded-3"
+                     src="@($"../filemanager/GetScaledImageOnWidth?path={Model[2].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={230}")"
+                     alt="@(Model[2].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title)">
+            </picture>
+        </a>
 
     </div>
     <div class="col-12 col-md-9 col-lg-4 g-1">
-         <picture>
-            <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[3].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={535}")" />
-            <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[3].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={550}")">
-            <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[3].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={440}")">
-            <img class="imgBig rounded-3 ps-lg-1 pt-lg-1 pt-md-1 pb-md-1 p-sm-1 ps-sm-0" 
-            src="@($"../filemanager/GetScaledImageOnWidth?path={Model[3].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={440}")"
-            alt="@(Model[3].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title)">
-        </picture>
+        <a href="@($"/blog/{Model[3].ContentCode}")" role="button">
+            <picture>
+                <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[3].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={535}")" />
+                <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[3].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={550}")">
+                <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[3].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={440}")">
+                <img class="imgBig rounded-3 ps-lg-1 pt-lg-1 pt-md-1 pb-md-1 p-sm-1 ps-sm-0"
+                     src="@($"../filemanager/GetScaledImageOnWidth?path={Model[3].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={440}")"
+                     alt="@(Model[3].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title)">
+            </picture>
+        </a>
     </div>
     <div class="col-12 col-md-3 col-lg-2 g-1">
-        <picture>
-            <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[4].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={260}")" />
-            <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[4].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={190}")">
-            <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[4].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={230}")">
-            <img class="pt-lg-1 ps-lg-1 mb-lg-0 ps-lg-1 me-lg-1 pt-md-1 ps-md-1 imgSmall m-sm-0 rounded-3" 
-            src="@($"../filemanager/GetScaledImageOnWidth?path={Model[4].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={230}")"
-            alt="@(Model[4].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title)">
-        </picture>
-
-        <picture>
-            <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[5].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={260}")" />
-            <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[5].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={190}")">
-            <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[5].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={230}")">
-            <img class="pt-lg-2 ps-lg-1 ps-lg-1 ms-md-0 pt-md-1 pb-md-1 ps-md-1 me-lg-1 imgSmall ps-sm-1 m-sm-0 rounded-3" 
-            src="@($"../filemanager/GetScaledImageOnWidth?path={Model[5].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={230}")" 
-            alt="@(Model[5].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title)">
-        </picture>
+        <a href="@($"/blog/{Model[4].ContentCode}")" role="button">
+            <picture>
+                <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[4].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={260}")" />
+                <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[4].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={190}")">
+                <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[4].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={230}")">
+                <img class="pt-lg-1 ps-lg-1 mb-lg-0 ps-lg-1 me-lg-1 pt-md-1 ps-md-1 imgSmall m-sm-0 rounded-3"
+                     src="@($"../filemanager/GetScaledImageOnWidth?path={Model[4].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={230}")"
+                     alt="@(Model[4].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title)">
+            </picture>
+        </a>
+        <a href="@($"/blog/{Model[5].ContentCode}")" role="button">
+            <picture>
+                <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[5].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={260}")" />
+                <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[5].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={190}")">
+                <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[5].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={230}")">
+                <img class="pt-lg-2 ps-lg-1 ps-lg-1 ms-md-0 pt-md-1 pb-md-1 ps-md-1 me-lg-1 imgSmall ps-sm-1 m-sm-0 rounded-3"
+                     src="@($"../filemanager/GetScaledImageOnWidth?path={Model[5].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square)}&width={230}")"
+                     alt="@(Model[5].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title)">
+            </picture>
+        </a>
     </div>
 </div>

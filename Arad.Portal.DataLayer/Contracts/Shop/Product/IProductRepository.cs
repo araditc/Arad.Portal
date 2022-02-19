@@ -71,7 +71,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 
         ProductOutputDTO FetchByCode(long productCode, DomainDTO dto, string userId);
 
-        List<ProductOutputDTO> GetSpecialProducts(int count, string currencyId, ProductType type);
+        List<ProductOutputDTO> GetSpecialProducts(int count, string currencyId, ProductOrContentType type);
 
         bool HasActiveProductPromotion(string productId);
         List<SelectListModel> GetAllActiveProductList(string langId, string currentUserId, string productGroupId, string vendorId);

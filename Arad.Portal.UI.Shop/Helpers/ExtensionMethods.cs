@@ -432,7 +432,7 @@ namespace Arad.Portal.UI.Shop.Helpers
                     AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf",
                     CreationDate = DateTime.Now,
                     IsActive = true,
-                    HtmlContent = "<div class='row'><div class='col-12 col-md-3'>[0]</div><div class='col-12 col-md-6'>[1]</div><div class='col-12 col-md-3'>[2]</div></div>"
+                    HtmlContent = "<div class='container'><div class='row'><div class='col-12 col-md-3'>[0]</div><div class='col-12 col-md-6'>[1]</div><div class='col-12 col-md-3'>[2]</div></div></div>"
                 };
                 moduleRepository.InsertOneTemplate(firstTemplate);
 
@@ -442,13 +442,24 @@ namespace Arad.Portal.UI.Shop.Helpers
                     AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf",
                     CreationDate = DateTime.Now,
                     IsActive = true,
-                    HtmlContent = "<div class='row'><div class='row'>[0]</div>[1]</div>"
+                    HtmlContent = "<div class='container'><div class='row'>[0]</div>[1]</div>"
                 };
                 moduleRepository.InsertOneTemplate(secondTemplate);
             }
             #endregion
 
             #region Module
+            if (!moduleRepository.HasAnyModule())
+            {
+                using StreamReader r = new StreamReader(Path.Combine(applicationPath, "SeedData", "Modules.json"));
+                string json = r.ReadToEnd();
+                List<DataLayer.Entities.General.DesignStructure.Module> modules = JsonConvert.DeserializeObject<List<DataLayer.Entities.General.DesignStructure.Module>>(json);
+
+                if (modules.Any())
+                {
+                    moduleRepository.Modules.InsertMany(modules);
+                }
+            }
             #endregion
 
         }

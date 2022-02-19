@@ -13,6 +13,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo
     public class ModuleRepository : BaseRepository, IModuleRepository
     {
         private readonly ModuleContext _context;
+        public IMongoCollection<Module> Modules { get; set; }
+
+        public IMongoCollection<Template> Templates { get; set; }
         public ModuleRepository(ModuleContext context, IHttpContextAccessor accessor):base(accessor)
         {
             _context = context;  

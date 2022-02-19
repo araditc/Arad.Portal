@@ -20,6 +20,7 @@ namespace Arad.Portal.DataLayer.Models.Content
         public string Title { get; set; }
         public string SubTitle { get; set; }
         public List<string> TagKeywords { get; set; }
+        public long ContentCode { get; set; }
         public long TotalScore { get; set; }
         public int ScoredCount { get; set; }
         public int VisitCount { get; set; }

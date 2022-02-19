@@ -1,6 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <dictionary>
 	<!--Start [buttons text]-->
+	<string key="btn_HomePageDesign">
+		<value>design home page</value>
+	</string>
+	<string key="btn_ContentPageDesign">
+		<value>design productlist page</value>
+	</string>
+	<string key="btn_ProductPageDesign">
+		<value>design contentList page</value>
+	</string>
 	<string key="btn_InformMe">
 		<value>Inform me when available</value>
 	</string>

@@ -404,7 +404,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             return result;
         }
 
-        public List<ContentGlance> GetSpecialContent(ContentTemplate template, int count, string language, ContentType contentType)
+        public List<ContentGlance> GetSpecialContent(ContentTemplateDesign template, int count, string language, ProductOrContentType contentType)
         {
             var domainName = this.GetCurrentDomainName();
             var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
@@ -417,7 +417,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
 
             switch (contentType)
             {
-                case ContentType.Newest:
+                case ProductOrContentType.Newest:
                     lst = _contentContext.Collection
                     .Find(filterDef)
                     .Project(_ =>
@@ -433,10 +433,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                             Images = _.Images,
                             SubTitle = _.SubTitle,
                             TagKeywords = _.TagKeywords,
-                            Title = _.Title
+                            Title = _.Title,
+                            ContentCode = _.ContentCode
                         }).Sort(Builders<Entities.General.Content.Content>.Sort.Descending(_ => _.CreationDate)).Limit(count).ToList();
                     break;
-                case ContentType.MostPopular:
+                case ProductOrContentType.MostPopular:
                     lst = _contentContext.Collection
                    .Find(filterDef)
                    .Project(_ =>
@@ -452,10 +453,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                            Images = _.Images,
                            SubTitle = _.SubTitle,
                            TagKeywords = _.TagKeywords,
-                           Title = _.Title
+                           Title = _.Title,
+                           ContentCode = _.ContentCode
                        }).Sort(Builders<Entities.General.Content.Content>.Sort.Descending(_ => (float)_.TotalScore / _.ScoredCount)).Limit(count).ToList();
                     break;
-                case ContentType.MostVisited:
+                case ProductOrContentType.MostVisited:
                     lst = _contentContext.Collection
                    .Find(filterDef)
                    .Project(_ =>
@@ -471,7 +473,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                            Images = _.Images,
                            SubTitle = _.SubTitle,
                            TagKeywords = _.TagKeywords,
-                           Title = _.Title
+                           Title = _.Title,
+                           ContentCode = _.ContentCode
                        }).Sort(Builders<Entities.General.Content.Content>.Sort.Descending(_ =>_.VisitCount)).Limit(count).ToList();
                     break;
                 default:

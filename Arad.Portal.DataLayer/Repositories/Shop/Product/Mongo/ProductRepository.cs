@@ -1182,7 +1182,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public List<ProductOutputDTO> GetSpecialProducts(int count, string currencyId, ProductType type)
+        public List<ProductOutputDTO> GetSpecialProducts(int count, string currencyId, ProductOrContentType type)
         {
             var domainName = this.GetCurrentDomainName();
             var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
@@ -1205,7 +1205,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             List<ProductOutputDTO> lst = new List<ProductOutputDTO>();
             switch (type)
             {
-                case ProductType.Newest:
+                case ProductOrContentType.Newest:
                     lst = _context.ProductCollection
                     .Find(filterDef)
                     .Project(_ =>
@@ -1227,7 +1227,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                             VisitCount = _.VisitCount
                         }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.CreationDate)).Limit(count).ToList();
                     break;
-                case ProductType.MostPopular:
+                case ProductOrContentType.MostPopular:
                  lst = _context.ProductCollection
                     .Find(filterDef)
                     .Project(_ =>
@@ -1249,7 +1249,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                             VisitCount = _.VisitCount
                         }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => (float)_.TotalScore / _.ScoredCount)).Limit(count).ToList();
                     break;
-                case ProductType.BestSale:
+                case ProductOrContentType.BestSale:
                     lst = _context.ProductCollection
                     .Find(filterDef)
                     .Project(_ =>
@@ -1271,7 +1271,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                             VisitCount = _.VisitCount
                         }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.SaleCount)).Limit(count).ToList();
                     break;
-                case ProductType.MostVisited:
+                case ProductOrContentType.MostVisited:
                     lst = _context.ProductCollection
                     .Find(filterDef)
                     .Project(_ =>

@@ -1,0 +1,73 @@
+[
+  {
+    "ModuleId": "db0ae375-278a-4fd3-b62b-5fd6cb13edd7",
+    "ModuleCategoryType": 0,
+    "ComponentName": "SpecialProduct",
+    "ModuleParameters": [
+      "ProductOrContentType", 
+    ]
+  },
+  {
+    "ModuleId": "f8865ffc-1563-41ba-a281-ee57fa7ffc09",
+    "ModuleCategoryType": 0,
+    "ComponentName": "SpecialProduct",
+    "ModuleParameters": [
+      
+    ]
+  },
+  {
+    "ModuleId": "37b44a90-323f-45f1-837e-8ff6f32ee778",
+    "ModuleCategoryType": 0,
+    "ComponentName": "SpecialProduct",
+    "ModuleParameters": [
+      
+    ]
+  },
+  {
+    "ModuleId": "8c8189f7-a12c-48ea-a239-f358129dfb3f",
+    "ModuleCategoryType": 0,
+    "ComponentName": "SpecialProduct",
+    "ModuleParameters": [
+     
+    ]
+  },
+  {
+    "ModuleId": "f6fa9952-6d31-47cb-b0cc-6a3c6cd3ff7a",
+    "ModuleCategoryType": 1,
+    "ComponentName": "ContentTemplate",
+    "ModuleParameters": [
+    ]
+  },
+  {
+    "ModuleId": "a4616f72-2c58-4b73-b5d7-b68fbe0c0b01",
+    "ModuleCategoryType": 1,
+    "ComponentName": "ContentTemplate",
+    "ModuleParameters": [
+    ]
+  },
+  {
+    "ModuleId": "7fa07f11-a5de-4d26-b334-3e6376af81d2",
+    "ModuleCategoryType": 1,
+    "ComponentName": "ContentTemplate",
+    "ModuleParameters": [
+    ]
+  },
+  {
+    "ModuleId": "71cf0a77-8ff4-4665-a79a-4bf9d56d3cc8",
+    "ModuleCategoryType": 1,
+    "ComponentName": "",
+    "ModuleParameters": []
+  },
+  {
+    "ModuleId": "463daa30-8f4c-4ddc-ac45-206bd3a9a6f9",
+    "ModuleCategoryType": null,
+    "ComponentName": "",
+    "ModuleParameters": []
+  },
+  {
+    "ModuleId": "dba22354-3cb8-4598-a43d-1b1c52dd5561",
+    "ModuleCategoryType": null,
+    "ComponentName": "",
+    "ModuleParameters": []
+  }
+]

@@ -148,6 +148,24 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         }
 
+        [HttpGet]
+        public IActionResult HomePageDesign(string domainId)
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ContentPageDesign(string domainId)
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ProductPageDesign(string domainId)
+        {
+            return View();
+        }
+
         [HttpPost]
         public IActionResult GetProviderParams([FromQuery] int pspVal)
         {

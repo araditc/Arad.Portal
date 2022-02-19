@@ -13,53 +13,54 @@ namespace Arad.Portal.DataLayer.Entities.General.DesignStructure
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string ModuleId { get; set; }
-        public ModuleContentType ModuleContentType { get; set; }
+        public ModuleCategoryType ModuleCategoryType { get; set; }
         public string ComponentName { get; set; }
 
         /// <summary>
         /// this list contains some parameters for executing and designing this component
         /// for example input parameters for viewcomponent 
-        /// if componentName = 'ContentTemplate' one parameter should be enum ContentTemplate and its value
-        /// if its enum is equal to forth or fifth count it should also declare
+        /// if componentName = 'ContentTemplate' one parameter should be enum ContentTemplateDesign and its value
+        /// if its enum is equal to forth or fifth 'count' should also declare
         /// </summary>
-       public List<KeyVal> ParamsWithDefaultValues { get; set; }
-       
-
-    }
-    public enum ModuleContentType
-    {
-        MostPopulareProducts,
-        MostVisitedProducts,
-        BestSaleProducts,
-        NewestProduct,
-        ImageSlider,
-        MostPopularContent,
-        MostVisitedContent,
-        NewestContent,
-        Advertisement
+       public List<string> ModuleParameters { get; set; }
     }
 
-    public enum ProductType
+    public enum ModuleCategoryType
     {
-        Newest,
-        MostPopular,
-        BestSale, 
-        MostVisited
+        Product = 0,
+        Content = 1,
+        Advertisement = 2,
+        ImageSlider = 3
+    }
+   
+    public enum ProductOrContentType
+    {
+        Newest = 0,
+        MostPopular = 1,
+        BestSale = 2, 
+        MostVisited = 3
     }
 
-    public enum ContentType
+    public enum ImageSliderTemplateDesign
     {
-        Newest,
-        MostPopular,   
-        MostVisited
+        First = 0
     }
 
-    public enum ContentTemplate
+    public enum AdvertisementTemplateDesign
     {
-        First,
-        Second,
-        Third,
-        Forth,
-        Fifth
+        First = 0
+    }
+    public enum ProductTemplateDesign
+    {
+        First = 0
+    }
+    
+    public enum ContentTemplateDesign
+    {
+        First = 0,
+        Second = 1,
+        Third = 2,
+        Forth = 3,
+        Fifth = 4
     }
 }

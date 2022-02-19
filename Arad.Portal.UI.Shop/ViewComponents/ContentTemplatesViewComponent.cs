@@ -23,7 +23,7 @@ namespace Arad.Portal.UI.Shop.ViewComponents
                 _accessor = accessor;
                _lanRepository = lanRepository;
         }
-        public IViewComponentResult Invoke(ContentType contentType, ContentTemplate selectionTemplate, int? count)
+        public IViewComponentResult Invoke(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, int? count)
         {
             var defaultCulture = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
             List<ContentGlance> lst = new List<ContentGlance>();
@@ -34,17 +34,17 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             int cnt = 0;
             switch(selectionTemplate)
             {
-                case ContentTemplate.First:
+                case ContentTemplateDesign.First:
                     cnt = 6;
                     break;
-                case ContentTemplate.Second:
+                case ContentTemplateDesign.Second:
                     cnt = 4;
                     break;
-                case ContentTemplate.Third:
+                case ContentTemplateDesign.Third:
                     cnt = 8;
                     break;
-                case ContentTemplate.Forth :
-                case ContentTemplate.Fifth :
+                case ContentTemplateDesign.Forth :
+                case ContentTemplateDesign.Fifth :
                     cnt = count.Value;
                     break;
                 
@@ -52,11 +52,11 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             lst = _contentRepository.GetSpecialContent(selectionTemplate, cnt, langId, contentType);
             return selectionTemplate switch
             {
-                ContentTemplate.First => View("First", lst),
-                ContentTemplate.Second => View("Second", lst),
-                ContentTemplate.Third => View("Third", lst),
-                ContentTemplate.Forth => View("Forth", lst),
-                ContentTemplate.Fifth => View("Fifth", lst),
+                ContentTemplateDesign.First => View("First", lst),
+                ContentTemplateDesign.Second => View("Second", lst),
+                ContentTemplateDesign.Third => View("Third", lst),
+                ContentTemplateDesign.Forth => View("Forth", lst),
+                ContentTemplateDesign.Fifth => View("Fifth", lst),
                 _ => View(lst),
             };
         }

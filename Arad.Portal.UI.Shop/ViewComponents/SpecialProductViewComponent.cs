@@ -32,7 +32,7 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             _currencyRepository = currencyRepository;
         }
 
-        public  IViewComponentResult Invoke(int count, ProductType productType)
+        public  IViewComponentResult Invoke(ProductOrContentType productType, ProductTemplateDesign selectionTemplate, int count)
         {
             var defaultCulture = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
             var defLangSymbol = defaultCulture.Split("|")[0][2..];
@@ -46,7 +46,11 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             ViewBag.CurLangId = langId;
             
             var lst = _productRepository.GetSpecialProducts(count, currencyDto.CurrencyId, productType);
-            return View(lst);
+            return selectionTemplate switch
+            {
+                ProductTemplateDesign.First => View("First", lst),
+                _ => View(lst),
+            };
         }
     }
 }
