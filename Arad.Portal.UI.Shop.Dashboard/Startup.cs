@@ -81,7 +81,6 @@ using Arad.Portal.DataLayer.Contracts.General.CountryParts;
 using Arad.Portal.DataLayer.Repositories.General.CountryParts.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.DesignStructure;
 using Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo;
-
 namespace Arad.Portal.UI.Shop.Dashboard
 {
     public class Startup

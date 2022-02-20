@@ -450,6 +450,17 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
             #endregion
 
             #region Module
+            if (!moduleRepository.HasAnyModule())
+            {
+                using StreamReader r = new StreamReader(Path.Combine(applicationPath, "SeedData", "Modules.json"));
+                string json = r.ReadToEnd();
+                List<DataLayer.Entities.General.DesignStructure.Module> modules = JsonConvert.DeserializeObject<List<DataLayer.Entities.General.DesignStructure.Module>>(json);
+
+                if (modules.Any())
+                {
+                    moduleRepository.Modules.InsertMany(modules);
+                }
+            }
             #endregion
 
         }

@@ -12,6 +12,8 @@ namespace Arad.Portal.DataLayer.Entities.General.DesignStructure
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string TemplateId { get; set; }
+
+        public string TemplateName { get; set; }
         /// <summary>
         /// htmlContent which contains []  and will be replaced by a modules or combinations of Module
         /// </summary>

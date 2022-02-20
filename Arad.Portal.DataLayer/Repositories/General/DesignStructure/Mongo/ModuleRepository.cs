@@ -1,10 +1,12 @@
 ﻿using Arad.Portal.DataLayer.Contracts.General.DesignStructure;
 using Arad.Portal.DataLayer.Entities.General.DesignStructure;
+using Arad.Portal.DataLayer.Models.Shared;
 using Microsoft.AspNetCore.Http;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Arad.Portal.GeneralLibrary.Utilities;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -38,6 +40,136 @@ namespace Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo
         public void InsertOneTemplate(Template template)
         {
             _context.TemplateCollection.InsertOne(template);
+        }
+
+        public List<SelectListModel> GetAllTemplate()
+        {
+            FilterDefinitionBuilder<Template> builder = new();
+            FilterDefinition<Template> filterDef;
+            filterDef = builder.Empty;
+            var lst = _context.TemplateCollection
+                .Find(filterDef)
+                .Project(_=> new SelectListModel() 
+                {
+                    Value = _.TemplateName, 
+                    Text = GeneralLibrary.Utilities.Language.GetString($"TemplateName_{_.TemplateName}")
+                }).ToList();
+            return lst;
+        }
+
+        public List<SelectListModel> GetAllModules()
+        {
+            FilterDefinitionBuilder<Module> builder = new();
+            FilterDefinition<Module> filterDef;
+            filterDef = builder.Empty;
+            var lst = _context.ModuleCollection
+                .Find(filterDef)
+                .Project(_ => new SelectListModel()
+                {
+                    Value = _.ModuleName,
+                    Text = _.ModuleName
+                }).ToList();
+            lst.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("Choose"), Value = "-1" });
+            return lst;
+        }
+
+        public Template FetchTemplateByName(string templateName)
+        {
+            var tem = _context.TemplateCollection
+                .Find(_ => _.TemplateName.ToLower() == templateName.ToLower()).FirstOrDefault();
+            return tem;
+        }
+
+        public Module FetchModuleByName(string moduleName)
+        {
+            var module = _context.ModuleCollection
+                         .Find(_ => _.ModuleName == moduleName).FirstOrDefault();
+            return module;
+        }
+
+        public List<SelectListModel> GetAllProductOrContentTypes()
+        {
+            var result = new List<SelectListModel>();
+            foreach (int i in Enum.GetValues(typeof(ProductOrContentType)))
+            {
+                string name = Enum.GetName(typeof(ProductOrContentType), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            
+            return result;
+        }
+
+        public List<SelectListModel> GetAllContentTemplateDesign()
+        {
+            var result = new List<SelectListModel>();
+            foreach (int i in Enum.GetValues(typeof(ContentTemplateDesign)))
+            {
+                string name = Enum.GetName(typeof(ContentTemplateDesign), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+
+            return result;
+        }
+
+        public List<SelectListModel> GetAllProductTemplateDesign()
+        {
+            var result = new List<SelectListModel>();
+            foreach (int i in Enum.GetValues(typeof(ProductTemplateDesign)))
+            {
+                string name = Enum.GetName(typeof(ProductTemplateDesign), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+
+            return result;
+        }
+
+        public List<SelectListModel> GetAllAdvertisementTemplateDesign()
+        {
+            var result = new List<SelectListModel>();
+            foreach (int i in Enum.GetValues(typeof(AdvertisementTemplateDesign)))
+            {
+                string name = Enum.GetName(typeof(AdvertisementTemplateDesign), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+
+            return result;
+        }
+
+        public List<SelectListModel> GetAllImageSliderTemplateDesign()
+        {
+            var result = new List<SelectListModel>();
+            foreach (int i in Enum.GetValues(typeof(ImageSliderTemplateDesign)))
+            {
+                string name = Enum.GetName(typeof(ImageSliderTemplateDesign), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+
+            return result;
         }
     }
 }

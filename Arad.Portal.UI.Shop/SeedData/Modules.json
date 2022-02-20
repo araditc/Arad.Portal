@@ -1,7 +1,7 @@
 [
   {
     "ModuleId": "db0ae375-278a-4fd3-b62b-5fd6cb13edd7",
-    "ModuleName": "ProductList",
+    "ModuleName":  "ProductList",
     "ModuleCategoryType": 0,
     "ComponentName": "SpecialProduct",
     "ModuleParameters": {

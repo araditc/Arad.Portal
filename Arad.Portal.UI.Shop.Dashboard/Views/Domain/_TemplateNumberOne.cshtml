@@ -1,0 +1,62 @@
+﻿<div class="container">
+    <div class='row border border-3 border-secondary' style="min-height: 400px;">
+        <div class='col-12 col-md-3  border border-1 border-secondary text-center h-100'>
+            <div class="rightestHeaderTemplate border border-secondary">
+                <select class="form-control selectpicker moduleList" data-live-search="true" asp-items="@(new SelectList(ViewBag.ModuleList,"Value","Text"))">
+                </select>
+                <br/>
+                <button id="btnRightestAdd" class="btn btn-success bg-gradient btn-sm float-end" type="button">@Language.GetString("btn_Add")</button>
+                <button id="btnRightestBreak" class="btn btn-secondary bg-gradient btn-sm float-end" type="button">@Language.GetString("btn_Add")</button>
+            </div>
+            <br />
+            <div id="rightest" class="m-2"></div>
+        </div>
+        <div class='col-12 col-md-6  border border-1 border-secondary text-center h-100'>
+            <div class="middleHeaderTemplate border border-secondary">
+                <select class="form-control selectpicker moduleList" data-live-search="true" asp-items="@(new SelectList(ViewBag.ModuleList,"Value","Text"))">
+                </select>
+                <br/>
+                <button id="btnMiddleAdd" class="btn btn-success bg-gradient btn-sm float-end" type="button">@Language.GetString("btn_Add")</button>
+                <button id="btnMiddleBreak" class="btn btn-secondary bg-gradient btn-sm float-end" type="button">@Language.GetString("btn_Add")</button>
+            </div>
+            <br />
+            <div id="middleDiv" class="m-2"></div>
+        </div>
+        <div class='col-12 col-md-3  border border-1 border-secondary text-center h-100'>
+            <div class="leftestHeaderTemplate border border-secondary">
+                <select class="form-control selectpicker moduleList" data-live-search="true" asp-items="@(new SelectList(ViewBag.ModuleList,"Value","Text"))">
+                </select>
+                <br/>
+                <button id="btnLeftestAdd" class="btn btn-success bg-gradient btn-sm float-end" type="button">@Language.GetString("btn_Add")</button>
+                <button id="btnLeftestBreak" class="btn btn-secondary bg-gradient btn-sm float-end" type="button">@Language.GetString("btn_Add")</button>
+            </div>
+            <br />
+            <div id="leftest" class="m-2"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $(".moduleList").change(function(){
+            if($(this).val()!= "-1")
+            {
+               var selectedModuleName = $(this).val();
+               var targetDivID;
+               var parent = $(this).parent();
+               if($(parent).hasClass("rightestHeaderTemplate"))
+               {
+                   targetDivID = "rightest" ;
+               }else if($(parent).hasClass("middleHeaderTemplate"))
+               {
+                   targetDivID = "middleDiv";
+               }else if($(parent).hasClass("leftestHeaderTemplate"))
+               {
+                   targetDivID = "leftest";
+               }
+               
+
+            }
+        });
+    });
+</script>

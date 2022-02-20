@@ -40,6 +40,9 @@
 	<string key="btn_Add">
 		<value>Add</value>
 	</string>
+	<string key="btn_Break">
+		<value>Add New Line</value>
+	</string>
 	<string key="btn_ExcelImport">
 		<value>Get data from excel file</value>
 	</string>
@@ -75,6 +78,9 @@
 	</string>
 	<string key="btn_Show">
 		<value>Show</value>
+	</string>
+	<string key="btn_Preview">
+		<value>Preview</value>
 	</string>
 	<string key="btn_ChangePass">
 		<value>Change Password</value>
@@ -341,6 +347,13 @@
 		<value>Shipping Setting</value>
 	</string>
 	<!--============================================End [Admin Menues]======================================-->
+	<string key="TemplateName_TemplateNumber1">
+		<value>Template Number1</value>
+	</string>
+	<string key="TemplateName_TemplateNumber2">
+		<value>Template Number2</value>
+	</string>
+	
 	<!--Start [tables]-->
 	<string key="tbl_PaymentGateways">
 		<value>Payment gateways</value>
@@ -1479,6 +1492,9 @@
   <string key="Active">
     <value>Active</value>
   </string>
+	<string key="PageTemplate">
+		<value>Page Template</value>
+	</string>
 	<string key="All">
 		<value>All</value>
 	</string>

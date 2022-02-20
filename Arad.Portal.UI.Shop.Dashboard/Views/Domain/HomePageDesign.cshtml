@@ -1,6 +1,35 @@
 ﻿
 <div class="row">
     <div class="col-12 col-md-4">
-       <label class="form-label" for="DefaultLanguageId">@Language.GetString("DefaultLanguage")</label><br />
+       <label class="form-label" for="TemplateId">@Language.GetString("PageTemplate")</label>
+    </div>
+     <div class="col-12 col-md-4">
+       <select class="form-control selectpicker" data-live-search="true" id="templateList" asp-items="@(new SelectList(ViewBag.TemplateList,"Value","Text"))">
+        </select>
     </div>
 </div>
+<div class="row g-3">
+    <div class="col-12 m-3 border border-secondary border-1 rounded" id="templateContent">
+
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function(){
+        $("#templateList").change(function()
+        {
+            var templateName = $("#templateList").val();
+            $("#templateContent").load(
+                "@Url.Action("GetSpecificTemplateView","Domain")", 
+                {"templateName" : templateName },
+                function (response, status, xhr)
+                {
+                    if (status == "error")
+                    {
+                        alert("An error occurred while loading the results.");
+                    }
+                });
+        });
+    });
+</script>

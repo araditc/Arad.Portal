@@ -11,8 +11,4 @@
     <ProjectReference Include="..\Arad.Portal.GeneralLibrary\Arad.Portal.GeneralLibrary.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\DesignStructure\" />
-  </ItemGroup>
-
 </Project>

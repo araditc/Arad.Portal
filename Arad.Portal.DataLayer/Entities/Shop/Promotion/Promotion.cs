@@ -66,7 +66,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
     public class PromotionInfo
     {
         public string AffectedProductId { get; set; }
-
+        
         public string AffectedProductName { get; set; }
 
         public string AffectedProductGroupId { get; set; }

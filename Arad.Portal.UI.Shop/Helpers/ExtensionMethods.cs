@@ -429,6 +429,7 @@ namespace Arad.Portal.UI.Shop.Helpers
                 var firstTemplate = new DataLayer.Entities.General.DesignStructure.Template()
                 {
                     TemplateId = "eeef1c0d-31c9-4c93-b894-f4b27f26c8d8",
+                    TemplateName = "TemplateNumberOne",
                     AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf",
                     CreationDate = DateTime.Now,
                     IsActive = true,
@@ -439,6 +440,7 @@ namespace Arad.Portal.UI.Shop.Helpers
                 var secondTemplate = new DataLayer.Entities.General.DesignStructure.Template()
                 {
                     TemplateId = "3b88a057-7686-43b4-a6e8-1a1f64bb0123",
+                    TemplateName = "TemplateNumberTwo",
                     AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf",
                     CreationDate = DateTime.Now,
                     IsActive = true,

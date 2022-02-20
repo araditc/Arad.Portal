@@ -1,7 +1,9 @@
-﻿using Arad.Portal.DataLayer.Models.Shared;
+﻿using Arad.Portal.DataLayer.Models.DesignStructure;
+using Arad.Portal.DataLayer.Models.Shared;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,10 +12,15 @@ namespace Arad.Portal.DataLayer.Entities.General.DesignStructure
 {
     public class Module : BaseEntity
     {
+        public Module()
+        {
+            ModuleParameters = new();
+        }
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string ModuleId { get; set; }
         public ModuleCategoryType ModuleCategoryType { get; set; }
+        public string ModuleName { get; set; }
         public string ComponentName { get; set; }
 
         /// <summary>
@@ -22,7 +29,7 @@ namespace Arad.Portal.DataLayer.Entities.General.DesignStructure
         /// if componentName = 'ContentTemplate' one parameter should be enum ContentTemplateDesign and its value
         /// if its enum is equal to forth or fifth 'count' should also declare
         /// </summary>
-       public List<string> ModuleParameters { get; set; }
+       public ModuleParameters ModuleParameters { get; set; }
     }
 
     public enum ModuleCategoryType

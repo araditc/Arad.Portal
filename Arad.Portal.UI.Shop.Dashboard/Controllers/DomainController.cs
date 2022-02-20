@@ -18,6 +18,7 @@ using Arad.Portal.DataLayer.Contracts.General.Services;
 using static Arad.Portal.DataLayer.Models.Shared.Enums;
 using System.Reflection;
 using Arad.Portal.DataLayer.Entities.General.Domain;
+using Arad.Portal.DataLayer.Contracts.General.DesignStructure;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -26,6 +27,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
     {
         private readonly IDomainRepository _domainRepository;
         private readonly IPermissionView _permissionViewManager;
+        private readonly IModuleRepository _moduleRepository;
         private readonly IProviderRepository _providerRepository;
         private readonly ILanguageRepository _lanRepository;
         private readonly ICurrencyRepository _curRepository;
@@ -33,6 +35,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
        
         public DomainController(IDomainRepository domainRepository, UserManager<ApplicationUser> userManager,
             IProviderRepository providerRepository,
+            IModuleRepository moduleRepository,
             IPermissionView permissionView, ILanguageRepository lanRepository,
             ICurrencyRepository currencyRepository)
         {
@@ -42,6 +45,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _userManager = userManager;
             _curRepository = currencyRepository;
             _providerRepository = providerRepository;
+            _moduleRepository = moduleRepository;
         }
 
         [HttpGet]
@@ -151,8 +155,29 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public IActionResult HomePageDesign(string domainId)
         {
+            var temList = _moduleRepository.GetAllTemplate();
+            ViewBag.TemplateList = temList;
+            var moduleList = _moduleRepository.GetAllModules();
+            ViewBag.ModuleList = moduleList;
             return View();
         }
+
+        public IActionResult GetSpecificTemplateView(string templateName)
+        {
+            //var template = _moduleRepository.FetchTemplateByName(templateName);
+            var viewName = $"_{templateName}.cshtml";
+            return PartialView(viewName);
+        }
+
+        //public IActionResult GetSpecificModule(string moduleName)
+        //{
+        //    var module = _moduleRepository.FetchModuleByName(moduleName);
+        //    var viewName = $"_{moduleName}.cshtml";
+        //    if(moduleName.ToLower() == "productlist")
+        //    {
+        //        ViewBag
+        //    }
+        //}
 
         [HttpGet]
         public IActionResult ContentPageDesign(string domainId)
