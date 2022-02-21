@@ -29,7 +29,6 @@
     <Folder Include="wwwroot\Images\" />
     <Folder Include="wwwroot\Files\" />
     <Folder Include="wwwroot\plugins\" />
-    <Folder Include="wwwroot\Template\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -188,6 +188,8 @@
     <None Include="wwwroot\lib\bootstrap5\js\bootstrap.js.map" />
     <None Include="wwwroot\lib\bootstrap5\js\bootstrap.min.js" />
     <None Include="wwwroot\lib\bootstrap5\js\bootstrap.min.js.map" />
+    <None Include="wwwroot\lib\ms-DropdownImg\images\icons\Thumbs.db" />
+    <None Include="wwwroot\lib\ms-DropdownImg\js\dd.min.js" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">

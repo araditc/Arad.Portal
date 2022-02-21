@@ -19,6 +19,8 @@ using static Arad.Portal.DataLayer.Models.Shared.Enums;
 using System.Reflection;
 using Arad.Portal.DataLayer.Entities.General.Domain;
 using Arad.Portal.DataLayer.Contracts.General.DesignStructure;
+using Microsoft.AspNetCore.Hosting;
+using System.Globalization;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -31,10 +33,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IProviderRepository _providerRepository;
         private readonly ILanguageRepository _lanRepository;
         private readonly ICurrencyRepository _curRepository;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly UserManager<ApplicationUser> _userManager;
        
         public DomainController(IDomainRepository domainRepository, UserManager<ApplicationUser> userManager,
             IProviderRepository providerRepository,
+            IWebHostEnvironment hostEnvironment,
             IModuleRepository moduleRepository,
             IPermissionView permissionView, ILanguageRepository lanRepository,
             ICurrencyRepository currencyRepository)
@@ -46,6 +50,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _curRepository = currencyRepository;
             _providerRepository = providerRepository;
             _moduleRepository = moduleRepository;
+            _webHostEnvironment = hostEnvironment;
         }
 
         [HttpGet]
@@ -169,15 +174,46 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return PartialView(viewName);
         }
 
-        //public IActionResult GetSpecificModule(string moduleName)
-        //{
-        //    var module = _moduleRepository.FetchModuleByName(moduleName);
-        //    var viewName = $"_{moduleName}.cshtml";
-        //    if(moduleName.ToLower() == "productlist")
-        //    {
-        //        ViewBag
-        //    }
-        //}
+        public IActionResult GetSpecificModule(string moduleName)
+        {
+            var module = _moduleRepository.FetchModuleByName(moduleName);
+            var viewName = $"_{moduleName}.cshtml";
+            var imageTemplatePath = _webHostEnvironment.WebRootPath;
+            var productOrContentTypes = _moduleRepository.GetAllProductOrContentTypes();
+            ViewBag.ProductOrContentTypeList = productOrContentTypes;
+           
+            switch (moduleName.ToLower())
+            {
+                case "productlist":
+                    var productTemplateList = _moduleRepository.GetAllProductTemplateDesign();
+                    foreach (var item in productTemplateList)
+                    {
+                        if(item.Text.ToLower() != "forth")
+                        {
+                            item.ImageUrl = System.IO.Path.Combine(imageTemplatePath, item.ImageUrl);
+                        }else
+                        {
+                            if(CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+                            {
+                                item.ImageUrl = System.IO.Path.Combine(imageTemplatePath, "Template/forth-rtl.jpg");
+                            }
+                            else
+                            {
+                                item.ImageUrl = System.IO.Path.Combine(imageTemplatePath, "Template/forth-ltr.jpg");
+                            }
+                        }
+                    }
+                    ViewBag.ProductTemplateList = productTemplateList;
+                    break;
+                case "contentlist":
+                    var contentTemplateDesigns = _moduleRepository.GetAllContentTemplateDesign();
+                    ViewBag.ContentTemplateList = contentTemplateDesigns;
+                    break;
+                default:
+                    break;
+            }
+            return PartialView(viewName);
+        }
 
         [HttpGet]
         public IActionResult ContentPageDesign(string domainId)

@@ -7,10 +7,11 @@
 <link href="~/css/siteTemplate/ForthContentTemplate.css" rel="stylesheet" />
 }
 
+
 <ul class="list-group">
     @foreach (var item in Model)
     {
-         <li class="list-group-item">
+         <li class="list-group-item border-0 contentForth">
              <div class="row">
                <div class="col-3 col-md-2 col-lg-1">
                   <a href="@($"/blog/{item.ContentCode}")">

@@ -95,8 +95,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo
                 string name = Enum.GetName(typeof(ProductOrContentType), i);
                 var obj = new SelectListModel()
                 {
-                    Text = name,
-                    Value = i.ToString()
+                    Text = GeneralLibrary.Utilities.Language.GetString($"Enum_{name}"),
+                    Value = name
                 };
                 result.Add(obj);
             }
@@ -104,13 +104,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo
             return result;
         }
 
-        public List<SelectListModel> GetAllContentTemplateDesign()
+        public List<SelectImageListModel> GetAllContentTemplateDesign()
         {
-            var result = new List<SelectListModel>();
+            var result = new List<SelectImageListModel>();
             foreach (int i in Enum.GetValues(typeof(ContentTemplateDesign)))
             {
                 string name = Enum.GetName(typeof(ContentTemplateDesign), i);
-                var obj = new SelectListModel()
+                var obj = new SelectImageListModel()
                 {
                     Text = name,
                     Value = i.ToString()
@@ -121,30 +121,32 @@ namespace Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo
             return result;
         }
 
-        public List<SelectListModel> GetAllProductTemplateDesign()
+        public List<SelectImageListModel> GetAllProductTemplateDesign()
         {
-            var result = new List<SelectListModel>();
+            var result = new List<SelectImageListModel>();
             foreach (int i in Enum.GetValues(typeof(ProductTemplateDesign)))
             {
                 string name = Enum.GetName(typeof(ProductTemplateDesign), i);
-                var obj = new SelectListModel()
+                var obj = new SelectImageListModel()
                 {
                     Text = name,
-                    Value = i.ToString()
+                    Value = name,
+                    ImageUrl = $"template/{name}.jpg"
                 };
+                
                 result.Add(obj);
             }
 
             return result;
         }
 
-        public List<SelectListModel> GetAllAdvertisementTemplateDesign()
+        public List<SelectImageListModel> GetAllAdvertisementTemplateDesign()
         {
-            var result = new List<SelectListModel>();
+            var result = new List<SelectImageListModel>();
             foreach (int i in Enum.GetValues(typeof(AdvertisementTemplateDesign)))
             {
                 string name = Enum.GetName(typeof(AdvertisementTemplateDesign), i);
-                var obj = new SelectListModel()
+                var obj = new SelectImageListModel()
                 {
                     Text = name,
                     Value = i.ToString()
@@ -155,13 +157,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo
             return result;
         }
 
-        public List<SelectListModel> GetAllImageSliderTemplateDesign()
+        public List<SelectImageListModel> GetAllImageSliderTemplateDesign()
         {
-            var result = new List<SelectListModel>();
+            var result = new List<SelectImageListModel>();
             foreach (int i in Enum.GetValues(typeof(ImageSliderTemplateDesign)))
             {
                 string name = Enum.GetName(typeof(ImageSliderTemplateDesign), i);
-                var obj = new SelectListModel()
+                var obj = new SelectImageListModel()
                 {
                     Text = name,
                     Value = i.ToString()

@@ -42,9 +42,10 @@ namespace Arad.Portal.DataLayer.Entities.General.DesignStructure
    
     public enum ProductOrContentType
     {
+       
         Newest = 0,
         MostPopular = 1,
-        BestSale = 2, 
+        BestSale = 2,
         MostVisited = 3
     }
 

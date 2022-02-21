@@ -18,13 +18,13 @@ namespace Arad.Portal.DataLayer.Contracts.General.DesignStructure
 
         List<SelectListModel> GetAllProductOrContentTypes();
 
-        List<SelectListModel> GetAllContentTemplateDesign();
+        List<SelectImageListModel> GetAllContentTemplateDesign();
 
-        List<SelectListModel> GetAllProductTemplateDesign();
+        List<SelectImageListModel> GetAllProductTemplateDesign();
 
-        List<SelectListModel> GetAllAdvertisementTemplateDesign();
+        List<SelectImageListModel> GetAllAdvertisementTemplateDesign();
 
-        List<SelectListModel> GetAllImageSliderTemplateDesign();
+        List<SelectImageListModel> GetAllImageSliderTemplateDesign();
         
         Entities.General.DesignStructure.Template FetchTemplateByName(string templateName);
 
