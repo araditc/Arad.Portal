@@ -19,7 +19,7 @@
     $(document).ready(function(){
         $("#templateList").change(function()
         {
-            var templateName = $("#templateList").val();
+            var templateName = $("#templateList").find("option:selected").text();
             $("#templateContent").load(
                 "@Url.Action("GetSpecificTemplateView","Domain")", 
                 {"templateName" : templateName },

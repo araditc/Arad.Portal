@@ -1,0 +1,59 @@
+﻿@using Arad.Portal.DataLayer.Models.Shared;
+@model List<Arad.Portal.DataLayer.Models.Content.ContentGlance>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+<link href="~/css/siteTemplate/SecondContentTemplate.css" rel="stylesheet" />
+}
+
+<div class="row g-1">
+    <div class="offset-1 col-10 col-sm-4 m-lg-0 m-md-0 m-sm-0 text-center ps-4">
+         <a href="@($"/blog/{Model[4].ContentCode}")" role="button">
+        <picture>
+            <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.TwoToOne)}&width={168}")">
+            <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.TwoToOne)}&width={228}")">
+            <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.TwoToOne)}&width={428}")">
+            <img src="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.TwoToOne)}&width={428}")" 
+                    class="img-fluid pt-lg-1 ps-lg-1 pt-md-1 ps-md-1 p-sm-1"
+                    alt="@Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.TwoToOne).Title" />
+        </picture>
+        </a>
+    </div>
+    <div class="col-12 col-sm-8 m-lg-0 m-md-0 m-sm-0 text-center">
+         <a href="@($"/blog/{Model[4].ContentCode}")" role="button">
+        <picture>
+            <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[1].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.FourToOne)}&width={342}")">
+            <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[1].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.FourToOne)}&width={462}")">
+            <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[1].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.FourToOne)}&width={862}")">
+            <img src="@($"../filemanager/GetScaledImageOnWidth?path={Model[1].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.FourToOne)}&width={862}")"
+                class="img-fluid pt-lg-1 ps-lg-1 pe-lg-1 pt-md-1 ps-md-1 pe-md-1 p-sm-1"
+                alt="@Model[1].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.FourToOne).Title">
+        </picture>
+        </a>
+    </div>
+    <div class="col-12 col-sm-8 col-lg-8 col-md-8 m-lg-0 m-md-0 m-sm-0 text-center">
+         <a href="@($"/blog/{Model[4].ContentCode}")" role="button">
+         <picture>
+            <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[2].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.FourToOne)}&width={342}")">
+            <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[2].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.FourToOne)}&width={462}")">
+            <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[2].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.FourToOne)}&width={862}")">
+            <img src="@($"../filemanager/GetScaledImageOnWidth?path={Model[2].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.FourToOne)}&width={862}")"
+            class="img-fluid pt-lg-1 ps-lg-1 pe-lg-1 pt-md-1 ps-md-1 pe-md-1 p-sm-1"
+            alt="@Model[2].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.FourToOne).Title">
+        </picture>
+        </a>
+    </div>
+    <div class="offset-1 col-10 col-sm-4 col-lg-4 col-md-4 m-lg-0 m-md-0 m-sm-0 text-center pe-4">
+         <a href="@($"/blog/{Model[4].ContentCode}")" role="button">
+        <picture>
+            <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[3].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.TwoToOne)}&width={168}")">
+            <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[3].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.TwoToOne)}&width={228}")">
+            <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[3].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.TwoToOne)}&width={428}")">
+            <img src="@($"../filemanager/GetScaledImageOnWidth?path={Model[3].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.TwoToOne)}&width={428}")"
+                class="acc img-fluid pt-lg-1 pe-lg-1 pt-md-1 pe-md-1 p-sm-1"
+                alt="@Model[3].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.TwoToOne).Title" />  
+        </picture>
+        </a>
+    </div>
+</div>

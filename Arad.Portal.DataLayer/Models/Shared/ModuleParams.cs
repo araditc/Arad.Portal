@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Arad.Portal.DataLayer.Models.DesignStructure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,13 @@ namespace Arad.Portal.DataLayer.Models.Shared
         {
             ParamsValue = new();
         }
+
+        /// <summary>
+        /// one of places of template for example: [x]
+        /// </summary>
+        public string Place { get; set; }
         public string ModuleId { get; set; }
 
-        public List<KeyVal> ParamsValue { get; set; }
+        public ModuleParameters ParamsValue { get; set; }
     }
 }

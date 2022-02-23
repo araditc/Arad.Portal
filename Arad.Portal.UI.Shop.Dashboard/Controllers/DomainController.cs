@@ -21,6 +21,7 @@ using Arad.Portal.DataLayer.Entities.General.Domain;
 using Arad.Portal.DataLayer.Contracts.General.DesignStructure;
 using Microsoft.AspNetCore.Hosting;
 using System.Globalization;
+using Arad.Portal.DataLayer.Entities.General.DesignStructure;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -169,9 +170,25 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         public IActionResult GetSpecificTemplateView(string templateName)
         {
-            //var template = _moduleRepository.FetchTemplateByName(templateName);
+            var template = _moduleRepository.FetchTemplateByName(templateName);
+            var moduleList = _moduleRepository.GetAllModules();
+            ViewBag.ModuleList = moduleList;
+            ViewBag.TemplateId = template.TemplateId;
             var viewName = $"_{templateName}.cshtml";
             return PartialView(viewName);
+        }
+
+        [HttpGet]
+        public IActionResult GetProductModuleViewComponent(ProductOrContentType productType, ProductTemplateDesign selectionTemplate, int count)
+        {
+            return ViewComponent("SpecialProduct", new { productType, selectionTemplate, count });
+        }
+
+
+        [HttpGet]
+        public IActionResult GetContentModuleViewComponent(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, int? count)
+        {
+            return ViewComponent("ContentTemplate", new { contentType, selectionTemplate, count });
         }
 
         public IActionResult GetSpecificModule(string moduleName)

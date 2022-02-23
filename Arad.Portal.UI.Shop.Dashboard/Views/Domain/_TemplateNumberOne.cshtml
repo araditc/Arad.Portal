@@ -1,62 +1,232 @@
 ﻿<div class="container">
+    <div class="row">
+        <button id="btnPreview" class="btn btn-primary bg-gradient btn-sm float-end" type="button">@Language.GetString("btn_Preview")</button>
+        <button id="btnSave" class="btn btn-primary bg-gradient btn-sm float-end" type="button">@Language.GetString("btn_Save")</button>
+    </div>
     <div class='row border border-3 border-secondary' style="min-height: 400px;">
         <div class='col-12 col-md-3  border border-1 border-secondary text-center h-100'>
-            <div class="rightestHeaderTemplate border border-secondary">
+            <div class="firstHeaderTemplate border border-secondary">
                 <select class="form-control selectpicker moduleList" data-live-search="true" asp-items="@(new SelectList(ViewBag.ModuleList,"Value","Text"))">
                 </select>
-                <br/>
-                <button id="btnRightestAdd" class="btn btn-success bg-gradient btn-sm float-end" type="button">@Language.GetString("btn_Add")</button>
-                <button id="btnRightestBreak" class="btn btn-secondary bg-gradient btn-sm float-end" type="button">@Language.GetString("btn_Add")</button>
+                <br />
+                <button id="btnFirstAdd" class="btn btn-success bg-gradient btn-sm float-end addModule" type="button">@Language.GetString("btn_Add")</button>
+                <button id="btnFirstBreak" class="btn btn-secondary bg-gradient btn-sm float-end lineBreak" type="button">@Language.GetString("btn_Add")</button>
+                <br />
+                <div id="firstParamsDiv"></div>
             </div>
             <br />
-            <div id="rightest" class="m-2"></div>
+            <div id="firstDiv" class="m-2"></div>
         </div>
         <div class='col-12 col-md-6  border border-1 border-secondary text-center h-100'>
             <div class="middleHeaderTemplate border border-secondary">
                 <select class="form-control selectpicker moduleList" data-live-search="true" asp-items="@(new SelectList(ViewBag.ModuleList,"Value","Text"))">
                 </select>
-                <br/>
-                <button id="btnMiddleAdd" class="btn btn-success bg-gradient btn-sm float-end" type="button">@Language.GetString("btn_Add")</button>
-                <button id="btnMiddleBreak" class="btn btn-secondary bg-gradient btn-sm float-end" type="button">@Language.GetString("btn_Add")</button>
+                <br />
+                <button id="btnMiddleAdd" class="btn btn-success bg-gradient btn-sm float-end addModule" type="button">@Language.GetString("btn_Add")</button>
+                <button id="btnMiddleBreak" class="btn btn-secondary bg-gradient btn-sm float-end lineBreak" type="button">@Language.GetString("btn_Add")</button>
+                <br />
+                <div id="middleParamsDiv"></div>
             </div>
             <br />
             <div id="middleDiv" class="m-2"></div>
         </div>
         <div class='col-12 col-md-3  border border-1 border-secondary text-center h-100'>
-            <div class="leftestHeaderTemplate border border-secondary">
+            <div class="LastHeaderTemplate border border-secondary">
                 <select class="form-control selectpicker moduleList" data-live-search="true" asp-items="@(new SelectList(ViewBag.ModuleList,"Value","Text"))">
                 </select>
-                <br/>
-                <button id="btnLeftestAdd" class="btn btn-success bg-gradient btn-sm float-end" type="button">@Language.GetString("btn_Add")</button>
-                <button id="btnLeftestBreak" class="btn btn-secondary bg-gradient btn-sm float-end" type="button">@Language.GetString("btn_Add")</button>
+                <br />
+                <button id="btnLastAdd" class="btn btn-success bg-gradient btn-sm float-end addModule" type="button">@Language.GetString("btn_Add")</button>
+                <button id="btnLastBreak" class="btn btn-secondary bg-gradient btn-sm float-end lineBreak" type="button">@Language.GetString("btn_Add")</button>
+                <br />
+                <div id="lastParamsDiv"></div>
             </div>
             <br />
-            <div id="leftest" class="m-2"></div>
+            <div id="lastDiv" class="m-2"></div>
         </div>
     </div>
 </div>
 
 <script>
+    var firstPlace = "";
+    var secondPlace ="";
+    var thirdPlace = "";
+    var firstHtml = "";
+    var secondHtml = "";
+    var thirdHtml = "";
+    var moduleParams = [];
     $(document).ready(function(){
         $(".moduleList").change(function(){
             if($(this).val()!= "-1")
             {
-               var selectedModuleName = $(this).val();
+               var selectedModuleName = $(this).find("option:selected").text();
                var targetDivID;
+               var targetParamsDiv;
                var parent = $(this).parent();
-               if($(parent).hasClass("rightestHeaderTemplate"))
+               if($(parent).hasClass("firstHeaderTemplate"))
                {
-                   targetDivID = "rightest" ;
-               }else if($(parent).hasClass("middleHeaderTemplate"))
+                   targetDivID = "firstDiv" ;
+                   targetParamsDiv="firstParamsDiv";
+               }
+               else if($(parent).hasClass("middleHeaderTemplate"))
                {
                    targetDivID = "middleDiv";
-               }else if($(parent).hasClass("leftestHeaderTemplate"))
-               {
-                   targetDivID = "leftest";
+                   targetParamsDiv = "middleParamsDiv";
                }
-               
+               else if($(parent).hasClass("lastHeaderTemplate"))
+               {
+                   targetDivID = "lastDiv";
+                   targetParamsDiv = "lastParamsDiv";
+               }
 
+               $(`#${targetParamsDiv}`).load(
+                    "@Url.Action("GetSpecificModule","Domain")",
+                    {"moduleName", selectedModuleName},
+                    function (response, status, xhr)
+                    {
+                        if (status == "error")
+                        {
+                            alert("An error occurred while loading the results.");
+                        }
+                    });
             }
         });
-    });
+
+        $(".lineBreak").click(function(){
+             var id = $(this).attr("id");
+             var targetDivID = "";
+             switch(id)
+             {
+                 case "btnFirstBreak":
+                 targetDivID = "firstDiv";
+                 firstPlace += "<br/>";
+                 break;
+                 case "btnMiddleBreak":
+                 targetDivID = "middleDiv";
+                 secondPlace += "<br/>";
+                 break;
+                 case "btnLastBreak":
+                 targetDivID = "lastDiv";
+                 thirdPlace += "<br/>";
+                 break;
+             }
+            $(`#${targetDivID}`).append("<br/>");
+        });
+
+        $(".addModule").click(function(){
+            var btnID = $(this).attr("id");
+            var selectedModuleName = $(this).siblings(".moduleList").find("option:selected").text();
+            var selectedModuleId = $(this).siblings(".moduleList").val();
+            var obj = {};
+            obj.ParamsValue = {};
+            obj.ModuleId = selectedModuleId;
+            var targetDivID ="";
+            var targetParamsDiv = "";
+            switch(btnID)
+            {
+                case "btnFirstAdd":
+                   targetDivID = "firstDiv" ;
+                   targetParamsDiv="firstParamsDiv";
+                   firstPlace += selectedModuleId; 
+                   obj.Place ="[0]";
+                break;
+                case "btnMiddleAdd":
+                   targetDivID = "middleDiv";
+                   targetParamsDiv = "middleParamsDiv";
+                   secondPlace += selectedModuleId;
+                   obj.Place ="[1]";
+                break;
+                case "btnLastAdd":
+                   targetDivID = "lastDiv";
+                   targetParamsDiv = "lastParamsDiv";
+                   thirdPlace += selectedModuleId;
+                   obj.Place ="[2]";
+                break;
+             }
+              var selectedTemplate ="";
+              var selectedType ="";
+              var count = null;
+             $(`#${targetParamsDiv} .par`).each(function(){
+                 var id = $(this).attr("id");
+                 switch(selectedModuleName)
+                 {
+                      case "ProductList":
+                       switch(id)
+                       {
+                           case "templateSection":
+                           selectedTemplate = $("input[name='rdbProductTemplateList']:checked").val();
+                           break;
+                           case "typeList":
+                           selectedType = $(`#${id}`).val();
+                           break;
+                           case "countToShow":
+                           count = $(`#${id}`).val();
+                           break;
+                       }
+                      break;
+                      case "ContentList":
+                      switch(id)
+                       {
+                           case "templateSection":
+                            selectedTemplate = $("input[name='rdbContentTemplateList']:checked").val();
+                            switch(selectedTemplate)
+                            {
+                                case "First":
+                                count = 6;
+                                break;
+                                case "Second":
+                                count = 4;
+                                break;
+                                case "Third":
+                                count = 8;
+                                break;
+                            }
+                           break;
+                           case "typeList":
+                            selectedType = $(`#${id}`).val();
+                           break;
+                           case "countToShow":
+                             selectedType = $(`#${id}`).val();
+                           break;
+                       }
+                      break;
+                 }
+             });
+             var url = "";
+             if(selectedModuleName.toLowerCase() =="productlist)
+             {
+                 url = @Url.Action("GetProductModuleViewComponent", "Domain")+"?productType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count;
+                 obj.ParamsValue.Count = count;
+                 obj.ParamsValue.ProductOrContentType = selectedType;
+                 obj.ParamsValue.ProductTemplateDesign = selectedTemplate;
+             }
+             else if(selectedModuleName.toLowerCase() == "contentlist")
+             {
+                 url = @Url.Action("GetContentModuleViewComponent", "Domain")+"?contentType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count;
+                 obj.ParamsValue.Count = count;
+                 obj.ParamsValue.ProductOrContentType = selectedType;
+                 obj.ParamsValue.ContentTemplateDesign = selectedTemplate;
+             }
+             moduleParams.push(obj);
+              $.ajax({
+                    type: "Get",
+                    dataType: "html",
+                    url: url,
+                    success: function (result) {
+                        if (result != "") {
+                            $(`#${targetDivID}`).append(result);
+                        }
+                    },
+                });
+        });
+
+        $("#btnPreview").click(function(){
+            firstHtml = $("#firstDiv").html();
+            secondHtml = $("#middleDiv").html();
+            thirdHtml = $("#lastDiv").html();
+
+            window.location.href = 
+        });
+        });
 </script>
+
+

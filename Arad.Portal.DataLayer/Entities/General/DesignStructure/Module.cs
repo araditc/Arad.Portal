@@ -22,7 +22,6 @@ namespace Arad.Portal.DataLayer.Entities.General.DesignStructure
         public ModuleCategoryType ModuleCategoryType { get; set; }
         public string ModuleName { get; set; }
         public string ComponentName { get; set; }
-
         /// <summary>
         /// this list contains some parameters for executing and designing this component
         /// for example input parameters for viewcomponent 

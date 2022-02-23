@@ -1,9 +1,9 @@
-﻿<div class="row" div="templateSection">
+﻿<div class="row par" id="templateSection">
      <label class="form-label" >@Language.GetString("ViewTemplate")</label><br/>
     @foreach(SelectImageListModel option in ViewBag.ContentTemplateList)
     {
         <div class="col-12 col-md-3">
-            <input class="form-check-input" name="rdbContentTemplateList" type="checkbox" value="@(option.Value)" /><br/>
+            <input class="form-check-input" name="rdbContentTemplateList" type="checkbox" value="@(option.Text)" /><br/>
             <img class="img-fluid m-2" src="@($"../filemanager/GetScaledImageOnWidth?path={option.ImageUrl}&width=200")" />
         </div>
     }
@@ -11,12 +11,12 @@
 <div class="row">
     <div class="col-12">
           <label class="form-label" >@Language.GetString("Type")</label><br/>
-          <select class="form-control selectpicker" data-live-search="true" asp-items ="@(new SelectList(ViewBag.ProductOrContentTypeList,"Value","Text"))" >
+          <select class="form-control selectpicker par" data-live-search="true" id="typeList"  asp-items ="@(new SelectList(ViewBag.ProductOrContentTypeList,"Value","Text"))" >
           </select>
     </div>
     <div class="col-12 col-md-4 countSection d-none" >
           <label class="form-label" >@Language.GetString("CountToShow")</label><br/>
-          <input type="number" id="countToShow" class="form-control" value="" />
+          <input type="number" id="countToShow" class="form-control par" value="" />
     </div>
     
 </div>
@@ -24,7 +24,7 @@
 
 <script>
     $(document).ready(function(){
-        var cnt ="";
+        //var cnt ="";
         $("input[name='rdbContentTemplateList']").change(function () {
              var selectedRadio = $("input[name='rdbContentTemplateList']:checked").val();
              
@@ -32,23 +32,17 @@
              {
                  case "First":
                  $(".countSection").removeClass("d-block").addClass("d-none");
-                 cnt = 6;
+                 //cnt = 6;
                  break;
                  case "Second":
                   $(".countSection").removeClass("d-block").addClass("d-none");
-                 cnt = 4;
+                 //cnt = 4;
                  break;
                  case "Third":
                   $(".countSection").removeClass("d-block").addClass("d-none");
-                 cnt = 8;
+                 //cnt = 8;
                  break;
                  case "Forth":
-                 if($(".countSection").hasClass("d-none"))
-                 {
-                     $(".countSection")
-                     .removeClass("d-none").addClass("d-block");
-                 }
-                 break;
                  case "Fifth":
                  if($(".countSection").hasClass("d-none"))
                  {

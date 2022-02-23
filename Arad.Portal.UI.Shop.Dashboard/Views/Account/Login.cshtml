@@ -147,7 +147,7 @@
 
                                     <span class="form-control p-0">
                                         <img alt="Captcha"
-                                             id="imgCpatcha"
+                                             id="imgCaptcha"
                                              src="@Url.Action("CaptchaImage", "Captcha")"
                                              style="height: 100% !important; width: 100% !important;">
                                     </span>
@@ -156,7 +156,7 @@
                                 {
                                     <span class="form-control p-0">
                                         <img alt="Captcha"
-                                             id="imgCpatcha"
+                                             id="imgCaptcha"
                                              src="@Url.Action("CaptchaImage", "Captcha")"
                                              style="height: 100% !important; width: 100% !important;">
                                     </span>
@@ -228,7 +228,7 @@
 
     function refreshCaptcha()
     {
-        $("#imgCpatcha").attr('src', `@Url.Action("CaptchaImage", "Captcha")?${new Date().getTime()}`);
+        $("#imgCaptcha").attr('src', `@Url.Action("CaptchaImage", "Captcha")?${new Date().getTime()}`);
         $("#inlineFormInputGroup").val('');
         $("#inlineFormInputGroup").focus();
         $('#captValidation').empty();

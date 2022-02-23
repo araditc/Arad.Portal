@@ -51,7 +51,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo
                 .Find(filterDef)
                 .Project(_=> new SelectListModel() 
                 {
-                    Value = _.TemplateName, 
+                    Value = _.TemplateId, 
                     Text = GeneralLibrary.Utilities.Language.GetString($"TemplateName_{_.TemplateName}")
                 }).ToList();
             return lst;
@@ -66,7 +66,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo
                 .Find(filterDef)
                 .Project(_ => new SelectListModel()
                 {
-                    Value = _.ModuleName,
+                    Value = _.ModuleId,
                     Text = _.ModuleName
                 }).ToList();
             lst.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("Choose"), Value = "-1" });

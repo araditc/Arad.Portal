@@ -35,6 +35,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Shared\Components\ContentTemplates\Fifth.cshtml" />
+    <None Include="Views\Shared\Components\ContentTemplates\First.cshtml" />
+    <None Include="Views\Shared\Components\ContentTemplates\Forth.cshtml" />
+    <None Include="Views\Shared\Components\ContentTemplates\Second.cshtml" />
+    <None Include="Views\Shared\Components\ContentTemplates\Third.cshtml" />
+    <None Include="Views\Shared\Components\SpecialProduct\First.cshtml" />
     <None Include="wwwroot\lib\bootstrap-select\css\bootstrap-select.css.map" />
     <None Include="wwwroot\lib\bootstrap-select\js\bootstrap-select.js" />
     <None Include="wwwroot\lib\bootstrap-select\js\bootstrap-select.js.map" />

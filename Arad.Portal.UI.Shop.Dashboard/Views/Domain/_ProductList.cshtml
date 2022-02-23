@@ -1,9 +1,9 @@
-﻿<div class="row" div="templateSection">
+﻿<div class="row par" id="templateSection">
      <label class="form-label" >@Language.GetString("ViewTemplate")</label><br/>
     @foreach(SelectImageListModel option in ViewBag.ProductTemplateList)
     {
         <div class="col-12 col-md-3">
-            <input class="form-check-input" name="rdbProductTemplateList" type="checkbox" value="@(option.Value)" /><br/>
+            <input class="form-check-input" name="rdbProductTemplateList" type="radio" value="@(option.Text)" /><br/>
             <img class="img-fluid m-2" src="@($"../filemanager/GetScaledImageOnWidth?path={option.ImageUrl}&width=200")" />
         </div>
     }
@@ -11,12 +11,12 @@
 <div class="row">
     <div class="col-12">
           <label class="form-label" >@Language.GetString("Type")</label><br/>
-          <select class="form-control selectpicker" data-live-search="true" asp-items ="@(new SelectList(ViewBag.ProductOrContentTypeList,"Value","Text"))" >
+          <select class="form-control selectpicker par" data-live-search="true" id="typeList" asp-items ="@(new SelectList(ViewBag.ProductOrContentTypeList,"Value","Text"))" >
           </select>
     </div>
     <div class="col-12 col-md-4 countSection d-none" >
           <label class="form-label" >@Language.GetString("CountToShow")</label><br/>
-          <input type="number" id="countToShow" class="form-control" value="" />
+          <input type="number" id="countToShow" class="form-control par" value="" />
     </div>
     
 </div>

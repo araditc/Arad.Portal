@@ -226,7 +226,7 @@
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label class="form-label">@Language.GetString("tbl_SpecificationName")</label>
-                                        <select class="form-control selectpicker" data-live-search="true" id="specificationId" data-live-search="true">
+                                        <select class="form-control selectpicker" data-live-search="true" id="specificationId" >
                                         </select>
                                         <span data-val-result="specificationId" class="text-danger"></span>
                                     </div>
@@ -957,21 +957,7 @@ else
                     if ($(this).text() == currencyId && $(this).parent().find("td:eq(4)").text() == "" &&
                         $(this).parent().find("td:eq(5)").text() == active) {
                         /*confirm = false;*/
-                        @*Swal.fire({
-                            title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-                            text: '@Language.GetString("AlertAndMessage_PricePerCurrencyUniqueness")',
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#d51c1c',
-                            cancelButtonColor: '#009c09db',
-                            confirmButtonText: '@Language.GetString("btn_Confirm")',
-                            cancelButtonText: '@Language.GetString("btn_NotConfirm")'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                $(this).parent().find("td:eq(5)").text(inActive);
-                                appendToPriceList(tr);
-                            }
-                        });*@
+                       
                         globalSender = this;
                         document.getElementById('confirmLabel').innerHTML = '@Language.GetString("AlertAndMessage_AreYouSure")';
 			            document.getElementById('confirmBody').innerHTML = '@Language.GetString("AlertAndMessage_PricePerCurrencyUniqueness")';
