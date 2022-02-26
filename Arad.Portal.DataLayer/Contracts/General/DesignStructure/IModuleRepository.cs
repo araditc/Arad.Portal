@@ -16,6 +16,8 @@ namespace Arad.Portal.DataLayer.Contracts.General.DesignStructure
         List<SelectListModel> GetAllTemplate();
         List<SelectListModel> GetAllModules();
 
+        List<Entities.General.DesignStructure.Module> GetAllModuleList();
+
         List<SelectListModel> GetAllProductOrContentTypes();
 
         List<SelectImageListModel> GetAllContentTemplateDesign();
@@ -28,7 +30,11 @@ namespace Arad.Portal.DataLayer.Contracts.General.DesignStructure
         
         Entities.General.DesignStructure.Template FetchTemplateByName(string templateName);
 
-        Entities.General.DesignStructure.Module FetchModuleByName(string moduleName);
+        Entities.General.DesignStructure.Template FetchTemplateById(string templateId);
+
+        Entities.General.DesignStructure.Module FetchById(string moduleId);
+
+       Entities.General.DesignStructure.Module FetchModuleByName(string moduleName);
 
     }
 }

@@ -136,27 +136,27 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     staticFileStorageURL = _webHostEnvironment.WebRootPath;
                 }
-                foreach (var img in model.Images)
-                {
-                    if (string.IsNullOrWhiteSpace(img.Content))
-                    {
-                        IImageFormat format;
-                        using (SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(Path.Combine(staticFileStorageURL, img.Url), out format))
-                        {
-                            var imageEncoder = Configuration.Default.ImageFormatsManager.FindEncoder(format);
-                            using (MemoryStream m = new MemoryStream())
-                            {
-                                image.Save(m, imageEncoder);
-                                byte[] imageBytes = m.ToArray();
+                //foreach (var img in model.Images)
+                //{
+                //    if (string.IsNullOrWhiteSpace(img.Content))
+                //    {
+                //        IImageFormat format;
+                //        using (SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(Path.Combine(staticFileStorageURL, img.Url), out format))
+                //        {
+                //            var imageEncoder = Configuration.Default.ImageFormatsManager.FindEncoder(format);
+                //            using (MemoryStream m = new MemoryStream())
+                //            {
+                //                image.Save(m, imageEncoder);
+                //                byte[] imageBytes = m.ToArray();
 
-                                // Convert byte[] to Base64 String
-                                string base64String = Convert.ToBase64String(imageBytes);
-                                img.Content = $"data:image/png;base64, {base64String}";
-                            }
-                        }
+                //                // Convert byte[] to Base64 String
+                //                string base64String = Convert.ToBase64String(imageBytes);
+                //                img.Content = $"data:image/png;base64, {base64String}";
+                //            }
+                //        }
 
-                    }
-                }
+                //    }
+                //}
             }else
             {
                 model.ContentCode = _codeGenerator.GetNewId();
@@ -257,6 +257,19 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 //if (dto.LogoContent != "")
                 //    dto.FileLogo = dto.LogoContent;
+
+                var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
+                var path = "images/Contents";
+                foreach (var pic in dto.Images)
+                {
+                    var res = ImageFunctions.SaveImageModel(pic, path, localStaticFileStorageURL);
+                    if (res.Key != Guid.Empty.ToString())
+                    {
+                        pic.ImageId = res.Key;
+                        pic.Url = res.Value;
+                        pic.Content = "";
+                    }
+                }
 
                 Result saveResult = await _contentRepository.Update(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }

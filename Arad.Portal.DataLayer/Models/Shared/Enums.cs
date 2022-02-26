@@ -10,6 +10,12 @@ namespace Arad.Portal.DataLayer.Models.Shared
 {
     public static class Enums
     {
+        public enum PageType
+        {
+            MainPage,
+            contentPage,
+            ProductPage
+        }
 
         public enum PspType
         {

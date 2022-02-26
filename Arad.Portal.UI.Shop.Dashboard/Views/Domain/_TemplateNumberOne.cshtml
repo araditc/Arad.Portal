@@ -54,6 +54,7 @@
     var secondHtml = "";
     var thirdHtml = "";
     var moduleParams = [];
+    var paramsValue = [] ;
     $(document).ready(function(){
         $(".moduleList").change(function(){
             if($(this).val()!= "-1")
@@ -218,13 +219,75 @@
                     },
                 });
         });
-
-        $("#btnPreview").click(function(){
-            firstHtml = $("#firstDiv").html();
+        function getContent()
+        {
+             firstHtml = $("#firstDiv").html();
             secondHtml = $("#middleDiv").html();
             thirdHtml = $("#lastDiv").html();
+           
+            var obj1 = {};
+            var obj2 ={};
+            var obj3 = {};
+            obj1.Key = "[0]";
+            obj1.Value = firstPlace;
+            paramsValue.push(obj1);
 
-            window.location.href = 
+            obj2.Key ="[1]";
+            obj2.Value = secondPlace;
+            paramsValue.push(obj2);
+
+            obj3.Key = "[2]";
+            obj3.Value = thirdPlace;
+            paramsValue.push(obj3);
+        }
+        $("#btnPreview").click(function(){
+
+            getContent();
+             $.ajax({
+                url: "/Domain/StoreDesignPreview',
+                data : JSON.stringify(paramsValue)
+                contentType: 'application/json',
+                type: 'Post',
+                dataType: 'json',
+                success: function (result) {
+                    if(result != "")
+                    {
+                        window.open('@Url.Action("DesignPreview")'+'?key='+result.key + '&id' + '@ViewBag.TemplateId', '_blank');
+                    }
+                }
+            });
+        });
+
+        $("#btn_Save").click(function(){
+            if(paramsValue.length == 0)
+            {
+                getContent();
+            }
+            var obj = {};
+            obj.TemplateId = "@ViewBag.TemplateId";
+            obj.DomianId = "@ViewBag.DomainId";
+            obj.ParamsValue = paramsValue;
+            obj.ModuleParams = moduleParams;
+            $.ajax({
+                url: "/Domain/SendModuleParams',
+                data : JSON.stringify(obj)
+                contentType: 'application/json',
+                type: 'Post',
+                dataType: 'json',
+                success: function (result)
+                {
+                   if (result.status === "Success") 
+                   {
+                        document.getElementById('mainToastBody').innerHTML = 
+                           '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
+                        document.getElementById('mainToastBody').classList.add('alert-success');
+                        setTimeout(function()
+                        {
+                                window.location.href = '@Url.Action("List")';
+                        },1500);
+                    }     
+                }
+            });
         });
         });
 </script>

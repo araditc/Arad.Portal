@@ -54,5 +54,25 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             byte[] fileContent = ImageFunctions.GetResizedImage(finalPath, height);
             return File(fileContent, mimeType);
         }
+
+        public IActionResult GetScaledImageOnWidth(string path, int width)
+        {
+            string finalPath = "";
+            var localStaticFileStorage = _configuration["LocalStaticFileStorage"];
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                if (path.StartsWith("/"))
+                    path = path[1..];
+                finalPath = Path.Combine(localStaticFileStorage, path).Replace("\\", "/");
+            }
+            if (string.IsNullOrWhiteSpace(finalPath) || !System.IO.File.Exists(finalPath))
+            {
+                finalPath = Path.Combine(localStaticFileStorage, "images/imgs/NoImage.png").Replace("\\", "/");
+            }
+            var fileName = Path.GetFileName(finalPath);
+            var mimeType = ImageFunctions.GetMIMEType(fileName);
+            byte[] fileContent = ImageFunctions.GetResizedImageBasedOnWidth(finalPath, width);
+            return File(fileContent, mimeType);
+        }
     }
 }

@@ -20,7 +20,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo
         public IMongoCollection<Template> Templates { get; set; }
         public ModuleRepository(ModuleContext context, IHttpContextAccessor accessor):base(accessor)
         {
-            _context = context;  
+            _context = context;
+            Modules = _context.ModuleCollection;
+            Templates = _context.TemplateCollection;
         }
         public bool HasAnyModule()
         {
@@ -172,6 +174,26 @@ namespace Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo
             }
 
             return result;
+        }
+
+        public Template FetchTemplateById(string templateId)
+        {
+            var tem = _context.TemplateCollection
+                .Find(_ => _.TemplateId == templateId).FirstOrDefault();
+            return tem;
+        }
+
+        public Module FetchById(string moduleId)
+        {
+            var module = _context.ModuleCollection
+                   .Find(_ => _.ModuleId == moduleId).FirstOrDefault();
+            return module;
+        }
+
+        public List<Module> GetAllModuleList()
+        {
+            var moduleList = _context.ModuleCollection.Find(_ => _.IsActive).ToList();
+            return moduleList;
         }
     }
 }

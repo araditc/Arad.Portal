@@ -74,7 +74,6 @@ namespace Arad.Portal.UI.Shop.Controllers
             return File(fileContent, mimeType);
         }
 
-
         public IActionResult GetScaledImageOnWidth(string path, int width)
         {
             string finalPath = "";
@@ -88,7 +87,7 @@ namespace Arad.Portal.UI.Shop.Controllers
 
             if (string.IsNullOrWhiteSpace(finalPath) || !System.IO.File.Exists(finalPath))
             {
-                finalPath = "/images/imgs/NoImage.png";
+                finalPath = Path.Combine(localStaticFileStorage, "images/imgs/NoImage.png").Replace("\\", "/");
             }
             var fileName = Path.GetFileName(finalPath);
             var mimeType = ImageFunctions.GetMIMEType(fileName);

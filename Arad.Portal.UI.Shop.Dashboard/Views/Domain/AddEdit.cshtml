@@ -446,7 +446,7 @@
                                     {
                                          window.location.href = '@Url.Action("List")';
                                     },
-                            1500);
+                                 1500);
                                 }else
                                 if (result.status === "ModelError") {
                                     var spanErrorList = $('span[data-val-result]');
@@ -464,15 +464,7 @@
                                             $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
                                         }
                                     }
-                                },
-                            @*error: function (xhr, ajaxOptions, thrownError) {
-                                alert("@error");
-                                alert(xhr.status);
-                                alert(thrownError);
-                            },*@
-                            complete: function () {
-                                /*removeLoading($("#addDomainCard"));*/
-                            }
+                                }
                     });
                 }
 

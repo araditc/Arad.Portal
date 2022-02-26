@@ -22,6 +22,14 @@ using Arad.Portal.DataLayer.Contracts.General.DesignStructure;
 using Microsoft.AspNetCore.Hosting;
 using System.Globalization;
 using Arad.Portal.DataLayer.Entities.General.DesignStructure;
+using Arad.Portal.UI.Shop.Dashboard.Helpers;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
+using Microsoft.Extensions.DependencyInjection;
+using System.Text.Encodings.Web;
+using Microsoft.AspNetCore.Mvc.ViewFeatures.Buffers;
+using System.IO;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -36,7 +44,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly ICurrencyRepository _curRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly UserManager<ApplicationUser> _userManager;
-       
+        
+
         public DomainController(IDomainRepository domainRepository, UserManager<ApplicationUser> userManager,
             IProviderRepository providerRepository,
             IWebHostEnvironment hostEnvironment,
@@ -53,6 +62,29 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _moduleRepository = moduleRepository;
             _webHostEnvironment = hostEnvironment;
         }
+
+        public async Task<string> RenderViewComponent(string viewComponent, object args)
+        {
+            var sp = HttpContext.RequestServices;
+
+            var helper = new DefaultViewComponentHelper(
+                sp.GetRequiredService<IViewComponentDescriptorCollectionProvider>(),
+                HtmlEncoder.Default,
+                sp.GetRequiredService<IViewComponentSelector>(),
+                sp.GetRequiredService<IViewComponentInvokerFactory>(),
+                sp.GetRequiredService<IViewBufferScope>());
+
+            using (var writer = new StringWriter())
+            {
+                var context = new ViewContext(ControllerContext, NullView.Instance, ViewData, TempData, writer, new HtmlHelperOptions());
+                helper.Contextualize(context);
+                var result = await helper.InvokeAsync(viewComponent, args);
+                result.WriteTo(writer, HtmlEncoder.Default);
+                await writer.FlushAsync();
+                return writer.ToString();
+            }
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> List()
@@ -165,6 +197,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.TemplateList = temList;
             var moduleList = _moduleRepository.GetAllModules();
             ViewBag.ModuleList = moduleList;
+
+            ViewBag.DomainId = domainId;
             return View();
         }
 
@@ -178,12 +212,125 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return PartialView(viewName);
         }
 
+        [HttpPost]
+        public IActionResult StoreDesignPreview([FromBody] List<KeyVal> parameters)
+        {
+            var key = Guid.NewGuid().ToString();
+            HttpContext.Session.SetComplexData(key, parameters);
+
+            return Json(new { key = key });
+
+        }
+
+        [HttpGet]
+        public IActionResult DesignPreview(string key, string id)
+        {
+            var template = _moduleRepository.FetchTemplateById(id);
+            List<KeyVal> datas = HttpContext.Session.GetComplexData<List<KeyVal>>(key);
+
+            switch (template.TemplateName)
+            {
+                case "TemplateNumber1":
+                    var first = datas.FirstOrDefault(_ => _.Key == "[0]").Val;
+                    var second = datas.FirstOrDefault(_ => _.Key =="[1]").Val;
+                    var third = datas.FirstOrDefault(_ => _.Key == "[2]").Val;
+                    template.HtmlContent = template.HtmlContent.Replace("[0]", first);
+                    template.HtmlContent = template.HtmlContent.Replace("[1]", second);
+                    template.HtmlContent = template.HtmlContent.Replace("[2]", third);
+                    break;
+                case "TemplateNumber2":
+                    break;
+                default:
+                    break;
+            }
+            return View(template);
+        }
+
         [HttpGet]
         public IActionResult GetProductModuleViewComponent(ProductOrContentType productType, ProductTemplateDesign selectionTemplate, int count)
         {
             return ViewComponent("SpecialProduct", new { productType, selectionTemplate, count });
         }
 
+
+        [HttpPost]
+        public async  Task<IActionResult> SendModuleParams([FromBody]DomainPageModel model)
+        {
+            var domainDto = _domainRepository.FetchDomain(model.DomainId).ReturnValue;
+            switch (model.PageType)
+            {
+                case PageType.MainPage:
+                    domainDto.MainPageTemplateId = model.TemplateId;
+                    domainDto.MainPageTemplateParamsValue = model.ParamsValue;
+                    domainDto.MainPageModuleParamsWithValues = model.ModuleParams;
+                    break;
+                case PageType.contentPage:
+                    domainDto.ContentTemplateId = model.TemplateId;
+                    domainDto.ContentTemplateParamsValue = model.ParamsValue;
+                    domainDto.ContentModuleParamsWithValues = model.ModuleParams;
+                    break;
+                case PageType.ProductPage:
+                    domainDto.ProductTemplateId = model.TemplateId;
+                    domainDto.ProductTemplateParamsValue = model.ParamsValue;
+                    domainDto.ProductModuleParamsWithValues = model.ModuleParams;
+                    break;
+                default:
+                    break;
+            }
+            var res = await _domainRepository.EditDomain(domainDto);
+            return Json(res.Succeeded ? new { Status = "Success", res.Message }
+                 : new { Status = "Error", res.Message });
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetPageFromDomain(string domainId, PageType pageType)
+        {
+            var domainEntity = _domainRepository.FetchDomain(domainId).ReturnValue;
+            Template templateEntity = new Template();
+            var allModules = _moduleRepository.GetAllModuleList();
+            switch (pageType)
+            {
+                case PageType.MainPage:
+                    templateEntity = _moduleRepository.FetchTemplateById(domainEntity.MainPageTemplateId);
+                    foreach (var par in domainEntity.MainPageTemplateParamsValue)
+                    {
+                        string htmlPart = "";
+                        var moduleList = par.Val.Split("<br/>");
+                        foreach (var moduleId in moduleList)
+                        {
+                            var moduleEntity = allModules.FirstOrDefault(_ => _.ModuleId == moduleId);
+                            var moduleParameters = domainEntity.MainPageModuleParamsWithValues
+                                .FirstOrDefault(_ => _.Place == par.Key && _.ModuleId == moduleId);
+                            switch (moduleEntity.ModuleCategoryType)
+                            {
+                                //case ModuleCategoryType.Advertisement:
+                                //    break;
+                                //case ModuleCategoryType.ImageSlider:
+                                //    break;
+                                case ModuleCategoryType.Product:
+                                    htmlPart += await RenderViewComponent("SpecialProduct", moduleParameters.ParamsValue);
+                                    break;
+                                case ModuleCategoryType.Content:
+                                    htmlPart += await RenderViewComponent("ContentTemplates", moduleParameters.ParamsValue);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            htmlPart += "<br/>";
+                        }
+                        templateEntity.HtmlContent = templateEntity.HtmlContent.Replace(par.Key, htmlPart);
+                    }
+                    break;
+                //case PageType.contentPage:
+                //    break;
+                //case PageType.ProductPage:
+                //    break;
+                default:
+                    break;
+            }
+            return View(templateEntity);
+        }
 
         [HttpGet]
         public IActionResult GetContentModuleViewComponent(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, int? count)
@@ -384,5 +531,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
             : new { Status = "Error", opResult.Message });
         }
+
+
+        
     }
 }

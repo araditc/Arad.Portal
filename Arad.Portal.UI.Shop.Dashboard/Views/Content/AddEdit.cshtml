@@ -15,108 +15,117 @@
     }
 }
 @section Styles{
-    <link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
-    <link href="~/plugins/TagInput/amsify.suggestags.css" rel="stylesheet" />
-    <link href="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.css" rel="stylesheet" />
-    <style>
-       
-        .ck-editor .ck-editor__main .ck-content {
-            height: 280px;
-            min-height: 250px;
-        }
-        .removeImage {
-            display: inline-block;
-            position: absolute;
-            top: -7px;
-            right: -5px;
-            width: 20px;
-            height: 21px;
-            background: #dc3545;
-            text-align: center;
-            border-radius: 50%;
-            color: white !important;
-            cursor: pointer;
-        }
-        .row{
-            margin-top: 1%;
-        }
-        #bd-root-userBirthDate {
-            width: 100%
-        }
-        img {
-            max-width: 100%;
-            max-height: 100%;
-        }
-        .cropper-container {
-            width: 100%
-        }
-        .iti__flag-container {
-            direction: ltr
-        }
-        .modal {
-            z-index: 100001 !important;
-        }
-        .amsify-suggestags-input-area {
-            text-align: @(ViewBag.dir == "rtl" ? "right" : "left");
-            height: auto;
-        }
-        img, svg, .SimpleUploadsTmpWrapper {
-            height: auto;
-            max-width: 100%;
-        }
-    </style>
+<link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
+<link href="~/plugins/TagInput/amsify.suggestags.css" rel="stylesheet" />
+<link href="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.css" rel="stylesheet" />
+<style>
+
+    .ck-editor .ck-editor__main .ck-content {
+        height: 280px;
+        min-height: 250px;
+    }
+
+    .removeImage {
+        display: inline-block;
+        position: absolute;
+        top: -7px;
+        right: -5px;
+        width: 20px;
+        height: 21px;
+        background: #dc3545;
+        text-align: center;
+        border-radius: 50%;
+        color: white !important;
+        cursor: pointer;
+    }
+
+    .row {
+        margin-top: 1%;
+    }
+
+    #bd-root-userBirthDate {
+        width: 100%
+    }
+
+    img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .cropper-container {
+        width: 100%
+    }
+
+    .iti__flag-container {
+        direction: ltr
+    }
+
+    .modal {
+        z-index: 100001 !important;
+    }
+
+    .amsify-suggestags-input-area {
+        text-align: @(ViewBag.dir == "rtl" ? "right" : "left");
+        height: auto;
+    }
+
+    img, svg, .SimpleUploadsTmpWrapper {
+        height: auto;
+        max-width: 100%;
+    }
+</style>
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
-        <style>
-            .ck-tooltip__text {
-                font-family: IRANSansWeb !important;
-            }
+<link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
+<style>
+    .ck-tooltip__text {
+        font-family: IRANSansWeb !important;
+    }
 
-            .ck-button__label {
-                font-family: IRANSansWeb !important;
-            }
+    .ck-button__label {
+        font-family: IRANSansWeb !important;
+    }
 
-            .text-danger {
-                font-size: 12px;
-            }
+    .text-danger {
+        font-size: 12px;
+    }
 
-           
-            .removeImage {
-                display: inline-block;
-                position: absolute;
-                top: -7px;
-                right: -5px;
-                width: 20px;
-                height: 21px;
-                background: #dc3545;
-                text-align: center;
-                border-radius: 50%;
-                color: white !important;
-                cursor: pointer;
-            }
 
-            .divCenter {
-                text-align: center;
-                border: 1px solid;
-            }
+    .removeImage {
+        display: inline-block;
+        position: absolute;
+        top: -7px;
+        right: -5px;
+        width: 20px;
+        height: 21px;
+        background: #dc3545;
+        text-align: center;
+        border-radius: 50%;
+        color: white !important;
+        cursor: pointer;
+    }
 
-            table tr {
-                text-align: center;
-            }
+    .divCenter {
+        text-align: center;
+        border: 1px solid;
+    }
 
-            tbody tr td {
-                vertical-align: middle;
-            }
+    table tr {
+        text-align: center;
+    }
 
-            .valign {
-                vertical-align: middle;
-            }
-        </style>
+    tbody tr td {
+        vertical-align: middle;
+    }
+
+    .valign {
+        vertical-align: middle;
+    }
+</style>
     }
     else
     {
-            <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css" rel="stylesheet" />
+<link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css" rel="stylesheet" />
     }
 }
 
@@ -128,8 +137,8 @@
         <div class="modal-content col-md-12">
             <div class="modal-header">
                 <div class="col-md-1">
-                   <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
-                </button>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                    </button>
                 </div>
                 <div class="col-md-11" style="text-align: center">
                     <h5 class="modal-title align-content-center" id="ModalLongTitle">@Language.GetString("CropImage")</h5>
@@ -143,9 +152,9 @@
                                  alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
                         </div>
                         @*<div id="container" class="col-10 col-6">
-                             <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="croppedImg"
-                                 alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
-                        </div>*@
+                            <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="croppedImg"
+                            alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
+                            </div>*@
 
                     </div>
                 </div>
@@ -154,7 +163,7 @@
                 <div>
                     <button class="btn btn-success bg-gradient" id="send_pic" type="button"><i style="margin-left: 5px;font-size:13px" class="fas fa-check"></i>@Language.GetString("btn_Approve")</button>
                     <button class="btn btn-primary bg-gradient" id="crop_button"><i style="margin-left: 5px;font-size:13px" class="fas fa-cut"></i>@Language.GetString("btn_Crop")</button>
-                    <button class="btn btn-primary bg-gradient"  onclick="rotatePic()">
+                    <button class="btn btn-primary bg-gradient" onclick="rotatePic()">
                         <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i> @Language.GetString("btn_Rotate")
                     </button>
 
@@ -212,7 +221,7 @@
                 <div class="row">
                     <div class="col-md-3">
                         <label class="form-label">@Language.GetString("StartShowDate")</label>
-                        
+
                         @if (CultureInfo.CurrentCulture.Name == "fa-IR")
                         {
                             <div class="input-group">
@@ -236,7 +245,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">@Language.GetString("EndShowDate")</label>
-                        
+
                         @if (CultureInfo.CurrentCulture.Name == "fa-IR")
                         {
                             <div class="input-group">
@@ -290,14 +299,14 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-4 border pt-3">
-                                            <label class="form-label custom-file-label float-start pt-2" for="image">@Language.GetString("btn_UploadImage")</label>
-                                            <input accept="image/x-png,image/jpeg"
-                                                   type="file" class="btn btn-sm bg-gradient float-end" name="image" id="image" onchange="getURL(this)"/>
+                                        <label class="form-label custom-file-label float-start pt-2" for="image">@Language.GetString("btn_UploadImage")</label>
+                                        <input accept="image/x-png,image/jpeg"
+                                               type="file" class="btn btn-sm bg-gradient float-end" name="image" id="image" onchange="getURL(this)" />
                                     </div>
                                     <div class="col-md-2 mb-1">
-                                       <label class="form-label" >@Language.GetString("tbl_AspectRatioImage")</label>
-                                       <select id="imgAspectRatio" class="form-control selectpicker" data-live-search="true" 
-                                          asp-items="@(new SelectList(ViewBag.ImageRatio,"Value","Text"))"></select>
+                                        <label class="form-label">@Language.GetString("tbl_AspectRatioImage")</label>
+                                        <select id="imgAspectRatio" class="form-control selectpicker" data-live-search="true"
+                                                asp-items="@(new SelectList(ViewBag.ImageRatio,"Value","Text"))"></select>
                                     </div>
                                 </div>
                                 <div class="row" id="proGallery" style="padding:1%;">
@@ -319,18 +328,18 @@
                                                 @foreach (var pic in Model.Images)
                                                 {
                                                     <tr>
-                                                        <td><img src="@pic.Content" width="120" height="120" /></td>
+                                                        <td><img  src='@($"../../filemanager/GetScaledImageOnWidth?path={pic.Url}&width={120}")' /></td>
                                                         <td style="display:none;">@pic.ImageId</td>
                                                         <td><input type="text" class="form-control txtTitle" value="@pic.Title" /></td>
                                                         <td><input type="text" class="form-control txtDesc" value="@pic.Description" /></td>
-                                                        <td class="d-none">(int)@pic.ImageRatio</td>
+                                                        <td class="d-none">@((int)@pic.ImageRatio)</td>
                                                         <td>
-                                                             @pic.ImageRatio.GetDescription()
+                                                            @pic.ImageRatio.GetDescription()
                                                         </td>
                                                         <td>
-                                                        <div class="form-check d-flex justify-content-center p-0">
-                                                            <input class="form-check-input rdbIsMain" type="radio" checked="@pic.IsMain" name="isMainImage" />
-                                                        </div>
+                                                            <div class="form-check d-flex justify-content-center p-0">
+                                                                <input class="form-check-input rdbIsMain" type="radio" checked="@pic.IsMain" name="isMainImage" />
+                                                            </div>
                                                         </td>
                                                         <td>
                                                             <button type="button" class="btn btn-danger bg-gradient" imgId="@($"img_{@pic.ImageId}")" onclick="deleteFromImageList(this);">
@@ -369,11 +378,11 @@
 
                                         <script src="~/lib/ckeditor/ckeditor.js"></script>
                                         <script>
-                                                var config = {
-                                                    filebrowserImageUploadUrl: 'Image/content-file-upload',
-                                                    language: '@lan'
-                                                }
-                                                CKEDITOR.replace("editorCk", config);
+                                            var config = {
+                                                filebrowserImageUploadUrl: 'Image/content-file-upload',
+                                                language: '@lan'
+                                            }
+                                            CKEDITOR.replace("editorCk", config);
 
                                         </script>
                                     </div>
@@ -400,21 +409,21 @@
 
 
 @section Scripts{
-    <script src="~/lib/cropperjs/cropper.js"></script>
-    <script src="~/plugins/TagInput/jquery.amsify.suggestags.js"></script>
+<script src="~/lib/cropperjs/cropper.js"></script>
+<script src="~/plugins/TagInput/jquery.amsify.suggestags.js"></script>
     @*ckeditor4*@
-    <script src="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.js"></script>
+<script src="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.js"></script>
 
 
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <script src="~/plugins/datePicker/kamadatepicker.min.js"></script>
+<script src="~/plugins/datePicker/kamadatepicker.min.js"></script>
     }
     else
     {
 <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
     }
-   
+
 <script>
         var fileName;
         var fileContent;
@@ -428,7 +437,7 @@
         var inActive = '@Language.GetString("InActive")';
         var editorBodyVar;
         $(document).ready(function () {
-           
+
         //TagInput
         $("input[name='tagKeyWords']").amsifySuggestags();
         //datetimepicker
@@ -456,7 +465,11 @@
                 for (var i = 0; i < serverImages.length; i++) {
                     var model = {};
                     model.ImageId = serverImages[i].imageId;
-                    model.Content = serverImages[i].url;
+                    model.Title = serverImages[i].title;
+                    model.Description = serverImages[i].description;
+                    model.Content = serverImages[i].content;
+                    model.IsMain = serverImages[i].isMain;
+                    model.Url = serverImages[i].url;
 
                     images.push(model);
                 }
@@ -507,7 +520,7 @@
             //console.log("validation passed");
             if (!flag) {
                 var dto = FillDataToSend();
-               
+
                 $.ajax({
                     url: "@Model.ContentId" != "" ? "/Content/Edit" : "/Content/Add",
                     contentType: 'application/json',
@@ -521,7 +534,7 @@
                         debugger;
                         if (result.status === "Success") {
                             document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
-                           
+
                             document.getElementById('mainToastBody').classList.add('alert-success');
                             setTimeout(function()
                             {
@@ -552,10 +565,10 @@
                             }
                     },
                 @*error: function (xhr, ajaxOptions, thrownError) {
-                        alert("@error");
-                        alert(xhr.status);
-                        alert(thrownError);
-                    },*@
+                            alert("@error");
+                            alert(xhr.status);
+                            alert(thrownError);
+                        },*@
                     complete: function () {
                         /*removeLoading($("#addContentCardBody"));*/
                     }
@@ -602,52 +615,61 @@
             var url = $("#galleryPic").attr("src");
             var model = {};
             model.ImageId = counter;
+            var width ="";
+            var height ="";
             var ratio="";
             switch($("#imgAspectRatio").val())
             {
                 case "1":
                 ratio ="1*1";
+                width = 120;
+                height = 120;
+                width
                 break;
                 case "2":
-                ratio = "2*1"
+                ratio = "2*1";
+                width = 120;
+                height = 60;
                 break;
                 case "4":
                 ratio="4*1";
+                width = 120;
+                height = 30;
                 break;
             }
             model.Content = url;
+            
             images.push(model);
             var tr = "";
                  tr = "<tr><td><img imgId='img_" + counter + "' src='" + model.Content +
-                    "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
+                    "' width='"+width+"' height='"+height+"'/></td><td style='display:none;'>" + model.ImageId +
                     "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
                     "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
-                    "'/><td class='d-none'>"+$("#imgAspectRatio").val()+"</td><td>"+ratio+"</td><td style='vertical-align:middle;'><div class='form-check d-flex justify-content-center p-0'><input type='radio'  name='isMainImage' class='form-check-input rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' imgId='img_" 
+                    "'/><td class='d-none'>"+$("#imgAspectRatio").val()+"</td><td>"+ratio+"</td><td style='vertical-align:middle;'><div class='form-check d-flex justify-content-center p-0'><input type='radio'  name='isMainImage' class='form-check-input rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' imgId='img_"
                     + counter + "' onclick='deleteFromImageList(this);'><i class='fa fa-trash' ></i></button></td></tr>";
-              
+
             $("#imageList").append(tr);
             counter += 1;
-          
+
          });
-         $("#uploadModal").on("shown.bs.modal", function() {
-             debugger;
-              var image = document.getElementById('croppedImg');
-              $("#send_pic").attr("disabled", true);
-                var ratio = $("#imgAspectRatio").val();
-                if (cropper !== null && cropper !== undefined) {
-                cropper.destroy();
-               }
+                $("#uploadModal").on("shown.bs.modal", function() {
+                    debugger;
+                    var image = document.getElementById('croppedImg');
+                    $("#send_pic").attr("disabled", true);
+                    var ratio = $("#imgAspectRatio").val();
+                    if (cropper !== null && cropper !== undefined) {
+                    cropper.destroy();
+                    }
+                    cropper = new Cropper(image,
+                        {
+                            background: true,
+                            aspectRatio: ratio,
+                            viewMode: 1,
+                            responsive: true,
+                            rotatable: true
 
-                cropper = new Cropper(image,
-                    {
-                        background: true,
-                        aspectRatio: ratio,
-                        viewMode: 1,
-                        responsive: true,
-                        rotatable: true
-
-                    });
-       });
+                        });
+            });
       $('#uploadModal').on('hidden.bs.modal',
         function () {
 
@@ -655,8 +677,8 @@
             document.getElementById("image").value = "";
             $("#cropped_result").remove();
         });
-       $(document).on("click", "#crop_button", 
-       function () 
+       $(document).on("click", "#crop_button",
+       function ()
        {
            var imgUrl = cropper.getCroppedCanvas({imageSmoothingEnabled: true,
                         imageSmoothingQuality: 'high' }).toDataURL('image/jpeg', 1);
@@ -676,7 +698,17 @@
        });
     });
 
-     
+    
+    function deleteFromImageList(sender) {
+
+        var id = $(sender).attr("imgId");
+        //removeFromArray
+        var item = images.find(_ => _.ImageId === id);
+        var index = images.indexOf(item);
+        images.splice(index, 1);
+        //remove in view
+        $(sender).parent().parent().remove();
+     }
     function FillDataToSend() {
         debugger;
         //console.log("FillDataToSend started");
@@ -736,12 +768,12 @@
         //alert(obj);
         return obj;
     }
-    
+
     function rotatePic() {
     cropper.rotate(90);
     }
 
-   
+
 
     function getURL(input)
     {
@@ -761,21 +793,21 @@
             }
             reader.onload = function (e) {
             var content = e.target.result;
-            //if file format is incorrect, then the 'content' won't have any src.
+            //if file format is incorrect, then the 'content' won't have any src
             if (content !== "data:") {
             var reducedContent = content.slice(5);
 
             if (reducedContent.startsWith("image")) {
                 $('#croppedImg').attr('src', content);
                $("#uploadModal").modal("show");
-            } 
+            }
             else {
             showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
             document.getElementById("image").value = "";
             $("#cropped_result").remove();
             }
             } else {
-            
+
             showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
             document.getElementById("image").value = "";
             $("#cropped_result").remove();
@@ -790,7 +822,7 @@
             }
             }
     }
-   
+
 </script>
 }
 

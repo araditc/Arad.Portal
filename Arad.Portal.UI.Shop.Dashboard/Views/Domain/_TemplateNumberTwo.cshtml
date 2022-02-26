@@ -1,3 +1,18 @@
 ﻿<div class="container">
-       <div class='row border border-3 border-secondary'></div>
+     <div class="row">
+        <button id="btnPreview" class="btn btn-primary bg-gradient btn-sm float-end" type="button">@Language.GetString("btn_Preview")</button>
+        <button id="btnSave" class="btn btn-primary bg-gradient btn-sm float-end" type="button">@Language.GetString("btn_Save")</button>
+    </div>
+       <div class="row border border-3 border-secondary" style="min-height: 400px;">
+           <div class="col-12">
+                <select class="form-control selectpicker moduleList" data-live-search="true" asp-items="@(new SelectList(ViewBag.ModuleList,"Value","Text"))">
+                </select>
+                <br />
+                <button id="btnFirstAdd" class="btn btn-success bg-gradient btn-sm float-end addModule" type="button">@Language.GetString("btn_Add")</button>
+                <button id="btnFirstBreak" class="btn btn-secondary bg-gradient btn-sm float-end lineBreak" type="button">@Language.GetString("btn_Add")</button>
+                <br />
+                <div id="mainParamsDiv"></div>
+           </div>
+       </div>
 </div>
+

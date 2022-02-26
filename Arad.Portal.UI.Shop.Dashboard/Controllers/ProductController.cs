@@ -27,7 +27,7 @@ using Arad.Portal.UI.Shop.Dashboard.Helpers;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
 using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
- 
+using SixLabors.ImageSharp.Formats;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -124,6 +124,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 ViewBag.Vendors = "-1";
             }
             ViewBag.ActivePromotionId = "-1";
+
+            var imageRatioList = _productRepository.GetAllImageRatio();
+            ViewBag.ImageRatio = imageRatioList;
+
+
             var model = new ProductOutputDTO();
             if (!string.IsNullOrWhiteSpace(id))
             {
@@ -167,6 +172,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.PromotionList = _promotionRepository.GetActivePromotionsOfCurrentUser(currentUserId, PromotionType.Product);
             
             ViewBag.PicSize = imageSize;
+
             return View(model);
         }
 

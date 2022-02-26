@@ -62,7 +62,7 @@ namespace Arad.Portal.UI.Shop.Helpers
             double ratio = (double)desiredHeight / img.Height;
             int newWidth = (int)(img.Width * ratio);
             int newHeight = (int)(img.Height * ratio);
-            img.Mutate(x => x.Resize(newHeight, newWidth));
+            img.Mutate(x => x.Resize(newWidth, newHeight));
             using (MemoryStream ms = new MemoryStream())
             {
                 img.Save(ms, imageEncoder);
@@ -82,7 +82,7 @@ namespace Arad.Portal.UI.Shop.Helpers
             double ratio = (double)desiredWidth / img.Width;
             int newWidth = (int)(img.Width * ratio);
             int newHeight = (int)(img.Height * ratio);
-            img.Mutate(x => x.Resize(newHeight, newWidth));
+            img.Mutate(x => x.Resize(newWidth, newHeight));
             using (MemoryStream ms = new())
             {
                 img.Save(ms, imageEncoder);
@@ -96,7 +96,7 @@ namespace Arad.Portal.UI.Shop.Helpers
             double ratio = (double)desiredHeight / image.Height;
             int newWidth = (int)(image.Width * ratio);
             int newHeight = (int)(image.Height * ratio);
-            image.Mutate(x => x.Resize(newHeight, newWidth));
+            image.Mutate(x => x.Resize(newWidth, newHeight));
 
             return image;
         }
@@ -106,7 +106,7 @@ namespace Arad.Portal.UI.Shop.Helpers
             double ratio = (double)desiredWidth / image.Width;
             int newWidth = (int)(image.Width * ratio);
             int newHeight = (int)(image.Height * ratio);
-            image.Mutate(x => x.Resize(newHeight, newWidth));
+            image.Mutate(x => x.Resize(newWidth, newHeight));
 
             return image;
         }

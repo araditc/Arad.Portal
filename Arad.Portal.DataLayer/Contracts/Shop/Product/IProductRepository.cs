@@ -32,7 +32,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         Task<Result> AddMultilingualProperty(string productId,
             MultiLingualProperty multiLingualProperty);
 
-
+        List<SelectListModel> GetAllImageRatio();
         Task<Result> AddPictureToProduct(string productId,
             Image picture);
         Task<Result> ImportFromExcel(List<ProductExcelImport> lst);

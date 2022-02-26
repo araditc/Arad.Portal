@@ -104,7 +104,8 @@
                 <div class="modal-body" id="upload-modal-body">
                     <div id="rowContainer" class="row justify-content-center align-items-center">
                         <div id="container" style="position: relative;display: inline; height: 400px; width: 400px;max-width:100%;">
-                            <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="blah" alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
+                            <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="croppedImg"
+                            alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
                         </div>
                     </div>
                 </div>
@@ -537,13 +538,15 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-4 border">
-                                        @*<div class="custom-file">*@
-                                            <label class="custom-file-label float-start" for="image">@Language.GetString("btn_UploadImage")</label>
+                                    <div class="col-md-4 border pt-3">
+                                            <label class="form-label custom-file-label float-start pt-2" for="image">@Language.GetString("btn_UploadImage")</label>
                                             <input accept="image/x-png,image/jpeg"
-                                                   type="file" class="btn btn-sm bg-gradient float-end" name="image" id="image" onchange="getURL(this)">
-
-                                        @*</div>*@
+                                                   type="file" class="btn btn-sm bg-gradient float-end" name="image" id="image" onchange="getURL(this)"/>
+                                    </div>
+                                    <div class="col-md-2 mb-1">
+                                       <label class="form-label" >@Language.GetString("tbl_AspectRatioImage")</label>
+                                       <select id="imgAspectRatio" class="form-control selectpicker" data-live-search="true" 
+                                          asp-items="@(new SelectList(ViewBag.ImageRatio,"Value","Text"))"></select>
                                     </div>
                                 </div>
                                 <div class="row" id="proGallery" style="padding:1%;">
@@ -552,8 +555,10 @@
                                             <thead>
                                                 <tr>
                                                     <th>@Language.GetString("Image")</th>
-                                                    <th style="display:none;"></th>
-                                                    <th>@Language.GetString("Title")</th>
+                                                    <th class="d-none"></th>
+                                                    <th>@Language.GetString("tbl_AspectRatioImage")</th>
+                                                    <th class="d-none"></th>
+                                                     <th>@Language.GetString("Title")</th>
                                                     <th>@Language.GetString("Description")</th>
                                                     <th>@Language.GetString("MainPhoto")</th>
                                                     <th></th>
@@ -563,8 +568,10 @@
                                                 @foreach (var pic in Model.Images)
                                                 {
                                                     <tr>
-                                                        <td><img  src='@($"../../filemanager/getscaledimage?path={pic.Url}&height={120}")' /></td>
-                                                        <td style="display:none;">@pic.ImageId</td>
+                                                        <td><img  src='@($"../../filemanager/GetScaledImageOnWidth?path={pic.Url}&width={120}")' /></td>
+                                                        <td class="d-none">@pic.ImageId</td>
+                                                        <td>@pic.ImageRatio.GetDescription()</td>
+                                                        <td class="d-none">@((int)@pic.ImageRatio)</td>
                                                         <td><input type="text" class="form-control txtTitle" value="@pic.Title" /></td>
                                                         <td><input type="text" class="form-control txtDesc" value="@pic.Description" /></td>
                                                         <td>
@@ -680,7 +687,7 @@ else
             }
        //multiselect
         @*$("#GroupIds").select2({ dir: '@dir', theme: 'bootstrap4' });
-        $("#specValues").select2({ dir: '@dir', theme: 'bootstrap4' });
+        $("#specValues").select2({ dir: '@dir', theme: 'bootstrap4' });*@
         if ('@Model.Images.Any()' == 'True') {
 
             var serverImages = @Json.Serialize(@Model.Images);
@@ -695,7 +702,7 @@ else
 
                 images.push(model);
             }
-        }*@
+        }
 
         $("#languageId").val('@ViewBag.LangId');
         $("#multiLangId").val('@ViewBag.LangId');
@@ -801,18 +808,40 @@ else
       });
 
         $("#send_pic").click(function () {
-
+             debugger;
             $("#uploadModal").modal("hide");
             var url = $("#galleryPic").attr("src");
             var model = {};
+            var ratio="";
+             var width ="";
+            var height ="";
+            switch($("#imgAspectRatio").val())
+            {
+                case "1":
+                ratio ="1*1";
+                 width = 120;
+                height = 120;
+                break;
+                case "2":
+                ratio = "2*1";
+                 width = 120;
+                height = 60;
+                break;
+                case "4":
+                ratio="4*1";
+                 width = 120;
+                height = 30;
+                break;
+            }
             model.ImageId = counter;
             model.Content = url;
+            model.ImageRatioId = 
             images.push(model);
             var tr = "";
 
             tr = "<tr><td><img imgId='img_" + counter + "' src='" + model.Content +
-                "' width='120' height='120'/></td><td style='display:none;'>" + model.ImageId +
-                "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
+                "' width='"+width+"' height='"+height+"'/></td><td style='display:none;'>" + model.ImageId +
+                "</td><td>"+ratio+"</td><td class='d-none'>"+$("#imgAspectRatio").val()+"</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
                 "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
                 "'/></td><td style='vertical-align:middle;'><div class='form-check d-flex justify-content-center p-0'><input type='radio'  name='isMainImage' class='rdbIsMain form-check-input'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' onclick='deleteFromImageList(this);'><i class='fa fa-trash'></i></button></td></tr>";
 
@@ -1057,7 +1086,7 @@ else
     }
 
     function FillDataToSend() {
-
+        debugger
         var dto = {};
         dto.GroupNames = [];
         dto.GroupIds = [];
@@ -1121,16 +1150,18 @@ else
 
         //pictures
         $("#imageList tr").each(function () {
-
+            debugger;
             var id = $(this).find("td:eq(1)").text();
             var item = images.find(_ => _.ImageId == id);
             index = images.indexOf(item);
 
-            item.IsMain = $(this).find("td:eq(4) .rdbIsMain").prop("checked") == true;
-            item.Title = $(this).find("td:eq(2) .txtTitle").val();
-            item.Description = $(this).find("td:eq(3) .txtDesc").val();
+            item.IsMain = $(this).find("td:eq(6) .rdbIsMain").prop("checked") == true;
+            item.Title = $(this).find("td:eq(4) .txtTitle").val();
+            item.Description = $(this).find("td:eq(5) .txtDesc").val();
+            item.ImageRatio = parseInt($(this).find("td:eq(2)").text());
+            item.ImageRatioId = parseInt($(this).find("td:eq(3)").text());
             item.ImageId = item.ImageId.toString();
-            images[index] = item;
+            //images[index] = item;
             dto.Pictures.push(images[index]);
         });
 
@@ -1212,7 +1243,26 @@ else
            /* $("#urlFriend").val("");*/
         }
        }
+    $("#uploadModal").on("shown.bs.modal", function() {
+             
+              var image = document.getElementById('croppedImg');
+              $("#send_pic").attr("disabled", true);
+              debugger;
+                var ratio = $("#imgAspectRatio").val();
+                if (cropper !== null && cropper !== undefined) {
+                cropper.destroy();
+               }
 
+                cropper = new Cropper(image,
+                    {
+                        background: true,
+                        aspectRatio: ratio,
+                        viewMode: 1,
+                        responsive: true,
+                        rotatable: true
+
+                    });
+       });
     $('#uploadModal').on('hidden.bs.modal',
         function () {
 
@@ -1224,47 +1274,25 @@ else
     function rotatePic() {
         cropper.rotate(90);
     }
-
-    function upRiseModal() {
-    $("#send_pic").attr("disabled", true);
-    $("#uploadModal").modal("show");
-    }
-
-    function initCropper() {
-
-        var image = document.getElementById('blah');
-        if (cropper !== null && cropper !== undefined) {
-            cropper.destroy();
-        }
-
-        cropper = new Cropper(image,
-            {
-                background: true,
-                aspectRatio: 1,
-                viewMode: 2,
-                responsive: true,
-                rotatable: true
-            });
-
-        document.getElementById('crop_button').addEventListener('click',
-            function () {
-                 var imgUrl = cropper.getCroppedCanvas({imageSmoothingEnabled: true,
-                         imageSmoothingQuality: 'high' }).toDataURL('image/jpeg', 1);
-                var img = document.createElement("img");
-                img.setAttribute("id", "galleryPic");
-                img.setAttribute("class", "img-fluid");
-                var height = $("#container").attr("height");
-                var croppedContainer = document.createElement("div");
-                croppedContainer.setAttribute("id", "cropped_result");
-                croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
-                document.getElementById("rowContainer").appendChild(croppedContainer);
-                img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
-                img.src = imgUrl;
-                document.getElementById("cropped_result").innerHTML = "";
-                document.getElementById("cropped_result").appendChild(img);
-                $("#send_pic").attr("disabled", false);
-            });
-    }
+    $(document).on("click", "#crop_button", 
+        function () {
+                var imgUrl = cropper.getCroppedCanvas({imageSmoothingEnabled: true,
+                        imageSmoothingQuality: 'high' }).toDataURL('image/jpeg', 1);
+            var img = document.createElement("img");
+            img.setAttribute("id", "galleryPic");
+            img.setAttribute("class", "img-fluid");
+            var height = $("#container").attr("height");
+            var croppedContainer = document.createElement("div");
+            croppedContainer.setAttribute("id", "cropped_result");
+            croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
+            document.getElementById("rowContainer").appendChild(croppedContainer);
+            img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
+            img.src = imgUrl;
+            document.getElementById("cropped_result").innerHTML = "";
+            document.getElementById("cropped_result").appendChild(img);
+            $("#send_pic").attr("disabled", false);
+        });
+   
 
     function getURL(input)
     {
@@ -1288,30 +1316,17 @@ else
                     var reducedContent = content.slice(5);
 
                     if (reducedContent.startsWith("image")) {
-                        $('#blah').attr('src', content);
-                        setTimeout(upRiseModal, 100);
-                        setTimeout(initCropper, 500);
+                        //setTimeout(upRiseModal, 100);
+                        //setTimeout(initCropper, 500);
+                         $('#croppedImg').attr('src', content);
+                        $("#uploadModal").modal("show");
                     } else {
-
-                        @*Swal.fire({
-                            position: 'top-end',
-                            icon: 'error',
-                            title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });*@
                         showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
                         document.getElementById("image").value = "";
                         $("#cropped_result").remove();
                     }
                 } else {
-                    @*Swal.fire({
-                        position: 'top-end',
-                        icon: 'error',
-                        title: '@Language.GetString("AlertAndMessage_InvalidFormat")',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });*@
+                  
                     showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
                     document.getElementById("image").value = "";
                     $("#cropped_result").remove();
@@ -1320,12 +1335,7 @@ else
         }
         else
         {
-            @*Swal.fire({
-                icon: 'error',
-                title: '@Language.GetString("AlertAndMessage_InvalidFileSize")',
-                showConfirmButton: false,
-                timer: 1500
-            });*@
+          
             showError('@Language.GetString("AlertAndMessage_InvalidFileSize")');
             document.getElementById("image").value = "";
             $("#cropped_result").remove();

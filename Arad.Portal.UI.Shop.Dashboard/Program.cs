@@ -26,7 +26,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
                 })
                 .ConfigureServices(services =>
                 {
-                    services.AddHostedService<ConfigureMongoDbIndexesService>();
-                });
+            services.AddHostedService<ConfigureMongoDbIndexesService>();
+        });
     }
 }
