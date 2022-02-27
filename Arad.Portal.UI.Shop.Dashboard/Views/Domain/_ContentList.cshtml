@@ -4,7 +4,7 @@
     {
         <div class="col-12 col-md-3">
             <input class="form-check-input" name="rdbContentTemplateList" type="checkbox" value="@(option.Text)" /><br/>
-            <img class="img-fluid m-2" src="@($"../filemanager/GetScaledImageOnWidth?path={option.ImageUrl}&width=200")" />
+            <img class="img-fluid m-2" src="@($"../filemanager/GetScaledImageOnWidth?path={option.ImageUrl}&width=60")" />
         </div>
     }
 </div>
@@ -14,9 +14,12 @@
           <select class="form-control selectpicker par" data-live-search="true" id="typeList"  asp-items ="@(new SelectList(ViewBag.ProductOrContentTypeList,"Value","Text"))" >
           </select>
     </div>
-    <div class="col-12 col-md-4 countSection d-none" >
+    <div class="col-12 countSection d-none" >
           <label class="form-label" >@Language.GetString("CountToShow")</label><br/>
           <input type="number" id="countToShow" class="form-control par" value="" />
+    </div>
+    <div class="col-12">
+        <button id="btnAddModuleWithParameters" class="btn btn-success bg-gradient btn-sm float-end m-1" type="button">@Language.GetString("btn_Add")</button>
     </div>
     
 </div>

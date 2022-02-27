@@ -105,7 +105,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
         {
             services.AddHttpClient();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            services.AddDistributedMemoryCache();
+            //services.AddDistributedMemoryCache();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<HtmlEncoder>(
                 HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.BasicLatin,
@@ -163,11 +163,11 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                  .AddCookie(opt =>
                  {
-                     opt.Cookie.HttpOnly = true;
+                     //opt.Cookie.HttpOnly = true;
                  });
             services.ConfigureApplicationCookie(options =>
             {
-                options.Cookie.HttpOnly = true;
+                //options.Cookie.HttpOnly = true;
                 options.AccessDeniedPath = "/Account/unAuthorize";
                 options.LoginPath = "/Account/Login";
                 options.LogoutPath = "/Account/Logout";
@@ -210,8 +210,28 @@ namespace Arad.Portal.UI.Shop.Dashboard
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspuseSnetcore-hsts.
                 app.UseHsts();
             }
+
+            //   app.UseHttpsRedirection();
            
-         //   app.UseHttpsRedirection();
+            if(!Directory.Exists(Configuration["LocalStaticFileStorage"]))
+            {
+                Directory.CreateDirectory(Configuration["LocalStaticFileStorage"]);
+                var path1 = Path.Combine(Configuration["LocalStaticFileStorage"], "/Contents");
+                var path2 = Path.Combine(Configuration["LocalStaticFileStorage"], "/ProductGroups");
+                var path3 = Path.Combine(Configuration["LocalStaticFileStorage"], "/Products");
+                if(!Directory.Exists(path1))
+                {
+                    Directory.CreateDirectory(path1);
+                }
+                if (!Directory.Exists(path2))
+                {
+                    Directory.CreateDirectory(path2);
+                }
+                if (!Directory.Exists(path3))
+                {
+                    Directory.CreateDirectory(path3);
+                }
+            }
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions()
             {
@@ -241,18 +261,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
                 else
                     endpoints.MapControllers();
 
-                //endpoints.MapControllerRoute(
-                //     name: "ProductComments",
-                //     pattern: "ProductComments/{action}/{id?}",
-                //     defaults: new { controller = "Comments" , t = "product"});
-
-                //  endpoints.MapControllerRoute(
-                //    name: "ContentComments",
-                //    pattern: "ContentComments/{action}/{id?}",
-                //    defaults: new { controller = "Comments", t = "content"});
-
-                //endpoints.MapRazorPages();
-
+               
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
@@ -346,5 +355,6 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<ICountryRepository, CountryRepository>();
             services.AddTransient<IModuleRepository, ModuleRepository>();
         }
+
     }
 }

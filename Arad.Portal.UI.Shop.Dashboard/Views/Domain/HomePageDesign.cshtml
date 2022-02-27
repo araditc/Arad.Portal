@@ -1,7 +1,7 @@
 ﻿
 <div class="row">
-    <div class="col-12 col-md-1">
-       <label class="form-label" for="TemplateId">@Language.GetString("PageTemplate")</label>
+    <div class="col-12 col-md-1 text-center">
+       <label class="form-label mt-2" for="TemplateId">@Language.GetString("PageTemplate")</label>
     </div>
      <div class="col-12 col-md-3">
        <select class="form-control selectpicker" data-live-search="true" id="templateList" asp-items="@(new SelectList(ViewBag.TemplateList,"Value","Text"))">
@@ -27,7 +27,7 @@
              var templateName = $("#templateList").find("option:selected").text();
 
              $.ajax({
-                 url:"@Url.Action("GetSpecificTemplateView","Domain")"+"?templateName="+templateName+"&id="+'@ViewBag.DomainId,
+                 url:"@Url.Action("GetSpecificTemplateView","Domain")"+"?templateName="+templateName+"&id="+"@ViewBag.DomainId",
                  type:'Get',
                  statusCode:{
                      200:function(data){

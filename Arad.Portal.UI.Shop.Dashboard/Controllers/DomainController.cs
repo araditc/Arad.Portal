@@ -357,33 +357,35 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 case "productlist":
                     var productTemplateList = _moduleRepository.GetAllProductTemplateDesign();
-                    foreach (var item in productTemplateList)
-                    {
-                        if(item.Text.ToLower() != "forth")
-                        {
-                            item.ImageUrl = System.IO.Path.Combine(imageTemplatePath, item.ImageUrl);
-                        }else
-                        {
-                            if(CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-                            {
-                                item.ImageUrl = System.IO.Path.Combine(imageTemplatePath, "Template/forth-rtl.jpg");
-                            }
-                            else
-                            {
-                                item.ImageUrl = System.IO.Path.Combine(imageTemplatePath, "Template/forth-ltr.jpg");
-                            }
-                        }
-                    }
+                   
                     ViewBag.ProductTemplateList = productTemplateList;
                     break;
                 case "contentlist":
                     var contentTemplateDesigns = _moduleRepository.GetAllContentTemplateDesign();
+                    foreach (var item in contentTemplateDesigns)
+                    {
+                        if (item.Text.ToLower() != "forth")
+                        {
+                            item.ImageUrl = System.IO.Path.Combine(imageTemplatePath, item.ImageUrl);
+                        }
+                        else
+                        {
+                            if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+                            {
+                                item.ImageUrl = Path.Combine(imageTemplatePath, "Template/forth-rtl.jpg");
+                            }
+                            else
+                            {
+                                item.ImageUrl = Path.Combine(imageTemplatePath, "Template/forth-ltr.jpg");
+                            }
+                        }
+                    }
                     ViewBag.ContentTemplateList = contentTemplateDesigns;
                     break;
                 default:
                     break;
             }
-            return PartialView(viewName);
+            return PartialView($"~/Views/Domain/{viewName}");
         }
 
         [HttpGet]

@@ -2,56 +2,63 @@
 <div class="">
     <div class="row">
         <div class="col-3 col-md-3">
-              <button id="btnPreview" class="btn btn-primary bg-gradient btn-sm float-end m-3" type="button">@Language.GetString("btn_Preview")</button>
-              <button id="btnSave" class="btn btn-primary bg-gradient btn-sm float-end m-3" type="button">@Language.GetString("btn_Save")</button>
+            <button id="btnPreview" class="btn btn-primary bg-gradient btn-sm float-end m-3" type="button">@Language.GetString("btn_Preview")</button>
+            <button id="btnSave" class="btn btn-primary bg-gradient btn-sm float-end m-3" type="button">@Language.GetString("btn_Save")</button>
         </div>
-      
+
     </div>
-    <div class='row border border-3 border-secondary' style="min-height: 400px;height: 400px;">
-        <div class='col-12 col-md-3  border border-1 border-secondary text-center h-100'>
-            <div class="firstHeaderTemplate border border-secondary rounded p-1">
-                <select class="form-control selectpicker moduleList m-1" data-live-search="true" asp-items="@(new SelectList(@ViewBag.ModuleList,"Value","Text"))">
+    <div class='row border border-3 border-secondary' style="min-height: 400px;">
+        <div class='col-12 col-md-3  border border-1 border-secondary justify-content-center h-100'>
+            <div class="firstHeaderTemplate border border-secondary rounded p-1 justify-content-center templatePart">
+                <select class="form-control selectpicker moduleList" data-live-search="true" asp-items="@(new SelectList(@ViewBag.ModuleList,"Value","Text"))">
                 </select>
-                <br/>
-                <div>
-                <button id="btnFirstAdd" class="btn btn-success bg-gradient btn-sm float-end addModule m-1" type="button">@Language.GetString("btn_Add")</button>
-                <button id="btnFirstBreak" class="btn btn-secondary bg-gradient btn-sm float-end lineBreak m-1" type="button">@Language.GetString("btn_Break")</button>
+                <br />
+                <div class="d-flex justify-content-end">
+
+                    <button id="btnFirstAdd" class="btn btn-success bg-gradient btn-sm float-end addModule m-1" type="button">@Language.GetString("btn_Select")</button>
+                    <button id="btnFirstBreak" class="btn btn-secondary bg-gradient btn-sm float-end lineBreak m-1" type="button">@Language.GetString("btn_Break")</button>
                 </div>
-                <br/>
-                <div id="firstParamsDiv"  style="height: 200px;"></div>
+                <br />
+                <div id="firstParamsDiv" class="paramDiv" ></div>
             </div>
             <br />
-            <div id="firstDiv" class="m-2"></div>
+            <div id="firstDiv" class="m-2 d-none"></div>
         </div>
-        <div class='col-12 col-md-6  border border-1 border-secondary text-center h-100'>
-            <div class="middleHeaderTemplate border border-secondary">
-                <select class="form-control selectpicker moduleList m-3" data-live-search="true" asp-items="@(new SelectList(ViewBag.ModuleList,"Value","Text"))">
+        <div class='col-12 col-md-6  border border-1 border-secondary justify-content-center h-100'>
+            <div class="middleHeaderTemplate border border-secondary rounded p-1 justify-content-center templatePart">
+                <select class="form-control selectpicker moduleList" data-live-search="true" asp-items="@(new SelectList(ViewBag.ModuleList,"Value","Text"))">
                 </select>
                 <br />
-                <div>
-                <button id="btnMiddleAdd" class="btn btn-success bg-gradient btn-sm float-end addModule m-3" type="button">@Language.GetString("btn_Add")</button>
-                <button id="btnMiddleBreak" class="btn btn-success bg-gradient btn-sm float-end lineBreak m-3" type="button">@Language.GetString("btn_Break")</button>
+                <div class="d-flex justify-content-end">
+
+                    <button id="btnMiddleAdd" class="btn btn-success bg-gradient btn-sm float-end addModule m-1" type="button">@Language.GetString("btn_Select")</button>
+
+                    <button id="btnMiddleBreak" class="btn btn-secondary bg-gradient btn-sm float-end lineBreak m-1" type="button">@Language.GetString("btn_Break")</button>
+
                 </div>
                 <br />
-                <div id="middleParamsDiv" style="height: 200px;"></div>
+                <div id="middleParamsDiv" class="paramDiv" ></div>
             </div>
             <br />
-            <div id="middleDiv" class="m-2"></div>
+            <div id="middleDiv" class="m-2 d-none"></div>
         </div>
-        <div class='col-12 col-md-3  border border-1 border-secondary text-center h-100'>
-            <div class="LastHeaderTemplate border border-secondary">
-                <select class="form-control selectpicker moduleList m-3" data-live-search="true" asp-items="@(new SelectList(ViewBag.ModuleList,"Value","Text"))">
+        <div class='col-12 col-md-3  border border-1 border-secondary justify-content-center h-100'>
+            <div class="LastHeaderTemplate border border-secondary rounded p-1 justify-content-center templatePart">
+                <select class="form-control selectpicker moduleList" data-live-search="true" asp-items="@(new SelectList(ViewBag.ModuleList,"Value","Text"))">
                 </select>
                 <br />
-                <div>
-                <button id="btnLastAdd" class="btn btn-success bg-gradient btn-sm float-end addModule m-3" type="button">@Language.GetString("btn_Add")</button>
-                <button id="btnLastBreak" class="btn btn-secondary bg-gradient btn-sm float-end lineBreak m-3" type="button">@Language.GetString("btn_Break")</button>
+                <div class="d-flex justify-content-end">
+
+                    <button id="btnLastAdd" class="btn btn-success bg-gradient btn-sm float-end addModule m-1" type="button">@Language.GetString("btn_Select")</button>
+
+                    <button id="btnLastBreak" class="btn btn-secondary bg-gradient btn-sm float-end lineBreak m-1" type="button">@Language.GetString("btn_Break")</button>
+
                 </div>
                 <br />
-                <div id="lastParamsDiv"  style="height: 200px;"></div>
+                <div id="lastParamsDiv" class="paramDiv"></div>
             </div>
             <br />
-            <div id="lastDiv" class="m-2"></div>
+            <div id="lastDiv" class="m-2 d-none"></div>
         </div>
     </div>
 </div>
@@ -67,43 +74,36 @@
     var paramsValue = [] ;
     $(document).ready(function(){
         $(".moduleList").selectpicker();
-        $(".moduleList").change(function(){
-            if($(this).val()!= "-1")
-            {
-               var selectedModuleName = $(this).find("option:selected").text();
-               var targetDivID;
-               var targetParamsDiv;
-               var parent = $(this).parent();
-               if($(parent).hasClass("firstHeaderTemplate"))
-               {
-                   targetDivID = "firstDiv" ;
-                   targetParamsDiv="firstParamsDiv";
-               }
-               else if($(parent).hasClass("middleHeaderTemplate"))
-               {
-                   targetDivID = "middleDiv";
-                   targetParamsDiv = "middleParamsDiv";
-               }
-               else if($(parent).hasClass("lastHeaderTemplate"))
-               {
-                   targetDivID = "lastDiv";
-                   targetParamsDiv = "lastParamsDiv";
-               }
-               $.ajax({
-                 url:"@Url.Action("GetSpecificModule","Domain")"+"?moduleName="+selectedModuleName+"&id="+'@ViewBag.DomainId',
-                 type:'Get',
-                 statusCode:{
-                     200:function(data){
-                         debugger;
-                          $(`#${targetParamsDiv}`).html(data);
-                     }
-                 }
+        //$(".moduleList").change(function(){
+        //    if($(this).val()!= "-1")
+        //    {
+        //       var selectedModuleName = $(this).find("option:selected").text();
+        //       var targetDivID;
+        //       var targetParamsDiv;
+        //       var parent = $(this).parent();
+        //       if($(parent).hasClass("firstHeaderTemplate"))
+        //       {
+        //           targetDivID = "firstDiv" ;
+        //           targetParamsDiv="firstParamsDiv";
+        //       }
+        //       else if($(parent).hasClass("middleHeaderTemplate"))
+        //       {
+        //           targetDivID = "middleDiv";
+        //           targetParamsDiv = "middleParamsDiv";
+        //       }
+        //       else if($(parent).hasClass("lastHeaderTemplate"))
+        //       {
+        //           targetDivID = "lastDiv";
+        //           targetParamsDiv = "lastParamsDiv";
+        //       }
 
-             });
-            }
-        });
+
+        //     });
+        //    }
+        //});
 
         $(".lineBreak").click(function(){
+            debugger;
              var id = $(this).attr("id");
              var targetDivID = "";
              switch(id)
@@ -125,12 +125,13 @@
         });
 
         $(".addModule").click(function(){
+            debugger;
             var btnID = $(this).attr("id");
-            var selectedModuleName = $(this).siblings(".moduleList").find("option:selected").text();
-            var selectedModuleId = $(this).siblings(".moduleList").val();
-            var obj = {};
-            obj.ParamsValue = {};
-            obj.ModuleId = selectedModuleId;
+            var selectedModuleName = $(this).parent().siblings(".moduleList").find("option:selected").text();
+            var selectedModuleId = $(this).parent().siblings(".moduleList").find("option:selected").val();
+            //var obj = {};
+            //obj.ParamsValue = {};
+            //obj.ModuleId = selectedModuleId;
             var targetDivID ="";
             var targetParamsDiv = "";
             switch(btnID)
@@ -138,32 +139,149 @@
                 case "btnFirstAdd":
                    targetDivID = "firstDiv" ;
                    targetParamsDiv="firstParamsDiv";
-                   firstPlace += selectedModuleId; 
-                   obj.Place ="[0]";
+                   firstPlace += selectedModuleId;
+                   //obj.Place ="[0]";
                 break;
                 case "btnMiddleAdd":
                    targetDivID = "middleDiv";
                    targetParamsDiv = "middleParamsDiv";
                    secondPlace += selectedModuleId;
-                   obj.Place ="[1]";
+                   //obj.Place ="[1]";
                 break;
                 case "btnLastAdd":
                    targetDivID = "lastDiv";
                    targetParamsDiv = "lastParamsDiv";
                    thirdPlace += selectedModuleId;
-                   obj.Place ="[2]";
+                   //obj.Place ="[2]";
                 break;
              }
-              var selectedTemplate ="";
+               $.ajax({
+                 url:"@Url.Action("GetSpecificModule","Domain")"+"?moduleName="+selectedModuleName+"&id="+'@ViewBag.DomainId',
+                 type:'Get',
+                 statusCode:{
+                     200:function(data){
+                         debugger;
+                          $(`#${targetParamsDiv}`).html(data);
+                     }
+                 }
+               });
+        });
+        function getContent()
+        {
+            firstHtml = $("#firstDiv").html();
+            secondHtml = $("#middleDiv").html();
+            thirdHtml = $("#lastDiv").html();
+
+            var obj1 = {};
+            var obj2 ={};
+            var obj3 = {};
+            obj1.Key = "[0]";
+            obj1.Value = firstPlace;
+            paramsValue.push(obj1);
+
+            obj2.Key ="[1]";
+            obj2.Value = secondPlace;
+            paramsValue.push(obj2);
+
+            obj3.Key = "[2]";
+            obj3.Value = thirdPlace;
+            paramsValue.push(obj3);
+        }
+        $("#btnPreview").click(function(){
+
+            getContent();
+             $.ajax({
+                url: "/Domain/StoreDesignPreview",
+                data : JSON.stringify(paramsValue),
+                contentType: 'application/json',
+                type: 'Post',
+                dataType: 'json',
+                success: function (result) {
+                    if(result != "")
+                    {
+                        window.open('@Url.Action("DesignPreview")'+'?key='+result.key + '&id' + '@ViewBag.TemplateId', '_blank');
+                    }
+                }
+            });
+        });
+
+        $("#btn_Save").click(function(){
+            if(paramsValue.length == 0)
+            {
+                getContent();
+            }
+            var obj = {};
+            obj.TemplateId = "@ViewBag.TemplateId";
+            obj.DomianId = "@ViewBag.DomainId";
+            obj.ParamsValue = paramsValue;
+            obj.ModuleParams = moduleParams;
+            $.ajax({
+                url: "/Domain/SendModuleParams",
+                data : JSON.stringify(obj),
+                contentType: 'application/json',
+                type: 'Post',
+                dataType: 'json',
+                success: function (result)
+                {
+                   if (result.status === "Success")
+                   {
+                        document.getElementById('mainToastBody').innerHTML =
+                           '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
+                        document.getElementById('mainToastBody').classList.add('alert-success');
+                        setTimeout(function()
+                        {
+                                window.location.href = '@Url.Action("List")';
+                        },1500);
+                    }
+                }
+            });
+        });
+   });
+   function addModulesWithParams(sender)
+   {
+       debugger;
+        var selectedTemplate ="";
               var selectedType ="";
               var count = null;
-             $(`#${targetParamsDiv} .par`).each(function(){
+              debugger;
+             
+              var targetParamsDiv = $(sender).closest(".paramDiv");
+              var targetDivId ="";
+              if(targetParamsDiv != undefined)
+              {
+                  var templatePart = $(sender).closest(".templatePart");
+                  var 
+              obj = {};
+              obj.ParamsValue = {};
+              obj.ModuleId = $(templatePart).find(".moduleList option:selected").val();
+               var selectedModuleName = $(templatePart).find(".moduleList option:selected").text();
+              var section = templatePart;
+              if(section.hasClass("firstHeaderTemplate"))
+              {
+                  obj.Place ="[0]";
+                  targetDivId = "firstDiv";
+              }
+              else if(section.hasClass("middleHeaderTemplate"))
+              {
+                   obj.Place ="[1]";
+                    targetDivId = "middleDiv";
+              }
+              else if(section.hasClass("LastHeaderTemplate"))
+              {
+                   obj.Place ="[2]";
+                    targetDivId = "lastDiv";
+              }
+            
+              $(targetParamsDiv).find(".par").each(function(){
                  var id = $(this).attr("id");
+                
                  switch(selectedModuleName)
                  {
+                   
                       case "ProductList":
                        switch(id)
                        {
+                          
                            case "templateSection":
                            selectedTemplate = $("input[name='rdbProductTemplateList']:checked").val();
                            break;
@@ -225,82 +343,28 @@
                     url: url,
                     success: function (result) {
                         if (result != "") {
-                            $(`#${targetDivID}`).append(result);
+                            $(`#${targetDivId}`).append(result);
                         }
                     },
                 });
-        });
-        function getContent()
-        {
-             firstHtml = $("#firstDiv").html();
-            secondHtml = $("#middleDiv").html();
-            thirdHtml = $("#lastDiv").html();
-           
-            var obj1 = {};
-            var obj2 ={};
-            var obj3 = {};
-            obj1.Key = "[0]";
-            obj1.Value = firstPlace;
-            paramsValue.push(obj1);
+              }
+   }
 
-            obj2.Key ="[1]";
-            obj2.Value = secondPlace;
-            paramsValue.push(obj2);
 
-            obj3.Key = "[2]";
-            obj3.Value = thirdPlace;
-            paramsValue.push(obj3);
-        }
-        $("#btnPreview").click(function(){
 
-            getContent();
-             $.ajax({
-                url: "/Domain/StoreDesignPreview",
-                data : JSON.stringify(paramsValue),
-                contentType: 'application/json',
-                type: 'Post',
-                dataType: 'json',
-                success: function (result) {
-                    if(result != "")
-                    {
-                        window.open('@Url.Action("DesignPreview")'+'?key='+result.key + '&id' + '@ViewBag.TemplateId', '_blank');
-                    }
-                }
-            });
-        });
 
-        $("#btn_Save").click(function(){
-            if(paramsValue.length == 0)
-            {
-                getContent();
-            }
-            var obj = {};
-            obj.TemplateId = "@ViewBag.TemplateId";
-            obj.DomianId = "@ViewBag.DomainId";
-            obj.ParamsValue = paramsValue;
-            obj.ModuleParams = moduleParams;
-            $.ajax({
-                url: "/Domain/SendModuleParams",
-                data : JSON.stringify(obj),
-                contentType: 'application/json',
-                type: 'Post',
-                dataType: 'json',
-                success: function (result)
-                {
-                   if (result.status === "Success") 
-                   {
-                        document.getElementById('mainToastBody').innerHTML = 
-                           '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
-                        document.getElementById('mainToastBody').classList.add('alert-success');
-                        setTimeout(function()
-                        {
-                                window.location.href = '@Url.Action("List")';
-                        },1500);
-                    }     
-                }
-            });
-        });
-        });
+
+
+   //$("#btnAddModuleWithParameters").click(function(){
+   //    debugger;
+      
+   //})
+   
+   //$(document).on("click", $("#btnAddModuleWithParameters"), function(){
+      
+       
+              
+   //});
 </script>
 
 
