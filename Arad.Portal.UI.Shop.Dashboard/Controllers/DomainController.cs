@@ -202,14 +202,21 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return View();
         }
 
-        public IActionResult GetSpecificTemplateView(string templateName)
+        /// <summary>
+        /// id is domainId
+        /// </summary>
+        /// <param name="templateName"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public IActionResult GetSpecificTemplateView(string templateName, string id)
         {
             var template = _moduleRepository.FetchTemplateByName(templateName);
             var moduleList = _moduleRepository.GetAllModules();
+            ViewBag.DomainId = id;
             ViewBag.ModuleList = moduleList;
             ViewBag.TemplateId = template.TemplateId;
             var viewName = $"_{templateName}.cshtml";
-            return PartialView(viewName);
+            return PartialView($"~/Views/Domain/{viewName}");
         }
 
         [HttpPost]
@@ -338,14 +345,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return ViewComponent("ContentTemplate", new { contentType, selectionTemplate, count });
         }
 
-        public IActionResult GetSpecificModule(string moduleName)
+        public IActionResult GetSpecificModule(string moduleName, string id)
         {
             var module = _moduleRepository.FetchModuleByName(moduleName);
             var viewName = $"_{moduleName}.cshtml";
             var imageTemplatePath = _webHostEnvironment.WebRootPath;
             var productOrContentTypes = _moduleRepository.GetAllProductOrContentTypes();
             ViewBag.ProductOrContentTypeList = productOrContentTypes;
-           
+            ViewBag.DomainId=id;
             switch (moduleName.ToLower())
             {
                 case "productlist":

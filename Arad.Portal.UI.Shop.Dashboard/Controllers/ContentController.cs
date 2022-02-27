@@ -262,13 +262,17 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 var path = "images/Contents";
                 foreach (var pic in dto.Images)
                 {
-                    var res = ImageFunctions.SaveImageModel(pic, path, localStaticFileStorageURL);
-                    if (res.Key != Guid.Empty.ToString())
+                    if(!string.IsNullOrEmpty(pic.Content))
                     {
-                        pic.ImageId = res.Key;
-                        pic.Url = res.Value;
-                        pic.Content = "";
+                        var res = ImageFunctions.SaveImageModel(pic, path, localStaticFileStorageURL);
+                        if (res.Key != Guid.Empty.ToString())
+                        {
+                            pic.ImageId = res.Key;
+                            pic.Url = res.Value;
+                            pic.Content = "";
+                        }
                     }
+                    
                 }
 
                 Result saveResult = await _contentRepository.Update(dto);

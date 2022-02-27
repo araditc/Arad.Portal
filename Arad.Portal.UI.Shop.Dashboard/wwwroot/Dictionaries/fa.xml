@@ -58,6 +58,9 @@
 	<string key="btn_Send">
 		<value>ارسال</value>
 	</string>
+	<string key="btn_Select">
+		<value>انتخاب</value>
+	</string>
 	<string key="btn_Approve">
 		<value>تایید</value>
 	</string>

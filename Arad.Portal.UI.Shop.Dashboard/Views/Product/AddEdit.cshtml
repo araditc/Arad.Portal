@@ -760,18 +760,13 @@ else
                            /* AddLoading($("#addProductCard"));*/
                         },
                         success: function (result) {
-
+                            debugger;
                             if (result.status === "Success") {
-                                @*Swal.fire({
-                                    icon: 'success',
-                                    text: result.message,
-                                    showConfirmButton: false,
-                                    timer: 3000
-                                }).then(() => {
-                                    window.location.href = '@Url.Action("List")';
-                                });*@
+                               
                                 document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
                                 document.getElementById('mainToastBody').classList.add('alert-success');
+                                var bsAlert = new bootstrap.Toast(document.getElementById('mainToast'));
+                                bsAlert.show();
                                 setTimeout(function()
                                 {
                                      window.location.href = '@Url.Action("List")';
@@ -790,8 +785,8 @@ else
                                     spanErrorList.parent().removeClass("has-error");
                                 }
                                 if (result.modelStateErrors !== null) {
-                                        $('[data-val-result=' + value.key + ']').html(value.errorMessage);
-                                        $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                        $('[data-val-result=' + result.modelStateErrors.key + ']').html(result.modelStateErrors.errorMessage);
+                                        $('[data-val-result=' + result.modelStateErrors.key + ']').parent().addClass("has-error");
                                     }
                                 }
                             },

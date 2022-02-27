@@ -54,7 +54,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo
                 .Project(_=> new SelectListModel() 
                 {
                     Value = _.TemplateId, 
-                    Text = GeneralLibrary.Utilities.Language.GetString($"TemplateName_{_.TemplateName}")
+                    Text = _.TemplateName
                 }).ToList();
             return lst;
         }

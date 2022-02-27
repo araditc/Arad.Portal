@@ -58,6 +58,9 @@
 	<string key="btn_Send">
 		<value>Send</value>
 	</string>
+	<string key="btn_Select">
+		<value>select</value>
+	</string>
 	<string key="btn_Approved">
 		<value>Approve</value>
 	</string>

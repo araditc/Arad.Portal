@@ -127,13 +127,13 @@
                                 }
                                 @if (ViewBag.Permissions["Add"])
                                 {
-                                    <a asp-action="HomePageDesign" asp-controller="Domain" class="btn btn-success bg-gradient btn-sm">
+                                    <a asp-action="HomePageDesign" asp-controller="Domain" asp-route-domainId="@item.DomainId" class="btn btn-success bg-gradient btn-sm">
                                         <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_HomePageDesign")
                                     </a>
-                                    <a asp-action="ProductPageDesign" asp-controller="Domain" class="btn btn-success bg-gradient btn-sm">
+                                    <a asp-action="ProductPageDesign" asp-controller="Domain" asp-route-domainId="@item.DomainId" class="btn btn-success bg-gradient btn-sm">
                                         <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_ProductPageDesign")
                                     </a>
-                                    <a asp-action="ContentPageDesign" asp-controller="Domain" class="btn btn-success bg-gradient btn-sm">
+                                    <a asp-action="ContentPageDesign" asp-controller="Domain" asp-route-domainId="@item.DomainId" class="btn btn-success bg-gradient btn-sm">
                                         <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_ContentPageDesign")
                                     </a>
                                 }

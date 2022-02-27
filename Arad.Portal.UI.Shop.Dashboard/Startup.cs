@@ -122,12 +122,9 @@ namespace Arad.Portal.UI.Shop.Dashboard
             SendSmsConfig sendSmsConfig = new();
             Configuration.Bind(nameof(SendSmsConfig), sendSmsConfig);
             services.AddSingleton(sendSmsConfig);
-
-            services.AddSession(options =>
+          
+            services.ConfigureApplicationCookie(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(20);
-                options.Cookie.Name = ".web.Session";
-
                 if (!_environment.IsDevelopment())
                 {
                     options.Cookie.HttpOnly = true;
@@ -135,6 +132,12 @@ namespace Arad.Portal.UI.Shop.Dashboard
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.Cookie.SameSite = SameSiteMode.Strict;
                 }
+            });
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
+                options.Cookie.Name = ".web.Session";
             });
 
             services.AddIdentityMongoDbProvider<ApplicationUser, ApplicationRole, string>(identityOptions =>
@@ -161,13 +164,6 @@ namespace Arad.Portal.UI.Shop.Dashboard
                  .AddCookie(opt =>
                  {
                      opt.Cookie.HttpOnly = true;
-                     if (!_environment.IsDevelopment())
-                     {
-                         opt.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                         opt.Cookie.SameSite = SameSiteMode.Strict;
-                         opt.Cookie.HttpOnly = true;
-                         opt.Cookie.IsEssential = true;
-                     }
                  });
             services.ConfigureApplicationCookie(options =>
             {
@@ -194,7 +190,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<RemoteServerConnection>();
             services.AddTransient<CreateNotification>();
             
-            services.AddProgressiveWebApp();
+            //services.AddProgressiveWebApp();
             AddRepositoryServices(services);
             services.AddTransient<CodeGenerator>();
 
@@ -215,7 +211,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
                 app.UseHsts();
             }
            
-            app.UseHttpsRedirection();
+         //   app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions()
             {
