@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+@model Arad.Portal.DataLayer.Models.Shared.TemplateDesign
+@using System.Globalization;
+@using Arad.Portal.GeneralLibrary.Utilities;
+@{
+    Layout = null;
+    var direction = "";
+    var langList = new List<string>() { "fa", "en" };
+    string lang = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        direction = "rtl";
+        ViewBag.dir = "rtl";
+    }
+    else
+    {
+        direction = "ltr";
+        ViewBag.dir = "ltr";
+    }
+    switch (CultureInfo.CurrentCulture.Name)
+    {
+        case "fa-IR":
+            lang = "fa";
+            break;
+        case "en-US":
+            lang = "en";
+            break;
+    }
+}
+<html dir="@direction" lang="@lang">
+   <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="Arad Portal" name="description">
+    <title>@ViewData["Title"] - Arad.Portal.UI.Shop</title>
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    @if (direction == "ltr")
+    {
+        <link href="~/lib/bootstrap5/css/bootstrap.min.css" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="~/lib/bootstrap5/css/bootstrap.rtl.min.css" rel="stylesheet" />
+        <link href="~/Fonts/IranSans/css/fontiran.css" rel="stylesheet" />
+    }
+    <link rel="stylesheet" href="~/css/Menu/Bootstrap4MegaMenu.css" />
+    <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js"></script>
+   </head>
+   <body>
+       <header>
+           @Html.Raw(Model.HeaderContent)
+       </header>
+       <div class="container">
+           @Html.Raw(Model.ContainerContent)
+       </div>
+       <footer>
+           @Html.Raw(Model.FooterContent)
+       </footer>
+   </body>
+   </html>

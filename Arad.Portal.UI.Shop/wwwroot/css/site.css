@@ -163,3 +163,22 @@ i span {
 #loading.is-active::after, .loader.is-active::before {
     display: block
 }
+/*-----------------------------------------------------------------------*/
+.lan {
+    padding: 1rem 0.25rem;
+}
+
+.profile {
+    padding: 1rem 0.5rem;
+}
+
+.notifyBadge {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: transparent;
+    color: black;
+}
+
+.userPart i {
+    /* font-size : larger;*/
+    color: black;
+}

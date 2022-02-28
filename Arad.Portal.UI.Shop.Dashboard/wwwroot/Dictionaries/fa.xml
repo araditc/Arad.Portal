@@ -43,6 +43,9 @@
 	<string key="btn_Break">
 		<value>افزودن سطر جدید</value>
 	</string>
+	<string key="btn_NewRow">
+		<value>ایجاد سظر جدید</value>
+	</string>
 	<string key="btn_ExcelImport">
 		<value>دریافت داده از فایل اکسل</value>
 	</string>
