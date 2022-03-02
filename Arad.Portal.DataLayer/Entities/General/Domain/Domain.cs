@@ -70,37 +70,43 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
         /// روش حمل پیش فرض فروشنده
         /// </summary>
         public string DefaultShippingTypeId { get; set; }
-      
-        public string MainPageTemplateId { get; set; }
 
-        /// <summary>
-        /// for example [0] : "moduleId" or "moduleId1 <br/> moduleId2 <br/>" as one object of keyVal
-        /// </summary>
-        public List<KeyVal> MainPageTemplateParamsValue { get; set; }
+        public string HeaderPart { get; set; }
 
-        /// <summary>
-        /// parameters in  Modules
-        /// </summary>
-        public List<ModuleParams> MainPageModuleParamsWithValues { get; set; }
-        public string ContentTemplateId { get; set; }
+        public string MainPagePart { get; set; }
 
-        /// <summary>
-        /// for example [0] : "moduleId" as one object of keyVal
-        /// </summary>
-        public List<KeyVal> ContentTemplateParamsValue { get; set; }
-        /// <summary>
-        /// parameters in  Modules
-        /// </summary>
-        public List<ModuleParams> ContentModuleParamsWithValues { get; set; }
-        public string ProductTemplateId { get; set; }
-        /// <summary>
-        /// for example [0] : "moduleId" as one object of keyVal
-        /// </summary>
-        public List<KeyVal> ProductTemplateParamsValue { get; set; }
-        /// <summary>
-        /// parameters in  Modules
-        /// </summary>
-        public List<ModuleParams> ProductModuleParamsWithValues { get; set; }
+        public string FooterPart { get; set; }
+
+        //public string MainPageTemplateId { get; set; }
+
+        ///// <summary>
+        ///// for example [0] : "moduleId" or "moduleId1 <br/> moduleId2 <br/>" as one object of keyVal
+        ///// </summary>
+        //public List<KeyVal> MainPageTemplateParamsValue { get; set; }
+
+        ///// <summary>
+        ///// parameters in  Modules
+        ///// </summary>
+        //public List<ModuleParams> MainPageModuleParamsWithValues { get; set; }
+        //public string ContentTemplateId { get; set; }
+
+        ///// <summary>
+        ///// for example [0] : "moduleId" as one object of keyVal
+        ///// </summary>
+        //public List<KeyVal> ContentTemplateParamsValue { get; set; }
+        ///// <summary>
+        ///// parameters in  Modules
+        ///// </summary>
+        //public List<ModuleParams> ContentModuleParamsWithValues { get; set; }
+        //public string ProductTemplateId { get; set; }
+        ///// <summary>
+        ///// for example [0] : "moduleId" as one object of keyVal
+        ///// </summary>
+        //public List<KeyVal> ProductTemplateParamsValue { get; set; }
+        ///// <summary>
+        ///// parameters in  Modules
+        ///// </summary>
+        //public List<ModuleParams> ProductModuleParamsWithValues { get; set; }
     }
     public class ProviderDetail
     {

@@ -52,6 +52,28 @@
     <script src="~/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js"></script>
    </head>
    <body>
+       <div aria-hidden="true" aria-labelledby="confirmDesignModalLabel" class="modal fade" id="confirmDesignModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title" id="confirmDesignModalLabel">
+                    </h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                    </button>
+                </div>
+                <div class="modal-body" id="confirmDesignModalBody">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" onclick="confirmation();" type="button">
+                        @Language.GetString("btn_Confirm")
+                    </button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                        @Language.GetString("btn_NotConfirm")
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
        <div class="row">
            <div class="col-3 col-md-3">
                 <button id="btnPreview" class="btn btn-primary bg-gradient btn-sm float-end m-3" type="button">@Language.GetString("btn_Preview")</button>
@@ -60,28 +82,9 @@
        </div>
        <header class="headerPart">
            <div class="border-3 border-secondary m-1" style="min-height: 150px;">
-             <button id="btnnewRowHeader" class="btn btn-success bg-gradient btn-sm float-end addNewRow m-1" tag="header" type="button">@Language.GetString("btn_NewRow")</button>
              <div class="row mt-4">
-             <div class="col-4 col-md-2 col-lg-1">
-                 <div class="m-1 ms-4">
-                    <ul class="langUl list-group list-group-horizontal">
-                        <li class="list-group-item lan border-0 pt-2">
-                            <a title="@Language.GetString("Persian")" role="button"  data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                <img src="~/imgs/IRAN.png" onclick="setLang('fa-IR')" />
-                            </a>
-
-                        </li>
-                        <li class="list-group-item lan border-0 pt-2">
-                            <a title="@Language.GetString("English")" role="button"  data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                <img src="~/imgs/USA.png" onclick="setLang('en-US')" />
-                            </a>
-
-                        </li>
-                    </ul>   
-                </div>
-            </div>
             @if (!User.Identity.IsAuthenticated)
-            {
+              {
                 <div class="offset-4 col-4 offset-md-8 col-md-2 offset-lg-9 col-lg-2">
                     <div class="rounded border-0 float-end mt-2 me-4">
                     <ul class="list-group list-group-horizontal userPart">
@@ -102,9 +105,9 @@
                     </ul>
                     </div>
                 </div>
-            }
-            else
-            {
+               }
+                else
+                {
                 <div class="offset-4 col-4 offset-md-8 col-md-2 offset-lg-10 col-lg-1">
                     <div class="rounded border-0 float-end mt-2 me-4">
                     <ul class="list-group list-group-horizontal">
@@ -125,30 +128,72 @@
                     </ul>
                     </div>
                 </div>
-            }
+                }
+
+             <div class="col-4 col-md-2 col-lg-1">
+                 <button id="restoreRecord" onclick="flagRestoration();" class="btn btn-sm btn-secondary bg-gradient d-none">
+                     <i style="position: relative;left: 5px;top: 2px;" class="fa fa-refresh"></i>
+                       @Language.GetString("btn_Restore")
+                 </button>
+                 <button type="button" class="btn-close" aria-label="Close" id="removeFlagPart"></button>
+                 <div class="m-1 ms-4 flagPartDiv">
+                    <ul class="langUl list-group list-group-horizontal">
+                        <li class="list-group-item lan border-0 pt-2 px-1">
+                            <a title="@Language.GetString("Persian")" role="button"  data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                <img src="~/imgs/IRAN.png" onclick="setLang('fa-IR')" />
+                            </a>
+
+                        </li>
+                        <li class="list-group-item lan border-0 pt-2 px-1">
+                            <a title="@Language.GetString("English")" role="button"  data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                <img src="~/imgs/USA.png" onclick="setLang('en-US')" />
+                            </a>
+
+                        </li>
+                    </ul>   
+                </div>
+            </div>
         </div>
-
-               
-           </div>
-           <div class="headerContent d-none">
-
-           </div>
+         <div class="border-3 border-secondary m-1 dynamicHeaderPart" style="min-height: 150px;">
+         <partial name="_PageDesign.cshtml" model='new TemplateSectionPart(){SectionTag = "headerSection"}'/>
+         </div>
+         <div class="navbarMenu">
+                @await Component.InvokeAsync("StoreMenu")
+         </div>
+        </div> 
+          
+        
        </header>
        <div class="container">
-            <div class="border-3 border-secondary m-1" style="min-height: 500px;">
-                 <button id="btnnewRowContent" class="btn btn-success bg-gradient btn-sm float-end addNewRow m-1" tag="container" type="button">@Language.GetString("btn_NewRow")</button>
-
-
-                
-            </div>
-            <div class="containerContent d-none"></div>
+          <div class="border-3 border-secondary m-1 dynamicContainerPart" style="min-height: 150px;">
+            <partial name="_PageDesign.cshtml" model='new TemplateSectionPart(){SectionTag = "containerSection"}'/>
+          </div>
+           
        </div>
        <footer class="footerPart">
-           <div class="border-3 border-secondary m-1" style="min-height: 150px;">
-                <button id="btnnewRowFooter" class="btn btn-success bg-gradient btn-sm float-end addNewRow m-1" tag="footer" type="button">@Language.GetString("btn_NewRow")</button>
-
+           <div class="border-3 border-secondary m-1 dynamicFooterPart" style="min-height: 150px;">
+               <partial name="_PageDesign.cshtml" model='new TemplateSectionPart(){SectionTag = "footerPartSection"}'/>
            </div>
-           <div class="footerContent d-none"></div>
        </footer>
+       <script>
+           $(document).ready(function(){
+               $("#removeFlagPart").click(function(){
+               $('confirmDesignModalLabel').text('@Language.GetString("btn_Delete")');
+			   document.getElementById('confirmDesignModalBody').innerHTML('@Language.GetString("AlertAndMessage_RemoveBoxConfrim")');
+			   $('#confirmDesignModal').modal('show');
+               });
+           })
+           function confirmation()
+           {
+               $(".flagPartDiv").addClass("d-none");
+               $("#restoreRecord").removeClass("d-none");
+           }
+
+           function flagRestoration()
+           {
+               $(".flagPartDiv").removeClass("d-none");
+               $("#restoreRecord").addClass("d-none");
+           }
+       </script>
    </body>
 </html>

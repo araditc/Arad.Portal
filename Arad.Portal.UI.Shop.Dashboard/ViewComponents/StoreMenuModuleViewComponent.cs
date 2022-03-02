@@ -14,16 +14,16 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
+namespace Arad.Portal.UI.Shop.ViewComponents
 {
-    public class StoreMenu : ViewComponent
+    public class StoreMenuModule : ViewComponent
     {
         private readonly IHttpContextAccessor _accessor;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDomainRepository _domainRepository;
         private readonly ILanguageRepository _languageRepository;
         private readonly IMenuRepository _menuRepository;
-        public StoreMenu(IHttpContextAccessor accessor, UserManager<ApplicationUser> userManager, 
+        public StoreMenuModule(IHttpContextAccessor accessor, UserManager<ApplicationUser> userManager, 
             IDomainRepository domainRepository, ILanguageRepository languageRepository, IMenuRepository menuRepository)
         {
             _accessor = accessor;

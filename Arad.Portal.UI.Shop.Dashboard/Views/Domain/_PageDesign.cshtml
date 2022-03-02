@@ -1,0 +1,58 @@
+﻿@model Arad.Portal.DataLayer.Models.Shared.TemplateSectionPart
+@{
+
+}
+<div class="row">
+    <div class="col-12 text-center">
+        <label class="lblAlert form-label">@Language.GetString("AlertAndMessage_CreateNewRow")</label>
+        <button class="btn btn-success bg-gradient btn-sm float-end addNewRow m-1" id='@($"btnAdd_{Model.SectionTag}")' onclick="addNewRow();"
+               type="button" >@Language.GetString("btn_NewRow")</button>
+    </div>
+</div>
+<div id="@($"{Model.SectionTag}_paramSection")">
+    
+</div>
+<div class="row firstLevel parentSrc d-none">
+    <div class="col-12">
+        <label class="lblAlert form-label">@Language.GetString("AlertAndMessage_HowManyColumns")</label>
+        <br />
+        <select class="form-control selectpicker" onchange="selectColumns(this);"  data-live-search="true">
+            <option value="1">@Language.GetString("Template_OneCol")</option>
+            <option value="2">@Language.GetString("Template_TwoCol")</option>
+            <option value="3">@Language.GetString("Template_ThreeCol")</option>
+            <option value="4">@Language.GetString("Template_FourCol")</option>
+            <option value="6">@Language.GetString("Template_SixCol")</option>
+        </select>
+    </div>
+</div>
+ <div id="@($"{Model.SectionTag}_Content")" class="d-none"></div>
+<script>
+    $(document).ready(function(){
+
+        $("#")
+    });
+    function addNewRow()
+    {
+        var divId = '#'+'@Model.SectionTag'+'_paramSection';
+        $(divId).find(".row.firstLevel").removeClass("active");
+        $(divId).append("<div class='row firstLevel active'></div>");
+        $(".parentSrc").clone().removeClass("d-none").removeClass("parentSrc").appendTo(".firstLevel.active");
+        $(".lblAlert").addClass("d-none");
+    }
+
+    function selectColumns(sender)
+    {
+        var col = $(sender).val();
+        $.ajax({
+                 url:"@Url.Action("GetRowWithSelectedColumns","Domain")"+"?count="col,
+                 type:'Get',
+                 statusCode:{
+                     200:function(data){
+                         debugger;
+                          $(".firstLevel.active").html(data);
+                     }
+                 }
+               });
+
+    }
+</script>

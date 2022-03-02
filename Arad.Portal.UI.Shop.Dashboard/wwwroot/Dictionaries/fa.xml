@@ -357,6 +357,30 @@
 	<string key="TemplateName_TemplateNumber2">
 		<value>قالب شماره دو</value>
 	</string>
+	<string key="Template_OneCol">
+		<value>یک ستون</value>
+	</string>
+	<string key="Template_TwoCol">
+		<value>دو ستون</value>
+	</string>
+	<string key="Template_ThreeCol">
+		<value>سه ستون</value>
+	</string>
+	<string key="Template_FourCol">
+		<value>چهار ستون</value>
+	</string>
+	<string key="Template_SixCol">
+		<value>شش ستون</value>
+	</string>
+	<string key="Template_ContentType">
+		<value>نوع محتوا</value>
+	</string>
+	<string key="Template_SystemModules">
+		<value>ماژول های سیستمی</value>
+	</string>
+	<string key="Template_Editor">
+		<value>ویرایشگر</value>
+	</string>
 	<!--Start [tables]-->
 	<string key="tbl_PaymentGateways">
 		<value>درگاه های پرداخت</value>
@@ -583,6 +607,15 @@
 	</string>
 	<string key="Validation_MobileNumberInvalid2">
 		<value>شماره وارد شده مربوط به تلفن ثابت می باشد.</value>
+	</string>
+	<string key="AlertAndMessage_HowManyColumns">
+		<value>این سطر چند ستون دارد؟</value>
+	</string>
+	<string key="AlertAndMessage_CreateNewRow">
+		<value>لطفا در ابتدا سطر جدید ایجاد کنید</value>
+	</string>
+	<string key="AlertAndMessage_RemoveBoxConfrim">
+		<value>آیا برای حذف این قسمت از صفه مطمئن هستید؟</value>
 	</string>
 	<string key="AlertAndMessage_DontChangeExcelTemplate">
 		<value>برای جلوگیری از بروز خطا و ثبت اطلاعات محصول در پایگاه داده از هرگونه تغببر در ترتیب و نام ستون های قالب  دریافت محصول خودداری کنید.</value>

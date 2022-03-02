@@ -542,6 +542,30 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
 
-        
+        [HttpGet]
+        public IActionResult GetRowWithSelectedColumns(string count)
+        {
+            var viewName = "";
+            switch(count)
+            {
+                case "1":
+                    viewName = "_OneColumn.cshtml";
+                    break;
+                case "2":
+                    viewName = "_TwoColumns.cshtml";
+                    break;
+                case "3":
+                    viewName = "_ThreeColumns.cshtml";
+                    break;
+                case "4":
+                    viewName = "_FourColumns.cshtml";
+                    break;
+                case "6":
+                    viewName = "_SixColumns.cshtml";
+                    break;
+              
+            }
+            return PartialView(viewName);
+        }
     }
 }

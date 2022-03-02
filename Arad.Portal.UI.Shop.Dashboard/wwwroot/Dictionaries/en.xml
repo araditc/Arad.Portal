@@ -359,6 +359,30 @@
 	<string key="TemplateName_TemplateNumber2">
 		<value>Template Number2</value>
 	</string>
+	<string key="Template_OneCol">
+		<value>One Column</value>
+	</string>
+	<string key="Template_TwoCol">
+		<value>Two Column</value>
+	</string>
+		<string key="Template_ThreeCol">
+		<value>Three Column</value>
+	</string>
+		<string key="Template_FourCol">
+		<value>Four Column</value>
+	</string>
+		<string key="Template_SixCol">
+		<value>Six Column</value>
+	</string>
+	<string key="Template_ContentType">
+		<value>Content Type</value>
+	</string>
+	<string key="Template_SystemModules">
+		<value>System Modules</value>
+	</string>
+	<string key="Template_Editor">
+		<value>Editor</value>
+	</string>
 	
 	<!--Start [tables]-->
 	<string key="tbl_PaymentGateways">
@@ -590,6 +614,15 @@
 	</string>
 	<string key="Validation_MobileNumberInvalid2">
 		<value>Enter the number of fixed phone.</value>
+	</string>
+	<string key="AlertAndMessage_HowManyColumns">
+		<value>How many columns this row have?</value>
+	</string>
+	<string key="AlertAndMessage_CreateNewRow">
+		<value>First of all plaese create new row</value>
+	</string>
+	<string key="AlertAndMessage_RemoveBoxConfrim">
+		<value>Are you Sure for removing this part from page?</value>
 	</string>
 	<string key="AlertAndMessage_DontChangeExcelTemplate">
 		<value>for preventing error occurrence and saving data to database avoid changing the columns order or rename columns.</value>
