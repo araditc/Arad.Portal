@@ -1,4 +1,4 @@
-﻿@model Arad.Portal.DataLayer.Models.DesignStructure.ColAddress
+﻿@model Arad.Portal.DataLayer.Models.DesignStructure.ColContent
 @{
     var lan = "";
     if (CultureInfo.CurrentCulture.Name == "fa-IR")
@@ -20,39 +20,38 @@
         </select>
     </div>
 </div>
-<div class="row parent" cn ="@Model.ColNumber" rn="@Model.RowNumber" sec = "@Model.Section">
+<div class="row parent" cn ="@Model.ColNumber" rn="@ViewBag.RowNumber" sec = "@Model.Section">
     <div class="col-12 modulePart d-none">
          <select class="form-control selectpicker moduleList" data-live-search="true" asp-items="@(new SelectList(ViewBag.ModuleList,"Value","Text"))">
          </select>
          <br />
         <div class="d-flex justify-content-end">
-            <button  class="btn btn-success bg-gradient btn-sm float-end btnAddModule m-1" cn ="@Model.ColNumber" rn="@Model.RowNumber" sec = "@Model.Section"
+            <button  class="btn btn-success bg-gradient btn-sm float-end btnAddModule m-1" cn ="@Model.ColNumber" rn="@ViewBag.RowNumber" sec = "@Model.Section"
             type="button">@Language.GetString("btn_Select")</button>
         </div>
         <br/>
-        <div class="paramsDiv" cn ="@Model.ColNumber" rn="@Model.RowNumber" sec = "@Model.Section" ></div>
+        <div class="paramsDiv" cn ="@Model.ColNumber" rn="@ViewBag.RowNumber" sec = "@Model.Section" ></div>
     </div>
     <div class="col-12 editorPart d-none" >
-        <textarea id='@($"editor_{Model.ColNumber}_{Model.RowNumber}")' name='@($"editor_{Model.ColNumber}_{Model.RowNumber}")' class="form-control" rows="40"></textarea>
-         <button  class="btn btn-success bg-gradient btn-sm float-end btnHtmlSanitizer m-1" cn ="@Model.ColNumber" rn="@Model.RowNumber" sec = "@Model.Section"
+        <textarea id='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")' name='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")' class="form-control" rows="40"></textarea>
+         <button  class="btn btn-success bg-gradient btn-sm float-end btnHtmlSanitizer m-1" cn ="@Model.ColNumber" rn="@ViewBag.RowNumber" sec = "@Model.Section"
             type="button">@Language.GetString("btn_Validation")</button>
     </div>
-    <div class="col-12 finalColumnContent d-none" >
+    <div class="col-12 finalColumnContent d-none"></div>
 
-   </div>
+   
    <div class="col-12 moduleDataPreview d-none" >
-
    </div>
 </div>
 
 
 <script>
-   editorName = `editor_${Model.ColNumber}_${Model.RowNumber}`;
+   editorId = `editor_${Model.ColNumber}_${Model.RowNumber}`;
     var config = {
         filebrowserImageUploadUrl: 'Image/content-file-upload',
         language: '@lan'
     }
-    CKEDITOR.replace(editorName, config);
+    CKEDITOR.replace(editorId, config);
     $(document).ready(function(){
         $(".moduleList").selectpicker();
 
@@ -75,7 +74,7 @@
         });
 
         $("#btnHtmlSanitizer").click(function(){
-            var htmlData = CKEDITOR.instances.editorName.getData();
+            var htmlData = CKEDITOR.instances.editorId.getData();
             $.ajax({
                  url:"@Url.Action("SanitizeCkEditorContent","Domain")",
                  type:'Post',
@@ -85,6 +84,29 @@
                      200:function(data){
                          debugger;
                         //show whether this html is valid or not
+                        if(data.isvalid.toLowerCase() == "false")
+                        {
+                          $('#mainToastBody').html('<i class="fas fa-exclamation-triangle"></i>@Language.GetString("AlertAndMessage_InvalidEditorContent")');
+                          $('#mainToastBody').classList.add('alert-danger');
+                          var toastDiv = $("#mainToast");
+                          var toast = new bootstrap.Toast(toastDiv);
+                          toast.show();
+                          setTimeout(function(){
+                              CKEDITOR.instances.editorId.setData(""),3000
+                          });
+                        }else //it is valid
+                        {
+                            $('#mainToastBody').html('<i class="fas fa-exclamation-triangle"></i>@Language.GetString("AlertAndMessage_InvalidEditorContent")');
+                            $('#mainToastBody').classList.add('alert-success');
+                            var toastDiv = $("#mainToast");
+                            var toast = new bootstrap.Toast(toastDiv);
+                            toast.show();
+                            setTimeout(function(){
+                              toast.hide(),2000
+                          });
+                          var data = "<div class='target' type='editor'>"+ htmlData +"</div>";
+                          $(this).closest(".parent").find(".finalColumnContent").append(data);
+                        }
                      }
                  }
                });
@@ -187,13 +209,18 @@
         var data = JSON.stringify(obj);
         data =`<div class='target' type='module'>${data}</div>`;
         var finalData = $(parent).find(".finalColumnContent").append(data);
+
         $.ajax({
             type: "Get",
             dataType: "html",
-            url: url,
+            url: urlPrimary
             success: function (result) {
                 if (result != "") {
-                    $(parent).find(".moduleDataPreview").append(result);
+                    $(parent).find(".moduleDataPreview").html(result).removeClass("d-none");
+                    setTimeout(function(){
+                        $(parent).find(".moduleDataPreview").html("");
+                        $(parent).find(".moduleDataPreview").addClass("d-none");
+                    });
                 }
             },
         });

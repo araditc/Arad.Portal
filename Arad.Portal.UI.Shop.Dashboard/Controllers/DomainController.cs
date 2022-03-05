@@ -395,7 +395,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public IActionResult SanitizeCkEditorContent([FromBody]string html)
         {
             var res = Helpers.HtmlSanitizer.SanitizeHtml(html);
-            return Json(new { result = res });
+            return Json(new { isvalid = res });
         }
 
         [HttpGet]
@@ -553,7 +553,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
 
         [HttpGet]
-        public IActionResult GetRowWithSelectedColumns(string count, string rowNumber)
+        public IActionResult GetRowWithSelectedColumns(string count, string rn)
         {
 
             var moduleList = _moduleRepository.GetAllModules();
@@ -579,7 +579,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     break;
               
             }
-            ViewBag.RowNumber = rowNumber;
+            ViewBag.RowNumber = rn;
             return PartialView(viewName);
         }
     }

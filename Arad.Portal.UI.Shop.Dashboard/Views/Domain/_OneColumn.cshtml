@@ -13,8 +13,8 @@
     }
    
 }
-<div class="row" rn="@ViewBag.RowNumber">
+<div class="row sectionRow" rn="@ViewBag.RowNumber">
     <div class="col-12" colNum="1">
-         <partial name="_InnerSection.cshtml" model='new ColAddress(){ColNumber = 1, RowNumber = @ViewBag.RowNumber, Section = section }'/>
+         <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1,Section = section }'/>
     </div>
 </div>

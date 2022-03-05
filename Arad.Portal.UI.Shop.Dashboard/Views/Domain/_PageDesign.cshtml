@@ -1,10 +1,11 @@
-﻿@model Arad.Portal.DataLayer.Models.Shared.TemplateSectionPart
+﻿
+@model Arad.Portal.DataLayer.Models.Shared.TemplateSectionPart
 @{
 
 }
-<div class="row">
+<div class='row @($"div_{Model.SectionTag}")' >
     <div class="col-12 text-center">
-        <label class="lblAlert form-label">@Language.GetString("AlertAndMessage_CreateNewRow")</label>
+        <label class="lblAlertFirstRow form-label">@Language.GetString("AlertAndMessage_CreateNewRow")</label>
         <button class="btn btn-success bg-gradient btn-sm float-end addNewRow m-1" id='@($"btnAdd_{Model.SectionTag}")' onclick="addNewRow();"
                type="button" >@Language.GetString("btn_NewRow")</button>
     </div>
@@ -26,15 +27,13 @@
     </div>
     <div class="col-12 contentColumns"></div>
 </div>
- @*<div id="@($"{Model.SectionTag}_Content")" class="d-none"></div>*@
+ 
 <script>
     var headerRowNumber=1000;
     var contentRowNumber = 2000;
     var footerRownumber = 3000;
 
     $(document).ready(function(){
-
-        //$("#")
     });
     function addNewRow()
     {
@@ -56,9 +55,10 @@
             footerRowNumber += 1;
             break;
         }
-        $(divId).append("<div rn='"+currentRowNumber+"' class='row"+ currentRowNumber+ " firstLevel active'></div>");
+        $(divId).append("<div rn='"+currentRowNumber+"' class='row "+ currentRowNumber+ " firstLevel active'></div>");
         (".parentSrc").clone().removeClass("d-none").removeClass("parentSrc").appendTo(`.firstLevel.active.${currentRowNumber}`);
-        $(`.lblAlert.${currentRowNumber}`).addClass("d-none");
+        var parentDivClass = `.div_${Model.SectionTag}`;
+        $(parentDiv).find(".lblAlert").addClass("d-none");
 
     }
 
@@ -67,7 +67,7 @@
         var col = $(sender).val();
         var rowNumber = $(sender).closest(".row.firstLevel").attr(rn);
         $.ajax({
-                 url:"@Url.Action("GetRowWithSelectedColumns","Domain")"+"?count="col+"&rowNumber="+rowNumber,
+                 url:"@Url.Action("GetRowWithSelectedColumns","Domain")"+"?count="col+"&rn="+rowNumber,
                  type:'Get',
                  statusCode:{
                      200:function(data){

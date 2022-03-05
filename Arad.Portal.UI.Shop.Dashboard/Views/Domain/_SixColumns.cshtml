@@ -1,9 +1,35 @@
-﻿<div class="row" rn="@ViewBag.RowNumber">
-    <div class="col-12 col-md-2" colNum="1"></div>
-     <div class="col-12 col-md-2" colNum="2"></div>
-      <div class="col-12 col-md-2" colNum="3"></div>
-       <div class="col-12 col-md-2" colNum="4"></div>
-        <div class="col-12 col-md-2" colNum="5"></div>
-         <div class="col-12 col-md-2" colNum="6"></div>
+﻿@using Arad.Portal.DataLayer.Models.DesignStructure;
+@{
+    var section = "";
+    if(@ViewBag.RowNumber.ToString().StartWith("1"))
+    {
+        section = "headerSection";
+    }else if(@ViewBag.RowNumber.ToString().StartWith("2"))
+    {
+        section = "containerSection";
+    }else if(@ViewBag.RowNumber.ToString().StartWith("3"))
+    {
+        section = "footerSection";
+    }
+}
+<div class="row sectionRow" rn="@ViewBag.RowNumber">
+    <div class="col-12 col-md-2" colNum="1">
+         <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section }'/>
+    </div>
+     <div class="col-12 col-md-2" colNum="2">
+          <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section }'/>
+     </div>
+      <div class="col-12 col-md-2" colNum="3">
+           <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section }'/>
+      </div>
+       <div class="col-12 col-md-2" colNum="4">
+            <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section }'/>
+       </div>
+        <div class="col-12 col-md-2" colNum="5">
+             <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section }'/>
+        </div>
+         <div class="col-12 col-md-2" colNum="6">
+              <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section }'/>
+         </div>
 </div>
 

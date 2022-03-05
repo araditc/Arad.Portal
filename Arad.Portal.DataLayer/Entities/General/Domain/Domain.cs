@@ -1,5 +1,6 @@
 ﻿using Arad.Portal.DataLayer.Entities.General.Email;
 using Arad.Portal.DataLayer.Entities.General.User;
+using Arad.Portal.DataLayer.Models.DesignStructure;
 using Arad.Portal.DataLayer.Models.Shared;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
@@ -17,15 +18,6 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
         {
             Prices = new();
             DomainPaymentProviders = new();
-
-            MainPageTemplateParamsValue = new();
-            MainPageModuleParamsWithValues = new();
-
-            ContentTemplateParamsValue = new();
-            ContentModuleParamsWithValues = new();
-
-            ProductTemplateParamsValue = new();
-            ProductModuleParamsWithValues = new();
         }
 
         [BsonId]
@@ -71,11 +63,11 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
         /// </summary>
         public string DefaultShippingTypeId { get; set; }
 
-        public string HeaderPart { get; set; }
+        public PageHeaderPart HeaderPart { get; set; }
 
-        public string MainPagePart { get; set; }
+        public MainPageContentPart MainPageContentPart { get; set; }
 
-        public string FooterPart { get; set; }
+        public PageFooterPart FooterPart { get; set; }
 
         //public string MainPageTemplateId { get; set; }
 

@@ -36,7 +36,8 @@ namespace Arad.Portal.DataLayer.Entities.General.DesignStructure
         Product = 0,
         Content = 1,
         Advertisement = 2,
-        ImageSlider = 3
+        ImageSlider = 3,
+        Menu = 5
     }
    
     public enum ProductOrContentType

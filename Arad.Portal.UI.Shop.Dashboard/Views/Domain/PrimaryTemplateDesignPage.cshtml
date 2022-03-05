@@ -85,7 +85,7 @@
        </div>
        <header class="headerPart">
            <div class="border-3 border-secondary m-1" style="min-height: 150px;">
-             <div class="row mt-4">
+             <div class="row regPart mt-4" id="regPart">
             @if (!User.Identity.IsAuthenticated)
               {
                 <div class="offset-4 col-4 offset-md-8 col-md-2 offset-lg-9 col-lg-2">
@@ -109,29 +109,29 @@
                     </div>
                 </div>
                }
-                else
-                {
-                <div class="offset-4 col-4 offset-md-8 col-md-2 offset-lg-10 col-lg-1">
-                    <div class="rounded border-0 float-end mt-2 me-4">
-                    <ul class="list-group list-group-horizontal">
-                        <li class="list-group-item profile">
-                            <a href="/account/Profile" id="userProfileId" role="button" title="@Language.GetString("User_Profile")" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                <i class="far fa-user"></i>
-                            </a>
-                        </li>
-                        <li class="list-group-item border-0 pb-0 bg-secondary bg-opacity-10">
-                            <div class="vr" style="min-height:1.5em;"></div>
-                        </li>
-                        <li class="list-group-item profile">
-                            <a href="/basket/get" id="userBasketId" role="button" title="@Language.GetString("ShoppingCart")" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                <i class="fas fa-shopping-cart"></i>
-                                <span class="badge notifyBadge"></span>
-                            </a>
-                        </li>
-                    </ul>
-                    </div>
+            else
+            {
+            <div class="offset-4 col-4 offset-md-8 col-md-2 offset-lg-10 col-lg-1">
+                <div class="rounded border-0 float-end mt-2 me-4">
+                <ul class="list-group list-group-horizontal">
+                    <li class="list-group-item profile">
+                        <a href="/account/Profile" id="userProfileId" role="button" title="@Language.GetString("User_Profile")" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                            <i class="far fa-user"></i>
+                        </a>
+                    </li>
+                    <li class="list-group-item border-0 pb-0 bg-secondary bg-opacity-10">
+                        <div class="vr" style="min-height:1.5em;"></div>
+                    </li>
+                    <li class="list-group-item profile">
+                        <a href="/basket/get" id="userBasketId" role="button" title="@Language.GetString("ShoppingCart")" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="badge notifyBadge"></span>
+                        </a>
+                    </li>
+                </ul>
                 </div>
-                }
+            </div>
+            }
 
              <div class="col-4 col-md-2 col-lg-1">
                  <button id="restoreRecord" onclick="flagRestoration();" class="btn btn-sm btn-secondary bg-gradient d-none">
@@ -160,23 +160,25 @@
          <div class="border-3 border-secondary m-1 dynamicHeaderPart" style="min-height: 150px;">
          <partial name="_PageDesign.cshtml" model='new TemplateSectionPart(){SectionTag = "headerSection"}'/>
          </div>
+       
          <div class="navbarMenu">
                 @await Component.InvokeAsync("StoreMenu")
          </div>
         </div> 
           
-        
+       
        </header>
        <div class="container">
           <div class="border-3 border-secondary m-1 dynamicContainerPart" style="min-height: 150px;">
             <partial name="_PageDesign.cshtml" model='new TemplateSectionPart(){SectionTag = "containerSection"}'/>
           </div>
-           
+        
        </div>
        <footer class="footerPart">
            <div class="border-3 border-secondary m-1 dynamicFooterPart" style="min-height: 150px;">
                <partial name="_PageDesign.cshtml" model='new TemplateSectionPart(){SectionTag = "footerSection"}'/>
            </div>
+          
        </footer>
 <script>
     var hIdetities = [];
@@ -185,12 +187,46 @@
 
     var rowIdetifier = {};
     rowIdentifier.Cols = [];
-    var hcolIdentifier = {};
+  
     $(document).ready(function(){
         $("#removeFlagPart").click(function(){
         $('confirmDesignModalLabel').text('@Language.GetString("btn_Delete")');
 		document.getElementById('confirmDesignModalBody').innerHTML('@Language.GetString("AlertAndMessage_RemoveBoxConfrim")');
 		$('#confirmDesignModal').modal('show');
+        });
+
+        $("#btnPreview").click(function(){
+             var header = {};
+             header.CustomizedContent = [];
+             var regPart = document.getElementById("regPart").outerHTML;
+
+             var priorHeader = document.getElementById("regPart").outerHTML;
+             header.PriorFixedContent = priorHeader;
+             var i = 1;
+             var rn ="";
+             $(".dynamicHeaderPart .contentColumns > .firstLevel").each(function(){
+                 rn = $(this).attr("rn");
+                 var obj = {}; //an instance of RowContent
+                 obj.RowNumber = parseInt(rn) ;
+                 obj.OrderInRow = i ;
+                 obj.ColsContent = [] ;
+                 $(this).find(".row.parent .finalColumnContent").each(function(){
+                     var colContent ={} ; //an instance of ColContent
+                     colContent.Section = "headerSection";
+                     colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
+                     colContent.ColData = $(this).html();
+
+                     obj.ColsContent.push(colContent);
+                 });
+                 i++;
+                 header.CustomizedContent.push(obj);
+             });
+
+             var obj = {}; //an instance of RowContent for navbar Menu
+             obj.RowNumber = parseInt(rn) + 1;
+             obj.OrderInRow = i ;
+             obj.ExtraClassNames ="navbarMenu";
+             var MenuData = "<div addClass='target' type='module'></div>";
         });
     })
     function confirmation()

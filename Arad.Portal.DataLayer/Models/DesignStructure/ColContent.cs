@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Models.DesignStructure
 {
-    public class ColAddress
+    public class ColContent
     {
         public string Section { get; set; }
-
-        public int RowNumber { get; set; }
-
+      
         public int ColNumber { get; set; }
 
         public string ColData { get; set; }

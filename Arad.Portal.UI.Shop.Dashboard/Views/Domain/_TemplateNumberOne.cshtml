@@ -191,7 +191,7 @@
 
             getContent();
              $.ajax({
-                url: "/Domain/StoreDesignPreview",
+                url: @Url.Action("StoreDesignPreview"),
                 data : JSON.stringify(paramsValue),
                 contentType: 'application/json',
                 type: 'Post',

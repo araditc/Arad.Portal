@@ -611,6 +611,12 @@
 	<string key="Validation_MobileNumberInvalid2">
 		<value>شماره وارد شده مربوط به تلفن ثابت می باشد.</value>
 	</string>
+	<string key="AlertAndMessage_EditorContentIsValid">
+		<value>محتوای ویرایشگر معتبر است.</value>
+	</string>
+	<string key="AlertAndMessage_InvalidEditorContent">
+		<value>محتوای ویرایشگر نامعتبر است.</value>
+	</string>
 	<string key="AlertAndMessage_HowManyColumns">
 		<value>این سطر چند ستون دارد؟</value>
 	</string>
