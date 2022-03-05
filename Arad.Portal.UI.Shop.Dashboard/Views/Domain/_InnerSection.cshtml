@@ -1,4 +1,16 @@
-﻿<div class="row">
+﻿@model Arad.Portal.DataLayer.Models.DesignStructure.ColAddress
+@{
+    var lan = "";
+    if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        lan = "fa";
+    }
+    else
+    {
+        lan = "en";
+    }
+}
+<div class="row">
     <div class="col-12">
          <label class="form-label">@Language.GetString("Template_ContentType")</label>
         <br />
@@ -8,26 +20,41 @@
         </select>
     </div>
 </div>
-<div class="row parent" data-tag="@ViewBag.UniqueCounter">
+<div class="row parent" cn ="@Model.ColNumber" rn="@Model.RowNumber" sec = "@Model.Section">
     <div class="col-12 modulePart d-none">
          <select class="form-control selectpicker moduleList" data-live-search="true" asp-items="@(new SelectList(ViewBag.ModuleList,"Value","Text"))">
          </select>
          <br />
         <div class="d-flex justify-content-end">
-            <button  class="btn btn-success bg-gradient btn-sm float-end btnAddModule m-1" 
+            <button  class="btn btn-success bg-gradient btn-sm float-end btnAddModule m-1" cn ="@Model.ColNumber" rn="@Model.RowNumber" sec = "@Model.Section"
             type="button">@Language.GetString("btn_Select")</button>
         </div>
         <br/>
-        <div class="paramsDiv" data-tag="@ViewBag.UniqueCounter"></div>
+        <div class="paramsDiv" cn ="@Model.ColNumber" rn="@Model.RowNumber" sec = "@Model.Section" ></div>
     </div>
     <div class="col-12 editorPart d-none" >
-
+        <textarea id='@($"editor_{Model.ColNumber}_{Model.RowNumber}")' name='@($"editor_{Model.ColNumber}_{Model.RowNumber}")' class="form-control" rows="40"></textarea>
+         <button  class="btn btn-success bg-gradient btn-sm float-end btnHtmlSanitizer m-1" cn ="@Model.ColNumber" rn="@Model.RowNumber" sec = "@Model.Section"
+            type="button">@Language.GetString("btn_Validation")</button>
     </div>
+    <div class="col-12 finalColumnContent d-none" >
+
+   </div>
+   <div class="col-12 moduleDataPreview d-none" >
+
+   </div>
 </div>
 
+
 <script>
+   editorName = `editor_${Model.ColNumber}_${Model.RowNumber}`;
+    var config = {
+        filebrowserImageUploadUrl: 'Image/content-file-upload',
+        language: '@lan'
+    }
+    CKEDITOR.replace(editorName, config);
     $(document).ready(function(){
-          $(".moduleList").selectpicker();
+        $(".moduleList").selectpicker();
 
         $("#btnAddModule").click(function(){
             var parentDiv = $(this).closest(".parent");
@@ -40,134 +67,136 @@
                  statusCode:{
                      200:function(data){
                          debugger;
-                         var paramDiv="#"+targetDiv
+                         var paramDiv=`#${targetDiv}`
                           $(paramDiv).html(data);
                      }
                  }
                });
         });
+
+        $("#btnHtmlSanitizer").click(function(){
+            var htmlData = CKEDITOR.instances.editorName.getData();
+            $.ajax({
+                 url:"@Url.Action("SanitizeCkEditorContent","Domain")",
+                 type:'Post',
+                 data: htmlData,
+                 content-Type: "text/html; charset=UTF-8",
+                 statusCode:{
+                     200:function(data){
+                         debugger;
+                        //show whether this html is valid or not
+                     }
+                 }
+               });
+
+        })
     });
     function selectDrpContentType(sender)
     {
-        var val = $(".drpContentType").val();
+        var val = $(sender).val();
+        var targetDiv = $(sender).closest(".row").siblings(".row.parent");
+        var targetDivId =`#${targetDivId}`;
         switch(val)
         {
             case "1":
+            $(targetDivId).find(".modulePart").removeClass("d-none");
+            $(targetDivId).find(".editorPart").addClass("d-none");
             break;
             case "2":
+            $(targetDivId).find(".editorPart").removeClass("d-none");
+            $(targetDivId).find(".modulePart").addClass("d-none");
             break;
         }
     }
     function addModulesWithParams(sender)
    {
-       debugger;
-        var selectedTemplate ="";
-              var selectedType ="";
-              var count = null;
-              debugger;
-             
-              var targetParamsDiv = $(sender).closest(".paramDiv");
-              var targetDivId ="";
-              if(targetParamsDiv != undefined)
-              {
-                  var templatePart = $(sender).closest(".templatePart");
-                  var 
-              obj = {};
-              obj.ParamsValue = {};
-              obj.ModuleId = $(templatePart).find(".moduleList option:selected").val();
-               var selectedModuleName = $(templatePart).find(".moduleList option:selected").text();
-              var section = templatePart;
-              if(section.hasClass("firstHeaderTemplate"))
-              {
-                  obj.Place ="[0]";
-                  targetDivId = "firstDiv";
-              }
-              else if(section.hasClass("middleHeaderTemplate"))
-              {
-                   obj.Place ="[1]";
-                    targetDivId = "middleDiv";
-              }
-              else if(section.hasClass("LastHeaderTemplate"))
-              {
-                   obj.Place ="[2]";
-                    targetDivId = "lastDiv";
-              }
-            
-              $(targetParamsDiv).find(".par").each(function(){
-                 var id = $(this).attr("id");
+       var obj = {};//an instance of ModuleWithParametersValue
+       obj.ParametersValue =[];
+        var targetParamsDiv = $(sender).closest(".paramDiv");
+        var parent =  $(sender).closest(".parent");
+        var targetDivId ="";
+        if(targetParamsDiv != undefined)
+        {
+            obj.ModuleId = $(templatePart).find(".moduleList option:selected").val();
+            obj.ModuleName = $(templatePart).find(".moduleList option:selected").text();
+           
+            $(targetParamsDiv).find(".par").each(function(){
+                var id = $(this).attr("id");
                 
-                 switch(selectedModuleName)
-                 {
+                switch(obj.ModuleName)
+                {
                    
-                      case "ProductList":
-                       switch(id)
-                       {
+                    case "ProductList":
+                    switch(id)
+                    {
                           
-                           case "templateSection":
-                           selectedTemplate = $("input[name='rdbProductTemplateList']:checked").val();
-                           break;
-                           case "typeList":
-                           selectedType = $(`#${id}`).val();
-                           break;
-                           case "countToShow":
-                           count = $(`#${id}`).val();
-                           break;
-                       }
-                      break;
-                      case "ContentList":
-                      switch(id)
-                       {
-                           case "templateSection":
-                            selectedTemplate = $("input[name='rdbContentTemplateList']:checked").val();
-                            switch(selectedTemplate)
-                            {
-                                case "First":
-                                count = 6;
-                                break;
-                                case "Second":
-                                count = 4;
-                                break;
-                                case "Third":
-                                count = 8;
-                                break;
-                            }
-                           break;
-                           case "typeList":
-                            selectedType = $(`#${id}`).val();
-                           break;
-                           case "countToShow":
-                             selectedType = $(`#${id}`).val();
-                           break;
-                       }
-                      break;
-                 }
-             });
-             var url = "";
-             if(selectedModuleName.toLowerCase() =="productlist")
-             {
-                 url = "@Url.Action("GetProductModuleViewComponent", "Domain")"+"?productType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count;
-                 obj.ParamsValue.Count = count;
-                 obj.ParamsValue.ProductOrContentType = selectedType;
-                 obj.ParamsValue.ProductTemplateDesign = selectedTemplate;
-             }
-             else if(selectedModuleName.toLowerCase() == "contentlist")
-             {
-                 url = "@Url.Action("GetContentModuleViewComponent", "Domain")"+"?contentType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count;
-                 obj.ParamsValue.Count = count;
-                 obj.ParamsValue.ProductOrContentType = selectedType;
-                 obj.ParamsValue.ContentTemplateDesign = selectedTemplate;
-             }
-             moduleParams.push(obj);
-              $.ajax({
-                    type: "Get",
-                    dataType: "html",
-                    url: url,
-                    success: function (result) {
-                        if (result != "") {
-                            $(`#${targetDivId}`).append(result);
+                        case "templateSection":
+                        selectedTemplate = $("input[name='rdbProductTemplateList']:checked").val();
+                        break;
+                        case "typeList":
+                        selectedType = $(`#${id}`).val();
+                        break;
+                        case "countToShow":
+                        count = $(`#${id}`).val();
+                        break;
+                    }
+                    break;
+                    case "ContentList":
+                    switch(id)
+                    {
+                        case "templateSection":
+                        selectedTemplate = $("input[name='rdbContentTemplateList']:checked").val();
+                        switch(selectedTemplate)
+                        {
+                            case "First":
+                            count = 6;
+                            break;
+                            case "Second":
+                            count = 4;
+                            break;
+                            case "Third":
+                            count = 8;
+                            break;
                         }
-                    },
-                });
-              }
+                        break;
+                        case "typeList":
+                        selectedType = $(`#${id}`).val();
+                        break;
+                        case "countToShow":
+                            selectedType = $(`#${id}`).val();
+                        break;
+                    }
+                    break;
+                }
+        });
+        var url = "";
+        if(selectedModuleName.toLowerCase() =="productlist")
+        {
+            url = "@Url.Action("GetProductModuleViewComponent", "Domain")"+"?productType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count;
+            obj.ParametersValue.Count = count;
+            obj.ParametersValue.ProductOrContentType = selectedType;
+            obj.ParametersValue.ProductTemplateDesign = selectedTemplate;
+        }
+        else if(selectedModuleName.toLowerCase() == "contentlist")
+        {
+            url = "@Url.Action("GetContentModuleViewComponent", "Domain")"+"?contentType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count;
+            obj.ParametersValue.Count = count;
+            obj.ParametersValue.ProductOrContentType = selectedType;
+            obj.ParametersValue.ContentTemplateDesign = selectedTemplate;
+        }
+        var data = JSON.stringify(obj);
+        data =`<div class='target' type='module'>${data}</div>`;
+        var finalData = $(parent).find(".finalColumnContent").append(data);
+        $.ajax({
+            type: "Get",
+            dataType: "html",
+            url: url,
+            success: function (result) {
+                if (result != "") {
+                    $(parent).find(".moduleDataPreview").append(result);
+                }
+            },
+        });
+        }
    }
 </script>

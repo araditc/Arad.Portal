@@ -8,7 +8,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
     public class HtmlSanitizer
     {
 
-        public HashSet<string> BlackList = new HashSet<string>() 
+        public  HashSet<string> BlackList = new HashSet<string>() 
         {
                 { "script" },
                 { "iframe" },

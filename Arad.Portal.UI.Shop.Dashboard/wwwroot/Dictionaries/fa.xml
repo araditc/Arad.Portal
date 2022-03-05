@@ -64,6 +64,9 @@
 	<string key="btn_Select">
 		<value>انتخاب</value>
 	</string>
+	<string key="btn_Validation">
+		<value>اعتبارسنجی</value>
+	</string>
 	<string key="btn_Approve">
 		<value>تایید</value>
 	</string>

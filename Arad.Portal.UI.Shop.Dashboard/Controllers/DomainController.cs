@@ -219,6 +219,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return PartialView($"~/Views/Domain/{viewName}");
         }
 
+       
+
         [HttpPost]
         public IActionResult StoreDesignPreview([FromBody] List<KeyVal> parameters)
         {
@@ -388,6 +390,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return PartialView($"~/Views/Domain/{viewName}");
         }
 
+
+        [HttpPost]
+        public IActionResult SanitizeCkEditorContent([FromBody]string html)
+        {
+            var res = Helpers.HtmlSanitizer.SanitizeHtml(html);
+            return Json(new { result = res });
+        }
+
         [HttpGet]
         public IActionResult ContentPageDesign(string domainId)
         {
@@ -543,8 +553,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
 
         [HttpGet]
-        public IActionResult GetRowWithSelectedColumns(string count)
+        public IActionResult GetRowWithSelectedColumns(string count, string rowNumber)
         {
+
+            var moduleList = _moduleRepository.GetAllModules();
+            ViewBag.ModuleList = moduleList;
+
             var viewName = "";
             switch(count)
             {
@@ -565,6 +579,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     break;
               
             }
+            ViewBag.RowNumber = rowNumber;
             return PartialView(viewName);
         }
     }

@@ -24,32 +24,56 @@
             <option value="6">@Language.GetString("Template_SixCol")</option>
         </select>
     </div>
+    <div class="col-12 contentColumns"></div>
 </div>
- <div id="@($"{Model.SectionTag}_Content")" class="d-none"></div>
+ @*<div id="@($"{Model.SectionTag}_Content")" class="d-none"></div>*@
 <script>
+    var headerRowNumber=1000;
+    var contentRowNumber = 2000;
+    var footerRownumber = 3000;
+
     $(document).ready(function(){
 
-        $("#")
+        //$("#")
     });
     function addNewRow()
     {
-        var divId = '#'+'@Model.SectionTag'+'_paramSection';
+        var divId = `#${@Model.SectionTag}_paramSection`;
         $(divId).find(".row.firstLevel").removeClass("active");
-        $(divId).append("<div class='row firstLevel active'></div>");
-        $(".parentSrc").clone().removeClass("d-none").removeClass("parentSrc").appendTo(".firstLevel.active");
-        $(".lblAlert").addClass("d-none");
+        var currentRowNumber ;
+        switch('@Model.SectionTag')
+        {
+            case "headerSection":
+            currentRowNumber = headerRowNumber;
+            headerRowNumber += 1;
+            break;
+            case "containerSection":
+            currentRowNumber = contentRowNumber;
+            contentRowNumber += 1;
+            break;
+            case "footerSection":
+            currentRowNumber = footerRowNumber;
+            footerRowNumber += 1;
+            break;
+        }
+        $(divId).append("<div rn='"+currentRowNumber+"' class='row"+ currentRowNumber+ " firstLevel active'></div>");
+        (".parentSrc").clone().removeClass("d-none").removeClass("parentSrc").appendTo(`.firstLevel.active.${currentRowNumber}`);
+        $(`.lblAlert.${currentRowNumber}`).addClass("d-none");
+
     }
 
     function selectColumns(sender)
     {
         var col = $(sender).val();
+        var rowNumber = $(sender).closest(".row.firstLevel").attr(rn);
         $.ajax({
-                 url:"@Url.Action("GetRowWithSelectedColumns","Domain")"+"?count="col,
+                 url:"@Url.Action("GetRowWithSelectedColumns","Domain")"+"?count="col+"&rowNumber="+rowNumber,
                  type:'Get',
                  statusCode:{
                      200:function(data){
                          debugger;
-                          $(".firstLevel.active").html(data);
+                         var divId =  `#${@Model.SectionTag}_paramSection`;
+                          $(divId).find(`.firstLevel.active.${rowNumber} .contentColumns`).html(data);
                      }
                  }
                });
