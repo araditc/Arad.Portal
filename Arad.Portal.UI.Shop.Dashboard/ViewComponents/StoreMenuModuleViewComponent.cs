@@ -32,18 +32,18 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             _languageRepository = languageRepository;
             _menuRepository = menuRepository;
         }
-        public  IViewComponentResult Invoke()
+        public  IViewComponentResult Invoke(string domainId)
         {
             var menues = new List<StoreMenuVM>();
-            var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
-            var result = _domainRepository.FetchByName(domainName);
+            //var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
+            var result = _domainRepository.FetchDomain(domainId);
             var domainEntity = result.ReturnValue;
 
-            domainName = _accessor.HttpContext.Request.Host.ToString();
-            if (domainName.ToString().ToLower().StartsWith("localhost"))
-            {
-                domainName = _accessor.HttpContext.Request.Host.ToString().Substring(0, 9);
-            }
+            //domainName = _accessor.HttpContext.Request.Host.ToString();
+            //if (domainName.ToString().ToLower().StartsWith("localhost"))
+            //{
+            //    domainName = _accessor.HttpContext.Request.Host.ToString().Substring(0, 9);
+            //}
             try
             {
                 var cookieVal = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];

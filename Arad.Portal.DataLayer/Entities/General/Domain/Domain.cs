@@ -65,7 +65,7 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
 
         public PageHeaderPart HeaderPart { get; set; }
 
-        public MainPageContentPart MainPageContentPart { get; set; }
+        public MainPageContentPart MainPageContainerPart { get; set; }
 
         public PageFooterPart FooterPart { get; set; }
 

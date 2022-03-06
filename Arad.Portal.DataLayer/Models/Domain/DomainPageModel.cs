@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Models.Shared;
+﻿using Arad.Portal.DataLayer.Models.DesignStructure;
+using Arad.Portal.DataLayer.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,16 +13,18 @@ namespace Arad.Portal.DataLayer.Models.Domain
     {
         public DomainPageModel()
         {
-            ModuleParams = new();
+            HeaderPart = new();
+            MainPageContainerPart = new();
+            FooterPart = new();
         }
         public string DomainId { get; set; }
 
-        public string TemplateId { get; set; }
+        public PageHeaderPart HeaderPart { get; set; }
 
-        public PageType PageType { get; set; }
+        public MainPageContentPart MainPageContainerPart { get; set; }
 
-        public List<KeyVal> ParamsValue { get; set; }
+        public PageFooterPart FooterPart { get; set; }
 
-        public List<ModuleParams> ModuleParams { get; set; }
+        //public PageType PageType { get; set; }
     }
 }

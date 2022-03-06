@@ -19,7 +19,8 @@
       "ContentTemplateDesign": 1,
       "ProductOrContentType": 1,
       "Count": 10
-    },
+    }
+  },
     {
       "ModuleId": "f8865ffc-1653-41ba-a281-ee57fa7ffc09",
       "ModuleName": "HorizantalStoreMenu",

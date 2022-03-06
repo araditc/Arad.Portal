@@ -8,10 +8,12 @@ namespace Arad.Portal.DataLayer.Models.Shared
 {
     public class TemplateDesign
     {
+        public string DomainId { get; set; }
         public string HeaderContent { get; set; }
 
         public string ContainerContent { get; set; }
 
         public string FooterContent { get; set; }
+        
     }
 }

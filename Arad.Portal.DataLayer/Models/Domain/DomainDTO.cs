@@ -1,4 +1,5 @@
 ﻿using Arad.Portal.DataLayer.Entities.General.Domain;
+using Arad.Portal.DataLayer.Models.DesignStructure;
 using Arad.Portal.DataLayer.Models.Shared;
 using System;
 using System.Collections.Generic;
@@ -56,34 +57,11 @@ namespace Arad.Portal.DataLayer.Models.Domain
 
         public string MainPageTemplateId { get; set; }
 
-        /// <summary>
-        /// for example [0] : "moduleId" or "moduleId1 <br/> moduleId2 <br/>" as one object of keyVal
-        /// </summary>
-        public List<KeyVal> MainPageTemplateParamsValue { get; set; }
+        public PageHeaderPart HeaderPart { get; set; }
 
-        /// <summary>
-        /// parameters in  Modules
-        /// </summary>
-        public List<ModuleParams> MainPageModuleParamsWithValues { get; set; }
-        public string ContentTemplateId { get; set; }
+        public MainPageContentPart MainPageContainerPart { get; set; }
 
-        /// <summary>
-        /// for example [0] : "moduleId" as one object of keyVal
-        /// </summary>
-        public List<KeyVal> ContentTemplateParamsValue { get; set; }
-        /// <summary>
-        /// parameters in  Modules
-        /// </summary>
-        public List<ModuleParams> ContentModuleParamsWithValues { get; set; }
-        public string ProductTemplateId { get; set; }
-        /// <summary>
-        /// for example [0] : "moduleId" as one object of keyVal
-        /// </summary>
-        public List<KeyVal> ProductTemplateParamsValue { get; set; }
-        /// <summary>
-        /// parameters in  Modules
-        /// </summary>
-        public List<ModuleParams> ProductModuleParamsWithValues { get; set; }
+        public PageFooterPart FooterPart { get; set; }
     }
 
     public class ProviderDetailDTO

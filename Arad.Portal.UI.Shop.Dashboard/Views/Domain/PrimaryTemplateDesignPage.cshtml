@@ -195,13 +195,17 @@
 		$('#confirmDesignModal').modal('show');
         });
 
-        $("#btnPreview").click(function(){
-             var header = {};
-             header.CustomizedContent = [];
-             var regPart = document.getElementById("regPart").outerHTML;
+        $("#btnSave").click(function(){
 
+            //start of header section
+
+             var header = {}; //an instance of headerPart
+             header.CustomizedContent = [];
+
+             var regPart = document.getElementById("regPart").outerHTML;
              var priorHeader = document.getElementById("regPart").outerHTML;
              header.PriorFixedContent = priorHeader;
+
              var i = 1;
              var rn ="";
              $(".dynamicHeaderPart .contentColumns > .firstLevel").each(function(){
@@ -215,6 +219,7 @@
                      colContent.Section = "headerSection";
                      colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
                      colContent.ColData = $(this).html();
+                     colContent.ColumnClassNames = $(this).attr("classNames");
 
                      obj.ColsContent.push(colContent);
                  });
@@ -222,11 +227,178 @@
                  header.CustomizedContent.push(obj);
              });
 
+             //navbar
              var obj = {}; //an instance of RowContent for navbar Menu
              obj.RowNumber = parseInt(rn) + 1;
              obj.OrderInRow = i ;
              obj.ExtraClassNames ="navbarMenu";
-             var MenuData = "<div addClass='target' type='module'></div>";
+             obj.ColsContent =[] ;
+             var singleCol = {};
+             singleCol.Section ="";
+             singleCol.ColNumber = 1;
+
+             var menuModule = {};//an instance of ModuleWithParametersValue for menu
+             menuModule.ModuleId = "f8865ffc-1653-41ba-a281-ee57fa7ffc09";
+             menuModule.ModuleName = "HorizantalStoreMenu";
+             menuModule.ParametersValue =[];
+             var data = JSON.stringify(menuModule);
+             var menuData = `<div addClass='target' type='module'>${data}</div>`;
+
+             singleCol.ColData = menuData;
+             singleCol.ColumnClassNames = "";
+             obj.ColsContent.push(singleCol);
+             header.CustomizedContent.push(obj);
+             //end of header section
+
+             //start of container section
+             i= 1;
+             rn ="";
+             var bodyContainer = {}; //an instance of MainPageContentPart
+             bodyContainer.RowContents = [] ;
+              $(".dynamicContainerPart .contentColumns > .firstLevel").each(function()
+              {
+                  rn = $(this).attr("rn");
+                 var bodyRowContent = {}; //an instance of RowContent
+                 bodyRowContent.RowNumber = parseInt(rn) ;
+                 bodyRowContent.OrderInRow = i ;
+                 bodyRowContent.ColsContent = [] ;
+                 $(this).find(".row.parent .finalColumnContent").each(function(){
+                     var colContent ={} ; //an instance of ColContent
+                     colContent.Section = "containerSection";
+                     colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
+                     colContent.ColData = $(this).html();
+                     colContent.ColumnClassNames = $(this).attr("classNames");
+                     bodyRowContent.ColsContent.push(colContent);
+                 });
+                i++;
+                bodyContainer.RowContents.push(bodyRowContent);
+              });
+              //end of container section
+
+              //start of footerSection
+               i= 1;
+               rn ="";
+               var footerPart ={} ; //an instance of footerPart
+               footerPart.CustomizedContent =[];
+               $(".dynamicFooterPart .contentColumns > .firstLevel").each(function()
+               {
+                 rn = $(this).attr("rn");
+                 var footerRowContent = {}; //an instance of RowContent
+                 footerRowContent.RowNumber = parseInt(rn) ;
+                 footerRowContent.OrderInRow = i ;
+                 footerRowContent.ColsContent = [] ;
+                 $(this).find(".row.parent .finalColumnContent").each(function(){
+                     var colContent ={} ; //an instance of ColContent
+                     colContent.Section = "footerSection";
+                     colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
+                     colContent.ColData = $(this).html();
+                     colContent.ColumnClassNames = $(this).attr("classNames");
+
+                     footerRowContent.ColsContent.push(colContent);
+                 });
+                  i++;
+                 footerPart.CustomizedContent.push(footerRowContent);
+               });
+               //end of footer section
+
+             var model = {}; //an instance of DomainPageModel
+             model.HeaderPart = header;
+             model.MainPageContainerPart = bodyContainer;
+             model.FooterPart = footerPart;
+             model.DomainId = '@ViewBag.DomainId';
+             $.ajax({
+                type: "Post",
+                url: @Url.Action("SavePageContent", "Domain"),
+                contentType : 'application/json',
+                data : JSON.stringify(pageModel),
+                success: function (result) {
+                    $('#mainToastBody').html('<i class="fal fa-check-circle"></i>@Language.GetString("AlertAndMessage_EditionDoneSuccessfully")');
+                          $('#mainToastBody').classList.add('alert-success');
+                          var toastDiv = $("#mainToast");
+                          var toast = new bootstrap.Toast(toastDiv);
+                          toast.show();
+                          setTimeout(function(){
+                              toast.hide(),3000
+                          });
+                },
+             });
+        });
+
+        $("#btnPreview").click(function(){
+            var header ="";
+            var container ="";
+            var footer ="";
+
+             var regPart = document.getElementById("regPart").outerHTML;
+             var priorHeader = document.getElementById("regPart").outerHTML;
+             header = priorHeader;
+            
+             $(".dynamicHeaderPart .contentColumns > .firstLevel").each(function(){
+                 header += "<div class='row firstLevel'>";
+                 $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
+                     var classNames = $(this).attr("classNames");
+                     var columnContent = $(this).val();
+                     header +=`<div class=${classNames}>${columnContent}</div>` ;
+                 });
+                 header += "</div>";
+             });
+
+             $.ajax({
+                 url:"@Url.Action("GetViewComponet","Domain")"+"?viewComponentName=StoreMenuModule&arguments="+'@ViewBag.DomainId',
+                 type:'Get',
+                 statusCode:{
+                     200:function(data){
+                         debugger;
+                        header +=`<div class="navbar">${data}</div>` ;
+                     }
+                 }
+               });
+             
+              $(".dynamicContainerPart .contentColumns > .firstLevel").each(function()
+              {
+                  container += "<div class='row firstLevel'>";
+                 $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
+                   
+                    var classNames = $(this).attr("classNames");
+                     var columnContent = $(this).val();
+                     container +=`<div class=${classNames}>${columnContent}</div>` ;
+                 });
+                 container += "</div>";
+              });
+             
+
+              //start of footerSection
+               $(".dynamicFooterPart .contentColumns > .firstLevel").each(function()
+               {
+                 footer += "<div class='row firstLevel'>";
+                 $(this).find(".row.parent .finalColumnContent").each(function(){
+                     var classNames = $(this).attr("classNames");
+                     var columnContent = $(this).val();
+                     footer +=`<div class=${classNames}>${columnContent}</div>` ;
+                 });
+                  footer += "</div>";
+                
+               });
+               //end of footer section
+
+             var model = {}; //an instance of TemplateDesign
+             model.HeaderContent = header;
+             model.ContainerContent = container;
+             model.FooterContent = footer;
+             model.DomainId = '@ViewBag.DomainId';
+              $.ajax({
+                url: @Url.Action("StoreDesignPreview"),
+                data : JSON.stringify(model),
+                contentType: 'application/json',
+                type: 'Post',
+                dataType: 'json',
+                success: function (result) {
+                    if(result != "")
+                    {
+                        window.open('@Url.Action("DesignPreview")'+'?key='+result.key , '_blank');
+                    }
+                }
+            });
         });
     })
     function confirmation()

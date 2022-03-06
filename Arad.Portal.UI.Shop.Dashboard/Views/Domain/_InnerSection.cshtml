@@ -37,8 +37,11 @@
          <button  class="btn btn-success bg-gradient btn-sm float-end btnHtmlSanitizer m-1" cn ="@Model.ColNumber" rn="@ViewBag.RowNumber" sec = "@Model.Section"
             type="button">@Language.GetString("btn_Validation")</button>
     </div>
-    <div class="col-12 finalColumnContent d-none"></div>
-
+    <div class="col-12 finalColumnContent d-none" classNames ="@Model.ColumnClassNames"></div>
+      <div class="col-12 htmlColumnContentPreview d-none" classNames="@Model.ColumnClassNames">
+      </div>
+          
+@*difference between these finalColumnContent and htmlColumnContentPreview is about modules the first one store with parameters and second one html of executed module will render *@
    
    <div class="col-12 moduleDataPreview d-none" >
    </div>
@@ -106,6 +109,8 @@
                           });
                           var data = "<div class='target' type='editor'>"+ htmlData +"</div>";
                           $(this).closest(".parent").find(".finalColumnContent").append(data);
+
+                          $(this).closest(".parent").find(".htmlColumnContentPreview").append(htmlData);
                         }
                      }
                  }
@@ -143,15 +148,13 @@
             obj.ModuleName = $(templatePart).find(".moduleList option:selected").text();
            
             $(targetParamsDiv).find(".par").each(function(){
+
                 var id = $(this).attr("id");
-                
                 switch(obj.ModuleName)
                 {
-                   
                     case "ProductList":
                     switch(id)
-                    {
-                          
+                    {  
                         case "templateSection":
                         selectedTemplate = $("input[name='rdbProductTemplateList']:checked").val();
                         break;
@@ -213,10 +216,12 @@
         $.ajax({
             type: "Get",
             dataType: "html",
-            url: urlPrimary
+            url: url
             success: function (result) {
                 if (result != "") {
                     $(parent).find(".moduleDataPreview").html(result).removeClass("d-none");
+                    $(parent).find(".htmlColumnContentPreview").append(result);
+
                     setTimeout(function(){
                         $(parent).find(".moduleDataPreview").html("");
                         $(parent).find(".moduleDataPreview").addClass("d-none");

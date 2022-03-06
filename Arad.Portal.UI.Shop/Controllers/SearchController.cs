@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Arad.Portal.DataLayer.Contracts.General.Domain;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,11 @@ namespace Arad.Portal.UI.Shop.Controllers
 {
     public class SearchController : BaseController
     {
-        public SearchController(IHttpContextAccessor accessor):base(accessor)
+
+        private readonly IDomainRepository _domainRepository;
+        public SearchController(IHttpContextAccessor accessor,IDomainRepository domainRepository):base(accessor, domainRepository)
         {
-                
+            _domainRepository = domainRepository;
         }
         public IActionResult Index()
         {

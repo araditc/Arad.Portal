@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Models.DesignStructure
 {
-    public class MainPageContentPart
+    public class PageModel
     {
-        public MainPageContentPart()
-        {
-            RowContents = new();
-        }
-        public List<RowContent> RowContents { get; set; }
+        public string Header { get; set; }
+        public string Body { get; set; }
+        public string Footer { get; set; }
     }
 }

@@ -142,7 +142,22 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
             return View(model);
         }
-       
+
+
+       [HttpPost]
+       public async Task<IActionResult> SavePageContent([FromBody]DomainPageModel model)
+       {
+            var domainEntity = _domainRepository.FetchDomain(model.DomainId);
+            domainEntity.ReturnValue.HeaderPart = model.HeaderPart;
+            domainEntity.ReturnValue.MainPageContainerPart = model.MainPageContainerPart;
+            domainEntity.ReturnValue.FooterPart = model.FooterPart;
+
+            var result = await _domainRepository.EditDomain(domainEntity.ReturnValue);
+
+            return Json(result.Succeeded ? new { Status = "Success", result.Message }
+                 : new { Status = "Error", result.Message });
+       }
+
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] DomainDTO dto)
         {
@@ -222,37 +237,22 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
        
 
         [HttpPost]
-        public IActionResult StoreDesignPreview([FromBody] List<KeyVal> parameters)
+        public IActionResult StoreDesignPreview([FromBody] TemplateDesign model)
         {
             var key = Guid.NewGuid().ToString();
-            HttpContext.Session.SetComplexData(key, parameters);
+            HttpContext.Session.SetComplexData(key, model);
 
             return Json(new { key = key });
 
         }
 
         [HttpGet]
-        public IActionResult DesignPreview(string key, string id)
+        public IActionResult DesignPreview(string key)
         {
-            var template = _moduleRepository.FetchTemplateById(id);
-            List<KeyVal> datas = HttpContext.Session.GetComplexData<List<KeyVal>>(key);
 
-            switch (template.TemplateName)
-            {
-                case "TemplateNumber1":
-                    var first = datas.FirstOrDefault(_ => _.Key == "[0]").Val;
-                    var second = datas.FirstOrDefault(_ => _.Key =="[1]").Val;
-                    var third = datas.FirstOrDefault(_ => _.Key == "[2]").Val;
-                    template.HtmlContent = template.HtmlContent.Replace("[0]", first);
-                    template.HtmlContent = template.HtmlContent.Replace("[1]", second);
-                    template.HtmlContent = template.HtmlContent.Replace("[2]", third);
-                    break;
-                case "TemplateNumber2":
-                    break;
-                default:
-                    break;
-            }
-            return View(template);
+            TemplateDesign data = HttpContext.Session.GetComplexData<TemplateDesign>(key);
+           
+            return View("PrimaryTemplatePreview", data);
         }
 
         [HttpGet]
@@ -261,85 +261,90 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return ViewComponent("SpecialProduct", new { productType, selectionTemplate, count });
         }
 
-
-        [HttpPost]
-        public async  Task<IActionResult> SendModuleParams([FromBody]DomainPageModel model)
+        public IActionResult GetViewComponet(string viewComponentName, object arguments)
         {
-            var domainDto = _domainRepository.FetchDomain(model.DomainId).ReturnValue;
-            switch (model.PageType)
-            {
-                case PageType.MainPage:
-                    domainDto.MainPageTemplateId = model.TemplateId;
-                    domainDto.MainPageTemplateParamsValue = model.ParamsValue;
-                    domainDto.MainPageModuleParamsWithValues = model.ModuleParams;
-                    break;
-                case PageType.contentPage:
-                    domainDto.ContentTemplateId = model.TemplateId;
-                    domainDto.ContentTemplateParamsValue = model.ParamsValue;
-                    domainDto.ContentModuleParamsWithValues = model.ModuleParams;
-                    break;
-                case PageType.ProductPage:
-                    domainDto.ProductTemplateId = model.TemplateId;
-                    domainDto.ProductTemplateParamsValue = model.ParamsValue;
-                    domainDto.ProductModuleParamsWithValues = model.ModuleParams;
-                    break;
-                default:
-                    break;
-            }
-            var res = await _domainRepository.EditDomain(domainDto);
-            return Json(res.Succeeded ? new { Status = "Success", res.Message }
-                 : new { Status = "Error", res.Message });
+            return ViewComponent(viewComponentName, arguments);
         }
 
 
-        [HttpGet]
-        public async Task<IActionResult> GetPageFromDomain(string domainId, PageType pageType)
-        {
-            var domainEntity = _domainRepository.FetchDomain(domainId).ReturnValue;
-            Template templateEntity = new Template();
-            var allModules = _moduleRepository.GetAllModuleList();
-            switch (pageType)
-            {
-                case PageType.MainPage:
-                    templateEntity = _moduleRepository.FetchTemplateById(domainEntity.MainPageTemplateId);
-                    foreach (var par in domainEntity.MainPageTemplateParamsValue)
-                    {
-                        string htmlPart = "";
-                        var moduleList = par.Val.Split("<br/>");
-                        foreach (var moduleId in moduleList)
-                        {
-                            var moduleEntity = allModules.FirstOrDefault(_ => _.ModuleId == moduleId);
-                            var moduleParameters = domainEntity.MainPageModuleParamsWithValues
-                                .FirstOrDefault(_ => _.Place == par.Key && _.ModuleId == moduleId);
-                            switch (moduleEntity.ModuleCategoryType)
-                            {
-                                //case ModuleCategoryType.Advertisement:
-                                //    break;
-                                //case ModuleCategoryType.ImageSlider:
-                                //    break;
-                                case ModuleCategoryType.Product:
-                                    htmlPart += await RenderViewComponent("SpecialProduct", moduleParameters.ParamsValue);
-                                    break;
-                                case ModuleCategoryType.Content:
-                                    htmlPart += await RenderViewComponent("ContentTemplates", moduleParameters.ParamsValue);
-                                    break;
-                                default:
-                                    break;
-                            }
-                            htmlPart += "<br/>";
-                        }
-                        templateEntity.HtmlContent = templateEntity.HtmlContent.Replace(par.Key, htmlPart);
-                    }
-                    break;
-                //case PageType.contentPage:
-                //    break;
-                //case PageType.ProductPage:
-                //    break;
-                default:
-                    break;
-            }
-            return View(templateEntity);
-        }
+        //[HttpPost]
+        //public async  Task<IActionResult> SendModuleParams([FromBody]DomainPageModel model)
+        //{
+        //    var domainDto = _domainRepository.FetchDomain(model.DomainId).ReturnValue;
+        //    switch (model.PageType)
+        //    {
+        //        case PageType.MainPage:
+        //            domainDto.MainPageTemplateId = model.TemplateId;
+        //            domainDto.MainPageTemplateParamsValue = model.ParamsValue;
+        //            domainDto.MainPageModuleParamsWithValues = model.ModuleParams;
+        //            break;
+        //        case PageType.contentPage:
+        //            domainDto.ContentTemplateId = model.TemplateId;
+        //            domainDto.ContentTemplateParamsValue = model.ParamsValue;
+        //            domainDto.ContentModuleParamsWithValues = model.ModuleParams;
+        //            break;
+        //        case PageType.ProductPage:
+        //            domainDto.ProductTemplateId = model.TemplateId;
+        //            domainDto.ProductTemplateParamsValue = model.ParamsValue;
+        //            domainDto.ProductModuleParamsWithValues = model.ModuleParams;
+        //            break;
+        //        default:
+        //            break;
+        //    }
+        //    var res = await _domainRepository.EditDomain(domainDto);
+        //    return Json(res.Succeeded ? new { Status = "Success", res.Message }
+        //         : new { Status = "Error", res.Message });
+        //}
+
+
+        //[HttpGet]
+        //public async Task<IActionResult> GetPageFromDomain(string domainId, PageType pageType)
+        //{
+        //    var domainEntity = _domainRepository.FetchDomain(domainId).ReturnValue;
+        //    Template templateEntity = new Template();
+        //    var allModules = _moduleRepository.GetAllModuleList();
+        //    switch (pageType)
+        //    {
+        //        case PageType.MainPage:
+        //            templateEntity = _moduleRepository.FetchTemplateById(domainEntity.MainPageTemplateId);
+        //            foreach (var par in domainEntity.MainPageTemplateParamsValue)
+        //            {
+        //                string htmlPart = "";
+        //                var moduleList = par.Val.Split("<br/>");
+        //                foreach (var moduleId in moduleList)
+        //                {
+        //                    var moduleEntity = allModules.FirstOrDefault(_ => _.ModuleId == moduleId);
+        //                    var moduleParameters = domainEntity.MainPageModuleParamsWithValues
+        //                        .FirstOrDefault(_ => _.Place == par.Key && _.ModuleId == moduleId);
+        //                    switch (moduleEntity.ModuleCategoryType)
+        //                    {
+        //                        //case ModuleCategoryType.Advertisement:
+        //                        //    break;
+        //                        //case ModuleCategoryType.ImageSlider:
+        //                        //    break;
+        //                        case ModuleCategoryType.Product:
+        //                            htmlPart += await RenderViewComponent("SpecialProduct", moduleParameters.ParamsValue);
+        //                            break;
+        //                        case ModuleCategoryType.Content:
+        //                            htmlPart += await RenderViewComponent("ContentTemplates", moduleParameters.ParamsValue);
+        //                            break;
+        //                        default:
+        //                            break;
+        //                    }
+        //                    htmlPart += "<br/>";
+        //                }
+        //                templateEntity.HtmlContent = templateEntity.HtmlContent.Replace(par.Key, htmlPart);
+        //            }
+        //            break;
+        //        //case PageType.contentPage:
+        //        //    break;
+        //        //case PageType.ProductPage:
+        //        //    break;
+        //        default:
+        //            break;
+        //    }
+        //    return View(templateEntity);
+        //}
 
         [HttpGet]
         public IActionResult GetContentModuleViewComponent(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, int? count)
@@ -398,17 +403,17 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return Json(new { isvalid = res });
         }
 
-        [HttpGet]
-        public IActionResult ContentPageDesign(string domainId)
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public IActionResult ContentPageDesign(string domainId)
+        //{
+        //    return View();
+        //}
 
-        [HttpGet]
-        public IActionResult ProductPageDesign(string domainId)
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public IActionResult ProductPageDesign(string domainId)
+        //{
+        //    return View();
+        //}
 
         [HttpPost]
         public IActionResult GetProviderParams([FromQuery] int pspVal)

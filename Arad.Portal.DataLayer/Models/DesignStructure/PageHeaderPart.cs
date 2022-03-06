@@ -5,17 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Models.DesignStructure
-{ 
+{
     public class PageHeaderPart
     {
         public PageHeaderPart()
         {
             CustomizedContent = new();
         }
-    public string PriorFixedContent { get; set; }
+        public string PriorFixedContent { get; set; }
 
-    public List<RowContent> CustomizedContent { get; set; }
+        public List<RowContent> CustomizedContent { get; set; }
 
-    public string LatterFixedContent { get; set; }
-}
+        public string LatterFixedContent { get; set; }
+    }
 }
