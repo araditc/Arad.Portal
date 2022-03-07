@@ -1,0 +1,46 @@
+﻿body {
+    margin : 0;
+    padding :0;
+}
+/*.banner-area {
+    height: 100vh;
+    width: 100%;
+    background-image: url(/wwwroot/imgs/2.jpg);
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-position: center center;
+}*/
+
+.menu-area{
+    position : static;
+}
+
+
+
+h6 a.nav-link {
+    font-weight: 600;
+}
+
+.dropdown-item {
+    font-size: 0.95rem;
+}
+
+.mega-area{
+    position : absolute;
+    width : 100%;
+    left :0;
+    right : 0;
+    padding : 15px;
+}
+.dropdown-item {
+    /* padding : 5px 0;*/
+    color: #555c62cf;
+}
+h5 {
+    /* letter-spacing : 2px;
+   font-weight : 900;*/
+}
+.navbar{
+    margin-top : 2%;
+}
+

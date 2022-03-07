@@ -9,24 +9,26 @@
     {
         lan = "en";
     }
+   
 }
 <div class="row">
     <div class="col-12">
          <label class="form-label">@Language.GetString("Template_ContentType")</label>
         <br />
-        <select class="form-control selectpicker drpContentType" onchange="selectDrpContentType(this);"  data-live-search="true">
+        <select class="form-control selectpicker drpContentType" onchange="selectDrpContentType(this);"  cn ="@Model.ColNumber" rn="@ViewBag.RowNumber" sec = "@Model.Section"  data-live-search="true">
+             <option value="0">@Language.GetString("AlertAndMessage_Choose")</option>
             <option value="1">@Language.GetString("Template_SystemModules")</option>
             <option value="2">@Language.GetString("Template_Editor")</option>
         </select>
     </div>
 </div>
-<div class="row parent" cn ="@Model.ColNumber" rn="@ViewBag.RowNumber" sec = "@Model.Section">
+<div class="row parent" cn ="@Model.ColNumber" rn="@ViewBag.RowNumber" sec = "@Model.Section" style="min-height:300px;">
     <div class="col-12 modulePart d-none">
          <select class="form-control selectpicker moduleList" data-live-search="true" asp-items="@(new SelectList(ViewBag.ModuleList,"Value","Text"))">
          </select>
          <br />
         <div class="d-flex justify-content-end">
-            <button  class="btn btn-success bg-gradient btn-sm float-end btnAddModule m-1" cn ="@Model.ColNumber" rn="@ViewBag.RowNumber" sec = "@Model.Section"
+            <button  class="btn btn-success bg-gradient btn-sm float-end btnAddModule m-1" onclick="addModule(this);" cn ="@Model.ColNumber" rn="@ViewBag.RowNumber" sec = "@Model.Section"
             type="button">@Language.GetString("btn_Select")</button>
         </div>
         <br/>
@@ -34,7 +36,17 @@
     </div>
     <div class="col-12 editorPart d-none" >
         <textarea id='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")' name='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")' class="form-control" rows="40"></textarea>
-         <button  class="btn btn-success bg-gradient btn-sm float-end btnHtmlSanitizer m-1" cn ="@Model.ColNumber" rn="@ViewBag.RowNumber" sec = "@Model.Section"
+        <script>
+               debugger;
+               editorId = `editor_${'@Model.ColNumber'}_${'@ViewBag.RowNumber'}`;
+                var config = {
+                    filebrowserImageUploadUrl: 'Image/content-file-upload',
+                    language: '@lan'
+                }
+                CKEDITOR.replace(editorId, config);
+        </script>
+
+         <button  class="btn btn-success bg-gradient btn-sm float-end btnHtmlSanitizer m-1" onclick="sinitize(this);" editorid ='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")' cn ="@Model.ColNumber" rn="@ViewBag.RowNumber" sec = "@Model.Section"
             type="button">@Language.GetString("btn_Validation")</button>
     </div>
     <div class="col-12 finalColumnContent d-none" classNames ="@Model.ColumnClassNames"></div>
@@ -49,40 +61,43 @@
 
 
 <script>
-   editorId = `editor_${Model.ColNumber}_${Model.RowNumber}`;
-    var config = {
-        filebrowserImageUploadUrl: 'Image/content-file-upload',
-        language: '@lan'
-    }
-    CKEDITOR.replace(editorId, config);
+    var domainId = "";
     $(document).ready(function(){
-        $(".moduleList").selectpicker();
-
-        $("#btnAddModule").click(function(){
-            var parentDiv = $(this).closest(".parent");
+       
+    });
+    function addModule(sender)
+    {
+        debugger;
+        var parentDiv = $(sender).closest(".parent");
+        var colnumber =  $(sender).attr("cn");
+        var cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
+             
              var selectedModuleName = $(parentDiv).find(".moduleList").find("option:selected").text();
             var selectedModuleId = $(parentDiv).find(".moduleList").find("option:selected").val();
-            var targetDiv = $(parentDiv).find(".paramsDiv");
+            var paramDiv = $(parentDiv).find(".paramsDiv");
             $.ajax({
-                 url:"@Url.Action("GetSpecificModule","Domain")"+"?moduleName="+selectedModuleName+"&id="+'@ViewBag.DomainId',
+                 url:"@Url.Action("GetSpecificModule","Domain")"+"?moduleName="+selectedModuleName+"&id="+'@ViewBag.DomainId'+"&colCount="+cnt,
                  type:'Get',
                  statusCode:{
                      200:function(data){
                          debugger;
-                         var paramDiv=`#${targetDiv}`
                           $(paramDiv).html(data);
+                          $("#typeList").selectpicker();
                      }
                  }
                });
-        });
+    }
 
-        $("#btnHtmlSanitizer").click(function(){
+    function sinitize(sender)
+    {
+        debugger;
+        editorId  =$(sender).attr("editorId");
             var htmlData = CKEDITOR.instances.editorId.getData();
             $.ajax({
                  url:"@Url.Action("SanitizeCkEditorContent","Domain")",
                  type:'Post',
                  data: htmlData,
-                 content-Type: "text/html; charset=UTF-8",
+                 contentType: "text/html; charset=UTF-8",
                  statusCode:{
                      200:function(data){
                          debugger;
@@ -107,7 +122,7 @@
                             setTimeout(function(){
                               toast.hide(),2000
                           });
-                          var data = "<div class='target' type='editor'>"+ htmlData +"</div>";
+                          var data = "<div target='editor'>"+ htmlData +"</div>";
                           $(this).closest(".parent").find(".finalColumnContent").append(data);
 
                           $(this).closest(".parent").find(".htmlColumnContentPreview").append(htmlData);
@@ -115,37 +130,42 @@
                      }
                  }
                });
+    }
 
-        })
-    });
     function selectDrpContentType(sender)
     {
+        debugger;
+        var colnumber = $(sender).attr("cn");
+        domainId = $(sender).closest(`div[colnum='${colnumber}']`).attr("did");
+        cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
+        debugger;
         var val = $(sender).val();
         var targetDiv = $(sender).closest(".row").siblings(".row.parent");
-        var targetDivId =`#${targetDivId}`;
+        //var targetDivId =`#${targetDivId}`;
         switch(val)
         {
             case "1":
-            $(targetDivId).find(".modulePart").removeClass("d-none");
-            $(targetDivId).find(".editorPart").addClass("d-none");
+            $(targetDiv).find(".modulePart").removeClass("d-none");
+            $(targetDiv).find(".editorPart").addClass("d-none");
             break;
             case "2":
-            $(targetDivId).find(".editorPart").removeClass("d-none");
-            $(targetDivId).find(".modulePart").addClass("d-none");
+            $(targetDiv).find(".editorPart").removeClass("d-none");
+            $(targetDiv).find(".modulePart").addClass("d-none");
             break;
         }
     }
     function addModulesWithParams(sender)
    {
+       debugger;
        var obj = {};//an instance of ModuleWithParametersValue
        obj.ParametersValue =[];
         var targetParamsDiv = $(sender).closest(".paramDiv");
+                              
         var parent =  $(sender).closest(".parent");
         var targetDivId ="";
-        if(targetParamsDiv != undefined)
-        {
-            obj.ModuleId = $(templatePart).find(".moduleList option:selected").val();
-            obj.ModuleName = $(templatePart).find(".moduleList option:selected").text();
+        
+            obj.ModuleId = $(sender).closest(".modulePart").find(".modulelist option:selected").val()
+            obj.ModuleName = $(sender).closest(".modulePart").find(".modulelist option:selected").text();
            
             $(targetParamsDiv).find(".par").each(function(){
 
@@ -192,7 +212,7 @@
                         break;
                     }
                     break;
-                }
+              }
         });
         var url = "";
         if(selectedModuleName.toLowerCase() =="productlist")
@@ -210,13 +230,13 @@
             obj.ParametersValue.ContentTemplateDesign = selectedTemplate;
         }
         var data = JSON.stringify(obj);
-        data =`<div class='target' type='module'>${data}</div>`;
+        data =`<div target='module'>${data}</div>`;
         var finalData = $(parent).find(".finalColumnContent").append(data);
 
         $.ajax({
             type: "Get",
             dataType: "html",
-            url: url
+            url: url, 
             success: function (result) {
                 if (result != "") {
                     $(parent).find(".moduleDataPreview").html(result).removeClass("d-none");
@@ -229,6 +249,6 @@
                 }
             },
         });
-        }
+        
    }
 </script>

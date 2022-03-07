@@ -12,7 +12,7 @@ namespace Arad.Portal.UI.Shop.Controllers
     {
 
         private readonly IDomainRepository _domainRepository;
-        public SearchController(IHttpContextAccessor accessor,IDomainRepository domainRepository):base(accessor, domainRepository)
+        public SearchController(IHttpContextAccessor accessor,IDomainRepository domainRepository):base(accessor)
         {
             _domainRepository = domainRepository;
         }

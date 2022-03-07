@@ -189,6 +189,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<IPermissionView, PermissionView>();
             services.AddTransient<RemoteServerConnection>();
             services.AddTransient<CreateNotification>();
+          
             
             //services.AddProgressiveWebApp();
             AddRepositoryServices(services);

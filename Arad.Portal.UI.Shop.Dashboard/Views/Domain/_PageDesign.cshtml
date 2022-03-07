@@ -6,27 +6,29 @@
 <div class='row @($"div_{Model.SectionTag}")' >
     <div class="col-12 text-center">
         <label class="lblAlertFirstRow form-label">@Language.GetString("AlertAndMessage_CreateNewRow")</label>
-        <button class="btn btn-success bg-gradient btn-sm float-end addNewRow m-1" id='@($"btnAdd_{Model.SectionTag}")' onclick="addNewRow();"
+        <button class="btn btn-success bg-gradient btn-sm float-end addNewRow m-1" id='@($"btnAdd_{Model.SectionTag}")' onclick="addNewRow(this, '@Model.SectionTag');"
                type="button" >@Language.GetString("btn_NewRow")</button>
     </div>
 </div>
 <div id="@($"{Model.SectionTag}_paramSection")">
     
 </div>
-<div class="row firstLevel parentSrc d-none">
-    <div class="col-12">
+@*<div class="row firstLevel mx-1 parentSrc @($"tem_{Model.SectionTag}") d-none">
+  
+    <div class="col-12 col-md-3">
         <label class="lblAlert form-label">@Language.GetString("AlertAndMessage_HowManyColumns")</label>
         <br />
-        <select class="form-control selectpicker" onchange="selectColumns(this);"  data-live-search="true">
+        <select  class="form-control selectpicker colCnt" onchange="selectColumns(this);"  data-live-search="true">
             <option value="1">@Language.GetString("Template_OneCol")</option>
             <option value="2">@Language.GetString("Template_TwoCol")</option>
             <option value="3">@Language.GetString("Template_ThreeCol")</option>
             <option value="4">@Language.GetString("Template_FourCol")</option>
             <option value="6">@Language.GetString("Template_SixCol")</option>
         </select>
-    </div>
+    
     <div class="col-12 contentColumns"></div>
-</div>
+    </div>
+</div>*@
  
 <script>
     var headerRowNumber=1000;
@@ -34,13 +36,16 @@
     var footerRownumber = 3000;
 
     $(document).ready(function(){
+        //debugger;
+        //$(".colCnt").selectpicker();
     });
-    function addNewRow()
+    function addNewRow(sender, tag)
     {
-        var divId = `#${@Model.SectionTag}_paramSection`;
+       
+        var divId = `#${tag}_paramSection`;
         $(divId).find(".row.firstLevel").removeClass("active");
         var currentRowNumber ;
-        switch('@Model.SectionTag')
+        switch(tag)
         {
             case "headerSection":
             currentRowNumber = headerRowNumber;
@@ -56,24 +61,33 @@
             break;
         }
         $(divId).append("<div rn='"+currentRowNumber+"' class='row "+ currentRowNumber+ " firstLevel active'></div>");
-        (".parentSrc").clone().removeClass("d-none").removeClass("parentSrc").appendTo(`.firstLevel.active.${currentRowNumber}`);
-        var parentDivClass = `.div_${Model.SectionTag}`;
-        $(parentDiv).find(".lblAlert").addClass("d-none");
+        //$(`.parentSrc.tem_${tag}`).clone()..appendTo(`.firstLevel.active.${currentRowNumber}`);
+        var guid = createGuid();
+        var template = getColTemplate(guid, tag);
+        $(`.firstLevel.active.${currentRowNumber}`).append(template);
+        var parentDivClass = `.div_${tag}`;
+        $(`#${guid}`).selectpicker();
 
+        $(parentDivClass).find(".lblAlertFirstRow").addClass("d-none");
+
+         $(sender).attr("disabled", true);
     }
 
-    function selectColumns(sender)
+    function selectColumns(sender, tag)
     {
+        debugger;
         var col = $(sender).val();
-        var rowNumber = $(sender).closest(".row.firstLevel").attr(rn);
+        var rowNumber = $(sender).closest(".row.firstLevel").attr("rn");
         $.ajax({
-                 url:"@Url.Action("GetRowWithSelectedColumns","Domain")"+"?count="col+"&rn="+rowNumber,
+                 url:"@Url.Action("GetRowWithSelectedColumns","Domain")"+"?count="+col+"&rn="+rowNumber+"&d="+'@Model.DomainId',
                  type:'Get',
                  statusCode:{
                      200:function(data){
                          debugger;
-                         var divId =  `#${@Model.SectionTag}_paramSection`;
+                         var divId =  `#${tag}_paramSection`;
                           $(divId).find(`.firstLevel.active.${rowNumber} .contentColumns`).html(data);
+                           $(".drpContentType").selectpicker();
+                           $(".moduleList").selectpicker();
                      }
                  }
                });

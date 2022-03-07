@@ -12,5 +12,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
         /// header, container, footer
         /// </summary>
         public string SectionTag { get; set; }
+
+        public string  DomainId { get; set; }
     }
 }

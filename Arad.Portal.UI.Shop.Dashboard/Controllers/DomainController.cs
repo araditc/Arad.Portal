@@ -208,13 +208,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public IActionResult HomePageDesign(string domainId)
         {
-            var temList = _moduleRepository.GetAllTemplate();
-            ViewBag.TemplateList = temList;
-            var moduleList = _moduleRepository.GetAllModules();
-            ViewBag.ModuleList = moduleList;
+            //var moduleList = _moduleRepository.GetAllModules();
+            //ViewBag.ModuleList = moduleList;
 
             ViewBag.DomainId = domainId;
-            return View();
+            return View("~/Views/Domain/PrimaryTemplateDesignPage.cshtml");
         }
 
         /// <summary>
@@ -352,9 +350,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return ViewComponent("ContentTemplate", new { contentType, selectionTemplate, count });
         }
 
-        public IActionResult GetSpecificModule(string moduleName, string id)
+        public IActionResult GetSpecificModule(string moduleName, string id, int colCount)
         {
             var module = _moduleRepository.FetchModuleByName(moduleName);
+            
             var viewName = $"_{moduleName}.cshtml";
             var imageTemplatePath = _webHostEnvironment.WebRootPath;
             var productOrContentTypes = _moduleRepository.GetAllProductOrContentTypes();
@@ -373,25 +372,32 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     {
                         if (item.Text.ToLower() != "forth")
                         {
-                            item.ImageUrl = System.IO.Path.Combine(imageTemplatePath, item.ImageUrl);
+                            item.ImageUrl = System.IO.Path.Combine(imageTemplatePath, $"Template/{item.Text}.jpg");
                         }
                         else
                         {
                             if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
                             {
-                                item.ImageUrl = Path.Combine(imageTemplatePath, "Template/forth-rtl.jpg");
+                                item.ImageUrl = Path.Combine(imageTemplatePath, "Template/Forth-rtl.jpg");
                             }
                             else
                             {
-                                item.ImageUrl = Path.Combine(imageTemplatePath, "Template/forth-ltr.jpg");
+                                item.ImageUrl = Path.Combine(imageTemplatePath, "Template/Forth-ltr.jpg");
                             }
                         }
                     }
                     ViewBag.ContentTemplateList = contentTemplateDesigns;
                     break;
+                case "HorizantalStoreMenu":
+                break;
+                case "ImageSlider":
+                    break;
+                case "Advertisement":
+                    break;
                 default:
                     break;
             }
+            ViewBag.ColCount =  colCount;
             return PartialView($"~/Views/Domain/{viewName}");
         }
 
@@ -558,7 +564,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
 
         [HttpGet]
-        public IActionResult GetRowWithSelectedColumns(string count, string rn)
+        public IActionResult GetRowWithSelectedColumns(string count, string rn, string d)
         {
 
             var moduleList = _moduleRepository.GetAllModules();
@@ -585,7 +591,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
               
             }
             ViewBag.RowNumber = rn;
-            return PartialView(viewName);
+            ViewBag.DomainId = d;
+            return PartialView($"~/Views/Domain/{viewName}");
         }
     }
 }

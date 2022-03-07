@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Models.Shared
 {
-    public abstract class BaseModel
+    public  class LayoutModel
     {
+        public bool HasCustomizedHeader { get; set; }
         public PageHeaderPart HeaderPart { get; set; }
-
+        public bool  HasCustomizedFooter { get; set; }
         public PageFooterPart FooterPart { get; set; }
     }
 }

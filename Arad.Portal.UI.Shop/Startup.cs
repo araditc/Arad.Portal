@@ -208,6 +208,7 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<CreateNotification>();
             services.AddTransient(typeof(EnyimMemcachedMethods<>));
             services.AddTransient<HttpClientHelper>();
+            services.AddTransient<LayoutContentProcess>();
             
             services.AddSingleton<IHostedService, CacheCleanerService>();
             services.AddSingleton<IHostedService, LifetimeEventsHostedService>();

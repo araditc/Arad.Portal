@@ -1,7 +1,11 @@
 ﻿<!DOCTYPE html>
 @using System.Globalization;
+@using Arad.Portal.DataLayer.Models.DesignStructure
 @using Arad.Portal.GeneralLibrary.Utilities;
-@model Arad.Portal.DataLayer.Models.Shared.BaseModel
+@using HtmlAgilityPack
+@using Newtonsoft.Json
+
+@inject Arad.Portal.UI.Shop.Helpers.LayoutContentProcess process
 @{
     var direction = "";
     var langList = new List<string>() { "fa", "en" };
@@ -45,7 +49,7 @@
     <link rel="stylesheet" href="~/css/Menu/Bootstrap4MegaMenu.css" />
     <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
-   
+
     @await RenderSectionAsync("Styles", required: false)
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
@@ -64,77 +68,140 @@
     </div>
 
     <header>
-        <div class="row">
-             <div class="col-4 col-md-2 col-lg-1">
-                 <div class="m-1 ms-4">
-                    <ul class="langUl list-group list-group-horizontal">
-                        <li class="list-group-item lan border-0 pt-2 px-1">
-                            <a title="@Language.GetString("Persian")" role="button"  data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                <img src="~/imgs/IRAN.png" onclick="setLang('fa-IR')" />
-                            </a>
+        @if (process.LayoutModel.HasCustomizedHeader)
+        {
+            @if (!string.IsNullOrWhiteSpace(process.LayoutModel.HeaderPart.PriorFixedContent))
+            {
+                @Html.Raw(process.LayoutModel.HeaderPart.PriorFixedContent);
+                
+            }
+            @if (process.LayoutModel.HeaderPart.CustomizedContent.Count > 0)
+            {
+                foreach (RowContent row in process.LayoutModel.HeaderPart.CustomizedContent.OrderBy(_ => _.RowNumber))
+                {
+                    <div class="row firstLevel @row.ExtraClassNames">
+                        @foreach (ColContent column in row.ColsContent.OrderBy(_ => _.ColNumber))
+                        {
+                            <div class="@column.ColumnClassNames">
+                                @{
+                                    var htmlDoc = new HtmlDocument();
+                                    htmlDoc.LoadHtml(column.ColData);
+                                    var divs = htmlDoc.DocumentNode.Descendants("div");
+                                    foreach (var div in divs)
+                                    {
+                                        if (div.Attributes["target"].Value =="module")
+                                        {
+                                            var module = JsonConvert.DeserializeObject<ModuleWithParametersValue>(column.ColData);
+                                            switch (module.ModuleName)
+                                            {
+                                                case "ProductList":
+                                                    @Component.InvokeAsync("SpecialProduct",
+                                                        new { productType = module.ParametersValue.ProductOrContentType,
+                                                        selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count} );
+                                                                                            
+                                                    break;
+                                                case "ContentList":
+                                                    @Component.InvokeAsync("ContentTemplates", new { contentType = module.ParametersValue.ProductOrContentType,
+                                                         selectionTemplate = module.ParametersValue.ContentTemplateDesign ,  count = module.ParametersValue.Count }) ;
+                                                   
+                                                    break;
+                                                case "HorizantalStoreMenu":
+                                                    @Component.InvokeAsync("StoreMenu");
+                                                    break;
+                                            }
+                                        }
+                                        else if (div.Attributes["target"].Value =="editor")
+                                        {
+                                            @Html.Raw(column.ColData) ;
+                                        }
+                                    }
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+            }
+            @if (!string.IsNullOrWhiteSpace(process.LayoutModel.HeaderPart.LatterFixedContent))
+            {
+                @Html.Raw(process.LayoutModel.HeaderPart.LatterFixedContent)  ;
+              
+            }
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-4 col-md-2 col-lg-1">
+                    <div class="m-1 ms-4">
+                        <ul class="langUl list-group list-group-horizontal">
+                            <li class="list-group-item lan border-0 pt-2 px-1">
+                                <a title="@Language.GetString("Persian")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                    <img src="~/imgs/IRAN.png" onclick="setLang('fa-IR')" />
+                                </a>
 
-                        </li>
-                        <li class="list-group-item lan border-0 pt-2 px-1">
-                            <a title="@Language.GetString("English")" role="button"  data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                <img src="~/imgs/USA.png" onclick="setLang('en-US')" />
-                            </a>
+                            </li>
+                            <li class="list-group-item lan border-0 pt-2 px-1">
+                                <a title="@Language.GetString("English")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                    <img src="~/imgs/USA.png" onclick="setLang('en-US')" />
+                                </a>
 
-                        </li>
-                    </ul>   
+                            </li>
+                        </ul>
+                    </div>
                 </div>
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <div class="offset-4 col-4 offset-md-8 col-md-2 offset-lg-9 col-lg-2">
+                        <div class="rounded border-0 float-end mt-2 me-4">
+                            <ul class="list-group list-group-horizontal userPart">
+                                <li class="list-group-item ps-3 pe-2 border-0 bg-secondary bg-opacity-10">
+                                    <a href="/account/login" title="@Language.GetString("btn_Login")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                        <i class="fas fa-sign-in-alt"></i>
+                                    </a>
+                                </li>
+                                <li class="list-group-item border-0 pb-0 bg-secondary bg-opacity-10">
+                                    <div class="vr" style="min-height:1.5em;"></div>
+                                </li>
+                                <li class="list-group-item ps-2 pe-3 border-0 bg-secondary bg-opacity-10">
+
+                                    <a href="/account/register" title="@Language.GetString("btn_Register")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                        <i class="fas fa-user-plus"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="offset-4 col-4 offset-md-8 col-md-2 offset-lg-10 col-lg-1">
+                        <div class="rounded border-0 float-end mt-2 me-4">
+                            <ul class="list-group list-group-horizontal">
+                                <li class="list-group-item profile">
+                                    <a href="/account/Profile" id="userProfileId" role="button" title="@Language.GetString("User_Profile")" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                        <i class="far fa-user"></i>
+                                    </a>
+                                </li>
+                                <li class="list-group-item border-0 pb-0 bg-secondary bg-opacity-10">
+                                    <div class="vr" style="min-height:1.5em;"></div>
+                                </li>
+                                <li class="list-group-item profile">
+                                    <a href="/basket/get" id="userBasketId" role="button" title="@Language.GetString("ShoppingCart")" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        <span class="badge notifyBadge"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                }
             </div>
-            @if (!User.Identity.IsAuthenticated)
-            {
-                <div class="offset-4 col-4 offset-md-8 col-md-2 offset-lg-9 col-lg-2">
-                    <div class="rounded border-0 float-end mt-2 me-4">
-                    <ul class="list-group list-group-horizontal userPart">
-                        <li class="list-group-item ps-3 pe-2 border-0 bg-secondary bg-opacity-10">
-                            <a href="/account/login" title="@Language.GetString("btn_Login")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                <i class="fas fa-sign-in-alt"></i>
-                            </a>
-                        </li>
-                        <li class="list-group-item border-0 pb-0 bg-secondary bg-opacity-10">
-                            <div class="vr" style="min-height:1.5em;"></div>
-                        </li>
-                        <li class="list-group-item ps-2 pe-3 border-0 bg-secondary bg-opacity-10">
-                           
-                            <a href="/account/register" title="@Language.GetString("btn_Register")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                <i class="fas fa-user-plus"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    </div>
-                </div>
-            }
-            else
-            {
-                <div class="offset-4 col-4 offset-md-8 col-md-2 offset-lg-10 col-lg-1">
-                    <div class="rounded border-0 float-end mt-2 me-4">
-                    <ul class="list-group list-group-horizontal">
-                        <li class="list-group-item profile">
-                            <a href="/account/Profile" id="userProfileId" role="button" title="@Language.GetString("User_Profile")" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                <i class="far fa-user"></i>
-                            </a>
-                        </li>
-                        <li class="list-group-item border-0 pb-0 bg-secondary bg-opacity-10">
-                            <div class="vr" style="min-height:1.5em;"></div>
-                        </li>
-                        <li class="list-group-item profile">
-                            <a href="/basket/get" id="userBasketId" role="button" title="@Language.GetString("ShoppingCart")" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                <i class="fas fa-shopping-cart"></i>
-                                <span class="badge notifyBadge"></span>
-                            </a>
-                        </li>
-                    </ul>
-                    </div>
-                </div>
-            }
-        </div>
-        <div class="navbarMenu">
-        @await Component.InvokeAsync("StoreMenu")
-       </div>
+            <div class="navbarMenu">
+                @await Component.InvokeAsync("StoreMenu")
+            </div>
+        }
+
     </header>
-    
+
 
     <div class="container">
         <main role="main" class="pb-3">
@@ -143,80 +210,138 @@
     </div>
     <footer>
         <div class="footer">
-
+            @if (process.LayoutModel.HasCustomizedFooter)
+            {
+                @if (!string.IsNullOrWhiteSpace(process.LayoutModel.FooterPart.PriorFixedContent))
+                {
+                    @Html.Raw(process.LayoutModel.FooterPart.PriorFixedContent);
+                    
+                }
+                @if (process.LayoutModel.FooterPart.CustomizedContent.Count > 0)
+                {
+                    foreach (RowContent row in process.LayoutModel.FooterPart.CustomizedContent.OrderBy(_ => _.RowNumber))
+                    {
+                        <div class="row firstLevel @row.ExtraClassNames">
+                            @foreach (ColContent column in row.ColsContent.OrderBy(_ => _.ColNumber))
+                            {
+                                <div class="@column.ColumnClassNames">
+                                    @{
+                                        var htmlDoc = new HtmlDocument();
+                                        htmlDoc.LoadHtml(column.ColData);
+                                        var divs = htmlDoc.DocumentNode.Descendants("div");
+                                        foreach (var div in divs)
+                                        {
+                                            if (div.Attributes["target"].Value =="module")
+                                            {
+                                                var module = JsonConvert.DeserializeObject<ModuleWithParametersValue>(column.ColData);
+                                                switch (module.ModuleName)
+                                                {
+                                                    case "ProductList":
+                                                        @Component.InvokeAsync("SpecialProduct",
+                                                               new { productType = module.ParametersValue.ProductOrContentType,
+                                                                    selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count} );
+                                                        break;
+                                                    case "ContentList":
+                                                        @Component.InvokeAsync("ContentTemplates", new { contentType = module.ParametersValue.ProductOrContentType,
+                                                                        selectionTemplate = module.ParametersValue.ContentTemplateDesign ,  count = module.ParametersValue.Count });
+                                                        break;
+                                                    case "HorizantalStoreMenu":
+                                                        @Component.InvokeAsync("StoreMenu");
+                                                        break;
+                                                }
+                                            }
+                                            else if (div.Attributes["target"].Value =="editor")
+                                            {
+                                                @Html.Raw(column.ColData);
+                                            }
+                                        }
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
+                }
+                @if (!string.IsNullOrWhiteSpace(process.LayoutModel.HeaderPart.LatterFixedContent))
+                {
+                    @Html.Raw(process.LayoutModel.HeaderPart.LatterFixedContent);
+                }
+            }else
+            {
+                
+            }
         </div>
     </footer>
-  
+
     <script>
-    function setLang(lang)
-    {
-        debugger;
-        var currentCulture = '@CultureInfo.CurrentCulture.Name';
-        if (currentCulture !== lang) {
-            $.ajax({
-                type: "GET",
-                url: '/Account/changeLang?langId=' + lang,
-                success: function () {
-                    debugger;
-                    window.location.reload();
-                }
-            });
+        function setLang(lang)
+        {
+            debugger;
+            var currentCulture = '@CultureInfo.CurrentCulture.Name';
+            if (currentCulture !== lang) {
+                $.ajax({
+                    type: "GET",
+                    url: '/Account/changeLang?langId=' + lang,
+                    success: function () {
+                        debugger;
+                        window.location.reload();
+                    }
+                });
+            }
         }
-    }
-    function setProductCountInCart(number) {
-       $("#userBasketId .notifyBadge").html(number);
-    }
-
-    function changeScreen() {
-        var windowSize = $(window).width();
-        console.log(windowSize);
-        if (windowSize <= 974) {
-            $(".nascr").removeClass("d-none").addClass("d-block");
-            $(".wiscr").removeClass("d-block").addClass("d-none");
-        } else {
-            $(".nascr").removeClass("d-block").addClass("d-none");
-            $(".wiscr").removeClass("d-none").addClass("d-block");
+        function setProductCountInCart(number) {
+           $("#userBasketId .notifyBadge").html(number);
         }
-    }
-        $(document).ready(function () {
-            changeScreen();
-            $(window).resize(changeScreen);
 
-            $(".menu-area").mouseover(function () {
+        function changeScreen() {
+            var windowSize = $(window).width();
+            console.log(windowSize);
+            if (windowSize <= 974) {
+                $(".nascr").removeClass("d-none").addClass("d-block");
+                $(".wiscr").removeClass("d-block").addClass("d-none");
+            } else {
+                $(".nascr").removeClass("d-block").addClass("d-none");
+                $(".wiscr").removeClass("d-none").addClass("d-block");
+            }
+        }
+            $(document).ready(function () {
+                changeScreen();
+                $(window).resize(changeScreen);
+
+                $(".menu-area").mouseover(function () {
+                        var windowSize = $(window).width();
+                        if (windowSize > 975) {
+                            $(this).addClass("show");
+                            $(this).find(".dropdown-toggle").addClass("text-primary");
+                            $(this).find(".mega-area").addClass("show");
+                        }
+                });
+
+                $(".menu-area").mouseleave(function () {
                     var windowSize = $(window).width();
                     if (windowSize > 975) {
-                        $(this).addClass("show");
-                        $(this).find(".dropdown-toggle").addClass("text-primary");
-                        $(this).find(".mega-area").addClass("show");
+                        $(this).removeClass("show");
+                        $(this).find(".dropdown-toggle").removeClass("text-primary");
+                        $(this).find(".mega-area").removeClass("show");
                     }
-            });
+                });
 
-            $(".menu-area").mouseleave(function () {
-                var windowSize = $(window).width();
-                if (windowSize > 975) {
-                    $(this).removeClass("show");
-                    $(this).find(".dropdown-toggle").removeClass("text-primary");
-                    $(this).find(".mega-area").removeClass("show");
-                }
-            });
+                $(".nav-item .nav-link").mouseover(function () {
+                        $(this).addClass("text-primary");
+                });
+                $(".nav-item .nav-link").mouseleave(function () {
+                        $(this).removeClass("text-primary");
+                });
 
-            $(".nav-item .nav-link").mouseover(function () {
-                    $(this).addClass("text-primary");
+                $(".custmDrp").click(function () {
+                    debugger;
+                    var item = $(this).parent().parent().siblings(".mega-area")
+                    if (item.hasClass("show")) {
+                        item.removeClass("show");
+                    } else {
+                        item.addClass("show");
+                    }
+                })
             });
-            $(".nav-item .nav-link").mouseleave(function () {
-                    $(this).removeClass("text-primary");
-            });
-
-            $(".custmDrp").click(function () {
-                debugger;
-                var item = $(this).parent().parent().siblings(".mega-area")
-                if (item.hasClass("show")) {
-                    item.removeClass("show");
-                } else {
-                    item.addClass("show");  
-                }
-            })
-        });
     </script>
 </body>
 </html>
