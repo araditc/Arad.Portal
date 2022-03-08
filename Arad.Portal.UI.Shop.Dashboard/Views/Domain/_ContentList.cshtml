@@ -1,14 +1,14 @@
-﻿<div class="row par" id="templateSection">
+﻿<div class="row par mx-2" id="templateSection">
      <label class="form-label" >@Language.GetString("ViewTemplate")</label><br/>
     @foreach(SelectImageListModel option in ViewBag.ContentTemplateList)
     {
-        <div class="col-12 @(@ViewBag.ColCnt == "1" || @ViewBag.ColCnt == "2" ? "col-md-3" : "")">
-            <input class="form-check-input" name="rdbContentTemplateList" type="checkbox" value="@(option.Text)" /><br/>
+        <div class="col-12 @(@ViewBag.ColCnt == 1 || @ViewBag.ColCnt == 2 ? "col-md-3" : "")">
+            <input class="form-check-input" name="rdbContentTemplateList" type="radio" value="@(option.Text)" /><br/>
             <img class="img-fluid m-2" src="@($"../filemanager/GetScaledImageOnWidth?path={option.ImageUrl}&width=180")" />
         </div>
     }
 </div>
-<div class="row">
+<div class="row mx-2">
     <div class="col-12">
           <label class="form-label" >@Language.GetString("Type")</label><br/>
           <select class="form-control selectpicker par typeList" data-live-search="true" id="typeList"  asp-items ="@(new SelectList(ViewBag.ProductOrContentTypeList,"Value","Text"))" >

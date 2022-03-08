@@ -1,7 +1,7 @@
 ﻿@using Arad.Portal.DataLayer.Models.Shared;
 @model List<Arad.Portal.DataLayer.Models.Content.ContentGlance>
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Styles{
 <link href="~/css/siteTemplate/ForthContentTemplate.css" rel="stylesheet" />
@@ -15,9 +15,9 @@
              <div class="row">
                <div class="col-3 col-md-2 col-lg-1">
                   <a href="@($"/blog/{item.ContentCode}")">
-                    <img src="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square && _.IsMain)}&width={35}")"
+                    <img src="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square && _.IsMain).Url}&width={35}")"
                          class="img-fluid rounded-circle"
-                         alt="@Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title" />
+                         alt="@Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title??''" />
                   </a>
                </div>
                <div class="col-9 col-md-10 col-lg-11">

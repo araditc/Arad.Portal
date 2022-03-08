@@ -410,15 +410,15 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
             FilterDefinitionBuilder<Entities.General.Content.Content> builder = new();
             FilterDefinition<Entities.General.Content.Content> filterDef;
-            filterDef = builder.Gte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.Now);
-            filterDef = builder.Lte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.Now);
-            filterDef = builder.And(nameof(Entities.General.Content.Content.AssociatedDomainId), domainEntity.DomainId);
+            filterDef = builder.Gte(nameof(Entities.General.Content.Content.EndShowDate), DateTime.Now);
+            filterDef &= builder.Lte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.Now);
+            filterDef &= builder.Eq(nameof(Entities.General.Content.Content.AssociatedDomainId), domainEntity.DomainId);
             List<ContentGlance> lst = new List<ContentGlance>();
 
             switch (contentType)
             {
                 case ProductOrContentType.Newest:
-                    lst = _contentContext.Collection
+                 lst = _contentContext.Collection
                     .Find(filterDef)
                     .Project(_ =>
                         new ContentGlance()

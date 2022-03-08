@@ -700,8 +700,8 @@
 
     
     function deleteFromImageList(sender) {
-
-        var id = $(sender).attr("imgId");
+        debugger;
+        var id = $(sender).attr("imgId").replace("img_", "");
         //removeFromArray
         var item = images.find(_ => _.ImageId === id);
         var index = images.indexOf(item);

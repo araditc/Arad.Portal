@@ -69,7 +69,7 @@
 .img-overlay-wrap .star-rating {
     position: absolute;
     top: 3%;
-    left: 3%;
+    right: 3%;
     display: none;
 }
 .img-overlay-wrap .discount {

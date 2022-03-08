@@ -259,9 +259,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return ViewComponent("SpecialProduct", new { productType, selectionTemplate, count });
         }
 
-        public IActionResult GetViewComponet(string viewComponentName, object arguments)
+        public IActionResult GetMenu(string domainId)
         {
-            return ViewComponent(viewComponentName, arguments);
+            return ViewComponent("StoreMenuModule", new { domainId = domainId});
         }
 
 
@@ -347,7 +347,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public IActionResult GetContentModuleViewComponent(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, int? count)
         {
-            return ViewComponent("ContentTemplate", new { contentType, selectionTemplate, count });
+            return ViewComponent("ContentTemplates", new { contentType, selectionTemplate, count });
         }
 
         public IActionResult GetSpecificModule(string moduleName, string id, int colCount)
@@ -397,7 +397,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 default:
                     break;
             }
-            ViewBag.ColCount =  colCount;
+            ViewBag.ColCnt =  colCount;
             return PartialView($"~/Views/Domain/{viewName}");
         }
 

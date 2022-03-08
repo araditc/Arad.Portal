@@ -33,7 +33,7 @@
 <script>
     var headerRowNumber=1000;
     var contentRowNumber = 2000;
-    var footerRownumber = 3000;
+    var footerRowNumber = 3000;
 
     $(document).ready(function(){
         //debugger;
@@ -88,6 +88,8 @@
                           $(divId).find(`.firstLevel.active.${rowNumber} .contentColumns`).html(data);
                            $(".drpContentType").selectpicker();
                            $(".moduleList").selectpicker();
+                            var buttonDivClass = `.row.div_${tag}`;
+                            $(buttonDivClass).find(".addNewRow").removeAttr("disabled");
                      }
                  }
                });

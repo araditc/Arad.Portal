@@ -1,14 +1,14 @@
-﻿<div class="row par" id="templateSection">
+﻿<div class="row par mx-2" id="templateSection">
      <label class="form-label text-center" >@Language.GetString("ViewTemplate")</label><br/>
     @foreach(SelectImageListModel option in ViewBag.ProductTemplateList)
     {
-        <div class="col-12 @(@ViewBag.ColCnt == "1" || @ViewBag.ColCnt == "2" ? "col-md-3" : "") text-center">
+        <div class="col-12 @(@ViewBag.ColCnt == 1 || @ViewBag.ColCnt == 2 ? "col-md-3" : "") text-center">
             <input class="form-check-input" name="rdbProductTemplateList" type="radio" value="@(option.Text)" /><br/>
             <img class="img-fluid m-2" src="@($"../filemanager/GetScaledImageOnWidth?path={option.ImageUrl}&width=60")" />
         </div>
     }
 </div>
-<div class="row">
+<div class="row mx-2">
     <div class="col-12 text-center">
           <label class="form-label" >@Language.GetString("Type")</label><br/>
           <select class="form-control selectpicker par" data-live-search="true" id="typeList" 
@@ -30,23 +30,6 @@
     $(document).ready(function(){
         debugger;
          $("#typeList").selectpicker();
-        //$("input[name='rdbProductTemplateList']").change(function () {
-        //     var selectedRadio = $("input[name='rdbProductTemplateList']:checked").val();
-        //     var cnt ="";
-        //     switch(selectedRadio)
-        //     {
-        //         case "First":
-        //         if($(".countSection").hasClass("d-none"))
-        //         {
-        //             $(".countSection")
-        //             .removeClass("d-none").addClass("d-block");
-        //         }
-        //         break;
-        //     }
-
-        //});
-        //$("#btnAddModuleWithParameters").click(function(){
-        //});
     });
     
      

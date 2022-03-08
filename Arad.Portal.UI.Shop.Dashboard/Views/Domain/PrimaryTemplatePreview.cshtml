@@ -46,10 +46,18 @@
     <link rel="stylesheet" href="~/css/Menu/Bootstrap4MegaMenu.css" />
     <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
+     <link href="~/lib/owlCarousel/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/lib/owlCarousel/css/owl.theme.default.min.css" rel="stylesheet" />
+    <link href="~/lib/owlCarousel/css/CarouselCustomArrowKeys.css" rel="stylesheet" />
+     <link href="~/css/SpecialProduct.css" rel="stylesheet" />
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
     <script src="~/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js"></script>
+    <script src="~/lib/ckeditor/ckeditor.js"></script>
+    <script src="~/lib/owlCarousel/js/owl.carousel.min.js"></script>
+    <script src="~/js/TemplateCreation.js"></script>
 </head>
 <body>
     <div id="loading" class="text-center">
@@ -159,5 +167,33 @@
         }
 
     </footer>
+    <script>
+        $(document).ready(function(){
+            $(".owl-carousel").owlCarousel({
+                loop: true,
+                rtl: true,
+                /* autoplay: true,*/
+                margin: 10,
+                animateOut: 'fadeOut',
+                animateIn: 'fadeIn',
+                nav: true,
+                /*dots: true,*/
+                autoplayHoverPause: false,
+                items: 3,
+                navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>", "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    600: {
+                        items: 3
+                    },
+                    1000: {
+                        items: 5
+                    }
+                }
+            });
+        });
+</script>
 </body>
 </html>

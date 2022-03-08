@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
 {
+   
     public class ContentTemplatesViewComponent : ViewComponent
     {
         private readonly IContentRepository _contentRepository;

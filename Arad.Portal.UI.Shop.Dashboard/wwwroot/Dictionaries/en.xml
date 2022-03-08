@@ -624,6 +624,9 @@
 	<string key="AlertAndMessage_InvalidEditorContent">
 		<value>Invalid Editor Content</value>
 	</string>
+	<string key="AlertAndMessage_ValidEditorContent">
+		<value>Valid Editor Content</value>
+	</string>
 	<string key="AlertAndMessage_HowManyColumns">
 		<value>How many columns this row have?</value>
 	</string>

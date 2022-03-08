@@ -37,7 +37,7 @@
     <div class="col-12 editorPart d-none" >
         <textarea id='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")' name='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")' class="form-control" rows="40"></textarea>
         <script>
-               debugger;
+     
                editorId = `editor_${'@Model.ColNumber'}_${'@ViewBag.RowNumber'}`;
                 var config = {
                     filebrowserImageUploadUrl: 'Image/content-file-upload',
@@ -49,13 +49,13 @@
          <button  class="btn btn-success bg-gradient btn-sm float-end btnHtmlSanitizer m-1" onclick="sinitize(this);" editorid ='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")' cn ="@Model.ColNumber" rn="@ViewBag.RowNumber" sec = "@Model.Section"
             type="button">@Language.GetString("btn_Validation")</button>
     </div>
-    <div class="col-12 finalColumnContent d-none" classNames ="@Model.ColumnClassNames"></div>
-      <div class="col-12 htmlColumnContentPreview d-none" classNames="@Model.ColumnClassNames">
+    <div class="row finalColumnContent d-none" classNames ="@Model.ColumnClassNames"></div>
+      <div class="row htmlColumnContentPreview d-none mx-2" classNames="@Model.ColumnClassNames">
       </div>
           
 @*difference between these finalColumnContent and htmlColumnContentPreview is about modules the first one store with parameters and second one html of executed module will render *@
    
-   <div class="col-12 moduleDataPreview d-none" >
+   <div class="row moduleDataPreview d-none mx-2" >
    </div>
 </div>
 
@@ -67,7 +67,6 @@
     });
     function addModule(sender)
     {
-        debugger;
         var parentDiv = $(sender).closest(".parent");
         var colnumber =  $(sender).attr("cn");
         var cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
@@ -80,9 +79,8 @@
                  type:'Get',
                  statusCode:{
                      200:function(data){
-                         debugger;
                           $(paramDiv).html(data);
-                          $("#typeList").selectpicker();
+                          $(".typeList").selectpicker();
                      }
                  }
                });
@@ -90,23 +88,25 @@
 
     function sinitize(sender)
     {
-        debugger;
+     
         editorId  =$(sender).attr("editorId");
-            var htmlData = CKEDITOR.instances.editorId.getData();
+            var htmlData = CKEDITOR.instances[editorId].getData();
+            var dataToSend= JSON.stringify(htmlData);
             $.ajax({
                  url:"@Url.Action("SanitizeCkEditorContent","Domain")",
                  type:'Post',
-                 data: htmlData,
-                 contentType: "text/html; charset=UTF-8",
+                 data: dataToSend,
+                 contentType: "application/json; charset=utf-8",
                  statusCode:{
                      200:function(data){
-                         debugger;
+                      
                         //show whether this html is valid or not
-                        if(data.isvalid.toLowerCase() == "false")
+                        if(!data.isvalid)
                         {
                           $('#mainToastBody').html('<i class="fas fa-exclamation-triangle"></i>@Language.GetString("AlertAndMessage_InvalidEditorContent")');
-                          $('#mainToastBody').classList.add('alert-danger');
+                          $('#mainToastBody').addClass('alert-danger');
                           var toastDiv = $("#mainToast");
+                          $("#toastPanel").show();
                           var toast = new bootstrap.Toast(toastDiv);
                           toast.show();
                           setTimeout(function(){
@@ -114,18 +114,15 @@
                           });
                         }else //it is valid
                         {
-                            $('#mainToastBody').html('<i class="fas fa-exclamation-triangle"></i>@Language.GetString("AlertAndMessage_InvalidEditorContent")');
-                            $('#mainToastBody').classList.add('alert-success');
-                            var toastDiv = $("#mainToast");
-                            var toast = new bootstrap.Toast(toastDiv);
+                            $('#mainToastBody').html('<i class="fas fa-exclamation-triangle"></i>@Language.GetString("AlertAndMessage_ValidEditorContent")');
+                            $('#mainToastBody').addClass('alert-success');
+                            var toast = new bootstrap.Toast($("#mainToast"));
                             toast.show();
-                            setTimeout(function(){
-                              toast.hide(),2000
-                          });
+                         
                           var data = "<div target='editor'>"+ htmlData +"</div>";
-                          $(this).closest(".parent").find(".finalColumnContent").append(data);
+                          $(sender).closest(".parent").find(".finalColumnContent").append(data);
 
-                          $(this).closest(".parent").find(".htmlColumnContentPreview").append(htmlData);
+                          $(sender).closest(".parent").find(".htmlColumnContentPreview").append(htmlData);
                         }
                      }
                  }
@@ -134,11 +131,11 @@
 
     function selectDrpContentType(sender)
     {
-        debugger;
+      
         var colnumber = $(sender).attr("cn");
         domainId = $(sender).closest(`div[colnum='${colnumber}']`).attr("did");
         cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
-        debugger;
+      
         var val = $(sender).val();
         var targetDiv = $(sender).closest(".row").siblings(".row.parent");
         //var targetDivId =`#${targetDivId}`;
@@ -156,16 +153,17 @@
     }
     function addModulesWithParams(sender)
    {
-       debugger;
+      
        var obj = {};//an instance of ModuleWithParametersValue
        obj.ParametersValue =[];
-        var targetParamsDiv = $(sender).closest(".paramDiv");
+        var targetParamsDiv = $(sender).closest(".paramsDiv");
+        var count = 0; 
                               
         var parent =  $(sender).closest(".parent");
         var targetDivId ="";
         
-            obj.ModuleId = $(sender).closest(".modulePart").find(".modulelist option:selected").val()
-            obj.ModuleName = $(sender).closest(".modulePart").find(".modulelist option:selected").text();
+            obj.ModuleId = $(sender).closest(".modulePart").find(".moduleList option:selected").val()
+            obj.ModuleName = $(sender).closest(".modulePart").find(".moduleList option:selected").text();
            
             $(targetParamsDiv).find(".par").each(function(){
 
@@ -208,21 +206,21 @@
                         selectedType = $(`#${id}`).val();
                         break;
                         case "countToShow":
-                            selectedType = $(`#${id}`).val();
+                            count = $(`#${id}`).val();
                         break;
                     }
                     break;
               }
         });
         var url = "";
-        if(selectedModuleName.toLowerCase() =="productlist")
+        if(obj.ModuleName.toLowerCase() =="productlist")
         {
             url = "@Url.Action("GetProductModuleViewComponent", "Domain")"+"?productType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count;
             obj.ParametersValue.Count = count;
             obj.ParametersValue.ProductOrContentType = selectedType;
             obj.ParametersValue.ProductTemplateDesign = selectedTemplate;
         }
-        else if(selectedModuleName.toLowerCase() == "contentlist")
+        else if(obj.ModuleName.toLowerCase() == "contentlist")
         {
             url = "@Url.Action("GetContentModuleViewComponent", "Domain")"+"?contentType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count;
             obj.ParametersValue.Count = count;
@@ -238,14 +236,41 @@
             dataType: "html",
             url: url, 
             success: function (result) {
+             
                 if (result != "") {
                     $(parent).find(".moduleDataPreview").html(result).removeClass("d-none");
                     $(parent).find(".htmlColumnContentPreview").append(result);
-
+                    if(obj.ModuleName.toLowerCase() =="productlist")
+                    {
+                         $(".owl-carousel").owlCarousel({
+                                loop: true,
+                                rtl: true,
+                                /* autoplay: true,*/
+                                margin: 10,
+                                animateOut: 'fadeOut',
+                                animateIn: 'fadeIn',
+                                nav: true,
+                                /*dots: true,*/
+                                autoplayHoverPause: false,
+                                items: 3,
+                                navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>", "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
+                                responsive: {
+                                    0: {
+                                        items: 1
+                                    },
+                                    600: {
+                                        items: 3
+                                    },
+                                    1000: {
+                                        items: 5
+                                    }
+                                }
+                           });
+                    }
                     setTimeout(function(){
                         $(parent).find(".moduleDataPreview").html("");
                         $(parent).find(".moduleDataPreview").addClass("d-none");
-                    });
+                    }, 5000);
                 }
             },
         });
