@@ -37,9 +37,7 @@ namespace Arad.Portal.UI.Shop.Helpers
             PayingOrders.TryRemove($"ar_{transactionId}", out _);
         }
 
-        /// <summary>
-        /// after unsuccessful response payment from psp
-        /// </summary>
+        
         public async Task<bool> DeleteDataWithRollBack(string transactionId)
         {
             bool result = true;

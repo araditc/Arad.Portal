@@ -11,7 +11,7 @@
         @foreach (var item in Model)
         {
          
-        <div class="thumb-wrapper m-1">
+        <div class="thumb-wrapper m-1 text-center">
             <div class="img-overlay-wrap">
                 @if ((item.DiscountType != null && (item.DiscountType == DiscountType.Percentage || item.DiscountType == DiscountType.Fixed)) )
                 {
@@ -31,7 +31,7 @@
                     <span class="newp bg-light rounded m-1 ps-2 pe-2">NEW</span>
                 }
                
-                <img src="@($"../filemanager/getscaledimage?path={item.MainImageUrl}&height={500}")" class="img-fluid rounded-3" alt="">
+                <img src="@($"../filemanager/getscaledimageOnWidth?path={item.MainImageUrl}&width={500}")" class="img-fluid rounded-3" alt="">
                 <div class="star-rating">
                     <ul class="list-inline bg-white p-1 rounded">
                         @for (int i = 1; i <= item.LikeRate; i++)

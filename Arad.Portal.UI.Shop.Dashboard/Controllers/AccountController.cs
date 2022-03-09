@@ -146,31 +146,32 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([FromForm] LoginViewModel model)
         {
-            //if (!HttpContext.Session.ValidateCaptcha(model.Captcha))
-            //{
-            //    ModelState.AddModelError("Captcha", Language.GetString("AlertAndMessage_CaptchaIsExpired"));
-            //}
+            if (!HttpContext.Session.ValidateCaptcha(model.Captcha))
+            {
+                ModelState.AddModelError("Captcha", Language.GetString("AlertAndMessage_CaptchaIsExpired"));
+            }
 
-            //if (!ModelState.IsValid)
-            //{
-            //    return View(model);
-            //}
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
-            //await HttpContext.SignOutAsync();
-            //ApplicationUser user = await _userManager.FindByNameAsync(model.Username);
-
-            //if (user == null || await _userManager.CheckPasswordAsync(user, model.Password) != true)
-            //{
-            //    ViewBag.Message = Language.GetString("AlertAndMessage_InvalidUsernameOrPassword");
-            //    return View(model);
-            //}
-
-            //if (!user.IsActive)
-            //{
-            //    ViewBag.Message = Language.GetString("AlertAndMessage_InActiveUserAccount");
-            //    return View(model);
-            //}
+            await HttpContext.SignOutAsync();
             ApplicationUser user = await _userManager.FindByNameAsync(model.Username);
+
+            if (user == null || await _userManager.CheckPasswordAsync(user, model.Password) != true)
+            {
+                ViewBag.Message = Language.GetString("AlertAndMessage_InvalidUsernameOrPassword");
+                return View(model);
+            }
+
+            if (!user.IsActive)
+            {
+                ViewBag.Message = Language.GetString("AlertAndMessage_InActiveUserAccount");
+                return View(model);
+            }
+            
+            user = await _userManager.FindByNameAsync(model.Username);
             await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
 
             user.LastLoginDate = DateTime.Now;

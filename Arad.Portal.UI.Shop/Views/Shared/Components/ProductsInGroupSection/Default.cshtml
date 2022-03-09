@@ -10,7 +10,7 @@
                     <div class="w-100">
                         <div class="w-100">
                             <div class="text-center">
-                                <img class="proImg rounded m-2 mt-4 img-fluid" src="@($"../filemanager/getscaledimage?path={item.Images.First(_=>_.IsMain).Url}&height={500}")"  
+                                <img class="proImg rounded m-2 mt-4 img-fluid" src="@($"../filemanager/getscaledimageOnWidth?path={item.Images.First(_=>_.IsMain).Url}&width={500}")"  
                                      alt="@(item.Images.Where(_=>_.IsMain).Any() ? item.Images.First(_=>_.IsMain).Title : "ProductImage")" />
                             </div>
                             <div class="bbb_deals_content">

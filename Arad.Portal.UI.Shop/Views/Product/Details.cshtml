@@ -69,8 +69,8 @@
                 <div class="main-img-slider">
                     @foreach (var item in Model.Images)
                     {
-                        <a data-fancybox="gallery" href=@($"../filemanager/getscaledimage?path={item.Url}&height={1000}")>
-                            <img src=@($"../filemanager/getscaledimage?path={item.Url}&height={800}") class="img-fluid">
+                        <a data-fancybox="gallery" href=@($"../filemanager/getscaledimageOnWidth?path={item.Url}&width={1000}")>
+                            <img src=@($"../filemanager/getscaledimageOnWidth?path={item.Url}&width={800}") class="img-fluid">
                         </a>
                     }
                 </div>
@@ -78,7 +78,7 @@
                 <ul class="thumb-nav">
                     @foreach (var item in Model.Images)
                     {
-                        <li><img class="smlImg" src=@($"../filemanager/getscaledimage?path={item.Url}&height={75}")></li>
+                        <li><img class="smlImg" src=@($"../filemanager/getscaledimageOnWidth?path={item.Url}&width={75}")></li>
                     }
                 </ul>
             </div>

@@ -169,9 +169,36 @@
     </footer>
     <script>
         $(document).ready(function(){
+            
+                $(".menu-area").mouseover(function () {
+                        var windowSize = $(window).width();
+                        if (windowSize > 975) {
+                            $(this).addClass("show");
+                            $(this).find(".dropdown-toggle").addClass("text-primary");
+                            $(this).find(".mega-area").addClass("show");
+                        }
+                });
+
+                $(".menu-area").mouseleave(function () {
+                    var windowSize = $(window).width();
+                    if (windowSize > 975) {
+                        $(this).removeClass("show");
+                        $(this).find(".dropdown-toggle").removeClass("text-primary");
+                        $(this).find(".mega-area").removeClass("show");
+                    }
+                });
+
+                $(".nav-item .nav-link").mouseover(function () {
+                        $(this).addClass("text-primary");
+                });
+                $(".nav-item .nav-link").mouseleave(function () {
+                        $(this).removeClass("text-primary");
+                });
+
             $(".owl-carousel").owlCarousel({
                 loop: true,
                 rtl: true,
+                navigation : true,
                 /* autoplay: true,*/
                 margin: 10,
                 animateOut: 'fadeOut',

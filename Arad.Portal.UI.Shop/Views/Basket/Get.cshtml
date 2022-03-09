@@ -38,7 +38,7 @@
                                     <td>
                                         @if (item.ProductImage != null)
                                         {
-                                            <img class="smlImg" src=@($"../filemanager/getscaledimage?path={item.ProductImage.Url}&height={75}")>
+                                            <img class="smlImg" src=@($"../filemanager/getscaledimageOnWidth?path={item.ProductImage.Url}&width={75}")>
                                         }
                                     </td>
                                     <td>@item.ProductName</td>

@@ -187,7 +187,7 @@
           <div class="border border-3 border-secondary m-1 dynamicContainerPart" style="min-height: 150px;">
             <partial name="_PageDesign.cshtml" model='new TemplateSectionPart(){SectionTag = "containerSection", DomainId = @domainId}'/>
           </div>
-        @*  display: block;*@
+     
      <div class="position-fixed p-5 left-0 top-0" id="toastPanel" style="z-index: 11;">
         <div aria-atomic="true" aria-live="assertive" class="toast" id="mainToast" role="alert" autohide="false">
             <div class="toast-body p-3 fs-5 rounded-3 text-center" id="mainToastBody" @*style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);"*@>
@@ -377,6 +377,7 @@
              model.MainPageContainerPart = bodyContainer;
              model.FooterPart = footerPart;
              model.DomainId = '@domainId';
+             debugger;
              $.ajax({
                 type: "Post",
                 url: '@Url.Action("SavePageContent", "Domain")',
@@ -411,7 +412,7 @@
                  $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
                      var classNames = $(this).attr("classNames");
                      var columnContent = $(this).html();
-                     header +=`<div class=${classNames}>${columnContent}</div>` ;
+                     header +=`<div class='${classNames}'>${columnContent}</div>` ;
                  });
                  header += "</div>";
              });
@@ -431,7 +432,7 @@
                    
                                 var classNames = $(this).attr("classNames");
                                  var columnContent = $(this).html();
-                                 container +=`<div class=${classNames}>${columnContent}</div>` ;
+                                 container +=`<div class='${classNames}'>${columnContent}</div>` ;
                              });
                              container += "</div>";
                           });
@@ -439,12 +440,11 @@
                           //start of footerSection
                            $(".dynamicFooterPart .firstLevel .contentColumns").each(function()
                            {
-                            
                              footer += "<div class='row firstLevel'>";
                              $(this).find(".row.parent .finalColumnContent").each(function(){
                                  var classNames = $(this).attr("classNames");
                                  var columnContent = $(this).html();
-                                 footer +=`<div class=${classNames}>${columnContent}</div>` ;
+                                 footer +=`<div class='${classNames}'>${columnContent}</div>` ;
                              });
                               footer += "</div>";
                 
@@ -478,6 +478,7 @@
             $(".owl-carousel").owlCarousel({
                 loop: true,
                 rtl: true,
+                navigation : true,
                 /* autoplay: true,*/
                 margin: 10,
                 animateOut: 'fadeOut',
@@ -486,7 +487,8 @@
                 /*dots: true,*/
                 autoplayHoverPause: false,
                 items: 3,
-                navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>", "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
+                navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>", 
+                          "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
                 responsive: {
                     0: {
                         items: 1

@@ -10,7 +10,7 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
     {
         public string Section { get; set; }
       
-        public int ColNumber { get; set; }
+        public int? ColNumber { get; set; }
         /// <summary>
         /// classes are seperated by space as shown in class of each element tag
         /// </summary>

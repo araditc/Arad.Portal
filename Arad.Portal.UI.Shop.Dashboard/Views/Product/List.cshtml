@@ -219,7 +219,7 @@
                             var src = item.Images.Any(_ => _.IsMain) ?
                                 item.Images.First(_ => _.IsMain).Url : "/images/imgs/NoImage.png";
 
-                            var img = $"<img class='smlImg' src='{$"../filemanager/getscaledimage?path={src}&height={75}"}'>";
+                            var img = $"<img class='smlImg' src='{$"../filemanager/getscaledimageOnWidth?path={src}&width={75}"}'>";
                             <tr class="ListCell">
                                 <td>@(++i)</td>
                                 <td>@Html.Raw(img)</td>
