@@ -11,6 +11,8 @@
     }
    
 }
+
+
 <div class="row">
     <div class="col-12">
          <label class="form-label">@Language.GetString("Template_ContentType")</label>
@@ -67,6 +69,7 @@
     });
     function addModule(sender)
     {
+        debugger;
         var parentDiv = $(sender).closest(".parent");
         var colnumber =  $(sender).attr("cn");
         var cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
@@ -88,7 +91,7 @@
 
     function sinitize(sender)
     {
-     
+     debugger;
         editorId  =$(sender).attr("editorId");
             var htmlData = CKEDITOR.instances[editorId].getData();
             var dataToSend= JSON.stringify(htmlData);
@@ -131,7 +134,7 @@
 
     function selectDrpContentType(sender)
     {
-      
+      debugger;
         var colnumber = $(sender).attr("cn");
         domainId = $(sender).closest(`div[colnum='${colnumber}']`).attr("did");
         cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
@@ -205,6 +208,7 @@
                         selectedType = $(`#${id}`).val();
                         break;
                         case "countToShow":
+                        if(!$(".countSection").hasClass("d-none"))
                             count = $(`#${id}`).val();
                         break;
                     }

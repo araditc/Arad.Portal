@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
     [Authorize(Policy = "Role")]
+    //[Authorize]
     public class HomeController : Controller
     {
         private readonly IWebHostEnvironment _env;
@@ -23,7 +24,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpGet]
-        public async  Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return View();
         }

@@ -128,7 +128,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                     CreationDate = DateTime.Now,
                     SMTPAccount = new DataLayer.Entities.General.Email.SMTP() //testing
                     {
-                        EmailAddress = "azizi@arad-itc.com",
+                        EmailAddress = "azizi@arad-itc.org",
                         Encryption = DataLayer.Models.Shared.Enums.EmailEncryptionType.None,
                         IgnoreSSLWarning = true,
                         IsDefault = true,

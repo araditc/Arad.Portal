@@ -209,7 +209,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             {
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspuseSnetcore-hsts.
-                app.UseHsts();
+                //app.UseHsts();
             }
 
             //   app.UseHttpsRedirection();
@@ -257,9 +257,9 @@ namespace Arad.Portal.UI.Shop.Dashboard
 
             app.UseEndpoints(endpoints =>
             {
-                if (env.IsDevelopment())
-                    endpoints.MapControllers().WithMetadata(new AllowAnonymousAttribute());
-                else
+                //if (env.IsDevelopment())
+                //    endpoints.MapControllers().WithMetadata(new AllowAnonymousAttribute());
+                //else
                     endpoints.MapControllers();
 
                

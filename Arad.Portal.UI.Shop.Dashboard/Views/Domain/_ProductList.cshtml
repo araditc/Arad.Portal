@@ -4,7 +4,7 @@
     {
         <div class="col-12 @(@ViewBag.ColCnt == 1 || @ViewBag.ColCnt == 2 ? "col-md-3" : "") text-center">
             <input class="form-check-input" name="rdbProductTemplateList" type="radio" value="@(option.Text)" /><br/>
-            <img class="img-fluid m-2" src="@($"../filemanager/GetScaledImageOnWidth?path={option.ImageUrl}&width=60")" />
+            <img class="img-fluid m-2" src="@($"../filemanager/GetScaledImageOnWidth?path={option.ImageUrl}&width=300")" />
         </div>
     }
 </div>

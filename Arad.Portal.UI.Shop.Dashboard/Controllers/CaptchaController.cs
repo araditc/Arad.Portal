@@ -6,7 +6,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
 
 
-    [Authorize(Policy = "Role")]
+    //[Authorize(Policy = "Role")]
     public class CaptchaController : Controller
     {
         [HttpGet]

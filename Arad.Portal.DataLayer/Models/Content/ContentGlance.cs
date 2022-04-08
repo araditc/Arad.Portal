@@ -17,6 +17,7 @@ namespace Arad.Portal.DataLayer.Models.Content
         public string ContentCategoryId { get; set; }
         public string CategoryName { get; set; }
         public List<Shared.Image> Images { get; set; }
+        public string DesiredImageUrl { get; set; }
         public string Title { get; set; }
         public string SubTitle { get; set; }
         public List<string> TagKeywords { get; set; }

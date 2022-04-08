@@ -111,8 +111,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return View(dicKey);
         }
 
-        [AllowAnonymous]
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login(string returnUrl)
         {
             if (HttpContext.User.Identity is { IsAuthenticated: true })
@@ -143,6 +143,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([FromForm] LoginViewModel model)
         {

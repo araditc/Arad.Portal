@@ -81,6 +81,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
@@ -246,8 +247,27 @@ namespace Arad.Portal.UI.Shop
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-           
-            app.UseHttpsRedirection();
+
+            // app.UseHttpsRedirection();
+            if (!Directory.Exists(Configuration["LocalStaticFileStorage"]))
+            {
+                Directory.CreateDirectory(Configuration["LocalStaticFileStorage"]);
+                var path1 = Path.Combine(Configuration["LocalStaticFileStorage"], "/Contents");
+                var path2 = Path.Combine(Configuration["LocalStaticFileStorage"], "/ProductGroups");
+                var path3 = Path.Combine(Configuration["LocalStaticFileStorage"], "/Products");
+                if (!Directory.Exists(path1))
+                {
+                    Directory.CreateDirectory(path1);
+                }
+                if (!Directory.Exists(path2))
+                {
+                    Directory.CreateDirectory(path2);
+                }
+                if (!Directory.Exists(path3))
+                {
+                    Directory.CreateDirectory(path3);
+                }
+            }
             app.UseEnyimMemcached();
             app.UseStaticFiles();
             app.UseRequestLocalization(AddMultilingualSettings());

@@ -363,7 +363,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 case "productlist":
                     var productTemplateList = _moduleRepository.GetAllProductTemplateDesign();
-                   
+                    foreach (var item in productTemplateList)
+                    { 
+                       item.ImageUrl = System.IO.Path.Combine(imageTemplatePath, $"Template/Product/{item.Text}.jpg");
+                    }
                     ViewBag.ProductTemplateList = productTemplateList;
                     break;
                 case "contentlist":
@@ -372,17 +375,17 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     {
                         if (item.Text.ToLower() != "forth")
                         {
-                            item.ImageUrl = System.IO.Path.Combine(imageTemplatePath, $"Template/{item.Text}.jpg");
+                            item.ImageUrl = System.IO.Path.Combine(imageTemplatePath, $"Template/Content/{item.Text}.jpg");
                         }
                         else
                         {
                             if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
                             {
-                                item.ImageUrl = Path.Combine(imageTemplatePath, "Template/Forth-rtl.jpg");
+                                item.ImageUrl = Path.Combine(imageTemplatePath, "Template/Content/Forth-rtl.jpg");
                             }
                             else
                             {
-                                item.ImageUrl = Path.Combine(imageTemplatePath, "Template/Forth-ltr.jpg");
+                                item.ImageUrl = Path.Combine(imageTemplatePath, "Template/Content/Forth-ltr.jpg");
                             }
                         }
                     }
