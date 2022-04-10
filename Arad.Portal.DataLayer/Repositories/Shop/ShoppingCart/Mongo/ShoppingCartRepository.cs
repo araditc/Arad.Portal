@@ -338,11 +338,18 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
         {
             var result = new Result<ShoppingCartDTO>();
             var dto = new ShoppingCartDTO();
-            var userCartEntity = _context.Collection
+            Entities.Shop.ShoppingCart.ShoppingCart userCartEntity = null;
+             if(!_context.Collection
+                .Find(_ => _.CreatorUserId == userId && !_.IsDeleted &&
+                      _.IsActive && _.AssociatedDomainId == domainId).Any())
+            {
+                var res = await InsertUserShoppingCart(userId);
+            }
+
+            userCartEntity = _context.Collection
                 .Find(_ => _.CreatorUserId == userId && !_.IsDeleted &&
                       _.IsActive && _.AssociatedDomainId == domainId).FirstOrDefault();
-            if(userCartEntity != null)
-            {
+            //surely we have an instance of ShoppingCart
                 dto.ShoppingCartCulture = userCartEntity.ShoppingCartCulture;
                 dto.UserCartId = userCartEntity.ShoppingCartId;
                 dto.DomainId = domainId;
@@ -466,11 +473,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                 {
                     result.Message = ConstMessages.GeneralError;
                 }
-            }
-            else
-            {
-                result.Message = ConstMessages.ObjectNotFound;
-            }
+
+           
             return result;
         }
 

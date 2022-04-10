@@ -86,6 +86,9 @@ namespace Arad.Portal.UI.Shop.Dashboard
     public class Startup
     {
         private readonly IWebHostEnvironment _environment;
+        public IConfiguration Configuration { get; }
+        public static string ApplicationPath { get; set; }
+
         //private static readonly IBasicDataRepository basicDataRepository;
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
@@ -93,19 +96,15 @@ namespace Arad.Portal.UI.Shop.Dashboard
             GeneralLibrary.Utilities.Language._hostingEnvironment = env.WebRootPath;
             ApplicationPath = env.ContentRootPath;
             _environment = env;
-
-
         }
 
-        public IConfiguration Configuration { get; }
-        public static string ApplicationPath { get; set; }
-
+       
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            //services.AddDistributedMemoryCache();
+            services.AddDistributedMemoryCache();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<HtmlEncoder>(
                 HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.BasicLatin,

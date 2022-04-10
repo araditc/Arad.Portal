@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-//using System.Drawing;
-//using System.Drawing.Drawing2D;
-//using System.Drawing.Text;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Arad.Portal.DataLayer.Models.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SixLabors.ImageSharp;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp.Processing;
@@ -163,5 +157,4 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
             }
         }
     }
-
 }

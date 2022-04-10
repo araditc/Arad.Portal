@@ -66,6 +66,7 @@
 	<script src="~/js/TemplateCreation.js"></script>
 </head>
 <body>
+	
 	<div aria-hidden="true" aria-labelledby="confirmDesignModalLabel" class="modal fade" id="confirmDesignModal" tabindex="-1">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -88,12 +89,14 @@
 			</div>
 		</div>
 	</div>
+	<div class="container">
 	<div class="row mt-3">
 		<div class="float-end">
 			<button id="btnSave" class="btn btn-success bg-gradient btn-sm float-end m-2" type="button">@Language.GetString("btn_Save")</button>
 			<button id="btnPreview" class="btn btn-primary bg-gradient btn-sm float-end m-2" type="button">@Language.GetString("btn_Preview")</button>
 
 		</div>
+	</div>
 	</div>
 	<header class="headerPart m-2">
 		<h3 class="text-center bg-secondary bg-opacity-10">Header</h3>
@@ -183,8 +186,6 @@
 				@await Component.InvokeAsync("StoreMenuModule", new { domainId = @domainId})
 			</div>
 		</div>
-
-
 	</header>
 	<div class="container">
 		<h3 class="text-center bg-secondary bg-opacity-10">Body</h3>
@@ -194,7 +195,7 @@
 
 		<div class="position-fixed p-5 left-0 top-0" id="toastPanel" style="z-index: 11;">
 			<div aria-atomic="true" aria-live="assertive" class="toast" id="mainToast" role="alert" autohide="false">
-				<div class="toast-body p-3 fs-5 rounded-3 text-center" id="mainToastBody" @*style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);"*@>
+				<div class="toast-body p-3 fs-5 rounded-3 text-center" id="mainToastBody" >
 				</div>
 			</div>
 		</div>
@@ -202,12 +203,15 @@
 	<footer class="footerPart">
 		<h3 class="text-center bg-secondary bg-opacity-10">Footer</h3>
 		<div class="border border-3 border-secondary m-1 dynamicFooterPart" style="min-height: 150px;">
-			<partial name="_PageDesign.cshtml" model='new TemplateSectionPart(){SectionTag = "footerSection", DomainId = @domainId}' />
+			<div class="container">
+			<partial name="_PageDesign.cshtml" 
+			model='new TemplateSectionPart(){SectionTag = "footerSection", DomainId = @domainId}' />
+			</div>
 		</div>
-
 	</footer>
 
 	<script>
+		
 			function getColTemplate(id, tag) {
 
 			colTemplate = "<div class='col-12 col-md-3'>" +
@@ -284,7 +288,8 @@
 					 var i = 1;
 					 var rn ="";
 					 $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
-						 rn = $(this).attr("rn");
+						 debugger;
+						 rn = $(this).find(".row.sectionRow").attr("rn");
 						 var obj = {}; //an instance of RowContent
 						 obj.RowNumber = parseInt(rn) ;
 						 obj.OrderInRow = i ;
@@ -315,7 +320,7 @@
 					 var menuModule = {};//an instance of ModuleWithParametersValue for menu
 					 menuModule.ModuleId = "f8865ffc-1653-41ba-a281-ee57fa7ffc09";
 					 menuModule.ModuleName = "HorizantalStoreMenu";
-					 menuModule.ParametersValue =[];
+					 menuModule.ParametersValue = {};
 					 var data = JSON.stringify(menuModule);
 					 var menuData = `<div target='module'>${data}</div>`;
 
@@ -332,7 +337,8 @@
 					 bodyContainer.RowContents = [] ;
 					  $(".dynamicContainerPart .firstLevel .contentColumns").each(function()
 					  {
-						  rn = $(this).attr("rn");
+						  debugger;
+						  rn = $(this).find(".row.sectionRow").attr("rn");
 						 var bodyRowContent = {}; //an instance of RowContent
 						 bodyRowContent.RowNumber = parseInt(rn) ;
 						 bodyRowContent.OrderInRow = i ;
@@ -357,7 +363,8 @@
 					   footerPart.CustomizedContent =[];
 					   $(".dynamicFooterPart .firstLevel .contentColumns").each(function()
 					   {
-						 rn = $(this).attr("rn");
+						   debugger;
+						 rn = $(this).find(".row.sectionRow").attr("rn");
 						 var footerRowContent = {}; //an instance of RowContent
 						 footerRowContent.RowNumber = parseInt(rn) ;
 						 footerRowContent.OrderInRow = i ;
@@ -381,22 +388,38 @@
 					 model.MainPageContainerPart = bodyContainer;
 					 model.FooterPart = footerPart;
 					 model.DomainId = '@domainId';
-					 debugger;
+					
 					 $.ajax({
 						type: "Post",
 						url: '@Url.Action("SavePageContent", "Domain")',
 						contentType : 'application/json',
 						data : JSON.stringify(model),
 						success: function (result) {
-							$('#mainToastBody').html('<i class="fal fa-check-circle"></i>@Language.GetString("AlertAndMessage_EditionDoneSuccessfully")');
+							debugger;
+							$('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_EditionDoneSuccessfully")');
 								  $('#mainToastBody').addClass('alert-success');
+								  
 								  var toastDiv = $("#mainToast");
-								  var toast = new bootstrap.Toast(toastDiv);
-								  toast.show();
-								  setTimeout(function(){
-									  toast.hide(),3000
-								  });
+                                  $("#toastPanel").show();
+                                  var toast = new bootstrap.Toast(toastDiv);
+                                  toast.show();
+								  //setTimeout(function(){
+									 // toast.hide(),3000
+								  //}); 
 						},
+						//statusCode:{
+						//	200: function(result){
+						//		debugger;
+						//	$('#mainToastBody').html('<i class="fal fa-check-circle"></i>@Language.GetString("AlertAndMessage_EditionDoneSuccessfully")');
+						//		  $('#mainToastBody').addClass('alert-success');
+						//		  var toastDiv = $("#mainToast");
+						//		  var toast = new bootstrap.Toast(toastDiv);
+						//		  toast.show();
+						//		  setTimeout(function(){
+						//			  toast.hide(),3000
+						//		  });
+						//	}
+						//}
 					 });
 				});
 
@@ -517,10 +540,16 @@
 			})
 
 			  //window.addEventListener('load',()=>{
-			  //     //$("#toastPanel").hide();
+			  //     $("#toastPanel").hide();
 			  //})
 			function confirmation()
 			{
+
+				 //$('#confirmDesignModal').modal('hide');
+     //            $("#toastPanel").show();
+     //            $('#mainToastBody').removeClass('alert-success');
+     //            $('#mainToastBody').removeClass('alert-danger');
+
 
 				$(".flagPartDiv").addClass("d-none");
 				$("#restoreRecord").removeClass("d-none");

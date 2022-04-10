@@ -76,6 +76,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Concurrent;
@@ -92,9 +93,7 @@ namespace Arad.Portal.UI.Shop
     public class Startup
     {
         private readonly IWebHostEnvironment _environment;
-        private static readonly IBasicDataRepository basicDataRepository;
         public IConfiguration Configuration { get; }
-
         public static ConcurrentDictionary<string, OTP> OTP = new();
         public static string ApplicationPath { get; set; }
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
@@ -111,15 +110,14 @@ namespace Arad.Portal.UI.Shop
         {
             
             services.AddHttpClient();
-          
-            services.AddEnyimMemcached(setup => {
-                setup.Servers.Add(new Server { Address = "127.0.0.1", Port = 11211 });
-            });
-
+            //services.AddEnyimMemcached(setup =>
+            //{
+            //    setup.Servers.Add(new Server { Address = "127.0.0.1", Port = 11211 });
+            //});
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
            
-            services.AddMemoryCache();
-            //services.AddDistributedMemoryCache();
+            //services.AddMemoryCache();
+            services.AddDistributedMemoryCache();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<HtmlEncoder>(
                 HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.BasicLatin,
@@ -137,18 +135,25 @@ namespace Arad.Portal.UI.Shop
             Configuration.Bind(nameof(SendSmsConfig), sendSmsConfig);
             services.AddSingleton(sendSmsConfig);
 
-            services.AddSession(options =>
+            services.ConfigureApplicationCookie(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(20);
-                options.Cookie.Name = ".web.Session";
-
                 if (!_environment.IsDevelopment())
                 {
                     options.Cookie.HttpOnly = true;
                     options.Cookie.IsEssential = true;
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.Cookie.SameSite = SameSiteMode.Strict;
+                    options.AccessDeniedPath = "/Account/unAuthorize";
+                    options.LoginPath = "/Account/Login";
+                    options.LogoutPath = "/Account/Logout";
+                    options.Cookie.Name = "IdentityCookie";
                 }
+            });
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
+                options.Cookie.Name = ".web.Session";
             });
 
             services.AddIdentityMongoDbProvider<ApplicationUser, ApplicationRole, string>(identityOptions =>
@@ -174,25 +179,10 @@ namespace Arad.Portal.UI.Shop
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                  .AddCookie(opt =>
                  {
-                     opt.Cookie.HttpOnly = true;
-                     if (!_environment.IsDevelopment())
-                     {
-                         opt.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                         opt.Cookie.SameSite = SameSiteMode.Strict;
-                         opt.Cookie.HttpOnly = true;
-                         opt.Cookie.IsEssential = true;
-                     }
+                    // opt.Cookie.HttpOnly = true;
+                    
                  });
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.Cookie.HttpOnly = true;
-                options.AccessDeniedPath = "/Account/unAuthorize";
-                options.LoginPath = "/Account/Login";
-                options.LogoutPath = "/Account/Logout";
-                options.Cookie.Name = "IdentityCookie";
-
-            });
-
+            
             services.AddTransient<IAuthorizationHandler, RoleHandler>();
             services.AddAuthorization(options =>
             {
@@ -211,8 +201,8 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<HttpClientHelper>();
             services.AddTransient<LayoutContentProcess>();
             
-            services.AddSingleton<IHostedService, CacheCleanerService>();
-            services.AddSingleton<IHostedService, LifetimeEventsHostedService>();
+            //services.AddSingleton<IHostedService, CacheCleanerService>();
+            //services.AddSingleton<IHostedService, LifetimeEventsHostedService>();
             //services.AddTransient<ServiceResolver>(serviceProvider => key =>
             //{
             //    switch (key)
@@ -229,9 +219,6 @@ namespace Arad.Portal.UI.Shop
             AddRepositoryServices(services);
             services.AddSingleton<SharedRuntimeData>();
             //services.AddProgressiveWebApp();
-
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -270,6 +257,12 @@ namespace Arad.Portal.UI.Shop
             }
             app.UseEnyimMemcached();
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Configuration["LocalStaticFileStorage"]),
+                RequestPath = new PathString("/Images"),
+                //EnableDirectoryBrowsing = false
+            });
             app.UseRequestLocalization(AddMultilingualSettings());
 
             app.UseRouting();

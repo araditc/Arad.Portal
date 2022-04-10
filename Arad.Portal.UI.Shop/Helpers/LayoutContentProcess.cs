@@ -16,6 +16,7 @@ namespace Arad.Portal.UI.Shop.Helpers
         {
             _domainRepository = domainRepository;
             _accessor = accessor;
+            CalculateLayoutContent();
         }
 
         public void CalculateLayoutContent()

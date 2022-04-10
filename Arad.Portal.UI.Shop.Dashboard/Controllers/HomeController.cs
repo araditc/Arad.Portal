@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
     [Authorize(Policy = "Role")]
-    //[Authorize]
     public class HomeController : Controller
     {
         private readonly IWebHostEnvironment _env;

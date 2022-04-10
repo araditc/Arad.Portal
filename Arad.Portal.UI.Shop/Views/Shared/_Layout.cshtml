@@ -49,13 +49,21 @@
     <link rel="stylesheet" href="~/css/Menu/Bootstrap4MegaMenu.css" />
     <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
-
+     <link href="~/lib/owlCarousel/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/lib/owlCarousel/css/owl.theme.default.min.css" rel="stylesheet" />
+    <link href="~/lib/owlCarousel/css/CarouselCustomArrowKeys.css" rel="stylesheet" />
+    <link href="~/css/SpecialProduct.css" rel="stylesheet" />
+    <link href="~/css/siteTemplate/FirstContentTemplate.css" rel="stylesheet" />
+    <link href="~/css/siteTemplate/ThirdContentTemplate.css" rel="stylesheet" />
+    <link href="~/css/siteTemplate/ForthContentTemplate.css" rel="stylesheet" />
+    <link href="~/css/siteTemplate/FifthContentTemplate.css" rel="stylesheet" />
     @await RenderSectionAsync("Styles", required: false)
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
     <script src="~/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js"></script>
-
+    <script src="~/lib/owlCarousel/js/owl.carousel.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </head>
 
@@ -91,28 +99,31 @@
                                     {
                                         if (div.Attributes["target"].Value =="module")
                                         {
-                                            var module = JsonConvert.DeserializeObject<ModuleWithParametersValue>(column.ColData);
+                                            var module = JsonConvert
+                                            .DeserializeObject<ModuleWithParametersValue>(column.ColData.Replace("<div target='module'>", "")
+                                                                                                        .Replace("</div>", ""));
                                             switch (module.ModuleName)
                                             {
                                                 case "ProductList":
-                                                    @Component.InvokeAsync("SpecialProduct",
+                                                    @await Component.InvokeAsync("SpecialProduct",
                                                         new { productType = module.ParametersValue.ProductOrContentType,
                                                         selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count} );
                                                                                             
                                                     break;
                                                 case "ContentList":
-                                                    @Component.InvokeAsync("ContentTemplates", new { contentType = module.ParametersValue.ProductOrContentType,
+                                                    @await Component.InvokeAsync("ContentTemplates", new { contentType = module.ParametersValue.ProductOrContentType,
                                                          selectionTemplate = module.ParametersValue.ContentTemplateDesign ,  count = module.ParametersValue.Count }) ;
                                                    
                                                     break;
                                                 case "HorizantalStoreMenu":
-                                                    @Component.InvokeAsync("StoreMenu");
+                                                    @await Component.InvokeAsync("StoreMenu");
                                                     break;
                                             }
                                         }
                                         else if (div.Attributes["target"].Value =="editor")
                                         {
-                                            @Html.Raw(column.ColData) ;
+                                            @Html.Raw(column.ColData.Replace("<div target=\"editor\">", "")
+                                                                    .Replace("</div>", "")); ;
                                         }
                                     }
                                 }
@@ -233,11 +244,12 @@
                                         {
                                             if (div.Attributes["target"].Value =="module")
                                             {
-                                                var module = JsonConvert.DeserializeObject<ModuleWithParametersValue>(column.ColData);
+                                                var module = JsonConvert.DeserializeObject<ModuleWithParametersValue>(column.ColData.Replace("<div target='module'>", "")
+                                                                                                                                    .Replace("</div>", ""));
                                                 switch (module.ModuleName)
                                                 {
                                                     case "ProductList":
-                                                        @Component.InvokeAsync("SpecialProduct",
+                                                        @await Component.InvokeAsync("SpecialProduct",
                                                                new { productType = module.ParametersValue.ProductOrContentType,
                                                                     selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count} );
                                                         break;
@@ -246,13 +258,14 @@
                                                                         selectionTemplate = module.ParametersValue.ContentTemplateDesign ,  count = module.ParametersValue.Count });
                                                         break;
                                                     case "HorizantalStoreMenu":
-                                                        @Component.InvokeAsync("StoreMenu");
+                                                        @await Component.InvokeAsync("StoreMenu");
                                                         break;
                                                 }
                                             }
                                             else if (div.Attributes["target"].Value =="editor")
                                             {
-                                                @Html.Raw(column.ColData);
+                                                @Html.Raw(column.ColData.Replace("<div target=\"editor\">", "")
+                                                                        .Replace("</div>", ""));
                                             }
                                         }
                                     }

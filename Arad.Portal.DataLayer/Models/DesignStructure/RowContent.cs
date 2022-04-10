@@ -12,7 +12,7 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
         {
             ColsContent = new();
         }
-        public string RowNumber { get; set; }
+        public int RowNumber { get; set; }
 
         public string ExtraClassNames { get; set; }
 

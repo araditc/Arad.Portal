@@ -41,11 +41,48 @@
         <script>
      
                editorId = `editor_${'@Model.ColNumber'}_${'@ViewBag.RowNumber'}`;
-                var config = {
-                    filebrowserImageUploadUrl: 'Image/content-file-upload',
-                    language: '@lan'
-                }
-                CKEDITOR.replace(editorId, config);
+                //var config = {
+                //    filebrowserImageUploadUrl: 'Image/content-file-upload',
+                //    language: '@lan'
+                //}
+                 var config = {
+                height: 300,
+                filebrowserImageUploadUrl: 'Image/content-file-upload',
+                language: 'en',
+                scayt_sLang: 'en',
+                //font_names: 'IRANSansWeb,WeblogmaYekan,Vazir,Shabnam',
+                allowedContent: true,
+                toolbarGroups: [
+                    { name: 'clipboard', groups: ['clipboard', 'undo'] },
+                    { name: 'editing', groups: ['find', 'selection', 'spellchecker'] },
+                    { name: 'links' },
+                    { name: 'insert' },
+                    { name: 'forms' },
+                    { name: 'tools' },
+                    { name: 'document', groups: ['mode', 'document', 'doctools'] },
+                    { name: 'others' },
+                    '/',
+                    { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+                    { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi'] },
+                    { name: 'styles' },
+                    { name: 'colors' },
+                    { name: 'about' }
+                ]
+            };
+            
+            config.font_names =
+            'Arial/Arial, Helvetica, sans-serif;' +
+            'Times New Roman/Times New Roman, Times, serif;' +
+            'Verdana;' +
+            'IRANSansWeb;' +
+            'WeblogmaYekan;' +
+            'Vazir;' +
+            'Shabnam';
+            //config.extraPlugins = 'image2';
+            
+            CKEDITOR.replace(editorId, config);
+            CKEDITOR.dtd.$removeEmpty['i'] = false;
+            CKEDITOR.dtd.$removeEmpty['span'] = false;
         </script>
 
          <button  class="btn btn-success bg-gradient btn-sm float-end btnHtmlSanitizer m-1" onclick="sinitize(this);" editorid ='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")' cn ="@Model.ColNumber" rn="@ViewBag.RowNumber" sec = "@Model.Section"
@@ -122,7 +159,7 @@
                             var toast = new bootstrap.Toast($("#mainToast"));
                             toast.show();
                          
-                          var data = "<div target='editor'>"+ htmlData +"</div>";
+                          var data = `<div target='editor'>${htmlData}</div>`;
                           $(sender).closest(".parent").find(".finalColumnContent").append(data);
 
                           $(sender).closest(".parent").find(".htmlColumnContentPreview").append(htmlData);
@@ -158,7 +195,7 @@
    {
       debugger;
        var obj = {};//an instance of ModuleWithParametersValue
-       obj.ParametersValue =[];
+       obj.ParametersValue ={};
         var targetParamsDiv = $(sender).closest(".paramsDiv");
         var count = 0; 
                               
@@ -182,7 +219,7 @@
                         selectedType = $(`#${id}`).val();
                         break;
                         case "countToShow":
-                        count = $(`#${id}`).val();
+                        count = parseInt($(`#${id}`).val());
                         break;
                     }
                     break;
@@ -209,7 +246,7 @@
                         break;
                         case "countToShow":
                         if(!$(".countSection").hasClass("d-none"))
-                            count = $(`#${id}`).val();
+                            count = parseInt($(`#${id}`).val());
                         break;
                     }
                     break;
@@ -219,18 +256,18 @@
         if(obj.ModuleName.toLowerCase() =="productlist")
         {
             url = "@Url.Action("GetProductModuleViewComponent", "Domain")"+"?productType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count;
-            obj.ParametersValue.Count = count;
-            obj.ParametersValue.ProductOrContentType = selectedType;
             obj.ParametersValue.ProductTemplateDesign = selectedTemplate;
+            
         }
         else if(obj.ModuleName.toLowerCase() == "contentlist")
         {
             debugger;
             url = "@Url.Action("GetContentModuleViewComponent", "Domain")"+"?contentType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count;
-            obj.ParametersValue.Count = count;
-            obj.ParametersValue.ProductOrContentType = selectedType;
             obj.ParametersValue.ContentTemplateDesign = selectedTemplate;
         }
+        obj.ParametersValue.Count = count;
+        obj.ParametersValue.ProductOrContentType = selectedType;
+        
         var data = JSON.stringify(obj);
         data =`<div target='module'>${data}</div>`;
         var finalData = $(parent).find(".finalColumnContent").append(data);
@@ -272,10 +309,10 @@
                                 }
                            });
                     }
-                    setTimeout(function(){
-                        $(parent).find(".moduleDataPreview").html("");
-                        $(parent).find(".moduleDataPreview").addClass("d-none");
-                    }, 5000);
+                    //setTimeout(function(){
+                    //    $(parent).find(".moduleDataPreview").html("");
+                    //    $(parent).find(".moduleDataPreview").addClass("d-none");
+                    //}, 5000);
                 }
             },
         });

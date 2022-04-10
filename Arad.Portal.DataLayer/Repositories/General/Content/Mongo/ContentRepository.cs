@@ -404,15 +404,20 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             return result;
         }
 
-        public List<ContentGlance> GetSpecialContent(ContentTemplateDesign template, int count, string language, ProductOrContentType contentType)
+        public List<ContentGlance> GetSpecialContent(int count, ProductOrContentType contentType, bool isDevelopment)
         {
-            var domainName = this.GetCurrentDomainName();
-            var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
+            Entities.General.Domain.Domain domainEntity = new Entities.General.Domain.Domain();
+            if(!isDevelopment)
+            {
+                var domainName = this.GetCurrentDomainName();
+                domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
+            }
+            
             FilterDefinitionBuilder<Entities.General.Content.Content> builder = new();
             FilterDefinition<Entities.General.Content.Content> filterDef;
             filterDef = builder.Gte(nameof(Entities.General.Content.Content.EndShowDate), DateTime.Now);
             filterDef &= builder.Lte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.Now);
-            filterDef &= builder.Eq(nameof(Entities.General.Content.Content.AssociatedDomainId), domainEntity.DomainId);
+            filterDef &= builder.Eq(nameof(Entities.General.Content.Content.AssociatedDomainId), isDevelopment ? "d24ceebd-c587-4a02-a201-3ad5a9345daf" : domainEntity.DomainId);
             List<ContentGlance> lst = new List<ContentGlance>();
 
             switch (contentType)

@@ -75,6 +75,7 @@ namespace Arad.Portal.UI.Shop.Controllers
 
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login(string returnUrl)
         {
             if (HttpContext.User.Identity is { IsAuthenticated: true })
@@ -92,6 +93,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([FromForm] LoginDTO model)
         {

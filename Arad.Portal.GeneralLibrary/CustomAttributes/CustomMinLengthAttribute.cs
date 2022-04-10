@@ -22,7 +22,7 @@ namespace Arad.Portal.GeneralLibrary.CustomAttributes
             msg = msg.Replace("0", name).Replace("1", Length.ToString());
             return msg;
         }
-        public override bool IsValid(object? value)
+        public override bool IsValid(object value)
         {
             return value.ToString().Length >= Length;
         }

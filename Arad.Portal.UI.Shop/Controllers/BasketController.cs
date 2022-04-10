@@ -45,14 +45,14 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
             if(User != null && User.Identity.IsAuthenticated)
             {
                 var domainName = base.DomainName;
                 var currentUserId = base.CurrentUserId;
                 var domain = _domainRepository.FetchByName(domainName);
-                var model = _shoppingCartRepository.FetchActiveUserShoppingCart(currentUserId, domain.ReturnValue.DomainId);
+                var model =(await _shoppingCartRepository.FetchActiveUserShoppingCart(currentUserId, domain.ReturnValue.DomainId)).ReturnValue;
 
                 return View(model);
             }

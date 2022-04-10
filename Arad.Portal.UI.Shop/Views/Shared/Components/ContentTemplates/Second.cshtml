@@ -9,50 +9,50 @@
 
 <div class="row g-1">
     <div class="offset-1 col-10 col-sm-4 m-lg-0 m-md-0 m-sm-0 text-center">
-         <a href="@($"/blog/{Model[4].ContentCode}")" role="button">
+         <a href="@($"/blog/{Model[0].ContentCode}")" role="button">
         <picture>
-            <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.TwoToOne).Url}&width={168}")">
-            <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.TwoToOne).Url}&width={228}")">
-            <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.TwoToOne).Url}&width={428}")">
-            <img src="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.TwoToOne)}&width={428}")" 
+            <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].DesiredImageUrl}&width={168}")">
+            <source media="(min-width: 768px && max-width: 991px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].DesiredImageUrl}&width={228}")">
+            <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].DesiredImageUrl}&width={580}")">
+            <img src="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].DesiredImageUrl}&width={580}")" 
                     class="img-fluid pt-lg-1 ps-lg-1 pt-md-1 ps-md-1 p-sm-1"
-                    alt="@Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.TwoToOne).Title??''" />
+                    alt=@(Model[0].Images.Any(_=>_.ImageRatio == ImageRatio.TwoToOne) ? Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.TwoToOne).Title : "") />
         </picture>
         </a>
     </div>
     <div class="col-12 col-sm-8 m-lg-0 m-md-0 m-sm-0 text-center">
-         <a href="@($"/blog/{Model[4].ContentCode}")" role="button">
+         <a href="@($"/blog/{Model[1].ContentCode}")" role="button">
         <picture>
-            <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[1].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.FourToOne).Url}&width={342}")">
-            <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[1].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.FourToOne).Url}&width={462}")">
-            <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[1].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.FourToOne).Url}&width={862}")">
-            <img src="@($"../filemanager/GetScaledImageOnWidth?path={Model[1].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.FourToOne)}&width={862}")"
+            <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[1].DesiredImageUrl}&width={342}")">
+            <source media="(min-width: 768px && max-width: 991px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[1].DesiredImageUrl}&width={462}")">
+            <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[1].DesiredImageUrl}&width={862}")">
+            <img src="@($"../filemanager/GetScaledImageOnWidth?path={Model[1].DesiredImageUrl}&width={862}")"
                 class="img-fluid pt-lg-1 ps-lg-1 pe-lg-1 pt-md-1 ps-md-1 pe-md-1 p-sm-1"
-                alt="@Model[1].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.FourToOne).Title??''">
+                alt=@(Model[1].Images.Any(_=>_.ImageRatio == ImageRatio.FourToOne) ? Model[1].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.FourToOne).Title : "")>
         </picture>
         </a>
     </div>
     <div class="col-12 col-sm-8 col-lg-8 col-md-8 m-lg-0 m-md-0 m-sm-0 text-center">
-         <a href="@($"/blog/{Model[4].ContentCode}")" role="button">
+         <a href="@($"/blog/{Model[2].ContentCode}")" role="button">
          <picture>
-            <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[2].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.FourToOne).Url}&width={342}")">
-            <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[2].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.FourToOne).Url}&width={462}")">
-            <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[2].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.FourToOne).Url}&width={862}")">
-            <img src="@($"../filemanager/GetScaledImageOnWidth?path={Model[2].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.FourToOne)}&width={862}")"
+            <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[2].DesiredImageUrl}&width={342}")">
+            <source media="(min-width: 768px && max-width: 991px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[2].DesiredImageUrl}&width={462}")">
+            <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[2].DesiredImageUrl}&width={862}")">
+            <img src="@($"../filemanager/GetScaledImageOnWidth?path={Model[2].DesiredImageUrl}&width={862}")"
             class="img-fluid pt-lg-1 ps-lg-1 pe-lg-1 pt-md-1 ps-md-1 pe-md-1 p-sm-1"
-            alt="@Model[2].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.FourToOne).Title??''">
+            alt=@(Model[2].Images.Any(_=>_.ImageRatio == ImageRatio.FourToOne) ? Model[2].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.FourToOne).Title : "")>
         </picture>
         </a>
     </div>
     <div class="offset-1 col-10 col-sm-4 col-lg-4 col-md-4 m-lg-0 m-md-0 m-sm-0 text-center">
-         <a href="@($"/blog/{Model[4].ContentCode}")" role="button">
+         <a href="@($"/blog/{Model[3].ContentCode}")" role="button">
         <picture>
-            <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[3].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.TwoToOne).Url}&width={168}")">
-            <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[3].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.TwoToOne).Url}&width={228}")">
-            <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[3].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.TwoToOne).Url}&width={428}")">
-            <img src="@($"../filemanager/GetScaledImageOnWidth?path={Model[3].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.TwoToOne)}&width={428}")"
+            <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[3].DesiredImageUrl}&width={168}")">
+            <source media="(min-width: 768px && max-width: 991px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[3].DesiredImageUrl}&width={228}")">
+            <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[3].DesiredImageUrl}&width={580}")">
+            <img src="@($"../filemanager/GetScaledImageOnWidth?path={Model[3].DesiredImageUrl}&width={580}")"
                 class="acc img-fluid pt-lg-1 pe-lg-1 pt-md-1 pe-md-1 p-sm-1"
-                alt="@Model[3].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.TwoToOne).Title??''" />  
+                alt=@(Model[3].Images.Any(_=>_.ImageRatio == ImageRatio.TwoToOne) ? Model[3].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.TwoToOne).Title : "") />  
         </picture>
         </a>
     </div>

@@ -1,8 +1,53 @@
-﻿@{
+﻿@using Arad.Portal.DataLayer.Models.DesignStructure
+@model MainPageContentPart
+@{
     ViewData["Title"] = "Home Page";
 }
+@using HtmlAgilityPack
+@using Newtonsoft.Json
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+@foreach(RowContent row in Model.RowContents.OrderBy(_=>_.RowNumber))
+{
+    <div class="row @row.ExtraClassNames">
+          @foreach (ColContent column in row.ColsContent.OrderBy(_ => _.ColNumber))
+            {
+                 <div class="@column.ColumnClassNames">
+                   @{
+                        var htmlDoc = new HtmlDocument();
+                        htmlDoc.LoadHtml(column.ColData);
+                        var divs = htmlDoc.DocumentNode.Descendants("div");
+                        foreach (var div in divs)
+                        {
+                            if (div.Attributes["target"].Value =="module")
+                            {
+                                var module = JsonConvert
+                                .DeserializeObject<ModuleWithParametersValue>(column.ColData.Replace("<div target=\"module\">", "")
+                                                                                            .Replace("</div>", ""));
+                                switch (module.ModuleName)
+                                {
+                                    case "ProductList":
+                                        @await Component.InvokeAsync("SpecialProduct",
+                                            new { productType = module.ParametersValue.ProductOrContentType,
+                                            selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count} );
+                                                                                            
+                                        break;
+                                    case "ContentList":
+                                        @await Component.InvokeAsync("ContentTemplates", new { contentType = module.ParametersValue.ProductOrContentType,
+                                                selectionTemplate = module.ParametersValue.ContentTemplateDesign ,  count = module.ParametersValue.Count }) ;
+                                        break;
+                                }
+                            }
+                            else if (div.Attributes["target"].Value =="editor")
+                            {
+                                @Html.Raw(column.ColData.Replace("<div target=\"editor\">", "")
+                                                        .Replace("</div>", "")); ;
+                            }
+                        }
+                   }
+                 </div>
+            }
+    </div>
+}
+
+

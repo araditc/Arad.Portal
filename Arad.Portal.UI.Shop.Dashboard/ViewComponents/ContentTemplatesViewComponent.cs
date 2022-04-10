@@ -3,9 +3,11 @@ using Arad.Portal.DataLayer.Contracts.General.Language;
 using Arad.Portal.DataLayer.Entities.General.DesignStructure;
 using Arad.Portal.DataLayer.Models.Content;
 using Arad.Portal.DataLayer.Models.Shared;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -17,16 +19,18 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
     public class ContentTemplatesViewComponent : ViewComponent
     {
         private readonly IContentRepository _contentRepository;
+        private readonly IWebHostEnvironment _environment;
         private readonly IHttpContextAccessor _accessor;
         private readonly ILanguageRepository _lanRepository;
         public ContentTemplatesViewComponent(IContentRepository contentRepository,
-            IHttpContextAccessor accessor, ILanguageRepository lanRepository)
+            IHttpContextAccessor accessor, ILanguageRepository lanRepository, IWebHostEnvironment env)
         {
                 _contentRepository = contentRepository;
                 _accessor = accessor;
-               _lanRepository = lanRepository;
+                _lanRepository = lanRepository;
+                _environment = env;
         }
-        public IViewComponentResult Invoke(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, int? count)
+        public IViewComponentResult Invoke(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, int count)
         {
             var defaultCulture = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
             List<ContentGlance> lst = new List<ContentGlance>();
@@ -34,7 +38,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
             CultureInfo currentCultureInfo = new(defLangSymbol, false);
             var langId = _lanRepository.FetchBySymbol(defLangSymbol);
             ViewBag.CurLangId = langId;
-            int cnt = count.Value;
+           
             //switch(selectionTemplate)
             //{
                 //case ContentTemplateDesign.First:
@@ -51,7 +55,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
                 //    cnt = count.Value;
                 //    break;
             //}
-            lst = _contentRepository.GetSpecialContent(selectionTemplate, cnt, langId, contentType);
+            lst = _contentRepository.GetSpecialContent(count,contentType, _environment.IsDevelopment());
             switch (selectionTemplate)
             {
                 case ContentTemplateDesign.First:

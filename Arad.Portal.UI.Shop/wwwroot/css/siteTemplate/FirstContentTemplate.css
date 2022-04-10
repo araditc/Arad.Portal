@@ -2,7 +2,7 @@
     border-radius: 0.65rem !important;
 }
 
-.row {
+.row.firstTemp {
     min-height: 300px;
 }
 

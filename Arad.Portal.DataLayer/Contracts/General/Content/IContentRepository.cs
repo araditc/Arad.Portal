@@ -13,7 +13,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Content
     {
         Task<Result> Add(ContentDTO dto);
         Task<PagedItems<ContentViewModel>> List(string queryString);
-        List<ContentGlance> GetSpecialContent(ContentTemplateDesign template, int count, string language, ProductOrContentType contentType);
+        List<ContentGlance> GetSpecialContent(int count, ProductOrContentType contentType, bool isDevelopment);
         Task<ContentDTO> ContentFetch(string contentId);
         Task<Result> Update(ContentDTO dto);
         Task<Result> Delete(string contentId, string modificationReason);
