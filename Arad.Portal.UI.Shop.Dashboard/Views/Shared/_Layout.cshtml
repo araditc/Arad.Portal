@@ -69,6 +69,7 @@
     <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
     <script src="~/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js"></script>
+    <script src="~/js/LangUniqueness.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 
@@ -165,9 +166,10 @@
         </div>
     </div>
     
-    <div class="position-fixed h-100 w-100 p-5 bg-dark" id="toastPanel" style="display: block; left: 0; top: 0; z-index: 11;">
+    <div class="position-fixed left-50 top-0 p-5" id="toastPanel" style="z-index: 11;">
         <div aria-atomic="true" aria-live="assertive" class="toast" id="mainToast" role="alert" autohide="false">
-            <div class="toast-body p-3 fs-5 rounded-3 text-center" id="mainToastBody" style="top: 40%; left: 200px;position: absolute;width: calc(100% - 400px);">
+           @* width: calc(100% - 400px);top: 40%; left: 200px;position: absolute;*@
+            <div class="toast-body p-3 fs-5 rounded-3 text-center" id="mainToastBody" >
             </div>
         </div>
     </div>
@@ -204,7 +206,7 @@
     var entityId;
     var confirmUrl;
     var typeOfRequest;
-    var bsAlert = new bootstrap.Toast(document.getElementById('mainToast'));
+    //var bsAlert = new bootstrap.Toast(document.getElementById('mainToast'));
 
     adjustSidebar();
 
@@ -214,7 +216,7 @@
 
             $("#loading").removeClass('is-active');
             $("#deleteToast").hide();
-            $("#toastPanel").hide();
+            //$("#toastPanel").hide();
             setInterval(function()
                 {
                     const dateTime = new Date();
@@ -418,7 +420,7 @@
         setTimeout(function () {
             $("#toastPanel").hide();
         },
-            1500);
+        1500);
     }
     </script>
 

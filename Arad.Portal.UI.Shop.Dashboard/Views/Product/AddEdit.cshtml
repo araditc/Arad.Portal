@@ -686,8 +686,7 @@ else
                 $('.datepicker').datepicker();
             }
        //multiselect
-        @*$("#GroupIds").select2({ dir: '@dir', theme: 'bootstrap4' });
-        $("#specValues").select2({ dir: '@dir', theme: 'bootstrap4' });*@
+      
         if ('@Model.Images.Any()' == 'True') {
 
             var serverImages = @Json.Serialize(@Model.Images);
@@ -705,10 +704,15 @@ else
         }
 
         $("#languageId").val('@ViewBag.LangId');
+         $("#languageId").selectpicker("refresh");
         $("#multiLangId").val('@ViewBag.LangId');
+        $("#multiLangId").selectpicker("refresh");
         $("#currencyId").val('@ViewBag.DefCurrency');
+        $("#currencyId").selectpicker("refresh");
+
         if ("@ViewBag.ActivePromotionId" != "-1") {
             $("#promotionId").val("@ViewBag.ActivePromotionId");
+            $("#promotionId").selectpicker("refresh");
         }
 
         $("#btnAddProduct").click(function () {
@@ -760,9 +764,9 @@ else
                            /* AddLoading($("#addProductCard"));*/
                         },
                         success: function (result) {
-                            debugger;
+                           
                             if (result.status === "Success") {
-                               
+                                debugger;
                                 document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
                                 document.getElementById('mainToastBody').classList.add('alert-success');
                                 var bsAlert = new bootstrap.Toast(document.getElementById('mainToast'));
@@ -863,6 +867,7 @@ else
                                 });
 
                                 $("#specGroupId").html(options);
+                                $("#specGroupId").selectpicker("refresh");
                             }
                         }
                     },
@@ -875,39 +880,41 @@ else
        });
 
         $("#specGroupId").change(function () {
+           debugger;
+            var langId = $("#languageId").val();
+            var groupId = $("#specGroupId").val();
+            if (groupId != "") {
+                $.ajax({
+                    url: "/ProductSpecification/GetSpecificationInGroupAndLang?groupId=" + groupId + "&langId=" + langId,
+                    type: 'Get',
+                    dataType : 'json',
+                    success: function (result) {
+                        debugger;
+                        var options = "<option value='-1'> " +'@Language.GetString("AlertAndMessage_Choose")'+" </option>";
+                        if (result.status === "success") {
 
-        var langId = $("#languageId").val();
-        var groupId = $("#specGroupId").val();
-        if (groupId != "") {
-            $.ajax({
-                url: "/ProductSpecification/GetSpecificationInGroupAndLang?groupId=" + groupId + "&langId=" + langId,
-                type: 'Get',
-                dataType : 'json',
-                success: function (result) {
+                            if (result.data.length != 0) {
+                                (result.data).forEach(function (item) {
+                                    var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                    options += op;
+                                });
 
-                    var options = "<option value='-1'> " +'@Language.GetString("AlertAndMessage_Choose")'+" </option>";
-                    if (result.status === "success") {
-
-                        if (result.data.length != 0) {
-                            (result.data).forEach(function (item) {
-                                var op = "<option value='" + item.value + "'>" + item.text + "</option>";
-                                options += op;
-                            });
-
-                            $("#specificationId").html(options);
+                                $("#specificationId").html(options);
+                                $("#specificationId").selectpicker('refresh');
+                            }
                         }
+                    },
+                    error: function (xhr, thrownError) {
+                        alert("@error");
+                        alert(xhr.status);
+                        alert(thrownError);
                     }
-                },
-                error: function (xhr, thrownError) {
-                    alert("@error");
-                    alert(xhr.status);
-                    alert(thrownError);
-                }
         });
         }
     });
 
         $("#specificationId").change(function () {
+            debugger;
             var langId = $("#languageId").val();
             var specId = $("#specificationId").val();
             if (specId != "-1") {
@@ -927,6 +934,7 @@ else
                                 });
                                 $("#specValues").empty();
                                 $("#specValues").html(options);
+                                $("#specValues").selectpicker('refresh');
                             }
                         }
                     },
@@ -1007,6 +1015,7 @@ else
                      }
                     $("#priceList").append(tr);
                     $("#currencyId").val('@ViewBag.DefCurrency');
+                    $("#currencyId").selectpicker("refresh");
                     $("#priceValue").val("0");
                     $("#dtpStartDate").val("");
     }
@@ -1017,63 +1026,69 @@ else
     }
 
     function addSpecToList() {
-        var flag = false;
-        $("span[data-val-result='languageId']").html("");
-        $("span[data-val-result='specGroupId']").html("");
-        $("span[data-val-result='specificationId']").html("");
-        $("span[data-val-result='specValues']").html("");
+        debugger;
+        var selectedLang = $("#LanguageId").val();
+        
+            var flag = false;
+            $("span[data-val-result='languageId']").html("");
+            $("span[data-val-result='specGroupId']").html("");
+            $("span[data-val-result='specificationId']").html("");
+            $("span[data-val-result='specValues']").html("");
 
-
-        if ($("#languageId").val() == "-1") {
-            $("span[data-val-result='languageId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
-            flag = true;
-        }
-        if ($("#specGroupId").val() == "-1") {
-            $("span[data-val-result='specGroupId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
-            flag = true;
-        }
-        if ($("#specificationId").val() == "-1") {
-            $("span[data-val-result='specificationId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
-            flag = true;
-        }
-        if ($("#specValues").val().length == 0) {
-            $("span[data-val-result='specValues']").html('@Language.GetString("AlertAndMessage_SelectAtLeastOneItem")');
-            flag = true;
-        }
-
-        if (!flag) {
-            var vals = "";
-            //for (var i = 0; i < $("#specValues").select2("data").length; i++) {
-
-            //    vals += $("#specValues").select2("data")[i].text + "|";
-            //}
-            //remove last '|'
-            vals = vals.substring(0, vals.length - 1);
-
-            var tr = "<tr style='text-align:center;'><td>" + $("#languageId option:selected").text() +
-                "</td><td style='display:none;'>" + $('#languageId').val() +
-                "</td><td>" + $('#specGroupId option:selected').text() +
-                "</td><td style='display:none;'>" + $('#specGroupId').val() +
-                "</td><td>" + $("#specificationId option:selected").text() +
-                "</td><td style='display:none;'>" + $("#specificationId").val() +
-                "</td><td>" + vals
-                "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromSpecList(this)'>" +
-                "<i class='fa fa-trash'></i></button></td></tr>";
-
-
-            if ($("#specificationList tr").length == 1 && $("#specificationList tr")[0].children.length == 1) {
-                $("#specificationList tr")[0].remove();
+            if ($("#languageId").val() == "-1") {
+                $("span[data-val-result='languageId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                flag = true;
+            }
+            if ($("#specGroupId").val() == "-1") {
+                $("span[data-val-result='specGroupId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                flag = true;
+            }
+            if ($("#specificationId").val() == "-1") {
+                $("span[data-val-result='specificationId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                flag = true;
+            }
+            if ($("#specValues").val().length == 0) {
+                $("span[data-val-result='specValues']").html('@Language.GetString("AlertAndMessage_SelectAtLeastOneItem")');
+                flag = true;
             }
 
-            $("#specificationList").append(tr);
-            $("#languageId").val("@ViewBag.LangId");
-            $("#specGroupId").val("-1");
-            $("#specificationId").val("-1");
+            if (!flag) {
+                var vals = "";
+                for (var i = 0; i < $("#specValues option:selected").length; i++) {
 
-            $("#specValues").empty();
-            /*$('#specValues').select2('data', null);*/
-        }
-        }
+                    vals += $("#specValues option:selected")[i].innerText + "|";
+                }
+                //remove last '|'
+                vals = vals.substring(0, vals.length - 1);
+
+                var tr = "<tr style='text-align:center;'><td>" + $("#languageId option:selected").text() +
+                    "</td><td style='display:none;'>" + $('#languageId').val() +
+                    "</td><td>" + $('#specGroupId option:selected').text() +
+                    "</td><td style='display:none;'>" + $('#specGroupId').val() +
+                    "</td><td>" + $("#specificationId option:selected").text() +
+                    "</td><td style='display:none;'>" + $("#specificationId").val() +
+                    "</td><td>" + vals
+                    "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromSpecList(this)'>" +
+                    "<i class='fa fa-trash'></i></button></td></tr>";
+
+
+                if ($("#specificationList tr").length == 1 && $("#specificationList tr")[0].children.length == 1) {
+                    $("#specificationList tr")[0].remove();
+                }
+
+                $("#specificationList").append(tr);
+                $("#languageId").val("@ViewBag.LangId");
+                 $("#languageId").selectpicker("refresh");
+                $("#specGroupId").val("-1");
+                $("#specGroupId").selectpicker("refresh");
+                $("#specificationId").val("-1");
+                $("#specificationId").selectpicker("refresh");
+
+                $("#specValues").empty();
+                $("#specValues").selectpicker('refresh');
+         
+            }
+     }
 
     function deleteFromSpecList(sender) {
         var tr = $(sender).parent().parent();
@@ -1095,14 +1110,15 @@ else
 
         //groupIds
         for (var i = 0; i < $("#GroupIds").val().length; i++) {
+            debugger;
             dto.GroupIds.push($("#GroupIds").val()[i]);
         }
 
         //GroupNames
-        //for (var i = 0; i < $("#GroupIds").select2("data").length; i++) {
+        for (var i = 0; i < $("#GroupIds option:selected").length; i++) {
 
-        //    dto.GroupNames.push($("#GroupIds").select2("data")[i].text);
-        //}
+            dto.GroupNames.push($("#GroupIds option:selected")[i].innerText);
+        }
 
         //multilingualProperties
         debugger;
@@ -1126,7 +1142,6 @@ else
             innerModel.Prefix = "";
 
             dto.Prices.push(innerModel);
-
         });
 
         //specifications
@@ -1166,7 +1181,7 @@ else
         dto.ShowInLackOfInventory = $("#chbNotifyInventory").prop("checked");
         if ("@ViewBag.Vendors" != "-1") {
             dto.SellerUserId = $("#SellerUserId").val();
-            dto.SellerUserName = $("SellerUserId option:selected").text();
+            dto.SellerUserName = $("#SellerUserId option:selected").text();
         }
         dto.UnitId = $("#Unit_ProductUnitId").val();
         dto.PromotionId = $("#PromotionId").val();
@@ -1186,58 +1201,65 @@ else
     }
 
     function addToTable() {
-
+        debugger;
         var flag = false;
-        $("span[data-val-result='multiLangId']").html("");
-        $("span[data-val-result='productName']").html("");
+        var selectedLang = $('#multiLangId').val();
+        if(isUnique(selectedLang, 'multiLingualList', 1, '@Language.GetString("AlertAndMessage_LangUniqueness")'))
+        {
+             $("span[data-val-result='multiLangId']").html("");
+            $("span[data-val-result='productName']").html("");
 
 
-        if ($("#multiLangId").val() == "") {
-            $("span[data-val-result='multiLangId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
-            flag = true;
-        }
-        if ($("#productName").val() == "") {
-                $("span[data-val-result='productName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
-            flag = true;
-        }
-        if (!flag) {
-            var obj = {};
-            obj.LanguageId = $('#multiLangId').val();
-            obj.LanguageName = $("#multiLangId option:selected").text();
-            obj.Name = $('#productName').val();
-            obj.SeoTitle = $("#seoTitle").val();
-            obj.SeoDescription = $("#seoDescription").val();
-            obj.Description = $("#description").val();
-            obj.UrlFriend = $("#urlFriend").val();
-            obj.BodyContent = CKEDITOR.instances.editorCk.getData();
-            obj.Tag = cnt.toString();
-
-            multiLingualArr.push(obj);
-
-            var tr = "<tr style='text-align:center;'><td>" + $("#multiLangId option:selected").text() +
-                "</td><td style='display:none;'>" + $('#multiLangId').val() +
-                "</td><td>" + $('#productName').val() +
-                "</td><td>" + $("#seoTitle").val() +
-                "</td><td>" + $("#seoDescription").val() +
-                "</td><td>" + $("#description").val() +
-                "</td><td>" + $("#urlFriend").val() +
-                "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' cnt='" + obj.Tag + "' onclick='deleteFromTable(this);'>" +
-                "<i class='fa fa-trash' ></i></button></td></tr>";
-
-            if ($("#multiLingualList tr").length == 1 && $("#multiLingualList tr")[0].children.length == 1) {
-                $("#multiLingualList tr")[0].remove();
+            if ($("#multiLangId").val() == "") {
+                $("span[data-val-result='multiLangId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                flag = true;
             }
+            if ($("#productName").val() == "") {
+                    $("span[data-val-result='productName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                flag = true;
+            }
+            if (!flag) {
+                debugger;
+                var obj = {};
+                obj.LanguageId = $('#multiLangId').val();
+                obj.LanguageName = $("#multiLangId option:selected").text();
+                obj.Name = $('#productName').val();
+                obj.SeoTitle = $("#seoTitle").val();
+                obj.SeoDescription = $("#seoDescription").val();
+                obj.Description = $("#description").val();
+                obj.UrlFriend = $("#urlFriend").val();
+                obj.BodyContent = CKEDITOR.instances.editorCk.getData();
+                obj.Tag = cnt.toString();
 
-            $("#multiLingualList").append(tr);
-            cnt = cnt + 1;
-            $("#multiLangId").val("@ViewBag.LangId");
-            $("#productName").val("");
-            $("#seoTitle").val("");
-            $("#seoDescription").val("");
-            $("#description").val("");
-           /* $("#urlFriend").val("");*/
+                multiLingualArr.push(obj);
+
+                var tr = "<tr style='text-align:center;'><td>" + $("#multiLangId option:selected").text() +
+                    "</td><td style='display:none;'>" + $('#multiLangId').val() +
+                    "</td><td>" + $('#productName').val() +
+                    "</td><td>" + $("#seoTitle").val() +
+                    "</td><td>" + $("#seoDescription").val() +
+                    "</td><td>" + $("#description").val() +
+                    "</td><td>" + $("#urlFriend").val() +
+                    "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' cnt='" + obj.Tag + "' onclick='deleteFromTable(this);'>" +
+                    "<i class='fa fa-trash' ></i></button></td></tr>";
+
+                if ($("#multiLingualList tr").length == 1 && $("#multiLingualList tr")[0].children.length == 1) {
+                    $("#multiLingualList tr")[0].remove();
+                }
+
+                $("#multiLingualList").append(tr);
+                cnt = cnt + 1;
+                $("#multiLangId").val("@ViewBag.LangId");
+                $("#multiLangId").selectpicker("refresh");
+                $("#productName").val("");
+                $("#seoTitle").val("");
+                $("#seoDescription").val("");
+                $("#description").val("");
+                CKEDITOR.instances.editorCk.setData("");
+               /* $("#urlFriend").val("");*/
+            }
         }
-       }
+     }
     $("#uploadModal").on("shown.bs.modal", function() {
              
               var image = document.getElementById('croppedImg');

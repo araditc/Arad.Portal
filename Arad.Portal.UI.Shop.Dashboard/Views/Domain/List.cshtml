@@ -14,7 +14,7 @@
         queryString = System.Web.HttpUtility.ParseQueryString(Model.QueryString);
         queryString.Remove("page");
     }
-    else
+   if(langId == "")
     {
         langId = ViewBag.DefLangId;
     }

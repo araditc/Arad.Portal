@@ -13,12 +13,15 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public MultiLingualProperty()
         {
             TagKeywords = new();
+            ProductGroupNames = new();
         }
         public string MultiLingualPropertyId { get; set; }
 
         public string Name { get; set; }
 
         public string GroupName { get; set; }
+
+        public List<string> ProductGroupNames { get; set; }
 
         public string Description { get; set; }
         /// <summary>

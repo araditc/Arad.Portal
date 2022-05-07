@@ -12,8 +12,13 @@
     {
         queryString = System.Web.HttpUtility.ParseQueryString(Model.QueryString);
         queryString.Remove("page");
+        if(!string.IsNullOrWhiteSpace(queryString["LanguageId"]))
+        {
+            langId = queryString["LanguageId"];
+        }
+        
     }
-    else
+    if(langId == "")
     {
         langId = ViewBag.DefLangId;
     }

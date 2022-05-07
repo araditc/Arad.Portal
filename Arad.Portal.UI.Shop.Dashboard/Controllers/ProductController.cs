@@ -74,6 +74,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _codeGenerator = codeGenerator;
             imageSize = _configuration["ProductImageSize:Size"];
         }
+
         [HttpGet]
         public async Task<IActionResult> List()
         {
@@ -208,6 +209,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     var lan = _lanRepository.FetchLanguage(item.LanguageId);
                     item.LanguageSymbol = lan.Symbol;
                     item.MultiLingualPropertyId = Guid.NewGuid().ToString();
+                    item.ProductGroupNames = new();
+                    foreach (var grp in dto.GroupIds)
+                    {
+                        var groupDto = _productGroupRepository.ProductGroupFetch(grp);
+                        if(groupDto.MultiLingualProperties.Any(_ => _.LanguageId == item.LanguageId))
+                        {
+                            var name = groupDto.MultiLingualProperties.Where(_ => _.LanguageId == item.LanguageId).FirstOrDefault().Name;
+                            item.ProductGroupNames.Add(name);
+                        }
+                    }
                 }
 
                 foreach (var item in dto.Prices)
@@ -220,6 +231,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.SDate = DateHelper.ToEnglishDate(item.StartDate);
                     item.IsActive = true;
                 }
+
+                
+                
                 var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
                 var path = "images/Products";
                 foreach (var pic in dto.Pictures)
@@ -265,6 +279,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     var lan = _lanRepository.FetchLanguage(item.LanguageId);
                     item.LanguageSymbol = lan.Symbol;
                     item.MultiLingualPropertyId = Guid.NewGuid().ToString();
+                    item.ProductGroupNames = new();
+                    foreach (var grp in dto.GroupIds)
+                    {
+                        var groupDto = _productGroupRepository.ProductGroupFetch(grp);
+                        if (groupDto.MultiLingualProperties.Any(_ => _.LanguageId == item.LanguageId))
+                        {
+                            var name = groupDto.MultiLingualProperties.Where(_ => _.LanguageId == item.LanguageId).FirstOrDefault().Name;
+                            item.ProductGroupNames.Add(name);
+                        }
+                    }
                 }
             
                 //var changeCulture = false;

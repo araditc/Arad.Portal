@@ -17,13 +17,10 @@
         {
             langId = queryString["LanguageId"].ToString();
         }
-        else
-        {
-            langId = ViewBag.DefLangId;
-        }
+      
         queryString.Remove("page");
     }
-    else
+   if(langId == "")
     {
         langId = ViewBag.DefLangId;
     }
