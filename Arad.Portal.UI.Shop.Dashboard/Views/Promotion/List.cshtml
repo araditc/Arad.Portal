@@ -319,12 +319,15 @@
            $("#dtpToDate").val('@toDate');
            if ('@vendor' != "" && $("#productVendor").val() != undefined) {
                $("#productVendor").val('@vendor');
+               $("#productVendor").selectpicker("refresh");
            }
            if ('@groupId' != "" && $("#productGroupId").val() != undefined) {
                $("#productGroupId").val('@groupId');
+               $("#productGroupId").selectpicker("refresh");
            }
            if ('@productId' != "" && $("#productId").val() != undefined) {
                $("#productId").val('@groupId');
+               $("#productId").selectpicker("refresh");
            }
         //datetimepicker
             if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")

@@ -180,6 +180,7 @@
            
             if ("@langId" != "") {
                 $("#cmbLangIdFilter").val("@langId");
+                 $("#cmbLangIdFilter").selectpicker("refresh");
             }
 
             $("#cmbLangIdFilter").change(function () {

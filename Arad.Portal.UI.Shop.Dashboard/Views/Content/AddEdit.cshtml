@@ -452,6 +452,7 @@
         }
         if ("@Model.ContentId" != "") {
             $("#LanguageId").val('@Model.LanguageId');
+             $("#LanguageId").selectpicker("refresh");
             if ("@Model.PersianStartShowDate" != "") {
 
                 $("#dtpStartShowDate").val("@Model.PersianStartShowDate");
@@ -478,6 +479,7 @@
         else
         {
           $("#LanguageId").val('@ViewBag.LangId');
+          $("#LanguageId").selectpicker("refresh");
         }
         $("#btnAddContent").click(function () {
             debugger;
@@ -597,6 +599,7 @@
 
                             $("#ContentCategoryId").html(options);
                             $("#ContentCategoryId").val('@Model.ContentCategoryId');
+                             $("#ContentCategoryId").selectpicker("refresh");
                         }
                     }
                 },

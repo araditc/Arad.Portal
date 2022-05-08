@@ -100,20 +100,20 @@
                         <span data-val-result="DefaultCurrencyId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label class="form-label" for="DefaultCurrencyId">@Language.GetString("tbl_InvoiceNumberCreationWay")</label><br />
+                        <label class="form-label" for="InvoiceNumberProcedure">@Language.GetString("tbl_InvoiceNumberCreationWay")</label><br />
                         <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.InvoiceNumberProcedure" asp-items="@(new SelectList( ViewBag.InvoiceNumberEnum,"Value","Text", Model.InvoiceNumberProcedure))">
                         </select>
                         <span data-val-result="InvoiceNumberProcedure" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3 invoiceInitialise">
-                        <label class="form-label" for="DefaultCurrencyId">@Language.GetString("FirstInvoiceNumberPattern")</label><br />
+                        <label class="form-label" for="InvoiceNumberInitializer">@Language.GetString("FirstInvoiceNumberPattern")</label><br />
                         <input type="text" class="form-control" asp-for="@Model.InvoiceNumberInitializer" value="@Model.InvoiceNumberInitializer" />
                         <span data-val-result="InvoiceNumberInitializer" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3 invoiceInitialise">
-                        <label class="form-label" for="DefaultCurrencyId">@Language.GetString("IncreasementLevel")</label><br />
+                        <label class="form-label" for="IncreasementValue">@Language.GetString("IncreasementLevel")</label><br />
                         <input type="text" class="form-control" asp-for="@Model.IncreasementValue" value="@Model.IncreasementValue" />
-                        <span data-val-result="InvoiceNumberInitializer" class="text-danger"></span>
+                        <span data-val-result="IncreasementValue" class="text-danger"></span>
                     </div>
 
                 </div>
@@ -321,6 +321,7 @@
         $(document).ready(function () {
 
             $("#DefaultLanguageId").val('@ViewBag.LangId');
+            $("#DefaultLanguageId").selectpicker("refresh");
 
             if ('@Model.DomainId' == "") {
                 $("#InvoiceNumberProcedure").val("-1");
@@ -600,6 +601,7 @@
                      }
                     $("#priceList").append(tr);
                     $("#currencyId").val('@ViewBag.DefCurrency');
+                    $("#currencyId").selectpicker("refresh");
                     $("#priceValue").val("0");
                     $("#dtpStartDate").val("");
     }

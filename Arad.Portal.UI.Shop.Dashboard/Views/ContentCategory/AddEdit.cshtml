@@ -124,6 +124,7 @@
             $("#languageId").val('@ViewBag.LangId');
             if ("@Model.ContentCategoryId" != "" && "@Model.ParentCategoryId" != "") {
                 $("#ParentCategoryId").val("@Model.ParentCategoryId");
+                $("#ParentCategoryId").selectpicker("refresh");
             }
 
             $("#btnAddContentCategory").click(function () {
