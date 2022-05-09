@@ -17,13 +17,14 @@
 @section Styles{
 <link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
 <link href="~/plugins/TagInput/amsify.suggestags.css" rel="stylesheet" />
-<link href="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.css" rel="stylesheet" />
+@*<link href="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.css" rel="stylesheet" />*@
+ 
 <style>
 
-    .ck-editor .ck-editor__main .ck-content {
+   /* .ck-editor .ck-editor__main .ck-content {
         height: 280px;
         min-height: 250px;
-    }
+    }*/
 
     .removeImage {
         display: inline-block;
@@ -78,14 +79,14 @@
     {
 <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
 <style>
-    .ck-tooltip__text {
+   @* .ck-tooltip__text {
         font-family: IRANSansWeb !important;
     }
 
     .ck-button__label {
         font-family: IRANSansWeb !important;
     }
-
+*@
     .text-danger {
         font-size: 12px;
     }
@@ -376,13 +377,56 @@
                                         <span data-val-result="editorCk" class="text-danger"></span>
                                         <textarea id="editorCk" name="editorCk" class="form-control" rows="40">@Html.Raw(Model.Contents)</textarea>
 
-                                        <script src="~/lib/ckeditor/ckeditor.js"></script>
+                                      @*  <script src="~/lib/ckeditor/ckeditor.js"></script>*@
+                                      <script src="~/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js"></script>
                                         <script>
+                                            //var config = {
+                                            //    filebrowserImageUploadUrl: 'Image/content-file-upload',
+                                            //   // language: '@lan'
+                                            //   language : 'en'
+                                            //}
+                                            //CKEDITOR.replace("editorCk", config);
+
+                                           //CKEditor
                                             var config = {
-                                                filebrowserImageUploadUrl: 'Image/content-file-upload',
-                                                language: '@lan'
-                                            }
-                                            CKEDITOR.replace("editorCk", config);
+                                                height: 300,
+                                                filebrowserUploadUrl: '/Image/ContentImageUpload',
+                                                filebrowserBrowseUrl: '/Image/ContentFileBrows',
+                                                language: '@lan',
+                                                scayt_sLang: '@lan',
+                                                allowedContent: true,
+                                                toolbarGroups: [
+                                                    { name: 'clipboard', groups: ['clipboard', 'undo'] },
+                                                    { name: 'editing', groups: ['find', 'selection', 'spellchecker'] },
+                                                    { name: 'links' },
+                                                    { name: 'insert' },
+                                                    { name: 'forms' },
+                                                    { name: 'tools' },
+                                                    { name: 'document', groups: ['mode', 'document', 'doctools'] },
+                                                    { name: 'others' },
+                                                    '/',
+                                                    { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+                                                    { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi'] },
+                                                    { name: 'styles' },
+                                                    { name: 'colors' },
+                                                    { name: 'about' }
+                                                ]
+                                            };
+                                            config.font_names =
+                                                'Arial/Arial, Helvetica, sans-serif;' +
+                                                'Times New Roman/Times New Roman, Times, serif;' +
+                                                'Verdana;' +
+                                                'IRANSansWeb;' +
+                                                'WeblogmaYekan;' +
+                                                'Vazir;' +
+                                                'Shabnam';
+
+                                            config.extraPlugins = 'image2';
+
+                                            var editor = document.getElementById("editorCk");
+                                            CKEDITOR.replace(editor, config);
+                                            CKEDITOR.dtd.$removeEmpty['i'] = false;
+                                            CKEDITOR.dtd.$removeEmpty['span'] = false;
 
                                         </script>
                                     </div>
@@ -412,7 +456,7 @@
 <script src="~/lib/cropperjs/cropper.js"></script>
 <script src="~/plugins/TagInput/jquery.amsify.suggestags.js"></script>
     @*ckeditor4*@
-<script src="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.js"></script>
+@*<script src="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.js"></script>*@
 
 
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")

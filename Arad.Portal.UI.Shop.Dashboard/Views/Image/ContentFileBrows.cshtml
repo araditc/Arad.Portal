@@ -1,0 +1,83 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>File Brows</title>
+    <link rel="stylesheet" href="~/lib/bootstrap5/css/bootstrap.min.css" />
+    <style>
+        #form {
+            width: 600px;
+        }
+
+        #folderExplorer {
+            float: left;
+            width: 100px;
+        }
+
+        #fileExplorer {
+            float: left;
+            width: 680px;
+            border-left: 1px solid #dff0ff;
+        }
+
+        .thumbnail {
+            float: left;
+            margin: 3px;
+            padding: 3px;
+            border: 1px solid #dff0ff;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            padding: 0;
+        }
+    </style>
+
+   <script src="~/js/plugins/jquery/jquery.min.js"></script>
+    <script src="~/lib/ckeditor/ckeditor.js"></script>
+   
+</head>
+
+<body>
+<div id="fileExplorer w-100">
+    @foreach (var fileInfo in ViewBag.fileInfos)
+    {
+        <div class="thumbnail">
+              <img  src=@($"../filemanager/getscaledimageOnWidth?path=ckEditorContentImages/{fileInfo.Name}&width={100}") alt="thumb" title="@fileInfo.Name" />
+            <br />
+            @fileInfo.Name
+        </div>
+    }
+</div>
+ <script>
+        $(document).ready(function() {
+            var funcNum = '@(Context.Request.Query["CKEditorFuncNum"])';
+            //console.log("gggg");
+            //$('#fileExplorer').on('click',
+            //    'img',
+            //    function() {
+            //        console.log($(this).attr('title'));
+            //         var fileUrl = `${@ViewBag.Location}/ckEditorContentImages/` + $(this).attr('title');
+            //        window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
+            //        window.close();
+            //    })
+            //    .hover(function() {
+            //    $(this).css('cursor','pointer');
+            //});
+        });
+
+        
+    </script>
+</body>
+</html>

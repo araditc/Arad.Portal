@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -29,8 +30,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpPost]
-        [Route("Image/content-file-upload")]
-        public IActionResult UploadImage(IFormFile upload)
+        [Route("Image/ContentImageUpload")]
+        public IActionResult ContentUploadImage(IFormFile upload)
         {
             if (upload.Length <= 0) return null;
             // < 512 Kb
@@ -52,7 +53,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpPost]
-        [Route("Image/ProductFileUpload")]
+        [Route("Image/ProductImageUpload")]
         public IActionResult ProductImageUpload(IFormFile upload)
         {
             if (upload.Length <= 0) return null;
@@ -70,8 +71,59 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 upload.CopyTo(stream);
             }
-            var url = $"{"/ckEditorProductImages/"}{filename}";
+            var url = $"/ckEditorProductImages/{filename}";
+            
             return Json(new { uploaded = true, url });
         }
+       
+        [HttpGet]
+        public IActionResult ContentFileBrows()
+        {
+            var dir = new DirectoryInfo(Path.Combine(_localStorage, "ckEditorContentImages").Replace("\\", "/"));
+
+            List<string> MultipleFilters = new List<string>()
+            {
+                "*.png",
+                "*.jpeg",
+                "*.jpg"
+            };
+            ArrayList alFiles = new ArrayList();
+            // for each filter find mathing file names
+            foreach (string FileFilter in MultipleFilters)
+            {
+                // add found file names to array list
+                alFiles.AddRange(dir.GetFiles(FileFilter));
+            }
+
+            ViewBag.fileInfos = alFiles;
+            ViewBag.Location = _localStorage;
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ProductFileBrows()
+        {
+            var dir = new DirectoryInfo(Path.Combine(_localStorage, "ckEditorProductImages").Replace("\\", "/"));
+
+            List<string> MultipleFilters = new List<string>()
+            {
+                "*.png",
+                "*.jpeg",
+                "*.jpg"
+            };
+            ArrayList alFiles = new ArrayList();
+            // for each filter find mathing file names
+            foreach (string FileFilter in MultipleFilters)
+            {
+                // add found file names to array list
+                alFiles.AddRange(dir.GetFiles(FileFilter));
+            }
+
+            ViewBag.fileInfos = alFiles;
+            ViewBag.Location = _localStorage;
+            return View();
+        }
+
+        
     }
 }
