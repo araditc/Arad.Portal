@@ -22,9 +22,9 @@ namespace Arad.Portal.DataLayer.Contracts.General.Permission
         Task<Result<string>> GetPermissionType(string permissionId);
         List<MenuLinkModel> GetChildren(List<Entities.General.Permission.Permission> context,
            string permissionId, string address, string domain);
-        Task<List<PermissionDTO>> MenusPermission(Enums.PermissionType typeMenu);
-        Task<Result> Save(PermissionDTO permission);
-        Result<PermissionDTO> GetForEdit(string permissionId);
+        //Task<List<PermissionDTO>> MenusPermission(Enums.PermissionType typeMenu);
+        //Task<Result> Save(PermissionDTO permission);
+        //Result<PermissionDTO> GetForEdit(string permissionId);
         Task<Result> Delete(string permissionId);
         Result<List<Modification>> GetModifications(string permissionId);
         Task<List<string>> GetUserPermissionsAsync();
@@ -52,10 +52,6 @@ namespace Arad.Portal.DataLayer.Contracts.General.Permission
 
         Task<bool> Upsert(Entities.General.Permission.Permission permission);
 
-        Task<bool> Delete(string id);
-
-
-
-
+      
     }
 }
