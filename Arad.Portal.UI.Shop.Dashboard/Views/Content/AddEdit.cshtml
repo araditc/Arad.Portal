@@ -391,7 +391,7 @@
                                             var config = {
                                                 height: 300,
                                                 filebrowserUploadUrl: '/Image/ContentImageUpload',
-                                                filebrowserBrowseUrl: '/Image/ContentFileBrows',
+                                               // filebrowserBrowseUrl: '/Image/ContentFileBrows',
                                                 language: '@lan',
                                                 scayt_sLang: '@lan',
                                                 allowedContent: true,
@@ -420,8 +420,8 @@
                                                 'WeblogmaYekan;' +
                                                 'Vazir;' +
                                                 'Shabnam';
-
-                                            config.extraPlugins = 'image2';
+                                          // config.baseHref="D://AradProject/AradPortalFileStorage/";
+                                            config.extraPlugins = '';
 
                                             var editor = document.getElementById("editorCk");
                                             CKEDITOR.replace(editor, config);
