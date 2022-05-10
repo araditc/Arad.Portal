@@ -7,28 +7,67 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace Arad.Portal.UI.Shop
 {
     public class Program
     {
+        private static string _path;
         public static void Main(string[] args)
         {
+            var config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetCurrentDirectory())
+               .AddJsonFile("appsettings.json", optional: true)
+               .AddCommandLine(args)
+               .Build();
+            var logAddress = config["LogConfiguration:LogFileDirectory"];
+
+            if (!Directory.Exists(logAddress))
+            {
+                Directory.CreateDirectory(logAddress);
+            }
+
+            var fileName = config["LogConfiguration:LogFileName"];
+            _path = Path.Combine(logAddress, fileName);
+
             CreateHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                })
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            var config = new ConfigurationBuilder()
+              .SetBasePath(Directory.GetCurrentDirectory())
+              .AddJsonFile("appsettings.json", optional: true)
+              .AddCommandLine(args)
+              .Build();
+
+            long fileSizeLimit;
+            try
+            {
+                fileSizeLimit = long.Parse(config["LogConfiguration:FileSizeLimit"]);
+            }
+            catch (Exception e)
+            {
+                fileSizeLimit = 10000000;
+            }
+
+            return Host.CreateDefaultBuilder(args)
+               .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
                 .ConfigureServices(services =>
                 {
                     services.AddHostedService<ConfigureMongoDbIndexesService>();
-                    services.AddHostedService<CacheCleanerService>();
-                });
+                })
+               .UseSerilog(
+                   (hostingContext, loggerConfiguration) => loggerConfiguration
+                       .MinimumLevel.Information()
+                       .WriteTo.File(_path,
+                           rollingInterval: RollingInterval.Day,
+                           rollOnFileSizeLimit: true,
+                           fileSizeLimitBytes: fileSizeLimit));
+        }
     }
 }

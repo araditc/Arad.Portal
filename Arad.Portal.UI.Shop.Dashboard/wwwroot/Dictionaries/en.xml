@@ -815,6 +815,9 @@
   <string key="AlertAndMessage_MinLength">
     <value>0 length dont have to be less than 1.</value>
   </string>
+	<string key="AlertAndMessage_NumberLessThanZero">
+		<value>This number should be less than zero.</value>
+	</string>
 	<string key="AlertAndMessage_FillEssentialFields">
 		<value>Please Fill Essential Fields.</value>
 	</string>

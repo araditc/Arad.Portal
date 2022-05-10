@@ -23,6 +23,8 @@
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
     <!--<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />-->
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta11" />
     <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.65" />
   </ItemGroup>
@@ -34,6 +36,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\CkEditor\Content\" />
+    <Folder Include="wwwroot\CkEditor\Domain\" />
     <Folder Include="wwwroot\CkEditor\Product\" />
     <Folder Include="wwwroot\Files\" />
     <Folder Include="wwwroot\ckEditorContentImages\" />
@@ -562,6 +565,8 @@
     <None Include="wwwroot\lib\ckeditor_4.15.1_full\ckeditor\skins\moono-lisa\readme.md" />
     <None Include="wwwroot\lib\ckeditor_4.15.1_full\ckeditor\styles.js" />
     <None Include="wwwroot\lib\ckeditor_4.15.1_full\ckeditor\vendor\promise.js" />
+    <None Include="wwwroot\lib\jsTree\jstree.js" />
+    <None Include="wwwroot\lib\jsTree\jstree.min.js" />
     <None Include="wwwroot\lib\ms-DropdownImg\images\icons\Thumbs.db" />
     <None Include="wwwroot\lib\ms-DropdownImg\js\dd.min.js" />
   </ItemGroup>

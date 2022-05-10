@@ -1,0 +1,177 @@
+﻿
+@model Arad.Portal.DataLayer.Models.Role.RoleDTO
+@{
+     var title = Language.GetString("Menu_Roles");
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/lib/jsTree/themes/default/style.min.css" rel="stylesheet"/>
+
+<style>
+    .treeview .item i { margin: 10px; }
+
+    p.group { padding-right: 3%; }
+</style>
+
+<div class="card pb-0 rounded-3 shadow-sm">
+    <div class="card-header py-2 bg-secondary bg-gradient bg-opacity-10">
+        <p class="my-0 fw-bold col fs-5">
+            <i class="fa fa-users fs-3"></i>
+            @title
+        </p>
+    </div>
+    <div class="card-body">
+
+        <form asp-action="Upsert" class="row g-3" id="upsertForm" method="post">
+            <input asp-for="RoleId" data-val="true" type="hidden" value="@Model.RoleId">
+            
+
+            <div class="col-md-4">
+                <label class="form-label" for="@(nameof(Model.RoleName))">
+                    @Language.GetString("Common_Name")
+                </label>
+                <input asp-for="RoleName" class="form-control" id="@(nameof(Model.RoleName))" type="text">
+                <span asp-validation-for="RoleName" class="text-danger form-validation-alert">
+                </span>
+            </div>
+
+            <div class="col-md-12">
+                <label class="form-label" for="@(nameof(Model.PermissionIds))">
+                   @Language.GetString("Role_Name")
+                </label>
+                <div class="border rounded" id="permissionTreeView">
+
+                </div>
+                <span asp-validation-for="PermissionIds" class="text-danger form-validation-alert">
+                </span>
+            </div>
+
+            <div class="col-md-12 text-end">
+                <button class="btn btn-success btn-sm pe-3" type="submit">
+                    <i class="far fa-save px-1 mt-1">
+                    </i>@GetString("btn_Save")
+                </button>
+                <a asp-action="List" class="btn btn-light border border-1 btn-sm">
+                    <i class="far fa-share-square px-1 mt-1"></i>
+                    @GetString("btn_Back")
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/lib/jsTree/jstree.min.js"></script>
+    <script>
+        $(document)
+            .ready(function()
+            {
+                $.ajax({
+                    url: '@Url.Action("ListPermissions")?id=@Model.RoleId',
+                    type: 'Get',
+
+                    success: function(result)
+                    {
+                        $('#permissionTreeView')
+                            .jstree({
+                                'core': {
+                                    'data': result
+                                },
+                                "checkbox": {
+                                    "three_state": false,
+                                    "keep_selected_style": false
+                                },
+                                "plugins": ["checkbox"]
+                            });
+                    },
+                    error: function(xhr, ajaxOptions, thrownError)
+                    {
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+                });
+            });
+            
+        $("#upsertForm")
+            .submit(function(e)
+            {
+                e.preventDefault();
+                $("#toastPanel").show();
+                
+                const roleForm = document.getElementById('upsertForm');
+                const form = new FormData(roleForm);
+                var permissionIds = [];
+                
+                const selectedItem = $('#permissionTreeView').jstree("get_selected", true);
+
+                for (let i = 0; i < selectedItem.length; i++)
+                {
+                    permissionIds.push(selectedItem[i].id);
+                }
+                
+                form.append('PermissionIds', permissionIds);
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    data: form,
+                    processData: false,
+                    contentType: false,
+                    type: 'Post',
+                    beforeSend: function()
+                    {
+                        $("#loading").addClass('is-active');
+                    },
+                    success: function(result)
+                    {
+                        $("#loading").removeClass('is-active');
+                        if (result.result === "Success")
+                        {
+                            document.getElementById('mainToastBody').innerHTML = `<i class="far fa-check-circle"></i> ${result.message}`;
+                            document.getElementById('mainToastBody').classList.add('alert-success');
+                            bsAlert.show();
+                            
+                            setTimeout(function()
+                                {
+                                    window.location.href = `@Url.Action("List")`;
+                                },
+                                2500);
+                        }
+
+                        if (result.result === "ModelError")
+                        {
+                            const spanErrorList = $('span[data-val-result]');
+                            if (spanErrorList.length > 1)
+                            {
+                                spanErrorList.each(function()
+                                {
+                                    $(this).html("");
+                                    $(this).parent().removeClass("has-error");
+                                });
+                            }
+                            else
+                            {
+                                spanErrorList.html("");
+                                spanErrorList.parent().removeClass("has-error");
+                            }
+
+                            if (result.modelStateErrors !== null)
+                            {
+                                result.modelStateErrors.forEach(function(value)
+                                {
+                                    $(`[data-val-result=${value.key}]`).html(value.errorMessage);
+                                    $(`[data-val-result=${value.key}]`).parent().addClass("has-error");
+                                });
+                            }
+                        }
+
+                        if (result.result === "Error")
+                        {
+                            showError(result.message);
+                        }
+                    }
+                });
+            });
+
+    </script>
+}

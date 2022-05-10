@@ -34,6 +34,26 @@ namespace Arad.Portal.DataLayer.Contracts.General.Permission
 
         Task<Result> ChangeActivation(string permissionId, bool isActive, string modificationReason);
 
+        Task<List<Entities.General.Permission.Permission>> GetAll();
+
+        Task<List<PermissionTreeViewDto>> GetMenus(string currentUserId, string address, bool isAdmin);
+
+        Task<List<string>> GetUserPermissions();
+
+        Task<List<Entities.General.Permission.Permission>> GetAllListViewCustom();
+
+        Task<List<PermissionSelectDto>> GetAllListView();
+
+        Task<PagedItems<PermissionSelectDto>> GetPage(string queryString);
+
+        Task<Entities.General.Permission.Permission> GetById(string id);
+
+        Task<Entities.General.Permission.Permission> GetRootById(string id);
+
+        Task<bool> Upsert(Entities.General.Permission.Permission permission);
+
+        Task<bool> Delete(string id);
+
 
 
 

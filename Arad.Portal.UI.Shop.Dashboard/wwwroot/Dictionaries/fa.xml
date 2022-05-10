@@ -801,6 +801,9 @@
 	<string key="AlertAndMessage_MinLength">
 		<value>طول 0 نیاید کمتر از 1 باشد.</value>
 	</string>
+	<string key="AlertAndMessage_NumberLessThanZero">
+		<value>عدد نباید کمتر از صفر باشد.</value>
+	</string>
 	<string key="AlertAndMessage_FillEssentialFields">
 		<value>لطفا فیلدهای ضروری تکمیل گردد.</value>
 	</string>

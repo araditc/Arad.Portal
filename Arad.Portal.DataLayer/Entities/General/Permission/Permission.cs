@@ -14,20 +14,46 @@ namespace Arad.Portal.DataLayer.Entities.General.Permission
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string PermissionId { get; set; }
+        //public string Title { get; set; }
+        //public List<string> Routes { get; set; }
+        //public string ClientAddress { get; set; }
+        //public Enums.PermissionType Type { get; set; }
+        //public Enums.PermissionMethod Method { get; set; }
+        //public string MenuIdOfModule { get; set; }
+        ///// <summary>
+        ///// ParentMenu
+        ///// </summary>
+        //public string ParentMenuId { get; set; }
+        //public double Priority { get; set; }
+        //public string Icon { get; set; }
         public string Title { get; set; }
-        public List<string> Routes { get; set; }
-        public string ClientAddress { get; set; }
-        public Enums.PermissionType Type { get; set; }
-        public Enums.PermissionMethod Method { get; set; }
 
-        public string MenuIdOfModule { get; set; }
+        public short LevelNo { get; set; }
 
-        /// <summary>
-        /// ParentMenu
-        /// </summary>
-        public string ParentMenuId { get; set; }
-        public double Priority { get; set; }
+        public string ParentId { get; set; }
+
+        public short Priority { get; set; }
+
         public string Icon { get; set; }
+
+        public List<string> Urls { get; set; }
+
+        public string ClientAddress { get; set; }
+
+        public List<Permission> Children { get; set; } = new();
+
+        public List<Action> Actions { get; set; } = new();
+    }
+
+    public class Action
+    {
+        public string Id { get; set; }
+
+        public string Title { get; set; }
+
+        public string ClientAddress { get; set; }
+
+        public List<string> Urls { get; set; }
     }
 
 }

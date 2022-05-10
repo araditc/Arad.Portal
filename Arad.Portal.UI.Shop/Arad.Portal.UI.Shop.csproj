@@ -19,6 +19,8 @@
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0">
       <TreatAsUsed>true</TreatAsUsed>
     </PackageReference>
+    <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta11" />
   </ItemGroup>
 

@@ -13,6 +13,7 @@ using Arad.Portal.DataLayer.Entities.General.User;
 using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
+using Serilog;
 
 namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
 {
@@ -85,7 +86,15 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
 
         public void InsertOne(Entities.General.BasicData.BasicData entity)
         {
-            _context.Collection.InsertOne(entity);
+            try
+            {
+                _context.Collection.InsertOne(entity);
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex.ToString());
+            }
+            
         }
 
         public bool SaveLastId(long id)
