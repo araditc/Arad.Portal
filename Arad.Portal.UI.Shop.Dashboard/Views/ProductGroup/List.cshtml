@@ -70,12 +70,9 @@
             </div>
             <div class="col-md-3 offset-md-6">
                 <div class="card-tools float-end">
-                    @if (ViewBag.Permissions["Add"])
-                    {
                         <a asp-action="AddEdit" asp-controller="ProductGroup" class="btn btn-success bg-gradient btn-sm">
                             <i  class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_Add")
                         </a>
-                    }
                 </div>
             </div>
         </div>
@@ -111,19 +108,17 @@
                             <td class="ListCell">@item.MultiLingualProperty.LanguageName</td>
                             <td class="ListCell">@item.MultiLingualProperty.CurrencyName</td>
                             <td>
-                                @if (ViewBag.Permissions["Edit"])
-                                {
+                              
                                     <a asp-action="AddEdit" asp-controller="ProductGroup" asp-route-id="@item.ProductGroupId" class="btn btn-sm btn-warning bg-gradient">
                                         <i  class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                                     </a>
-                                }
-                                @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
+                                @if (!item.IsDeleted)
                                 {
                                     <button onclick="EntityDelete('@item.ProductGroupId')" class="btn btn-sm btn-danger bg-gradient">
                                         <i  class="fa fa-trash"></i>@Language.GetString("btn_Delete")
                                     </button>
                                 }
-                                @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
+                                @if (item.IsDeleted)
                                 {
                                     <button id="restoreRecord" data-id="@item.ProductGroupId" onclick="EntityRestore('@item.ProductGroupId')" class="btn btn-sm btn-secondary bg-gradient">
                                         <i class="fa fa-refresh"></i>

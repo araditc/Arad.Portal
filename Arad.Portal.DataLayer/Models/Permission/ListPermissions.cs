@@ -14,7 +14,7 @@ namespace Arad.Portal.DataLayer.Models.Permission
         public bool IsSelected { get; set; }
         public bool IsActive { get; set; }
         public List<ListPermissions> Childrens { get; set; }
-        public PermissionType Type { get; set; }
+       // public PermissionType Type { get; set; }
         public double Priority { get; set; }
     }
 }

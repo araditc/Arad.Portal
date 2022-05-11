@@ -1,4 +1,7 @@
-﻿using Arad.Portal.DataLayer.Entities.General.Role;
+﻿using Arad.Portal.DataLayer.Contracts.General.Permission;
+using Arad.Portal.DataLayer.Contracts.General.Role;
+using Arad.Portal.DataLayer.Entities.General.Permission;
+using Arad.Portal.DataLayer.Entities.General.Role;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Repositories.General.Permission.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Role.Mongo;
@@ -18,21 +21,19 @@ namespace Arad.Portal.UI.Shop.Authorization
 {
     public class RoleHandler : AuthorizationHandler<RoleRequirement>
     {
-        private readonly IHttpContextAccessor _accessor;
-        private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IRoleRepository _roleRepository;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleContext _roleContext;
-        private readonly PermissionContext _permissionContext;
+        private readonly IPermissionRepository _permissionRepository;
 
-        public RoleHandler(IHttpContextAccessor accessor,
-            IConfiguration configuration, UserManager<ApplicationUser> userManager,
-            RoleContext roleContext, PermissionContext permissionContext)
+        public RoleHandler(UserManager<ApplicationUser> userManager,
+            IPermissionRepository permissionRepository,
+            IRoleRepository roleRepository, IHttpContextAccessor httpContextAccessor)
         {
-            _accessor = accessor;
-            _configuration = configuration;
             _userManager = userManager;
-            _roleContext = roleContext;
-            _permissionContext = permissionContext;
+            _permissionRepository = permissionRepository;
+            _roleRepository = roleRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
@@ -40,16 +41,13 @@ namespace Arad.Portal.UI.Shop.Authorization
         {
             try
             {
-                var accessor = _accessor.HttpContext.GetRouteData();
+                RouteData route = _httpContextAccessor.HttpContext?.GetRouteData();
 
-                if (accessor == null)
+                if (route == null)
                 {
                     context.Fail();
                     return Task.CompletedTask;
                 }
-
-                var controller = accessor.Values["controller"].ToString();
-                var action = accessor.Values["action"].ToString();
 
                 string userId = context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
                 if (string.IsNullOrEmpty(userId))
@@ -59,42 +57,26 @@ namespace Arad.Portal.UI.Shop.Authorization
                 }
 
                 var user = _userManager.FindByIdAsync(userId).Result;
-                if (user == null)
+
+                if (user == null || !user.IsActive)
                 {
                     context.Fail();
                     return Task.CompletedTask;
                 }
-
-                if (!user.IsActive)
-                {
-                    context.Fail();
-                    return Task.CompletedTask;
-                }
-
+                else
                 if (user.IsSystemAccount)
                 {
                     context.Succeed(requirement);
                     return Task.CompletedTask;
                 }
 
-                string address = $"{controller}/{action}".ToLower();
+                string path = $"{route?.Values["controller"]}/{route?.Values["action"]}".ToLower();
 
 
-                Role userRoleEntity = _roleContext.Collection.Find(_ => _.RoleId == user.UserRoleId).FirstOrDefault();
+                var roleDto = _roleRepository.FetchRole(user.UserRoleId).Result;
+                List<Permission> roots = _permissionRepository.GetAllListViewCustom().Result;
 
-
-                var permissions = _permissionContext.Collection.AsQueryable().Where(p => p.IsActive).ToList();
-                List<DataLayer.Entities.General.Permission.Permission> permissionList = new();
-                var toLowerRoutesPers = new List<string>();
-
-                permissionList = _permissionContext.Collection.AsQueryable()
-                        .Where(_ => _.IsActive && userRoleEntity.PermissionIds.Contains(_.PermissionId)).ToList();
-
-                toLowerRoutesPers = permissionList.SelectMany(_ => _.Routes).ToList();
-
-                //string ch = toLowerRoutesPers.FirstOrDefault(w => w == address);
-
-                if (!toLowerRoutesPers.Any(_ => _.ToLower() == address))
+                if (!CheckAccess(roots))
                 {
                     context.Fail();
                     return Task.CompletedTask;
@@ -102,6 +84,31 @@ namespace Arad.Portal.UI.Shop.Authorization
 
                 context.Succeed(requirement);
                 return Task.CompletedTask;
+
+                bool CheckAccess(List<Permission> permissions)
+                {
+                    foreach (Permission permission in permissions)
+                    {
+                        List<string> accessUrl = new() { permission.ClientAddress.ToLower() };
+                        if (permission.Urls != null)
+                        {
+                            accessUrl.AddRange(permission.Urls.Select(u => u.ToLower()));
+                        }
+
+                        foreach (DataLayer.Entities.General.Permission.Action permissionAction in permission.Actions)
+                        {
+                            accessUrl.Add(permissionAction.ClientAddress.ToLower());
+                            accessUrl.AddRange(permissionAction.Urls.Select(u => u.ToLower()));
+                        }
+
+                        if (roleDto.PermissionIds.Any(r => r.Equals(permission.PermissionId)) && accessUrl.Any(r => r.Equals(path)))
+                        {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }
             }
             catch (Exception e)
             {

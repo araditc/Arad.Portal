@@ -54,7 +54,7 @@
     </style>
 
     <link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
-    <link href="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.css" rel="stylesheet" />
+   @* <link href="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.css" rel="stylesheet" />*@
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
         <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
@@ -313,13 +313,54 @@
                                         <label class="form-label">@Language.GetString("ProductSpecs")</label>
                                         <textarea id="editorCk" name="editorCk" class="form-control" rows="30"></textarea>
 
-                                        <script src="~/lib/ckeditor/ckeditor.js"></script>
+                                       @* <script src="~/lib/ckeditor/ckeditor.js"></script>*@
+                                         <script src="~/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js"></script>
                                         <script>
-                                                var config = {
-                                                    filebrowserImageUploadUrl: 'Image/ProductFileUpload',
-                                                    language: '@lan'
-                                                }
-                                                CKEDITOR.replace("editorCk", config);
+                                                //var config = {
+                                                //    filebrowserImageUploadUrl: 'Image/ProductFileUpload',
+                                                //    language: '@lan'
+                                                //}
+                                                //CKEDITOR.replace("editorCk", config);
+                                                var config =
+                                                {
+                                                height: 300,
+                                                filebrowserUploadUrl: '/Image/ProductImageUpload',
+                                               // filebrowserBrowseUrl: '/Image/ContentFileBrows',
+                                                language: '@lan',
+                                                scayt_sLang: '@lan',
+                                                allowedContent: true,
+                                                toolbarGroups: [
+                                                    { name: 'clipboard', groups: ['clipboard', 'undo'] },
+                                                    { name: 'editing', groups: ['find', 'selection', 'spellchecker'] },
+                                                    { name: 'links' },
+                                                    { name: 'insert' },
+                                                    { name: 'forms' },
+                                                    { name: 'tools' },
+                                                    { name: 'document', groups: ['mode', 'document', 'doctools'] },
+                                                    { name: 'others' },
+                                                    '/',
+                                                    { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+                                                    { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi'] },
+                                                    { name: 'styles' },
+                                                    { name: 'colors' },
+                                                    { name: 'about' }
+                                                ]
+                                            };
+                                            config.font_names =
+                                                'Arial/Arial, Helvetica, sans-serif;' +
+                                                'Times New Roman/Times New Roman, Times, serif;' +
+                                                'Verdana;' +
+                                                'IRANSansWeb;' +
+                                                'WeblogmaYekan;' +
+                                                'Vazir;' +
+                                                'Shabnam';
+
+                                            config.extraPlugins = '';
+
+                                            var editor = document.getElementById("editorCk");
+                                            CKEDITOR.replace(editor, config);
+                                            CKEDITOR.dtd.$removeEmpty['i'] = false;
+                                            CKEDITOR.dtd.$removeEmpty['span'] = false;
                                         </script>
                                     </div>
                                 </div>

@@ -171,15 +171,33 @@
 	<string key="PermissionTitle_Users">
 		<value>Users</value>
 	</string>
-  <string key="PermissionTitle_UserDetails">
-    <value>User detail</value>
+  <string key="PermissionTitle_UserEdit">
+    <value>User Edit</value>
   </string>
 	<string key="PermissionTitle_AddUser">
 		<value>Add User</value>
 	</string>
-  <string key="PermissionTitle_RoleDetails">
-    <value>Role Details</value>
+  <string key="PermissionTitle_RoleAdd">
+    <value>Role Add</value>
   </string>
+	<string key="PermissionTitle_RoleEdit">
+		<value>Role Edit</value>
+	</string>
+	<string key="PermissionTitle_ActionDelete">
+		<value>Action Delete</value>
+	</string>
+	<string key="PermissionTitle_ActionNew">
+		<value>Action New</value>
+	</string>
+	<string key="PermissionTitle_ActionEdit">
+		<value>Action Edit</value>
+	</string>
+	<string key="PermissionTitle_ActionRestore">
+		<value>Action Restore</value>
+	</string>
+	<string key="PermissionTitle_ChangeActivation">
+		<value>Change Activation State</value>
+	</string>
  
 	<string key="PermissionTitle_EditUser">
 		<value>Edit User</value>

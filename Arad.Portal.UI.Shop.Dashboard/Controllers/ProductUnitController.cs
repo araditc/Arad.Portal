@@ -19,14 +19,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
     public class ProductUnitController : Controller
     {
         private readonly IProductUnitRepository _unitRepository;
-        private readonly IPermissionView _permissionViewManager;
         private readonly ILanguageRepository _lanRepository;
         //private readonly UserExtensions _userExtensions;
         public ProductUnitController(IProductUnitRepository unitRepository,
-            IPermissionView permissionView, ILanguageRepository lanRepository)
+            ILanguageRepository lanRepository)
         {
             _unitRepository = unitRepository;
-            _permissionViewManager = permissionView;
             _lanRepository = lanRepository;
         }
 
@@ -34,8 +32,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> List()
         {
-            var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
-            ViewBag.Permissions = dicKey;
+           
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
             ViewBag.LangId = lan.LanguageId;

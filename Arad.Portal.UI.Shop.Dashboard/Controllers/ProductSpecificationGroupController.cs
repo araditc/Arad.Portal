@@ -19,14 +19,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
     public class ProductSpecificationGroupController : Controller
     {
         private readonly IProductSpecGroupRepository _productSpecGrpRepository;
-        private readonly IPermissionView _permissionViewManager;
+        
         private readonly ILanguageRepository _lanRepository;
         private readonly ICurrencyRepository _currencyRepository;
         public ProductSpecificationGroupController(IProductSpecGroupRepository productSpecGroupRepository,
-            IPermissionView permissionView, ILanguageRepository lanRepository, ICurrencyRepository currencyRepository)
+            ILanguageRepository lanRepository, ICurrencyRepository currencyRepository)
         {
             _productSpecGrpRepository = productSpecGroupRepository;
-            _permissionViewManager = permissionView;
             _lanRepository = lanRepository;
             _currencyRepository = currencyRepository;
         }
@@ -35,9 +34,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> List()
         {
             PagedItems<SpecificationGroupViewModel> list = new PagedItems<SpecificationGroupViewModel>();
-            var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            ViewBag.Permissions = dicKey;
+            
             try
             {
                 list = await _productSpecGrpRepository.List(Request.QueryString.ToString());

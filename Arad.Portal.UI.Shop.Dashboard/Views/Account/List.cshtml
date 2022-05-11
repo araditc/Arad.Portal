@@ -103,12 +103,9 @@
             </div>
             <div class="col-md-3 offset-md-6">
                 <div class="card-tools float-end">
-                    @if (ViewBag.Permissions["Add"])
-                    {
                         <a asp-action="AddUser" asp-controller="Account" class="btn btn-success bg-gradient btn-sm">
                             <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_Add")
                         </a>
-                    }
                 </div>
             </div>
         </div>
@@ -152,15 +149,12 @@
                                 }
                             </td>
                             <td class="ListCell">
-                                @if (ViewBag.Permissions["Edit"])
-                                {
+                               
                                     <a id="editRecord" asp-action="EditUser" asp-controller="Account" asp-route-id="@item.Id" class="btn btn-sm btn-warning bg-gradient">
                                         @Language.GetString("btn_Edit")
                                     </a>
-                                }
-
-
-                                @if (ViewBag.Permissions["Remove"] && item.IsDelete)
+                               
+                                @if (item.IsDelete)
                                 {
                                     <button id="restoreRecord" data-id="@item.Id" onclick="restoreUser('@item.Id')" class="btn btn-sm btn-secondary bg-gradient">
                                         @Language.GetString("btn_Restore")

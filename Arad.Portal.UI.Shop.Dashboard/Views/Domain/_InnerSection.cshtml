@@ -41,48 +41,46 @@
         <script>
      
                editorId = `editor_${'@Model.ColNumber'}_${'@ViewBag.RowNumber'}`;
-                //var config = {
-                //    filebrowserImageUploadUrl: 'Image/content-file-upload',
-                //    language: '@lan'
-                //}
-                 var config = {
-                height: 300,
-                filebrowserImageUploadUrl: 'Image/content-file-upload',
-                language: 'en',
-                scayt_sLang: 'en',
-                //font_names: 'IRANSansWeb,WeblogmaYekan,Vazir,Shabnam',
-                allowedContent: true,
-                toolbarGroups: [
-                    { name: 'clipboard', groups: ['clipboard', 'undo'] },
-                    { name: 'editing', groups: ['find', 'selection', 'spellchecker'] },
-                    { name: 'links' },
-                    { name: 'insert' },
-                    { name: 'forms' },
-                    { name: 'tools' },
-                    { name: 'document', groups: ['mode', 'document', 'doctools'] },
-                    { name: 'others' },
-                    '/',
-                    { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
-                    { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi'] },
-                    { name: 'styles' },
-                    { name: 'colors' },
-                    { name: 'about' }
-                ]
-            };
-            
-            config.font_names =
-            'Arial/Arial, Helvetica, sans-serif;' +
-            'Times New Roman/Times New Roman, Times, serif;' +
-            'Verdana;' +
-            'IRANSansWeb;' +
-            'WeblogmaYekan;' +
-            'Vazir;' +
-            'Shabnam';
-            //config.extraPlugins = 'image2';
-            
-            CKEDITOR.replace(editorId, config);
-            CKEDITOR.dtd.$removeEmpty['i'] = false;
-            CKEDITOR.dtd.$removeEmpty['span'] = false;
+               var config =
+                                                {
+                                                height: 300,
+                                                filebrowserUploadUrl: '/Image/DomainImageUpload',
+                                               // filebrowserBrowseUrl: '/Image/ContentFileBrows',
+                                                language: '@lan',
+                                                scayt_sLang: '@lan',
+                                                allowedContent: true,
+                                                toolbarGroups: [
+                                                    { name: 'clipboard', groups: ['clipboard', 'undo'] },
+                                                    { name: 'editing', groups: ['find', 'selection', 'spellchecker'] },
+                                                    { name: 'links' },
+                                                    { name: 'insert' },
+                                                    { name: 'forms' },
+                                                    { name: 'tools' },
+                                                    { name: 'document', groups: ['mode', 'document', 'doctools'] },
+                                                    { name: 'others' },
+                                                    '/',
+                                                    { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+                                                    { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi'] },
+                                                    { name: 'styles' },
+                                                    { name: 'colors' },
+                                                    { name: 'about' }
+                                                ]
+                                            };
+                                            config.font_names =
+                                                'Arial/Arial, Helvetica, sans-serif;' +
+                                                'Times New Roman/Times New Roman, Times, serif;' +
+                                                'Verdana;' +
+                                                'IRANSansWeb;' +
+                                                'WeblogmaYekan;' +
+                                                'Vazir;' +
+                                                'Shabnam';
+
+                                            config.extraPlugins = '';
+
+                                            //var editor = document.getElementById("editorCk");
+                                            CKEDITOR.replace(editorId, config);
+                                            CKEDITOR.dtd.$removeEmpty['i'] = false;
+                                            CKEDITOR.dtd.$removeEmpty['span'] = false;
         </script>
 
          <button  class="btn btn-success bg-gradient btn-sm float-end btnHtmlSanitizer m-1" onclick="sinitize(this);" editorid ='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")' cn ="@Model.ColNumber" rn="@ViewBag.RowNumber" sec = "@Model.Section"

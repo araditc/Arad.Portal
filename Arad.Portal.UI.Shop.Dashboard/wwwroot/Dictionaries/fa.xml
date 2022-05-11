@@ -174,14 +174,32 @@
 		<value>کاربران</value>
 	</string>
   <string key="PermissionTitle_UserDetails">
-    <value>جرییات کاربران</value>
+    <value>ویرایش کاربران</value>
   </string>
 	<string key="PermissionTitle_AddUser">
 		<value>افزودن کاربر</value>
 	</string>
-  <string key="PermissionTitle_RoleDetails">
-    <value>جزییات نقش</value>
-  </string>
+	<string key="PermissionTitle_RoleAdd">
+		<value>افزودن نقش</value>
+	</string>
+	<string key="PermissionTitle_RoleEdit">
+		<value>ویرایش نقش</value>
+	</string>
+	<string key="PermissionTitle_ActionDelete">
+		<value>عملیات حذف</value>
+	</string>
+	<string key="PermissionTitle_ActionNew">
+		<value>عملیات ثبت</value>
+	</string>
+	<string key="PermissionTitle_ActionEdit">
+		<value>عملیات ویرایش</value>
+	</string>
+	<string key="PermissionTitle_ActionRestore">
+		<value>عملیات بازگردانی</value>
+	</string>
+	<string key="PermissionTitle_ChangeActivation">
+		<value>تغییر وضعیت فعال بودن</value>
+	</string>
 	<string key="PermissionTitle_EditUser">
 		<value>ویرایش کاربر</value>
 	</string>

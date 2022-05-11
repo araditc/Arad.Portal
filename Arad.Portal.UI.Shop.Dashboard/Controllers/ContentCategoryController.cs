@@ -20,16 +20,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
     public class ContentCategoryController : Controller
     {
         private readonly IContentCategoryRepository _contentCategoryRepository;
-        private readonly IPermissionView _permissionViewManager;
         private readonly ILanguageRepository _lanRepository;
         private readonly CodeGenerator _codeGenerator;
        
         public ContentCategoryController(IContentCategoryRepository contentCategoryRepository,
             CodeGenerator codeGenerator,
-            IPermissionView permissionView, ILanguageRepository lanRepository)
+            ILanguageRepository lanRepository)
         {
             _contentCategoryRepository = contentCategoryRepository;
-            _permissionViewManager = permissionView;
             _lanRepository = lanRepository;
             _codeGenerator = codeGenerator;
         }
@@ -38,9 +36,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> List()
         {
             PagedItems<ContentCategoryViewModel> result = new PagedItems<ContentCategoryViewModel>();
-            var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            ViewBag.Permissions = dicKey;
             try
             {
                 result = await _contentCategoryRepository.List(Request.QueryString.ToString());

@@ -77,12 +77,11 @@
             </div>
             <div class="col-md-3 offset-md-6">
                 <div class="card-tools float-end">
-                    @if (ViewBag.Permissions["Add"])
-                    {
+                   
                         <a asp-action="AddEdit" asp-controller="Menu" class="btn btn-success bg-gradient btn-sm">
                             <i  class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_Add")
                         </a>
-                    }
+                  
                 </div>
             </div>
         </div>
@@ -121,13 +120,12 @@
                             <td class="ListCell">@item.SubGroupName</td>
                             <td class="ListCell">@item.SubName</td>
                             <td>
-                                @if (ViewBag.Permissions["Edit"])
-                                {
+                                
                                     <a asp-action="AddEdit" asp-controller="Menu" asp-route-id="@item.MenuId" class="btn btn-sm btn-warning bg-gradient">
                                         <i  class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                                     </a>
-                                }
-                                @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
+                               
+                                @if (!item.IsDeleted)
                                 {
                                     <button onclick="EntityDelete('@item.MenuId')" class="btn btn-sm btn-danger bg-gradient">
                                         <i  class="fa fa-trash"></i>@Language.GetString("btn_Delete")

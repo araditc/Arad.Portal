@@ -59,12 +59,11 @@
             </div>
             <div class="col-md-3 offset-md-6">
                 <div class="card-tools float-end">
-                    @if (ViewBag.Permissions["Add"])
-                    {
+                    
                         <a asp-action="AddEdit" asp-controller="ContentCategory" class="btn btn-success btn-sm bg-gradient">
                             <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_Add")
                         </a>
-                    }
+                    
                 </div>
             </div>
         </div>
@@ -93,19 +92,18 @@
                             <td class="ListCell">@item.CategoryName.LanguageName</td>
                             <td class="ListCell">@item.CategoryType</td>
                             <td>
-                                @if (ViewBag.Permissions["Edit"])
-                                {
+                                
                                     <a asp-action="AddEdit" asp-controller="ContentCategory" asp-route-id="@item.ContentCategoryId" class="btn btn-sm btn-warning bg-gradient">
                                         <i  class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                                     </a>
-                                }
-                                @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
+                               
+                                @if (!item.IsDeleted)
                                 {
                                     <button onclick="EntityDelete('@item.ContentCategoryId')" class="btn btn-sm btn-danger bg-gradient">
                                         <i  class="fa fa-trash"></i>@Language.GetString("btn_Delete")
                                     </button>
                                 }
-                                @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
+                                @if (item.IsDeleted)
                                 {
                                     <button id="restoreRecord" data-id="@item.ContentCategoryId" onclick="EntityRestore('@item.ContentCategoryId')" class="btn btn-sm btn-primary bg-gradient">
                                         <i  class="fa fa-refresh"></i>

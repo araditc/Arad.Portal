@@ -33,7 +33,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IContentRepository _contentRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IContentCategoryRepository _contentCategoryRepository;
-        private readonly IPermissionView _permissionViewManager;
+       
         private readonly ILanguageRepository _lanRepository;
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -41,7 +41,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly string imageSize = "";
         private readonly CodeGenerator _codeGenerator;
         public ContentController(IContentRepository contentRepository, IWebHostEnvironment webHostEnvironment,
-                                    IContentCategoryRepository contentCategoryRepository, IPermissionView permissionView,
+                                    IContentCategoryRepository contentCategoryRepository,
                                     ILanguageRepository languageRepository, UserManager<ApplicationUser> userManager,
                                     CodeGenerator codeGenerator,
                                     IHttpContextAccessor accessor, IConfiguration configuration)
@@ -49,7 +49,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _contentRepository = contentRepository;
             _webHostEnvironment = webHostEnvironment;
             _contentCategoryRepository = contentCategoryRepository;
-            _permissionViewManager = permissionView;
             _lanRepository = languageRepository;
             _userManager = userManager;
             _configuration = configuration;
@@ -61,8 +60,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> List()
         {
             PagedItems<ContentViewModel> result = new PagedItems<ContentViewModel>();
-            var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
-            ViewBag.Permissions = dicKey;
+           
             try
             {
                 result = await _contentRepository.List(Request.QueryString.ToString());

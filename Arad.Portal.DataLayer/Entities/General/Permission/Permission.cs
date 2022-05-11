@@ -11,6 +11,11 @@ namespace Arad.Portal.DataLayer.Entities.General.Permission
 {
     public class Permission : BaseEntity
     {
+        public Permission()
+        {
+            Children = new();
+            Actions = new();
+        }
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string PermissionId { get; set; }
@@ -40,9 +45,9 @@ namespace Arad.Portal.DataLayer.Entities.General.Permission
 
         public string ClientAddress { get; set; }
 
-        public List<Permission> Children { get; set; } = new();
+        public List<Permission> Children { get; set; } 
 
-        public List<Action> Actions { get; set; } = new();
+        public List<Action> Actions { get; set; }
     }
 
     public class Action

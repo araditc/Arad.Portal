@@ -27,17 +27,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
     {
         private readonly ICommentRepository _commentRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly IPermissionView _permissionViewManager;
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         public CommentController(ICommentRepository commentRepository, IWebHostEnvironment webHostEnvironment, 
-            IPermissionView permissionView, IConfiguration configuration,
+            IConfiguration configuration,
             UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContextAccessor)
         {
             _commentRepository = commentRepository;
             _webHostEnvironment = webHostEnvironment;
-            _permissionViewManager = permissionView;
             _configuration = configuration;
             _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
@@ -45,9 +43,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> List()
         {
             PagedItems<CommentViewModel> result = new PagedItems<CommentViewModel>();
-            var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
             var referenceSource = Request.Path.ToString().Split("/")[1];
-            ViewBag.Permissions = dicKey;
+           
 
             if (referenceSource == "ProductComments")
             {

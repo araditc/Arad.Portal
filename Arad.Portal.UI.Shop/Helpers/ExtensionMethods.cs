@@ -133,7 +133,7 @@ namespace Arad.Portal.UI.Shop.Helpers
                         IsDefault = true,
                         Server = "https://mail.arad-itc.org/",
                         SMTPAuthPassword = "Sa15861136664",
-                        SMTPAuthUsername = "azizi",
+                        SMTPAuthUsername = "azizi@arad-itc.org",
                         ServerPort = 465
                     }
                 };

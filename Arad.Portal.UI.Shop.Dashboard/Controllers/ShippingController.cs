@@ -29,7 +29,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IProviderRepository _providerRepository;
         private readonly IShippingSettingRepository _shippingSettingRepository;
         private readonly IDomainRepository _domainRepository;
-        private readonly IPermissionView _permissionViewManager;
         private readonly ICurrencyRepository _currencyRepository;
         public ShippingController(IHttpContextAccessor accessor,
             IShippingSettingRepository shippingSettingRepository,
@@ -37,7 +36,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             IDomainRepository domainRepository,
             IProviderRepository providerRepository,
             ICurrencyRepository currencyRepository,
-            IPermissionView permissionViewManager,
             IBasicDataRepository basicDataRepository)
         {
             _shippingSettingRepository = shippingSettingRepository;
@@ -46,7 +44,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _domainRepository = domainRepository;
             _providerRepository = providerRepository;
             _currencyRepository = currencyRepository;
-            _permissionViewManager = permissionViewManager;
             _accessor = accessor;
         }
         public async Task<IActionResult> List()
@@ -54,8 +51,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             PagedItems<ShippingSettingDTO> result;
             try
             {
-                var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
-                ViewBag.Permissions = dicKey;
+                //var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
+                //ViewBag.Permissions = dicKey;
                 result = await _shippingSettingRepository.List(this.Request.QueryString.ToString());
                 foreach (var item in result.Items)
                 {

@@ -14,7 +14,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public bool Checked { get; set; }
 
         public bool isActive { get; set; }
-        public PermissionType type { get; set; }
+        //public PermissionType type { get; set; }
         public double priority { get; set; }
         public List<TreeviewModel> children { get; set; }
     }

@@ -94,36 +94,6 @@ namespace Arad.Portal.DataLayer.Models.Shared
             Error,
             Sending
         }
-  
-
-        public enum PermissionType
-        {
-            Module = 0,
-            Menu = 1,
-            BaseMenu = 2
-        }
-
-        /// <summary>
-        /// PermissionViewKey
-        /// </summary>
-        public enum PermissionMethod
-        {
-            [CustomDescription("EnumDesc_List")]
-            List = 0,
-            [CustomDescription("EnumDesc_Add")]
-            Add = 1,
-            [CustomDescription("EnumDesc_Remove")]
-            Remove = 2,
-            [CustomDescription("EnumDesc_Edit")]
-            Edit = 3,
-            [CustomDescription("EnumDesc_Password")]
-            Password = 4,
-            [CustomDescription("EnumDesc_Active")]
-            Active = 5,
-            [CustomDescription("EnumDesc_Dependency")]
-            Dependency = 6,
-            [CustomDescription("EnumDesc_Details")]
-            Details = 7,
-        }
+        
     }
 }

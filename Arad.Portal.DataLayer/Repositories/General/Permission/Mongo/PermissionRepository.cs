@@ -151,9 +151,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
                         Id = _.PermissionId,
                         ClientAddress = _.ClientAddress,
                         Title = _.Title,
-                        Type = _.Type,
-                        Method = _.Method,
-                        Routes =_.Routes.Count != 0 ?  string.Join(",", _.Routes) : "",
+                        //Type = _.Type,
+                        //Method = _.Method,
+                        //Routes =_.Routes.Count != 0 ?  string.Join(",", _.Routes) : "",
                         CreationDate = _.CreationDate,
                         CreatorName = _.CreatorUserName,
                         HasModification = _.Modifications != null && _.Modifications.Any(),
@@ -181,53 +181,53 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
         {
             var result = new List<MenuLinkModel>();
             //address = address.Length > 1 ? address.Substring(1, address.Length) : address;
-            try
-            {
-                var user = await _userManager.FindByIdAsync(currentUserId);
+            //try
+            //{
+            //    var user = await _userManager.FindByIdAsync(currentUserId);
 
-                if (user.IsSystemAccount)
-                {
-                    var query = _context.Collection.AsQueryable();
-                    var allBaseMenues = query.Where(p => p.Type == Enums.PermissionType.BaseMenu).ToList();
-                    var allMenues = query.Where(p => p.Type == Enums.PermissionType.Menu).ToList();
+            //    if (user.IsSystemAccount)
+            //    {
+            //        var query = _context.Collection.AsQueryable();
+            //        //var allBaseMenues = query.Where(p => p.Type == Enums.PermissionType.BaseMenu).ToList();
+            //        //var allMenues = query.Where(p => p.Type == Enums.PermissionType.Menu).ToList();
 
 
-                    result = allBaseMenues.Select(_ => new MenuLinkModel()
-                    {
-                        MenuId = _.PermissionId,
-                        MenuTitle = GeneralLibrary.Utilities.Language.GetString("PermissionTitle_" + _.Title),
-                        Icon = _.Icon,
-                        Link = _.ClientAddress,
-                        Priority = _.Priority,
-                        IsActive = (!string.IsNullOrWhiteSpace(_.ClientAddress)  && _.ClientAddress.Contains(address)) || (_.ClientAddress == "" 
-                        && _.Routes.Contains(address)),
-                        Children = GetChildren(allMenues, _.PermissionId, address, domain)
-                    }).ToList().OrderBy(_ => _.Priority).ToList();
-                }
-                else
-                {
-                    var pers = _userRepository.GetPermissionsOfUser(user);
-                    var baseMenues = pers.Where(p => p.Type == Enums.PermissionType.BaseMenu).ToList();
+            //        result = allBaseMenues.Select(_ => new MenuLinkModel()
+            //        {
+            //            MenuId = _.PermissionId,
+            //            MenuTitle = GeneralLibrary.Utilities.Language.GetString("PermissionTitle_" + _.Title),
+            //            Icon = _.Icon,
+            //            Link = _.ClientAddress,
+            //            Priority = _.Priority,
+            //            IsActive = (!string.IsNullOrWhiteSpace(_.ClientAddress)  && _.ClientAddress.Contains(address)) || (_.ClientAddress == "" 
+            //            && _.Routes.Contains(address)),
+            //            Children = GetChildren(allMenues, _.PermissionId, address, domain)
+            //        }).ToList().OrderBy(_ => _.Priority).ToList();
+            //    }
+            //    else
+            //    {
+            //        var pers = _userRepository.GetPermissionsOfUser(user);
+            //        var baseMenues = pers.Where(p => p.Type == Enums.PermissionType.BaseMenu).ToList();
 
-                    var menues = pers.Where(p => p.Type == Enums.PermissionType.Menu).ToList();
+            //        var menues = pers.Where(p => p.Type == Enums.PermissionType.Menu).ToList();
 
-                    result = baseMenues.Select(_ => new MenuLinkModel()
-                    {
-                        MenuId = _.PermissionId,
-                        MenuTitle = GeneralLibrary.Utilities.Language.GetString("PermissionTitle_" + _.Title),
-                        Icon = _.Icon,
-                        Link = _.ClientAddress,
-                        Priority = _.Priority,
-                        IsActive = (!string.IsNullOrWhiteSpace(_.ClientAddress) && _.ClientAddress.Contains(address)) || (_.ClientAddress == "" 
-                        && _.Routes.Contains(address)),
-                        Children = GetChildren(menues, _.PermissionId, address, domain)
-                    }).OrderBy(o => o.Priority).ToList();
-                }
-            }
-            catch (Exception)
-            {
+            //        result = baseMenues.Select(_ => new MenuLinkModel()
+            //        {
+            //            MenuId = _.PermissionId,
+            //            MenuTitle = GeneralLibrary.Utilities.Language.GetString("PermissionTitle_" + _.Title),
+            //            Icon = _.Icon,
+            //            Link = _.ClientAddress,
+            //            Priority = _.Priority,
+            //            IsActive = (!string.IsNullOrWhiteSpace(_.ClientAddress) && _.ClientAddress.Contains(address)) || (_.ClientAddress == "" 
+            //            && _.Routes.Contains(address)),
+            //            Children = GetChildren(menues, _.PermissionId, address, domain)
+            //        }).OrderBy(o => o.Priority).ToList();
+            //    }
+            //}
+            //catch (Exception)
+            //{
 
-            }
+            //}
             return result;
         }
 
@@ -235,20 +235,20 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
            string permissionId, string address, string domain)
         {
             var result = new List<MenuLinkModel>();
-            if (context.Any(_ => _.ParentMenuId == permissionId))
-            {
-                result = context.Where(_ => _.ParentMenuId == permissionId)
-                    .Select(_ => new MenuLinkModel()
-                {
-                    Icon = _.Icon,
-                    IsActive = !string.IsNullOrWhiteSpace(_.ClientAddress) && _.ClientAddress.Equals(address),
-                    Link = _.ClientAddress,
-                    MenuTitle = GeneralLibrary.Utilities.Language.GetString("PermissionTitle_" + _.Title),
-                    MenuId = _.PermissionId,
-                    Priority = _.Priority,
-                    Children = GetChildren(context, _.PermissionId, address, domain)
-                }).ToList();
-            }
+            //if (context.Any(_ => _.ParentMenuId == permissionId))
+            //{
+            //    result = context.Where(_ => _.ParentMenuId == permissionId)
+            //        .Select(_ => new MenuLinkModel()
+            //    {
+            //        Icon = _.Icon,
+            //        IsActive = !string.IsNullOrWhiteSpace(_.ClientAddress) && _.ClientAddress.Equals(address),
+            //        Link = _.ClientAddress,
+            //        MenuTitle = GeneralLibrary.Utilities.Language.GetString("PermissionTitle_" + _.Title),
+            //        MenuId = _.PermissionId,
+            //        Priority = _.Priority,
+            //        Children = GetChildren(context, _.PermissionId, address, domain)
+            //    }).ToList();
+            //}
 
             return result;
             
@@ -368,29 +368,29 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
             return result;
         }
 
-        public async Task<Result<string>> GetPermissionType(string permissionId)
-        {
-            var result = new Result<string>();
-           if (!string.IsNullOrWhiteSpace(permissionId))
-            {
-                var per = await _context.Collection
-                    .Find(_ => _.PermissionId == permissionId).FirstOrDefaultAsync();
+        //public async Task<Result<string>> GetPermissionType(string permissionId)
+        //{
+        //    var result = new Result<string>();
+        //   if (!string.IsNullOrWhiteSpace(permissionId))
+        //    {
+        //        var per = await _context.Collection
+        //            .Find(_ => _.PermissionId == permissionId).FirstOrDefaultAsync();
 
-                if(per != null)
-                {
-                   result.ReturnValue =  per.Type.ToString();
-                   result.Message = ConstMessages.SuccessfullyDone;
-                   result.Succeeded = true;
-                }else
-                {
-                    result.Message = ConstMessages.ObjectNotFound;
-                }
-            }else
-            {
-                result.Message = ConstMessages.ObjectNotFound;
-            }
-            return result;
-        }
+        //        if(per != null)
+        //        {
+        //           result.ReturnValue =  per.Type.ToString();
+        //           result.Message = ConstMessages.SuccessfullyDone;
+        //           result.Succeeded = true;
+        //        }else
+        //        {
+        //            result.Message = ConstMessages.ObjectNotFound;
+        //        }
+        //    }else
+        //    {
+        //        result.Message = ConstMessages.ObjectNotFound;
+        //    }
+        //    return result;
+        //}
 
         public async Task<Entities.General.Permission.Permission> FetchPermission(string permissionId)
         {
@@ -428,77 +428,77 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
         public async Task<List<TreeviewModel>> ListPermissions(string currentUserId, string currentRoleId)
         { 
             var result = new List<TreeviewModel>();
-            try
-            {
-                RoleDTO role = new RoleDTO();
-                if(!string.IsNullOrWhiteSpace(currentRoleId))
-                {
-                   role = await _roleRepository.FetchRole(currentRoleId);
-                }
-                var user = await _userManager.FindByIdAsync(currentUserId);
-                if(user.IsSystemAccount)
-                {
-                    var query = _context.Collection.AsQueryable();
-                    var baseMenu = await query.Where(a => a.Type == Enums.PermissionType.BaseMenu).ToListAsync();
-                    var menuesAndModules = await query.Where(a => a.Type == Enums.PermissionType.Menu || a.Type == Enums.PermissionType.Module).ToListAsync();
-                    //var modules = await query.Where(a => a.Type == Enums.PermissionType.Module).ToListAsync();
-                    var list = baseMenu.OrderBy(_=>_.Priority).Select(d => new TreeviewModel()
-                    {
-                        id = d.PermissionId,
-                        text = GeneralLibrary.Utilities.Language.GetString($"PermissionTitle_{d.Title}"),
-                        type = d.Type,
-                        children = GetChildren(menuesAndModules, d.PermissionId, role).ToList(),
-                        Checked = !string.IsNullOrWhiteSpace(currentRoleId) && role.PermissionIds.Contains(d.PermissionId),
+            //try
+            //{
+            //    RoleDTO role = new RoleDTO();
+            //    if(!string.IsNullOrWhiteSpace(currentRoleId))
+            //    {
+            //       role = await _roleRepository.FetchRole(currentRoleId);
+            //    }
+            //    var user = await _userManager.FindByIdAsync(currentUserId);
+            //    if(user.IsSystemAccount)
+            //    {
+            //        var query = _context.Collection.AsQueryable();
+            //        var baseMenu = await query.Where(a => a.Type == Enums.PermissionType.BaseMenu).ToListAsync();
+            //        var menuesAndModules = await query.Where(a => a.Type == Enums.PermissionType.Menu || a.Type == Enums.PermissionType.Module).ToListAsync();
+            //        //var modules = await query.Where(a => a.Type == Enums.PermissionType.Module).ToListAsync();
+            //        var list = baseMenu.OrderBy(_=>_.Priority).Select(d => new TreeviewModel()
+            //        {
+            //            id = d.PermissionId,
+            //            text = GeneralLibrary.Utilities.Language.GetString($"PermissionTitle_{d.Title}"),
+            //            type = d.Type,
+            //            children = GetChildren(menuesAndModules, d.PermissionId, role).ToList(),
+            //            Checked = !string.IsNullOrWhiteSpace(currentRoleId) && role.PermissionIds.Contains(d.PermissionId),
 
-                        isActive = d.IsActive,
-                        priority = d.Priority
-                    }).ToList();
+            //            isActive = d.IsActive,
+            //            priority = d.Priority
+            //        }).ToList();
 
-                    result = list;
+            //        result = list;
                    
-                }
-                else
-                {
-                    var pers = _userRepository.GetPermissionsOfUser(user);
-                    var baseMenues = pers.Where(p => p.Type == Enums.PermissionType.BaseMenu).ToList();
-                    var menuesAndModules = pers.Where(p => p.Type == Enums.PermissionType.Menu || p.Type == Enums.PermissionType.Module).ToList();
-                    result = baseMenues.OrderBy(_=>_.Priority).Select(d => new TreeviewModel()
-                    {
-                        id = d.PermissionId,
-                        text = GeneralLibrary.Utilities.Language.GetString($"PermissionTitle_{d.Title}"),
-                        type = d.Type,
-                        children = GetChildren(menuesAndModules, d.PermissionId, role).ToList(),
-                        Checked = !string.IsNullOrWhiteSpace(currentRoleId) && role.PermissionIds.Contains(d.PermissionId),
+            //    }
+            //    else
+            //    {
+            //        var pers = _userRepository.GetPermissionsOfUser(user);
+            //        var baseMenues = pers.Where(p => p.Type == Enums.PermissionType.BaseMenu).ToList();
+            //        var menuesAndModules = pers.Where(p => p.Type == Enums.PermissionType.Menu || p.Type == Enums.PermissionType.Module).ToList();
+            //        result = baseMenues.OrderBy(_=>_.Priority).Select(d => new TreeviewModel()
+            //        {
+            //            id = d.PermissionId,
+            //            text = GeneralLibrary.Utilities.Language.GetString($"PermissionTitle_{d.Title}"),
+            //            type = d.Type,
+            //            children = GetChildren(menuesAndModules, d.PermissionId, role).ToList(),
+            //            Checked = !string.IsNullOrWhiteSpace(currentRoleId) && role.PermissionIds.Contains(d.PermissionId),
                        
-                        isActive = d.IsActive,
-                        priority = d.Priority
-                    }).ToList();
-                }
-            }
-            catch(Exception ex)
-            {
-            }
+            //            isActive = d.IsActive,
+            //            priority = d.Priority
+            //        }).ToList();
+            //    }
+            //}
+            //catch(Exception ex)
+            //{
+            //}
             return result;
         }
 
         public List<TreeviewModel> GetChildren(List<Entities.General.Permission.Permission> context, string parentId, RoleDTO? currentRole)
         {
             var result = new List<TreeviewModel>();
-            if (context.Any(_ => _.ParentMenuId == parentId))
-            {
-                result = context.OrderBy(_=>_.Priority).Where(_ => _.ParentMenuId == parentId)
-                    .Select(d => new TreeviewModel()
-                    {
-                        id = d.PermissionId,
-                        text = GeneralLibrary.Utilities.Language.GetString($"PermissionTitle_{d.Title}"),
-                        type = d.Type,
-                        children = GetChildren(context, d.PermissionId, currentRole).ToList(),
-                        Checked = currentRole != null  && currentRole.PermissionIds.Contains(d.PermissionId),
+            //if (context.Any(_ => _.ParentMenuId == parentId))
+            //{
+            //    result = context.OrderBy(_=>_.Priority).Where(_ => _.ParentMenuId == parentId)
+            //        .Select(d => new TreeviewModel()
+            //        {
+            //            id = d.PermissionId,
+            //            text = GeneralLibrary.Utilities.Language.GetString($"PermissionTitle_{d.Title}"),
+            //            type = d.Type,
+            //            children = GetChildren(context, d.PermissionId, currentRole).ToList(),
+            //            Checked = currentRole != null  && currentRole.PermissionIds.Contains(d.PermissionId),
 
-                        isActive = d.IsActive,
-                        priority = d.Priority
-                    }).ToList();
-            }
+            //            isActive = d.IsActive,
+            //            priority = d.Priority
+            //        }).ToList();
+            //}
             return result;
         }
 
@@ -586,6 +586,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
         }
 
         public Task<bool> Upsert(Entities.General.Permission.Permission permission)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result<string>> GetPermissionType(string permissionId)
         {
             throw new NotImplementedException();
         }

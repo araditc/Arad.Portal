@@ -111,10 +111,7 @@
                 </div>
                 <div class="col-md-3 offset-md-6">
                     <div class="card-tools float-end">
-                        @if (ViewBag.Permissions["Add"])
-                        {
-
-                        }
+                       
                     </div>
                 </div>
             </div>
@@ -159,20 +156,19 @@
                                     </div>
                                 </td>
                                 <td>
-                                    @if (ViewBag.Permissions["Edit"])
-                                    {
+                                 
                                         <a asp-action="ApproveComment" asp-controller="Comment" asp-route-commentId="@item.CommentId" asp-route-isApproved="@item.IsApproved"
                                            class="btn btn-sm btn-primary bg-gradient">
                                             <i  class="fa fa-edit"></i>@Language.GetString("btn_Approved")
                                         </a>
-                                    }
-                                    @if (ViewBag.Permissions["Remove"] && !item.IsDeleted)
+                                   
+                                    @if (!item.IsDeleted)
                                     {
                                         <button onclick="EntityDelete('@item.CommentId')" class="btn btn-sm btn-danger bg-gradient">
                                             <i  class="fa fa-trash"></i>@Language.GetString("btn_Delete")
                                         </button>
                                     }
-                                    @if (ViewBag.Permissions["Remove"] && item.IsDeleted)
+                                    @if (item.IsDeleted)
                                     {
                                         <button id="restoreRecord" onclick="EntityRestore('@item.CommentId')" class="btn btn-sm btn-secondary bg-gradient">
                                             <i style="position: relative;left: 5px;top: 2px;" class="fa fa-refresh"></i>

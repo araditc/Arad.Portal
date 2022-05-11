@@ -33,6 +33,10 @@ namespace Arad.Portal.UI.Shop
 
             var fileName = config["LogConfiguration:LogFileName"];
             _path = Path.Combine(logAddress, fileName);
+            if (!File.Exists(_path))
+            {
+                File.Create(_path);
+            }
 
             CreateHostBuilder(args).Build().Run();
         }

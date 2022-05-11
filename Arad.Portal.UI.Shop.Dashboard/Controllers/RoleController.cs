@@ -19,6 +19,9 @@ using Newtonsoft.Json;
 using Arad.Portal.DataLayer.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Http;
+using Arad.Portal.DataLayer.Entities.General.User;
+using Microsoft.AspNetCore.Identity;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -27,18 +30,19 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
     {
         private readonly IRoleRepository _roleRepository;
         private readonly IPermissionRepository _permissionRepository;
-        private readonly IPermissionView _permissionViewManager;
         private readonly UserExtensions _userExtensions;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
         
 
         public RoleController(IRoleRepository repository, IPermissionRepository permissionRepository,
-            UserExtensions userExtensions, IPermissionView permissionViewManager, IMapper mapper)
+            UserExtensions userExtensions,IMapper mapper,
+            UserManager<ApplicationUser> userManager)
         {
             _roleRepository = repository;
             _permissionRepository = permissionRepository;
             _userExtensions = userExtensions;
-            _permissionViewManager = permissionViewManager;
+            _userManager = userManager;
             _mapper = mapper;
         }
 
@@ -46,8 +50,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> List()
         {
             //var claims = User.Claims;
-            var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
-            ViewBag.Permissions = dicKey;
             PagedItems<RoleListViewModel> list = await _roleRepository.RoleList(Request.QueryString.ToString());
             return View(list);
         }
@@ -370,13 +372,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                 return Ok(new { Status = "ModelError", ModelStateErrors = errors });
             }
-
-            List<string> currentUserPers = await _permissionRepository
-                .GetUserPermissionsAsync();
-
-            if (dto.PermissionIds.Any(item => !currentUserPers.Contains(item)))
+           var currentUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            var dbUser = await _userManager.FindByIdAsync(currentUserId);
+            
+            if (dbUser.IsSystemAccount)
             {
-                return RedirectToAction("AccessDenied", "Account");
+                List<string> currentUserPermission = await _permissionRepository.GetUserPermissions();
+                if (dto.PermissionIds != null && dto.PermissionIds.Split(',').Any(item => !currentUserPermission.Contains(item)))
+                {
+                    return RedirectToAction("AccessDenied", "Account");
+                }
             }
 
             Result saveResult;
@@ -388,16 +393,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     return RedirectToAction("PageOrItemNotFound", "Account");
                 }
-                dto.ModificationReason = $"PermissionIdsCount : {dto.PermissionIds.Count}";
-                dto.HasModifications = true;
+                //dto.ModificationReason = $"PermissionIdsCount : {dto.PermissionIds.Count}";
+                //dto.HasModifications = true;
                 saveResult = await _roleRepository.Update(dto);
             }
             else
             {
                 saveResult = await _roleRepository.Add(dto);
             }
-            
-           // return Ok(new { result = result ? "Success" : "Error", Message = GetString($"AlertAndMessages_{(result ? "OperationSuccess" : "OperationError")}") });
+           
             return Ok(saveResult.Succeeded ? new { Status = "Success", saveResult.Message } : new { Status = "Error", saveResult.Message });
         }
 

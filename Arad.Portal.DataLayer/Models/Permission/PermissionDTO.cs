@@ -31,7 +31,7 @@ namespace Arad.Portal.DataLayer.Models.Permission
     //    public string ModificationReason { get; set; }
     //}
 
-    public class PermissionDto :  IValidatableObject
+    public class PermissionDTO :  IValidatableObject
     {
         public string ParentId { get; set; }
 

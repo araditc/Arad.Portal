@@ -37,7 +37,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
     public class DomainController : Controller
     {
         private readonly IDomainRepository _domainRepository;
-        private readonly IPermissionView _permissionViewManager;
         private readonly IModuleRepository _moduleRepository;
         private readonly IProviderRepository _providerRepository;
         private readonly ILanguageRepository _lanRepository;
@@ -50,11 +49,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             IProviderRepository providerRepository,
             IWebHostEnvironment hostEnvironment,
             IModuleRepository moduleRepository,
-            IPermissionView permissionView, ILanguageRepository lanRepository,
+            ILanguageRepository lanRepository,
             ICurrencyRepository currencyRepository)
         {
             _domainRepository = domainRepository;
-            _permissionViewManager = permissionView;
             _lanRepository = lanRepository;
             _userManager = userManager;
             _curRepository = currencyRepository;
@@ -90,9 +88,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> List()
         {
             PagedItems<DomainViewModel> result = new PagedItems<DomainViewModel>();
-            var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            ViewBag.Permissions = dicKey;
             try
             {
                 result = await _domainRepository.AllDomainList(Request.QueryString.ToString());

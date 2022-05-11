@@ -27,7 +27,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
     public class MenuController : Controller
     {
         private readonly IMenuRepository _menuRepository;
-        private readonly IPermissionView _permissionViewManager;
         private readonly ILanguageRepository _lanRepository;
         private readonly IProductGroupRepository _productGroupRepository;
         private readonly IContentCategoryRepository _contentCategoryRepository;
@@ -39,13 +38,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly string domainId;
         private readonly string domainName;
         public MenuController(IMenuRepository menuRepository,IContentRepository contentRepository,
-            IPermissionView permissionView, ILanguageRepository lanRepository,IHttpContextAccessor httpContextAccessor,
+            ILanguageRepository lanRepository,IHttpContextAccessor httpContextAccessor,
             IProductGroupRepository productGroupRepository, IContentCategoryRepository contentCategoryRepository,
             IProductRepository productRepository, UserManager<ApplicationUser> userManager,
             IDomainRepository domainRepository)
         {
             _menuRepository = menuRepository;
-            _permissionViewManager = permissionView;
             _lanRepository = lanRepository;
             _productGroupRepository = productGroupRepository;
             _contentCategoryRepository = contentCategoryRepository;
@@ -63,14 +61,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> List()
         {
             PagedItems<MenuDTO> result = new PagedItems<MenuDTO>();
-            var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
           
             var domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
             var res = _domainRepository.FetchByName(domainName);
             var domainId = res.Succeeded ? res.ReturnValue.DomainId : Guid.Empty.ToString();
            
-            ViewBag.Permissions = dicKey;
             try
             {
                 var qs = Request.QueryString.ToString();

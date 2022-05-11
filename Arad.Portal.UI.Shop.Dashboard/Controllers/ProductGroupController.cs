@@ -28,7 +28,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
     public class ProductGroupController : Controller
     {
         private readonly IProductGroupRepository _productGroupRepository;
-        private readonly IPermissionView _permissionViewManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ILanguageRepository _lanRepository;
         private readonly ICurrencyRepository _curRepository;
@@ -36,11 +35,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly CodeGenerator _codeGenerator;
         private readonly string imageSize = "";
         public ProductGroupController(IProductGroupRepository productGroupRepository,CodeGenerator codeGenerator,
-            IPermissionView permissionView, ILanguageRepository lanRepository, ICurrencyRepository currencyRepository,
+            ILanguageRepository lanRepository, ICurrencyRepository currencyRepository,
             IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             _productGroupRepository = productGroupRepository;
-            _permissionViewManager = permissionView;
             _lanRepository = lanRepository;
             _curRepository = currencyRepository;
             _codeGenerator = codeGenerator;
@@ -53,9 +51,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> List()
         {
             PagedItems<ProductGroupViewModel> result = new PagedItems<ProductGroupViewModel>();
-            var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            ViewBag.Permissions = dicKey;
             try
             {
                 result = await _productGroupRepository.List(Request.QueryString.ToString());

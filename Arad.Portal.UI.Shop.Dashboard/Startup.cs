@@ -185,7 +185,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             });
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddTransient<IPermissionView, PermissionView>();
+            //services.AddTransient<IPermissionView, PermissionView>();
             services.AddTransient<RemoteServerConnection>();
             services.AddTransient<CreateNotification>();
           
@@ -212,26 +212,26 @@ namespace Arad.Portal.UI.Shop.Dashboard
             }
 
             //   app.UseHttpsRedirection();
-           
-            if(!Directory.Exists(Configuration["LocalStaticFileStorage"]))
+            if (!Directory.Exists(Configuration["LocalStaticFileStorage"]))
             {
                 Directory.CreateDirectory(Configuration["LocalStaticFileStorage"]);
-                var path1 = Path.Combine(Configuration["LocalStaticFileStorage"], "/Contents");
-                var path2 = Path.Combine(Configuration["LocalStaticFileStorage"], "/ProductGroups");
-                var path3 = Path.Combine(Configuration["LocalStaticFileStorage"], "/Products");
-                if(!Directory.Exists(path1))
-                {
-                    Directory.CreateDirectory(path1);
-                }
-                if (!Directory.Exists(path2))
-                {
-                    Directory.CreateDirectory(path2);
-                }
-                if (!Directory.Exists(path3))
-                {
-                    Directory.CreateDirectory(path3);
-                }
             }
+            var path1 = Path.Combine(Configuration["LocalStaticFileStorage"], "/Contents");
+            var path2 = Path.Combine(Configuration["LocalStaticFileStorage"], "/ProductGroups");
+            var path3 = Path.Combine(Configuration["LocalStaticFileStorage"], "/Products");
+            if(!Directory.Exists(path1))
+            {
+                Directory.CreateDirectory(path1);
+            }
+            if (!Directory.Exists(path2))
+            {
+                Directory.CreateDirectory(path2);
+            }
+            if (!Directory.Exists(path3))
+            {
+                Directory.CreateDirectory(path3);
+            }
+           
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions()
             {

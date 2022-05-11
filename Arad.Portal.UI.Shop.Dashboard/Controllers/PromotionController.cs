@@ -23,18 +23,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
     public class PromotionController : Controller
     {
         private readonly IPromotionRepository _promotionRepository;
-        private readonly IPermissionView _permissionViewManager;
         private readonly ILanguageRepository _lanRepository;
         private readonly ICurrencyRepository _currencyRepository;
         private readonly IProductRepository _productRepositoy;
         private readonly UserManager<ApplicationUser> _userManager;
         public PromotionController(IPromotionRepository promotionRepository,
-            IPermissionView permissionView, ILanguageRepository lanRepository, 
+            ILanguageRepository lanRepository, 
             IProductRepository productRepositoy,
             ICurrencyRepository currencyRepository, UserManager<ApplicationUser> userManager)
         {
             _promotionRepository = promotionRepository;
-            _permissionViewManager = permissionView;
             _lanRepository = lanRepository;
             _currencyRepository = currencyRepository;
             _userManager = userManager;
@@ -49,8 +47,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var currentUser = await _userManager.FindByIdAsync(currentUserId);
             ViewBag.IsSysAcc = currentUser.IsSystemAccount;
             var defaulltLang = _lanRepository.GetDefaultLanguage(currentUserId);
-            var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
-            ViewBag.Permissions = dicKey;
             var lst = _productRepositoy.GetProductsOfThisVendor(defaulltLang.LanguageId, currentUserId);
             lst.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
             ViewBag.CurrentSellerProductList = lst;

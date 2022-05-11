@@ -51,7 +51,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IRoleRepository _roleRepository;
         private readonly IPermissionRepository _permissionRepository;
         private readonly INotificationRepository _notificationRepository;
-        private readonly IPermissionView _permissionViewManager;
         private readonly IOptions<MessageCenter> _smsSettings;
         private readonly IMessageTemplateRepository _messageTemplateRepository;
         private readonly ILanguageRepository _languageRepository;
@@ -66,7 +65,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IPermissionView permissionView,
             UserExtensions userExtension,
             IRoleRepository roleRepository,
             CreateNotification createNotification,
@@ -87,7 +85,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _signInManager = signInManager;
             _userExtension = userExtension;
             _configuration = configuration;
-            _permissionViewManager = permissionView;
             _roleRepository = roleRepository;
             _permissionRepository = permissionRepository;
             _languageRepository = languageRepository;
@@ -101,14 +98,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _errorLogRepository = errorLogRepository;
             _mapper = mapper;
             _userContext = userContext;
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Index()
-        {
-            var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
-
-            return View(dicKey);
         }
 
         [HttpGet]
@@ -271,8 +260,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var result = new PagedItems<UserListView>();
 
 
-            var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
-            ViewBag.Permissions = dicKey;
+           
             FilterDefinitionBuilder<ApplicationUser> builder = new();
             FilterDefinition<ApplicationUser> filterDef = builder.Empty; 
             try

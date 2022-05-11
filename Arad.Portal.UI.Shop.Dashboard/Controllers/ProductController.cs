@@ -39,7 +39,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IProductUnitRepository _unitRepository;
         private readonly IProductGroupRepository _productGroupRepository;
         private readonly IProductSpecGroupRepository _specGroupRepository;
-        private readonly IPermissionView _permissionViewManager;
+       
         private readonly ILanguageRepository _lanRepository;
         private readonly ICurrencyRepository _curRepository;
         private readonly IConfiguration _configuration;
@@ -51,7 +51,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly CodeGenerator _codeGenerator;
         
         public ProductController(UserManager<ApplicationUser> userManager,CodeGenerator codeGenerator,
-            IProductRepository productRepository, IPermissionView permissionView,
+            IProductRepository productRepository,
             ILanguageRepository languageRepository, IProductGroupRepository productGroupRepository,
             ICurrencyRepository currencyRepository, IProductUnitRepository unitRepository,
             IProductSpecGroupRepository specGroupRepository,IPromotionRepository promotionRepository,
@@ -60,7 +60,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             _productRepository = productRepository;
             _configuration = configuration;
-            _permissionViewManager = permissionView;
             _lanRepository = languageRepository;
             _curRepository = currencyRepository;
             _productGroupRepository = productGroupRepository;
@@ -79,8 +78,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> List()
         {
             PagedItems<ProductViewModel> result = new PagedItems<ProductViewModel>();
-            var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
-            ViewBag.Permissions = dicKey;
+            
             try
             {
                 result = await _productRepository.List(Request.QueryString.ToString());

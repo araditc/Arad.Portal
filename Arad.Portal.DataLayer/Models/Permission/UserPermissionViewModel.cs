@@ -16,10 +16,10 @@ namespace Arad.Portal.DataLayer.Models.Permission
         public double Priority { get; set; }
         public string Id { get; set; }
 
-        [CustomErrorMessage("AlertAndMessage_FieldEssential")]
-        public Enums.PermissionType Type { get; set; }
-        [CustomErrorMessage("AlertAndMessage_FieldEssential")]
-        public Enums.PermissionMethod Method { get; set; }
+        //[CustomErrorMessage("AlertAndMessage_FieldEssential")]
+        //public Enums.PermissionType Type { get; set; }
+        //[CustomErrorMessage("AlertAndMessage_FieldEssential")]
+        //public Enums.PermissionMethod Method { get; set; }
 
         [CustomErrorMessage("AlertAndMessage_FieldEssential")]
         public string Title { get; set; }

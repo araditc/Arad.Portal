@@ -7,7 +7,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>File Browsers</title>
+    <title>File Browser</title>
     <link rel="stylesheet" href="~/lib/bootstrap5/css/bootstrap.min.css" />
     <style>
         #form {
@@ -47,17 +47,17 @@
     <script src="~/lib/ckeditor/ckeditor.js"></script>
     <script>
         $(document).ready(function() {
-            var funcNum = '@(Context.Request.Query["CKEditorFuncNum"])';
-            //console.log("gggg");
-            $('#fileExplorer').on('click',
-                'img',
-                function() {
-                    var fileUrl = `${@ViewBag.Location}/ckEditorProductImages/` + $(this).attr('title');
-                    window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
-                    window.close();
-                }).hover(function() {
-                $(this).css('cursor','pointer');
-            });
+            //var funcNum = '@(Context.Request.Query["CKEditorFuncNum"])';
+            ////console.log("gggg");
+            //$('#fileExplorer').on('click',
+            //    'img',
+            //    function() {
+            //        var fileUrl = `${@ViewBag.Location}/ckEditorProductImages/` + $(this).attr('title');
+            //        window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
+            //        window.close();
+            //    }).hover(function() {
+            //    $(this).css('cursor','pointer');
+            //});
         });
 
         

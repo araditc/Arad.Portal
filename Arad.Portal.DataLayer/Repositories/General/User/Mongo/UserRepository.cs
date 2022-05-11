@@ -87,7 +87,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
 
                 //finalList = finalList.Distinct().ToList();
                 finalList = _permissionContext.Collection.AsQueryable()
-                        .Where(_ => _.IsActive && userRoleEntity.PermissionIds.Contains(_.PermissionId)).SelectMany(_ => _.Routes).ToList();
+                        .Where(_ => _.IsActive && userRoleEntity.PermissionIds.Contains(_.PermissionId)).SelectMany(_ => _.Urls).ToList();
             }
             catch (Exception ex)
             {
