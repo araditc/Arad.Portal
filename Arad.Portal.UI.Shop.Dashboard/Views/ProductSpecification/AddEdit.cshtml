@@ -162,6 +162,7 @@
            
             if ('@ViewBag.LangId' != "") {
                 $("#languageId").val('@ViewBag.LangId');
+                $("#languageId").selectpicker("refresh");
             }
             $("#languageId").change(function () {
                 debugger;
@@ -184,6 +185,7 @@
 
                                 $("#SpecificationGroupId").html(options);
                                 $("#SpecificationGroupId").val('@Model.SpecificationGroupId');
+                                $("#SpecificationGroupId").selectpicker("refresh");
                             }
                         }
                         },

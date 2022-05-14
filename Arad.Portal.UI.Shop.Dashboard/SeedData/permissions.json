@@ -136,7 +136,7 @@
                 "LevelNo": 2,
                 "Priority": 2,
                 "Icon": "fa fa fa-object-ungroup",
-                "ClientAddress": "ProductGroup/List",
+                "ClientAddress": "/ProductGroup/List",
                 "Actions": [
                     {
                         "PermissionId": "87b791eb-1262-4c9d-abda-26f2efd9383e",
@@ -170,7 +170,7 @@
                 "LevelNo": 2,
                 "Priority": 3,
                 "Icon": "fa fa-object-group",
-                "ClientAddress": "ProductSpecificationGroup/List",
+                "ClientAddress": "/ProductSpecificationGroup/List",
                 "Actions": [
                     {
                         "PermissionId": "dda6df00-5471-4790-a43d-c002edd087fc",
