@@ -40,6 +40,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Permission
 
         Task<List<string>> GetUserPermissions();
 
+        Task<List<string>> GetAllNestedPermissionIds();
         Task<List<Entities.General.Permission.Permission>> GetAllListViewCustom();
 
         Task<List<PermissionSelectDto>> GetAllListView();

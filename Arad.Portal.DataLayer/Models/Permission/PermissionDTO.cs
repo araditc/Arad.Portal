@@ -107,6 +107,8 @@ namespace Arad.Portal.DataLayer.Models.Permission
 
         public bool IsActive { get; set; }
 
+
+        public bool HasModification { get; set; }
         public string Title { get; set; }
 
         public string ParentTitle { get; set; }

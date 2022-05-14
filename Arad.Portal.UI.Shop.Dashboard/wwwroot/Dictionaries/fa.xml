@@ -170,6 +170,12 @@
 	<string key="PermissionTitle_MainPage">
 		<value>داشبورد</value>
 	</string>
+	<string key="PermissionTitle_ProductCommentDelete">
+		<value>حذف نظر</value>
+	</string>
+	<string key="PermissionTitle_ProductCommentApprove">
+		<value>تایید نظر</value>
+	</string>
 	<string key="PermissionTitle_UserManagement">
 		<value>مدیریت کاربران</value>
 	</string>
@@ -226,6 +232,9 @@
 	</string>
 	<string key="PermissionTitle_UserDelete">
 		<value>حذف کاربر</value>
+	</string>
+	<string key="PermissionTitle_UserEdit">
+		<value>ویرایش کاربر</value>
 	</string>
 	<string key="PermissionTitle_UserChangePassword">
 		<value>تغییر کلمه عبور</value>

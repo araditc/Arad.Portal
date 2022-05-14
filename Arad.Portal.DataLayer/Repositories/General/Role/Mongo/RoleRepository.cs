@@ -35,12 +35,15 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
         {
             var result = new Result();
             var equallentModel = _mapper.Map<Entities.General.Role.Role>(dto);
-
+            equallentModel.PermissionIds = dto.PermissionIds.Split(",").ToList();
+                
             equallentModel.CreationDate = DateTime.Now;
             equallentModel.CreatorUserId = _httpContextAccessor.HttpContext.User.Claims
                 .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             equallentModel.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                 .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+
+            equallentModel.IsActive = true;
 
             try
             {
@@ -146,6 +149,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
                 var role = await _context.Collection
                     .Find(c => c.RoleId == roleId).FirstOrDefaultAsync();
                 result = _mapper.Map<RoleDTO>(role);
+                result.PermissionIds = string.Join(',', role.PermissionIds);
             }
             catch (Exception e)
             {
@@ -162,6 +166,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
                 var role = await _context.Collection
                     .Find(c => c.RoleName == roleName).FirstOrDefaultAsync();
                 result = _mapper.Map<RoleDTO>(role);
+                result.PermissionIds = string.Join(",", role.PermissionIds);
             }
             catch (Exception e)
             {
@@ -196,9 +201,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
                    { 
                      RoleId = _.RoleId,
                      RoleName = _.RoleName,
-                     //PermissionIds = _.PermissionIds,
-                     //IsActive = _.IsActive,
-                     //IsDeleted = _.IsDeleted
+                     PermissionIds = string.Join(',', _.PermissionIds),
+                       //IsActive = _.IsActive,
+                       //IsDeleted = _.IsDeleted
                    }).ToList();
 
                 result.CurrentPage = page;
@@ -277,6 +282,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
             var result = new Result();
 
             var equallentModel = _mapper.Map<Entities.General.Role.Role>(dto);
+            equallentModel.PermissionIds = dto.PermissionIds.Split(',').ToList();
 
             var availableEntity = await _context.Collection
                     .Find(_ => _.RoleId.Equals(dto.RoleId)).FirstOrDefaultAsync();
@@ -295,7 +301,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
                 equallentModel.CreationDate = availableEntity.CreationDate;
                 equallentModel.CreatorUserId = availableEntity.CreatorUserId;
                 equallentModel.CreatorUserName = availableEntity.CreatorUserName;
-
+                equallentModel.IsActive = true;
                 var updateResult = await _context.Collection
                    .ReplaceOneAsync(_ => _.RoleId == availableEntity.RoleId, equallentModel);
 

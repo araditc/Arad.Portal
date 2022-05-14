@@ -698,6 +698,9 @@
   <string key="AlertAndMessage_PasswordRequired">
     <value>Please Fill Password.</value>
   </string>
+	<string key="AlertAndMessage_PasswordIncorrect">
+		<value>The password you have entered is incorrect.</value>
+	</string>
   <string key="AlertAndMessage_PasswordValidation">
     <value>Password have to be mixed of characters and numbers.</value>
   </string>

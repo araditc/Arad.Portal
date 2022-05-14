@@ -304,43 +304,52 @@ else
             }
         });
 
+
         $("#btnAddToCart").click(function () {
-            if ('@ViewBag.LoggedUser' == 'True')//user is authenticated and can add product to its cart
-            {
-                 $.ajax({
-                     url: "/Basket/AddProToBasket?productId=" + '@Model.ProductId' + "&cnt=" + cnt,
-                    contentType: 'application/json',
-                    type: 'Post',
-                    dataType: 'json',
-                    beforeSend: function () {
-                    },
-                    success: function (result) {
-                        if (result.status == "Success") {
+                 debugger;
+                 var cnt = $("#orderCnt").val();
+                   if ('@ViewBag.LoggedUser' == 'True')//user is authenticated and can add product to its cart
+                    {
+                        debugger;
+                     
+                         $.ajax({
+                             url: "/Basket/AddProToBasket?productId=" + '@Model.ProductId' + "&cnt=" + cnt,
+                            contentType: 'application/json',
+                            type: 'Get',
+                            dataType: 'json',
+                            beforeSend: function () {
+                            },
+                            success: function (result) {
+                                if (result.status == "Success") {
 
-                            setProductCountInCart(result.cnt);
-                            Swal.fire({
-                                icon: 'success',
-                                text: result.message,
-                                showConfirmButton: false,
-                                timer: 2500
-                            });
-                        }
-                        else {
-                             Swal.fire({
-                                 icon: 'error',
-                                 text: result.message,
-                                 showConfirmButton: false,
-                                 timer: 2500
-                                });
-                        }
-                        //$("#msgresult").text(result.message);
-                        //$('.toast').toast({ delay: 3000 });
-                        //$(".toast").toast('show');
-                    }
-                  });
-            }
+                                    setProductCountInCart(result.cnt);
+                                    Swal.fire({
+                                        icon: 'success',
+                                        text: result.message,
+                                        showConfirmButton: false,
+                                        timer: 2500
+                                    });
+                                }
+                                else {
+                                     Swal.fire({
+                                         icon: 'error',
+                                         text: result.message,
+                                         showConfirmButton: false,
+                                         timer: 2500
+                                        });
+                                }
+                                //$("#msgresult").text(result.message);
+                                //$('.toast').toast({ delay: 3000 });
+                                //$(".toast").toast('show');
+                            }
+                          });
+                   }else
+                   {
+                       window.location.href = `/${"@ViewBag.LanIcon"}/Account/login?returnUrl=/${"@ViewBag.LanIcon"}/basket/AddProToBasket?productId=${"@Model.ProductId"}&cnt=${cnt}`;
+                   }
+            });
 
-        });
+       
     });
 
     function Rate(score) {

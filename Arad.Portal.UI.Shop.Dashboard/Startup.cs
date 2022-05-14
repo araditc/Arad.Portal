@@ -128,7 +128,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
                 {
                     options.Cookie.HttpOnly = true;
                     options.Cookie.IsEssential = true;
-                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    //options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.Cookie.SameSite = SameSiteMode.Strict;
                 }
             });
@@ -156,7 +156,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             {
                 services.AddAntiforgery(options =>
                 {
-                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    //options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 });
             }
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -200,7 +200,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (!env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }

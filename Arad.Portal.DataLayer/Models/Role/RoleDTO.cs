@@ -15,6 +15,8 @@ namespace Arad.Portal.DataLayer.Models.Role
         public string PermissionIds { get; set; }
         public string ModificationReason { get; set; }
 
+        public bool? IsActive { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (string.IsNullOrWhiteSpace(RoleName))

@@ -28,12 +28,7 @@
 	<string key="Upload">
 		<value>Upload</value>
 	</string>
-	<string key="ProductCommentDelete">
-		<value>comment delete</value>
-	</string>
-	<string key="ProductCommentApprove">
-		<value>comment approve</value>
-	</string>
+	
 	<string key="PutImage">
 		<value>Put Image</value>
 	</string>
@@ -164,9 +159,21 @@
 		<value>Menu1-1-1-1-1</value>
 	</string>-->
 	<!--End[JustForTesting]-->
+	<string key="ProductCommentDelete">
+		<value>comment delete</value>
+	</string>
+	<string key="ProductCommentApprove">
+		<value>comment approve</value>
+	</string>
 	<!--============================================START [Admin Menues]======================================-->
 	<string key="PermissionTitle_MainPage">
 		<value>Dashboard</value>
+	</string>
+	<string key="PermissionTitle_ProductCommentDelete">
+		<value>comment delete</value>
+	</string>
+	<string key="PermissionTitle_ProductCommentApprove">
+		<value>comment approve</value>
 	</string>
 	<string key="PermissionTitle_UserManagement">
 		<value>User Management</value>

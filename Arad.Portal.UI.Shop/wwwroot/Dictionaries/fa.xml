@@ -691,6 +691,9 @@
 	<string key="AlertAndMessage_PasswordRequired">
 		<value>لطفا کلمه غبور را وارد کنید.</value>
 	</string>
+	<string key="AlertAndMessage_PasswordIncorrect">
+		<value>نام کاربری اشتباه است.</value>
+	</string>
 	<string key="AlertAndMessage_PasswordValidation">
 		<value>پسورد باید ترکیبی از حروف وعدد باشد.</value>
 	</string>

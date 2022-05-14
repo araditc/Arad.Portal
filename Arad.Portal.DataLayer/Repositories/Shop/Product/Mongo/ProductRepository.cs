@@ -859,6 +859,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 .Find(_ => _.ProductCode == productCode).FirstOrDefault();
 
             result = _mapper.Map<ProductOutputDTO>(productEntity);
+            result.Images = result.Images.Where(_ => _.ImageRatio == ImageRatio.Square).ToList();
             result.Comments = CreateNestedTreeComment(productEntity.Comments, userId);
             result.MultiLingualProperties = productEntity.MultiLingualProperties;
 

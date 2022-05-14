@@ -35,7 +35,7 @@ namespace Arad.Portal.UI.Shop.Controllers
 
                 if (!System.IO.File.Exists(finalPath))
                 {
-                    finalPath = Path.Combine(localStaticFileStorage, "images/imgs/NoImage.png").Replace("\\", "/");
+                    finalPath = "/imgs/NoImage.png";
                 }
                 var fileName = Path.GetFileName(finalPath);
                 var mimeType = ImageFunctions.GetMIMEType(fileName);
@@ -44,7 +44,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
             else
             {
-                finalPath = Path.Combine(localStaticFileStorage, "images/imgs/NoImage.png").Replace("\\", "/");
+                finalPath = "/imgs/NoImage.png";
                 var fileName = Path.GetFileName(finalPath);
                 var mimeType = ImageFunctions.GetMIMEType(fileName);
                 byte[] fileContent = System.IO.File.ReadAllBytes(finalPath);
@@ -61,12 +61,12 @@ namespace Arad.Portal.UI.Shop.Controllers
             {
                 if (path.StartsWith("/"))
                     path = path[1..];
-                finalPath = Path.Combine(localStaticFileStorage, path).Replace("\\", "/");
+                finalPath = "/imgs/NoImage.png";
             }
            
             if (string.IsNullOrWhiteSpace(finalPath) || !System.IO.File.Exists(finalPath))
             {
-                finalPath = "/images/imgs/NoImage.png";
+                finalPath = Path.Combine(localStaticFileStorage, "images/imgs/NoImage.png").Replace("\\", "/");
             }
             var fileName = Path.GetFileName(finalPath);
             var mimeType = ImageFunctions.GetMIMEType(fileName);

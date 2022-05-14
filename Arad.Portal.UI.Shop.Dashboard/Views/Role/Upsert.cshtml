@@ -22,7 +22,7 @@
     </div>
     <div class="card-body">
 
-        <form asp-action="Upsert" class="row g-3" id="upsertForm" method="post">
+        <form asp-action="Upsert" asp-controller="Role" class="row g-3" role="form" id="upsertForm" method="post">
             <input asp-for="RoleId" data-val="true" type="hidden" value="@Model.RoleId">
             
 
@@ -47,11 +47,9 @@
             </div>
 
             <div class="col-md-12 text-end">
-                <button class="btn btn-success btn-sm pe-3" type="submit">
-                    <i class="far fa-save px-1 mt-1">
-                    </i>@Language.GetString("btn_Save")
-                </button>
-                <a asp-action="List" class="btn btn-light border border-1 btn-sm">
+                <input type="submit" value="@Language.GetString("btn_Save")" class="btn btn-primary bg-gradient float-end m-2" />
+               
+                <a asp-action="List" class="btn btn-light border border-1 btn-sm m-2">
                     <i class="far fa-share-square px-1 mt-1"></i>
                     @Language.GetString("btn_Back")
                 </a>
@@ -73,6 +71,7 @@
 
                     success: function(result)
                     {
+                        debugger;
                         $('#permissionTreeView')
                             .jstree({
                                 'core': {
@@ -91,18 +90,18 @@
                         alert(thrownError);
                     }
                 });
-            });
-            
-        $("#upsertForm")
-            .submit(function(e)
+
+                  
+            $("#upsertForm").submit(function(e)
             {
+                //alert("sssssssss");
                 e.preventDefault();
                 $("#toastPanel").show();
                 
                 const roleForm = document.getElementById('upsertForm');
                 const form = new FormData(roleForm);
                 var permissionIds = [];
-                
+                debugger;
                 const selectedItem = $('#permissionTreeView').jstree("get_selected", true);
 
                 for (let i = 0; i < selectedItem.length; i++)
@@ -124,9 +123,11 @@
                     },
                     success: function(result)
                     {
+                        debugger;
                         $("#loading").removeClass('is-active');
-                        if (result.result === "Success")
+                        if (result.status == "Success")
                         {
+                            debugger;
                             document.getElementById('mainToastBody').innerHTML = `<i class="far fa-check-circle"></i> ${result.message}`;
                             document.getElementById('mainToastBody').classList.add('alert-success');
                              var bsAlert = new bootstrap.Toast($("#mainToast"));
@@ -139,8 +140,9 @@
                                 2500);
                         }
 
-                        if (result.result === "ModelError")
+                        if (result.status == "ModelError")
                         {
+                            debugger;
                             const spanErrorList = $('span[data-val-result]');
                             if (spanErrorList.length > 1)
                             {
@@ -166,13 +168,16 @@
                             }
                         }
 
-                        if (result.result === "Error")
+                        if (result.status === "Error")
                         {
                             showError(result.message);
                         }
                     }
                 });
             });
+            });
+            
+      
 
     </script>
 }

@@ -686,6 +686,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
             {
                 return new();
             }
+           
 
             FilterDefinitionBuilder<Entities.General.Role.Role> roleBuilder = new();
             FilterDefinition <Entities.General.Role.Role> roleFilterDefinition = roleBuilder.Eq(role => role.RoleId, user.UserRoleId);
@@ -693,29 +694,203 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
 
             return role.PermissionIds;
         }
-        public Task<List<Entities.General.Permission.Permission>> GetAllListViewCustom()
+        public async Task<List<Entities.General.Permission.Permission>> GetAllListViewCustom()
         {
-            throw new NotImplementedException();
+            List<Entities.General.Permission.Permission> result = new();
+            try
+            {
+                IFindFluent<Entities.General.Permission.Permission, Entities.General.Permission.Permission> find =
+                    _context.Collection.Find(FilterDefinition<Entities.General.Permission.Permission>.Empty);
+                List<Entities.General.Permission.Permission> permissions = await find.ToListAsync();
+                GenerateList(permissions, "");
+
+                void GenerateList(List<Entities.General.Permission.Permission> tmPermissions, string parentName)
+                {
+                    foreach (Entities.General.Permission.Permission permission in tmPermissions)
+                    {
+                        Entities.General.Permission.Permission dto = new()
+                        {
+                            PermissionId = permission.PermissionId,
+                            Urls = permission.Urls,
+                            ClientAddress = permission.ClientAddress,
+                            IsActive = permission.IsActive,
+                            Actions = permission.Actions
+                        };
+                        result.Add(dto);
+
+                        GenerateList(permission.Children, $"{parentName}{(string.IsNullOrWhiteSpace(parentName) ? "" : "-")}{dto.Title}");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            return result;
         }
 
-        public Task<List<PermissionSelectDto>> GetAllListView()
+        public async Task<List<PermissionSelectDto>> GetAllListView()
         {
-            throw new NotImplementedException();
+            List<PermissionSelectDto> result = new();
+            try
+            {
+                IFindFluent<Entities.General.Permission.Permission, Entities.General.Permission.Permission> find = _context.Collection.Find(FilterDefinition<Entities.General.Permission.Permission>.Empty);
+                List<Entities.General.Permission.Permission> permissions = await find.ToListAsync();
+                GenerateList(permissions, "");
+
+                void GenerateList(List<Entities.General.Permission.Permission> tmPermissions, string parentName)
+                {
+                    foreach (Entities.General.Permission.Permission permission in tmPermissions)
+                    {
+                        PermissionSelectDto dto = new()
+                        {
+                            PermissionId = permission.PermissionId,
+                            ClientAddress = permission.ClientAddress,
+                            LevelNo = permission.LevelNo,
+                            CreatorUserName = permission.CreatorUserName,
+                            HasModification = permission.Modifications.Any(),
+                            Icon = permission.Icon,
+                            IsActive = permission.IsActive,
+                            ParentTitle = parentName,
+                            Priority = permission.Priority,
+                            Title = Arad.Portal.GeneralLibrary.Utilities.Language.GetString($"PermissionTitle_{permission.Title}")
+                        };
+                        result.Add(dto);
+
+                        GenerateList(permission.Children, $"{parentName}{(string.IsNullOrWhiteSpace(parentName) ? "" : "-")}{dto.Title}");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            return result;
         }
 
-        public Task<PagedItems<PermissionSelectDto>> GetPage(string queryString)
+
+        public async Task<List<string>> GetAllNestedPermissionIds()
         {
-            throw new NotImplementedException();
+            List<string> result = new();
+            try
+            {
+                IFindFluent<Entities.General.Permission.Permission, Entities.General.Permission.Permission> find 
+                    = _context.Collection.Find(FilterDefinition<Entities.General.Permission.Permission>.Empty);
+                List<Entities.General.Permission.Permission> permissions = await find.ToListAsync();
+                GenerateList(permissions);
+
+                void GenerateList(List<Entities.General.Permission.Permission> tmPermissions)
+                {
+                    foreach (Entities.General.Permission.Permission permission in tmPermissions)
+                    {
+                        
+                        result.Add(permission.PermissionId);
+                        foreach (Arad.Portal.DataLayer.Entities.General.Permission.Action action in permission.Actions)
+                        {
+                            result.Add(permission.PermissionId);
+                        }
+                        GenerateList(permission.Children);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            return result;
+        }
+        public async Task<PagedItems<PermissionSelectDto>> GetPage(string queryString)
+        {
+            try
+            {
+                int pageSize = 10;
+                int page = 1;
+                NameValueCollection queryParams = HttpUtility.ParseQueryString(queryString);
+
+                if (!string.IsNullOrWhiteSpace(queryParams["page"]))
+                {
+                    page = Convert.ToInt32(queryParams["page"]);
+                }
+
+                if (!string.IsNullOrWhiteSpace(queryParams["pageSize"]))
+                {
+                    pageSize = Convert.ToInt32(queryParams["pageSize"]);
+                }
+
+                List<PermissionSelectDto> permissionSelectDtos = await GetAllListView();
+                List<PermissionSelectDto> permissions = permissionSelectDtos.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+                return new() { CurrentPage = page, Items = permissions, PageSize = pageSize, QueryString = queryString };
+            }
+            catch
+            {
+                return new() { QueryString = queryString, CurrentPage = 1, Items = new(), PageSize = 10 };
+            }
         }
 
-        public Task<Entities.General.Permission.Permission> GetById(string id)
+        public async Task<Entities.General.Permission.Permission> GetById(string id)
         {
-            throw new NotImplementedException();
+            List<Entities.General.Permission.Permission> roots = await GetAll();
+            Entities.General.Permission.Permission result = null;
+            Get(roots);
+            return result;
+
+            void Get(List<Entities.General.Permission.Permission> permissions)
+            {
+                foreach (Entities.General.Permission.Permission permission in permissions)
+                {
+                    if (permission.PermissionId.Equals(id))
+                    {
+                        result = permission;
+                        return;
+                    }
+
+                    if (permission.Children.Any())
+                    {
+                        Get(permission.Children);
+                    }
+                }
+            }
         }
 
-        public Task<Entities.General.Permission.Permission> GetRootById(string id)
+        public async Task<Entities.General.Permission.Permission> GetRootById(string id)
         {
-            throw new NotImplementedException();
+            List<Entities.General.Permission.Permission> roots = await GetAll();
+            Entities.General.Permission.Permission result = new();
+            Get(roots, id);
+
+            while (true)
+            {
+                if (string.IsNullOrWhiteSpace(result.ParentId))
+                {
+                    return result;
+                }
+
+                Get(roots, result.ParentId);
+            }
+
+            void Get(List<Entities.General.Permission.Permission> permissions, string childId)
+            {
+                foreach (Entities.General.Permission.Permission permission in permissions)
+                {
+                    if (permission.PermissionId.Equals(childId))
+                    {
+                        result = permission;
+                        return;
+                    }
+
+                    if (permission.Children.Any())
+                    {
+                        Get(permission.Children, childId);
+                    }
+                }
+            }
         }
 
         public Task<bool> Upsert(Entities.General.Permission.Permission permission)

@@ -24,14 +24,14 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly IHttpContextAccessor _accessor;
         private readonly ILanguageRepository _lanRepository;
         private readonly IDomainRepository _domainRepository;
-        private readonly EnyimMemcachedMethods<DataLayer.Entities.Shop.Transaction.Transaction> _enyimMemcachedMethods;
+        //private readonly EnyimMemcachedMethods<DataLayer.Entities.Shop.Transaction.Transaction> _enyimMemcachedMethods;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ICommentRepository _commentRepository;
         private readonly string _domainName;
 
         public ProductController(IProductRepository productRepository, IHttpContextAccessor accessor,
             UserManager<ApplicationUser> userManager,
-            EnyimMemcachedMethods<DataLayer.Entities.Shop.Transaction.Transaction> enyimMemcachedMethods,
+            //EnyimMemcachedMethods<DataLayer.Entities.Shop.Transaction.Transaction> enyimMemcachedMethods,
             ILanguageRepository lanRepository, IDomainRepository domainRepository, ICommentRepository commentRepository):base(accessor)
         {
             _productRepository = productRepository;
@@ -41,7 +41,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             _userManager = userManager;
             _commentRepository = commentRepository;
             _domainName = this.DomainName;
-            _enyimMemcachedMethods = enyimMemcachedMethods;
+            //_enyimMemcachedMethods = enyimMemcachedMethods;
         }
 
         [Route("{language}/product")]
@@ -78,6 +78,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
 
             var lanId = _lanRepository.FetchBySymbol(lanIcon);
+            ViewBag.LanIcon = lanIcon;
             ViewBag.CurCurrencyId = domainEntity.ReturnValue.DefaultCurrencyId;
             ViewBag.CurLanguageId = lanId;
             return View(entity);

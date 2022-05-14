@@ -139,7 +139,7 @@
                         if (resultData.status === "success") {
                             debugger;
                             var html = '';
-                            if (resultData.result === true) {
+                            if (resultData.result == "True") {
                                 html = '<button onclick="changeActivation(\'' + id + '\')" class="btn btn-sm btn-success bg-gradient"> ' + '@Language.GetString("Active")' +' </button>';
                             } else {
                                 html = '<button onclick="changeActivation(\'' + id + '\')" class="btn btn-sm btn-danger bg-gradient"> '+ '@Language.GetString("InActive")' +' </button>';

@@ -375,14 +375,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
            var currentUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             var dbUser = await _userManager.FindByIdAsync(currentUserId);
             
-            if (dbUser.IsSystemAccount)
-            {
-                List<string> currentUserPermission = await _permissionRepository.GetUserPermissions();
-                if (dto.PermissionIds != null && dto.PermissionIds.Split(',').Any(item => !currentUserPermission.Contains(item)))
-                {
-                    return RedirectToAction("AccessDenied", "Account");
-                }
-            }
+            //if (dbUser.IsSystemAccount)
+            //{
+            //    List<string> currentUserPermission = await _permissionRepository.GetAllNestedPermissionIds();
+            //    //if (dto.PermissionIds != null && dto.PermissionIds.Split(',').Any(item => !currentUserPermission.Contains(item)))
+            //    //{
+            //    //    return RedirectToAction("AccessDenied", "Account");
+            //    //}
+            //}
 
             Result saveResult;
             if (!string.IsNullOrWhiteSpace(dto.RoleId))
@@ -450,7 +450,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                     foreach (DataLayer.Entities.General.Permission.Action action in permission.Actions)
                     {
-                        JsTree actionJsTree = new() { Id = action.PermissionId, Text = Language.GetString(action.Title), State = new State(), Children = new() };
+                        JsTree actionJsTree = new() { Id = action.PermissionId, Text = Language.GetString($"PermissionTitle_{action.Title}"), State = new State(), Children = new() };
                         jsTree.Children.Add(actionJsTree);
 
                         if (roleDto != null && roleDto.PermissionIds.Contains(action.PermissionId))
@@ -472,5 +472,30 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
             return Ok(jsTrees);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ChangeActivation(string id)
+        {
+            JsonResult result;
+            try
+            {
+                var res = await _roleRepository.ChangeActivation(id);
+                if (res.Succeeded)
+                {
+                    var role = await _roleRepository.FetchRole(id);
+                    result = Json(new { Status = "success", Message = res.Message, result = role.IsActive.ToString() });
+                }
+                else
+                {
+                    result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
+                }
+            }
+            catch (Exception e)
+            {
+                result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
+            }
+            return result;
+        }
+
     }
 }

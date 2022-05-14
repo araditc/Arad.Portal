@@ -24,13 +24,13 @@
                         "Urls": [ "Account/Add", "Account/List" ]
                     },
                     {
-                        "PermissionId": "abcd7707-1a23-44f6-9f34-af35280cbd4a",
+                        "PermissionId": "abcd7707-1a33-44f6-9f34-af35280cbd4a",
                         "Title": "UserEdit",
                         "ClientAddress": "/Account/EditUser",
                         "Urls": [ "/Account/Edit" ]
                     },
                     {
-                        "PermissionId": "f4adf45a-53df-4300-be6a-cc97159a260a",
+                        "PermissionId": "f4adf45a-53df-4311-be6a-cc97159a260a",
                         "Title": "UserDelete",
                         "ClientAddress": "/Account/Delete",
                         "Urls": []
@@ -65,7 +65,7 @@
                 "ClientAddress": "/Role/List",
                 "Actions": [
                     {
-                        "PermissionId": "de565b89-504f-4360-a71a-f94de6f70374",
+                        "PermissionId": "de565b89-504f-4361-a71a-f94de6f70374",
                         "Title": "RoleAdd",
                         "ClientAddress": "/Role/New",
                         "Urls": [ "Role/Upsert", "Role/ListPermissions" ]
@@ -84,7 +84,7 @@
                     },
                     {
                         "PermissionId": "f4adf45a-53df-4300-be6a-cc97159a260a",
-                        "Title": "PermissionTitle_ChangeActivation",
+                        "Title": "ChangeActivation",
                         "ClientAddress": "/Role/ChangeActivation",
                         "Urls": []
                     }

@@ -25,7 +25,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> AddProToBasket([FromQuery]string productId, [FromQuery]int cnt)
         {
             if(User != null && User.Identity.IsAuthenticated)
