@@ -236,8 +236,8 @@
                             <td class="ListCell">@(++i)</td>
                             <td class="ListCell">@item.Title</td>
                             <td class="ListCell">@item.CurrencyName</td>
-                            <td class="ListCell">@item.StartDate</td>
-                            <td class="ListCell">@item.EndDate</td>
+                            <td class="ListCell">@item.SDate</td>
+                            <td class="ListCell">@item.EDate</td>
                             <td class="ListCell">@item.PromotionType</td>
                             <td class="ListCell">@item.DiscountType</td>
                             <td class="ListCell">@item.Value</td>
@@ -294,9 +294,6 @@
 
 @section Scripts
 {
-    <script src="~/js/popperjs/popper.min.js"></script>
-    <script src="~/js/plugins/bootstrap/js/bootstrap.min.js"></script>
-    <script src="~/js/bootstrap-select/bootstrap-select.js"></script>
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
         <script src="~/plugins/datePicker/kamadatepicker.min.js"></script>
@@ -533,7 +530,7 @@
     function EntityDelete(id) {
         debugger;
           entityId = id;
-			typeOfRequest = 'Delete';
+			typeOfRequest = 'Get';
 			confirmUrl = '@Url.Action("Delete", "Promotion")' + "/" + id,
 			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Delete")';
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_DeletionSureness")';
@@ -543,7 +540,7 @@
     function EntityRestore(id) {
         debugger;
           entityId = id;
-			typeOfRequest = 'PUT';
+			typeOfRequest = 'Get';
 			confirmUrl = '@Url.Action("Restore", "Promotion")' + '?id=' + id,
 			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';

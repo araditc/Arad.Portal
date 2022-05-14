@@ -276,6 +276,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
                        ContentCategoryId = _.ContentCategoryId,
                        ParentCategoryId = _.ParentCategoryId,
                        CategoryType = _.CategoryType,
+                       IsDeleted = _.IsDeleted,
                        CategoryName = _.CategoryNames.Count(a=>a.LanguageId == langId) != 0 ? _.CategoryNames.First(a => a.LanguageId == langId) : _.CategoryNames.First()
                    }).ToList();
 

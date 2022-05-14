@@ -15,7 +15,12 @@
     </div>
     <div class="card-body">
         <div class="row">
-            
+            <div class="offset-md-8 col-md-4">
+                 <a asp-action="GetTemplate" class="float-end btn btn-dark p-3 m-2" >
+                    <i class="fa fa-download px-1 mt-1">
+                    </i>@Language.GetString("GetExcelTemplate")
+             </a>
+            </div>
         </div>
     </div>
     <div class="card-body">
@@ -55,7 +60,7 @@
                     <i class="far fa-save px-1 mt-1">
                     </i>@Language.GetString("btn_Save")
                 </button>
-                <a asp-action="List" class="btn btn-secondary btnBack bg-gradient">
+                <a asp-action="List" asp-controller="Product" class="btn btn-secondary btnBack bg-gradient">
                     <i class="far fa-share-square px-1 mt-1"></i>
                     @Language.GetString("btn_Back")
                 </a>
@@ -87,60 +92,58 @@
 </div>
 @section Scripts {
     <script>
-    var bsAlert = new bootstrap.Toast(document.getElementById('mainToast'));
+   
     $(document).ready(function () {
+        debugger;
         if ('@isNotNullOperationResult' === 'True')
             {
-                $("#toastPanel").show();
-                bsAlert.show();
+                //bsAlert.show();
 
 				if ("@isSuccess" === "False")
                 {
                     document.getElementById('mainToastBody').innerHTML = '<i class="fas fa-exclamation-triangle"></i> @operationResult.Message';
                     document.getElementById('mainToastBody').classList.add('alert-danger');
 
-                    setTimeout(function()
-                        {
-                            $("#toastPanel").hide();
-                        },
-                        2000);
+                    
+                    var toast = new bootstrap.Toast($("#mainToast"));
+                    toast.show();
                 }
                 else
                 {
                     document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @operationResult.Message';
                     document.getElementById('mainToastBody').classList.add('alert-success');
 
+                    var toast = new bootstrap.Toast($("#mainToast"));
+                    toast.show();
                     if ("@string.IsNullOrWhiteSpace(operationResult.Url)" === "False")
                     {
                         setTimeout(function()
                             {
-                            // window.location.href = '@operationResult.Url';
+                            
                             window.location.reload();
                             },
                             2500);
                     }
                 }
-            }if ('@isNotNullOperationResult' === 'True')
+            }
+            if ('@isNotNullOperationResult' === 'True')
             {
-                $("#toastPanel").show();
-                bsAlert.show();
 
 				if ("@isSuccess" === "False")
                 {
                     document.getElementById('mainToastBody').innerHTML = '<i class="fas fa-exclamation-triangle"></i> @operationResult.Message';
                     document.getElementById('mainToastBody').classList.add('alert-danger');
 
-                    setTimeout(function()
-                        {
-                            $("#toastPanel").hide();
-                        },
-                        2000);
+                    var toast = new bootstrap.Toast($("#mainToast"));
+                    toast.show();
                 }
                 else
                 {
                     document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @operationResult.Message';
                     document.getElementById('mainToastBody').classList.add('alert-success');
 
+                     var toast = new bootstrap.Toast($("#mainToast"));
+                    toast.show();
                     if ("@string.IsNullOrWhiteSpace(operationResult.Url)" === "False")
                     {
                         setTimeout(function()

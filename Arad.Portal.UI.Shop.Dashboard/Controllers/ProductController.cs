@@ -175,7 +175,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return View(model);
         }
 
-        [HttpDelete]
+        [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
             Result opResult = await _productRepository.DeleteProduct(id, "delete");
@@ -186,10 +186,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] ProductInputDTO dto)
         {
-            JsonResult result;
+            JsonResult result ;
+            var errors = new List<AjaxValidationErrorModel>();
             if (!ModelState.IsValid)
             {
-                var errors = new List<AjaxValidationErrorModel>();
+                
 
                 foreach (var modelStateKey in ModelState.Keys)
                 {
@@ -201,56 +202,61 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
-                
-                foreach (var item in dto.MultiLingualProperties)
+                if (_productRepository.IsCodeUnique(dto.UniqueCode))
                 {
-                    var lan = _lanRepository.FetchLanguage(item.LanguageId);
-                    item.LanguageSymbol = lan.Symbol;
-                    item.MultiLingualPropertyId = Guid.NewGuid().ToString();
-                    item.ProductGroupNames = new();
-                    foreach (var grp in dto.GroupIds)
+
+                    foreach (var item in dto.MultiLingualProperties)
                     {
-                        var groupDto = _productGroupRepository.ProductGroupFetch(grp);
-                        if(groupDto.MultiLingualProperties.Any(_ => _.LanguageId == item.LanguageId))
+                        var lan = _lanRepository.FetchLanguage(item.LanguageId);
+                        item.LanguageSymbol = lan.Symbol;
+                        item.MultiLingualPropertyId = Guid.NewGuid().ToString();
+                        item.ProductGroupNames = new();
+                        foreach (var grp in dto.GroupIds)
                         {
-                            var name = groupDto.MultiLingualProperties.Where(_ => _.LanguageId == item.LanguageId).FirstOrDefault().Name;
-                            item.ProductGroupNames.Add(name);
+                            var groupDto = _productGroupRepository.ProductGroupFetch(grp);
+                            if (groupDto.MultiLingualProperties.Any(_ => _.LanguageId == item.LanguageId))
+                            {
+                                var name = groupDto.MultiLingualProperties.Where(_ => _.LanguageId == item.LanguageId).FirstOrDefault().Name;
+                                item.ProductGroupNames.Add(name);
+                            }
                         }
                     }
-                }
 
-                foreach (var item in dto.Prices)
-                {
-                    var cur = _curRepository.FetchCurrency(item.CurrencyId);
-                   
-                    item.PriceId = Guid.NewGuid().ToString();
-                    item.Symbol = cur.ReturnValue.Symbol;
-                    item.Prefix = cur.ReturnValue.Symbol;
-                    item.SDate = DateHelper.ToEnglishDate(item.StartDate);
-                    item.IsActive = true;
-                }
-
-                
-                
-                var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
-                var path = "images/Products";
-                foreach (var pic in dto.Pictures)
-                {
-                    var res = ImageFunctions.SaveImageModel(pic, path, localStaticFileStorageURL);
-                    if (res.Key != Guid.Empty.ToString())
+                    foreach (var item in dto.Prices)
                     {
-                        pic.ImageId = res.Key;
-                        pic.Url = res.Value;
-                        pic.Content = "";
+                        var cur = _curRepository.FetchCurrency(item.CurrencyId);
+
+                        item.PriceId = Guid.NewGuid().ToString();
+                        item.Symbol = cur.ReturnValue.Symbol;
+                        item.Prefix = cur.ReturnValue.Symbol;
+                        item.SDate = DateHelper.ToEnglishDate(item.StartDate);
+                        item.IsActive = true;
                     }
-                }
-                Result saveResult = await _productRepository.Add(dto);
-                if(saveResult.Succeeded)
+
+                    var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
+                    var path = "images/Products";
+                    foreach (var pic in dto.Pictures)
+                    {
+                        var res = ImageFunctions.SaveImageModel(pic, path, localStaticFileStorageURL);
+                        if (res.Key != Guid.Empty.ToString())
+                        {
+                            pic.ImageId = res.Key;
+                            pic.Url = res.Value;
+                            pic.Content = "";
+                        }
+                    }
+                    Result saveResult = await _productRepository.Add(dto);
+                    if (saveResult.Succeeded)
+                    {
+                        _codeGenerator.SaveToDB(dto.ProductCode);
+                    }
+                    result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
+                    : new { Status = "Error", saveResult.Message });
+                }else
                 {
-                    _codeGenerator.SaveToDB(dto.ProductCode);
+                    errors.Add(new AjaxValidationErrorModel() { Key = "UniqueCode", ErrorMessage = Language.GetString("AlertAndMessage_DuplicateUniqueCode") });
+                    result = Json(new { Status = "ModelError", ModelStateErrors = errors });
                 }
-                result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
-                : new { Status = "Error", saveResult.Message });
             }
             return result;
         }
@@ -259,9 +265,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> Edit([FromBody] ProductInputDTO dto)
         {
             JsonResult result;
+            var errors = new List<AjaxValidationErrorModel>();
             if (!ModelState.IsValid)
             {
-                var errors = new List<AjaxValidationErrorModel>();
+              
                 foreach (var modelStateKey in ModelState.Keys)
                 {
                     var modelStateVal = ModelState[modelStateKey];
@@ -272,58 +279,66 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
-                foreach (var item in dto.MultiLingualProperties)
+                if(_productRepository.IsCodeUnique(dto.UniqueCode.ToLower(), dto.ProductId))
                 {
-                    var lan = _lanRepository.FetchLanguage(item.LanguageId);
-                    item.LanguageSymbol = lan.Symbol;
-                    item.MultiLingualPropertyId = Guid.NewGuid().ToString();
-                    item.ProductGroupNames = new();
-                    foreach (var grp in dto.GroupIds)
+                    foreach (var item in dto.MultiLingualProperties)
                     {
-                        var groupDto = _productGroupRepository.ProductGroupFetch(grp);
-                        if (groupDto.MultiLingualProperties.Any(_ => _.LanguageId == item.LanguageId))
+                        var lan = _lanRepository.FetchLanguage(item.LanguageId);
+                        item.LanguageSymbol = lan.Symbol;
+                        item.MultiLingualPropertyId = Guid.NewGuid().ToString();
+                        item.ProductGroupNames = new();
+                        foreach (var grp in dto.GroupIds)
                         {
-                            var name = groupDto.MultiLingualProperties.Where(_ => _.LanguageId == item.LanguageId).FirstOrDefault().Name;
-                            item.ProductGroupNames.Add(name);
+                            var groupDto = _productGroupRepository.ProductGroupFetch(grp);
+                            if (groupDto.MultiLingualProperties.Any(_ => _.LanguageId == item.LanguageId))
+                            {
+                                var name = groupDto.MultiLingualProperties.Where(_ => _.LanguageId == item.LanguageId).FirstOrDefault().Name;
+                                item.ProductGroupNames.Add(name);
+                            }
                         }
                     }
-                }
-            
-                //var changeCulture = false;
-                foreach (var item in dto.Prices)
-                {
-                    var cur = _curRepository.FetchCurrency(item.CurrencyId);
-                   
-                    item.PriceId = Guid.NewGuid().ToString();
-                    item.Symbol = cur.ReturnValue.Symbol;
-                    item.Prefix = cur.ReturnValue.Symbol;
-                    item.IsActive = true;
-                }
-                //if(changeCulture)
-                //{
-                //    CultureInfo.CurrentCulture = new CultureInfo("fa-IR");
-                //}
-                var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
-                var path = "images/Products";
-                foreach (var pic in dto.Pictures)
-                {
-                    Guid isGuidKey;
-                    if (!Guid.TryParse(pic.ImageId, out isGuidKey))
+
+                    //var changeCulture = false;
+                    foreach (var item in dto.Prices)
                     {
-                        //its insert and imageId which was int from client replace with guid
-                        var res = ImageFunctions.SaveImageModel(pic, path, localStaticFileStorageURL);
-                        if (res.Key != Guid.Empty.ToString())
-                        {
-                            pic.ImageId = res.Key;
-                            pic.Url = res.Value;
-                            pic.Content = "";
-                        }
-                        //otherwise its  is update then it has no url ;
+                        var cur = _curRepository.FetchCurrency(item.CurrencyId);
+
+                        item.PriceId = Guid.NewGuid().ToString();
+                        item.Symbol = cur.ReturnValue.Symbol;
+                        item.Prefix = cur.ReturnValue.Symbol;
+                        item.IsActive = true;
                     }
+                    //if(changeCulture)
+                    //{
+                    //    CultureInfo.CurrentCulture = new CultureInfo("fa-IR");
+                    //}
+                    var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
+                    var path = "images/Products";
+                    foreach (var pic in dto.Pictures)
+                    {
+                        Guid isGuidKey;
+                        if (!Guid.TryParse(pic.ImageId, out isGuidKey))
+                        {
+                            //its insert and imageId which was int from client replace with guid
+                            var res = ImageFunctions.SaveImageModel(pic, path, localStaticFileStorageURL);
+                            if (res.Key != Guid.Empty.ToString())
+                            {
+                                pic.ImageId = res.Key;
+                                pic.Url = res.Value;
+                                pic.Content = "";
+                            }
+                            //otherwise its  is update then it has no url ;
+                        }
+                    }
+                    Result saveResult = await _productRepository.UpdateProduct(dto);
+                    result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
+                    : new { Status = "Error", saveResult.Message });
+                }else
+                {
+                    errors.Add(new AjaxValidationErrorModel() { Key = "UniqueCode", ErrorMessage = Language.GetString("AlertAndMessage_DuplicateUniqueCode") });
+                    result = Json(new { Status = "ModelError", ModelStateErrors = errors });
                 }
-                Result saveResult = await _productRepository.UpdateProduct(dto);
-                result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
-                : new { Status = "Error", saveResult.Message });
+                
             }
             return result;
         }

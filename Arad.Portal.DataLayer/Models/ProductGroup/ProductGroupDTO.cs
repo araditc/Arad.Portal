@@ -13,7 +13,7 @@ namespace Arad.Portal.DataLayer.Models.ProductGroup
         public ProductGroupDTO()
         {
             MultiLingualProperties = new List<MultiLingualProperty>();
-            GroupImage = new Image();
+            GroupImage = new();
         }
         public string ProductGroupId { get; set; }
 

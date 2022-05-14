@@ -358,13 +358,10 @@
                 if (resultData.status.toLowerCase() === "success") {
 
                     $('#mainToastBody').html('<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessage_OperationDoneSuccessfully")');
-                    //if ("data" in resultData)
-                    //{
-                    //    document.getElementById('mainToastBody').innerHTML += `<br/>${resultData.message}`;
-                    //}
                     $('#mainToastBody').addClass('alert-success');
-                    $("#toastPanel").show();
-                    bsAlert.show();
+                   
+                    var toast = new bootstrap.Toast($("#mainToast"));
+                    toast.show();
                     setTimeout(function()
                     {
                         window.location.reload();
@@ -375,52 +372,22 @@
                     showError(resultData.message);
                 }
             }
-            @*statusCode: {
-                200: function(resultData)
-                {
-                    if (resultData.result)
-                    {
-                        document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
-
-                        if ("data" in resultData)
-                        {
-                            document.getElementById('mainToastBody').innerHTML += `<br/>${resultData.data}`;
-                        }
-
-                        document.getElementById('mainToastBody').classList.add('alert-success');
-                        setTimeout(function()
-                            {
-                                window.location.reload();
-                            },
-                            1500);
-                    }
-                    else
-                    {
-                        showError(resultData.message);
-                    }
-                    bsAlert.show();
-                },
-                404: function()
-                {
-                    showError('@Language.GetString("AlertAndMessages_UserNotFound")');
-                },
-                403: function()
-                {
-                    showError('@Language.GetString("AlertAndMessages_NotAllowed")');
-                }
-            }*@
+            
         });
     }
 
     function showError(msg) {
-        $("#toastPanel").show();
+        
         document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
         document.getElementById('mainToastBody').classList.add('alert-danger');
-        bsAlert.show();
-        setTimeout(function () {
-            $("#toastPanel").hide();
-        },
-        1500);
+        var toastDiv = $("#mainToast");
+        $("#toastPanel").show();
+        var toast = new bootstrap.Toast(toastDiv);
+        toast.show();
+        //setTimeout(function () {
+        //    $("#toastPanel").hide();
+        //},
+        //1500);
     }
     </script>
 

@@ -355,8 +355,9 @@
             });
         });
         function EntityDelete(id) {
+            debugger;
              entityId = id;
-			typeOfRequest = 'Delete';
+			typeOfRequest = 'Get';
 			confirmUrl = '@Url.Action("Delete", "Product")' + "/" + id,
 			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Delete")';
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_DeletionSureness")';
@@ -365,7 +366,7 @@
 
         function EntityRestore(id) {
              entityId = id;
-			typeOfRequest = 'PUT';
+			typeOfRequest = 'Get';
 			confirmUrl = '@Url.Action("Restore", "Product")' + '?id=' + id,
 			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';

@@ -18,12 +18,12 @@
             </div>
             <div class="col-md-3 offset-md-6">
                 <div class="card-tools float-end">
-                    @if (ViewBag.Permissions["Add"])
-                    {
-                        <a asp-action="AddEdit" class="btn btn-success bg-gradient btn-sm">
+                   @* @if (ViewBag.Permissions["Add"])
+                    {*@
+                        <a asp-action="New" class="btn btn-success bg-gradient btn-sm">
                             <i  class="fa fa-plus pt-1"></i>@Language.GetString("btn_Add")
                         </a>
-                    }
+                    @*}*@
                 </div>
             </div>
         </div>
@@ -79,7 +79,7 @@
                             </td>
                             <td class="ListCell">
                                
-                                    <a asp-action="AddEdit" asp-controller="Role" asp-route-id="@item.Id" class="btn btn-sm btn-warning bg-gradient">
+                                    <a asp-action="Edit" asp-controller="Role" asp-route-id="@item.Id" class="btn btn-sm btn-warning bg-gradient">
                                         <i  class="fa fa-edit"></i>@Language.GetString("btn_Edit")
                                     </a>
                               
@@ -178,6 +178,8 @@
                         });*@
                             document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> ' + resultData.message;
                             document.getElementById('mainToastBody').classList.add('alert-success');
+                             var bsAlert = new bootstrap.Toast($("#mainToast"));
+                            bsAlert.show();
                     },
             });
         }
@@ -185,7 +187,7 @@
         function RoleDelete(id) {
             debugger;
              entityId = id;
-			typeOfRequest = 'Delete';
+			typeOfRequest = 'Get';
 			confirmUrl = '@Url.Action("Delete", "Role")' + '?id=' + id,
 			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Delete")';
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_DeletionSureness")';

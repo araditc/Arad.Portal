@@ -12,9 +12,9 @@
     </div>
     <div class="card-body">
 
-        <form  class="row g-3" enctype="multipart/form-data" method="post" role="form">
-
-            <div class="col-md-4">
+        <form   enctype="multipart/form-data" method="post" role="form">
+            <div class="row g-3 align-items-center">
+            <div class="col-auto">
 
                 <label class="form-label" for="formFile">
                    @Language.GetString("ProductTemplateLanguage")
@@ -22,13 +22,20 @@
                 <select class="form-control selectpicker" data-live-search="true" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                 </select>
             </div>
-
-            <div class="col-md-12 text-end">
-                <button class="btn btn-success btn-sm pe-3" id="btnDownloadTemplate" @*onclick="download();"*@ type="button">
+            <div class="col-auto text-end">
+                <button class="btn btn-success btn-sm pe-3 mt-3" id="btnDownloadTemplate" @*onclick="download();"*@ type="button">
                     <i class="fas fa-file-download px-1 mt-1">
                     </i>@Language.GetString("Download")
                 </button>
                 
+            </div>
+             <div class="col-auto text-end">
+                <a asp-action="ImportProductFromExcel" asp-controller="Excel" class="btn btn-sm btn-secondary btnBack bg-gradient mt-3">
+                    <i class="far fa-share-square px-1 mt-1"></i>
+                    @Language.GetString("btn_Back")
+                </a>
+                
+            </div>
             </div>
         </form>
     </div>

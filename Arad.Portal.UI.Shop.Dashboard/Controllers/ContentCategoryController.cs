@@ -64,7 +64,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
             ViewBag.LangId = lan.LanguageId;
             var categoryList = await _contentCategoryRepository.AllActiveContentCategory(lan.LanguageId, currentUserId);
-            categoryList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
+            //categoryList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
             ViewBag.CategoryList = categoryList;
              var lst =  _contentCategoryRepository.GetAllContentCategoryType();
             //lst.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
@@ -226,7 +226,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             : new { Status = "Error", saveResult.Message });
             return result;
         }
-        [HttpDelete]
+        [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
             Result opResult = await _contentCategoryRepository.Delete(id, "delete");

@@ -54,11 +54,11 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
         public int? BoughtCount { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime StartDate { get; set; }
+        public DateTime SDate { get; set; }
 
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime? EndDate { get; set; }
+        public DateTime? EDate { get; set; }
 
 
     }

@@ -1,22 +1,22 @@
-﻿@using  Arad.Portal.DataLayer.Models.Shared;
-@model List<Arad.Portal.DataLayer.Models.Shared.MenuLinkModel>
+﻿@using  Arad.Portal.DataLayer.Models.Permission;
+@model List<Arad.Portal.DataLayer.Models.Permission.PermissionTreeViewDto>
 @{
     Layout = null;
 }
 <div class="position-sticky pt-2">
     <div class="accordion"
          id="menu">
-        @foreach (MenuLinkModel item in Model.OrderBy(c => c.Priority))
+        @foreach (PermissionTreeViewDto item in Model.OrderBy(c => c.Priority))
         {
             @if (item.Children is { Count: 0 })
             {
                 <div class="accordion-item border-0">
                     <h2 class="accordion-header py-1"
-                        id="@($"heading{item.MenuId}")">
-                        <a href="@item.Link"
+                        id="@($"heading{item.PermissionId}")">
+                        <a href="@item.ClientAddress"
                            class="btn btn-sm bg-gradient text-start text-nowrap lh-lg @(item.IsActive ? "text-primary" : "")">
                             <i class="@item.Icon"></i>
-                            @item.MenuTitle
+                           @Language.GetString($"PermissionTitle_{item.Title}") 
                         </a>
                     </h2>
                 </div>
@@ -25,31 +25,31 @@
             {
                 <div class="accordion-item border-0">
                     <h2 class="accordion-header py-2"
-                        id="@($"heading{item.MenuId}")">
+                        id="@($"heading{item.PermissionId}")">
 
-                        <button aria-controls="@($"collapse{item.MenuId}")"
+                        <button aria-controls="@($"collapse{item.PermissionId}")"
                                 aria-expanded="@item.IsActive"
                                 class="accordion-button py-1 px-2 @(item.IsActive ? "" : "collapsed")"
-                                data-bs-target="@($"#collapse{item.MenuId}")"
+                                data-bs-target="@($"#collapse{item.PermissionId}")"
                                 data-bs-toggle="collapse"
                                 type="button">
                             <i class="@item.Icon pe-1"></i>
-                            @item.MenuTitle
+                            @Language.GetString($"PermissionTitle_{item.Title}") 
                         </button>
 
                     </h2>
 
-                    <div aria-labelledby="@($"heading{item.MenuId}")"
+                    <div aria-labelledby="@($"heading{item.PermissionId}")"
                          class="accordion-collapse collapse @(item.IsActive ? "show" : "")"
                          data-bs-parent="#menu"
-                         id="@($"collapse{item.MenuId}")">
+                         id="@($"collapse{item.PermissionId}")">
 
                         <div class="accordion-body p-1">
 
                             <div class="accordion"
-                                 id="@($"subMenu{item.MenuId}")">
+                                 id="@($"subMenu{item.PermissionId}")">
 
-                                @foreach (MenuLinkModel child in item.Children.OrderBy(c => c.Priority))
+                                @foreach (PermissionTreeViewDto child in item.Children.OrderBy(c => c.Priority))
                                 {
                                     <div class="accordion-item border-0">
                                         @await Component.InvokeAsync("InnerMenu", child)

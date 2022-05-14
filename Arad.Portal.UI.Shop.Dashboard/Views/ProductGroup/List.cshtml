@@ -184,7 +184,7 @@
         function EntityRestore(id) {
             debugger;
             entityId = id;
-			typeOfRequest = 'PUT';
+			typeOfRequest = 'Get';
 			confirmUrl = '@Url.Action("Restore", "ProductGroup")' + '?id=' + id,
 			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';

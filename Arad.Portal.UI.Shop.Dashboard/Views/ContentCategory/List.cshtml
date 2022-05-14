@@ -105,7 +105,7 @@
                                 }
                                 @if (item.IsDeleted)
                                 {
-                                    <button id="restoreRecord" data-id="@item.ContentCategoryId" onclick="EntityRestore('@item.ContentCategoryId')" class="btn btn-sm btn-primary bg-gradient">
+                                    <button id="restoreRecord" data-id="@item.ContentCategoryId" onclick="EntityRestore('@item.ContentCategoryId')" class="btn btn-sm btn-secondary bg-gradient">
                                         <i  class="fa fa-refresh"></i>
                                         @Language.GetString("btn_Restore")
                                     </button>
@@ -155,7 +155,7 @@
         });
         function EntityDelete(id) {
             entityId = id;
-			typeOfRequest = 'Delete';
+			typeOfRequest = 'Get';
 			confirmUrl = '@Url.Action("Delete", "ContentCategory")' + "/" + id,
 			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Delete")';
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_DeletionSureness")';
@@ -164,7 +164,7 @@
 
         function EntityRestore(id) {
               entityId = id;
-			typeOfRequest = 'PUT';
+			typeOfRequest = 'Get';
 			confirmUrl = '@Url.Action("Restore", "ContentCategory")' + '?id=' + id,
 			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';

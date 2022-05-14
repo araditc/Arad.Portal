@@ -47,11 +47,11 @@ namespace Arad.Portal.DataLayer.Models.Promotion
 
         public string CurrencyName { get; set; }
 
-        public DateTime? StartDate { get; set; }
+        public DateTime? SDate { get; set; }
 
         public string PersianStartDate { get; set; }
 
-        public DateTime? EndDate { get; set; }
+        public DateTime? EDate { get; set; }
 
         public string PersianEndDate { get; set; }
 

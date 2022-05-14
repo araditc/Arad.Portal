@@ -277,13 +277,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                 {
                     //???
                     totalList = totalList
-                        .Where(_ => _.CreationDate >= filter["from"].ToString().ToEnglishDate().ToUniversalTime());
+                        .Where(_ => _.StartShowDate >= filter["from"].ToString().ToEnglishDate().ToUniversalTime());
                 }
                 if (!string.IsNullOrWhiteSpace(filter["to"]))
                 {
                     //???
                     totalList = totalList
-                        .Where(_ => _.CreationDate <= filter["to"].ToString().ToEnglishDate().ToUniversalTime());
+                        .Where(_ => _.EndShowDate <= filter["to"].ToString().ToEnglishDate().ToUniversalTime());
                 }
                 if(!string.IsNullOrWhiteSpace(filter["keyword"]))
                 {

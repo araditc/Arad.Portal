@@ -28,6 +28,7 @@ using Arad.Portal.DataLayer.Models.Domain;
 using Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
 using Arad.Portal.DataLayer.Entities.General.DesignStructure;
+using MongoDB.Bson;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 {
@@ -35,6 +36,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
     {
         private readonly ProductContext _context;
         //private readonly OrderContext _orderContext;
+        private readonly FilterDefinitionBuilder<Entities.Shop.Product.Product> _builder = new();
         private readonly DomainContext _domainContext;
         private readonly CurrencyContext _currencyContext;
         private readonly TransactionContext _transactionContext;
@@ -585,8 +587,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 {
                     totalList = totalList
                         .Where(_ => _.Promotion != null &&
-                                    _.Promotion.StartDate <= DateTime.UtcNow &&
-                        (_.Promotion.EndDate == null || _.Promotion.EndDate <= DateTime.UtcNow));
+                                    _.Promotion.SDate <= DateTime.UtcNow &&
+                        (_.Promotion.EDate == null || _.Promotion.EDate <= DateTime.UtcNow));
                 }
                 if (!string.IsNullOrWhiteSpace(filter["exist"]) && Convert.ToBoolean(filter["exist"].ToString()))
                 {
@@ -687,8 +689,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 if(productEntity.Promotion != null)
                 {
                     if(productEntity.Promotion.PromotionType == Entities.Shop.Promotion.PromotionType.Product && 
-                        productEntity.Promotion.IsActive && productEntity.Promotion.StartDate <= DateTime.Now &&
-                        (productEntity.Promotion.EndDate >= DateTime.Now || productEntity.Promotion == null))
+                        productEntity.Promotion.IsActive && productEntity.Promotion.SDate <= DateTime.Now &&
+                        (productEntity.Promotion.EDate >= DateTime.Now || productEntity.Promotion == null))
                     {
                         result = true;
                     }
@@ -904,26 +906,26 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 
             var promotionList = new List<Entities.Shop.Promotion.Promotion>();
             if (_promotionContext.Collection.Find(_ => _.PromotionType ==
-             Entities.Shop.Promotion.PromotionType.All && (_.EndDate == null || _.EndDate.Value >= DateTime.Now) && _.StartDate <= DateTime.Now).Any())
+             Entities.Shop.Promotion.PromotionType.All && (_.EDate == null || _.EDate.Value >= DateTime.Now) && _.SDate <= DateTime.Now).Any())
             {
                 promotionOnAll = _promotionContext.Collection
-                    .Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.All && (_.EndDate == null || _.EndDate.Value >= DateTime.Now) && _.StartDate <= DateTime.Now).First();
+                    .Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.All && (_.EDate == null || _.EDate.Value >= DateTime.Now) && _.SDate <= DateTime.Now).First();
             }
             if (_promotionContext.Collection.Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group &&
-             _.StartDate <= DateTime.Now && (_.EndDate == null || _.EndDate.Value >= DateTime.Now) && _.Infoes.Any(a => productGroupIds.Contains(a.AffectedProductGroupId))).Any())
+             _.SDate <= DateTime.Now && (_.EDate == null || _.EDate.Value >= DateTime.Now) && _.Infoes.Any(a => productGroupIds.Contains(a.AffectedProductGroupId))).Any())
             {
                 promotionOnProductGroup =
-                     _promotionContext.Collection.Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group && _.StartDate <= DateTime.Now &&
-                          (_.EndDate == null || _.EndDate.Value >= DateTime.Now) && _.Infoes.Any(a => productGroupIds.Contains(a.AffectedProductGroupId))).First();
+                     _promotionContext.Collection.Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group && _.SDate <= DateTime.Now &&
+                          (_.EDate == null || _.EDate.Value >= DateTime.Now) && _.Infoes.Any(a => productGroupIds.Contains(a.AffectedProductGroupId))).First();
             }
 
 
             if (_promotionContext.Collection.Find(_ => _.PromotionType ==
-                 Entities.Shop.Promotion.PromotionType.Product && _.StartDate <= DateTime.Now && (_.EndDate == null || _.EndDate.Value >= DateTime.Now)
+                 Entities.Shop.Promotion.PromotionType.Product && _.SDate <= DateTime.Now && (_.EDate == null || _.EDate.Value >= DateTime.Now)
                    && _.Infoes.Any(a => a.AffectedProductId == productId)).Any())
             {
                 promotionOnThisProduct = _promotionContext.Collection.Find(_ => _.PromotionType ==
-                 Entities.Shop.Promotion.PromotionType.Product && _.StartDate <= DateTime.Now && (_.EndDate == null || _.EndDate.Value >= DateTime.Now)
+                 Entities.Shop.Promotion.PromotionType.Product && _.SDate <= DateTime.Now && (_.EDate == null || _.EDate.Value >= DateTime.Now)
                    && _.Infoes.Any(a => a.AffectedProductId == productId)).First();
 
             }
@@ -944,7 +946,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 }
                 else
                 {
-                    if (promotionList[i].StartDate > newestPromotion.StartDate)
+                    if (promotionList[i].SDate > newestPromotion.SDate)
                     {
                         //this promotion is newer than current promotion
                         newestPromotion = promotionList[i];
@@ -1140,12 +1142,15 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                         PriceValue = pro.Price,
                         Symbol = currencyEntity.Symbol
                     });
-
-                    product.Images.Add(new Image()
+                    if(pro.ProductImage != null)
                     {
-                        ImageId = pro.ProductImage.ImageId,
-                        Url = pro.ProductImage.Url
-                    });
+                        product.Images.Add(new Image()
+                        {
+                            ImageId = pro.ProductImage.ImageId,
+                            Url = pro.ProductImage.Url
+                        });
+                    }
+                   
 
                     product.UniqueCode = pro.UniqueCode;
                     product.Inventory = pro.Inventory;
@@ -1160,8 +1165,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                         .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
                     product.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                         .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
-
-                    //var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                    
                     var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
                     product.AssociatedDomainId = domainId;
 
@@ -1332,6 +1336,20 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 result.Add(obj);
             }
             return result;
+        }
+
+        public bool IsCodeUnique(string code, string productId ="")
+        {
+            if(!string.IsNullOrWhiteSpace(productId))
+            {
+                return !_context.ProductCollection.Find(_ => _.UniqueCode == code).Any();
+            }else
+            {
+                var builder = Builders<BsonDocument>.Filter;
+                var filter = builder.Ne("ProductId", productId) & builder.Eq("UniqueCode", code);
+                return !_context.BsonProductCollection.Find(filter).Any();
+            }
+           
         }
     }
 }

@@ -102,7 +102,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         }
             
-        [HttpPut]
+        [HttpGet]
         public async Task<IActionResult> Restore(string id)
         {
             JsonResult result;

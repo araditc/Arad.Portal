@@ -383,16 +383,21 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             var model = new RegisterUserModel();
             var list = await _roleRepository.List("");
+            //var superRole = list.Items.FirstOrDefault(_ => _.RoleName == "سوپر ادمین");
+            //list.Items.Remove(superRole);
             ViewBag.LangList = _languageRepository.GetAllActiveLanguage();
             var currentUserId = _httpContextAccessor.HttpContext.User
                 .Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             var currentUser = await _userManager.FindByIdAsync(currentUserId);
-            if(currentUser.IsSystemAccount)
+            var lan = _languageRepository.GetDefaultLanguage(currentUserId);
+            ViewBag.LangId = lan.LanguageId;
+            if (currentUser.IsSystemAccount)
             {
                 ViewBag.IsSystem = true;
                 ViewBag.DomainList = _domainRepository.GetAllActiveDomains();
 
-            }else
+            }
+            else
             {
                 ViewBag.IsSystem = false;
             }
@@ -511,7 +516,18 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                                     ErrorMessage = Language.GetString("AlertAndMessage_DuplicateUsername"),
                                 };
                                 errors.Add(obj);
+
                             }
+                            else if(error.Code == "PasswordRequiresLower")
+                            {
+                                var obj = new ClientValidationErrorModel
+                                {
+                                    Key = "Password",
+                                    ErrorMessage = Language.GetString("AlertAndMessage_PasswordRequiresLower"),
+                                };
+                                errors.Add(obj);
+                            }
+                            
                         }
 
                         result = new JsonResult(new { Status = "error", Message = "", ModelStateErrors = errors });
@@ -546,6 +562,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             try
             {
                 var userDb = await _userManager.FindByIdAsync(id);
+                bool isVendor;
+                if (userDb.Claims.Any(_ => _.ClaimType == "AppRole"))
+                    isVendor = true;
+                else isVendor = false;
                 ViewBag.IsSystem = userDb.IsSystemAccount;
                 ViewBag.LangList = _languageRepository.GetAllActiveLanguage();
                 model = new UserEdit()
@@ -554,10 +574,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     PhoneNumber = userDb.PhoneNumber.Substring(2, 10),
                     FirstName = userDb.Profile.FirstName,
                     LastName = userDb.Profile.LastName,
-                    UserRoleId = userDb.UserRoleId
+                    UserRoleId = userDb.UserRoleId,
+                    DefaultLanguageId = userDb.Profile.DefaultLanguageId,
+                    IsVendor = isVendor
                 };
 
                 var list = await _roleRepository.List("");
+                //var superRole = list.Items.FirstOrDefault(_ => _.RoleName == "سوپر ادمین");
+                //list.Items.Remove(superRole);
                 ViewBag.Roles = list.Items.Select(_ => new RoleListView()
                 {
                     Title = _.RoleName,
@@ -668,7 +692,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                                     result = new JsonResult(new { Status = "error", Message = "", ModelStateErrors = errors });
                                 }
                             }
-                            return View("Index");
                         }
                     }
                 }
@@ -776,7 +799,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         }
 
-        [HttpDelete]
+        [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
             JsonResult result = new JsonResult(new

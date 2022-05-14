@@ -1,5 +1,5 @@
-﻿@using Arad.Portal.DataLayer.Models.Shared; 
-@model Arad.Portal.DataLayer.Models.Shared.MenuLinkModel
+﻿@using Arad.Portal.DataLayer.Models.Permission; 
+@model Arad.Portal.DataLayer.Models.Permission.PermissionTreeViewDto
 @{
     Layout = null;
 }
@@ -7,28 +7,28 @@
 @if (Model.Children != null && Model.Children.Any())
 {
     <h2 class="accordion-header py-2"
-        id="@($"heading{Model.MenuId}")">
-        <button aria-controls="@($"collapse{Model.MenuId}")"
+        id="@($"heading{Model.PermissionId}")">
+        <button aria-controls="@($"collapse{Model.PermissionId}")"
                 aria-expanded="false"
                 class="accordion-button collapsed py-2 px-2"
-                data-bs-target="@($"#collapse{Model.MenuId}")"
+                data-bs-target="@($"#collapse{Model.PermissionId}")"
                 data-bs-toggle="collapse"
                 type="button">
             <i class="@Model.Icon"></i>
-            @Model.MenuTitle
+           @Language.GetString($"PermissionTitle_{Model.Title}") 
         </button>
     </h2>
 
-    <div aria-labelledby="@($"heading{Model.MenuId}")"
+    <div aria-labelledby="@($"heading{Model.PermissionId}")"
          class="accordion-collapse collapse"
-         id="@($"collapse{Model.MenuId}")">
+         id="@($"collapse{Model.PermissionId}")">
 
         <div class="accordion-body">
 
             <div class="accordion"
-                 id="@($"subMenu{Model.MenuId}")">
+                 id="@($"subMenu{Model.PermissionId}")">
 
-                @foreach (MenuLinkModel child in Model.Children.OrderBy(c => c.Priority))
+                @foreach (PermissionTreeViewDto child in Model.Children.OrderBy(c => c.Priority))
                 {
                     <div class="accordion-item border-0">
                         @await Component.InvokeAsync("InnerMenu", child)
@@ -42,11 +42,11 @@ else
 {
     <div class="accordion-item  border-0">
         <h2 class="accordion-header py-1 px-2"
-            id="@($"heading{Model.MenuId}")">
-            <a href="@Model.Link"
+            id="@($"heading{Model.PermissionId}")">
+            <a href="@Model.ClientAddress"
                class="btn btn-sm bg-gradient text-start @(Model.IsActive ? "text-primary" : "")">
                 <i class="@Model.Icon"></i>
-                @Model.MenuTitle
+               @Language.GetString($"PermissionTitle_{Model.Title}") 
             </a>
         </h2>
     </div>

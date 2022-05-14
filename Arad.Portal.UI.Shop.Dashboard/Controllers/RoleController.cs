@@ -405,7 +405,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return Ok(saveResult.Succeeded ? new { Status = "Success", saveResult.Message } : new { Status = "Error", saveResult.Message });
         }
 
-        [HttpDelete]
+        [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
             //bool result = await _repository.Delete(id);
@@ -445,14 +445,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 List<JsTree> trees = new();
                 foreach (DataLayer.Entities.General.Permission.Permission permission in list.OrderBy(p => p.Priority))
                 {
-                    JsTree jsTree = new() { Id = permission.PermissionId, Text = Language.GetString($"PermissionTitle_{permission.Title}"), State = new State(), Children = ConvertToJsTree(permission.Children) };
+                    JsTree jsTree = new() { Id = permission.PermissionId, Text = Language.GetString($"PermissionTitle_{permission.Title}"),
+                        State = new State(), Children = ConvertToJsTree(permission.Children) };
 
                     foreach (DataLayer.Entities.General.Permission.Action action in permission.Actions)
                     {
-                        JsTree actionJsTree = new() { Id = action.Id, Text = Language.GetString(action.Title), State = new State(), Children = new() };
+                        JsTree actionJsTree = new() { Id = action.PermissionId, Text = Language.GetString(action.Title), State = new State(), Children = new() };
                         jsTree.Children.Add(actionJsTree);
 
-                        if (roleDto != null && roleDto.PermissionIds.Contains(action.Id))
+                        if (roleDto != null && roleDto.PermissionIds.Contains(action.PermissionId))
                         {
                             actionJsTree.State.Selected = true;
                         }

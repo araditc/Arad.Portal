@@ -72,7 +72,7 @@ namespace Arad.Portal.DataLayer.Models.Permission
 
     public class PermissionTreeViewDto
     {
-        public string Id { get; set; }
+        public string PermissionId { get; set; }
 
         public string Title { get; set; }
 

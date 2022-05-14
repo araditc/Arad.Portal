@@ -44,6 +44,7 @@ using Arad.Portal.DataLayer.Entities.General.Notify;
 using Arad.Portal.DataLayer.Entities.Shop.Setting;
 using Arad.Portal.DataLayer.Models.Setting;
 
+
 namespace Arad.Portal.UI.Shop.Mapping
 {
     public class MappingProfile : AutoMapper.Profile
@@ -77,6 +78,8 @@ namespace Arad.Portal.UI.Shop.Mapping
             CreateMap<ShippingTypeDetail, ShippingTypeDetailDTO>().ReverseMap();
             CreateMap<ShippingCoupon, ShippingCouponDTO>().ReverseMap();
             CreateMap<ProviderDetail, ProviderDetailDTO>().ReverseMap();
+            CreateMap<Permission, PermissionTreeViewDto>().ReverseMap();
+            CreateMap<Arad.Portal.DataLayer.Entities.General.Permission.Action, ActionDto>().ReverseMap();
         }
     }
 }

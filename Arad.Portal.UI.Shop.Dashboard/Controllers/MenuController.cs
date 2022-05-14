@@ -299,8 +299,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             return res;
         }
-       
-        [HttpDelete]
+
+        [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
             Result opResult = await _menuRepository.DeleteMenu(id);

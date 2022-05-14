@@ -244,7 +244,7 @@
 
         function EntityDelete(id) {
             entityId = id;
-			typeOfRequest = 'Delete';
+			typeOfRequest = 'Get';
 			confirmUrl = '@Url.Action("Delete", "Comment")' + "/" + id,
 			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Delete")';
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_DeletionSureness")';
@@ -253,7 +253,7 @@
 
     function EntityRestore(id) {
          entityId = id;
-			typeOfRequest = 'PUT';
+			typeOfRequest = 'Get';
 			confirmUrl = '@Url.Action("Restore", "Comment")' + "/" + id,
 			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';

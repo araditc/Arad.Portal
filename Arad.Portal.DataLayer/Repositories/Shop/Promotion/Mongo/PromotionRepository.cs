@@ -38,7 +38,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
             var result = new Result();
             var promotionEntity = _context.Collection
                 .Find(_ => _.PromotionId == promotionId &&
-                _.StartDate <= DateTime.UtcNow && _.EndDate == null)
+                _.SDate <= DateTime.UtcNow && _.EDate == null)
                 .FirstOrDefault();
             if(promotionEntity != null)
             {
@@ -75,7 +75,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
             var result = new Result();
             var promotionEntity = _context.Collection
                 .Find(_ => _.PromotionId == promotionId &&
-                _.StartDate <= DateTime.UtcNow && _.EndDate == null)
+                _.SDate <= DateTime.UtcNow && _.EDate == null)
                 .FirstOrDefault();
             if (promotionEntity != null)
             {
@@ -165,8 +165,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
             equallentModel.CreatorUserName = GetUserName();
             equallentModel.PromotionType = (PromotionType)dto.PromotionTypeId;
             equallentModel.DiscountType = (DiscountType)dto.DiscountTypeId;
-            equallentModel.StartDate = DateHelper.ToEnglishDate(dto.PersianStartDate).ToUniversalTime();
-            equallentModel.EndDate = DateHelper.ToEnglishDate(dto.PersianEndDate).ToUniversalTime();
+            equallentModel.SDate = dto.PersianStartDate.ToEnglishDate().ToUniversalTime();
+            equallentModel.EDate =dto.PersianEndDate.ToEnglishDate().ToUniversalTime();
 
                 await _context.Collection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;
@@ -187,6 +187,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
             if(oldEntity != null)
             {
                 var equallentModel = _mapper.Map<Entities.Shop.Promotion.Promotion>(dto);
+                equallentModel.SDate = DateHelper.ToEnglishDate(dto.PersianStartDate);
+                if(!string.IsNullOrWhiteSpace(dto.PersianEndDate))
+                equallentModel.EDate = DateHelper.ToEnglishDate(dto.PersianEndDate);
                 var modifications = oldEntity.Modifications;
                 var newModification = GetCurrentModification(dto.ModificationReason);
                 modifications.Add(newModification);
@@ -278,12 +281,12 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                 }
                 if (!string.IsNullOrWhiteSpace(fromDate))
                 {
-                    list = list.Where(_ => _.StartDate >= DateHelper.ToEnglishDate(fromDate).ToUniversalTime()).Skip((page - 1) * pageSize)
+                    list = list.Where(_ => _.SDate >= DateHelper.ToEnglishDate(fromDate).ToUniversalTime()).Skip((page - 1) * pageSize)
                       .Take(pageSize).ToList();
                 }
                 if (!string.IsNullOrWhiteSpace(toDate))
                 {
-                    list = list.Where(_ => _.EndDate <= DateHelper.ToEnglishDate(toDate).ToUniversalTime()).Skip((page - 1) * pageSize)
+                    list = list.Where(_ => _.EDate <= DateHelper.ToEnglishDate(toDate).ToUniversalTime()).Skip((page - 1) * pageSize)
                       .Take(pageSize).ToList();
                 }
                 if (!string.IsNullOrWhiteSpace(productId))
@@ -325,7 +328,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                 .Find(_ => _.PromotionId == promotionId).FirstOrDefault();
             if(promotionEntity != null)
             {
-                promotionEntity.EndDate = dateTime == null ? DateTime.Now : dateTime.Value;
+                promotionEntity.EDate = dateTime == null ? DateTime.Now : dateTime.Value;
                 var updateResult = await _context.Collection
                         .ReplaceOneAsync(_ => _.PromotionId == promotionId, promotionEntity);
                 if (updateResult.IsAcknowledged)
@@ -346,8 +349,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
 
         public List<SelectListModel> GetActivePromotionsOfCurrentUser(string userId, PromotionType type)
         {
-            var alltypes = _context.Collection.Find(_ => _.CreatorUserId == userId && _.StartDate <= DateTime.Now &&
-            (_.EndDate >= DateTime.Now || _.EndDate == null) && _.IsActive);
+            var alltypes = _context.Collection.Find(_ => _.CreatorUserId == userId && _.SDate <= DateTime.Now &&
+            (_.EDate >= DateTime.Now || _.EDate == null) && _.IsActive);
             var res = alltypes.ToList().Where(_=>_.PromotionType == type).Select(_ => new SelectListModel() 
             { 
                 Text = _.Title,
@@ -364,10 +367,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
             {
                 result = _mapper.Map<PromotionDTO>(entity);
             }
-            result.PersianStartDate = DateHelper.ToPersianDdate(entity.StartDate.ToLocalTime());
-            if(entity.EndDate != null)
+            result.PersianStartDate = DateHelper.ToPersianDdate(entity.SDate.ToLocalTime());
+            if(entity.EDate != null)
             {
-                result.PersianEndDate = DateHelper.ToPersianDdate(entity.EndDate.Value.ToLocalTime());
+                result.PersianEndDate = DateHelper.ToPersianDdate(entity.EDate.Value.ToLocalTime());
             }
             
             result.PromotionTypeId = (int)entity.PromotionType;

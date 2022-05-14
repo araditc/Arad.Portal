@@ -164,7 +164,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
             var categoryList = await _contentCategoryRepository.AllActiveContentCategory(lan.LanguageId, currentUserId);
             categoryList = categoryList.OrderBy(_ => _.Text).ToList();
-            categoryList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
+            //categoryList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
             ViewBag.CatList = categoryList;
 
             var imageRatioList = _contentRepository.GetAllImageRatio();
@@ -183,8 +183,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             //}
             return View(model);
         }
-
-        [HttpDelete]
+        [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
             Result opResult = await _contentRepository.Delete(id, "delete");

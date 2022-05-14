@@ -45,14 +45,14 @@ namespace Arad.Portal.DataLayer.Entities.General.Permission
 
         public string ClientAddress { get; set; }
 
-        public List<Permission> Children { get; set; } 
+        public List<Permission> Children { get; set; }
 
         public List<Action> Actions { get; set; }
     }
 
     public class Action
     {
-        public string Id { get; set; }
+        public string PermissionId { get; set; }
 
         public string Title { get; set; }
 

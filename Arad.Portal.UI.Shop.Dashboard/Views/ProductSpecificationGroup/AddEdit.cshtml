@@ -154,8 +154,10 @@
                         }).then(() => {
                             window.location.href = '@Url.Action("List")';
                         });*@
-                          document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessages_OperationSuccess")';
+                          document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
                             document.getElementById('mainToastBody').classList.add('alert-success');
+                             var bsAlert = new bootstrap.Toast($("#mainToast"));
+                            bsAlert.show();
                             setTimeout(function()
                             {
                                  window.location.href = '@Url.Action("List")';

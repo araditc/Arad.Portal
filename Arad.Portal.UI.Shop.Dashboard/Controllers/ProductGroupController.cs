@@ -75,25 +75,28 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     staticFileStorageURL = _webHostEnvironment.WebRootPath;
                 }
-               
-                if (!string.IsNullOrWhiteSpace(model.GroupImage.Url))
+                if(model.GroupImage != null)
                 {
-                    model.GroupImage.Url = model.GroupImage.Url.Replace("\\", "/");
-                    IImageFormat format;
-                    using (SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(Path.Combine(staticFileStorageURL, model.GroupImage.Url), out format))
+                    if (!string.IsNullOrWhiteSpace(model.GroupImage.Url))
                     {
-                        var imageEncoder = Configuration.Default.ImageFormatsManager.FindEncoder(format);
-                        using (MemoryStream m = new MemoryStream())
+                        model.GroupImage.Url = model.GroupImage.Url.Replace("\\", "/");
+                        IImageFormat format;
+                        using (SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(Path.Combine(staticFileStorageURL, model.GroupImage.Url), out format))
                         {
-                            image.Save(m, imageEncoder);
-                            byte[] imageBytes = m.ToArray();
+                            var imageEncoder = Configuration.Default.ImageFormatsManager.FindEncoder(format);
+                            using (MemoryStream m = new MemoryStream())
+                            {
+                                image.Save(m, imageEncoder);
+                                byte[] imageBytes = m.ToArray();
 
-                            // Convert byte[] to Base64 String
-                            string base64String = Convert.ToBase64String(imageBytes);
-                            model.GroupImage.Content = $"data:image/png;base64, {base64String}";
+                                // Convert byte[] to Base64 String
+                                string base64String = Convert.ToBase64String(imageBytes);
+                                model.GroupImage.Content = $"data:image/png;base64, {base64String}";
+                            }
                         }
                     }
                 }
+               
             }
             else
             {
@@ -175,6 +178,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         dto.GroupImage.Title = dto.MultiLingualProperties.Any(_ => _.LanguageId == lang.LanguageId) ?
                             dto.MultiLingualProperties.First(_ => _.LanguageId == lang.LanguageId).Name : dto.MultiLingualProperties.First().Name;
                     }
+                }else
+                {
+                    dto.GroupImage = null;
                 }
                 Result saveResult = await _productGroupRepository.Add(dto);
                 if(saveResult.Succeeded)
@@ -260,25 +266,29 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 var lan = _lanRepository.GetDefaultLanguage(currentUserId);
 
                 Guid isGuidKey;
-                if (!Guid.TryParse(dto.GroupImage.ImageId, out isGuidKey) && !string.IsNullOrWhiteSpace(dto.GroupImage.Content))
+                if(dto.GroupImage != null)
                 {
-                    //its insert and imageId which was int from client replace with guid
-                    var res = ImageFunctions.SaveImageModel(dto.GroupImage, path, localStaticFileStorageURL);
-                    if (res.Key != Guid.Empty.ToString())
+                    if (!Guid.TryParse(dto.GroupImage.ImageId, out isGuidKey) && !string.IsNullOrWhiteSpace(dto.GroupImage.Content))
                     {
-                        dto.GroupImage.ImageId = res.Key;
-                        dto.GroupImage.Url = res.Value;
-                        dto.GroupImage.Content = "";
-                        //dto.GroupImage.Title = dto.MultiLingualProperties.Any(_ => _.LanguageId == lan.LanguageId) ?
-                        //   dto.MultiLingualProperties.First(_ => _.LanguageId == lan.LanguageId).Name : dto.MultiLingualProperties.First().Name;
+                        //its insert and imageId which was int from client replace with guid
+                        var res = ImageFunctions.SaveImageModel(dto.GroupImage, path, localStaticFileStorageURL);
+                        if (res.Key != Guid.Empty.ToString())
+                        {
+                            dto.GroupImage.ImageId = res.Key;
+                            dto.GroupImage.Url = res.Value;
+                            dto.GroupImage.Content = "";
+                            //dto.GroupImage.Title = dto.MultiLingualProperties.Any(_ => _.LanguageId == lan.LanguageId) ?
+                            //   dto.MultiLingualProperties.First(_ => _.LanguageId == lan.LanguageId).Name : dto.MultiLingualProperties.First().Name;
 
+                        }
+                        //otherwise it is update then it doesnt need to change its url
                     }
-                    //otherwise it is update then it doesnt need to change its url
+                    else if (!string.IsNullOrWhiteSpace(dto.GroupImage.Url))
+                    {
+                        dto.GroupImage.Url = dto.GroupImage.Url.Replace("/", "\\");
+                    }
                 }
-                else
-                {
-                   dto.GroupImage.Url = dto.GroupImage.Url.Replace("/", "\\");
-                }
+                
                
                 model = _productGroupRepository.ProductGroupFetch(dto.ProductGroupId);
                 if (model == null)
@@ -306,7 +316,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return result;
         }
 
-        [HttpDelete]
+        [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
             Result opResult = await _productGroupRepository.Delete(id, "delete");

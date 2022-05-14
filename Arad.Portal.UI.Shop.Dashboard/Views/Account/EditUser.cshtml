@@ -42,13 +42,14 @@
                     <div class="row">
                         <div class="form-group col-12 col-md-4 p-2">
                             <label asp-for="UserRoleId" class="form-label"></label>
+                            <br/>
                             <select class="form-select selectpicker" asp-for="UserRoleId" asp-items="@(new SelectList(ViewBag.Roles,"Id","Title"))" data-live-search="true">
                             </select>
                             <span data-val-result="UserRoleId" class="text-danger"></span>
                         </div>
                         <div class="form-group col-12 col-md-4 p-2">
                             <label class="form-label">@Language.GetString("DefaultLanguage")</label>
-                            <select class="form-select form-select-sm selectpicker" asp-for="DefaultLanguageId" data-live-search="true" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+                            <select class="form-select  selectpicker" asp-for="DefaultLanguageId" data-live-search="true" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                             </select>
                             <span data-val-result="DefaultLanguageId" class="text-danger"></span>
                         </div>
@@ -99,13 +100,18 @@
                 hiddenInput: "FullMobile"
             });
 
+        $("#DefaultLanguageId").val('@Model.DefaultLanguageId');
+        $("#DefaultLanguageId").selectpicker('refresh');
 
+         $("#UserRoleId").val('@Model.UserRoleId');
+        $("#UserRoleId").selectpicker('refresh');
       $("#editUserFrm").submit(function (e) {
                 debugger;
              e.preventDefault();
              var frm = document.getElementById('editUserFrm');
              var form = new FormData(frm);
              /*form.append("FullMobile", $("#hidePhone").val());*/
+          form.set("IsVendor", $("#IsVendor").is(":checked"));
 
              $.ajax({
                  url: $(this).attr('action'),
@@ -122,14 +128,11 @@
             spanErrorList.html("");
             spanErrorList.parent().removeClass("has-error");
             if (result.status === "success") {
-                @*Swal.fire({
-                        icon: 'success',
-                        text: result.message,
-                        confirmButtonText:
-                        '<i class="fa fa-thumbs-up"></i> @alert',
-                });*@
+              
                  document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @alert';
                  document.getElementById('mainToastBody').classList.add('alert-success');
+                  var bsAlert = new bootstrap.Toast($("#mainToast"));
+                                bsAlert.show();
             }
             else if (result.status === "error") {
 

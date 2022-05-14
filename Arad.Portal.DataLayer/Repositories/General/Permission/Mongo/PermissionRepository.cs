@@ -21,29 +21,40 @@ using AspNetCore.Identity.Mongo.Mongo;
 using MongoDB.Driver.Linq;
 using Arad.Portal.DataLayer.Contracts.General.Role;
 using Arad.Portal.DataLayer.Models.Role;
+using Arad.Portal.DataLayer.Repositories.General.Role.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
 {
     public class PermissionRepository : BaseRepository, IPermissionRepository
     {
         private readonly PermissionContext _context;
+        private readonly RoleContext _roleContext;
         private readonly FilterDefinitionBuilder<Entities.General.Permission.Permission> _builder = new();
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly IRoleRepository _roleRepository;
+        private readonly string _userId;
+        private readonly string _userName;
         public PermissionRepository(PermissionContext context,
             IHttpContextAccessor httpContextAccessor,
             IMapper mapper,
+            RoleContext roleContext,
             UserManager<ApplicationUser> userManager, 
             IRoleRepository roleRepository,
             IUserRepository userRepository): base(httpContextAccessor)
         {
             _context = context;
+            _roleContext = roleContext;
             _userManager = userManager;
             _mapper = mapper;
             _userRepository = userRepository;
             _roleRepository = roleRepository;
+            if (httpContextAccessor.HttpContext != null)
+            {
+                _userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                _userName = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
+            }
         }
         public async Task<Result> Delete(string permissionId)
         {
@@ -407,6 +418,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
 
         public async Task InsertMany(List<Entities.General.Permission.Permission> permissions)
         {
+            permissions.Select(c => { c.IsActive = true; return c; }).ToList();
             await _context.Collection.InsertManyAsync(permissions);
         }
 
@@ -550,16 +562,137 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
             throw new NotImplementedException();
         }
 
-        public Task<List<PermissionTreeViewDto>> GetMenus(string currentUserId, string address, bool isAdmin)
+        public async Task<List<PermissionTreeViewDto>> GetMenus(string currentUserId, string address)
         {
-            throw new NotImplementedException();
+            List<PermissionTreeViewDto> result = new();
+
+            try
+            {
+                ApplicationUser user = await _userManager.FindByIdAsync(currentUserId);
+                List<Entities.General.Permission.Permission> permissions = GetPermissionsOfUser(user);
+
+
+                void RemoveChild(ICollection<Entities.General.Permission.Permission> tmpPermissions, string title)
+                {
+                    foreach (Entities.General.Permission.Permission menu in tmpPermissions)
+                    {
+                        if (menu.Title.Equals(title))
+                        {
+                            tmpPermissions.Remove(menu);
+                            break;
+                        }
+
+                        RemoveChild(menu.Children, title);
+                    }
+                }
+
+                result = _mapper.Map<List<PermissionTreeViewDto>>(permissions);
+
+                foreach (PermissionTreeViewDto dto in result)
+                {
+                    foreach (PermissionTreeViewDto child in dto.Children)
+                    {
+                        child.IsActive = GetAccessUrl(child).Any(a => a.Equals(address, StringComparison.OrdinalIgnoreCase));
+                    }
+                    dto.IsActive = !dto.Children.Any() ? GetAccessUrl(dto).Any(a => a.Equals(address, StringComparison.OrdinalIgnoreCase)) : dto.Children.Any(c => c.IsActive);
+                }
+
+                IEnumerable<string> GetAccessUrl(PermissionTreeViewDto dto)
+                {
+                    List<string> accessUrl = new() { dto.ClientAddress };
+                    if (dto.Urls != null)
+                    {
+                        accessUrl.AddRange(dto.Urls.Select(u => u.ToLower()));
+                    }
+
+                    foreach (ActionDto permissionAction in dto.Actions)
+                    {
+                        accessUrl.Add(permissionAction.ClientAddress);
+                        accessUrl.AddRange(permissionAction.Urls);
+                    }
+
+                    return accessUrl;
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return result;
         }
 
-        public Task<List<string>> GetUserPermissions()
-        {
-            throw new NotImplementedException();
-        }
 
+        private List<Entities.General.Permission.Permission> GetPermissionsOfUser(ApplicationUser user)
+        {
+            List<Entities.General.Permission.Permission> permissionList;
+            try
+            {
+                FilterDefinition<Entities.General.Permission.Permission> filterDefinition = _builder.Eq(p => p.IsActive, true);
+                permissionList = _context.Collection.Find(filterDefinition).ToList();
+
+                if (!user.IsSystemAccount)
+                {
+                    FilterDefinitionBuilder<Entities.General.Role.Role> roleBuilder = new();
+                    FilterDefinition<Entities.General.Role.Role> roleFilterDefinition = roleBuilder.Eq(role => role.RoleId, user.UserRoleId);
+                    Entities.General.Role.Role role = _roleContext.Collection.Find(roleFilterDefinition).SingleOrDefault();
+
+                    if (role == null)
+                    {
+                        return new();
+                    }
+
+                    List<Entities.General.Permission.Permission> accessPermissions = new();
+
+                    foreach (Entities.General.Permission.Permission permission in permissionList.Where(p => role.PermissionIds.Any(pId => pId.Equals(p.PermissionId))))
+                    {
+                        accessPermissions.Add(permission);
+                        Remove(permission.Children);
+                    }
+
+                    void Remove(IList<Entities.General.Permission.Permission> children)
+                    {
+                        int count = children.Count;
+                        for (int index = count - 1; index >= 0; index--)
+                        {
+                            Entities.General.Permission.Permission child = children[index];
+                            if (role.PermissionIds.Any(p => p.Equals(child.PermissionId)))
+                            {
+                                Remove(child.Children);
+                            }
+                            else
+                            {
+                                children.RemoveAt(index);
+                            }
+                        }
+                    }
+
+                    return accessPermissions;
+                }
+            }
+            catch
+            {
+                return new();
+            }
+
+            return permissionList;
+        }
+        public async Task<List<string>> GetUserPermissions()
+        {
+            ApplicationUser user = await _userManager.FindByIdAsync(_userId);
+
+            if (user == null)
+            {
+                return new();
+            }
+
+            FilterDefinitionBuilder<Entities.General.Role.Role> roleBuilder = new();
+            FilterDefinition <Entities.General.Role.Role> roleFilterDefinition = roleBuilder.Eq(role => role.RoleId, user.UserRoleId);
+            Entities.General.Role.Role role = _roleContext.Collection.Find(roleFilterDefinition).SingleOrDefault();
+
+            return role.PermissionIds;
+        }
         public Task<List<Entities.General.Permission.Permission>> GetAllListViewCustom()
         {
             throw new NotImplementedException();

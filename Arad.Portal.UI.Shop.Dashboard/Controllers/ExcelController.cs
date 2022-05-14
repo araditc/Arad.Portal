@@ -23,13 +23,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
     public class ExcelController : Controller
     {
         private readonly IConfiguration _configuration;
-        private IHostingEnvironment _Environment;
+        private IWebHostEnvironment _Environment;
         private readonly IProductRepository _productRepository;
         private readonly ILanguageRepository _languageRepository;
         private readonly IProductGroupRepository _productGroupRepository;
         public ExcelController(IConfiguration configuration,
             IProductRepository productRepository,
-            IHostingEnvironment env,
+            IWebHostEnvironment env,
             IProductGroupRepository groupRepository,
             ILanguageRepository languageRepository)
         {
@@ -68,7 +68,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var lan = _languageRepository.GetDefaultLanguage(currentUserId);
             var groupList = await _productGroupRepository.GetAlActiveProductGroup(lan.LanguageId, currentUserId);
-            groupList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
+            //groupList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
             ViewBag.ProductGroupList = groupList;
 
             return View(model);
@@ -76,7 +76,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ImportProductFromExcel(ProductImportPage model)
+        public async Task<IActionResult> ImportProductFromExcel([FromForm]ProductImportPage model)
         {
             var res = new ProductImportPage();
             var result = new DataLayer.Models.Shared.Result();

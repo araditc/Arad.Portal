@@ -14,7 +14,7 @@ using AspNetCore.Identity.Mongo.Mongo;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Microsoft.AspNetCore.Routing;
-
+using Arad.Portal.DataLayer.Models.Permission;
 
 namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
 {
@@ -35,7 +35,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var menues = new List<MenuLinkModel>();
+            var menues = new List<PermissionTreeViewDto>();
             try
             {
                 string userId = _accessor.HttpContext.User.Claims
@@ -53,7 +53,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
                 
                 if (userId != null)
                 {
-                    menues = await _permissionRepository.ListOfMenues(userId,obj.PathString, obj.Domain);
+                    menues = await _permissionRepository.GetMenus(userId,obj.PathString);
                 }
             }
             catch (Exception e)

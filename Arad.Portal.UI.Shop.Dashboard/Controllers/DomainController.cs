@@ -553,7 +553,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
            
             return result;
         }
-        [HttpDelete]
+        [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
             Result opResult = await _domainRepository.DeleteDomain(id, "delete");

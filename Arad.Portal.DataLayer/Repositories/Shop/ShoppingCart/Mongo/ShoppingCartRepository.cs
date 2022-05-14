@@ -597,26 +597,26 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             promotionOnAll = _promotionContext.Collection
                         .Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.All &&
                         _.AssociatedDomainId == searchDomainId && _.IsActive && !_.IsDeleted &&
-                        _.StartDate <= DateTime.Now && (_.EndDate == null || _.EndDate >= DateTime.Now)).Any() ?
+                        _.SDate <= DateTime.Now && (_.EDate == null || _.EDate >= DateTime.Now)).Any() ?
                         _promotionContext.Collection
                         .Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.All &&
                         _.AssociatedDomainId == searchDomainId && _.IsActive && !_.IsDeleted &&
-                        _.StartDate <= DateTime.Now && (_.EndDate == null || _.EndDate >= DateTime.Now)).First() : null;
+                        _.SDate <= DateTime.Now && (_.EDate == null || _.EDate >= DateTime.Now)).First() : null;
 
             promotionOnThisProductGroup = _promotionContext.Collection
                 .Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group &&
                 _.Infoes.Select(a => a.AffectedProductGroupId).Intersect(product.GroupIds).Any() &&
                 _.AssociatedDomainId == searchDomainId && _.IsActive && !_.IsDeleted &&
-                _.StartDate <= DateTime.Now && (_.EndDate == null || _.EndDate >= DateTime.Now)).Any() ?
+                _.SDate <= DateTime.Now && (_.EDate == null || _.EDate >= DateTime.Now)).Any() ?
                 _promotionContext.Collection
                 .Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group &&
                 _.Infoes.Select(a => a.AffectedProductGroupId).Intersect(product.GroupIds).Any() &&
                 _.AssociatedDomainId == searchDomainId && _.IsActive && !_.IsDeleted &&
-                _.StartDate <= DateTime.Now && (_.EndDate == null || _.EndDate >= DateTime.Now)).First() : null;
+                _.SDate <= DateTime.Now && (_.EDate == null || _.EDate >= DateTime.Now)).First() : null;
 
             promotionOnThisProduct = product.Promotion != null && product.Promotion.IsActive && !product.Promotion.IsDeleted
-                 && product.Promotion.StartDate >= DateTime.Now &&
-                 (product.Promotion.EndDate == null || product.Promotion.EndDate >= DateTime.Now) ? product.Promotion : null;
+                 && product.Promotion.SDate >= DateTime.Now &&
+                 (product.Promotion.EDate == null || product.Promotion.EDate >= DateTime.Now) ? product.Promotion : null;
 
             if (promotionOnAll != null)
                 promotionList.Add(promotionOnAll);
@@ -627,7 +627,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
 
             if (promotionList.Any())
             {
-                finalPromotion = promotionList.OrderByDescending(_ => _.StartDate).First();
+                finalPromotion = promotionList.OrderByDescending(_ => _.SDate).First();
             }
             return finalPromotion;
         }

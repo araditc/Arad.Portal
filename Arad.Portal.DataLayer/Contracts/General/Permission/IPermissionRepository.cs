@@ -36,7 +36,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Permission
 
         Task<List<Entities.General.Permission.Permission>> GetAll();
 
-        Task<List<PermissionTreeViewDto>> GetMenus(string currentUserId, string address, bool isAdmin);
+        Task<List<PermissionTreeViewDto>> GetMenus(string currentUserId, string address);
 
         Task<List<string>> GetUserPermissions();
 

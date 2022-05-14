@@ -123,6 +123,9 @@
 	<string key="FileImportExport_InvalidContentType">
 		<value>نوع فایل اکسل نیست.</value>
 	</string>
+	<string key="FileImportExport_ResultMessage">
+		<value>فایل بارگزاری شده با موفقیت وارد پایگاه داده شد.</value>
+	</string>
 	<string key="FileImportExport_Help">
 		<value>راهنما</value>
 	</string>
@@ -200,6 +203,9 @@
 	<string key="PermissionTitle_ChangeActivation">
 		<value>تغییر وضعیت فعال بودن</value>
 	</string>
+	<string key="PermissionTitle_HomePageDesign">
+		<value>طراحی صفحه اول</value>
+	</string>
 	<string key="PermissionTitle_EditUser">
 		<value>ویرایش کاربر</value>
 	</string>
@@ -262,9 +268,6 @@
 	</string>
 	<string key="PermissionTitle_TreeViewRoleList">
 		<value>لیست درختی نقش ها</value>
-	</string>
-	<string key="PermissionTitle_RoleEdit">
-		<value>ویرایش نقش</value>
 	</string>
 	<string key="PermissionTitle_RoleDelete">
 		<value>حذف نقش</value>
@@ -629,8 +632,14 @@
 	<string key="Validation_MobileNumberInvalid2">
 		<value>شماره وارد شده مربوط به تلفن ثابت می باشد.</value>
 	</string>
+	<string key="AlertAndMessage_DuplicateUniqueCode">
+		<value>کد انحصاری تکراری است.</value>
+	</string>
 	<string key="AlertAndMessage_LangUniqueness">
 		<value>در حال حاضر برای این زبان یک سطر وجود دارد.</value>
+	</string>
+	<string key="AlertAndMessage_PasswordRequiresLower">
+		<value>پسورد باید حداقل یک کاراکتر از حروف کوچک a تا z باشد.</value>
 	</string>
 	<string key="AlertAndMessage_EditorContentIsValid">
 		<value>محتوای ویرایشگر معتبر است.</value>
@@ -1638,6 +1647,9 @@
 	</string>
 	<string key="Download">
 		<value>دانلود</value>
+	</string>
+	<string key="GetExcelTemplate">
+		<value>دریافت قالب فایل اکسل محصولات</value>
 	</string>
 	<string key="Or">
 		<value>یا</value>

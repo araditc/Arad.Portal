@@ -30,7 +30,7 @@ namespace Arad.Portal.DataLayer.Models.User
         [CustomErrorMessage("AlertAndMessage_PhoneNumberRequired")]
         public string PhoneNumber { get; set; }
 
-        [CustomDisplayName("IsVendor")]
+        //[CustomDisplayName("IsVendor")]
         public bool IsVendor { get; set; }
 
         [CustomDisplayName("User_FullMobile")]

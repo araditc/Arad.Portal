@@ -123,6 +123,9 @@
 	<string key="FileImportExport_InvalidContentType">
 		<value>file type is not an excel file.</value>
 	</string>
+	<string key="FileImportExport_ResultMessage">
+		<value>The uploaded file imported successfully.</value>
+	</string>
 	<string key="FileImportExport_Help">
 		<value>Help</value>
 	</string>
@@ -198,6 +201,9 @@
 	<string key="PermissionTitle_ChangeActivation">
 		<value>Change Activation State</value>
 	</string>
+	<string key="PermissionTitle_HomePageDesign">
+		<value>Homepage Design</value>
+	</string>
  
 	<string key="PermissionTitle_EditUser">
 		<value>Edit User</value>
@@ -264,9 +270,6 @@
 	</string>
 	<string key="PermissionTitle_TreeViewRoleList">
 		<value>treeview role list</value>
-	</string>
-	<string key="PermissionTitle_RoleEdit">
-		<value>Edit Role</value>
 	</string>
 	<string key="PermissionTitle_RoleDelete">
 		<value>Delete Role</value>
@@ -589,6 +592,9 @@
 	<string key="Download">
 		<value>download</value>
 	</string>
+	<string key="GetExcelTemplate">
+		<value>Get Product Excel Template</value>
+	</string>
 	<string key="EnumDesc_Dependency">
 		<value>Dependency</value>
 	</string>
@@ -636,8 +642,14 @@
 	<string key="Validation_MobileNumberInvalid2">
 		<value>Enter the number of fixed phone.</value>
 	</string>
+	<string key="AlertAndMessage_DuplicateUniqueCode">
+		<value>UniqueCode is duplicate.</value>
+	</string>
 	<string key="AlertAndMessage_LangUniqueness">
 		<value>There is already a row for this language.</value>
+	</string>
+	<string key="AlertAndMessage_PasswordRequiresLower">
+		<value>Passwords must have at least one lowercase ('a'-'z').</value>
 	</string>
 	<string key="AlertAndMessage_EditorContentIsValid">
 		<value>Editor content is valid</value>
