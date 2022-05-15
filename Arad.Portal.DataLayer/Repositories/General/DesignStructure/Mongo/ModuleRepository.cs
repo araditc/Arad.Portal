@@ -9,6 +9,7 @@ using System.Linq;
 using Arad.Portal.GeneralLibrary.Utilities;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo
 {
@@ -18,7 +19,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo
         public IMongoCollection<Module> Modules { get; set; }
 
         public IMongoCollection<Template> Templates { get; set; }
-        public ModuleRepository(ModuleContext context, IHttpContextAccessor accessor):base(accessor)
+        public ModuleRepository(ModuleContext context,
+            IHttpContextAccessor accessor,
+            IWebHostEnvironment env):base(accessor, env)
         {
             _context = context;
             Modules = _context.ModuleCollection;

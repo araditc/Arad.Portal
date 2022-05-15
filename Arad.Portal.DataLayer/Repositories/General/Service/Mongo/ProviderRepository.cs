@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Arad.Portal.GeneralLibrary.Utilities;
+using Microsoft.AspNetCore.Hosting;
 
 
 namespace Arad.Portal.DataLayer.Repositories.General.Service.Mongo
@@ -18,7 +19,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Service.Mongo
 
         private readonly ProviderContext _context;
         public ProviderRepository(IHttpContextAccessor accessor,
-            ProviderContext context):base(accessor)
+            IWebHostEnvironment env,
+            ProviderContext context):base(accessor, env)
         {
             _context = context;
         }

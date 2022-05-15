@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
+using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.DataLayer.Repositories.General.Role.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Permission.Mongo;
 
@@ -29,7 +30,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             RoleContext roleContext,
             PermissionContext permissionContext,
             IHttpContextAccessor httpContextAccessor,
-            IMapper mapper) : base(httpContextAccessor)
+            IWebHostEnvironment env,
+            IMapper mapper) : base(httpContextAccessor, env)
         {
             _context = userContext;
             _roleContext = roleContext;

@@ -19,6 +19,8 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
             Prices = new();
             DomainPaymentProviders = new();
             HeaderPart = new();
+            MainPageContainerPart = new();
+            FooterPart = new();
         }
 
         [BsonId]

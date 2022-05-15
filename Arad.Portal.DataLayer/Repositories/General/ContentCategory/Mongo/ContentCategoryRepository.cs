@@ -20,6 +20,7 @@ using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Models.Content;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
 {
@@ -33,9 +34,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
 
         public ContentCategoryRepository(IHttpContextAccessor httpContextAccessor,
             IMapper mapper, ContentCategoryContext categoryContext,
+            IWebHostEnvironment env,
             UserManager<ApplicationUser> userManager,
             LanguageContext langContext, ContentContext contentContext)
-            : base(httpContextAccessor)
+            : base(httpContextAccessor, env)
         {
             _mapper = mapper;
             _categoryContext = categoryContext;

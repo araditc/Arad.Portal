@@ -20,6 +20,7 @@
 using Arad.Portal.DataLayer.Contracts.General.Email;
 using Arad.Portal.DataLayer.Repositories.General.Email.Mongo;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Mongo
 {
@@ -27,7 +28,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Mongo
     {
         private readonly EmailOptionContext _context;
         public EmailOptionRepository(IHttpContextAccessor accessor,
-                                      EmailOptionContext context):base(accessor)
+            IWebHostEnvironment env,
+                                      EmailOptionContext context):base(accessor, env)
         {
             _context = context;
         }

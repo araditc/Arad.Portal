@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+
 
 namespace Arad.Portal.UI.Shop.Middlewares
 {
@@ -19,13 +21,16 @@ namespace Arad.Portal.UI.Shop.Middlewares
         private RequestDelegate _next;
         private readonly DomainContext _domainContext;
         private readonly LanguageContext _languageContext;
+        private readonly IWebHostEnvironment _env;
 
         public LanguageMapperMiddleware(RequestDelegate next, DomainContext domainContext,
+            IWebHostEnvironment environment,
             LanguageContext languageContext)
         {
             _next = next;
             _domainContext = domainContext;
             _languageContext = languageContext;
+            _env = environment;
         }
         public async Task Invoke(HttpContext context)
         {
@@ -34,12 +39,27 @@ namespace Arad.Portal.UI.Shop.Middlewares
             string pathRequest = "";
             var langSymbolList = _languageContext.Collection.Find(_ => _.IsActive).Project(_ => _.Symbol.ToLower()).ToList();
             string newPath = "";
-            var domainName = $"{context.Request.Host}";
+            string domainName = "";
+            if(_env.EnvironmentName == "environment")
+            {
+                domainName = "http://localhost:17951";
+            }
+            else
+            {
+                domainName = $"{context.Request.Host}";
+            }
+            
             if (context.Request.Path.ToString().Contains("/FileManager/GetScaledImage") ||
                 context.Request.Path.ToString().Contains("/FileManager/GetImage") ||
+                 context.Request.Path.ToString().Contains("/FileManager/GetScaledImageOnWidth") ||
+                  context.Request.Path.ToString().Contains("/fonts") ||
+                  context.Request.Path.ToString().Contains("/ImageSlider/") ||
+                  context.Request.Path.ToString().Contains("/fonts/") ||
+                  context.Request.Path.ToString().Contains("/imgs") ||
                 context.Request.Path.ToString().Contains("/lib/") ||
                 context.Request.Path.ToString().Contains("/css/") ||
                 context.Request.Path.ToString().Contains("/js/") ||
+               
                 context.Request.Path.ToString().Contains("/plugins/"))
             {
                 await _next.Invoke(context);

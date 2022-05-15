@@ -16,6 +16,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using static Arad.Portal.DataLayer.Models.Shared.Enums;
 
 namespace Arad.Portal.UI.Shop.Controllers
@@ -33,7 +34,8 @@ namespace Arad.Portal.UI.Shop.Controllers
         public PaymentController(IProductRepository productRepository, IHttpContextAccessor accessor,
             UserManager<ApplicationUser> userManager, ITransactionRepository transationRepository,
             SharedRuntimeData sharedRuntimeData,
-            IMapper mapper, IShoppingCartRepository shoppingCartRepository):base(accessor)
+            IWebHostEnvironment env,
+            IMapper mapper, IShoppingCartRepository shoppingCartRepository):base(accessor, env)
         {
             _productRepository = productRepository;
             _userManager = userManager;

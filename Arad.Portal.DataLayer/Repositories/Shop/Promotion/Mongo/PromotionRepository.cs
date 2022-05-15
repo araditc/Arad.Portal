@@ -15,6 +15,7 @@ using System.Collections.Specialized;
 using System.Web;
 using Arad.Portal.DataLayer.Entities.Shop.Promotion;
 using Arad.Portal.GeneralLibrary.Utilities;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
 {
@@ -25,8 +26,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
         private readonly IMapper _mapper;
         public PromotionRepository(IHttpContextAccessor httpContextAccessor,
                                    PromotionContext promotionContext,
+                                   IWebHostEnvironment env,
                                    IMapper mapper,
-                                   ProductContext productContext) : base(httpContextAccessor)
+                                   ProductContext productContext) : base(httpContextAccessor, env)
         {
             _context = promotionContext;
             _productContext = productContext;

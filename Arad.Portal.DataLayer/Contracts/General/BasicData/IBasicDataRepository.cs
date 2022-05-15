@@ -19,6 +19,6 @@ namespace Arad.Portal.DataLayer.Contracts.General.BasicData
 
         bool HasShippingType();
 
-        string GetDomainName();
+        
     }
 }

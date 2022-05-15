@@ -38,6 +38,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using static Arad.Portal.DataLayer.Models.Shared.Enums;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
+using Microsoft.AspNetCore.Hosting;
+
+
 
 namespace Arad.Portal.DataLayer.Helpers
 {
@@ -53,6 +56,7 @@ namespace Arad.Portal.DataLayer.Helpers
         private readonly IDomainRepository _domainRepository;
         //private readonly IUserRepository _userManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IWebHostEnvironment _env;
         private readonly string _domainName;
 
         public CreateNotification(IMessageTemplateRepository messageTemplateRepository,
@@ -63,7 +67,8 @@ namespace Arad.Portal.DataLayer.Helpers
                                   IHttpContextAccessor httpContextAccessor,
                                   Setting setting,
                                   SendSmsConfig sendSmsConfig,
-                                  IDomainRepository domainRepository
+                                  IDomainRepository domainRepository,
+                                  IWebHostEnvironment environment
                                   )
         {
             _messageTemplateRepository = messageTemplateRepository;
@@ -71,11 +76,20 @@ namespace Arad.Portal.DataLayer.Helpers
             _notificationRepository = notificationRepository;
             //_smtpRepository = smtpRepository;
             _userManager = userManager;
+            _env = environment;
             _httpContextAccessor = httpContextAccessor;
             _setting = setting;
             _sendSmsConfig = sendSmsConfig;
             _domainRepository = domainRepository;
-            _domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
+            if(_env.EnvironmentName !=  "Development")
+            {
+                _domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
+            }
+            else
+            {
+                _domainName = "http://localhost:17951";
+            }
+            
         }
 
 

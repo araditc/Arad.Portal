@@ -1,10 +1,12 @@
 ﻿using Arad.Portal.DataLayer.Contracts.General.ContentCategory;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -13,7 +15,8 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly IContentCategoryRepository _categoryRepository;
       
         public ContentCategoryController(IContentCategoryRepository categoryRepository,
-            IHttpContextAccessor accessor):base(accessor)
+            IWebHostEnvironment env,
+            IHttpContextAccessor accessor):base(accessor, env)
         {
             _categoryRepository = categoryRepository;
         }

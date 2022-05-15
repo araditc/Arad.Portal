@@ -2,597 +2,523 @@
 @using System.Globalization;
 @using Arad.Portal.GeneralLibrary.Utilities;
 @{
-	Layout = null;
-	var direction = "";
-	var langList = new List<string>() { "fa", "en" };
-	string lang = "";
-	if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-	{
-		direction = "rtl";
-		ViewBag.dir = "rtl";
-	}
-	else
-	{
-		direction = "ltr";
-		ViewBag.dir = "ltr";
-	}
-	switch (CultureInfo.CurrentCulture.Name)
-	{
-		case "fa-IR":
-			lang = "fa";
-			break;
-		case "en-US":
-			lang = "en";
-			break;
-	}
+    Layout = null;
+    var direction = "";
+    var langList = new List<string>() { "fa", "en" };
+    string lang = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        direction = "rtl";
+        ViewBag.dir = "rtl";
+    }
+    else
+    {
+        direction = "ltr";
+        ViewBag.dir = "ltr";
+    }
+    switch (CultureInfo.CurrentCulture.Name)
+    {
+        case "fa-IR":
+            lang = "fa";
+            break;
+        case "en-US":
+            lang = "en";
+            break;
+    }
 
-	var domainId = @ViewBag.DomainId;
+    var domainId = @ViewBag.DomainId;
 }
 <html dir="@direction" lang="@lang">
 <head>
-	<meta charset="utf-8" />
-	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
-	<meta content="Arad Portal" name="description">
-	<title>@ViewData["Title"] - Arad.Portal.UI.Shop</title>
-	<link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
-	@if (direction == "ltr")
-	{
-		<link href="~/lib/bootstrap5/css/bootstrap.min.css" rel="stylesheet" />
-	}
-	else
-	{
-		<link href="~/lib/bootstrap5/css/bootstrap.rtl.min.css" rel="stylesheet" />
-		<link href="~/Fonts/IranSans/css/fontiran.css" rel="stylesheet" />
-	}
-	<link rel="stylesheet" href="~/css/Menu/Bootstrap4MegaMenu.css" />
-	<link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
-	<link href="~/css/site.css" rel="stylesheet" />
-	<link href="~/lib/owlCarousel/css/owl.carousel.min.css" rel="stylesheet" />
-	<link href="~/lib/owlCarousel/css/owl.theme.default.min.css" rel="stylesheet" />
-	<link href="~/lib/owlCarousel/css/CarouselCustomArrowKeys.css" rel="stylesheet" />
-	<link href="~/css/SpecialProduct.css" rel="stylesheet" />
-	<link href="~/css/siteTemplate/FirstContentTemplate.css" rel="stylesheet" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="Arad Portal" name="description">
+    <title>@ViewData["Title"] - Arad.Portal.UI.Shop</title>
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    @if (direction == "ltr")
+    {
+        <link href="~/lib/bootstrap5/css/bootstrap.min.css" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="~/lib/bootstrap5/css/bootstrap.rtl.min.css" rel="stylesheet" />
+        <link href="~/Fonts/IranSans/css/fontiran.css" rel="stylesheet" />
+    }
+    <link rel="stylesheet" href="~/css/Menu/Bootstrap4MegaMenu.css" />
+    <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/lib/owlCarousel/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/lib/owlCarousel/css/owl.theme.default.min.css" rel="stylesheet" />
+    <link href="~/lib/owlCarousel/css/CarouselCustomArrowKeys.css" rel="stylesheet" />
+    <link href="~/css/SpecialProduct.css" rel="stylesheet" />
+    <link href="~/css/siteTemplate/FirstContentTemplate.css" rel="stylesheet" />
     <link href="~/css/siteTemplate/ThirdContentTemplate.css" rel="stylesheet" />
     <link href="~/css/siteTemplate/ForthContentTemplate.css" rel="stylesheet" />
     <link href="~/css/siteTemplate/FifthContentTemplate.css" rel="stylesheet" />
-	@*<link href="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.css" rel="stylesheet" />*@
+    <link href="~/css/header.css" rel="stylesheet" />
+    @*<link href="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.css" rel="stylesheet" />*@
 
-	<script src="~/lib/jquery/dist/jquery.min.js"></script>
-	<script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
-	<script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
-	<script src="~/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js"></script>
-	@*<script src="~/lib/ckeditor/ckeditor.js"></script>*@
-	 <script src="~/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js"></script>
-	<script src="~/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js"></script>
-	<script src="~/lib/owlCarousel/js/owl.carousel.min.js"></script>
-	<script src="~/js/TemplateCreation.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js"></script>
+    @*<script src="~/lib/ckeditor/ckeditor.js"></script>*@
+    <script src="~/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js"></script>
+    <script src="~/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js"></script>
+    <script src="~/lib/owlCarousel/js/owl.carousel.min.js"></script>
+    <script src="~/js/TemplateCreation.js"></script>
 </head>
 <body>
-	
-	<div aria-hidden="true" aria-labelledby="confirmDesignModalLabel" class="modal fade" id="confirmDesignModal" tabindex="-1">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header bg-light">
-					<h5 class="modal-title" id="confirmDesignModalLabel">
-					</h5>
-					<button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
-					</button>
-				</div>
-				<div class="modal-body" id="confirmDesignModalBody">
-				</div>
-				<div class="modal-footer">
-					<button class="btn btn-success" onclick="confirmation();" type="button">
-						@Language.GetString("btn_Confirm")
-					</button>
-					<button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
-						@Language.GetString("btn_NotConfirm")
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="container">
-	<div class="row mt-3">
-		<div class="float-end">
-			<button id="btnSave" class="btn btn-success bg-gradient btn-sm float-end m-2" type="button">@Language.GetString("btn_Save")</button>
-			<button id="btnPreview" class="btn btn-primary bg-gradient btn-sm float-end m-2" type="button">@Language.GetString("btn_Preview")</button>
 
-		</div>
-	</div>
-	</div>
-	<header class="headerPart m-2">
-		<h3 class="text-center bg-secondary bg-opacity-10">Header</h3>
-		<div class="border border-3 border-secondary m-1" style="min-height: 150px;">
-			<div class="row regPart mt-1 mx-1" id="regPart">
-				<div class="col-4 col-md-2 col-lg-1 border-0">
+    <div aria-hidden="true" aria-labelledby="confirmDesignModalLabel" class="modal fade" id="confirmDesignModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title" id="confirmDesignModalLabel">
+                    </h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                    </button>
+                </div>
+                <div class="modal-body" id="confirmDesignModalBody">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" onclick="confirmation();" type="button">
+                        @Language.GetString("btn_Confirm")
+                    </button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                        @Language.GetString("btn_NotConfirm")
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row mt-3">
+            <div class="float-end">
+                <button id="btnSave" class="btn btn-success bg-gradient btn-sm float-end m-2" type="button">@Language.GetString("btn_Save")</button>
+                <button id="btnPreview" class="btn btn-primary bg-gradient btn-sm float-end m-2" type="button">@Language.GetString("btn_Preview")</button>
 
+            </div>
+        </div>
+    </div>
+    <header class="headerPart m-2">
+        <h3 class="text-center bg-secondary bg-opacity-10">Header</h3>
+        
+        <div class="border border-3 border-secondary m-1" style="min-height: 150px;">
+            <partial name="~/Shared/_PriorFixedHeader.cshtml" />
+            <div class="border border-3 border-secondary m-1 mx-0 dynamicHeaderPart" style="min-height: 150px;">
+                <partial name="_PageDesign.cshtml" model='new TemplateSectionPart(){SectionTag = "headerSection", DomainId = @domainId}' />
+            </div>
 
-					<div class="ms-1 flagPartDiv">
-						<button id="restoreRecord" onclick="flagRestoration();" class="btn btn-sm btn-secondary bg-gradient d-none">
-							<i style="position: relative;left: 5px;top: 2px;" class="fa fa-refresh"></i>
-							@Language.GetString("btn_Restore")
-						</button>
-						<button type="button" class="btn-close d-none" aria-label="Close" id="removeFlagPart"></button>
-						<ul class="langUl list-group list-group-horizontal">
-							<li class="list-group-item lan border-0 pt-2 px-1">
-								<a title="@Language.GetString("Persian")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
-									<img src="~/imgs/IRAN.png" onclick="setLang('fa-IR')" />
-								</a>
+            <div class="navbarMenu">
+                @await Component.InvokeAsync("StoreMenuModule", new { domainId = @domainId})
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <h3 class="text-center bg-secondary bg-opacity-10">Body</h3>
+        <div class="border border-3 border-secondary m-1 dynamicContainerPart" style="min-height: 150px;">
+            <partial name="_PageDesign.cshtml" model='new TemplateSectionPart(){SectionTag = "containerSection", DomainId = @domainId}' />
+        </div>
 
-							</li>
-							<li class="list-group-item lan border-0 pt-2 px-1">
-								<a title="@Language.GetString("English")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
-									<img src="~/imgs/USA.png" onclick="setLang('en-US')" />
-								</a>
+        <div class="position-fixed p-5 left-50 top-0" id="toastPanel" style="z-index: 11;">
+            <div aria-atomic="true" aria-live="assertive" class="toast" id="mainToast" role="alert" autohide="false">
+                <div class="toast-body p-3 fs-5 rounded-3 text-center" id="mainToastBody">
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footerPart">
+        <h3 class="text-center bg-secondary bg-opacity-10">Footer</h3>
+        <div class="border border-3 border-secondary m-1 dynamicFooterPart" style="min-height: 150px;">
+            <div class="container">
+                <partial name="_PageDesign.cshtml"
+                         model='new TemplateSectionPart(){SectionTag = "footerSection", DomainId = @domainId}' />
+            </div>
+        </div>
+    </footer>
 
-							</li>
-						</ul>
-					</div>
-				</div>
+    <script>
 
-				@if (!User.Identity.IsAuthenticated)
-				{
-					<div class="offset-4 col-4 offset-md-8 col-md-2 offset-lg-9 col-lg-2">
-						<div class="rounded border-0 float-end mt-2 me-4">
-							<ul class="list-group list-group-horizontal userPart">
-								<li class="list-group-item ps-3 pe-2 border-0 bg-secondary bg-opacity-10">
-									<a href="/account/login" title="@Language.GetString("btn_Login")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
-										<i class="fas fa-sign-in-alt"></i>
-									</a>
-								</li>
-								<li class="list-group-item border-0 pb-0 bg-secondary bg-opacity-10">
-									<div class="vr" style="min-height:1.5em;"></div>
-								</li>
-								<li class="list-group-item ps-2 pe-3 border-0 bg-secondary bg-opacity-10">
+               function getColTemplate(id, tag) {
 
-									<a href="/account/register" title="@Language.GetString("btn_Register")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
-										<i class="fas fa-user-plus"></i>
-									</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				}
-				else
-				{
-					<div class="offset-4 col-4 offset-md-8 col-md-2 offset-lg-10 col-lg-1">
-						<div class="rounded border-0 float-end mt-2 me-4">
-							<ul class="list-group list-group-horizontal">
-								<li class="list-group-item profile">
-									<a href="/account/Profile" id="userProfileId" role="button" title="@Language.GetString("User_Profile")" data-bs-toggle="tooltip" data-bs-placement="bottom">
-										<i class="far fa-user"></i>
-									</a>
-								</li>
-								<li class="list-group-item border-0 pb-0 bg-secondary bg-opacity-10">
-									<div class="vr" style="min-height:1.5em;"></div>
-								</li>
-								<li class="list-group-item profile">
-									<a href="/basket/get" id="userBasketId" role="button" title="@Language.GetString("ShoppingCart")" data-bs-toggle="tooltip" data-bs-placement="bottom">
-										<i class="fas fa-shopping-cart"></i>
-										<span class="badge notifyBadge"></span>
-									</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				}
+               colTemplate = "<div class='col-12 col-md-3'>" +
+                   "<label class='lblAlert form-label'>" + '@Language.GetString("AlertAndMessage_HowManyColumns")' + "</label><br />" +
+                   "<select  class='form-control selectpicker colCnt' onchange='selectColumns(this, \""+ tag +"\" );' id=" + id + " data-live-search='true'>" +
+                       "<option value='0'>" + '@Language.GetString("AlertAndMessage_Choose")' + "</option>" +
+                       "<option value='1'>" + '@Language.GetString("Template_OneCol")' + "</option>" +
+                       "<option value='2'>" + '@Language.GetString("Template_TwoCol")' + "</option>" +
+                       "<option value='3'>" + '@Language.GetString("Template_ThreeCol")' + "</option>" +
+                       "<option value='4'>" + '@Language.GetString("Template_FourCol")' + "</option>" +
+                       "<option value='6'>" + '@Language.GetString("Template_SixCol")' + "</option></select></div><div class='col-12 contentColumns'></div>";
 
+               return colTemplate;
+           }
+               $(document).ready(function(){
+                    changeScreen();
+                           $(window).resize(changeScreen);
 
-			</div>
+                           $(".menu-area").mouseover(function () {
+                                   var windowSize = $(window).width();
+                                   if (windowSize > 975) {
+                                       $(this).addClass("show");
+                                       $(this).find(".dropdown-toggle").addClass("text-primary");
+                                       $(this).find(".mega-area").addClass("show");
+                                   }
+                           });
 
-			<div class="border border-3 border-secondary m-1 mx-0 dynamicHeaderPart" style="min-height: 150px;">
-				<partial name="_PageDesign.cshtml" model='new TemplateSectionPart(){SectionTag = "headerSection", DomainId = @domainId}' />
-			</div>
+                           $(".menu-area").mouseleave(function () {
+                               var windowSize = $(window).width();
+                               if (windowSize > 975) {
+                                   $(this).removeClass("show");
+                                   $(this).find(".dropdown-toggle").removeClass("text-primary");
+                                   $(this).find(".mega-area").removeClass("show");
+                               }
+                           });
 
-			<div class="navbarMenu">
-				@await Component.InvokeAsync("StoreMenuModule", new { domainId = @domainId})
-			</div>
-		</div>
-	</header>
-	<div class="container">
-		<h3 class="text-center bg-secondary bg-opacity-10">Body</h3>
-		<div class="border border-3 border-secondary m-1 dynamicContainerPart" style="min-height: 150px;">
-			<partial name="_PageDesign.cshtml" model='new TemplateSectionPart(){SectionTag = "containerSection", DomainId = @domainId}' />
-		</div>
+                           $(".nav-item .nav-link").mouseover(function () {
+                                   $(this).addClass("text-primary");
+                           });
+                           $(".nav-item .nav-link").mouseleave(function () {
+                                   $(this).removeClass("text-primary");
+                           });
 
-		<div class="position-fixed p-5 left-50 top-0" id="toastPanel" style="z-index: 11;">
-			<div aria-atomic="true" aria-live="assertive" class="toast" id="mainToast" role="alert" autohide="false">
-				<div class="toast-body p-3 fs-5 rounded-3 text-center" id="mainToastBody" >
-				</div>
-			</div>
-		</div>
-	</div>
-	<footer class="footerPart">
-		<h3 class="text-center bg-secondary bg-opacity-10">Footer</h3>
-		<div class="border border-3 border-secondary m-1 dynamicFooterPart" style="min-height: 150px;">
-			<div class="container">
-			<partial name="_PageDesign.cshtml" 
-			model='new TemplateSectionPart(){SectionTag = "footerSection", DomainId = @domainId}' />
-			</div>
-		</div>
-	</footer>
+                           $(".custmDrp").click(function () {
 
-	<script>
-		
-			function getColTemplate(id, tag) {
-
-			colTemplate = "<div class='col-12 col-md-3'>" +
-				"<label class='lblAlert form-label'>" + '@Language.GetString("AlertAndMessage_HowManyColumns")' + "</label><br />" +
-				"<select  class='form-control selectpicker colCnt' onchange='selectColumns(this, \""+ tag +"\" );' id=" + id + " data-live-search='true'>" +
-					"<option value='0'>" + '@Language.GetString("AlertAndMessage_Choose")' + "</option>" +
-					"<option value='1'>" + '@Language.GetString("Template_OneCol")' + "</option>" +
-					"<option value='2'>" + '@Language.GetString("Template_TwoCol")' + "</option>" +
-					"<option value='3'>" + '@Language.GetString("Template_ThreeCol")' + "</option>" +
-					"<option value='4'>" + '@Language.GetString("Template_FourCol")' + "</option>" +
-					"<option value='6'>" + '@Language.GetString("Template_SixCol")' + "</option></select></div><div class='col-12 contentColumns'></div>";
-
-			return colTemplate;
-		}
-			$(document).ready(function(){
-				 changeScreen();
-						$(window).resize(changeScreen);
-
-						$(".menu-area").mouseover(function () {
-								var windowSize = $(window).width();
-								if (windowSize > 975) {
-									$(this).addClass("show");
-									$(this).find(".dropdown-toggle").addClass("text-primary");
-									$(this).find(".mega-area").addClass("show");
-								}
-						});
-
-						$(".menu-area").mouseleave(function () {
-							var windowSize = $(window).width();
-							if (windowSize > 975) {
-								$(this).removeClass("show");
-								$(this).find(".dropdown-toggle").removeClass("text-primary");
-								$(this).find(".mega-area").removeClass("show");
-							}
-						});
-
-						$(".nav-item .nav-link").mouseover(function () {
-								$(this).addClass("text-primary");
-						});
-						$(".nav-item .nav-link").mouseleave(function () {
-								$(this).removeClass("text-primary");
-						});
-
-						$(".custmDrp").click(function () {
-
-							var item = $(this).parent().parent().siblings(".mega-area")
-							if (item.hasClass("show")) {
-								item.removeClass("show");
-							} else {
-								item.addClass("show");
-							}
-						});
+                               var item = $(this).parent().parent().siblings(".mega-area")
+                               if (item.hasClass("show")) {
+                                   item.removeClass("show");
+                               } else {
+                                   item.addClass("show");
+                               }
+                           });
 
 
 
-				$("#removeFlagPart").click(function(){
+                   $("#removeFlagPart").click(function(){
 
-				$('#confirmDesignModalLabel').text('@Language.GetString("btn_Delete")');
-				$('#confirmDesignModalBody').html('@Language.GetString("AlertAndMessage_RemoveBoxConfrim")');
-				$('#confirmDesignModal').modal('show');
-				});
+                   $('#confirmDesignModalLabel').text('@Language.GetString("btn_Delete")');
+                   $('#confirmDesignModalBody').html('@Language.GetString("AlertAndMessage_RemoveBoxConfrim")');
+                   $('#confirmDesignModal').modal('show');
+                   });
 
-				$("#btnSave").click(function(){
-					debugger;
-					//start of header section
+                   $("#btnSave").click(function(){
+                       debugger;
+                       //start of header section
 
-					 var header = {}; //an instance of headerPart
-					 header.CustomizedContent = [];
+                        var header = {}; //an instance of headerPart
+                        header.CustomizedContent = [];
 
-					 var regPart = document.getElementById("regPart").outerHTML;
-					 var priorHeader = document.getElementById("regPart").outerHTML;
-					 header.PriorFixedContent = priorHeader;
+                        var regPart = document.getElementById("regPart").outerHTML;
+                        var priorHeader = document.getElementById("regPart").outerHTML;
+                        header.PriorFixedContent = priorHeader;
 
-					 var i = 1;
-					 var rn ="";
-					 $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
-						 debugger;
-						 rn = $(this).find(".row.sectionRow").attr("rn");
-						 var obj = {}; //an instance of RowContent
-						 obj.RowNumber = parseInt(rn) ;
-						 obj.OrderInRow = i ;
-						 obj.ColsContent = [] ;
-						 $(this).find(".row.parent .finalColumnContent").each(function(){
-							 var colContent ={} ; //an instance of ColContent
-							 colContent.Section = "headerSection";
-							 colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
-							 colContent.ColData = $(this).html();
-							 colContent.ColumnClassNames = $(this).attr("classNames");
+                        var i = 1;
+                        var rn ="";
+                        $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
+                            debugger;
+                            rn = $(this).find(".row.sectionRow").attr("rn");
+                            var obj = {}; //an instance of RowContent
+                            obj.RowNumber = parseInt(rn) ;
+                            obj.OrderInRow = i ;
+                            obj.ColsContent = [] ;
+                            $(this).find(".row.parent .finalColumnContent").each(function(){
+                                var colContent ={} ; //an instance of ColContent
+                                colContent.Section = "headerSection";
+                                colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
+                                colContent.ColData = $(this).html();
+                                colContent.ColumnClassNames = $(this).attr("classNames");
 
-							 obj.ColsContent.push(colContent);
-						 });
-						 i++;
-						 header.CustomizedContent.push(obj);
-					 });
+                                obj.ColsContent.push(colContent);
+                            });
+                            i++;
+                            header.CustomizedContent.push(obj);
+                        });
 
-					 //navbar
-					 var obj = {}; //an instance of RowContent for navbar Menu
-					 obj.RowNumber = parseInt(rn) + 1;
-					 obj.OrderInRow = i ;
-					 obj.ExtraClassNames ="navbarMenu";
-					 obj.ColsContent =[] ;
-					 var singleCol = {};
-					 singleCol.Section ="";
-					 singleCol.ColNumber = 1;
+                        //navbar
+                        var obj = {}; //an instance of RowContent for navbar Menu
+                        obj.RowNumber = parseInt(rn) + 1;
+                        obj.OrderInRow = i ;
+                        obj.ExtraClassNames ="navbarMenu";
+                        obj.ColsContent =[] ;
+                        var singleCol = {};
+                        singleCol.Section ="";
+                        singleCol.ColNumber = 1;
 
-					 var menuModule = {};//an instance of ModuleWithParametersValue for menu
-					 menuModule.ModuleId = "f8865ffc-1653-41ba-a281-ee57fa7ffc09";
-					 menuModule.ModuleName = "HorizantalStoreMenu";
-					 menuModule.ParametersValue = {};
-					 var data = JSON.stringify(menuModule);
-					 var menuData = `<div target='module'>${data}</div>`;
+                        var menuModule = {};//an instance of ModuleWithParametersValue for menu
+                        menuModule.ModuleId = "f8865ffc-1653-41ba-a281-ee57fa7ffc09";
+                        menuModule.ModuleName = "HorizantalStoreMenu";
+                        menuModule.ParametersValue = {};
+                        var data = JSON.stringify(menuModule);
+                        var menuData = `<div target='module'>${data}</div>`;
 
-					 singleCol.ColData = menuData;
-					 singleCol.ColumnClassNames = "";
-					 obj.ColsContent.push(singleCol);
-					 header.CustomizedContent.push(obj);
-					 //end of header section
+                        singleCol.ColData = menuData;
+                        singleCol.ColumnClassNames = "";
+                        obj.ColsContent.push(singleCol);
+                        header.CustomizedContent.push(obj);
+                        //end of header section
 
-					 //start of container section
-					 i= 1;
-					 rn ="";
-					 var bodyContainer = {}; //an instance of MainPageContentPart
-					 bodyContainer.RowContents = [] ;
-					  $(".dynamicContainerPart .firstLevel .contentColumns").each(function()
-					  {
-						  debugger;
-						  rn = $(this).find(".row.sectionRow").attr("rn");
-						 var bodyRowContent = {}; //an instance of RowContent
-						 bodyRowContent.RowNumber = parseInt(rn) ;
-						 bodyRowContent.OrderInRow = i ;
-						 bodyRowContent.ColsContent = [] ;
-						 $(this).find(".row.parent .finalColumnContent").each(function(){
-							 var colContent ={} ; //an instance of ColContent
-							 colContent.Section = "containerSection";
-							 colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
-							 colContent.ColData = $(this).html();
-							 colContent.ColumnClassNames = $(this).attr("classNames");
-							 bodyRowContent.ColsContent.push(colContent);
-						 });
-						i++;
-						bodyContainer.RowContents.push(bodyRowContent);
-					  });
-					  //end of container section
+                        //start of container section
+                        i= 1;
+                        rn ="";
+                        var bodyContainer = {}; //an instance of MainPageContentPart
+                        bodyContainer.RowContents = [] ;
+                         $(".dynamicContainerPart .firstLevel .contentColumns").each(function()
+                         {
+                             debugger;
+                             rn = $(this).find(".row.sectionRow").attr("rn");
+                            var bodyRowContent = {}; //an instance of RowContent
+                            bodyRowContent.RowNumber = parseInt(rn) ;
+                            bodyRowContent.OrderInRow = i ;
+                            bodyRowContent.ColsContent = [] ;
+                            $(this).find(".row.parent .finalColumnContent").each(function(){
+                                var colContent ={} ; //an instance of ColContent
+                                colContent.Section = "containerSection";
+                                colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
+                                colContent.ColData = $(this).html();
+                                colContent.ColumnClassNames = $(this).attr("classNames");
+                                bodyRowContent.ColsContent.push(colContent);
+                            });
+                           i++;
+                           bodyContainer.RowContents.push(bodyRowContent);
+                         });
+                         //end of container section
 
-					  //start of footerSection
-					   i= 1;
-					   rn ="";
-					   var footerPart ={} ; //an instance of footerPart
-					   footerPart.CustomizedContent =[];
-					   $(".dynamicFooterPart .firstLevel .contentColumns").each(function()
-					   {
-						   debugger;
-						 rn = $(this).find(".row.sectionRow").attr("rn");
-						 var footerRowContent = {}; //an instance of RowContent
-						 footerRowContent.RowNumber = parseInt(rn) ;
-						 footerRowContent.OrderInRow = i ;
-						 footerRowContent.ColsContent = [] ;
-						 $(this).find(".row.parent .finalColumnContent").each(function(){
-							 var colContent ={} ; //an instance of ColContent
-							 colContent.Section = "footerSection";
-							 colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
-							 colContent.ColData = $(this).html();
-							 colContent.ColumnClassNames = $(this).attr("classNames");
+                         //start of footerSection
+                          i= 1;
+                          rn ="";
+                          var footerPart ={} ; //an instance of footerPart
+                          footerPart.CustomizedContent =[];
+                          $(".dynamicFooterPart .firstLevel .contentColumns").each(function()
+                          {
+                              debugger;
+                            rn = $(this).find(".row.sectionRow").attr("rn");
+                            var footerRowContent = {}; //an instance of RowContent
+                            footerRowContent.RowNumber = parseInt(rn) ;
+                            footerRowContent.OrderInRow = i ;
+                            footerRowContent.ColsContent = [] ;
+                            $(this).find(".row.parent .finalColumnContent").each(function(){
+                                var colContent ={} ; //an instance of ColContent
+                                colContent.Section = "footerSection";
+                                colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
+                                colContent.ColData = $(this).html();
+                                colContent.ColumnClassNames = $(this).attr("classNames");
 
-							 footerRowContent.ColsContent.push(colContent);
-						 });
-						  i++;
-						 footerPart.CustomizedContent.push(footerRowContent);
-					   });
-					   //end of footer section
+                                footerRowContent.ColsContent.push(colContent);
+                            });
+                             i++;
+                            footerPart.CustomizedContent.push(footerRowContent);
+                          });
+                          //end of footer section
 
-					 var model = {}; //an instance of DomainPageModel
-					 model.HeaderPart = header;
-					 model.MainPageContainerPart = bodyContainer;
-					 model.FooterPart = footerPart;
-					 model.DomainId = '@domainId';
-					
-					 $.ajax({
-						type: "Post",
-						url: '@Url.Action("SavePageContent", "Domain")',
-						contentType : 'application/json',
-						data : JSON.stringify(model),
-						success: function (result) {
-							debugger;
-							$('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_EditionDoneSuccessfully")');
-								  $('#mainToastBody').addClass('alert-success');
-								  
-								  var toastDiv = $("#mainToast");
-                                  $("#toastPanel").show();
-                                  var toast = new bootstrap.Toast(toastDiv);
-                                  toast.show();
-								  //setTimeout(function(){
-									 // toast.hide(),3000
-								  //}); 
-						},
-						//statusCode:{
-						//	200: function(result){
-						//		debugger;
-						//	$('#mainToastBody').html('<i class="fal fa-check-circle"></i>@Language.GetString("AlertAndMessage_EditionDoneSuccessfully")');
-						//		  $('#mainToastBody').addClass('alert-success');
-						//		  var toastDiv = $("#mainToast");
-						//		  var toast = new bootstrap.Toast(toastDiv);
-						//		  toast.show();
-						//		  setTimeout(function(){
-						//			  toast.hide(),3000
-						//		  });
-						//	}
-						//}
-					 });
-				});
+                        var model = {}; //an instance of DomainPageModel
+                        model.HeaderPart = header;
+                        model.MainPageContainerPart = bodyContainer;
+                        model.FooterPart = footerPart;
+                        model.DomainId = '@domainId';
 
-				$("#btnPreview").click(function(){
-					debugger;
-					var header ="";
-					var container ="";
-					var footer ="";
+                        $.ajax({
+                           type: "Post",
+                           url: '@Url.Action("SavePageContent", "Domain")',
+                           contentType : 'application/json',
+                           data : JSON.stringify(model),
+                           success: function (result) {
+                               debugger;
+                               $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_EditionDoneSuccessfully")');
+                                     $('#mainToastBody').addClass('alert-success');
 
-					 var regPart = document.getElementById("regPart").outerHTML;
-					 var priorHeader = document.getElementById("regPart").outerHTML;
-					 header = priorHeader;
+                                     var toastDiv = $("#mainToast");
+                                     $("#toastPanel").show();
+                                     var toast = new bootstrap.Toast(toastDiv);
+                                     toast.show();
+                                     //setTimeout(function(){
+                                        // toast.hide(),3000
+                                     //});
+                           },
+                           //statusCode:{
+                           //	200: function(result){
+                           //		debugger;
+                           //	$('#mainToastBody').html('<i class="fal fa-check-circle"></i>@Language.GetString("AlertAndMessage_EditionDoneSuccessfully")');
+                           //		  $('#mainToastBody').addClass('alert-success');
+                           //		  var toastDiv = $("#mainToast");
+                           //		  var toast = new bootstrap.Toast(toastDiv);
+                           //		  toast.show();
+                           //		  setTimeout(function(){
+                           //			  toast.hide(),3000
+                           //		  });
+                           //	}
+                           //}
+                        });
+                   });
 
-					 $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
+                   $("#btnPreview").click(function(){
+                       debugger;
+                       var header ="";
+                       var container ="";
+                       var footer ="";
 
-						 header += "<div class='row firstLevel'>";
-						 $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
-							 var classNames = $(this).attr("classNames");
-							 var columnContent = $(this).html();
-							 header +=`<div class='${classNames}'>${columnContent}</div>` ;
-						 });
-						 header += "</div>";
-					 });
+                        var regPart = document.getElementById("regPart").outerHTML;
+                        var priorHeader = document.getElementById("regPart").outerHTML;
+                        header = priorHeader;
 
-					 $.ajax({
-						 url:"@Url.Action("GetMenu","Domain")"+"?domainId="+'@domainId',
-						 type:'Get',
-						 statusCode:{
-							 200:function(data){
+                        $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
 
-								header +=`<div class="navbar">${data}</div>` ;
-								$(".dynamicContainerPart .firstLevel .contentColumns").each(function()
-								  {
+                            header += "<div class='row firstLevel'>";
+                            $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
+                                var classNames = $(this).attr("classNames");
+                                var columnContent = $(this).html();
+                                header +=`<div class='${classNames}'>${columnContent}</div>` ;
+                            });
+                            header += "</div>";
+                        });
 
-									  container += "<div class='row firstLevel'>";
-									 $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
+                        $.ajax({
+                            url:"@Url.Action("GetMenu","Domain")"+"?domainId="+'@domainId',
+                            type:'Get',
+                            statusCode:{
+                                200:function(data){
 
-										var classNames = $(this).attr("classNames");
-										 var columnContent = $(this).html();
-										 container +=`<div class='${classNames}'>${columnContent}</div>` ;
-									 });
-									 container += "</div>";
-								  });
+                                   header +=`<div class="navbar">${data}</div>` ;
+                                   $(".dynamicContainerPart .firstLevel .contentColumns").each(function()
+                                     {
 
-								  //start of footerSection
-								   $(".dynamicFooterPart .firstLevel .contentColumns").each(function()
-								   {
-									 footer += "<div class='row firstLevel'>";
-									 $(this).find(".row.parent .finalColumnContent").each(function(){
-										 var classNames = $(this).attr("classNames");
-										 var columnContent = $(this).html();
-										 footer +=`<div class='${classNames}'>${columnContent}</div>` ;
-									 });
-									  footer += "</div>";
+                                         container += "<div class='row firstLevel'>";
+                                        $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
 
-								   });
-								 //end of footer section
+                                           var classNames = $(this).attr("classNames");
+                                            var columnContent = $(this).html();
+                                            container +=`<div class='${classNames}'>${columnContent}</div>` ;
+                                        });
+                                        container += "</div>";
+                                     });
 
+                                     //start of footerSection
+                                      $(".dynamicFooterPart .firstLevel .contentColumns").each(function()
+                                      {
+                                        footer += "<div class='row firstLevel'>";
+                                        $(this).find(".row.parent .finalColumnContent").each(function(){
+                                            var classNames = $(this).attr("classNames");
+                                            var columnContent = $(this).html();
+                                            footer +=`<div class='${classNames}'>${columnContent}</div>` ;
+                                        });
+                                         footer += "</div>";
 
-								 var model = {}; //an instance of TemplateDesign
-								 model.HeaderContent = header;
-								 model.ContainerContent = container;
-								 model.FooterContent = footer;
-								 model.DomainId = '@domainId';
-								  $.ajax({
-									url: '@Url.Action("StoreDesignPreview")',
-									data : JSON.stringify(model),
-									contentType: 'application/json',
-									type: 'Post',
-									dataType: 'json',
-									success: function (result) {
-										if(result != "")
-										{
-											window.open('@Url.Action("DesignPreview")'+'?key='+result.key , '_blank');
-										}
-									}
-								});
-							 }
-						 }
-					   });
-				});
-
-					$(".owl-carousel").owlCarousel({
-						loop: true,
-						rtl: true,
-						navigation : true,
-						/* autoplay: true,*/
-						margin: 10,
-						animateOut: 'fadeOut',
-						animateIn: 'fadeIn',
-						nav: true,
-						/*dots: true,*/
-						autoplayHoverPause: false,
-						items: 3,
-						navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>",
-								  "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
-						responsive: {
-							0: {
-								items: 1
-							},
-							600: {
-								items: 3
-							},
-							1000: {
-								items: 5
-							}
-						}
-					});
-					$(".likeLink i").click(function () {
-						if ($(this).hasClass("far fa-heart")) {
-							$(this).removeClass("far fa-heart");
-							$(this).addClass("fas fa-heart");
-						} else {
-							$(this).removeClass("fas fa-heart");
-							$(this).addClass("far fa-heart");
-						}
-					});
-			})
-
-			  //window.addEventListener('load',()=>{
-			  //     $("#toastPanel").hide();
-			  //})
-			function confirmation()
-			{
-
-				 //$('#confirmDesignModal').modal('hide');
-     //            $("#toastPanel").show();
-     //            $('#mainToastBody').removeClass('alert-success');
-     //            $('#mainToastBody').removeClass('alert-danger');
+                                      });
+                                    //end of footer section
 
 
-				$(".flagPartDiv").addClass("d-none");
-				$("#restoreRecord").removeClass("d-none");
-			}
+                                    var model = {}; //an instance of TemplateDesign
+                                    model.HeaderContent = header;
+                                    model.ContainerContent = container;
+                                    model.FooterContent = footer;
+                                    model.DomainId = '@domainId';
+                                     $.ajax({
+                                       url: '@Url.Action("StoreDesignPreview")',
+                                       data : JSON.stringify(model),
+                                       contentType: 'application/json',
+                                       type: 'Post',
+                                       dataType: 'json',
+                                       success: function (result) {
+                                           if(result != "")
+                                           {
+                                               window.open('@Url.Action("DesignPreview")'+'?key='+result.key , '_blank');
+                                           }
+                                       }
+                                   });
+                                }
+                            }
+                          });
+                   });
 
-			function flagRestoration()
-			{
+                       $(".owl-carousel").owlCarousel({
+                           loop: true,
+                           rtl: true,
+                           navigation : true,
+                           /* autoplay: true,*/
+                           margin: 10,
+                           animateOut: 'fadeOut',
+                           animateIn: 'fadeIn',
+                           nav: true,
+                           /*dots: true,*/
+                           autoplayHoverPause: false,
+                           items: 3,
+                           navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>",
+                                     "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
+                           responsive: {
+                               0: {
+                                   items: 1
+                               },
+                               600: {
+                                   items: 3
+                               },
+                               1000: {
+                                   items: 5
+                               }
+                           }
+                       });
+                       $(".likeLink i").click(function () {
+                           if ($(this).hasClass("far fa-heart")) {
+                               $(this).removeClass("far fa-heart");
+                               $(this).addClass("fas fa-heart");
+                           } else {
+                               $(this).removeClass("fas fa-heart");
+                               $(this).addClass("far fa-heart");
+                           }
+                       });
+               })
 
-				$(".flagPartDiv").removeClass("d-none");
-				$("#restoreRecord").addClass("d-none");
-			}
-			function setLang(lang)
-				{
+                 //window.addEventListener('load',()=>{
+                 //     $("#toastPanel").hide();
+                 //})
+               function confirmation()
+               {
 
-					var currentCulture = '@CultureInfo.CurrentCulture.Name';
-					if (currentCulture !== lang) {
-						$.ajax({
-							type: "GET",
-							url: '/Account/changeLang?langId=' + lang,
-							success: function () {
+                    //$('#confirmDesignModal').modal('hide');
+        //            $("#toastPanel").show();
+        //            $('#mainToastBody').removeClass('alert-success');
+        //            $('#mainToastBody').removeClass('alert-danger');
 
-								window.location.reload();
-							}
-						});
-					}
-				}
-				function setProductCountInCart(number) {
-				   $("#userBasketId .notifyBadge").html(number);
-				}
 
-				function changeScreen() {
-					var windowSize = $(window).width();
-					console.log(windowSize);
-					if (windowSize <= 974) {
-						$(".nascr").removeClass("d-none").addClass("d-block");
-						$(".wiscr").removeClass("d-block").addClass("d-none");
-					} else {
-						$(".nascr").removeClass("d-block").addClass("d-none");
-						$(".wiscr").removeClass("d-none").addClass("d-block");
-					}
-				}
-	</script>
+                   $(".flagPartDiv").addClass("d-none");
+                   $("#restoreRecord").removeClass("d-none");
+               }
+
+               function flagRestoration()
+               {
+
+                   $(".flagPartDiv").removeClass("d-none");
+                   $("#restoreRecord").addClass("d-none");
+               }
+               function setLang(lang)
+                   {
+
+                       var currentCulture = '@CultureInfo.CurrentCulture.Name';
+                       if (currentCulture !== lang) {
+                           $.ajax({
+                               type: "GET",
+                               url: '/Account/changeLang?langId=' + lang,
+                               success: function () {
+
+                                   window.location.reload();
+                               }
+                           });
+                       }
+                   }
+                   function setProductCountInCart(number) {
+                      $("#userBasketId .notifyBadge").html(number);
+                   }
+
+                   function changeScreen() {
+                       var windowSize = $(window).width();
+                       console.log(windowSize);
+                       if (windowSize <= 974) {
+                           $(".nascr").removeClass("d-none").addClass("d-block");
+                           $(".wiscr").removeClass("d-block").addClass("d-none");
+                       } else {
+                           $(".nascr").removeClass("d-block").addClass("d-none");
+                           $(".wiscr").removeClass("d-none").addClass("d-block");
+                       }
+                   }
+    </script>
 </body>
 </html>

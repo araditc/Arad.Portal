@@ -16,6 +16,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo
 {
@@ -29,8 +30,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo
         public ShippingSettingRepository(IHttpContextAccessor accessor,
             ShippingSettingContext context,
             IMapper mapper,
+            IWebHostEnvironment env,
             DomainContext  domainContext,
-            UserManager<ApplicationUser> userManager):base(accessor)
+            UserManager<ApplicationUser> userManager):base(accessor, env)
         {
             _context = context;
             _userManager = userManager;

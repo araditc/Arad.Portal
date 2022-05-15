@@ -7,13 +7,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
     public class FileManagerController : BaseController
     {
         private readonly IConfiguration _configuration;
-        public FileManagerController(IConfiguration configuration, IHttpContextAccessor accessor):base(accessor)
+        public FileManagerController(IConfiguration configuration, 
+            IHttpContextAccessor accessor, IWebHostEnvironment env):base(accessor, env)
         {
             _configuration = configuration;
         }

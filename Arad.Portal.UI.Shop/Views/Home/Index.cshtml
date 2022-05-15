@@ -6,8 +6,9 @@
 @using HtmlAgilityPack
 @using Newtonsoft.Json
 
-
-@foreach(RowContent row in Model.RowContents.OrderBy(_=>_.RowNumber))
+@if(Model != null )
+{
+    @foreach(RowContent row in Model.RowContents.OrderBy(_=>_.RowNumber))
 {
     <div class="row @row.ExtraClassNames">
           @foreach (ColContent column in row.ColsContent.OrderBy(_ => _.ColNumber))
@@ -49,5 +50,7 @@
             }
     </div>
 }
+}
+
 
 

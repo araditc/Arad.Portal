@@ -1,0 +1,94 @@
+﻿@using System.Drawing.Text
+@using Microsoft.AspNetCore.Html
+@{
+    Layout = null;
+}
+
+<div class="top-nav">
+    <div class="row">
+        <div class="col-4 col-md-2 col-lg-1">
+            <div class="m-1 ms-4">
+                <ul class="langUl list-group list-group-horizontal">
+                    <li class="list-group-item lan border-0 pt-2 px-1">
+                        <a title="@Language.GetString("Persian")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                            <img src="~/imgs/IRAN.png" onclick="setLang('fa-IR')" />
+                        </a>
+
+                    </li>
+                    <li class="list-group-item lan border-0 pt-2 px-1">
+                        <a title="@Language.GetString("English")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                            <img src="~/imgs/USA.png" onclick="setLang('en-US')" />
+                        </a>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="offset-4 col-4 offset-md-8 col-md-2 offset-lg-9 col-lg-2">
+            <div class="account-wrapper">
+                <ul>
+                    <li class="shopping_cart home_cart">
+                        <a asp-action="" asp-controller="" title="" class="r-cart">
+
+                            <span class="head-shoppings">
+                                <i class="fa fa-shopping-basket shopping-basket"></i>
+                                <span class="display-none count-basket" data-count="0">$"0 {@Language.GetString("Stuff")}"</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="login">
+                        @{
+
+                            @if (!@User.Identity.IsAuthenticated)
+                            {
+                                <a class="openLoginModal">
+                                    <span class="title">
+                                        <i class="fa fa-user"></i>
+                                        <span class="display-none ">@Language.GetString("User_LoginRegister")</span>
+                                    </span>
+                                </a>
+                            }
+                            else
+                            {
+                                <a aria-haspopup="true" class="openLoginModal accordion-groupdropdown d-md-down-none notify display-none"
+                               data-toggle="dropdown" dropdowntoggle="" role="button" dropdown="" placement="bottom right">
+                                    <span class="title">
+                                        <i class="fa fa-user"></i>
+                                        <span class="display-none">@User.Identity.Name</span>
+                                    </span>
+                                </a>
+
+                                <div class="nav-item dropdown dropleft d-md-down-none">
+                                    <div class="dropdown-menu dropdown-menu-right user-actions-drop" aria-labelledby="dropdownMenu1">
+                                        <div class="dropdown-header text-right">
+                                            <strong>
+                                                <a href="#">@Language.GetString("User_ManagementPanel")</a>
+                                            </strong>
+                                        </div>
+                                        <div class="dropdown-header text-right">
+                                            <strong>
+                                                <a href="#">@Language.GetString("Menu_Profile")</a>
+                                            </strong>
+                                        </div>
+                                        <div class="dropdown-header text-right">
+                                            <strong>
+                                                <a href="#">@Language.GetString("Menu_MyOrders")</a>
+                                            </strong>
+                                        </div>
+                                        <div class="dropdown-header text-right">
+                                            <strong>
+                                                <a href="#">@Language.GetString("btn_Exit")</a>
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+

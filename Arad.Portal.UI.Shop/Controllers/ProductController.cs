@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -31,8 +32,8 @@ namespace Arad.Portal.UI.Shop.Controllers
 
         public ProductController(IProductRepository productRepository, IHttpContextAccessor accessor,
             UserManager<ApplicationUser> userManager,
-            //EnyimMemcachedMethods<DataLayer.Entities.Shop.Transaction.Transaction> enyimMemcachedMethods,
-            ILanguageRepository lanRepository, IDomainRepository domainRepository, ICommentRepository commentRepository):base(accessor)
+            IWebHostEnvironment env,
+            ILanguageRepository lanRepository, IDomainRepository domainRepository, ICommentRepository commentRepository):base(accessor, env)
         {
             _productRepository = productRepository;
             _accessor = accessor;

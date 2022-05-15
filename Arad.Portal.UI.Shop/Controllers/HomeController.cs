@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -17,9 +18,11 @@ namespace Arad.Portal.UI.Shop.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IDomainRepository _domainRepository;
-      
-        public HomeController(ILogger<HomeController> logger, IHttpContextAccessor accessor,
-                              IDomainRepository domainRepository) :base(accessor)
+
+        public HomeController(ILogger<HomeController> logger,
+            IHttpContextAccessor accessor,
+            IWebHostEnvironment env,
+                              IDomainRepository domainRepository) : base(accessor, env)
         {
             _logger = logger;
             _domainRepository = domainRepository;
@@ -31,13 +34,13 @@ namespace Arad.Portal.UI.Shop.Controllers
             var domainDto = _domainRepository.FetchByName(DomainName).ReturnValue;
             //if (CultureInfo.CurrentCulture.Name != domainDto.DefaultLangSymbol)
             //{
-                //Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
-                //    CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(domainDto.DefaultLangSymbol))
-                //    , new CookieOptions()
-                //    {
-                //        Expires = DateTimeOffset.Now.AddYears(1)
-                //    });
-           //}
+            //Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
+            //    CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(domainDto.DefaultLangSymbol))
+            //    , new CookieOptions()
+            //    {
+            //        Expires = DateTimeOffset.Now.AddYears(1)
+            //    });
+            //}
             return View(domainDto.MainPageContainerPart);
         }
 

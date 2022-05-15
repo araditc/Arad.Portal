@@ -256,9 +256,9 @@ namespace Arad.Portal.UI.Shop.Dashboard
 
             app.UseEndpoints(endpoints =>
             {
-                //if (env.IsDevelopment())
-                //    endpoints.MapControllers().WithMetadata(new AllowAnonymousAttribute());
-                //else
+                if (env.IsDevelopment())
+                    endpoints.MapControllers().WithMetadata(new AllowAnonymousAttribute());
+                else
                     endpoints.MapControllers();
 
                

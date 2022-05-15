@@ -15,6 +15,7 @@ using System.Web;
 using System.Collections.Specialized;
 using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Entities.General.User;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
 {
@@ -25,7 +26,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
         private readonly IMapper _mapper;
         public LanguageRepository(LanguageContext context, IMapper mapper,
             UserManager<ApplicationUser> userManager,
-            IHttpContextAccessor httpContextAccessor): base(httpContextAccessor)
+            IWebHostEnvironment env,
+            IHttpContextAccessor httpContextAccessor): base(httpContextAccessor, env)
         {
             _context = context;
             _mapper = mapper;

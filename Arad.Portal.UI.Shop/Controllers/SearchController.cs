@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -12,7 +14,7 @@ namespace Arad.Portal.UI.Shop.Controllers
     {
 
         private readonly IDomainRepository _domainRepository;
-        public SearchController(IHttpContextAccessor accessor,IDomainRepository domainRepository):base(accessor)
+        public SearchController(IHttpContextAccessor accessor,IDomainRepository domainRepository, IWebHostEnvironment env):base(accessor, env)
         {
             _domainRepository = domainRepository;
         }

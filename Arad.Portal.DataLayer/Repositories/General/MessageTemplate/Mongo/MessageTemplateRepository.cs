@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Driver;
+using Microsoft.AspNetCore.Hosting;
 
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +22,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo
         public MessageTemplateRepository(MessageTemplateContext context,
             IMapper mapper,
             DomainContext domainContext,
-            IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+            IWebHostEnvironment env,
+            IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor, env)
         {
             _context = context;
             _mapper = mapper;

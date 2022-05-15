@@ -16,6 +16,8 @@ using System.Web;
 using Arad.Portal.DataLayer.Entities.General.District;
 using Arad.Portal.DataLayer.Entities.General.County;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Hosting;
+
 
 namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
 {
@@ -25,7 +27,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
         private readonly IMapper _mapper;
        
         public RoleRepository(RoleContext roleContext, 
-            IHttpContextAccessor httpContextAccessor, IMapper mapper): base(httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+            IMapper mapper,
+            IWebHostEnvironment env): base(httpContextAccessor, env)
         {
             _context = roleContext;
             _mapper = mapper;

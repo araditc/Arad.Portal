@@ -1415,6 +1415,9 @@
 	</string>
 	<!--END [Allert And Message]-->
 	<!--START [Dashboard]-->
+	<string key="Stuff">
+		<value>stuff</value>
+	</string>
 	<string key="Choose">
 		<value>choose ...</value>
 	</string>
@@ -1546,6 +1549,9 @@
 	</string>
 	<string key="User_FirstName">
 		<value>Name</value>
+	</string>
+	<string key="User_ManagementPanel">
+		<value>management panel</value>
 	</string>
 	<string key="User_FatherName">
 		<value>Father name</value>
@@ -1843,6 +1849,9 @@
 	<string key="User_Signup">
 		<value>sign up</value>
 	</string>
+	<string key="User_LoginRegister">
+		<value>Login/Register</value>
+	</string>
 	<string key="FromDate">
 		<value>From Date</value>
 	</string>
@@ -1938,6 +1947,9 @@
 	</string>
 	<string key="Menu_Profile">
 		<value>User Profile</value>
+	</string>
+	<string key="Menu_MyOrders">
+		<value>My Orders</value>
 	</string>
 	<string key="Menu_Home">
 		<value>Home</value>

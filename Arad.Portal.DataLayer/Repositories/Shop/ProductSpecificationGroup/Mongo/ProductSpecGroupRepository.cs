@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo;
 using System.Collections.Specialized;
 using System.Web;
@@ -28,8 +29,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
         private readonly LanguageContext _languageContext;
         
         public ProductSpecGroupRepository(IHttpContextAccessor httpContextAccessor,
+            IWebHostEnvironment env,
             IMapper mapper, ProductContext productContext, LanguageContext langContext)
-            : base(httpContextAccessor)
+            : base(httpContextAccessor, env)
         {
             _mapper = mapper;
             _productContext = productContext;

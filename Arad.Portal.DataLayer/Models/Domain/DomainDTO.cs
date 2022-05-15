@@ -16,6 +16,9 @@ namespace Arad.Portal.DataLayer.Models.Domain
         {
             Prices = new();
             DomainPaymentProviders = new();
+            HeaderPart = new();
+            MainPageContainerPart = new();
+            FooterPart = new();
         }
         public string DomainId { get; set; }
 

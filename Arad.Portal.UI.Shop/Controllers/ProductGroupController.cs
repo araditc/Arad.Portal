@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -19,7 +20,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly IHttpContextAccessor _accessor;
         private readonly string _domainName ;
         public ProductGroupController(IProductGroupRepository groupRepository, IHttpContextAccessor accessor,
-            ILanguageRepository lanRepository, IMenuRepository menuRepository):base(accessor)
+            ILanguageRepository lanRepository, IMenuRepository menuRepository, IWebHostEnvironment env):base(accessor, env)
         {
             _groupRepository = groupRepository;
             _accessor = accessor;
@@ -35,7 +36,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         [Route("{language}/group/{**slug}")]
         public async Task<IActionResult> Details(long slug)
         {
-            var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
+           
             CommonViewModel model = new CommonViewModel();
             var path = _accessor.HttpContext.Request.Path.ToString();
             var langCode = path.Split("/")[1].ToLower();
@@ -50,7 +51,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 CountToTake = 4,
                 DefaultLanguageId = langId
             };
-            grpSection.GroupsWithProducts = await _groupRepository.AllGroupIdsWhichEndInProducts(domainName);
+            grpSection.GroupsWithProducts = await _groupRepository.AllGroupIdsWhichEndInProducts(_domainName);
             model.GroupSection = grpSection;
 
             var proSection = new ProductsInGroupSection()

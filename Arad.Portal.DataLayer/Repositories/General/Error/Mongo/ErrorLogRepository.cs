@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Arad.Portal.GeneralLibrary.Utilities;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Error.Mongo
 {
@@ -15,7 +16,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Error.Mongo
         private readonly ErrorLogContext _context;
         public ErrorLogRepository(
             ErrorLogContext context,
-            IHttpContextAccessor httpContextAccessor):base(httpContextAccessor)
+            IWebHostEnvironment env,
+            IHttpContextAccessor httpContextAccessor):base(httpContextAccessor, env)
         {
             _context = context;
         }

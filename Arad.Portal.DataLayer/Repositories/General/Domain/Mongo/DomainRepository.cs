@@ -19,6 +19,7 @@ using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.DataLayer.Entities.General.Email;
 using Arad.Portal.DataLayer.Entities.General.Domain;
 using static Arad.Portal.DataLayer.Models.Shared.Enums;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
 {
@@ -32,7 +33,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
         public DomainRepository(DomainContext context,
                                 IHttpContextAccessor httpContextAccessor,
                                 UserManager<ApplicationUser> userManager,
-                                IMapper mapper): base(httpContextAccessor)
+                                IWebHostEnvironment env,
+                                IMapper mapper): base(httpContextAccessor, env)
         {
             _context = context;
             _userManager = userManager;
@@ -461,7 +463,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
 
         public string GetDomainName()
         {
-            return $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
+            return base.GetCurrentDomainName();
         }
 
         public List<SelectListModel> GetInvoiceNumberProcedureEnum()

@@ -13,6 +13,7 @@ using Arad.Portal.DataLayer.Entities.General.User;
 using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
+using Microsoft.AspNetCore.Hosting;
 using Serilog;
 
 namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
@@ -23,10 +24,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
         private readonly BasicDataContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly DomainContext _domainContext;
+
         public BasicDataRepository(IHttpContextAccessor httpContextAccessor,
+            IWebHostEnvironment env,
             UserManager<ApplicationUser> userManager,
             DomainContext domainContext,
-            IMapper mapper, BasicDataContext basicDataContext):base(httpContextAccessor)
+            IMapper mapper, BasicDataContext basicDataContext):base(httpContextAccessor, env )
         {
             _mapper = mapper;
             _context = basicDataContext;
@@ -34,11 +37,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
             _domainContext = domainContext;
         }
 
-        public string GetDomainName()
-        {
-            return base.GetCurrentDomainName();
-        }
-
+       
         public List<BasicDataModel> GetList(string groupKey)
         {
             var result = new List<BasicDataModel>();

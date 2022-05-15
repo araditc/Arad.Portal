@@ -21,6 +21,8 @@ using Arad.Portal.DataLayer.Entities.General.Menu;
 using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Content.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
+using Microsoft.AspNetCore.Hosting;
+
 
 namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
 {
@@ -39,8 +41,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                                 ContentContext contentContext,
                                 LanguageContext languageContext,
                                 IHttpContextAccessor httpContextAccessor,
+                                IWebHostEnvironment env,
                                 ProductContext productContext,
-                                IMapper mapper) : base(httpContextAccessor)
+                                IMapper mapper) : base(httpContextAccessor, env)
         {
             _context = context;
             _userManager = userManager;

@@ -18,13 +18,12 @@ namespace Arad.Portal.DataLayer.Contracts.General.Domain
         Task<Result> DeleteDomain(string domainId, string modificationReason);
         Result<DomainDTO> FetchDomain(string domainId);
         Result<DomainDTO> FetchByName(string domainName);
-
+        string GetDomainName();
         Entities.General.Domain.Domain FetchDomainByName(string domainName);
         Result<DomainDTO> GetDefaultDomain();
         SMTP GetSMTPAccount(string domainName);
         Task<Result> Restore(string id);
         List<SelectListModel> GetAllActiveDomains();
-        string GetDomainName();
         List<SelectListModel> GetInvoiceNumberProcedureEnum();
         List<SelectListModel> GetPspTypesEnum();
     }

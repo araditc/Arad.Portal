@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Identity;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
+using Microsoft.AspNetCore.Hosting;
 
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
@@ -41,8 +42,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             LanguageContext languageContext,
             CurrencyContext currencyContext,
             UserManager<ApplicationUser> userManager,
+            IWebHostEnvironment env,
             IMapper mapper)
-            : base(httpContextAccessor)
+            : base(httpContextAccessor, env)
         {
             _context = context;
             _productContext = productContext;

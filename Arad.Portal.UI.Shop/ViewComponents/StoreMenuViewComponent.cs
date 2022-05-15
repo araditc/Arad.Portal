@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+
 
 namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
 {
@@ -21,9 +23,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
         private readonly IHttpContextAccessor _accessor;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDomainRepository _domainRepository;
+        private readonly IWebHostEnvironment _env;
         private readonly ILanguageRepository _languageRepository;
         private readonly IMenuRepository _menuRepository;
         public StoreMenu(IHttpContextAccessor accessor, UserManager<ApplicationUser> userManager, 
+            IWebHostEnvironment env,
             IDomainRepository domainRepository, ILanguageRepository languageRepository, IMenuRepository menuRepository)
         {
             _accessor = accessor;
@@ -31,19 +35,25 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
             _domainRepository = domainRepository;
             _languageRepository = languageRepository;
             _menuRepository = menuRepository;
+            _env = env;
         }
         public  IViewComponentResult Invoke()
         {
             var menues = new List<StoreMenuVM>();
-            var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
+            string domainName;
+            if (_env.EnvironmentName == "Development")
+            {
+                domainName = "http://localhost:17951";
+            }
+            else
+            {
+                domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
+            }
+       
             var result = _domainRepository.FetchByName(domainName);
             var domainEntity = result.ReturnValue;
 
-            domainName = _accessor.HttpContext.Request.Host.ToString();
-            if (domainName.ToString().ToLower().StartsWith("localhost"))
-            {
-                domainName = _accessor.HttpContext.Request.Host.ToString().Substring(0, 9);
-            }
+
             try
             {
                 var cookieVal = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];

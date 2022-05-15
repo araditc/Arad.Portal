@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -18,7 +19,8 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly IDomainRepository _domainRepository;
         public BasketController(IHttpContextAccessor accessor,
             IShoppingCartRepository shoppingCartRepository,
-            IDomainRepository domainRepository) : base(accessor)
+            IWebHostEnvironment env,
+            IDomainRepository domainRepository) : base(accessor, env)
         {
             _shoppingCartRepository = shoppingCartRepository;
             _domainRepository = domainRepository;

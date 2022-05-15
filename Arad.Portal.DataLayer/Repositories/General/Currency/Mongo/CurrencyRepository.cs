@@ -15,6 +15,7 @@ using System.Collections.Specialized;
 using System.Web;
 using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Entities.General.User;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
 {
@@ -25,9 +26,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
         public CurrencyRepository(CurrencyContext context, 
-            IMapper mapper,IHttpContextAccessor httpContextAccessor,
+            IMapper mapper,
+            IHttpContextAccessor httpContextAccessor,
+            IWebHostEnvironment env,
             UserManager<ApplicationUser> userManager) 
-            : base(httpContextAccessor)
+            : base(httpContextAccessor, env)
         {
             _context = context;
             _mapper = mapper;

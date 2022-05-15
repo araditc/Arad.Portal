@@ -22,6 +22,7 @@ using MongoDB.Driver.Linq;
 using Arad.Portal.DataLayer.Contracts.General.Role;
 using Arad.Portal.DataLayer.Models.Role;
 using Arad.Portal.DataLayer.Repositories.General.Role.Mongo;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
 {
@@ -40,9 +41,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
             IHttpContextAccessor httpContextAccessor,
             IMapper mapper,
             RoleContext roleContext,
+            IWebHostEnvironment env,
             UserManager<ApplicationUser> userManager, 
             IRoleRepository roleRepository,
-            IUserRepository userRepository): base(httpContextAccessor)
+            IUserRepository userRepository): base(httpContextAccessor, env)
         {
             _context = context;
             _roleContext = roleContext;

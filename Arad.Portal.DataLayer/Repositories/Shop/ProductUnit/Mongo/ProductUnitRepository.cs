@@ -16,6 +16,7 @@ using Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo;
 using System.Web;
 using System.Collections.Specialized;
 using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
 {
@@ -28,7 +29,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
         public ProductUnitRepository(
             ProductContext productContext,
             LanguageContext languageContext,
-            IMapper mapper, IHttpContextAccessor httpContextAccessor): base(httpContextAccessor)
+            IWebHostEnvironment env,
+            IMapper mapper, IHttpContextAccessor httpContextAccessor): base(httpContextAccessor, env)
         {
             _mapper = mapper;
             _languageContext = languageContext;

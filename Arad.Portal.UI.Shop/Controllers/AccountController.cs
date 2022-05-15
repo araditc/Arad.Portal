@@ -9,6 +9,7 @@ using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.UI.Shop.Helpers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
@@ -38,7 +39,8 @@ namespace Arad.Portal.UI.Shop.Controllers
             IErrorLogRepository errorLogRepository,
             IDomainRepository domainRepository,
             IHttpContextAccessor accessor,
-            SignInManager<ApplicationUser> signInManager):base(accessor)
+            IWebHostEnvironment env,
+            SignInManager<ApplicationUser> signInManager):base(accessor, env)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -461,11 +463,11 @@ namespace Arad.Portal.UI.Shop.Controllers
         public IActionResult ChangeLang(string langId)
         {
             var domainName = $"{HttpContext.Request.Host}";
-            if (domainName.ToString().ToLower().StartsWith("localhost"))
-            {
-                //prevent port of localhost
-                domainName = HttpContext.Request.Host.ToString().Substring(0, 9);
-            }
+            //if (domainName.ToString().ToLower().StartsWith("localhost"))
+            //{
+            //    //prevent port of localhost
+            //    domainName = HttpContext.Request.Host.ToString().Substring(0, 9);
+            //}
             if (CultureInfo.CurrentCulture.Name != langId)
             {
                 Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,

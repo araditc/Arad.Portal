@@ -1309,7 +1309,9 @@
 	</string>
 	<!--END [Allert And Message]-->
 	<!--START [Dashboard]-->
-
+	<string key="Stuff">
+		<value>کالا</value>
+	</string>
 	<string key="Choose">
 		<value>انتخاب کنید ...</value>
 	</string>
@@ -1445,6 +1447,9 @@
 	<string key="User_FirstName">
 		<value>نام</value>
 	</string>
+	<string key="User_ManagementPanel">
+		<value>پنل مدیریت</value>
+	</string>
 	<string key="User_LastName">
 		<value>نام خانوادگی</value>
 	</string>
@@ -1471,6 +1476,9 @@
 	</string>
 	<string key="User_Signup">
 		<value>ثبت نام</value>
+	</string>
+	<string key="User_LoginRegister">
+		<value>ورود/ ثبت نام</value>
 	</string>
 	<string key="ActivationState">
 		<value>وضعیت</value>
@@ -1816,6 +1824,9 @@
 	</string>
 	<string key="Menu_Profile">
 		<value>پروفایل</value>
+	</string>
+	<string key="Menu_MyOrders">
+		<value>سفارش های من</value>
 	</string>
 	<string key="Menu_Home">
 		<value>خانه</value>

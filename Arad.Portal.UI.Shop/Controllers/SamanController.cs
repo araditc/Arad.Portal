@@ -17,6 +17,7 @@ using System.Text;
 using System.Net.Mime;
 using Arad.Portal.DataLayer.Models.PSPs.Saman;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -33,7 +34,8 @@ namespace Arad.Portal.UI.Shop.Controllers
             IHttpContextAccessor accessor,
             IDomainRepository domainRepository,
              SharedRuntimeData sharedRuntimeData,
-            HttpClientHelper httpClientHelper, IConfiguration configuration) : base(accessor)
+             IWebHostEnvironment env,
+            HttpClientHelper httpClientHelper, IConfiguration configuration) : base(accessor, env)
         {
             _domainRepository = domainRepository;
             //MethodInfo method = typeof(XmlSerializer)

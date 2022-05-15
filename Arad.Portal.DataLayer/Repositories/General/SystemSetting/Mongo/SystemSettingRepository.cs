@@ -4,13 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.DataLayer.Repositories.General.SystemSetting.Mongo
 {
     public class SystemSettingRepository : BaseRepository, ISystemSettingRepository
     {
         private readonly SystemSettingContext _context;
-        public SystemSettingRepository(SystemSettingContext context, IHttpContextAccessor accessor):base(accessor)
+        public SystemSettingRepository(SystemSettingContext context, 
+            IWebHostEnvironment env,
+            IHttpContextAccessor accessor):base(accessor, env)
         {
             _context = context;
         }

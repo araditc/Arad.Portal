@@ -26,14 +26,17 @@ using Arad.Portal.DataLayer.Repositories.General.Email.Mongo;
 using Microsoft.AspNetCore.Http;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Mongo
 {
     public class SMTPRepository : BaseRepository, ISMTPRepository
     {
         private readonly SMTPContext _context;
-        public SMTPRepository(IHttpContextAccessor httpContextAccessor, SMTPContext context)
-            : base(httpContextAccessor)
+        public SMTPRepository(IHttpContextAccessor httpContextAccessor,
+            SMTPContext context,
+            IWebHostEnvironment env)
+            : base(httpContextAccessor, env)
         {
             _context = context;
         }

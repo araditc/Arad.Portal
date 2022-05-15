@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+
 
 namespace Arad.Portal.DataLayer.Repositories.General.CountryParts.Mongo
 {
@@ -15,8 +17,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.CountryParts.Mongo
     {
         private readonly CountryContext _context;
         private readonly IMapper _mapper;
-        public CountryRepository(IHttpContextAccessor httpContextAccessor,CountryContext context,
-            IMapper mapper) :base(httpContextAccessor)
+        public CountryRepository(IHttpContextAccessor httpContextAccessor,
+            CountryContext context,
+            IWebHostEnvironment env,
+            IMapper mapper) :base(httpContextAccessor, env)
         {
             _mapper = mapper;
             _context = context;

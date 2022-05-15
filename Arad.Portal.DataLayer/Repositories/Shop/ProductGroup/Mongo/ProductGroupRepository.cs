@@ -24,6 +24,8 @@ using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Models.Product;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
 using MongoDB.Bson;
+using Microsoft.AspNetCore.Hosting;
+
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
 {
@@ -39,8 +41,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             LanguageContext languageContext, 
             IHttpContextAccessor httpContextAccessor,
             IDomainRepository domainRepository,
+            IWebHostEnvironment env,
             IMapper mapper, UserManager<ApplicationUser> userManager):
-            base(httpContextAccessor)
+            base(httpContextAccessor, env)
         {
             
             _productContext = context;

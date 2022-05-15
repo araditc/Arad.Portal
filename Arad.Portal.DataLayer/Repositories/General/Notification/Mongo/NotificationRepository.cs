@@ -17,6 +17,7 @@ using Arad.Portal.DataLayer.Entities.General.Notify;
 using Arad.Portal.DataLayer.Entities;
 using Arad.Portal.DataLayer.Entities.General.Email;
 using Arad.Portal.GeneralLibrary.Utilities;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Notification.Mongo
 {
@@ -28,7 +29,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Notification.Mongo
         public NotificationRepository(NotificationContext notificationContext, 
             IMapper mapper,
             Setting setting,
-            IHttpContextAccessor httpContextAccessor): base(httpContextAccessor)
+            IWebHostEnvironment env,
+            IHttpContextAccessor httpContextAccessor): base(httpContextAccessor, env)
         {
             _context = notificationContext;
             _mapper = mapper;

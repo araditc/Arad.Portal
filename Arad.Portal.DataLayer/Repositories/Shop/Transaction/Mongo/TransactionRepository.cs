@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Arad.Portal.DataLayer.Models.Shared.Enums;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
 {
@@ -19,8 +20,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
        
         public TransactionRepository(IHttpContextAccessor httpContextAccessor,
             DomainContext domainContext,
+            IWebHostEnvironment env,
             TransactionContext context)
-            : base(httpContextAccessor)
+            : base(httpContextAccessor, env)
         {
             _context = context;
             _domainContext = domainContext;

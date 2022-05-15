@@ -19,6 +19,7 @@ using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Content.Mongo;
 using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Entities.General.User;
+using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
@@ -33,8 +34,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
         private readonly UserManager<ApplicationUser> _userManager;
         public CommentRepository(IHttpContextAccessor httpContextAccessor,
             IMapper mapper, CommentContext commentContext,
+            IWebHostEnvironment env,
             ProductContext productContext, ContentContext contentContext, UserManager<ApplicationUser> userManager)
-            :base(httpContextAccessor)
+            :base(httpContextAccessor, env)
         {
             _mapper = mapper;
             _commentContext = commentContext;

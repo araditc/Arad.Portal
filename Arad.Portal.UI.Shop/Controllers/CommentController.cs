@@ -1,6 +1,7 @@
 ﻿using Arad.Portal.DataLayer.Contracts.General.Comment;
 using Arad.Portal.DataLayer.Models.Comment;
 using Arad.Portal.DataLayer.Models.Shared;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,13 +10,15 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+
 namespace Arad.Portal.UI.Shop.Controllers
 {
     public class CommentController : BaseController
     {
         private readonly ICommentRepository _commentRepository;
-        public CommentController(ICommentRepository commentRepository, 
-                                 IHttpContextAccessor accessor):base(accessor)
+        public CommentController(ICommentRepository commentRepository,
+                                 IWebHostEnvironment env,
+                                 IHttpContextAccessor accessor):base(accessor, env)
         {
             _commentRepository = commentRepository;     
         }

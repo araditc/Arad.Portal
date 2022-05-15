@@ -15,6 +15,7 @@ using MongoDB.Driver.Linq;
 using System.Collections.Specialized;
 using System.Web;
 using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
 {
@@ -27,7 +28,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
        
         public ProductSpecificationRepository(IHttpContextAccessor httpContextAccessor,
             IMapper mapper, 
-            ProductContext productContext, LanguageContext languageContext): base(httpContextAccessor)
+            IWebHostEnvironment env,
+            ProductContext productContext, LanguageContext languageContext): base(httpContextAccessor, env)
         {
             _mapper = mapper;
             _productContext = productContext;

@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -12,8 +14,8 @@ namespace Arad.Portal.UI.Shop.Controllers
     {
         private readonly HttpClientHelper _httpClientHelper;
         private readonly IHttpContextAccessor _accessor;
-        public PostController(HttpClientHelper httpClientHelper, IHttpContextAccessor accessor)
-            : base(accessor)
+        public PostController(HttpClientHelper httpClientHelper, IHttpContextAccessor accessor, IWebHostEnvironment env)
+            : base(accessor, env)
         {
             _httpClientHelper = httpClientHelper;
         }

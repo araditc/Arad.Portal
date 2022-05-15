@@ -29,6 +29,8 @@ using Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
 using Arad.Portal.DataLayer.Entities.General.DesignStructure;
 using MongoDB.Bson;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 {
@@ -59,8 +61,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             LanguageContext languageContext,
             DomainContext domainContext,
             IHttpContextAccessor accessor,
+            IWebHostEnvironment env,
             TransactionContext transactionContext)
-            : base(httpContextAccessor)
+            : base(httpContextAccessor, env)
         {
             _context = context;
             _mapper = mapper;

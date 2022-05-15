@@ -54,7 +54,7 @@
     <link href="~/css/siteTemplate/ThirdContentTemplate.css" rel="stylesheet" />
     <link href="~/css/siteTemplate/ForthContentTemplate.css" rel="stylesheet" />
     <link href="~/css/siteTemplate/FifthContentTemplate.css" rel="stylesheet" />
-
+    <link href="~/css/header.css" rel="stylesheet" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
@@ -70,93 +70,22 @@
         </div>
     </div>
     <header>
+         <partial name="~/Shared/_PriorFixedHeader.cshtml" />
         @if (!string.IsNullOrEmpty(Model.HeaderContent))
         {
             @Html.Raw(Model.HeaderContent);
             
         }
-        else
-        {
-            <div class="row">
-                <div class="col-4 col-md-2 col-lg-1">
-                    <div class="m-1 ms-4">
-                        <ul class="langUl list-group list-group-horizontal">
-                            <li class="list-group-item lan border-0 pt-2 px-1">
-                                <a title="@Language.GetString("Persian")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                    <img src="~/imgs/IRAN.png" onclick="setLang('fa-IR')" />
-                                </a>
-
-                            </li>
-                            <li class="list-group-item lan border-0 pt-2 px-1">
-                                <a title="@Language.GetString("English")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                    <img src="~/imgs/USA.png" onclick="setLang('en-US')" />
-                                </a>
-
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                @if (!User.Identity.IsAuthenticated)
-                {
-                    <div class="offset-4 col-4 offset-md-8 col-md-2 offset-lg-9 col-lg-2">
-                        <div class="rounded border-0 float-end mt-2 me-4">
-                            <ul class="list-group list-group-horizontal userPart">
-                                <li class="list-group-item ps-3 pe-2 border-0 bg-secondary bg-opacity-10">
-                                    <a href="/account/login" title="@Language.GetString("btn_Login")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                        <i class="fas fa-sign-in-alt"></i>
-                                    </a>
-                                </li>
-                                <li class="list-group-item border-0 pb-0 bg-secondary bg-opacity-10">
-                                    <div class="vr" style="min-height:1.5em;"></div>
-                                </li>
-                                <li class="list-group-item ps-2 pe-3 border-0 bg-secondary bg-opacity-10">
-
-                                    <a href="/account/register" title="@Language.GetString("btn_Register")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                        <i class="fas fa-user-plus"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                }
-                else
-                {
-                    <div class="offset-4 col-4 offset-md-8 col-md-2 offset-lg-10 col-lg-1">
-                        <div class="rounded border-0 float-end mt-2 me-4">
-                            <ul class="list-group list-group-horizontal">
-                                <li class="list-group-item profile">
-                                    <a href="/account/Profile" id="userProfileId" role="button" title="@Language.GetString("User_Profile")" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                        <i class="far fa-user"></i>
-                                    </a>
-                                </li>
-                                <li class="list-group-item border-0 pb-0 bg-secondary bg-opacity-10">
-                                    <div class="vr" style="min-height:1.5em;"></div>
-                                </li>
-                                <li class="list-group-item profile">
-                                    <a href="/basket/get" id="userBasketId" role="button" title="@Language.GetString("ShoppingCart")" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                        <i class="fas fa-shopping-cart"></i>
-                                        <span class="badge notifyBadge"></span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                }
-            </div>
-            <div class="navbarMenu">
-                @await Component.InvokeAsync("StoreMenu")
-            </div>
-        }
+        <div class="navbarMenu">
+            @await Component.InvokeAsync("StoreMenu")
+        </div>
+       
     </header>
     <div class="container">
          <main role="main" class="pb-3">
-       @if(!string.IsNullOrEmpty(Model.ContainerContent))
+            @if(!string.IsNullOrEmpty(Model.ContainerContent))
             {
                 @Html.Raw(Model.ContainerContent)
-            }
-            else
-            {
-                @Html.Raw(@ViewBag.DefaultPageContainer)
             }
         </main>
     </div>
@@ -165,11 +94,7 @@
         {
             @Html.Raw(Model.FooterContent);
             
-        }else
-        {
-            @Html.Raw(@ViewBag.DefaultContainer)
         }
-
     </footer>
     <script>
         $(document).ready(function(){
