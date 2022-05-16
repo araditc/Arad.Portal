@@ -9,17 +9,14 @@
     }
 </style>
 <div class="border-top-0">
-    <div class="row">
+    <div class="row gx-0">
         <div class="col-12">
+        
             <nav class="navbar navbar-expand-lg navbar-light bg-light rounded mt-0">
-                @*<button class="navbar-toggler" type="button" data-toggle="collapse"
-                            data-target="#navbar" aria-controls="navbars" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>*@
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                @*<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
-                </button>
+                </button>*@
 
                 <div class="collapse navbar-collapse" id="navbar">
                     <ul class="navbar-nav  @(ViewBag.dir=="rtl" ? "ml-auto" : "mr-auto")">
@@ -35,7 +32,7 @@
                             {
                                 <li class="nav-item dropdown menu-area wiscr d-none">
                                     <a class="nav-link dropdown-toggle" href="@item.Url" id='@($"st_mn_{item.MenuCode}")'
-                                       data-toggle="dropdown" @*aria-haspopup="true" aria-expanded="false"*@>
+                                       data-toggle="dropdown" >
                                         @item.MenuTitle.Name
                                     </a>
                                     <div class="dropdown-menu ps-1 mega-area" aria-labelledby='@($"st_mn_{item.MenuCode}")'>
@@ -101,7 +98,7 @@
                                     <div class="row">
                                         <div class="col-4 col-sm-3 col-xl-2">
                                             <a class="nav-link w-auto" href="@item.Url" id='@($"st_mn_{item.MenuCode}")'
-                                               data-toggle="dropdown" @*aria-haspopup="true" aria-expanded="false"*@>
+                                               data-toggle="dropdown" >
                                                 @item.MenuTitle.Name
                                             </a>
                                         </div>

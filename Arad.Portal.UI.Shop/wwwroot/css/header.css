@@ -46,19 +46,19 @@ header {
     font-size: 14px;
 }
 
-.navbar {
+.navbarr {
     -webkit-transition: top .5s ease-in-out,padding .5s ease-in-out;
     -moz-transition: top .5s ease-in-out,padding .5s ease-in-out;
     transition: top .5s ease-in-out,padding .5s ease-in-out;
 }
 
-    .navbar .dropdown-item {
+    .navbarr .dropdown-item {
         font-size: 14px;
         text-align: right;
     }
 
 @media screen and (max-width : 767px) {
-    .navbar {
+    .navbarr {
         position: fixed;
         top: 0;
         right: 0;
@@ -73,7 +73,7 @@ header {
 
 
 .top-nav {
-    padding: 0 50px;
+    /*padding: 0 50px;*/
     background: #f3f3f3;
     /* height: 25px;*/
 }
@@ -105,16 +105,20 @@ header {
     margin-top: 3px;
 }
 
-    .account-wrapper > ul {
-        list-style-position: inside;
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: row-reverse;
-        align-items: center;
-        justify-content: center;
-    }
+#myUserProfile li a {
+    padding-right: 2%;
+    color: black;
+}
+.account-wrapper > ul {
+    list-style-position: inside;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: center;
+}
 
         .account-wrapper > ul > li {
             float: left;

@@ -1,103 +1,106 @@
 ﻿@model Arad.Portal.DataLayer.Models.ShoppingCart.ShoppingCartDTO
 @{
-   // var index = 1;
+    // var index = 1;
 }
-
-@foreach (var seller in @Model.Details)
+@if (@Model.Details.Any())
 {
-    <div class="row border-bottom">
-        <div class="Card">
-            <div class="card-header">
-                <div class="row">
-                    <div class="col-md-4 offset-md-2">
-                        <label class="form-control"> @Language.GetString("tbl_VendorName") : </label>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-control">@seller.SellerUserName</label>
+    @foreach (var seller in @Model.Details)
+    {
+        <div class="row border-bottom">
+            <div class="Card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-4 offset-md-2">
+                            <label class="form-control"> @Language.GetString("tbl_VendorName") : </label>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-control">@seller.SellerUserName</label>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="card-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">@Language.GetString("Image")</th>
-                            <th scope="col">@Language.GetString("tbl_ProductName")</th>
-                            <th scope="col">@Language.GetString("PricePerUnit")</th>
-                            <th scope="col">@Language.GetString("Count")</th>
-                            <th scope="col">@Language.GetString("FinalPrice")</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @{
-                            foreach (var item in seller.Products)
-                            {
-                                <tr>
-                                    <th scope="row">@item.RowNumber</th>
-                                    <td>
-                                        @if (item.ProductImage != null)
-                                        {
-                                            <img class="smlImg" src=@($"../filemanager/getscaledimageOnWidth?path={item.ProductImage.Url}&width={75}")>
-                                        }
-                                    </td>
-                                    <td>@item.ProductName</td>
-                                    <td>
-                                        @{
-                                            if (item.PreviousFinalPricePerUnit != item.PricePerUnit - item.DiscountPricePerUnit)
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">@Language.GetString("Image")</th>
+                                <th scope="col">@Language.GetString("tbl_ProductName")</th>
+                                <th scope="col">@Language.GetString("PricePerUnit")</th>
+                                <th scope="col">@Language.GetString("Count")</th>
+                                <th scope="col">@Language.GetString("FinalPrice")</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                foreach (var item in seller.Products)
+                                {
+                                    <tr>
+                                        <th scope="row">@item.RowNumber</th>
+                                        <td>
+                                            @if (item.ProductImage != null)
                                             {
-                                                <p><s>@($"{item.PreviousFinalPricePerUnit} {Model.ShoppingCartCulture.CurrencySymbol}")</s></p>
-                                                <p><mark>@($"{item.PricePerUnit - item.DiscountPricePerUnit} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
+                                                <img class="smlImg" src=@($"../filemanager/getscaledimageOnWidth?path={item.ProductImage.Url}&width={75}")>
                                             }
-                                        }
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control orderCnt" min="1" value="@item.OrderCount" onchange="changeOrderCount(this , @item.ProductId);" />
-                                    </td>
-                                    <td>
-                                        <p><mark>@($"{@item.TotalAmountToPay} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
-                                    </td>
-                                </tr>
+                                        </td>
+                                        <td>@item.ProductName</td>
+                                        <td>
+                                            @{
+                                                if (item.PreviousFinalPricePerUnit != item.PricePerUnit - item.DiscountPricePerUnit)
+                                                {
+                                                    <p><s>@($"{item.PreviousFinalPricePerUnit} {Model.ShoppingCartCulture.CurrencySymbol}")</s></p>
+                                                    <p><mark>@($"{item.PricePerUnit - item.DiscountPricePerUnit} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
+                                                }
+                                            }
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control orderCnt" min="1" value="@item.OrderCount" onchange="changeOrderCount(this , @item.ProductId);" />
+                                        </td>
+                                        <td>
+                                            <p><mark>@($"{@item.TotalAmountToPay} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
+                                        </td>
+                                    </tr>
+                                }
                             }
-                        }
-                    </tbody>
-                </table>
-            </div>
-            <div class="card-footer">
-                <div class="row">
-                    <div class="col-md-4 offset-md-2">
-                        <label class="form-control"> @Language.GetString("ShippingExpense") : </label>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-control">@($"{seller.ShippingExpense} {Model.ShoppingCartCulture.CurrencySymbol}")</label>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="row">
-                    <div class="col-md-4 offset-md-2">
-                        <label class="form-control"> @Language.GetString("SumOfAmount") : </label>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-md-4 offset-md-2">
+                            <label class="form-control"> @Language.GetString("ShippingExpense") : </label>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-control">@($"{seller.ShippingExpense} {Model.ShoppingCartCulture.CurrencySymbol}")</label>
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <p><mark>@($"{seller.Products.Sum(_=>_.TotalAmountToPay) + seller.ShippingExpense} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
+                    <div class="row">
+                        <div class="col-md-4 offset-md-2">
+                            <label class="form-control"> @Language.GetString("SumOfAmount") : </label>
+                        </div>
+                        <div class="col-md-4">
+                            <p><mark>@($"{seller.Products.Sum(_=>_.TotalAmountToPay) + seller.ShippingExpense} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-}
+    }
 
     <div class="row">
         <div class="col-md-2">
-             <label class="form-control"> @Language.GetString("FinalPriceForPayment") : </label>
+            <label class="form-control"> @Language.GetString("FinalPriceForPayment") : </label>
         </div>
         <div class="col-md-4">
             <h4>@($"{Model.FinalPriceForPay} {Model.ShoppingCartCulture.CurrencySymbol}")</h4>
         </div>
         <div class="col-md-2">
-            <input type="button" class="btn btn-success btn-lg bg-gradient"  id="btnPayement" />
+            <input type="button" class="btn btn-success btn-lg bg-gradient" id="btnPayement" />
         </div>
     </div>
+}
 
-    <script type="text/javascript">
+
+<script type="text/javascript">
         $(document).ready(function ()
         {
             //$.ajax({
@@ -124,4 +127,4 @@
                     }
                   });
     }
-    </script>
+</script>

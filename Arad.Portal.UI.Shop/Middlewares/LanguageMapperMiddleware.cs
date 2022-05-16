@@ -87,7 +87,7 @@ namespace Arad.Portal.UI.Shop.Middlewares
                 }
                 else if (defLangSymbol == "")
                 {
-                    var result = _domainContext.Collection.Find(_ => _.DomainName == $"{context.Request.Scheme}://{context.Request.Host}").First();
+                    var result = _domainContext.Collection.Find(_ => _.DomainName == $"{context.Request.Scheme}://{domainName}").First();
                     defLangSymbol = result.DefaultLangSymbol;
                 }
 

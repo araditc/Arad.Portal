@@ -99,24 +99,7 @@
 	</string>
 	<!--End [buttons text]-->
 	<!--Start[JustForTesting]-->
-	<!--<string key="PermissionTitle_Menu11">
-		<value>Menu1-1</value>
-	</string>
-	<string key="PermissionTitle_Menu12">
-		<value>Menu1-2</value>
-	</string>
-	<string key="PermissionTitle_Menu111">
-		<value>Menu1-1-1</value>
-	</string>
-	<string key="PermissionTitle_Menu112">
-		<value>Menu1-1-2</value>
-	</string>
-	<string key="PermissionTitle_Menu1111">
-		<value>Menu1-1-1-1</value>
-	</string>
-	<string key="PermissionTitle_Menu11111">
-		<value>Menu1-1-1-1-1</value>
-	</string>-->
+	
 	<!--End[JustForTesting]-->
 	<!--Start [TextAndPlaceholder]=================================================-->
 	<string key="TextAndPlaceholder_LogIn">
@@ -505,6 +488,9 @@
 		<value>Are you sure?</value>
 	</string>
 	<!--====================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_PasswordChangeSuccessfully">
+		<value>Password have changed successfully.</value>
+	</string>
 	<string key="AlertAndMessage_PaymentGatewayInfoes">
 		<value>please fill all paymentGateway information compeletely;</value>
 	</string>
@@ -1087,6 +1073,12 @@
 	<string key="AlertAndMessage_EnterUserAndPassword">
 		<value>Enter your username and password</value>
 	</string>
+	<string key="AlertAndMessage_NewPasswordRequired">
+		<value>Please enter your new password</value>
+	</string>
+	<string key="AlertAndMessage_ReNewPasswordRequired">
+		<value>Please enter your new password again</value>
+	</string>
 	<string key="AlertAndMessage_EnterOTP">
 		<value>Enter OTP</value>
 	</string>
@@ -1261,8 +1253,14 @@
 	<string key="AlertAndMessage_MenuOfModule">
 		<value>Choose MenuOfModule</value>
 	</string>
+	<string key="AlertAndMessage_PasswordandRepeatIsNotEqual">
+		<value>password and password repitation isnt equal.</value>
+	</string>
 	<!--END [Allert And Message]-->
 	<!--START [Dashboard]-->
+	<string key="ChangePassword_CreatePasswordBySystemCopy">
+		<value>ChangePassword_CreatePasswordBySystemCopy</value>
+	</string>
 	<string key="Stuff">
 		<value>stuff</value>
 	</string>
@@ -1395,8 +1393,14 @@
 	<string key="Role_CreatorUserName">
 		<value>Creator username</value>
 	</string>
+	<string key="User_CurrentPass">
+		<value>Current Password</value>
+	</string>
 	<string key="User_Profile">
 		<value>User Profile</value>
+	</string>
+	<string key="User_PasswordRepetition">
+		<value>Password Repetition</value>
 	</string>
 	<string key="User_FirstName">
 		<value>Name</value>
@@ -1406,6 +1410,9 @@
 	</string>
 	<string key="User_LastName">
 		<value>LastName</value>
+	</string>
+	<string key="User_ProfileApprove">
+		<value>Approve Profile</value>
 	</string>
 	<string key="User_PhoneNumber">
 		<value>PhoneNumber</value>
@@ -1726,6 +1733,9 @@
 	</string>
 	<string key="ContentTitle">
 		<value>Content Title</value>
+	</string>
+	<string key="Menu_ProfileInfoes">
+		<value>Profile Informations</value>
 	</string>
 	<string key="Menu_StoreMenues">
 		<value>Store Menues</value>

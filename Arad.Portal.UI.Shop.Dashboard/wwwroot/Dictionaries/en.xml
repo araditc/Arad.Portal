@@ -1413,8 +1413,14 @@
 	<string key="AlertAndMessage_MenuOfModule">
 		<value>Choose MenuOfModule</value>
 	</string>
+	<string key="AlertAndMessage_PasswordandRepeatIsNotEqual">
+		<value>password and password repitation isnt equal.</value>
+	</string>
 	<!--END [Allert And Message]-->
 	<!--START [Dashboard]-->
+	<string key="ChangePassword_CreatePasswordBySystemCopy">
+		<value>ChangePassword_CreatePasswordBySystemCopy</value>
+	</string>
 	<string key="Stuff">
 		<value>stuff</value>
 	</string>
@@ -1546,6 +1552,9 @@
 	</string>
 	<string key="Role_CreatorUserName">
 		<value>Creator username</value>
+	</string>
+	<string key="User_Profile">
+		<value>User Profile</value>
 	</string>
 	<string key="User_FirstName">
 		<value>Name</value>

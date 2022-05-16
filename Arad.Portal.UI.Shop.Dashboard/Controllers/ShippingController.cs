@@ -146,7 +146,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     dto.ShippingCoupon.EndDate = DateHelper.ToEnglishDate(dto.ShippingCoupon.PersianEndDate);
                 }
                 dto.ShippingSettingId = Guid.NewGuid().ToString();
-                var domainName = _domainRepository;
+                var domainName = _domainRepository.GetDomainName();
                 var currentDomain = _domainRepository.FetchByName(domainName).ReturnValue;
                 //dto.AssociatedDomainId = currentDomain.DomainId;
                 if (string.IsNullOrWhiteSpace(dto.CurrencyId))

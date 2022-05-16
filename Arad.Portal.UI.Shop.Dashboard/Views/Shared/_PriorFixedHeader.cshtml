@@ -5,7 +5,7 @@
 }
 
 <div class="top-nav">
-    <div class="row">
+    <div class="row gx-0">
         <div class="col-4 col-md-2 col-lg-1">
             <div class="m-1 ms-4">
                 <ul class="langUl list-group list-group-horizontal">
@@ -27,15 +27,6 @@
         <div class="offset-4 col-4 offset-md-8 col-md-2 offset-lg-9 col-lg-2">
             <div class="account-wrapper">
                 <ul>
-                    <li class="shopping_cart home_cart">
-                        <a asp-action="" asp-controller="" title="" class="r-cart">
-
-                            <span class="head-shoppings">
-                                <i class="fa fa-shopping-basket shopping-basket"></i>
-                                <span class="display-none count-basket" data-count="0">$"0 {@Language.GetString("Stuff")}"</span>
-                            </span>
-                        </a>
-                    </li>
                     <li class="login">
                         @{
 
@@ -51,14 +42,14 @@
                             else
                             {
                                 <a aria-haspopup="true" class="openLoginModal accordion-groupdropdown d-md-down-none notify display-none"
-                               data-toggle="dropdown" dropdowntoggle="" role="button" dropdown="" placement="bottom right">
+                               data-toggle="dropdown" dropdowntoggle="" role="button" placement="bottom right">
                                     <span class="title">
                                         <i class="fa fa-user"></i>
                                         <span class="display-none">@User.Identity.Name</span>
                                     </span>
                                 </a>
 
-                                <div class="nav-item dropdown dropleft d-md-down-none">
+                                //<div class="nav-item dropdown dropleft d-md-down-none">
                                     <div class="dropdown-menu dropdown-menu-right user-actions-drop" aria-labelledby="dropdownMenu1">
                                         <div class="dropdown-header text-right">
                                             <strong>
@@ -81,7 +72,7 @@
                                             </strong>
                                         </div>
                                     </div>
-                                </div>
+                                //</div>
                             }
                         }
                     </li>

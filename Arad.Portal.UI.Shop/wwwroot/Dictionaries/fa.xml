@@ -500,6 +500,9 @@
 		<value>مطمئن هستید؟</value>
 	</string>
 	<!--====================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_PasswordChangeSuccessfully">
+		<value>کلمه عبور با موفقیت تغییر یافت.</value>
+	</string>
 	<string key="AlertAndMessage_PaymentGatewayInfoes">
 		<value>لطفا اطلاعات درگاه پرداخت را بطور کامل وارد کنید.</value>
 	</string>
@@ -1141,6 +1144,12 @@
 	<string key="AlertAndMessage_EnterUserAndPassword">
 		<value>لطفا نام کاربری و گذرواژه را وارد نمائید.</value>
 	</string>
+	<string key="AlertAndMessage_NewPasswordRequired">
+		<value>لطفا کلمه عبور جدید را وارد کنید.</value>
+	</string>
+	<string key="AlertAndMessage_ReNewPasswordRequired">
+		<value>لطفا کلمه عبور جدید را دوباره وارد کنید.</value>
+	</string>
 	<string key="AlertAndMessage_EnterOTP">
 		<value>یک بار رمز را وارد نمائید.</value>
 	</string>
@@ -1307,8 +1316,14 @@
 	<string key="AlertAndMessage_MenuOfModule">
 		<value>لطفا منو را انتخاب نمایید.</value>
 	</string>
+	<string key="AlertAndMessage_PasswordandRepeatIsNotEqual">
+		<value>پسورد و تکرار آن یکسان نیستند.</value>
+	</string>
 	<!--END [Allert And Message]-->
 	<!--START [Dashboard]-->
+	<string key="ChangePassword_CreatePasswordBySystemCopy">
+		<value>تولید کلمه عبور بوسیله سیستم</value>
+	</string>
 	<string key="Stuff">
 		<value>کالا</value>
 	</string>
@@ -1441,8 +1456,14 @@
 	<string key="Role_CreatorUserName">
 		<value>کاربر ایجادکننده</value>
 	</string>
+	<string key="User_CurrentPass">
+		<value>کلمه عبور جاری</value>
+	</string>
 	<string key="User_Profile">
-		<value>حساب کاربری</value>
+		<value>پروفایل کاربری</value>
+	</string>
+	<string key="User_PasswordRepetition">
+		<value>تکرار کلمه عبور</value>
 	</string>
 	<string key="User_FirstName">
 		<value>نام</value>
@@ -1452,6 +1473,9 @@
 	</string>
 	<string key="User_LastName">
 		<value>نام خانوادگی</value>
+	</string>
+	<string key="User_ProfileApprove">
+		<value>تایید پروفایل</value>
 	</string>
 	<string key="User_PhoneNumber">
 		<value>تلفن همراه</value>
@@ -1767,6 +1791,9 @@
 	</string>
 	<string key="ContentTitle">
 		<value>عنوان محتوا</value>
+	</string>
+	<string key="Menu_ProfileInfoes">
+		<value>اطلاعات پروفایل</value>
 	</string>
 	<string key="Menu_StoreMenues">
 		<value>منوهای فروشگاه</value>

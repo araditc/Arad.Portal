@@ -491,13 +491,16 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             userEntity.Profile.DefaultLanguageId : domainEntity.DefaultLanguageId)).FirstOrDefault();
             defCurrencyEntity = _currencyContext.Collection.Find(_ => _.CurrencyId == (!string.IsNullOrWhiteSpace(userEntity.Profile.DefaultCurrencyId) ?
             userEntity.Profile.DefaultCurrencyId : domainEntity.DefaultCurrencyId)).FirstOrDefault();
-           
+
             var userCartModel = new Entities.Shop.ShoppingCart.ShoppingCart()
             {
                 CreationDate = DateTime.UtcNow,
                 CreatorUserId = userId,
                 CreatorUserName = GetUserName(),
                 ShoppingCartId = Guid.NewGuid().ToString(),
+                IsActive = true,
+                IsDeleted = false,
+                AssociatedDomainId = domainEntity.DomainId,
                 ShoppingCartCulture = new EntityCulture()
                 {
                     CurrencyId = defCurrencyEntity != null ? defCurrencyEntity.CurrencyId :
@@ -526,9 +529,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
         private long GetCurrentPrice(Entities.Shop.Product.Product product)
         {
             var availablePrice = product.Prices.Any(_ => _.IsActive &&
-                _.StartDate <= DateTime.Now && (_.EndDate == null || _.EndDate <= DateTime.Now)) ?
+                _.StartDate <= DateTime.Now && (_.EndDate == null || _.EndDate >= DateTime.Now)) ?
                 product.Prices.FirstOrDefault(_ => _.IsActive &&
-                _.StartDate <= DateTime.Now && (_.EndDate == null || _.EndDate <= DateTime.Now)) : null;
+                _.StartDate <= DateTime.Now && (_.EndDate == null || _.EndDate >= DateTime.Now)) : null;
             if(availablePrice != null)
             {
                 return Convert.ToInt64(availablePrice.PriceValue);
@@ -617,7 +620,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                 _.SDate <= DateTime.Now && (_.EDate == null || _.EDate >= DateTime.Now)).First() : null;
 
             promotionOnThisProduct = product.Promotion != null && product.Promotion.IsActive && !product.Promotion.IsDeleted
-                 && product.Promotion.SDate >= DateTime.Now &&
+                 && product.Promotion.SDate <= DateTime.Now &&
                  (product.Promotion.EDate == null || product.Promotion.EDate >= DateTime.Now) ? product.Promotion : null;
 
             if (promotionOnAll != null)

@@ -323,6 +323,65 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
 
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePassword model)
+        {
+            JsonResult result;
+            if (!ModelState.IsValid)
+            {
+                List<ClientValidationErrorModel> errors = new List<ClientValidationErrorModel>();
+
+                foreach (var modelStateKey in ModelState.Keys)
+                {
+                    var modelStateVal = ModelState[modelStateKey];
+                    foreach (var error in modelStateVal.Errors)
+                    {
+                        var obj = new ClientValidationErrorModel
+                        {
+                            Key = modelStateKey,
+                            ErrorMessage = error.ErrorMessage,
+                        };
+
+                        errors.Add(obj);
+                    }
+                }
+                result = Json(new { Status = "ModelError", ModelStateErrors = errors });
+            }
+
+            try
+            {
+                var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var user = await _userManager.FindByIdAsync(userId);
+
+                var res = await _userManager.ChangePasswordAsync(user, model.Password, model.NewPassword);
+
+                if (res.Succeeded)
+                {
+                    result = Json(new { status = "success", Message = Language.GetString("AlertAndMessage_PasswordChangeSuccessfully") });
+                }
+               result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_ErrorTryAgain"), ModelStateErrors = new List<string>() });
+            }
+            catch (Exception e)
+            {
+                result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_ErrorTryAgain"), ModelStateErrors = new List<string>() });
+            }
+            return result;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(userId);
+
+            var userProfile = new UserProfile()
+            {
+                Name = user.Profile.FirstName,
+                LastName = user.Profile.LastName
+            };
+            return View(userProfile);
+        }
+
         [HttpGet]
         public IActionResult PageOrItemNotFound()
         {
@@ -462,12 +521,13 @@ namespace Arad.Portal.UI.Shop.Controllers
         [HttpGet]
         public IActionResult ChangeLang(string langId)
         {
-            var domainName = $"{HttpContext.Request.Host}";
-            //if (domainName.ToString().ToLower().StartsWith("localhost"))
-            //{
-            //    //prevent port of localhost
-            //    domainName = HttpContext.Request.Host.ToString().Substring(0, 9);
-            //}
+            //var domainName = this.DomainName;
+            string domainName = $"{HttpContext.Request.Host}";
+            if (domainName.ToString().ToLower().StartsWith("localhost"))
+            {
+                //prevent port of localhost
+                domainName = HttpContext.Request.Host.ToString().Substring(0, 9);
+            }
             if (CultureInfo.CurrentCulture.Name != langId)
             {
                 Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,

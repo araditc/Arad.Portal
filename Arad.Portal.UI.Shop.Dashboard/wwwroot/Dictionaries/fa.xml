@@ -1448,8 +1448,14 @@
 	<string key="AlertAndMessage_MenuOfModule">
 		<value>لطفا منو را انتخاب نمایید.</value>
 	</string>
+<string key="AlertAndMessage_PasswordandRepeatIsNotEqual">
+	<value>پسورد و تکرار آن یکسان نیستند.</value>
+</string>
 	<!--END [Allert And Message]-->
 	<!--START [Dashboard]-->
+	<string key="ChangePassword_CreatePasswordBySystemCopy">
+		<value>تولید کلمه عبور بوسیله سیستم</value>
+	</string>
 	<string key="Stuff">
 		<value>stuff</value>
 	</string>
@@ -1581,6 +1587,9 @@
 	</string>
 	<string key="Role_CreatorUserName">
 		<value>کاربر ایجادکننده</value>
+	</string>
+	<string key="User_Profile">
+		<value>پروفایل کاربری</value>
 	</string>
 	<string key="User_FirstName">
 		<value>نام</value>

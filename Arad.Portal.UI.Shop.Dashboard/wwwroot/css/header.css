@@ -46,19 +46,24 @@ header {
     font-size: 14px;
 }
 
-.navbar {
+#myUserProfile li a {
+    padding-right: 2%;
+    color: black;
+}
+
+.navbarr {
     -webkit-transition: top .5s ease-in-out,padding .5s ease-in-out;
     -moz-transition: top .5s ease-in-out,padding .5s ease-in-out;
     transition: top .5s ease-in-out,padding .5s ease-in-out;
 }
 
-    .navbar .dropdown-item {
+    .navbarr .dropdown-item {
         font-size: 14px;
         text-align: right;
     }
 
 @media screen and (max-width : 767px) {
-    .navbar {
+    .navbarr {
         position: fixed;
         top: 0;
         right: 0;

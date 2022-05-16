@@ -41,24 +41,31 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
         {
             var menues = new List<StoreMenuVM>();
             string domainName;
-            if (_env.EnvironmentName == "Development")
-            {
-                domainName = "http://localhost:17951";
-            }
-            else
-            {
-                domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
-            }
-       
-            var result = _domainRepository.FetchByName(domainName);
-            var domainEntity = result.ReturnValue;
-
+            
+            //string domainName = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+            //if (domainName.ToString().ToLower().StartsWith("localhost"))
+            //{
+            //    //prevent port of localhost
+            //    domainName = HttpContext.Request.Host.ToString().Substring(0, 9);
+            //}
+            
 
             try
             {
                 var cookieVal = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
                 string symbol = cookieVal.Split("|")[0][2..];
                 var langId = _languageRepository.FetchBySymbol(symbol.ToLower());
+                if (_env.EnvironmentName == "Development")
+                {
+                    domainName = "http://localhost:17951";
+                }
+                else
+                {
+                    domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
+                }
+                var result = _domainRepository.FetchByName(domainName);
+                var domainEntity = result.ReturnValue;
+
                 menues = _menuRepository.StoreList(domainEntity.DomainId, langId);
             }
             catch (Exception e)

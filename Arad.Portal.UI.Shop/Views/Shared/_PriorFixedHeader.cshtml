@@ -6,8 +6,8 @@
 
 <div class="top-nav">
     <div class="row">
-        <div class="col-4 col-md-2 col-lg-1">
-            <div class="ms-4">
+        <div class="col-4 offset-1 offset-md-1 col-md-2 offset-lg-1 col-lg-1 ">
+            <div class="ms-2">
                 <ul class="langUl list-group list-group-horizontal">
                     <li class="list-group-item lan border-0 pt-2 px-1">
                         <a title="@Language.GetString("Persian")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
@@ -24,11 +24,11 @@
                 </ul>
             </div>
         </div>
-        <div class="offset-4 col-4 offset-md-8 col-md-2 offset-lg-10 col-lg-1">
+        <div class="offset-2 col-4 offset-md-6 col-md-2 offset-lg-8 col-lg-1">
             <div class="account-wrapper pt-2">
                 <ul>
                     <li class="shopping_cart home_cart">
-                        <a asp-action="Index" asp-controller="Basket" asp-area="" title="" class="r-cart">
+                        <a asp-action="Get" asp-controller="Basket" asp-area="" title="" class="r-cart">
 
                             <span class="head-shoppings">
                                 <i class="fa fa-shopping-basket shopping-basket"></i>
@@ -45,46 +45,77 @@
                                     <span class="title">
                                         <i class="fa fa-user"></i>
                                         <span class="display-none ">@Language.GetString("User_LoginRegister")</span>
-                                        
+
                                     </span>
                                 </a>
                             }
                             else
                             {
-                                <a aria-haspopup="true" class="openLoginModal accordion-groupdropdown d-md-down-none notify display-none" data-toggle="dropdown" dropdowntoggle="" role="button" dropdown="" placement="bottom right">
-                                    <span class="title">
-                                        <i class="fa fa-user"></i>
-                                        <span class="display-none">@User.Identity.Name</span>
-                                    </span>
-                                </a>
-
-                                <div class="nav-item dropdown dropleft d-md-down-none">
-                                    <div class="dropdown-menu dropdown-menu-right user-actions-drop" aria-labelledby="dropdownMenu1">
-                                        @if (@Model.Dashboard)
-                                        {
-                                            <div class="dropdown-header text-right">
-                                                <strong>
-                                                    <a asp-controller="Home" asp-action="Index">@Language.GetString("User_ManagementPanel")</a>
-                                                </strong>
-                                            </div>
-                                        }
-                                        <div class="dropdown-header text-right">
-                                            <strong>
+                                <div class="dropdown" id="myUserProfile">
+                                    <a class="openLoginModal btn dropdown-toggle" role="button" id="drpUserProfile" placement="bottom right" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="title">
+                                            <i class="fa fa-user"></i>
+                                            <span class="display-none">@User.Identity.Name</span>
+                                        </span>
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="drpUserProfile">
+                                        <li>
+                                       
+                                                <a asp-controller="Home" asp-action="Index">@Language.GetString("User_ManagementPanel")</a>
+                                            
+                                        </li>
+                                        <li>
+                                        
                                                 <a asp-controller="Account" asp-action="Profile">@Language.GetString("Menu_Profile")</a>
-                                            </strong>
-                                        </div>
-                                        <div class="dropdown-header text-right">
-                                            <strong>
+                                           
+                                        </li>
+                                        <li>
+                                        
                                                 <a asp-controller="Payment" asp-action="ListPayments">@Language.GetString("Menu_MyOrders")</a>
-                                            </strong>
-                                        </div>
-                                        <div class="dropdown-header text-right">
-                                            <strong>
+                                           
+                                        </li>
+                                        <li>
+                                        
                                                 <a asp-controller="Account" asp-action="Logout">@Language.GetString("Exit")</a>
-                                            </strong>
-                                        </div>
-                                    </div>
+                                            
+                                        </li>
+                                    </ul>
                                 </div>
+
+
+                                //<a aria-haspopup="true" class="openLoginModal accordion-groupdropdown d-md-down-none notify display-none" data-toggle="dropdown" dropdowntoggle="" role="button" placement="bottom right">
+                                //    <span class="title">
+                                //        <i class="fa fa-user"></i>
+                                //        <span class="display-none">@User.Identity.Name</span>
+                                //    </span>
+                                //</a>
+
+                                //<div class="nav-item dropdown dropleft d-md-down-none">
+                                //    <div class="dropdown-menu dropdown-menu-right user-actions-drop" aria-labelledby="dropdownMenu1">
+
+                                //        <div class="dropdown-header text-right">
+                                //            <strong>
+                                //                <a asp-controller="Home" asp-action="Index">@Language.GetString("User_ManagementPanel")</a>
+                                //            </strong>
+                                //        </div>
+
+                                //        <div class="dropdown-header text-right">
+                                //            <strong>
+                                //                <a asp-controller="Account" asp-action="Profile">@Language.GetString("Menu_Profile")</a>
+                                //            </strong>
+                                //        </div>
+                                //        <div class="dropdown-header text-right">
+                                //            <strong>
+                                //                <a asp-controller="Payment" asp-action="ListPayments">@Language.GetString("Menu_MyOrders")</a>
+                                //            </strong>
+                                //        </div>
+                                //        <div class="dropdown-header text-right">
+                                //            <strong>
+                                //                <a asp-controller="Account" asp-action="Logout">@Language.GetString("Exit")</a>
+                                //            </strong>
+                                //        </div>
+                                //    </div>
+                                //</div>
                             }
                         }
                     </li>
