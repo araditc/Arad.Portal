@@ -40,6 +40,9 @@
 	<string key="ShoppingCart">
 		<value>سبد خرید</value>
 	</string>
+	<string key="Shop_Unavailable">
+		<value>ناموجود</value>
+	</string>
 	<string key="btn_AddToShoppingCart">
 		<value>افزودن به سبد خرید</value>
 	</string>
@@ -1857,6 +1860,9 @@
 	</string>
 	<string key="Menu_Home">
 		<value>خانه</value>
+	</string>
+	<string key="Menu_HomePage">
+		<value>صفحه اصلی</value>
 	</string>
 	<string key="Menu_RoutePlaceHolder">
 		<value>مسیرهای مختلف را با , از هم جداکنید.</value>

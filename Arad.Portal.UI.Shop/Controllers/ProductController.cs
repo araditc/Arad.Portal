@@ -62,27 +62,34 @@ namespace Arad.Portal.UI.Shop.Controllers
             ViewBag.Providers = domainEntity.ReturnValue.DomainPaymentProviders.Select(_ => new SelectListModel() { Text = _.PspType.ToString(), Value = ((int)_.PspType).ToString() });
             var lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
             var entity = _productRepository.FetchByCode(slug, domainEntity.ReturnValue, userId);
-            if (isLoggedUser)
+            if(!string.IsNullOrEmpty(entity.ProductId))
             {
-                 #region check cookiepart for loggedUser
-                var userProductRateCookieName = $"{userId}_p{entity.ProductId}";
-                if(HttpContext.Request.Cookies[userProductRateCookieName] != null)
+                if (isLoggedUser)
                 {
-                    ViewBag.HasRateBefore = true;
-                    ViewBag.PreRate = HttpContext.Request.Cookies[userProductRateCookieName];
+                    #region check cookiepart for loggedUser
+                    var userProductRateCookieName = $"{userId}_p{entity.ProductId}";
+                    if (HttpContext.Request.Cookies[userProductRateCookieName] != null)
+                    {
+                        ViewBag.HasRateBefore = true;
+                        ViewBag.PreRate = HttpContext.Request.Cookies[userProductRateCookieName];
+                    }
+                    else
+                    {
+                        ViewBag.HasRateBefore = false;
+                    }
+                    #endregion
                 }
-                else
-                {
-                    ViewBag.HasRateBefore = false;
-                }
-                #endregion
-            }
 
-            var lanId = _lanRepository.FetchBySymbol(lanIcon);
-            ViewBag.LanIcon = lanIcon;
-            ViewBag.CurCurrencyId = domainEntity.ReturnValue.DefaultCurrencyId;
-            ViewBag.CurLanguageId = lanId;
-            return View(entity);
+                var lanId = _lanRepository.FetchBySymbol(lanIcon);
+                ViewBag.LanIcon = lanIcon;
+                ViewBag.CurCurrencyId = domainEntity.ReturnValue.DefaultCurrencyId;
+                ViewBag.CurLanguageId = lanId;
+                return View(entity);
+            }else
+            {
+                return Redirect($"~/{lanIcon}/ExceptionHandler/PageNotFound");
+            }
+            
         }
 
         [HttpPost]

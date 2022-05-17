@@ -40,6 +40,9 @@
 	<string key="ShoppingCart">
 		<value>Shopping Cart</value>
 	</string>
+	<string key="Shop_Unavailable">
+		<value>Unavailable</value>
+	</string>
 	<string key="btn_AddToShoppingCart">
 		<value>Add to Cart</value>
 	</string>
@@ -1799,6 +1802,9 @@
 	</string>
 	<string key="Menu_Home">
 		<value>Home</value>
+	</string>
+	<string key="Menu_HomePage">
+		<value>HomePage</value>
 	</string>
 	<string key="Menu_RoutePlaceHolder">
 		<value>Seprate each route with comma ,</value>

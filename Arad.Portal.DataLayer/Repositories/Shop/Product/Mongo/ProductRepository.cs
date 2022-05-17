@@ -860,13 +860,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             
             var productEntity = _context.ProductCollection
                 .Find(_ => _.ProductCode == productCode).FirstOrDefault();
+            if(productEntity != null)
+            {
+                result = _mapper.Map<ProductOutputDTO>(productEntity);
+                result.Images = result.Images.Where(_ => _.ImageRatio == ImageRatio.Square).ToList();
+                result.Comments = CreateNestedTreeComment(productEntity.Comments, userId);
+                result.MultiLingualProperties = productEntity.MultiLingualProperties;
 
-            result = _mapper.Map<ProductOutputDTO>(productEntity);
-            result.Images = result.Images.Where(_ => _.ImageRatio == ImageRatio.Square).ToList();
-            result.Comments = CreateNestedTreeComment(productEntity.Comments, userId);
-            result.MultiLingualProperties = productEntity.MultiLingualProperties;
-
-            #region evaluate finalPrice
+                #region evaluate finalPrice
                 var res = EvaluateFinalPrice(productEntity.ProductId, productEntity.Prices, productEntity.GroupIds, dto.DefaultCurrencyId);
                 result.GiftProduct = res.GiftProduct;
                 result.Promotion = res.Promotion;
@@ -874,27 +875,29 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 result.OldPrice = res.OldPrice;
                 result.DiscountType = res.DiscountType;
                 result.DiscountValue = res.DiscountValue;
-            #endregion
+                #endregion
 
-            foreach (var item in result.Specifications)
-            {
-                var lst = item.Values.Split("|").ToList();
-                var i = 1;
-                foreach (var str in lst)
+                foreach (var item in result.Specifications)
                 {
-                    var obj = new SelectListModel()
+                    var lst = item.Values.Split("|").ToList();
+                    var i = 1;
+                    foreach (var str in lst)
                     {
-                        Text = str,
-                        Value = i.ToString()
-                    };
-                    i += 1;
-                    item.ValueList.Add(obj);
+                        var obj = new SelectListModel()
+                        {
+                            Text = str,
+                            Value = i.ToString()
+                        };
+                        i += 1;
+                        item.ValueList.Add(obj);
+                    }
                 }
+                var r = Helpers.Utilities.ConvertPopularityRate(productEntity.TotalScore, productEntity.ScoredCount);
+                result.LikeRate = r.LikeRate;
+                result.DisikeRate = r.DisikeRate;
+                result.HalfLikeRate = r.HalfLikeRate;
             }
-            var r = Helpers.Utilities.ConvertPopularityRate(productEntity.TotalScore, productEntity.ScoredCount);
-            result.LikeRate = r.LikeRate;
-            result.DisikeRate = r.DisikeRate;
-            result.HalfLikeRate = r.HalfLikeRate;
+            
             return result;
         }
         private ProductOutputDTO EvaluateFinalPrice(string productId, List<Price> productPrices, List<string> productGroupIds, string defCurrenyId)

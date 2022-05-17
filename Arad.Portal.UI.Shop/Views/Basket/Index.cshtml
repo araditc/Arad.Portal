@@ -1,4 +1,4 @@
-﻿@model List<Models.Product.ProductBasketView>
+﻿@*@model List<Models.Product.ProductBasketView>*@
 @{
     ViewData["Title"] = "سبد خرید";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,7 +7,7 @@
     <link href="~/shop/css/shop-basket.css" rel="stylesheet" />
     <link href="~/lib/counter/counter.css" rel="stylesheet" />
 }
-<div class="container-fluid container-body basket-shop">
+@*<div class="container-fluid container-body basket-shop">
     <section class="section-full">
         <div class="title-page">
             <h3>
@@ -86,15 +86,7 @@
                                             <i class="mobile-title">تعداد:</i>
                                             <div class="counter clearfix">
                                                 <span>@pro.Count</span>
-                                                @*<div class="plus">
-                                                        <i class="fa fa-plus"></i>
-                                                    </div>*@
-                                                @*<div class="count">
-                                                        <input value="1">
-                                                    </div>*@
-                                                @*<div class="minus">
-                                                        <i class="fa fa-minus"></i>
-                                                    </div>*@
+                                              
                                             </div>
                                         </div>
                                     </div>
@@ -185,7 +177,7 @@
             </div>
         </div>
     </section>
-</div>
+</div>*@
 
 @section Scripts
 {

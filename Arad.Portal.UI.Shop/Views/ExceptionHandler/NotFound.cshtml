@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewData["Title"] = @Language.GetString("AlertAndMessage_PageNotFound");
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles
+{
+   @* <link href="~/shop/css/notFound.css" rel="stylesheet" />*@
+}
+
+<div class="notFound">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <img src="~/imgs/Lovepik_com-400217866-404-page-error.png" style="width:80%"/>
+            <h1 style="color: #a82b2b;">@Language.GetString("AlertAndMessage_PageNotFound")</h1>
+
+            <a href="/" class="btn btn-success">@Language.GetString("Menu_HomePage")</a>
+        </div>
+    </div>
+</div>
+
