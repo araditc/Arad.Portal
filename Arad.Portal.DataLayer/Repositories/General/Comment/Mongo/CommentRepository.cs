@@ -291,8 +291,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
                    {
                        CommentId = _.CommentId,
                        Content = _.Content,
-                       PersianCreationDate = _.CreationDate.ToPersianDdate(),
+                      // PersianCreationDate = _.CreationDate.ToPersianDdate(),
                        CreatorUserId = _.CreatorUserId,
+                       CreationDate = _.CreationDate,
                        CreatorUserName = _.CreatorUserName,
                        IsApproved = _.IsApproved,
                        LikeCount = _.LikeCount,
@@ -303,16 +304,21 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
                    }).ToList();
                 foreach (var item in list)
                 {
-                    item.ParentCommentContent = _commentContext.Collection.Find(_ => _.CommentId == item.ParentCommentId).First().Content;
+                    item.ParentCommentContent = _commentContext.Collection.Find(_ => _.CommentId == item.ParentCommentId).Any() ?  _commentContext.Collection.Find(_ => _.CommentId == item.ParentCommentId).First().Content : "";
                     if(item.ReferenceType == ReferenceType.Product)
                     {
-                        var productEntity = _productContext.ProductCollection.Find(_ => _.ProductId == item.ReferenceId).First();
-                        item.ReferenceTitle = productEntity.MultiLingualProperties.Find(_ => _.LanguageId == langId).Name;
+                      if(_productContext.ProductCollection.Find(_ => _.ProductId == item.ReferenceId).Any())
+                        {
+                            var productEntity = _productContext.ProductCollection.Find(_ => _.ProductId == item.ReferenceId).First();
+                            item.ReferenceTitle = productEntity.MultiLingualProperties.Find(_ => _.LanguageId == langId).Name;
+                        }
+                        
                     }
                     else if(item.ReferenceType == ReferenceType.Content)
                     {
                         item.ReferenceTitle = _contentContext.Collection.Find(_ => _.ContentId == item.ReferenceId).First().Title;
                     }
+                    item.PersianCreationDate = item.CreationDate.Value.ToPersianDdate();
                 }
                 result.Items = list;
                 result.CurrentPage = page;

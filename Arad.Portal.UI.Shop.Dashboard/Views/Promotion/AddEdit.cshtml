@@ -549,11 +549,18 @@
                             spanErrorList.html("");
                             spanErrorList.parent().removeClass("has-error");
                         }
-                        if (result.modelStateErrors !== null) {
-                                $('[data-val-result=' + value.key + ']').html(value.errorMessage);
-                                $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
-                            }
-                        }
+                       if (result.modelStateErrors != null && result.modelStateErrors.length > 0) {
+                            debugger;
+                                    result.modelStateErrors.forEach(function(value, index) {
+                                    $('[data-val-result=' + value.key + ']').append(value.errorMessage);
+                                    $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                    });
+                                    }
+                                    else
+                                    {
+                                        showError(result.message);
+                                   }
+                                   }
                     },
               
                 complete: function () {

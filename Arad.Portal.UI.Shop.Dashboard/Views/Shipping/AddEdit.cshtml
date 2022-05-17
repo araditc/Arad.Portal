@@ -287,7 +287,7 @@
 
             $("#chbIsFixedExpense").click(function () {
                 debugger;
-                if ($(this).prop("checked"))
+                if ($(this).is(":checked"))
                 {
                     $("#fixedExpenseValue").removeAttr("disabled");
                     $("#ProviderId").attr("disabled", "disabled");
@@ -363,11 +363,18 @@
                             spanErrorList.html("");
                             spanErrorList.parent().removeClass("has-error");
                         }
-                        if (result.modelStateErrors !== null) {
-                                $('[data-val-result=' + value.key + ']').html(value.errorMessage);
-                                $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
-                            }
-                        }
+                        if (result.modelStateErrors != null && result.modelStateErrors.length > 0) {
+                            debugger;
+                                    result.modelStateErrors.forEach(function(value, index) {
+                                    $('[data-val-result=' + value.key + ']').append(value.errorMessage);
+                                    $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                    });
+                                    }
+                                    else
+                                    {
+                                        showError(result.message);
+                                   }
+                                   }
                     },
                 @*error: function (xhr, ajaxOptions, thrownError) {
                     alert("@error");
@@ -479,12 +486,12 @@
                $("span[data-val-result='shippingTypeId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
             flag = true;
            }
-           if ($("#chbIsFixedExpense").prop("checked") && $("#fixedExpenseValue").val() == "") {
+           if ($("#chbIsFixedExpense").is(":checked") && $("#fixedExpenseValue").val() == "") {
                $("span[data-val-result='fixedExpenseValue']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
                flag = true;
            }
            else
-               if (!$("#chbIsFixedExpense").prop("checked") &&
+               if (!$("#chbIsFixedExpense").is(":checked") &&
                ($("#ProviderId").val() == "" || $("#ProviderId").val() == "-1")) {
                $("span[data-val-result='ProviderId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
                flag = true;
@@ -505,7 +512,7 @@
             currentCurrencySymbol = '@Model.CurrencySymbol';
         }
         debugger;
-        if ($("#chbIsFixedExpense").prop("checked"))
+        if ($("#chbIsFixedExpense").is(":checked"))
             col = '@Language.GetString("Yes")';
         else
             col = '@Language.GetString("No")';

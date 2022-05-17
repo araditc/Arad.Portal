@@ -1347,14 +1347,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 
         public bool IsCodeUnique(string code, string productId ="")
         {
-            if(!string.IsNullOrWhiteSpace(productId))
+            if(string.IsNullOrWhiteSpace(productId))
             {
                 return !_context.ProductCollection.Find(_ => _.UniqueCode == code).Any();
             }else
             {
-                var builder = Builders<BsonDocument>.Filter;
+                var builder = Builders<Entities.Shop.Product.Product>.Filter;
                 var filter = builder.Ne("ProductId", productId) & builder.Eq("UniqueCode", code);
-                return !_context.BsonProductCollection.Find(filter).Any();
+                return !_context.ProductCollection.Find(filter).Any();
             }
            
         }

@@ -345,10 +345,10 @@
                 if ($("#txtLeastProduct").val() != "0") {
                     queryString += "&inventory=" + $("#txtLeastProduct").val();
                 }
-                if ($("#chbProductsOnPromotion").prop("checked") == true) {
+                if ($("#chbProductsOnPromotion").is(":checked")) {
                     queryString += "&promotion=true";
                 }
-                if ($("#chbExistentProducts").prop("checked") == true) {
+                if ($("#chbExistentProducts").is(":checked")) {
                     queryString += "&exist=true";
                 }
                 window.location.href = '@Url.Action("List", "Product")' + queryString;

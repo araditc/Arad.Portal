@@ -491,6 +491,9 @@
 		<value>Are you sure?</value>
 	</string>
 	<!--====================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_LoginFirst">
+		<value>You havent been logged,please  login first.</value>
+	</string>
 	<string key="AlertAndMessage_PasswordChangeSuccessfully">
 		<value>Password have changed successfully.</value>
 	</string>

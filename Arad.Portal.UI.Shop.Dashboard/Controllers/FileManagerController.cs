@@ -67,7 +67,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             if (string.IsNullOrWhiteSpace(finalPath) || !System.IO.File.Exists(finalPath))
             {
-                finalPath = Path.Combine(localStaticFileStorage, "/imgs/NoImage.png").Replace("\\", "/");
+                finalPath = Path.Combine(localStaticFileStorage, "imgs/NoImage.png").Replace("\\", "/");
             }
             var fileName = Path.GetFileName(finalPath);
             var mimeType = ImageFunctions.GetMIMEType(fileName);

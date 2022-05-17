@@ -16,52 +16,52 @@
 }
 
 @section Styles{
-    <style>
-        .text-danger {
-            font-size: 12px;
-        }
+<style>
+    .text-danger {
+        font-size: 12px;
+    }
 
-        .removeImage {
-            display: inline-block;
-            position: absolute;
-            top: -7px;
-            right: -5px;
-            width: 20px;
-            height: 21px;
-            background: #dc3545;
-            text-align: center;
-            border-radius: 50%;
-            color: white !important;
-            cursor: pointer;
-        }
+    .removeImage {
+        display: inline-block;
+        position: absolute;
+        top: -7px;
+        right: -5px;
+        width: 20px;
+        height: 21px;
+        background: #dc3545;
+        text-align: center;
+        border-radius: 50%;
+        color: white !important;
+        cursor: pointer;
+    }
 
-        .divCenter {
-            text-align: center;
-            border: 1px solid;
-        }
+    .divCenter {
+        text-align: center;
+        border: 1px solid;
+    }
 
-        table tr {
-            text-align: center;
-        }
+    table tr {
+        text-align: center;
+    }
 
-        tbody tr td {
-            vertical-align: middle;
-        }
+    tbody tr td {
+        vertical-align: middle;
+    }
 
-        .valign {
-            vertical-align: middle;
-        }
-    </style>
+    .valign {
+        vertical-align: middle;
+    }
+</style>
 
-    <link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
+<link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
    @* <link href="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.css" rel="stylesheet" />*@
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
+<link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
     }
     else
     {
-        <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css" rel="stylesheet" />
+<link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css" rel="stylesheet" />
     }
 }
 <h4>@Language.GetString("Menu_Products")</h4>
@@ -105,7 +105,7 @@
                     <div id="rowContainer" class="row justify-content-center align-items-center">
                         <div id="container" style="position: relative;display: inline; height: 400px; width: 400px;max-width:100%;">
                             <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="croppedImg"
-                            alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
+                                 alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
                         </div>
                     </div>
                 </div>
@@ -130,7 +130,7 @@
             <div class="card-header">
                 <h5 class="card-title" data-toggle="tab">
                     @(!string.IsNullOrWhiteSpace(Model.ProductId) ?
-                     Language.GetString("EditProductPart_Title") : Language.GetString("AddProductPart_Title"))
+                    Language.GetString("EditProductPart_Title") : Language.GetString("AddProductPart_Title"))
                 </h5>
             </div>
 
@@ -227,7 +227,7 @@
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label class="form-label">@Language.GetString("tbl_SpecificationName")</label>
-                                        <select class="form-control selectpicker" data-live-search="true" id="specificationId" >
+                                        <select class="form-control selectpicker" data-live-search="true" id="specificationId">
                                         </select>
                                         <span data-val-result="specificationId" class="text-danger"></span>
                                     </div>
@@ -313,8 +313,8 @@
                                         <label class="form-label">@Language.GetString("ProductSpecs")</label>
                                         <textarea id="editorCk" name="editorCk" class="form-control" rows="30"></textarea>
 
-                                       @* <script src="~/lib/ckeditor/ckeditor.js"></script>*@
-                                         <script src="~/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js"></script>
+                                        @* <script src="~/lib/ckeditor/ckeditor.js"></script>*@
+                                        <script src="~/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js"></script>
                                         <script>
                                                 //var config = {
                                                 //    filebrowserImageUploadUrl: 'Image/ProductFileUpload',
@@ -487,7 +487,7 @@
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label class="form-label">@Language.GetString("StartDate")</label>
-                                        
+
                                         @if (CultureInfo.CurrentCulture.Name == "fa-IR")
                                         {
                                             <div class="input-group">
@@ -580,14 +580,14 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-4 border pt-3">
-                                            <label class="form-label custom-file-label float-start pt-2" for="image">@Language.GetString("btn_UploadImage")</label>
-                                            <input accept="image/x-png,image/jpeg"
-                                                   type="file" class="btn btn-sm bg-gradient float-end" name="image" id="image" onchange="getURL(this)"/>
+                                        <label class="form-label custom-file-label float-start pt-2" for="image">@Language.GetString("btn_UploadImage")</label>
+                                        <input accept="image/x-png,image/jpeg"
+                                               type="file" class="btn btn-sm bg-gradient float-end" name="image" id="image" onchange="getURL(this)" />
                                     </div>
                                     <div class="col-md-2 mb-1">
-                                       <label class="form-label" >@Language.GetString("tbl_AspectRatioImage")</label>
-                                       <select id="imgAspectRatio" class="form-control selectpicker" data-live-search="true" 
-                                          asp-items="@(new SelectList(ViewBag.ImageRatio,"Value","Text"))"></select>
+                                        <label class="form-label">@Language.GetString("tbl_AspectRatioImage")</label>
+                                        <select id="imgAspectRatio" class="form-control selectpicker" data-live-search="true"
+                                                asp-items="@(new SelectList(ViewBag.ImageRatio,"Value","Text"))"></select>
                                     </div>
                                 </div>
                                 <div class="row" id="proGallery" style="padding:1%;">
@@ -599,7 +599,7 @@
                                                     <th class="d-none"></th>
                                                     <th>@Language.GetString("tbl_AspectRatioImage")</th>
                                                     <th class="d-none"></th>
-                                                     <th>@Language.GetString("Title")</th>
+                                                    <th>@Language.GetString("Title")</th>
                                                     <th>@Language.GetString("Description")</th>
                                                     <th>@Language.GetString("MainPhoto")</th>
                                                     <th></th>
@@ -609,7 +609,7 @@
                                                 @foreach (var pic in Model.Images)
                                                 {
                                                     <tr>
-                                                        <td><img  src='@($"../../filemanager/GetScaledImageOnWidth?path={pic.Url}&width={120}")' /></td>
+                                                        <td><img src='@($"../../filemanager/GetScaledImageOnWidth?path={pic.Url}&width={120}")' /></td>
                                                         <td class="d-none">@pic.ImageId</td>
                                                         <td>@pic.ImageRatio.GetDescription()</td>
                                                         <td class="d-none">@((int)@pic.ImageRatio)</td>
@@ -727,7 +727,7 @@ else
                 $('.datepicker').datepicker();
             }
        //multiselect
-      
+
         if ('@Model.Images.Any()' == 'True') {
 
             var serverImages = @Json.Serialize(@Model.Images);
@@ -792,9 +792,10 @@ else
                 flag = true;
             }
 
-            var dto = FillDataToSend();
 
+              debugger;
                 if (!flag) {
+                    var dto = FillDataToSend();
                     $.ajax({
                         url: "@Model.ProductId" != "" ? "/Product/Edit" : "/Product/Add",
                         contentType: 'application/json',
@@ -805,7 +806,7 @@ else
                            /* AddLoading($("#addProductCard"));*/
                         },
                         success: function (result) {
-                           
+
                             if (result.status === "Success") {
                                 debugger;
                                 document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
@@ -829,11 +830,19 @@ else
                                     spanErrorList.html("");
                                     spanErrorList.parent().removeClass("has-error");
                                 }
-                                if (result.modelStateErrors !== null) {
-                                        $('[data-val-result=' + result.modelStateErrors.key + ']').append(result.modelStateErrors.errorMessage);
-                                        $('[data-val-result=' + result.modelStateErrors.key + ']').parent().addClass("has-error");
+                           
+                            if (result.modelStateErrors != null && result.modelStateErrors.length > 0) {
+                            debugger;
+                                    result.modelStateErrors.forEach(function(value, index) {
+                                    $('[data-val-result=' + value.key + ']').append(value.errorMessage);
+                                    $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                    });
                                     }
-                                }
+                                    else
+                                    {
+                                        showError(result.message);
+                                   }
+                                   }
                             },
                         error: function (xhr, ajaxOptions, thrownError) {
                             alert("@error");
@@ -875,7 +884,7 @@ else
             }
             model.ImageId = counter;
             model.Content = url;
-            model.ImageRatioId = 
+            model.ImageRatioId =
             images.push(model);
             var tr = "";
 
@@ -1028,12 +1037,12 @@ else
                 $("#priceList").find("td:eq(1)").each(function () {
 
                     if ($(this).text() == currencyId && $(this).parent().find("td:eq(4)").text() == "" &&
-                        $(this).parent().find("td:eq(5)").text() == active) {
+                        $(this).parent().find("td:eq(5)").text().trim() == active) {
                         /*confirm = false;*/
-                       
+
                         globalSender = this;
                         document.getElementById('confirmLabel').innerHTML = '@Language.GetString("AlertAndMessage_AreYouSure")';
-			            document.getElementById('confirmBody').innerHTML = '@Language.GetString("AlertAndMessage_PricePerCurrencyUniqueness")';
+                        document.getElementById('confirmBody').innerHTML = '@Language.GetString("AlertAndMessage_PricePerCurrencyUniqueness")';
                         $('#showModal').modal('show');
 
                     }
@@ -1069,7 +1078,7 @@ else
     function addSpecToList() {
         debugger;
         var selectedLang = $("#LanguageId").val();
-        
+
             var flag = false;
             $("span[data-val-result='languageId']").html("");
             $("span[data-val-result='specGroupId']").html("");
@@ -1127,7 +1136,7 @@ else
 
                 $("#specValues").empty();
                 $("#specValues").selectpicker('refresh');
-         
+
             }
      }
 
@@ -1174,7 +1183,7 @@ else
             innerModel.PriceValue = parseFloat($(this).find("td:eq(2)").text());
             innerModel.StartDate = $(this).find("td:eq(3)").text();
             innerModel.EndDate = $(this).find("td:eq(4)").text();
-            if ($(this).find("td:eq(5)").text() == active)
+            if ($(this).find("td:eq(5)").text().trim() == active)
                 innerModel.IsActive = true;
             else
                 innerModel.IsActive = false;
@@ -1206,7 +1215,7 @@ else
             var item = images.find(_ => _.ImageId == id);
             index = images.indexOf(item);
 
-            item.IsMain = $(this).find("td:eq(6) .rdbIsMain").prop("checked") == true;
+            item.IsMain = $(this).find("td:eq(6) .rdbIsMain").is(":checked");
             item.Title = $(this).find("td:eq(4) .txtTitle").val();
             item.Description = $(this).find("td:eq(5) .txtDesc").val();
             item.ImageRatio = parseInt($(this).find("td:eq(2)").text());
@@ -1219,14 +1228,14 @@ else
         dto.UniqueCode = $("#UniqueCode").val();
         dto.Inventory = parseInt($("#Inventory").val());
         dto.MinimumCount = parseInt($("#MinimumCount").val());
-        dto.ShowInLackOfInventory = $("#chbNotifyInventory").prop("checked");
+        dto.ShowInLackOfInventory = $("#chbNotifyInventory").is(":checked");
         if ("@ViewBag.Vendors" != "-1") {
             dto.SellerUserId = $("#SellerUserId").val();
             dto.SellerUserName = $("#SellerUserId option:selected").text();
         }
         dto.UnitId = $("#Unit_ProductUnitId").val();
         dto.PromotionId = $("#PromotionId").val();
-        dto.IsPublishedOnMainDomain = $("#chbIsPublishedOnMainDomain").prop("checked");
+        dto.IsPublishedOnMainDomain = $("#chbIsPublishedOnMainDomain").is(":checked");
 
         return dto;
     }
@@ -1302,7 +1311,7 @@ else
         }
      }
     $("#uploadModal").on("shown.bs.modal", function() {
-             
+
               var image = document.getElementById('croppedImg');
               $("#send_pic").attr("disabled", true);
               debugger;
@@ -1332,7 +1341,7 @@ else
     function rotatePic() {
         cropper.rotate(90);
     }
-    $(document).on("click", "#crop_button", 
+    $(document).on("click", "#crop_button",
         function () {
                 var imgUrl = cropper.getCroppedCanvas({imageSmoothingEnabled: true,
                         imageSmoothingQuality: 'high' }).toDataURL('image/jpeg', 1);
@@ -1350,7 +1359,7 @@ else
             document.getElementById("cropped_result").appendChild(img);
             $("#send_pic").attr("disabled", false);
         });
-   
+
 
     function getURL(input)
     {
@@ -1384,7 +1393,7 @@ else
                         $("#cropped_result").remove();
                     }
                 } else {
-                  
+
                     showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
                     document.getElementById("image").value = "";
                     $("#cropped_result").remove();
@@ -1393,7 +1402,7 @@ else
         }
         else
         {
-          
+
             showError('@Language.GetString("AlertAndMessage_InvalidFileSize")');
             document.getElementById("image").value = "";
             $("#cropped_result").remove();

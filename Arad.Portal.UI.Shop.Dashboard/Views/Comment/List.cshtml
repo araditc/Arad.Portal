@@ -157,8 +157,8 @@
                                 </td>
                                 <td>
                                  
-                                        <a asp-action="ApproveComment" asp-controller="Comment" asp-route-commentId="@item.CommentId" asp-route-isApproved="@item.IsApproved"
-                                           class="btn btn-sm btn-primary bg-gradient">
+                                        <a class="btn btn-success btnApprove" cmd="@item.CommentId" @*asp-action="ApproveComment" asp-controller="Comment" asp-route-commentId="@item.CommentId" asp-route-isApproved="@item.IsApproved"*@ class="btn btn-sm btn-primary bg-gradient">
+                                           
                                             <i  class="fa fa-edit"></i>@Language.GetString("btn_Approved")
                                         </a>
                                    
@@ -239,6 +239,34 @@
                     }
                 }
                window.location.href = '@Url.Action("List", "Comment")' + queryString;
+            });
+
+            $("#btnApprove").click(function(){
+                var cmt = $(this).attr("cmd");
+                 $.ajax({
+                        url:'@Url.Action("ApproveComment", "Comment")'+`?commentId=${cmt}`,
+                        contentType: "application/json",
+                        data: JSON.stringify(obj),
+                        type: "Post",
+                        beforeSend: function () {
+                        },
+                        success: function (result) {
+                            debugger;
+                            if (result.status === "Success") {
+                              document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
+                            document.getElementById('mainToastBody').classList.add('alert-success');
+                            var toastDiv = $("#mainToast");
+                            //$("#toastPanel").show();
+                            var toast = new bootstrap.Toast(toastDiv);
+                            toast.show();
+                            window.location.reload();
+                            }else
+                            {
+                                showError(result.message);
+                            }
+
+                        }
+                    });
             });
         });
 

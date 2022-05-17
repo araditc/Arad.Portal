@@ -503,6 +503,9 @@
 		<value>مطمئن هستید؟</value>
 	</string>
 	<!--====================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_LoginFirst">
+		<value>ابتدا وارد حساب کاربری خود شوید.</value>
+	</string>
 	<string key="AlertAndMessage_PasswordChangeSuccessfully">
 		<value>کلمه عبور با موفقیت تغییر یافت.</value>
 	</string>

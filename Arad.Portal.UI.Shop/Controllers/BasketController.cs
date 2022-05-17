@@ -30,7 +30,8 @@ namespace Arad.Portal.UI.Shop.Controllers
         [HttpGet]
         public async Task<IActionResult> AddProToBasket([FromQuery]string productId, [FromQuery]int cnt)
         {
-            if(User != null && User.Identity.IsAuthenticated)
+            var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
+            if (User != null && User.Identity.IsAuthenticated)
             {
                 var res = await _shoppingCartRepository.AddOrChangeProductToUserCart(productId, cnt);
                 return Json(new
@@ -42,31 +43,34 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
             else
             {
-                return RedirectToAction("Login", "Account", new { returnUrl = "/basket/AddProToBasket" });
+                //return RedirectToAction("Login", "Account", new { returnUrl = "/basket/AddProToBasket" });
+                return Redirect($"~/{lanIcon}/Account/Login?returnUrl=/{lanIcon}/basket/AddProToBasket?productId={productId}&cnt={cnt}");
             }
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            if(User != null && User.Identity.IsAuthenticated)
+            var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
+            if (User != null && User.Identity.IsAuthenticated)
             {
                 var domainName = base.DomainName;
                 var currentUserId = base.CurrentUserId;
                 var domain = _domainRepository.FetchByName(domainName);
+               
                 var model =(await _shoppingCartRepository.FetchActiveUserShoppingCart(currentUserId, domain.ReturnValue.DomainId)).ReturnValue;
 
                 return View(model);
             }
             else
             {
-                return RedirectToAction("Login", "Account", new { returnUrl = "/basket/get" });
+                return Redirect($"~/{lanIcon}/Account/Login?returnUr=/{lanIcon}/basket/get");
             }
 
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
     }
 }

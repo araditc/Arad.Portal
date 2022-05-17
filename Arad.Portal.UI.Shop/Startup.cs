@@ -240,9 +240,9 @@ namespace Arad.Portal.UI.Shop
             {
                 Directory.CreateDirectory(Configuration["LocalStaticFileStorage"]);
             }
-            var path1 = Path.Combine(Configuration["LocalStaticFileStorage"], "/Contents");
-            var path2 = Path.Combine(Configuration["LocalStaticFileStorage"], "/ProductGroups");
-            var path3 = Path.Combine(Configuration["LocalStaticFileStorage"], "/Products");
+            var path1 = Path.Combine(Configuration["LocalStaticFileStorage"], "Contents");
+            var path2 = Path.Combine(Configuration["LocalStaticFileStorage"], "ProductGroups");
+            var path3 = Path.Combine(Configuration["LocalStaticFileStorage"], "Products");
             if (!Directory.Exists(path1))
             {
                 Directory.CreateDirectory(path1);

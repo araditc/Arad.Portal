@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <dictionary>
 	<!--Start [buttons text]-->
+	
+	
 	<string key="btn_HomePageDesign">
 		<value>design home page</value>
 	</string>
@@ -1418,9 +1420,7 @@
 	</string>
 	<!--END [Allert And Message]-->
 	<!--START [Dashboard]-->
-	<string key="ChangePassword_CreatePasswordBySystemCopy">
-		<value>ChangePassword_CreatePasswordBySystemCopy</value>
-	</string>
+	
 	<string key="Stuff">
 		<value>stuff</value>
 	</string>

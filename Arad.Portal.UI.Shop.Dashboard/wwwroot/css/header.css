@@ -265,10 +265,10 @@ header {
     }
 }
 /* needed for checkbox hack */
-h1,
+/*h1,
 p {
     color: white;
-}
+}*/
 
 #nav {
     /* position: relative; */

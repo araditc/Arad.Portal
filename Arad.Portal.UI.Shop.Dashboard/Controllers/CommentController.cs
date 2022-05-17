@@ -123,7 +123,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         
         [HttpGet]
-        public async Task<IActionResult> ApproveComment(string commentId, bool isApproved)
+        public async Task<IActionResult> ApproveComment(string commentId, bool isApproved = true)
         {
             JsonResult result;
             Result saveResult = await _commentRepository.ChangeApproval(commentId, isApproved);
@@ -175,8 +175,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             else
             {
                
-                Result<
-                    Comment> saveResult = await _commentRepository.Add(dto);
+                Result<Comment> saveResult = await _commentRepository.Add(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
             }

@@ -606,6 +606,7 @@
                             else if (result.status === "Error") {
                                 showError(result.message);
                             }
+                            }
                     },
                 @*error: function (xhr, ajaxOptions, thrownError) {
                             alert("@error");
@@ -806,7 +807,7 @@
             var item = images.find(_ => _.ImageId == id);
             index = images.indexOf(item);
 
-            item.IsMain = $(this).find("td:eq(6) .rdbIsMain").prop("checked") == true;
+            item.IsMain = $(this).find("td:eq(6) .rdbIsMain").is(":checked");
             item.Title = $(this).find("td:eq(2) .txtTitle").val();
             item.Description = $(this).find("td:eq(3) .txtDesc").val();
             item.ImageRatioId = parseInt($(this).find("td:eq(4)").text());

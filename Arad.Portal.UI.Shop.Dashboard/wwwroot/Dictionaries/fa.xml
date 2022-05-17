@@ -67,6 +67,9 @@
 	<string key="btn_Validation">
 		<value>اعتبارسنجی</value>
 	</string>
+	<string key="btn_Approved">
+		<value>تایید</value>
+	</string>
 	<string key="btn_Approve">
 		<value>تایید</value>
 	</string>
@@ -1453,9 +1456,7 @@
 </string>
 	<!--END [Allert And Message]-->
 	<!--START [Dashboard]-->
-	<string key="ChangePassword_CreatePasswordBySystemCopy">
-		<value>تولید کلمه عبور بوسیله سیستم</value>
-	</string>
+	
 	<string key="Stuff">
 		<value>stuff</value>
 	</string>
