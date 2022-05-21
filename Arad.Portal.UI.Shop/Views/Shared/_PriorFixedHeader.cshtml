@@ -5,7 +5,7 @@
 }
 
 <div class="top-nav">
-    <div class="row">
+    <div class="row gx-0">
         <div class="col-4 offset-1 offset-md-1 col-md-2 offset-lg-1 col-lg-1 ">
             <div class="ms-2">
                 <ul class="langUl list-group list-group-horizontal">
@@ -24,7 +24,7 @@
                 </ul>
             </div>
         </div>
-        <div class="offset-2 col-4 offset-md-6 col-md-2 offset-lg-8 col-lg-1">
+        <div class="offset-2 col-4 offset-md-3 col-md-3 offset-lg-7 col-lg-2">
             <div class="account-wrapper pt-2">
                 <ul>
                     <li class="shopping_cart home_cart">
@@ -32,7 +32,7 @@
 
                             <span class="head-shoppings">
                                 <i class="fa fa-shopping-basket shopping-basket"></i>
-                                <span class="display-none count-basket" data-count="0">@($"{@ViewBag.BasketCount} {@Language.GetString("Stuff")}") </span>
+                                <span class="display-none count-basket" data-count="0">@($"{@ViewBag.BasketCount?? 0} {@Language.GetString("Stuff")}") </span>
                             </span>
                         </a>
                     </li>

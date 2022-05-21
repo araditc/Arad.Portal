@@ -4,8 +4,10 @@
 @using Arad.Portal.GeneralLibrary.Utilities;
 @using HtmlAgilityPack
 @using Newtonsoft.Json
+@using System.Security.Claims
 
 @inject Arad.Portal.UI.Shop.Helpers.LayoutContentProcess process
+@inject Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart.IShoppingCartRepository cartRepo
 @{
     var direction = "";
     var langList = new List<string>() { "fa", "en" };
@@ -28,6 +30,12 @@
         case "en-US":
             lang = "en";
             break;
+    }
+    if(User.Identity.IsAuthenticated)
+    {
+        var res = await cartRepo.LoadUserCartShopping(User.Claims
+                 .FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value);
+        ViewBag.BasketCount = res;
     }
 }
 <html dir="@direction" lang="@lang">
@@ -108,27 +116,27 @@
                                             switch (module.ModuleName)
                                             {
                                                 case "ProductList":
-                                                    @await Component.InvokeAsync("SpecialProduct",
+                                                                    @await Component.InvokeAsync("SpecialProduct",
                 new { productType = module.ParametersValue.ProductOrContentType,
                 selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count} )
                                                     ;
 
                                                     break;
                                                 case "ContentList":
-                                                    @await Component.InvokeAsync("ContentTemplates", new { contentType = module.ParametersValue.ProductOrContentType,
+                                                                    @await Component.InvokeAsync("ContentTemplates", new { contentType = module.ParametersValue.ProductOrContentType,
                 selectionTemplate = module.ParametersValue.ContentTemplateDesign ,  count = module.ParametersValue.Count })
                                                     ;
 
                                                     break;
                                                 case "HorizantalStoreMenu":
-                                                    @await Component.InvokeAsync("StoreMenu")
+                                                                    @await Component.InvokeAsync("StoreMenu")
                                                     ;
                                                     break;
                                             }
                                         }
                                         else if (div.Attributes["target"].Value == "editor")
                                         {
-                                            @Html.Raw(column.ColData.Replace("<div target=\"editor\">", "")
+                                                            @Html.Raw(column.ColData.Replace("<div target=\"editor\">", "")
                 .Replace("</div>", ""))
                                             ; ;
                                         }
@@ -200,25 +208,25 @@
                                                 switch (module.ModuleName)
                                                 {
                                                     case "ProductList":
-                                                        @await Component.InvokeAsync("SpecialProduct",
+                                                                        @await Component.InvokeAsync("SpecialProduct",
                     new { productType = module.ParametersValue.ProductOrContentType,
                     selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count} )
                                                         ;
                                                         break;
                                                     case "ContentList":
-                                                        @Component.InvokeAsync("ContentTemplates", new { contentType = module.ParametersValue.ProductOrContentType,
+                                                                        @Component.InvokeAsync("ContentTemplates", new { contentType = module.ParametersValue.ProductOrContentType,
                     selectionTemplate = module.ParametersValue.ContentTemplateDesign ,  count = module.ParametersValue.Count })
                                                         ;
                                                         break;
                                                     case "HorizantalStoreMenu":
-                                                        @await Component.InvokeAsync("StoreMenu")
+                                                                        @await Component.InvokeAsync("StoreMenu")
                                                         ;
                                                         break;
                                                 }
                                             }
                                             else if (div.Attributes["target"].Value == "editor")
                                             {
-                                                @Html.Raw(column.ColData.Replace("<div target=\"editor\">", "")
+                                                                @Html.Raw(column.ColData.Replace("<div target=\"editor\">", "")
                     .Replace("</div>", ""))
                                                 ;
                                             }
@@ -259,7 +267,8 @@
             }
         }
         function setProductCountInCart(number) {
-           $("#userBasketId .notifyBadge").html(number);
+            debugger;
+           $("span.count-basket").text(`${number} ${'@Language.GetString("Stuff")'}`);
         }
 
         function changeScreen() {

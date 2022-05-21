@@ -53,13 +53,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
                 var equallentModel = _mapper.Map<Entities.General.Comment.Comment>(dto);
 
                
-                equallentModel.CreationDate = DateTime.Now.ToUniversalTime();
-                equallentModel.CreatorUserId = _httpContextAccessor.HttpContext.User.Claims
-                    .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-                equallentModel.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
-                    .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+                //equallentModel.CreationDate = DateTime.Now.ToUniversalTime();
+                //equallentModel.CreatorUserId = _httpContextAccessor.HttpContext.User.Claims
+                //    .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+                //equallentModel.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
+                //    .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
                 equallentModel.IsActive = true;
-                equallentModel.CommentId = Guid.NewGuid().ToString();
+                //equallentModel.CommentId = Guid.NewGuid().ToString();
                 
                 await _commentContext.Collection.InsertOneAsync(equallentModel);
                 var comment = _commentContext.Collection.Find(_ => _.CommentId == equallentModel.CommentId).First();
@@ -160,20 +160,50 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
         public async Task<Result> ChangeApproval(string commentId, bool isApproved)
         {
             var result = new Result();
-            
+            bool finalRes = false;
             var entity = _commentContext.Collection.Find(_ => _.CommentId == commentId).First();
-            entity.IsApproved = isApproved;
-            var updateResult = await _commentContext.Collection
-                .ReplaceOneAsync(_ => _.CommentId == commentId, entity);
+            var refType = entity.ReferenceType;
+            if(entity.ReferenceType == ReferenceType.Product)
+            {
+                var pro = _productContext.ProductCollection
+                    .Find(_ => _.ProductId == entity.ReferenceId).FirstOrDefault();
+                pro.Comments.FirstOrDefault(_ => _.CommentId == commentId).IsApproved = true;
+                var updateRes = await _productContext.ProductCollection.ReplaceOneAsync(_ => _.ProductId == pro.ProductId, pro);
+                if(updateRes.IsAcknowledged)
+                {
+                    finalRes = true;
+                }
 
-            if (updateResult.IsAcknowledged)
+            }else // content
             {
-                result.Succeeded = true;
-                result.Message = ConstMessages.SuccessfullyDone;
+                var content = _contentContext.Collection
+                    .Find(_ => _.ContentId == entity.ReferenceId).FirstOrDefault();
+                content.Comments.FirstOrDefault(_ => _.CommentId == commentId).IsApproved = true;
+                var updateRes = await _contentContext.Collection.ReplaceOneAsync(_ => _.ContentId ==content.ContentId, content);
+                if (updateRes.IsAcknowledged)
+                {
+                    finalRes = true;
+                }
             }
-            else
+
+            if(finalRes)
             {
-                result.Message = ConstMessages.GeneralError;
+                entity.IsApproved = isApproved;
+                var updateResult = await _commentContext.Collection
+                    .ReplaceOneAsync(_ => _.CommentId == commentId, entity);
+
+                if (updateResult.IsAcknowledged)
+                {
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                }
+                else
+                {
+                    result.Message = ConstMessages.GeneralError;
+                }
+            }else
+            {
+                result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_InsertError");
             }
             return result;
         }
@@ -262,8 +292,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
                 var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
 
-                long totalCount = await _commentContext.Collection.Find(c => true).CountDocumentsAsync();
-                var totalList = _commentContext.Collection.AsQueryable();
+                long totalCount = await _commentContext.Collection.Find(_=>!_.IsDeleted).CountDocumentsAsync();
+                var totalList = _commentContext.Collection.AsQueryable().Where(_=>!_.IsDeleted);
                 
                 if(!string.IsNullOrWhiteSpace(filter["refType"]))
                 {

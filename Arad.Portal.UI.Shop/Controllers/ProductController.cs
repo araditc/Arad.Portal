@@ -56,7 +56,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         {
             var isLoggedUser = HttpContext.User.Identity.IsAuthenticated;
             string userId = "";
-            ViewBag.LoggedUser = isLoggedUser;
+            //ViewBag.LoggedUser = isLoggedUser;
             userId = isLoggedUser ? HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value : "";
             var domainEntity = _domainRepository.FetchByName(_domainName);
             ViewBag.Providers = domainEntity.ReturnValue.DomainPaymentProviders.Select(_ => new SelectListModel() { Text = _.PspType.ToString(), Value = ((int)_.PspType).ToString() });
@@ -92,37 +92,37 @@ namespace Arad.Portal.UI.Shop.Controllers
             
         }
 
-        [HttpPost]
-        public async Task<IActionResult> RateProduct([FromQuery]string productId, [FromQuery]int score, [FromQuery]bool isNew)
-        {
-            var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
-            string prevRate = ""; 
-            var userProductRateCookieName = $"{userId}_p{productId}";
-            if (!isNew)//the user has rated before
-            {
-                 prevRate = HttpContext.Request.Cookies[userProductRateCookieName];
-            }
-            int preS = !string.IsNullOrWhiteSpace(prevRate) ? Convert.ToInt32(prevRate) : 0;
+        //[HttpPost]
+        //public async Task<IActionResult> RatingProduct([FromBody]RateProduct model)
+        //{
+        //    var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+        //    string prevRate = ""; 
+        //    var userProductRateCookieName = $"{userId}_p{model.ProductId}";
+        //    if (!model.IsNew)//the user has rated before
+        //    {
+        //         prevRate = HttpContext.Request.Cookies[userProductRateCookieName];
+        //    }
+        //    int preS = !string.IsNullOrWhiteSpace(prevRate) ? Convert.ToInt32(prevRate) : 0;
            
-            var res = await _productRepository.RateProduct(productId, score,
-                    isNew, preS);
-            if (res.Succeeded)
-            {
-                //set its related cookie
-                return
-                    Json(new
-                    {
-                        status = "Succeed",
-                        like = res.ReturnValue.LikeRate,
-                        dislike = res.ReturnValue.DisikeRate,
-                        half = res.ReturnValue.HalfLikeRate
-                    });
-            }
-            else
-            {
-                return Json(new { status = "error" });
-            }
-        }
+        //    var res = await _productRepository.RateProduct(model.ProductId, model.Score,
+        //            model.IsNew, preS);
+        //    if (res.Succeeded)
+        //    {
+        //        //set its related cookie
+        //        return
+        //            Json(new
+        //            {
+        //                status = "Succeed",
+        //                like = res.ReturnValue.LikeRate,
+        //                dislike = res.ReturnValue.DisikeRate,
+        //                half = res.ReturnValue.HalfLikeRate
+        //            });
+        //    }
+        //    else
+        //    {
+        //        return Json(new { status = "error" });
+        //    }
+        //}
     }
 }
 

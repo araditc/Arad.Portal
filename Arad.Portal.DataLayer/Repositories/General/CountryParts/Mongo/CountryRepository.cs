@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-
+using Arad.Portal.DataLayer.Entities.General.Country;
 
 namespace Arad.Portal.DataLayer.Repositories.General.CountryParts.Mongo
 {
@@ -28,7 +28,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.CountryParts.Mongo
           
         }
 
-        public IMongoCollection<Entities.General.Country.Country> Countries { get; set; }
+        public IMongoCollection<Country> Countries { get; set; }
         
 
         //public async Task InsertMany(List<Entities.General.Country.Country> countries)
@@ -64,5 +64,14 @@ namespace Arad.Portal.DataLayer.Repositories.General.CountryParts.Mongo
                .Select(_ => new SelectListModel() { Text = _.Name, Value = _.Id }).ToList();
         }
 
+        public Country GetCountry(string countryId)
+        {
+            return Countries.Find(_ => _.Id == countryId).FirstOrDefault();
+        }
+
+        public Country GetCountryByName(string countryName)
+        {
+            return Countries.Find(_ => _.Name == countryName).FirstOrDefault();
+        }
     }
 }

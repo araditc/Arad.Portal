@@ -288,7 +288,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                         BirthDate = new DateTime(1987, 8, 26).ToUniversalTime(),
                         NationalCode = "1292086734",
                         CompanyName = "Arad",
-                        UserType = UserType.Admin
+                        UserType = UserType.Admin,
+                        DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
+                        DefaultCurrencyId = "f6a41b2d-3ed5-412b-b511-68498a7b62f3"
                     },
                     CreationDate = DateTime.UtcNow
                 };

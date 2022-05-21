@@ -9,6 +9,10 @@ namespace Arad.Portal.DataLayer.Models.ShoppingCart
 {
     public class PurchasePerSellerDTO 
     {
+        public PurchasePerSellerDTO()
+        {
+            Products = new();
+        }
         public string SellerId { get; set; }
 
         public string SellerUserName { get; set; }

@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <dictionary>
 	<!--Start [buttons text]-->
+	<string key="btn_AddNewAddress">
+		<value>افزودن آدرس جدید</value>
+	</string>
 	<string key="btn_Rotate">
 		<value>چرخش</value>
 	</string>
@@ -13,6 +16,9 @@
 	<string key="btn_Crop">
 		<value>برش</value>
 	</string>
+	<string key="btn_ContinueBuyingOnline">
+		<value>ادامه فرآیند خرید</value>
+	</string>
 	<string key="btn_UploadImage">
 		<value>بارگزاری تصویر</value>
 	</string>
@@ -21,6 +27,12 @@
 	</string>
 	<string key="PutImage">
 		<value>قراردادن عکس</value>
+	</string>
+	<string key="SendInfoes">
+		<value>اطلاعات ارسال</value>
+	</string>
+	<string key="AddNewAddress">
+		<value>افزوذن آدرس جدید</value>
 	</string>
 	<string key="btn_Add">
 		<value>افزودن</value>
@@ -503,6 +515,12 @@
 		<value>مطمئن هستید؟</value>
 	</string>
 	<!--====================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_AddressInsert">
+		<value>لطفا آدرس خود را ثبت نمایید.</value>
+	</string>
+	<string key="AlertAndMessage_InsertError">
+		<value>خطا در ثبت اطلاعات.</value>
+	</string>
 	<string key="AlertAndMessage_LoginFirst">
 		<value>ابتدا وارد حساب کاربری خود شوید.</value>
 	</string>
@@ -513,7 +531,7 @@
 		<value>لطفا اطلاعات درگاه پرداخت را بطور کامل وارد کنید.</value>
 	</string>
 	<string key="AlertAndMessage_ProductCountInCart">
-		<value>[0] واحد از این محصول به سبد خرید شما اضافه گردید.</value>
+		<value>این محصول به سبد خرید شما اضافه گردید.</value>
 	</string>
 	<string key="AlertAndMessage_ProductPriceIncrease">
 		<value>متاسفانه این محصول [0] افزایش قیمت داشته است.</value>
@@ -753,7 +771,7 @@
 		<value>کاربر با موفقیت ایجاد شد.</value>
 	</string>
 	<string key="AlertAndMessage_SubmitComment">
-		<value>با موفقیت ارسال شد.</value>
+		<value>نظر باموفقیت ارسال شد یعد از تایید نمایش داده خواهد شد.</value>
 	</string>
 
 	<string key="AlertAndMessage_DuplicatePhoneNumber">
@@ -848,6 +866,7 @@
 	<string key="AlertAndMessage_ErrorUploadingFile">
 		<value>خطا در بارگذاری فایل.</value>
 	</string>
+	
 	<string key="AlertAndMessage_IdRequired">
 		<value>Id مشخص نشده است.</value>
 	</string>
@@ -1467,6 +1486,30 @@
 	</string>
 	<string key="User_Profile">
 		<value>پروفایل کاربری</value>
+	</string>
+	<string key="Profile_Province">
+		<value>استان</value>
+	</string>
+	<string key="Profile_City">
+		<value>شهر</value>
+	</string>
+	<string key="Profile_ZipCode">
+		<value>کد پستی</value>
+	</string>
+	<string key="Profile_Address1">
+		<value>آدرس یک</value>
+	</string>
+	<string key="Profile_Address2">
+		<value>آدرس دو</value>
+	</string>
+	<string key="Shopping_Senttothisaddress">
+		<value>به این آدرس ارسال شود.</value>
+	</string>
+	<string key="Shopping_AddInvoiceWithOrders">
+		<value>ارسال فاکتور همراه با سفارش</value>
+	</string>
+	<string key="Shopping_OnlinePayment">
+		<value>پرداخت آنلاین</value>
 	</string>
 	<string key="User_PasswordRepetition">
 		<value>تکرار کلمه عبور</value>

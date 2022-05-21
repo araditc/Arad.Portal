@@ -17,11 +17,11 @@ namespace Arad.Portal.DataLayer.Models.User
         public string CountryId { get; set; }
         public string CountryName { get; set; }
 
-        [DisplayName("استان")]
+        [CustomDisplayName("Profile_Province")]
         public string ProvinceId { get; set; }
         public string ProvinceName { get; set; }
 
-        [DisplayName("شهر")]
+        [CustomDisplayName("Profile_City")]
         public string CityId { get; set; }
         public string CityName { get; set; }
 
@@ -29,7 +29,7 @@ namespace Arad.Portal.DataLayer.Models.User
 
         public string Address2 { get; set; }
 
-        [DisplayName("کد پستی")]/*ZipCode*/
+        [CustomDisplayName("Profile_ZipCode")]/*ZipCode*/
         public string PostalCode { get; set; }
        
     }

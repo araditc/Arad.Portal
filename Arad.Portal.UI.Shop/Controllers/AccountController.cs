@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Contracts.General.Domain;
+﻿using Arad.Portal.DataLayer.Contracts.General.CountryParts;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Contracts.General.Error;
 using Arad.Portal.DataLayer.Entities.General.Error;
 using Arad.Portal.DataLayer.Entities.General.User;
@@ -32,6 +33,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly CreateNotification _createNotification;
         private readonly IDomainRepository _domainRepository;
         private readonly IErrorLogRepository _errorLogRepository;
+        private readonly ICountryRepository _countryRepository;
         private readonly string _domainName;
         
         public AccountController(UserManager<ApplicationUser> userManager,
@@ -39,6 +41,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             IErrorLogRepository errorLogRepository,
             IDomainRepository domainRepository,
             IHttpContextAccessor accessor,
+            ICountryRepository countryRepository,
             IWebHostEnvironment env,
             SignInManager<ApplicationUser> signInManager):base(accessor, env)
         {
@@ -48,32 +51,28 @@ namespace Arad.Portal.UI.Shop.Controllers
             _errorLogRepository = errorLogRepository;
             _domainRepository = domainRepository;
             _domainName = DomainName;
+            _countryRepository = countryRepository;
         }
         public IActionResult Index()
         {
             return View();
         }
 
-        //[AllowAnonymous]
-        //[HttpGet]
-        //public IActionResult Login(string returnUrl)
-        //{
-        //    if (HttpContext.User.Identity != null &&
-        //        HttpContext.User.Identity.IsAuthenticated)
-        //    {
-        //        if (!string.IsNullOrEmpty(returnUrl))
-        //        {
-        //            return Redirect(returnUrl);
-        //        }
-        //    }
-        //    var viewModel = new LoginViewModel
-        //    {
-        //        ReturnUrl = string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl,
-        //        RememberMe = false
-        //    };
-        //    ViewBag.Message = string.Empty;
-        //    return View(viewModel);
-        //}
+        [Authorize(Policy = "Role")]
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login");
+        }
+
+        [HttpGet]
+        public IActionResult Address()
+        {
+            var returnUrl = HttpContext.Request.Headers["Referer"].ToString();
+            TempData["ReturnUrl"] = returnUrl;
+            return View();
+        }
 
 
         [HttpGet]
@@ -320,6 +319,110 @@ namespace Arad.Portal.UI.Shop.Controllers
             return Ok(insertResult.Succeeded ?
                 new { Status = "Success", Message = Language.GetString("AlertAndMessage_OperationSuccess") } : 
                 new { Status = "Error", Message = insertResult.Errors.First().Description });
+        }
+
+        [HttpGet]
+        public IActionResult GetStates()
+        {
+            try
+            {
+                var states = _countryRepository.GetStates();
+                var st = states.Select(c => new StateView()
+                {
+                    id = c.id,
+                    name = c.name
+                }).ToList();
+                return Json(new { Status = "success", Data = st });
+            }
+            catch (Exception e)
+            {
+                return Json(new { status = "error", data = new List<StateView>() });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GetCities(string stateId)
+        {
+            try
+            {
+                var cities = _stateCityRepository.GetCity(stateId);
+                var ci = cities.Select(c => new CityView()
+                {
+                    id = c.id,
+                    name = c.name
+                }).ToList();
+
+                return Json(new { status = "success", data = ci });
+            }
+            catch (Exception e)
+            {
+                return Json(new { status = "error", data = new List<CityView>() });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddAddress(Address address)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    double i;
+                    if (!double.TryParse(address.PostCode, out i))
+                    {
+                        ModelState.AddModelError("PostCode", "کد پستی معتبر وارد نماید.");
+                    }
+                    //if (!int.TryParse(address.HouseNumber, out i))
+                    //{
+                    //    ModelState.AddModelError("HouseNumber", "شماره پلاک معتبر وارد نمایید.");
+                    //}
+                    //if (int.Parse(address.SideFloor) != 0)
+                    //{
+                    //    ModelState.AddModelError("SideFloor", "شماره واحد معتبر وارد نمایید.");
+                    //}
+                    if (string.IsNullOrEmpty(address.TownShip))
+                    {
+                        ModelState.AddModelError("TownShip", "لطفا نام شهر را انتخاب نمایید.");
+                    }
+                    if (string.IsNullOrEmpty(address.Province))
+                    {
+                        ModelState.AddModelError("Province", "لطفا نام استان را انتخاب نمایید.");
+                    }
+
+                    var errors = ModelState.Generate();
+
+                    return Json(new { Status = "error", Message = "فیلدهای ضروری تکمیل گردد.", ModelStateErrors = errors });
+                }
+
+                //var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                //var userName = User.FindFirstValue(ClaimTypes.Name);
+
+                var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var user = await _userManager.FindByIdAsync(userId);
+
+                address.Id = Guid.NewGuid().ToString();
+
+                var provinceId = address.Province;
+
+                address.ProvinceName = _stateCityRepository.GetStateById(provinceId);
+                address.TownShipName = _stateCityRepository.GetCityById(address.TownShip);
+
+                user.Addresses.Add(address);
+
+                var updateAsync = await _userManager.UpdateAsync(user);
+
+                if (updateAsync.Succeeded)
+                {
+                    var returnUrl = TempData["ReturnUrl"];
+                    return Json(new { status = "success", Message = "آدرس با موفقیت افزوده شد", Url = returnUrl });
+                }
+
+                return Json(new { status = "error", Message = "لطفا مجددا سعی نمایید." });
+            }
+            catch (Exception x)
+            {
+                return Json(new { status = "error", Message = "لطفا مجددا سعی نمایید." });
+            }
         }
 
 

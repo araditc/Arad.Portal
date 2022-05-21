@@ -25,11 +25,15 @@ namespace Arad.Portal.DataLayer.Models.Shared
 
         public string CreatorUserId { get; set; }
 
+        public ReferenceType ReferenceType { get; set; }
+
         public string CreatorUserName { get; set; }
 
         public userStatus userStatus { get; set; }
 
         public DateTime CreationDate { get; set; }
+
+        public string PersianCreationDate { get; set; }
 
         public List<CommentVM> Childrens { get; set; }
     }

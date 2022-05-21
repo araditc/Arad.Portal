@@ -15,5 +15,9 @@ namespace Arad.Portal.DataLayer.Contracts.General.CountryParts
         List<SelectListModel> GetStates(string countryId);
 
         List<SelectListModel> GetCities(string cityId);
+
+        Entities.General.Country.Country GetCountry(string countryId);
+
+        Entities.General.Country.Country GetCountryByName(string countryName);
     }
 }

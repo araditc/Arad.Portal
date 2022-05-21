@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <dictionary>
 	<!--Start [buttons text]-->
+	<string key="btn_AddNewAddress">
+		<value>add new address</value>
+	</string>
 	<string key="btn_Rotate">
 		<value>Rotate</value>
 	</string>
@@ -13,6 +16,9 @@
 	<string key="btn_Crop">
 		<value>Crop</value>
 	</string>
+	<string key="btn_ContinueBuyingOnline">
+		<value>Continue Shopping Procedure</value>
+	</string>
 	<string key="btn_UploadImage">
 		<value>Upload Image</value>
 	</string>
@@ -21,6 +27,12 @@
 	</string>
 	<string key="PutImage">
 		<value>Put Image</value>
+	</string>
+	<string key="SendInfoes">
+		<value>send informations</value>
+	</string>
+	<string key="AddNewAddress">
+		<value>add new address</value>
 	</string>
 	<string key="btn_Add">
 		<value>Add</value>
@@ -491,6 +503,12 @@
 		<value>Are you sure?</value>
 	</string>
 	<!--====================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_AddressInsert">
+		<value>Please insert your address.</value>
+	</string>
+	<string key="AlertAndMessage_InsertError">
+		<value>Error i Inserting informations.</value>
+	</string>
 	<string key="AlertAndMessage_LoginFirst">
 		<value>You havent been logged,please  login first.</value>
 	</string>
@@ -501,7 +519,7 @@
 		<value>please fill all paymentGateway information compeletely;</value>
 	</string>
 	<string key="AlertAndMessage_ProductCountInCart">
-		<value>[0] units of this product added to your cart.</value>
+		<value>this product has been added to your cart.</value>
 	</string>
 	<string key="AlertAndMessage_ProductPriceIncrease">
 		<value>Unfortunatelly, the price of product [0] have been increased.</value>
@@ -745,7 +763,7 @@
 		<value>User was created successfully.</value>
 	</string>
 	<string key="AlertAndMessage_SubmitComment">
-		<value>Sent Successfully.</value>
+		<value>Comment Sent Successfully and It will be shown after approve.</value>
 	</string>
     <string key="AlertAndMessage_DuplicatePhoneNumber">
 		<value>There is a user account with this mobilePhone.</value>
@@ -1405,6 +1423,31 @@
 	<string key="User_Profile">
 		<value>User Profile</value>
 	</string>
+	<string key="Profile_Province">
+		<value>Province</value>
+	</string>
+	<string key="Profile_City">
+		<value>City</value>
+	</string>
+	<string key="Profile_ZipCode">
+		<value>ZipCode</value>
+	</string>
+	<string key="Profile_Address1">
+		<value>Address1</value>
+	</string>
+	<string key="Profile_Address2">
+		<value>Address2</value>
+	</string>
+	<string key="Shopping_Senttothisaddress">
+		<value>sent to this address.</value>
+	</string>
+	<string key="Shopping_AddInvoiceWithOrders">
+		<value>add invoice with orders</value>
+	</string>
+	<string key="Shopping_OnlinePayment">
+		<value>online payment</value>
+	</string>
+	
 	<string key="User_PasswordRepetition">
 		<value>Password Repetition</value>
 	</string>

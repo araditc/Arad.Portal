@@ -30,7 +30,7 @@ using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
 using Arad.Portal.DataLayer.Entities.General.DesignStructure;
 using MongoDB.Bson;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Hosting;
+using Arad.Portal.DataLayer.Repositories.General.Comment.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 {
@@ -46,14 +46,16 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         private readonly LanguageContext _languageContext;
         private readonly ShoppingCartContext _shoppingCartContext;
         private readonly IConfiguration _configuration;
+        private readonly CommentContext _commentContext;
         private readonly IMapper _mapper;
         //private readonly IHttpContextAccessor _accessor;
         //private readonly UserManager<ApplicationUser> _userManager;
-        
+
         public ProductRepository(IHttpContextAccessor httpContextAccessor,
             ProductContext context, IMapper mapper,
             PromotionContext promotionContext,
             CurrencyContext currencyContext,
+            CommentContext commentContext,
             //OrderContext orderContext,
             //UserManager<ApplicationUser> userManager,
             ShoppingCartContext shoppingCartContext,
@@ -75,6 +77,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             _domainContext = domainContext;
             _shoppingCartContext = shoppingCartContext;
             _currencyContext = currencyContext;
+            _commentContext = commentContext;
         }
 
         public async Task<Result> Add(ProductInputDTO dto)
@@ -103,7 +106,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             {
                 foreach (var item in dto.Pictures)
                 {
-                    if(System.IO.File.Exists(item.Url))
+                    if (System.IO.File.Exists(item.Url))
                     {
                         System.IO.File.Delete(item.Url);
                     }
@@ -334,11 +337,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         {
             var result = new Result();
             var entity = await _context.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefaultAsync();
-            if(entity != null)
+            if (entity != null)
             {
                 bool allowDeletion;
                 bool check;
-                check = _shoppingCartContext.Collection.Find(_ => _.Details.Any(a => a.Products.Any(b => b.ProductId == productId)) 
+                check = _shoppingCartContext.Collection.Find(_ => _.Details.Any(a => a.Products.Any(b => b.ProductId == productId))
                 && !_.IsDeleted && _.IsActive).Any();
                 check &= _transactionContext.Collection
                     .Find(_ => _.SubInvoices.Any(a => a.ParchasePerSeller.Products.Any(b => b.ProductId == productId))).Any();
@@ -368,7 +371,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 {
                     result.Message = ConstMessages.DeletedNotAllowedForDependencies;
                 }
-            }else
+            }
+            else
             {
                 result.Message = ConstMessages.ObjectNotFound;
             }
@@ -393,7 +397,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         private Entities.Shop.Product.Product MappingProduct(ProductInputDTO dto)
         {
             var equallentModel = _mapper.Map<Entities.Shop.Product.Product>(dto);
-            if(string.IsNullOrWhiteSpace(dto.ProductId)) //insert Case
+            if (string.IsNullOrWhiteSpace(dto.ProductId)) //insert Case
             {
                 equallentModel.ProductId = Guid.NewGuid().ToString();
             }
@@ -402,8 +406,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             {
                 foreach (var item in equallentModel.MultiLingualProperties)
                 {
-                    if(string.IsNullOrWhiteSpace(item.MultiLingualPropertyId))
-                    item.MultiLingualPropertyId = Guid.NewGuid().ToString();
+                    if (string.IsNullOrWhiteSpace(item.MultiLingualPropertyId))
+                        item.MultiLingualPropertyId = Guid.NewGuid().ToString();
                 }
             }
             #endregion
@@ -419,11 +423,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 
             #region Prices
             equallentModel.Prices = new List<Price>();
-            foreach (var price in dto.Prices.OrderBy(_=>_.StartDate))
+            foreach (var price in dto.Prices.OrderBy(_ => _.StartDate))
             {
-                if(price.IsActive && string.IsNullOrWhiteSpace(price.EndDate))//price is valid from client
+                if (price.IsActive && string.IsNullOrWhiteSpace(price.EndDate))//price is valid from client
                 {
-                    if(equallentModel.Prices.Any(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive))
+                    if (equallentModel.Prices.Any(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive))
                     {
                         var exist = equallentModel.Prices.First(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive);
                         equallentModel.Prices.Remove(exist);
@@ -433,7 +437,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 
                     }
                 }
-                
+
                 var p = new Price()
                 {
                     PriceId = !string.IsNullOrWhiteSpace(price.PriceId) ? price.PriceId : Guid.NewGuid().ToString(),
@@ -443,7 +447,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     Prefix = price.Prefix,
                     PriceValue = price.PriceValue,
                     StartDate = DateHelper.ToEnglishDate(price.StartDate.Split(" ")[0]),
-                    EndDate = !string.IsNullOrWhiteSpace(price.EndDate) ? 
+                    EndDate = !string.IsNullOrWhiteSpace(price.EndDate) ?
                     GeneralLibrary.Utilities.DateHelper.ToEnglishDate(price.EndDate.Split(" ")[0]) : null
                 };
                 equallentModel.Prices.Add(p);
@@ -468,9 +472,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         public int GetInventory(string productId)
         {
             var result = -1;
-            var entity =  _context.ProductCollection
+            var entity = _context.ProductCollection
                 .Find(_ => _.ProductId == productId).FirstOrDefault();
-            if(entity != null)
+            if (entity != null)
             {
                 result = entity.Inventory;
             }
@@ -482,7 +486,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             var result = new List<Image>();
             var entity = _context.ProductCollection
                 .Find(_ => _.ProductId == productId).FirstOrDefault();
-            if(entity != null)
+            if (entity != null)
             {
                 result = entity.Images;
             }
@@ -493,7 +497,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         {
             var result = new ProductOutputDTO();
             var entity = await _context.ProductCollection
-                .Find(_=>_.ProductId == productId).FirstOrDefaultAsync();
+                .Find(_ => _.ProductId == productId).FirstOrDefaultAsync();
             if (entity != null)
             {
                 result = _mapper.Map<ProductOutputDTO>(entity);
@@ -506,9 +510,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         public List<string> GetProductGroups(string productId)
         {
             var result = new List<string>();
-            var entity =  _context.ProductCollection
+            var entity = _context.ProductCollection
                 .Find(_ => _.ProductId == productId).FirstOrDefault();
-            if(entity != null)
+            if (entity != null)
             {
                 result = entity.GroupIds;
             }
@@ -520,7 +524,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             var result = new List<ProductSpecificationValue>();
             var entity = _context.ProductCollection
                .Find(_ => _.ProductId == productId).FirstOrDefault();
-            if(entity != null)
+            if (entity != null)
             {
                 result = entity.Specifications;
             }
@@ -548,16 +552,16 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 
                 long totalCount = await _context.ProductCollection.Find(c => true).CountDocumentsAsync();
                 var totalList = _context.ProductCollection.AsQueryable();
-                if(!string.IsNullOrWhiteSpace(filter["groupIds"]))
+                if (!string.IsNullOrWhiteSpace(filter["groupIds"]))
                 {
                     var arr = filter["groupIds"].ToString().Split("|");
                     totalList = totalList.Where(_ => _.GroupIds.Intersect(arr.ToList()).Any());
                 }
-                
-                if(!string.IsNullOrWhiteSpace(filter["name"]))
+
+                if (!string.IsNullOrWhiteSpace(filter["name"]))
                 {
                     totalList = totalList
-                        .Where(_=>_.MultiLingualProperties.Any(a=>a.Name.Contains(filter["name"])));
+                        .Where(_ => _.MultiLingualProperties.Any(a => a.Name.Contains(filter["name"])));
                 }
                 if (!string.IsNullOrWhiteSpace(filter["code"]))
                 {
@@ -569,7 +573,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     totalList = totalList
                         .Where(_ => _.MultiLingualProperties.Any(a => a.Description.Contains(filter["desc"])));
                 }
-                if(!string.IsNullOrWhiteSpace(filter["from"]))
+                if (!string.IsNullOrWhiteSpace(filter["from"]))
                 {
                     //???
                     totalList = totalList
@@ -596,7 +600,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 if (!string.IsNullOrWhiteSpace(filter["exist"]) && Convert.ToBoolean(filter["exist"].ToString()))
                 {
                     totalList = totalList
-                        .Where(_ => _.Inventory > 0 );
+                        .Where(_ => _.Inventory > 0);
                 }
                 if (string.IsNullOrWhiteSpace(filter["LanguageId"]))
                 {
@@ -607,7 +611,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 var list = totalList.Skip((page - 1) * pageSize)
                    .Take(pageSize).Select(_ => new ProductViewModel()
                    {
-                       ProductId =_.ProductId,
+                       ProductId = _.ProductId,
                        GroupNames = _.GroupNames,
                        GroupIds = _.GroupIds,
                        Inventory = _.Inventory,
@@ -616,7 +620,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                        MultiLingualProperties = _.MultiLingualProperties,
                        Images = _.Images,
                        Prices = _.Prices,
-                       Unit =  _.Unit,
+                       Unit = _.Unit,
                        CreationDate = _.CreationDate
                    }).ToList();
 
@@ -642,23 +646,23 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         {
             var result = new Result();
             var product = _context.ProductCollection.Find(_ => _.ProductId == dto.ProductId).First();
-           
-                var equallentModel = MappingProduct(dto);
-                equallentModel.CreationDate = product.CreationDate;
 
-                var updateResult = await _context.ProductCollection
-                    .ReplaceOneAsync(_ => _.ProductId == dto.ProductId, equallentModel);
+            var equallentModel = MappingProduct(dto);
+            equallentModel.CreationDate = product.CreationDate;
 
-                if (updateResult.IsAcknowledged)
-                {
-                    result.Succeeded = true;
-                    result.Message = ConstMessages.SuccessfullyDone;
-                }
-                else
-                {
-                    result.Message = ConstMessages.GeneralError;
+            var updateResult = await _context.ProductCollection
+                .ReplaceOneAsync(_ => _.ProductId == dto.ProductId, equallentModel);
 
-                }
+            if (updateResult.IsAcknowledged)
+            {
+                result.Succeeded = true;
+                result.Message = ConstMessages.SuccessfullyDone;
+            }
+            else
+            {
+                result.Message = ConstMessages.GeneralError;
+
+            }
             return result;
         }
 
@@ -687,11 +691,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         {
             var result = false;
             var productEntity = _context.ProductCollection.Find(_ => _.ProductId == productId).First();
-            if(productEntity != null)
+            if (productEntity != null)
             {
-                if(productEntity.Promotion != null)
+                if (productEntity.Promotion != null)
                 {
-                    if(productEntity.Promotion.PromotionType == Entities.Shop.Promotion.PromotionType.Product && 
+                    if (productEntity.Promotion.PromotionType == Entities.Shop.Promotion.PromotionType.Product &&
                         productEntity.Promotion.IsActive && productEntity.Promotion.SDate <= DateTime.Now &&
                         (productEntity.Promotion.EDate >= DateTime.Now || productEntity.Promotion == null))
                     {
@@ -701,16 +705,17 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             }
             return result;
         }
-       
-        public  List<SelectListModel> GetAllActiveProductList(string langId, string currentUserId,
+
+        public List<SelectListModel> GetAllActiveProductList(string langId, string currentUserId,
             string productGroupId, string vendorId)
         {
             var result = new List<SelectListModel>();
-          
+
             if (currentUserId == Guid.Empty.ToString())//systemAccount
             {
-                result = _context.ProductCollection.Find(_ => _.GroupIds.Contains(productGroupId) && (vendorId =="-1" || _.SellerUserId == vendorId) && _.IsActive)
-                  .Project(_ => new SelectListModel() {
+                result = _context.ProductCollection.Find(_ => _.GroupIds.Contains(productGroupId) && (vendorId == "-1" || _.SellerUserId == vendorId) && _.IsActive)
+                  .Project(_ => new SelectListModel()
+                  {
                       Text = _.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() != 0 ?
                          _.MultiLingualProperties.First(a => a.LanguageId == langId).Name : "",
                       Value = _.ProductId
@@ -747,7 +752,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         public List<SelectListModel> GetProductsOfThisVendor(string langId, string currentUserId)
         {
             var result = new List<SelectListModel>();
-            result = _context.ProductCollection.Find(_ =>  _.SellerUserId == currentUserId && _.IsActive)
+            result = _context.ProductCollection.Find(_ => _.SellerUserId == currentUserId && _.IsActive)
                   .Project(_ => new SelectListModel()
                   {
                       Text = _.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() != 0 ?
@@ -803,7 +808,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         public List<SelectListModel> GetAllProductList(ApplicationUser user, string productGroupId, string domainId)
         {
             var result = new List<SelectListModel>();
-            var domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).CountDocuments() > 0 
+            var domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).CountDocuments() > 0
                 ? _domainContext.Collection.Find(_ => _.DomainId == domainId).First() : new Entities.General.Domain.Domain();
             if (user.IsSystemAccount)//systemAccount
             {
@@ -857,10 +862,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         public ProductOutputDTO FetchByCode(long productCode, DomainDTO dto, string userId)
         {
             var result = new ProductOutputDTO();
-            
+
             var productEntity = _context.ProductCollection
                 .Find(_ => _.ProductCode == productCode).FirstOrDefault();
-            if(productEntity != null)
+            if (productEntity != null)
             {
                 result = _mapper.Map<ProductOutputDTO>(productEntity);
                 result.Images = result.Images.Where(_ => _.ImageRatio == ImageRatio.Square).ToList();
@@ -897,9 +902,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 result.DisikeRate = r.DisikeRate;
                 result.HalfLikeRate = r.HalfLikeRate;
             }
-            
+
             return result;
         }
+
+        //private List<CommentVM> GetChidrenComment(string commentId)
+        //{
+
+        //}
         private ProductOutputDTO EvaluateFinalPrice(string productId, List<Price> productPrices, List<string> productGroupIds, string defCurrenyId)
         {
             var result = new ProductOutputDTO();
@@ -940,7 +950,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             promotionList.Add(promotionOnProductGroup);
             promotionList.Add(promotionOnThisProduct);
 
-           
+
             long finalPrice = 0;
             for (int i = 0; i < promotionList.Count; i++)
             {
@@ -999,39 +1009,41 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         private List<CommentVM> CreateNestedTreeComment(List<Comment> comments, string currentUserId)
         {
             var result = new List<CommentVM>();
-            result = comments.Where(_ => _.ParentId == null).Select(_ => new CommentVM()
+            result = comments.Where(_ => _.ParentId == null && _.IsApproved && !_.IsDeleted).Select(_ => new CommentVM()
             {
                 CommentId = _.CommentId,
                 Content = _.Content,
                 CreationDate = _.CreationDate,
+                PersianCreationDate = DateHelper.ToPersianDdate(_.CreationDate.ToLocalTime()),
                 CreatorUserId = _.CreatorUserId,
                 CreatorUserName = _.CreatorUserName,
                 DislikeCount = _.DislikeCount,
                 ReferenceId = _.ReferenceId,
                 LikeCount = _.LikeCount,
-                userStatus = !string.IsNullOrWhiteSpace(currentUserId) ? ( _httpContextAccessor.HttpContext.Request.Cookies[$"{currentUserId}_cmt{_.CommentId}"] != null ?
-                ( _httpContextAccessor.HttpContext.Request.Cookies[$"{currentUserId}_cmt{_.CommentId}"] == "true" ? userStatus.Like : userStatus.Dislike ) :
-                     userStatus.NoAction ) : userStatus.UnAuthorized,
+                userStatus = !string.IsNullOrWhiteSpace(currentUserId) ? (_httpContextAccessor.HttpContext.Request.Cookies[$"{currentUserId}_cmt{_.CommentId}"] != null ?
+                (_httpContextAccessor.HttpContext.Request.Cookies[$"{currentUserId}_cmt{_.CommentId}"] == "true" ? userStatus.Like : userStatus.Dislike) :
+                     userStatus.NoAction) : userStatus.UnAuthorized,
                 Childrens = GetChildren(comments, _.CommentId, currentUserId)
 
             }).ToList();
             return result;
         }
 
-        private List<CommentVM>  GetChildren(List<Comment> list , string currentCommentId, string currentUserId)
+        private List<CommentVM> GetChildren(List<Comment> list, string currentCommentId, string currentUserId)
         {
             List<CommentVM> result;
-            if(!list.Any(_=>_.ParentId == currentCommentId))
+            if (!list.Any(_ => _.ParentId == currentCommentId))
             {
-                result = new List<CommentVM>();
+               result = new List<CommentVM>();
             }
             else
             {
-                result = list.Where(_ => _.ParentId == currentCommentId).Select(_ => new CommentVM()
+                result = list.Where(_ => _.ParentId == currentCommentId && _.IsApproved && !_.IsDeleted).Select(_ => new CommentVM()
                 {
                     CommentId = _.CommentId,
                     Content = _.Content,
                     CreationDate = _.CreationDate,
+                    PersianCreationDate = DateHelper.ToPersianDdate(_.CreationDate.ToLocalTime()),
                     CreatorUserId = _.CreatorUserId,
                     CreatorUserName = _.CreatorUserName,
                     DislikeCount = _.DislikeCount,
@@ -1040,7 +1052,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     userStatus = !string.IsNullOrWhiteSpace(currentUserId) ? (_httpContextAccessor.HttpContext.Request.Cookies[$"{currentUserId}_cmt{_.CommentId}"] != null ?
                       (_httpContextAccessor.HttpContext.Request.Cookies[$"{currentUserId}_cmt{_.CommentId}"] == "true" ? userStatus.Like : userStatus.Dislike) :
                      userStatus.NoAction) : userStatus.UnAuthorized,
-                    Childrens = GetChildren(list, currentCommentId, currentUserId)
+                    Childrens = GetChildren(list, _.CommentId, currentUserId)
                 }).ToList();
             }
             return result;
@@ -1058,18 +1070,18 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         {
             var result = new Result<EntityRate>();
             var entity = _context.ProductCollection.Find(_ => _.ProductId == productId).First();
-            if(isNew)
+            if (isNew)
             {
                 entity.TotalScore += score;
                 entity.ScoredCount += 1;
             }
-            else if(score != prevScore) //if user change the score of product
+            else if (score != prevScore) //if user change the score of product
             {
                 entity.TotalScore -= prevScore;
                 entity.TotalScore += score;
                 //scoredCount doesnt change cause this user rated before just change its score
             }
-           
+
             if (score != prevScore || isNew)
             {
                 var updateResult = await _context.ProductCollection.ReplaceOneAsync(_ => _.ProductId == productId, entity);
@@ -1097,7 +1109,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 entity.Inventory -= count;
 
             var updateResult = await _context.ProductCollection.ReplaceOneAsync(_ => _.ProductId == productId, entity);
-            if(updateResult.IsAcknowledged)
+            if (updateResult.IsAcknowledged)
             {
                 result.Succeeded = true;
             }
@@ -1149,7 +1161,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                         PriceValue = pro.Price,
                         Symbol = currencyEntity.Symbol
                     });
-                    if(pro.ProductImage != null)
+                    if (pro.ProductImage != null)
                     {
                         product.Images.Add(new Image()
                         {
@@ -1157,7 +1169,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                             Url = pro.ProductImage.Url
                         });
                     }
-                   
+
 
                     product.UniqueCode = pro.UniqueCode;
                     product.Inventory = pro.Inventory;
@@ -1172,7 +1184,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                         .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
                     product.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                         .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
-                    
+
                     var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
                     product.AssociatedDomainId = domainId;
 
@@ -1204,7 +1216,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             if (!domainEntity.IsDefault)
             {
                 filterDef = builder.And(nameof(Entities.Shop.Product.Product.AssociatedDomainId), domainEntity.DomainId);
-            }else
+            }
+            else
             {
                 var filter1 = builder.Eq(nameof(Entities.Shop.Product.Product.AssociatedDomainId), domainEntity.DomainId);
                 var filter2 = builder.Eq(nameof(Entities.Shop.Product.Product.IsPublishedOnMainDomain), true);
@@ -1239,26 +1252,26 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                         }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.CreationDate)).Limit(count).ToList();
                     break;
                 case ProductOrContentType.MostPopular:
-                 lst = _context.ProductCollection
-                    .Find(filterDef)
-                    .Project(_ =>
-                        new ProductOutputDTO()
-                        {
-                            GroupIds = _.GroupIds,
-                            Inventory = _.Inventory,
-                            Images = _.Images,
-                            MultiLingualProperties = _.MultiLingualProperties,
-                            Prices = _.Prices,
-                            ProductCode = _.ProductCode,
-                            ProductId = _.ProductId,
-                            Promotion = _.Promotion,
-                            SaleCount = _.SaleCount,
-                            UniqueCode = _.UniqueCode,
-                            TotalScore = _.TotalScore,
-                            ScoredCount = _.ScoredCount,
-                            Unit = _.Unit,
-                            VisitCount = _.VisitCount
-                        }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => (float)_.TotalScore / _.ScoredCount)).Limit(count).ToList();
+                    lst = _context.ProductCollection
+                       .Find(filterDef)
+                       .Project(_ =>
+                           new ProductOutputDTO()
+                           {
+                               GroupIds = _.GroupIds,
+                               Inventory = _.Inventory,
+                               Images = _.Images,
+                               MultiLingualProperties = _.MultiLingualProperties,
+                               Prices = _.Prices,
+                               ProductCode = _.ProductCode,
+                               ProductId = _.ProductId,
+                               Promotion = _.Promotion,
+                               SaleCount = _.SaleCount,
+                               UniqueCode = _.UniqueCode,
+                               TotalScore = _.TotalScore,
+                               ScoredCount = _.ScoredCount,
+                               Unit = _.Unit,
+                               VisitCount = _.VisitCount
+                           }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => (float)_.TotalScore / _.ScoredCount)).Limit(count).ToList();
                     break;
                 case ProductOrContentType.BestSale:
                     lst = _context.ProductCollection
@@ -1307,7 +1320,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             }
             //for testing
             Random ran = new Random();
-            
+
             foreach (var pro in lst)
             {
                 var res = EvaluateFinalPrice(pro.ProductId, pro.Prices, pro.GroupIds, currencyId);
@@ -1320,12 +1333,12 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 pro.DiscountType = res.DiscountType;
                 pro.DiscountValue = res.DiscountValue;
                 pro.MainImageUrl = pro.Images.Any(_ => _.IsMain) ? pro.Images.First(_ => _.IsMain).Url : "";
-                var r = Helpers.Utilities.ConvertPopularityRate(pro.TotalScore??0, pro.ScoredCount??0);
+                var r = Helpers.Utilities.ConvertPopularityRate(pro.TotalScore ?? 0, pro.ScoredCount ?? 0);
                 pro.LikeRate = r.LikeRate;
                 pro.DisikeRate = r.DisikeRate;
                 pro.HalfLikeRate = r.HalfLikeRate;
             }
-            
+
             return lst;
         }
 
@@ -1345,18 +1358,20 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public bool IsCodeUnique(string code, string productId ="")
+        public bool IsCodeUnique(string code, string productId = "")
         {
-            if(string.IsNullOrWhiteSpace(productId))
+            if (string.IsNullOrWhiteSpace(productId))
             {
                 return !_context.ProductCollection.Find(_ => _.UniqueCode == code).Any();
-            }else
+            }
+            else
             {
                 var builder = Builders<Entities.Shop.Product.Product>.Filter;
                 var filter = builder.Ne("ProductId", productId) & builder.Eq("UniqueCode", code);
                 return !_context.ProductCollection.Find(filter).Any();
             }
-           
+
         }
     }
 }
+

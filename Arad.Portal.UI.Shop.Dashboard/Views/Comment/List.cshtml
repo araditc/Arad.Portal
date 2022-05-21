@@ -152,15 +152,15 @@
                                 <td class="ListCell">@item.ParentCommentContent</td>
                                 <td class="ListCell">
                                     <div class="form-check d-flex justify-content-center p-0">
-                                        <input type="radio" name="isMainImage" checked="@item.IsApproved" class="form-check-input rdbIsMain">
+                                        <input type="radio" name=@($"isApproved_{@item.CommentId}")  checked="@item.IsApproved"
+                                        class="form-check-input rdbIsMain" disabled='disabled'>
                                     </div>
                                 </td>
                                 <td>
                                  
-                                        <a class="btn btn-success btnApprove" cmd="@item.CommentId" @*asp-action="ApproveComment" asp-controller="Comment" asp-route-commentId="@item.CommentId" asp-route-isApproved="@item.IsApproved"*@ class="btn btn-sm btn-primary bg-gradient">
-                                           
+                                        <button class="btn btn-success btn-sm btnApprove" cmd="@item.CommentId">
                                             <i  class="fa fa-edit"></i>@Language.GetString("btn_Approved")
-                                        </a>
+                                        </button>
                                    
                                     @if (!item.IsDeleted)
                                     {
@@ -241,13 +241,13 @@
                window.location.href = '@Url.Action("List", "Comment")' + queryString;
             });
 
-            $("#btnApprove").click(function(){
+            $(".btnApprove").click(function(){
+                debugger;
                 var cmt = $(this).attr("cmd");
                  $.ajax({
                         url:'@Url.Action("ApproveComment", "Comment")'+`?commentId=${cmt}`,
                         contentType: "application/json",
-                        data: JSON.stringify(obj),
-                        type: "Post",
+                        type: "Get",
                         beforeSend: function () {
                         },
                         success: function (result) {
@@ -259,7 +259,11 @@
                             //$("#toastPanel").show();
                             var toast = new bootstrap.Toast(toastDiv);
                             toast.show();
-                            window.location.reload();
+                             setTimeout(function()
+                            {
+                                window.location.reload();
+                            },
+                            2500);
                             }else
                             {
                                 showError(result.message);

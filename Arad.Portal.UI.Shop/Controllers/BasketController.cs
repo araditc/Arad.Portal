@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using System.Security.Claims;
+using Arad.Portal.DataLayer.Entities.General.User;
+using Microsoft.AspNetCore.Identity;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -16,14 +19,17 @@ namespace Arad.Portal.UI.Shop.Controllers
     public class BasketController : BaseController
     {
         private readonly IShoppingCartRepository _shoppingCartRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDomainRepository _domainRepository;
         public BasketController(IHttpContextAccessor accessor,
             IShoppingCartRepository shoppingCartRepository,
             IWebHostEnvironment env,
+            UserManager<ApplicationUser> userManager,
             IDomainRepository domainRepository) : base(accessor, env)
         {
             _shoppingCartRepository = shoppingCartRepository;
             _domainRepository = domainRepository;
+            _userManager = userManager;
         }
 
 
@@ -34,6 +40,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             if (User != null && User.Identity.IsAuthenticated)
             {
                 var res = await _shoppingCartRepository.AddOrChangeProductToUserCart(productId, cnt);
+                @ViewBag.BasketCount = res.ReturnValue.ItemsCount;
                 return Json(new
                 {
                     status = res.Succeeded ? "Success" : "Error",
@@ -55,7 +62,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             if (User != null && User.Identity.IsAuthenticated)
             {
                 var domainName = base.DomainName;
-                var currentUserId = base.CurrentUserId;
+                var currentUserId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
                 var domain = _domainRepository.FetchByName(domainName);
                
                 var model =(await _shoppingCartRepository.FetchActiveUserShoppingCart(currentUserId, domain.ReturnValue.DomainId)).ReturnValue;
@@ -68,6 +75,29 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
 
         }
+
+        [HttpGet]
+        public async Task<IActionResult> SendInfo()
+        {
+            //var items = HttpContext.Session.GetString("basket");
+            var domainName = base.DomainName;
+            var domainDTO = _domainRepository.FetchByName(domainName);
+            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var shoppingCart =await _shoppingCartRepository.FetchActiveUserShoppingCart(userId, domainDTO.ReturnValue.DomainId);
+            var user = await _userManager.FindByIdAsync(userId);
+
+            var model = new DataLayer.Models.Shared.SendInfoPage()
+            {
+                Addresses = user.Profile.Addresses,
+                CurrencySymbol = shoppingCart.ReturnValue.ShoppingCartCulture.CurrencySymbol,
+                TotalCost = Math.Round(shoppingCart.ReturnValue.FinalPriceForPay).ToString()
+            };
+            return View(model);
+        }
+
+           
+
+
         //public IActionResult Index()
         //{
         //    return View();

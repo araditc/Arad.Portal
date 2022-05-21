@@ -216,6 +216,7 @@ header {
     margin-right: 3px;
     position: relative;
     top: 2px;
+    white-space: nowrap;
 }
 
 @media screen and (max-width : 767px) {

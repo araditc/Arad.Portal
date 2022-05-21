@@ -31,6 +31,10 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
 
     public class PurchasePerSeller
     {
+        public PurchasePerSeller()
+        {
+            Products = new();
+        }
         public string SellerId { get; set; }
 
         public string SellerUserName { get; set; }

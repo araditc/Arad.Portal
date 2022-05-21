@@ -59,7 +59,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
         {
             var result = new Result<string>();
             var entity = _context.Collection
-                .Find(_ => _.CreatorUserId == userId && !_.IsDeleted && _.IsActive).FirstOrDefault();
+                .Find(_ => _.CreatorUserId == userId && !_.IsDeleted && _.IsActive && _.AssociatedDomainId == domainId).FirstOrDefault();
 
             if (entity != null)
             {
@@ -77,6 +77,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
         public async Task<Result<CartItemsCount>> AddOrChangeProductToUserCart(string productId, int orderCount)
         {
             var result = new Result<CartItemsCount>();
+            result.ReturnValue = new CartItemsCount();
             var productEntity = _productContext.ProductCollection
                 .Find(_ => _.ProductId == productId).FirstOrDefault();
             var userId = base.GetUserId();
@@ -139,7 +140,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                             var purchase = new PurchasePerSeller()
                             {
                                 SellerId = productEntity.SellerUserId,
-                                SellerUserName = (await _userManager.FindByIdAsync(productEntity.SellerUserId)).UserName
+                                SellerUserName = (await _userManager.FindByIdAsync(productEntity.SellerUserId)).UserName,
+                                Products = new()
                             };
                       
                             purchase.Products.Add(shopCartDetail);
@@ -171,7 +173,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             }
             return result;
         }
-        private int GetItemCountsInCart(Entities.Shop.ShoppingCart.ShoppingCart entity)
+        public int GetItemCountsInCart(Entities.Shop.ShoppingCart.ShoppingCart entity)
         {
             var totalCount = 0;
             foreach (var item in entity.Details)
@@ -339,6 +341,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
         public async Task<Result<ShoppingCartDTO>> FetchActiveUserShoppingCart(string userId, string domainId)
         {
             var result = new Result<ShoppingCartDTO>();
+            result.ReturnValue = new ShoppingCartDTO();
             var dto = new ShoppingCartDTO();
             Entities.Shop.ShoppingCart.ShoppingCart userCartEntity = null;
              if(!_context.Collection
@@ -460,8 +463,21 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                     dto.Details.Add(obj);
                 }
 
-                //then update current shopping cart in database
-                userCartEntity.Details = _mapper.Map<List<PurchasePerSeller>>(dto.Details);
+            //then update current shopping cart in database
+            userCartEntity.Details = new List<PurchasePerSeller>();
+            foreach (var obj in dto.Details)
+            {
+                userCartEntity.Details.Add(new PurchasePerSeller()
+                {
+                    Products = _mapper.Map<List<ShoppingCartDetail>>(obj.Products),
+                    SellerId = obj.SellerId,
+                    SellerUserName = obj.SellerUserName,
+                    ShippingExpense = Convert.ToInt64(obj.ShippingExpense),
+                    ShippingTypeId = obj.ShippingTypeId,
+                    TotalDetailsAmountWithShipping = Convert.ToInt64(obj.TotalDetailsAmountWithShipping)
+                });
+            }
+                //userCartEntity.Details = _mapper.Map<List<PurchasePerSeller>>(dto.Details);
                 dto.FinalPriceForPay = finalPaymentPrice;
                 var updateResult =await _context.Collection
                     .ReplaceOneAsync(_ => _.ShoppingCartId == userCartEntity.ShoppingCartId, userCartEntity);
@@ -574,9 +590,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             //maybe we have several promotions which is assign to product
             //promotion on all product promotion of productGroup
             //promotion of this product if it is so we should select latest promotion
-            Entities.Shop.Promotion.Promotion promotionOnAll;
-            Entities.Shop.Promotion.Promotion promotionOnThisProductGroup;
-            Entities.Shop.Promotion.Promotion promotionOnThisProduct;
+            Entities.Shop.Promotion.Promotion promotionOnAll = null;
+            Entities.Shop.Promotion.Promotion promotionOnThisProductGroup = null;
+            Entities.Shop.Promotion.Promotion promotionOnThisProduct = null;
             List<Entities.Shop.Promotion.Promotion> promotionList = new List<Entities.Shop.Promotion.Promotion>();
             Entities.Shop.Promotion.Promotion finalPromotion = null;
 
@@ -599,7 +615,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                 //it isnt main domain then surely the seller is owner of domain and it isnt systemaccount
                 searchDomainId = currentDomainEntity.DomainId; //product.AssociatedDomainId are the same
             }
-            promotionOnAll = _promotionContext.Collection
+            try
+            {
+                promotionOnAll = _promotionContext.Collection
                         .Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.All &&
                         _.AssociatedDomainId == searchDomainId && _.IsActive && !_.IsDeleted &&
                         _.SDate <= DateTime.Now && (_.EDate == null || _.EDate >= DateTime.Now)).Any() ?
@@ -608,20 +626,33 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                         _.AssociatedDomainId == searchDomainId && _.IsActive && !_.IsDeleted &&
                         _.SDate <= DateTime.Now && (_.EDate == null || _.EDate >= DateTime.Now)).First() : null;
 
-            promotionOnThisProductGroup = _promotionContext.Collection
-                .Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group &&
-                _.Infoes.Select(a => a.AffectedProductGroupId).Intersect(product.GroupIds).Any() &&
-                _.AssociatedDomainId == searchDomainId && _.IsActive && !_.IsDeleted &&
-                _.SDate <= DateTime.Now && (_.EDate == null || _.EDate >= DateTime.Now)).Any() ?
-                _promotionContext.Collection
-                .Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group &&
-                _.Infoes.Select(a => a.AffectedProductGroupId).Intersect(product.GroupIds).Any() &&
-                _.AssociatedDomainId == searchDomainId && _.IsActive && !_.IsDeleted &&
-                _.SDate <= DateTime.Now && (_.EDate == null || _.EDate >= DateTime.Now)).First() : null;
+                //promotionOnThisProductGroup = _promotionContext.Collection
+                //    .Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group &&
+                //    _.Infoes.Select(a => a.AffectedProductGroupId).Intersect(product.GroupIds).Any() &&
+                //    _.AssociatedDomainId == searchDomainId && _.IsActive && !_.IsDeleted &&
+                //    _.SDate <= DateTime.Now && (_.EDate == null || _.EDate >= DateTime.Now)).Any() ?
+                //    _promotionContext.Collection
+                //    .Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group &&
+                //    _.Infoes.Select(a => a.AffectedProductGroupId).Intersect(product.GroupIds).Any() &&
+                //    _.AssociatedDomainId == searchDomainId && _.IsActive && !_.IsDeleted &&
+                //    _.SDate <= DateTime.Now && (_.EDate == null || _.EDate >= DateTime.Now)).First() : null;
 
-            promotionOnThisProduct = product.Promotion != null && product.Promotion.IsActive && !product.Promotion.IsDeleted
-                 && product.Promotion.SDate <= DateTime.Now &&
-                 (product.Promotion.EDate == null || product.Promotion.EDate >= DateTime.Now) ? product.Promotion : null;
+                //promotionOnThisProductGroup = _promotionContext.Collection.AsQueryable()
+                //    .First(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group &&
+                //    _.Infoes.Select(a => a.AffectedProductGroupId).Intersect(product.GroupIds).ToList().Any() &&
+                //    _.AssociatedDomainId == searchDomainId && _.IsActive && !_.IsDeleted &&
+                //    _.SDate <= DateTime.Now && (_.EDate == null || _.EDate >= DateTime.Now));
+
+
+                promotionOnThisProduct = product.Promotion != null && product.Promotion.IsActive && !product.Promotion.IsDeleted
+                     && product.Promotion.SDate <= DateTime.Now &&
+                     (product.Promotion.EDate == null || product.Promotion.EDate >= DateTime.Now) ? product.Promotion : null;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
 
             if (promotionOnAll != null)
                 promotionList.Add(promotionOnAll);
@@ -784,6 +815,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                 result.Message = Language.GetString("AlertAndMessage_ExceptionOccured");
             }
             return result;
+        }
+
+        public async Task<int> LoadUserCartShopping(string userId)
+        {
+            var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == GetCurrentDomainName()).FirstOrDefault();
+            var res = await FetchActiveUserShoppingCart(userId, domainEntity.DomainId);
+            var cartEntiry = _context.Collection.Find(_ => _.ShoppingCartId == res.ReturnValue.UserCartId).FirstOrDefault();
+            return GetItemCountsInCart(cartEntiry);
         }
     }
 }

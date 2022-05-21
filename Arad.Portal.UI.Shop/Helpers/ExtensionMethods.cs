@@ -270,7 +270,7 @@ namespace Arad.Portal.UI.Shop.Helpers
                         //    ClaimValue = "f4dd87ab-cf2f-4711-9e1e-64735aa364de",
                         //    //testing
                         //    UserId = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa"
-                           
+
                         //}
                     },
                     PhoneNumber = "989309910790",
@@ -287,6 +287,8 @@ namespace Arad.Portal.UI.Shop.Helpers
                         BirthDate = new DateTime(1987, 8, 26).ToUniversalTime(),
                         NationalCode = "1292086734",
                         CompanyName = "Arad",
+                        DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
+                        DefaultCurrencyId = "f6a41b2d-3ed5-412b-b511-68498a7b62f3",
                         UserType = UserType.Admin
                     },
                     CreationDate = DateTime.UtcNow

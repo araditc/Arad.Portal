@@ -1,84 +1,105 @@
 ﻿@*https://bbbootstrap.com/snippets/bootstrap-nested-comment-section-reply-72244546*@
 @model Arad.Portal.DataLayer.Models.Shared.CommentVM
-<div class="media mt-4">
-    <div class="media-body">
+<div class="media my-4 ps-2">
+    <div class="media-body border-bottom">
         <div class="row">
-            <div class="col-md-8 d-flex">
-                <h5>
+            <div class="col-8 d-flex justify-content-between">
+                <span style="font-size:0.7rem;color:blue;">
                     @Model.CreatorUserName
-                </h5>
-                <span>@Model.CreationDate</span>
+                </span>
+                <span  style="font-size:0.7rem;color:blue;" >@(ViewBag.LanIcon == "fa-ir" ? @Model.PersianCreationDate : @Model.CreationDate )</span>
             </div>
-            <div class="col-md-1">
+            <div class="col-1 ps-2">
                 <div class="pull-right reply">
-                    <a data-toggle="collapse" href="@($"#bx_{Model.CommentId}")"
+                    <a data-bs-toggle="collapse" href="@($"#bx_{Model.CommentId}")"
                        role="button" aria-expanded="false" aria-controls="@($"bx_{Model.CommentId}")"><i class="fa fa-reply"></i></a>
                 </div>
             </div>
-            <div class="col-md-1">
-                <div>
+            <div class="col-1">
+                <div class="d-flex flex-row">
                     @if (Model.userStatus != Arad.Portal.DataLayer.Models.Shared.userStatus.UnAuthorized)
                     {
                         @if (Model.userStatus != Arad.Portal.DataLayer.Models.Shared.userStatus.Like)
                         {
                             <a href="#"
-                               role="button" aria-expanded="false" onclick="likeDisLike(this,  @Model.CommentId, true);"><i class="far fa-thumbs-up"></i><i class="d-none fas fa-thumbs-up"></i></a>
+                               role="button" aria-expanded="false"  onclick="likeDisLike(this,  '@Model.CommentId', true, '@ViewBag.LanIcon');">
+                               <i class="far fa-thumbs-up"></i><i class="d-none fas fa-thumbs-up">
+                               </i>
+                           </a>
                         }
                         else//like
                         {
-                            <a href="#" role="button" aria-expanded="false"><i class="fas fa-thumbs-up"></i></a>
+                            <a href="#"  role="button" aria-expanded="false">
+                                <i class="fas fa-thumbs-up"></i>
+                                </a>
                         }
                     }
                     else //unauthorize
                     {
-                        <a href="#"
-                           role="button" aria-expanded="false" ><i class="far fa-thumbs-up"></i></a>
+                        <a href="#" 
+                           role="button" aria-expanded="false" ><i class="far fa-thumbs-up"></i>
+                       </a>
                     }
 
-                    <span class="statistics">@Model.LikeCount</span>
+                    <span class="statistics  ps-2">@Model.LikeCount</span>
                 </div>
             </div>
-            <div class="col-md-1">
-                <div>
+            <div class="col-1">
+                <div class="d-flex flex-row">
                     @if (Model.userStatus != Arad.Portal.DataLayer.Models.Shared.userStatus.UnAuthorized)
                     {
                         @if (Model.userStatus != Arad.Portal.DataLayer.Models.Shared.userStatus.Dislike)
                         {
-                            <a href="#"
-                               role="button" aria-expanded="false" onclick="likeDisLike(this, @Model.CommentId, false);"><i class="far fa-thumbs-down"></i><i class="d-none fas fa-thumbs-down"></i></a>
+                            <a href="#" 
+                               role="button" aria-expanded="false" onclick="likeDisLike(this, '@Model.CommentId', false, '@ViewBag.LanIcon');">
+                               <i class="far fa-thumbs-down"></i><i class="d-none fas fa-thumbs-down"></i>
+                           </a>
                         }
                         else//dislike
                         {
-                            <a href="#"
-                               role="button" aria-expanded="false" ><i class="fas fa-thumbs-down"></i></a>
+                            <a href="#" 
+                               role="button" aria-expanded="false" ><i class="fas fa-thumbs-down"></i>
+                           </a>
 
                         }
 
                     }
                     else//unauthorize
                     {
-                        <a href="#"
-                           role="button" aria-expanded="false"><i class="far fa-thumbs-down"></i></a>
+                        <a href="#" 
+                           role="button" aria-expanded="false"><i class="far fa-thumbs-down"></i>
+                       </a>
                     }
-                    <span class="statistics">@Model.DislikeCount</span>
+                    <span class="statistics ps-2">@Model.DislikeCount</span>
                 </div>
             </div>
         </div>
-        @Model.Content
+        <span style="font-size:0.8rem;">@Model.Content</span>
         <div class="row collapse" id="@($"bx_{Model.CommentId}")">
             <div class="col-md-10">
-                <input type="text" class="cmt form-control" value="" />
+                <input type="text" class="cmt form-control" style="font-size:0.8rem;" value="" />
             </div>
-            <div class="col-md-2">
-                <a href="#"
-                   role="button" aria-expanded="false" onclick="submitComment(this, @Model.ReferenceId, '@ViewBag.LoggedUser');"><i class="fas fa-check"></i></a>
-            </div>
-        </div>
-        @foreach (var item in Model.Childrens)
-        {
-            @await Component.InvokeAsync("CommentSection", item)
-        }
+            <div class="col-md-2 px-0 pt-2">
+               @if(Model.ReferenceType == Arad.Portal.DataLayer.Entities.General.Comment.ReferenceType.Product)
+                {
+                     <a href="#"
+                   role="button" aria-expanded="false" onclick="submitComment(this, 'p*@Model.ReferenceId', '@User.Identity.IsAuthenticated', '@ViewBag.LanIcon');">
+                        <i class="fa fa-paper-plane"></i></a>
+                }else
+                {
+                    <a href="#"
+                   role="button" aria-expanded="false" onclick="submitComment(this, 'c*@Model.ReferenceId', '@User.Identity.IsAuthenticated', '@ViewBag.LanIcon');">
+                        <i class="fa fa-paper-plane"></i></a>
+                }
 
+            </div>
+            @foreach (var item in Model.Childrens)
+            {
+                <div class="ps-2">
+                   @await Component.InvokeAsync("CommentSection", item)
+                </div>
+            }
+        </div>
     </div>
 </div>
 @*<i class="far fa-thumbs-up"></i> empty
