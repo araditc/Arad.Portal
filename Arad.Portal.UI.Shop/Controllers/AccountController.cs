@@ -168,8 +168,8 @@ namespace Arad.Portal.UI.Shop.Controllers
             //}
 
             //TempData["LoginUser"] = string.Format(Language.GetString("AlertAndMessage_WelcomeUser"), user.FullName);
-
-            return RedirectToAction("index", "Home");
+            var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
+            return Redirect($"{lanIcon}/Home/Index");
         }
 
         [HttpGet]

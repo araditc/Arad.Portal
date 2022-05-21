@@ -143,8 +143,9 @@ namespace Arad.Portal.UI.Shop.Controllers
 
                         await _transactionRepository.UpdateTransaction(transaction);
 
-                        var path = Path.Combine(_samanModel.BaseAddress, _samanModel.GatewayEndPoint) + "?token=" +
-                                       tokenResponse.Token;
+                        var path = Flurl.Url.Combine(_samanModel.BaseAddress, _samanModel.GatewayEndPoint) + "?token=" + tokenResponse.Token;
+
+                        return Redirect(path);
                         //try
                         //{
                         //     await httpClient.GetAsync(_samanModel.GatewayEndPoint+"?token="+ tokenResponse.Token);
@@ -155,7 +156,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                         //    throw;
                         //}
 
-                        return Redirect(path);
+                       // return Redirect(path);
                     }
                     else
                     {
