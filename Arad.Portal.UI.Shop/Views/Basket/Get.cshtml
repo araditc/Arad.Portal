@@ -94,7 +94,7 @@
             <h4>@($"{Model.FinalPriceForPay} {Model.ShoppingCartCulture.CurrencySymbol}")</h4>
         </div>
         <div class="col-md-2">
-           if(@Model.Details.Any())
+           @if(@Model.Details.Any())
            {
                 <a class="btn btn-success btn-lg bg-gradient" asp-action="SendInfo">@Language.GetString("btn_ContinueBuyingOnline")</a>
            }

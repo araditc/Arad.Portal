@@ -13,5 +13,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public string TotalCost { get; set; }
 
         public string CurrencySymbol { get; set; }
+
+        public string UserCartId { get; set; }
     }
 }

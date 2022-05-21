@@ -21,13 +21,13 @@ namespace Arad.Portal.UI.Shop.Controllers
         {
             _accessor = accessor;
             _env = environment;
-            if(_env.EnvironmentName == "Development")
-            {
-                DomainName = "http://localhost:17951";
-            }else
-            {
+            //if(_env.EnvironmentName == "Development")
+            //{
+            //    DomainName = "http://localhost:17951";
+            //}else
+            //{
                 DomainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
-            }
+           // }
             
             if( User != null && User.Identity.IsAuthenticated)
             {

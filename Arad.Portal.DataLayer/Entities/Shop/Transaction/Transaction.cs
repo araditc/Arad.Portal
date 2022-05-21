@@ -16,6 +16,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
         {
             EventsData = new();
             SubInvoices = new();
+            BasicData = new();
+            CustomerData = new();
+            AdditionalData = new();
         }
 
         [BsonId]

@@ -1,0 +1,190 @@
+﻿
+@{
+    ViewData["Title"] = "اطلاعات آدرس کاربر";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles
+{
+    @*<link href="~/lib/intl-tel-input/css/intlTelInput.css" rel="stylesheet" />*@
+    <link href="~/css/edit-address.css" rel="stylesheet" />
+}
+<div class="container-fluid container-body address">
+    <section class="section-full">
+        <div class="head head-address col-xs-12">
+            <h3>
+                <span class=" pt-2">@Language.GetString("User_AddressInfoes")</span>
+            </h3>
+        </div>
+        <div class="row pt-5">
+            <div class="col-12">
+                <form id="address" class="form-address row text-right">
+                     <div class="col-2 rtl">
+                        <label>@Language.GetString("Profile_StateCity")</label>
+                    </div>
+                    <div class="col-5 rtl">
+                        <div class="form-group textPlaceholder">
+                            <select id="ProvinceId" name="ProvinceId" class="form-select selectpicker" data-placeholder="@Language.GetString("Profile_Province")" class="chosen-select select" tabindex="2" placeholder="@Language.GetString("Profile_Province")">
+                            </select>
+                            <span class="field-validation-error" data-val-result="ProvinceId"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="col-5 rtl">
+                        <div class="form-group textPlaceholder">
+                            <select id="CityId" name="CityId" class="form-select selectpicker" data-placeholder="@Language.GetString("Profile_City")" class="chosen-select select" tabindex="2" placeholder="@Language.GetString("Profile_City")" >
+                            </select>
+                            <span class="field-validation-error" data-val-result="CityId"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="col-2  rtl" style="margin-top: 10px;">
+                        <label>@Language.GetString("Profile_ZipCode") : </label>
+                    </div>
+                    <div class="col-10 rtl" style="margin-top: 10px;">
+                        <div class="form-group textPlaceholder rtl">
+                            <input id="PostalCode" name="PostalCode" class="form-control" type="text" dir="rtl" maxlength="10" minlenght="10" />
+                            <span class="field-validation-error" data-val-result="PostalCode"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="col-2 rtl">
+                        <label>@Language.GetString("Profile_Address1"): </label>
+                    </div>
+                    <div class="col-10 rtl">
+                        <div class="form-group textPlaceholder rtl">
+                            <input id="Address1" name="Address1" class="form-control" type="text" dir="rtl" placeholder="">
+                            <span style="display: block;" class="field-validation-error" data-val-result="Address1"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="col-2 rtl" style="margin-top: 10px;">
+                        <label>@Language.GetString("Profile_Address2"):</label>
+                    </div>
+                    <div class="col-10 rtl" style="margin-top: 10px;">
+                        <div class="form-group textPlaceholder rtl">
+                            <input id="Address2" name="Address2" class="form-control" type="text" dir="rtl" maxlength="10" minlenght="10" />
+                            <span class="field-validation-error" data-val-result="Address2"></span>
+                        </div>
+                    </div>
+
+                 
+
+                    <div class="col-lg-12 text-center pt-5">
+                        <button id="addressBtn" type="submit" class="btn btn-success btn-block float-end">@Language.GetString("Profile_AddAddress")</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts
+{
+   
+    <script>
+        $(document).ready(function() {
+
+            $.ajax({
+                type: "Get",
+                url: "@Url.Action("GetStates","Account")",
+                success: function (result) {
+                    var data = result.data;
+                    var html = '';
+                    html += '<option disabled value=null selected>'+'@Language.GetString("AlertAndMessage_Choose")'+'</option>';
+                    if (result.status === "success") {
+                        debugger;
+                        data.forEach(function (item) {
+                            html += '<option value="' + item.id + '">' + item.name + '</option>';
+                        });
+                        $("#ProvinceId").html(html);
+                        $("#ProvinceId").selectpicker('refresh');
+                    } else {
+
+                    }
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                },
+                complete: function() {
+                
+                }
+            });
+
+            $(document).on("change", "#ProvinceId", function (e) {
+                debugger;
+                var statId = $("#ProvinceId").val();
+                var data = { "stateId": statId };
+         
+                $.ajax({
+                    type: "Get",
+                    data: data,
+                    url: "@Url.Action("GetCities","Account")",
+                    success: function(result) {
+                        var data = result.data;
+                        var html = '';
+                        html += '<option disabled value=null selected>'+'@Language.GetString("AlertAndMessage_Choose")'+'</option>';
+                        if (result.status === "success") {
+                            data.forEach(function (item) {
+                                html += '<option value="' + item.id + '">' + item.name + '</option>';
+                            });
+                            $("#CityId").html(html);
+                            $("#CityId").selectpicker('refresh');
+                        } else {
+
+                        }
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        alert(xhr.status);
+                    },
+                    complete: function() {
+                
+                    }
+                });
+            });
+
+            $("#address").submit(function (e) {
+                debugger;
+                e.preventDefault();
+            
+                var spanErrorList = $('span[data-val-result]');
+                spanErrorList.html("");
+                spanErrorList.parent().removeClass("has-error");
+
+                $.ajax({
+                    type: "Post",
+                    url: "@Url.Action("AddAddress","Account")",
+                    data: $(this).serialize(),
+                    beforeSend: function() {
+                        //$("#loadingShop").removeClass("hidden");
+                    },
+                    success: function(result) {
+                        if (result.status === "success") {
+                            debugger;
+                            console.log(result);
+                            window.location = result.url;
+                        } else {
+                            if (result.modelStateErrors.length !== 0) {
+                                result.modelStateErrors.forEach(function(value, index) {
+                                    $('[data-val-result=' + value.key + ']').html(value.errorMessage);
+                                    $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                });
+                            }
+                        }
+                    },
+                    complete: function() {
+                       
+                    }
+                });
+            });
+
+
+        });
+
+    </script>
+}
+

@@ -20,6 +20,7 @@ namespace Arad.Portal.DataLayer.Entities.General.User
             LoginData = new();
             Profile = new();
             LoginData = new();
+            Otp = new();
         }
         public bool IsSystemAccount { get; set; }
         public bool IsDomainAdmin { get; set; }

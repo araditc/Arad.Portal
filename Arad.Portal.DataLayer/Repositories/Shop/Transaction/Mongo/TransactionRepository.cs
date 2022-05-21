@@ -78,7 +78,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
             var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
             if(!_context.Collection.Find(_=>_.BasicData.ReferenceId == referenceNumber 
                                            && _.BasicData.PspType == pspType
-                                           /*&& _.AssociatedDomainId == domainEntity.DomainId*/).Any())
+                                           && _.AssociatedDomainId == domainEntity.DomainId).Any())
             {
                 result = true;
             }

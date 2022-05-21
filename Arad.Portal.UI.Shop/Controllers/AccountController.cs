@@ -326,17 +326,17 @@ namespace Arad.Portal.UI.Shop.Controllers
         {
             try
             {
-                var states = _countryRepository.GetStates();
-                var st = states.Select(c => new StateView()
+                var states = _countryRepository.GetStates("ایران");
+                var st = states.Select(c => new CountryPartView()
                 {
-                    id = c.id,
-                    name = c.name
+                    Id = c.Value,
+                    Name = c.Text
                 }).ToList();
                 return Json(new { Status = "success", Data = st });
             }
             catch (Exception e)
             {
-                return Json(new { status = "error", data = new List<StateView>() });
+                return Json(new { status = "error", data = new List<CountryPartView>() });
             }
         }
 
@@ -345,20 +345,22 @@ namespace Arad.Portal.UI.Shop.Controllers
         {
             try
             {
-                var cities = _stateCityRepository.GetCity(stateId);
-                var ci = cities.Select(c => new CityView()
+                var cities = _countryRepository.GetCities(stateId);
+                var ci = cities.Select(c => new CountryPartView()
                 {
-                    id = c.id,
-                    name = c.name
+                    Id = c.Value,
+                    Name = c.Text
                 }).ToList();
 
                 return Json(new { status = "success", data = ci });
             }
+
             catch (Exception e)
             {
-                return Json(new { status = "error", data = new List<CityView>() });
+                return Json(new { status = "error", data = new List<CountryPartView>() });
             }
         }
+
 
         [HttpPost]
         public async Task<IActionResult> AddAddress(Address address)
@@ -368,29 +370,33 @@ namespace Arad.Portal.UI.Shop.Controllers
                 if (!ModelState.IsValid)
                 {
                     double i;
-                    if (!double.TryParse(address.PostCode, out i))
+                    if (!double.TryParse(address.PostalCode, out i))
                     {
-                        ModelState.AddModelError("PostCode", "کد پستی معتبر وارد نماید.");
+                        ModelState.AddModelError("PostalCode", "کد پستی معتبر وارد نماید.");
                     }
-                    //if (!int.TryParse(address.HouseNumber, out i))
-                    //{
-                    //    ModelState.AddModelError("HouseNumber", "شماره پلاک معتبر وارد نمایید.");
-                    //}
-                    //if (int.Parse(address.SideFloor) != 0)
-                    //{
-                    //    ModelState.AddModelError("SideFloor", "شماره واحد معتبر وارد نمایید.");
-                    //}
-                    if (string.IsNullOrEmpty(address.TownShip))
+                  
+                    if (string.IsNullOrEmpty(address.Address1))
                     {
-                        ModelState.AddModelError("TownShip", "لطفا نام شهر را انتخاب نمایید.");
-                    }
-                    if (string.IsNullOrEmpty(address.Province))
-                    {
-                        ModelState.AddModelError("Province", "لطفا نام استان را انتخاب نمایید.");
+                        ModelState.AddModelError("Address1", "لطفاآدرس یک را وارد کنید.");
                     }
 
-                    var errors = ModelState.Generate();
+                    List<ClientValidationErrorModel> errors = new List<ClientValidationErrorModel>();
 
+                    foreach (var modelStateKey in ModelState.Keys)
+                    {
+                        var modelStateVal = ModelState[modelStateKey];
+                        foreach (var error in modelStateVal.Errors)
+                        {
+                            var obj = new ClientValidationErrorModel
+                            {
+                                Key = modelStateKey,
+                                ErrorMessage = error.ErrorMessage,
+                            };
+
+                            errors.Add(obj);
+                        }
+                    }
+                   
                     return Json(new { Status = "error", Message = "فیلدهای ضروری تکمیل گردد.", ModelStateErrors = errors });
                 }
 
@@ -402,12 +408,9 @@ namespace Arad.Portal.UI.Shop.Controllers
 
                 address.Id = Guid.NewGuid().ToString();
 
-                var provinceId = address.Province;
-
-                address.ProvinceName = _stateCityRepository.GetStateById(provinceId);
-                address.TownShipName = _stateCityRepository.GetCityById(address.TownShip);
-
-                user.Addresses.Add(address);
+                var provinceId = address.ProvinceId;
+             
+                user.Profile.Addresses.Add(address);
 
                 var updateAsync = await _userManager.UpdateAsync(user);
 

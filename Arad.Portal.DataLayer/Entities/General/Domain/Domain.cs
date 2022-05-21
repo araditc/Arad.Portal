@@ -51,7 +51,7 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
 
         public List<Price> Prices { get; set; }
 
-        public List<ProviderDetail> DomainPaymentProviders { get; set; }
+        public List<ProviderDetail> DomainPaymentProviders { get; set; } 
 
         public InvoiceNumberProcedure InvoiceNumberProcedure { get; set; }
         /// <summary>

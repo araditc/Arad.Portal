@@ -1420,6 +1420,9 @@
 	<string key="User_CurrentPass">
 		<value>Current Password</value>
 	</string>
+	<string key="User_AddressInfoes">
+		<value>Address Informations</value>
+	</string>
 	<string key="User_Profile">
 		<value>User Profile</value>
 	</string>
@@ -1432,8 +1435,14 @@
 	<string key="Profile_ZipCode">
 		<value>ZipCode</value>
 	</string>
+	<string key="Profile_AddAddress">
+		<value>Add Address</value>
+	</string>
 	<string key="Profile_Address1">
 		<value>Address1</value>
+	</string>
+	<string key="Profile_StateCity">
+		<value>State/City</value>
 	</string>
 	<string key="Profile_Address2">
 		<value>Address2</value>

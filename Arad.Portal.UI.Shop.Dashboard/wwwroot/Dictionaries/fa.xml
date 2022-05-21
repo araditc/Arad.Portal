@@ -645,6 +645,9 @@
 		<value>شماره وارد شده مربوط به تلفن ثابت می باشد.</value>
 	</string>
 	<!--=================================================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_PaymentGatewayInfoes">
+		<value>کلیه اطلاعات درگاه پرداخت را وارد کنید.</value>
+	</string>
 	<string key="AlertAndMessage_InsertError">
 		<value>خطا در ثبت اطلاعات.</value>
 	</string>

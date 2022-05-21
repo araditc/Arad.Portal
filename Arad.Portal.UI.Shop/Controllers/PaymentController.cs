@@ -18,6 +18,7 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using static Arad.Portal.DataLayer.Models.Shared.Enums;
+using System.Security.Claims;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -36,7 +37,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             SharedRuntimeData sharedRuntimeData,
             IWebHostEnvironment env,
             IMapper mapper, IShoppingCartRepository shoppingCartRepository):base(accessor, env)
-        {
+        {  
             _productRepository = productRepository;
             _userManager = userManager;
             _transactionRepository = transationRepository;
@@ -47,11 +48,11 @@ namespace Arad.Portal.UI.Shop.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> InitializePay([FromQuery]string userCartId, [FromQuery] PspType type)
+        public async Task<IActionResult> InitializePay([FromBody] DataLayer.Models.Shared.PaymentModel model)
         {
-            if(_shoppingCartRepository.UserCartShoppingValidation(userCartId))
+            if(_shoppingCartRepository.UserCartShoppingValidation(model.UserCartId))
             {
-                var result = await _shoppingCartRepository.FetchUserShoppingCart(userCartId);
+                var result = await _shoppingCartRepository.FetchUserShoppingCart(model.UserCartId);
                 if (!result.Succeeded)
                 {
                     return RedirectToAction("PageOrItemNotFound", "Account");
@@ -60,32 +61,53 @@ namespace Arad.Portal.UI.Shop.Controllers
                 {
                     var subtractResult = await _shoppingCartRepository.SubtractUserCartOrderCntFromInventory(result.ReturnValue);
 
-                    if(subtractResult.Succeeded)
+                    PspType psp = Enum.Parse<PspType>(model.PspType);
+                    if (subtractResult.Succeeded)
                     {
-                        var userEntity = await _userManager.FindByIdAsync(base.CurrentUserId);
-
-                        var transaction = new Transaction()
+                        var userEntity = await _userManager.FindByIdAsync(HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value);
+                        var transaction = new Transaction();
+                        transaction.TransactionId = Guid.NewGuid().ToString();
+                        transaction.MainInvoiceNumber = Guid.NewGuid().ToString();
+                        transaction.FinalPriceToPay = result.ReturnValue.FinalPriceToPay;
+                        transaction.CustomerData = new CustomerData()
                         {
-                            TransactionId = Guid.NewGuid().ToString(),
-                            //???
-                            MainInvoiceNumber = Guid.NewGuid().ToString(),
-                            FinalPriceToPay = result.ReturnValue.FinalPriceToPay,
-                            CustomerData = new CustomerData()
-                            {
-                                UserId = base.CurrentUserId,
-                                UserName = base.CurrentUserName,
-                                UserFullName = userEntity.Profile.FullName
-                            },
-                            BasicData = new PaymentGatewayData()
-                            {
-                                //PaymentId = Guid.NewGuid().ToString(),
-                                CreationDateTime = DateTime.Now,
-                                Stage = PaymentStage.Initialized,
-                                PspType = type,
-                                ShoppinCartId = result.ReturnValue.ShoppingCartId,
-                                ReservationNumber =  $"{GetLocalIPAddress()}{DateTime.Now.Ticks}"
-                            }
+                            UserId = userEntity.Id,
+                            UserName = userEntity.UserName,
+                            UserFullName = userEntity.Profile.FullName ?? ""
                         };
+                        transaction.BasicData = new PaymentGatewayData()
+                        {
+                            //PaymentId = Guid.NewGuid().ToString(),
+                            CreationDateTime = DateTime.Now,
+                            Stage = PaymentStage.Initialized,
+                            PspType = psp,
+                            ShoppinCartId = result.ReturnValue.ShoppingCartId,
+                            ReservationNumber = $"{GetLocalIPAddress()}{DateTime.Now.Ticks}"
+                        };
+
+                        // var transaction = new Transaction()
+                        //{
+                        //    TransactionId = Guid.NewGuid().ToString(),
+                        //    //???
+                        //    MainInvoiceNumber = Guid.NewGuid().ToString(),
+                        //    FinalPriceToPay = result.ReturnValue.FinalPriceToPay,
+                        //    CustomerData = new CustomerData()
+                        //    {
+                        //        UserId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value,
+                        //        UserName = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.Name).Value,
+                        //        UserFullName = userEntity.Profile.FullName??""
+                        //    },
+                        //    BasicData = new PaymentGatewayData()
+                        //    {
+                        //        //PaymentId = Guid.NewGuid().ToString(),
+                        //        CreationDateTime = DateTime.Now,
+                        //        Stage = PaymentStage.Initialized,
+                        //        PspType = (PspType)model.PspTypeId,
+                        //        ShoppinCartId = result.ReturnValue.ShoppingCartId,
+                        //        ReservationNumber =  $"{GetLocalIPAddress()}{DateTime.Now.Ticks}"
+                        //    }
+                        //};
+                        var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
                         foreach (var invoice in result.ReturnValue.Details)
                         {
                             var obj = new InvoicePerSeller()
@@ -101,8 +123,9 @@ namespace Arad.Portal.UI.Shop.Controllers
                         var modelToStoreInSharedData = _transactionRepository.CreateTransactionItemsModel(transaction.TransactionId);
                         _sharedRuntimeData.AddToPayingOrders($"ar_{transaction.TransactionId}", modelToStoreInSharedData);
 
+                        var id = Utilities.Base64Encode(transaction.BasicData.ReservationNumber);
                         var redirectAddress =
-                            $"/{transaction.BasicData.PspType}/GetToken?identifierToken={Utilities.Base64Encode(transaction.BasicData.ReservationNumber)}";
+                            $"/{lanIcon}/{psp}/GetToken?reservationNumber={id}";
 
                         return Redirect(redirectAddress);
                     }

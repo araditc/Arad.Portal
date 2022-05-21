@@ -433,9 +433,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 case PspType.Saman:
                     htmlResult = GenerateForm(typeof(SamanModel).GetProperties());
                     break;
-                case PspType.Parsian:
-                    htmlResult = GenerateForm(typeof(ParsianModel).GetProperties());
-                    break;
+                //case PspType.Parsian:
+                //    htmlResult = GenerateForm(typeof(ParsianModel).GetProperties());
+                //    break;
             }
             return Content(htmlResult);
         }

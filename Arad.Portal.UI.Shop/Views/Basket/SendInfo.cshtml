@@ -6,8 +6,8 @@
 
 @section Styles{
 
-    <link href="~/lib/OwlCarousel/css/owl.carousel.min.css" rel="stylesheet" />
-    <link href="~/lib/OwlCarousel/css/owl.theme.default.min.css" rel="stylesheet" />
+    <link href="~/lib/OwlCarousel2/assets/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/lib/OwlCarousel2/assets/owl.theme.default.min.css" rel="stylesheet" />
     <link href="~/css/send-info.css" rel="stylesheet" />
 }
 
@@ -61,7 +61,7 @@
                                         <p class="title-select">
                                             <div class="custom-control custom-checkbox">
                                                 <input id="@item.Id" type="checkbox" name="address" class="custom-control-input form-rsdio selectAddress">
-                                                <label class="custom-control-label" for="@item.Id"></label>
+                                                <label class="form-label" for="@item.Id"></label>
                                             </div>
 
                                             <span>@Language.GetString("Shopping_Senttothisaddress")</span>
@@ -112,7 +112,7 @@
                         </div>
                         
                         <div class="col-xs-12 continue-buy-btn-wrap ">
-                            <a id="OnlinePay" class="btn buy-btn w-100" href="">@Language.GetString("Shopping_OnlinePayment")</a>
+                            <button id="OnlinePay" class="btn btn-success w-100" href="">@Language.GetString("Shopping_OnlinePayment")</button>
                         </div>
                     </div>
                 </div>
@@ -124,9 +124,8 @@
 @section Scripts
 {
     
-    <script src="~/lib/OwlCarousel2/owl.carousel.js"></script>
-
-    <script src="~/shop/js/slider.js"></script>
+     <script src="~/lib/OwlCarousel2/owl.carousel.js"></script>
+    <script src="~/js/slider.js"></script>
 
     <script>
 
@@ -157,36 +156,40 @@
         $(document).on("click",
             "#OnlinePay",
             function(e) {
+                debugger;
                 e.preventDefault();
              
-                var factor = false;
-                var gift = false;
-                var giftText = "";
-                //var address = $('input[name="address"]:checked').attr("id");
+               
+                //var giftText = "";
+                var address = $('input[name="address"]:checked').attr("id");
                 console.log(address);
-                if ($("#factor").prop("checked") === true) {
-                    factor = true;
-                }
+                //if ($("#factor").prop("checked") === true) {
+                //    factor = true;
+                //}
 
-                if ($("#gift").prop("checked") === true) {
-                    gift = true;
-                    giftText = $("#giftText").val();
-                }
+                //if ($("#gift").prop("checked") === true) {
+                //    gift = true;
+                //    giftText = $("#giftText").val();
+                //}
 
-                var formData = new FormData();
+                //var formData = new FormData();
 
-                formData.append("address", address);
-                formData.append("factor", factor);
-                formData.append("gift", gift);
-                formData.append("giftText", giftText);
-                formData.append("couponCode", $("#couponCode").val());
-
+                //formData.append("address", address);
+                //formData.append("factor", factor);
+                //formData.append("gift", gift);
+                //formData.append("giftText", giftText);
+                //formData.append("couponCode", $("#couponCode").val());
+                var obj = {};
+                obj.UserCartId = '@Model.UserCartId';
+                obj.Address = address;
+                obj.PspType = "Saman";
                 $.ajax({
-                    url: "@Url.Action("SetPaymentInfo","Payment",new {area = ""})",
-                    data: formData,
+                    url: "@Url.Action("InitializePay","Payment")",
+                    data: JSON.stringify(obj),
                     type: 'POST',
-                    contentType: false,
-                    processData: false,
+                    dataType : 'json',
+                    contentType: "application/json; charset=utf-8",
+                    
                     success: function(data) {
                         if (data.status === "success") {
                             

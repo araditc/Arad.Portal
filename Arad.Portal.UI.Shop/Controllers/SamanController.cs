@@ -18,6 +18,7 @@ using System.Net.Mime;
 using Arad.Portal.DataLayer.Models.PSPs.Saman;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -51,6 +52,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         [HttpGet]
         public async Task<IActionResult> GetToken(string reservationNumber)
         {
+            reservationNumber = Utilities.Base64Decode(reservationNumber);
             Transaction transaction = _transactionRepository.FetchByIdentifierToken(reservationNumber);
             if (transaction == null || transaction.BasicData.Stage != Enums.PaymentStage.Initialized)
             {
@@ -63,13 +65,13 @@ namespace Arad.Portal.UI.Shop.Controllers
             {
                 ResNum = reservationNumber,
                 Action = "token",
-                TotalAmount = transaction.FinalPriceToPay,
-                RedirectURL = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}/Saman/Verify"
+                Amount = transaction.FinalPriceToPay,
+                RedirectURL = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}/fa-ir/Saman/Verify"
             };
 
             var domainName = base.DomainName;
             var domainEntity = _domainRepository.FetchDomainByName(domainName);
-            SamanModel samanModel = null;
+           
             try
             {
 
@@ -90,7 +92,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             var httpClient = _httpClientHelper.GetClient();
             var serializedObj = JsonConvert.SerializeObject(senderModel);
             var content = new StringContent(serializedObj, Encoding.UTF8, MediaTypeNames.Application.Json);
-            httpClient.BaseAddress = new Uri(samanModel.BaseAddress);
+            httpClient.BaseAddress = new Uri(_samanModel.BaseAddress);
 
             transaction.EventsData.Add(new EventData()
             {
@@ -100,14 +102,25 @@ namespace Arad.Portal.UI.Shop.Controllers
                 additionalData = PspActions.ClientTokenRequest.GetDescription()
             });
 
-            var httpResponseMessage = await httpClient.PostAsync(samanModel.TokenEndPoint, content);
+
 
 
             //???
             //httpResponseMessage.EnsureSuccessStatusCode();
+            string serializedTokenResponse = "";
+            HttpResponseMessage httpResponseMessage;
+            try
+            {
+                httpResponseMessage = await httpClient.PostAsync(_samanModel.TokenEndPoint, content);
+                serializedTokenResponse = await httpResponseMessage.Content.ReadAsStringAsync();
+            }
+            catch (Exception e)
+            {
 
+                throw;
+            }
             var tokenResponseTime = DateTime.Now;
-            var serializedTokenResponse = await httpResponseMessage.Content.ReadAsStringAsync();
+            
 
             transaction.EventsData.Add(new EventData()
             {
@@ -130,8 +143,19 @@ namespace Arad.Portal.UI.Shop.Controllers
 
                         await _transactionRepository.UpdateTransaction(transaction);
 
-                        return Redirect(samanModel.GatewayEndPoint + "?token=" +
-                                        tokenResponse.Token);
+                        var path = Path.Combine(_samanModel.BaseAddress, _samanModel.GatewayEndPoint) + "?token=" +
+                                       tokenResponse.Token;
+                        //try
+                        //{
+                        //     await httpClient.GetAsync(_samanModel.GatewayEndPoint+"?token="+ tokenResponse.Token);
+                        //}
+                        //catch (Exception ex)
+                        //{
+
+                        //    throw;
+                        //}
+
+                        return Redirect(path);
                     }
                     else
                     {

@@ -392,7 +392,7 @@ namespace Arad.Portal.UI.Shop.Helpers
                     IsActive = true,
                     Template = "{'BaseUrl','UserName','PINCode', 'TerminalId'}",
                     ProviderType = DataLayer.Entities.General.Service.ProviderType.Payment,
-                    ProviderName = "درگاه  پرداخت پارسیان",
+                    ProviderName = "Parsian",
                     AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf"
                 };
                 providerRepository.InsertOne(parsianGateway);
@@ -404,7 +404,7 @@ namespace Arad.Portal.UI.Shop.Helpers
                     IsActive = true,
                     Template = "{'BaseUrl','UserName', 'Password', 'MerchantId','TerminalId','AcceptorId', 'AccountIban', 'Sha1'}",
                     ProviderType = DataLayer.Entities.General.Service.ProviderType.Payment,
-                    ProviderName = "درگاه  پرداخت ایران کیش",
+                    ProviderName = "IranKish",
                     AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf"
                 };
                 providerRepository.InsertOne(iranKishGateway);
@@ -414,9 +414,9 @@ namespace Arad.Portal.UI.Shop.Helpers
                     ProviderId = Guid.NewGuid().ToString(),
                     CreationDate = DateTime.Now,
                     IsActive = true,
-                    Template = "{'BaseAddress', 'TokenEndPoint', 'GatewayEndPoint', 'VerifyEndpoint', 'ReverseEndPoint', 'MerchantId', 'UserName', 'Password', 'TerminalId'}",
+                    Template = "{'BaseAddress', 'TokenEndPoint', 'GatewayEndPoint', 'VerifyEndpoint', 'Password', 'TerminalId'}",
                     ProviderType = DataLayer.Entities.General.Service.ProviderType.Payment,
-                    ProviderName = "درگاه پرداخت سامان",
+                    ProviderName = "Saman",
                     AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf"
                 };
                 providerRepository.InsertOne(samanGateway);

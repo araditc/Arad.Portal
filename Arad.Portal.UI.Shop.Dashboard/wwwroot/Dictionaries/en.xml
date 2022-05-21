@@ -652,6 +652,9 @@
 		<value>Enter the number of fixed phone.</value>
 	</string>
 	<!--====================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_PaymentGatewayInfoes">
+		<value>Fill All Payment Gateway Informations.</value>
+	</string>
 	<string key="AlertAndMessage_InsertError">
 		<value>Error i Inserting informations.</value>
 	</string>

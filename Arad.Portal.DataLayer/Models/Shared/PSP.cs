@@ -14,7 +14,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
             return new List<PaymentServiceProvider>()
             {
                 GetPSP(Enums.PspType.IranKish),
-                GetPSP(Enums.PspType.Parsian),
+                //GetPSP(Enums.PspType.Parsian),
                 GetPSP(Enums.PspType.Saman)
             };
         }
@@ -44,18 +44,18 @@ namespace Arad.Portal.DataLayer.Models.Shared
                         IconAddress = "/PspImages/Irankish.jpg"
                     };
 
-                case Enums.PspType.Parsian:
-                    return new PaymentServiceProvider()
-                    {
-                        Type = Enums.PspType.Parsian,
-                        Parameters = new List<Parameter>
-                        {
-                            new Parameter("Pin Code",null),
-                            new Parameter("Terminal",null),
-                        },
+                //case Enums.PspType.Parsian:
+                //    return new PaymentServiceProvider()
+                //    {
+                //        Type = Enums.PspType.Parsian,
+                //        Parameters = new List<Parameter>
+                //        {
+                //            new Parameter("Pin Code",null),
+                //            new Parameter("Terminal",null),
+                //        },
 
-                        IconAddress = "/PspImages/Parsian.jpg"
-                    };
+                //        IconAddress = "/PspImages/Parsian.jpg"
+                //    };
 
                 case Enums.PspType.Saman:
                     return new PaymentServiceProvider()

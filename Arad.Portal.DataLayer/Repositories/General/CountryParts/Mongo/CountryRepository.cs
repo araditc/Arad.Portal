@@ -46,10 +46,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.CountryParts.Mongo
             return lst;
         }
 
-        public List<SelectListModel> GetStates(string countryId)
+        public List<SelectListModel> GetStates(string countryName)
         {
             var states = _context.CountryCollection.AsQueryable()
-                .Where(_ => _.Id == countryId).SelectMany(_ => _.States).OrderBy(_ => _.Name)
+                .Where(_ => _.Name == countryName).SelectMany(_ => _.States).OrderBy(_ => _.Name)
                 .Select(_ => new SelectListModel() { Text = _.Name, Value = _.Id }).ToList();
                
             return states;

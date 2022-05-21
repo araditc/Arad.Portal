@@ -510,10 +510,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                  = new Entities.General.Domain.Domain();
             try
             {
-                var dbEntity = _context.Collection.Find(_ => _.DomainName == domainName).First();
-                if (dbEntity == null)
+                result = _context.Collection.Find(_ => _.DomainName == domainName).First();
+                if (result == null)
                 {
-                    dbEntity = _context.Collection.Find(_ => _.IsDefault).First();
+                    result = _context.Collection.Find(_ => _.IsDefault).First();
                 }
             }
             catch (Exception ex)

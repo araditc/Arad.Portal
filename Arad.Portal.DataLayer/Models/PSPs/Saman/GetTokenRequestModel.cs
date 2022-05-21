@@ -10,13 +10,13 @@ namespace Arad.Portal.DataLayer.Models.PSPs.Saman
     {
         public string Action { get; set; }
 
+        public long Amount { get; set; }
+
         public string TerminalId { get; set; }
 
         public string RedirectURL { get; set; }
 
         public string ResNum { get; set; }
-
-        public long TotalAmount { get; set; }
 
         public long CellNumber { get; set; }
 

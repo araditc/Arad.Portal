@@ -126,7 +126,7 @@
 					@(Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
 					Model.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLanguageId).Name : "")
 				</h6>
-				<p class="card-text text-start" style="height : 300px;overflow-y: auto">
+				<p class="card-text text-start" style="height : 500px;overflow-y: auto">
 					@*text-truncate*@
 					@(Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
 					Model.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLanguageId).Description : "")

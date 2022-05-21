@@ -362,6 +362,7 @@
                         beforeSend: function () {
                         },
                         success: function (result) {
+                            result = "<span data-val-result='paymentGatewayParameters' class='text-danger'></span><br/>" + result;
                             $("#paymentGatewayParameters").html(result);
                             $("#addProviderParam").removeClass("d-none");
                         }
@@ -377,7 +378,7 @@
                 debugger;
                 $("#paymentGatewayParameters .gatewayPar").each(function () {
                     if ($(this).val() == "") {
-                        $("span[data-val-result=='paymentGatewayParameters']").html('@Language.GetString("AlertAndMessage_PaymentGatewayInfoes")');
+                        $("span[data-val-result='paymentGatewayParameters']").html('@Language.GetString("AlertAndMessage_PaymentGatewayInfoes")');
                         return;
                     }
                 });
@@ -395,6 +396,9 @@
                 var tr = `<tr style='text-align:center;'><td>${$("#providerId option:selected").text()}</td><td>${data}</td><td>${btn}</td></tr>`;
 
                 $("#gatewayInfoes").append(tr);
+                $("#paymentGatewayParameters .gatewayPar").each(function () {
+                    $(this).val("");
+                });
             });
             $("#btnAddDomain").click(function () {
             debugger;
@@ -607,6 +611,13 @@
                     $("#priceValue").val("0");
                     $("#dtpStartDate").val("");
     }
+
+    function deleteFromTable(sender)
+    {
+         var tr = $(sender).parent().parent();
+        $(tr).remove();
+    }
+
 
     function deleteFromPriceList(sender) {
         var tr = $(sender).parent().parent();

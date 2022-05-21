@@ -27,13 +27,13 @@ namespace Arad.Portal.UI.Shop.Helpers
         public void CalculateLayoutContent()
         {
             string domainName;
-            if(_environment.EnvironmentName != "Development")
-            {
-                domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
-            }else
-            {
+            //if(_environment.EnvironmentName != "Development")
+            //{
+            //    domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
+            //}else
+            //{
                 domainName = "http://localhost:17951";
-            }
+           // }
              
             var domainEntity = _domainRepository.FetchByName(domainName).ReturnValue;
             

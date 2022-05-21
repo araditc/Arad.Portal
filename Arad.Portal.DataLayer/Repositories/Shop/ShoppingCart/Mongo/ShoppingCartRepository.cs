@@ -626,22 +626,31 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                         _.AssociatedDomainId == searchDomainId && _.IsActive && !_.IsDeleted &&
                         _.SDate <= DateTime.Now && (_.EDate == null || _.EDate >= DateTime.Now)).First() : null;
 
-                //promotionOnThisProductGroup = _promotionContext.Collection
-                //    .Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group &&
-                //    _.Infoes.Select(a => a.AffectedProductGroupId).Intersect(product.GroupIds).Any() &&
-                //    _.AssociatedDomainId == searchDomainId && _.IsActive && !_.IsDeleted &&
-                //    _.SDate <= DateTime.Now && (_.EDate == null || _.EDate >= DateTime.Now)).Any() ?
-                //    _promotionContext.Collection
-                //    .Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group &&
-                //    _.Infoes.Select(a => a.AffectedProductGroupId).Intersect(product.GroupIds).Any() &&
-                //    _.AssociatedDomainId == searchDomainId && _.IsActive && !_.IsDeleted &&
-                //    _.SDate <= DateTime.Now && (_.EDate == null || _.EDate >= DateTime.Now)).First() : null;
+                var groupIds = product.GroupIds;
 
-                //promotionOnThisProductGroup = _promotionContext.Collection.AsQueryable()
-                //    .First(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group &&
-                //    _.Infoes.Select(a => a.AffectedProductGroupId).Intersect(product.GroupIds).ToList().Any() &&
-                //    _.AssociatedDomainId == searchDomainId && _.IsActive && !_.IsDeleted &&
-                //    _.SDate <= DateTime.Now && (_.EDate == null || _.EDate >= DateTime.Now));
+                var filter = Builders<Entities.Shop.Promotion.Promotion>.Filter.Empty;
+                filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.Eq(x => x.PromotionType, Entities.Shop.Promotion.PromotionType.Group);
+                filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.Eq(x => x.IsActive,true);
+                filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.Eq(x => x.AssociatedDomainId,searchDomainId);
+                filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.Ne(x => x.IsDeleted,true);
+                filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.Lte(x => x.SDate, DateTime.Now);
+                
+                filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.Eq(x => x.PromotionType, Entities.Shop.Promotion.PromotionType.Group);
+                filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.AnyIn(x => x.Infoes.Select(a => a.AffectedProductGroupId), groupIds);
+                filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.Lte(x => x.SDate, DateTime.Now);
+                var timeFilter = Builders<Entities.Shop.Promotion.Promotion>.Filter.Or(Builders<Entities.Shop.Promotion.Promotion>.Filter.Gte(x => x.EDate, DateTime.Now)
+                    , Builders<Entities.Shop.Promotion.Promotion>.Filter.Eq(x => x.EDate, null));
+
+                filter &= timeFilter;
+
+            //    promotionOnThisProductGroup = await _promotionContext.Collection.Find(filter).FirstOrDefaultAsync();
+
+
+                promotionOnThisProductGroup = _promotionContext.Collection.AsQueryable()
+                    .FirstOrDefault(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group &&
+                    _.Infoes.Any(a => groupIds.Contains(a.AffectedProductGroupId))&&
+                    _.AssociatedDomainId == searchDomainId && _.IsActive && !_.IsDeleted &&
+                    _.SDate <= DateTime.Now && (_.EDate == null || _.EDate >= DateTime.Now));
 
 
                 promotionOnThisProduct = product.Promotion != null && product.Promotion.IsActive && !product.Promotion.IsDeleted
@@ -676,6 +685,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
         public async Task<Result<Entities.Shop.ShoppingCart.ShoppingCart>> FetchUserShoppingCart(string userCartId)
         {
             var result = new Result<Entities.Shop.ShoppingCart.ShoppingCart>();
+            result.ReturnValue = new Entities.Shop.ShoppingCart.ShoppingCart();
             var model = new Entities.Shop.ShoppingCart.ShoppingCart();
             var userCartEntity = _context.Collection
                 .Find(_ => _.ShoppingCartId == userCartId).FirstOrDefault();

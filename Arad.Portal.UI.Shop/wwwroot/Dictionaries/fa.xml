@@ -1484,6 +1484,9 @@
 	<string key="User_CurrentPass">
 		<value>کلمه عبور جاری</value>
 	</string>
+	<string key="User_AddressInfoes">
+		<value>اطلاعات آدرس</value>
+	</string>
 	<string key="User_Profile">
 		<value>پروفایل کاربری</value>
 	</string>
@@ -1496,8 +1499,14 @@
 	<string key="Profile_ZipCode">
 		<value>کد پستی</value>
 	</string>
+	<string key="Profile_AddAddress">
+		<value>ثبت آدرس</value>
+	</string>
 	<string key="Profile_Address1">
 		<value>آدرس یک</value>
+	</string>
+	<string key="Profile_StateCity">
+		<value>استان/شهر</value>
 	</string>
 	<string key="Profile_Address2">
 		<value>آدرس دو</value>

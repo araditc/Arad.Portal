@@ -90,12 +90,46 @@ namespace Arad.Portal.UI.Shop.Controllers
             {
                 Addresses = user.Profile.Addresses,
                 CurrencySymbol = shoppingCart.ReturnValue.ShoppingCartCulture.CurrencySymbol,
-                TotalCost = Math.Round(shoppingCart.ReturnValue.FinalPriceForPay).ToString()
+                TotalCost = Math.Round(shoppingCart.ReturnValue.FinalPriceForPay).ToString(),
+                UserCartId = shoppingCart.ReturnValue.UserCartId
             };
             return View(model);
         }
 
-           
+        public async Task<IActionResult> DeleteAddress(string addressId)
+        {
+            var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
+            try
+            {
+                var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                
+                var user = await _userManager.FindByIdAsync(userId);
+                var addresses = user.Profile.Addresses;
+                var item = addresses.SingleOrDefault(a => a.Id == addressId);
+                if (item != null) addresses.Remove(item);
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    
+                    TempData["MessageResult"] = true;
+                    return Redirect($"~/{lanIcon}/Basket/SendInfo");
+                }
+
+                
+                TempData["MessageResult"] = false;
+                return Redirect($"~/{lanIcon}/Basket/SendInfo");
+            }
+            catch (Exception x)
+            {
+                TempData["MessageResult"] = false;
+                return Redirect($"~/{lanIcon}/Basket/SendInfo");
+                
+            }
+        }
+
+
 
 
         //public IActionResult Index()
