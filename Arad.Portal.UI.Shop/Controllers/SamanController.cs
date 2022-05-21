@@ -19,6 +19,9 @@ using Arad.Portal.DataLayer.Models.PSPs.Saman;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using System.Security.Claims;
+using Arad.Portal.DataLayer.Entities.General.User;
+using Microsoft.AspNetCore.Identity;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -30,12 +33,14 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly SharedRuntimeData _sharedRuntimeData;
         private readonly IHttpContextAccessor _accessor;
         private readonly IDomainRepository _domainRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
         private SamanModel _samanModel = null;
         public SamanController(ITransactionRepository transactionRepository,
             IHttpContextAccessor accessor,
             IDomainRepository domainRepository,
              SharedRuntimeData sharedRuntimeData,
              IWebHostEnvironment env,
+             UserManager<ApplicationUser> userManager,
             HttpClientHelper httpClientHelper, IConfiguration configuration) : base(accessor, env)
         {
             _domainRepository = domainRepository;
@@ -47,6 +52,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             _configuration = configuration;
             _sharedRuntimeData = sharedRuntimeData;
             _accessor = accessor;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -71,7 +77,7 @@ namespace Arad.Portal.UI.Shop.Controllers
 
             var domainName = base.DomainName;
             var domainEntity = _domainRepository.FetchDomainByName(domainName);
-           
+
             try
             {
 
@@ -120,7 +126,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 throw;
             }
             var tokenResponseTime = DateTime.Now;
-            
+
 
             transaction.EventsData.Add(new EventData()
             {
@@ -144,6 +150,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                         await _transactionRepository.UpdateTransaction(transaction);
 
                         var path = Flurl.Url.Combine(_samanModel.BaseAddress, _samanModel.GatewayEndPoint) + "?token=" + tokenResponse.Token;
+                        path = $"https://sep.shaparak.ir/OnlinePG/SendToken?token={tokenResponse.Token}";
 
                         return Redirect(path);
                         //try
@@ -156,7 +163,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                         //    throw;
                         //}
 
-                       // return Redirect(path);
+                        // return Redirect(path);
                     }
                     else
                     {
@@ -222,7 +229,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                     initialData.RefNum = Request.Form["RefNum"].ToString();
 
                     #region checking for uniqueness of referencenumber
-                    if(initialData.State == "OK")
+                    if (initialData.State == "OK")
                     {
                         bool isUnique = _transactionRepository.IsRefNumberUnique(initialData.RefNum, Enums.PspType.Saman);
                         transaction.EventsData.Add(new EventData()
@@ -243,7 +250,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                             return RedirectToAction("PaymentError", "Payment");
                         }
                     }
-                    
+
                     #endregion
 
                 }
@@ -266,7 +273,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                         return RedirectToAction("PaymentError", "Payment");
                     }
                 }
-                if(initialData.State == "OK")
+                if (initialData.State == "OK")
                 {
                     transaction.BasicData.Stage = Enums.PaymentStage.DoneButNotConfirmed;
                     await _transactionRepository.UpdateTransaction(transaction);
@@ -290,11 +297,11 @@ namespace Arad.Portal.UI.Shop.Controllers
                     });
                     await _transactionRepository.UpdateTransaction(transaction);
 
-                  
+
                     var client = _httpClientHelper.GetClient();
                     client.Timeout = TimeSpan.FromSeconds(60);
                     client.BaseAddress = new Uri(_samanModel.BaseAddress);
-                  
+
                     //try several times to get response from verifyEndpoint
                     HttpResponseMessage response = null;
                     for (int i = 0; i < 10; i++)
@@ -311,7 +318,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                             continue;
                         }
                     }
-                    if(response != null)
+                    if (response != null)
                     {
                         var verifyResponse = await response.Content.ReadAsStringAsync();
                         var verifyOutPutModel = JsonConvert.DeserializeObject<IPGOutputModel>(verifyResponse);
@@ -450,11 +457,301 @@ namespace Arad.Portal.UI.Shop.Controllers
                 return RedirectToAction("PaymentError", "Payment");
             }
         }
-          
+
+        //[HttpGet]
+        //public async Task<IActionResult> GetToken(string reservationNumber)
+        //{
+        //    reservationNumber = Utilities.Base64Decode(reservationNumber);
+        //    Transaction transaction = _transactionRepository.FetchByIdentifierToken(reservationNumber);
+        //    if (transaction == null || transaction.BasicData.Stage != Enums.PaymentStage.Initialized)
+        //    {
+        //        TempData["Psp"] = "Saman";
+        //        TempData["PaymentErrorMessage"] = "تراکنش مورد نظر یافت نشد.";
+        //        return RedirectToAction("PaymentError", "Payment");
+        //    }
+
+
+        //    var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        //    var user = await _userManager.FindByIdAsync(userId);
+
+        //    if (string.IsNullOrEmpty(token))
+        //    {
+        //        Log.Fatal("1");
+        //        user.CouponsUser = null;
+        //        await _userManager.UpdateAsync(user);
+        //        return null;
+        //    }
+
+
+        //    PaymentRecord pay = _paymentRepository.GetByToken(token);
+        //    var invoiceNumber = CreateResnum();
+
+        //    if (pay == null)
+        //    {
+        //        user.CouponsUser = null;
+        //        await _userManager.UpdateAsync(user);
+        //        Log.Fatal("2");
+        //        return null;
+        //    }
+
+        //    var client = new Saman.PaymentIFBindingSoapClient(PaymentIFBindingSoapClient.EndpointConfiguration.PaymentIFBindingSoap);
+
+        //    var revertUrl = $"{Request.Scheme}://{Request.Host}/Saman/verify";
+        //    var merchantId = _configuration["IpgSetting:MerchantId"];
+
+        //    double valueAddedTotal = 0;
+        //    double taxationTotal = 0;
+        //    double discountTotal = 0;
+        //    double totalCostFactor = 0;
+
+        //    foreach (var pro in pay.Products)
+        //    {
+        //        valueAddedTotal += pro.ValueAdded;
+        //        taxationTotal += pro.Taxation;
+        //        discountTotal += pro.Discount;
+        //        totalCostFactor += Math.Round((pro.PriceFactor + pro.ExtraFieldPrice + pro.ValueAdded + pro.Taxation) * pro.Count - pro.Discount * pro.Count, MidpointRounding.AwayFromZero);
+        //    }
+        //    //Price
+        //    long price = (long)totalCostFactor;
+        //    var additionalData = HttpContext.User.Identity.Name;
+
+        //    var samanToken = "";
+
+        //    try
+        //    {
+        //        samanToken = await client.RequestTokenAsync(merchantId, invoiceNumber.ToString(), price,
+        //            0, 0, 0, 0, 0, 0,
+        //            additionalData, "", 0,
+        //            revertUrl);
+
+        //        var samanTokenCode = int.Parse(samanToken);
+        //        Log.Fatal(samanToken);
+        //        user.CouponsUser = null;
+        //        await _userManager.UpdateAsync(user);
+        //        Log.Fatal("3");
+        //        return null;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        pay.Stage = PaymentStage.RedirectToGateway;
+        //        pay.Modification.RedirectToGateway = DateTime.Now.ToUniversalTime().Ticks;
+        //        pay.InvoiceNumber = invoiceNumber.ToString();
+        //        var result = await _paymentRepository.Update(pay);
+
+        //        if (result)
+        //        {
+        //            ViewBag.Token = samanToken;
+        //            ViewBag.RedirectUrl = revertUrl;
+        //            return View();
+        //        }
+        //        Log.Fatal("4");
+        //        user.CouponsUser = null;
+        //        await _userManager.UpdateAsync(user);
+        //        return null;
+        //    }
+        //}
+
+        //[AllowAnonymous]
+        //[HttpPost]
+        //public async Task<IActionResult> Verify(PayResult model)
+        //{
+        //    //var jj = Request.Form;
+        //    var record = _paymentRepository.GetByResNum(model.ResNum);
+
+        //    var user = await _userManager.FindByIdAsync(record.UserId);
+        //    user.CouponsUser = null;
+        //    await _userManager.UpdateAsync(user);
+
+        //    if (record.Stage == PaymentStage.DoneAndConfirmed)
+        //    {
+        //        user.CouponsUser = null;
+        //        var errorMsg = "خرید شما قبلا تایید شده است.";
+        //        return View("FailPayment", errorMsg);
+        //    }
+
+        //    if (model.State.Equals("OK"))
+        //    {
+        //        var verify = new SamanVerify.PaymentIFBindingSoapClient(SamanVerify.PaymentIFBindingSoapClient.EndpointConfiguration.PaymentIFBindingSoap12);
+
+        //        //var verify = new SamanVerify2.PaymentIFBindingSoapClient(SamanVerify2.PaymentIFBindingSoapClient.EndpointConfiguration.PaymentIFBindingSoap);
+
+        //        //double result = 0;
+        //        //if(verify.InnerChannel.State != System.ServiceModel.CommunicationState.Faulted)
+        //        //{
+
+        //        //}
+
+        //        var result = await verify.verifyTransactionAsync(model.RefNum, model.MId);
+
+        //        if (result > 0)
+        //        {
+        //            if ((long)result == record.TotalPrice)
+        //            {
+        //                record.Stage = PaymentStage.DoneAndConfirmed;
+        //                record.Modification.DoneAndConfirmed = DateTime.Now.ToUniversalTime().Ticks;
+        //                record.GateWayReferenceId = model.RNN;
+        //                //record.StateCode = model.StateCode;
+
+        //                foreach (var pro in record.Products)
+        //                {
+        //                    var resultUpdateSale = _productRepository.UpdateSaleCount(pro.Id);
+        //                }
+
+        //                var resultUpdate = await _paymentRepository.Update(record);
+        //                var successResult = new SuccessPaymentViewResult()
+        //                {
+        //                    GateWayReferenceId = model.RNN
+        //                };
+
+
+        //                return View("SuccessPayment", successResult);
+
+        //            }
+        //            else
+        //            {
+        //                var pass = _configuration["IpgSetting:Password"];
+        //                var reverseTransResult =
+        //                    await verify.reverseTransactionAsync(model.RefNum, model.MId, model.MId, pass);
+
+        //                if (reverseTransResult == 1)
+        //                {
+        //                    record.Stage = PaymentStage.Failed;
+        //                    record.Modification.Failed = DateTime.Now.ToUniversalTime().Ticks;
+        //                    record.GateWayReferenceId = model.RNN;
+        //                    record.StateCode = model.StateCode;
+        //                    record.TransactionPayResultCode = result;
+        //                    await _paymentRepository.Update(record);
+        //                    var errorMesg = "تراکنش ناموفق، مبلغ برداشت شده به حساب شما عودت داده می شود.";
+        //                    return View("FailPayment", errorMesg);
+        //                }
+        //                else
+        //                {
+        //                    record.Stage = PaymentStage.Failed;
+        //                    record.Modification.Failed = DateTime.Now.ToUniversalTime().Ticks;
+        //                    record.GateWayReferenceId = model.RNN;
+        //                    record.StateCode = model.StateCode;
+        //                    record.TransactionPayResultCode = result;
+        //                    await _paymentRepository.Update(record);
+        //                    var errorMesg = "تراکنش ناموفق، لطفا برای عودت مبلغ برداشت شده با شماره فاکتور " + record.GateWayReferenceId + " پیگیری نمایید..";
+        //                    return View("FailPayment", errorMesg);
+        //                }
+        //            }
+        //        }
+
+        //        record.Stage = PaymentStage.Failed;
+        //        record.Modification.Failed = DateTime.Now.ToUniversalTime().Ticks;
+        //        record.GateWayReferenceId = model.RNN;
+        //        record.StateCode = model.StateCode;
+        //        record.TransactionPayResultCode = result;
+        //        await _paymentRepository.Update(record);
+        //        var errorMsg = TransactionChecking((int)result);
+        //        return View("FailPayment", errorMsg);
+
+        //    }
+        //    else
+        //    {
+        //        record.Stage = PaymentStage.Failed;
+        //        record.Modification.Failed = DateTime.Now.ToUniversalTime().Ticks;
+        //        record.GateWayReferenceId = model.RNN;
+        //        record.StateCode = model.StateCode;
+        //        await _paymentRepository.Update(record);
+        //        var errorMsg = "تراکنش ناموفق";
+        //        return View("FailPayment", errorMsg);
+        //    }
+        //}
+
+        //private int CreateResnum()
+        //{
+        //    return (int)(DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds;
+        //}
+
+        //private string TransactionChecking(int i)
+        //{
+        //    bool isError = false;
+        //    string errorMsg = "";
+        //    switch (i)
+        //    {
+        //        case -1:		//TP_ERROR
+        //            isError = true;
+        //            errorMsg = "بروز خطا درهنگام بررسي صحت رسيد ديجيتالي در نتيجه خريد شما تاييد نگرييد" + "-1";
+        //            break;
+        //        case -2:		//ACCOUNTS_DONT_MATCH
+        //            isError = true;
+        //            errorMsg = "بروز خطا در هنگام تاييد رسيد ديجيتالي در نتيجه خريد شما تاييد نگرييد" + "-2";
+        //            break;
+        //        case -3:		//BAD_INPUT
+        //            isError = true;
+        //            errorMsg = "خطا در پردازش رسيد ديجيتالي در نتيجه خريد شما تاييد نگرييد" + "-3";
+        //            break;
+        //        case -4:		//INVALID_PASSWORD_OR_ACCOUNT
+        //            isError = true;
+        //            errorMsg = "خطاي دروني سيستم درهنگام بررسي صحت رسيد ديجيتالي در نتيجه خريد شما تاييد نگرييد" + "-4";
+        //            break;
+        //        case -5:		//DATABASE_EXCEPTION
+        //            isError = true;
+        //            errorMsg = "خطاي دروني سيستم درهنگام بررسي صحت رسيد ديجيتالي در نتيجه خريد شما تاييد نگرييد" + "-5";
+        //            break;
+        //        case -7:		//ERROR_STR_NULL
+        //            isError = true;
+        //            errorMsg = "خطا در پردازش رسيد ديجيتالي در نتيجه خريد شما تاييد نگرييد" + "-7";
+        //            break;
+        //        case -8:		//ERROR_STR_TOO_LONG
+        //            isError = true;
+        //            errorMsg = "خطا در پردازش رسيد ديجيتالي در نتيجه خريد شما تاييد نگرييد" + "-8";
+        //            break;
+        //        case -9:		//ERROR_STR_NOT_AL_NUM
+        //            isError = true;
+        //            errorMsg = "خطا در پردازش رسيد ديجيتالي در نتيجه خريد شما تاييد نگرييد" + "-9";
+        //            break;
+        //        case -10:	//ERROR_STR_NOT_BASE64
+        //            isError = true;
+        //            errorMsg = "خطا در پردازش رسيد ديجيتالي در نتيجه خريد شما تاييد نگرييد" + "-10";
+        //            break;
+        //        case -11:	//ERROR_STR_TOO_SHORT
+        //            isError = true;
+        //            errorMsg = "خطا در پردازش رسيد ديجيتالي در نتيجه خريد شما تاييد نگرييد" + "-11";
+        //            break;
+        //        case -12:		//ERROR_STR_NULL
+        //            isError = true;
+        //            errorMsg = "خطا در پردازش رسيد ديجيتالي در نتيجه خريد شما تاييد نگرييد" + "-12";
+        //            break;
+        //        case -13:		//ERROR IN AMOUNT OF REVERS TRANSACTION AMOUNT
+        //            isError = true;
+        //            errorMsg = "خطا در پردازش رسيد ديجيتالي در نتيجه خريد شما تاييد نگرييد" + "-13";
+        //            break;
+        //        case -14:	//INVALID TRANSACTION
+        //            isError = true;
+        //            errorMsg = "خطا در پردازش رسيد ديجيتالي در نتيجه خريد شما تاييد نگرييد" + "-14";
+        //            break;
+        //        case -15:	//RETERNED AMOUNT IS WRONG
+        //            isError = true;
+        //            errorMsg = "خطا در پردازش رسيد ديجيتالي در نتيجه خريد شما تاييد نگرييد" + "-15";
+        //            break;
+        //        case -16:	//INTERNAL ERROR
+        //            isError = true;
+        //            errorMsg = "خطا در پردازش رسيد ديجيتالي در نتيجه خريد شما تاييد نگرييد" + "-16";
+        //            break;
+        //        case -17:	// REVERS TRANSACTIN FROM OTHER BANK
+        //            isError = true;
+        //            errorMsg = "خطا در پردازش رسيد ديجيتالي در نتيجه خريد شما تاييد نگرييد" + "-17";
+        //            break;
+        //        case -18:	//INVALID IP
+        //            isError = true;
+        //            errorMsg = "خطا در پردازش رسيد ديجيتالي در نتيجه خريد شما تاييد نگرييد" + "-18";
+        //            break;
+        //        default:
+        //            isError = true;
+        //            errorMsg = "خطای ناشناس";
+        //            break;
+
+        //    }
+        //    return errorMsg;
+        //}
+
     }
 }
 
 
 
-    
+
 

@@ -63,7 +63,8 @@ namespace Arad.Portal.UI.Shop.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Login");
+            var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
+            return Redirect($"/{lanIcon}/Account/Login");
         }
 
         [HttpGet]
