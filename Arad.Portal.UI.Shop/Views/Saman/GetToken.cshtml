@@ -1,0 +1,28 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>GetToken</title>
+</head>
+<body>
+    @*onload="document.forms['forms'].submit()"*@
+<form id="PaymentForm" action="https://sep.shaparak.ir/OnlinePG/OnlinePG" method="post">
+ <input type="hidden" name="Token" value="@ViewBag.Token" />
+ <input name="GetMethod" type="text" value="false"> <!--true | false | empty string | null-->
+</form>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+
+    $(document).ready(function() {
+        debugger;
+        $("#PaymentForm").submit();
+    });
+</script>
+</body>
+</html>

@@ -6,10 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
+    [Authorize(Policy = "Role")]
     public class PostController : BaseController
     {
         private readonly HttpClientHelper _httpClientHelper;

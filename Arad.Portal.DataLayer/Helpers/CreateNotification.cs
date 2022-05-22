@@ -81,15 +81,15 @@ namespace Arad.Portal.DataLayer.Helpers
             _setting = setting;
             _sendSmsConfig = sendSmsConfig;
             _domainRepository = domainRepository;
-            //if(_env.EnvironmentName !=  "Development")
-            //{
+            if (_env.EnvironmentName != "Development")
+            {
                 _domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
-            //}
-            //else
-            //{
-            //    _domainName = "http://localhost:17951";
-            //}
-            
+            }
+            else
+            {
+                _domainName = "http://localhost:17951";
+            }
+
         }
 
 

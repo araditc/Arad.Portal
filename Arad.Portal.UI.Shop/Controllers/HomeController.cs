@@ -11,6 +11,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -28,6 +29,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             _domainRepository = domainRepository;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             //define current culture of user based on default domain culture
@@ -41,7 +43,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             //        Expires = DateTimeOffset.Now.AddYears(1)
             //    });
             //}
-            return View(domainDto.MainPageContainerPart);
+            return View(domainDto.MainPageContainerPart != null ? domainDto.MainPageContainerPart : new DataLayer.Models.DesignStructure.MainPageContentPart());
         }
 
         public IActionResult Privacy()

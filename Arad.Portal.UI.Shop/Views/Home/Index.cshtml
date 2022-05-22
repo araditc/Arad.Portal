@@ -6,7 +6,7 @@
 @using HtmlAgilityPack
 @using Newtonsoft.Json
 
-@if(Model != null )
+@if(Model != null && Model.RowContents.Count() > 0)
 {
     @foreach(RowContent row in Model.RowContents.OrderBy(_=>_.RowNumber))
 {

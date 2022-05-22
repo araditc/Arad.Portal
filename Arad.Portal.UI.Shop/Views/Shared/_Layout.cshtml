@@ -116,27 +116,27 @@
                                             switch (module.ModuleName)
                                             {
                                                 case "ProductList":
-                                                                    @await Component.InvokeAsync("SpecialProduct",
+                                                    @await Component.InvokeAsync("SpecialProduct",
                 new { productType = module.ParametersValue.ProductOrContentType,
                 selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count} )
                                                     ;
 
                                                     break;
                                                 case "ContentList":
-                                                                    @await Component.InvokeAsync("ContentTemplates", new { contentType = module.ParametersValue.ProductOrContentType,
+                                                    @await Component.InvokeAsync("ContentTemplates", new { contentType = module.ParametersValue.ProductOrContentType,
                 selectionTemplate = module.ParametersValue.ContentTemplateDesign ,  count = module.ParametersValue.Count })
                                                     ;
 
                                                     break;
                                                 case "HorizantalStoreMenu":
-                                                                    @await Component.InvokeAsync("StoreMenu")
+                                                    @await Component.InvokeAsync("StoreMenu")
                                                     ;
                                                     break;
                                             }
                                         }
                                         else if (div.Attributes["target"].Value == "editor")
                                         {
-                                                            @Html.Raw(column.ColData.Replace("<div target=\"editor\">", "")
+                                            @Html.Raw(column.ColData.Replace("<div target=\"editor\">", "")
                 .Replace("</div>", ""))
                                             ; ;
                                         }
@@ -208,25 +208,25 @@
                                                 switch (module.ModuleName)
                                                 {
                                                     case "ProductList":
-                                                                        @await Component.InvokeAsync("SpecialProduct",
+                                                        @await Component.InvokeAsync("SpecialProduct",
                     new { productType = module.ParametersValue.ProductOrContentType,
                     selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count} )
                                                         ;
                                                         break;
                                                     case "ContentList":
-                                                                        @Component.InvokeAsync("ContentTemplates", new { contentType = module.ParametersValue.ProductOrContentType,
+                                                        @Component.InvokeAsync("ContentTemplates", new { contentType = module.ParametersValue.ProductOrContentType,
                     selectionTemplate = module.ParametersValue.ContentTemplateDesign ,  count = module.ParametersValue.Count })
                                                         ;
                                                         break;
                                                     case "HorizantalStoreMenu":
-                                                                        @await Component.InvokeAsync("StoreMenu")
+                                                        @await Component.InvokeAsync("StoreMenu")
                                                         ;
                                                         break;
                                                 }
                                             }
                                             else if (div.Attributes["target"].Value == "editor")
                                             {
-                                                                @Html.Raw(column.ColData.Replace("<div target=\"editor\">", "")
+                                                @Html.Raw(column.ColData.Replace("<div target=\"editor\">", "")
                     .Replace("</div>", ""))
                                                 ;
                                             }

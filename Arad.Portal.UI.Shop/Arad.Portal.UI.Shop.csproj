@@ -40,6 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Connected Services\" />
     <Folder Include="Views\ContentCategory\" />
     <Folder Include="Views\Search\" />
     <Folder Include="wwwroot\css\imgs\" />

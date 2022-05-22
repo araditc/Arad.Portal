@@ -163,22 +163,7 @@
                 //var giftText = "";
                 var address = $('input[name="address"]:checked').attr("id");
                 console.log(address);
-                //if ($("#factor").prop("checked") === true) {
-                //    factor = true;
-                //}
-
-                //if ($("#gift").prop("checked") === true) {
-                //    gift = true;
-                //    giftText = $("#giftText").val();
-                //}
-
-                //var formData = new FormData();
-
-                //formData.append("address", address);
-                //formData.append("factor", factor);
-                //formData.append("gift", gift);
-                //formData.append("giftText", giftText);
-                //formData.append("couponCode", $("#couponCode").val());
+               
                 var obj = {};
                 obj.UserCartId = '@Model.UserCartId';
                 obj.Address = address;
@@ -191,21 +176,14 @@
                     contentType: "application/json; charset=utf-8",
                     
                     success: function(data) {
+                        debugger;
                         if (data.status === "success") {
                             
-                            token = data.data.token;
-                            ConfirmPay();
+                            window.location.href = data.redirecturl ;
 
                         } else if (data.status === "error") {
 
-                            console.log(data);
-
-                            var err;
-                            data.message.forEach(function(item) {
-                                err = '<div class="alert alert-danger">' + item + '</div>';
-                            });
-
-                            $(".errors").html(err);
+                            window.location.href = data.redirecturl;
                         }
                     }
                 });

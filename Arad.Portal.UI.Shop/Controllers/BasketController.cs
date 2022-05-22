@@ -79,11 +79,12 @@ namespace Arad.Portal.UI.Shop.Controllers
         [HttpGet]
         public async Task<IActionResult> SendInfo()
         {
+           
             //var items = HttpContext.Session.GetString("basket");
             var domainName = base.DomainName;
             var domainDTO = _domainRepository.FetchByName(domainName);
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var shoppingCart =await _shoppingCartRepository.FetchActiveUserShoppingCart(userId, domainDTO.ReturnValue.DomainId);
+            var shoppingCart = await _shoppingCartRepository.FetchActiveUserShoppingCart(userId, domainDTO.ReturnValue.DomainId);
             var user = await _userManager.FindByIdAsync(userId);
 
             var model = new DataLayer.Models.Shared.SendInfoPage()
@@ -94,6 +95,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 UserCartId = shoppingCart.ReturnValue.UserCartId
             };
             return View(model);
+           
         }
 
         public async Task<IActionResult> DeleteAddress(string addressId)
@@ -114,17 +116,17 @@ namespace Arad.Portal.UI.Shop.Controllers
                 {
                     
                     TempData["MessageResult"] = true;
-                    return Redirect($"~/{lanIcon}/Basket/SendInfo");
+                    return Redirect($"/{lanIcon}/Basket/SendInfo");
                 }
 
                 
                 TempData["MessageResult"] = false;
-                return Redirect($"~/{lanIcon}/Basket/SendInfo");
+                return Redirect($"/{lanIcon}/Basket/SendInfo");
             }
             catch (Exception x)
             {
                 TempData["MessageResult"] = false;
-                return Redirect($"~/{lanIcon}/Basket/SendInfo");
+                return Redirect($"/{lanIcon}/Basket/SendInfo");
                 
             }
         }

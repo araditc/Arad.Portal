@@ -10,9 +10,9 @@ namespace Arad.Portal.DataLayer.Models.PSPs.Saman
     {
         public IPGOutputModel()
         {
-            VerifyInfo = new VerifyInfo();
+            TransactionDetail = new VerifyInfo();
         }
-        public VerifyInfo VerifyInfo { get; set; }
+        public VerifyInfo TransactionDetail { get; set; }
 
         public int ResultCode { get; set; }
 
@@ -31,6 +31,11 @@ namespace Arad.Portal.DataLayer.Models.PSPs.Saman
         /// رسید دیجیتالی
         /// </summary>
         public string RefNum { get; set; }
+
+        public string MaskedPan { get; set; }
+
+        public string HashedPan { get; set; }
+
         public int TerminalNumber { get; set; }
         /// <summary>
         /// مبلغ ارسالی به درگاه

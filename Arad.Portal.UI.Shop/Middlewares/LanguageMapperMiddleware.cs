@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-
+using Serilog;
 
 namespace Arad.Portal.UI.Shop.Middlewares
 {
@@ -34,7 +34,7 @@ namespace Arad.Portal.UI.Shop.Middlewares
         }
         public async Task Invoke(HttpContext context)
         {
-
+            Log.Fatal($"In middleware:{context.Request.Path}");
             string defLangSymbol = "";
             string pathRequest = "";
             var langSymbolList = _languageContext.Collection.Find(_ => _.IsActive).Project(_ => _.Symbol.ToLower()).ToList();

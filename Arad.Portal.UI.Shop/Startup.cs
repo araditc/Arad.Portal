@@ -108,12 +108,21 @@ namespace Arad.Portal.UI.Shop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
+            services.AddCors(x =>
+            {
+                x.AddPolicy("CSP", y =>
+                {
+                    y.AllowAnyOrigin();
+                    y.AllowAnyMethod();
+                    y.AllowAnyHeader();
+                });
+            });
             services.AddHttpClient();
             //services.AddEnyimMemcached(setup =>
             //{
             //    setup.Servers.Add(new Server { Address = "127.0.0.1", Port = 11211 });
             //});
+           
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
            
             //services.AddMemoryCache();
@@ -143,7 +152,7 @@ namespace Arad.Portal.UI.Shop
                     options.Cookie.IsEssential = true;
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.Cookie.SameSite = SameSiteMode.Strict;
-                    options.AccessDeniedPath = "/Account/unAuthorize";
+                    //options.AccessDeniedPath = "/Account/unAuthorize";
                     options.LoginPath = "/Account/Login";
                     options.LogoutPath = "/Account/Logout";
                     options.Cookie.Name = "IdentityCookie";
@@ -169,13 +178,14 @@ namespace Arad.Portal.UI.Shop
                 mongoIdentityOptions.ConnectionString = Configuration["DatabaseConfig:ConnectionString"];
             });
 
-            if (!_environment.IsDevelopment())
-            {
-                services.AddAntiforgery(options =>
-                {
-                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                });
-            }
+            //if (!_environment.IsDevelopment())
+            //{
+            //    services.AddAntiforgery(options =>
+            //    {
+            //        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            //    });
+            //}
+           
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                  .AddCookie(opt =>
                  {
@@ -184,6 +194,7 @@ namespace Arad.Portal.UI.Shop
                  });
             
             services.AddTransient<IAuthorizationHandler, RoleHandler>();
+           
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Role", policy =>
@@ -192,12 +203,16 @@ namespace Arad.Portal.UI.Shop
                     policy.Requirements.Add(new RoleRequirement());
                 });
             });
+           
             services.AddAutoMapper(typeof(Startup));
+
+            
+
 
             //services.AddTransient<IPermissionView, PermissionView>();
             services.AddTransient<RemoteServerConnection>();
             services.AddTransient<CreateNotification>();
-            services.AddTransient(typeof(EnyimMemcachedMethods<>));
+            //services.AddTransient(typeof(EnyimMemcachedMethods<>));
             services.AddTransient<HttpClientHelper>();
             services.AddTransient<LayoutContentProcess>();
             
@@ -255,7 +270,7 @@ namespace Arad.Portal.UI.Shop
             {
                 Directory.CreateDirectory(path3);
             }
-            app.UseEnyimMemcached();
+         //   app.UseEnyimMemcached();
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions()
             {
@@ -266,15 +281,18 @@ namespace Arad.Portal.UI.Shop
             app.UseRequestLocalization(AddMultilingualSettings());
 
             app.UseRouting();
+            app.UseCors("CSP");
             var options = new CookiePolicyOptions()
             {
                 //HttpOnly = HttpOnlyPolicy.Always,
 
                 //MinimumSameSitePolicy = SameSiteMode.Strict
             };
-            app.UseCookiePolicy(options);
+           // app.UseCookiePolicy(options);
 
             app.UseAuthentication();
+            
+
             app.UseAuthorization();
             app.UseSession();
             app.ApplyLanguageMapper();
@@ -289,6 +307,9 @@ namespace Arad.Portal.UI.Shop
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{language?}/{controller=Home}/{action=Index}/{id?}");
+                //endpoints.MapControllerRoute(
+                //            name: "default",
+                //           pattern: "{controller=Home}/{action=Index}/{id?}");
             });
             app.UseSeedDatabase(ApplicationPath);
         }
