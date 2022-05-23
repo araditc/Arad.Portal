@@ -152,7 +152,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.LanguageName = lan.LanguageName;
                     item.LanguageSymbol = lan.Symbol;
                     item.GroupName = group != null && group.GroupNames.First(_ => _.LanguageId == lan.LanguageId) != null ?
-                        group.GroupNames.First(_ => _.LanguageId == lan.LanguageId).Name : "";
+                        group.GroupNames.FirstOrDefault(_ => _.LanguageId == lan.LanguageId).Name : "";
                 }
 
                 Result saveResult = await _specificationRepository.Add(dto);
@@ -242,8 +242,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 item.MultiLingualPropertyId = Guid.NewGuid().ToString();
                 item.LanguageName = lan.LanguageName;
                 item.LanguageSymbol = lan.Symbol;
-                item.GroupName = group != null && group.GroupNames.First(_ => _.LanguageId == lan.LanguageId) != null ?
-                       group.GroupNames.First(_ => _.LanguageId == lan.LanguageId).Name : "";
+                item.GroupName = group != null && group.GroupNames.FirstOrDefault(_ => _.LanguageId == lan.LanguageId) != null ?
+                       group.GroupNames.FirstOrDefault(_ => _.LanguageId == lan.LanguageId).Name : "";
 
             }
 

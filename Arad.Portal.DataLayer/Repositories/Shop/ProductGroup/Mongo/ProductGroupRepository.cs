@@ -93,7 +93,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                 }
                 if(allowDeletion)
                 {
-                    var groupEntity = _productContext.ProductGroupCollection.Find(_ => _.ProductGroupId == productGroupId).First();
+                    var groupEntity = _productContext.ProductGroupCollection.Find(_ => _.ProductGroupId == productGroupId).FirstOrDefault();
                     if (groupEntity != null)
                     {
                         groupEntity.IsDeleted = true;
@@ -284,7 +284,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                        ProductGroupId = _.ProductGroupId,
                        ParentId = _.ParentId,
                        IsDeleted = _.IsDeleted,
-                       MultiLingualProperty = _.MultiLingualProperties.Where(a => a.LanguageId == langId).First()
+                       MultiLingualProperty = _.MultiLingualProperties.Where(a => a.LanguageId == langId).FirstOrDefault()
                    }).ToList();
                 result.CurrentPage = page;
                 result.Items = lst;
@@ -381,7 +381,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                .Project(_ => new SelectListModel()
                {
                    Text = _.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() != 0 ?
-                        _.MultiLingualProperties.First(a => a.LanguageId == langId).Name : "",
+                        _.MultiLingualProperties.FirstOrDefault(a => a.LanguageId == langId).Name : "",
                    Value = _.ProductGroupId
                }).ToList();
             }
@@ -391,7 +391,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                .Project(_ => new SelectListModel()
                {
                    Text = _.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() != 0 ?
-                        _.MultiLingualProperties.First(a => a.LanguageId == langId).Name : "",
+                        _.MultiLingualProperties.FirstOrDefault(a => a.LanguageId == langId).Name : "",
                    Value = _.ProductGroupId
                }).ToList();
             }
@@ -405,7 +405,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             var result = new ProductGroupDTO();
             var urlFriend = $"{domainName}/category/{slug}";
             var groupEntity = _productContext.ProductGroupCollection
-                .Find(_ => _.MultiLingualProperties.Any(a => a.UrlFriend == urlFriend)).First();
+                .Find(_ => _.MultiLingualProperties.Any(a => a.UrlFriend == urlFriend)).FirstOrDefault();
 
             result = _mapper.Map<ProductGroupDTO>(groupEntity);
             return result;
@@ -416,7 +416,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
         //    var result = new CommonViewModel();
 
         //    var productEntity = _productContext.ProductGroupCollection
-        //        .Find(_ => _.GroupCode == groupCode).First();
+        //        .Find(_ => _.GroupCode == groupCode).FirstOrDefault();
 
         //    result.Groups = GetsDirectChildren(productEntity.ProductGroupId, 4, 0);
         //    //result.NGrpCountToSkip = 4;
@@ -427,12 +427,12 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
         //    //result.NEntityCntToTake = 4;
         //    return result;
         //}
-        
+
         //public ProductGroupDTO FetchByCode(long groupCode)
         //{
         //    var result = new ProductGroupDTO();
         //    var groupEntity = _productContext.ProductGroupCollection
-        //        .Find(_ => _.GroupCode == groupCode).First();
+        //        .Find(_ => _.GroupCode == groupCode).FirstOrDefault();
         //    result = _mapper.Map<ProductGroupDTO>(groupEntity);
         //    return result;
         //}
@@ -455,7 +455,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
         {
             string result = "";
             var entity = _productContext.ProductGroupCollection
-                .Find(_ => _.GroupCode == groupCode).First();
+                .Find(_ => _.GroupCode == groupCode).FirstOrDefault();
 
             if(entity != null)
             {
@@ -467,7 +467,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
         public async Task<long> GetDircetChildrenCount(string domainName,string productGroupId, List<string> groupListWithProducts)
         {
             
-            var currentDomain = _domainRepository.FetchByName(domainName);
+            var currentDomain = _domainRepository.FetchByName(domainName, false);
 
             var count = await  _productContext.ProductGroupCollection
                     .Find(_ => _.AssociatedDomainId == currentDomain.ReturnValue.DomainId 
@@ -480,7 +480,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
         public long GetProductsInGroupCounts(string domainName, string productGroupId)
         {
             long count;
-            var currentDomain = _domainRepository.FetchByName(domainName);
+            var currentDomain = _domainRepository.FetchByName(domainName, false);
             var defDomain = _domainRepository.GetDefaultDomain();
             if(currentDomain.ReturnValue.DomainId != defDomain.ReturnValue.DomainId)
             {
@@ -496,7 +496,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
 
         public async Task<List<string>> AllGroupIdsWhichEndInProducts(string domainName)
         {
-            var currentDomain = _domainRepository.FetchByName(domainName);
+            var currentDomain = _domainRepository.FetchByName(domainName, false);
             var defDomain = _domainRepository.GetDefaultDomain();
 
             FilterDefinitionBuilder<Entities.Shop.Product.Product> builder = new();
@@ -520,13 +520,13 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             {
                 finalList.Add(groupId);
                 var entity = _productContext.ProductGroupCollection
-                             .Find(_ => _.ProductGroupId == groupId).First();
+                             .Find(_ => _.ProductGroupId == groupId).FirstOrDefault();
                 var tmp = entity;
                 while (tmp.ParentId != null)
                 {
                     finalList.Add(tmp.ParentId);
                     tmp = _productContext.ProductGroupCollection
-                         .Find(_ => _.ProductGroupId == tmp.ParentId).First();
+                         .Find(_ => _.ProductGroupId == tmp.ParentId).FirstOrDefault();
                 }
             }
             //testing part

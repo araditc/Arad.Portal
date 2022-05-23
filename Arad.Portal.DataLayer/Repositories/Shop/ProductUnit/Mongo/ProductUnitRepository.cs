@@ -169,7 +169,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
                 .Project(_ => new SelectListModel()
                 {
                     Text = _.UnitNames.Where(a => a.LanguageId == langId).Count() != 0 ?
-                         _.UnitNames.First(a => a.LanguageId == langId).Name : "",
+                         _.UnitNames.FirstOrDefault(a => a.LanguageId == langId).Name : "",
                     Value = _.ProductUnitId
                 }).ToList();
             return result;
@@ -205,7 +205,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
                    .Take(pageSize).Select(_ => new ProductUnitViewModel()
                    {
                       ProductUnitId = _.ProductUnitId,
-                      UnitName = _.UnitNames.Where(a => a.LanguageId == langId).First(),
+                      UnitName = _.UnitNames.Where(a => a.LanguageId == langId).FirstOrDefault(),
                       IsDeleted = _.IsDeleted
                    }).ToList();
 

@@ -533,6 +533,9 @@
 	<string key="AlertAndMessage_ProductCountInCart">
 		<value>این محصول به سبد خرید شما اضافه گردید.</value>
 	</string>
+	<string key="AlertAndMessage_ShoppingCartIsEmpty">
+		<value>سبد خرید شما خالی است.</value>
+	</string>
 	<string key="AlertAndMessage_ProductPriceIncrease">
 		<value>متاسفانه این محصول [0] افزایش قیمت داشته است.</value>
 	</string>

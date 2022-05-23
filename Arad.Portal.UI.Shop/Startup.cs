@@ -153,8 +153,8 @@ namespace Arad.Portal.UI.Shop
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.Cookie.SameSite = SameSiteMode.Strict;
                     //options.AccessDeniedPath = "/Account/unAuthorize";
-                    options.LoginPath = "/Account/Login";
-                    options.LogoutPath = "/Account/Logout";
+                    //options.LoginPath = "/Account/Login";
+                    //options.LogoutPath = "/Account/Logout";
                     options.Cookie.Name = "IdentityCookie";
                 }
             });
@@ -241,6 +241,7 @@ namespace Arad.Portal.UI.Shop
         {
             if (env.IsDevelopment())
             {
+                //app.UseExceptionHandler("/Home/Error");
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -299,10 +300,15 @@ namespace Arad.Portal.UI.Shop
            
             app.UseEndpoints(endpoints =>
             {
-                if (env.IsDevelopment())
-                    endpoints.MapControllers().WithMetadata(new AllowAnonymousAttribute());
-                else
-                    endpoints.MapControllers();
+                //if (env.IsDevelopment())
+                //{
+                //    endpoints.MapControllers().WithMetadata(new AllowAnonymousAttribute());
+                //}
+                //else
+                //{
+                //    endpoints.MapControllers();
+                //}
+
 
                 endpoints.MapControllerRoute(
                     name: "default",

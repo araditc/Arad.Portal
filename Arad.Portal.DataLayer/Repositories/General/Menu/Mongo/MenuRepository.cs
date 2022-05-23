@@ -203,7 +203,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
         {
             var result = new List<StoreMenuVM>();
             string finalLangId;
-            var domainEntity = _domainContext.Collection.Find(Builders<Entities.General.Domain.Domain>.Filter.Eq(_ => _.DomainId, domainId)).First();
+            var domainEntity = _domainContext.Collection.Find(Builders<Entities.General.Domain.Domain>.Filter.Eq(_ => _.DomainId, domainId)).FirstOrDefault();
             if(!string.IsNullOrWhiteSpace(langId))
             {
                 finalLangId = langId;
@@ -216,10 +216,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 {
                     MenuId = _.MenuId,
                     MenuTitle = _.MenuTitles.Count(_ => _.LanguageId == finalLangId) > 0 ?
-                                _.MenuTitles.First(_ => _.LanguageId == finalLangId):
+                                _.MenuTitles.FirstOrDefault(_ => _.LanguageId == finalLangId):
                                 (_.MenuTitles.Count(_ => _.LanguageId == domainEntity.DefaultLanguageId) > 0 ?
-                                _.MenuTitles.First(_ => _.LanguageId == domainEntity.DefaultLanguageId):
-                                _.MenuTitles.First()),
+                                _.MenuTitles.FirstOrDefault(_ => _.LanguageId == domainEntity.DefaultLanguageId):
+                                _.MenuTitles.FirstOrDefault()),
                     Icon = _.Icon,
                     MenuType = _.MenuType,
                     Order = _.Order,
@@ -279,7 +279,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
         public List<StoreMenuVM> GetChildren(string menuId, string finalLangId, Entities.General.Domain.Domain domainEntity)
         {
             var result = new List<StoreMenuVM>();
-            var menuEntity = _context.Collection.Find(_ => _.MenuId == menuId).First();
+            var menuEntity = _context.Collection.Find(_ => _.MenuId == menuId).FirstOrDefault();
             if (_context.Collection.Find(_ => _.ParentId == menuId).CountDocuments() > 0)
             {
                 result = _context.Collection.Find(_=>_.AssociatedDomainId == domainEntity.DomainId && _.ParentId == menuId)
@@ -288,10 +288,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                     {
                         MenuId = _.MenuId,
                         MenuTitle = _.MenuTitles.Count(_ => _.LanguageId == finalLangId) > 0 ?
-                                _.MenuTitles.First(_ => _.LanguageId == finalLangId) :
+                                _.MenuTitles.FirstOrDefault(_ => _.LanguageId == finalLangId) :
                                 (_.MenuTitles.Count(_ => _.LanguageId == domainEntity.DefaultLanguageId) > 0 ?
-                                _.MenuTitles.First(_ => _.LanguageId == domainEntity.DefaultLanguageId) :
-                                _.MenuTitles.First()),
+                                _.MenuTitles.FirstOrDefault(_ => _.LanguageId == domainEntity.DefaultLanguageId) :
+                                _.MenuTitles.FirstOrDefault()),
                         Icon = _.Icon,
                         MenuType = _.MenuType,
                         Order = _.Order,
@@ -369,7 +369,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             Result<MenuDTO> result
                = new Result<MenuDTO>();
             var entity = _context.Collection
-                .Find(_ => _.MenuId == menuId).First();
+                .Find(_ => _.MenuId == menuId).FirstOrDefault();
             try
             {
                 if (entity != null)
@@ -475,7 +475,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 .Project(_ => new SelectListModel()
                 {
                     Value = _.MenuId,
-                    Text = _.MenuTitles.First(a => a.LanguageId == langId).Name
+                    Text = _.MenuTitles.FirstOrDefault(a => a.LanguageId == langId).Name
                 }).ToList();
             }else
             {
@@ -483,7 +483,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 .Project(_ => new SelectListModel()
                 {
                     Value = _.MenuId,
-                    Text = _.MenuTitles.First(a => a.LanguageId == langId).Name
+                    Text = _.MenuTitles.FirstOrDefault(a => a.LanguageId == langId).Name
                 }).ToList();
             }
             

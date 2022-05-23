@@ -522,7 +522,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Permission.Mongo
             try
             {
 
-                var roleEntity = _context.Collection.Find(_ => _.PermissionId == permissionId).First();
+                var roleEntity = _context.Collection.Find(_ => _.PermissionId == permissionId).FirstOrDefault();
                 if (roleEntity != null)
                 {
                     roleEntity.IsActive = isActive;

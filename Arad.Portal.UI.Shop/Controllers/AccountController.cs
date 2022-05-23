@@ -171,7 +171,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             //TempData["LoginUser"] = string.Format(Language.GetString("AlertAndMessage_WelcomeUser"), user.FullName);
             var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
             //return RedirectToAction("Index", "Home");
-            return Redirect($"{lanIcon}/Home/Index");
+            return Redirect($"/{lanIcon}/Home/Index");
         }
 
         [HttpGet]
@@ -281,7 +281,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             };
             #endregion
 
-            var domainId = _domainRepository.FetchByName(DomainName).ReturnValue.DomainId;
+            var domainId = _domainRepository.FetchByName(DomainName, false).ReturnValue.DomainId;
             ApplicationUser user = new()
             {
                 UserName = model.FullCellPhoneNumber,
@@ -320,7 +320,7 @@ namespace Arad.Portal.UI.Shop.Controllers
 
             return Ok(insertResult.Succeeded ?
                 new { Status = "Success", Message = Language.GetString("AlertAndMessage_OperationSuccess") } : 
-                new { Status = "Error", Message = insertResult.Errors.First().Description });
+                new { Status = "Error", Message = insertResult.Errors.FirstOrDefault().Description });
         }
 
         [HttpGet]

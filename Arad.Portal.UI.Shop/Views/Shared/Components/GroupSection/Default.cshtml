@@ -10,7 +10,7 @@
                 <div class="card-body text-center" >
                     <a href="/group/@item.GroupCode" class="btn bg-gradient">
                         <h6 class="card-title">@(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ? 
-                            item.MultiLingualProperties.First(_=>_.LanguageId == ViewBag.CurLangId).Name : item.MultiLingualProperties.First().Name)</h6>
+                            item.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == ViewBag.CurLangId).Name : item.MultiLingualProperties.FirstOrDefault().Name)</h6>
                     </a>
                 </div>
             </div>

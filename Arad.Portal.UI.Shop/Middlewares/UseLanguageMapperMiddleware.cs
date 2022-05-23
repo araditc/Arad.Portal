@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,14 +17,14 @@ using Serilog;
 
 namespace Arad.Portal.UI.Shop.Middlewares
 {
-    public class LanguageMapperMiddleware
+    public class UseLanguageMapperMiddleware
     {
         private RequestDelegate _next;
         private readonly DomainContext _domainContext;
         private readonly LanguageContext _languageContext;
         private readonly IWebHostEnvironment _env;
 
-        public LanguageMapperMiddleware(RequestDelegate next, DomainContext domainContext,
+        public UseLanguageMapperMiddleware(RequestDelegate next, DomainContext domainContext,
             IWebHostEnvironment environment,
             LanguageContext languageContext)
         {
@@ -40,14 +41,9 @@ namespace Arad.Portal.UI.Shop.Middlewares
             var langSymbolList = _languageContext.Collection.Find(_ => _.IsActive).Project(_ => _.Symbol.ToLower()).ToList();
             string newPath = "";
             string domainName = "";
-            //if(_env.EnvironmentName == "environment")
-            //{
-            //    domainName = "http://localhost:17951";
-            //}
-            //else
-            //{
+            
             domainName = $"{context.Request.Host}";
-            //}
+            
 
             if (context.Request.Path.ToString().Contains("/FileManager/GetScaledImage") ||
                 context.Request.Path.ToString().Contains("/FileManager/GetImage") ||
@@ -87,7 +83,16 @@ namespace Arad.Portal.UI.Shop.Middlewares
                 }
                 else if (defLangSymbol == "")
                 {
-                    var result = _domainContext.Collection.Find(_ => _.DomainName == $"{context.Request.Scheme}://{domainName}").First();
+                    DataLayer.Entities.General.Domain.Domain result = null;
+                    if (_domainContext.Collection.Find(_ => _.DomainName == $"{context.Request.Scheme}://{domainName}").Any())
+                    {
+                        result = _domainContext.Collection.Find(_ => _.DomainName == $"{context.Request.Scheme}://{domainName}").FirstOrDefault();
+                    }
+                    else
+                    {
+                        result = _domainContext.Collection.Find(_ => _.IsDefault).FirstOrDefault();
+                    }
+
                     defLangSymbol = result.DefaultLangSymbol;
                 }
 
@@ -99,7 +104,7 @@ namespace Arad.Portal.UI.Shop.Middlewares
                         new CookieOptions() { Domain = domainName, Expires = DateTime.Now.AddDays(7) });
                 }
 
-                var lang = _languageContext.Collection.Find(_ => _.Symbol == defLangSymbol).First();
+                var lang = _languageContext.Collection.Find(_ => _.Symbol == defLangSymbol).FirstOrDefault();
                 //var redirectUrl = $"{domainName}/{lang.Symbol}";
                 if (context.Request.Path.Value.Length == 1)
                 {
@@ -140,8 +145,8 @@ namespace Arad.Portal.UI.Shop.Middlewares
                     await _next.Invoke(context);
                 }
             }
+            //await _next.Invoke(context);
 
-            
         }
     }
 }

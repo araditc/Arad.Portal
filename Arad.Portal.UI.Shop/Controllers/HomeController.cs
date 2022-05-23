@@ -33,17 +33,18 @@ namespace Arad.Portal.UI.Shop.Controllers
         public IActionResult Index()
         {
             //define current culture of user based on default domain culture
-            var domainDto = _domainRepository.FetchByName(DomainName).ReturnValue;
-            //if (CultureInfo.CurrentCulture.Name != domainDto.DefaultLangSymbol)
-            //{
-            //Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
-            //    CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(domainDto.DefaultLangSymbol))
-            //    , new CookieOptions()
-            //    {
-            //        Expires = DateTimeOffset.Now.AddYears(1)
-            //    });
-            //}
-            return View(domainDto.MainPageContainerPart != null ? domainDto.MainPageContainerPart : new DataLayer.Models.DesignStructure.MainPageContentPart());
+            var result = _domainRepository.FetchByName(DomainName, false);
+
+            if (result.Succeeded)
+            {
+                return View(result.ReturnValue.MainPageContainerPart != null ?
+               result.ReturnValue.MainPageContainerPart : new DataLayer.Models.DesignStructure.MainPageContentPart());
+            }
+            else
+            {
+                return View(new DataLayer.Models.DesignStructure.MainPageContentPart());
+            }
+
         }
 
         public IActionResult Privacy()

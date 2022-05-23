@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.Security.Claims;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Microsoft.AspNetCore.Identity;
+using Arad.Portal.DataLayer.Models.ShoppingCart;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -43,7 +44,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 @ViewBag.BasketCount = res.ReturnValue.ItemsCount;
                 return Json(new
                 {
-                    status = res.Succeeded ? "Success" : "Error",
+                    status = res.Succeeded ? "Succeed" : "Error",
                     message = res.Succeeded ? Language.GetString("AlertAndMessage_ProductCountInCart") : res.Message,
                     cnt = res.ReturnValue.ItemsCount
                 });
@@ -63,11 +64,17 @@ namespace Arad.Portal.UI.Shop.Controllers
             {
                 var domainName = base.DomainName;
                 var currentUserId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
-                var domain = _domainRepository.FetchByName(domainName);
-               
-                var model =(await _shoppingCartRepository.FetchActiveUserShoppingCart(currentUserId, domain.ReturnValue.DomainId)).ReturnValue;
-
-                return View(model);
+                var res = _domainRepository.FetchByName(domainName, false);
+                if(res.Succeeded)
+                {
+                    var model = (await _shoppingCartRepository.FetchActiveUserShoppingCart(currentUserId, res.ReturnValue.DomainId)).ReturnValue;
+                    return View(model);
+                }else
+                {
+                    var model = new ShoppingCartDTO();
+                    return View(model);
+                }
+                
             }
             else
             {
@@ -82,7 +89,7 @@ namespace Arad.Portal.UI.Shop.Controllers
            
             //var items = HttpContext.Session.GetString("basket");
             var domainName = base.DomainName;
-            var domainDTO = _domainRepository.FetchByName(domainName);
+            var domainDTO = _domainRepository.FetchByName(domainName,false);
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var shoppingCart = await _shoppingCartRepository.FetchActiveUserShoppingCart(userId, domainDTO.ReturnValue.DomainId);
             var user = await _userManager.FindByIdAsync(userId);

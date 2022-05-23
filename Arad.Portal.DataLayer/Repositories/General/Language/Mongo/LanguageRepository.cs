@@ -241,10 +241,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
         {
             LanguageDTO result = null;
             Entities.General.Language.Language lan ;
-            var currentUser = _userManager.Users.AsQueryable().First(_ => _.Id == currentUserId);
+            var currentUser = _userManager.Users.AsQueryable().FirstOrDefault(_ => _.Id == currentUserId);
             if(currentUser != null && !string.IsNullOrWhiteSpace(currentUser.Profile.DefaultLanguageId))
             {
-                lan = _context.Collection.Find(_ => _.LanguageId == currentUser.Profile.DefaultLanguageId).First();
+                lan = _context.Collection.Find(_ => _.LanguageId == currentUser.Profile.DefaultLanguageId).FirstOrDefault();
             }else
             {
                 lan = _context.Collection.Find(_ => _.IsDefault).FirstOrDefault();

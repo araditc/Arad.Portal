@@ -9,7 +9,7 @@
                 <img class="card-img-top rounded" src="@Url.Content(item.GroupImage.Url)" alt="@item.GroupImage.Title">
                 <div class="card-body text-center">
                     <a href="/group/@item.GroupCode" class="btn btn-light bg-gradient">
-                        <h6 class="card-title">@(item.MultiLingualProperties.First(_=>_.LanguageId == ViewBag.CurLangId).Name)</h6>
+                        <h6 class="card-title">@(item.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == ViewBag.CurLangId).Name)</h6>
                     </a>
                 </div>
             </div>

@@ -216,7 +216,7 @@
                         @foreach (var item in Model.Items)
                         {
                             var src = item.Images.Any(_ => _.IsMain) ?
-                                item.Images.First(_ => _.IsMain).Url : "/imgs/NoImage.png";
+                                item.Images.FirstOrDefault(_ => _.IsMain).Url : "/imgs/NoImage.png";
 
                             var img = $"<img class='smlImg' src='{$"../filemanager/getscaledimageOnWidth?path={src}&width={75}"}'>";
                             <tr class="ListCell">

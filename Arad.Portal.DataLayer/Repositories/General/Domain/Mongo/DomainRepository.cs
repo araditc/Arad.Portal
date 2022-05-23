@@ -67,7 +67,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                         {
                             if (equallentEntity.Prices.Any(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive))
                             {
-                                var exist = equallentEntity.Prices.First(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive);
+                                var exist = equallentEntity.Prices.FirstOrDefault(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive);
                                 equallentEntity.Prices.Remove(exist);
                                 exist.IsActive = false;
                                 exist.EndDate = DateTime.UtcNow;
@@ -254,22 +254,32 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             return result;
         }
 
-        public Result<DomainDTO> FetchByName(string domainName)
+        public Result<DomainDTO> FetchByName(string domainName, bool isDef)
         {
-            Result<DomainDTO> result
-                 = new Result<DomainDTO>();
+            Result<DomainDTO> result = new Result<DomainDTO>();
             try
             {
-                var dbEntity = _context.Collection.Find(_ => _.DomainName == domainName).First();
-                if (dbEntity == null)
+                
+                var dbEntity = _context.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
+                if (dbEntity == null && isDef)
                 {
-                    dbEntity = _context.Collection.Find(_ => _.IsDefault).First();
+                    dbEntity = _context.Collection.Find(_ => _.IsDefault).FirstOrDefault();
                 }
 
-                var dto = _mapper.Map<DomainDTO>(dbEntity);
-                result.Succeeded = true;
-                result.Message = ConstMessages.SuccessfullyDone;
-                result.ReturnValue = dto;
+
+                if(dbEntity != null)
+                {
+                    var dto = _mapper.Map<DomainDTO>(dbEntity);
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                    result.ReturnValue = dto;
+                }
+                else
+                {
+                    result.Message = ConstMessages.ObjectNotFound;
+                    result.ReturnValue = new DomainDTO();
+                }
+               
             }
             catch (Exception ex)
             {
@@ -281,11 +291,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
 
         public Result<DomainDTO> FetchDomain(string domainId)
         {
-            Result<DomainDTO> result
-                = new Result<DomainDTO>();
+            Result<DomainDTO> result = new Result<DomainDTO>();
+
             try
             {
-                var dbEntity = _context.Collection.Find(_ => _.DomainId == domainId).First();
+                var dbEntity = _context.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
                 if (dbEntity == null)
                 {
                     result.Message = ConstMessages.ObjectNotFound;
@@ -365,7 +375,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                     {
                         if (entity.Prices.Any(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive))
                         {
-                            var exist = entity.Prices.First(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive);
+                            var exist = entity.Prices.FirstOrDefault(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive);
                             entity.Prices.Remove(exist);
                             exist.IsActive = false;
                             exist.EndDate = DateTime.UtcNow;
@@ -436,7 +446,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
         public Result<DomainDTO> GetDefaultDomain()
         {
             var result = new Result<DomainDTO>();
-            var entity = _context.Collection.Find(_ => _.IsDefault).First();
+            var entity = _context.Collection.Find(_ => _.IsDefault).FirstOrDefault();
             if(entity != null)
             {
                 result.Succeeded = true;
@@ -453,7 +463,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
         public SMTP GetSMTPAccount(string domainName)
         {
             SMTP result = null;
-            var domainEntity = _context.Collection.Find(_ => _.DomainName == domainName).First();
+            var domainEntity = _context.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
             if(domainEntity != null && domainEntity.SMTPAccount != null)
             {
                 return domainEntity.SMTPAccount;
@@ -510,10 +520,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                  = new Entities.General.Domain.Domain();
             try
             {
-                result = _context.Collection.Find(_ => _.DomainName == domainName).First();
+                result = _context.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
                 if (result == null)
                 {
-                    result = _context.Collection.Find(_ => _.IsDefault).First();
+                    result = _context.Collection.Find(_ => _.IsDefault).FirstOrDefault();
                 }
             }
             catch (Exception ex)

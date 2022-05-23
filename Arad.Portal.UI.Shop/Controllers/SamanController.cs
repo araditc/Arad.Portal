@@ -153,7 +153,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                         await _transactionRepository.UpdateTransaction(transaction);
 
                         var path = Flurl.Url.Combine(_samanModel.BaseAddress, _samanModel.GatewayEndPoint) + "?token=" + tokenResponse.Token;
-                        path = $"https://sep.shaparak.ir/OnlinePG/SendToken?token={tokenResponse.Token}";
+                        //path = $"https://sep.shaparak.ir/OnlinePG/SendToken?token={tokenResponse.Token}";
 
                         //ViewBag.Token = tokenResponse.Token;
                         //ViewBag.RedirectAddress = path;

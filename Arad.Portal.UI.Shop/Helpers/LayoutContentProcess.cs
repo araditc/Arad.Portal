@@ -13,7 +13,7 @@ namespace Arad.Portal.UI.Shop.Helpers
         private readonly IHttpContextAccessor _accessor;
         private readonly IWebHostEnvironment _environment;
         public LayoutModel LayoutModel = new LayoutModel();
-        
+
         public LayoutContentProcess(IDomainRepository domainRepository,
             IWebHostEnvironment env,
             IHttpContextAccessor accessor)
@@ -26,32 +26,33 @@ namespace Arad.Portal.UI.Shop.Helpers
 
         public void CalculateLayoutContent()
         {
-            string domainName;
-            if (_environment.EnvironmentName != "Development")
+
+            string domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
+            var res = _domainRepository.FetchByName(domainName, false);
+            if (res.Succeeded)
             {
-                domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
+                var domainEntity = res.ReturnValue;
+                if (!string.IsNullOrEmpty(domainEntity.HeaderPart.PriorFixedContent) || !string.IsNullOrEmpty(domainEntity.HeaderPart.LatterFixedContent)
+                 || domainEntity.HeaderPart.CustomizedContent.Count > 0)
+                {
+                    LayoutModel.HasCustomizedHeader = true;
+                    LayoutModel.HeaderPart = domainEntity.HeaderPart;
+                }
+
+                if (!string.IsNullOrEmpty(domainEntity.FooterPart.PriorFixedContent) || !string.IsNullOrEmpty(domainEntity.FooterPart.LatterFixedContent)
+                    || domainEntity.FooterPart.CustomizedContent.Count > 0)
+                {
+                    LayoutModel.HasCustomizedFooter = true;
+                    LayoutModel.FooterPart = domainEntity.FooterPart;
+                }
             }
             else
             {
-                domainName = "http://localhost:17951";
+                LayoutModel.HeaderPart = new PageHeaderPart();
+                LayoutModel.FooterPart = new PageFooterPart();
             }
 
-            var domainEntity = _domainRepository.FetchByName(domainName).ReturnValue;
-            
-            if(!string.IsNullOrEmpty(domainEntity.HeaderPart.PriorFixedContent) || !string.IsNullOrEmpty(domainEntity.HeaderPart.LatterFixedContent)
-                 || domainEntity.HeaderPart.CustomizedContent.Count > 0 )
-            {
-                LayoutModel.HasCustomizedHeader = true;
-                LayoutModel.HeaderPart = domainEntity.HeaderPart;
-            }
 
-            if(!string.IsNullOrEmpty(domainEntity.FooterPart.PriorFixedContent) || !string.IsNullOrEmpty(domainEntity.FooterPart.LatterFixedContent)
-                || domainEntity.FooterPart.CustomizedContent.Count > 0)
-            {
-                LayoutModel.HasCustomizedFooter = true;
-                LayoutModel.FooterPart = domainEntity.FooterPart;
-            }
-          
         }
     }
 }

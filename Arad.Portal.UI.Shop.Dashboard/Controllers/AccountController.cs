@@ -462,7 +462,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 }
                 else
                 {
-                    associatedDomainId = _domainRepository.FetchByName(currentDomain).ReturnValue.DomainId;
+                    associatedDomainId = _domainRepository.FetchByName(currentDomain, false).ReturnValue.DomainId;
                 }
                 if (existUser == null)
                 {

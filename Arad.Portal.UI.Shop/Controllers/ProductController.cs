@@ -56,9 +56,9 @@ namespace Arad.Portal.UI.Shop.Controllers
         {
             var isLoggedUser = HttpContext.User.Identity.IsAuthenticated;
             string userId = "";
-            //ViewBag.LoggedUser = isLoggedUser;
+           
             userId = isLoggedUser ? HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value : "";
-            var domainEntity = _domainRepository.FetchByName(_domainName);
+            var domainEntity = _domainRepository.FetchByName(_domainName, false);
             ViewBag.Providers = domainEntity.ReturnValue.DomainPaymentProviders.Select(_ => new SelectListModel() { Text = _.PspType.ToString(), Value = ((int)_.PspType).ToString() });
             var lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
             var entity = _productRepository.FetchByCode(slug, domainEntity.ReturnValue, userId);

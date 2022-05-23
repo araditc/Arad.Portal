@@ -78,7 +78,7 @@
             <div class="proContent">
                 <h6 class="m-2">
                     @(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ?
-                                item.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLangId).Name : "")
+                                item.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLangId).Name : "")
                 </h6>
             
                 <p class="item-price"><strike class="ps-3 float-start"><span>@item.OldPrice</span><span >@ViewBag.CurrencySymbol</span></strike> <b class="float-end"><span>@item.PriceValWithPromotion</span><span class="ps-2">@ViewBag.CurrencySymbol</span></b></p>

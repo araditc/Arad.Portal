@@ -204,8 +204,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                             && _.AssociatedDomainId == domainEntity.DomainId && _.IsActive).FirstOrDefault();
                     }
                 }
-                if (userCartEntity != null)
-                {
+                
                     //surely this product added before to shoppingcart then it has this record
                     var sellerObj = userCartEntity.Details.Where(_ => _.SellerId == productEntity.SellerUserId).FirstOrDefault();
                     var productRow = sellerObj.Products.FirstOrDefault(_ => _.ProductId == productId);
@@ -243,11 +242,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                     {
                         result.Message = ConstMessages.LackOfInventoryOfProduct;
                     }
-                }
-                else
-                {
-                    result.Message = ConstMessages.ObjectNotFound;
-                }
+               
             }else //if new count == 0
             {
                 result = await DeleteProductFromUserShoppingCart(userId, productId);
@@ -399,7 +394,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                                 DiscountPricePerUnit = discountPerUnit.DiscountPerUnit,
                                 TotalAmountToPay = (activePriceValue - discountPerUnit.DiscountPerUnit) * pro.OrderCount,
                                 ProductImage = productEntity.Images.Any(_=>_.IsMain) ? 
-                                               productEntity.Images.First(_ => _.IsMain) : productEntity.Images.First()
+                                               productEntity.Images.FirstOrDefault(_ => _.IsMain) : productEntity.Images.FirstOrDefault()
                             };
                             finalPaymentPrice += det.TotalAmountToPay;
                             sellerFactor += det.TotalAmountToPay;
@@ -624,7 +619,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                         _promotionContext.Collection
                         .Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.All &&
                         _.AssociatedDomainId == searchDomainId && _.IsActive && !_.IsDeleted &&
-                        _.SDate <= DateTime.Now && (_.EDate == null || _.EDate >= DateTime.Now)).First() : null;
+                        _.SDate <= DateTime.Now && (_.EDate == null || _.EDate >= DateTime.Now)).FirstOrDefault() : null;
 
                 var groupIds = product.GroupIds;
 
@@ -672,7 +667,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
 
             if (promotionList.Any())
             {
-                finalPromotion = promotionList.OrderByDescending(_ => _.SDate).First();
+                finalPromotion = promotionList.OrderByDescending(_ => _.SDate).FirstOrDefault();
             }
             return finalPromotion;
         }
@@ -830,9 +825,16 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
         public async Task<int> LoadUserCartShopping(string userId)
         {
             var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == GetCurrentDomainName()).FirstOrDefault();
-            var res = await FetchActiveUserShoppingCart(userId, domainEntity.DomainId);
-            var cartEntiry = _context.Collection.Find(_ => _.ShoppingCartId == res.ReturnValue.UserCartId).FirstOrDefault();
-            return GetItemCountsInCart(cartEntiry);
+            if(domainEntity != null)
+            {
+                var res = await FetchActiveUserShoppingCart(userId, domainEntity.DomainId);
+                var cartEntiry = _context.Collection.Find(_ => _.ShoppingCartId == res.ReturnValue.UserCartId).FirstOrDefault();
+                return GetItemCountsInCart(cartEntiry);
+            }else
+            {
+                return 0;
+            }
+            
         }
     }
 }

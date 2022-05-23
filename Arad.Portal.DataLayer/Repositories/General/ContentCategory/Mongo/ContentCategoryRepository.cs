@@ -175,7 +175,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
         {
             var result = new CommonViewModel();
             var categoryEntity = _categoryContext.Collection
-                .Find(_ => _.CategoryCode == categoryCode).First();
+                .Find(_ => _.CategoryCode == categoryCode).FirstOrDefault();
 
             result.Categories = GetDirectChildrens(categoryEntity.ContentCategoryId,5);
             result.BlogList = GetContentsInCategory(categoryEntity.ContentCategoryId, 5);
@@ -189,7 +189,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             var result = new ContentCategoryDTO();
             var urlFriend = $"{domainName}/category/{slug}";
             var categoryEntity = _categoryContext.Collection
-                .Find(_ => _.CategoryNames.Any(a => a.UrlFriend == urlFriend)).First();
+                .Find(_ => _.CategoryNames.Any(a => a.UrlFriend == urlFriend)).FirstOrDefault();
 
             result = _mapper.Map<ContentCategoryDTO>(categoryEntity);
             return result;
@@ -279,7 +279,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
                        ParentCategoryId = _.ParentCategoryId,
                        CategoryType = _.CategoryType,
                        IsDeleted = _.IsDeleted,
-                       CategoryName = _.CategoryNames.Count(a=>a.LanguageId == langId) != 0 ? _.CategoryNames.First(a => a.LanguageId == langId) : _.CategoryNames.First()
+                       CategoryName = _.CategoryNames.Count(a=>a.LanguageId == langId) != 0 ? _.CategoryNames.First(a => a.LanguageId == langId) : _.CategoryNames.FirstOrDefault()
                    }).ToList();
 
                 result.CurrentPage = page;

@@ -255,15 +255,15 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
             try
             {
                 Entities.General.Currency.Currency dbEntity;
-                var currentUser = _userManager.Users.AsQueryable().First(_ => _.Id == userId);
+                var currentUser = _userManager.Users.AsQueryable().FirstOrDefault(_ => _.Id == userId);
 
                 if(currentUser != null && !string.IsNullOrWhiteSpace(currentUser.Profile.DefaultCurrencyId))
                 {
-                    dbEntity = _context.Collection.AsQueryable().First(_ => _.CurrencyId == currentUser.Profile.DefaultCurrencyId);
+                    dbEntity = _context.Collection.AsQueryable().FirstOrDefault(_ => _.CurrencyId == currentUser.Profile.DefaultCurrencyId);
                 }
                 else
                 {
-                    dbEntity = _context.Collection.AsQueryable().First(_ => _.IsDefault);
+                    dbEntity = _context.Collection.AsQueryable().FirstOrDefault(_ => _.IsDefault);
                 }
                
                 if (dbEntity == null)
@@ -300,7 +300,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
         public CurrencyDTO GetCurrencyByItsPrefix(string prefix)
         {
             var result = new CurrencyDTO();
-            var currency = _context.Collection.Find(_ => _.Prefix == prefix).First();
+            var currency = _context.Collection.Find(_ => _.Prefix == prefix).FirstOrDefault();
             result = _mapper.Map<CurrencyDTO>(currency);
             return result;
         }

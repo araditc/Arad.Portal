@@ -71,7 +71,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var model = new ShippingSettingDTO();
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             string domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
-            var domainEntity = _domainRepository.FetchByName(domainName).ReturnValue;
+            var domainEntity = _domainRepository.FetchByName(domainName, false).ReturnValue;
 
             model.CurrencyId = domainEntity.DefaultCurrencyId;
             var defCurrency = _currencyRepository.FetchCurrency(domainEntity.DefaultCurrencyId).ReturnValue;
@@ -147,7 +147,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 }
                 dto.ShippingSettingId = Guid.NewGuid().ToString();
                 var domainName = _domainRepository.GetDomainName();
-                var currentDomain = _domainRepository.FetchByName(domainName).ReturnValue;
+                var currentDomain = _domainRepository.FetchByName(domainName, false).ReturnValue;
                 //dto.AssociatedDomainId = currentDomain.DomainId;
                 if (string.IsNullOrWhiteSpace(dto.CurrencyId))
                 {

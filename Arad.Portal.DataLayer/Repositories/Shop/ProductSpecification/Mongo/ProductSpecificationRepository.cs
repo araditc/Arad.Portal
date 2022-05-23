@@ -221,7 +221,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                    {
                       ProductSpecificationId = _.ProductSpecificationId,
                       SpecificationGroupId = _.SpecificationGroupId,
-                      SpecificationNameValues = _.SpecificationNameValues.Where(a=>a.LanguageId == langId).First()
+                      SpecificationNameValues = _.SpecificationNameValues.Where(a=>a.LanguageId == langId).FirstOrDefault()
                      
                    }).ToList();
 
@@ -308,7 +308,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                 .Project(_ => new SelectListModel()
                 {
                     Text = _.SpecificationNameValues.Where(a => a.LanguageId == languageId).Count() != 0 ?
-                         _.SpecificationNameValues.First(a => a.LanguageId == languageId).Name : "",
+                         _.SpecificationNameValues.FirstOrDefault(a => a.LanguageId == languageId).Name : "",
                     Value = _.ProductSpecificationId
                 }).ToList();
             return result;
@@ -317,7 +317,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
         public List<SelectListModel> GetSpcificationValuesInLanguage(string specificationId, string languageId)
         {
             var result = new List<SelectListModel>();
-            var res = _productContext.SpecificationCollection.Find(_ => _.ProductSpecificationId == specificationId).First();
+            var res = _productContext.SpecificationCollection.Find(_ => _.ProductSpecificationId == specificationId).FirstOrDefault();
 
             result = res.SpecificationNameValues.Where(_ => _.LanguageId == languageId).FirstOrDefault().NameValues.Select(_ => new SelectListModel()
             {

@@ -55,18 +55,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
                 var cookieVal = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
                 string symbol = cookieVal.Split("|")[0][2..];
                 var langId = _languageRepository.FetchBySymbol(symbol.ToLower());
-                if (_env.EnvironmentName == "Development")
+                domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
+               
+                var result = _domainRepository.FetchByName(domainName, false);
+                if(result.Succeeded)
                 {
-                    domainName = "http://localhost:17951";
+                    var domainEntity = result.ReturnValue;
+                    menues = _menuRepository.StoreList(domainEntity.DomainId, langId);
                 }
-                else
-                {
-                    domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
-                }
-                var result = _domainRepository.FetchByName(domainName);
-                var domainEntity = result.ReturnValue;
-
-                menues = _menuRepository.StoreList(domainEntity.DomainId, langId);
             }
             catch (Exception e)
             {

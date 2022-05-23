@@ -197,7 +197,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
         }
 
        
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (!env.IsDevelopment())
@@ -206,7 +206,8 @@ namespace Arad.Portal.UI.Shop.Dashboard
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+               
+                app.UseExceptionHandler("/fa-ir/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspuseSnetcore-hsts.
                 //app.UseHsts();
             }
@@ -256,11 +257,10 @@ namespace Arad.Portal.UI.Shop.Dashboard
 
             app.UseEndpoints(endpoints =>
             {
-                if (env.IsDevelopment())
-                    endpoints.MapControllers().WithMetadata(new AllowAnonymousAttribute());
-                else
-                    endpoints.MapControllers();
-
+                //if (env.IsDevelopment())
+                //    endpoints.MapControllers().WithMetadata(new AllowAnonymousAttribute());
+                //else
+                //    endpoints.MapControllers();
                
                 endpoints.MapControllerRoute(
                     name: "default",

@@ -62,7 +62,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
                 //equallentModel.CommentId = Guid.NewGuid().ToString();
                 
                 await _commentContext.Collection.InsertOneAsync(equallentModel);
-                var comment = _commentContext.Collection.Find(_ => _.CommentId == equallentModel.CommentId).First();
+                var comment = _commentContext.Collection.Find(_ => _.CommentId == equallentModel.CommentId).FirstOrDefault();
                 result.ReturnValue = comment;
                 result.Succeeded = true;
                 result.Message = ConstMessages.SuccessfullyDone;
@@ -80,7 +80,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
             var result = new Result<Entities.General.Comment.Comment>();
             bool finalRes = false;
             ReplaceOneResult res;
-            var cmtEntity = _commentContext.Collection.Find(_ => _.CommentId == commentId).First();
+            var cmtEntity = _commentContext.Collection.Find(_ => _.CommentId == commentId).FirstOrDefault();
             if(isLike)
             {
                 cmtEntity.LikeCount += 1;
@@ -96,8 +96,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
                 switch (cmtEntity.ReferenceType)
                 {
                     case ReferenceType.Product:
-                        var proEntity = _productContext.ProductCollection.Find(_ => _.ProductId == cmtEntity.ReferenceId).First();
-                        var cmt = proEntity.Comments.Where(_ => _.CommentId == commentId).First();
+                        var proEntity = _productContext.ProductCollection.Find(_ => _.ProductId == cmtEntity.ReferenceId).FirstOrDefault();
+                        var cmt = proEntity.Comments.Where(_ => _.CommentId == commentId).FirstOrDefault();
                         if (isLike)
                         {
                             cmt.LikeCount += 1;
@@ -116,8 +116,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
                         }
                         break;
                     case ReferenceType.Content:
-                        var contentEntity = _contentContext.Collection.Find(_ => _.ContentId == cmtEntity.ReferenceId).First();
-                        var cmnt = contentEntity.Comments.Where(_ => _.CommentId == commentId).First();
+                        var contentEntity = _contentContext.Collection.Find(_ => _.ContentId == cmtEntity.ReferenceId).FirstOrDefault();
+                        var cmnt = contentEntity.Comments.Where(_ => _.CommentId == commentId).FirstOrDefault();
                         if (isLike)
                         {
                             cmnt.LikeCount += 1;
@@ -161,7 +161,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
         {
             var result = new Result();
             bool finalRes = false;
-            var entity = _commentContext.Collection.Find(_ => _.CommentId == commentId).First();
+            var entity = _commentContext.Collection.Find(_ => _.CommentId == commentId).FirstOrDefault();
             var refType = entity.ReferenceType;
             if(entity.ReferenceType == ReferenceType.Product)
             {
@@ -334,19 +334,19 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
                    }).ToList();
                 foreach (var item in list)
                 {
-                    item.ParentCommentContent = _commentContext.Collection.Find(_ => _.CommentId == item.ParentCommentId).Any() ?  _commentContext.Collection.Find(_ => _.CommentId == item.ParentCommentId).First().Content : "";
+                    item.ParentCommentContent = _commentContext.Collection.Find(_ => _.CommentId == item.ParentCommentId).Any() ?  _commentContext.Collection.Find(_ => _.CommentId == item.ParentCommentId).FirstOrDefault().Content : "";
                     if(item.ReferenceType == ReferenceType.Product)
                     {
                       if(_productContext.ProductCollection.Find(_ => _.ProductId == item.ReferenceId).Any())
                         {
-                            var productEntity = _productContext.ProductCollection.Find(_ => _.ProductId == item.ReferenceId).First();
+                            var productEntity = _productContext.ProductCollection.Find(_ => _.ProductId == item.ReferenceId).FirstOrDefault();
                             item.ReferenceTitle = productEntity.MultiLingualProperties.Find(_ => _.LanguageId == langId).Name;
                         }
                         
                     }
                     else if(item.ReferenceType == ReferenceType.Content)
                     {
-                        item.ReferenceTitle = _contentContext.Collection.Find(_ => _.ContentId == item.ReferenceId).First().Title;
+                        item.ReferenceTitle = _contentContext.Collection.Find(_ => _.ContentId == item.ReferenceId).FirstOrDefault().Title;
                     }
                     item.PersianCreationDate = item.CreationDate.Value.ToPersianDdate();
                 }

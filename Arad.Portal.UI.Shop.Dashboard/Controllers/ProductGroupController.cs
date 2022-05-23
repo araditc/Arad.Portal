@@ -176,7 +176,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         dto.GroupImage.Url = res.Value;
                         dto.GroupImage.Content = "";
                         dto.GroupImage.Title = dto.MultiLingualProperties.Any(_ => _.LanguageId == lang.LanguageId) ?
-                            dto.MultiLingualProperties.First(_ => _.LanguageId == lang.LanguageId).Name : dto.MultiLingualProperties.First().Name;
+                            dto.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lang.LanguageId).Name : dto.MultiLingualProperties.FirstOrDefault().Name;
                     }
                 }else
                 {
@@ -278,7 +278,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                             dto.GroupImage.Url = res.Value;
                             dto.GroupImage.Content = "";
                             //dto.GroupImage.Title = dto.MultiLingualProperties.Any(_ => _.LanguageId == lan.LanguageId) ?
-                            //   dto.MultiLingualProperties.First(_ => _.LanguageId == lan.LanguageId).Name : dto.MultiLingualProperties.First().Name;
+                            //   dto.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lan.LanguageId).Name : dto.MultiLingualProperties.FirstOrDefault().Name;
 
                         }
                         //otherwise it is update then it doesnt need to change its url

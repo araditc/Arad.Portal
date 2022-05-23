@@ -10,7 +10,7 @@ namespace Arad.Portal.UI.Shop.Middlewares
     {
         public static IApplicationBuilder ApplyLanguageMapper(this IApplicationBuilder app)
         {
-            app.UseMiddleware<LanguageMapperMiddleware>();
+            app.UseMiddleware<UseLanguageMapperMiddleware>();
             return app;
         }
     }

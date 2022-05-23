@@ -75,7 +75,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
             var result = new Result();
             try
             {
-                var roleEntity = _context.Collection.Find(_ => _.RoleId == roleId).First();
+                var roleEntity = _context.Collection.Find(_ => _.RoleId == roleId).FirstOrDefault();
                 if(roleEntity != null)
                 {
                     roleEntity.IsActive = !roleEntity.IsActive;
@@ -110,7 +110,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
             try
             {
 
-                var roleEntity = _context.Collection.Find(_ => _.RoleId == roleId).First();
+                var roleEntity = _context.Collection.Find(_ => _.RoleId == roleId).FirstOrDefault();
                 if (roleEntity != null)
                 {
                     roleEntity.IsDeleted = true;

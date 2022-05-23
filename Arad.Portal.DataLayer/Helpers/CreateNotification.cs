@@ -81,14 +81,8 @@ namespace Arad.Portal.DataLayer.Helpers
             _setting = setting;
             _sendSmsConfig = sendSmsConfig;
             _domainRepository = domainRepository;
-            if (_env.EnvironmentName != "Development")
-            {
-                _domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
-            }
-            else
-            {
-                _domainName = "http://localhost:17951";
-            }
+
+            _domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
 
         }
 
@@ -96,7 +90,7 @@ namespace Arad.Portal.DataLayer.Helpers
 
         public async Task<Result> ClientSignUp(string templateName, ApplicationUser user, string password)
         {
-            
+
             SMTP smtp = _domainRepository.GetSMTPAccount(_domainName);
 
             if (smtp == null)
@@ -129,12 +123,12 @@ namespace Arad.Portal.DataLayer.Helpers
                 {
                     continue;
                 }
-                
+
                 string title = await GenerateText(notificationType,
                     messageTemplate.MessageTemplateMultiLingual
-                    .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Subject,  user);
+                    .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Subject, user);
                 string messageText = await GenerateText(notificationType, messageTemplate.MessageTemplateMultiLingual
-                    .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body,  user, "", "", password);
+                    .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body, user, "", "", password);
 
                 Notification notification = new()
                 {
@@ -151,11 +145,11 @@ namespace Arad.Portal.DataLayer.Helpers
                     TemplateName = templateName,
                     UserFullName = "",
                     SendSmsConfig = _sendSmsConfig,
-                    AssociatedDomainId = _domainRepository.FetchByName(_domainName).ReturnValue.DomainId
+                    AssociatedDomainId = _domainRepository.FetchByName(_domainName, true).ReturnValue.DomainId
                 };
 
                 switch (notificationType)
-                { 
+                {
                     case NotificationType.Email:
                         notification.SMTP = smtp;
                         //todo notification.UserEmail = user.Email;
@@ -186,7 +180,7 @@ namespace Arad.Portal.DataLayer.Helpers
             {
                 return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_NotFoundSmsSetting") };
             }
-            
+
             List<NotificationType> notificationTypes = new() { NotificationType.Sms };
             List<Notification> notifications = new();
 
@@ -207,7 +201,7 @@ namespace Arad.Portal.DataLayer.Helpers
                     TemplateName = "",
                     UserFullName = "",
                     SendSmsConfig = _sendSmsConfig,
-                    AssociatedDomainId = _domainRepository.FetchByName(_domainName).ReturnValue.DomainId
+                    AssociatedDomainId = _domainRepository.FetchByName(_domainName, true).ReturnValue.DomainId
                 };
 
                 switch (notificationType)
@@ -239,7 +233,7 @@ namespace Arad.Portal.DataLayer.Helpers
         public async Task<Result> Send(string templateName, ApplicationUser user, string password)
         {
             //SMTP smtp = await _smtpRepository.GetDefault();
-          
+
             SMTP smtp = _domainRepository.GetSMTPAccount(_domainName);
 
             if (smtp == null)
@@ -273,10 +267,10 @@ namespace Arad.Portal.DataLayer.Helpers
                     continue;
                 }
 
-                string title = await GenerateText(notificationType, 
+                string title = await GenerateText(notificationType,
                     messageTemplate.MessageTemplateMultiLingual.First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Subject, user);
-                string messageText = await GenerateText(notificationType, 
-                    messageTemplate.MessageTemplateMultiLingual.First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body,  user, "", "", password);
+                string messageText = await GenerateText(notificationType,
+                    messageTemplate.MessageTemplateMultiLingual.First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body, user, "", "", password);
 
                 Notification notification = new()
                 {
@@ -293,7 +287,7 @@ namespace Arad.Portal.DataLayer.Helpers
                     TemplateName = templateName,
                     UserFullName = "",
                     SendSmsConfig = _sendSmsConfig,
-                    AssociatedDomainId = _domainRepository.FetchByName(_domainName).ReturnValue.DomainId
+                    AssociatedDomainId = _domainRepository.FetchByName(_domainName, true).ReturnValue.DomainId
                 };
 
                 switch (notificationType)
@@ -325,7 +319,7 @@ namespace Arad.Portal.DataLayer.Helpers
         public async Task<Result> SendConfirmEmail(string templateName, ApplicationUser user, string callbackUrl)
         {
             //SMTP smtp = await _smtpRepository.GetDefault(); 
-         
+
             SMTP smtp = _domainRepository.GetSMTPAccount(_domainName);
             if (smtp == null)
             {
@@ -349,7 +343,7 @@ namespace Arad.Portal.DataLayer.Helpers
 
             foreach (NotificationType notificationType in notificationTypes)
             {
-                MessageTemplate messageTemplate = messageTemplates.FirstOrDefault(m => m.NotificationType == notificationType 
+                MessageTemplate messageTemplate = messageTemplates.FirstOrDefault(m => m.NotificationType == notificationType
                     && m.MessageTemplateMultiLingual.Any(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)));
 
                 if (messageTemplate == null)
@@ -360,8 +354,8 @@ namespace Arad.Portal.DataLayer.Helpers
                 string title = await GenerateText(notificationType, messageTemplate.MessageTemplateMultiLingual
                     .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Subject, user);
                 string messageText = await GenerateText(notificationType,
-                    messageTemplate.MessageTemplateMultiLingual.First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body,  user, callbackUrl);
-                
+                    messageTemplate.MessageTemplateMultiLingual.First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body, user, callbackUrl);
+
                 Notification notification = new()
                 {
                     NotificationId = Guid.NewGuid().ToString(),
@@ -376,7 +370,7 @@ namespace Arad.Portal.DataLayer.Helpers
                     CreatorUserName = user.UserName,
                     TemplateName = templateName,
                     UserFullName = user.Profile.FullName,
-                    AssociatedDomainId = _domainRepository.FetchByName(_domainName).ReturnValue.DomainId
+                    AssociatedDomainId = _domainRepository.FetchByName(_domainName, true).ReturnValue.DomainId
                 };
 
                 switch (notificationType)
@@ -404,11 +398,11 @@ namespace Arad.Portal.DataLayer.Helpers
 
             return new() { Succeeded = true, Message = Language.GetString("AlertAndMessage_OperationSuccess") };
         }
-        
+
         public async Task<Result> SendOtp(string templateName, ApplicationUser user, string otp)
         {
             //SMTP smtp = await _smtpRepository.GetDefault();
-           
+
             SMTP smtp = _domainRepository.GetSMTPAccount(_domainName);
 
             if (smtp == null)
@@ -433,7 +427,7 @@ namespace Arad.Portal.DataLayer.Helpers
 
             foreach (NotificationType notificationType in notificationTypes)
             {
-                MessageTemplate messageTemplate = messageTemplates.FirstOrDefault(m => m.NotificationType == notificationType 
+                MessageTemplate messageTemplate = messageTemplates.FirstOrDefault(m => m.NotificationType == notificationType
                 && m.MessageTemplateMultiLingual.Any(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)));
 
                 if (messageTemplate == null)
@@ -451,7 +445,7 @@ namespace Arad.Portal.DataLayer.Helpers
                     "",
                     otp,
                     "");
-                
+
                 Notification notification = new()
                 {
                     NotificationId = Guid.NewGuid().ToString(),
@@ -467,7 +461,7 @@ namespace Arad.Portal.DataLayer.Helpers
                     TemplateName = templateName,
                     UserFullName = user.Profile.FullName,
                     SendSmsConfig = _sendSmsConfig,
-                    AssociatedDomainId = _domainRepository.FetchByName(_domainName).ReturnValue.DomainId
+                    AssociatedDomainId = _domainRepository.FetchByName(_domainName, true).ReturnValue.DomainId
                 };
 
                 switch (notificationType)
@@ -501,7 +495,7 @@ namespace Arad.Portal.DataLayer.Helpers
             try
             {
                 //SMTP smtp = await _smtpRepository.GetDefault();
-            
+
                 SMTP smtp = _domainRepository.GetSMTPAccount(_domainName);
 
                 if (smtp == null)
@@ -541,8 +535,8 @@ namespace Arad.Portal.DataLayer.Helpers
                         messageTemplate.MessageTemplateMultiLingual
                         .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body,
                         null,
-                        null, 
-                        otp, 
+                        null,
+                        otp,
                         null);
 
                     ApplicationUser user = _userManager.Users.FirstOrDefault(_ => _.IsSystemAccount);
@@ -562,7 +556,7 @@ namespace Arad.Portal.DataLayer.Helpers
                         TemplateName = templateName,
                         UserFullName = "",
                         SendSmsConfig = _sendSmsConfig,
-                        AssociatedDomainId = _domainRepository.FetchByName(_domainName).ReturnValue.DomainId
+                        AssociatedDomainId = _domainRepository.FetchByName(_domainName, true).ReturnValue.DomainId
                     };
 
                     switch (notificationType)
@@ -592,9 +586,9 @@ namespace Arad.Portal.DataLayer.Helpers
             }
             catch (Exception ex)
             {
-                return new() {Succeeded = false , Message = Language.GetString("AlertAndMessage_Error") };
+                return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_Error") };
             }
-            
+
         }
 
         private async Task<string> GenerateText(NotificationType notificationType, string text,
@@ -623,7 +617,7 @@ namespace Arad.Portal.DataLayer.Helpers
                 text = text.Replace("{$client_email_verification_link}", url);
             }
 
-            
+
 
             if (user != null)
             {
@@ -679,7 +673,7 @@ namespace Arad.Portal.DataLayer.Helpers
             //    text = text.Replace("{$company_logo_url}", url);
             //}
             //}
-            
+
             return text;
 
             string IsNullOrEmpty(string value) => string.IsNullOrWhiteSpace(value) ? "" : value;

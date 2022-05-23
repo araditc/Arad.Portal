@@ -10,14 +10,14 @@
                     <div class="w-100">
                         <div class="w-100">
                             <div class="text-center">
-                                <img class="proImg rounded m-2 mt-4 img-fluid" src="@($"../filemanager/getscaledimageOnWidth?path={item.Images.First(_=>_.IsMain).Url}&width={500}")"  
-                                     alt="@(item.Images.Where(_=>_.IsMain).Any() ? item.Images.First(_=>_.IsMain).Title : "ProductImage")" />
+                                <img class="proImg rounded m-2 mt-4 img-fluid" src="@($"../filemanager/getscaledimageOnWidth?path={(item.Images.Any(_=>_.IsMain) ? item.Images.FirstOrDefault(_=>_.IsMain).Url : "/img/NoImage.Png")}&width={500}")"  
+                                     alt="@(item.Images.Where(_=>_.IsMain).Any() ? item.Images.FirstOrDefault(_=>_.IsMain).Title : "ProductImage")" />
                             </div>
                             <div class="bbb_deals_content">
                                 <div class="bbb_deals_info_line d-flex flex-row justify-content-start">
                                     <div class="bbb_deals_item_category">
                                         @*<a href="/product/@item.ProductCode">@(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ?
-                                            item.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLangId).Name : item.MultiLingualProperties.First().Name )</a>*@
+                                            item.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLangId).Name : item.MultiLingualProperties.FirstOrDefault().Name )</a>*@
                                     </div>
                                     <div class="bbb_deals_item_price_a ml-auto">
                                      @if(item.OldPrice != 0 && item.OldPrice != item.PriceValWithPromotion)
@@ -29,7 +29,7 @@
                                 <div class="bbb_deals_info_line d-flex flex-row justify-content-center">
                                     <a class="text-decoration-none" href="/product/@item.ProductCode">
                                         @(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ?
-                                        item.MultiLingualProperties.First(_ => _.LanguageId == ViewBag.CurLangId).Name : item.MultiLingualProperties.First().Name )
+                                        item.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLangId).Name : item.MultiLingualProperties.FirstOrDefault().Name )
                                     </a>
                                     <div class="bbb_deals_item_price ml-auto">@($"{@item.PriceValWithPromotion} {ViewBag.CurrencySymbol}")</div>
                                 </div>

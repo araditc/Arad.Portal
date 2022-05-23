@@ -42,17 +42,10 @@ namespace Arad.Portal.DataLayer.Repositories
     
         protected string GetCurrentDomainName()
         {
-            if (_env.EnvironmentName != "Development")
-            {
+            
                 var domain = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
                 return domain;
-            }
-            else
-            {
-                return "http://localhost:17951";
-            }
-
-
+           
         }
         protected string GetUserId()
         {

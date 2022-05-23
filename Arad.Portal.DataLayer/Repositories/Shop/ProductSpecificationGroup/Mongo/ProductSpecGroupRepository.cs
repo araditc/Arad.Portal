@@ -70,7 +70,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
                 .Project(_=> new SelectListModel()
                 {
                     Text = _.GroupNames.Where(a => a.LanguageId == langId).Count() != 0 ?
-                         _.GroupNames.First(a => a.LanguageId == langId).Name : "",
+                         _.GroupNames.FirstOrDefault(a => a.LanguageId == langId).Name : "",
                     Value = _.SpecificationGroupId
                 }).ToList();
             return result;
@@ -180,7 +180,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
                    {
                        SpecificationGroupId = _.SpecificationGroupId,
                        IsDeleted = _.IsDeleted,
-                       GroupName = _.GroupNames.First(a => a.LanguageId == langId)
+                       GroupName = _.GroupNames.FirstOrDefault(a => a.LanguageId == langId)
                    }).ToList();
 
                 result.CurrentPage = page;

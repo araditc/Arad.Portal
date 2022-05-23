@@ -364,7 +364,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
         public PromotionDTO FetchPromotion(string id)
         {
             var result = new PromotionDTO();
-            var entity = _context.Collection.Find(_ => _.PromotionId == id).First();
+            var entity = _context.Collection.Find(_ => _.PromotionId == id).FirstOrDefault();
             if(entity != null)
             {
                 result = _mapper.Map<PromotionDTO>(entity);

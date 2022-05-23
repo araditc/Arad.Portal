@@ -52,8 +52,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
         {
             var result = new List<BasicDataModel>();
            var domainName = base.GetCurrentDomainName();
-            var domainEntity = _domainContext.Collection
-                .Find(_ => _.DomainName == domainName).FirstOrDefault();
+            var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).Any() ?
+                _domainContext.Collection.Find(_ => _.DomainName == domainName).First() :
+                _domainContext.Collection.Find(_ => _.IsDefault).First();
 
             var lst = _context.Collection
                   .Find(_ => _.GroupKey.ToLower() == groupKey.ToLower() 

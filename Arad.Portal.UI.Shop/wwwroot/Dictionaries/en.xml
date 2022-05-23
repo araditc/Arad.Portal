@@ -521,6 +521,9 @@
 	<string key="AlertAndMessage_ProductCountInCart">
 		<value>this product has been added to your cart.</value>
 	</string>
+	<string key="AlertAndMessage_ShoppingCartIsEmpty">
+		<value>Your basket is empty.</value>
+	</string>
 	<string key="AlertAndMessage_ProductPriceIncrease">
 		<value>Unfortunatelly, the price of product [0] have been increased.</value>
 	</string>

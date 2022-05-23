@@ -2,8 +2,11 @@
 @{
     // var index = 1;
 }
+ <div class="card">
+ <div class="card-body">
 @if (@Model.Details.Any())
 {
+   
     @foreach (var seller in @Model.Details)
     {
         <div class="row border-bottom">
@@ -100,7 +103,15 @@
            }
         </div>
     </div>
+   
+}else
+{
+    <div class="row">
+        <p class="text-center m-1 p-1"><strong>@Language.GetString("AlertAndMessage_ShoppingCartIsEmpty")</strong></p>
+    </div>
 }
+ </div>
+ </div>
 
 
 <script type="text/javascript">
@@ -118,6 +129,7 @@
             //});
         });
     function changeOrderCount(sender, productId) {
+        debugger;
         var cnt = $(sender).val();
          $.ajax({
              url: "/basket/AddProToBasket?productId=" + productId + "&cnt=" + cnt,
@@ -127,6 +139,11 @@
                     beforeSend: function () {
                     },
                     success: function (result) {
+                        debugger;
+                        if(result.status =="Succeed")
+                        {
+                            window.location.reload();
+                        }
                     }
                   });
     }

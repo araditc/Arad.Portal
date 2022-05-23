@@ -53,7 +53,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _userManager = userManager;
             _contentRepository = contentRepository;
             domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
-            domainId = _domainRepository.FetchByName(domainName).ReturnValue.DomainId;
+            domainId = _domainRepository.FetchByName(domainName, false).ReturnValue.DomainId;
             
         }
 
@@ -64,7 +64,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
           
             var domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
-            var res = _domainRepository.FetchByName(domainName);
+            var res = _domainRepository.FetchByName(domainName, false);
             var domainId = res.Succeeded ? res.ReturnValue.DomainId : Guid.Empty.ToString();
            
             try
