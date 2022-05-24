@@ -108,7 +108,8 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
         public string UserId { get; set; }
         public string UserName { get; set; }
         public string UserFullName { get; set; }
-     }
+        public string ShippingAddressId { get; set; }
+    }
 
     public class EventData
     {

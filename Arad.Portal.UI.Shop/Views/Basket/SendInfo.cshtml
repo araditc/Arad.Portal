@@ -162,8 +162,18 @@
                
                 //var giftText = "";
                 var address = $('input[name="address"]:checked').attr("id");
-                console.log(address);
-               
+                if($('input[name="address"]:checked').length == 0)
+                {
+                     document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${'@Language.GetString("AlertAndMessage_LoginFirst")'}`;
+                     document.getElementById('mainToastBody').classList.add('alert-danger');
+                        var toastDiv = $("#mainToast");
+                        $("#toastPanel").show();
+                        var toast = new bootstrap.Toast(toastDiv);
+                      toast.show();
+                      return ;
+                }
+                
+                
                 var obj = {};
                 obj.UserCartId = '@Model.UserCartId';
                 obj.Address = address;

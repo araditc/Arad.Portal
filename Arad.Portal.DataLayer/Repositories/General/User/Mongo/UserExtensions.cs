@@ -104,7 +104,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             try
             {
                 var user = _userManager.Users
-                    .FirstOrDefault(_ => _.PhoneNumber == phoneNumber && !_.IsDeleted);
+                    .Any(_ => _.PhoneNumber == phoneNumber && !_.IsDeleted) ? _userManager.Users
+                    .FirstOrDefault(_ => _.PhoneNumber == phoneNumber && !_.IsDeleted) : null;
 
                 return user;
             }

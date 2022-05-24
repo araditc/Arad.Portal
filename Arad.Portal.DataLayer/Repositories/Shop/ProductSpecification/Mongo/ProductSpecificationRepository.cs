@@ -221,7 +221,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                    {
                       ProductSpecificationId = _.ProductSpecificationId,
                       SpecificationGroupId = _.SpecificationGroupId,
-                      SpecificationNameValues = _.SpecificationNameValues.Where(a=>a.LanguageId == langId).FirstOrDefault()
+                      SpecificationNameValues = _.SpecificationNameValues.Any(a=>a.LanguageId == langId) ?
+                      _.SpecificationNameValues.FirstOrDefault(a => a.LanguageId == langId) : 
+                      _.SpecificationNameValues.FirstOrDefault()
                      
                    }).ToList();
 
@@ -285,19 +287,27 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
             var result = new Result();
             var entity = _productContext.SpecificationCollection
               .Find(_ => _.ProductSpecificationId == specificationId).FirstOrDefault();
-            entity.IsDeleted = false;
-            var updateResult = await _productContext.SpecificationCollection
-               .ReplaceOneAsync(_ => _.ProductSpecificationId == specificationId, entity);
-            if (updateResult.IsAcknowledged)
+            if(entity != null)
             {
-                result.Succeeded = true;
-                result.Message = ConstMessages.SuccessfullyDone;
+                entity.IsDeleted = false;
+                var updateResult = await _productContext.SpecificationCollection
+                   .ReplaceOneAsync(_ => _.ProductSpecificationId == specificationId, entity);
+                if (updateResult.IsAcknowledged)
+                {
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                }
+                else
+                {
+                    result.Succeeded = false;
+                    result.Message = ConstMessages.ErrorInSaving;
+                }
             }
             else
             {
-                result.Succeeded = false;
-                result.Message = ConstMessages.ErrorInSaving;
+                result.Message = ConstMessages.ObjectNotFound;
             }
+            
             return result;
         }
 

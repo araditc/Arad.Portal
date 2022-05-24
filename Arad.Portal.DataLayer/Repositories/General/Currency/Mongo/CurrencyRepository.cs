@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using Arad.Portal.DataLayer.Entities;
 using Arad.Portal.DataLayer.Models.Currency;
 using Microsoft.AspNetCore.Http;
@@ -228,7 +229,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
                 = new Result<CurrencyDTO>(); 
             try
             {
-                var dbEntity = _context.Collection.AsQueryable().FirstOrDefault(_=>_.CurrencyId == currencyId);
+                var dbEntity = _context.Collection.Find(_=>_.CurrencyId == currencyId).FirstOrDefault();
                 if (dbEntity == null)
                 {
                     result.Message = ConstMessages.ObjectNotFound;
@@ -255,15 +256,15 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
             try
             {
                 Entities.General.Currency.Currency dbEntity;
-                var currentUser = _userManager.Users.AsQueryable().FirstOrDefault(_ => _.Id == userId);
+                var currentUser = _userManager.Users.FirstOrDefault(_=>_.Id == userId);
 
                 if(currentUser != null && !string.IsNullOrWhiteSpace(currentUser.Profile.DefaultCurrencyId))
                 {
-                    dbEntity = _context.Collection.AsQueryable().FirstOrDefault(_ => _.CurrencyId == currentUser.Profile.DefaultCurrencyId);
+                    dbEntity = _context.Collection.Find(_ => _.CurrencyId == currentUser.Profile.DefaultCurrencyId).FirstOrDefault();
                 }
                 else
                 {
-                    dbEntity = _context.Collection.AsQueryable().FirstOrDefault(_ => _.IsDefault);
+                    dbEntity = _context.Collection.Find(_ => _.IsDefault).FirstOrDefault();
                 }
                
                 if (dbEntity == null)
@@ -301,7 +302,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
         {
             var result = new CurrencyDTO();
             var currency = _context.Collection.Find(_ => _.Prefix == prefix).FirstOrDefault();
-            result = _mapper.Map<CurrencyDTO>(currency);
+            if(currency != null)
+            {
+                result = _mapper.Map<CurrencyDTO>(currency);
+            }
+           
             return result;
         }
     }

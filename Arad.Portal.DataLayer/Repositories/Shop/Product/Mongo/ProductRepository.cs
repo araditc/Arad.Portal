@@ -417,7 +417,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             {
                 var unitEntity = _context
                     .ProductUnitCollection.Find(_ => _.ProductUnitId == dto.UnitId).FirstOrDefault();
-                equallentModel.Unit = unitEntity;
+                if(unitEntity != null)
+                {
+                    equallentModel.Unit = unitEntity;
+                }
+                
             }
             #endregion
 
@@ -430,10 +434,13 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     if (equallentModel.Prices.Any(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive))
                     {
                         var exist = equallentModel.Prices.FirstOrDefault(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive);
-                        equallentModel.Prices.Remove(exist);
-                        exist.IsActive = false;
-                        exist.EndDate = DateTime.Now;
-                        equallentModel.Prices.Add(exist);
+                        //equallentModel.Prices.Remove(exist);
+                        if(exist != null)
+                        {
+                            exist.IsActive = false;
+                            exist.EndDate = DateTime.Now;
+                        }
+                        //equallentModel.Prices.Add(exist);
 
                     }
                 }
@@ -459,7 +466,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             {
                 var promotionEntity =
                     _promotionContext.Collection.Find(_ => _.PromotionId == dto.PromotionId).FirstOrDefault();
-                equallentModel.Promotion = promotionEntity;
+                if(promotionEntity != null)
+                {
+                    equallentModel.Promotion = promotionEntity;
+                }
+                
             }
             #endregion Promotion
 
@@ -646,22 +657,23 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         {
             var result = new Result();
             var product = _context.ProductCollection.Find(_ => _.ProductId == dto.ProductId).FirstOrDefault();
-
-            var equallentModel = MappingProduct(dto);
-            equallentModel.CreationDate = product.CreationDate;
-
-            var updateResult = await _context.ProductCollection
-                .ReplaceOneAsync(_ => _.ProductId == dto.ProductId, equallentModel);
-
-            if (updateResult.IsAcknowledged)
+            if(product != null)
             {
-                result.Succeeded = true;
-                result.Message = ConstMessages.SuccessfullyDone;
-            }
-            else
-            {
-                result.Message = ConstMessages.GeneralError;
+                var equallentModel = MappingProduct(dto);
+                equallentModel.CreationDate = product.CreationDate;
 
+                var updateResult = await _context.ProductCollection
+                    .ReplaceOneAsync(_ => _.ProductId == dto.ProductId, equallentModel);
+
+                if (updateResult.IsAcknowledged)
+                {
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                }
+                else
+                {
+                    result.Message = ConstMessages.GeneralError;
+                }
             }
             return result;
         }
@@ -671,19 +683,26 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             var result = new Result();
             var entity = _context.ProductCollection
               .Find(_ => _.ProductId == productId).FirstOrDefault();
-            entity.IsDeleted = false;
-            var updateResult = await _context.ProductCollection
-               .ReplaceOneAsync(_ => _.ProductId == productId, entity);
-            if (updateResult.IsAcknowledged)
+            if(entity != null)
             {
-                result.Succeeded = true;
-                result.Message = ConstMessages.SuccessfullyDone;
-            }
-            else
+                entity.IsDeleted = false;
+                var updateResult = await _context.ProductCollection
+                   .ReplaceOneAsync(_ => _.ProductId == productId, entity);
+                if (updateResult.IsAcknowledged)
+                {
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                }
+                else
+                {
+                    result.Succeeded = false;
+                    result.Message = ConstMessages.ErrorInSaving;
+                }
+            }else
             {
-                result.Succeeded = false;
-                result.Message = ConstMessages.ErrorInSaving;
+                result.Message = ConstMessages.ObjectNotFound;
             }
+           
             return result;
         }
 
@@ -822,13 +841,17 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             }
             else
             {
-                result = _context.ProductCollection.Find(_ => _.GroupIds.Contains(productGroupId) && _.IsActive && _.CreatorUserId == user.Id)
+                if(domainEntity != null)
+                {
+                    result = _context.ProductCollection.Find(_ => _.GroupIds.Contains(productGroupId) && _.IsActive && _.CreatorUserId == user.Id)
                   .Project(_ => new SelectListModel()
                   {
                       Text = _.MultiLingualProperties.Where(a => a.LanguageId == domainEntity.DefaultLanguageId).Count() != 0 ?
                          _.MultiLingualProperties.FirstOrDefault(a => a.LanguageId == domainEntity.DefaultLanguageId).Name : _.MultiLingualProperties.FirstOrDefault().Name,
                       Value = _.ProductId
                   }).ToList();
+                }
+                
             }
             return result;
         }
@@ -839,7 +862,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             var urlFriend = $"{domainName}/product/{slug}";
             var productEntity = _context.ProductCollection
                 .Find(_ => _.MultiLingualProperties.Any(a => a.UrlFriend == urlFriend)).FirstOrDefault();
-
+            if(productEntity != null)
             result = _mapper.Map<ProductOutputDTO>(productEntity);
             result.MultiLingualProperties = productEntity.MultiLingualProperties;
 
@@ -852,7 +875,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             var urlFriend = $"{domainName}/product/{slug}";
             var productEntity = _context.ProductCollection
                 .Find(_ => _.MultiLingualProperties.Any(a => a.UrlFriend == urlFriend)).FirstOrDefault();
-
+            if(productEntity != null)
             result = _mapper.Map<ProductOutputDTO>(productEntity);
             result.MultiLingualProperties = productEntity.MultiLingualProperties;
 
@@ -920,7 +943,6 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-       
         private ProductOutputDTO EvaluateFinalPrice(string productId, List<Price> productPrices, List<string> productGroupIds, string defCurrenyId)
         {
             var result = new ProductOutputDTO();
@@ -931,22 +953,34 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             Entities.Shop.Promotion.Promotion promotionOnProductGroup = null;
             Entities.Shop.Promotion.Promotion promotionOnThisProduct = null;
             Entities.Shop.Promotion.Promotion newestPromotion = null;
+            var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == GetCurrentDomainName()).Any() ?
+                _domainContext.Collection.Find(_ => _.DomainName == GetCurrentDomainName()).FirstOrDefault() :
+                _domainContext.Collection.Find(_ => _.IsDefault).FirstOrDefault();
 
             var promotionList = new List<Entities.Shop.Promotion.Promotion>();
             if (_promotionContext.Collection.Find(_ => _.PromotionType ==
-             Entities.Shop.Promotion.PromotionType.All && (_.EDate == null || _.EDate.Value >= DateTime.Now) && _.SDate <= DateTime.Now).Any())
+             Entities.Shop.Promotion.PromotionType.All 
+             && (_.EDate == null || _.EDate.Value >= DateTime.Now) && _.SDate <= DateTime.Now 
+             && _.AssociatedDomainId == domainEntity.DomainId 
+             && _.IsActive && !_.IsDeleted).Any())
             {
                 promotionOnAll = _promotionContext.Collection
-                    .Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.All && (_.EDate == null || _.EDate.Value >= DateTime.Now) && _.SDate <= DateTime.Now).FirstOrDefault();
+                    .Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.All 
+                        && (_.EDate == null || _.EDate.Value >= DateTime.Now) && _.SDate <= DateTime.Now 
+                        && _.AssociatedDomainId == domainEntity.DomainId && _.IsActive && !_.IsDeleted).FirstOrDefault();
             }
-            if (_promotionContext.Collection.Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group &&
-             _.SDate <= DateTime.Now && (_.EDate == null || _.EDate.Value >= DateTime.Now) && _.Infoes.Any(a => productGroupIds.Contains(a.AffectedProductGroupId))).Any())
+            if (_promotionContext.Collection.AsQueryable().Any(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group &&
+             _.SDate <= DateTime.Now && (_.EDate == null || _.EDate.Value >= DateTime.Now) && _.IsActive && !_.IsDeleted
+                    && _.AssociatedDomainId == domainEntity.DomainId
+                    && _.Infoes.Any(a => productGroupIds.Contains(a.AffectedProductGroupId))))
             {
-                promotionOnProductGroup =
-                     _promotionContext.Collection.Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group && _.SDate <= DateTime.Now &&
-                          (_.EDate == null || _.EDate.Value >= DateTime.Now) && _.Infoes.Any(a => productGroupIds.Contains(a.AffectedProductGroupId))).FirstOrDefault();
+               
+                promotionOnProductGroup = _promotionContext.Collection.AsQueryable()
+                   .FirstOrDefault(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group &&
+                   _.Infoes.Any(a => productGroupIds.Contains(a.AffectedProductGroupId)) &&
+                   _.AssociatedDomainId == domainEntity.DomainId && _.IsActive && !_.IsDeleted &&
+                   _.SDate <= DateTime.Now && (_.EDate == null || _.EDate >= DateTime.Now));
             }
-
 
             if (_promotionContext.Collection.Find(_ => _.PromotionType ==
                  Entities.Shop.Promotion.PromotionType.Product && _.SDate <= DateTime.Now && (_.EDate == null || _.EDate.Value >= DateTime.Now)

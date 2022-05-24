@@ -140,7 +140,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
             {
                 var group = await _productContext.SpecGroupCollection
                     .Find(_ => _.SpecificationGroupId == productSpecificationGroupId).FirstOrDefaultAsync();
-                result = _mapper.Map<SpecificationGroupDTO>(group);
+                if(group != null)
+                {
+                    result = _mapper.Map<SpecificationGroupDTO>(group);
+                }
+                
             }
             catch (Exception e)
             {
@@ -180,7 +184,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
                    {
                        SpecificationGroupId = _.SpecificationGroupId,
                        IsDeleted = _.IsDeleted,
-                       GroupName = _.GroupNames.FirstOrDefault(a => a.LanguageId == langId)
+                       GroupName = _.GroupNames.Any(a => a.LanguageId == langId) ? _.GroupNames.FirstOrDefault(a => a.LanguageId == langId) : _.GroupNames.FirstOrDefault()
                    }).ToList();
 
                 result.CurrentPage = page;
@@ -206,19 +210,26 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
             var result = new Result();
             var entity = _productContext.SpecGroupCollection
               .Find(_ => _.SpecificationGroupId == productSpecificationGroupId).FirstOrDefault();
-            entity.IsDeleted = false;
-            var updateResult = await _productContext.SpecGroupCollection
-               .ReplaceOneAsync(_ => _.SpecificationGroupId == productSpecificationGroupId, entity);
-            if (updateResult.IsAcknowledged)
+            if(entity != null)
             {
-                result.Succeeded = true;
-                result.Message = ConstMessages.SuccessfullyDone;
-            }
-            else
+                entity.IsDeleted = false;
+                var updateResult = await _productContext.SpecGroupCollection
+                   .ReplaceOneAsync(_ => _.SpecificationGroupId == productSpecificationGroupId, entity);
+                if (updateResult.IsAcknowledged)
+                {
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                }
+                else
+                {
+                    result.Succeeded = false;
+                    result.Message = ConstMessages.ErrorInSaving;
+                }
+            }else
             {
-                result.Succeeded = false;
-                result.Message = ConstMessages.ErrorInSaving;
+                result.Message = ConstMessages.ObjectNotFound;
             }
+           
             return result;
         }
 

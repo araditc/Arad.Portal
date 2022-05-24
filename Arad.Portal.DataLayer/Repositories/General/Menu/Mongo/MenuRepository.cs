@@ -93,6 +93,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             {
                 var userId = this.GetUserId();
                 var userEntity = await _userManager.FindByIdAsync(userId);
+                if (userEntity == null)
+                    return result;
 
                 NameValueCollection filter = HttpUtility.ParseQueryString(queryString);
 
@@ -126,11 +128,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 var domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
 
                 FilterDefinitionBuilder<Entities.General.Menu.Menu> builder = new();
-                FilterDefinition<Entities.General.Menu.Menu> filterDef;
+                FilterDefinition<Entities.General.Menu.Menu> filterDef = null;
                 if (userEntity.IsSystemAccount)
                     filterDef = builder.Empty;
-                else
+                else if (domainEntity != null)
                     filterDef = builder.Eq(nameof(Entities.General.Menu.Menu.AssociatedDomainId), domainEntity.DomainId);
+                else
+                    return result;
                
                 filterDef = builder.And(filterDef, builder.Eq(nameof(Entities.General.Menu.Menu.IsActive), true));
                 if(parentId != "")
@@ -170,7 +174,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                         {
                             MenuId = _.MenuId,
                             Icon = _.Icon,
-                            MenuTitle = _.MenuTitles.FirstOrDefault(_=>_.LanguageId == languageId).Name,
+                            MenuTitle = _.MenuTitles.Any(_=>_.LanguageId == languageId) ? 
+                            _.MenuTitles.FirstOrDefault(_ => _.LanguageId == languageId).Name : _.MenuTitles.FirstOrDefault().Name,
                             LanguageId = languageId,
                             MenuTitles = _.MenuTitles,
                             MenuType = _.MenuType,
@@ -204,94 +209,25 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             var result = new List<StoreMenuVM>();
             string finalLangId;
             var domainEntity = _domainContext.Collection.Find(Builders<Entities.General.Domain.Domain>.Filter.Eq(_ => _.DomainId, domainId)).FirstOrDefault();
-            if(!string.IsNullOrWhiteSpace(langId))
+            if(domainEntity != null)
             {
-                finalLangId = langId;
-            }else
-            {
-                finalLangId = domainEntity.DefaultLanguageId;
-            }
-            result = _context.Collection.Find(_ => _.AssociatedDomainId == domainId && _.ParentId == null)
-                .Project(_ => new StoreMenuVM()
+                if (!string.IsNullOrWhiteSpace(langId))
                 {
-                    MenuId = _.MenuId,
-                    MenuTitle = _.MenuTitles.Count(_ => _.LanguageId == finalLangId) > 0 ?
-                                _.MenuTitles.FirstOrDefault(_ => _.LanguageId == finalLangId):
-                                (_.MenuTitles.Count(_ => _.LanguageId == domainEntity.DefaultLanguageId) > 0 ?
-                                _.MenuTitles.FirstOrDefault(_ => _.LanguageId == domainEntity.DefaultLanguageId):
-                                _.MenuTitles.FirstOrDefault()),
-                    Icon = _.Icon,
-                    MenuType = _.MenuType,
-                    Order = _.Order,
-                    Url = _.Url,
-                    SubId = _.SubId,
-                    SubName = _.SubName,
-                    SubGroupId = _.SubGroupId,
-                    SubGroupName = _.SubGroupName,
-                    MenuCode = _.MenuCode,
-                    Childrens = GetChildren(_.MenuId, finalLangId, domainEntity),
-                    IsFull = true
-                }).ToList();
-            //those menues which have isFull = true will be shown in UI
-            #region check isFull
-            var productGroupsMenu = result.Where(_ => _.MenuType == MenuType.ProductGroup);
-            var prodctGroupMenuLeaves = productGroupsMenu.Where(_ => _.Childrens.Count() == 0);
-            foreach (var leaf in prodctGroupMenuLeaves)
-            {
-                var tmp = new StoreMenuVM();
-                var productsInGroupCounts = _productContext.ProductCollection.Find(_ => _.GroupIds.Contains(leaf.SubGroupId)).CountDocuments();
-                if (productsInGroupCounts == 0)
-                {
-                    leaf.IsFull = false;
-                    tmp = leaf;
-                    while (tmp.ParentId != null)
-                    {
-                        tmp.IsFull = false;
-                        tmp = result.FirstOrDefault(_ => _.MenuId == tmp.ParentId);
-                    }
-                    tmp.IsFull = false;
+                    finalLangId = langId;
                 }
-            }
-            var contentCategoryMenu = result.Where(_ => _.MenuType == MenuType.CategoryContent);
-            var contentCategoryLeaves = contentCategoryMenu.Where(_ => _.Childrens.Count() == 0);
-            foreach (var leaf in contentCategoryLeaves)
-            {
-                var tmp = new StoreMenuVM();
-                var contentsInCategoryCounts = _contentContext.Collection
-                    .Find(_ => _.ContentCategoryId == leaf.SubGroupId).CountDocuments();
-                if (contentsInCategoryCounts == 0)
+                else
                 {
-                    leaf.IsFull = false;
-                    tmp = leaf;
-                    while (tmp.ParentId != null)
-                    {
-                        tmp.IsFull = false;
-                        tmp = result.FirstOrDefault(_ => _.MenuId == tmp.ParentId);
-                    }
-                    tmp.IsFull = false;
+                    finalLangId = domainEntity.DefaultLanguageId;
                 }
-            }
-            #endregion
-
-            return result;
-        }
-
-        public List<StoreMenuVM> GetChildren(string menuId, string finalLangId, Entities.General.Domain.Domain domainEntity)
-        {
-            var result = new List<StoreMenuVM>();
-            var menuEntity = _context.Collection.Find(_ => _.MenuId == menuId).FirstOrDefault();
-            if (_context.Collection.Find(_ => _.ParentId == menuId).CountDocuments() > 0)
-            {
-                result = _context.Collection.Find(_=>_.AssociatedDomainId == domainEntity.DomainId && _.ParentId == menuId)
-
+                result = _context.Collection.Find(_ => _.AssociatedDomainId == domainId && _.ParentId == null)
                     .Project(_ => new StoreMenuVM()
                     {
                         MenuId = _.MenuId,
-                        MenuTitle = _.MenuTitles.Count(_ => _.LanguageId == finalLangId) > 0 ?
-                                _.MenuTitles.FirstOrDefault(_ => _.LanguageId == finalLangId) :
-                                (_.MenuTitles.Count(_ => _.LanguageId == domainEntity.DefaultLanguageId) > 0 ?
-                                _.MenuTitles.FirstOrDefault(_ => _.LanguageId == domainEntity.DefaultLanguageId) :
-                                _.MenuTitles.FirstOrDefault()),
+                        MenuTitle = _.MenuTitles.Any(_ => _.LanguageId == finalLangId) ?
+                                    _.MenuTitles.FirstOrDefault(_ => _.LanguageId == finalLangId) :
+                                    (_.MenuTitles.Any(_ => _.LanguageId == domainEntity.DefaultLanguageId)  ?
+                                    _.MenuTitles.FirstOrDefault(_ => _.LanguageId == domainEntity.DefaultLanguageId) :
+                                    _.MenuTitles.FirstOrDefault()),
                         Icon = _.Icon,
                         MenuType = _.MenuType,
                         Order = _.Order,
@@ -301,9 +237,87 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                         SubGroupId = _.SubGroupId,
                         SubGroupName = _.SubGroupName,
                         MenuCode = _.MenuCode,
-                        Childrens = GetChildren(_.MenuId, finalLangId, domainEntity)
+                        Childrens = GetChildren(_.MenuId, finalLangId, domainEntity),
+                        IsFull = true
                     }).ToList();
+                //those menues which have isFull = true will be shown in UI
+                #region check isFull
+                var productGroupsMenu = result.Where(_ => _.MenuType == MenuType.ProductGroup);
+                var prodctGroupMenuLeaves = productGroupsMenu.Where(_ => _.Childrens.Count() == 0);
+                foreach (var leaf in prodctGroupMenuLeaves)
+                {
+                    var tmp = new StoreMenuVM();
+                    var productsInGroupCounts = _productContext.ProductCollection.Find(_ => _.GroupIds.Contains(leaf.SubGroupId)).CountDocuments();
+                    if (productsInGroupCounts == 0)
+                    {
+                        leaf.IsFull = false;
+                        tmp = leaf;
+                        while (tmp.ParentId != null)
+                        {
+                            tmp = result.FirstOrDefault(_ => _.MenuId == tmp.ParentId);
+                            tmp.IsFull = false;
+                        }
+                        tmp.IsFull = false;
+                    }
+                }
+                var contentCategoryMenu = result.Where(_ => _.MenuType == MenuType.CategoryContent);
+                var contentCategoryLeaves = contentCategoryMenu.Where(_ => _.Childrens.Count() == 0);
+                foreach (var leaf in contentCategoryLeaves)
+                {
+                    var tmp = new StoreMenuVM();
+                    var contentsInCategoryCounts = _contentContext.Collection
+                        .Find(_ => _.ContentCategoryId == leaf.SubGroupId).CountDocuments();
+                    if (contentsInCategoryCounts == 0)
+                    {
+                        leaf.IsFull = false;
+                        tmp = leaf;
+                        while (tmp.ParentId != null)
+                        {
+                            tmp = result.FirstOrDefault(_ => _.MenuId == tmp.ParentId);
+                            tmp.IsFull = false;
+                        }
+                        tmp.IsFull = false;
+                    }
+                }
+                #endregion
             }
+
+
+            return result;
+        }
+
+        public List<StoreMenuVM> GetChildren(string menuId, string finalLangId, Entities.General.Domain.Domain domainEntity)
+        {
+            var result = new List<StoreMenuVM>();
+            var menuEntity = _context.Collection.Find(_ => _.MenuId == menuId).FirstOrDefault();
+            if(menuEntity != null)
+            {
+                if (_context.Collection.Find(_ => _.ParentId == menuId).CountDocuments() > 0)
+                {
+                    result = _context.Collection.Find(_ => _.AssociatedDomainId == domainEntity.DomainId && _.ParentId == menuId)
+
+                        .Project(_ => new StoreMenuVM()
+                        {
+                            MenuId = _.MenuId,
+                            MenuTitle = _.MenuTitles.Count(_ => _.LanguageId == finalLangId) > 0 ?
+                                    _.MenuTitles.FirstOrDefault(_ => _.LanguageId == finalLangId) :
+                                    (_.MenuTitles.Count(_ => _.LanguageId == domainEntity.DefaultLanguageId) > 0 ?
+                                    _.MenuTitles.FirstOrDefault(_ => _.LanguageId == domainEntity.DefaultLanguageId) :
+                                    _.MenuTitles.FirstOrDefault()),
+                            Icon = _.Icon,
+                            MenuType = _.MenuType,
+                            Order = _.Order,
+                            Url = _.Url,
+                            SubId = _.SubId,
+                            SubName = _.SubName,
+                            SubGroupId = _.SubGroupId,
+                            SubGroupName = _.SubGroupName,
+                            MenuCode = _.MenuCode,
+                            Childrens = GetChildren(_.MenuId, finalLangId, domainEntity)
+                        }).ToList();
+                }
+            }
+           
             return result;
         }
 
@@ -466,6 +480,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             var userId  = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             var userEntity = await _userManager.FindByIdAsync(userId);
+            if (userEntity == null)
+                return new List<SelectListModel>();
+
 
             var result = new List<SelectListModel>();
 
@@ -475,7 +492,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 .Project(_ => new SelectListModel()
                 {
                     Value = _.MenuId,
-                    Text = _.MenuTitles.FirstOrDefault(a => a.LanguageId == langId).Name
+                    Text = _.MenuTitles.Any(a => a.LanguageId == langId) ? _.MenuTitles.FirstOrDefault(a => a.LanguageId == langId).Name : ""
                 }).ToList();
             }else
             {
@@ -483,7 +500,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 .Project(_ => new SelectListModel()
                 {
                     Value = _.MenuId,
-                    Text = _.MenuTitles.FirstOrDefault(a => a.LanguageId == langId).Name
+                    Text = _.MenuTitles.Any(a => a.LanguageId == langId) ? _.MenuTitles.FirstOrDefault(a => a.LanguageId == langId).Name : ""
                 }).ToList();
             }
             
@@ -496,16 +513,20 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             var result = new StoreMenuVM();
             var entity = _context.Collection
                 .Find(_ => _.MenuCode == menuCode).FirstOrDefault();
-            result.MenuId = entity.MenuId;
-            result.Icon = entity.Icon;
-            result.MenuType = entity.MenuType;
-            result.Order = entity.Order;
-            result.Url = entity.Url;
-            result.SubId = entity.SubId;
-            result.SubName = entity.SubName;
-            result.SubGroupId = entity.SubGroupId;
-            result.SubGroupName = entity.SubGroupName;
-            result.MenuCode = entity.MenuCode;
+            if(entity != null)
+            {
+                result.MenuId = entity.MenuId;
+                result.Icon = entity.Icon;
+                result.MenuType = entity.MenuType;
+                result.Order = entity.Order;
+                result.Url = entity.Url;
+                result.SubId = entity.SubId;
+                result.SubName = entity.SubName;
+                result.SubGroupId = entity.SubGroupId;
+                result.SubGroupName = entity.SubGroupName;
+                result.MenuCode = entity.MenuCode;
+            }
+           
             return result;
         }
     }

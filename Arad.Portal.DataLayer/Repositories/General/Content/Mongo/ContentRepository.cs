@@ -143,8 +143,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             var result = new ContentDTO();
             var contentEntity = _contentContext.Collection
                 .Find(_ => _.ContentCode == contentCode).FirstOrDefault();
-
-            result = _mapper.Map<ContentDTO>(contentEntity);
+            if(contentEntity != null)
+            {
+                result = _mapper.Map<ContentDTO>(contentEntity);
+            }
+           
             var r = Helpers.Utilities.ConvertPopularityRate(contentEntity.TotalScore, contentEntity.ScoredCount);
             result.LikeRate = r.LikeRate;
             result.DisikeRate = r.DisikeRate;
@@ -156,32 +159,40 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
         {
             var result = new Result<EntityRate>();
             var entity = _contentContext.Collection.Find(_ => _.ContentId == contentId).FirstOrDefault();
-            if (isNew)
+            if(entity != null)
             {
-                entity.TotalScore += score;
-                entity.ScoredCount += 1;
-            }
-            else if (score != prevScore) //if user change the score of product
-            {
-                entity.TotalScore -= prevScore;
-                entity.TotalScore += score;
-                //scoredCount doesnt change cause this user rated before just change its score
-            }
+                if (isNew)
+                {
+                    entity.TotalScore += score;
+                    entity.ScoredCount += 1;
+                }
+                else if (score != prevScore) //if user change the score of product
+                {
+                    entity.TotalScore -= prevScore;
+                    entity.TotalScore += score;
+                    //scoredCount doesnt change cause this user rated before just change its score
+                }
 
-            if (score != prevScore)
-            {
-                var updateResult = await _contentContext.Collection.ReplaceOneAsync(_ => _.ContentId == contentId, entity);
-                var res = Helpers.Utilities.ConvertPopularityRate(entity.TotalScore, entity.ScoredCount);
-                if (updateResult.IsAcknowledged)
+                if (score != prevScore)
                 {
-                    result.Succeeded = true;
-                    result.ReturnValue = res;
-                }
-                else
-                {
-                    result.Succeeded = false;
+                    var updateResult = await _contentContext.Collection.ReplaceOneAsync(_ => _.ContentId == contentId, entity);
+                    var res = Helpers.Utilities.ConvertPopularityRate(entity.TotalScore, entity.ScoredCount);
+                    if (updateResult.IsAcknowledged)
+                    {
+                        result.Succeeded = true;
+                        result.ReturnValue = res;
+                    }
+                    else
+                    {
+                        result.Succeeded = false;
+                    }
                 }
             }
+            else
+            {
+                result.Message = ConstMessages.ObjectNotFound;
+            }
+            
             return result;
         }
 
@@ -191,8 +202,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             var urlFriend = $"{domainName}/blog/{slug}";
             var contentEntity = _contentContext.Collection
                 .Find(_ => _.UrlFriend == urlFriend).FirstOrDefault();
-
-            result = _mapper.Map<ContentDTO>(contentEntity);
+            if(contentEntity != null)
+            {
+                result = _mapper.Map<ContentDTO>(contentEntity);
+            }
             return result;
         }
 
@@ -346,19 +359,23 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             var result = new Result();
             var entity = _contentContext.Collection
               .Find(_ => _.ContentId == contentId).FirstOrDefault();
-            entity.IsDeleted = false;
-            var updateResult = await _contentContext.Collection
-               .ReplaceOneAsync(_ => _.ContentId == contentId, entity);
-            if (updateResult.IsAcknowledged)
+            if(entity != null)
             {
-                result.Succeeded = true;
-                result.Message = ConstMessages.SuccessfullyDone;
+                entity.IsDeleted = false;
+                var updateResult = await _contentContext.Collection
+                   .ReplaceOneAsync(_ => _.ContentId == contentId, entity);
+                if (updateResult.IsAcknowledged)
+                {
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                }
+                else
+                {
+                    result.Succeeded = false;
+                    result.Message = ConstMessages.ErrorInSaving;
+                }
             }
-            else
-            {
-                result.Succeeded = false;
-                result.Message = ConstMessages.ErrorInSaving;
-            }
+           
             return result;
         }
 

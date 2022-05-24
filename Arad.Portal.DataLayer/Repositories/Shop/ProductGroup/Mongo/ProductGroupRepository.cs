@@ -284,7 +284,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                        ProductGroupId = _.ProductGroupId,
                        ParentId = _.ParentId,
                        IsDeleted = _.IsDeleted,
-                       MultiLingualProperty = _.MultiLingualProperties.Where(a => a.LanguageId == langId).FirstOrDefault()
+                       MultiLingualProperty = _.MultiLingualProperties.Any(a => a.LanguageId == langId) ?
+                         _.MultiLingualProperties.FirstOrDefault(a => a.LanguageId == langId) : _.MultiLingualProperties.FirstOrDefault()
                    }).ToList();
                 result.CurrentPage = page;
                 result.Items = lst;
@@ -348,19 +349,27 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             var result = new Result();
             var entity = _productContext.ProductGroupCollection
               .Find(_ => _.ProductGroupId == id).FirstOrDefault();
-            entity.IsDeleted = false;
-            var updateResult = await _productContext.ProductGroupCollection
-               .ReplaceOneAsync(_ => _.ProductGroupId == id, entity);
-            if (updateResult.IsAcknowledged)
+            if(entity != null)
             {
-                result.Succeeded = true;
-                result.Message = ConstMessages.SuccessfullyDone;
+                entity.IsDeleted = false;
+                var updateResult = await _productContext.ProductGroupCollection
+                   .ReplaceOneAsync(_ => _.ProductGroupId == id, entity);
+                if (updateResult.IsAcknowledged)
+                {
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                }
+                else
+                {
+                    result.Succeeded = false;
+                    result.Message = ConstMessages.ErrorInSaving;
+                }
             }
             else
             {
-                result.Succeeded = false;
-                result.Message = ConstMessages.ErrorInSaving;
+                result.Message = ConstMessages.ObjectNotFound;
             }
+           
             return result;
         }
        
@@ -375,26 +384,30 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
         {
             var result = new List<SelectListModel>();
             var dbUser = await _userManager.FindByIdAsync(currentUserId);
-            if(dbUser.IsSystemAccount)
+            if(dbUser != null)
             {
-                result = _productContext.ProductGroupCollection.Find(_ => _.IsActive && !_.IsDeleted)
-               .Project(_ => new SelectListModel()
-               {
-                   Text = _.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() != 0 ?
-                        _.MultiLingualProperties.FirstOrDefault(a => a.LanguageId == langId).Name : "",
-                   Value = _.ProductGroupId
-               }).ToList();
+                if (dbUser.IsSystemAccount)
+                {
+                    result = _productContext.ProductGroupCollection.Find(_ => _.IsActive && !_.IsDeleted)
+                   .Project(_ => new SelectListModel()
+                   {
+                       Text = _.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() != 0 ?
+                            _.MultiLingualProperties.FirstOrDefault(a => a.LanguageId == langId).Name : "",
+                       Value = _.ProductGroupId
+                   }).ToList();
+                }
+                else
+                {
+                    result = _productContext.ProductGroupCollection.Find(_ => dbUser.Profile.Access.AccessibleProductGroupIds.Contains(_.ProductGroupId))
+                   .Project(_ => new SelectListModel()
+                   {
+                       Text = _.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() != 0 ?
+                            _.MultiLingualProperties.FirstOrDefault(a => a.LanguageId == langId).Name : "",
+                       Value = _.ProductGroupId
+                   }).ToList();
+                }
             }
-            else
-            {
-                result = _productContext.ProductGroupCollection.Find(_ => dbUser.Profile.Access.AccessibleProductGroupIds.Contains(_.ProductGroupId))
-               .Project(_ => new SelectListModel()
-               {
-                   Text = _.MultiLingualProperties.Where(a => a.LanguageId == langId).Count() != 0 ?
-                        _.MultiLingualProperties.FirstOrDefault(a => a.LanguageId == langId).Name : "",
-                   Value = _.ProductGroupId
-               }).ToList();
-            }
+           
            
             result.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
             return result;
@@ -406,8 +419,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             var urlFriend = $"{domainName}/category/{slug}";
             var groupEntity = _productContext.ProductGroupCollection
                 .Find(_ => _.MultiLingualProperties.Any(a => a.UrlFriend == urlFriend)).FirstOrDefault();
-
-            result = _mapper.Map<ProductGroupDTO>(groupEntity);
+            if(groupEntity != null)
+            {
+                result = _mapper.Map<ProductGroupDTO>(groupEntity);
+            }
+          
             return result;
         }
 
@@ -521,13 +537,19 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                 finalList.Add(groupId);
                 var entity = _productContext.ProductGroupCollection
                              .Find(_ => _.ProductGroupId == groupId).FirstOrDefault();
-                var tmp = entity;
-                while (tmp.ParentId != null)
+                if(entity != null)
                 {
-                    finalList.Add(tmp.ParentId);
-                    tmp = _productContext.ProductGroupCollection
-                         .Find(_ => _.ProductGroupId == tmp.ParentId).FirstOrDefault();
+                    var tmp = entity;
+                    while (tmp.ParentId != null)
+                    {
+                        finalList.Add(tmp.ParentId);
+                        tmp = _productContext.ProductGroupCollection
+                             .Find(_ => _.ProductGroupId == tmp.ParentId).Any() ?
+                             _productContext.ProductGroupCollection
+                             .Find(_ => _.ProductGroupId == tmp.ParentId).FirstOrDefault() : null;
+                    }
                 }
+               
             }
             //testing part
             var groups = _productContext.ProductGroupCollection.AsQueryable().Select(_ => _.ProductGroupId).ToList();

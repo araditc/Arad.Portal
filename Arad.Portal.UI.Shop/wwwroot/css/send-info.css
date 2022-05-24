@@ -35,7 +35,7 @@
     margin-bottom: 10px;
 }
 .addresses-slider input{
-    display: none;
+   /* display: none;*/
 }
 .addresses-wrap label.card-view-address .name span::before{
     content:'\f00c';

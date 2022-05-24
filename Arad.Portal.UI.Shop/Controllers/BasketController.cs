@@ -60,6 +60,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         public async Task<IActionResult> Get()
         {
             var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
+            ViewBag.LanIcon = lanIcon;
             if (User != null && User.Identity.IsAuthenticated)
             {
                 var domainName = base.DomainName;
@@ -96,7 +97,7 @@ namespace Arad.Portal.UI.Shop.Controllers
 
             var model = new DataLayer.Models.Shared.SendInfoPage()
             {
-                Addresses = user.Profile.Addresses,
+                Addresses = user.Profile.Addresses.Where(_=>_.AddressType == DataLayer.Models.User.AddressType.ShippingAddress).ToList(),
                 CurrencySymbol = shoppingCart.ReturnValue.ShoppingCartCulture.CurrencySymbol,
                 TotalCost = Math.Round(shoppingCart.ReturnValue.FinalPriceForPay).ToString(),
                 UserCartId = shoppingCart.ReturnValue.UserCartId

@@ -153,6 +153,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
             try
             {
                 var model = _productContext.ProductUnitCollection.Find(_ => _.ProductUnitId == productUnitId).FirstOrDefault();
+                if(model != null)
                 result = _mapper.Map<ProductUnitDTO>(model);
             }
             catch (Exception)
@@ -205,7 +206,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
                    .Take(pageSize).Select(_ => new ProductUnitViewModel()
                    {
                       ProductUnitId = _.ProductUnitId,
-                      UnitName = _.UnitNames.Where(a => a.LanguageId == langId).FirstOrDefault(),
+                      UnitName = _.UnitNames.Any(a => a.LanguageId == langId) ?
+                      _.UnitNames.Where(a => a.LanguageId == langId).FirstOrDefault() : _.UnitNames.FirstOrDefault(),
                       IsDeleted = _.IsDeleted
                    }).ToList();
 
@@ -232,19 +234,26 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
             var result = new Result();
             var entity = _productContext.ProductUnitCollection
               .Find(_ => _.ProductUnitId == productUnitId).FirstOrDefault();
-            entity.IsDeleted = false;
-            var updateResult = await _productContext.ProductUnitCollection
-               .ReplaceOneAsync(_ => _.ProductUnitId == productUnitId, entity);
-            if (updateResult.IsAcknowledged)
+            if(entity != null)
             {
-                result.Succeeded = true;
-                result.Message = ConstMessages.SuccessfullyDone;
-            }
-            else
+                entity.IsDeleted = false;
+                var updateResult = await _productContext.ProductUnitCollection
+                   .ReplaceOneAsync(_ => _.ProductUnitId == productUnitId, entity);
+                if (updateResult.IsAcknowledged)
+                {
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                }
+                else
+                {
+                    result.Succeeded = false;
+                    result.Message = ConstMessages.ErrorInSaving;
+                }
+            }else
             {
-                result.Succeeded = false;
-                result.Message = ConstMessages.ErrorInSaving;
+                result.Message = ConstMessages.ObjectNotFound;
             }
+            
             return result;
         }
     }

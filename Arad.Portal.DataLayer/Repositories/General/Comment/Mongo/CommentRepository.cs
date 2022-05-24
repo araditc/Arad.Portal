@@ -30,12 +30,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
         private readonly CommentContext _commentContext;
         private readonly ProductContext _productContext;
         private readonly ContentContext _contentContext;
+        private readonly DomainContext _domainContext;
        
         private readonly UserManager<ApplicationUser> _userManager;
         public CommentRepository(IHttpContextAccessor httpContextAccessor,
             IMapper mapper, CommentContext commentContext,
             IWebHostEnvironment env,
-            ProductContext productContext, ContentContext contentContext, UserManager<ApplicationUser> userManager)
+            ProductContext productContext, ContentContext contentContext, UserManager<ApplicationUser> userManager, DomainContext domainContext)
             :base(httpContextAccessor, env)
         {
             _mapper = mapper;
@@ -43,6 +44,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
             _productContext = productContext;
             _contentContext = contentContext;
             _userManager = userManager;
+            _domainContext = domainContext;
         }
 
         public async Task<Result<Entities.General.Comment.Comment>> Add(CommentDTO dto)
@@ -81,73 +83,93 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
             bool finalRes = false;
             ReplaceOneResult res;
             var cmtEntity = _commentContext.Collection.Find(_ => _.CommentId == commentId).FirstOrDefault();
-            if(isLike)
+            if(cmtEntity != null)
             {
-                cmtEntity.LikeCount += 1;
-            }
-            else
-            {
-                cmtEntity.DislikeCount += 1;
-            }
-
-            var commentEntityUpdate = await _commentContext.Collection.ReplaceOneAsync(_=>_.CommentId == commentId, cmtEntity);
-            if(commentEntityUpdate.IsAcknowledged)
-            {
-                switch (cmtEntity.ReferenceType)
+                if (isLike)
                 {
-                    case ReferenceType.Product:
-                        var proEntity = _productContext.ProductCollection.Find(_ => _.ProductId == cmtEntity.ReferenceId).FirstOrDefault();
-                        var cmt = proEntity.Comments.Where(_ => _.CommentId == commentId).FirstOrDefault();
-                        if (isLike)
-                        {
-                            cmt.LikeCount += 1;
-                        }
-                        else
-                        {
-                            cmt.DislikeCount += 1;
-                        }
-                        var index = proEntity.Comments.IndexOf(cmt);
-                        proEntity.Comments[index] = cmt;
-                        res = await _productContext.ProductCollection
-                           .ReplaceOneAsync(_ => _.ProductId == cmtEntity.ReferenceId, proEntity);
-                        if (res.IsAcknowledged)
-                        {
-                            finalRes = await UpdateComment(cmtEntity);
-                        }
-                        break;
-                    case ReferenceType.Content:
-                        var contentEntity = _contentContext.Collection.Find(_ => _.ContentId == cmtEntity.ReferenceId).FirstOrDefault();
-                        var cmnt = contentEntity.Comments.Where(_ => _.CommentId == commentId).FirstOrDefault();
-                        if (isLike)
-                        {
-                            cmnt.LikeCount += 1;
-                        }
-                        else
-                        {
-                            cmnt.DislikeCount += 1;
-                        }
-                        var cmtIndex = contentEntity.Comments.IndexOf(cmnt);
-                        contentEntity.Comments[cmtIndex] = cmnt;
-                        res = await _contentContext.Collection
-                           .ReplaceOneAsync(_ => _.ContentId == cmtEntity.ReferenceId, contentEntity);
-                        if (res.IsAcknowledged)
-                        {
-                            finalRes = await UpdateComment(cmtEntity);
-                        }
-                        break;
-                    default:
-                        break;
+                    cmtEntity.LikeCount += 1;
                 }
-            }
-             
-            if (finalRes)
+                else
+                {
+                    cmtEntity.DislikeCount += 1;
+                }
+
+                var commentEntityUpdate = await _commentContext.Collection.ReplaceOneAsync(_ => _.CommentId == commentId, cmtEntity);
+                if (commentEntityUpdate.IsAcknowledged)
+                {
+                    switch (cmtEntity.ReferenceType)
+                    {
+                        case ReferenceType.Product:
+                            var proEntity = _productContext.ProductCollection.Find(_ => _.ProductId == cmtEntity.ReferenceId).FirstOrDefault();
+                            if(proEntity != null)
+                            {
+                                var cmt = proEntity.Comments.Where(_ => _.CommentId == commentId).FirstOrDefault();
+                                if(cmt != null)
+                                {
+                                    if (isLike)
+                                    {
+                                        cmt.LikeCount += 1;
+                                    }
+                                    else
+                                    {
+                                        cmt.DislikeCount += 1;
+                                    }
+                                    //var index = proEntity.Comments.IndexOf(cmt);
+                                    //proEntity.Comments[index] = cmt;
+                                    res = await _productContext.ProductCollection
+                                       .ReplaceOneAsync(_ => _.ProductId == cmtEntity.ReferenceId, proEntity);
+                                    if (res.IsAcknowledged)
+                                    {
+                                        finalRes = await UpdateComment(cmtEntity);
+                                    }
+                                }
+                            }
+                            break;
+                        case ReferenceType.Content:
+                            var contentEntity = _contentContext.Collection.Find(_ => _.ContentId == cmtEntity.ReferenceId).FirstOrDefault();
+                            if(contentEntity != null)
+                            {
+                                var cmnt = contentEntity.Comments.Where(_ => _.CommentId == commentId).FirstOrDefault();
+                                if(cmnt != null)
+                                {
+                                    if (isLike)
+                                    {
+                                        cmnt.LikeCount += 1;
+                                    }
+                                    else
+                                    {
+                                        cmnt.DislikeCount += 1;
+                                    }
+                                    //var cmtIndex = contentEntity.Comments.IndexOf(cmnt);
+                                    //contentEntity.Comments[cmtIndex] = cmnt;
+                                    res = await _contentContext.Collection
+                                       .ReplaceOneAsync(_ => _.ContentId == cmtEntity.ReferenceId, contentEntity);
+                                    if (res.IsAcknowledged)
+                                    {
+                                        finalRes = await UpdateComment(cmtEntity);
+                                    }
+                                }
+                            }
+                           
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                if (finalRes)
+                {
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                }
+                else
+                {
+                    result.Message = ConstMessages.GeneralError;
+                }
+               
+            }else
             {
-                result.Succeeded = true;
-                result.Message = ConstMessages.SuccessfullyDone;
-            }
-            else
-            {
-                result.Message = ConstMessages.GeneralError;
+                result.Message = ConstMessages.ObjectNotFound;
             }
             return result;
         }
@@ -162,49 +184,64 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
             var result = new Result();
             bool finalRes = false;
             var entity = _commentContext.Collection.Find(_ => _.CommentId == commentId).FirstOrDefault();
-            var refType = entity.ReferenceType;
-            if(entity.ReferenceType == ReferenceType.Product)
+            if(entity != null)
             {
-                var pro = _productContext.ProductCollection
-                    .Find(_ => _.ProductId == entity.ReferenceId).FirstOrDefault();
-                pro.Comments.FirstOrDefault(_ => _.CommentId == commentId).IsApproved = true;
-                var updateRes = await _productContext.ProductCollection.ReplaceOneAsync(_ => _.ProductId == pro.ProductId, pro);
-                if(updateRes.IsAcknowledged)
+                var refType = entity.ReferenceType;
+                if (entity.ReferenceType == ReferenceType.Product)
                 {
-                    finalRes = true;
+                    var pro = _productContext.ProductCollection
+                        .Find(_ => _.ProductId == entity.ReferenceId).FirstOrDefault();
+                    if(pro != null)
+                    {
+                        pro.Comments.FirstOrDefault(_ => _.CommentId == commentId).IsApproved = true;
+                        var updateRes = await _productContext.ProductCollection.ReplaceOneAsync(_ => _.ProductId == pro.ProductId, pro);
+                        if (updateRes.IsAcknowledged)
+                        {
+                            finalRes = true;
+                        }
+                    }
+                }
+                else // content
+                {
+                    var content = _contentContext.Collection
+                        .Find(_ => _.ContentId == entity.ReferenceId).FirstOrDefault();
+                    if(content != null)
+                    {
+                        content.Comments.FirstOrDefault(_ => _.CommentId == commentId).IsApproved = true;
+                        var updateRes = await _contentContext.Collection.ReplaceOneAsync(_ => _.ContentId == content.ContentId, content);
+                        if (updateRes.IsAcknowledged)
+                        {
+                            finalRes = true;
+                        }
+                    }
+                    
                 }
 
-            }else // content
-            {
-                var content = _contentContext.Collection
-                    .Find(_ => _.ContentId == entity.ReferenceId).FirstOrDefault();
-                content.Comments.FirstOrDefault(_ => _.CommentId == commentId).IsApproved = true;
-                var updateRes = await _contentContext.Collection.ReplaceOneAsync(_ => _.ContentId ==content.ContentId, content);
-                if (updateRes.IsAcknowledged)
+                if (finalRes)
                 {
-                    finalRes = true;
-                }
-            }
+                    entity.IsApproved = isApproved;
+                    var updateResult = await _commentContext.Collection
+                        .ReplaceOneAsync(_ => _.CommentId == commentId, entity);
 
-            if(finalRes)
-            {
-                entity.IsApproved = isApproved;
-                var updateResult = await _commentContext.Collection
-                    .ReplaceOneAsync(_ => _.CommentId == commentId, entity);
-
-                if (updateResult.IsAcknowledged)
-                {
-                    result.Succeeded = true;
-                    result.Message = ConstMessages.SuccessfullyDone;
+                    if (updateResult.IsAcknowledged)
+                    {
+                        result.Succeeded = true;
+                        result.Message = ConstMessages.SuccessfullyDone;
+                    }
+                    else
+                    {
+                        result.Message = ConstMessages.GeneralError;
+                    }
                 }
                 else
                 {
-                    result.Message = ConstMessages.GeneralError;
+                    result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_InsertError");
                 }
             }else
             {
-                result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_InsertError");
+                result.Message = ConstMessages.ObjectNotFound;
             }
+           
             return result;
         }
 
@@ -273,9 +310,17 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
             PagedItems<CommentViewModel> result = new PagedItems<CommentViewModel>();
              var userId  = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-
+            string langId = string.Empty;
             var dbUser = await _userManager.FindByIdAsync(userId);
-            var langId = dbUser.Profile.DefaultLanguageId;
+            if(dbUser != null)
+            {
+                 langId = dbUser.Profile.DefaultLanguageId;
+            }else
+            {
+                var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == GetCurrentDomainName()).FirstOrDefault();
+                langId = domainEntity.DefaultLanguageId;
+            }
+           
             try
             {
                 NameValueCollection filter = HttpUtility.ParseQueryString(queryString);
@@ -334,19 +379,26 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
                    }).ToList();
                 foreach (var item in list)
                 {
-                    item.ParentCommentContent = _commentContext.Collection.Find(_ => _.CommentId == item.ParentCommentId).Any() ?  _commentContext.Collection.Find(_ => _.CommentId == item.ParentCommentId).FirstOrDefault().Content : "";
+                    item.ParentCommentContent = _commentContext.Collection.Find(_ => _.CommentId == item.ParentCommentId).Any() ?
+                        _commentContext.Collection.Find(_ => _.CommentId == item.ParentCommentId).FirstOrDefault().Content : "";
                     if(item.ReferenceType == ReferenceType.Product)
                     {
                       if(_productContext.ProductCollection.Find(_ => _.ProductId == item.ReferenceId).Any())
                         {
                             var productEntity = _productContext.ProductCollection.Find(_ => _.ProductId == item.ReferenceId).FirstOrDefault();
-                            item.ReferenceTitle = productEntity.MultiLingualProperties.Find(_ => _.LanguageId == langId).Name;
+                            if(productEntity != null)
+                            {
+                                item.ReferenceTitle = productEntity.MultiLingualProperties.Any(_ => _.LanguageId == langId) ?
+                                    productEntity.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == langId).Name : "";
+                            }
+                            
                         }
                         
                     }
                     else if(item.ReferenceType == ReferenceType.Content)
                     {
-                        item.ReferenceTitle = _contentContext.Collection.Find(_ => _.ContentId == item.ReferenceId).FirstOrDefault().Title;
+                        item.ReferenceTitle = _contentContext.Collection.Find(_ => _.ContentId == item.ReferenceId).Any() ?
+                            _contentContext.Collection.Find(_ => _.ContentId == item.ReferenceId).FirstOrDefault().Title : "";
                     }
                     item.PersianCreationDate = item.CreationDate.Value.ToPersianDdate();
                 }
@@ -373,19 +425,26 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
             var result = new Result();
             var entity = _commentContext.Collection
               .Find(_ => _.CommentId == commentId).FirstOrDefault();
-            entity.IsDeleted = false;
-            var updateResult = await _commentContext.Collection
-               .ReplaceOneAsync(_ => _.CommentId == commentId, entity);
-            if (updateResult.IsAcknowledged)
+            if(entity != null)
             {
-                result.Succeeded = true;
-                result.Message = ConstMessages.SuccessfullyDone;
-            }
-            else
+                entity.IsDeleted = false;
+                var updateResult = await _commentContext.Collection
+                   .ReplaceOneAsync(_ => _.CommentId == commentId, entity);
+                if (updateResult.IsAcknowledged)
+                {
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                }
+                else
+                {
+                    result.Succeeded = false;
+                    result.Message = ConstMessages.ErrorInSaving;
+                }
+            }else
             {
-                result.Succeeded = false;
-                result.Message = ConstMessages.ErrorInSaving;
+                result.Message = ConstMessages.ObjectNotFound;
             }
+           
             return result;
         }
 

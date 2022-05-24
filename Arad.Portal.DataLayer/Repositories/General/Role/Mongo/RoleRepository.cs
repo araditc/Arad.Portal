@@ -152,8 +152,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
             {
                 var role = await _context.Collection
                     .Find(c => c.RoleId == roleId).FirstOrDefaultAsync();
-                result = _mapper.Map<RoleDTO>(role);
-                result.PermissionIds = string.Join(',', role.PermissionIds);
+                if(role != null)
+                {
+                    result = _mapper.Map<RoleDTO>(role);
+                    result.PermissionIds = string.Join(',', role.PermissionIds);
+                }
+                
             }
             catch (Exception e)
             {
@@ -169,8 +173,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
             {
                 var role = await _context.Collection
                     .Find(c => c.RoleName == roleName).FirstOrDefaultAsync();
-                result = _mapper.Map<RoleDTO>(role);
-                result.PermissionIds = string.Join(",", role.PermissionIds);
+                if(role != null)
+                {
+                    result = _mapper.Map<RoleDTO>(role);
+                    result.PermissionIds = string.Join(",", role.PermissionIds);
+                }
+               
             }
             catch (Exception e)
             {

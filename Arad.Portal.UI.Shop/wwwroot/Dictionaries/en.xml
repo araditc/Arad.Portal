@@ -503,6 +503,9 @@
 		<value>Are you sure?</value>
 	</string>
 	<!--====================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_ChooseOneAddress">
+		<value>Please choose one address, otherwise the first one will be selected.</value>
+	</string>
 	<string key="AlertAndMessage_AddressInsert">
 		<value>Please insert your address.</value>
 	</string>
@@ -534,7 +537,7 @@
 		<value>Sorry, the inventory of this product decreased to [0].</value>
 	</string>
 	<string key="AlertAndMessage_ProductNullCount">
-		<value>Sorry, this product has not exist any more</value>
+		<value>Sorry, inventory of product has been finished.</value>
 	</string>
 	<string key="AlertAndMessage_SubmitOtpPleaseTryAgainLater">
 		<value>Error, Please try again later</value>
@@ -1458,6 +1461,9 @@
 	</string>
 	<string key="Shopping_OnlinePayment">
 		<value>online payment</value>
+	</string>
+	<string key="Shopping_Changes">
+		<value>Changes</value>
 	</string>
 	
 	<string key="User_PasswordRepetition">

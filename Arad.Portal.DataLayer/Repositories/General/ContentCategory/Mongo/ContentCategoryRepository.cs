@@ -75,27 +75,31 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
         {
             var result = new List<SelectListModel>();
             var dbUser = await _userManager.FindByIdAsync(currentUserId);
-            if(dbUser.IsSystemAccount)
+            if(dbUser != null)
             {
-                result = _categoryContext.Collection.Find(_ => _.IsActive && !_.IsDeleted)
-                .Project(_ => new SelectListModel()
+                if (dbUser.IsSystemAccount)
                 {
-                    Text = _.CategoryNames.Where(a => a.LanguageId == langId).Count() != 0 ?
-                         _.CategoryNames.First(a => a.LanguageId == langId).Name : "",
-                    Value = _.ContentCategoryId
-                }).ToList();
-            }
-            else
-            {
-                result = _categoryContext.Collection.Aggregate().Match(_ => dbUser.Profile.Access.AccessibleContentCategoryIds.Contains(_.ContentCategoryId))
-                .Project(_ => new SelectListModel()
+                    result = _categoryContext.Collection.Find(_ => _.IsActive && !_.IsDeleted)
+                    .Project(_ => new SelectListModel()
+                    {
+                        Text = _.CategoryNames.Where(a => a.LanguageId == langId).Count() != 0 ?
+                             _.CategoryNames.First(a => a.LanguageId == langId).Name : "",
+                        Value = _.ContentCategoryId
+                    }).ToList();
+                }
+                else
                 {
-                    Text = _.CategoryNames.Where(a => a.LanguageId == langId).Count() != 0 ?
-                         _.CategoryNames.First(a => a.LanguageId == langId).Name : "",
-                    Value = _.ContentCategoryId
-                }).ToList();
-               // .Sort(Builders<SelectListModel>.Sort.Ascending(x => x.Text))
+                    result = _categoryContext.Collection.Aggregate().Match(_ => dbUser.Profile.Access.AccessibleContentCategoryIds.Contains(_.ContentCategoryId))
+                    .Project(_ => new SelectListModel()
+                    {
+                        Text = _.CategoryNames.Where(a => a.LanguageId == langId).Count() != 0 ?
+                             _.CategoryNames.First(a => a.LanguageId == langId).Name : "",
+                        Value = _.ContentCategoryId
+                    }).ToList();
+                    // .Sort(Builders<SelectListModel>.Sort.Ascending(x => x.Text))
+                }
             }
+           
             result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
             return result; ;
         }
@@ -107,7 +111,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             {
                 var category = await _categoryContext.Collection
                     .Find(_ => _.ContentCategoryId == contentCategoryId).FirstOrDefaultAsync();
-                result = _mapper.Map<ContentCategoryDTO>(category);
+                if(category != null)
+                {
+                    result = _mapper.Map<ContentCategoryDTO>(category);
+                }
             }
             catch (Exception ex)
             {
@@ -176,9 +183,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             var result = new CommonViewModel();
             var categoryEntity = _categoryContext.Collection
                 .Find(_ => _.CategoryCode == categoryCode).FirstOrDefault();
-
-            result.Categories = GetDirectChildrens(categoryEntity.ContentCategoryId,5);
-            result.BlogList = GetContentsInCategory(categoryEntity.ContentCategoryId, 5);
+            if(categoryEntity != null)
+            {
+                result.Categories = GetDirectChildrens(categoryEntity.ContentCategoryId, 5);
+                result.BlogList = GetContentsInCategory(categoryEntity.ContentCategoryId, 5);
+            }
+            
             return result;
         }
 
@@ -190,7 +200,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             var urlFriend = $"{domainName}/category/{slug}";
             var categoryEntity = _categoryContext.Collection
                 .Find(_ => _.CategoryNames.Any(a => a.UrlFriend == urlFriend)).FirstOrDefault();
-
+            if(categoryEntity != null)
+            {
+                result = _mapper.Map<ContentCategoryDTO>(categoryEntity);
+            }
             result = _mapper.Map<ContentCategoryDTO>(categoryEntity);
             return result;
         }
@@ -279,7 +292,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
                        ParentCategoryId = _.ParentCategoryId,
                        CategoryType = _.CategoryType,
                        IsDeleted = _.IsDeleted,
-                       CategoryName = _.CategoryNames.Count(a=>a.LanguageId == langId) != 0 ? _.CategoryNames.First(a => a.LanguageId == langId) : _.CategoryNames.FirstOrDefault()
+                       CategoryName = _.CategoryNames.Any(a=>a.LanguageId == langId) ?
+                       _.CategoryNames.FirstOrDefault(a => a.LanguageId == langId) : _.CategoryNames.FirstOrDefault()
                    }).ToList();
 
                 result.CurrentPage = page;
@@ -305,19 +319,23 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             var result = new Result();
             var entity = _categoryContext.Collection
               .Find(_ => _.ContentCategoryId == contentCategoryId).FirstOrDefault();
-            entity.IsDeleted = false;
-            var updateResult = await _categoryContext.Collection
-               .ReplaceOneAsync(_ => _.ContentCategoryId == contentCategoryId, entity);
-            if (updateResult.IsAcknowledged)
+            if(entity != null)
             {
-                result.Succeeded = true;
-                result.Message = ConstMessages.SuccessfullyDone;
+                entity.IsDeleted = false;
+                var updateResult = await _categoryContext.Collection
+                   .ReplaceOneAsync(_ => _.ContentCategoryId == contentCategoryId, entity);
+                if (updateResult.IsAcknowledged)
+                {
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                }
+                else
+                {
+                    result.Succeeded = false;
+                    result.Message = ConstMessages.ErrorInSaving;
+                }
             }
-            else
-            {
-                result.Succeeded = false;
-                result.Message = ConstMessages.ErrorInSaving;
-            }
+           
             return result;
         }
 

@@ -515,6 +515,9 @@
 		<value>مطمئن هستید؟</value>
 	</string>
 	<!--====================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_ChooseOneAddress">
+		<value>لطفا یک آدرس انتخاب کنید درغیر اینصورت اولین آدرس انتخاب میشود.</value>
+	</string>
 	<string key="AlertAndMessage_AddressInsert">
 		<value>لطفا آدرس خود را ثبت نمایید.</value>
 	</string>
@@ -543,10 +546,10 @@
 		<value>قیمت این محصول [0]  کاهش یافته است.</value>
 	</string>
 	<string key="AlertAndMessage_ProductDecreaseInventory">
-		<value>با عرض پوزش موجودی محصول به [0] کاهش پیدا کرده است.</value>
+		<value> موجودی محصول به [0] کاهش پیدا کرده است.</value>
 	</string>
 	<string key="AlertAndMessage_ProductNullCount">
-		<value>با عرض پوزش محصول مورد نظر به اتمام رسیده است.</value>
+		<value> موجودی محصول مورد نظر به اتمام رسیده است.</value>
 	</string>
 	<string key="AlertAndMessage_SubmitOtpPleaseTryAgainLater">
 		<value>خطا، لطفا بعدا دوباره تلاش نمایید.</value>
@@ -1522,6 +1525,9 @@
 	</string>
 	<string key="Shopping_OnlinePayment">
 		<value>پرداخت آنلاین</value>
+	</string>
+	<string key="Shopping_Changes">
+		<value>تغییرات</value>
 	</string>
 	<string key="User_PasswordRepetition">
 		<value>تکرار کلمه عبور</value>

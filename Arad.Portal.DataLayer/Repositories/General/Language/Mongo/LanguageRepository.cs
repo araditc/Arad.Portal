@@ -260,8 +260,15 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
         {
             var entity = _context.Collection
                 .Find(_ => _.Symbol.ToLower() == symbol.ToLower()).FirstOrDefault();
+            if(entity != null)
+            {
+                return entity.LanguageId;
+            }else
+            {
+                return String.Empty;
 
-            return entity.LanguageId;
+            }
+            
         }
     }
 }

@@ -68,11 +68,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                             if (equallentEntity.Prices.Any(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive))
                             {
                                 var exist = equallentEntity.Prices.FirstOrDefault(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive);
-                                equallentEntity.Prices.Remove(exist);
-                                exist.IsActive = false;
-                                exist.EndDate = DateTime.UtcNow;
-                                equallentEntity.Prices.Add(exist);
-
+                                if(exist != null)
+                                {
+                                    exist.IsActive = false;
+                                    exist.EndDate = DateTime.UtcNow;
+                                }
                             }
                         }
 
@@ -230,27 +230,34 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
 
 
             var dbEntity = _context.Collection.Find(_ => _.DomainId == dto.DomainId).FirstOrDefault();
-            dbEntity.Prices.FirstOrDefault(_ => _.IsActive).EndDate = DateTime.Now;
-            dbEntity.Prices.FirstOrDefault(_ => _.IsActive).IsActive = false;
-            dto.Price.IsActive = true;
-            dto.Price.PriceId = Guid.NewGuid().ToString();
-            dbEntity.Prices.Add(dto.Price);
-
-            var mod = GetCurrentModification(dto.ModificationReason);
-            dbEntity.Modifications.Add(mod);
-
-            var updateResult = await _context.Collection
-                   .ReplaceOneAsync(_ => _.DomainId == dto.DomainId, dbEntity);
-            if(updateResult.IsAcknowledged)
+            if(dbEntity != null)
             {
-                result.Succeeded = true;
-                result.Message = ConstMessages.SuccessfullyDone;
-            }
-            else
-            {
-                result.Message = ConstMessages.ErrorInSaving;
+                dbEntity.Prices.FirstOrDefault(_ => _.IsActive).EndDate = DateTime.Now;
+                dbEntity.Prices.FirstOrDefault(_ => _.IsActive).IsActive = false;
+                dto.Price.IsActive = true;
+                dto.Price.PriceId = Guid.NewGuid().ToString();
+                dbEntity.Prices.Add(dto.Price);
 
+                var mod = GetCurrentModification(dto.ModificationReason);
+                dbEntity.Modifications.Add(mod);
+
+                var updateResult = await _context.Collection
+                       .ReplaceOneAsync(_ => _.DomainId == dto.DomainId, dbEntity);
+                if (updateResult.IsAcknowledged)
+                {
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                }
+                else
+                {
+                    result.Message = ConstMessages.ErrorInSaving;
+
+                }
+            }else
+            {
+                result.Message = ConstMessages.ObjectNotFound;
             }
+            
             return result;
         }
 
@@ -321,19 +328,27 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             var result = new Result();
             var entity = _context.Collection
               .Find(_ => _.DomainId == id).FirstOrDefault();
-            entity.IsDeleted = false;
-            var updateResult = await _context.Collection
-               .ReplaceOneAsync(_ => _.DomainId == id, entity);
-            if (updateResult.IsAcknowledged)
+            if(entity != null)
             {
-                result.Succeeded = true;
-                result.Message = ConstMessages.SuccessfullyDone;
+                entity.IsDeleted = false;
+                var updateResult = await _context.Collection
+                   .ReplaceOneAsync(_ => _.DomainId == id, entity);
+                if (updateResult.IsAcknowledged)
+                {
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                }
+                else
+                {
+                    result.Succeeded = false;
+                    result.Message = ConstMessages.ErrorInSaving;
+                }
             }
             else
             {
-                result.Succeeded = false;
-                result.Message = ConstMessages.ErrorInSaving;
+                result.Message = ConstMessages.ObjectNotFound;
             }
+           
             return result;
         }
         public async Task InsertMany(List<Entities.General.Domain.Domain> domains)
@@ -376,10 +391,14 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                         if (entity.Prices.Any(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive))
                         {
                             var exist = entity.Prices.FirstOrDefault(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive);
-                            entity.Prices.Remove(exist);
-                            exist.IsActive = false;
-                            exist.EndDate = DateTime.UtcNow;
-                            entity.Prices.Add(exist);
+                            //entity.Prices.Remove(exist);
+                            if(exist != null)
+                            {
+                                exist.IsActive = false;
+                                exist.EndDate = DateTime.UtcNow;
+                            }
+                            
+                            //entity.Prices.Add(exist);
 
                         }
                     }

@@ -596,14 +596,21 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             string searchDomainId = "";
             if (currentDomainEntity.IsDefault)//we should calculate the promotion of sellerDomain
             {
-                if(sellerUserEntity.IsSystemAccount)
+                if(sellerUserEntity != null)
                 {
-                    searchDomainId = currentDomainEntity.DomainId;
-                }
-                else
+                    if (sellerUserEntity.IsSystemAccount)
+                    {
+                        searchDomainId = currentDomainEntity.DomainId;
+                    }
+                    else
+                    {
+                        searchDomainId = product.AssociatedDomainId;
+                    }
+                }else
                 {
-                    searchDomainId = product.AssociatedDomainId;
+                    return null;
                 }
+                
             }
             else
             {
@@ -623,20 +630,20 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
 
                 var groupIds = product.GroupIds;
 
-                var filter = Builders<Entities.Shop.Promotion.Promotion>.Filter.Empty;
-                filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.Eq(x => x.PromotionType, Entities.Shop.Promotion.PromotionType.Group);
-                filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.Eq(x => x.IsActive,true);
-                filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.Eq(x => x.AssociatedDomainId,searchDomainId);
-                filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.Ne(x => x.IsDeleted,true);
-                filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.Lte(x => x.SDate, DateTime.Now);
+                //var filter = Builders<Entities.Shop.Promotion.Promotion>.Filter.Empty;
+                //filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.Eq(x => x.PromotionType, Entities.Shop.Promotion.PromotionType.Group);
+                //filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.Eq(x => x.IsActive,true);
+                //filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.Eq(x => x.AssociatedDomainId,searchDomainId);
+                //filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.Ne(x => x.IsDeleted,true);
+                //filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.Lte(x => x.SDate, DateTime.Now);
                 
-                filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.Eq(x => x.PromotionType, Entities.Shop.Promotion.PromotionType.Group);
-                filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.AnyIn(x => x.Infoes.Select(a => a.AffectedProductGroupId), groupIds);
-                filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.Lte(x => x.SDate, DateTime.Now);
-                var timeFilter = Builders<Entities.Shop.Promotion.Promotion>.Filter.Or(Builders<Entities.Shop.Promotion.Promotion>.Filter.Gte(x => x.EDate, DateTime.Now)
-                    , Builders<Entities.Shop.Promotion.Promotion>.Filter.Eq(x => x.EDate, null));
+                //filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.Eq(x => x.PromotionType, Entities.Shop.Promotion.PromotionType.Group);
+                //filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.AnyIn(x => x.Infoes.Select(a => a.AffectedProductGroupId), groupIds);
+                //filter &= Builders<Entities.Shop.Promotion.Promotion>.Filter.Lte(x => x.SDate, DateTime.Now);
+                //var timeFilter = Builders<Entities.Shop.Promotion.Promotion>.Filter.Or(Builders<Entities.Shop.Promotion.Promotion>.Filter.Gte(x => x.EDate, DateTime.Now)
+                //    , Builders<Entities.Shop.Promotion.Promotion>.Filter.Eq(x => x.EDate, null));
 
-                filter &= timeFilter;
+                //filter &= timeFilter;
 
             //    promotionOnThisProductGroup = await _promotionContext.Collection.Find(filter).FirstOrDefaultAsync();
 

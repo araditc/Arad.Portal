@@ -156,7 +156,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
 
                 if (user != null)
                 {
-                    result = _roleContext.Collection.Find(_ => _.RoleId == user.UserRoleId).FirstOrDefault().RoleName;
+                    result = _roleContext.Collection.Find(_ => _.RoleId == user.UserRoleId).Any() ? 
+                        _roleContext.Collection.Find(_ => _.RoleId == user.UserRoleId).FirstOrDefault().RoleName : "";
                 }
 
             }
