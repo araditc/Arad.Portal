@@ -132,6 +132,24 @@
 	<string key="design_HorizantalMargin">
 		<value>horizantal margin</value>
 	</string>
+	<string key="design_RowStyles">
+		<value>row styles</value>
+	</string>
+	<string key="design_bg">
+		<value>Choose background color</value>
+	</string>
+	<string key="design_ChooseColor">
+		<value>choose color</value>
+	</string>
+	<string key="Stuff">
+		<value>stuff</value>
+	</string>
+	<string key="design_NoColor">
+		<value>No Color</value>
+	</string>
+	<string key="design_ImageDelete">
+		<value>delete bg image</value>
+	</string>
 	<!--End Design Page-->
 	<!--Start[FileImport]-->
 	<string key="FileImportExport_GetProductExcelFileTemplate">
@@ -1448,9 +1466,7 @@
 	<!--END [Allert And Message]-->
 	<!--START [Dashboard]-->
 	
-	<string key="Stuff">
-		<value>stuff</value>
-	</string>
+	
 	<string key="Choose">
 		<value>choose ...</value>
 	</string>

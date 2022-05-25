@@ -257,10 +257,10 @@ namespace Arad.Portal.UI.Shop.Dashboard
 
             app.UseEndpoints(endpoints =>
             {
-                if (env.IsDevelopment())
-                    endpoints.MapControllers().WithMetadata(new AllowAnonymousAttribute());
-                else
-                    endpoints.MapControllers();
+                //if (env.IsDevelopment())
+                //    endpoints.MapControllers().WithMetadata(new AllowAnonymousAttribute());
+                //else
+                //    endpoints.MapControllers();
 
                 endpoints.MapControllerRoute(
                     name: "default",

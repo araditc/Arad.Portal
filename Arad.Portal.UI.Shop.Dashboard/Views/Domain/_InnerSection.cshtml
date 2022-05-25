@@ -86,13 +86,13 @@
          <button  class="btn btn-success bg-gradient btn-sm float-end btnHtmlSanitizer m-1" onclick="sinitize(this);" editorid ='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")' cn ="@Model.ColNumber" rn="@ViewBag.RowNumber" sec = "@Model.Section"
             type="button">@Language.GetString("btn_Validation")</button>
     </div>
-    <div class="row finalColumnContent d-none" classNames ="@Model.ColumnClassNames"></div>
-      <div class="row htmlColumnContentPreview d-none mx-2" classNames="@Model.ColumnClassNames">
+    <div class="row finalColumnContent d-none" guid="@Model.RowGuid" classNames ="@Model.ColumnClassNames"></div>
+      <div class="row htmlColumnContentPreview d-none mx-2" guid="@Model.RowGuid" classNames="@Model.ColumnClassNames">
       </div>
           
 @*difference between these finalColumnContent and htmlColumnContentPreview is about modules the first one store with parameters and second one html of executed module will render *@
    
-   <div class="row moduleDataPreview d-none mx-2" >
+   <div class="row moduleDataPreview d-none mx-2" guid="@Model.RowGuid" >
    </div>
 </div>
 

@@ -14,15 +14,15 @@
 }
 <div class="row sectionRow mx-2" rn="@ViewBag.RowNumber">
     <div class="col-12 col-md-3 border border-1" colnum="1" did='@ViewBag.DomainId' cnt ="4">
-           <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section, ColumnClassNames = "col-12 col-md-3" }'/>
+           <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section, ColumnClassNames = "col-12 col-md-3", RowGuid ="@ViewBag.Guid" }'/>
     </div>
      <div class="col-12 col-md-3 border border-1" colnum="2" did='@ViewBag.DomainId' cnt ="4">
-            <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 2, Section = section, ColumnClassNames = "col-12 col-md-3" }'/>
+            <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 2, Section = section, ColumnClassNames = "col-12 col-md-3", RowGuid ="@ViewBag.Guid" }'/>
      </div>
       <div class="col-12 col-md-3 border border-1" colnum="3" did='@ViewBag.DomainId' cnt ="4">
-             <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 3, Section = section, ColumnClassNames = "col-12 col-md-3" }'/>
+             <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 3, Section = section, ColumnClassNames = "col-12 col-md-3", RowGuid ="@ViewBag.Guid" }'/>
       </div>
        <div class="col-12 col-md-3 border border-1" colnum="4" did='@ViewBag.DomainId' cnt ="4">
-              <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 4, Section = section, ColumnClassNames = "col-12 col-md-3" }'/>
+              <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 4, Section = section, ColumnClassNames = "col-12 col-md-3", RowGuid ="@ViewBag.Guid" }'/>
        </div>
 </div>

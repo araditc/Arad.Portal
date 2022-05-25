@@ -698,25 +698,7 @@ else
             multiLingualArr.push(obj);
         }
 
-        //$("#multiLangId").change(function () {
-        //    var lan = $("multiLangId option:selected").text();
-        //    if (lan == "فارسی") {
-        //        lan = "fa";
-        //          var config = {
-        //                filebrowserImageUploadUrl: 'Image/ProductFileUpload',
-        //                language: lan
-        //          }
-        //          CKEDITOR.replace("editorCk", config);
-        //    } else {
-        //        //if just we have two language english and persian
-        //        lan = "en";
-        //        var config = {
-        //            filebrowserImageUploadUrl: 'Image/ProductFileUpload',
-        //            language: lan
-        //        }
-        //        CKEDITOR.replace("editorCk", config);
-        //    }
-        //});
+      
             //datetimepicker
             if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
             {
@@ -857,7 +839,7 @@ else
       });
 
         $("#send_pic").click(function () {
-             debugger;
+             
             $("#uploadModal").modal("hide");
             var url = $("#galleryPic").attr("src");
             var model = {};

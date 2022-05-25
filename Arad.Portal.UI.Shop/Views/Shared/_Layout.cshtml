@@ -84,14 +84,14 @@
         </div>
     </div>
 
-    <header class="container-fluid ps-0 pe-0">
+    <header class="container-fluid ps-0 pe-0" style=@(process.LayoutModel.HeaderPart != null && !string.IsNullOrWhiteSpace(process.LayoutModel.HeaderPart.CodeColor) ? $"background-color:{process.LayoutModel.HeaderPart.CodeColor}" : "")>
         <partial name="~/Views/Shared/_PriorFixedHeader.cshtml" />
         @if (process.LayoutModel.HasCustomizedHeader)
         {
             @if (!string.IsNullOrWhiteSpace(process.LayoutModel.HeaderPart.PriorFixedContent))
             {
-                @Html.Raw(process.LayoutModel.HeaderPart.PriorFixedContent)
-                ;
+                @Html.Raw(process.LayoutModel.HeaderPart.PriorFixedContent) ;
+               
 
             }
             @if (process.LayoutModel.HeaderPart.CustomizedContent.Count > 0)
@@ -178,7 +178,7 @@
         </main>
     </div>
     <footer>
-        <div class="footer">
+        <div class="footer" style=@(process.LayoutModel.FooterPart != null && !string.IsNullOrWhiteSpace(process.LayoutModel.FooterPart.CodeColor) ? $"background-color:{process.LayoutModel.FooterPart.CodeColor}" : "")>
             @if (process.LayoutModel.HasCustomizedFooter)
             {
                 @if (!string.IsNullOrWhiteSpace(process.LayoutModel.FooterPart.PriorFixedContent))

@@ -15,9 +15,9 @@
 }
 <div class="row sectionRow mx-2" rn="@ViewBag.RowNumber">
     <div class="col-12 col-md-6 border border-1" colnum="1" did='@ViewBag.DomainId' cnt ="2">
-         <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section, ColumnClassNames = "col-12 col-md-6" }'/>
+         <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section, ColumnClassNames = "col-12 col-md-6", RowGuid ="@ViewBag.Guid" }'/>
     </div>
      <div class="col-12 col-md-6 border border-1" colnum="2" did='@ViewBag.DomainId' cnt ="2">
-          <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 2, Section = section, ColumnClassNames = "col-12 col-md-6" }'/>
+          <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 2, Section = section, ColumnClassNames = "col-12 col-md-6", RowGuid ="@ViewBag.Guid" }'/>
      </div>
 </div>

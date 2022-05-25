@@ -30,6 +30,8 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures.Buffers;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Arad.Portal.DataLayer.Contracts.Shop.Product;
+using Microsoft.Extensions.Configuration;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -39,17 +41,21 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IDomainRepository _domainRepository;
         private readonly IModuleRepository _moduleRepository;
         private readonly IProviderRepository _providerRepository;
+        private readonly IProductRepository _productRepository;
         private readonly ILanguageRepository _lanRepository;
         private readonly ICurrencyRepository _curRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
         
 
         public DomainController(IDomainRepository domainRepository, UserManager<ApplicationUser> userManager,
             IProviderRepository providerRepository,
             IWebHostEnvironment hostEnvironment,
+            IProductRepository productRepository,
             IModuleRepository moduleRepository,
             ILanguageRepository lanRepository,
+            IConfiguration configuration,
             ICurrencyRepository currencyRepository)
         {
             _domainRepository = domainRepository;
@@ -59,6 +65,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _providerRepository = providerRepository;
             _moduleRepository = moduleRepository;
             _webHostEnvironment = hostEnvironment;
+            _productRepository = productRepository;
+            _configuration = configuration;
         }
 
         public async Task<string> RenderViewComponent(string viewComponent, object args)
@@ -208,6 +216,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             //ViewBag.ModuleList = moduleList;
 
             ViewBag.DomainId = domainId;
+
+            var imageRatioList = _productRepository.GetAllImageRatio();
+            ViewBag.ImageRatio = imageRatioList;
+            var imageSize = _configuration["ProductImageSize:Size"];
+            ViewBag.PicSize = imageSize;
             return View("~/Views/Domain/PrimaryTemplateDesignPage.cshtml");
         }
 
@@ -563,7 +576,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
 
         [HttpGet]
-        public IActionResult GetRowWithSelectedColumns(string count, string rn, string d)
+        public IActionResult GetRowWithSelectedColumns(string count, string rn, string d, string gu)
         {
 
             var moduleList = _moduleRepository.GetAllModules();
@@ -591,6 +604,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             ViewBag.RowNumber = rn;
             ViewBag.DomainId = d;
+            ViewBag.Guid = gu;
             return PartialView($"~/Views/Domain/{viewName}");
         }
     }

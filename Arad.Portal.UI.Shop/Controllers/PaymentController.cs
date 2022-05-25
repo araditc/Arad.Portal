@@ -75,7 +75,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                             UserName = userEntity.UserName,
                             UserFullName = userEntity.Profile.FullName ?? "",
                             ShippingAddressId = !string.IsNullOrWhiteSpace(model.Address) ? model.Address : (userEntity.Profile.Addresses.Any(_=>_.AddressType == DataLayer.Models.User.AddressType.ShippingAddress) ?
-                              userEntity.Profile.Addresses.FirstOrDefault(_ => _.AddressType == DataLayer.Models.User.AddressType.ShippingAddress).Id : "")
+                             userEntity.Profile.Addresses.FirstOrDefault(_ => _.AddressType == DataLayer.Models.User.AddressType.ShippingAddress).Id : "")
                         };
                         transaction.BasicData = new PaymentGatewayData()
                         {

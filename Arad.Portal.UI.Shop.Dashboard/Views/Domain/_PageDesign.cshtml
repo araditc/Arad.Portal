@@ -5,7 +5,7 @@
 }
 <div class='row @($"div_{Model.SectionTag}")' >
     <div class="col-12 text-center">
-        <label class="lblAlertFirstRow form-label">@Language.GetString("AlertAndMessage_CreateNewRow")</label>
+        <label class="lblAlertFirstRow form-label fs-5">@Language.GetString("AlertAndMessage_CreateNewRow")</label>
         <button class="btn btn-success bg-gradient btn-sm float-end addNewRow m-1" id='@($"btnAdd_{Model.SectionTag}")' onclick="addNewRow(this, '@Model.SectionTag');"
                type="button" >@Language.GetString("btn_NewRow")</button>
     </div>
@@ -60,10 +60,12 @@
             footerRowNumber += 1;
             break;
         }
-        $(divId).append("<div rn='"+currentRowNumber+"' class='row "+ currentRowNumber+ " firstLevel align-middle active'></div>");
-        //$(`.parentSrc.tem_${tag}`).clone()..appendTo(`.firstLevel.active.${currentRowNumber}`);
-        var guid = createGuid();
+         var guid = createGuid();
         var template = getColTemplate(guid, tag);
+
+        $(divId).append("<div rn='"+currentRowNumber+"' guid='"+guid+"' class='row "+ currentRowNumber+ " firstLevel align-middle active'></div>");
+        //$(`.parentSrc.tem_${tag}`).clone()..appendTo(`.firstLevel.active.${currentRowNumber}`);
+       
         $(`.firstLevel.active.${currentRowNumber}`).append(template);
         var parentDivClass = `.div_${tag}`;
         $(`#${guid}`).selectpicker();
@@ -78,8 +80,9 @@
         debugger;
         var col = $(sender).val();
         var rowNumber = $(sender).closest(".row.firstLevel").attr("rn");
+        var guid = $(sender).closest(".row.firstLevel").attr("guid");
         $.ajax({
-                 url:"@Url.Action("GetRowWithSelectedColumns","Domain")"+"?count="+col+"&rn="+rowNumber+"&d="+'@Model.DomainId',
+                 url:"@Url.Action("GetRowWithSelectedColumns","Domain")"+"?count="+col+"&rn="+rowNumber+"&d="+'@Model.DomainId'+"&gu="+ guid,
                  type:'Get',
                  statusCode:{
                      200:function(data){

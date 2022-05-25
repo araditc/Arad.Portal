@@ -70,14 +70,14 @@
         </div>
     </div>
     <header>
-         <partial name="~/Shared/_PriorFixedHeader.cshtml" />
+         <partial name="~/Views/Shared/_PriorFixedHeader.cshtml" />
         @if (!string.IsNullOrEmpty(Model.HeaderContent))
         {
             @Html.Raw(Model.HeaderContent);
             
         }
         <div class="navbarMenu">
-            @await Component.InvokeAsync("StoreMenu")
+            @await Component.InvokeAsync("StoreMenuModule", new {domainId ="d24ceebd-c587-4a02-a201-3ad5a9345daf"});
         </div>
        
     </header>

@@ -138,6 +138,24 @@
 	<string key="design_HorizantalMargin">
 		<value>فاصله افقی از المان بیرونی</value>
 	</string>
+	<string key="design_RowStyles">
+		<value>تنظیمات ظاهری</value>
+	</string>
+	<string key="design_bg">
+		<value>انتخاب رنگ پس زمینه</value>
+	</string>
+	<string key="design_ChooseColor">
+		<value>انتخاب رنگ</value>
+	</string>
+	<string key="Stuff">
+		<value>کالا</value>
+	</string>
+	<string key="design_NoColor">
+		<value>بدون رنگ</value>
+	</string>
+	<string key="design_ImageDelete">
+		<value>حذف تصویر پس زمینه</value>
+	</string>
 	<!--End Design Page-->
 	<!--Start[FileImport]-->
 	<string key="FileImportExport_GetProductExcelFileTemplate">
@@ -1484,9 +1502,6 @@
 	<!--END [Allert And Message]-->
 	<!--START [Dashboard]-->
 	
-	<string key="Stuff">
-		<value>stuff</value>
-	</string>
 	<string key="Choose">
 		<value>انتخاب کنید ...</value>
 	</string>

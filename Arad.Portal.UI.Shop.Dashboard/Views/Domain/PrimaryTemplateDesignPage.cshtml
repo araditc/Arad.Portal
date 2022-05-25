@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 @using System.Globalization;
 @using Arad.Portal.GeneralLibrary.Utilities;
+
 @{
     Layout = null;
     var direction = "";
@@ -56,7 +57,7 @@
     <link href="~/css/siteTemplate/ForthContentTemplate.css" rel="stylesheet" />
     <link href="~/css/siteTemplate/FifthContentTemplate.css" rel="stylesheet" />
     <link href="~/css/header.css" rel="stylesheet" />
-    @*<link href="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.css" rel="stylesheet" />*@
+
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
@@ -67,9 +68,16 @@
     <script src="~/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js"></script>
     <script src="~/lib/owlCarousel/js/owl.carousel.min.js"></script>
     <script src="~/js/TemplateCreation.js"></script>
+
 </head>
 <body>
-
+    <style>
+        .wrap {
+            margin: 0 auto;
+            width: 300px;
+            text-align: center;
+        }
+    </style>
     <div aria-hidden="true" aria-labelledby="confirmDesignModalLabel" class="modal fade" id="confirmDesignModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -92,21 +100,64 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="uploadModal" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content col-md-12">
+                <div class="modal-header">
+                    <div class="col-md-1">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="col-md-11" style="text-align: center">
+                        <h5 class="modal-title align-content-center" id="exampleModalLongTitle">@Language.GetString("CropImage")</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body" id="upload-modal-body">
+                        <div id="rowContainer" class="row justify-content-center align-items-center">
+                            <div id="container" style="position: relative;display: inline; height: 400px; width: 400px;max-width:100%;">
+                                <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="croppedImg"
+                                     alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center align-items-center">
+                    <div>
+                        <button class="btn btn-success bg-gradient" id="send_pic" type="button"><i style="margin-left: 5px;font-size:13px" class="fas fa-check"></i>@Language.GetString("btn_Approve")</button>
+                        <button class="btn btn-primary bg-gradient" id="crop_button"><i style="margin-left: 5px;font-size:13px" class="fas fa-cut"></i>@Language.GetString("btn_Crop")</button>
+                        <button class="btn btn-primary bg-gradient" onclick="rotatePic()"> <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i> @Language.GetString("btn_Rotate")</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="container">
         <div class="row mt-3">
             <div class="float-end">
 
                 <button id="btnSave" class="btn btn-success bg-gradient btn-sm float-end m-2" type="button">@Language.GetString("btn_Save")</button>
                 <button id="btnPreview" class="btn btn-primary bg-gradient btn-sm float-end m-2" type="button">@Language.GetString("btn_Preview")</button>
-                 <button id="btnBack" asp-action="Index" asp-controller="Home" class="btn btn-secondary bg-gradient btn-sm float-end m-2" type="button">@Language.GetString("btn_Back")</button>
+                <a id="btnBack" asp-action="Index" asp-controller="Home" class="btn btn-secondary bg-gradient btn-sm float-end m-2" type="button">@Language.GetString("btn_Back")</a>
 
             </div>
         </div>
     </div>
     <header class="headerPart m-2 container-fluid ps-0 pe-0">
         <h3 class="text-center bg-secondary bg-opacity-10">Header</h3>
-        
+
         <div class="border border-3 border-secondary m-1" style="min-height: 150px;">
+            <div class='p-2 row justify-content-center'>
+                <div class='col-1 text-center'>
+                    <button class='btn btn-sm m-2 btn-success btnHFStyle' sec="header"><i class='fs-4 fa fa-cog'></i></button>
+                </div>
+                <div class='col-1 text-center'>
+                    <button class='btn btn-sm  btn-success btnNoColor p-2 m-2' sec="header" onclick="resetColor(this);">@Language.GetString("design_NoColor")</button>
+                </div>
+            </div>
             <partial name="~/Views/Shared/_PriorFixedHeader.cshtml" />
             <div class="border border-3 border-secondary m-1 mx-0 dynamicHeaderPart p-2" style="min-height: 150px;">
                 <partial name="_PageDesign.cshtml" model='new TemplateSectionPart(){SectionTag = "headerSection", DomainId = @domainId}' />
@@ -133,6 +184,14 @@
     <footer class="footerPart">
         <h3 class="text-center bg-secondary bg-opacity-10">Footer</h3>
         <div class="border border-3 border-secondary m-1 dynamicFooterPart p-2" style="min-height: 150px;">
+            <div class='p-2 row justify-content-center'>
+                <div class='col-1 text-center'>
+                    <button class='btn btn-sm m-2 btn-success btnHFStyle' sec="footer"><i class='fs-4 fa fa-cog'></i></button>
+                </div>
+                <div class='col-1 text-center'>
+                    <button class='btn btn-sm  btn-success btnNoColor p-2 m-2' sec="footer" onclick="resetColor(this);">@Language.GetString("design_NoColor")</button>
+                </div>
+            </div>
             <div class="container">
                 <partial name="_PageDesign.cshtml"
                          model='new TemplateSectionPart(){SectionTag = "footerSection", DomainId = @domainId}' />
@@ -141,416 +200,773 @@
     </footer>
 
     <div class="offcanvas offcanvas-end" tabindex="-1" id="styleDiv" aria-labelledby="offcanvasExampleLabel">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-    <div>
-      Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasExampleLabel">@Language.GetString("design_RowStyles")</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+
+            <div class="row">
+                <div class="col">@Language.GetString("design_VerticalPadding")</div>
+                <div class="col">
+                    <select id="verticalPaddingSelect" class="form-control selectpicker" onchange="addCustomClass('vp');" data-live-search="true">
+                        <option value=""></option>
+                        <option value="py-0">py-0</option>
+                        <option value="py-2">py-2</option>
+                        <option value="py-4">py-4</option>
+                        <option value="py-5">py-4</option>
+                        <option value="py-10">py-10</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">@Language.GetString("design_HorizantalPadding")</div>
+                <div class="col">
+                    <select id="horizantalPaddingSelect" class="form-control selectpicker" onchange="addCustomClass('hp');" data-live-search="true">
+                        <option value=""></option>
+                        <option value="px-0">px-0</option>
+                        <option value="px-2">px-2</option>
+                        <option value="px-4">px-4</option>
+                        <option value="px-5">px-5</option>
+                        <option value="px-10">px-10</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">@Language.GetString("design_VerticalMargin")</div>
+                <div class="col">
+                    <select id="verticalMarginSelect" class="form-control selectpicker" onchange="addCustomClass('vm');" data-live-search="true">
+                        <option value=""></option>
+                        <option value="my-0">my-0</option>
+                        <option value="my-2">my-2</option>
+                        <option value="my-4">my-4</option>
+                        <option value="my-5">my-5</option>
+                        <option value="my-10">my-10</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">@Language.GetString("design_HorizantalMargin")</div>
+                <div class="col">
+                    <select id="horizantalMarginSelect" class="form-control selectpicker" onchange="addCustomClass('hm');" data-live-search="true">
+                        <option value=""></option>
+                        <option value="mx-0">mx-0</option>
+                        <option value="mx-2">mx-2</option>
+                        <option value="mx-4">mx-4</option>
+                        <option value="mx-5">mx-5</option>
+                        <option value="mx-10">mx-10</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
     </div>
-    <div class="dropdown mt-3">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
-        Dropdown button
-      </button>
-      
+
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="styleHeaderFooterDiv" aria-labelledby="offcanvashfExampleLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvashfExampleLabel">@Language.GetString("design_bg")</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="row">
+
+                <div class="col">
+                    <label>@Language.GetString("design_bgColor")</label>
+                    <input type="color" id="bgcolor" name="bgcolor" onchange="bgColorChange();" value="#7b6f6f" />
+                </div>
+            </div>
+            @*<div class="row">
+                <div class="col border pt-3">
+                <label class="form-label custom-file-label float-start pt-2" for="image">@Language.GetString("design_bgPhoto")</label>
+                <input accept="image/x-png,image/jpeg"
+                type="file" class="btn btn-sm bg-gradient float-end" name="image" id="image" onchange="getURL(this)" />
+                </div>
+                <div class="col mb-1">
+                <label class="form-label">@Language.GetString("tbl_AspectRatioImage")</label>
+                <select id="imgAspectRatio" class="form-control selectpicker" data-live-search="true"
+                asp-items="@(new SelectList(ViewBag.ImageRatio,"Value","Text"))"></select>
+                </div>
+                <div class="col">
+                <input type="button" id="deleteBgImage" class="btn btn-danger btn-sm m-2"  value="@Language.GetString("design_ImageDelete")"  />
+                </div>
+                </div>*@
+
+
+
+
+        </div>
     </div>
-  </div>
-</div>
 
     <script>
+             var selectedRow;
+             var selectedSection;
+             var footerBgColor = "";
+             var headerBgColor = "";
 
-               function getColTemplate(id, tag) {
+             function bgColorChange()
+             {
+                 debugger;
+                var color = $("#bgcolor").val();
+                if(selectedSection =="footer")
+                {
+                    footerBgColor = color;
+                    $(".dynamicFooterPart").css("background-color", footerBgColor);
+                }else if(selectedSection =="header")
+                {
+                    headerBgColor = color;
+                    $(".dynamicHeaderPart").css("background-color", headerBgColor);
+                }
+             }
 
-               colTemplate = "<div class='col-12 col-md-3 p-2'>" +
-                   "<label class='lblAlert form-label'>" + '@Language.GetString("AlertAndMessage_HowManyColumns")' + "</label><br />" +
-                   "<select  class='form-control selectpicker colCnt' onchange='selectColumns(this, \""+ tag +"\" );' id='" + id + "' data-live-search='true'>" +
-                       "<option value='0'>" + '@Language.GetString("AlertAndMessage_Choose")' + "</option>" +
-                       "<option value='1'>" + '@Language.GetString("Template_OneCol")' + "</option>" +
-                       "<option value='2'>" + '@Language.GetString("Template_TwoCol")' + "</option>" +
-                       "<option value='3'>" + '@Language.GetString("Template_ThreeCol")' + "</option>" +
-                       "<option value='4'>" + '@Language.GetString("Template_FourCol")' + "</option>" +
-                       "<option value='6'>" + '@Language.GetString("Template_SixCol")' + "</option></select></div><div class='p-2 row justify-content-center'>"+
-                       "<div class='col-2 text-center'>"+
-                       "<button class='btn btn-sm btn-dark btnRowStyle'  id='" + id + "'><i class='fs-4 fa fa-cog'></i></button>"+
-                       "</div><div class='p-2 col-12 contentColumns'></div>";
+             function resetColor(sender)
+             {
+                 debugger;
+                 var sec = $(sender).attr("sec");
+                 if(sec == "header")
+                 {
+                     headerBgColor = "";
+                      $(".dynamicHeaderPart").css("background-color", headerBgColor);
+                 }else if(sec == "footer")
+                 {
+                     footerBgColor = "";
+                      $(".dynamicFooterPart"),css("background-color", "");
+                 }
+             }
+             function addCustomClass(type)
+             {
+                 debugger;
+                 var cls = "";
+                 var custClass = $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames");
+                  var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames");
+                 switch(type)
+                 {
+                     case "vp":
+                     cls = $("#verticalPaddingSelect").val();
+                     $(`.row.moduleDataPreview[guid='${selectedRow}']`).removeClass("py-0").removeClass("py-2").removeClass("py-4").removeClass("py-5").removeClass("py-10");
+                     custClass = custClass.replace("py-0", "").replace("py-2", "").replace("py-4", "").replace("py-5","").replace("py-10", "");
+                     pClass = pClass.replace("py-0", "").replace("py-2", "").replace("py-4", "").replace("py-5","").replace("py-10", "");
+                     break;
+                     case "hp":
+                     $(`.row.moduleDataPreview[guid='${selectedRow}']`).removeClass("px-0").removeClass("px-2").removeClass("px-4").removeClass("px-5").removeClass("px-10");
+                     cls = $("#horizantalPaddingSelect").val();
+                      custClass = custClass.replace("px-0", "").replace("px-2", "").replace("px-4", "").replace("px-5","").replace("px-10", "");
+                       pClass = pClass.replace("px-0", "").replace("px-2", "").replace("px-4", "").replace("px-5","").replace("px-10", "");
+                     break;
+                     case "vm":
+                    $(`.row.moduleDataPreview[guid='${selectedRow}']`).removeClass("mx-0").removeClass("mx-2").removeClass("mx-4").removeClass("mx-5").removeClass("mx-10");
+                     cls = $("#verticalMarginSelect").val();
+                    custClass = custClass.replace("mx-0", "").replace("mx-2", "").replace("mx-4", "").replace("mx-5","").replace("mx-10", "");
+                    pClass = pClass.replace("mx-0", "").replace("mx-2", "").replace("mx-4", "").replace("mx-5","").replace("mx-10", "");
+                     break;
+                     case "hm":
+                      $(`.row.moduleDataPreview[guid='${selectedRow}']`).removeClass("my-0").removeClass("my-2").removeClass("my-4").removeClass("my-5").removeClass("my-10");
+                     cls = $("#horizantalMarginSelect").val();
+                     custClass = custClass.replace("my-0", "").replace("my-2", "").replace("my-4", "").replace("my-5","").replace("my-10", "");
+                     pClass = pClass.replace("my-0", "").replace("my-2", "").replace("my-4", "").replace("my-5","").replace("my-10", "");
+                     break;
+                 }
 
-               return colTemplate;
-           }
-              var selectedRow;
-               $(document).ready(function(){
-                    changeScreen();
-                           $(window).resize(changeScreen);
+                  $(`.row.moduleDataPreview[guid='${selectedRow}']`).addClass(cls);
 
-                           $(".menu-area").mouseover(function () {
+                  custClass += ` ${cls}`;
+                  $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames", custClass);
+
+                  pClass += ` ${cls}`;
+                  $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames", pClass);
+             }
+
+
+              function getColTemplate(id, tag) {
+
+                   colTemplate = "<div class='col-12 col-md-3 p-2'>" +
+                       "<label class='lblAlert form-label'>" + '@Language.GetString("AlertAndMessage_HowManyColumns")' + "</label><br />" +
+                       "<select  class='form-control selectpicker colCnt' onchange='selectColumns(this, \""+ tag +"\" );' id='" + id + "' data-live-search='true'>" +
+                           "<option value='0'>" + '@Language.GetString("AlertAndMessage_Choose")' + "</option>" +
+                           "<option value='1'>" + '@Language.GetString("Template_OneCol")' + "</option>" +
+                           "<option value='2'>" + '@Language.GetString("Template_TwoCol")' + "</option>" +
+                           "<option value='3'>" + '@Language.GetString("Template_ThreeCol")' + "</option>" +
+                           "<option value='4'>" + '@Language.GetString("Template_FourCol")' + "</option>" +
+                           "<option value='6'>" + '@Language.GetString("Template_SixCol")' + "</option></select></div><div class='p-2 row justify-content-center'>"+
+                           "<div class='col-2 text-center'>"+
+                           "<button class='btn btn-sm m-2 btn-dark btnRowStyle'  guid='" + id + "'><i class='fs-4 fa fa-cog'></i></button>"+
+                           "</div><div class='ps-4 col-12 contentColumns' guid='"+ id + "'></div>";
+
+                   return colTemplate;
+               }
+
+                   $(document).ready(function(){
+                        changeScreen();
+                               $(window).resize(changeScreen);
+
+                               $(".menu-area").mouseover(function () {
+                                       var windowSize = $(window).width();
+                                       if (windowSize > 975) {
+                                           $(this).addClass("show");
+                                           $(this).find(".dropdown-toggle").addClass("text-primary");
+                                           $(this).find(".mega-area").addClass("show");
+                                       }
+                               });
+
+                               $(".menu-area").mouseleave(function () {
                                    var windowSize = $(window).width();
                                    if (windowSize > 975) {
-                                       $(this).addClass("show");
-                                       $(this).find(".dropdown-toggle").addClass("text-primary");
-                                       $(this).find(".mega-area").addClass("show");
+                                       $(this).removeClass("show");
+                                       $(this).find(".dropdown-toggle").removeClass("text-primary");
+                                       $(this).find(".mega-area").removeClass("show");
                                    }
+                               });
+
+                               $(".nav-item .nav-link").mouseover(function () {
+                                       $(this).addClass("text-primary");
+                               });
+                               $(".nav-item .nav-link").mouseleave(function () {
+                                       $(this).removeClass("text-primary");
+                               });
+
+                               $(".custmDrp").click(function () {
+
+                                   var item = $(this).parent().parent().siblings(".mega-area")
+                                   if (item.hasClass("show")) {
+                                       item.removeClass("show");
+                                   } else {
+                                       item.addClass("show");
+                                   }
+                               });
+
+
+                          $(".btnHFStyle").click(function(){
+                           debugger;
+                           selectedSection = $(this).attr("sec");
+                           var offcanvas = $("#styleHeaderFooterDiv");
+                           var off = new bootstrap.Offcanvas(offcanvas);
+                           off.show();
+                       });
+
+                           $("#deleteBgImage").click(function(){
+
                            });
 
-                           $(".menu-area").mouseleave(function () {
-                               var windowSize = $(window).width();
-                               if (windowSize > 975) {
-                                   $(this).removeClass("show");
-                                   $(this).find(".dropdown-toggle").removeClass("text-primary");
-                                   $(this).find(".mega-area").removeClass("show");
-                               }
-                           });
+                          $("#send_pic").click(function () {
 
-                           $(".nav-item .nav-link").mouseover(function () {
-                                   $(this).addClass("text-primary");
-                           });
-                           $(".nav-item .nav-link").mouseleave(function () {
-                                   $(this).removeClass("text-primary");
-                           });
-
-                           $(".custmDrp").click(function () {
-
-                               var item = $(this).parent().parent().siblings(".mega-area")
-                               if (item.hasClass("show")) {
-                                   item.removeClass("show");
-                               } else {
-                                   item.addClass("show");
-                               }
-                           });
-
-
-
-                   $("#removeFlagPart").click(function(){
-
-                   $('#confirmDesignModalLabel').text('@Language.GetString("btn_Delete")');
-                   $('#confirmDesignModalBody').html('@Language.GetString("AlertAndMessage_RemoveBoxConfrim")');
-                   $('#confirmDesignModal').modal('show');
-                   });
-
-                   $(document).on("click", ".btnRowStyle", function () {
-                       debugger;
-                       selectedRow = $(this).attr("id");
-                       var offcanvas = $("#styleDiv");
-                       var off = new bootstrap.Offcanvas(offcanvas);
-                       off.show();
-                   });
-
-                   $("#btnSave").click(function(){
-                       debugger;
-                       //start of header section
-
-                        var header = {}; //an instance of headerPart
-                        header.CustomizedContent = [];
-
-                        var regPart = document.getElementById("regPart").outerHTML;
-                        var priorHeader = document.getElementById("regPart").outerHTML;
-                        header.PriorFixedContent = priorHeader;
-
-                        var i = 1;
-                        var rn ="";
-                        $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
-                            debugger;
-                            rn = $(this).find(".row.sectionRow").attr("rn");
-                            var obj = {}; //an instance of RowContent
-                            obj.RowNumber = parseInt(rn) ;
-                            obj.OrderInRow = i ;
-                            obj.ColsContent = [] ;
-                            $(this).find(".row.parent .finalColumnContent").each(function(){
-                                var colContent ={} ; //an instance of ColContent
-                                colContent.Section = "headerSection";
-                                colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
-                                colContent.ColData = $(this).html();
-                                colContent.ColumnClassNames = $(this).attr("classNames");
-
-                                obj.ColsContent.push(colContent);
-                            });
-                            i++;
-                            header.CustomizedContent.push(obj);
-                        });
-
-                        //navbar
-                        var obj = {}; //an instance of RowContent for navbar Menu
-                        obj.RowNumber = parseInt(rn) + 1;
-                        obj.OrderInRow = i ;
-                        obj.ExtraClassNames ="navbarMenu";
-                        obj.ColsContent =[] ;
-                        var singleCol = {};
-                        singleCol.Section ="";
-                        singleCol.ColNumber = 1;
-
-                        var menuModule = {};//an instance of ModuleWithParametersValue for menu
-                        menuModule.ModuleId = "f8865ffc-1653-41ba-a281-ee57fa7ffc09";
-                        menuModule.ModuleName = "HorizantalStoreMenu";
-                        menuModule.ParametersValue = {};
-                        var data = JSON.stringify(menuModule);
-                        var menuData = `<div target='module'>${data}</div>`;
-
-                        singleCol.ColData = menuData;
-                        singleCol.ColumnClassNames = "";
-                        obj.ColsContent.push(singleCol);
-                        header.CustomizedContent.push(obj);
-                        //end of header section
-
-                        //start of container section
-                        i= 1;
-                        rn ="";
-                        var bodyContainer = {}; //an instance of MainPageContentPart
-                        bodyContainer.RowContents = [] ;
-                         $(".dynamicContainerPart .firstLevel .contentColumns").each(function()
-                         {
-                             debugger;
-                             rn = $(this).find(".row.sectionRow").attr("rn");
-                            var bodyRowContent = {}; //an instance of RowContent
-                            bodyRowContent.RowNumber = parseInt(rn) ;
-                            bodyRowContent.OrderInRow = i ;
-                            bodyRowContent.ColsContent = [] ;
-                            $(this).find(".row.parent .finalColumnContent").each(function(){
-                                var colContent ={} ; //an instance of ColContent
-                                colContent.Section = "containerSection";
-                                colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
-                                colContent.ColData = $(this).html();
-                                colContent.ColumnClassNames = $(this).attr("classNames");
-                                bodyRowContent.ColsContent.push(colContent);
-                            });
-                           i++;
-                           bodyContainer.RowContents.push(bodyRowContent);
-                         });
-                         //end of container section
-
-                         //start of footerSection
-                          i= 1;
-                          rn ="";
-                          var footerPart ={} ; //an instance of footerPart
-                          footerPart.CustomizedContent =[];
-                          $(".dynamicFooterPart .firstLevel .contentColumns").each(function()
-                          {
-                              debugger;
-                            rn = $(this).find(".row.sectionRow").attr("rn");
-                            var footerRowContent = {}; //an instance of RowContent
-                            footerRowContent.RowNumber = parseInt(rn) ;
-                            footerRowContent.OrderInRow = i ;
-                            footerRowContent.ColsContent = [] ;
-                            $(this).find(".row.parent .finalColumnContent").each(function(){
-                                var colContent ={} ; //an instance of ColContent
-                                colContent.Section = "footerSection";
-                                colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
-                                colContent.ColData = $(this).html();
-                                colContent.ColumnClassNames = $(this).attr("classNames");
-
-                                footerRowContent.ColsContent.push(colContent);
-                            });
-                             i++;
-                            footerPart.CustomizedContent.push(footerRowContent);
-                          });
-                          //end of footer section
-
-                        var model = {}; //an instance of DomainPageModel
-                        model.HeaderPart = header;
-                        model.MainPageContainerPart = bodyContainer;
-                        model.FooterPart = footerPart;
-                        model.DomainId = '@domainId';
-
-                        $.ajax({
-                           type: "Post",
-                           url: '@Url.Action("SavePageContent", "Domain")',
-                           contentType : 'application/json',
-                           data : JSON.stringify(model),
-                           success: function (result) {
-                               debugger;
-                               $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_EditionDoneSuccessfully")');
-                                     $('#mainToastBody').addClass('alert-success');
-
-                                     var toastDiv = $("#mainToast");
-                                     $("#toastPanel").show();
-                                     var toast = new bootstrap.Toast(toastDiv);
-                                     toast.show();
-                                     //setTimeout(function(){
-                                        // toast.hide(),3000
-                                     //});
-                           },
-                           //statusCode:{
-                           //	200: function(result){
-                           //		debugger;
-                           //	$('#mainToastBody').html('<i class="fal fa-check-circle"></i>@Language.GetString("AlertAndMessage_EditionDoneSuccessfully")');
-                           //		  $('#mainToastBody').addClass('alert-success');
-                           //		  var toastDiv = $("#mainToast");
-                           //		  var toast = new bootstrap.Toast(toastDiv);
-                           //		  toast.show();
-                           //		  setTimeout(function(){
-                           //			  toast.hide(),3000
-                           //		  });
-                           //	}
-                           //}
-                        });
-                   });
-
-                   $("#btnPreview").click(function(){
-                       debugger;
-                       var header ="";
-                       var container ="";
-                       var footer ="";
-
-                        var regPart = document.getElementById("regPart").outerHTML;
-                        var priorHeader = document.getElementById("regPart").outerHTML;
-                        header = priorHeader;
-
-                        $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
-
-                            header += "<div class='row firstLevel'>";
-                            $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
-                                var classNames = $(this).attr("classNames");
-                                var columnContent = $(this).html();
-                                header +=`<div class='${classNames}'>${columnContent}</div>` ;
-                            });
-                            header += "</div>";
-                        });
-
-                        $.ajax({
-                            url:"@Url.Action("GetMenu","Domain")"+"?domainId="+'@domainId',
-                            type:'Get',
-                            statusCode:{
-                                200:function(data){
-
-                                   header +=`<div class="navbar">${data}</div>` ;
-                                   $(".dynamicContainerPart .firstLevel .contentColumns").each(function()
-                                     {
-
-                                         container += "<div class='row firstLevel'>";
-                                        $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
-
-                                           var classNames = $(this).attr("classNames");
-                                            var columnContent = $(this).html();
-                                            container +=`<div class='${classNames}'>${columnContent}</div>` ;
-                                        });
-                                        container += "</div>";
-                                     });
-
-                                     //start of footerSection
-                                      $(".dynamicFooterPart .firstLevel .contentColumns").each(function()
-                                      {
-                                        footer += "<div class='row firstLevel'>";
-                                        $(this).find(".row.parent .finalColumnContent").each(function(){
-                                            var classNames = $(this).attr("classNames");
-                                            var columnContent = $(this).html();
-                                            footer +=`<div class='${classNames}'>${columnContent}</div>` ;
-                                        });
-                                         footer += "</div>";
-
-                                      });
-                                    //end of footer section
-
-
-                                    var model = {}; //an instance of TemplateDesign
-                                    model.HeaderContent = header;
-                                    model.ContainerContent = container;
-                                    model.FooterContent = footer;
-                                    model.DomainId = '@domainId';
-                                     $.ajax({
-                                       url: '@Url.Action("StoreDesignPreview")',
-                                       data : JSON.stringify(model),
-                                       contentType: 'application/json',
-                                       type: 'Post',
-                                       dataType: 'json',
-                                       success: function (result) {
-                                           if(result != "")
-                                           {
-                                               window.open('@Url.Action("DesignPreview")'+'?key='+result.key , '_blank');
-                                           }
-                                       }
-                                   });
+                                $("#uploadModal").modal("hide");
+                                var url = $("#galleryPic").attr("src");
+                                var model = {};
+                                var ratio="";
+                                 var width ="";
+                                var height ="";
+                                switch($("#imgAspectRatio").val())
+                                {
+                                    case "1":
+                                    ratio ="1*1";
+                                     width = 120;
+                                    height = 120;
+                                    break;
+                                    case "2":
+                                    ratio = "2*1";
+                                     width = 120;
+                                    height = 60;
+                                    break;
+                                    case "4":
+                                    ratio="4*1";
+                                     width = 120;
+                                    height = 30;
+                                    break;
                                 }
+                                model.ImageId = counter;
+                                model.Content = url;
+                                model.ImageRatioId =
+                                images.push(model);
+                       });
+
+                       $("#removeFlagPart").click(function(){
+
+                       $('#confirmDesignModalLabel').text('@Language.GetString("btn_Delete")');
+                       $('#confirmDesignModalBody').html('@Language.GetString("AlertAndMessage_RemoveBoxConfrim")');
+                       $('#confirmDesignModal').modal('show');
+                       });
+
+                       $(document).on("click", ".btnRowStyle", function () {
+                           debugger;
+                           selectedRow = $(this).attr("guid");
+                           var offcanvas = $("#styleDiv");
+                           var off = new bootstrap.Offcanvas(offcanvas);
+                           off.show();
+                       });
+                       //$(document).on("click", ".btnHFStyle", function () {
+                       //    debugger;
+                       //    var section = $(this).attr("sec");
+                       //    var offcanvas = $("#styleHeaderFooterDiv");
+                       //    var off = new bootstrap.Offcanvas(offcanvas);
+                       //    off.show();
+                       //});
+
+                       $("#btnSave").click(function(){
+                           debugger;
+                           //start of header section
+
+                            var header = {}; //an instance of headerPart
+                            header.CustomizedContent = [];
+
+                            //var regPart = document.getElementById("regPart").outerHTML;
+                            //var priorHeader = document.getElementById("regPart").outerHTML;
+                            //header.PriorFixedContent = priorHeader;
+                            if(headerBgColor != "")
+                            {
+                                header.BGTypeId = 1;
+                                header.CodeColor = headerBgColor;
                             }
-                          });
-                   });
 
-                       $(".owl-carousel").owlCarousel({
-                           loop: true,
-                           rtl: true,
-                           navigation : true,
-                           /* autoplay: true,*/
-                           margin: 10,
-                           animateOut: 'fadeOut',
-                           animateIn: 'fadeIn',
-                           nav: true,
-                           /*dots: true,*/
-                           autoplayHoverPause: false,
-                           items: 3,
-                           navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>",
-                                     "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
-                           responsive: {
-                               0: {
-                                   items: 1
+                            var i = 1;
+                            var rn ="";
+                            $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
+                                debugger;
+                                rn = $(this).find(".row.sectionRow").attr("rn");
+                                var obj = {}; //an instance of RowContent
+                                obj.RowNumber = parseInt(rn) ;
+                                obj.OrderInRow = i ;
+                                obj.ColsContent = [] ;
+                                $(this).find(".row.parent .finalColumnContent").each(function(){
+                                    var colContent ={} ; //an instance of ColContent
+                                    colContent.Section = "headerSection";
+                                    colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
+                                    colContent.ColData = $(this).html();
+                                    colContent.ColumnClassNames = $(this).attr("classNames");
+
+                                    obj.ColsContent.push(colContent);
+                                });
+                                i++;
+                                header.CustomizedContent.push(obj);
+                            });
+
+                            //navbar
+                            var obj = {}; //an instance of RowContent for navbar Menu
+                            obj.RowNumber = parseInt(rn) + 1;
+                            obj.OrderInRow = i ;
+                            obj.ExtraClassNames ="navbarMenu";
+                            obj.ColsContent =[] ;
+                            var singleCol = {};
+                            singleCol.Section ="";
+                            singleCol.ColNumber = 1;
+
+                            var menuModule = {};//an instance of ModuleWithParametersValue for menu
+                            menuModule.ModuleId = "f8865ffc-1653-41ba-a281-ee57fa7ffc09";
+                            menuModule.ModuleName = "HorizantalStoreMenu";
+                            menuModule.ParametersValue = {};
+                            var data = JSON.stringify(menuModule);
+                            var menuData = `<div target='module'>${data}</div>`;
+
+                            singleCol.ColData = menuData;
+                            singleCol.ColumnClassNames = "";
+                            obj.ColsContent.push(singleCol);
+                            header.CustomizedContent.push(obj);
+                            //end of header section
+
+                            //start of container section
+                            i= 1;
+                            rn ="";
+                            var bodyContainer = {}; //an instance of MainPageContentPart
+                            bodyContainer.RowContents = [] ;
+                             $(".dynamicContainerPart .firstLevel .contentColumns").each(function()
+                             {
+                                 debugger;
+                                 rn = $(this).find(".row.sectionRow").attr("rn");
+                                var bodyRowContent = {}; //an instance of RowContent
+                                bodyRowContent.RowNumber = parseInt(rn) ;
+                                bodyRowContent.OrderInRow = i ;
+                                bodyRowContent.ColsContent = [] ;
+                                $(this).find(".row.parent .finalColumnContent").each(function(){
+                                    var colContent ={} ; //an instance of ColContent
+                                    colContent.Section = "containerSection";
+                                    colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
+                                    colContent.ColData = $(this).html();
+                                    colContent.ColumnClassNames = $(this).attr("classNames");
+                                    bodyRowContent.ColsContent.push(colContent);
+                                });
+                               i++;
+                               bodyContainer.RowContents.push(bodyRowContent);
+                             });
+                             //end of container section
+
+                             //start of footerSection
+                              i= 1;
+                              rn ="";
+                              var footerPart ={} ; //an instance of footerPart
+
+                               if(footerBgColor != "")
+                                {
+                                    footerPart.BGTypeId = 1;
+                                    footerPart.CodeColor = headerBgColor;
+                                }
+                              footerPart.CustomizedContent =[];
+                              $(".dynamicFooterPart .firstLevel .contentColumns").each(function()
+                              {
+                                  debugger;
+                                rn = $(this).find(".row.sectionRow").attr("rn");
+                                var footerRowContent = {}; //an instance of RowContent
+                                footerRowContent.RowNumber = parseInt(rn) ;
+                                footerRowContent.OrderInRow = i ;
+                                footerRowContent.ColsContent = [] ;
+                                $(this).find(".row.parent .finalColumnContent").each(function(){
+                                    var colContent ={} ; //an instance of ColContent
+                                    colContent.Section = "footerSection";
+                                    colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
+                                    colContent.ColData = $(this).html();
+                                    colContent.ColumnClassNames = $(this).attr("classNames");
+
+                                    footerRowContent.ColsContent.push(colContent);
+                                });
+                                 i++;
+                                footerPart.CustomizedContent.push(footerRowContent);
+                              });
+                              //end of footer section
+
+                            var model = {}; //an instance of DomainPageModel
+                            model.HeaderPart = header;
+                            model.MainPageContainerPart = bodyContainer;
+                            model.FooterPart = footerPart;
+                            model.DomainId = '@domainId';
+
+                            $.ajax({
+                               type: "Post",
+                               url: '@Url.Action("SavePageContent", "Domain")',
+                               contentType : 'application/json',
+                               data : JSON.stringify(model),
+                               success: function (result) {
+                                   debugger;
+                                   $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_EditionDoneSuccessfully")');
+                                         $('#mainToastBody').addClass('alert-success');
+
+                                         var toastDiv = $("#mainToast");
+                                         $("#toastPanel").show();
+                                         var toast = new bootstrap.Toast(toastDiv);
+                                         toast.show();
+                                         //setTimeout(function(){
+                                            // toast.hide(),3000
+                                         //});
                                },
-                               600: {
-                                   items: 3
-                               },
-                               1000: {
-                                   items: 5
+
+                            });
+                       });
+
+                       $("#btnPreview").click(function(){
+                           debugger;
+                           var header ="";
+                           var container ="";
+                           var footer ="";
+
+                            //var regPart = document.getElementById("regPart").outerHTML;
+                            //var priorHeader = document.getElementById("regPart").outerHTML;
+                            //header = priorHeader;
+
+                            $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
+
+                                header += "<div class='row firstLevel'>";
+                                $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
+                                    var classNames = $(this).attr("classNames");
+                                    var columnContent = $(this).html();
+                                    header +=`<div class='${classNames}'>${columnContent}</div>` ;
+                                });
+                                header += "</div>";
+                            });
+
+                            $.ajax({
+                                url:"@Url.Action("GetMenu","Domain")"+"?domainId="+'@domainId',
+                                type:'Get',
+                                statusCode:{
+                                    200:function(data){
+
+                                       header +=`<div class="navbar">${data}</div>` ;
+                                       $(".dynamicContainerPart .firstLevel .contentColumns").each(function()
+                                         {
+
+                                             container += "<div class='row firstLevel'>";
+                                            $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
+
+                                               var classNames = $(this).attr("classNames");
+                                                var columnContent = $(this).html();
+                                                container +=`<div class='${classNames}'>${columnContent}</div>` ;
+                                            });
+                                            container += "</div>";
+                                         });
+
+                                         //start of footerSection
+                                          $(".dynamicFooterPart .firstLevel .contentColumns").each(function()
+                                          {
+                                            footer += "<div class='row firstLevel'>";
+                                            $(this).find(".row.parent .finalColumnContent").each(function(){
+                                                var classNames = $(this).attr("classNames");
+                                                var columnContent = $(this).html();
+                                                footer +=`<div class='${classNames}'>${columnContent}</div>` ;
+                                            });
+                                             footer += "</div>";
+
+                                          });
+                                        //end of footer section
+
+
+                                        var model = {}; //an instance of TemplateDesign
+                                        model.HeaderContent = header;
+                                        model.ContainerContent = container;
+                                        model.FooterContent = footer;
+                                        model.DomainId = '@domainId';
+                                         $.ajax({
+                                           url: '@Url.Action("StoreDesignPreview")',
+                                           data : JSON.stringify(model),
+                                           contentType: 'application/json',
+                                           type: 'Post',
+                                           dataType: 'json',
+                                           success: function (result) {
+                                               if(result != "")
+                                               {
+                                                   window.open('@Url.Action("DesignPreview")'+'?key='+result.key , '_blank');
+                                               }
+                                           }
+                                       });
+                                    }
+                                }
+                              });
+                       });
+
+                           $(".owl-carousel").owlCarousel({
+                               loop: true,
+                               rtl: true,
+                               navigation : true,
+                               /* autoplay: true,*/
+                               margin: 10,
+                               animateOut: 'fadeOut',
+                               animateIn: 'fadeIn',
+                               nav: true,
+                               /*dots: true,*/
+                               autoplayHoverPause: false,
+                               items: 3,
+                               navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>",
+                                         "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
+                               responsive: {
+                                   0: {
+                                       items: 1
+                                   },
+                                   600: {
+                                       items: 3
+                                   },
+                                   1000: {
+                                       items: 5
+                                   }
                                }
-                           }
-                       });
-                       $(".likeLink i").click(function () {
-                           if ($(this).hasClass("far fa-heart")) {
-                               $(this).removeClass("far fa-heart");
-                               $(this).addClass("fas fa-heart");
-                           } else {
-                               $(this).removeClass("fas fa-heart");
-                               $(this).addClass("far fa-heart");
-                           }
-                       });
-               })
-
-                 //window.addEventListener('load',()=>{
-                 //     $("#toastPanel").hide();
-                 //})
-               function confirmation()
-               {
-
-                    //$('#confirmDesignModal').modal('hide');
-        //            $("#toastPanel").show();
-        //            $('#mainToastBody').removeClass('alert-success');
-        //            $('#mainToastBody').removeClass('alert-danger');
+                           });
+                           $(".likeLink i").click(function () {
+                               if ($(this).hasClass("far fa-heart")) {
+                                   $(this).removeClass("far fa-heart");
+                                   $(this).addClass("fas fa-heart");
+                               } else {
+                                   $(this).removeClass("fas fa-heart");
+                                   $(this).addClass("far fa-heart");
+                               }
+                           });
+                   })
 
 
-                   $(".flagPartDiv").addClass("d-none");
-                   $("#restoreRecord").removeClass("d-none");
-               }
-
-               function flagRestoration()
-               {
-
-                   $(".flagPartDiv").removeClass("d-none");
-                   $("#restoreRecord").addClass("d-none");
-               }
-               function setLang(lang)
+                   function confirmation()
                    {
 
-                       var currentCulture = '@CultureInfo.CurrentCulture.Name';
-                       if (currentCulture !== lang) {
-                           $.ajax({
-                               type: "GET",
-                               url: '/Account/changeLang?langId=' + lang,
-                               success: function () {
-
-                                   window.location.reload();
-                               }
-                           });
-                       }
-                   }
-                   function setProductCountInCart(number) {
-                      $("#userBasketId .notifyBadge").html(number);
+                       $(".flagPartDiv").addClass("d-none");
+                       $("#restoreRecord").removeClass("d-none");
                    }
 
-                   function changeScreen() {
-                       var windowSize = $(window).width();
-                       console.log(windowSize);
-                       if (windowSize <= 974) {
-                           $(".nascr").removeClass("d-none").addClass("d-block");
-                           $(".wiscr").removeClass("d-block").addClass("d-none");
-                       } else {
-                           $(".nascr").removeClass("d-block").addClass("d-none");
-                           $(".wiscr").removeClass("d-none").addClass("d-block");
-                       }
+                   function flagRestoration()
+                   {
+
+                       $(".flagPartDiv").removeClass("d-none");
+                       $("#restoreRecord").addClass("d-none");
                    }
+                   function setLang(lang)
+                       {
+
+                           var currentCulture = '@CultureInfo.CurrentCulture.Name';
+                           if (currentCulture !== lang) {
+                               $.ajax({
+                                   type: "GET",
+                                   url: '/Account/changeLang?langId=' + lang,
+                                   success: function () {
+
+                                       window.location.reload();
+                                   }
+                               });
+                           }
+                       }
+                       function setProductCountInCart(number) {
+                          $("#userBasketId .notifyBadge").html(number);
+                       }
+
+                       function changeScreen() {
+                           var windowSize = $(window).width();
+                           console.log(windowSize);
+                           if (windowSize <= 974) {
+                               $(".nascr").removeClass("d-none").addClass("d-block");
+                               $(".wiscr").removeClass("d-block").addClass("d-none");
+                           } else {
+                               $(".nascr").removeClass("d-block").addClass("d-none");
+                               $(".wiscr").removeClass("d-none").addClass("d-block");
+                           }
+                       }
+
+                       function addToTable() {
+            debugger;
+            var flag = false;
+            var selectedLang = $('#multiLangId').val();
+            if(isUnique(selectedLang, 'multiLingualList', 1, '@Language.GetString("AlertAndMessage_LangUniqueness")'))
+            {
+                 $("span[data-val-result='multiLangId']").html("");
+                $("span[data-val-result='productName']").html("");
+
+
+                if ($("#multiLangId").val() == "") {
+                    $("span[data-val-result='multiLangId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                    flag = true;
+                }
+                if ($("#productName").val() == "") {
+                        $("span[data-val-result='productName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                    flag = true;
+                }
+                if (!flag) {
+                    debugger;
+                    var obj = {};
+                    obj.LanguageId = $('#multiLangId').val();
+                    obj.LanguageName = $("#multiLangId option:selected").text();
+                    obj.Name = $('#productName').val();
+                    obj.SeoTitle = $("#seoTitle").val();
+                    obj.SeoDescription = $("#seoDescription").val();
+                    obj.Description = $("#description").val();
+                    obj.UrlFriend = $("#urlFriend").val();
+                    obj.BodyContent = CKEDITOR.instances.editorCk.getData();
+                    obj.Tag = cnt.toString();
+
+                    multiLingualArr.push(obj);
+
+                    var tr = "<tr style='text-align:center;'><td>" + $("#multiLangId option:selected").text() +
+                        "</td><td style='display:none;'>" + $('#multiLangId').val() +
+                        "</td><td>" + $('#productName').val() +
+                        "</td><td>" + $("#seoTitle").val() +
+                        "</td><td>" + $("#seoDescription").val() +
+                        "</td><td>" + $("#description").val() +
+                        "</td><td>" + $("#urlFriend").val() +
+                        "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' cnt='" + obj.Tag + "' onclick='deleteFromTable(this);'>" +
+                        "<i class='fa fa-trash' ></i></button></td></tr>";
+
+                    if ($("#multiLingualList tr").length == 1 && $("#multiLingualList tr")[0].children.length == 1) {
+                        $("#multiLingualList tr")[0].remove();
+                    }
+
+                    $("#multiLingualList").append(tr);
+                    cnt = cnt + 1;
+                    $("#multiLangId").val("@ViewBag.LangId");
+                    $("#multiLangId").selectpicker("refresh");
+                    $("#productName").val("");
+                    $("#seoTitle").val("");
+                    $("#seoDescription").val("");
+                    $("#description").val("");
+                    CKEDITOR.instances.editorCk.setData("");
+                   /* $("#urlFriend").val("");*/
+                }
+            }
+         }
+        $("#uploadModal").on("shown.bs.modal", function() {
+
+                  var image = document.getElementById('croppedImg');
+                  $("#send_pic").attr("disabled", true);
+                  debugger;
+                    var ratio = $("#imgAspectRatio").val();
+                    if (cropper !== null && cropper !== undefined) {
+                    cropper.destroy();
+                   }
+
+                    cropper = new Cropper(image,
+                        {
+                            background: true,
+                            aspectRatio: ratio,
+                            viewMode: 1,
+                            responsive: true,
+                            rotatable: true
+
+                        });
+           });
+        $('#uploadModal').on('hidden.bs.modal',
+            function () {
+
+                cropper.destroy();
+                document.getElementById("image").value = "";
+                $("#cropped_result").remove();
+            });
+
+        function rotatePic() {
+            cropper.rotate(90);
+        }
+        $(document).on("click", "#crop_button",
+            function () {
+                    var imgUrl = cropper.getCroppedCanvas({imageSmoothingEnabled: true,
+                            imageSmoothingQuality: 'high' }).toDataURL('image/jpeg', 1);
+                var img = document.createElement("img");
+                img.setAttribute("id", "galleryPic");
+                img.setAttribute("class", "img-fluid");
+                var height = $("#container").attr("height");
+                var croppedContainer = document.createElement("div");
+                croppedContainer.setAttribute("id", "cropped_result");
+                croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
+                document.getElementById("rowContainer").appendChild(croppedContainer);
+                img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
+                img.src = imgUrl;
+                document.getElementById("cropped_result").innerHTML = "";
+                document.getElementById("cropped_result").appendChild(img);
+                $("#send_pic").attr("disabled", false);
+            });
+
+
+        function getURL(input)
+        {
+         $("#cropped_result").remove();
+         if (input.files && input.files[0]) {
+            var file = input.files[0];
+            currentFileName = file.name;
+            currentFileSize = file.size;
+
+            if (currentFileSize <= @ViewBag.PicSize) {
+                var reader = new FileReader();
+                try {
+                    reader.readAsDataURL(file);
+                } catch (e) {
+
+                }
+                reader.onload = function (e) {
+                    var content = e.target.result;
+                    //if file format is incorrect, then the 'content' won't have any src.
+                    if (content !== "data:") {
+                        var reducedContent = content.slice(5);
+
+                        if (reducedContent.startsWith("image")) {
+                             $('#croppedImg').attr('src', content);
+                            $("#uploadModal").modal("show");
+                        } else {
+                            showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
+                            document.getElementById("image").value = "";
+                            $("#cropped_result").remove();
+                        }
+                    } else {
+
+                        showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
+                        document.getElementById("image").value = "";
+                        $("#cropped_result").remove();
+                    }
+                };
+            }
+            else
+            {
+
+                showError('@Language.GetString("AlertAndMessage_InvalidFileSize")');
+                document.getElementById("image").value = "";
+                $("#cropped_result").remove();
+            }
+        }
+        }
     </script>
 </body>
 </html>

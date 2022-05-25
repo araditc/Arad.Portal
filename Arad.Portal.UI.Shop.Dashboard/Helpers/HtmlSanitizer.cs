@@ -10,14 +10,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 
         public  HashSet<string> BlackList = new HashSet<string>() 
         {
-                { "script" },
-                { "iframe" },
-                { "form" },
-                { "object" },
-                { "embed" },
-                { "link" },                
-                { "head" },
-                { "meta" }
+                //{ "script" },
+                //{ "iframe" },
+                //{ "form" },
+                //{ "object" },
+                //{ "embed" },
+                //{ "link" },                
+                //{ "head" },
+                //{ "meta" }
         };
 
         /// <summary>
