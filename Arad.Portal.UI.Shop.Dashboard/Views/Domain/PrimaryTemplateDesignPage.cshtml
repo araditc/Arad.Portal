@@ -95,8 +95,10 @@
     <div class="container">
         <div class="row mt-3">
             <div class="float-end">
+
                 <button id="btnSave" class="btn btn-success bg-gradient btn-sm float-end m-2" type="button">@Language.GetString("btn_Save")</button>
                 <button id="btnPreview" class="btn btn-primary bg-gradient btn-sm float-end m-2" type="button">@Language.GetString("btn_Preview")</button>
+                 <button id="btnBack" asp-action="Index" asp-controller="Home" class="btn btn-secondary bg-gradient btn-sm float-end m-2" type="button">@Language.GetString("btn_Back")</button>
 
             </div>
         </div>
@@ -105,8 +107,8 @@
         <h3 class="text-center bg-secondary bg-opacity-10">Header</h3>
         
         <div class="border border-3 border-secondary m-1" style="min-height: 150px;">
-            <partial name="~/Shared/_PriorFixedHeader.cshtml" />
-            <div class="border border-3 border-secondary m-1 mx-0 dynamicHeaderPart" style="min-height: 150px;">
+            <partial name="~/Views/Shared/_PriorFixedHeader.cshtml" />
+            <div class="border border-3 border-secondary m-1 mx-0 dynamicHeaderPart p-2" style="min-height: 150px;">
                 <partial name="_PageDesign.cshtml" model='new TemplateSectionPart(){SectionTag = "headerSection", DomainId = @domainId}' />
             </div>
 
@@ -117,7 +119,7 @@
     </header>
     <div class="container">
         <h3 class="text-center bg-secondary bg-opacity-10">Body</h3>
-        <div class="border border-3 border-secondary m-1 dynamicContainerPart" style="min-height: 150px;">
+        <div class="border border-3 border-secondary m-1 dynamicContainerPart p-2" style="min-height: 150px;">
             <partial name="_PageDesign.cshtml" model='new TemplateSectionPart(){SectionTag = "containerSection", DomainId = @domainId}' />
         </div>
 
@@ -130,7 +132,7 @@
     </div>
     <footer class="footerPart">
         <h3 class="text-center bg-secondary bg-opacity-10">Footer</h3>
-        <div class="border border-3 border-secondary m-1 dynamicFooterPart" style="min-height: 150px;">
+        <div class="border border-3 border-secondary m-1 dynamicFooterPart p-2" style="min-height: 150px;">
             <div class="container">
                 <partial name="_PageDesign.cshtml"
                          model='new TemplateSectionPart(){SectionTag = "footerSection", DomainId = @domainId}' />
@@ -138,22 +140,44 @@
         </div>
     </footer>
 
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="styleDiv" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div>
+      Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+    </div>
+    <div class="dropdown mt-3">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
+        Dropdown button
+      </button>
+      
+    </div>
+  </div>
+</div>
+
     <script>
 
                function getColTemplate(id, tag) {
 
-               colTemplate = "<div class='col-12 col-md-3'>" +
+               colTemplate = "<div class='col-12 col-md-3 p-2'>" +
                    "<label class='lblAlert form-label'>" + '@Language.GetString("AlertAndMessage_HowManyColumns")' + "</label><br />" +
-                   "<select  class='form-control selectpicker colCnt' onchange='selectColumns(this, \""+ tag +"\" );' id=" + id + " data-live-search='true'>" +
+                   "<select  class='form-control selectpicker colCnt' onchange='selectColumns(this, \""+ tag +"\" );' id='" + id + "' data-live-search='true'>" +
                        "<option value='0'>" + '@Language.GetString("AlertAndMessage_Choose")' + "</option>" +
                        "<option value='1'>" + '@Language.GetString("Template_OneCol")' + "</option>" +
                        "<option value='2'>" + '@Language.GetString("Template_TwoCol")' + "</option>" +
                        "<option value='3'>" + '@Language.GetString("Template_ThreeCol")' + "</option>" +
                        "<option value='4'>" + '@Language.GetString("Template_FourCol")' + "</option>" +
-                       "<option value='6'>" + '@Language.GetString("Template_SixCol")' + "</option></select></div><div class='col-12 contentColumns'></div>";
+                       "<option value='6'>" + '@Language.GetString("Template_SixCol")' + "</option></select></div><div class='p-2 row justify-content-center'>"+
+                       "<div class='col-2 text-center'>"+
+                       "<button class='btn btn-sm btn-dark btnRowStyle'  id='" + id + "'><i class='fs-4 fa fa-cog'></i></button>"+
+                       "</div><div class='p-2 col-12 contentColumns'></div>";
 
                return colTemplate;
            }
+              var selectedRow;
                $(document).ready(function(){
                     changeScreen();
                            $(window).resize(changeScreen);
@@ -200,6 +224,14 @@
                    $('#confirmDesignModalLabel').text('@Language.GetString("btn_Delete")');
                    $('#confirmDesignModalBody').html('@Language.GetString("AlertAndMessage_RemoveBoxConfrim")');
                    $('#confirmDesignModal').modal('show');
+                   });
+
+                   $(document).on("click", ".btnRowStyle", function () {
+                       debugger;
+                       selectedRow = $(this).attr("id");
+                       var offcanvas = $("#styleDiv");
+                       var off = new bootstrap.Offcanvas(offcanvas);
+                       off.show();
                    });
 
                    $("#btnSave").click(function(){

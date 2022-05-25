@@ -241,7 +241,6 @@ namespace Arad.Portal.UI.Shop
         {
             if (env.IsDevelopment())
             {
-                //app.UseExceptionHandler("/Home/Error");
                 app.UseDeveloperExceptionPage();
             }
             else

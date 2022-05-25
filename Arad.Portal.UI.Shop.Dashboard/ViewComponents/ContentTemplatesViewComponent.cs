@@ -73,61 +73,71 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
                     }
                     return View("First", lst);
                 case ContentTemplateDesign.Second:
-                    for (int i = 0; i < 4; i++)
+                    if (lst.Count() == 4)
                     {
-                        if(i == 0 || i == 3)
+                        for (int i = 0; i < 4; i++)
                         {
-                             if(lst[i].Images.Any(_ => _.ImageRatio == ImageRatio.TwoToOne))
+                            if (i == 0 || i == 3)
                             {
-                                lst[i].DesiredImageUrl = lst[i].Images
-                                    .FirstOrDefault(_ => _.ImageRatio == ImageRatio.TwoToOne).Url;
-                            }else
-                            {
-                                lst[i].DesiredImageUrl = "/imgs/NoImage21.jpg";
-                            }
-                        }else
-                        {
-                            if (lst[i].Images.Any(_ => _.ImageRatio == ImageRatio.FourToOne))
-                            {
-                                lst[i].DesiredImageUrl = lst[i].Images
-                                    .FirstOrDefault(_ => _.ImageRatio == ImageRatio.FourToOne).Url;
+                                if (lst[i].Images.Any(_ => _.ImageRatio == ImageRatio.TwoToOne))
+                                {
+                                    lst[i].DesiredImageUrl = lst[i].Images
+                                        .FirstOrDefault(_ => _.ImageRatio == ImageRatio.TwoToOne).Url;
+                                }
+                                else
+                                {
+                                    lst[i].DesiredImageUrl = "/imgs/NoImage21.jpg";
+                                }
                             }
                             else
                             {
-                                lst[i].DesiredImageUrl = "/imgs/NoImage41.jpg";
+                                if (lst[i].Images.Any(_ => _.ImageRatio == ImageRatio.FourToOne))
+                                {
+                                    lst[i].DesiredImageUrl = lst[i].Images
+                                        .FirstOrDefault(_ => _.ImageRatio == ImageRatio.FourToOne).Url;
+                                }
+                                else
+                                {
+                                    lst[i].DesiredImageUrl = "/imgs/NoImage41.jpg";
+                                }
                             }
                         }
                     }
                     return View("Second", lst);
+                   
                 case ContentTemplateDesign.Third:
-                    for (int i = 0; i < 8; i++)
+                    if (lst.Count() == 8)
                     {
-                        if(i < 4)
+                        for (int i = 0; i < 8; i++)
                         {
-                            if(lst[i].Images.Any(_ => _.ImageRatio == ImageRatio.TwoToOne))
+                            if (i < 4)
                             {
-                                lst[i].DesiredImageUrl = lst[i].Images
-                                    .FirstOrDefault(_ => _.ImageRatio == ImageRatio.TwoToOne).Url;
+                                if (lst[i].Images.Any(_ => _.ImageRatio == ImageRatio.TwoToOne))
+                                {
+                                    lst[i].DesiredImageUrl = lst[i].Images
+                                        .FirstOrDefault(_ => _.ImageRatio == ImageRatio.TwoToOne).Url;
+                                }
+                                else
+                                {
+                                    lst[i].DesiredImageUrl = "/imgs/NoImage21.jpg";
+                                }
                             }
                             else
                             {
-                                lst[i].DesiredImageUrl = "/imgs/NoImage21.jpg";
-                            }
-                        }
-                        else
-                        {
-                            if (lst[i].Images.Any(_ => _.ImageRatio == ImageRatio.Square))
-                            {
-                                lst[i].DesiredImageUrl = lst[i].Images
-                                    .FirstOrDefault(_ => _.ImageRatio == ImageRatio.Square).Url;
-                            }
-                            else
-                            {
-                                lst[i].DesiredImageUrl = "/imgs/NoImage.png";
+                                if (lst[i].Images.Any(_ => _.ImageRatio == ImageRatio.Square))
+                                {
+                                    lst[i].DesiredImageUrl = lst[i].Images
+                                        .FirstOrDefault(_ => _.ImageRatio == ImageRatio.Square).Url;
+                                }
+                                else
+                                {
+                                    lst[i].DesiredImageUrl = "/imgs/NoImage.png";
+                                }
                             }
                         }
                     }
                     return View("Third", lst);
+
                 case ContentTemplateDesign.Forth:
                     foreach (var item in lst)
                     {

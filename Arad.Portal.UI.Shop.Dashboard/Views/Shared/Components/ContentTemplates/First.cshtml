@@ -4,7 +4,8 @@
     //Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
+@if(Model.Count == 6)
+{
 <div class="row firstTemp m-10">
     <div class="col-12 col-md-9 col-lg-4 g-1 ">
         <a href="@($"/blog/{Model[0].ContentCode}")" role="button">
@@ -78,3 +79,4 @@
         </a>
     </div>
 </div>
+}

@@ -442,9 +442,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             FilterDefinition<Entities.General.Content.Content> filterDef;
             filterDef = builder.Gte(nameof(Entities.General.Content.Content.EndShowDate), DateTime.Now);
             filterDef &= builder.Lte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.Now);
-            if (domainEntity == null)
+            if (domainEntity != null)
             {
-                filterDef &= builder.Eq(nameof(Entities.General.Content.Content.AssociatedDomainId), domainEntity.DomainId);
+                //???
+                //filterDef &= builder.Eq(nameof(Entities.General.Content.Content.AssociatedDomainId), domainEntity.DomainId);
                 switch (contentType)
                 {
                     case ProductOrContentType.Newest:

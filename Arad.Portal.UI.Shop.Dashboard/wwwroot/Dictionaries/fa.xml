@@ -119,6 +119,26 @@
 		<value>صفحه ورود</value>
 	</string>
 	<!--End [buttons text]-->
+	<!--Start Design Page-->
+	<string key="design_bgColor">
+		<value>رنگ پس زمینه</value>
+	</string>
+	<string key="design_bgPhoto">
+		<value>عکس پس زمینه</value>
+	</string>
+	<string key="design_VerticalPadding">
+		<value>فاصله عمودی تا حاشیه</value>
+	</string>
+	<string key="design_HorizantalPadding">
+		<value>فاصله افقی تا حاشیه</value>
+	</string>
+	<string key="design_VerticalMargin">
+		<value>فاصله عمودی از المان بیرونی</value>
+	</string>
+	<string key="design_HorizantalMargin">
+		<value>فاصله افقی از المان بیرونی</value>
+	</string>
+	<!--End Design Page-->
 	<!--Start[FileImport]-->
 	<string key="FileImportExport_GetProductExcelFileTemplate">
 		<value>دریافت قالب برای ورود محصولات از طریق فایل اکسل</value>

@@ -43,11 +43,30 @@
 	<string key="btn_Save">
 		<value>Save</value>
 	</string>
+	
 	<string key="GetMore">
 		<value>more</value>
 	</string>
-	<string key="btn_Edit">
-		<value>Edit</value>
+	<string key="design_bgColor">
+		<value>background color</value>
+	</string>
+	<string key="design_bgPhoto">
+		<value>background Image</value>
+	</string>
+	<string key="design_VerticalPadding">
+		<value>vertical padding</value>
+	</string>
+	<string key="design_HorizantalPadding">
+		<value>horizantal padding</value>
+	</string>
+	<string key="design_VerticalMargin">
+		<value>vertical margin</value>
+	</string>
+	<string key="design_HorizantalMargin">
+		<value>horizantal margin</value>
+	</string>
+	<string key="btn_Save">
+		<value>Save</value>
 	</string>
 	<string key="ShoppingCart">
 		<value>Shopping Cart</value>
