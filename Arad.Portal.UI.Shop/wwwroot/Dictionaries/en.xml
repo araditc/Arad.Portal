@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <dictionary>
 	<!--Start [buttons text]-->
+	<string key="EditUserProfile">
+		<value>edit user profile</value>
+	</string>
 	<string key="btn_AddNewAddress">
 		<value>add new address</value>
 	</string>
@@ -521,7 +524,28 @@
 	<string key="Title_AreYouSure">
 		<value>Are you sure?</value>
 	</string>
+	<string key="Title_BasicInfo">
+		<value>basic user information</value>
+	</string>
 	<!--====================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_AddressType">
+		<value>please select AddressType</value>
+	</string>
+	<string key="AlertAndMessage_CountryId">
+		<value>please select country</value>
+	</string>
+	<string key="AlertAndMessage_ProvinceId">
+		<value>please select province</value>
+	</string>
+	<string key="AlertAndMessage_CityId">
+		<value>please select city</value>
+	</string>
+	<string key="AlertAndMessage_Address1">
+		<value>please enter address1</value>
+	</string>
+	<string key="AlertAndMessage_AddressAddedSuccessfully">
+		<value>Address have been added successfully</value>
+	</string>
 	<string key="AlertAndMessage_ChooseOneAddress">
 		<value>Please choose one address, otherwise the first one will be selected.</value>
 	</string>
@@ -949,7 +973,7 @@
 		<value>Invalid national id.</value>
 	</string>
 	<string key="AlertAndMessage_EnterPostalCode">
-		<value>Please enter postal code.</value>
+		<value>Please enter valid postal code.</value>
 	</string>
 	<string key="AlertAndMessage_InvalidPostalCode">
 		<value>Invalid postal code.</value>
@@ -1445,17 +1469,47 @@
 	<string key="User_CurrentPass">
 		<value>Current Password</value>
 	</string>
+	<string key="User_CompanyName">
+		<value>company name</value>
+	</string>
+	<string key="User_BirthDate">
+		<value>bithDate</value>
+	</string>
 	<string key="User_AddressInfoes">
 		<value>Address Informations</value>
 	</string>
 	<string key="User_Profile">
 		<value>User Profile</value>
 	</string>
+	<string key="User_AccountNumber">
+		<value>Account Number</value>
+	</string>
+	<string key="User_AccountName">
+		<value>Account Name</value>
+	</string>
+	<string key="User_Iban">
+		<value>Iban</value>
+	</string>
+	<string key="User_BankName">
+		<value>Bank Name</value>
+	</string>
+	<string key="Profile_AddressType">
+		<value>Address Type</value>
+	</string>
+	<string key="Profile_BankAccountInfoes">
+		<value>bank account information</value>
+	</string>
+	<string key="Profile_Country">
+		<value>Country</value>
+	</string>
 	<string key="Profile_Province">
 		<value>Province</value>
 	</string>
 	<string key="Profile_City">
 		<value>City</value>
+	</string>
+	<string key="Profile_IsMainAddress">
+		<value>IsMainAddress</value>
 	</string>
 	<string key="Profile_ZipCode">
 		<value>ZipCode</value>

@@ -52,6 +52,8 @@ namespace Arad.Portal.UI.Shop.Mapping
         public MappingProfile()
         {
             CreateMap<DomainDTO, Domain>().ReverseMap();
+            CreateMap<DataLayer.Models.User.Profile, UserProfileDTO>().ReverseMap();
+            CreateMap<AddressDto, Address>().ReverseMap();
             CreateMap<CurrencyDTO, Currency>().ReverseMap();
             CreateMap<PermissionDTO, Permission>().ReverseMap();
             CreateMap<LanguageDTO, Language>().ReverseMap();

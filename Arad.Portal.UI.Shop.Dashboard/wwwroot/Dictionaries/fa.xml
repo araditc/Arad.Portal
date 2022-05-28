@@ -1634,6 +1634,12 @@
 	<string key="User_Profile">
 		<value>پروفایل کاربری</value>
 	</string>
+	<string key="User_Captcha">
+		<value>کپچا</value>
+	</string>
+	<string key="User_CellPhoneNumber">
+		<value>موبایل</value>
+	</string>
 	<string key="User_FirstName">
 		<value>نام</value>
 	</string>

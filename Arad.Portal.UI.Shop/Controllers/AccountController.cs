@@ -1,6 +1,9 @@
 ﻿using Arad.Portal.DataLayer.Contracts.General.CountryParts;
+using Arad.Portal.DataLayer.Contracts.General.Currency;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Contracts.General.Error;
+using Arad.Portal.DataLayer.Contracts.General.Language;
+using Arad.Portal.DataLayer.Contracts.General.User;
 using Arad.Portal.DataLayer.Entities.General.Error;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Helpers;
@@ -8,6 +11,7 @@ using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Models.User;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.UI.Shop.Helpers;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -34,15 +38,23 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly IDomainRepository _domainRepository;
         private readonly IErrorLogRepository _errorLogRepository;
         private readonly ICountryRepository _countryRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly ILanguageRepository _lanRepository;
+        private readonly ICurrencyRepository _curRepository;
         private readonly string _domainName;
+        private readonly IMapper _mapper;
         
         public AccountController(UserManager<ApplicationUser> userManager,
             CreateNotification createNotification,
+            IMapper mapper,
+            IUserRepository userRepo,
             IErrorLogRepository errorLogRepository,
             IDomainRepository domainRepository,
             IHttpContextAccessor accessor,
             ICountryRepository countryRepository,
             IWebHostEnvironment env,
+            ICurrencyRepository curRepo,
+            ILanguageRepository lanRepo,
             SignInManager<ApplicationUser> signInManager):base(accessor, env)
         {
             _userManager = userManager;
@@ -50,7 +62,11 @@ namespace Arad.Portal.UI.Shop.Controllers
             _createNotification = createNotification;
             _errorLogRepository = errorLogRepository;
             _domainRepository = domainRepository;
+            _userRepository = userRepo;
             _domainName = DomainName;
+            _lanRepository = lanRepo;
+            _curRepository = curRepo;
+            _mapper = mapper;
             _countryRepository = countryRepository;
         }
         public IActionResult Index()
@@ -71,6 +87,8 @@ namespace Arad.Portal.UI.Shop.Controllers
         public IActionResult Address()
         {
             var returnUrl = HttpContext.Request.Headers["Referer"].ToString();
+            var lst = _userRepository.GetAddressTypes();
+            ViewBag.AddressTypes = lst;
             TempData["ReturnUrl"] = returnUrl;
             return View();
         }
@@ -288,7 +306,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 IsSystemAccount = false,
                 Id = id,
                 IsDomainAdmin = false,
-                Profile = new Profile() { UserType = UserType.Customer},
+                Profile = new DataLayer.Models.User.Profile() { UserType = UserType.Customer},
                 IsDeleted = false ,
                 CreatorId = id,
                 CreatorUserName = model.FullCellPhoneNumber,
@@ -322,13 +340,19 @@ namespace Arad.Portal.UI.Shop.Controllers
                 new { Status = "Success", Message = Language.GetString("AlertAndMessage_OperationSuccess") } : 
                 new { Status = "Error", Message = insertResult.Errors.FirstOrDefault().Description });
         }
+        [HttpGet]
+        public IActionResult GetCountries()
+        {
+            var countries = _countryRepository.GetAllCountries();
+            return Json(new { Status = "success", Data = countries });
+        }
 
         [HttpGet]
-        public IActionResult GetStates()
+        public IActionResult GetStates(string countryName)
         {
             try
             {
-                var states = _countryRepository.GetStates("ایران");
+                var states = _countryRepository.GetStates(countryName);
                 var st = states.Select(c => new CountryPartView()
                 {
                     Id = c.Value,
@@ -365,21 +389,37 @@ namespace Arad.Portal.UI.Shop.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> AddAddress(Address address)
+        public async Task<IActionResult> AddAddress(AddressDto address)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
                     double i;
+                    if (string.IsNullOrEmpty(address.AddressTypeId))
+                    {
+                        ModelState.AddModelError("AddressType", Language.GetString("AlertAndMessage_AddressType"));
+                    }
+                    if (string.IsNullOrEmpty(address.CountryId))
+                    {
+                        ModelState.AddModelError("CountryId", Language.GetString("AlertAndMessage_CountryId"));
+                    }
+                    if (string.IsNullOrEmpty(address.ProvinceId))
+                    {
+                        ModelState.AddModelError("ProvinceId", Language.GetString("AlertAndMessage_ProvinceId"));
+                    }
+                    if (string.IsNullOrEmpty(address.CityId))
+                    {
+                        ModelState.AddModelError("CityId", Language.GetString("AlertAndMessage_CityId"));
+                    }
                     if (!double.TryParse(address.PostalCode, out i))
                     {
-                        ModelState.AddModelError("PostalCode", "کد پستی معتبر وارد نماید.");
+                        ModelState.AddModelError("PostalCode", Language.GetString("AlertAndMessage_EnterPostalCode"));
                     }
                   
                     if (string.IsNullOrEmpty(address.Address1))
                     {
-                        ModelState.AddModelError("Address1", "لطفاآدرس یک را وارد کنید.");
+                        ModelState.AddModelError("Address1", Language.GetString("AlertAndMessage_Address1"));
                     }
 
                     List<ClientValidationErrorModel> errors = new List<ClientValidationErrorModel>();
@@ -399,7 +439,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                         }
                     }
                    
-                    return Json(new { Status = "error", Message = "فیلدهای ضروری تکمیل گردد.", ModelStateErrors = errors });
+                    return Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_FillEssentialFields"), ModelStateErrors = errors });
                 }
 
                 //var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -411,22 +451,22 @@ namespace Arad.Portal.UI.Shop.Controllers
                 address.Id = Guid.NewGuid().ToString();
 
                 var provinceId = address.ProvinceId;
-             
-                user.Profile.Addresses.Add(address);
+                var add = _mapper.Map<Address>(address);
+                user.Profile.Addresses.Add(add);
 
                 var updateAsync = await _userManager.UpdateAsync(user);
 
                 if (updateAsync.Succeeded)
                 {
                     var returnUrl = TempData["ReturnUrl"];
-                    return Json(new { status = "success", Message = "آدرس با موفقیت افزوده شد", Url = returnUrl });
+                    return Json(new { status = "success", Message = Language.GetString("AlertAndMessage_AddressAddedSuccessfully"), Url = returnUrl });
                 }
 
-                return Json(new { status = "error", Message = "لطفا مجددا سعی نمایید." });
+                return Json(new { status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
             }
             catch (Exception x)
             {
-                return Json(new { status = "error", Message = "لطفا مجددا سعی نمایید." });
+                return Json(new { status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
             }
         }
 
@@ -476,18 +516,64 @@ namespace Arad.Portal.UI.Shop.Controllers
             return result;
         }
 
+       
         [HttpGet]
         public async Task<IActionResult> Profile()
         {
-            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = await _userManager.FindByIdAsync(userId);
+            string userId = User.GetUserId();
+            ApplicationUser user = await _userManager.FindByIdAsync(userId);
 
-            var userProfile = new UserProfile()
+            if (user == null)
             {
-                Name = user.Profile.FirstName,
-                LastName = user.Profile.LastName
-            };
-            return View(userProfile);
+                return RedirectToAction("PageOrItemNotFound", "Account");
+            }
+
+            //await SetViewBag();
+            var lst = _userRepository.GetAddressTypes();
+            ViewBag.AddressTypes = lst;
+            UserProfileDTO dto = _mapper.Map<UserProfileDTO>(user.Profile);
+            var countries = this.GetCountries();
+            ViewBag.Countries = countries;
+            ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
+            var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
+            ViewBag.LanIcon = lanIcon;
+            var currencyList = _curRepository.GetAllActiveCurrency();
+            ViewBag.CurrencyList = currencyList;
+
+            //await SetViewBag();
+
+            return View(dto);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Profile([FromBody] UserProfileDTO dto)
+        {
+            JsonResult result;
+            var errors = new List<AjaxValidationErrorModel>();
+            if (!ModelState.IsValid)
+            {
+
+                foreach (var modelStateKey in ModelState.Keys)
+                {
+                    var modelStateVal = ModelState[modelStateKey];
+                    errors.AddRange(modelStateVal.Errors.Select(error => new AjaxValidationErrorModel
+                    { Key = modelStateKey, ErrorMessage = error.ErrorMessage }));
+                }
+                result = Json(new { Status = "ModelError", ModelStateErrors = errors });
+            }else
+            {
+                var user =await _userManager.FindByIdAsync(dto.UserID);
+                var pro = _mapper.Map<DataLayer.Models.User.Profile>(dto);
+                user.Profile = pro;
+                var res = await _userManager.UpdateAsync(user);
+               
+                    result = Json(res.Succeeded ? new { Status = "Success", Message = Language.GetString("AlertAndMessage_OperationSuccess") }
+                   : new { Status = "Error", Message = Language.GetString("AlertAndMessage_OperationFailed") });
+               
+            }
+            return result;
+
         }
 
         [HttpGet]
@@ -650,6 +736,9 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
             return Ok(false);
         }
+
+        
+
 
         [HttpGet]
         [AllowAnonymous]

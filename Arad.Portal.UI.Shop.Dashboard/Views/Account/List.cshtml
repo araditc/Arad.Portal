@@ -150,13 +150,16 @@
                             </td>
                             <td class="ListCell">
                                
-                                    <a id="editRecord" asp-action="EditUser" asp-controller="Account" asp-route-id="@item.Id" class="btn btn-sm btn-warning bg-gradient">
+                                    <a id=@($"editRecord_{@item.Id}") asp-action="EditUser" asp-controller="Account" asp-route-id="@item.Id" class="btn btn-sm btn-warning bg-gradient">
                                         @Language.GetString("btn_Edit")
+                                    </a>
+                                       <a id=@($"resetPass_{@item.Id}") asp-action="ResetPassword" asp-controller="Account"  class="btn btn-sm btn-danger bg-gradient">
+                                        @Language.GetString("btn_ChangePass")
                                     </a>
                                
                                 @if (item.IsDelete)
                                 {
-                                    <button id="restoreRecord" data-id="@item.Id" onclick="restoreUser('@item.Id')" class="btn btn-sm btn-secondary bg-gradient">
+                                    <button id=@($"restoreRecord_{@item.Id}") data-id="@item.Id" onclick="restoreUser('@item.Id')" class="btn btn-sm btn-secondary bg-gradient">
                                         @Language.GetString("btn_Restore")
                                     </button>
                                 }

@@ -420,9 +420,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 #endregion
                 entity.InvoiceNumberProcedure = (InvoiceNumberProcedure)Convert.ToInt32(dto.InvoiceNumberProcedure);
                 entity.DomainPaymentProviders = _mapper.Map<List<ProviderDetail>>(dto.DomainPaymentProviders);
-                entity.HeaderPart = dto.HeaderPart;
-                entity.MainPageContainerPart = dto.MainPageContainerPart;
-                entity.FooterPart = dto.FooterPart;
+                //entity.HeaderPart = dto.HeaderPart;
+                //entity.MainPageContainerPart = dto.MainPageContainerPart;
+                //entity.FooterPart = dto.FooterPart;
 
                 var updateResult = await _context.Collection
                .ReplaceOneAsync(_ => _.DomainId == dto.DomainId, entity);

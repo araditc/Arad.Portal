@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.DataLayer.Repositories.General.Role.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Permission.Mongo;
 
+
 namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
 {
     public class UserRepository : BaseRepository, IUserRepository
@@ -96,6 +97,23 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
 
             }
             return finalList;
+        }
+
+        public List<SelectListModel> GetAddressTypes()
+        {
+            var result = new List<SelectListModel>();
+            foreach (int i in Enum.GetValues(typeof(AddressType)))
+            {
+                string name = Enum.GetName(typeof(AddressType), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("Choose"), Value = "-1" });
+            return result;
         }
 
         public List<UserDTO> GetAll()

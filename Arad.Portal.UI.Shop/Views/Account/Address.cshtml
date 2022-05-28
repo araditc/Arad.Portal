@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "اطلاعات آدرس کاربر";
+    ViewData["Title"] = Language.GetString("User_AddressInfoes");
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -19,12 +19,33 @@
         <div class="row pt-5">
             <div class="col-12">
                 <form id="address" class="form-address row text-right">
+                    <div class="form-group col-md-2">
+                        <label class="form-label" for="AddressType">@Language.GetString("Profile_AddressType")</label><br />
+                        <select class="form-control selectpicker" id="AddressTypeId" data-live-search="true"
+                                asp-items="@(new SelectList(ViewBag.AddressTypes,"Value","Text"))">
+                        </select>
+                        <span data-val-result="AddressType" class="text-danger"></span>
+                    </div>
+
+
+                      <div class="col-2 rtl">
+                        <label>@Language.GetString("Profile_Country")</label>
+                    </div>
+                    <div class="col-5 rtl">
+                        <div class="form-group textPlaceholder">
+                            <select id="ProvinceId" name="ProvinceId" class="form-select selectpicker"
+                            data-placeholder="@Language.GetString("Profile_Country")"  tabindex="2" placeholder="@Language.GetString("Profile_Province")">
+                            </select>
+                            <span class="field-validation-error" data-val-result="CountryId"></span>
+                        </div>
+                    </div>
                      <div class="col-2 rtl">
                         <label>@Language.GetString("Profile_StateCity")</label>
                     </div>
                     <div class="col-5 rtl">
                         <div class="form-group textPlaceholder">
-                            <select id="ProvinceId" name="ProvinceId" class="form-select selectpicker" data-placeholder="@Language.GetString("Profile_Province")" class="chosen-select select" tabindex="2" placeholder="@Language.GetString("Profile_Province")">
+                            <select id="ProvinceId" name="ProvinceId" class="form-select selectpicker" 
+                            data-placeholder="@Language.GetString("Profile_Province")"  tabindex="2" placeholder="@Language.GetString("Profile_Province")">
                             </select>
                             <span class="field-validation-error" data-val-result="ProvinceId"></span>
                         </div>
@@ -33,7 +54,8 @@
 
                     <div class="col-5 rtl">
                         <div class="form-group textPlaceholder">
-                            <select id="CityId" name="CityId" class="form-select selectpicker" data-placeholder="@Language.GetString("Profile_City")" class="chosen-select select" tabindex="2" placeholder="@Language.GetString("Profile_City")" >
+                            <select id="CityId" name="CityId" class="form-select selectpicker" data-placeholder="@Language.GetString("Profile_City")" 
+                            tabindex="2" placeholder="@Language.GetString("Profile_City")" >
                             </select>
                             <span class="field-validation-error" data-val-result="CityId"></span>
                         </div>
@@ -89,9 +111,42 @@
     <script>
         $(document).ready(function() {
 
-            $.ajax({
+             $.ajax({
                 type: "Get",
-                url: "@Url.Action("GetStates","Account")",
+                url: "@Url.Action("GetCountries","Account")",
+                success: function (result) {
+                    var data = result.data;
+                    var html = '';
+                    html += '<option disabled value=null selected>'+'@Language.GetString("AlertAndMessage_Choose")'+'</option>';
+                    if (result.status === "success") {
+                        debugger;
+                        data.forEach(function (item) {
+                            html += '<option value="' + item.value + '">' + item.text + '</option>';
+                        });
+                        $("#CountryId").html(html);
+                        $("#CountryId").selectpicker('refresh');
+                    } else {
+
+                    }
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                },
+                complete: function() {
+                
+                }
+            });
+
+           
+
+             $(document).on("change", "#CountryId", function (e) {
+                debugger;
+                var name = $("#CountryId option:selected").text();
+               
+         
+               $.ajax({
+                type: "Get",
+                url: "@Url.Action("GetStates","Account")"+"?countryName="+ name,
                 success: function (result) {
                     var data = result.data;
                     var html = '';
@@ -114,16 +169,16 @@
                 
                 }
             });
+            });
 
             $(document).on("change", "#ProvinceId", function (e) {
                 debugger;
                 var statId = $("#ProvinceId").val();
-                var data = { "stateId": statId };
+
          
                 $.ajax({
                     type: "Get",
-                    data: data,
-                    url: "@Url.Action("GetCities","Account")",
+                    url: "@Url.Action("GetCities","Account")"+"?stateId="+statId,
                     success: function(result) {
                         var data = result.data;
                         var html = '';

@@ -66,11 +66,11 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
         /// </summary>
         public string DefaultShippingTypeId { get; set; }
 
-        public PageHeaderPart HeaderPart { get; set; }
+        public List<PageHeaderPart> HeaderPart { get; set; }
 
-        public MainPageContentPart MainPageContainerPart { get; set; }
+        public List<MainPageContentPart> MainPageContainerPart { get; set; }
 
-        public PageFooterPart FooterPart { get; set; }
+        public List<PageFooterPart> FooterPart { get; set; }
 
         //public string MainPageTemplateId { get; set; }
 

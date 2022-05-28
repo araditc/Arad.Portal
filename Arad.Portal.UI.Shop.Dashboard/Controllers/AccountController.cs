@@ -864,7 +864,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 ModelState.AddModelError("UserName", Language.GetString("Validation_EnterUsername"));
             }
 
-            if (string.IsNullOrWhiteSpace(model.FullCellPhoneNumber))
+            if (string.IsNullOrWhiteSpace(model.CellPhoneNumber))
             {
                 ModelState.AddModelError("CellPhoneNumber", Language.GetString("Validation_EnterMobileNumber"));
             }
@@ -872,7 +872,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 PhoneNumberUtil phoneUtil = PhoneNumberUtil.GetInstance();
 
-                PhoneNumber phoneNumber = phoneUtil.Parse(model.FullCellPhoneNumber, "IR");
+                PhoneNumber phoneNumber = phoneUtil.Parse(model.CellPhoneNumber, "IR");
 
                 if (!phoneUtil.IsValidNumber(phoneNumber))
                 {
@@ -912,7 +912,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 return Ok(new { Status = "Error", Message = Language.GetString("AlertAndMessage_NotFoundUser") });
             }
 
-            if (user.PhoneNumber != model.FullCellPhoneNumber)
+            if (user.PhoneNumber != model.FullCellPhoneNumber.Replace("+",""))
             {
                 return Ok(new { Status = "Error", Message = Language.GetString("AlertAndMessage_NotFoundUser") });
             }
@@ -924,12 +924,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
             Result result = await _createNotification.SendOtp("SendOtpForResetPassword", user, otp);
 
-            if (!result.Succeeded)
-            {
-                ErrorLog errorLog = new() { Error = result.Message, Source = @"Account\ResetPassword", Ip = Request.HttpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString() };
-                await _errorLogRepository.Add(errorLog);
-            }
-
             return Ok(result.Succeeded ? new { Status = "Success", result.Message } : new { Status = "Error", result.Message });
         }
 
@@ -938,26 +932,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return View();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Profile()
-        {
-            string userId = User.GetUserId();
-            ApplicationUser user = await _userManager.FindByIdAsync(userId);
-
-            if (user == null)
-            {
-                return RedirectToAction("PageOrItemNotFound", "Account");
-            }
-
-            //await SetViewBag();
-
-            UserProfileDTO dto = _mapper.Map<UserProfileDTO>(user);
-           
-            //await SetViewBag();
-
-            return View(dto);
-        }
-
+        
         //private async Task SetViewBag()
         //{
             //List<Country> countries = await _countryRepository.GetAll();

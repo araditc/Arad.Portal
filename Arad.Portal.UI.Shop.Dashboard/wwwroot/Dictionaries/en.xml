@@ -1599,6 +1599,12 @@
 	<string key="User_Profile">
 		<value>User Profile</value>
 	</string>
+	<string key="User_Captcha">
+		<value>Captcha</value>
+	</string>
+	<string key="User_CellPhoneNumber">
+		<value>CellPhoneNumber</value>
+	</string>
 	<string key="User_FirstName">
 		<value>Name</value>
 	</string>

@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <dictionary>
 	<!--Start [buttons text]-->
+	<string key="EditUserProfile">
+		<value>ویرایش پروفایل کاربری</value>
+	</string>
 	<string key="btn_AddNewAddress">
 		<value>افزودن آدرس جدید</value>
 	</string>
@@ -532,7 +535,28 @@
 	<string key="Title_AreYouSure">
 		<value>مطمئن هستید؟</value>
 	</string>
+	<string key="Title_BasicInfo">
+		<value>اطلاعات پایه کاربر</value>
+	</string>
 	<!--====================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_AddressType">
+		<value>لطفا نوع آدرس را انتخاب کنید.</value>
+	</string>
+	<string key="AlertAndMessage_CountryId">
+		<value>لطفا کشور را انتخاب کنید.</value>
+	</string>
+	<string key="AlertAndMessage_ProvinceId">
+		<value>لطفا استان را انتخاب کنید.</value>
+	</string>
+	<string key="AlertAndMessage_CityId">
+		<value>لطفا شهر را انتخاب کنید.</value>
+	</string>
+	<string key="AlertAndMessage_Address1">
+		<value>لطفاآدرس یک را وارد کنید.</value>
+	</string>
+	<string key="AlertAndMessage_AddressAddedSuccessfully">
+		<value>آدرس با موفقیت افزوده شد.</value>
+	</string>
 	<string key="AlertAndMessage_ChooseOneAddress">
 		<value>لطفا یک آدرس انتخاب کنید درغیر اینصورت اولین آدرس انتخاب میشود.</value>
 	</string>
@@ -1003,7 +1027,7 @@
 		<value>کد ملی اشتباه است.</value>
 	</string>
 	<string key="AlertAndMessage_EnterPostalCode">
-		<value>لطفا کد پستی را وارد نمائید.</value>
+		<value>لطفا کد پستی معتبر وارد نمائید.</value>
 	</string>
 	<string key="AlertAndMessage_InvalidPostalCode">
 		<value>کد پستی اشتباه است.</value>
@@ -1508,17 +1532,47 @@
 	<string key="User_CurrentPass">
 		<value>کلمه عبور جاری</value>
 	</string>
+	<string key="User_CompanyName">
+		<value>نام شرکت</value>
+	</string>
+	<string key="User_BirthDate">
+		<value>تاریخ تولد</value>
+	</string>
 	<string key="User_AddressInfoes">
 		<value>اطلاعات آدرس</value>
 	</string>
 	<string key="User_Profile">
 		<value>پروفایل کاربری</value>
 	</string>
+	<string key="User_AccountNumber">
+		<value>شماره حساب</value>
+	</string>
+	<string key="User_AccountName">
+		<value>نام حساب</value>
+	</string>
+	<string key="User_Iban">
+		<value>شماره شبا</value>
+	</string>
+	<string key="User_BankName">
+		<value>نام بانک</value>
+	</string>
+	<string key="Profile_AddressType">
+		<value>نوع آدرس</value>
+	</string>
+	<string key="Profile_BankAccountInfoes">
+		<value>اطلاعات حساب بانکی</value>
+	</string>
+	<string key="Profile_Country">
+		<value>کشور</value>
+	</string>
 	<string key="Profile_Province">
 		<value>استان</value>
 	</string>
 	<string key="Profile_City">
 		<value>شهر</value>
+	</string>
+	<string key="Profile_IsMainAddress">
+		<value>آدرس اصلی</value>
 	</string>
 	<string key="Profile_ZipCode">
 		<value>کد پستی</value>
