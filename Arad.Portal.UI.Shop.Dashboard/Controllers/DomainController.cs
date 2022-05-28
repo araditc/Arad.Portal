@@ -32,6 +32,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Arad.Portal.DataLayer.Contracts.Shop.Product;
 using Microsoft.Extensions.Configuration;
+using Arad.Portal.DataLayer.Models.DesignStructure;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -152,9 +153,28 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
        public async Task<IActionResult> SavePageContent([FromBody]DomainPageModel model)
        {
             var domainEntity = _domainRepository.FetchDomain(model.DomainId);
-            domainEntity.ReturnValue.HeaderPart = model.HeaderPart;
-            domainEntity.ReturnValue.MainPageContainerPart = model.MainPageContainerPart;
-            domainEntity.ReturnValue.FooterPart = model.FooterPart;
+            //var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
+            //var languageId = _lanRepository.FetchBySymbol(lanIcon);
+            var obj = new PageDesignContent()
+            {
+                LanguageId = model.LanguageId,
+                HeaderPart = model.HeaderPart,
+                FooterPart = model.FooterPart,
+                MainPageContainerPart = model.MainPageContainerPart
+            };
+
+            if(domainEntity.ReturnValue.HomePageDesign.Any(_=>_.LanguageId == model.LanguageId))
+            {
+                var m = domainEntity.ReturnValue.HomePageDesign.FirstOrDefault(_ => _.LanguageId == model.LanguageId);
+                m.HeaderPart = obj.HeaderPart;
+                m.FooterPart = obj.FooterPart;
+                m.MainPageContainerPart = obj.MainPageContainerPart;
+            }else
+            {
+                domainEntity.ReturnValue.HomePageDesign.Add(obj);
+            }
+            domainEntity.ReturnValue.IsMultiLinguals = model.IsMultiLinguals;
+            domainEntity.ReturnValue.IsShop = model.IsShop;
 
             var result = await _domainRepository.EditDomain(domainEntity.ReturnValue);
 
@@ -216,7 +236,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             //ViewBag.ModuleList = moduleList;
 
             ViewBag.DomainId = domainId;
-
+            var lanList = _lanRepository.GetAllActiveLanguage();
+            lanList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
+            ViewBag.LangList = lanList;
             var imageRatioList = _productRepository.GetAllImageRatio();
             ViewBag.ImageRatio = imageRatioList;
             var imageSize = _configuration["ProductImageSize:Size"];
@@ -241,8 +263,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return PartialView($"~/Views/Domain/{viewName}");
         }
 
-       
-
         [HttpPost]
         public IActionResult StoreDesignPreview([FromBody] TemplateDesign model)
         {
@@ -258,6 +278,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
 
             TemplateDesign data = HttpContext.Session.GetComplexData<TemplateDesign>(key);
+
+            var lanEntity = _lanRepository.FetchLanguage(data.LanguageId);
+            data.LangSymbol = lanEntity.Symbol.Substring(0, 2);
            
             return View("PrimaryTemplatePreview", data);
         }
@@ -268,9 +291,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return ViewComponent("SpecialProduct", new { productType, selectionTemplate, count });
         }
 
-        public IActionResult GetMenu(string domainId)
+        public IActionResult GetMenu(string domainId, string languageId)
         {
-            return ViewComponent("StoreMenuModule", new { domainId = domainId});
+            return ViewComponent("StoreMenuModule", new { domainId = domainId, languageId = languageId });
         }
 
 
@@ -573,7 +596,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
             : new { Status = "Error", opResult.Message });
         }
-
 
         [HttpGet]
         public IActionResult GetRowWithSelectedColumns(string count, string rn, string d, string gu)

@@ -32,7 +32,7 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             _languageRepository = languageRepository;
             _menuRepository = menuRepository;
         }
-        public  IViewComponentResult Invoke(string domainId)
+        public  IViewComponentResult Invoke(string domainId, string languageId)
         {
             var menues = new List<StoreMenuVM>();
             //var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
@@ -46,10 +46,14 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             //}
             try
             {
-                var cookieVal = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
-                string symbol = cookieVal.Split("|")[0][2..];
-                var langId = _languageRepository.FetchBySymbol(symbol.ToLower());
-                menues = _menuRepository.StoreList(domainEntity.DomainId, langId);
+                if(string.IsNullOrWhiteSpace(languageId))
+                {
+                    var cookieVal = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
+                    string symbol = cookieVal.Split("|")[0][2..];
+                    languageId = _languageRepository.FetchBySymbol(symbol.ToLower());
+                }
+
+                menues = _menuRepository.StoreList(domainEntity.DomainId, languageId);
             }
             catch (Exception e)
             {

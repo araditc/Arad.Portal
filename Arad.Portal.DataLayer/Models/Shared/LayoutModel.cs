@@ -13,5 +13,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public PageHeaderPart HeaderPart { get; set; }
         public bool  HasCustomizedFooter { get; set; }
         public PageFooterPart FooterPart { get; set; }
+        public bool IsMultiLingual { get; set; }
+        public bool IsShop { get; set; }
     }
 }

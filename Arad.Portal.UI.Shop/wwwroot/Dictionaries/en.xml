@@ -43,10 +43,6 @@
 	<string key="btn_ExcelImport">
 		<value>Get data from excel file</value>
 	</string>
-	<string key="btn_Save">
-		<value>Save</value>
-	</string>
-	
 	<string key="GetMore">
 		<value>more</value>
 	</string>

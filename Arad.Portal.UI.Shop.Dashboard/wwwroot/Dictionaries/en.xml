@@ -801,7 +801,6 @@
 	<string key="AlertAndMessage_FillShippingWay">
 		<value>Please fill at Least one row of table.</value>
 	</string>
-	
 	<string key="AlertAndMessage_FillPriceList">
 		<value>Please fill One valid and active price row</value>
 	</string>

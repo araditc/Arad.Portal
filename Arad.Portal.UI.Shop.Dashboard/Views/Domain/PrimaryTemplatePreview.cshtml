@@ -7,27 +7,36 @@
     var direction = "";
     var langList = new List<string>() { "fa", "en" };
     string lang = "";
-    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    //if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    //{
+    //    direction = "rtl";
+    //    ViewBag.dir = "rtl";
+    //}
+    //else
+    //{
+    //    direction = "ltr";
+    //    ViewBag.dir = "ltr";
+    //}
+    //switch (CultureInfo.CurrentCulture.Name)
+    //{
+    //    case "fa-IR":
+    //        lang = "fa";
+    //        break;
+    //    case "en-US":
+    //        lang = "en";
+    //        break;
+    //}
+
+    if(Model.LangSymbol == "fa")
     {
         direction = "rtl";
-        ViewBag.dir = "rtl";
     }
     else
     {
         direction = "ltr";
-        ViewBag.dir = "ltr";
-    }
-    switch (CultureInfo.CurrentCulture.Name)
-    {
-        case "fa-IR":
-            lang = "fa";
-            break;
-        case "en-US":
-            lang = "en";
-            break;
     }
 }
-<html dir="@direction" lang="@lang">
+<html dir="@direction" lang="@Model.LangSymbol">
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
@@ -76,9 +85,9 @@
             @Html.Raw(Model.HeaderContent);
             
         }
-        <div class="navbarMenu">
-            @await Component.InvokeAsync("StoreMenuModule", new {domainId ="d24ceebd-c587-4a02-a201-3ad5a9345daf"});
-        </div>
+        @*<div class="navbarMenu">
+            @await Component.InvokeAsync("StoreMenuModule", new {domainId = Model.DomainId, languageId = Model.LanguageId});
+        </div>*@
        
     </header>
     <div class="container">
@@ -97,6 +106,8 @@
         }
     </footer>
     <script>
+        
+
         $(document).ready(function(){
             
                 $(".menu-area").mouseover(function () {

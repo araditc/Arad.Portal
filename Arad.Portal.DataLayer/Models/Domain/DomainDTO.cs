@@ -16,9 +16,7 @@ namespace Arad.Portal.DataLayer.Models.Domain
         {
             Prices = new();
             DomainPaymentProviders = new();
-            HeaderPart = new();
-            MainPageContainerPart = new();
-            FooterPart = new();
+            HomePageDesign = new();
         }
         public string DomainId { get; set; }
 
@@ -44,6 +42,10 @@ namespace Arad.Portal.DataLayer.Models.Domain
 
         public bool IsDeleted { get; set; }
 
+        public bool IsMultiLinguals { get; set; }
+
+        public bool IsShop { get; set; }
+
         public List<PriceDTO> Prices { get; set; }
 
         public List<ProviderDetailDTO> DomainPaymentProviders { get; set; }
@@ -60,11 +62,11 @@ namespace Arad.Portal.DataLayer.Models.Domain
 
         public string MainPageTemplateId { get; set; }
 
-        public PageHeaderPart HeaderPart { get; set; }
+        //public PageHeaderPart HeaderPart { get; set; }
+        //public MainPageContentPart MainPageContainerPart { get; set; }
+        //public PageFooterPart FooterPart { get; set; }
+        public List<PageDesignContent> HomePageDesign { get; set; }
 
-        public MainPageContentPart MainPageContainerPart { get; set; }
-
-        public PageFooterPart FooterPart { get; set; }
     }
 
     public class ProviderDetailDTO

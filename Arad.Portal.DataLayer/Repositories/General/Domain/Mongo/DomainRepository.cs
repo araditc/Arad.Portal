@@ -185,12 +185,14 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 //checke all dependencies in other entities if any dependecy exist delete not allowed
                 var allowDeletion = true;
                 #endregion
+
                 if(allowDeletion)
                 {
                     var entity = _context.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
                     if(entity != null)
                     {
                         entity.IsDeleted = true;
+
                         #region add modification
                         var mod = GetCurrentModification(modificationReason);
                         entity.Modifications.Add(mod);
@@ -382,6 +384,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 //{
                 //    price.PriceId = Guid.NewGuid().ToString();
                 //}
+
                 #region Prices
                 entity.Prices = new List<Price>();
                 foreach (var price in dto.Prices.OrderBy(_ => _.StartDate))
@@ -418,14 +421,14 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                     entity.Prices.Add(p);
                 }
                 #endregion
+
                 entity.InvoiceNumberProcedure = (InvoiceNumberProcedure)Convert.ToInt32(dto.InvoiceNumberProcedure);
                 entity.DomainPaymentProviders = _mapper.Map<List<ProviderDetail>>(dto.DomainPaymentProviders);
-                //entity.HeaderPart = dto.HeaderPart;
-                //entity.MainPageContainerPart = dto.MainPageContainerPart;
-                //entity.FooterPart = dto.FooterPart;
 
-                var updateResult = await _context.Collection
-               .ReplaceOneAsync(_ => _.DomainId == dto.DomainId, entity);
+                entity.HomePageDesign = dto.HomePageDesign;
+
+                var updateResult = await _context.Collection.ReplaceOneAsync(_ => _.DomainId == dto.DomainId, entity);
+
                 if (updateResult.IsAcknowledged)
                 {
                     result.Succeeded = true;

@@ -12,7 +12,6 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
         {
             RowContents = new();
         }
-        public string LanguageId { get; set; }
         public List<RowContent> RowContents { get; set; }
     }
 }

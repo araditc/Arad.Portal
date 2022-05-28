@@ -18,9 +18,7 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
         {
             Prices = new();
             DomainPaymentProviders = new();
-            HeaderPart = new();
-            MainPageContainerPart = new();
-            FooterPart = new();
+            HomePageDesign = new();
         }
 
         [BsonId]
@@ -49,6 +47,10 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
 
         public POP POPAccount { get; set; }
 
+        public bool IsMultiLinguals { get; set; }
+
+        public bool IsShop { get; set; }
+
         public List<Price> Prices { get; set; }
 
         public List<ProviderDetail> DomainPaymentProviders { get; set; } 
@@ -66,11 +68,13 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
         /// </summary>
         public string DefaultShippingTypeId { get; set; }
 
-        public List<PageHeaderPart> HeaderPart { get; set; }
+        public List<PageDesignContent> HomePageDesign { get; set; }
 
-        public List<MainPageContentPart> MainPageContainerPart { get; set; }
+        //public PageHeaderPart /*HeaderPart*/ { get; set; }
 
-        public List<PageFooterPart> FooterPart { get; set; }
+        //public MainPageContentPart MainPageContainerPart { get; set; }
+
+        //public PageFooterPart FooterPart { get; set; }
 
         //public string MainPageTemplateId { get; set; }
 

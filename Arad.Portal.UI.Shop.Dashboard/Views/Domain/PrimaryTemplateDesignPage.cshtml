@@ -137,7 +137,12 @@
 
     <div class="container">
         <div class="row mt-3">
-            <div class="float-end">
+            <div class="col-4">
+                  <label class="form-label">@Language.GetString("LanguageName")</label>
+                <select class="form-control selectpicker" data-live-search="true" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))" data-live-search="true">
+                </select>
+            </div>
+            <div class="offset-4 col-4 float-end">
 
                 <button id="btnSave" class="btn btn-success bg-gradient btn-sm float-end m-2" type="button">@Language.GetString("btn_Save")</button>
                 <button id="btnPreview" class="btn btn-primary bg-gradient btn-sm float-end m-2" type="button">@Language.GetString("btn_Preview")</button>
@@ -146,7 +151,7 @@
             </div>
         </div>
     </div>
-    <header class="headerPart m-2 container-fluid ps-0 pe-0">
+    <header class="headerPart m-2 container-fluid ps-0 pe-0" id="PrimaryTemplateHeaderPart">
         <h3 class="text-center bg-secondary bg-opacity-10">Header</h3>
 
         <div class="border border-3 border-secondary m-1" style="min-height: 150px;">
@@ -164,11 +169,11 @@
             </div>
 
             <div class="navbarMenu">
-                @await Component.InvokeAsync("StoreMenuModule", new { domainId = @domainId})
+                @await Component.InvokeAsync("StoreMenuModule", new { domainId = @domainId, languageId =""})
             </div>
         </div>
     </header>
-    <div class="container">
+    <div class="container" id="PrimaryTemplateContainerPart">
         <h3 class="text-center bg-secondary bg-opacity-10">Body</h3>
         <div class="border border-3 border-secondary m-1 dynamicContainerPart p-2" style="min-height: 150px;">
             <partial name="_PageDesign.cshtml" model='new TemplateSectionPart(){SectionTag = "containerSection", DomainId = @domainId}' />
@@ -181,7 +186,7 @@
             </div>
         </div>
     </div>
-    <footer class="footerPart">
+    <footer class="footerPart"  id="PrimaryTemplateFooterPart">
         <h3 class="text-center bg-secondary bg-opacity-10">Footer</h3>
         <div class="border border-3 border-secondary m-1 dynamicFooterPart p-2" style="min-height: 150px;">
             <div class='p-2 row justify-content-center'>
@@ -303,6 +308,8 @@
              var selectedSection;
              var footerBgColor = "";
              var headerBgColor = "";
+             var isShop = true;
+             var isMultiLingual = true;
 
              function bgColorChange()
              {
@@ -396,7 +403,7 @@
                }
 
                    $(document).ready(function(){
-                        changeScreen();
+                               changeScreen();
                                $(window).resize(changeScreen);
 
                                $(".menu-area").mouseover(function () {
@@ -432,6 +439,19 @@
                                    } else {
                                        item.addClass("show");
                                    }
+                               });
+
+                               $("#btnFlags").click(function(){
+                                   var sender =  $(this);
+                                   $(this).parent().remove();
+                                   isMultiLingual = false;
+                               });
+
+                               $("#btnIsShop").click(function(){
+                                   var sender = $(this);
+                                   $(this).parent().remove();
+                                   isShop = false;
+
                                });
 
 
@@ -518,7 +538,7 @@
                             }
 
                             var i = 1;
-                            var rn ="";
+                            var rn = 1000;
                             $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
                                 debugger;
                                 rn = $(this).find(".row.sectionRow").attr("rn");
@@ -541,7 +561,15 @@
 
                             //navbar
                             var obj = {}; //an instance of RowContent for navbar Menu
-                            obj.RowNumber = parseInt(rn) + 1;
+                            if($(".dynamicHeaderPart .firstLevel .contentColumns").length == 0 )
+                            {
+                                obj.RowNumber =  parseInt(rn);
+                            }else
+                            {
+                                obj.RowNumber =  parseInt(rn) + 1;
+                            }
+
+                            obj.RowNumber =  parseInt(rn) + 1;
                             obj.OrderInRow = i ;
                             obj.ExtraClassNames ="navbarMenu";
                             obj.ColsContent =[] ;
@@ -622,10 +650,17 @@
                               //end of footer section
 
                             var model = {}; //an instance of DomainPageModel
-                            model.HeaderPart = header;
-                            model.MainPageContainerPart = bodyContainer;
-                            model.FooterPart = footerPart;
-                            model.DomainId = '@domainId';
+                           if($("#languageId").val() != "-1")
+                           {
+                               debugger;
+                                model.HeaderPart = header;
+                                model.MainPageContainerPart = bodyContainer;
+                                model.FooterPart = footerPart;
+                                model.DomainId = '@domainId';
+                                model.LanguageId = $("#languageId").val();
+                                model.IsMultiLinguals = isMultiLingual;
+                                model.isShop = isShop;
+
 
                             $.ajax({
                                type: "Post",
@@ -647,6 +682,12 @@
                                },
 
                             });
+                           }
+                           else
+                            {
+                                showError('@Language.GetString("AlertAndMessage_FillLangId")');
+                            }
+                           
                        });
 
                        $("#btnPreview").click(function(){
@@ -670,8 +711,11 @@
                                 header += "</div>";
                             });
 
+                      if($("#languageId").val() != "-1")
+                         {
+
                             $.ajax({
-                                url:"@Url.Action("GetMenu","Domain")"+"?domainId="+'@domainId',
+                                url:"@Url.Action("GetMenu","Domain")"+"?domainId="+'@domainId'+"&languageId="+ $("#languageId").val(),
                                 type:'Get',
                                 statusCode:{
                                     200:function(data){
@@ -704,28 +748,38 @@
                                           });
                                         //end of footer section
 
+                                       
+                                            var model = {}; //an instance of TemplateDesign
+                                            model.HeaderContent = header;
+                                            model.ContainerContent = container;
+                                            model.FooterContent = footer;
+                                            model.DomainId = '@domainId';
+                                            model.LanguageId = $("#languageId").val();
+                                            model.IsShop = isShop;
+                                            model.IsMultiLinguals = isMultiLingual;
 
-                                        var model = {}; //an instance of TemplateDesign
-                                        model.HeaderContent = header;
-                                        model.ContainerContent = container;
-                                        model.FooterContent = footer;
-                                        model.DomainId = '@domainId';
-                                         $.ajax({
-                                           url: '@Url.Action("StoreDesignPreview")',
-                                           data : JSON.stringify(model),
-                                           contentType: 'application/json',
-                                           type: 'Post',
-                                           dataType: 'json',
-                                           success: function (result) {
-                                               if(result != "")
-                                               {
-                                                   window.open('@Url.Action("DesignPreview")'+'?key='+result.key , '_blank');
+                                             $.ajax({
+                                               url: '@Url.Action("StoreDesignPreview")',
+                                               data : JSON.stringify(model),
+                                               contentType: 'application/json',
+                                               type: 'Post',
+                                               dataType: 'json',
+                                               success: function (result) {
+                                                   if(result != "")
+                                                   {
+                                                       window.open('@Url.Action("DesignPreview")'+'?key='+result.key , '_blank');
+                                                   }
                                                }
-                                           }
-                                       });
+                                              });
                                     }
                                 }
                               });
+
+                          }
+                        else
+                        {
+                            showError('@Language.GetString("AlertAndMessage_FillLangId")');
+                        }
                        });
 
                            $(".owl-carousel").owlCarousel({
@@ -967,6 +1021,16 @@
             }
         }
         }
+
+        function showError(msg) {
+        
+        document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
+        document.getElementById('mainToastBody').classList.add('alert-danger');
+        $("#toastPanel").show();
+        var toast = new bootstrap.Toast($("#mainToast"));
+        toast.show();
+    }
     </script>
+
 </body>
 </html>

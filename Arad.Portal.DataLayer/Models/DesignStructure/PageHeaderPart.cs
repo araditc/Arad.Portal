@@ -12,9 +12,6 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
         {
             CustomizedContent = new();
         }
-
-
-        public string LanguageId { get; set; }
         public BGType BGType { get; set; }
 
         public int BGTypeId { get; set; }

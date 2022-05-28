@@ -10,14 +10,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 
         public  HashSet<string> BlackList = new HashSet<string>() 
         {
-                //{ "script" },
-                //{ "iframe" },
-                //{ "form" },
-                //{ "object" },
-                //{ "embed" },
-                //{ "link" },                
-                //{ "head" },
-                //{ "meta" }
+                { "script" },
+                { "iframe" },
+                { "form" },
+                { "object" },
+                { "embed" },
+                { "link" },
+                { "head" },
+                { "meta" }
         };
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                         var attr = currentAttribute.Name.ToLower();
                         var val = currentAttribute.Value.ToLower();
                        
-                        if (attr.StartsWith("on"))
+                        if (attr.StartsWith("on") && attr != "onload")
                         {
                             node.Attributes.Remove(currentAttribute);
                             isValid = false;

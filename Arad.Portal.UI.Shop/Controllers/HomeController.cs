@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authorization;
+using Arad.Portal.DataLayer.Contracts.General.Language;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -19,32 +20,57 @@ namespace Arad.Portal.UI.Shop.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IDomainRepository _domainRepository;
+        private readonly ILanguageRepository _lanRepository;
 
         public HomeController(ILogger<HomeController> logger,
             IHttpContextAccessor accessor,
+            ILanguageRepository lanRepo,
             IWebHostEnvironment env,
-                              IDomainRepository domainRepository) : base(accessor, env)
+            IDomainRepository domainRepository) : base(accessor, env)
         {
             _logger = logger;
             _domainRepository = domainRepository;
+            _lanRepository = lanRepo;
         }
 
         [AllowAnonymous]
         public IActionResult Index()
         {
-            //define current culture of user based on default domain culture
+            
             var result = _domainRepository.FetchByName(DomainName, false);
+            var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
+            var lanId = _lanRepository.FetchBySymbol(lanIcon);
 
-            if (result.Succeeded)
+            if (result.Succeeded )
             {
-                return View(result.ReturnValue.MainPageContainerPart != null ?
-               result.ReturnValue.MainPageContainerPart : new DataLayer.Models.DesignStructure.MainPageContentPart());
+                if(!result.ReturnValue.IsMultiLinguals) //single language
+                {
+                    var lan = result.ReturnValue.DefaultLanguageId;
+                    var lanEntity = _lanRepository.FetchLanguage(lan);
+                    Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
+                    CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(lanEntity.Symbol))
+                    , new CookieOptions()
+                        {
+                            Expires = DateTimeOffset.Now.AddYears(1),
+                            Domain = result.ReturnValue.DomainName
+                        });
+                }
+
+
+                if(result.ReturnValue.HomePageDesign.Any(_=>_.LanguageId == lanId))
+                {
+                    var m = result.ReturnValue.HomePageDesign.FirstOrDefault(_ => _.LanguageId == lanId);
+                    return View(m.MainPageContainerPart);
+                }
+                else
+                {
+                    return View((new DataLayer.Models.DesignStructure.MainPageContentPart()));
+                }
             }
             else
             {
                 return View(new DataLayer.Models.DesignStructure.MainPageContentPart());
             }
-
         }
 
         public IActionResult Privacy()
