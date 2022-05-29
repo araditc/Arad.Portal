@@ -120,6 +120,9 @@
 	</string>
 	<!--End [buttons text]-->
 	<!--Start Design Page-->
+	<string key="design_ColSizeRatio">
+		<value>نسبت عرض ستونها</value>
+	</string>
 	<string key="design_bgColor">
 		<value>رنگ پس زمینه</value>
 	</string>

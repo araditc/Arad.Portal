@@ -3,12 +3,8 @@
 @{
     Layout = null;
 }
-<style>
-    .all{
-        color : darkblue;
-    }
-</style>
-<div class="border-top-0 w-100">
+
+<div class="border-top-0 w-100" id="navbar">
     <div class="row gx-0">
         <div class="col-12">
             <nav class="navbar navbar-expand-lg navbar-light bg-light rounded mt-0">
@@ -173,4 +169,7 @@
         </div>
     </div>
 </div>
-                                                
+ <script on-content-loaded ="true">
+     var jj = $("#navbar").offset();
+     alert(jj.top);
+ </script>                                              

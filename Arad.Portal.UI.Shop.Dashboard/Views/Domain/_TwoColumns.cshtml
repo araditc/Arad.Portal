@@ -1,4 +1,5 @@
 ﻿@using Arad.Portal.DataLayer.Models.DesignStructure;
+@using Arad.Portal.DataLayer.Models.Shared;
 @{
     var section = "";
     if(@ViewBag.RowNumber.ToString().StartsWith("1"))
@@ -11,13 +12,64 @@
     {
         section = "footerSection";
     }
+    string firstClass = "";
+    string secondClass = "";
+    switch((Enums.TwoColsTemplateWidth)@ViewBag.ColWidth)
+    {
+        case Enums.TwoColsTemplateWidth.Eleven_One:
+            firstClass = "col-11 border border-1";
+            secondClass = "col-1 border border-1";
+            break;
+        case Enums.TwoColsTemplateWidth.Five_One:
+            firstClass = "col-10 border border-1";
+            secondClass = "col-2 border border-1";
+            break;
+        case Enums.TwoColsTemplateWidth.Five_Seven:
+            firstClass = "col-5 border border-1";
+            secondClass = "col-7 border border-1";
+            break;
+        case Enums.TwoColsTemplateWidth.One_Eleven:
+            firstClass = "col-1 border border-1";
+            secondClass = "col-11 border border-1";
+            break;
+        case Enums.TwoColsTemplateWidth.One_Five:
+            firstClass = "col-2 border border-1";
+            secondClass = "col-10 border border-1";
+            break;
+        case Enums.TwoColsTemplateWidth.One_One:
+            firstClass = "col-12 col-md-6 border border-1";
+            secondClass= "col-12 col-md-6 border border-1";
+            break;
+        case Enums.TwoColsTemplateWidth.One_Three:
+            firstClass = "col-3 border border-1";
+            secondClass = "col-9 border border-1";
+            break;
+        case Enums.TwoColsTemplateWidth.One_Two:
+            firstClass = "col-4 border border-1";
+            secondClass = "col-8 border border-1";
+            break;
+        case Enums.TwoColsTemplateWidth.Seven_Five:
+            firstClass = "col-7 border border-1";
+            secondClass = "col-5 border border-1";
+            break;
+        case Enums.TwoColsTemplateWidth.Three_One:
+            firstClass = "col-9 border border-1";
+            secondClass = "col-3 border border-1";
+            break;
+        case Enums.TwoColsTemplateWidth.Two_One:
+            firstClass = "col-8 border border-1";
+            secondClass = "col-4 border border-1";
+            break;
+    }
+     var guid = @ViewBag.Guid;
    
 }
+
 <div class="row sectionRow mx-2" rn="@ViewBag.RowNumber">
-    <div class="col-12 col-md-6 border border-1" colnum="1" did='@ViewBag.DomainId' cnt ="2">
-         <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section, ColumnClassNames = "col-12 col-md-6", RowGuid ="@ViewBag.Guid" }'/>
+    <div class="@firstClass" colnum="1" did='@ViewBag.DomainId' cnt ="2">
+         <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section, ColumnClassNames = firstClass.Replace("border", "").Replace("border-1", ""), RowGuid = guid }'/>
     </div>
-     <div class="col-12 col-md-6 border border-1" colnum="2" did='@ViewBag.DomainId' cnt ="2">
-          <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 2, Section = section, ColumnClassNames = "col-12 col-md-6", RowGuid ="@ViewBag.Guid" }'/>
+     <div class="@secondClass" colnum="2" did='@ViewBag.DomainId' cnt ="2">
+          <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 2, Section = section, ColumnClassNames = secondClass.Replace("border", "").Replace("border-1", ""), RowGuid = guid }'/>
      </div>
 </div>

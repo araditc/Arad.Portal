@@ -114,6 +114,9 @@
 	</string>
 	<!--End [buttons text]-->
 	<!--Start Design Page-->
+	<string key="design_ColSizeRatio">
+		<value>Columns width ratio</value>
+	</string>
 	<string key="design_bgColor">
 		<value>background color</value>
 	</string>

@@ -11,25 +11,75 @@
     {
         section = "footerSection";
     }
+    var guid = @ViewBag.Guid;
+    var first = "";
+    var second = "";
+    var third = "";
+    var forth = "";
+    var fifth = "";
+    var sixth = ""; 
+    switch((Enums.SixColsTemplateWidth)@ViewBag.ColWidth)
+    {
+        case Enums.SixColsTemplateWidth.One_One_One_One_One_One :
+            first = "col-6 col-md-2 border border-1";
+            second = "col-6 col-md-2 border border-1";
+            third = "col-6 col-md-2 border border-1";
+            forth = "col-6 col-md-2 border border-1";
+            fifth = "col-6 col-md-2 border border-1";
+            sixth = "col-6 col-md-2 border border-1";
+            break;
+        case Enums.SixColsTemplateWidth.One_Three_Two_Two_Three_One :
+            first = "col-3 col-md-1 border border-1";
+            second = "col-9 col-md-3 border border-1";
+            third = "col-6 col-md-2 border border-1";
+            forth = "col-6 col-md-2 border border-1";
+            fifth = "col-9 col-md-3 border border-1";
+            sixth = "col-3 col-md-1 border border-1";
+        break;
+        case Enums.SixColsTemplateWidth.One_Two_Three_Three_Two_One :
+            first = "col-4 col-md-1 border border-1";
+            second = "col-8 col-md-2 border border-1";
+            third = "col-12 col-md-3 border border-1";
+            forth = "col-12 col-md-3 border border-1";
+            fifth = "col-8 col-md-2 border border-1";
+            sixth = "col-4 col-md-1 border border-1";
+        break;
+        case Enums.SixColsTemplateWidth.Three_Two_One_One_Two_Three :
+            first = "col-12 col-md-3 border border-1";
+            second = "col-8 col-md-2 border border-1";
+            third = "col-4 col-md-1 border border-1";
+            forth = "col-4 col-md-1 border border-1";
+            fifth = "col-8 col-md-2 border border-1";
+            sixth = "col-12 col-md-3 border border-1";
+        break;
+        case Enums.SixColsTemplateWidth.Two_One_Three_Three_One_Two :
+            first = "col-8 col-md-2 border border-1";
+            second = "col-4 col-md-1 border border-1";
+            third = "col-12 col-md-3 border border-1";
+            forth = "col-12 col-md-3 border border-1";
+            fifth = "col-4 col-md-1 border border-1";
+            sixth = "col-8 col-md-2 border border-1";
+        break;
+    }
 }
 <div class="row sectionRow mx-2" rn="@ViewBag.RowNumber">
-    <div class="col-12 col-md-2 border" colnum="1" did='@ViewBag.DomainId' cnt="6">
-         <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section, ColumnClassNames = "col-12 col-md-2", RowGuid ="@ViewBag.Guid" }'/>
+    <div class="col-12 col-md-2 border border-1" colnum="1" did='@ViewBag.DomainId' cnt="6">
+         <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section, ColumnClassNames = first.Replace("border", "").Replace("border-1", ""), RowGuid = guid }'/>
     </div>
      <div class="col-12 col-md-2 border" colnum="2" did='@ViewBag.DomainId' cnt="6">
-          <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 2, Section = section, ColumnClassNames = "col-12 col-md-2", RowGuid ="@ViewBag.Guid" }'/>
+          <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 2, Section = section, ColumnClassNames = second.Replace("border", "").Replace("border-1", ""), RowGuid = guid }'/>
      </div>
       <div class="col-12 col-md-2 border" colnum="3" did='@ViewBag.DomainId' cnt="6">
-           <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 3, Section = section, ColumnClassNames = "col-12 col-md-2", RowGuid ="@ViewBag.Guid" }'/>
+           <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 3, Section = section, ColumnClassNames = third.Replace("border", "").Replace("border-1", ""), RowGuid = guid }'/>
       </div>
        <div class="col-12 col-md-2 border" colnum="4" did='@ViewBag.DomainId' cnt="6">
-            <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 4, Section = section, ColumnClassNames = "col-12 col-md-2", RowGuid ="@ViewBag.Guid" }'/>
+            <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 4, Section = section, ColumnClassNames = forth.Replace("border", "").Replace("border-1", ""), RowGuid = guid }'/>
        </div>
         <div class="col-12 col-md-2 border" colnum="5" did='@ViewBag.DomainId' cnt="6">
-             <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 5, Section = section, ColumnClassNames = "col-12 col-md-2", RowGuid ="@ViewBag.Guid" }'/>
+             <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 5, Section = section, ColumnClassNames = fifth.Replace("border", "").Replace("border-1", ""), RowGuid = guid }'/>
         </div>
          <div class="col-12 col-md-2 border" colnum="6" did='@ViewBag.DomainId' cnt="6">
-              <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 6, Section = section, ColumnClassNames = "col-12 col-md-2", RowGuid ="@ViewBag.Guid" }'/>
+              <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 6, Section = section, ColumnClassNames = sixth.Replace("border", "").Replace("border-1", ""), RowGuid = guid }'/>
          </div>
 </div>
 

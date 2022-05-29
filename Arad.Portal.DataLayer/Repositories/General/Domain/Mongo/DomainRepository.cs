@@ -555,5 +555,137 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
 
             return result;
         }
+
+        public List<SelectListModel> GetTwoColsTemplateWidthEnum()
+        {
+            var result = new List<SelectListModel>();
+            
+            foreach (int i in Enum.GetValues(typeof(TwoColsTemplateWidth)))
+            {
+                string name = Enum.GetName(typeof(TwoColsTemplateWidth), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            result.Insert(0, new SelectListModel()
+            {
+                Text = GeneralLibrary.Utilities.Language.GetString("Choose"),
+                Value = "-1"
+            });
+            return result;
+        }
+
+        public List<SelectListModel> GetThreeColsTemplateWidthEnum()
+        {
+            var result = new List<SelectListModel>();
+
+            foreach (int i in Enum.GetValues(typeof(ThreeColsTemplateWidth)))
+            {
+                string name = Enum.GetName(typeof(ThreeColsTemplateWidth), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            result.Insert(0, new SelectListModel()
+            {
+                Text = GeneralLibrary.Utilities.Language.GetString("Choose"),
+                Value = "-1"
+            });
+            return result;
+        }
+
+        public List<SelectListModel> GetFourColsTemplateWidthEnum()
+        {
+            var result = new List<SelectListModel>();
+
+            foreach (int i in Enum.GetValues(typeof(FourColsTemplateWidth)))
+            {
+                string name = Enum.GetName(typeof(FourColsTemplateWidth), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            result.Insert(0, new SelectListModel()
+            {
+                Text = GeneralLibrary.Utilities.Language.GetString("Choose"),
+                Value = "-1"
+            });
+            return result;
+        }
+
+        public List<SelectListModel> GetFiveColsTemplateWidthEnum()
+        {
+            var result = new List<SelectListModel>();
+
+            foreach (int i in Enum.GetValues(typeof(FiveColsTemplateWidth)))
+            {
+                string name = Enum.GetName(typeof(FiveColsTemplateWidth), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            result.Insert(0, new SelectListModel()
+            {
+                Text = GeneralLibrary.Utilities.Language.GetString("Choose"),
+                Value = "-1"
+            });
+            return result;
+        }
+
+        public List<SelectListModel> GetSixColsTemplateWidthEnum()
+        {
+            var result = new List<SelectListModel>();
+
+            foreach (int i in Enum.GetValues(typeof(SixColsTemplateWidth)))
+            {
+                string name = Enum.GetName(typeof(SixColsTemplateWidth), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            result.Insert(0, new SelectListModel()
+            {
+                Text = GeneralLibrary.Utilities.Language.GetString("Choose"),
+                Value = "-1"
+            });
+            return result;
+        }
+
+        public List<SelectListModel> GetOneColsTemplateWidthEnum()
+        {
+            var result = new List<SelectListModel>();
+
+            foreach (int i in Enum.GetValues(typeof(OneColsTemplateWidth)))
+            {
+                string name = Enum.GetName(typeof(OneColsTemplateWidth), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            result.Insert(0, new SelectListModel()
+            {
+                Text = GeneralLibrary.Utilities.Language.GetString("Choose"),
+                Value = "-1"
+            });
+            return result;
+        }
     }
 }

@@ -26,5 +26,12 @@ namespace Arad.Portal.DataLayer.Contracts.General.Domain
         List<SelectListModel> GetAllActiveDomains();
         List<SelectListModel> GetInvoiceNumberProcedureEnum();
         List<SelectListModel> GetPspTypesEnum();
+        List<SelectListModel> GetOneColsTemplateWidthEnum();
+        List<SelectListModel> GetTwoColsTemplateWidthEnum();
+        List<SelectListModel> GetThreeColsTemplateWidthEnum();
+        List<SelectListModel> GetFourColsTemplateWidthEnum();
+        List<SelectListModel> GetFiveColsTemplateWidthEnum();
+        List<SelectListModel> GetSixColsTemplateWidthEnum();
+
     }
 }

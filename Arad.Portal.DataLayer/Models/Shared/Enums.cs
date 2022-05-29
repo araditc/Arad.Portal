@@ -37,6 +37,62 @@ namespace Arad.Portal.DataLayer.Models.Shared
             SSL
         }
 
+        public enum OneColsTemplateWidth
+        {
+            One
+        }
+
+        public enum TwoColsTemplateWidth
+        {
+            One_One =1,
+            One_Two =2,
+            One_Three =3,
+            One_Five =4,
+            One_Eleven = 5,
+            Five_Seven = 6,
+            Seven_Five = 7,
+            Eleven_One = 8,
+            Five_One = 9,
+            Three_One = 10,
+            Two_One = 11
+        }
+
+        public enum ThreeColsTemplateWidth
+        {
+           One_One_One = 1,
+           One_Four_One = 2,
+           One_Two_One = 3,
+           Five_Two_Five = 4,
+           One_Ten_One = 5
+        }
+
+        public enum FourColsTemplateWidth
+        {
+            One_One_One_One = 1,
+            One_Five_Five_One = 2,
+            One_Two_Two_One = 3,
+            Five_One_One_Five = 4,
+            Two_One_One_Two = 5,
+            One_Two_One_Two = 6,
+            Two_One_Two_One = 7
+        }
+
+        public enum FiveColsTemplateWidth
+        {
+            One_Two_Six_Two_One,
+            Two_One_Six_One_Two
+        }
+
+        public enum SixColsTemplateWidth
+        {
+            One_One_One_One_One_One,
+            One_Two_Three_Three_Two_One,
+            Three_Two_One_One_Two_Three,
+            Two_One_Three_Three_One_Two,
+            One_Three_Two_Two_Three_One
+            
+        }
+
         /// <summary>
         /// شناسه واریز
         /// </summary>

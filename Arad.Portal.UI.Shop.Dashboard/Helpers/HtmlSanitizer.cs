@@ -122,7 +122,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                             
 
                         // Remove CSS Expressions
-                        else if (attr == "style" &&
+                        else if (/*attr == "style" &&*/
                                  val != null &&
                                  HasExpressionLinks(val) || HasScriptLinks(val))
                         {

@@ -262,7 +262,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> GetFilteredProductGroup(string vendorId)
         {
             JsonResult result;
-            List<SelectListModel> lst;
+            List<SelectListModel> List;
             
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userDb = await _userManager.FindByIdAsync(currentUserId);
@@ -278,10 +278,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 vendorId = "-1";
             }
             var defaultLanguage = _lanRepository.GetDefaultLanguage(currentUserId);
-            var list = _productRepositoy.GetGroupsOfThisVendor(vendorId, defaultLanguage.LanguageId);
-            if (list.Count() > 0)
+            List = _productRepositoy.GetGroupsOfThisVendor(vendorId, defaultLanguage.LanguageId);
+            if (List.Count() > 0)
             {
-                result = new JsonResult(new { Status = "success", Data = list });
+                result = new JsonResult(new { Status = "success", Data = List });
             }
             else
             {

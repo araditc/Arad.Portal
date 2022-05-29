@@ -57,6 +57,7 @@
     <link href="~/css/siteTemplate/ForthContentTemplate.css" rel="stylesheet" />
     <link href="~/css/siteTemplate/FifthContentTemplate.css" rel="stylesheet" />
     <link href="~/css/header.css" rel="stylesheet" />
+    <link href="~/css/StickyNavbar.css" rel="stylesheet" />
 
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -68,6 +69,7 @@
     <script src="~/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js"></script>
     <script src="~/lib/owlCarousel/js/owl.carousel.min.js"></script>
     <script src="~/js/TemplateCreation.js"></script>
+    <script src="~/js/StickyNavbar.js"></script>
 
 </head>
 <body>
@@ -168,9 +170,9 @@
                 <partial name="_PageDesign.cshtml" model='new TemplateSectionPart(){SectionTag = "headerSection", DomainId = @domainId}' />
             </div>
 
-            <div class="navbarMenu">
+           @* <div class="navbarMenu">
                 @await Component.InvokeAsync("StoreMenuModule", new { domainId = @domainId, languageId =""})
-            </div>
+            </div>*@
         </div>
     </header>
     <div class="container" id="PrimaryTemplateContainerPart">
@@ -388,13 +390,17 @@
 
                    colTemplate = "<div class='col-12 col-md-3 p-2'>" +
                        "<label class='lblAlert form-label'>" + '@Language.GetString("AlertAndMessage_HowManyColumns")' + "</label><br />" +
-                       "<select  class='form-control selectpicker colCnt' onchange='selectColumns(this, \""+ tag +"\" );' id='" + id + "' data-live-search='true'>" +
+                       "<select  class='form-control selectpicker colCnt' onchange='selectColumns(this, \""+ id +"\" );' id='" + id + "' data-live-search='true'>" +
                            "<option value='0'>" + '@Language.GetString("AlertAndMessage_Choose")' + "</option>" +
                            "<option value='1'>" + '@Language.GetString("Template_OneCol")' + "</option>" +
                            "<option value='2'>" + '@Language.GetString("Template_TwoCol")' + "</option>" +
                            "<option value='3'>" + '@Language.GetString("Template_ThreeCol")' + "</option>" +
                            "<option value='4'>" + '@Language.GetString("Template_FourCol")' + "</option>" +
-                           "<option value='6'>" + '@Language.GetString("Template_SixCol")' + "</option></select></div><div class='p-2 row justify-content-center'>"+
+                           "<option value='6'>" + '@Language.GetString("Template_SixCol")' + "</option></select></div>"+
+                           "<div class='col-12 col-md-3 p-2'>" +
+                           "<label class='lblAlert form-label'>" + '@Language.GetString("design_ColSizeRatio")' + "</label><br />" +
+                           "<select  class='form-control selectpicker colWidth' onchange='selectColumnsWidthRatio(this, \""+ tag +"\" );' colWidthId='"+id+"' data-live-search='true'></select></div>" +
+                           "<div class='p-2 row justify-content-center'>"+
                            "<div class='col-2 text-center'>"+
                            "<button class='btn btn-sm m-2 btn-dark btnRowStyle'  guid='" + id + "'><i class='fs-4 fa fa-cog'></i></button>"+
                            "</div><div class='ps-4 col-12 contentColumns' guid='"+ id + "'></div>";
@@ -455,7 +461,7 @@
                                });
 
 
-                          $(".btnHFStyle").click(function(){
+                       $(".btnHFStyle").click(function(){
                            debugger;
                            selectedSection = $(this).attr("sec");
                            var offcanvas = $("#styleHeaderFooterDiv");
@@ -463,9 +469,9 @@
                            off.show();
                        });
 
-                           $("#deleteBgImage").click(function(){
+                        $("#deleteBgImage").click(function(){
 
-                           });
+                        });
 
                           $("#send_pic").click(function () {
 
@@ -581,6 +587,8 @@
                             menuModule.ModuleId = "f8865ffc-1653-41ba-a281-ee57fa7ffc09";
                             menuModule.ModuleName = "HorizantalStoreMenu";
                             menuModule.ParametersValue = {};
+                            menuModule.ParametersValue.domainId = '@domainId';
+                            menuModule.ParametersValue.languageId = $("#languageId").val();
                             var data = JSON.stringify(menuModule);
                             var menuData = `<div target='module'>${data}</div>`;
 
@@ -715,7 +723,7 @@
                          {
 
                             $.ajax({
-                                url:"@Url.Action("GetMenu","Domain")"+"?domainId="+'@domainId'+"&languageId="+ $("#languageId").val(),
+                                url:"@Url.Action("GetMenuModuleViewComponent","Domain")"+"?domainId="+'@domainId'+"&languageId="+ $("#languageId").val(),
                                 type:'Get',
                                 statusCode:{
                                     200:function(data){
@@ -822,20 +830,17 @@
 
                    function confirmation()
                    {
-
                        $(".flagPartDiv").addClass("d-none");
                        $("#restoreRecord").removeClass("d-none");
                    }
 
                    function flagRestoration()
                    {
-
                        $(".flagPartDiv").removeClass("d-none");
                        $("#restoreRecord").addClass("d-none");
                    }
                    function setLang(lang)
                        {
-
                            var currentCulture = '@CultureInfo.CurrentCulture.Name';
                            if (currentCulture !== lang) {
                                $.ajax({
@@ -864,64 +869,63 @@
                            }
                        }
 
-                       function addToTable() {
+      function addToTable() {
             debugger;
             var flag = false;
             var selectedLang = $('#multiLangId').val();
             if(isUnique(selectedLang, 'multiLingualList', 1, '@Language.GetString("AlertAndMessage_LangUniqueness")'))
             {
-                 $("span[data-val-result='multiLangId']").html("");
-                $("span[data-val-result='productName']").html("");
+                     $("span[data-val-result='multiLangId']").html("");
+                     $("span[data-val-result='productName']").html("");
 
-
-                if ($("#multiLangId").val() == "") {
-                    $("span[data-val-result='multiLangId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
-                    flag = true;
-                }
-                if ($("#productName").val() == "") {
-                        $("span[data-val-result='productName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
-                    flag = true;
-                }
-                if (!flag) {
-                    debugger;
-                    var obj = {};
-                    obj.LanguageId = $('#multiLangId').val();
-                    obj.LanguageName = $("#multiLangId option:selected").text();
-                    obj.Name = $('#productName').val();
-                    obj.SeoTitle = $("#seoTitle").val();
-                    obj.SeoDescription = $("#seoDescription").val();
-                    obj.Description = $("#description").val();
-                    obj.UrlFriend = $("#urlFriend").val();
-                    obj.BodyContent = CKEDITOR.instances.editorCk.getData();
-                    obj.Tag = cnt.toString();
-
-                    multiLingualArr.push(obj);
-
-                    var tr = "<tr style='text-align:center;'><td>" + $("#multiLangId option:selected").text() +
-                        "</td><td style='display:none;'>" + $('#multiLangId').val() +
-                        "</td><td>" + $('#productName').val() +
-                        "</td><td>" + $("#seoTitle").val() +
-                        "</td><td>" + $("#seoDescription").val() +
-                        "</td><td>" + $("#description").val() +
-                        "</td><td>" + $("#urlFriend").val() +
-                        "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' cnt='" + obj.Tag + "' onclick='deleteFromTable(this);'>" +
-                        "<i class='fa fa-trash' ></i></button></td></tr>";
-
-                    if ($("#multiLingualList tr").length == 1 && $("#multiLingualList tr")[0].children.length == 1) {
-                        $("#multiLingualList tr")[0].remove();
+                    if ($("#multiLangId").val() == "") {
+                        $("span[data-val-result='multiLangId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                        flag = true;
                     }
+                    if ($("#productName").val() == "") {
+                            $("span[data-val-result='productName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                        flag = true;
+                    }
+                    if (!flag) {
+                        debugger;
+                        var obj = {};
+                        obj.LanguageId = $('#multiLangId').val();
+                        obj.LanguageName = $("#multiLangId option:selected").text();
+                        obj.Name = $('#productName').val();
+                        obj.SeoTitle = $("#seoTitle").val();
+                        obj.SeoDescription = $("#seoDescription").val();
+                        obj.Description = $("#description").val();
+                        obj.UrlFriend = $("#urlFriend").val();
+                        obj.BodyContent = CKEDITOR.instances.editorCk.getData();
+                        obj.Tag = cnt.toString();
 
-                    $("#multiLingualList").append(tr);
-                    cnt = cnt + 1;
-                    $("#multiLangId").val("@ViewBag.LangId");
-                    $("#multiLangId").selectpicker("refresh");
-                    $("#productName").val("");
-                    $("#seoTitle").val("");
-                    $("#seoDescription").val("");
-                    $("#description").val("");
-                    CKEDITOR.instances.editorCk.setData("");
-                   /* $("#urlFriend").val("");*/
-                }
+                        multiLingualArr.push(obj);
+
+                        var tr = "<tr style='text-align:center;'><td>" + $("#multiLangId option:selected").text() +
+                            "</td><td style='display:none;'>" + $('#multiLangId').val() +
+                            "</td><td>" + $('#productName').val() +
+                            "</td><td>" + $("#seoTitle").val() +
+                            "</td><td>" + $("#seoDescription").val() +
+                            "</td><td>" + $("#description").val() +
+                            "</td><td>" + $("#urlFriend").val() +
+                            "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' cnt='" + obj.Tag + "' onclick='deleteFromTable(this);'>" +
+                            "<i class='fa fa-trash' ></i></button></td></tr>";
+
+                        if ($("#multiLingualList tr").length == 1 && $("#multiLingualList tr")[0].children.length == 1) {
+                            $("#multiLingualList tr")[0].remove();
+                        }
+
+                        $("#multiLingualList").append(tr);
+                        cnt = cnt + 1;
+                        $("#multiLangId").val("@ViewBag.LangId");
+                        $("#multiLangId").selectpicker("refresh");
+                        $("#productName").val("");
+                        $("#seoTitle").val("");
+                        $("#seoDescription").val("");
+                        $("#description").val("");
+                        CKEDITOR.instances.editorCk.setData("");
+                       /* $("#urlFriend").val("");*/
+                    }
             }
          }
         $("#uploadModal").on("shown.bs.modal", function() {

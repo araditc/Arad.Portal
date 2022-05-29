@@ -27,5 +27,11 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
 
         [BsonIgnoreIfNull]
         public AdvertisementTemplateDesign? AdvertisementTemplateDesign { get; set; }
+
+        [BsonIgnoreIfNull]
+        public string DomainId { get; set; }
+
+        [BsonIgnoreIfNull]
+        public string LanguageId { get; set; }
     }
 }

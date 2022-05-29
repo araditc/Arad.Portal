@@ -291,7 +291,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return ViewComponent("SpecialProduct", new { productType, selectionTemplate, count });
         }
 
-        public IActionResult GetMenu(string domainId, string languageId)
+        public IActionResult GetMenuModuleViewComponent(string domainId, string languageId)
         {
             return ViewComponent("StoreMenuModule", new { domainId = domainId, languageId = languageId });
         }
@@ -597,8 +597,47 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             : new { Status = "Error", opResult.Message });
         }
 
+
+        public IActionResult GetRelatedColsTemplateWidths(int count)
+        {
+            JsonResult result;
+            var res = new List<SelectListModel>();
+            switch (count)
+            {
+                case 1:
+                    res = _domainRepository.GetOneColsTemplateWidthEnum();
+                    break;
+                case 2:
+                    res = _domainRepository.GetTwoColsTemplateWidthEnum();
+                    break;
+                case 3:
+                    res = _domainRepository.GetThreeColsTemplateWidthEnum();
+                    break;
+                case 4:
+                    res = _domainRepository.GetFourColsTemplateWidthEnum();
+                    break;
+                case 5:
+                    res = _domainRepository.GetFiveColsTemplateWidthEnum();
+                    break;
+                case 6:
+                    res = _domainRepository.GetSixColsTemplateWidthEnum();
+                    break;
+            }
+
+            if (res.Count() > 0)
+            {
+                result = new JsonResult(new { Status = "success", Data = res });
+            }
+            else
+            {
+                result = new JsonResult(new { Status = "notFound", Message = "" });
+            }
+
+            return result;
+        }
+
         [HttpGet]
-        public IActionResult GetRowWithSelectedColumns(string count, string rn, string d, string gu)
+        public IActionResult GetRowWithSelectedColumns(int count,int colWidth, string rn, string d, string gu)
         {
 
             var moduleList = _moduleRepository.GetAllModules();
@@ -607,23 +646,28 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var viewName = "";
             switch(count)
             {
-                case "1":
+                case 1:
                     viewName = "_OneColumn.cshtml";
                     break;
-                case "2":
+                case 2:
                     viewName = "_TwoColumns.cshtml";
                     break;
-                case "3":
+                case 3:
                     viewName = "_ThreeColumns.cshtml";
                     break;
-                case "4":
+                case 4:
                     viewName = "_FourColumns.cshtml";
                     break;
-                case "6":
+                case 5:
+                    viewName = "_FiveColumns.cshtml";
+                    break;
+                case 6:
                     viewName = "_SixColumns.cshtml";
                     break;
               
             }
+            
+            ViewBag.ColWidth = colWidth;
             ViewBag.RowNumber = rn;
             ViewBag.DomainId = d;
             ViewBag.Guid = gu;

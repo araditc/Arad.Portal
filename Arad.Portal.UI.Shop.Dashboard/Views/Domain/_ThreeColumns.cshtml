@@ -11,16 +11,50 @@
     {
         section = "footerSection";
     }
-   
+    string first = "";
+    string second = "";
+    string third = "";
+
+    switch((Enums.ThreeColsTemplateWidth)@ViewBag.ColWidth)
+    {
+        case Enums.ThreeColsTemplateWidth.One_One_One:
+            first = "col-12 col-md-4 border border-1";
+            second = "col-12 col-md-4 border border-1";
+            third = "col-12 col-md-4 border border-1";
+            break;
+        case Enums.ThreeColsTemplateWidth.Five_Two_Five:
+            first = "col-5  border border-1";
+            second = "col-2  border border-1";
+            third = "col-5  border border-1";
+            break;
+        case Enums.ThreeColsTemplateWidth.One_Four_One:
+            first = "col-2  border border-1";
+            second = "col-8  border border-1";
+            third = "col-2  border border-1";
+            break;
+        case Enums.ThreeColsTemplateWidth.One_Ten_One:
+            first = "col-1  border border-1";
+            second = "col-10  border border-1";
+            third = "col-1  border border-1";
+            break;
+        case Enums.ThreeColsTemplateWidth.One_Two_One:
+            first = "col-12 col-md-3  border border-1";
+            second = "col-12 col-md-6  border border-1";
+            third = "col-12 col-md-3  border border-1";
+            break;
+
+    }
+     var guid = @ViewBag.Guid;
+
 }
 <div class="row sectionRow mx-2" rn="@ViewBag.RowNumber">
-    <div class="col-12 col-md-4 border border-1" colnum="1" did='@ViewBag.DomainId' cnt ="3">
-          <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section, ColumnClassNames ="col-12 col-md-4", RowGuid ="@ViewBag.Guid"}'/>
+    <div class="@first" colnum="1" did='@ViewBag.DomainId' cnt ="3">
+          <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section, ColumnClassNames = first.Replace("border", "").Replace("border-1", ""), RowGuid = guid}'/>
     </div>
-     <div class="col-12 col-md-4 border border-1" colnum="2 did='@ViewBag.DomainId' cnt ="3">
-           <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 2, Section = section, ColumnClassNames = "col-12 col-md-4", RowGuid ="@ViewBag.Guid"  }'/>
+     <div class="@second" colnum="2 did='@ViewBag.DomainId' cnt ="3">
+           <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 2, Section = section, ColumnClassNames = second.Replace("border", "").Replace("border-1", ""), RowGuid = guid }'/>
      </div>
-      <div class="col-12 col-md-4 border border-1" colnum="3" did='@ViewBag.DomainId' cnt ="3">
-            <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 3, Section = section, ColumnClassNames = "col-12 col-md-4", RowGuid ="@ViewBag.Guid" }'/>
+      <div class="@third" colnum="3" did='@ViewBag.DomainId' cnt ="3">
+            <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 3, Section = section, ColumnClassNames = third.Replace("border", "").Replace("border-1", ""), RowGuid = guid }'/>
       </div>
 </div>
