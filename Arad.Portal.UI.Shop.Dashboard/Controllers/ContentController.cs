@@ -134,27 +134,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     staticFileStorageURL = _webHostEnvironment.WebRootPath;
                 }
-                //foreach (var img in model.Images)
-                //{
-                //    if (string.IsNullOrWhiteSpace(img.Content))
-                //    {
-                //        IImageFormat format;
-                //        using (SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(Path.Combine(staticFileStorageURL, img.Url), out format))
-                //        {
-                //            var imageEncoder = Configuration.Default.ImageFormatsManager.FindEncoder(format);
-                //            using (MemoryStream m = new MemoryStream())
-                //            {
-                //                image.Save(m, imageEncoder);
-                //                byte[] imageBytes = m.ToArray();
-
-                //                // Convert byte[] to Base64 String
-                //                string base64String = Convert.ToBase64String(imageBytes);
-                //                img.Content = $"data:image/png;base64, {base64String}";
-                //            }
-                //        }
-
-                //    }
-                //}
+                
             }else
             {
                 model.ContentCode = _codeGenerator.GetNewId();

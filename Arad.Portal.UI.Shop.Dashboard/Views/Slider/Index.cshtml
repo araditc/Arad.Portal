@@ -1,0 +1,451 @@
+﻿@*@model List<Models.Slider.Slider>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link href="~/css/form.css" rel="stylesheet" />
+    <link href="~/css/data-grid.css" rel="stylesheet" />
+}
+
+<div class="headPage text-right">
+    <h5>اسلایدرها</h5>
+
+    <a class="action-head add open" data-toggle="collapse" href="#add">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+    </a>
+
+</div>
+
+
+<div id="add" class="box-container collapse">
+    <div class="box-head">
+        <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+        اضافه کردن اسلایدر جدید
+    </div>
+    <div class="box-body ">
+        <form id="addSlider" class="sm" asp-action="AddSlider" asp-controller="Slider" method="post" autocomplete="off" asp-antiforgery="true">
+            <div class="form-row text-right ">
+                <div class=" col-md-12">
+                    <div class="row">
+                        <input type="hidden" class="form-control" id="Id" name="Id" placeholder=" ">
+                        <div class="form-group col-md-4 col-lg-3">
+                            <label for="Title">عنوان اسلایدر</label>
+                            <input type="text" class="form-control" id="Title" name="Title" placeholder=" ">
+                            <span class="field-validation-error" data-val-result="Title"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success btn-xs">
+                <i class="fa fa-check" aria-hidden="true"></i>&nbsp تایید
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="table">
+    <div class="table-head d-none d-lg-block">
+        <div class="table-row">
+            <div class="row m-0">
+                <div class="table-col col-md-1">
+                    <span>ردیف</span>
+                </div>
+                <div class="table-col col-md-7">
+                    <span>عنوان</span>
+                </div>
+                <div class="table-col col-md-2">
+                    <span>وضعیت</span>
+                </div>
+                <div class="table-col col-md-2">
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="table" class="table-body">
+        @{
+            if (Model.Count != 0)
+            {
+                int i = 0;
+
+                @foreach (var item in Model)
+                {
+                    <div class="table-row">
+                        <div class="card-table @(item.IsActive ? "active":"notActive")">
+                            <div class="row m-0">
+                                <div class="table-col col-xs-12 col-md-1 d-none d-lg-block">
+                                    <span>@(++i)</span>
+                                </div>
+                                <div class="table-col col-xs-12 col-lg-7">
+                                    <span class="mo-title">عنوان:</span>
+                                    <span>@item.Title</span>
+                                </div>
+                                <div class="table-col col-xs-12 col-lg-2">
+                                    <span class="mo-title">وضعیت</span>
+                                    <label class="switch">
+                                        <input class="checkbox" type="checkbox" id="active" checked="@item.IsActive" data-id="@item.Id" value="@item.IsActive">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="table-col col-xs-12 col-lg-2">
+                                    <div class="">
+                                        <a asp-action="Slides" asp-controller="Slider" asp-area="Admin" asp-route-id="@item.Id" class="btn btn-outline-primary btn-xs">
+                                            اسلایدها
+                                        </a>
+                                        @*@if (ViewBag.Permissions["Details"])
+                                            {*@
+                                        <a id="editRecord" data-id="@item.Id" href="#" class="btn btn-outline-primary btn-xs">
+                                            جزییات
+                                        </a>
+                                        @*}
+                                            @if (ViewBag.Permissions["Remove"])
+                                            {*@
+                                        <button id="deleteRecord" data-id="@item.Id" href="#" data-toggle="modal" type="button" class="btn btn-outline-danger btn-xs">
+                                            حذف
+                                        </button>
+                                        @*}*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="empty text-center">اطلاعاتی برای نمایش وجود ندارد.</div>
+            }
+        }
+    </div>
+</div>
+
+<!-- Modal remove-->
+<div id="removeModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <a role="button" class="modal-close" data-dismiss="modal"></a>
+            <div class="modal-header">
+                <h6 class="modal-title">حذف خبر </h6>
+            </div>
+            <div class="modal-body text-center">
+                <p class="alert warning">آیا برای حذف اسلایدر اطمینان دارید؟</p>
+                <button id="delete" type="button" class="btn btn-danger btn-sm btn-modal-body" data-dismiss="modal">حذف</button>
+                <button type="button" class="btn btn-outline-danger btn-sm btn-modal-body" data-dismiss="modal" style="margin-left:5px">انصراف</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+            $(document).ready(function () {
+
+                $("#addSlider").submit(function(e) {
+                    e.preventDefault();
+
+                    var $inputs = $('#addSlider :input');
+                    var values = {};
+                    $inputs.each(function() {
+                        values[this.name] = $(this).val();
+                    });
+                    console.log(values["Id"]);
+                    if (values["Id"] === "") {
+                        $.ajax({
+                            url: "@Url.Action("AddSlider")",
+                            type: 'Post',
+                            data: values,
+                            beforeSend: function() {
+                                $("#loading").css("display", "block");
+                            },
+                            success: function(result) {
+                                var spanErrorList = $('#addSlider span[data-val-result]');
+                                spanErrorList.html("");
+                                spanErrorList.parent().removeClass("has-error");
+
+                                if (result.status === "success") {
+
+                                    Swal.fire({
+                                        type: 'success',
+                                        title: result.message,
+                                        confirmButtonText:
+                                            '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                    }).then(function() {
+                                        location.reload();
+                                    });
+
+
+                                } else if (result.status === "error") {
+                                    if (spanErrorList.length > 1) {
+                                        spanErrorList.each(function() {
+                                            $(this).html("");
+                                            $(this).parent().removeClass("has-error");
+                                        });
+                                    }
+
+                                    if (result.modelStateErrors !== null) {
+                                        console.log(result);
+                                        result.modelStateErrors.forEach(function(value, index) {
+                                            $("#addRole").find('[data-val-result=' + value.key + ']')
+                                                .html(value.errorMessage);
+                                            $("#addRole").find('[data-val-result=' + value.key + ']').parent()
+                                                .addClass("has-error");
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            type: 'error',
+                                            title: result.message,
+                                            confirmButtonText:
+                                                '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                        });
+                                    }
+                                }
+
+                            },
+                            error: function(xhr, ajaxOptions, thrownError) {
+
+                            },
+                            complete: function() {
+                                $("#loading").css("display", "none");
+                            }
+                        });
+                    } else {
+                        $.ajax({
+                            url: "@Url.Action("EditSlider")",
+                            type: 'Post',
+                            data: values,
+                            beforeSend: function() {
+                                $("#loading").css("display", "block");
+                            },
+                            success: function(result) {
+                                var spanErrorList = $('#addSlider span[data-val-result]');
+                                spanErrorList.html("");
+                                spanErrorList.parent().removeClass("has-error");
+
+                                if (result.status === "success") {
+
+                                    Swal.fire({
+                                        type: 'success',
+                                        title: result.message,
+                                        confirmButtonText:
+                                            '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                    }).then(function () {
+                                        clearForm("#addSlider");
+                                        location.reload();
+                                    });
+
+
+                                } else if (result.status === "error") {
+                                    if (spanErrorList.length > 1) {
+                                        spanErrorList.each(function() {
+                                            $(this).html("");
+                                            $(this).parent().removeClass("has-error");
+                                        });
+                                    }
+
+                                    if (result.modelStateErrors !== null) {
+                                        console.log(result);
+                                        result.modelStateErrors.forEach(function(value, index) {
+                                            $("#addRole").find('[data-val-result=' + value.key + ']')
+                                                .html(value.errorMessage);
+                                            $("#addRole").find('[data-val-result=' + value.key + ']').parent()
+                                                .addClass("has-error");
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            type: 'error',
+                                            title: result.message,
+                                            confirmButtonText:
+                                                '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                        });
+                                    }
+
+                                    $("#loading").css("display", "none");
+                                }
+
+                            },
+                            error: function(xhr, ajaxOptions, thrownError) {
+
+                            },
+                            complete: function() {
+                                $("#loading").css("display", "none");
+                            }
+                        });
+                    }
+                });
+
+                $(document).on("click",
+                "#editRecord",
+                function(e) {
+                    e.preventDefault();
+
+                    var id = $(this).data("id");
+                    var data = { sliderId: id };
+
+                    $.ajax({
+                        url: "@Url.Action("GetSlider")",
+                        type: 'Get',
+                        data: data,
+                        beforeSend: function() {
+                            $("#loading").css("display", "block");
+                        },
+                        success: function(result) {
+
+                            if (result.status === "success") {
+                                var slide = result.data;
+
+                                $("#addSlider #Title").val(slide.title);
+                                $("#addSlider #Id").val(slide.id);
+
+                                $('#add').collapse('show');
+
+                            } else {
+                                toastr.error(result.message);
+                            }
+
+                            $("#loading").css("display", "none");
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                            $("#loading").css("display", "none");
+                        },
+                        complete: function() {
+
+                        }
+                    });
+                    });
+
+                $(document).on("click", "#deleteRecord", function(e) {
+                        e.preventDefault();
+                        var id = $(this).data("id");
+
+                        $("#delete").data("id", id);
+                        $("#removeModal").modal("show");
+
+                    });
+
+                $(document).on("click", "#delete", function(e) {
+                        e.preventDefault();
+                        var id = $(this).data("id");
+                        var data = { Id: id };
+
+                        $.ajax({
+                            url: "@Url.Action("DeleteSlider")",
+                            type: 'Get',
+                            data: data,
+                            beforeSend: function() {
+                                $("#loading").css("display", "block");
+                            },
+                            success: function(result) {
+
+                                if (result.status === "success") {
+                                    //var $inputs = $('#filter :input');
+
+                                    //var values1 = {};
+
+                                    //$inputs.each(function () {
+                                    //    values1[this.name] = $(this).val();
+                                    //});
+                                    //values1['PageSize'] = pageSize;
+                                    //values1['CurrentPage'] = $pagination.twbsPagination('getCurrentPage');
+
+                                    //list(values1);
+
+                                    $("#removeModal").modal("hide");
+                                    location.reload();
+                                    Swal.fire({
+                                        type: 'success',
+                                        title: result.message,
+                                        confirmButtonText:
+                                            '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                    });
+
+                                } else {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: result.message,
+                                        confirmButtonText:
+                                            '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                    });
+                                }
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+
+                            },
+                            complete: function() {
+                                $("#loading").css("display", "none");
+                            }
+                        });
+                    });
+
+                $(document).on("click", "#active", function (e) {
+                    var active;
+                    if (event.target.checked === true) {
+                        active = true;
+                    } else active = false;
+
+                    var elm = $(this);
+                    var id = $(this).data("id");
+                    var data = { Id: id, IsActive: active };
+
+                    $.ajax({
+                        url: "@Url.Action("ChangeBeActiveSlider")",
+                        type: 'Get',
+                        data: data,
+                        beforeSend: function() {
+                            $("#loading").css("display", "block");
+                        },
+                        success: function(result) {
+
+                            if (result.status === "success") {
+
+                                var card = elm.parent().parent().parent().parent();
+
+                                if (active === true) {
+                                    $(card).removeClass("notActive");
+                                    $(card).addClass("active");
+
+                                } else {
+                                    $(card).removeClass("active");
+                                    $(card).addClass("notActive");
+                                }
+
+                                toastr.success(result.message);
+                                location.reload();
+
+                            } else {
+                                elm.prop("checked", !active).change();
+                                toastr.error(result.message);
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            elm.prop("checked", !active).change();
+                        },
+                        complete: function() {
+                            $("#loading").css("display", "none");
+                        }
+                    });
+                });
+
+            });
+
+
+            function clearForm(form) {
+                $(form).find(':input').each(function () {
+                    switch (this.type) {
+                    case 'password':
+                    case 'text':
+                    case 'textarea':
+                    case 'hidden':
+                        $(this).val('');
+                        break;
+                    case 'checkbox':
+                    case 'radio':
+                        this.checked = false;
+                    }
+                });
+            }
+    </script>
+}*@

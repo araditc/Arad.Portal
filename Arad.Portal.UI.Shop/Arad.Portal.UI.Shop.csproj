@@ -10,6 +10,8 @@
     <Content Remove="Views\Shared\Components\ContentTemplates\Forth.cshtml" />
     <Content Remove="Views\Shared\Components\ContentTemplates\Second.cshtml" />
     <Content Remove="Views\Shared\Components\ContentTemplates\Third.cshtml" />
+    <Content Remove="Views\Shared\Components\Slider\Default.cshtml" />
+    <Content Remove="Views\Shared\Components\SliderLayer\Default.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,6 +57,8 @@
     <None Include="Views\Shared\Components\ContentTemplates\Forth.cshtml" />
     <None Include="Views\Shared\Components\ContentTemplates\Second.cshtml" />
     <None Include="Views\Shared\Components\ContentTemplates\Third.cshtml" />
+    <None Include="Views\Shared\Components\Slider\Default.cshtml" />
+    <None Include="Views\Shared\Components\SliderLayer\Default.cshtml" />
     <None Include="wwwroot\lib\counter\counter.js" />
     <None Include="wwwroot\lib\OwlCarousel2\owl.carousel.js" />
     <None Include="wwwroot\lib\OwlCarousel2\owl.carousel.min.js" />

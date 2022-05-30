@@ -19,7 +19,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
 
         public enum PspType
         {
-            //[Description(" ایران کیش")]
+            //[Description(" ایران کیش")enum
             IranKish,
             //[Description("سامان")]
             Saman

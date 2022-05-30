@@ -353,10 +353,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
            
             return result;
         }
+
         public async Task InsertMany(List<Entities.General.Domain.Domain> domains)
         {
            await _context.Collection.InsertManyAsync(domains);
         }
+
         public bool HasAny()
         {
             return _context.Collection.AsQueryable().Any();

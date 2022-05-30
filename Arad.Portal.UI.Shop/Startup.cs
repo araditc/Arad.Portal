@@ -15,6 +15,7 @@ using Arad.Portal.DataLayer.Contracts.General.Notification;
 using Arad.Portal.DataLayer.Contracts.General.Permission;
 using Arad.Portal.DataLayer.Contracts.General.Role;
 using Arad.Portal.DataLayer.Contracts.General.Services;
+using Arad.Portal.DataLayer.Contracts.General.SliderModule;
 using Arad.Portal.DataLayer.Contracts.General.SystemSetting;
 using Arad.Portal.DataLayer.Contracts.General.User;
 using Arad.Portal.DataLayer.Contracts.Shop.Product;
@@ -47,6 +48,7 @@ using Arad.Portal.DataLayer.Repositories.General.Notification.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Permission.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Role.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Service.Mongo;
+using Arad.Portal.DataLayer.Repositories.General.SliderModule.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.SystemSetting.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.User.Mongo;
 using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
@@ -404,6 +406,7 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<IProviderRepository, ProviderRepository>();
             services.AddTransient<ICountryRepository, CountryRepository>();
             services.AddTransient<IModuleRepository, ModuleRepository>();
+            services.AddTransient<ISliderRepository, SliderRepository>();
 
          
 

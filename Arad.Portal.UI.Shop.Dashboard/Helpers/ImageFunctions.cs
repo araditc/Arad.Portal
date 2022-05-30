@@ -111,7 +111,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
             return image;
         }
 
-        public static KeyValuePair<string, string> SaveImageModel(DataLayer.Models.Shared.Image picture, string pathToSave, string staticFileStorageURL, string webRootPath)
+        public static KeyValuePair<string, string> SaveImageModel(DataLayer.Models.Shared.Image picture, string pathToSave,
+               string staticFileStorageURL, string webRootPath)
         {
             KeyValuePair<string, string> res;
             if (string.IsNullOrWhiteSpace(staticFileStorageURL))

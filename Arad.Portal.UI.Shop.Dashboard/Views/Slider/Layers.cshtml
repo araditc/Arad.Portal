@@ -1,0 +1,270 @@
+﻿@*@model string;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link href="~/css/form.css" rel="stylesheet" />
+    <link href="~/css/data-grid.css" rel="stylesheet" />
+    <link href="~/css/slider.css" rel="stylesheet" />
+}
+
+<div class="headPage text-right">
+    <h5>@($"لایه ها {Model}")</h5>
+
+    <a class="action-head add open" asp-action="AddLayer" asp-controller="Slider" asp-area="Admin" asp-route-sliderId="@ViewBag.SliderId" asp-route-slideId="@ViewBag.SlideId">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+    </a>
+
+</div>
+
+<div class="table">
+    <div class="table-head d-none d-lg-block">
+        <div class="table-row">
+            <div class="row m-0">
+                <div class="table-col col-md-1">
+                    <span>ردیف</span>
+                </div>
+                <div class="table-col col-md-1">
+                    <span>نوع</span>
+                </div>
+                <div class="table-col col-md-3">
+                    <span> محتوا</span>
+                </div>
+                <div class="table-col col-md-1">
+                    <span>Link</span>
+                </div>
+                <div class="table-col col-md-1">
+                    <span>Position-Top</span>
+                </div>
+                <div class="table-col col-md-1">
+                    <span>Position-Right</span>
+                </div>
+                <div class="table-col col-md-1">
+                    <span>Position-Bottom</span>
+                </div>
+                <div class="table-col col-md-1">
+                    <span>Position-Left</span>
+                </div>
+                <div class="table-col col-md-2">
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="table" class="table-body">
+
+    </div>
+</div>
+
+<!-- Modal remove-->
+<div id="removeModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <a role="button" class="modal-close" data-dismiss="modal"></a>
+            <div class="modal-header">
+                <h6 class="modal-title">حذف خبر </h6>
+            </div>
+            <div class="modal-body text-center">
+                <p class="alert warning">آیا برای حذف اسلایدر اطمینان دارید؟</p>
+                <button id="delete" type="button" class="btn btn-danger btn-sm btn-modal-body" data-dismiss="modal">حذف</button>
+                <button type="button" class="btn btn-outline-danger btn-sm btn-modal-body" data-dismiss="modal" style="margin-left:5px">انصراف</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/lib/cropperjs/cropper.min.js"></script>
+    <script src="~/js/cropper.js"></script>
+    <script src="~/lib/MD.BootstrapPersianDateTimePicker/dist/jquery.md.bootstrap.datetimepicker.js"></script>
+    <script src="~/lib/twbs-pagination/jquery.twbsPagination.js"></script>
+
+    @if (ViewBag.Success != null)
+    {
+        <script type="text/javascript">
+            //toastr.error('@(Html.Raw(ViewBag.MsgSuccess))')
+            Swal.fire({
+                type: 'success',
+                title: "@(ViewBag.Success)",
+                confirmButtonText:
+                    '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+            });
+        </script>
+    }
+
+    <script>
+        var pageSize = 10;
+        var $pagination = $('#pagination');
+        var defaultOpts = {
+            visiblePages: 5,
+            first: "اولین",
+            prev: "قبلی",
+            next: "بعدی",
+            last: "آخرین"
+        };
+
+        var aspectCropper = 0;
+
+        function CropperShow(img) {
+            readURL(img, aspectCropper);
+        }
+
+        $('#uploadModal').on('hidden.bs.modal',
+            function () {
+                cropper.destroy();
+                document.getElementById("Image").value = "";
+                $("#cropped_result").remove();
+            });
+
+        $(document).on("click",
+            "#picRecord",
+            function (e) {
+                e.preventDefault();
+                $("#uploadModal").modal("show");
+            });
+
+        $(document).on("click",
+            "#send_pic",
+            function () {
+                var url = $("#pic").attr("src");
+                var pic = '';
+                picSrc = url;
+
+                $(".ImageWrapper img").attr("src", picSrc);
+
+                $('#uploadModal').modal("hide");
+            });
+
+        $('#calenderStart').MdPersianDateTimePicker({
+            targetTextSelector: '#StartDate',
+            targetDateSelector: '#StartDateHide',
+            fromDate: true,
+            enableTimePicker: true,
+            groupId: 'rangeSelector',
+        });
+        $('#calenderEnd').MdPersianDateTimePicker({
+            targetTextSelector: '#ExpireDate',
+            targetDateSelector: '#ExpireDateHide',
+            toDate: true,
+            enableTimePicker: true,
+            groupId: 'rangeSelector',
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+
+            list();
+        });
+
+        function list() {
+            $("#table").html("");
+            var data = {
+                pageSize: pageSize,
+                currentPage: $pagination.twbsPagination('getCurrentPage'),
+                sliderId: "@(ViewBag.SliderId)",
+                slideId: "@(ViewBag.SlideId)"
+            };
+
+            $.ajax({
+                url: "@Url.Action("ListLayers")",
+                type: 'Post',
+                data: data,
+                beforeSend: function() {
+                    $("#loading-data").css("display", "block");
+                },
+                success: function(result) {
+
+                    $("#table").html(result);
+
+                    var totalPages = $("#page-data").data("total");
+                    var currentPage = $pagination.twbsPagination('getCurrentPage');
+
+                    $pagination.twbsPagination('destroy');
+
+                    if (totalPages > 0) {
+                        $pagination.twbsPagination($.extend({},
+                            defaultOpts,
+                            {
+                                startPage: currentPage,
+                                totalPages: totalPages
+                            }));
+                    }
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                },
+                complete: function() {
+                    $("#loading-data").css("display", "none");
+                    $("#loading").css("display", "none");
+                }
+            });
+
+            $(document).on("click", "#deleteRecord", function(e) {
+                        e.preventDefault();
+                        var id = $(this).data("id");
+
+                        $("#delete").data("id", id);
+                        $("#removeModal").modal("show");
+
+                    });
+
+                $(document).on("click", "#delete", function(e) {
+                        e.preventDefault();
+                        var id = $(this).data("id");
+                        var data = { Id: id };
+
+                        $.ajax({
+                            url: "@Url.Action("DeleteLayer")",
+                            type: 'Get',
+                            data: data,
+                            beforeSend: function() {
+                                $("#loading").css("display", "block");
+                            },
+                            success: function(result) {
+
+                                if (result.status === "success") {
+                                    //var $inputs = $('#filter :input');
+
+                                    //var values1 = {};
+
+                                    //$inputs.each(function () {
+                                    //    values1[this.name] = $(this).val();
+                                    //});
+                                    //values1['PageSize'] = pageSize;
+                                    //values1['CurrentPage'] = $pagination.twbsPagination('getCurrentPage');
+
+                                    //list(values1);
+
+                                    $("#removeModal").modal("hide");
+                                    location.reload();
+                                    Swal.fire({
+                                        type: 'success',
+                                        title: result.message,
+                                        confirmButtonText:
+                                            '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                    });
+
+                                } else {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: result.message,
+                                        confirmButtonText:
+                                            '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
+                                    });
+                                }
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+
+                            },
+                            complete: function() {
+                                $("#loading").css("display", "none");
+                            }
+                        });
+                    });
+        }
+    </script>
+}*@

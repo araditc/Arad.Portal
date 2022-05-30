@@ -114,6 +114,18 @@
 	</string>
 	<!--End [buttons text]-->
 	<!--Start Design Page-->
+	<string key="design_AddNewLayer">
+		<value>Add new layer</value>
+	</string>
+	<string key="design_EditLayer">
+		<value>edit layer</value>
+	</string>
+	<string key="design_LayerType">
+		<value>layer type</value>
+	</string>
+	<string key="design_ContentText">
+		<value>content text</value>
+	</string>
 	<string key="design_ColSizeRatio">
 		<value>Columns width ratio</value>
 	</string>
@@ -693,6 +705,9 @@
 		<value>Enter the number of fixed phone.</value>
 	</string>
 	<!--====================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_EndDateMustBeGreaterThanStartDate">
+		<value>expire date must be greater than start date.</value>
+	</string>
 	<string key="AlertAndMessage_PaymentGatewayInfoes">
 		<value>Fill All Payment Gateway Informations.</value>
 	</string>
@@ -746,6 +761,9 @@
 	</string>
 	<string key="AlertAndMessage_InvalidFileSize">
 		<value>the file size exceed limitation.</value>
+	</string>
+	<string key="AlertAndMessage_FileSizeExceed">
+		<value>the file size exceed 500 KB.</value>
 	</string>
 	<string key="AlertAndMessage_PricePerCurrencyUniqueness">
 		<value>there is already an active price for this currency,if start and end of duration overlapped, then previous price will be deactivated.</value>
@@ -995,6 +1013,9 @@
 	<string key="AlertAndMessage_DeletionDoneSuccessfully">
 		<value>Deletion done successfully.</value>
 	</string>
+	<string key="AlertAndMessage_DeletionNotAllowed">
+		<value>Deletion not allowed.</value>
+	</string>
 	<string key="AlertAndMessage_UserRestoreSureness">
 		<value>Are you Sure For Restoring This User?</value>
 	</string>
@@ -1123,6 +1144,10 @@
 	<string key="AlertAndMessage_ErrorTryAgain">
 		<value>Error, please try again</value>
 	</string>
+	<string key="AlertAndMessage_ErrorInUploadFile">
+		<value>Error in file uploading</value>
+	</string>
+	
 	<string key="AlertAndMessage_ValidityOfOTP">
 		<value>The validity of the OTP is only 3 minutes</value>
 	</string>

@@ -120,6 +120,18 @@
 	</string>
 	<!--End [buttons text]-->
 	<!--Start Design Page-->
+	<string key="design_AddNewLayer">
+		<value>افزودن لایه جدید</value>
+	</string>
+	<string key="design_EditLayer">
+		<value>ویرایش لایه</value>
+	</string>
+	<string key="design_LayerType">
+		<value>نوع لایه</value>
+	</string>
+	<string key="design_ContentText">
+		<value>متن محتوا</value>
+	</string>
 	<string key="design_ColSizeRatio">
 		<value>نسبت عرض ستونها</value>
 	</string>
@@ -686,6 +698,9 @@
 		<value>شماره وارد شده مربوط به تلفن ثابت می باشد.</value>
 	</string>
 	<!--=================================================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_EndDateMustBeGreaterThanStartDate">
+		<value>تاریخ انقضا باید بعد از تاریخ انتشار باشد.</value>
+	</string>
 	<string key="AlertAndMessage_PaymentGatewayInfoes">
 		<value>کلیه اطلاعات درگاه پرداخت را وارد کنید.</value>
 	</string>
@@ -979,6 +994,9 @@
 	<string key="AlertAndMessage_DeletionDoneSuccessfully">
 		<value>عملیات حذف با موفقیت انجام گردید.</value>
 	</string>
+	<string key="AlertAndMessage_DeletionNotAllowed">
+		<value>امکان حذف وجود ندارد.</value>
+	</string>
 	<string key="AlertAndMessage_SendNewPassword">
 		<value>کلمه عبور جدید به تلفن همراه شما پیامک میشود.</value>
 	</string>
@@ -1008,6 +1026,9 @@
 	</string>
 	<string key="AlertAndMessage_InvalidFileSize">
 		<value>سایز فایل بیش از حد مجاز است.</value>
+	</string>
+	<string key="AlertAndMessage_FileSizeExceed">
+		<value>حجم فایل بیش از 500 کیلوبایت است.</value>
 	</string>
 	<string key="AlertAndMessage_EnterBirthDate">
 		<value>لطفا تاریخ تولد را وارد نمائید.</value>
@@ -1165,6 +1186,10 @@
 	<string key="AlertAndMessage_ErrorTryAgain">
 		<value>خطا، لطفا مجدد تلاش کنید.</value>
 	</string>
+	<string key="AlertAndMessage_ErrorInUploadFile">
+		<value>خطا در بارگزاری فایل</value>
+	</string>
+	
 	<string key="AlertAndMessage_ErrorTryAgainLater">
 		<value>خطا، لطفا بعدا تلاش کنید.</value>
 	</string>

@@ -1,0 +1,46 @@
+﻿@using Arad.Portal.DataLayer.Models.SlideModule;
+@model Arad.Portal.DataLayer.Entities.General.SliderModule.Slider
+    
+<div class="topSlider owl-carousel owl-theme ">
+    @if (Model != null)
+    {
+        @foreach (var slide in Model.Slides)
+        {
+            if (slide.IsActive)
+            {
+                var itemBackground = string.IsNullOrEmpty(slide.ColoredBackground) ? "transparent" : slide.ColoredBackground;
+
+                if (string.IsNullOrWhiteSpace(slide.Link))
+                {
+                    <div class="item" style="background-color: @itemBackground; position: relative;">
+                        <img class="animate__animated @($"animate__{slide.TransActionType}")" src="@slide.ImageUrl" alt="@slide.Alt" title="@slide.Title" />
+                        @if (slide.Layers.Count > 0)
+                        {
+                            foreach (var layer in slide.Layers)
+                            {
+                                @await Component.InvokeAsync("SliderLayer", layer)
+
+                            }
+                        }
+
+                    </div>
+                }
+                else
+                {
+                    <a href="@slide.Link" target="@slide.Target" class="item" style="background-color: @itemBackground;">
+                        <img class="animate__animated @($"animate__{slide.TransActionType}")" src="@slide.ImageUrl" alt="@slide.Alt" title="@slide.Title" />
+                        @if (slide.Layers.Count > 0)
+                        {
+                            foreach (var layer in slide.Layers)
+                            {
+                                @await Component.InvokeAsync("SliderLayer", layer)
+
+                            }
+                        }
+                    </a>
+                }
+            }
+
+        }
+    }
+</div>
