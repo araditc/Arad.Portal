@@ -25,7 +25,10 @@ namespace Arad.Portal.DataLayer.Models.SlideModule
         [Required]
         [CustomErrorMessage("AlertAndMessage_FieldEssential")]
         public DateTime? StartDate { get; set; }
+        public string PersianStartDate { get; set; }
         public DateTime? ExpireDate { get; set; }
+
+        public string PersianExpireDate { get; set; }
         public bool IsActive { get; set; }
         [Required]
         [CustomErrorMessage("AlertAndMessage_FieldEssential")]

@@ -120,8 +120,62 @@
 	</string>
 	<!--End [buttons text]-->
 	<!--Start Design Page-->
+	<string key="design_Slide">
+		<value>اسلاید</value>
+	</string>
+	<string key="design_Layers">
+		<value>لایه ها</value>
+	</string>
+	<string key="design_Slides">
+		<value>اسلایدها</value>
+	</string>
+	<string key="design_SlidesOf">
+		<value>اسلایدهای</value>
+	</string>
+	<string key="design_Sliders">
+		<value>اسلایدرها</value>
+	</string>
+	<string key="design_AddNewSlider">
+		<value>اضافه کردن اسلایدر جدید</value>
+	</string>
+	<string key="design_SlideImages">
+		<value>تصویر اسلاید</value>
+	</string>
+	<string key="design_SlideTitle">
+		<value>عنوان اسلاید</value>
+	</string>
+	<string key="design_bgColor">
+		<value>رنگ پس زمینه</value>
+	</string>
+	<string key="design_TransactionType">
+		<value>نوع تراکنش</value>
+	</string>
 	<string key="design_AddNewLayer">
 		<value>افزودن لایه جدید</value>
+	</string>
+	<string key="design_LinkSpecification">
+		<value>مشخصات لینک</value>
+	</string>
+	<string key="design_Link">
+		<value>لینک</value>
+	</string>
+	<string key="design_LinkView">
+		<value>نمایش لینک</value>
+	</string>
+	<string key="design_PositionSpecification">
+		<value>مشخصات Position</value>
+	</string>
+	<string key="design_AttributeSpecification">
+		<value>مشخصات Attribute</value>
+	</string>
+	<string key="design_AltTag">
+		<value>تگ Alt</value>
+	</string>
+	<string key="design_StyleSpecification">
+		<value>مشخصات Style</value>
+	</string>
+	<string key="design_CustomCss">
+		<value>CSS سفارشی</value>
 	</string>
 	<string key="design_EditLayer">
 		<value>ویرایش لایه</value>
@@ -134,9 +188,6 @@
 	</string>
 	<string key="design_ColSizeRatio">
 		<value>نسبت عرض ستونها</value>
-	</string>
-	<string key="design_bgColor">
-		<value>رنگ پس زمینه</value>
 	</string>
 	<string key="design_bgPhoto">
 		<value>عکس پس زمینه</value>
@@ -436,6 +487,9 @@
 	<string key="PermissionTitle_Domains">
 		<value>دامنه ها</value>
 	</string>
+	<string key="PermissionTitle_Sliders">
+		<value>اسلایدر ها</value>
+	</string>
 	<string key="PermissionTitle_ShippingSetting">
 		<value>تنظیمات حمل و نقل کالا</value>
 	</string>
@@ -599,6 +653,12 @@
 	</string>
 	<string key="tbl_FirstPage">
 		<value>اول</value>
+	</string>
+	<string key="tbl_First">
+		<value>اولین</value>
+	</string>
+	<string key="tbl_Last">
+		<value>آخرین</value>
 	</string>
 	<string key="tbl_LastPage">
 		<value>آخر</value>

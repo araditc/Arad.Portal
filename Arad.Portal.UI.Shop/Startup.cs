@@ -370,6 +370,7 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<ProviderContext>();
             services.AddTransient<CountryContext>();
             services.AddTransient<ModuleContext>();
+            services.AddTransient<SliderContext>();
            
             #endregion
 

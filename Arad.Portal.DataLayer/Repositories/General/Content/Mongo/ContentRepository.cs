@@ -49,9 +49,23 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             try
             {
                 var equallentModel = _mapper.Map<Entities.General.Content.Content>(dto);
+                if(!string.IsNullOrEmpty(dto.PersianStartShowDate))
+                {
+                    equallentModel.StartShowDate = dto.PersianStartShowDate.ToEnglishDate().ToUniversalTime();
+                }else if(dto.StartShowDate != null)
+                {
+                    equallentModel.StartShowDate = dto.StartShowDate.Value;
+                }
+                
 
-                equallentModel.StartShowDate = dto.PersianStartShowDate.ToEnglishDate().ToUniversalTime();
-                equallentModel.EndShowDate = dto.PersianEndShowDate.ToEnglishDate().ToUniversalTime();
+                if(!string.IsNullOrEmpty(dto.PersianEndShowDate))
+                {
+                    equallentModel.EndShowDate = dto.PersianEndShowDate.ToEnglishDate().ToUniversalTime();
+                }else if(dto.EndShowDate != null)
+                {
+                    equallentModel.EndShowDate = dto.EndShowDate.Value;
+                }
+               
                 equallentModel.CreationDate = DateTime.Now.ToUniversalTime();
                 equallentModel.CreatorUserId = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
@@ -384,8 +398,25 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             var result = new Result();
 
             var equallentModel = _mapper.Map<Entities.General.Content.Content>(dto);
-            equallentModel.StartShowDate = DateHelper.ToEnglishDate(dto.PersianStartShowDate);
-            equallentModel.EndShowDate = DateHelper.ToEnglishDate(dto.PersianEndShowDate);
+            if(!string.IsNullOrWhiteSpace(dto.PersianStartShowDate))
+            {
+                equallentModel.StartShowDate = DateHelper.ToEnglishDate(dto.PersianStartShowDate);
+
+            }else if(dto.StartShowDate != null)
+            {
+                equallentModel.StartShowDate = dto.StartShowDate.Value;
+            }
+           
+
+            if(!string.IsNullOrWhiteSpace(dto.PersianEndShowDate))
+            {
+                equallentModel.EndShowDate = DateHelper.ToEnglishDate(dto.PersianEndShowDate);
+            }
+            else if(dto.EndShowDate != null)
+            {
+                equallentModel.EndShowDate = dto.EndShowDate.Value;
+            }
+          
             var userName = _httpContextAccessor.HttpContext.User.Claims
                    .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
             var userId = _httpContextAccessor.HttpContext.User.Claims

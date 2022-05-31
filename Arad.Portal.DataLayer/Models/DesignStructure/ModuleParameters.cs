@@ -33,5 +33,8 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
 
         [BsonIgnoreIfNull]
         public string LanguageId { get; set; }
+
+        [BsonIgnoreIfNull]
+        public string SliderId { get; set; }
     }
 }

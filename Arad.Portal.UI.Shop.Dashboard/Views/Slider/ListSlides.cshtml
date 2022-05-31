@@ -19,31 +19,31 @@
                                     <span>@(++i)</span>
                                 </div>
                                 <div class="table-col col-xs-12 col-lg-1">
-                                    <span class="mo-title">تصویر:</span>
+                                    <span class="mo-title">@Language.GetString("Image"):</span>
                                     <span>
                                         <img src="@item.ImageUrl" style="width: 50px; height: 50px;" />
                                     </span>
                                 </div>
                                 <div class="table-col col-xs-12 col-lg-2">
-                                    <span class="mo-title">عنوان:</span>
+                                    <span class="mo-title">@Language.GetString("Entities_Title"):</span>
                                     <span>@item.Title</span>
                                 </div>
                                 <div class="table-col col-xs-12 col-lg-1">
-                                    <span class="mo-title">رنگ پس زمینه:</span>
+                                    <span class="mo-title">@Language.GetString("design_bgColor"):</span>
                                     
                                     <span style="background-color: @item.ColoredBackground; width: 25px; height: 10px;"></span>
                                     
                                 </div>
                                 <div class="table-col col-xs-12 col-lg-1">
-                                    <span class="mo-title"> لینک:</span>
+                                    <span class="mo-title"> @Language.GetString("design_Link") :</span>
                                     <span>@item.Link</span>
                                 </div>
                                 <div class="table-col col-xs-12 col-lg-1">
-                                    <span class="mo-title">تاریخ انتشار:</span>
+                                    <span class="mo-title">@Language.GetString("StartShowDate"):</span>
                                     <span>@item.StartDate</span>
                                 </div>
                                 <div class="table-col col-xs-12 col-lg-1">
-                                    <span class="mo-title"> تاریخ انقضا:</span>
+                                    <span class="mo-title"> @Language.GetString("EndShowDate"):</span>
                                     <span>@item.ExpireDate</span>
                                 </div>
                                 <div class="table-col col-xs-12 col-lg-1">
@@ -55,18 +55,18 @@
                                 </div>
                                 <div class="table-col col-xs-12 col-lg-3">
                                     <div class="">
-                                        <a class="btn btn-outline-secondary btn-xs" asp-action="Layers" asp-controller="Slider" asp-area="Admin" asp-route-sliderId="@ViewBag.SliderId" asp-route-slideId="@item.Id">
-                                             لایه ها   
+                                        <a class="btn btn-outline-secondary btn-xs" asp-action="Layers" asp-controller="Slider"  asp-route-sliderId="@ViewBag.SliderId" asp-route-slideId="@item.Id">
+                                            @Language.GetString("design_Layers")  
                                         </a>
                                        
 
                                         <a id="editRecord" data-id="@item.Id" class="btn btn-outline-primary btn-xs">
-                                            جزییات
+                                           @Language.GetString("btn_Detail")
                                         </a>
 
                                        
                                         <button id="deleteRecord" data-id="@item.Id" href="#" data-toggle="modal" type="button" class="btn btn-outline-danger btn-xs">
-                                            حذف
+                                          @Language.GetString("btn_Delete")
                                         </button>
                                        
                                     </div>
@@ -79,7 +79,7 @@
             }
             else
             {
-                <div class="empty text-center">اطلاعاتی برای نمایش وجود ندارد.</div>
+                <div class="empty text-center">@Language.GetString("AlertAndMessage_NoDataToShow").</div>
             }
         }
     </div>

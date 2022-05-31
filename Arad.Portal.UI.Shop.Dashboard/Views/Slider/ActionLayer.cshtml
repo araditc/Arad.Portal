@@ -3,7 +3,7 @@
 @model Arad.Portal.DataLayer.Models.SlideModule.LayerView
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section Styles{
@@ -53,22 +53,22 @@
                         </div>
                         <div class="box-head inner">
                             <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
-                            مشخصات لینک
+                           @Language.GetString("design_LinkSpecification")
                         </div>
                         <div class="form-group col-md-12 col-lg-4">
-                            <label for="Link">لینک</label>
+                            <label for="Link">@Language.GetString("design_Link")</label>
                             <input dir="ltr" type="text" class="form-control" asp-for="Link" placeholder=" ">
                             <span class="field-validation-error" data-val-result="Link"></span>
                         </div>
                         <div class="form-group col-md-12 col-lg-4">
-                            <label for="Target">نمایش لینک</label>
+                            <label for="Target">@Language.GetString("design_LinkView")</label>
                             <select asp-for="Target" class="form-control" asp-items="Html.GetEnumSelectList<Target>()"></select>
                             <span class="field-validation-error" data-val-result="Target" asp-validation-for="Target"></span>
                         </div>
 
                         <div class="box-head inner">
                             <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
-                            مشخصات Position
+                           @Language.GetString("design_PositionSpecification")
                         </div>
                         <div class="form-group col-md-12 col-lg-3">
                             <label for="">Position-Top</label>
@@ -92,7 +92,7 @@
                         </div>
                         <div class="box-head inner">
                             <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
-                            مشخصات Attributes
+                            @Language.GetString("design_AttributeSpecification")
                         </div>
                         <div class="form-group col-md-12 col-lg-3">
                             <label for="Alt">Class</label>
@@ -110,13 +110,13 @@
                             <span class="field-validation-error" data-val-result="Alt"></span>
                         </div>
                         <div class="form-group col-md-12 col-lg-3">
-                            <label for="Alt">تگ Alt</label>
+                            <label for="Alt">@Language.GetString("design_AltTag")</label>
                             <input dir="ltr" type="text" class="form-control" asp-for="Attributes.Alt" placeholder=" ">
                             <span class="field-validation-error" data-val-result="Alt"></span>
                         </div>
                         <div class="box-head inner">
                             <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
-                            مشخصات Style
+                          @Language.GetString("design_StyleSpecification")
                         </div>
                         <div class="form-group col-md-12 col-lg-2">
                             <label for="Alt"> Width</label>
@@ -205,7 +205,7 @@
                         </div>
 
                         <div class="form-group col-md-12 col-lg-2">
-                            <label>CustomCss</label>
+                            <label>@Language.GetString("design_CustomCss")</label>
                             <input dir="ltr" type="text" class="form-control" asp-for="Styles.CustomCss" placeholder=" ">
                             <span class="field-validation-error" data-val-result="ColoredBackground"></span>
                         </div>
@@ -213,7 +213,7 @@
                 </div>
             </div>
             <button type="submit" class="btn btn-success btn-xs">
-                <i class="fa fa-check" aria-hidden="true"></i>&nbspتایید
+                <i class="fa fa-check" aria-hidden="true"></i>&nbsp @Language.GetString("btn_Approved")
             </button>
         </form>
     </div>
@@ -226,13 +226,7 @@
     @if (ViewBag.Error != null)
     {
         <script type="text/javascript">
-            //toastr.error('@(Html.Raw(ViewBag.MsgSuccess))')
-            Swal.fire({
-                type: 'error',
-                title: "@(ViewBag.Error)",
-                confirmButtonText:
-                    '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
-            });
+            showError('@ViewBag.Error');
         </script>
     }
 

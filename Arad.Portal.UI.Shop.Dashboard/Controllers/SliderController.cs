@@ -263,6 +263,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> AddSlide(SlideView model)
         {
             var errors = new List<ClientValidationErrorModel>();
+            if(!string.IsNullOrWhiteSpace(model.PersianStartDate) && !string.IsNullOrWhiteSpace(model.PersianExpireDate))
+            {
+
+            }
             if (model.ExpireDate <= model.StartDate)
             {
                 ModelState.AddModelError(nameof(model.ExpireDate), Language.GetString("AlertAndMessage_EndDateMustBeGreaterThanStartDate"));

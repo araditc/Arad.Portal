@@ -3,6 +3,7 @@
     "ModuleId": "db0ae375-278a-4fd3-b62b-5fd6cb13edd7",
     "ModuleName": "ProductList",
     "ModuleCategoryType": 0,
+    "IsActive" :  true,
     "ComponentName": "SpecialProduct",
     "ModuleParameters": {
       "ProductTemplateDesign": 1,
@@ -14,6 +15,7 @@
     "ModuleId": "f8865ffc-1563-41ba-a281-ee57fa7ffc09",
     "ModuleName": "ContentList",
     "ModuleCategoryType": 1,
+    "IsActive": true,
     "ComponentName": "ContentTemplate",
     "ModuleParameters": {
       "ContentTemplateDesign": 1,
@@ -21,10 +23,25 @@
       "Count": 10
     }
   },
-    {
-      "ModuleId": "f8865ffc-1653-41ba-a281-ee57fa7ffc09",
-      "ModuleName": "HorizantalStoreMenu",
-      "ModuleCategoryType": 5,
-      "ComponentName": "StoreMenuModule"
+  {
+    "ModuleId": "f8865ffc-1653-41ba-a281-ee57fa7ffc09",
+    "ModuleName": "HorizantalStoreMenu",
+    "ModuleCategoryType": 5,
+    "IsActive": true,
+    "ComponentName": "StoreMenuModule",
+    "ModuleParameters": {
+      "DomainId": "",
+      "LanguageId" :  ""
     }
+  },
+  {
+    "ModuleId": "f8854ffc-1653-41ba-a281-ee57fa7ffc09",
+    "ModuleName": "ImageTextSlider",
+    "ModuleCategoryType": 3,
+    "IsActive": true,
+    "ComponentName": "Slider",
+    "ModuleParameters": {
+      "SliderId" :  ""
+    }
+  }
 ]

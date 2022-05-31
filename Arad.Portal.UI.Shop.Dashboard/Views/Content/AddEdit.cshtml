@@ -809,10 +809,16 @@
             images[index] = item;
             obj.Images.push(item);
         });
-        obj.PersianStartShowDate = $("#dtpStartShowDate").val();
-        obj.PersianEndShowDate = $("#dtpEndShowDate").val();
-        /*console.log("FillDataTosend passed");*/
-        //alert(obj);
+         if("@CultureInfo.CurrentCulture.Name" === "fa-IR")
+            {
+                    obj.PersianStartShowDate = $("#dtpStartShowDate").val();
+                    obj.PersianEndShowDate = $("#dtpEndShowDate").val();
+            }else
+            {
+                obj.StartShowDate = $("#dtpStartShowDate").val();
+                obj.EndShowDate = $("#dtpEndShowDate").val();
+            }
+       
         return obj;
     }
 

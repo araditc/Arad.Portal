@@ -114,8 +114,59 @@
 	</string>
 	<!--End [buttons text]-->
 	<!--Start Design Page-->
+	<string key="design_Slide">
+		<value>slide</value>
+	</string>
+	<string key="design_SlidesOf">
+		<value>slides of</value>
+	</string>
+	<string key="design_Layers">
+		<value>layers</value>
+	</string>
+	<string key="design_Sliders">
+		<value>sliders</value>
+	</string>
+	<string key="design_AddNewSlider">
+		<value>add new slider</value>
+	</string>
+	<string key="design_SlideImages">
+		<value>slide images</value>
+	</string>
+	<string key="design_SlideTitle">
+		<value>slide title</value>
+	</string>
+	<string key="design_bgColor">
+		<value>background color</value>
+	</string>
+	<string key="design_TransactionType">
+		<value>transaction type</value>
+	</string>
 	<string key="design_AddNewLayer">
 		<value>Add new layer</value>
+	</string>
+	<string key="design_LinkSpecification">
+		<value>link specification</value>
+	</string>
+	<string key="design_Link">
+		<value>Link</value>
+	</string>
+	<string key="design_LinkView">
+		<value>link view</value>
+	</string>
+	<string key="design_PositionSpecification">
+		<value>position specification</value>
+	</string>
+	<string key="design_AttributeSpecification">
+		<value>Attribute Specification</value>
+	</string>
+	<string key="design_AltTag">
+		<value>Alt Tag</value>
+	</string>
+	<string key="design_StyleSpecification">
+		<value>Style Specification</value>
+	</string>
+	<string key="design_CustomCss">
+		<value>Custom Css</value>
 	</string>
 	<string key="design_EditLayer">
 		<value>edit layer</value>
@@ -128,9 +179,6 @@
 	</string>
 	<string key="design_ColSizeRatio">
 		<value>Columns width ratio</value>
-	</string>
-	<string key="design_bgColor">
-		<value>background color</value>
 	</string>
 	<string key="design_bgPhoto">
 		<value>background Image</value>
@@ -435,6 +483,9 @@
 	<string key="PermissionTitle_Domains">
 		<value>Domains</value>
 	</string>
+	<string key="PermissionTitle_Sliders">
+		<value>Sliders</value>
+	</string>
 	<string key="PermissionTitle_ShippingSetting">
 		<value>Shipping Setting</value>
 	</string>
@@ -599,6 +650,12 @@
 	</string>
 	<string key="tbl_FirstPage">
 		<value>First</value>
+	</string>
+	<string key="tbl_First">
+		<value>First</value>
+	</string>
+	<string key="tbl_Last">
+		<value>Last</value>
 	</string>
 	<string key="tbl_LastPage">
 		<value>Last</value>

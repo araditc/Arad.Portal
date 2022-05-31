@@ -1,8 +1,8 @@
-﻿@*@using Models.Slider
+﻿@using Arad.Portal.DataLayer.Entities.General.SliderModule;
 @model string;
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section Styles{
@@ -10,13 +10,12 @@
     <link href="~/css/data-grid.css" rel="stylesheet" />
     <link href="~/lib/cropperjs/cropper.min.css" rel="stylesheet" />
     <link href="~/css/slider.css" rel="stylesheet" />
-    <link href="~/lib/MD.BootstrapPersianDateTimePicker/dist/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
-    <link href="~/lib/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-colorpicker/css/bootstrap-colorpicker.css" rel="stylesheet" />
 }
 
 
 <div class="headPage text-right">
-    <h5>@($"اسلایدهای {Model}")</h5>
+    <h5>@($"{Language.GetString("design_SlidesOf")} {Model}")</h5>
 
     <a class="action-head add open" data-toggle="collapse" href="#add">
         <i class="fa fa-plus" aria-hidden="true"></i>
@@ -27,7 +26,7 @@
 <div id="add" class="box-container collapse">
     <div class="box-head">
         <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
-        <span>اسلاید</span>
+        <span>@Language.GetString("design_Slide")</span>
     </div>
     <div class="box-body ">
         <form id="addSlide" class="sm" asp-action="AddSlide" asp-controller="Slider" method="post" autocomplete="off" asp-antiforgery="true">
@@ -41,7 +40,7 @@
                                     <img src="~/images/blank.png" />
                                 </div>
                                 <label class="custom-upload text-center" for="Image" style="width: 100%;padding: 2px 10px;">
-                                    <input type="file" accept="image/x-png,image/jpeg" name="Image" id="Image" onchange="CropperShow(this)" />تصویر اسلاید
+                                    <input type="file" accept="image/x-png,image/jpeg" name="Image" id="Image" onchange="CropperShow(this)" />@Language.GetString("design_SlideImages")
                                 </label>
                                 <span class="field-validation-error" data-val-result="ImageUrl"></span>
                             </div>
@@ -49,35 +48,57 @@
                         <input type="hidden" class="form-control" id="Id" name="Id" placeholder=" ">
                         <div class="row col-md-6 col-lg-9">
                             <div class="form-group col-md-12 col-lg-4">
-                                <label for="Title">عنوان اسلاید</label>
+                                <label for="Title">@Language.GetString("design_SlideTitle")</label>
                                 <input type="text" class="form-control" id="Title" name="Title" placeholder=" ">
                                 <span class="field-validation-error" data-val-result="Title"></span>
                             </div>
 
-                            <div id="calenderStart" class="form-group col-md-12 col-lg-4">
-                                <label for="StartDate"> شروع تاریخ انتشار </label>
-                                <div class="input-group">
-                                    <input type="text" name="StartDate" id="StartDate" class="form-control" placeholder="" aria-label="dateTime" aria-describedby="date" readonly="">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text cursor-pointer" data-mdpersiandatetimepicker="" data-mdpersiandatetimepicker-group="rangeSelector"><i class="fa fa-calendar"></i></span>
+                            <div  class="form-group col-md-12 col-lg-4">
+                               <label class="form-label">@Language.GetString("StartShowDate")</label>
+                                @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                                {
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                        <input autocomplete="off" id="dtpStartShowDate" type="text" class="form-control" />
                                     </div>
-                                    <input type="hidden" id="StartDateHide" />
-                                </div>
+                                }
+                                else
+                                {
+                                    <div class="input-group date" data-provide="datepicker">
+                                        <input type="text" class="form-control" id="dtpStartShowDate">
+                                        <span class="input-group-text">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                    </div>
+                                }
                                 <span class="field-validation-error" data-val-result="StartDate"></span>
                             </div>
-                            <div id="calenderEnd" class="form-group col-md-12 col-lg-4">
-                                <label for="ExpireDate"> پایان تاریخ انتشار </label>
-                                <div class="input-group">
-                                    <input type="text" name="ExpireDate" id="ExpireDate" class="form-control" placeholder="" aria-label="dateTime" aria-describedby="date">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text cursor-pointer" data-mdpersiandatetimepicker="" data-mdpersiandatetimepicker-group="rangeSelector"><i class="fa fa-calendar"></i></span>
+                            <div  class="form-group col-md-12 col-lg-4">
+                                <label class="form-label">@Language.GetString("EndShowDate")</label>
+                                @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                                {
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                        <input autocomplete="off" id="dtpEndShowDate" type="text" class="form-control" />
                                     </div>
-                                    <input type="hidden" id="ExpireDateHide" />
-                                </div>
+                                }
+                                else
+                                {
+                                    <div class="input-group date" data-provide="datepicker">
+                                        <input type="text" class="form-control" id="dtpEndShowDate">
+                                        <span class="input-group-text">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                    </div>
+                                }
                                 <span class="field-validation-error" data-val-result="ExpireDate"></span>
                             </div>
                             <div class="form-group col-md-12 col-lg-4">
-                                <label for="ColoredBackground">رنگ پس زمینه</label>
+                                <label for="ColoredBackground">@Language.GetString("design_bgColor")</label>
                                 <input type="text" class="form-control" id="ColoredBackground" name="ColoredBackground" placeholder=" ">
                                 <span class="field-validation-error" data-val-result="ColoredBackground"></span>
                             </div>
@@ -87,22 +108,22 @@
                                 <span class="field-validation-error" data-val-result="ImageFit"></span>
                             </div>
                             <div class="form-group col-md-12 col-lg-4">
-                                <label for="TransActionType">Transaction Type</label>
+                                <label for="TransActionType">@Language.GetString("design_TransactionType")</label>
                                 <select name="TransActionType" id="TransActionType" class="form-control" asp-items="Html.GetEnumSelectList<TransActionType>()"></select>
                                 <span class="field-validation-error" data-val-result="TransActionType"></span>
                             </div>
                             <div class="form-group col-md-12 col-lg-4">
-                                <label for="Link">لینک</label>
+                                <label for="Link">@Language.GetString("design_Link")</label>
                                 <input type="text" class="form-control" id="Link" name="Link" placeholder=" ">
                                 <span class="field-validation-error" data-val-result="Link"></span>
                             </div>
                             <div class="form-group col-md-12 col-lg-4">
-                                <label for="Target">نمایش لینک</label>
+                                <label for="Target">@Language.GetString("design_LinkView")</label>
                                 <select name="Target" id="Target" class="form-control" asp-items="Html.GetEnumSelectList<Target>()"></select>
                                 <span class="field-validation-error" data-val-result="Target"></span>
                             </div>
                             <div class="form-group col-md-12 col-lg-4">
-                                <label for="Alt">تگ Alt</label>
+                                <label for="Alt">@Language.GetString("design_AltTag")</label>
                                 <input type="text" class="form-control" id="Alt" name="Alt" placeholder=" ">
                                 <span class="field-validation-error" data-val-result="Alt"></span>
                             </div>
@@ -112,7 +133,7 @@
                 </div>
             </div>
             <button type="submit" class="btn btn-success btn-xs">
-                <i class="fa fa-check" aria-hidden="true"></i>&nbspتایید
+                <i class="fa fa-check" aria-hidden="true"></i>&nbsp @Language.GetString("btn_Approved")
             </button>
         </form>
     </div>
@@ -123,28 +144,28 @@
         <div class="table-row">
             <div class="row m-0">
                 <div class="table-col col-md-1">
-                    <span>ردیف</span>
+                    <span>@Language.GetString("tbl_RowName")</span>
                 </div>
                 <div class="table-col col-md-1">
-                    <span>تصویر</span>
+                    <span>@Language.GetString("Image")</span>
                 </div>
                 <div class="table-col col-md-2">
-                    <span>عنوان</span>
+                    <span>@Language.GetString("Entities_Title")</span>
                 </div>
                 <div class="table-col col-md-1">
-                    <span>رنگ زمینه</span>
+                    <span>@Language.GetString("design_bgColor")</span>
                 </div>
                 <div class="table-col col-md-1">
-                    <span> لینک </span>
+                    <span>@Language.GetString("design_Link") </span>
                 </div>
                 <div class="table-col col-md-1">
-                    <span>تاریخ انتشار </span>
+                    <span>@Language.GetString("StartShowDate") </span>
                 </div>
                 <div class="table-col col-md-1">
-                    <span>تاریخ انقضا</span>
+                    <span>@Language.GetString("EndShowDate")</span>
                 </div>
                 <div class="table-col col-md-1">
-                    <span>وضعیت</span>
+                    <span>@Language.GetString("ActivationState")</span>
                 </div>
                 <div class="table-col col-md-2">
                     <span></span>
@@ -156,6 +177,7 @@
     <div id="table" class="table-body">
 
     </div>
+   
 </div>
 
 
@@ -166,7 +188,7 @@
         <div class="modal-content">
             <a role="button" class="modal-close" data-dismiss="modal"></a>
             <div class="modal-header">
-                <h6 class="modal-title"> برش عکس </h6>
+                <h6 class="modal-title"> @Language.GetString("CropImage") </h6>
             </div>
             <div class="modal-body" id="upload-modal-body">
                 <div id="rowContainer" class="row">
@@ -181,8 +203,8 @@
 
             <div class="modal-footer justify-content-center align-items-center">
                 <div>
-                    <button class="btn btn-success" id="send_pic" type="button" data-id="">تایید</button>
-                    <button class="btn btn-primary" id="crop_button">برش</button>
+                    <button class="btn btn-success" id="send_pic" type="button" data-id="">@Language.GetString("btn_Approved")</button>
+                    <button class="btn btn-primary" id="crop_button">@Language.GetString("btn_Crop")</button>
                 </div>
             </div>
         </div>
@@ -190,13 +212,13 @@
 </div>
 
 <!-- Modal remove-->
-<div id="removeModal" class="modal fade" role="dialog">
+@*<div id="removeModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <a role="button" class="modal-close" data-dismiss="modal"></a>
             <div class="modal-header">
-                <h6 class="modal-title">حذف خبر </h6>
+                <h6 class="modal-title"> </h6>
             </div>
             <div class="modal-body text-center">
                 <p class="alert warning">آیا برای حذف اسلایدر اطمینان دارید؟</p>
@@ -205,14 +227,13 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
 
 @section Scripts{
     <script src="~/lib/cropperjs/cropper.min.js"></script>
     <script src="~/js/cropper.js"></script>
-    <script src="~/lib/MD.BootstrapPersianDateTimePicker/dist/jquery.md.bootstrap.datetimepicker.js"></script>
     <script src="~/lib/twbs-pagination/jquery.twbsPagination.js"></script>
-    <script src="~/lib/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js"></script>
+    <script src="~/lib/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
 
     <script>
         $('#ColoredBackground').colorpicker({ format: 'rgba' });
@@ -221,10 +242,10 @@
         var $pagination = $('#pagination');
         var defaultOpts = {
             visiblePages: 5,
-            first: "اولین",
-            prev: "قبلی",
-            next: "بعدی",
-            last: "آخرین"
+            first: "@Language.GetString("tbl_First")",
+            prev: "@Language.GetString("tbl_PreviousPage")",
+            next: "@Language.GetString("tbl_NextPage")",
+            last: "@Language.GetString("tbl_Last")"
         };
 
         var aspectCropper = 0;
@@ -258,21 +279,17 @@
 
                 $('#uploadModal').modal("hide");
             });
-
-        $('#calenderStart').MdPersianDateTimePicker({
-            targetTextSelector: '#StartDate',
-            targetDateSelector: '#StartDateHide',
-            fromDate: true,
-            enableTimePicker: true,
-            groupId: 'rangeSelector',
-        });
-        $('#calenderEnd').MdPersianDateTimePicker({
-            targetTextSelector: '#ExpireDate',
-            targetDateSelector: '#ExpireDateHide',
-            toDate: true,
-            enableTimePicker: true,
-            groupId: 'rangeSelector',
-        });
+        if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
+        {
+            kamaDatepicker('dtpStartShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+            kamaDatepicker('dtpEndShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+        }
+        else
+        {
+            $('.datepicker').datepicker();
+        }
+       
+        
     </script>
 
     <script>
@@ -292,9 +309,18 @@
                 $inputs.each(function() {
                     values[this.name] = $(this).val();
                 });
+                if("@CultureInfo.CurrentCulture.Name" === "fa-IR")
+                {
+                   values["PersianStartDate"] = $("#dtpStartShowDate").val();
+                   values["PersianExpireDate"] = $("#dtpEndShowDate").val();
 
-                values["ExpireDate"] = $("#ExpireDateHide").val();
-                values["StartDate"] = $("#StartDateHide").val();
+                }else
+                {
+                     values["StartDate"] = $("#dtpStartShowDate").val();
+                    values["ExpireDate"] = $("#dtpEndShowDate").val()
+                }
+
+              
                 values["SliderId"] = "@(ViewBag.SliderId)";
                 values["ImageUrl"] = picSrc;
 
@@ -309,12 +335,11 @@
                         success: function(result) {
                             if (result.status === "success") {
                                 list();
-                                Swal.fire({
-                                    type: 'success',
-                                    title: result.message,
-                                    confirmButtonText:
-                                        '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
-                                });
+                              
+                            document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
+                            document.getElementById('mainToastBody').classList.add('alert-success');
+                            var bsAlert = new bootstrap.Toast($("#mainToast"));
+                            bsAlert.show();
 
 
                             } else if (result.status === "error") {
@@ -334,12 +359,8 @@
                                             .addClass("has-error");
                                     });
                                 } else {
-                                    Swal.fire({
-                                        type: 'error',
-                                        title: result.message,
-                                        confirmButtonText:
-                                            '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
-                                    });
+                                   
+                                    showError(result.message);
                                 }
                             }
 
@@ -362,12 +383,12 @@
                         success: function(result) {
                             if (result.status === "success") {
                                 list();
-                                Swal.fire({
-                                    type: 'success',
-                                    title: result.message,
-                                    confirmButtonText:
-                                        '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
-                                });
+                               
+                                 document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
+                                document.getElementById('mainToastBody').classList.add('alert-success');
+                                var bsAlert = new bootstrap.Toast($("#mainToast"));
+                                bsAlert.show();
+
                                 $('#add').collapse('hide');
                                 clearForm("#addSlide");
                                 $(".ImageWrapper img").attr("src", "/images/blank.png");
@@ -388,12 +409,8 @@
                                             .addClass("has-error");
                                     });
                                 } else {
-                                    Swal.fire({
-                                        type: 'error',
-                                        title: result.message,
-                                        confirmButtonText:
-                                            '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
-                                    });
+                                   
+                                    showError(result.message)
                                 }
                             }
 
@@ -441,12 +458,7 @@
                                 //$("#addSlide #StartDate").val(slide.startDate);
                                 //$("#addSlide #ExpireDate").val(slide.expireDate);
 
-                                if (slide.startDate !== "") {
-                                    $('#calenderStart').MdPersianDateTimePicker('setDate', new Date(slide.startDate));
-                                }
-                                if (slide.expireDate !== null) {
-                                    $('#calenderEnd').MdPersianDateTimePicker('setDate', new Date(slide.expireDate));
-                                }
+                                
 
                                 $('#add').collapse('show');
 
@@ -490,34 +502,17 @@
                 success: function(result) {
 
                     if (result.status === "success") {
-                        //var $inputs = $('#filter :input');
-
-                        //var values1 = {};
-
-                        //$inputs.each(function () {
-                        //    values1[this.name] = $(this).val();
-                        //});
-                        //values1['PageSize'] = pageSize;
-                        //values1['CurrentPage'] = $pagination.twbsPagination('getCurrentPage');
-
-                        //list(values1);
+                        
 
                         $("#removeModal").modal("hide");
                         location.reload();
-                        Swal.fire({
-                            type: 'success',
-                            title: result.message,
-                            confirmButtonText:
-                                '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
-                        });
+                         document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
+                            document.getElementById('mainToastBody').classList.add('alert-success');
+                            var bsAlert = new bootstrap.Toast($("#mainToast"));
+                            bsAlert.show();
 
                     } else {
-                        Swal.fire({
-                            type: 'error',
-                            title: result.message,
-                            confirmButtonText:
-                                '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
-                        });
+                        showError(result.message);
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
@@ -544,7 +539,7 @@
                 type: 'Get',
                 data: data,
                 beforeSend: function() {
-                    $("#loading").css("display", "block");
+                   
                 },
                 success: function(result) {
 
@@ -561,18 +556,21 @@
                             $(card).addClass("notActive");
                         }
 
-                        toastr.success(result.message);
+                            document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
+                            document.getElementById('mainToastBody').classList.add('alert-success');
+                            var bsAlert = new bootstrap.Toast($("#mainToast"));
+                            bsAlert.show();
 
                     } else {
                         elm.prop("checked", !active).change();
-                        toastr.error(result.message);
+                       showError(result.message);
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     elm.prop("checked", !active).change();
                 },
                 complete: function() {
-                    $("#loading").css("display", "none");
+                    
                 }
             });
         });
@@ -614,7 +612,7 @@
                 },
                 complete: function() {
                     $("#loading-data").css("display", "none");
-                    $("#loading").css("display", "none");
+                   
                 }
             });
         }
@@ -639,4 +637,3 @@
         }
     </script>
 }
-*@

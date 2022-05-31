@@ -81,6 +81,9 @@ using Arad.Portal.DataLayer.Contracts.General.CountryParts;
 using Arad.Portal.DataLayer.Repositories.General.CountryParts.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.DesignStructure;
 using Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo;
+using Arad.Portal.DataLayer.Contracts.General.SliderModule;
+using Arad.Portal.DataLayer.Repositories.General.SliderModule.Mongo;
+
 namespace Arad.Portal.UI.Shop.Dashboard
 {
     public class Startup
@@ -318,6 +321,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<ProviderContext>();
             services.AddTransient<CountryContext>();
             services.AddTransient<ModuleContext>();
+            services.AddTransient<SliderContext>();
 
             #endregion
 
@@ -354,6 +358,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<IProviderRepository, ProviderRepository>();
             services.AddTransient<ICountryRepository, CountryRepository>();
             services.AddTransient<IModuleRepository, ModuleRepository>();
+            services.AddTransient<ISliderRepository, SliderRepository>();
         }
 
     }

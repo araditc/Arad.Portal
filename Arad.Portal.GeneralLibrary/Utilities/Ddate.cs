@@ -484,7 +484,6 @@ namespace Arad.Portal.GeneralLibrary.Utilities
             return dt;
         }
 
-
         public static string ToPersianDdateNoBackSlash(this DateTime d)
         {
             d = d.ToLocalTime();
