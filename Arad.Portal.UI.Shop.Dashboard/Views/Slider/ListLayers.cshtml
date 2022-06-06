@@ -4,7 +4,7 @@
 }
 
 
-<div id="page-data" data-current="@Model.CurrentPage" data-total="@Model.ItemsCount" data-size="@Model.PageSize">
+@*<div id="page-data" data-current="@Model.CurrentPage" data-total="@Model.ItemsCount" data-size="@Model.PageSize">*@
     @{
         if (Model.Items.Count != 0)
         {
@@ -12,61 +12,81 @@
 
             @foreach (var item in Model.Items)
             {
-                <div class="table-row">
-                    <div class="card-table">
-                        <div class="row m-0">
-                            <div class="table-col col-xs-12 col-md-1 d-none d-lg-block">
-                                <span>@(++i)</span>
-                            </div>
-                            <div class="table-col col-xs-12 col-lg-1">
-                                <span class="mo-title">@Language.GetString("Type"):</span>
-                                <span>
-                                    @item.Type
-                                </span>
-                            </div>
-                            <div class="table-col col-xs-12 col-lg-3">
-                                <span class="mo-title">@Language.GetString("tbl_Content"):</span>
-                                <span>@item.Content</span>
-                            </div>
-                            <div class="table-col col-xs-12 col-lg-1">
-                                <span class="mo-title">  Link:</span>
-                                <span>@(item.Link == null ? "---" : item.Link)</span>
-                            </div>
-                            <div class="table-col col-xs-12 col-lg-1">
-                                <span class="mo-title">  Position-Top:</span>
-                                <span>@(item.Position.Top == null ? "---" : item.Position.Top)</span>
-                            </div>
-                            <div class="table-col col-xs-12 col-lg-1">
-                                <span class="mo-title"> Position-Right:</span>
-                                <span>@(item.Position.Right == null ? "---" : item.Position.Top)</span>
-                            </div>
-                            <div class="table-col col-xs-12 col-lg-1">
-                                <span class="mo-title"> Position-Bottom:</span>
-                                <span>@(item.Position.Bottom == null ? "---" : item.Position.Top)</span>
-                            </div>
-                            <div class="table-col col-xs-12 col-lg-1">
-                                <span class="mo-title">  Position-Left:</span>
-                                <span>@(item.Position.Left == null ? "---" : item.Position.Top)</span>
-                            </div>
-                            <div class="table-col col-xs-12 col-lg-2">
-                                <div class="">
-                                      
-
-                                    <a id="editRecord" asp-action="EditLayer" asp-controller="Slider"  asp-route-sliderId="@ViewBag.SliderId" asp-route-slideId="@ViewBag.SlideId" asp-route-layerId="@item.Id" class="btn btn-outline-primary btn-xs">
+                <tr class="page-data" data-current="@Model.CurrentPage" data-total="@Model.ItemsCount" data-size="@Model.PageSize">
+                <td>@(++i)</td>
+                <td> @item.Type</td>
+                <td>@item.Content</td>
+                <td>@(item.Link == null ? "---" : item.Link)</td>
+                <td>@(item.Position.Top == null ? "---" : item.Position.Top)</td>
+                <td>@(item.Position.Right == null ? "---" : item.Position.Right)</td>
+                <td>@(item.Position.Bottom == null ? "---" : item.Position.Bottom)</td>
+                <td>@(item.Position.Left == null ? "---" : item.Position.Left)</td>
+                <td>
+                  <a id="editRecord" asp-action="EditLayer" asp-controller="Slider"  asp-route-sliderId="@ViewBag.SliderId" asp-route-slideId="@ViewBag.SlideId" asp-route-layerId="@item.Id" class="btn btn-outline-primary btn-xs">
                                        @Language.GetString("btn_Detail")
                                     </a>
 
                                        
                                     <button id="deleteRecord" data-id="@item.Id" href="#" data-toggle="modal" type="button" class="btn btn-outline-danger btn-xs">
                                        @Language.GetString("btn_Delete")
-                                    </button>
-                                       
-                                </div>
-                            </div>
-                        </div>
+                   </button>
+                </td>
+                </tr>
+                //<div class="table-row">
+                //    <div class="card-table">
+                //        <div class="row m-0">
+                //            <div class="table-col col-xs-12 col-md-1 d-none d-lg-block">
+                //                <span>@(++i)</span>
+                //            </div>
+                //            <div class="table-col col-xs-12 col-lg-1">
+                //                <span class="mo-title">@Language.GetString("Type"):</span>
+                //                <span>
+                //                    @item.Type
+                //                </span>
+                //            </div>
+                //            <div class="table-col col-xs-12 col-lg-3">
+                //                <span class="mo-title">@Language.GetString("tbl_Content"):</span>
+                //                <span>@item.Content</span>
+                //            </div>
+                //            <div class="table-col col-xs-12 col-lg-1">
+                //                <span class="mo-title">  Link:</span>
+                //                <span>@(item.Link == null ? "---" : item.Link)</span>
+                //            </div>
+                //            <div class="table-col col-xs-12 col-lg-1">
+                //                <span class="mo-title">  Position-Top:</span>
+                //                <span>@(item.Position.Top == null ? "---" : item.Position.Top)</span>
+                //            </div>
+                //            <div class="table-col col-xs-12 col-lg-1">
+                //                <span class="mo-title"> Position-Right:</span>
+                //                <span>@(item.Position.Right == null ? "---" : item.Position.Right)</span>
+                //            </div>
+                //            <div class="table-col col-xs-12 col-lg-1">
+                //                <span class="mo-title"> Position-Bottom:</span>
+                //                <span>@(item.Position.Bottom == null ? "---" : item.Position.Bottom)</span>
+                //            </div>
+                //            <div class="table-col col-xs-12 col-lg-1">
+                //                <span class="mo-title">  Position-Left:</span>
+                //                <span>@(item.Position.Left == null ? "---" : item.Position.Left)</span>
+                //            </div>
+                //            <div class="table-col col-xs-12 col-lg-2">
+                //                <div class="">
+                                      
 
-                    </div>
-                </div>
+                //                    <a id="editRecord" asp-action="EditLayer" asp-controller="Slider"  asp-route-sliderId="@ViewBag.SliderId" asp-route-slideId="@ViewBag.SlideId" asp-route-layerId="@item.Id" class="btn btn-outline-primary btn-xs">
+                //                       @Language.GetString("btn_Detail")
+                //                    </a>
+
+                                       
+                //                    <button id="deleteRecord" data-id="@item.Id" href="#" data-toggle="modal" type="button" class="btn btn-outline-danger btn-xs">
+                //                       @Language.GetString("btn_Delete")
+                //                    </button>
+                                       
+                //                </div>
+                //            </div>
+                //        </div>
+
+                //    </div>
+                //</div>
             }
         }
         else
@@ -74,4 +94,101 @@
             <div class="empty text-center">@Language.GetString("AlertAndMessage_NoDataToShow")</div>
         }
     }
-</div>
+@*</div>*@
+@model PagedItems<Arad.Portal.DataLayer.Models.SlideModule.LayersListGridView>
+@{
+    Layout = null;
+}
+
+
+@*<div id="page-data" data-current="@Model.CurrentPage" data-total="@Model.ItemsCount" data-size="@Model.PageSize">*@
+    @{
+        if (Model.Items.Count != 0)
+        {
+            int i = (Model.CurrentPage - 1) * Model.PageSize;
+
+            @foreach (var item in Model.Items)
+            {
+                <tr class="page-data" data-current="@Model.CurrentPage" data-total="@Model.ItemsCount" data-size="@Model.PageSize">
+                <td>@(++i)</td>
+                <td> @item.Type</td>
+                <td>@item.Content</td>
+                <td>@(item.Link == null ? "---" : item.Link)</td>
+                <td>@(item.Position.Top == null ? "---" : item.Position.Top)</td>
+                <td>@(item.Position.Right == null ? "---" : item.Position.Right)</td>
+                <td>@(item.Position.Bottom == null ? "---" : item.Position.Bottom)</td>
+                <td>@(item.Position.Left == null ? "---" : item.Position.Left)</td>
+                <td>
+                  <a id="editRecord" asp-action="EditLayer" asp-controller="Slider"  asp-route-sliderId="@ViewBag.SliderId" asp-route-slideId="@ViewBag.SlideId" asp-route-layerId="@item.Id" class="btn btn-outline-primary btn-xs">
+                                       @Language.GetString("btn_Detail")
+                                    </a>
+
+                                       
+                                    <button id="deleteRecord" data-id="@item.Id" href="#" data-toggle="modal" type="button" class="btn btn-outline-danger btn-xs">
+                                       @Language.GetString("btn_Delete")
+                   </button>
+                </td>
+                </tr>
+                //<div class="table-row">
+                //    <div class="card-table">
+                //        <div class="row m-0">
+                //            <div class="table-col col-xs-12 col-md-1 d-none d-lg-block">
+                //                <span>@(++i)</span>
+                //            </div>
+                //            <div class="table-col col-xs-12 col-lg-1">
+                //                <span class="mo-title">@Language.GetString("Type"):</span>
+                //                <span>
+                //                    @item.Type
+                //                </span>
+                //            </div>
+                //            <div class="table-col col-xs-12 col-lg-3">
+                //                <span class="mo-title">@Language.GetString("tbl_Content"):</span>
+                //                <span>@item.Content</span>
+                //            </div>
+                //            <div class="table-col col-xs-12 col-lg-1">
+                //                <span class="mo-title">  Link:</span>
+                //                <span>@(item.Link == null ? "---" : item.Link)</span>
+                //            </div>
+                //            <div class="table-col col-xs-12 col-lg-1">
+                //                <span class="mo-title">  Position-Top:</span>
+                //                <span>@(item.Position.Top == null ? "---" : item.Position.Top)</span>
+                //            </div>
+                //            <div class="table-col col-xs-12 col-lg-1">
+                //                <span class="mo-title"> Position-Right:</span>
+                //                <span>@(item.Position.Right == null ? "---" : item.Position.Right)</span>
+                //            </div>
+                //            <div class="table-col col-xs-12 col-lg-1">
+                //                <span class="mo-title"> Position-Bottom:</span>
+                //                <span>@(item.Position.Bottom == null ? "---" : item.Position.Bottom)</span>
+                //            </div>
+                //            <div class="table-col col-xs-12 col-lg-1">
+                //                <span class="mo-title">  Position-Left:</span>
+                //                <span>@(item.Position.Left == null ? "---" : item.Position.Left)</span>
+                //            </div>
+                //            <div class="table-col col-xs-12 col-lg-2">
+                //                <div class="">
+                                      
+
+                //                    <a id="editRecord" asp-action="EditLayer" asp-controller="Slider"  asp-route-sliderId="@ViewBag.SliderId" asp-route-slideId="@ViewBag.SlideId" asp-route-layerId="@item.Id" class="btn btn-outline-primary btn-xs">
+                //                       @Language.GetString("btn_Detail")
+                //                    </a>
+
+                                       
+                //                    <button id="deleteRecord" data-id="@item.Id" href="#" data-toggle="modal" type="button" class="btn btn-outline-danger btn-xs">
+                //                       @Language.GetString("btn_Delete")
+                //                    </button>
+                                       
+                //                </div>
+                //            </div>
+                //        </div>
+
+                //    </div>
+                //</div>
+            }
+        }
+        else
+        {
+            <div class="empty text-center">@Language.GetString("AlertAndMessage_NoDataToShow")</div>
+        }
+    }
+@*</div>*@

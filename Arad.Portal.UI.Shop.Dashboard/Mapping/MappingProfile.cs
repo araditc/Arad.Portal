@@ -37,6 +37,8 @@ using Arad.Portal.DataLayer.Models.Menu;
 using Arad.Portal.DataLayer.Entities.General.BasicData;
 using Arad.Portal.DataLayer.Entities.Shop.Setting;
 using Arad.Portal.DataLayer.Models.Setting;
+using Arad.Portal.DataLayer.Entities.General.SliderModule;
+using Arad.Portal.DataLayer.Models.SlideModule;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Mapping
 {
@@ -76,6 +78,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Mapping
             CreateMap<ProviderDetail, ProviderDetailDTO>().ReverseMap();
             CreateMap<Permission, PermissionTreeViewDto>().ReverseMap();
             CreateMap<Action, ActionDto>().ReverseMap();
+            CreateMap<Slide, SlideDTO>().ReverseMap();
 
 
 

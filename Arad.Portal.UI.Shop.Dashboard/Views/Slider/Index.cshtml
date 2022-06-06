@@ -4,10 +4,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section Styles{
+@*@section Styles{
 <link href="~/css/form.css" rel="stylesheet" />
 <link href="~/css/data-grid.css" rel="stylesheet" />
-}
+}*@
 
 
 <div id="add" class="collapse">
@@ -61,8 +61,8 @@
         </div>
     </div>
 
-    <div class="card-body table-responsive" id="SliderListCard">
-        <table class="table table-bordered table-striped align-middle">
+    <div class="card-body" id="SliderListCard">
+        <table class="table table-bordered  table-responsive table-striped align-middle">
             <thead>
                 <tr style="text-align:center;">
                     <th>@Language.GetString("tbl_RowName")</th>
@@ -187,6 +187,7 @@
 
 @section Scripts{
 <script>
+    var sliderId ="";
         $(document).ready(function () {
 
             $("#addSlider").submit(function(e) {
@@ -198,7 +199,9 @@
                     values[this.name] = $(this).val();
                 });
                 console.log(values["Id"]);
-                if (values["Id"] === "") {
+                
+                if (sliderId == "") {
+                    debugger;
                     $.ajax({
                         url: "@Url.Action("AddSlider")",
                         type: 'Post',
@@ -206,6 +209,7 @@
                         beforeSend: function() {
                         },
                         success: function(result) {
+                            debugger;
                             var spanErrorList = $('#addSlider span[data-val-result]');
                             spanErrorList.html("");
                             spanErrorList.parent().removeClass("has-error");
@@ -254,6 +258,9 @@
                         }
                     });
                 } else {
+                    debugger;
+                    values["Id"] = sliderId;
+                    sliderId = "";
                     $.ajax({
                         url: "@Url.Action("EditSlider")",
                         type: 'Post',
@@ -262,6 +269,7 @@
 
                         },
                         success: function(result) {
+                            debugger;
                             var spanErrorList = $('#addSlider span[data-val-result]');
                             spanErrorList.html("");
                             spanErrorList.parent().removeClass("has-error");
@@ -322,7 +330,7 @@
 
                 var id = $(this).data("id");
                 var data = { sliderId: id };
-
+                sliderId = id ;
                 $.ajax({
                     url: "@Url.Action("GetSlider")",
                     type: 'Get',
@@ -355,6 +363,7 @@
                 });
 
             $(document).on("click", "#deleteRecord", function(e) {
+                debugger;
                     e.preventDefault();
                     var id = $(this).data("id");
 
@@ -364,6 +373,7 @@
                 });
 
             $(document).on("click", "#delete", function(e) {
+                debugger;
                     e.preventDefault();
                     var id = $(this).data("id");
                     var data = { Id: id };

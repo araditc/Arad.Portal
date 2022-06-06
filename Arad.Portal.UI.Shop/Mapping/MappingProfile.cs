@@ -43,7 +43,8 @@ using Arad.Portal.DataLayer.Entities.General.BasicData;
 using Arad.Portal.DataLayer.Entities.General.Notify;
 using Arad.Portal.DataLayer.Entities.Shop.Setting;
 using Arad.Portal.DataLayer.Models.Setting;
-
+using Arad.Portal.DataLayer.Entities.General.SliderModule;
+using Arad.Portal.DataLayer.Models.SlideModule;
 
 namespace Arad.Portal.UI.Shop.Mapping
 {
@@ -84,7 +85,8 @@ namespace Arad.Portal.UI.Shop.Mapping
             CreateMap<ShippingCoupon, ShippingCouponDTO>().ReverseMap();
             CreateMap<ProviderDetail, ProviderDetailDTO>().ReverseMap();
             CreateMap<Permission, PermissionTreeViewDto>().ReverseMap();
-            CreateMap<Arad.Portal.DataLayer.Entities.General.Permission.Action, ActionDto>().ReverseMap();
+            CreateMap<DataLayer.Entities.General.Permission.Action, ActionDto>().ReverseMap();
+            CreateMap<Slide, SlideDTO>().ReverseMap();
         }
     }
 }

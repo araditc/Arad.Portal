@@ -22,8 +22,9 @@ namespace Arad.Portal.DataLayer.Models.SlideModule
         public TransActionType TransActionType { get; set; }
         public string Link { get; set; }
         public Target Target { get; set; }
-        [Required]
-        [CustomErrorMessage("AlertAndMessage_FieldEssential")]
+
+        //[Required]
+        //[CustomErrorMessage("AlertAndMessage_FieldEssential")]
         public DateTime? StartDate { get; set; }
         public string PersianStartDate { get; set; }
         public DateTime? ExpireDate { get; set; }

@@ -5,11 +5,13 @@ using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Models.SlideModule;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.UI.Shop.Dashboard.Helpers;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,12 +23,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
     {
         private readonly ISliderRepository _sliderRepository;
         private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
 
-        public SliderController(ISliderRepository sliderRepository, IConfiguration configuration)
+        public SliderController(ISliderRepository sliderRepository, IConfiguration configuration, IMapper mapper)
         {
             _sliderRepository = sliderRepository;
             _configuration = configuration;
-
+            _mapper = mapper;
         }
 
         private ClientValidationErrorModel ValidatorPic(string model)
@@ -50,6 +53,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return new ClientValidationErrorModel() { Key = "0", ErrorMessage = "" };
         }
 
+
         private Image Upload(Image imgObj)
         {
             try
@@ -72,7 +76,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     imgObj.Content = "";
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
@@ -182,17 +186,17 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     return Json(new { Status = "success", Message = Language.GetString("AlertAndMessage_DeletionDoneSuccessfully") });
                 }
                 return Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_DeletionNotAllowed") });
-                
+
             }
             catch (Exception e)
             {
                 return Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_DeletionNotAllowed") });
-               
+
             }
         }
 
         [HttpGet]
-        public IActionResult Slides([FromRoute] string id)
+        public IActionResult Slides(string id)
         {
             Slider slider = _sliderRepository.GetSlider(id);
 
@@ -230,10 +234,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                             Target = n.Target,
                             TransActionType = n.TransActionType,
                             StartDate = n.StartDate,
-                            ExpireDate =  n.ExpireDate,
+                            ExpireDate = n.ExpireDate,
                             PersianStartDate = DateHelper.ToPersianDdate(n.StartDate.Value),
                             PersianExpireDate = DateHelper.ToPersianDdate(n.ExpireDate.Value)
-                         }).ToList()
+                        }).ToList()
                     };
 
                     //ViewBag.Permissions = dicKey;
@@ -263,14 +267,28 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> AddSlide(SlideView model)
         {
             var errors = new List<ClientValidationErrorModel>();
-            if(!string.IsNullOrWhiteSpace(model.PersianStartDate) && !string.IsNullOrWhiteSpace(model.PersianExpireDate))
+            if (CultureInfo.CurrentCulture.Name == "fa-IR")
             {
+                if (string.IsNullOrWhiteSpace(model.PersianStartDate))
+                {
+                    ModelState.AddModelError(nameof(model.StartDate), Language.GetString("AlertAndMessage_FieldEssential"));
+                }
 
             }
-            if (model.ExpireDate <= model.StartDate)
+            else
             {
-                ModelState.AddModelError(nameof(model.ExpireDate), Language.GetString("AlertAndMessage_EndDateMustBeGreaterThanStartDate"));
+                if (model.StartDate == null)
+                {
+                    ModelState.AddModelError(nameof(model.StartDate), Language.GetString("AlertAndMessage_FieldEssential"));
+                }
+
+                if (model.ExpireDate != null && model.ExpireDate <= model.StartDate)
+                {
+                    ModelState.AddModelError(nameof(model.ExpireDate), Language.GetString("AlertAndMessage_EndDateMustBeGreaterThanStartDate"));
+                }
             }
+
+
 
             var validate = ValidatorPic(model.ImageUrl);
 
@@ -316,14 +334,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 Id = Guid.NewGuid().ToString(),
                 Alt = model.Alt,
                 ColoredBackground = model.ColoredBackground,
-                ExpireDate = model.ExpireDate,
+                ExpireDate = (CultureInfo.CurrentCulture.Name == "fa-IR" && !string.IsNullOrWhiteSpace(model.PersianExpireDate)) ? model.PersianExpireDate.ToEnglishDate() : model.ExpireDate,
                 ImageFit = model.ImageFit,
-                ImageUrl = resultUpload.Title,
+                ImageUrl = resultUpload.Url,
                 Link = model.Link,
-                StartDate = model.StartDate,
+                StartDate = (CultureInfo.CurrentCulture.Name == "fa-IR" && !string.IsNullOrWhiteSpace(model.PersianStartDate)) ? model.PersianStartDate.ToEnglishDate() : model.StartDate,
                 Target = model.Target,
                 TransActionType = model.TransActionType,
-                Title = model.Title,
+                Title = resultUpload.Title,
                 IsActive = true
             };
 
@@ -343,10 +361,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public IActionResult GetSlide(string slideId)
         {
             Slide slide = _sliderRepository.GetSlide(slideId);
-
             if (slide != null)
             {
-                return Json(new { Status = "success", Data = slide });
+                var outputModel = _mapper.Map<SlideDTO>(slide);
+                outputModel.PersianStartShowDate = DateHelper.ToPersianDdate(slide.StartDate.Value);
+                if (slide.ExpireDate != null)
+                    outputModel.PersianEndShowDate = DateHelper.ToPersianDdate(slide.ExpireDate.Value);
+
+
+                return Json(new { Status = "success", Data = outputModel });
             }
 
             return Json(new { Status = "error", Data = slide, message = Language.GetString("AlertAndMessage_NotFound") });
@@ -356,6 +379,33 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> EditSlide(SlideView model)
         {
             var errors = new List<ClientValidationErrorModel>();
+
+            if (CultureInfo.CurrentCulture.Name == "fa-IR")
+            {
+                if (string.IsNullOrWhiteSpace(model.PersianStartDate))
+                {
+                    ModelState.AddModelError(nameof(model.StartDate), Language.GetString("AlertAndMessage_FieldEssential"));
+                }
+                model.StartDate = DateHelper.ToEnglishDate(model.PersianStartDate);
+                if(!string.IsNullOrWhiteSpace(model.PersianExpireDate))
+                {
+                    model.ExpireDate = DateHelper.ToEnglishDate(model.PersianExpireDate);
+                }
+
+            }
+            else
+            {
+                if (model.StartDate == null)
+                {
+                    ModelState.AddModelError(nameof(model.StartDate), Language.GetString("AlertAndMessage_FieldEssential"));
+                }
+
+                if (model.ExpireDate != null && model.ExpireDate <= model.StartDate)
+                {
+                    ModelState.AddModelError(nameof(model.ExpireDate), Language.GetString("AlertAndMessage_EndDateMustBeGreaterThanStartDate"));
+                }
+            }
+
 
             if (model.ExpireDate <= model.StartDate)
             {
@@ -415,7 +465,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 ColoredBackground = model.ColoredBackground,
                 ExpireDate = model.ExpireDate,
                 ImageFit = model.ImageFit,
-                ImageUrl = model.ImageUrl,
+                ImageUrl = image.Url,
                 Link = model.Link,
                 StartDate = model.StartDate,
                 Target = model.Target,

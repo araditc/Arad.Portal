@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Arad.Portal.DataLayer.Contracts.General.SliderModule;
@@ -10,6 +11,7 @@ using Arad.Portal.DataLayer.Models.SlideModule;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 namespace Arad.Portal.DataLayer.Repositories.General.SliderModule.Mongo
 {
@@ -36,6 +38,16 @@ namespace Arad.Portal.DataLayer.Repositories.General.SliderModule.Mongo
         {
             try
             {
+
+                model.CreationDate = DateTime.Now;
+                model.CreatorUserId = _httpContextAccessor.HttpContext.User.Claims
+                    .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+                model.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
+                    .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+
+                model.SliderId = Guid.NewGuid().ToString();
+
+
                 _context.Collection.InsertOne(model);
 
                 return true;
@@ -63,15 +75,17 @@ namespace Arad.Portal.DataLayer.Repositories.General.SliderModule.Mongo
         {
             try
             {
-                var slider = _context.Collection.AsQueryable().FirstOrDefault(s => s.SliderId == model.SliderId);
-
-                var result = await _context.Collection.ReplaceOneAsync(c => c.SliderId == model.SliderId, model);
-
-                if (result.IsAcknowledged)
+                if(_context.Collection.Find(s => s.SliderId == model.SliderId).Any())
                 {
-                    return true;
-                }
+                    var slider = _context.Collection.Find(s => s.SliderId == model.SliderId).FirstOrDefault();
 
+                    var result = await _context.Collection.ReplaceOneAsync(c => c.SliderId == model.SliderId, model);
+
+                    if (result.IsAcknowledged)
+                    {
+                        return true;
+                    }
+                }
                 return false;
             }
             catch (Exception e)

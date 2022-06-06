@@ -6,166 +6,196 @@
 }
 
 @section Styles{
-    <link href="~/css/form.css" rel="stylesheet" />
-    <link href="~/css/data-grid.css" rel="stylesheet" />
-    <link href="~/lib/cropperjs/cropper.min.css" rel="stylesheet" />
-    <link href="~/css/slider.css" rel="stylesheet" />
-    <link href="~/lib/bootstrap-colorpicker/css/bootstrap-colorpicker.css" rel="stylesheet" />
+<link href="~/css/form.css" rel="stylesheet" />
+<link href="~/css/data-grid.css" rel="stylesheet" />
+<link href="~/lib/cropperjs/cropper.min.css" rel="stylesheet" />
+<link href="~/css/slider.css" rel="stylesheet" />
+<link href="~/lib/bootstrap-colorpicker/css/bootstrap-colorpicker.css" rel="stylesheet" />
+
+ @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+<link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
+    }
+    else
+    {
+<link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css" rel="stylesheet" />
+    }
 }
 
 
-<div class="headPage text-right">
+<div class="row text-right mb-2">
     <h5>@($"{Language.GetString("design_SlidesOf")} {Model}")</h5>
 
-    <a class="action-head add open" data-toggle="collapse" href="#add">
-        <i class="fa fa-plus" aria-hidden="true"></i>
-    </a>
+
+    <div class="offset-10 col-2">
+        <a class="btn btn-success bg-gradient btn-sm" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="add" href="#add">
+            <i class="fa fa-plus pt-1"></i>@Language.GetString("btn_Add")
+        </a>
+    </div>
 
 </div>
 
-<div id="add" class="box-container collapse">
-    <div class="box-head">
+<div id="add" class="card collapse">
+    <div class="card-header">
         <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
         <span>@Language.GetString("design_Slide")</span>
     </div>
-    <div class="box-body ">
-        <form id="addSlide" class="sm" asp-action="AddSlide" asp-controller="Slider" method="post" autocomplete="off" asp-antiforgery="true">
-            <div class="form-row text-right ">
-                <div class=" col-md-12">
-                    <div class="row">
-                        <div class="form-group col-md-6 col-lg-3">
-                            <div id="ImageWrap" class="" style="background: #f3f3f3;padding: 10px 10px;">
-                                <span class="field-validation-error" data-val-result="Pic"></span>
-                                <div class="ImageWrapper">
-                                    <img src="~/images/blank.png" />
+    <div class="card-body">
+        <form id="addSlide" asp-action="AddSlide" asp-controller="Slider" method="post" autocomplete="off" asp-antiforgery="true">
+            <div class="row text-start">
+                <div class="col-12">
+                    <div class="form-group col-6 col-lg-3">
+                        <div id="ImageWrap" class="" style="background: #f3f3f3;padding: 10px 10px;">
+                            <span class="field-validation-error" data-val-result="Pic"></span>
+                            <div class="ImageWrapper">
+                                <img src="~/imgs/blank.png" />
+                            </div>
+                            <label class="custom-upload text-center" for="Image" style="width: 100%;padding: 2px 10px;">
+                                <input type="file" accept="image/x-png,image/jpeg" name="Image" id="Image" onchange="CropperShow(this)" />@Language.GetString("design_SlideImages")
+                            </label>
+                            <span class="field-validation-error" data-val-result="ImageUrl"></span>
+                        </div>
+                    </div>
+                    <input type="hidden" class="form-control" id="Id" name="Id" placeholder=" ">
+                    <div class="row col-md-6 col-lg-9">
+                        <div class="col-12 col-lg-4">
+                            <label for="Title">@Language.GetString("design_SlideTitle")</label>
+                            <input type="text" class="form-control" id="Title" name="Title" placeholder=" ">
+                            <span class="field-validation-error" data-val-result="Title"></span>
+                        </div>
+
+                        <div class="col-12 col-lg-4">
+                            <label class="form-label">@Language.GetString("StartShowDate")</label>
+                            @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                            {
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                    <input autocomplete="off" id="dtpStartShowDate" type="text" class="form-control" />
                                 </div>
-                                <label class="custom-upload text-center" for="Image" style="width: 100%;padding: 2px 10px;">
-                                    <input type="file" accept="image/x-png,image/jpeg" name="Image" id="Image" onchange="CropperShow(this)" />@Language.GetString("design_SlideImages")
-                                </label>
-                                <span class="field-validation-error" data-val-result="ImageUrl"></span>
-                            </div>
+                            }
+                            else
+                            {
+                                <div class="input-group date" data-provide="datepicker">
+                                    <input type="text" class="form-control" id="dtpStartShowDate">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                </div>
+                            }
+                            <span class="field-validation-error" data-val-result="StartDate"></span>
                         </div>
-                        <input type="hidden" class="form-control" id="Id" name="Id" placeholder=" ">
-                        <div class="row col-md-6 col-lg-9">
-                            <div class="form-group col-md-12 col-lg-4">
-                                <label for="Title">@Language.GetString("design_SlideTitle")</label>
-                                <input type="text" class="form-control" id="Title" name="Title" placeholder=" ">
-                                <span class="field-validation-error" data-val-result="Title"></span>
-                            </div>
-
-                            <div  class="form-group col-md-12 col-lg-4">
-                               <label class="form-label">@Language.GetString("StartShowDate")</label>
-                                @if (CultureInfo.CurrentCulture.Name == "fa-IR")
-                                {
-                                    <div class="input-group">
-                                        <span class="input-group-text">
-                                            <i class="fa fa-calendar"></i>
-                                        </span>
-                                        <input autocomplete="off" id="dtpStartShowDate" type="text" class="form-control" />
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="input-group date" data-provide="datepicker">
-                                        <input type="text" class="form-control" id="dtpStartShowDate">
-                                        <span class="input-group-text">
-                                            <i class="fa fa-calendar"></i>
-                                        </span>
-                                    </div>
-                                }
-                                <span class="field-validation-error" data-val-result="StartDate"></span>
-                            </div>
-                            <div  class="form-group col-md-12 col-lg-4">
-                                <label class="form-label">@Language.GetString("EndShowDate")</label>
-                                @if (CultureInfo.CurrentCulture.Name == "fa-IR")
-                                {
-                                    <div class="input-group">
-                                        <span class="input-group-text">
-                                            <i class="fa fa-calendar"></i>
-                                        </span>
-                                        <input autocomplete="off" id="dtpEndShowDate" type="text" class="form-control" />
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="input-group date" data-provide="datepicker">
-                                        <input type="text" class="form-control" id="dtpEndShowDate">
-                                        <span class="input-group-text">
-                                            <i class="fa fa-calendar"></i>
-                                        </span>
-                                    </div>
-                                }
-                                <span class="field-validation-error" data-val-result="ExpireDate"></span>
-                            </div>
-                            <div class="form-group col-md-12 col-lg-4">
-                                <label for="ColoredBackground">@Language.GetString("design_bgColor")</label>
-                                <input type="text" class="form-control" id="ColoredBackground" name="ColoredBackground" placeholder=" ">
-                                <span class="field-validation-error" data-val-result="ColoredBackground"></span>
-                            </div>
-                            <div class="form-group col-md-12 col-lg-4">
-                                <label for="ImageFit">Image Fit</label>
-                                <select name="ImageFit" id="ImageFit" class="form-control" asp-items="Html.GetEnumSelectList<ImageFit>()"></select>
-                                <span class="field-validation-error" data-val-result="ImageFit"></span>
-                            </div>
-                            <div class="form-group col-md-12 col-lg-4">
-                                <label for="TransActionType">@Language.GetString("design_TransactionType")</label>
-                                <select name="TransActionType" id="TransActionType" class="form-control" asp-items="Html.GetEnumSelectList<TransActionType>()"></select>
-                                <span class="field-validation-error" data-val-result="TransActionType"></span>
-                            </div>
-                            <div class="form-group col-md-12 col-lg-4">
-                                <label for="Link">@Language.GetString("design_Link")</label>
-                                <input type="text" class="form-control" id="Link" name="Link" placeholder=" ">
-                                <span class="field-validation-error" data-val-result="Link"></span>
-                            </div>
-                            <div class="form-group col-md-12 col-lg-4">
-                                <label for="Target">@Language.GetString("design_LinkView")</label>
-                                <select name="Target" id="Target" class="form-control" asp-items="Html.GetEnumSelectList<Target>()"></select>
-                                <span class="field-validation-error" data-val-result="Target"></span>
-                            </div>
-                            <div class="form-group col-md-12 col-lg-4">
-                                <label for="Alt">@Language.GetString("design_AltTag")</label>
-                                <input type="text" class="form-control" id="Alt" name="Alt" placeholder=" ">
-                                <span class="field-validation-error" data-val-result="Alt"></span>
-                            </div>
+                        <div class="col-12 col-lg-4">
+                            <label class="form-label">@Language.GetString("EndShowDate")</label>
+                            @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                            {
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                    <input autocomplete="off" id="dtpEndShowDate" type="text" class="form-control" />
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="input-group date" data-provide="datepicker">
+                                    <input type="text" class="form-control" id="dtpEndShowDate">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                </div>
+                            }
+                            <span class="field-validation-error" data-val-result="ExpireDate"></span>
                         </div>
-
+                        <div class="col-12 col-lg-4">
+                            <label class="form-label" for="ColoredBackground">@Language.GetString("design_bgColor")</label>
+                            <input dir="ltr" type="text" class="form-control" id="ColoredBackground" name="ColoredBackground" placeholder=" ">
+                            <span class="field-validation-error" data-val-result="ColoredBackground"></span>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <label class="form-label" for="ImageFit">Image Fit</label>
+                            <select name="ImageFit" id="ImageFit" class="form-control" asp-items="Html.GetEnumSelectList<ImageFit>()"></select>
+                            <span class="field-validation-error" data-val-result="ImageFit"></span>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <label class="form-label" for="TransActionType">Effects</label>
+                            <select name="TransActionType" id="TransActionType" class="form-control" asp-items="Html.GetEnumSelectList<TransActionType>()"></select>
+                            <span class="field-validation-error" data-val-result="TransActionType"></span>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <label class="form-label" for="Link">@Language.GetString("design_Link")</label>
+                            <input type="text" class="form-control" id="Link" name="Link" placeholder=" ">
+                            <span class="field-validation-error" data-val-result="Link"></span>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <label class="form-label" for="Target">@Language.GetString("design_LinkView")</label>
+                            <select name="Target" id="Target" class="form-control" asp-items="Html.GetEnumSelectList<Target>()"></select>
+                            <span class="field-validation-error" data-val-result="Target"></span>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <label class="form-label" for="Alt">@Language.GetString("design_AltTag")</label>
+                            <input type="text" class="form-control" id="Alt" name="Alt" placeholder=" ">
+                            <span class="field-validation-error" data-val-result="Alt"></span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-success btn-xs">
+            <button type="submit" class="btn btn-success btn-sm float-end">
                 <i class="fa fa-check" aria-hidden="true"></i>&nbsp @Language.GetString("btn_Approved")
             </button>
         </form>
     </div>
 </div>
 
-<div class="table">
+<div class="row">
+    <div class="col-12">
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr style="text-align:center;">
+                    <th>@Language.GetString("tbl_RowName")</th>
+                    <th>@Language.GetString("Image")</th>
+                    <th>@Language.GetString("Entities_Title")</th>
+                    <th>@Language.GetString("design_bgColor")</th>
+                    <th>@Language.GetString("design_Link")</th>
+                    <th>@Language.GetString("StartShowDate")</th>
+                    <th>@Language.GetString("EndShowDate")</th>
+                    <th>@Language.GetString("ActivationState")</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="table"></tbody>
+        </table>
+    </div>
+</div>
+
+@*<div class="table">
     <div class="table-head d-none d-lg-block">
         <div class="table-row">
             <div class="row m-0">
                 <div class="table-col col-md-1">
-                    <span>@Language.GetString("tbl_RowName")</span>
+                    <span></span>
                 </div>
                 <div class="table-col col-md-1">
-                    <span>@Language.GetString("Image")</span>
+                    <span></span>
                 </div>
                 <div class="table-col col-md-2">
-                    <span>@Language.GetString("Entities_Title")</span>
+                    <span></span>
                 </div>
                 <div class="table-col col-md-1">
-                    <span>@Language.GetString("design_bgColor")</span>
+                    <span></span>
                 </div>
                 <div class="table-col col-md-1">
-                    <span>@Language.GetString("design_Link") </span>
+                    <span> </span>
                 </div>
                 <div class="table-col col-md-1">
-                    <span>@Language.GetString("StartShowDate") </span>
+                    <span> </span>
                 </div>
                 <div class="table-col col-md-1">
-                    <span>@Language.GetString("EndShowDate")</span>
+                    <span></span>
                 </div>
                 <div class="table-col col-md-1">
-                    <span>@Language.GetString("ActivationState")</span>
+                    <span></span>
                 </div>
                 <div class="table-col col-md-2">
                     <span></span>
@@ -175,15 +205,14 @@
     </div>
 
     <div id="table" class="table-body">
-
     </div>
-   
-</div>
+
+</div>*@
 
 
 <!-- Modal -->
-<div id="uploadModal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-xl">
+<div id="uploadModal" class="modal">
+    <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <a role="button" class="modal-close" data-dismiss="modal"></a>
@@ -196,7 +225,6 @@
                         <img class="img-fluid" hidden="hidden" id="blah" src="#" alt="your image" style="max-width: 100%; width: 356px; height: 100%; border: 1px solid black" />
                     </div>
                     <div id="resultCrop" class="col-md-6 text-center">
-
                     </div>
                 </div>
             </div>
@@ -211,429 +239,438 @@
     </div>
 </div>
 
-<!-- Modal remove-->
-@*<div id="removeModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <a role="button" class="modal-close" data-dismiss="modal"></a>
-            <div class="modal-header">
-                <h6 class="modal-title"> </h6>
-            </div>
-            <div class="modal-body text-center">
-                <p class="alert warning">آیا برای حذف اسلایدر اطمینان دارید؟</p>
-                <button id="delete" type="button" class="btn btn-danger btn-sm btn-modal-body" data-dismiss="modal">حذف</button>
-                <button type="button" class="btn btn-outline-danger btn-sm btn-modal-body" data-dismiss="modal" style="margin-left:5px">انصراف</button>
-            </div>
-        </div>
-    </div>
-</div>*@
 
-@section Scripts{
-    <script src="~/lib/cropperjs/cropper.min.js"></script>
-    <script src="~/js/cropper.js"></script>
-    <script src="~/lib/twbs-pagination/jquery.twbsPagination.js"></script>
-    <script src="~/lib/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
 
-    <script>
-        $('#ColoredBackground').colorpicker({ format: 'rgba' });
-        var picSrc;
-        var pageSize = 10;
-        var $pagination = $('#pagination');
-        var defaultOpts = {
-            visiblePages: 5,
-            first: "@Language.GetString("tbl_First")",
-            prev: "@Language.GetString("tbl_PreviousPage")",
-            next: "@Language.GetString("tbl_NextPage")",
-            last: "@Language.GetString("tbl_Last")"
-        };
 
-        var aspectCropper = 0;
+<script src="~/lib/cropperjs/cropper.min.js"></script>
+<script src="~/js/cropper.js"></script>
+<script src="~/lib/twbs-pagination/jquery.twbsPagination.js"></script>
+<script src="~/lib/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
 
-        function CropperShow(img) {
-            readURL(img, aspectCropper);
-        }
 
-        $('#uploadModal').on('hidden.bs.modal',
-            function () {
-                cropper.destroy();
-                document.getElementById("Image").value = "";
-                $("#cropped_result").remove();
+@if (CultureInfo.CurrentCulture.Name == "fa-IR")
+{
+    <script src="~/plugins/datePicker/kamadatepicker.min.js"></script>
+}
+else
+{
+    <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+}
+
+<script>
+      var picSrc;
+    var pageSize = 10;
+     var aspectCropper = 0;
+    
+  
+    var $pagination = $('#pagination');
+    var defaultOpts = {
+        visiblePages: 5,
+        first: "@Language.GetString("tbl_First")",
+        prev: "@Language.GetString("tbl_PreviousPage")",
+        next: "@Language.GetString("tbl_NextPage")",
+        last: "@Language.GetString("tbl_Last")"
+    };
+
+   
+
+    function CropperShow(img) {
+        readURL(img, aspectCropper);
+    }
+
+    $('#uploadModal').on('hidden.bs.modal',
+        function () {
+            cropper.destroy();
+            document.getElementById("Image").value = "";
+            $("#cropped_result").remove();
+        });
+
+    $(document).on("click",
+        "#picRecord",
+        function (e) {
+            e.preventDefault();
+            $("#uploadModal").modal("show");
+        });
+
+    $(document).on("click",
+        "#send_pic",
+        function () {
+            debugger;
+            var url = $("#pic").attr("src");
+            var pic = '';
+            picSrc = url;
+
+            $(".ImageWrapper img").attr("src", picSrc);
+
+            $('#uploadModal').modal("hide");
+        });
+    if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
+    {
+        kamaDatepicker('dtpStartShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+        kamaDatepicker('dtpEndShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+    }
+    else
+    {
+        $('.datepicker').datepicker();
+    }
+
+
+    $(document).ready(function() {
+        $('#ColoredBackground').colorpicker();
+
+        list();
+
+        $("#addSlide").submit(function(e) {
+            debugger;
+            e.preventDefault();
+
+            $('#addSlide span[data-val-result]').each(function(){
+                 $(this).html("");
+                 $(this).parent().removeClass("has-error");
             });
-
-        $(document).on("click",
-            "#picRecord",
-            function (e) {
-                e.preventDefault();
-                $("#uploadModal").modal("show");
+           
+            var $inputs = $('#addSlide :input');
+            var values = {};
+            $inputs.each(function() {
+                values[this.name] = $(this).val();
             });
+            if("@CultureInfo.CurrentCulture.Name" === "fa-IR")
+            {
+               values["PersianStartDate"] = $("#dtpStartShowDate").val();
+               values["PersianExpireDate"] = $("#dtpEndShowDate").val();
 
-        $(document).on("click",
-            "#send_pic",
-            function () {
-                var url = $("#pic").attr("src");
-                var pic = '';
-                picSrc = url;
-
-                $(".ImageWrapper img").attr("src", picSrc);
-
-                $('#uploadModal').modal("hide");
-            });
-        if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
-        {
-            kamaDatepicker('dtpStartShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
-            kamaDatepicker('dtpEndShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
-        }
-        else
-        {
-            $('.datepicker').datepicker();
-        }
-       
-        
-    </script>
-
-    <script>
-        $(document).ready(function() {
-
-            list();
-
-            $("#addSlide").submit(function(e) {
-                e.preventDefault();
-
-                var spanErrorList = $('#addSlide span[data-val-result]');
-                spanErrorList.html("");
-                spanErrorList.parent().removeClass("has-error");
-
-                var $inputs = $('#addSlide :input');
-                var values = {};
-                $inputs.each(function() {
-                    values[this.name] = $(this).val();
-                });
-                if("@CultureInfo.CurrentCulture.Name" === "fa-IR")
-                {
-                   values["PersianStartDate"] = $("#dtpStartShowDate").val();
-                   values["PersianExpireDate"] = $("#dtpEndShowDate").val();
-
-                }else
-                {
-                     values["StartDate"] = $("#dtpStartShowDate").val();
-                    values["ExpireDate"] = $("#dtpEndShowDate").val()
-                }
-
-              
-                values["SliderId"] = "@(ViewBag.SliderId)";
-                values["ImageUrl"] = picSrc;
-
-                if (values["Id"] === "") {
-                    $.ajax({
-                        url: "@Url.Action("AddSlide")",
-                        type: 'Post',
-                        data: values,
-                        beforeSend: function() {
-                            $("#loading").css("display", "block");
-                        },
-                        success: function(result) {
-                            if (result.status === "success") {
-                                list();
-                              
-                            document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
-                            document.getElementById('mainToastBody').classList.add('alert-success');
-                            var bsAlert = new bootstrap.Toast($("#mainToast"));
-                            bsAlert.show();
+            }else
+            {
+                 values["StartDate"] = $("#dtpStartShowDate").val();
+                values["ExpireDate"] = $("#dtpEndShowDate").val()
+            }
 
 
-                            } else if (result.status === "error") {
-                                if (spanErrorList.length > 1) {
-                                    spanErrorList.each(function() {
-                                        $(this).html("");
-                                        $(this).parent().removeClass("has-error");
-                                    });
-                                }
+            values["SliderId"] = "@(ViewBag.SliderId)";
+            values["ImageUrl"] = picSrc;
 
-                                if (result.modelStateErrors !== null) {
-                                    console.log(result);
-                                    result.modelStateErrors.forEach(function(value, index) {
-                                        $("#addSlide").find('[data-val-result=' + value.key + ']')
-                                            .html(value.errorMessage);
-                                        $("#addSlide").find('[data-val-result=' + value.key + ']').parent()
-                                            .addClass("has-error");
-                                    });
-                                } else {
-                                   
-                                    showError(result.message);
-                                }
+            if (values["Id"] === "") {
+                $.ajax({
+                    url: "@Url.Action("AddSlide")",
+                    type: 'Post',
+                    data: values,
+                    beforeSend: function() {
+                        $("#loading").css("display", "block");
+                    },
+                    success: function(result) {
+                        debugger;
+                        if (result.status === "success") {
+                            list();
+
+                        document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
+                        document.getElementById('mainToastBody').classList.add('alert-success');
+                        var bsAlert = new bootstrap.Toast($("#mainToast"));
+                        bsAlert.show();
+
+
+                        } else if (result.status === "error") {
+                            if (spanErrorList.length > 1) {
+                                spanErrorList.each(function() {
+                                    $(this).html("");
+                                    $(this).parent().removeClass("has-error");
+                                });
                             }
 
-                        },
-                        error: function(xhr, ajaxOptions, thrownError) {
-
-                        },
-                        complete: function() {
-                            $("#loading").css("display", "none");
-                        }
-                    });
-                } else {
-                    $.ajax({
-                        url: "@Url.Action("EditSlide")",
-                        type: 'Post',
-                        data: values,
-                        beforeSend: function() {
-                            $("#loading").css("display", "block");
-                        },
-                        success: function(result) {
-                            if (result.status === "success") {
-                                list();
-                               
-                                 document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
-                                document.getElementById('mainToastBody').classList.add('alert-success');
-                                var bsAlert = new bootstrap.Toast($("#mainToast"));
-                                bsAlert.show();
-
-                                $('#add').collapse('hide');
-                                clearForm("#addSlide");
-                                $(".ImageWrapper img").attr("src", "/images/blank.png");
-                                picSrc = "";
-                            } else if (result.status === "error") {
-                                if (spanErrorList.length > 1) {
-                                    spanErrorList.each(function() {
-                                        $(this).html("");
-                                        $(this).parent().removeClass("has-error");
-                                    });
-                                }
-                                if (result.modelStateErrors !== null) {
-
-                                    result.modelStateErrors.forEach(function(value, index) {
-                                        $("#addSlide").find('[data-val-result=' + value.key + ']')
-                                            .html(value.errorMessage);
-                                        $("#addSlide").find('[data-val-result=' + value.key + ']').parent()
-                                            .addClass("has-error");
-                                    });
-                                } else {
-                                   
-                                    showError(result.message)
-                                }
-                            }
-
-                        },
-                        error: function(xhr, ajaxOptions, thrownError) {
-
-                        },
-                        complete: function() {
-                            $("#loading").css("display", "none");
-                        }
-                    });
-                }
-            });
-
-            $(document).on("click", "#editRecord",
-                function(e) {
-                    e.preventDefault();
-
-                    var id = $(this).data("id");
-                    var data = { slideId: id };
-
-                    $.ajax({
-                        url: "@Url.Action("GetSlide")",
-                        type: 'Get',
-                        data: data,
-                        beforeSend: function() {
-                            $("#loading").css("display", "block");
-                        },
-                        success: function(result) {
-
-                            if (result.status === "success") {
-                                var slide = result.data;
-
-                                $("#addSlide #Title").val(slide.title);
-                                $("#addSlide #Id").val(slide.id);
-                                $("#addSlide #ColoredBackground").val(slide.coloredBackground);
-                                $("#addSlide #ImageFit").val(slide.imageFit);
-                                $("#addSlide #TransActionType").val(slide.transActionType);
-                                $("#addSlide #Link").val(slide.link);
-                                $("#addSlide #Target").val(slide.target);
-                                $("#addSlide #Alt").val(slide.alt);
-                                $(".ImageWrapper img").attr("src", slide.imageUrl);
-                                picSrc = slide.imageUrl;
-
-                                //$("#addSlide #StartDate").val(slide.startDate);
-                                //$("#addSlide #ExpireDate").val(slide.expireDate);
-
-                                
-
-                                $('#add').collapse('show');
-
+                            if (result.modelStateErrors !== null) {
+                                console.log(result);
+                                result.modelStateErrors.forEach(function(value, index) {
+                                    $("#addSlide").find('[data-val-result=' + value.key + ']')
+                                        .html(value.errorMessage);
+                                    $("#addSlide").find('[data-val-result=' + value.key + ']').parent()
+                                        .addClass("has-error");
+                                });
                             } else {
-                                toastr.error(result.message);
+
+                                showError(result.message);
                             }
-
-                            $("#loading").css("display", "none");
-                        },
-                        error: function(xhr, ajaxOptions, thrownError) {
-                            $("#loading").css("display", "none");
-                        },
-                        complete: function() {
-
                         }
-                    });
+
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+
+                    },
+                    complete: function() {
+                        $("#loading").css("display", "none");
+                    }
                 });
-        });
+            } else {
+                $.ajax({
+                    url: "@Url.Action("EditSlide")",
+                    type: 'Post',
+                    data: values,
+                    beforeSend: function() {
+                        $("#loading").css("display", "block");
+                    },
+                    success: function(result) {
+                        if (result.status === "success") {
+                            list();
 
-        $(document).on("click", "#deleteRecord", function(e) {
-            e.preventDefault();
-            var id = $(this).data("id");
-
-            $("#delete").data("id", id);
-            $("#removeModal").modal("show");
-
-        });
-
-        $(document).on("click", "#delete", function(e) {
-            e.preventDefault();
-            var id = $(this).data("id");
-            var data = { Id: id };
-
-            $.ajax({
-                url: "@Url.Action("DeleteSlide")",
-                type: 'Get',
-                data: data,
-                beforeSend: function() {
-                    $("#loading").css("display", "block");
-                },
-                success: function(result) {
-
-                    if (result.status === "success") {
-                        
-
-                        $("#removeModal").modal("hide");
-                        location.reload();
-                         document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
+                             document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
                             document.getElementById('mainToastBody').classList.add('alert-success');
                             var bsAlert = new bootstrap.Toast($("#mainToast"));
                             bsAlert.show();
 
-                    } else {
-                        showError(result.message);
-                    }
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
+                            $('#add').collapse('hide');
+                            clearForm("#addSlide");
+                            $(".ImageWrapper img").attr("src", "/images/blank.png");
+                            picSrc = "";
+                        } else if (result.status === "error") {
+                            if (spanErrorList.length > 1) {
+                                spanErrorList.each(function() {
+                                    $(this).html("");
+                                    $(this).parent().removeClass("has-error");
+                                });
+                            }
+                            if (result.modelStateErrors !== null) {
 
-                },
-                complete: function() {
-                    $("#loading").css("display", "none");
-                }
-            });
+                                result.modelStateErrors.forEach(function(value, index) {
+                                    $("#addSlide").find('[data-val-result=' + value.key + ']')
+                                        .html(value.errorMessage);
+                                    $("#addSlide").find('[data-val-result=' + value.key + ']').parent()
+                                        .addClass("has-error");
+                                });
+                            } else {
+
+                                showError(result.message)
+                            }
+                        }
+
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+
+                    },
+                    complete: function() {
+                        $("#loading").css("display", "none");
+                    }
+                });
+            }
         });
 
-        $(document).on("click", "#active", function (e) {
-            var active;
-            if (event.target.checked === true) {
-                active = true;
-            } else active = false;
+        $(document).on("click", "#editRecord",
+            function(e) {
+                debugger;
+                e.preventDefault();
 
-            var elm = $(this);
-            var id = $(this).data("id");
-            var data = { Id: id, IsActive: active };
+                var id = $(this).data("id");
+                var data = { slideId: id };
 
-            $.ajax({
-                url: "@Url.Action("ChangeBeActiveSlide")",
-                type: 'Get',
-                data: data,
-                beforeSend: function() {
-                   
-                },
-                success: function(result) {
+                $.ajax({
+                    url: "@Url.Action("GetSlide")",
+                    type: 'Get',
+                    data: data,
+                    beforeSend: function() {
+                        $("#loading").css("display", "block");
+                    },
+                    success: function(result) {
+                        debugger;
+                        if (result.status === "success") {
+                            var slide = result.data;
 
-                    if (result.status === "success") {
+                            $("#addSlide #Title").val(slide.title);
+                            $("#addSlide #Id").val(slide.id);
+                            $("#addSlide #ColoredBackground").val(slide.coloredBackground);
+                            $("#addSlide #ImageFit").val(slide.imageFit);
+                            $("#addSlide #TransActionType").val(slide.transActionType);
+                            $("#addSlide #Link").val(slide.link);
+                            $("#addSlide #Target").val(slide.target);
+                            $("#addSlide #Alt").val(slide.alt);
+                            if('@CultureInfo.CurrentCulture.Name' == "fa-IR")
+                            {
+                                  $("#addSlide #dtpStartShowDate").val(slide.persianStartShowDate);
+                                  if(slide.persianEndShowDate != "")
+                                  {
+                                       $("#addSlide #dtpStartShowDate").val(slide.persianEndShowDate);
+                                  }
+                            }else
+                            {
+                                 $("#addSlide #dtpStartShowDate").val(slide.startDate);
+                                 if(slide.expireDate != "")
+                                 $("#addSlide #dtpEndShowDate").val(slide.expireDate);
 
-                        var card = elm.parent().parent().parent().parent();
+                            }
+   
+                            $(".ImageWrapper img").attr("src", `../../filemanager/getscaledimageOnWidth?path=${slide.imageUrl}&width=${150}`);
+                            picSrc = slide.imageUrl;
 
-                        if (active === true) {
-                            $(card).removeClass("notActive");
-                            $(card).addClass("active");
+
+                            $('#add').collapse('show');
 
                         } else {
-                            $(card).removeClass("active");
-                            $(card).addClass("notActive");
+                            toastr.error(result.message);
                         }
 
-                            document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
-                            document.getElementById('mainToastBody').classList.add('alert-success');
-                            var bsAlert = new bootstrap.Toast($("#mainToast"));
-                            bsAlert.show();
+                        $("#loading").css("display", "none");
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        $("#loading").css("display", "none");
+                    },
+                    complete: function() {
+
+                    }
+                });
+            });
+    });
+
+    $(document).on("click", "#deleteRecord", function(e) {
+        e.preventDefault();
+        var id = $(this).data("id");
+
+        $("#delete").data("id", id);
+        $("#removeModal").modal("show");
+
+    });
+
+    $(document).on("click", "#delete", function(e) {
+        e.preventDefault();
+        var id = $(this).data("id");
+        var data = { Id: id };
+
+        $.ajax({
+            url: "@Url.Action("DeleteSlide")",
+            type: 'Get',
+            data: data,
+            beforeSend: function() {
+                $("#loading").css("display", "block");
+            },
+            success: function(result) {
+
+                if (result.status === "success") {
+
+                    $("#removeModal").modal("hide");
+                    location.reload();
+                     document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
+                        document.getElementById('mainToastBody').classList.add('alert-success');
+                        var bsAlert = new bootstrap.Toast($("#mainToast"));
+                        bsAlert.show();
+
+                } else {
+                    showError(result.message);
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+
+            },
+            complete: function() {
+                $("#loading").css("display", "none");
+            }
+        });
+    });
+
+    $(document).on("click", "#active", function (e) {
+        var active;
+        if (event.target.checked === true) {
+            active = true;
+        } else active = false;
+
+        var elm = $(this);
+        var id = $(this).data("id");
+        var data = { Id: id, IsActive: active };
+
+        $.ajax({
+            url: "@Url.Action("ChangeBeActiveSlide")",
+            type: 'Get',
+            data: data,
+            beforeSend: function() {
+
+            },
+            success: function(result) {
+
+                if (result.status === "success") {
+
+                    var card = elm.parent().parent().parent().parent();
+
+                    if (active === true) {
+                        $(card).removeClass("notActive");
+                        $(card).addClass("active");
 
                     } else {
-                        elm.prop("checked", !active).change();
-                       showError(result.message);
+                        $(card).removeClass("active");
+                        $(card).addClass("notActive");
                     }
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
+
+                        document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
+                        document.getElementById('mainToastBody').classList.add('alert-success');
+                        var bsAlert = new bootstrap.Toast($("#mainToast"));
+                        bsAlert.show();
+
+                } else {
                     elm.prop("checked", !active).change();
-                },
-                complete: function() {
-                    
+                   showError(result.message);
                 }
-            });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                elm.prop("checked", !active).change();
+            },
+            complete: function() {
+
+            }
         });
+    });
 
-        function list() {
-            $("#table").html("");
-            var data = {
-                pageSize: pageSize,
-                currentPage: $pagination.twbsPagination('getCurrentPage'),
-                sliderId: "@(ViewBag.SliderId)"
-            };
+    function list() {
+        debugger;
+        $("#table").html("");
+        var data = {
+            pageSize: pageSize,
+            currentPage: $pagination.twbsPagination('getCurrentPage'),
+            sliderId: "@(ViewBag.SliderId)"
+        };
 
-            $.ajax({
-                url: "@Url.Action("ListSlides")",
-                type: 'Post',
-                data: data,
-                beforeSend: function() {
-                    $("#loading-data").css("display", "block");
-                },
-                success: function(result) {
+        $.ajax({
+            url: "@Url.Action("ListSlides")",
+            type: 'Post',
+            data: data,
+            beforeSend: function() {
+                $("#loading-data").css("display", "block");
+            },
+            success: function(result) {
+                debugger;
+                $("#table").html(result);
+                               $(result).find(".page-data")
+                var totalPages = $(".page-data").data("total");
+                var currentPage = $pagination.twbsPagination('getCurrentPage');
 
-                    $("#table").html(result);
+                $pagination.twbsPagination('destroy');
 
-                    var totalPages = $("#page-data").data("total");
-                    var currentPage = $pagination.twbsPagination('getCurrentPage');
-
-                    $pagination.twbsPagination('destroy');
-
-                    if (totalPages > 0) {
-                        $pagination.twbsPagination($.extend({},
-                            defaultOpts,
-                            {
-                                startPage: currentPage,
-                                totalPages: totalPages
-                            }));
-                    }
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-                },
-                complete: function() {
-                    $("#loading-data").css("display", "none");
-                   
+                if (totalPages > 0) {
+                    $pagination.twbsPagination($.extend({},
+                        defaultOpts,
+                        {
+                            startPage: currentPage,
+                            totalPages: totalPages
+                        }));
                 }
-            });
-        }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+            },
+            complete: function() {
+                $("#loading-data").css("display", "none");
 
-        function clearForm(form) {
-            $(form).find(':input').each(function () {
-                switch (this.type) {
-                case 'password':
-                case 'text':
-                case 'textarea':
-                case 'hidden':
-                {
-                    $(this).val('');
-                    break;
-                }
+            }
+        });
+    }
 
-                case 'checkbox':
-                case 'radio':
-                    this.checked = false;
-                }
-            });
-        }
-    </script>
-}
+    function clearForm(form) {
+        $(form).find(':input').each(function () {
+            switch (this.type) {
+            case 'password':
+            case 'text':
+            case 'textarea':
+            case 'hidden':
+            {
+                $(this).val('');
+                break;
+            }
+
+            case 'checkbox':
+            case 'radio':
+                this.checked = false;
+            }
+        });
+    }
+</script>
