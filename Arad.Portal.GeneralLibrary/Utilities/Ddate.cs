@@ -434,7 +434,10 @@ namespace Arad.Portal.GeneralLibrary.Utilities
         public static string ToPersianDdate(this DateTime d)
         {
 
-            d = d.ToLocalTime();
+           
+                d = d.ToLocalTime();
+
+            
 
             var newDateObject = new PersianCalendar();
             var convertedDate = newDateObject.GetYear(d).ToString("0000") + "/" +

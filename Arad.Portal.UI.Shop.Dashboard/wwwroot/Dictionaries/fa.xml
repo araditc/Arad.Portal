@@ -120,6 +120,9 @@
 	</string>
 	<!--End [buttons text]-->
 	<!--Start Design Page-->
+	<string key="design_Slider">
+		<value>اسلایدر</value>
+	</string>
 	<string key="design_Slide">
 		<value>اسلاید</value>
 	</string>

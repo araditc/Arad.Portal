@@ -359,14 +359,19 @@ else
                     },
                     success: function(result) {
                         debugger;
+
+                       
+
                         if (result.status === "success") {
                             list();
+                        
 
                         document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
                         document.getElementById('mainToastBody').classList.add('alert-success');
                         var bsAlert = new bootstrap.Toast($("#mainToast"));
                         bsAlert.show();
 
+                         $("#add").removeClass("show");
 
                         } else if (result.status === "error") {
                             if (spanErrorList.length > 1) {
@@ -481,10 +486,11 @@ else
                             $("#addSlide #Alt").val(slide.alt);
                             if('@CultureInfo.CurrentCulture.Name' == "fa-IR")
                             {
+                                debugger;
                                   $("#addSlide #dtpStartShowDate").val(slide.persianStartShowDate);
                                   if(slide.persianEndShowDate != "")
                                   {
-                                       $("#addSlide #dtpStartShowDate").val(slide.persianEndShowDate);
+                                       $("#addSlide #dtpEndShowDate").val(slide.persianEndShowDate);
                                   }
                             }else
                             {
@@ -516,14 +522,15 @@ else
             });
     });
 
-    $(document).on("click", "#deleteRecord", function(e) {
-        e.preventDefault();
-        var id = $(this).data("id");
+    //$(document).on("click", "#deleteRecord", function(e) {
+    //    debugger;
+    //    e.preventDefault();
+    //    var id = $(this).data("id");
 
-        $("#delete").data("id", id);
-        $("#removeModal").modal("show");
+    //    $("#delete").data("id", id);
+    //    $("#removeModal").modal("show");
 
-    });
+    //});
 
     $(document).on("click", "#delete", function(e) {
         e.preventDefault();
@@ -645,6 +652,8 @@ else
                             totalPages: totalPages
                         }));
                 }
+                debugger;
+                 $("#add").removeClass("show");
             },
             error: function(xhr, ajaxOptions, thrownError) {
             },
@@ -653,6 +662,19 @@ else
 
             }
         });
+    }
+
+
+     function SlideDelete( id) {
+        debugger;
+          entityId = id;
+            typeOfRequest = 'Get';
+            confirmUrl = '@Url.Action("DeleteSlide", "Slider")' + "/" + id,
+            document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Delete")';
+            document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_DeletionSureness")';
+            $('#confirmModal').modal('show');
+
+          
     }
 
     function clearForm(form) {

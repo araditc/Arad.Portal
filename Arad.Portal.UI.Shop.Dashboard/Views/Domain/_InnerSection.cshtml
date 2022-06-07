@@ -189,14 +189,16 @@
             break;
         }
     }
-    function addModulesWithParams(sender)
+   function addModulesWithParams(sender)
    {
       debugger;
        var obj = {};//an instance of ModuleWithParametersValue
        obj.ParametersValue ={};
         var targetParamsDiv = $(sender).closest(".paramsDiv");
         var count = 0; 
-                              
+         var sliderId ="" ;
+         var domainId = "@ViewBag.DomainId";
+         var languageId = $("#languageId").val();
         var parent =  $(sender).closest(".parent");
         var targetDivId ="";
         
@@ -214,10 +216,10 @@
                         selectedTemplate = $("input[name='rdbProductTemplateList']:checked").val();
                         break;
                         case "typeList":
-                        selectedType = $(`#${id}`).val();
+                        selectedType = $(this).val();
                         break;
                         case "countToShow":
-                        count = parseInt($(`#${id}`).val());
+                        count = parseInt($(this).val());
                         break;
                     }
                     break;
@@ -240,31 +242,51 @@
                         }
                         break;
                         case "typeList":
-                        selectedType = $(`#${id}`).val();
+                        selectedType = $(this).val();
                         break;
                         case "countToShow":
                         if(!$(".countSection").hasClass("d-none"))
-                            count = parseInt($(`#${id}`).val());
+                            count = parseInt($(this).val());
                         break;
                     }
+                    break;
+                    case "ImageTextSlider":
+                    if(id ="sliderList")
+                    {
+                        sliderId = $(this).val();
+                    }
+                    break;
+                    case "HorizantalStoreMenu":
                     break;
               }
         });
         var url = "";
-        if(obj.ModuleName.toLowerCase() =="productlist")
+        switch(obj.ModuleName.toLowerCase())
         {
-            url = "@Url.Action("GetProductModuleViewComponent", "Domain")"+"?productType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count;
-            obj.ParametersValue.ProductTemplateDesign = selectedTemplate;
-            
+            case "productlist":
+                url = "@Url.Action("GetProductModuleViewComponent", "Domain")"+"?productType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count;
+                obj.ParametersValue.ProductTemplateDesign = selectedTemplate;
+                obj.ParametersValue.Count = count;
+                obj.ParametersValue.ProductOrContentType = selectedType;
+            break;
+            case "contentlist":
+                url = "@Url.Action("GetContentModuleViewComponent", "Domain")"+"?contentType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count;
+                obj.ParametersValue.ContentTemplateDesign = selectedTemplate;
+                obj.ParametersValue.Count = count;
+                 obj.ParametersValue.ProductOrContentType = selectedType;
+            break;
+            case "imagetextslider":
+              url = "@Url.Action("GetSliderViewComponent", "Domain")"+ "?sliderId="+ sliderId;
+              obj.ParametersValue.SliderId = sliderId;
+            break;
+            case "horizantalstoremenu":
+              url = "@Url.Action("GetStoreMenuViewComponent", "Domain")"+"?domainId=" + domainId +"&languageId="+ languageId;
+              obj.ParametersValue.DomainId = domainId;
+              obj.ParametersValue.languageId = languageId ;
+            break;
+
         }
-        else if(obj.ModuleName.toLowerCase() == "contentlist")
-        {
-            debugger;
-            url = "@Url.Action("GetContentModuleViewComponent", "Domain")"+"?contentType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count;
-            obj.ParametersValue.ContentTemplateDesign = selectedTemplate;
-        }
-        obj.ParametersValue.Count = count;
-        obj.ParametersValue.ProductOrContentType = selectedType;
+       
         
         var data = JSON.stringify(obj);
         data =`<div target='module'>${data}</div>`;

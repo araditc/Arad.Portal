@@ -114,6 +114,9 @@
 	</string>
 	<!--End [buttons text]-->
 	<!--Start Design Page-->
+	<string key="design_Slider">
+		<value>slider</value>
+	</string>
 	<string key="design_Slide">
 		<value>slide</value>
 	</string>

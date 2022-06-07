@@ -47,7 +47,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.SliderModule.Mongo
 
                 model.SliderId = Guid.NewGuid().ToString();
 
+                var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
 
+                model.AssociatedDomainId = domainId;
                 _context.Collection.InsertOne(model);
 
                 return true;
@@ -315,26 +317,19 @@ namespace Arad.Portal.DataLayer.Repositories.General.SliderModule.Mongo
         {
             try
             {
-                var slider = _context.Collection.AsQueryable().FirstOrDefault(s => s.SliderId == id);
-
-                if (slider != null)
+                var slider = _context.Collection.Find(s => s.SliderId == id).FirstOrDefault();
+                if(slider != null)
                 {
-                    if (slider.IsActive)
+                    var filter = Builders<Slider>.Filter.Eq("SliderId", id);
+                    var update = Builders<Slider>.Update.Set("IsDeleted", true);
+                    var resultUpdate = await _context.Collection.UpdateOneAsync(filter, update);
+                    var ack = resultUpdate.IsAcknowledged;
+
+                    if (ack)
                     {
-                        return false;
+                        return true;
                     }
                 }
-
-                var filter = Builders<Slider>.Filter.Eq("SliderId", id);
-                var update = Builders<Slider>.Update.Set("IsDeleted", true);
-                var resultUpdate = await _context.Collection.UpdateOneAsync(filter, update);
-                var ack = resultUpdate.IsAcknowledged;
-
-                if (ack)
-                {
-                    return true;
-                }
-
                 return false;
             }
             catch (Exception e)
@@ -344,73 +339,80 @@ namespace Arad.Portal.DataLayer.Repositories.General.SliderModule.Mongo
             }
         }
 
-        public async Task<bool> ActiveSlider(string id, bool isActive)
+        public async Task<Result> ActiveSlider(string sliderId)
         {
+            var result = new Result();
             try
             {
-                if (isActive)
+                var entity = _context.Collection.Find(_ => _.SliderId == sliderId).FirstOrDefault();
+                if (entity != null)
                 {
-                    var activeNow = _context.Collection.AsQueryable().FirstOrDefault(s => s.IsActive);
-
-                    if (activeNow != null)
+                    entity.IsActive = !entity.IsActive;
+                    var updateResult = await _context.Collection.ReplaceOneAsync(_ => _.SliderId == sliderId, entity);
+                    if (updateResult.IsAcknowledged)
                     {
-                        var filter1 = Builders<Slider>.Filter.Eq("SliderId", activeNow.SliderId);
-                        var update1 = Builders<Slider>.Update.Set("IsActive", false);
-                        var resultUpdate1 = await _context.Collection.UpdateOneAsync(filter1, update1);
+                        result.Succeeded = true;
+                        result.Message = ConstMessages.SuccessfullyDone;
+                    }
+                    else
+                    {
+                        result.Message = ConstMessages.ErrorInSaving;
                     }
                 }
-
-                var filter = Builders<Slider>.Filter.Eq("SliderId",  id);
-                var update = Builders<Slider>.Update.Set("IsActive", isActive);
-
-                var resultUpdate = await _context.Collection.UpdateOneAsync(filter, update);
-                var ack = resultUpdate.IsAcknowledged;
-
-                if (ack)
+                else
                 {
-                    return true;
+                    result.Message = ConstMessages.ObjectNotFound;
                 }
 
-                return false;
             }
             catch (Exception e)
             {
-                return false;
+                result.Message = ConstMessages.ErrorInSaving;
             }
+
+            return result;
         }
 
-        public async Task<bool> ActiveSlide(string id, bool isActive)
+        public async Task<Result> ActiveSlide(string slideId)
         {
+            var result = new Result();
             try
             {
-                var slider = _context.Collection.AsQueryable()
-                    .FirstOrDefault(s => s.Slides.Any(ss => ss.Id == id));
+                var slider = _context.Collection.Find(s => s.Slides.Any(ss => ss.Id == slideId)).FirstOrDefault();
 
                 if (slider != null)
                 {
                     var slideOld = slider.Slides
-                        .FirstOrDefault(s => s.Id == id);
+                        .FirstOrDefault(s => s.Id == slideId);
 
                     if (slideOld != null)
                     {
-                        slideOld.IsActive = isActive;
+                        slideOld.IsActive = !slideOld.IsActive;
                     }
 
-                    var result = await _context.Collection
+                    var updateResult = await _context.Collection
                         .ReplaceOneAsync(c => c.SliderId == slider.SliderId, slider);
 
-                    if (result.IsAcknowledged)
+                    if (updateResult.IsAcknowledged)
                     {
-                        return true;
+                        result.Succeeded = true;
+                        result.Message = ConstMessages.SuccessfullyDone;
+                    }
+                    else
+                    {
+                        result.Message = ConstMessages.ErrorInSaving;
                     }
                 }
-
-                return false;
+                else
+                {
+                    result.Message = ConstMessages.ObjectNotFound;
+                }
             }
             catch (Exception e)
             {
-                return false;
+                result.Message = ConstMessages.ErrorInSaving;
             }
+            return result;
         }
 
         public async Task<bool> DeleteSlide(string id)
@@ -513,6 +515,19 @@ namespace Arad.Portal.DataLayer.Repositories.General.SliderModule.Mongo
             {
                 return false;
             }
+        }
+
+        public List<SelectListModel> ActiveSliderList(string domainId)
+        {
+            var result = new List<SelectListModel>();
+             result = _context.Collection.Find(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId)
+                     .Project(_ => new SelectListModel()
+                     {
+                         Text = _.Title,
+                         Value = _.SliderId
+                     }).ToList();
+
+            return result;
         }
     }
 }

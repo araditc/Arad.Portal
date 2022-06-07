@@ -1,0 +1,20 @@
+﻿<div class="row mx-2">
+     <div class="col-12">
+          <label class="form-label" >@Language.GetString("design_Slider")</label><br/>
+          <select class="form-control selectpicker par sliderlist" data-live-search="true" id="sliderList" asp-items ="@(new SelectList(ViewBag.SliderList,"Value","Text"))" >
+          </select>
+    </div>
+
+     <div class="col-12 text-center">
+        <button id="btnAddModuleWithParameters" class="btn btn-success bg-gradient btn-sm float-end m-1"
+        onclick="addModulesWithParams(this);" type="button">@Language.GetString("btn_Add")</button>
+    </div>
+</div>
+
+
+<script>
+     $(document).ready(function(){
+        debugger;
+         $("#sliderList").selectpicker();
+    });
+</script>

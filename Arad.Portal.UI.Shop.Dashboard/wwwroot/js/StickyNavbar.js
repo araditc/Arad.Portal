@@ -1,7 +1,7 @@
 ﻿// When the user scrolls the page, execute myFunction
 
-var jj = $("#navbar").offset();
-alert(jj.top);
+//var jj = $("#navbar").offset();
+//alert(jj.top);
 //window.onscroll = function ()
 //{
 //    // Get the offset position of the navbar

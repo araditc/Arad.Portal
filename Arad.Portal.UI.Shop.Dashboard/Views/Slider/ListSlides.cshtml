@@ -21,8 +21,8 @@
                          <label style="background-color: @item.ColoredBackground; width: 25px; height: 15px;"></label>
                     </td>
                     <td class="ListCell">@item.Link</td>
-                    <td class="ListCell">@item.StartDate</td>
-                    <td class="ListCell">@item.ExpireDate</td>
+                    <td class="ListCell">@(@CultureInfo.CurrentCulture.Name == "fa-IR" ? @item.PersianStartDate : @item.StartDate)</td>
+                    <td class="ListCell">@(@CultureInfo.CurrentCulture.Name == "fa-IR" ? @item.PersianExpireDate : @item.ExpireDate)</td>
                     <td class="ListCell">
                         @{
                             if (item.IsActive)
@@ -36,89 +36,27 @@
                         }
                     </td>
                     <td class="ListCell">
-                                         <a class="btn btn-outline-secondary btn-xs" asp-action="Layers" asp-controller="Slider"  asp-route-sliderId="@ViewBag.SliderId" asp-route-slideId="@item.Id">
-                                            @Language.GetString("design_Layers")  
-                                        </a>
+                        <a class="btn btn-outline-secondary btn-xs" asp-action="Layers" asp-controller="Slider"  asp-route-sliderId="@ViewBag.SliderId" asp-route-slideId="@item.Id">
+                        @Language.GetString("design_Layers")  
+                    </a>
                                        
 
-                                        <a id="editRecord" data-id="@item.Id" class="btn btn-outline-primary btn-xs">
-                                           @Language.GetString("btn_Detail")
-                                        </a>
+                    <a id="editRecord" data-id="@item.Id" class="btn btn-outline-primary btn-xs">
+                        @Language.GetString("btn_Detail")
+                    </a>
 
                                        
-                                        <button id="deleteRecord" data-id="@item.Id" href="#" data-toggle="modal" type="button" class="btn btn-outline-danger btn-xs">
-                                          @Language.GetString("btn_Delete")
-                                        </button>
+                    <button  data-id="@item.Id"  type="button" onclick="SlideDelete(this, '@item.Id')" class="deleteRecord btn btn-outline-danger btn-xs">
+                        @Language.GetString("btn_Delete")
+                    </button>
                     </td>
                     </tr>
-                    //<div class="table-row">
-                    //    <div class="card-table">
-                    //        <div class="row m-0">
-                    //            <div class="table-col col-xs-12 col-md-1 d-none d-lg-block">
-                    //                <span>@(++i)</span>
-                    //            </div>
-                    //            <div class="table-col col-xs-12 col-lg-1">
-                    //                <span class="mo-title">@Language.GetString("Image"):</span>
-                    //                <span>
-                    //                    <img src="@item.ImageUrl" style="width: 50px; height: 50px;" />
-                    //                </span>
-                    //            </div>
-                    //            <div class="table-col col-xs-12 col-lg-2">
-                    //                <span class="mo-title">@Language.GetString("Entities_Title"):</span>
-                    //                <span>@item.Title</span>
-                    //            </div>
-                    //            <div class="table-col col-xs-12 col-lg-1">
-                    //                <span class="mo-title">@Language.GetString("design_bgColor"):</span>
-                                    
-                    //                <span style="background-color: @item.ColoredBackground; width: 25px; height: 10px;"></span>
-                                    
-                    //            </div>
-                    //            <div class="table-col col-xs-12 col-lg-1">
-                    //                <span class="mo-title"> @Language.GetString("design_Link") :</span>
-                    //                <span>@item.Link</span>
-                    //            </div>
-                    //            <div class="table-col col-xs-12 col-lg-1">
-                    //                <span class="mo-title">@Language.GetString("StartShowDate"):</span>
-                    //                <span>@item.StartDate</span>
-                    //            </div>
-                    //            <div class="table-col col-xs-12 col-lg-1">
-                    //                <span class="mo-title"> @Language.GetString("EndShowDate"):</span>
-                    //                <span>@item.ExpireDate</span>
-                    //            </div>
-                    //            <div class="table-col col-xs-12 col-lg-1">
-                    //                <label class="switch">
-                                      
-                    //                    <input type="checkbox" class="checkbox" id="active" checked="@item.IsActive" data-id="@item.Id" value="@item.IsActive">
-                    //                    <span class="slider round"></span>
-                    //                </label>
-                    //            </div>
-                    //            <div class="table-col col-xs-12 col-lg-3">
-                    //                <div class="">
-                    //                    <a class="btn btn-outline-secondary btn-xs" asp-action="Layers" asp-controller="Slider"  asp-route-sliderId="@ViewBag.SliderId" asp-route-slideId="@item.Id">
-                    //                        @Language.GetString("design_Layers")  
-                    //                    </a>
-                                       
-
-                    //                    <a id="editRecord" data-id="@item.Id" class="btn btn-outline-primary btn-xs">
-                    //                       @Language.GetString("btn_Detail")
-                    //                    </a>
-
-                                       
-                    //                    <button id="deleteRecord" data-id="@item.Id" href="#" data-toggle="modal" type="button" class="btn btn-outline-danger btn-xs">
-                    //                      @Language.GetString("btn_Delete")
-                    //                    </button>
-                                       
-                    //                </div>
-                    //            </div>
-                    //        </div>
-
-                    //    </div>
-                    //</div>
+                   
                 }
             }
             else
             {
-                <tr ><td colspan="9"><h6>@Language.GetString("AlertAndMessage_NoDataToShow").</h6></td></tr>
+                <tr ><td colspan="9" class="text-center"><h6>@Language.GetString("AlertAndMessage_NoDataToShow").</h6></td></tr>
             }
         
     //</div>

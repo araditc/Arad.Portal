@@ -33,6 +33,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Arad.Portal.DataLayer.Contracts.Shop.Product;
 using Microsoft.Extensions.Configuration;
 using Arad.Portal.DataLayer.Models.DesignStructure;
+using Arad.Portal.DataLayer.Contracts.General.SliderModule;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -45,6 +46,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IProductRepository _productRepository;
         private readonly ILanguageRepository _lanRepository;
         private readonly ICurrencyRepository _curRepository;
+        private readonly ISliderRepository _sliderRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -56,6 +58,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             IProductRepository productRepository,
             IModuleRepository moduleRepository,
             ILanguageRepository lanRepository,
+            ISliderRepository sliderRepository,
             IConfiguration configuration,
             ICurrencyRepository currencyRepository)
         {
@@ -68,6 +71,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _webHostEnvironment = hostEnvironment;
             _productRepository = productRepository;
             _configuration = configuration;
+            _sliderRepository = sliderRepository;
         }
 
         public async Task<string> RenderViewComponent(string viewComponent, object args)
@@ -382,6 +386,17 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return ViewComponent("ContentTemplates", new { contentType, selectionTemplate, count });
         }
 
+        [HttpGet]
+        public IActionResult GetSliderViewComponent(string sliderId)
+        {
+            return ViewComponent("Slider", new { sliderId });
+        }
+
+        public IActionResult GetStoreMenuViewComponent(string domainId, string languageId)
+        {
+            return ViewComponent("StoreMenuModule", new { domainId, languageId });
+        }
+
         public IActionResult GetSpecificModule(string moduleName, string id, int colCount)
         {
             var module = _moduleRepository.FetchModuleByName(moduleName);
@@ -390,14 +405,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var imageTemplatePath = _webHostEnvironment.WebRootPath;
             var productOrContentTypes = _moduleRepository.GetAllProductOrContentTypes();
             ViewBag.ProductOrContentTypeList = productOrContentTypes;
-            ViewBag.DomainId=id;
+            ViewBag.DomainId = id;
             switch (moduleName.ToLower())
             {
                 case "productlist":
                     var productTemplateList = _moduleRepository.GetAllProductTemplateDesign();
                     foreach (var item in productTemplateList)
                     { 
-                       item.ImageUrl = System.IO.Path.Combine(imageTemplatePath, $"Template/Product/{item.Text}.jpg");
+                       item.ImageUrl = Path.Combine(imageTemplatePath, $"Template/Product/{item.Text}.jpg");
                     }
                     ViewBag.ProductTemplateList = productTemplateList;
                     break;
@@ -407,7 +422,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     {
                         if (item.Text.ToLower() != "forth")
                         {
-                            item.ImageUrl = System.IO.Path.Combine(imageTemplatePath, $"Template/Content/{item.Text}.jpg");
+                            item.ImageUrl = Path.Combine(imageTemplatePath, $"Template/Content/{item.Text}.jpg");
                         }
                         else
                         {
@@ -423,11 +438,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     }
                     ViewBag.ContentTemplateList = contentTemplateDesigns;
                     break;
-                case "HorizantalStoreMenu":
-                break;
-                case "ImageSlider":
+                case "imagetextslider":
+
+                    var sliderList = _sliderRepository.ActiveSliderList(id);
+                    ViewBag.SliderList = sliderList;
+
                     break;
-                case "Advertisement":
+                case "horizantalstoremenu":
+                break;
+                case "advertisement":
                     break;
                 default:
                     break;

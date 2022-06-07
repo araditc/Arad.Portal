@@ -23,10 +23,12 @@ namespace Arad.Portal.DataLayer.Contracts.General.SliderModule
         Task<bool> UpdateLayer(Layer layer);
         Task<bool> UpdateSlide(Slide slide);
         Task<bool> DeleteSlider(string id);
-        Task<bool> ActiveSlider(string id, bool isActive);
-        Task<bool> ActiveSlide(string id, bool isActive);
+        Task<Result> ActiveSlider(string sliderId);
+        Task<Result> ActiveSlide(string slideId);
         Task<bool> DeleteSlide(string id);
         Task<bool> ActiveLayer(string id, bool isActive);
         Task<bool> DeleteLayer(string id);
+
+        List<SelectListModel> ActiveSliderList(string domianId);
     }
 }

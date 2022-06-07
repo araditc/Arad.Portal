@@ -157,21 +157,27 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ChangeBeActiveSlider(string id, bool IsActive)
+        public async Task<IActionResult> ChangeBeActiveSlider(string id)
         {
+            JsonResult result;
             try
             {
-                bool result = await _sliderRepository.ActiveSlider(id, IsActive);
-                if (result)
+                var res = await _sliderRepository.ActiveSlider(id);
+                if (res.Succeeded)
                 {
-                    return Json(new { Status = "success", Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully") });
+                    var slider = _sliderRepository.GetSlider(id);
+                    result = Json(new { Status = "success", Message = res.Message, result = slider.IsActive.ToString() });
                 }
-                return Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_ErrorTryAgain") });
+                else
+                {
+                    result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
+                }
             }
             catch (Exception e)
             {
-                return Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_ErrorTryAgain") });
+                result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
             }
+            return result;
         }
 
         [HttpGet]
@@ -364,9 +370,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             if (slide != null)
             {
                 var outputModel = _mapper.Map<SlideDTO>(slide);
-                outputModel.PersianStartShowDate = DateHelper.ToPersianDdate(slide.StartDate.Value);
+                outputModel.PersianStartShowDate = DateHelper.ToPersianDdate(outputModel.StartDate.Value);
                 if (slide.ExpireDate != null)
-                    outputModel.PersianEndShowDate = DateHelper.ToPersianDdate(slide.ExpireDate.Value);
+                    outputModel.PersianEndShowDate = DateHelper.ToPersianDdate(outputModel.ExpireDate.Value);
 
 
                 return Json(new { Status = "success", Data = outputModel });
@@ -465,7 +471,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 ColoredBackground = model.ColoredBackground,
                 ExpireDate = model.ExpireDate,
                 ImageFit = model.ImageFit,
-                ImageUrl = image.Url,
+                ImageUrl = model.ImageUrl.StartsWith("data") ? image.Url : model.ImageUrl,
                 Link = model.Link,
                 StartDate = model.StartDate,
                 Target = model.Target,
@@ -485,21 +491,27 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ChangeBeActiveSlide(string id, bool IsActive)
+        public async Task<IActionResult> ChangeBeActiveSlide(string id)
         {
+            JsonResult result;
             try
             {
-                bool result = await _sliderRepository.ActiveSlide(id, IsActive);
-                if (result)
+                var res = await _sliderRepository.ActiveSlide(id);
+                if (res.Succeeded)
                 {
-                    return Json(new { Status = "success", Message = Language.GetString("AlertAndMessage_EditionDoneSuccessfully") });
+                    var slide =  _sliderRepository.GetSlide(id);
+                    result = Json(new { Status = "success", Message = res.Message, result = slide.IsActive.ToString() });
                 }
-                return Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_ErrorTryAgain") });
+                else
+                {
+                    result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
+                }
             }
             catch (Exception e)
             {
-                return Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_ErrorTryAgain") });
+                result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_TryLator") });
             }
+            return result;
         }
 
         [HttpGet]

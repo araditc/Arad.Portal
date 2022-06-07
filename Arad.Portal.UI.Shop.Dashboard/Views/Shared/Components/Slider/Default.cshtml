@@ -13,7 +13,7 @@
                 if (string.IsNullOrWhiteSpace(slide.Link))
                 {
                     <div class="item" style="background-color: @itemBackground; position: relative;">
-                        <img class="animate__animated @($"animate__{slide.TransActionType}")" src="@slide.ImageUrl" alt="@slide.Alt" title="@slide.Title" />
+                        <img class="animate__animated @($"animate__{slide.TransActionType}")" src="@($"../../filemanager/GetScaledImageOnWidth?path=/{slide.ImageUrl}&width={150}")" alt="@slide.Alt" title="@slide.Title" />
                         @if (slide.Layers.Count > 0)
                         {
                             foreach (var layer in slide.Layers)
@@ -28,7 +28,7 @@
                 else
                 {
                     <a href="@slide.Link" target="@slide.Target" class="item" style="background-color: @itemBackground;">
-                        <img class="animate__animated @($"animate__{slide.TransActionType}")" src="@slide.ImageUrl" alt="@slide.Alt" title="@slide.Title" />
+                        <img class="animate__animated @($"animate__{slide.TransActionType}")" src="@($"../../filemanager/GetScaledImageOnWidth?path=/{slide.ImageUrl}&width={150}")" alt="@slide.Alt" title="@slide.Title" />
                         @if (slide.Layers.Count > 0)
                         {
                             foreach (var layer in slide.Layers)
