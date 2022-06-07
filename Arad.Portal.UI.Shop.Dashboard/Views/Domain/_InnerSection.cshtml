@@ -12,7 +12,9 @@
    
 }
 
-
+<div class="row justify-content-end">
+      <button class='btn btn-sm m-2 btn-primary columnStyles' sec="@Model.Section" cn="@Model.ColNumber" rn="@ViewBag.RowNumber"><i class='fs-6 fa fa-cog'></i></button>
+</div>
 <div class="row">
     <div class="col-12">
          <label class="form-label">@Language.GetString("Template_ContentType")</label>
@@ -24,6 +26,7 @@
         </select>
     </div>
 </div>
+
 <div class="row parent" cn ="@Model.ColNumber" rn="@ViewBag.RowNumber" sec = "@Model.Section" style="min-height:300px;">
     <div class="col-12 modulePart d-none">
          <select class="form-control selectpicker moduleList" data-live-search="true" asp-items="@(new SelectList(ViewBag.ModuleList,"Value","Text"))">
@@ -91,7 +94,7 @@
       </div>
           
 @*difference between these finalColumnContent and htmlColumnContentPreview is about modules the first one store with parameters and second one html of executed module will render *@
-   
+  @*difference between moduleDatePreview and htmlColumnContentPreview is if we have more than one module in a column then mouleDataPreview is for the last module to show but htmlColumnContentPreview is all data of this columns*@ 
    <div class="row moduleDataPreview d-none mx-2" guid="@Model.RowGuid" >
    </div>
 </div>

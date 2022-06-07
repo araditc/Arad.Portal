@@ -265,10 +265,99 @@
                     </select>
                 </div>
             </div>
+            <div class="row">
+                 <div class="form-check m-auto d-inline-block pt-3">
+                    <input class="form-check-input rowbd" type="checkbox" value="border-top">
+                    <label class="form-check-label" for="border-top">
+                        border-top
+                    </label>
+                </div>
+                <div class="form-check m-auto d-inline-block pt-3">
+                    <input class="form-check-input rowbd" type="checkbox" value="border-start">
+                    <label class="form-check-label" for="border-start">
+                        border-start
+                    </label>
+                </div>
+                <div class="form-check m-auto d-inline-block pt-3">
+                    <input class="form-check-input rowbd" type="checkbox" value="border-bottom">
+                    <label class="form-check-label" for="border-bottom">
+                        border-bottom
+                    </label>
+                </div>
+                <div class="form-check m-auto d-inline-block pt-3">
+                    <input class="form-check-input rowbd" type="checkbox" value="border-end">
+                    <label class="form-check-label" for="border-end">
+                        border-end
+                    </label>
+                </div>
+            </div>
+
+         <div class="row">
+              <div class="col-12">
+                  <label class="form-label">border thickness</label>
+              </div>
+              <select id="borderThickness" class="form-control selectpicker" data-live-search="true" onchange="addExtraClasses('')">
+                  <option value="0">@Language.GetString("AlertAndMessage_Choose")</option>
+                  <option value="border-1">1</option>
+                  <option value="border-2">2</option>
+                  <option value="border-3">3</option>
+                  <option value="border-4">4</option>
+                  <option value="border-5">5</option>
+              </select>
+          </div>
 
         </div>
     </div>
 
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="colStylesDiv" aria-labelledby="offcanvashfExampleLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvashfExampleLabel">borders</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+         <div class="offcanvas-body">
+             <div class="row">
+                <div class="form-check m-auto d-inline-block pt-3">
+                    <input class="form-check-input" type="checkbox" value="border-top">
+                    <label class="form-check-label" for="border-top">
+                        border-top
+                    </label>
+                </div>
+                <div class="form-check m-auto d-inline-block pt-3">
+                    <input class="form-check-input" type="checkbox" value="border-start">
+                    <label class="form-check-label" for="border-start">
+                        border-start
+                    </label>
+                </div>
+                <div class="form-check m-auto d-inline-block pt-3">
+                    <input class="form-check-input" type="checkbox" value="border-bottom">
+                    <label class="form-check-label" for="border-bottom">
+                        border-bottom
+                    </label>
+                </div>
+                <div class="form-check m-auto d-inline-block pt-3">
+                    <input class="form-check-input" type="checkbox" value="border-end">
+                    <label class="form-check-label" for="border-end">
+                        border-end
+                    </label>
+                </div>
+          </div>
+       
+          <div class="row">
+              <div class="col-12">
+                  <label class="form-label">border thickness</label>
+              </div>
+              <select id="borderThickness" class="form-control selectpicker" data-live-search="true">
+                   <option value="0">@Language.GetString("AlertAndMessage_Choose")</option>
+                  <option value="border-1">1</option>
+                  <option value="border-2">2</option>
+                  <option value="border-3">3</option>
+                  <option value="border-4">4</option>
+                  <option value="border-5">5</option>
+              </select>
+          </div>
+         </div>
+
+    </div>
 
     <div class="offcanvas offcanvas-end" tabindex="-1" id="styleHeaderFooterDiv" aria-labelledby="offcanvashfExampleLabel">
         <div class="offcanvas-header">
@@ -307,6 +396,8 @@
 
     <script>
              var selectedRow;
+             var colselectedRow ;
+             var colSelectedNumber;
              var selectedSection;
              var footerBgColor = "";
              var headerBgColor = "";
@@ -342,6 +433,9 @@
                       $(".dynamicFooterPart"),css("background-color", "");
                  }
              }
+             function
+
+
              function addCustomClass(type)
              {
                  debugger;
@@ -352,31 +446,31 @@
                  {
                      case "vp":
                      cls = $("#verticalPaddingSelect").val();
-                     $(`.row.moduleDataPreview[guid='${selectedRow}']`).removeClass("py-0").removeClass("py-2").removeClass("py-4").removeClass("py-5").removeClass("py-10");
+                     $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass("py-0").removeClass("py-2").removeClass("py-4").removeClass("py-5").removeClass("py-10");
                      custClass = custClass.replace("py-0", "").replace("py-2", "").replace("py-4", "").replace("py-5","").replace("py-10", "");
                      pClass = pClass.replace("py-0", "").replace("py-2", "").replace("py-4", "").replace("py-5","").replace("py-10", "");
                      break;
                      case "hp":
-                     $(`.row.moduleDataPreview[guid='${selectedRow}']`).removeClass("px-0").removeClass("px-2").removeClass("px-4").removeClass("px-5").removeClass("px-10");
+                     $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass("px-0").removeClass("px-2").removeClass("px-4").removeClass("px-5").removeClass("px-10");
                      cls = $("#horizantalPaddingSelect").val();
                       custClass = custClass.replace("px-0", "").replace("px-2", "").replace("px-4", "").replace("px-5","").replace("px-10", "");
                        pClass = pClass.replace("px-0", "").replace("px-2", "").replace("px-4", "").replace("px-5","").replace("px-10", "");
                      break;
                      case "vm":
-                    $(`.row.moduleDataPreview[guid='${selectedRow}']`).removeClass("mx-0").removeClass("mx-2").removeClass("mx-4").removeClass("mx-5").removeClass("mx-10");
+                    $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass("mx-0").removeClass("mx-2").removeClass("mx-4").removeClass("mx-5").removeClass("mx-10");
                      cls = $("#verticalMarginSelect").val();
                     custClass = custClass.replace("mx-0", "").replace("mx-2", "").replace("mx-4", "").replace("mx-5","").replace("mx-10", "");
                     pClass = pClass.replace("mx-0", "").replace("mx-2", "").replace("mx-4", "").replace("mx-5","").replace("mx-10", "");
                      break;
                      case "hm":
-                      $(`.row.moduleDataPreview[guid='${selectedRow}']`).removeClass("my-0").removeClass("my-2").removeClass("my-4").removeClass("my-5").removeClass("my-10");
+                      $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass("my-0").removeClass("my-2").removeClass("my-4").removeClass("my-5").removeClass("my-10");
                      cls = $("#horizantalMarginSelect").val();
                      custClass = custClass.replace("my-0", "").replace("my-2", "").replace("my-4", "").replace("my-5","").replace("my-10", "");
                      pClass = pClass.replace("my-0", "").replace("my-2", "").replace("my-4", "").replace("my-5","").replace("my-10", "");
                      break;
                  }
 
-                  $(`.row.moduleDataPreview[guid='${selectedRow}']`).addClass(cls);
+                  $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).addClass(cls);
 
                   custClass += ` ${cls}`;
                   $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames", custClass);
@@ -467,6 +561,36 @@
                            var offcanvas = $("#styleHeaderFooterDiv");
                            var off = new bootstrap.Offcanvas(offcanvas);
                            off.show();
+                       });
+
+                       $(".columnStyles").click(function() {
+                           debugger;
+                           colselectedRow = $(this).attr("rn");
+                           colSelectedNumber = $(this).attr("cn");
+                           var ofCanvas = $("#colStylesDiv");
+                           var of = new bootstrap.Offcanvas(ofCanvas);
+                           of.show();
+                           
+                       })
+
+                       $(".rowbd").change(function() {
+                           var cls = $(this).value;
+                            var custClass = $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames");
+                            var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames");
+                          if($(this).is(':checked')) 
+                          {
+                              $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).addClass(cls);
+                              custClass += ` ${cls}`;
+                              pClass +=  ` ${cls}`;
+                          }else
+                          {
+                              $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass(cls);
+                              custClass = custClass.replace(cls, "");
+                              pClass = pClass.replace(cls, "");
+                          }
+
+                          $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames", custClass);
+                          $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames", pClass);
                        });
 
                         $("#deleteBgImage").click(function(){
