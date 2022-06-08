@@ -200,7 +200,7 @@
                         <div class="col-12 col-lg-2">
                             <label class="form-label">BackgroundColor</label>
                             <input dir="ltr" type="text" id="BackgroundColor" class="form-control" asp-for="Styles.BackgroundColor" placeholder=" ">
-                            <span class="field-validation-error" data-val-result="ColoredBackground"></span>
+                            <span class="field-validation-error" data-val-result="BackgroundColor"></span>
                         </div>
 
                         <div class="col-12 col-lg-2">
@@ -228,7 +228,11 @@
     }
 
     <script>
-        $('#BackgroundColor').colorpicker({ format: 'rgba' });
-        $('#Styles_Color').colorpicker({format: 'rgba'});
+        $(document).ready(function(){
+            debugger;
+             $('#BackgroundColor').colorpicker();
+             $('#Styles_Color').colorpicker();
+        });
+       
     </script>
 }

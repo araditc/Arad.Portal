@@ -58,8 +58,8 @@
     <link href="~/css/siteTemplate/FifthContentTemplate.css" rel="stylesheet" />
     <link href="~/css/header.css" rel="stylesheet" />
     <link href="~/css/StickyNavbar.css" rel="stylesheet" />
-
-
+    <link href="~/lib/bootstrap-colorpicker/css/bootstrap-colorpicker.css" rel="stylesheet" />
+    <link href = "~/lib/animate.css/animate.min.css" rel="stylesheet"/>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
@@ -69,6 +69,7 @@
     <script src="~/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js"></script>
     <script src="~/lib/owlCarousel/js/owl.carousel.min.js"></script>
     <script src="~/js/TemplateCreation.js"></script>
+    <script src="~/lib/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
    @* <script src="~/js/StickyNavbar.js"></script>*@
 
 </head>
@@ -159,7 +160,7 @@
         <div class="border border-3 border-secondary m-1" style="min-height: 150px;">
             <div class='p-2 row justify-content-center'>
                 <div class='col-1 text-center'>
-                    <button class='btn btn-sm m-2 btn-success btnHFStyle' sec="header"><i class='fs-4 fa fa-cog'></i></button>
+                    <button class='btn btn-sm m-2 btn-success pt-2 btnHFStyle' data-bs-toggle="tooltip" data-bs-placement="top" title="@Language.GetString("design_RowStyle")" sec="header"><i class='fs-4 fa fa-cog'></i></button>
                 </div>
                 <div class='col-1 text-center'>
                     <button class='btn btn-sm  btn-success btnNoColor p-2 m-2' sec="header" onclick="resetColor(this);">@Language.GetString("design_NoColor")</button>
@@ -193,10 +194,10 @@
         <div class="border border-3 border-secondary m-1 dynamicFooterPart p-2" style="min-height: 150px;">
             <div class='p-2 row justify-content-center'>
                 <div class='col-1 text-center'>
-                    <button class='btn btn-sm m-2 btn-success btnHFStyle' sec="footer"><i class='fs-4 fa fa-cog'></i></button>
+                    <button class='btn btn-sm m-2 pt-2 btn-success btnHFStyle' sec="footer" data-bs-toggle="tooltip" data-bs-placement="top" title="@Language.GetString("design_RowStyle")" ><i class='fs-4 fa fa-cog'></i></button>
                 </div>
                 <div class='col-1 text-center'>
-                    <button class='btn btn-sm  btn-success btnNoColor p-2 m-2' sec="footer" onclick="resetColor(this);">@Language.GetString("design_NoColor")</button>
+                    <button class='btn btn-sm btn-success btnNoColor p-2 m-2' sec="footer" onclick="resetColor(this);">@Language.GetString("design_NoColor")</button>
                 </div>
             </div>
             <div class="container">
@@ -293,10 +294,11 @@
             </div>
 
          <div class="row">
-              <div class="col-12">
-                  <label class="form-label">border thickness</label>
+              <div class="col-12 bg-success bg-opacity-10 pt-2 mt-3">
+                  <label class="form-label fs-6">border thickness</label>
               </div>
-              <select id="borderThickness" class="form-control selectpicker" data-live-search="true" onchange="addExtraClasses('')">
+              <div class="col-12">
+              <select id="borderThicknessRow" class="form-control selectpicker" data-live-search="true" onchange="addExtraClasses()">
                   <option value="0">@Language.GetString("AlertAndMessage_Choose")</option>
                   <option value="border-1">1</option>
                   <option value="border-2">2</option>
@@ -304,6 +306,7 @@
                   <option value="border-4">4</option>
                   <option value="border-5">5</option>
               </select>
+              </div>
           </div>
 
         </div>
@@ -317,25 +320,25 @@
          <div class="offcanvas-body">
              <div class="row">
                 <div class="form-check m-auto d-inline-block pt-3">
-                    <input class="form-check-input" type="checkbox" value="border-top">
+                    <input class="form-check-input colBd" type="checkbox" value="border-top">
                     <label class="form-check-label" for="border-top">
                         border-top
                     </label>
                 </div>
                 <div class="form-check m-auto d-inline-block pt-3">
-                    <input class="form-check-input" type="checkbox" value="border-start">
+                    <input class="form-check-input colBd" type="checkbox" value="border-start">
                     <label class="form-check-label" for="border-start">
                         border-start
                     </label>
                 </div>
                 <div class="form-check m-auto d-inline-block pt-3">
-                    <input class="form-check-input" type="checkbox" value="border-bottom">
+                    <input class="form-check-input colBd" type="checkbox" value="border-bottom">
                     <label class="form-check-label" for="border-bottom">
                         border-bottom
                     </label>
                 </div>
                 <div class="form-check m-auto d-inline-block pt-3">
-                    <input class="form-check-input" type="checkbox" value="border-end">
+                    <input class="form-check-input colBd" type="checkbox" value="border-end">
                     <label class="form-check-label" for="border-end">
                         border-end
                     </label>
@@ -343,11 +346,11 @@
           </div>
        
           <div class="row">
-              <div class="col-12">
-                  <label class="form-label">border thickness</label>
+              <div class="col-12 bg-success bg-opacity-10 pt-2 mt-3">
+                  <label class="form-label fs-6">border thickness</label>
               </div>
-              <select id="borderThickness" class="form-control selectpicker" data-live-search="true">
-                   <option value="0">@Language.GetString("AlertAndMessage_Choose")</option>
+              <select id="borderThicknessColumn" class="form-control selectpicker" data-live-search="true" onchange="addExtraClasses()">
+                  <option value="0">@Language.GetString("AlertAndMessage_Choose")</option>
                   <option value="border-1">1</option>
                   <option value="border-2">2</option>
                   <option value="border-3">3</option>
@@ -368,8 +371,8 @@
             <div class="row">
 
                 <div class="col">
-                    <label>@Language.GetString("design_bgColor")</label>
-                    <input type="color" id="bgcolor" name="bgcolor" onchange="bgColorChange();" value="#7b6f6f" />
+                     <label class="form-label">@Language.GetString("design_bgColor")</label>
+                     <input dir="ltr" type="text" id="bgcolor" name="bgcolor" class="form-control" onchange="bgColorChange();"  placeholder=" ">
                 </div>
             </div>
             @*<div class="row">
@@ -396,7 +399,7 @@
 
     <script>
              var selectedRow;
-             var colselectedRow ;
+             var colSelectedRow ;
              var colSelectedNumber;
              var selectedSection;
              var footerBgColor = "";
@@ -406,7 +409,7 @@
 
              function bgColorChange()
              {
-                 debugger;
+                
                 var color = $("#bgcolor").val();
                 if(selectedSection =="footer")
                 {
@@ -433,8 +436,7 @@
                       $(".dynamicFooterPart"),css("background-color", "");
                  }
              }
-             function
-
+            
 
              function addCustomClass(type)
              {
@@ -496,13 +498,19 @@
                            "<select  class='form-control selectpicker colWidth' onchange='selectColumnsWidthRatio(this, \""+ tag +"\" );' colWidthId='"+id+"' data-live-search='true'></select></div>" +
                            "<div class='p-2 row justify-content-center'>"+
                            "<div class='col-2 text-center'>"+
-                           "<button class='btn btn-sm m-2 btn-dark btnRowStyle'  guid='" + id + "'><i class='fs-4 fa fa-cog'></i></button>"+
+                           "<button class='btn btn-sm m-2 pt-2 btn-dark btnRowStyle'  guid='" + id + "' data-bs-toggle='tooltip' data-bs-placement='top' title="+
+                           '@Language.GetString("design_RowStyles")' +
+                           "><i class='fs-4 fa fa-cog'></i></button>" +
                            "</div><div class='ps-4 col-12 contentColumns' guid='"+ id + "'></div>";
 
                    return colTemplate;
                }
 
-                   $(document).ready(function(){
+       $(document).ready(function(){
+
+
+                              $("#bgcolor").colorpicker();
+                                 
                                changeScreen();
                                $(window).resize(changeScreen);
 
@@ -563,17 +571,20 @@
                            off.show();
                        });
 
-                       $(".columnStyles").click(function() {
+
+
+                    $(document).on("click", ".columnStyles", function () {
                            debugger;
-                           colselectedRow = $(this).attr("rn");
+                           colSelectedRow = $(this).attr("rn");
                            colSelectedNumber = $(this).attr("cn");
                            var ofCanvas = $("#colStylesDiv");
                            var of = new bootstrap.Offcanvas(ofCanvas);
                            of.show();
                            
-                       })
+                       });
 
                        $(".rowbd").change(function() {
+                           debugger;
                            var cls = $(this).value;
                             var custClass = $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames");
                             var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames");
@@ -940,6 +951,29 @@
                                    }
                                }
                            });
+
+                            $('.custSlider').owlCarousel({
+                                rtl: true,
+                                center: true,
+                                loop: true,
+                                margin: 0,
+                                nav: false,
+                                dots: false,
+                                autoplay: true,
+                                responsive: {
+                                    0: {
+                                        items: 1
+                                    },
+                                    600: {
+                                        items: 1
+                                    },
+                                    1000: {
+                                        items: 1
+                                    }
+                                }
+                            });
+
+
                            $(".likeLink i").click(function () {
                                if ($(this).hasClass("far fa-heart")) {
                                    $(this).removeClass("far fa-heart");

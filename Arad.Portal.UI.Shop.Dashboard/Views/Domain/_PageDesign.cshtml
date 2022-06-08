@@ -63,8 +63,7 @@
          var guid = createGuid();
         var template = getColTemplate(guid, tag);
 
-        $(divId).append("<div rn='"+currentRowNumber+"' guid='"+guid+"' class='row "+ currentRowNumber+ " firstLevel align-middle active'></div>");
-        //$(`.parentSrc.tem_${tag}`).clone()..appendTo(`.firstLevel.active.${currentRowNumber}`);
+        $(divId).append("<div rn='" + currentRowNumber + "' guid='"+guid+"' class='row " + currentRowNumber + " firstLevel align-middle active'></div>");
        
         $(`.firstLevel.active.${currentRowNumber}`).append(template);
         var parentDivClass = `.div_${tag}`;

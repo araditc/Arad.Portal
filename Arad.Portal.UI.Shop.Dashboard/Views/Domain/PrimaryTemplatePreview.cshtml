@@ -65,7 +65,7 @@
     <link href="~/css/siteTemplate/FifthContentTemplate.css" rel="stylesheet" />
     <link href="~/css/header.css" rel="stylesheet" />
     <link href="~/css/StickyNavbar.css" rel="stylesheet" />
-
+    <link href = "~/lib/animate.css/animate.min.css" rel="stylesheet"/>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
@@ -165,6 +165,27 @@
                     }
                 }
             });
+
+            $('.custSlider').owlCarousel({
+                                rtl: true,
+                                center: true,
+                                loop: true,
+                                margin: 0,
+                                nav: false,
+                                dots: false,
+                                autoplay: true,
+                                responsive: {
+                                    0: {
+                                        items: 1
+                                    },
+                                    600: {
+                                        items: 1
+                                    },
+                                    1000: {
+                                        items: 1
+                                    }
+                                }
+                            });
         });
 </script>
 </body>

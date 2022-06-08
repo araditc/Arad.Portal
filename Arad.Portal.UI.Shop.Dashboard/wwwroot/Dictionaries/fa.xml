@@ -120,6 +120,12 @@
 	</string>
 	<!--End [buttons text]-->
 	<!--Start Design Page-->
+	<string key="design_RowStyle">
+		<value>تنظیمات استایل سطر</value>
+	</string>
+	<string key="design_ColumnStyles">
+		<value>تنظیمات استایل ستون</value>
+	</string>
 	<string key="design_Slider">
 		<value>اسلایدر</value>
 	</string>

@@ -9,7 +9,7 @@
         if (string.IsNullOrWhiteSpace(layer.Link))
         {
             <figcaption id="@layer.Attributes.Id"
-                        class="animate__animated @($"animate__{layer.TransActionType}") @layer.Attributes.Class "
+                        class="animate__animated @($"animate__{layer.TransActionType}") @layer.Attributes.Class"
                         title="@layer.Attributes.Title"
                         alt="@layer.Attributes.Alt"
                         style="position: absolute; z-index: 999; 
@@ -24,13 +24,13 @@
                                font-size: @layer.Styles.FontSize; color: @layer.Styles.Color; 
                                background-color: @layer.Styles.BackgroundColor; word-wrap: @layer.Styles.WordWrap;
                                @layer.Styles.CustomCss;">
-                <span>@layer.Content</span>
+                <span  class="@layer.Attributes.Class animate__animated @($"animate__{layer.TransActionType}")">@layer.Content</span>
             </figcaption>
         }
         else
         {
             <a id="@layer.Attributes.Id" href="@layer.Link" target="@layer.Target"
-               class="@layer.Attributes.Class"
+               class="@layer.Attributes.Class animate__animated @($"animate__{layer.TransActionType}")"
                title="@layer.Attributes.Title"
                alt="@layer.Attributes.Alt"
                style="position: absolute; z-index: 999; top: @layer.Position.Top; 
@@ -44,7 +44,7 @@
                       font-size: @layer.Styles.FontSize; color: @layer.Styles.Color; 
                       background-color: @layer.Styles.BackgroundColor; word-wrap: @layer.Styles.WordWrap; 
                       @layer.Styles.CustomCss;">
-                <span>@layer.Content</span>
+                <span  class="@layer.Attributes.Class animate__animated @($"animate__{layer.TransActionType}")">@layer.Content</span>
             </a>
         }
     }

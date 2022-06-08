@@ -16,6 +16,8 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
 
         public string ExtraClassNames { get; set; }
 
+        public string InlineStyles { get; set; }
+
         public int? Order { get; set; }
 
         public List<ColContent> ColsContent { get; set; }

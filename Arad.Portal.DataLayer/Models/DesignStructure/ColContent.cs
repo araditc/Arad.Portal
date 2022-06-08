@@ -16,6 +16,8 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
         /// </summary>
         public string ColumnClassNames { get; set; }
 
+        public string InlineStyles { get; set; }
+
         public string ColData { get; set; }
 
         public string RowGuid { get; set; }

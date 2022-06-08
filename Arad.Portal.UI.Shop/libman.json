@@ -24,7 +24,7 @@
     },
     {
       "library": "OwlCarousel2@2.3.4",
-      "destination": "wwwroot/lib/OwlCarousel2/"
+      "destination": "wwwroot/lib/OwlCarousel/"
     },
     {
       "library": "animate.css@4.1.1",

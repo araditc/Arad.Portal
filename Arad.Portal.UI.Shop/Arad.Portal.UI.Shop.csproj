@@ -60,8 +60,6 @@
     <None Include="Views\Shared\Components\Slider\Default.cshtml" />
     <None Include="Views\Shared\Components\SliderLayer\Default.cshtml" />
     <None Include="wwwroot\lib\counter\counter.js" />
-    <None Include="wwwroot\lib\OwlCarousel2\owl.carousel.js" />
-    <None Include="wwwroot\lib\OwlCarousel2\owl.carousel.min.js" />
   </ItemGroup>
 
   <ItemGroup>

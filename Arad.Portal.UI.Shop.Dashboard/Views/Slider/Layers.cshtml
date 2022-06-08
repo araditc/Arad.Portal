@@ -99,6 +99,7 @@
             $('#uploadModal').modal("hide");
         });
 
+
     $(document).ready(function() {
 
         list();
@@ -220,7 +221,7 @@
         debugger;
           entityId = id;
             typeOfRequest = 'Get';
-            confirmUrl = '@Url.Action("DeleteSlide", "Slider")' + "/" + id,
+            confirmUrl = '@Url.Action("DeleteLayer", "Slider")' + "?id=" + id,
             document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Delete")';
             document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_DeletionSureness")';
             $('#confirmModal').modal('show');

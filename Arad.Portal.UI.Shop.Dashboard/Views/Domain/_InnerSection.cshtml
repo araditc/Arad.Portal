@@ -12,9 +12,12 @@
    
 }
 
-<div class="row justify-content-end">
-      <button class='btn btn-sm m-2 btn-primary columnStyles' sec="@Model.Section" cn="@Model.ColNumber" rn="@ViewBag.RowNumber"><i class='fs-6 fa fa-cog'></i></button>
+<div class="row justify-content-center">
+    <div class="offset-8 col-4 offset-md-10 col-md-2">
+        <button class='btn btn-sm m-2 pt-2 btn-primary columnStyles float-end' data-bs-toggle="tooltip" data-bs-placement="top" title="@Language.GetString("design_ColumnStyles")" sec="@Model.Section" cn="@Model.ColNumber" rn="@ViewBag.RowNumber"><i class='fs-6 fa fa-cog'></i></button>
+    </div>
 </div>
+
 <div class="row">
     <div class="col-12">
          <label class="form-label">@Language.GetString("Template_ContentType")</label>
@@ -45,45 +48,45 @@
      
                editorId = `editor_${'@Model.ColNumber'}_${'@ViewBag.RowNumber'}`;
                var config =
-                                                {
-                                                height: 300,
-                                                filebrowserUploadUrl: '/Image/DomainImageUpload',
-                                               // filebrowserBrowseUrl: '/Image/ContentFileBrows',
-                                                language: '@lan',
-                                                scayt_sLang: '@lan',
-                                                allowedContent: true,
-                                                toolbarGroups: [
-                                                    { name: 'clipboard', groups: ['clipboard', 'undo'] },
-                                                    { name: 'editing', groups: ['find', 'selection', 'spellchecker'] },
-                                                    { name: 'links' },
-                                                    { name: 'insert' },
-                                                    { name: 'forms' },
-                                                    { name: 'tools' },
-                                                    { name: 'document', groups: ['mode', 'document', 'doctools'] },
-                                                    { name: 'others' },
-                                                    '/',
-                                                    { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
-                                                    { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi'] },
-                                                    { name: 'styles' },
-                                                    { name: 'colors' },
-                                                    { name: 'about' }
-                                                ]
-                                            };
-                                            config.font_names =
-                                                'Arial/Arial, Helvetica, sans-serif;' +
-                                                'Times New Roman/Times New Roman, Times, serif;' +
-                                                'Verdana;' +
-                                                'IRANSansWeb;' +
-                                                'WeblogmaYekan;' +
-                                                'Vazir;' +
-                                                'Shabnam';
+                        {
+                        height: 300,
+                        filebrowserUploadUrl: '/Image/DomainImageUpload',
+                        // filebrowserBrowseUrl: '/Image/ContentFileBrows',
+                        language: '@lan',
+                        scayt_sLang: '@lan',
+                        allowedContent: true,
+                        toolbarGroups: [
+                            { name: 'clipboard', groups: ['clipboard', 'undo'] },
+                            { name: 'editing', groups: ['find', 'selection', 'spellchecker'] },
+                            { name: 'links' },
+                            { name: 'insert' },
+                            { name: 'forms' },
+                            { name: 'tools' },
+                            { name: 'document', groups: ['mode', 'document', 'doctools'] },
+                            { name: 'others' },
+                            '/',
+                            { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+                            { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi'] },
+                            { name: 'styles' },
+                            { name: 'colors' },
+                            { name: 'about' }
+                        ]
+                    };
+                config.font_names =
+                    'Arial/Arial, Helvetica, sans-serif;' +
+                    'Times New Roman/Times New Roman, Times, serif;' +
+                    'Verdana;' +
+                    'IRANSansWeb;' +
+                    'WeblogmaYekan;' +
+                    'Vazir;' +
+                    'Shabnam';
 
-                                            config.extraPlugins = '';
+                config.extraPlugins = '';
 
-                                            //var editor = document.getElementById("editorCk");
-                                            CKEDITOR.replace(editorId, config);
-                                            CKEDITOR.dtd.$removeEmpty['i'] = false;
-                                            CKEDITOR.dtd.$removeEmpty['span'] = false;
+                //var editor = document.getElementById("editorCk");
+                CKEDITOR.replace(editorId, config);
+                CKEDITOR.dtd.$removeEmpty['i'] = false;
+                CKEDITOR.dtd.$removeEmpty['span'] = false;
         </script>
 
          <button  class="btn btn-success bg-gradient btn-sm float-end btnHtmlSanitizer m-1" onclick="sinitize(this);" editorid ='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")' cn ="@Model.ColNumber" rn="@ViewBag.RowNumber" sec = "@Model.Section"
@@ -332,10 +335,31 @@
                                 }
                            });
                     }
-                    //setTimeout(function(){
-                    //    $(parent).find(".moduleDataPreview").html("");
-                    //    $(parent).find(".moduleDataPreview").addClass("d-none");
-                    //}, 5000);
+                    else if(obj.ModuleName.toLowerCase() =="imagetextslider")
+                    {
+                        debugger;
+                         $('.custSlider').owlCarousel({
+                                rtl: true,
+                                center: true,
+                                loop: true,
+                                margin: 0,
+                                nav: false,
+                                dots: false,
+                                autoplay: true,
+                                responsive: {
+                                    0: {
+                                        items: 1
+                                    },
+                                    600: {
+                                        items: 1
+                                    },
+                                    1000: {
+                                        items: 1
+                                    }
+                                }
+                            });
+                    }
+                   
                 }
             },
         });

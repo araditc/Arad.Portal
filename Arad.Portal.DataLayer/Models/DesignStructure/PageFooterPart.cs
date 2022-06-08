@@ -17,9 +17,7 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
         public string BgImage { get; set; }
         public string CodeColor { get; set; }
         public string PriorFixedContent { get; set; }
-
         public List<RowContent> CustomizedContent { get; set; }
-
         public string LatterFixedContent { get; set; }
     } 
 }

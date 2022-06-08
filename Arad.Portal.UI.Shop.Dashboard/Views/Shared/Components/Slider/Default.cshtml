@@ -1,7 +1,7 @@
 ﻿@using Arad.Portal.DataLayer.Models.SlideModule;
 @model Arad.Portal.DataLayer.Entities.General.SliderModule.Slider
     
-<div class="topSlider owl-carousel owl-theme ">
+<div class="custSlider owl-carousel owl-theme ">
     @if (Model != null)
     {
         @foreach (var slide in Model.Slides)
@@ -12,7 +12,7 @@
 
                 if (string.IsNullOrWhiteSpace(slide.Link))
                 {
-                    <div class="item" style="background-color: @itemBackground; position: relative;">
+                    <div class="item" style="background-color: @itemBackground; position: relative; z-index:0;">
                         <img class="animate__animated @($"animate__{slide.TransActionType}")" src="@($"../../filemanager/GetScaledImageOnWidth?path=/{slide.ImageUrl}&width={150}")" alt="@slide.Alt" title="@slide.Title" />
                         @if (slide.Layers.Count > 0)
                         {
@@ -44,3 +44,25 @@
         }
     }
 </div>
+<script on-content-loaded ="true">
+     $('.custSlider').owlCarousel({
+        rtl: true,
+        center: true,
+        loop: true,
+        margin: 0,
+        nav: false,
+        dots: false,
+        autoplay: true,
+        responsive: {
+            0: {
+                items: 1
+            },
+            600: {
+                items: 1
+            },
+            1000: {
+                items: 1
+            }
+        }
+    });
+</script>
