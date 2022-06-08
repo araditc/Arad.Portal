@@ -3,79 +3,124 @@
 @model Arad.Portal.DataLayer.Entities.General.SliderModule.Layer
 @{
     var layer = Model;
-
-    if (layer.Type == LayerType.Text)
-    {
-        if (string.IsNullOrWhiteSpace(layer.Link))
-        {
-            <figcaption id="@layer.Attributes.Id"
-                        class="animate__animated @($"animate__{layer.TransActionType}") @layer.Attributes.Class"
-                        title="@layer.Attributes.Title"
-                        alt="@layer.Attributes.Alt"
-                        style="position: absolute; z-index: 999; 
-                               top: @layer.Position.Top; 
-                               right: @layer.Position.Right; bottom: @layer.Position.Bottom; 
-                               left: @layer.Position.Left; border-top: @layer.Styles.BorderTop; 
-                               border-right: @layer.Styles.BorderRight; border-bottom: @layer.Styles.BorderBottom; 
-                               border-left: @layer.Styles.BorderLeft; padding-top: @layer.Styles.PaddingTop; 
-                               padding-right: @layer.Styles.PaddingRight; padding-bottom: @layer.Styles.PaddingBottom; 
-                               padding-left: @layer.Styles.PaddingLeft; border-radius: @layer.Styles.RoundedCorners; 
-                               line-height: @layer.Styles.LineHeight; font-family: @layer.Styles.FontFamily; 
-                               font-size: @layer.Styles.FontSize; color: @layer.Styles.Color; 
-                               background-color: @layer.Styles.BackgroundColor; word-wrap: @layer.Styles.WordWrap;
-                               @layer.Styles.CustomCss;">
-                <span  class="@layer.Attributes.Class animate__animated @($"animate__{layer.TransActionType}")">@layer.Content</span>
-            </figcaption>
-        }
-        else
-        {
-            <a id="@layer.Attributes.Id" href="@layer.Link" target="@layer.Target"
-               class="@layer.Attributes.Class animate__animated @($"animate__{layer.TransActionType}")"
-               title="@layer.Attributes.Title"
-               alt="@layer.Attributes.Alt"
-               style="position: absolute; z-index: 999; top: @layer.Position.Top; 
-                      right: @layer.Position.Right; bottom: @layer.Position.Bottom; 
-                      left: @layer.Position.Left; border-top: @layer.Styles.BorderTop; 
-                      border-right: @layer.Styles.BorderRight; border-bottom: @layer.Styles.BorderBottom; 
-                      border-left: @layer.Styles.BorderLeft; padding-top: @layer.Styles.PaddingTop; 
-                      padding-right: @layer.Styles.PaddingRight; padding-bottom: @layer.Styles.PaddingBottom; 
-                      padding-left: @layer.Styles.PaddingLeft; border-radius: @layer.Styles.RoundedCorners; 
-                      line-height: @layer.Styles.LineHeight; font-family: @layer.Styles.FontFamily; 
-                      font-size: @layer.Styles.FontSize; color: @layer.Styles.Color; 
-                      background-color: @layer.Styles.BackgroundColor; word-wrap: @layer.Styles.WordWrap; 
-                      @layer.Styles.CustomCss;">
-                <span  class="@layer.Attributes.Class animate__animated @($"animate__{layer.TransActionType}")">@layer.Content</span>
-            </a>
-        }
-    }
-    else
-    {
-        <a id="@layer.Attributes.Id" href="@layer.Link" target="@layer.Target"
-           class="btn animate__animated @($"animate__{layer.TransActionType}") @layer.Attributes.Class"
-           title="@layer.Attributes.Title"
-           alt="@layer.Attributes.Alt"
-           style="position: absolute; z-index: 999;
-                                                                                    top: @layer.Position.Top;
-                                                                                    right: @layer.Position.Right;
-                                                                                    bottom: @layer.Position.Bottom;
-                                                                                    left: @layer.Position.Left;
-                                                                                    border-top:@layer.Styles.BorderTop;
-                                                                                    border-right: @layer.Styles.BorderRight;
-                                                                                    border-bottom: @layer.Styles.BorderBottom;
-                                                                                    border-left: @layer.Styles.BorderLeft;
-                                                                                    padding-top: @layer.Styles.PaddingTop;
-                                                                                    padding-right: @layer.Styles.PaddingRight;
-                                                                                    padding-bottom: @layer.Styles.PaddingBottom;
-                                                                                    padding-left: @layer.Styles.PaddingLeft;
-                                                                                    border-radius: @layer.Styles.RoundedCorners;
-                                                                                    line-height: @layer.Styles.LineHeight;
-                                                                                    font-family: @layer.Styles.FontFamily;
-                                                                                    font-size: @layer.Styles.FontSize;
-                                                                                    color: @layer.Styles.Color;
-                                                                                    background-color: @layer.Styles.BackgroundColor;
-                                                                                    word-wrap: @layer.Styles.WordWrap;
-                                                                                    @layer.Styles.CustomCss;">
-            <span>@layer.Content</span>
-        </a>
-    }
+       <div class="carousel-caption d-md-block">
+            if (layer.Type == LayerType.Text)
+            {
+                if (string.IsNullOrWhiteSpace(layer.Link))
+                {
+                    <figcaption id="@layer.Attributes.Id"
+                                class="@layer.Attributes.Class"
+                                data-animation="animated @($"{layer.TransActionType}")"
+                                title="@layer.Attributes.Title"
+                                alt="@layer.Attributes.Alt"
+                                style="position: absolute; z-index: 999; 
+                                       top: @layer.Position.Top; 
+                                       right: @layer.Position.Right; bottom: @layer.Position.Bottom; 
+                                       left: @layer.Position.Left; border-top: @layer.Styles.BorderTop; 
+                                       border-right: @layer.Styles.BorderRight; border-bottom: @layer.Styles.BorderBottom; 
+                                       border-left: @layer.Styles.BorderLeft; padding-top: @layer.Styles.PaddingTop; 
+                                       padding-right: @layer.Styles.PaddingRight; padding-bottom: @layer.Styles.PaddingBottom; 
+                                       padding-left: @layer.Styles.PaddingLeft; border-radius: @layer.Styles.RoundedCorners; 
+                                       line-height: @layer.Styles.LineHeight; font-family: @layer.Styles.FontFamily; 
+                                       font-size: @layer.Styles.FontSize; color: @layer.Styles.Color; 
+                                       background-color: @layer.Styles.BackgroundColor; word-wrap: @layer.Styles.WordWrap;
+                                       @layer.Styles.CustomCss;">
+                        <span >@layer.Content</span>
+                    </figcaption>
+                }
+                else
+                {
+                    <a id="@layer.Attributes.Id" href="@layer.Link" target="@layer.Target"
+                       class="@layer.Attributes.Class"
+                       data-animation="animated @($"{layer.TransActionType}")"
+                       title="@layer.Attributes.Title"
+                       alt="@layer.Attributes.Alt"
+                       style="position: absolute; z-index: 999; top: @layer.Position.Top; 
+                              right: @layer.Position.Right; bottom: @layer.Position.Bottom; 
+                              left: @layer.Position.Left; border-top: @layer.Styles.BorderTop; 
+                              border-right: @layer.Styles.BorderRight; border-bottom: @layer.Styles.BorderBottom; 
+                              border-left: @layer.Styles.BorderLeft; padding-top: @layer.Styles.PaddingTop; 
+                              padding-right: @layer.Styles.PaddingRight; padding-bottom: @layer.Styles.PaddingBottom; 
+                              padding-left: @layer.Styles.PaddingLeft; border-radius: @layer.Styles.RoundedCorners; 
+                              line-height: @layer.Styles.LineHeight; font-family: @layer.Styles.FontFamily; 
+                              font-size: @layer.Styles.FontSize; color: @layer.Styles.Color; 
+                              background-color: @layer.Styles.BackgroundColor; word-wrap: @layer.Styles.WordWrap; 
+                              @layer.Styles.CustomCss;">
+                        <span >@layer.Content</span>
+                    </a>
+                }
+            }
+            else
+            {
+                <a id="@layer.Attributes.Id" href="@layer.Link" target="@layer.Target"
+                   class="btn animate__animated @($"animate__{layer.TransActionType}") @layer.Attributes.Class"
+                    data-animation="animated @($"{layer.TransActionType}")"
+                   title="@layer.Attributes.Title"
+                   alt="@layer.Attributes.Alt"
+                   style="position: absolute; z-index: 999;
+                            top: @layer.Position.Top;
+                            right: @layer.Position.Right;
+                            bottom: @layer.Position.Bottom;
+                            left: @layer.Position.Left;
+                            border-top:@layer.Styles.BorderTop;
+                            border-right: @layer.Styles.BorderRight;
+                            border-bottom: @layer.Styles.BorderBottom;
+                            border-left: @layer.Styles.BorderLeft;
+                            padding-top: @layer.Styles.PaddingTop;
+                            padding-right: @layer.Styles.PaddingRight;
+                            padding-bottom: @layer.Styles.PaddingBottom;
+                            padding-left: @layer.Styles.PaddingLeft;
+                            border-radius: @layer.Styles.RoundedCorners;
+                            line-height: @layer.Styles.LineHeight;
+                            font-family: @layer.Styles.FontFamily;
+                            font-size: @layer.Styles.FontSize;
+                            color: @layer.Styles.Color;
+                            background-color: @layer.Styles.BackgroundColor;
+                            word-wrap: @layer.Styles.WordWrap;
+                            @layer.Styles.CustomCss;">
+                    <span>@layer.Content</span>
+                </a>
+            }
+    </div>
 }
+
+<script on-content-loaded ="true">
+       /* Demo Scripts for Bootstrap Carousel and Animate.css article
+* on SitePoint by Maria Antonietta Perna
+*/
+        (function ($) {
+            //Function to animate slider captions
+            function doAnimations(elems) {
+                //Cache the animationend event in a variable
+                var animEndEv = "webkitAnimationEnd animationend";
+
+                elems.each(function () {
+                    var $this = $(this),
+                        $animationType = $this.data("animation");
+                    $this.addClass($animationType).one(animEndEv, function () {
+                        $this.removeClass($animationType);
+                    });
+                });
+            }
+
+            //Variables on page load
+            var $myCarousel = $("#carouselExampleIndicators"),
+                $firstAnimatingElems = $myCarousel
+                    .find(".carousel-item:first")
+                    .find("[data-animation ^= 'animated']");
+
+            //Initialize carousel
+            $myCarousel.carousel();
+
+            //Animate captions in first slide on page load
+            doAnimations($firstAnimatingElems);
+
+            //Other slides to be animated on carousel slide event
+            $myCarousel.on("slide.bs.carousel", function (e) {
+                var $animatingElems = $(e.relatedTarget).find(
+                    "[data-animation ^= 'animated']"
+                );
+                doAnimations($animatingElems);
+            });
+        })(jQuery);
+</script>

@@ -1,68 +1,93 @@
 ﻿@using Arad.Portal.DataLayer.Models.SlideModule;
 @model Arad.Portal.DataLayer.Entities.General.SliderModule.Slider
+@{
+    int i = 1;
+}
     
-<div class="custSlider owl-carousel owl-theme ">
+<div class="carousel slide">
     @if (Model != null)
     {
-        @foreach (var slide in Model.Slides)
-        {
-            if (slide.IsActive)
+          <div class="carousel-inner skyblue">
+            @foreach (var slide in Model.Slides)
             {
-                var itemBackground = string.IsNullOrEmpty(slide.ColoredBackground) ? "transparent" : slide.ColoredBackground;
-
-                if (string.IsNullOrWhiteSpace(slide.Link))
+                if (slide.IsActive)
                 {
-                    <div class="item" style="background-color: @itemBackground; position: relative; z-index:0;">
-                        <img class="animate__animated @($"animate__{slide.TransActionType}")" src="@($"../../filemanager/GetScaledImageOnWidth?path=/{slide.ImageUrl}&width={150}")" alt="@slide.Alt" title="@slide.Title" />
-                        @if (slide.Layers.Count > 0)
-                        {
-                            foreach (var layer in slide.Layers)
+                    var itemBackground = string.IsNullOrEmpty(slide.ColoredBackground) ? "transparent" : slide.ColoredBackground;
+
+                    if (string.IsNullOrWhiteSpace(slide.Link))
+                    {
+                        <div class="carousel-item @(i == 1 ? 'active' : '')" style="background-color: @itemBackground; position: relative; z-index:0;">
+                            <img data-animation="animated @($"{slide.TransActionType}")" src="@($"../../filemanager/GetScaledImageOnWidth?path=/{slide.ImageUrl}&width={200}")" alt="@slide.Alt" title="@slide.Title" />
+                            @if (slide.Layers.Count > 0)
                             {
-                                @await Component.InvokeAsync("SliderLayer", layer)
+                                foreach (var layer in slide.Layers)
+                                {
+                                    @await Component.InvokeAsync("SliderLayer", layer)
 
+                                }
                             }
-                        }
 
-                    </div>
-                }
-                else
-                {
-                    <a href="@slide.Link" target="@slide.Target" class="item" style="background-color: @itemBackground;">
-                        <img class="animate__animated @($"animate__{slide.TransActionType}")" src="@($"../../filemanager/GetScaledImageOnWidth?path=/{slide.ImageUrl}&width={150}")" alt="@slide.Alt" title="@slide.Title" />
-                        @if (slide.Layers.Count > 0)
-                        {
-                            foreach (var layer in slide.Layers)
+                        </div>
+                    }
+                    else
+                    {
+                        <a href="@slide.Link" target="@slide.Target" class="carousel-item @(i == 1 ? 'active' : '')" style="background-color: @itemBackground;">
+                            <img data-animation="animated @($"{slide.TransActionType}")" src="@($"../../filemanager/GetScaledImageOnWidth?path=/{slide.ImageUrl}&width={200}")" alt="@slide.Alt" title="@slide.Title" />
+                            @if (slide.Layers.Count > 0)
                             {
-                                @await Component.InvokeAsync("SliderLayer", layer)
+                                foreach (var layer in slide.Layers)
+                                {
+                                    @await Component.InvokeAsync("SliderLayer", layer)
 
+                                }
                             }
-                        }
-                    </a>
+                        </a>
+                    }
                 }
+                @i += 1;
             }
-
-        }
+        </div>
     }
 </div>
+
+
 <script on-content-loaded ="true">
-     $('.custSlider').owlCarousel({
-        rtl: true,
-        center: true,
-        loop: true,
-        margin: 0,
-        nav: false,
-        dots: false,
-        autoplay: true,
-        responsive: {
-            0: {
-                items: 1
-            },
-            600: {
-                items: 1
-            },
-            1000: {
-                items: 1
+       /* Demo Scripts for Bootstrap Carousel and Animate.css article
+* on SitePoint by Maria Antonietta Perna
+*/
+        (function ($) {
+            //Function to animate slider captions
+            function doAnimations(elems) {
+                //Cache the animationend event in a variable
+                var animEndEv = "webkitAnimationEnd animationend";
+
+                elems.each(function () {
+                    var $this = $(this),
+                        $animationType = $this.data("animation");
+                    $this.addClass($animationType).one(animEndEv, function () {
+                        $this.removeClass($animationType);
+                    });
+                });
             }
-        }
-    });
+
+            //Variables on page load
+            var $myCarousel = $("#carouselExampleIndicators"),
+                $firstAnimatingElems = $myCarousel
+                    .find(".carousel-item:first")
+                    .find("[data-animation ^= 'animated']");
+
+            //Initialize carousel
+            $myCarousel.carousel();
+
+            //Animate captions in first slide on page load
+            doAnimations($firstAnimatingElems);
+
+            //Other slides to be animated on carousel slide event
+            $myCarousel.on("slide.bs.carousel", function (e) {
+                var $animatingElems = $(e.relatedTarget).find(
+                    "[data-animation ^= 'animated']"
+                );
+                doAnimations($animatingElems);
+            });
+        })(jQuery);
 </script>

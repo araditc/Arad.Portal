@@ -1,0 +1,68 @@
+﻿@using Arad.Portal.DataLayer.Models.SlideModule;
+@model Arad.Portal.DataLayer.Entities.General.SliderModule.Slider
+    
+<div class="custSlider owl-carousel owl-theme ">
+    @if (Model != null)
+    {
+        @foreach (var slide in Model.Slides)
+        {
+            if (slide.IsActive)
+            {
+                var itemBackground = string.IsNullOrEmpty(slide.ColoredBackground) ? "transparent" : slide.ColoredBackground;
+
+                if (string.IsNullOrWhiteSpace(slide.Link))
+                {
+                    <div class="item" style="background-color: @itemBackground; position: relative; z-index:0;">
+                        <img class="animate__animated @($"animate__{slide.TransActionType}")" src="@($"../../filemanager/GetScaledImageOnWidth?path=/{slide.ImageUrl}&width={150}")" alt="@slide.Alt" title="@slide.Title" />
+                        @if (slide.Layers.Count > 0)
+                        {
+                            foreach (var layer in slide.Layers)
+                            {
+                                @await Component.InvokeAsync("SliderLayer", layer)
+
+                            }
+                        }
+
+                    </div>
+                }
+                else
+                {
+                    <a href="@slide.Link" target="@slide.Target" class="item" style="background-color: @itemBackground;">
+                        <img class="animate__animated @($"animate__{slide.TransActionType}")" src="@($"../../filemanager/GetScaledImageOnWidth?path=/{slide.ImageUrl}&width={150}")" alt="@slide.Alt" title="@slide.Title" />
+                        @if (slide.Layers.Count > 0)
+                        {
+                            foreach (var layer in slide.Layers)
+                            {
+                                @await Component.InvokeAsync("SliderLayer", layer)
+
+                            }
+                        }
+                    </a>
+                }
+            }
+
+        }
+    }
+</div>
+<script on-content-loaded ="true">
+     $('.custSlider').owlCarousel({
+        rtl: true,
+        center: true,
+        loop: true,
+        margin: 0,
+        nav: false,
+        dots: false,
+        autoplay: true,
+        responsive: {
+            0: {
+                items: 1
+            },
+            600: {
+                items: 1
+            },
+            1000: {
+                items: 1
+            }
+        }
+    });
+</script>
