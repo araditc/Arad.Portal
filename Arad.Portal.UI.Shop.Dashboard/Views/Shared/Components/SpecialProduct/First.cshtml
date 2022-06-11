@@ -6,7 +6,7 @@
 
 
 <div class="row mx-1" style="min-height:250px;">
-    <div class="owl-carousel">
+    <div class="owl-carousel" id="productCarousel">
 
         @foreach (var item in Model)
         {
@@ -31,7 +31,7 @@
                     <span class="newp bg-light rounded m-1 ps-2 pe-2">NEW</span>
                 }
                
-                <img src="@($"../filemanager/GetScaledImageOnWidth?path={item.MainImageUrl}&width={150}")" class="img-fluid rounded-3" alt="">
+                <img src="@($"../filemanager/GetScaledImageOnWidth?path={item.MainImageUrl}&width={150}")" class="img-fluid rounded-3" data-animation="animated @(ViewBag.LoadAnimation)" alt="">
                 <div class="star-rating">
                     <ul class="list-inline bg-white p-1 rounded">
                          @for (int i = (item.HalfLikeRate ? item.LikeRate + 2 : item.LikeRate + 1); i <= 5; i++)

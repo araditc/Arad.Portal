@@ -114,6 +114,9 @@
 	</string>
 	<!--End [buttons text]-->
 	<!--Start Design Page-->
+	<string key="design_AnimationDelay">
+		<value>animation delay</value>
+	</string>
 	<string key="design_RowStyle">
 		<value>row style settings</value>
 	</string>

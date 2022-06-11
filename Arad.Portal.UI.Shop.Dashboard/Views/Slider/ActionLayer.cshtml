@@ -25,10 +25,9 @@
                 <span>@Language.GetString("design_EditLayer")</span>
             }
         }
-
     </div>
     <div class="card-body">
-        <form id="addSlide"  asp-action="@(ViewBag.Action == "Add" ? "AddLayer" : "EditLayer")" 
+        <form id="addLayer"  asp-action="@(ViewBag.Action == "Add" ? "AddLayer" : "EditLayer")" 
               asp-controller="Slider"  method="post" autocomplete="off" asp-antiforgery="true">
             <div class="row text-start">
                
@@ -71,22 +70,22 @@
                         </div>
                         <div class="col-12 col-lg-3">
                             <label class="form-label">Position-Top</label>
-                            <input dir="ltr" type="text" class="form-control" asp-for="Position.Top" placeholder=" ">
+                            <input dir="ltr" type="text" class="form-control" asp-for="Position.Top" placeholder="in pixel">
                             <span class="field-validation-error" data-val-result="Alt" asp-validation-for="Position.Top"></span>
                         </div>
                         <div class="col-12 col-lg-3">
                             <label class="form-label">Position-Right</label>
-                            <input dir="ltr" type="text" class="form-control" asp-for="Position.Right" placeholder=" ">
+                            <input dir="ltr" type="text" class="form-control" asp-for="Position.Right" placeholder="in pixel">
                             <span class="field-validation-error" data-val-result="Alt" asp-validation-for="Position.Right"></span>
                         </div>
                         <div class="col-12 col-lg-3">
                             <label class="form-label" for="">Position-Bottom</label>
-                            <input dir="ltr" type="text" class="form-control" asp-for="Position.Bottom" placeholder=" ">
+                            <input dir="ltr" type="text" class="form-control" asp-for="Position.Bottom" placeholder="in pixel">
                             <span class="field-validation-error" data-val-result="Alt" asp-validation-for="Position.Bottom"></span>
                         </div>
                         <div class="col-12 col-lg-3">
                             <label class="form-label" for="">Position-Left</label>
-                            <input dir="ltr" type="text" class="form-control" asp-for="Position.Left" placeholder=" ">
+                            <input dir="ltr" type="text" class="form-control" asp-for="Position.Left" placeholder="in pixel">
                             <span class="field-validation-error" data-val-result="Alt" asp-validation-for="Position.Left"></span>
                         </div>
                         <div class="bg-secondary bg-opacity-10  row mx-auto my-2 justify-content-center">
@@ -94,19 +93,19 @@
                             @Language.GetString("design_AttributeSpecification")
                         </div>
                         <div class="col-12 col-lg-3">
-                            <label class="form-label" for="Alt">Class</label>
+                            <label class="form-label" for="Class">Class</label>
                             <input dir="ltr" type="text" class="form-control" asp-for="Attributes.Class" placeholder=" ">
-                            <span class="field-validation-error" data-val-result="Alt"></span>
+                            <span class="field-validation-error" data-val-result="Class"></span>
                         </div>
                         <div class="col-12 col-lg-3">
                             <label class="form-label" for="Alt">Id</label>
                             <input dir="ltr" type="text" class="form-control" asp-for="Attributes.Id" placeholder=" ">
-                            <span class="field-validation-error" data-val-result="Alt"></span>
+                            <span class="field-validation-error" data-val-result="Id"></span>
                         </div>
                         <div class="col-12 col-lg-3">
                             <label class="form-label" for="Alt">Title</label>
                             <input dir="ltr" type="text" class="form-control" asp-for="Attributes.Title" placeholder=" ">
-                            <span class="field-validation-error" data-val-result="Alt"></span>
+                            <span class="field-validation-error" data-val-result="Title"></span>
                         </div>
                         <div class="col-12 col-lg-3">
                             <label class="form-label" for="Alt">@Language.GetString("design_AltTag")</label>
@@ -118,96 +117,102 @@
                           @Language.GetString("design_StyleSpecification")
                         </div>
                         <div class="col-12 col-lg-2">
-                            <label class="form-label" for="Alt"> Width</label>
+                            <label class="form-label" for="Width"> Width</label>
                             <input dir="ltr" type="text" class="form-control" asp-for="Styles.Width" placeholder=" ">
-                            <span class="field-validation-error" data-val-result="Alt"></span>
+                            <span class="field-validation-error" data-val-result="Width"></span>
                         </div>
                         <div class="col-12 col-lg-2">
-                            <label class="form-label" for="Alt">Height</label>
+                            <label class="form-label" for="Height">Height</label>
                             <input dir="ltr" type="text" class="form-control" asp-for="Styles.Height" placeholder=" ">
-                            <span class="field-validation-error" data-val-result="Alt"></span>
+                            <span class="field-validation-error" data-val-result="Height"></span>
                         </div>
                         <div class="col-12 col-lg-2">
-                            <label class="form-label" for="Alt">BorderTop</label>
+                            <label class="form-label" for="BorderTop">BorderTop</label>
                             <input dir="ltr" type="text" class="form-control" asp-for="Styles.BorderTop" placeholder=" ">
-                            <span class="field-validation-error" data-val-result="Alt"></span>
+                            <span class="field-validation-error" data-val-result="BorderTop"></span>
                         </div>
                         <div class="col-12 col-lg-2">
-                            <label class="form-label" for="Alt">BorderRight</label>
+                            <label class="form-label" for="BorderRight">BorderRight</label>
                             <input dir="ltr" type="text" class="form-control" asp-for="Styles.BorderRight" placeholder=" ">
-                            <span class="field-validation-error" data-val-result="Alt"></span>
+                            <span class="field-validation-error" data-val-result="BorderRight"></span>
                         </div>
                         <div class="col-12 col-lg-2">
-                            <label class="form-label" for="Alt">BorderBottom</label>
+                            <label class="form-label" for="BorderBottom">BorderBottom</label>
                             <input dir="ltr" type="text" class="form-control" asp-for="Styles.BorderBottom" placeholder=" ">
-                            <span class="field-validation-error" data-val-result="Alt"></span>
+                            <span class="field-validation-error" data-val-result="BorderBottom"></span>
                         </div>
                         <div class="col-12 col-lg-2">
-                            <label class="form-label" for="Alt">BorderLeft</label>
+                            <label class="form-label" for="BorderLeft">BorderLeft</label>
                             <input dir="ltr" type="text" class="form-control" asp-for="Styles.BorderLeft" placeholder=" ">
-                            <span class="field-validation-error" data-val-result="Alt"></span>
+                            <span class="field-validation-error" data-val-result="BorderLeft"></span>
                         </div>
                         <div class="col-12 col-lg-2">
-                            <label class="form-label" for="Alt">RoundedCorners</label>
+                            <label class="form-label" for="RoundedCorners">RoundedCorners</label>
                             <input dir="ltr" type="text" class="form-control" asp-for="Styles.RoundedCorners" placeholder=" ">
-                            <span class="field-validation-error" data-val-result="Alt"></span>
+                            <span class="field-validation-error" data-val-result="RoundedCorners"></span>
                         </div>
                         <div class="col-12 col-lg-2">
-                            <label class="form-label" for="Alt">FontFamily</label>
+                            <label class="form-label" for="FontFamily">FontFamily</label>
                             <input dir="ltr" type="text" class="form-control" asp-for="Styles.FontFamily" placeholder=" ">
-                            <span class="field-validation-error" data-val-result="Alt"></span>
+                            <span class="field-validation-error" data-val-result="FontFamily"></span>
                         </div>
                         <div class="col-12 col-lg-2">
-                            <label class="form-label" for="Alt">FontSize</label>
-                            <input dir="ltr" type="text" class="form-control" asp-for="Styles.FontSize" placeholder=" ">
-                            <span class="field-validation-error" data-val-result="Alt"></span>
+                            <label class="form-label" for="FontSize">FontSize</label>
+                            <input dir="ltr" type="text" class="form-control" asp-for="Styles.FontSize" placeholder="in pixel">
+                            <span class="field-validation-error" data-val-result="FontSize"></span>
                         </div>
                         <div class="col-12 col-lg-2">
-                            <label class="form-label">Color</label>
+                            <label class="form-label" for="Color">Color</label>
                             <input dir="ltr" type="text" class="form-control" asp-for="Styles.Color" placeholder=" ">
                             <span class="field-validation-error" data-val-result="ColoredBackground"></span>
                         </div>
                         <div class="col-12 col-lg-2">
-                            <label class="form-label" for="Alt">WordWrap</label>
+                            <label class="form-label" for="WordWrap">WordWrap</label>
                             <input dir="ltr" type="text" class="form-control" asp-for="Styles.WordWrap" placeholder=" ">
-                            <span class="field-validation-error" data-val-result="Alt"></span>
+                            <span class="field-validation-error" data-val-result="WordWrap"></span>
                         </div>
                         <div class="col-12 col-lg-2">
-                            <label class="form-label" for="Alt">LineHeight</label>
-                            <input dir="ltr" type="text" class="form-control" asp-for="Styles.LineHeight" placeholder=" ">
-                            <span class="field-validation-error" data-val-result="Alt"></span>
+                            <label class="form-label" for="LineHeight">LineHeight</label>
+                            <input dir="ltr" type="text" class="form-control" asp-for="Styles.LineHeight" placeholder="in pixel">
+                            <span class="field-validation-error" data-val-result="LineHeight"></span>
                         </div>
                         <div class="col-12 col-lg-2">
-                            <label class="form-label" for="Alt">PaddingTop</label>
-                            <input dir="ltr" type="text" class="form-control" asp-for="Styles.PaddingTop" placeholder=" ">
-                            <span class="field-validation-error" data-val-result="Alt"></span>
+                            <label class="form-label" for="PaddingTop">PaddingTop</label>
+                            <input dir="ltr" type="text" class="form-control" asp-for="Styles.PaddingTop" placeholder="in pixel">
+                            <span class="field-validation-error" data-val-result="PaddingTop"></span>
                         </div>
                         <div class="col-12 col-lg-2">
-                            <label class="form-label" for="Alt">PaddingRight</label>
-                            <input dir="ltr" type="text" class="form-control" asp-for="Styles.PaddingRight" placeholder=" ">
-                            <span class="field-validation-error" data-val-result="Alt"></span>
+                            <label class="form-label" for="PaddingRight">PaddingRight</label>
+                            <input dir="ltr" type="text" class="form-control" asp-for="Styles.PaddingRight" placeholder="in pixel">
+                            <span class="field-validation-error" data-val-result="PaddingRight"></span>
                         </div>
                         <div class="col-12 col-lg-2">
-                            <label class="form-label" for="Alt">PaddingBottom</label>
-                            <input dir="ltr" type="text" class="form-control" asp-for="Styles.PaddingBottom" placeholder=" ">
-                            <span class="field-validation-error" data-val-result="Alt"></span>
+                            <label class="form-label" for="PaddingBottom">PaddingBottom</label>
+                            <input dir="ltr" type="text" class="form-control" asp-for="Styles.PaddingBottom" placeholder="in pixel">
+                            <span class="field-validation-error" data-val-result="PaddingBottom"></span>
                         </div>
                         <div class="col-12 col-lg-2">
-                            <label class="form-label" for="Alt">PaddingLeft</label>
-                            <input dir="ltr" type="text" class="form-control" asp-for="Styles.PaddingLeft" placeholder=" ">
-                            <span class="field-validation-error" data-val-result="Alt"></span>
+                            <label class="form-label" for="PaddingLeft">PaddingLeft</label>
+                            <input dir="ltr" type="text" class="form-control" asp-for="Styles.PaddingLeft" placeholder="in pixel">
+                            <span class="field-validation-error" data-val-result="PaddingLeft"></span>
                         </div>
                         <div class="col-12 col-lg-2">
-                            <label class="form-label">BackgroundColor</label>
+                            <label class="form-label" for="BackgroundColor">BackgroundColor</label>
                             <input dir="ltr" type="text" id="BackgroundColor" class="form-control" asp-for="Styles.BackgroundColor" placeholder=" ">
                             <span class="field-validation-error" data-val-result="BackgroundColor"></span>
                         </div>
+                         <div class="col-12 col-lg-2">
+                            <label class="form-label" for="CustomCss">@Language.GetString("design_CustomCss")</label>
+                            <input dir="ltr" type="text" class="form-control" asp-for="Styles.CustomCss" placeholder=" ">
+                            <span class="field-validation-error" data-val-result="CustomCss"></span>
+                        </div>
 
                         <div class="col-12 col-lg-2">
-                            <label class="form-label">@Language.GetString("design_CustomCss")</label>
-                            <input dir="ltr" type="text" class="form-control" asp-for="Styles.CustomCss" placeholder=" ">
-                            <span class="field-validation-error" data-val-result="ColoredBackground"></span>
+                            <label class="form-label" for="AnimationDelay">@Language.GetString("design_AnimationDelay")</label>
+                            <input dir="ltr" type="text" class="form-control" asp-for="Styles.AnimationDelay" placeholder="in seconds">
+                            <span class="field-validation-error" data-val-result="AnimationDelay"></span>
                         </div>
+                        
             </div>
             <button type="submit" class="btn btn-success btn-sm float-end">
                 <i class="fa fa-check" aria-hidden="true"></i>&nbsp @Language.GetString("btn_Approved")

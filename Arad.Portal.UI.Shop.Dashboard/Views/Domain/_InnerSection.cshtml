@@ -9,7 +9,7 @@
     {
         lan = "en";
     }
-   
+
 }
 
 <div class="row justify-content-center">
@@ -20,9 +20,9 @@
 
 <div class="row">
     <div class="col-12">
-         <label class="form-label">@Language.GetString("Template_ContentType")</label>
+        <label class="form-label">@Language.GetString("Template_ContentType")</label>
         <br />
-        <select class="form-control selectpicker drpContentType" onchange="selectDrpContentType(this);"  cn ="@Model.ColNumber" rn="@ViewBag.RowNumber" sec = "@Model.Section"  data-live-search="true">
+        <select class="form-control selectpicker drpContentType" onchange="selectDrpContentType(this);" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section" data-live-search="true">
             <option value="0">@Language.GetString("AlertAndMessage_Choose")</option>
             <option value="1">@Language.GetString("Template_SystemModules")</option>
             <option value="2">@Language.GetString("Template_Editor")</option>
@@ -30,339 +30,339 @@
     </div>
 </div>
 
-<div class="row parent" cn ="@Model.ColNumber" rn="@ViewBag.RowNumber" sec = "@Model.Section" style="min-height:300px;">
+<div class="row parent" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section" style="min-height:300px;">
     <div class="col-12 modulePart d-none">
-         <select class="form-control selectpicker moduleList" data-live-search="true" asp-items="@(new SelectList(ViewBag.ModuleList,"Value","Text"))">
-         </select>
-         <br />
+        <select class="form-control selectpicker moduleList" data-live-search="true" asp-items="@(new SelectList(ViewBag.ModuleList,"Value","Text"))">
+        </select>
+        <br />
         <div class="d-flex justify-content-end">
-            <button  class="btn btn-success bg-gradient btn-sm float-end btnAddModule m-1" onclick="addModule(this);" cn ="@Model.ColNumber" rn="@ViewBag.RowNumber" sec = "@Model.Section"
-            type="button">@Language.GetString("btn_Select")</button>
+            <button class="btn btn-success bg-gradient btn-sm float-end btnAddModule m-1" onclick="addModule(this);" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section"
+                    type="button">
+                @Language.GetString("btn_Select")
+            </button>
         </div>
-        <br/>
-        <div class="paramsDiv" cn ="@Model.ColNumber" rn="@ViewBag.RowNumber" sec = "@Model.Section" ></div>
+        <br />
+        <div class="paramsDiv" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section"></div>
     </div>
-    <div class="col-12 editorPart d-none" >
+    <div class="col-12 editorPart d-none">
         <textarea id='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")' name='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")' class="form-control" rows="40"></textarea>
         <script>
-     
-               editorId = `editor_${'@Model.ColNumber'}_${'@ViewBag.RowNumber'}`;
-               var config =
-                        {
-                        height: 300,
-                        filebrowserUploadUrl: '/Image/DomainImageUpload',
-                        // filebrowserBrowseUrl: '/Image/ContentFileBrows',
-                        language: '@lan',
-                        scayt_sLang: '@lan',
-                        allowedContent: true,
-                        toolbarGroups: [
-                            { name: 'clipboard', groups: ['clipboard', 'undo'] },
-                            { name: 'editing', groups: ['find', 'selection', 'spellchecker'] },
-                            { name: 'links' },
-                            { name: 'insert' },
-                            { name: 'forms' },
-                            { name: 'tools' },
-                            { name: 'document', groups: ['mode', 'document', 'doctools'] },
-                            { name: 'others' },
-                            '/',
-                            { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
-                            { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi'] },
-                            { name: 'styles' },
-                            { name: 'colors' },
-                            { name: 'about' }
-                        ]
-                    };
-                config.font_names =
-                    'Arial/Arial, Helvetica, sans-serif;' +
-                    'Times New Roman/Times New Roman, Times, serif;' +
-                    'Verdana;' +
-                    'IRANSansWeb;' +
-                    'WeblogmaYekan;' +
-                    'Vazir;' +
-                    'Shabnam';
 
-                config.extraPlugins = '';
+            editorId = `editor_${'@Model.ColNumber'}_${'@ViewBag.RowNumber'}`;
+            var config =
+                     {
+                     height: 300,
+                     filebrowserUploadUrl: '/Image/DomainImageUpload',
+                     // filebrowserBrowseUrl: '/Image/ContentFileBrows',
+                     language: '@lan',
+                     scayt_sLang: '@lan',
+                     allowedContent: true,
+                     toolbarGroups: [
+                         { name: 'clipboard', groups: ['clipboard', 'undo'] },
+                         { name: 'editing', groups: ['find', 'selection', 'spellchecker'] },
+                         { name: 'links' },
+                         { name: 'insert' },
+                         { name: 'forms' },
+                         { name: 'tools' },
+                         { name: 'document', groups: ['mode', 'document', 'doctools'] },
+                         { name: 'others' },
+                         '/',
+                         { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+                         { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi'] },
+                         { name: 'styles' },
+                         { name: 'colors' },
+                         { name: 'about' }
+                     ]
+                 };
+             config.font_names =
+                 'Arial/Arial, Helvetica, sans-serif;' +
+                 'Times New Roman/Times New Roman, Times, serif;' +
+                 'Verdana;' +
+                 'IRANSansWeb;' +
+                 'WeblogmaYekan;' +
+                 'Vazir;' +
+                 'Shabnam';
 
-                //var editor = document.getElementById("editorCk");
-                CKEDITOR.replace(editorId, config);
-                CKEDITOR.dtd.$removeEmpty['i'] = false;
-                CKEDITOR.dtd.$removeEmpty['span'] = false;
+             config.extraPlugins = '';
+
+             //var editor = document.getElementById("editorCk");
+             CKEDITOR.replace(editorId, config);
+             CKEDITOR.dtd.$removeEmpty['i'] = false;
+             CKEDITOR.dtd.$removeEmpty['span'] = false;
         </script>
 
-         <button  class="btn btn-success bg-gradient btn-sm float-end btnHtmlSanitizer m-1" onclick="sinitize(this);" editorid ='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")' cn ="@Model.ColNumber" rn="@ViewBag.RowNumber" sec = "@Model.Section"
-            type="button">@Language.GetString("btn_Validation")</button>
+        <button class="btn btn-success bg-gradient btn-sm float-end btnHtmlSanitizer m-1" onclick="sinitize(this);" editorid='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")' cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section"
+                type="button">
+            @Language.GetString("btn_Validation")
+        </button>
     </div>
-    <div class="row finalColumnContent d-none" guid="@Model.RowGuid" classNames ="@Model.ColumnClassNames"></div>
-      <div class="row htmlColumnContentPreview d-none mx-2" guid="@Model.RowGuid" classNames="@Model.ColumnClassNames">
-      </div>
-          
-@*difference between these finalColumnContent and htmlColumnContentPreview is about modules the first one store with parameters and second one html of executed module will render *@
-  @*difference between moduleDatePreview and htmlColumnContentPreview is if we have more than one module in a column then mouleDataPreview is for the last module to show but htmlColumnContentPreview is all data of this columns*@ 
-   <div class="row moduleDataPreview d-none mx-2" guid="@Model.RowGuid" >
-   </div>
+    <div class="row finalColumnContent d-none" guid="@Model.RowGuid" classNames="@Model.ColumnClassNames"></div>
+    <div class="row htmlColumnContentPreview d-none mx-2" guid="@Model.RowGuid" classNames="@Model.ColumnClassNames">
+    </div>
+
+    @*difference between these finalColumnContent and htmlColumnContentPreview is about modules the first one store with parameters and second one html of executed module will render *@
+    @*difference between moduleDatePreview and htmlColumnContentPreview is if we have more than one module in a column then mouleDataPreview is for the last module to show but htmlColumnContentPreview is all data of this columns*@
+    <div class="row moduleDataPreview d-none mx-2" guid="@Model.RowGuid">
+    </div>
 </div>
 
 
 <script>
-    var domainId = "";
-    $(document).ready(function(){
-       
-    });
-    function addModule(sender)
-    {
-        debugger;
-        var parentDiv = $(sender).closest(".parent");
-        var colnumber =  $(sender).attr("cn");
-        var cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
-             
-             var selectedModuleName = $(parentDiv).find(".moduleList").find("option:selected").text();
-            var selectedModuleId = $(parentDiv).find(".moduleList").find("option:selected").val();
-            var paramDiv = $(parentDiv).find(".paramsDiv");
-            $.ajax({
-                 url:"@Url.Action("GetSpecificModule","Domain")"+"?moduleName="+selectedModuleName+"&id="+'@ViewBag.DomainId'+"&colCount="+cnt,
-                 type:'Get',
-                 statusCode:{
-                     200:function(data){
-                          $(paramDiv).html(data);
-                          $(".typeList").selectpicker();
-                     }
-                 }
-               });
-    }
+     var domainId = "";
+     $(document).ready(function(){
 
-    function sinitize(sender)
-    {
-     debugger;
-        editorId  =$(sender).attr("editorId");
-            var htmlData = CKEDITOR.instances[editorId].getData();
-            var dataToSend= JSON.stringify(htmlData);
-            $.ajax({
-                 url:"@Url.Action("SanitizeCkEditorContent","Domain")",
-                 type:'Post',
-                 data: dataToSend,
-                 contentType: "application/json; charset=utf-8",
-                 statusCode:{
-                     200:function(data){
-                      
-                        //show whether this html is valid or not
-                        if(!data.isvalid)
-                        {
-                          $('#mainToastBody').html('<i class="fas fa-exclamation-triangle"></i>@Language.GetString("AlertAndMessage_InvalidEditorContent")');
-                          $('#mainToastBody').addClass('alert-danger');
-                          var toastDiv = $("#mainToast");
-                          $("#toastPanel").show();
-                          var toast = new bootstrap.Toast(toastDiv);
-                          toast.show();
-                          setTimeout(function(){
-                              CKEDITOR.instances.editorId.setData(""),3000
-                          });
-                        }else //it is valid
-                        {
-                            $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_ValidEditorContent")');
-                            $('#mainToastBody').addClass('alert-success');
-                            var toast = new bootstrap.Toast($("#mainToast"));
-                            toast.show();
-                         
-                          var data = `<div target='editor'>${htmlData}</div>`;
-                          $(sender).closest(".parent").find(".finalColumnContent").append(data);
+     });
+     function addModule(sender)
+     {
+         debugger;
+         var parentDiv = $(sender).closest(".parent");
+         var colnumber =  $(sender).attr("cn");
+         var cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
 
-                          $(sender).closest(".parent").find(".htmlColumnContentPreview").append(htmlData);
-                        }
-                     }
-                 }
-               });
-    }
+              var selectedModuleName = $(parentDiv).find(".moduleList").find("option:selected").text();
+             var selectedModuleId = $(parentDiv).find(".moduleList").find("option:selected").val();
+             var paramDiv = $(parentDiv).find(".paramsDiv");
+             $.ajax({
+                  url:"@Url.Action("GetSpecificModule","Domain")"+"?moduleName="+selectedModuleName+"&id="+'@ViewBag.DomainId'+"&colCount="+cnt,
+                  type:'Get',
+                  statusCode:{
+                      200:function(data){
+                           $(paramDiv).html(data);
+                           $(".typeList").selectpicker();
+                      }
+                  }
+                });
+     }
 
-    function selectDrpContentType(sender)
-    {
+     function sinitize(sender)
+     {
       debugger;
-        var colnumber = $(sender).attr("cn");
-        domainId = $(sender).closest(`div[colnum='${colnumber}']`).attr("did");
-        cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
-      
-        var val = $(sender).val();
-        var targetDiv = $(sender).closest(".row").siblings(".row.parent");
-        //var targetDivId =`#${targetDivId}`;
-        switch(val)
-        {
-            case "1":
-            $(targetDiv).find(".modulePart").removeClass("d-none");
-            $(targetDiv).find(".editorPart").addClass("d-none");
-            break;
-            case "2":
-            $(targetDiv).find(".editorPart").removeClass("d-none");
-            $(targetDiv).find(".modulePart").addClass("d-none");
-            break;
-        }
-    }
-   function addModulesWithParams(sender)
-   {
-      debugger;
-       var obj = {};//an instance of ModuleWithParametersValue
-       obj.ParametersValue ={};
-        var targetParamsDiv = $(sender).closest(".paramsDiv");
-        var count = 0; 
-         var sliderId ="" ;
-         var domainId = "@ViewBag.DomainId";
-         var languageId = $("#languageId").val();
-        var parent =  $(sender).closest(".parent");
-        var targetDivId ="";
-        
-            obj.ModuleId = $(sender).closest(".modulePart").find(".moduleList option:selected").val()
-            obj.ModuleName = $(sender).closest(".modulePart").find(".moduleList option:selected").text();
-           
-            $(targetParamsDiv).find(".par").each(function(){
-                var id = $(this).attr("id");
-                switch(obj.ModuleName)
-                {
-                    case "ProductList":
-                    switch(id)
-                    {  
-                        case "templateSection":
-                        selectedTemplate = $("input[name='rdbProductTemplateList']:checked").val();
-                        break;
-                        case "typeList":
-                        selectedType = $(this).val();
-                        break;
-                        case "countToShow":
-                        count = parseInt($(this).val());
-                        break;
-                    }
-                    break;
-                    case "ContentList":
-                    switch(id)
-                    {
-                        case "templateSection":
-                        selectedTemplate = $("input[name='rdbContentTemplateList']:checked").val();
-                        switch(selectedTemplate)
-                        {
-                            case "First":
-                            count = 6;
-                            break;
-                            case "Second":
-                            count = 4;
-                            break;
-                            case "Third":
-                            count = 8;
-                            break;
-                        }
-                        break;
-                        case "typeList":
-                        selectedType = $(this).val();
-                        break;
-                        case "countToShow":
-                        if(!$(".countSection").hasClass("d-none"))
-                            count = parseInt($(this).val());
-                        break;
-                    }
-                    break;
-                    case "ImageTextSlider":
-                    if(id ="sliderList")
-                    {
-                        sliderId = $(this).val();
-                    }
-                    break;
-                    case "HorizantalStoreMenu":
-                    break;
-              }
-        });
-        var url = "";
-        switch(obj.ModuleName.toLowerCase())
-        {
-            case "productlist":
-                url = "@Url.Action("GetProductModuleViewComponent", "Domain")"+"?productType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count;
-                obj.ParametersValue.ProductTemplateDesign = selectedTemplate;
-                obj.ParametersValue.Count = count;
-                obj.ParametersValue.ProductOrContentType = selectedType;
-            break;
-            case "contentlist":
-                url = "@Url.Action("GetContentModuleViewComponent", "Domain")"+"?contentType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count;
-                obj.ParametersValue.ContentTemplateDesign = selectedTemplate;
-                obj.ParametersValue.Count = count;
-                 obj.ParametersValue.ProductOrContentType = selectedType;
-            break;
-            case "imagetextslider":
-              url = "@Url.Action("GetSliderViewComponent", "Domain")"+ "?sliderId="+ sliderId;
-              obj.ParametersValue.SliderId = sliderId;
-            break;
-            case "horizantalstoremenu":
-              url = "@Url.Action("GetStoreMenuViewComponent", "Domain")"+"?domainId=" + domainId +"&languageId="+ languageId;
-              obj.ParametersValue.DomainId = domainId;
-              obj.ParametersValue.languageId = languageId ;
-            break;
+         editorId  =$(sender).attr("editorId");
+             var htmlData = CKEDITOR.instances[editorId].getData();
+             var dataToSend= JSON.stringify(htmlData);
+             $.ajax({
+                  url:"@Url.Action("SanitizeCkEditorContent","Domain")",
+                  type:'Post',
+                  data: dataToSend,
+                  contentType: "application/json; charset=utf-8",
+                  statusCode:{
+                      200:function(data){
 
-        }
-       
-        
-        var data = JSON.stringify(obj);
-        data =`<div target='module'>${data}</div>`;
-        var finalData = $(parent).find(".finalColumnContent").append(data);
-
-        $.ajax({
-            type: "Get",
-            dataType: "html",
-            url: url, 
-            success: function (result) {
-             
-                if (result != "") {
-                    $(parent).find(".moduleDataPreview").html(result).removeClass("d-none");
-                    $(parent).find(".htmlColumnContentPreview").append(result);
-                    if(obj.ModuleName.toLowerCase() =="productlist")
-                    {
-                         $(".owl-carousel").owlCarousel({
-                                loop: true,
-                                rtl: true,
-                                navigation : true,
-                                /* autoplay: true,*/
-                                margin: 10,
-                                animateOut: 'fadeOut',
-                                animateIn: 'fadeIn',
-                                nav: true,
-                                /*dots: true,*/
-                                autoplayHoverPause: false,
-                                items: 3,
-                                navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>", "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
-                                responsive: {
-                                    0: {
-                                        items: 1
-                                    },
-                                    600: {
-                                        items: 3
-                                    },
-                                    1000: {
-                                        items: 5
-                                    }
-                                }
+                         //show whether this html is valid or not
+                         if(!data.isvalid)
+                         {
+                           $('#mainToastBody').html('<i class="fas fa-exclamation-triangle"></i>@Language.GetString("AlertAndMessage_InvalidEditorContent")');
+                           $('#mainToastBody').addClass('alert-danger');
+                           var toastDiv = $("#mainToast");
+                           $("#toastPanel").show();
+                           var toast = new bootstrap.Toast(toastDiv);
+                           toast.show();
+                           setTimeout(function(){
+                               CKEDITOR.instances.editorId.setData(""),3000
                            });
-                    }
-                    else if(obj.ModuleName.toLowerCase() =="imagetextslider")
-                    {
-                        debugger;
-                         $('.custSlider').owlCarousel({
-                                rtl: true,
-                                center: true,
-                                loop: true,
-                                margin: 0,
-                                nav: false,
-                                dots: false,
-                                autoplay: true,
-                                responsive: {
-                                    0: {
-                                        items: 1
-                                    },
-                                    600: {
-                                        items: 1
-                                    },
-                                    1000: {
-                                        items: 1
-                                    }
-                                }
+                         }else //it is valid
+                         {
+                             $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_ValidEditorContent")');
+                             $('#mainToastBody').addClass('alert-success');
+                             var toast = new bootstrap.Toast($("#mainToast"));
+                             toast.show();
+
+                           var data = `<div target='editor'>${htmlData}</div>`;
+                           $(sender).closest(".parent").find(".finalColumnContent").append(data);
+
+                           $(sender).closest(".parent").find(".htmlColumnContentPreview").append(htmlData);
+                         }
+                      }
+                  }
+                });
+     }
+
+     function selectDrpContentType(sender)
+     {
+       debugger;
+         var colnumber = $(sender).attr("cn");
+         domainId = $(sender).closest(`div[colnum='${colnumber}']`).attr("did");
+         cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
+
+         var val = $(sender).val();
+         var targetDiv = $(sender).closest(".row").siblings(".row.parent");
+         //var targetDivId =`#${targetDivId}`;
+         switch(val)
+         {
+             case "1":
+             $(targetDiv).find(".modulePart").removeClass("d-none");
+             $(targetDiv).find(".editorPart").addClass("d-none");
+             break;
+             case "2":
+             $(targetDiv).find(".editorPart").removeClass("d-none");
+             $(targetDiv).find(".modulePart").addClass("d-none");
+             break;
+         }
+     }
+
+    function doAnimations(elems) {
+                var animEndEv = "webkitAnimationEnd animationend";
+
+                elems.each(function () {
+                    var $this = $(this),
+                        $animationType = $this.data("animation");
+                    $this.addClass($animationType).one(animEndEv, function () {
+                        $this.removeClass($animationType);
+                    });
+                });
+            }
+
+
+    function addModulesWithParams(sender)
+    {
+       debugger;
+        var obj = {};//an instance of ModuleWithParametersValue
+        obj.ParametersValue ={};
+         var targetParamsDiv = $(sender).closest(".paramsDiv");
+         var count = 0;
+          var sliderId ="" ;
+          var domainId = "@ViewBag.DomainId";
+          var languageId = $("#languageId").val();
+         var parent =  $(sender).closest(".parent");
+         var targetDivId ="";
+
+             obj.ModuleId = $(sender).closest(".modulePart").find(".moduleList option:selected").val()
+             obj.ModuleName = $(sender).closest(".modulePart").find(".moduleList option:selected").text();
+
+             $(targetParamsDiv).find(".par").each(function(){
+                 var id = $(this).attr("id");
+                 switch(obj.ModuleName)
+                 {
+                     case "ProductList":
+                     switch(id)
+                     {
+                         case "templateSection":
+                         selectedTemplate = $("input[name='rdbProductTemplateList']:checked").val();
+                         break;
+                         case "typeList":
+                         selectedType = $(this).val();
+                         break;
+                         case "countToShow":
+                         count = parseInt($(this).val());
+                         break;
+                     }
+                     break;
+                     case "ContentList":
+                     switch(id)
+                     {
+                         case "templateSection":
+                         selectedTemplate = $("input[name='rdbContentTemplateList']:checked").val();
+                         switch(selectedTemplate)
+                         {
+                             case "First":
+                             count = 6;
+                             break;
+                             case "Second":
+                             count = 4;
+                             break;
+                             case "Third":
+                             count = 8;
+                             break;
+                         }
+                         break;
+                         case "typeList":
+                         selectedType = $(this).val();
+                         break;
+                         case "countToShow":
+                         if(!$(".countSection").hasClass("d-none"))
+                             count = parseInt($(this).val());
+                         break;
+                     }
+                     break;
+                     case "ImageTextSlider":
+                     if(id ="sliderList")
+                     {
+                         sliderId = $(this).val();
+                     }
+                     break;
+                     case "HorizantalStoreMenu":
+                     break;
+               }
+         });
+         var url = "";
+         switch(obj.ModuleName.toLowerCase())
+         {
+             case "productlist":
+                 url = "@Url.Action("GetProductModuleViewComponent", "Domain")"+"?productType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count;
+                 obj.ParametersValue.ProductTemplateDesign = selectedTemplate;
+                 obj.ParametersValue.Count = count;
+                 obj.ParametersValue.ProductOrContentType = selectedType;
+             break;
+             case "contentlist":
+                 url = "@Url.Action("GetContentModuleViewComponent", "Domain")"+"?contentType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count;
+                 obj.ParametersValue.ContentTemplateDesign = selectedTemplate;
+                 obj.ParametersValue.Count = count;
+                  obj.ParametersValue.ProductOrContentType = selectedType;
+             break;
+             case "imagetextslider":
+               url = "@Url.Action("GetSliderViewComponent", "Domain")"+ "?sliderId="+ sliderId;
+               obj.ParametersValue.SliderId = sliderId;
+             break;
+             case "horizantalstoremenu":
+               url = "@Url.Action("GetStoreMenuViewComponent", "Domain")"+"?domainId=" + domainId +"&languageId="+ languageId;
+               obj.ParametersValue.DomainId = domainId;
+               obj.ParametersValue.languageId = languageId ;
+             break;
+
+         }
+
+
+         var data = JSON.stringify(obj);
+         data =`<div target='module'>${data}</div>`;
+         var finalData = $(parent).find(".finalColumnContent").append(data);
+
+         $.ajax({
+             type: "Get",
+             dataType: "html",
+             url: url,
+             success: function (result) {
+                 debugger;
+                 if (result != "") {
+                     $(parent).find(".moduleDataPreview").html(result).removeClass("d-none");
+                     $(parent).find(".htmlColumnContentPreview").append(result);
+                     if(obj.ModuleName.toLowerCase() =="productlist")
+                     {
+                          $(".owl-carousel").owlCarousel({
+                                 loop: true,
+                                 rtl: true,
+                                 navigation : true,
+                                 /* autoplay: true,*/
+                                 margin: 10,
+                                 animateOut: 'fadeOut',
+                                 animateIn: 'fadeIn',
+                                 nav: true,
+                                 /*dots: true,*/
+                                 autoplayHoverPause: false,
+                                 items: 3,
+                                 navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>", "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
+                                 responsive: {
+                                     0: {
+                                         items: 1
+                                     },
+                                     600: {
+                                         items: 3
+                                     },
+                                     1000: {
+                                         items: 5
+                                     }
+                                 }
                             });
-                    }
-                   
-                }
-            },
-        });
-        
-   }
+                     }
+                     else if(obj.ModuleName.toLowerCase() =="imagetextslider")
+                     {
+                         debugger;
+                        
+                         AfterCarouselLoad();
+                     }
+
+                 }
+             },
+         });
+
+    }
 </script>

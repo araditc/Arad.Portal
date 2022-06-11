@@ -2,12 +2,16 @@
 @model Arad.Portal.DataLayer.Entities.General.SliderModule.Slider
 @{
     int i = 1;
-}
     
+}
+
 <div class="carousel slide" id="sliderCarousel">
     @if (Model != null)
     {
-          <div class="carousel-inner skyblue">
+        @*style="object-fit: @slide.ImageFit"*@
+      
+       
+        <div class="carousel-inner">
             @foreach (var slide in Model.Slides)
             {
                 if (slide.IsActive)
@@ -16,8 +20,11 @@
 
                     if (string.IsNullOrWhiteSpace(slide.Link))
                     {
-                        <div class="carousel-item @(i == 1 ? 'active' : '')" style="background-color: @itemBackground; position: relative; z-index:0;">
-                            <img data-animation="animated @($"{slide.TransActionType}")" src="@($"../../filemanager/GetScaledImageOnWidth?path=/{slide.ImageUrl}&width={200}")" alt="@slide.Alt" title="@slide.Title" />
+                        <div class='carousel-item @(i == 1 ? "active" : "")' 
+                        style="background-color: @itemBackground;position: relative; z-index:0;">
+                            <img data-animation="animated @($"{slide.TransActionType}")"
+                             src='@($"../../filemanager/GetScaledImageOnWidth?path=/{slide.ImageUrl}&width={1000}")'
+                             class="w-100" alt="@slide.Alt" title="@slide.Title"  />
                             @if (slide.Layers.Count > 0)
                             {
                                 foreach (var layer in slide.Layers)
@@ -31,8 +38,11 @@
                     }
                     else
                     {
-                        <a href="@slide.Link" target="@slide.Target" class="carousel-item @(i == 1 ? 'active' : '')" style="background-color: @itemBackground;">
-                            <img data-animation="animated @($"{slide.TransActionType}")" src="@($"../../filemanager/GetScaledImageOnWidth?path=/{slide.ImageUrl}&width={200}")" alt="@slide.Alt" title="@slide.Title" />
+                        <a href="@slide.Link" target="@slide.Target" class="carousel-item @(i == 1 ? "active" : "")" 
+                               style="background-color: @itemBackground;position: relative; z-index:0;">
+                            <img data-animation="animated @($"{slide.TransActionType}")"
+                              src='@($"../../filemanager/GetScaledImageOnWidth?path=/{slide.ImageUrl}&width={1000}")' 
+                               class="w-100" alt="@slide.Alt" title="@slide.Title"  />
                             @if (slide.Layers.Count > 0)
                             {
                                 foreach (var layer in slide.Layers)
@@ -44,50 +54,18 @@
                         </a>
                     }
                 }
-                @i += 1;
+                i += 1;
             }
         </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#sliderCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#sliderCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     }
 </div>
 
-
-<script on-content-loaded ="true">
-       /* Demo Scripts for Bootstrap Carousel and Animate.css article
-* on SitePoint by Maria Antonietta Perna
-*/
-        (function ($) {
-            //Function to animate slider captions
-            function doAnimations(elems) {
-                //Cache the animationend event in a variable
-                var animEndEv = "webkitAnimationEnd animationend";
-
-                elems.each(function () {
-                    var $this = $(this),
-                        $animationType = $this.data("animation");
-                    $this.addClass($animationType).one(animEndEv, function () {
-                        $this.removeClass($animationType);
-                    });
-                });
-            }
-
-            //Variables on page load
-            var $myCarousel = $("#sliderCarousel"),
-                $firstAnimatingElems = $myCarousel
-                    .find(".carousel-item:first")
-                    .find("[data-animation ^= 'animated']");
-
-            //Initialize carousel
-            $myCarousel.carousel();
-
-            //Animate captions in first slide on page load
-            doAnimations($firstAnimatingElems);
-
-            //Other slides to be animated on carousel slide event
-            $myCarousel.on("slide.bs.carousel", function (e) {
-                var $animatingElems = $(e.relatedTarget).find(
-                    "[data-animation ^= 'animated']"
-                );
-                doAnimations($animatingElems);
-            });
-        })(jQuery);
-</script>

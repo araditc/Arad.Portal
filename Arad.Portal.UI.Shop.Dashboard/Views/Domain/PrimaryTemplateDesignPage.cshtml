@@ -64,7 +64,6 @@
     <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
     <script src="~/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js"></script>
-    @*<script src="~/lib/ckeditor/ckeditor.js"></script>*@
     <script src="~/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js"></script>
     <script src="~/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js"></script>
     <script src="~/lib/owlCarousel/js/owl.carousel.min.js"></script>
@@ -170,10 +169,6 @@
             <div class="border border-3 border-secondary m-1 mx-0 dynamicHeaderPart p-2" style="min-height: 150px;">
                 <partial name="_PageDesign.cshtml" model='new TemplateSectionPart(){SectionTag = "headerSection", DomainId = @domainId}' />
             </div>
-
-           @* <div class="navbarMenu">
-                @await Component.InvokeAsync("StoreMenuModule", new { domainId = @domainId, languageId =""})
-            </div>*@
         </div>
     </header>
     <div class="container" id="PrimaryTemplateContainerPart">
@@ -375,7 +370,7 @@
                      <input dir="ltr" type="text" id="bgcolor" name="bgcolor" class="form-control" onchange="bgColorChange();"  placeholder=" ">
                 </div>
             </div>
-            @*<div class="row">
+            <div class="row">
                 <div class="col border pt-3">
                 <label class="form-label custom-file-label float-start pt-2" for="image">@Language.GetString("design_bgPhoto")</label>
                 <input accept="image/x-png,image/jpeg"
@@ -389,11 +384,7 @@
                 <div class="col">
                 <input type="button" id="deleteBgImage" class="btn btn-danger btn-sm m-2"  value="@Language.GetString("design_ImageDelete")"  />
                 </div>
-                </div>*@
-
-
-
-
+                </div>
         </div>
     </div>
 
@@ -436,7 +427,18 @@
                       $(".dynamicFooterPart"),css("background-color", "");
                  }
              }
-            
+             
+             function doAnimations(elems) {
+                var animEndEv = "webkitAnimationEnd animationend";
+
+                elems.each(function () {
+                    var $this = $(this),
+                        $animationType = $this.data("animation");
+                    $this.addClass($animationType).one(animEndEv, function () {
+                        $this.removeClass($animationType);
+                    });
+                });
+            }
 
              function addCustomClass(type)
              {
@@ -506,70 +508,104 @@
                    return colTemplate;
                }
 
+    function doAnimations(elems) {
+        var animEndEv = "webkitAnimationEnd animationend";
+
+        elems.each(function () {
+            var $this = $(this),
+                $animationType = $this.data("animation");
+            $this.addClass($animationType).one(animEndEv, function () {
+                $this.removeClass($animationType);
+            });
+        });
+    }
+
+    function AfterCarouselLoad()
+    {
+        debugger;
+          var $myCarousel = $("#sliderCarousel");
+          $firstAnimatingElems = $myCarousel
+                  .find(".carousel-item:first")
+                 .find("[data-animation ^= 'animated']");
+
+        var carousel = new bootstrap.Carousel($myCarousel);
+        doAnimations($firstAnimatingElems);
+           
+        var myCarousel = document.getElementById('sliderCarousel');
+        myCarousel.addEventListener("slide.bs.carousel", function (e) {
+            var $animatingElems = $(e.relatedTarget).find(
+                "[data-animation ^= 'animated']"
+            );
+            doAnimations($animatingElems);
+        });
+    }
+
        $(document).ready(function(){
 
+           debugger;
+          
 
-                              $("#bgcolor").colorpicker();
+            $("#bgcolor").colorpicker();
                                  
-                               changeScreen();
-                               $(window).resize(changeScreen);
+            changeScreen();
+            $(window).resize(changeScreen);
 
-                               $(".menu-area").mouseover(function () {
-                                       var windowSize = $(window).width();
-                                       if (windowSize > 975) {
-                                           $(this).addClass("show");
-                                           $(this).find(".dropdown-toggle").addClass("text-primary");
-                                           $(this).find(".mega-area").addClass("show");
-                                       }
-                               });
+            $(".menu-area").mouseover(function () {
+                    var windowSize = $(window).width();
+                    if (windowSize > 975) {
+                        $(this).addClass("show");
+                        $(this).find(".dropdown-toggle").addClass("text-primary");
+                        $(this).find(".mega-area").addClass("show");
+                    }
+            });
 
-                               $(".menu-area").mouseleave(function () {
-                                   var windowSize = $(window).width();
-                                   if (windowSize > 975) {
-                                       $(this).removeClass("show");
-                                       $(this).find(".dropdown-toggle").removeClass("text-primary");
-                                       $(this).find(".mega-area").removeClass("show");
-                                   }
-                               });
+            $(".menu-area").mouseleave(function () {
+                var windowSize = $(window).width();
+                if (windowSize > 975) {
+                    $(this).removeClass("show");
+                    $(this).find(".dropdown-toggle").removeClass("text-primary");
+                    $(this).find(".mega-area").removeClass("show");
+                }
+            });
 
-                               $(".nav-item .nav-link").mouseover(function () {
-                                       $(this).addClass("text-primary");
-                               });
-                               $(".nav-item .nav-link").mouseleave(function () {
-                                       $(this).removeClass("text-primary");
-                               });
+            $(".nav-item .nav-link").mouseover(function () {
+                    $(this).addClass("text-primary");
+            });
+            $(".nav-item .nav-link").mouseleave(function () {
+                    $(this).removeClass("text-primary");
+            });
 
-                               $(".custmDrp").click(function () {
+            $(".custmDrp").click(function () {
 
-                                   var item = $(this).parent().parent().siblings(".mega-area")
-                                   if (item.hasClass("show")) {
-                                       item.removeClass("show");
-                                   } else {
-                                       item.addClass("show");
-                                   }
-                               });
+                var item = $(this).parent().parent().siblings(".mega-area")
+                if (item.hasClass("show")) {
+                    item.removeClass("show");
+                } else {
+                    item.addClass("show");
+                }
+            });
 
-                               $("#btnFlags").click(function(){
-                                   var sender =  $(this);
-                                   $(this).parent().remove();
-                                   isMultiLingual = false;
-                               });
+            $("#btnFlags").click(function(){
+                var sender =  $(this);
+                $(this).parent().remove();
+                isMultiLingual = false;
+            });
 
-                               $("#btnIsShop").click(function(){
-                                   var sender = $(this);
-                                   $(this).parent().remove();
-                                   isShop = false;
+            $("#btnIsShop").click(function(){
+                var sender = $(this);
+                $(this).parent().remove();
+                isShop = false;
 
-                               });
+            });
 
 
-                       $(".btnHFStyle").click(function(){
-                           debugger;
-                           selectedSection = $(this).attr("sec");
-                           var offcanvas = $("#styleHeaderFooterDiv");
-                           var off = new bootstrap.Offcanvas(offcanvas);
-                           off.show();
-                       });
+            $(".btnHFStyle").click(function(){
+                debugger;
+                selectedSection = $(this).attr("sec");
+                var offcanvas = $("#styleHeaderFooterDiv");
+                var off = new bootstrap.Offcanvas(offcanvas);
+                off.show();
+            });
 
 
 
@@ -952,28 +988,7 @@
                                }
                            });
 
-                            $('.custSlider').owlCarousel({
-                                rtl: true,
-                                center: true,
-                                loop: true,
-                                margin: 0,
-                                nav: false,
-                                dots: false,
-                                autoplay: true,
-                                responsive: {
-                                    0: {
-                                        items: 1
-                                    },
-                                    600: {
-                                        items: 1
-                                    },
-                                    1000: {
-                                        items: 1
-                                    }
-                                }
-                            });
-
-
+                          
                            $(".likeLink i").click(function () {
                                if ($(this).hasClass("far fa-heart")) {
                                    $(this).removeClass("far fa-heart");

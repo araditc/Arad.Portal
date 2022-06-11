@@ -7,8 +7,12 @@
     <script src="https://use.fontawesome.com/250f8590fa.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://unpkg.com/popper.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta.2/css/bootstrap.css" />
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta.2/css/bootstrap.css" />-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" />
     <title></title>
     <style>
@@ -60,7 +64,7 @@
         }
 
         /* Animation delays */
-       /* .carousel-caption h3:first-child {
+        .carousel-caption h3:first-child {
             animation-delay: 1s;
         }
 
@@ -70,7 +74,7 @@
 
         .carousel-caption button {
             animation-delay: 3s;
-        }*/
+        }
 
         h1 {
             text-align: center;
@@ -84,9 +88,9 @@
             text-align: center;
         }
 
-        .p a {
-            text-decoration: underline;
-        }
+            .p a {
+                text-decoration: underline;
+            }
     </style>
 </head>
 <body>
@@ -96,16 +100,17 @@
 
                 <!-- carousel code -->
                 <div id="carouselExampleIndicators" class="carousel slide">
+                    <!--data-bs-ride="carousel"-->
                     <!--<ol class="carousel-indicators">
-                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                    </ol>-->
+        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+    </ol>-->
                     <div class="carousel-inner skyblue">
 
                         <!-- first slide -->
                         <div class="carousel-item active skyblue">
-                            <img src="D://download.jpg" data-animation="animated tada"/>
+                            <img src="E://images-2.jpg" data-animation="animated tada" class="w-100" />
                             <div class="carousel-caption d-md-block">
                                 <h3 data-animation="animated flash">
                                     This is the caption for slide 1
@@ -120,7 +125,7 @@
                         <!-- second slide -->
                         <div class="carousel-item skyblue">
                             <div class="carousel-caption d-md-block">
-                                <img src="D://download2.jpg" data-animation="animated wobble"/>
+                                <img src="E://images-3.jpg" data-animation="animated wobble" class="w-100" />
                                 <h3 class="icon-container" data-animation="animated jello">
                                     <span class="fa fa-heart"></span>
                                 </h3>
@@ -134,6 +139,7 @@
                         <!-- third slide -->
                         <div class="carousel-item skyblue">
                             <div class="carousel-caption d-md-block">
+                                <img src="E://images-4.jpg" data-animation="animated wobble" class="w-100" />
                                 <h3 class="icon-container" data-animation="animated zoomInLeft">
                                     <span class="fa fa-glass"></span>
                                 </h3>
@@ -160,11 +166,58 @@
         </div>
     </div>
    
-    <script>
+    <!--<script>
         /* Demo Scripts for Bootstrap Carousel and Animate.css article
 * on SitePoint by Maria Antonietta Perna
 */
         (function ($) {
+            //Function to animate slider captions
+           
+
+            //Variables on page load
+            var $myCarousel = $("#carouselExampleIndicators"),
+                $firstAnimatingElems = $myCarousel
+                    .find(".carousel-item:first")
+                    .find("[data-animation ^= 'animated']");
+
+            //Initialize carousel
+            /* $myCarousel.carousel();*/
+            var carousel = new bootstrap.Carousel($myCarousel)
+
+            //Animate captions in first slide on page load
+            doAnimations($firstAnimatingElems);
+
+            //Other slides to be animated on carousel slide event
+            
+        })(jQuery);
+
+        function doAnimations(elems) {
+            //Cache the animationend event in a variable
+            var animEndEv = "webkitAnimationEnd animationend";
+
+            elems.each(function () {
+                var $this = $(this),
+                    $animationType = $this.data("animation");
+                $this.addClass($animationType).one(animEndEv, function () {
+                    $this.removeClass($animationType);
+                });
+            });
+        }
+        var myCarousel = document.getElementById('carouselExampleIndicators');
+
+        myCarousel.addEventListener("slide.bs.carousel", function (e) {
+            var $animatingElems = $(e.relatedTarget).find(
+                "[data-animation ^= 'animated']"
+            );
+            doAnimations($animatingElems);
+        });
+
+    </script>-->
+    <script>
+        /* Demo Scripts for Bootstrap Carousel and Animate.css article
+* on SitePoint by Maria Antonietta Perna
+*/
+        $(document).ready(function () {
             //Function to animate slider captions
             function doAnimations(elems) {
                 //Cache the animationend event in a variable
@@ -186,20 +239,24 @@
                     .find("[data-animation ^= 'animated']");
 
             //Initialize carousel
-            $myCarousel.carousel();
+            /*$myCarousel.carousel();*/
+            var carousel = new bootstrap.Carousel($myCarousel)
 
             //Animate captions in first slide on page load
             doAnimations($firstAnimatingElems);
 
             //Other slides to be animated on carousel slide event
-            $myCarousel.on("slide.bs.carousel", function (e) {
+            var myCarousel = document.getElementById('carouselExampleIndicators');
+            myCarousel.addEventListener("slide.bs.carousel", function (e) {
                 var $animatingElems = $(e.relatedTarget).find(
                     "[data-animation ^= 'animated']"
                 );
                 doAnimations($animatingElems);
             });
-        })(jQuery);
 
+        });
+            
+     
     </script>
 </body>
 </html>

@@ -1,10 +1,6 @@
 ﻿using Arad.Portal.DataLayer.Entities.General.DesignStructure;
 using MongoDB.Bson.Serialization.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Arad.Portal.DataLayer.Models.DesignStructure
 {
@@ -36,5 +32,19 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
 
         [BsonIgnoreIfNull]
         public string SliderId { get; set; }
+
+        [BsonIgnoreIfNull]
+        public Entities.General.SliderModule.TransActionType LoadAnimation { get; set; }
+
+        [BsonIgnoreIfNull]
+        public LoadAnimationType LoadAnimationType { get; set; }
+
+
+    }
+
+    public enum LoadAnimationType
+    {
+        InnerElements,
+        OuterElement
     }
 }

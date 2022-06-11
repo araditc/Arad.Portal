@@ -1,7 +1,9 @@
 ﻿using Arad.Portal.DataLayer.Contracts.General.Content;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using Arad.Portal.DataLayer.Entities.General.DesignStructure;
+using Arad.Portal.DataLayer.Entities.General.SliderModule;
 using Arad.Portal.DataLayer.Models.Content;
+using Arad.Portal.DataLayer.Models.DesignStructure;
 using Arad.Portal.DataLayer.Models.Shared;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,7 +32,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
                 _lanRepository = lanRepository;
                 _environment = env;
         }
-        public IViewComponentResult Invoke(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, int count)
+        public IViewComponentResult Invoke(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, int count, TransActionType loadAnimation, LoadAnimationType loadAnimationType)
         {
             var defaultCulture = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
             List<ContentGlance> lst = new List<ContentGlance>();
@@ -38,22 +40,24 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
             CultureInfo currentCultureInfo = new(defLangSymbol, false);
             var langId = _lanRepository.FetchBySymbol(defLangSymbol);
             ViewBag.CurLangId = langId;
-           
+
+            ViewBag.LoadAnimation = loadAnimation;
+            ViewBag.LoadAnimationType = loadAnimationType;
             //switch(selectionTemplate)
             //{
-                //case ContentTemplateDesign.First:
-                //    cnt = 6;
-                //    break;
-                //case ContentTemplateDesign.Second:
-                //    cnt = 4;
-                //    break;
-                //case ContentTemplateDesign.Third:
-                //    cnt = 8;
-                //    break;
-                //case ContentTemplateDesign.Forth :
-                //case ContentTemplateDesign.Fifth :
-                //    cnt = count.Value;
-                //    break;
+            //case ContentTemplateDesign.First:
+            //    cnt = 6;
+            //    break;
+            //case ContentTemplateDesign.Second:
+            //    cnt = 4;
+            //    break;
+            //case ContentTemplateDesign.Third:
+            //    cnt = 8;
+            //    break;
+            //case ContentTemplateDesign.Forth :
+            //case ContentTemplateDesign.Fifth :
+            //    cnt = count.Value;
+            //    break;
             //}
             lst = _contentRepository.GetSpecialContent(count,contentType, _environment.IsDevelopment());
             switch (selectionTemplate)

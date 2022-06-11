@@ -1,4 +1,5 @@
-﻿<div class="row par mx-2" id="templateSection">
+﻿@using Arad.Portal.DataLayer.Entities.General.SliderModule;
+<div class="row par mx-2" id="templateSection">
      <label class="form-label" >@Language.GetString("ViewTemplate")</label><br/>
     @foreach(SelectImageListModel option in ViewBag.ContentTemplateList)
     {
@@ -17,6 +18,11 @@
     <div class="col-12 countSection d-none" >
           <label class="form-label" >@Language.GetString("CountToShow")</label><br/>
           <input type="number" id="countToShow" class="form-control par" value="" />
+    </div>
+    <div class="col-12 text-center loadAnimate">
+        <label class="form-label" for="LoadAnimation">@Language.GetString("design_LayerType")</label>
+        <select id="LoadAnimation" class="form-control selectpicker mt-2 par" asp-items="Html.GetEnumSelectList<TransActionType>()"></select>
+        <span class="field-validation-error" data-val-result="LoadAnimation"></span>
     </div>
     <div class="col-12">
         <button id="btnAddModuleWithParameters" onclick="addModulesWithParams(this);"

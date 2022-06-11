@@ -4,11 +4,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*@section Styles{
-<link href="~/css/form.css" rel="stylesheet" />
-<link href="~/css/data-grid.css" rel="stylesheet" />
-}*@
-
 
 <div id="add" class="collapse">
     <div class="card">
@@ -124,64 +119,6 @@
         </table>
     </div>
 </div>
-
-
-@*<div class="table">
-
-
-    <div id="table" class="table-body">
-    @{
-    if (Model.Count != 0)
-    {
-    int i = 0;
-
-    @foreach (var item in Model)
-    {
-    <div class="table-row">
-    <div class="card-table @(item.IsActive ? "active":"notActive")">
-    <div class="row m-0">
-    <div class="table-col col-xs-12 col-md-1 d-none d-lg-block">
-    <span>@(++i)</span>
-    </div>
-    <div class="table-col col-xs-12 col-lg-7">
-    <span class="mo-title">@Language.GetString("Title") :</span>
-    <span>@item.Title</span>
-    </div>
-    <div class="table-col col-xs-12 col-lg-2">
-    <span class="mo-title">@Language.GetString("ActivationState")</span>
-    <label class="switch">
-    <input class="checkbox" type="checkbox" id="active" checked="@item.IsActive" data-id="@item.SliderId" value="@item.IsActive">
-    <span class="slider round"></span>
-    </label>
-    </div>
-    <div class="table-col col-xs-12 col-lg-2">
-    <div class="">
-    <a asp-action="Slides" asp-controller="Slider"  asp-route-id="@item.SliderId" class="btn btn-outline-primary btn-xs">
-    @Language.GetString("design_Slides")
-    </a>
-
-    <a id="editRecord" data-id="@item.SliderId" href="#" class="btn btn-outline-primary btn-xs">
-    @Language.GetString("btn_Detail")
-    </a>
-
-    <button id="deleteRecord" data-id="@item.SliderId" href="#" data-toggle="modal" type="button" class="btn btn-outline-danger btn-xs">
-    @Language.GetString("btn_Delete")
-    </button>
-
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    }
-    }
-    else
-    {
-    <div class="empty text-center">@Language.GetString("AlertAndMessage_NoDataToShow")</div>
-    }
-    }
-    </div>
-    </div>*@
 
 
 
