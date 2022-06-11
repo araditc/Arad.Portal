@@ -4,7 +4,7 @@
     int i = 1;
 }
     
-<div class="carousel slide">
+<div class="carousel slide" id="sliderCarousel">
     @if (Model != null)
     {
           <div class="carousel-inner skyblue">
@@ -71,7 +71,7 @@
             }
 
             //Variables on page load
-            var $myCarousel = $("#carouselExampleIndicators"),
+            var $myCarousel = $("#sliderCarousel"),
                 $firstAnimatingElems = $myCarousel
                     .find(".carousel-item:first")
                     .find("[data-animation ^= 'animated']");
