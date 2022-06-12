@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 @using System.Globalization;
+@using Arad.Portal.DataLayer.Entities.General.SliderModule;
 @using Arad.Portal.GeneralLibrary.Utilities;
 
 @{
@@ -202,12 +203,21 @@
         </div>
     </footer>
 
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="styleDiv" aria-labelledby="offcanvasExampleLabel">
+    @*******row design offcanvas*******************@
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="styleDiv" aria-labelledby="offcanvasLabel">
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasExampleLabel">@Language.GetString("design_RowStyles")</h5>
+            <h5 class="offcanvas-title" id="offcanvasLabel">@Language.GetString("design_RowStyles")</h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
+
+             <div class="row">
+
+                <div class="col">
+                     <label class="form-label">@Language.GetString("design_bgColor")</label>
+                     <input dir="ltr" type="text" id="bgcolor" name="bgcolor" class="form-control" onchange="rowBgColorChange();"  placeholder=" ">
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col">@Language.GetString("design_VerticalPadding")</div>
@@ -307,9 +317,11 @@
         </div>
     </div>
 
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="colStylesDiv" aria-labelledby="offcanvashfExampleLabel">
+
+    @*****************column design offcanvas************************@
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="colStylesDiv" aria-labelledby="offcanvasCoLabel">
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvashfExampleLabel">borders</h5>
+            <h5 class="offcanvas-title" id="offcanvasColLabel">borders</h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
          <div class="offcanvas-body">
@@ -357,9 +369,10 @@
 
     </div>
 
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="styleHeaderFooterDiv" aria-labelledby="offcanvashfExampleLabel">
+    @********************header and footer design offcanvas**************************@
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="styleHeaderFooterDiv" aria-labelledby="offcanvashfLabel">
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvashfExampleLabel">@Language.GetString("design_bg")</h5>
+            <h5 class="offcanvas-title" id="offcanvashfLabel">@Language.GetString("design_bg")</h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
@@ -376,10 +389,14 @@
                 <input accept="image/x-png,image/jpeg"
                 type="file" class="btn btn-sm bg-gradient float-end" name="image" id="image" onchange="getURL(this)" />
                 </div>
-                <div class="col mb-1">
+                <div class="col my-1">
                 <label class="form-label">@Language.GetString("tbl_AspectRatioImage")</label>
                 <select id="imgAspectRatio" class="form-control selectpicker" data-live-search="true"
                 asp-items="@(new SelectList(ViewBag.ImageRatio,"Value","Text"))"></select>
+                </div>
+                <div class="col my-1">
+                     <label class="form-label" for="ImageFit">Image Fit</label>
+                      <select name="ImageFit" id="ImageFit" class="form-control" asp-items="Html.GetEnumSelectList<ImageFit>()"></select>
                 </div>
                 <div class="col">
                 <input type="button" id="deleteBgImage" class="btn btn-danger btn-sm m-2"  value="@Language.GetString("design_ImageDelete")"  />
