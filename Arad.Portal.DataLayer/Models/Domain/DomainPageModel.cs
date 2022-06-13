@@ -30,7 +30,6 @@ namespace Arad.Portal.DataLayer.Models.Domain
         public bool IsMultiLinguals { get; set; }
 
         public bool IsShop { get; set; }
-
-        //public PageType PageType { get; set; }
+        
     }
 }

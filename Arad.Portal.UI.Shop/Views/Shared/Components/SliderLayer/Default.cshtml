@@ -3,79 +3,59 @@
 @model Arad.Portal.DataLayer.Entities.General.SliderModule.Layer
 @{
     var layer = Model;
-
-    if (layer.Type == LayerType.Text)
-    {
-        if (string.IsNullOrWhiteSpace(layer.Link))
-        {
-            <figcaption id="@layer.Attributes.Id"
-                        class="animate__animated @($"animate__{layer.TransActionType}") @layer.Attributes.Class "
-                        title="@layer.Attributes.Title"
-                        alt="@layer.Attributes.Alt"
-                        style="position: absolute; z-index: 999; 
-                               top: @layer.Position.Top; 
-                               right: @layer.Position.Right; bottom: @layer.Position.Bottom; 
-                               left: @layer.Position.Left; border-top: @layer.Styles.BorderTop; 
-                               border-right: @layer.Styles.BorderRight; border-bottom: @layer.Styles.BorderBottom; 
-                               border-left: @layer.Styles.BorderLeft; padding-top: @layer.Styles.PaddingTop; 
-                               padding-right: @layer.Styles.PaddingRight; padding-bottom: @layer.Styles.PaddingBottom; 
-                               padding-left: @layer.Styles.PaddingLeft; border-radius: @layer.Styles.RoundedCorners; 
-                               line-height: @layer.Styles.LineHeight; font-family: @layer.Styles.FontFamily; 
-                               font-size: @layer.Styles.FontSize; color: @layer.Styles.Color; 
-                               background-color: @layer.Styles.BackgroundColor; word-wrap: @layer.Styles.WordWrap;
-                               @layer.Styles.CustomCss;">
-                <span>@layer.Content</span>
-            </figcaption>
-        }
-        else
-        {
-            <a id="@layer.Attributes.Id" href="@layer.Link" target="@layer.Target"
-               class="@layer.Attributes.Class"
-               title="@layer.Attributes.Title"
-               alt="@layer.Attributes.Alt"
-               style="position: absolute; z-index: 999; top: @layer.Position.Top; 
-                      right: @layer.Position.Right; bottom: @layer.Position.Bottom; 
-                      left: @layer.Position.Left; border-top: @layer.Styles.BorderTop; 
-                      border-right: @layer.Styles.BorderRight; border-bottom: @layer.Styles.BorderBottom; 
-                      border-left: @layer.Styles.BorderLeft; padding-top: @layer.Styles.PaddingTop; 
-                      padding-right: @layer.Styles.PaddingRight; padding-bottom: @layer.Styles.PaddingBottom; 
-                      padding-left: @layer.Styles.PaddingLeft; border-radius: @layer.Styles.RoundedCorners; 
-                      line-height: @layer.Styles.LineHeight; font-family: @layer.Styles.FontFamily; 
-                      font-size: @layer.Styles.FontSize; color: @layer.Styles.Color; 
-                      background-color: @layer.Styles.BackgroundColor; word-wrap: @layer.Styles.WordWrap; 
-                      @layer.Styles.CustomCss;">
-                <span>@layer.Content</span>
-            </a>
-        }
-    }
-    else
-    {
-        <a id="@layer.Attributes.Id" href="@layer.Link" target="@layer.Target"
-           class="btn animate__animated @($"animate__{layer.TransActionType}") @layer.Attributes.Class"
-           title="@layer.Attributes.Title"
-           alt="@layer.Attributes.Alt"
-           style="position: absolute; z-index: 999;
-                                                                                    top: @layer.Position.Top;
-                                                                                    right: @layer.Position.Right;
-                                                                                    bottom: @layer.Position.Bottom;
-                                                                                    left: @layer.Position.Left;
-                                                                                    border-top:@layer.Styles.BorderTop;
-                                                                                    border-right: @layer.Styles.BorderRight;
-                                                                                    border-bottom: @layer.Styles.BorderBottom;
-                                                                                    border-left: @layer.Styles.BorderLeft;
-                                                                                    padding-top: @layer.Styles.PaddingTop;
-                                                                                    padding-right: @layer.Styles.PaddingRight;
-                                                                                    padding-bottom: @layer.Styles.PaddingBottom;
-                                                                                    padding-left: @layer.Styles.PaddingLeft;
-                                                                                    border-radius: @layer.Styles.RoundedCorners;
-                                                                                    line-height: @layer.Styles.LineHeight;
-                                                                                    font-family: @layer.Styles.FontFamily;
-                                                                                    font-size: @layer.Styles.FontSize;
-                                                                                    color: @layer.Styles.Color;
-                                                                                    background-color: @layer.Styles.BackgroundColor;
-                                                                                    word-wrap: @layer.Styles.WordWrap;
-                                                                                    @layer.Styles.CustomCss;">
-            <span>@layer.Content</span>
-        </a>
-    }
+       <div 
+          data-animation="animated @($"{layer.TransActionType}")"
+          class="@layer.Attributes.Class" style="z-index: 999; 
+                                       position : absolute;
+                                       top: @layer.Position.Top; 
+                                       right: @layer.Position.Right; bottom: @layer.Position.Bottom; 
+                                       left: @layer.Position.Left; border-top: @layer.Styles.BorderTop; 
+                                       animation-delay:  @layer.Styles.AnimationDelay;
+                                       border-right: @layer.Styles.BorderRight; border-bottom: @layer.Styles.BorderBottom; 
+                                       border-left: @layer.Styles.BorderLeft; padding-top: @layer.Styles.PaddingTop; 
+                                       padding-right: @layer.Styles.PaddingRight; padding-bottom: @layer.Styles.PaddingBottom; 
+                                       padding-left: @layer.Styles.PaddingLeft; border-radius: @layer.Styles.RoundedCorners; 
+                                       background-color: @layer.Styles.BackgroundColor; 
+                                       @layer.Styles.CustomCss;">
+            @if (layer.Type == LayerType.Text)
+            {
+                @if (string.IsNullOrWhiteSpace(layer.Link))
+                {
+                    <figcaption id="@layer.Attributes.Id"
+                                title="@layer.Attributes.Title"
+                                alt="@layer.Attributes.Alt"
+                                style="line-height: @layer.Styles.LineHeight; font-family: @layer.Styles.FontFamily;
+                                       font-size: @layer.Styles.FontSize; color: @layer.Styles.Color;
+                                       word-wrap: @layer.Styles.WordWrap;">
+                            
+                        <span >@layer.Content</span>
+                    </figcaption>
+                }
+                else
+                {
+                    <a id="@layer.Attributes.Id" href="@layer.Link" target="@layer.Target"
+                       title="@layer.Attributes.Title"
+                       alt="@layer.Attributes.Alt"
+                       style="line-height: @layer.Styles.LineHeight; font-family: @layer.Styles.FontFamily;
+                                       font-size: @layer.Styles.FontSize; color: @layer.Styles.Color;
+                                       word-wrap: @layer.Styles.WordWrap;">
+                        <span >@layer.Content</span>
+                    </a>
+                }
+            }
+            else
+            {
+                <a id="@layer.Attributes.Id" href="@layer.Link" target="@layer.Target"
+                   class="btn"
+                   title="@layer.Attributes.Title"
+                   alt="@layer.Attributes.Alt"
+                   style="line-height: @layer.Styles.LineHeight; font-family: @layer.Styles.FontFamily;
+                                       font-size: @layer.Styles.FontSize; color: @layer.Styles.Color;
+                                       word-wrap: @layer.Styles.WordWrap;">
+                    <span>@layer.Content</span>
+                </a>
+            }
+    </div>
 }
+
+

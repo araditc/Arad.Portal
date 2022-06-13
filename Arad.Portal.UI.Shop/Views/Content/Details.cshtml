@@ -82,7 +82,7 @@
             @foreach (var img in Model.Images)
             {
                 <div class="carousel-item active">
-                    <img src='@($"../filemanager/getscaledimageOnWidth?path={img.Url}&width={1000}")' class="d-block w-100" alt="...">
+                    <img src='@($"../filemanager/getscaledimageOnWidth?path={img.Url}&width={1000}")' class="d-block w-100" alt="@img.Title">
                 </div>
             }
         </div>

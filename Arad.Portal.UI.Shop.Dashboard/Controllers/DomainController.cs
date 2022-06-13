@@ -290,9 +290,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetProductModuleViewComponent(ProductOrContentType productType, ProductTemplateDesign selectionTemplate, int count)
+        public IActionResult GetProductModuleViewComponent(ProductOrContentType productType, ProductTemplateDesign selectionTemplate,
+            int count, DataLayer.Entities.General.SliderModule.TransActionType loadAnimation, LoadAnimationType loadAnimationType)
         {
-            return ViewComponent("SpecialProduct", new { productType, selectionTemplate, count });
+            return ViewComponent("SpecialProduct", new { productType, selectionTemplate, count, loadAnimation, loadAnimationType });
         }
 
         public IActionResult GetMenuModuleViewComponent(string domainId, string languageId)
@@ -381,9 +382,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         //}
 
         [HttpGet]
-        public IActionResult GetContentModuleViewComponent(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, int? count)
+        public IActionResult GetContentModuleViewComponent(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, int? count,
+            DataLayer.Entities.General.SliderModule.TransActionType loadAnimation, LoadAnimationType loadAnimationType)
         {
-            return ViewComponent("ContentTemplates", new { contentType, selectionTemplate, count });
+            return ViewComponent("ContentTemplates", new { contentType, selectionTemplate, count, loadAnimation, loadAnimationType });
         }
 
         [HttpGet]

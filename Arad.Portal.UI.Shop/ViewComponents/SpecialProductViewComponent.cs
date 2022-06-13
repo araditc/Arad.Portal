@@ -3,6 +3,8 @@ using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using Arad.Portal.DataLayer.Contracts.Shop.Product;
 using Arad.Portal.DataLayer.Entities.General.DesignStructure;
+using Arad.Portal.DataLayer.Entities.General.SliderModule;
+using Arad.Portal.DataLayer.Models.DesignStructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +34,8 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             _currencyRepository = currencyRepository;
         }
 
-        public  IViewComponentResult Invoke(ProductOrContentType productType, ProductTemplateDesign selectionTemplate, int count)
+        public  IViewComponentResult Invoke(ProductOrContentType productType, ProductTemplateDesign selectionTemplate, 
+            int count, TransActionType loadAnimation, LoadAnimationType loadAnimationType)
         {
             var defaultCulture = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
             var defLangSymbol = defaultCulture.Split("|")[0][2..];
@@ -44,7 +47,8 @@ namespace Arad.Portal.UI.Shop.ViewComponents
 
             var langId = _lanRepository.FetchBySymbol(defLangSymbol);
             ViewBag.CurLangId = langId;
-            
+            ViewBag.LoadAnimation = loadAnimation;
+            ViewBag.LoadAnimationType = loadAnimationType;
             var lst = _productRepository.GetSpecialProducts(count, currencyDto.CurrencyId, productType);
             return selectionTemplate switch
             {

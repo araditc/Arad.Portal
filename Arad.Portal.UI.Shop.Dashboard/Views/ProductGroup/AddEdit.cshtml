@@ -139,12 +139,12 @@
                                     @if(Model.GroupImage != null && Model.GroupImage.Url != null)
                                     {
                                           <img id="groupImage" onclick="ViewImage('@Model.GroupImage.Url')" style="cursor: pointer" imgid="@(!string.IsNullOrWhiteSpace(@Model.GroupImage.ImageId) ? @Model.GroupImage.ImageId : "-1")"
-                                         class="profile-user-img img-fluid img-circle" src="@(!string.IsNullOrWhiteSpace(@Model.GroupImage.Content) ? @Model.GroupImage.Content : "/imgs/NoImage.png")" alt="productGroup Image">
+                                         class="profile-user-img img-fluid img-circle" src="@(!string.IsNullOrWhiteSpace(@Model.GroupImage.Content) ? @Model.GroupImage.Content : "/imgs/NoImage.png")" alt="@(!string.IsNullOrWhiteSpace(@Model.GroupImage.Title) ? @Model.GroupImage.Title : "productGroup Image")">
                                     }
                                     else
                                     {
                                          <img id="groupImage" onclick="ViewImage('@Model.GroupImage.Url')" style="cursor: pointer" imgid="@(!string.IsNullOrWhiteSpace(@Model.GroupImage.ImageId) ? @Model.GroupImage.ImageId : "-1")"
-                                         class="profile-user-img img-fluid img-circle" src="@(!string.IsNullOrWhiteSpace(@Model.GroupImage.Content) ? @Model.GroupImage.Content : "/imgs/NoImage.png")" alt="productGroup Image">
+                                         class="profile-user-img img-fluid img-circle" src="@(!string.IsNullOrWhiteSpace(@Model.GroupImage.Content) ? @Model.GroupImage.Content : "/imgs/NoImage.png")" alt="@(!string.IsNullOrWhiteSpace(@Model.GroupImage.Title) ? @Model.GroupImage.Title : "productGroup Image")">
                                     }
 
                                 </div>

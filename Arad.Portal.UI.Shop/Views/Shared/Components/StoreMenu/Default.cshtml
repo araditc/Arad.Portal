@@ -8,165 +8,167 @@
         color : darkblue;
     }
 </style>
-<div class="border-top-0">
-    <div class="row gx-0">
-        <div class="col-12">
+<div class="navbarMenu">
+    <div class="border-top-0">
+        <div class="row gx-0">
+            <div class="col-12">
         
-            <nav class="navbar navbar-expand-lg navbar-light bg-light rounded mt-0">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light rounded mt-0">
               
-                <div class="collapse navbar-collapse" id="navbar">
-                    <ul class="navbar-nav  @(ViewBag.dir=="rtl" ? "ml-auto" : "mr-auto")">
-                        @foreach (var item in Model.Where(_ => _.ParentId == null && _.IsFull).OrderBy(_ => _.Order))
-                        {
-                            if (item.Childrens.Count() == 0)
+                    <div class="collapse navbar-collapse" id="navbar">
+                        <ul class="navbar-nav  @(ViewBag.dir=="rtl" ? "ml-auto" : "mr-auto")">
+                            @foreach (var item in Model.Where(_ => _.ParentId == null && _.IsFull).OrderBy(_ => _.Order))
                             {
-                                <li class="nav-item">
-                                    <a class="nav-link" href="@item.Url">@item.MenuTitle.Name</a>
-                                </li>
-                            }
-                            else
-                            {
-                                <li class="nav-item dropdown menu-area wiscr d-none">
-                                    <a class="nav-link dropdown-toggle" href="@item.Url" id='@($"st_mn_{item.MenuCode}")'
-                                       data-toggle="dropdown" >
-                                        @item.MenuTitle.Name
-                                    </a>
-                                    <div class="dropdown-menu ps-1 mega-area" aria-labelledby='@($"st_mn_{item.MenuCode}")'>
+                                if (item.Childrens.Count() == 0)
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="@item.Url">@item.MenuTitle.Name</a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item dropdown menu-area wiscr d-none">
+                                        <a class="nav-link dropdown-toggle" href="@item.Url" id='@($"st_mn_{item.MenuCode}")'
+                                           data-toggle="dropdown" >
+                                            @item.MenuTitle.Name
+                                        </a>
+                                        <div class="dropdown-menu ps-1 mega-area" aria-labelledby='@($"st_mn_{item.MenuCode}")'>
 
-                                        <div class="d-none d-lg-flex" style="height: 50vh !important; width: 80%; flex-wrap: wrap; flex-direction: column">
-                                            @for (int i = 0; i < item.Childrens.Count; i++)
-                                            {
-                                                var child = item.Childrens[i];
-                                                <div style='flex-shrink : @(child.Childrens.Count== 0 ? "5" : "0")'>
-                                                    <h6><a class="nav-link text-start" href="@child.Url">@child.MenuTitle.Name</a></h6>
+                                            <div class="d-none d-lg-flex" style="height: 50vh !important; width: 80%; flex-wrap: wrap; flex-direction: column">
+                                                @for (int i = 0; i < item.Childrens.Count; i++)
+                                                {
+                                                    var child = item.Childrens[i];
+                                                    <div style='flex-shrink : @(child.Childrens.Count== 0 ? "5" : "0")'>
+                                                        <h6><a class="nav-link text-start" href="@child.Url">@child.MenuTitle.Name</a></h6>
                                                    
-                                                    @for(int j = 0; j < 3 && child.Childrens.Count > j; j++)
-                                                    {
-                                                        <a class="dropdown-item text-start" href="@child.Childrens[j].Url">@child.Childrens[j].MenuTitle.Name</a>
-                                                    }
-                                                    @if(child.Childrens.Count > 3)
-                                                    {
+                                                        @for(int j = 0; j < 3 && child.Childrens.Count > j; j++)
+                                                        {
+                                                            <a class="dropdown-item text-start" href="@child.Childrens[j].Url">@child.Childrens[j].MenuTitle.Name</a>
+                                                        }
+                                                        @if(child.Childrens.Count > 3)
+                                                        {
                                                        
-                                                        @if(ViewBag.dir == "rtl")
+                                                            @if(ViewBag.dir == "rtl")
+                                                            {
+                                                                 <a class="dropdown-item text-start link-primary mt-3 mb-3 all" href="@child.Url">@($"{@Language.GetString("All")} {@child.MenuTitle.Name}")<span class="ms-3"></span><i class="fas fa-arrow-left align-middle"></i></a>
+                                                            }else
+                                                            {
+                                                                <a class="dropdown-item text-start link-primary mt-3 mb-3 all" href="@child.Url">@($"{@Language.GetString("All")} {@child.MenuTitle.Name}")<span class="ms-3"></span><i class="fas fa-arrow-right align-middle"></i></a>
+                                                            }
+
+                                                        }
+                                                    </div>
+                                                }
+                                            </div>
+
+                                            <div class="row d-block d-lg-none">
+                                                @for (int i = 0; i < item.Childrens.Count; i++)
+                                                {
+                                                    var child = item.Childrens[i];
+                                                    <div class="col-sm-6 col-lg-3">
+                                                        <h6><a class="nav-link" href="@child.Url">@child.MenuTitle.Name</a></h6>
+                                                        @for(int j = 0; j < 3 && child.Childrens.Count > j; j++)
                                                         {
-                                                             <a class="dropdown-item text-start link-primary mt-3 mb-3 all" href="@child.Url">@($"{@Language.GetString("All")} {@child.MenuTitle.Name}")<span class="ms-3"></span><i class="fas fa-arrow-left align-middle"></i></a>
-                                                        }else
+                                                             <a class="dropdown-item" href="@child.Childrens[j].Url">@child.Childrens[j].MenuTitle.Name</a>
+                                                        }
+                                                        @if (child.Childrens.Count > 3)
                                                         {
-                                                            <a class="dropdown-item text-start link-primary mt-3 mb-3 all" href="@child.Url">@($"{@Language.GetString("All")} {@child.MenuTitle.Name}")<span class="ms-3"></span><i class="fas fa-arrow-right align-middle"></i></a>
+                                                            @if (ViewBag.dir == "rtl")
+                                                            {
+                                                                  <a class="dropdown-item text-start link-primary mt-3 mb-3 all" href="@child.Url">@($"{@Language.GetString("All")} {@child.MenuTitle.Name}")<span class="ms-3"></span><i class="fas fa-arrow-left align-middle"></i></a>
+                                                            }
+                                                            else
+                                                            {
+                                                                <a class="dropdown-item text-start link-primary mt-3 mb-3 all" href="@child.Url">@($"{@Language.GetString("All")} {@child.MenuTitle.Name}")<span class="ms-3"></span><i class="fas fa-arrow-right align-middle"></i></a>
+                                                            }
                                                         }
 
-                                                    }
-                                                </div>
-                                            }
+                                                    </div>
+                                                }
+                                            </div>
+
+
                                         </div>
+                                    </li>
 
-                                        <div class="row d-block d-lg-none">
-                                            @for (int i = 0; i < item.Childrens.Count; i++)
-                                            {
-                                                var child = item.Childrens[i];
-                                                <div class="col-sm-6 col-lg-3">
-                                                    <h6><a class="nav-link" href="@child.Url">@child.MenuTitle.Name</a></h6>
-                                                    @for(int j = 0; j < 3 && child.Childrens.Count > j; j++)
-                                                    {
-                                                         <a class="dropdown-item" href="@child.Childrens[j].Url">@child.Childrens[j].MenuTitle.Name</a>
-                                                    }
-                                                    @if (child.Childrens.Count > 3)
-                                                    {
-                                                        @if (ViewBag.dir == "rtl")
-                                                        {
-                                                              <a class="dropdown-item text-start link-primary mt-3 mb-3 all" href="@child.Url">@($"{@Language.GetString("All")} {@child.MenuTitle.Name}")<span class="ms-3"></span><i class="fas fa-arrow-left align-middle"></i></a>
-                                                        }
-                                                        else
-                                                        {
-                                                            <a class="dropdown-item text-start link-primary mt-3 mb-3 all" href="@child.Url">@($"{@Language.GetString("All")} {@child.MenuTitle.Name}")<span class="ms-3"></span><i class="fas fa-arrow-right align-middle"></i></a>
-                                                        }
-                                                    }
-
-                                                </div>
-                                            }
+                                    <li class="nav-item dropdown menu-area nascr d-none">
+                                        <div class="row">
+                                            <div class="col-4 col-sm-3 col-xl-2">
+                                                <a class="nav-link w-auto" href="@item.Url" id='@($"st_mn_{item.MenuCode}")'
+                                                   data-toggle="dropdown" >
+                                                    @item.MenuTitle.Name
+                                                </a>
+                                            </div>
+                                            <div class="col-8 col-sm-9 col-xl-10">
+                                                <a class="nav-link dropdown-toggle text-end w-100 pe-4 custmDrp" href="#" data-toggle="dropdown">
+                                                </a>
+                                            </div>
                                         </div>
+                                        <div class="dropdown-menu ps-1 mega-area" aria-labelledby='@($"st_mn_{item.MenuCode}")'>
 
-
-                                    </div>
-                                </li>
-
-                                <li class="nav-item dropdown menu-area nascr d-none">
-                                    <div class="row">
-                                        <div class="col-4 col-sm-3 col-xl-2">
-                                            <a class="nav-link w-auto" href="@item.Url" id='@($"st_mn_{item.MenuCode}")'
-                                               data-toggle="dropdown" >
-                                                @item.MenuTitle.Name
-                                            </a>
-                                        </div>
-                                        <div class="col-8 col-sm-9 col-xl-10">
-                                            <a class="nav-link dropdown-toggle text-end w-100 pe-4 custmDrp" href="#" data-toggle="dropdown">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-menu ps-1 mega-area" aria-labelledby='@($"st_mn_{item.MenuCode}")'>
-
-                                        <div class="d-none d-lg-flex" style="height: 50vh !important; width: 80%; flex-wrap: wrap; flex-direction: column">
-                                            @for (int i = 0; i < item.Childrens.Count; i++)
-                                            {
-                                                var child = item.Childrens[i];
+                                            <div class="d-none d-lg-flex" style="height: 50vh !important; width: 80%; flex-wrap: wrap; flex-direction: column">
+                                                @for (int i = 0; i < item.Childrens.Count; i++)
+                                                {
+                                                    var child = item.Childrens[i];
                                                 
-                                                <div style='flex-shrink : @(child.Childrens.Count== 0 ? "5" : "0")'>
-                                                    <h6><a class="nav-link text-start" href="@child.Url">@child.MenuTitle.Name</a></h6>
-                                                    @for(int j = 0; j < 3 && child.Childrens.Count > j; j++)
-                                                    {
-                                                         <a class="dropdown-item text-start" href="@child.Childrens[j].Url">@child.Childrens[j].MenuTitle.Name</a>
-                                                    }
-                                                    @if (child.Childrens.Count > 3)
-                                                    {
-                                                        @if (ViewBag.dir == "rtl")
+                                                    <div style='flex-shrink : @(child.Childrens.Count== 0 ? "5" : "0")'>
+                                                        <h6><a class="nav-link text-start" href="@child.Url">@child.MenuTitle.Name</a></h6>
+                                                        @for(int j = 0; j < 3 && child.Childrens.Count > j; j++)
                                                         {
-                                                             <a class="dropdown-item text-start link-primary mt-3 mb-3 all" href="@child.Url">@($"{@Language.GetString("All")} {@child.MenuTitle.Name}")<span class="ms-3"></span><i class="fas fa-arrow-left align-middle"></i></a>
-                                                        }else
-                                                        {
-                                                            <a class="dropdown-item text-start link-primary mt-3 mb-3 all" href="@child.Url">@($"{@Language.GetString("All")} {@child.MenuTitle.Name}")<span class="ms-3"></span><i class="fas fa-arrow-right align-middle"></i></a>
+                                                             <a class="dropdown-item text-start" href="@child.Childrens[j].Url">@child.Childrens[j].MenuTitle.Name</a>
                                                         }
-                                                    }
-                                                </div>
-                                            }
+                                                        @if (child.Childrens.Count > 3)
+                                                        {
+                                                            @if (ViewBag.dir == "rtl")
+                                                            {
+                                                                 <a class="dropdown-item text-start link-primary mt-3 mb-3 all" href="@child.Url">@($"{@Language.GetString("All")} {@child.MenuTitle.Name}")<span class="ms-3"></span><i class="fas fa-arrow-left align-middle"></i></a>
+                                                            }else
+                                                            {
+                                                                <a class="dropdown-item text-start link-primary mt-3 mb-3 all" href="@child.Url">@($"{@Language.GetString("All")} {@child.MenuTitle.Name}")<span class="ms-3"></span><i class="fas fa-arrow-right align-middle"></i></a>
+                                                            }
+                                                        }
+                                                    </div>
+                                                }
 
-                                        </div>
+                                            </div>
 
-                                        <div class="row d-block d-lg-none">
-                                            @for (int i = 0; i < item.Childrens.Count; i++)
-                                            {
-                                                var child = item.Childrens[i];
-                                                <div class="col-sm-6 col-lg-3">
-                                                    <h6><a class="nav-link" href="@child.Url">@child.MenuTitle.Name</a></h6>
+                                            <div class="row d-block d-lg-none">
+                                                @for (int i = 0; i < item.Childrens.Count; i++)
+                                                {
+                                                    var child = item.Childrens[i];
+                                                    <div class="col-sm-6 col-lg-3">
+                                                        <h6><a class="nav-link" href="@child.Url">@child.MenuTitle.Name</a></h6>
                                                     
-                                                    @for(int j = 0; j < 3 && child.Childrens.Count > j; j++)
-                                                    {
-                                                         <a class="dropdown-item text-start" href="@child.Childrens[j].Url">@child.Childrens[j].MenuTitle.Name</a>
-                                                    }
-                                                     @if (child.Childrens.Count > 3)
-                                                    {
-                                                        @if (ViewBag.dir == "rtl")
+                                                        @for(int j = 0; j < 3 && child.Childrens.Count > j; j++)
                                                         {
-                                                            <a class="dropdown-item text-start link-primary mt-3 mb-3 all" href="@child.Url">@($"{@Language.GetString("All")} {@child.MenuTitle.Name}")<span class="ms-3"></span><i class="fas fa-arrow-left align-middle"></i></a>
+                                                             <a class="dropdown-item text-start" href="@child.Childrens[j].Url">@child.Childrens[j].MenuTitle.Name</a>
                                                         }
-                                                        else
+                                                         @if (child.Childrens.Count > 3)
                                                         {
-                                                            <a class="dropdown-item text-start link-primary mt-3 mb-3 all" href="@child.Url">@($"{@Language.GetString("All")} {@child.MenuTitle.Name}")<span class="ms-3"></span><i class="fas fa-arrow-left align-middle"></i></a>
+                                                            @if (ViewBag.dir == "rtl")
+                                                            {
+                                                                <a class="dropdown-item text-start link-primary mt-3 mb-3 all" href="@child.Url">@($"{@Language.GetString("All")} {@child.MenuTitle.Name}")<span class="ms-3"></span><i class="fas fa-arrow-left align-middle"></i></a>
+                                                            }
+                                                            else
+                                                            {
+                                                                <a class="dropdown-item text-start link-primary mt-3 mb-3 all" href="@child.Url">@($"{@Language.GetString("All")} {@child.MenuTitle.Name}")<span class="ms-3"></span><i class="fas fa-arrow-left align-middle"></i></a>
+                                                            }
                                                         }
-                                                    }
-                                                </div>
-                                            }
+                                                    </div>
+                                                }
+                                            </div>
+
+
                                         </div>
+                                    </li>
 
-
-                                    </div>
-                                </li>
-
+                                }
                             }
-                        }
-                    </ul>
+                        </ul>
 
-                </div>
-            </nav>
+                    </div>
+                </nav>
+            </div>
         </div>
     </div>
 </div>

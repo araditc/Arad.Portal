@@ -22,5 +22,6 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
         public MainPageContentPart MainPageContainerPart { get; set; }
 
         public PageFooterPart FooterPart { get; set; }
+       
     }
 }

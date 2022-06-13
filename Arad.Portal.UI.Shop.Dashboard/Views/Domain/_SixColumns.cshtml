@@ -62,7 +62,7 @@
         break;
     }
 }
-<div class="row sectionRow mx-2" rn="@ViewBag.RowNumber">
+<div class="row sectionRow mx-2" rn="@ViewBag.RowNumber" rowCustomClasses="" guid="@guid">
     <div class="col-12 col-md-2 border border-1" colnum="1" did='@ViewBag.DomainId' cnt="6">
          <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section, ColumnClassNames = first.Replace("border", "").Replace("border-1", ""), RowGuid = guid }'/>
     </div>

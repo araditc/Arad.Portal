@@ -186,6 +186,12 @@
 	<string key="design_LayerType">
 		<value>layer type</value>
 	</string>
+	<string key="design_loadAnimation">
+		<value>load effect</value>
+	</string>
+	<string key="design_loadAnimationType">
+		<value>effect target</value>
+	</string>
 	<string key="design_ContentText">
 		<value>content text</value>
 	</string>

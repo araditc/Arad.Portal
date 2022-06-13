@@ -100,11 +100,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 return Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_FillEssentialFields"), ModelStateErrors = errors });
             }
 
-            var sliders = _sliderRepository.GetSliders();
+            //var sliders = _sliderRepository.GetSliders();
 
             var slider = new Slider()
             {
-                IsActive = !sliders.Any(),
+                IsActive = true,
                 Title = model.Title
             };
 

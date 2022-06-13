@@ -34,7 +34,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
             _currencyRepository = currencyRepository;
         }
 
-        public  IViewComponentResult Invoke(ProductOrContentType productType, ProductTemplateDesign selectionTemplate, int count, TransActionType loadAnimation, LoadAnimationType loadAnimationType)
+        public  IViewComponentResult Invoke(ProductOrContentType productType, ProductTemplateDesign selectionTemplate, 
+            int count, TransActionType loadAnimation, LoadAnimationType loadAnimationType)
         {
             var defaultCulture = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
             var defLangSymbol = defaultCulture.Split("|")[0][2..];

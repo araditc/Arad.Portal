@@ -60,7 +60,7 @@
     <link href="~/css/header.css" rel="stylesheet" />
     <link href="~/css/StickyNavbar.css" rel="stylesheet" />
     <link href="~/lib/bootstrap-colorpicker/css/bootstrap-colorpicker.css" rel="stylesheet" />
-    <link href = "~/lib/animate.css/animate.min.css" rel="stylesheet"/>
+    <link href="~/lib/animate.css/animate.min.css" rel="stylesheet" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
@@ -70,7 +70,7 @@
     <script src="~/lib/owlCarousel/js/owl.carousel.min.js"></script>
     <script src="~/js/TemplateCreation.js"></script>
     <script src="~/lib/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
-   @* <script src="~/js/StickyNavbar.js"></script>*@
+    @* <script src="~/js/StickyNavbar.js"></script>*@
 
 </head>
 <body>
@@ -141,7 +141,7 @@
     <div class="container">
         <div class="row mt-3">
             <div class="col-4">
-                  <label class="form-label">@Language.GetString("LanguageName")</label>
+                <label class="form-label">@Language.GetString("LanguageName")</label>
                 <select class="form-control selectpicker" data-live-search="true" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))" data-live-search="true">
                 </select>
             </div>
@@ -185,12 +185,12 @@
             </div>
         </div>
     </div>
-    <footer class="footerPart"  id="PrimaryTemplateFooterPart">
+    <footer class="footerPart" id="PrimaryTemplateFooterPart">
         <h3 class="text-center bg-secondary bg-opacity-10">Footer</h3>
         <div class="border border-3 border-secondary m-1 dynamicFooterPart p-2" style="min-height: 150px;">
             <div class='p-2 row justify-content-center'>
                 <div class='col-1 text-center'>
-                    <button class='btn btn-sm m-2 pt-2 btn-success btnHFStyle' sec="footer" data-bs-toggle="tooltip" data-bs-placement="top" title="@Language.GetString("design_RowStyle")" ><i class='fs-4 fa fa-cog'></i></button>
+                    <button class='btn btn-sm m-2 pt-2 btn-success btnHFStyle' sec="footer" data-bs-toggle="tooltip" data-bs-placement="top" title="@Language.GetString("design_RowStyle")"><i class='fs-4 fa fa-cog'></i></button>
                 </div>
                 <div class='col-1 text-center'>
                     <button class='btn btn-sm btn-success btnNoColor p-2 m-2' sec="footer" onclick="resetColor(this);">@Language.GetString("design_NoColor")</button>
@@ -211,11 +211,11 @@
         </div>
         <div class="offcanvas-body">
 
-             <div class="row">
+            <div class="row">
 
                 <div class="col">
-                     <label class="form-label">@Language.GetString("design_bgColor")</label>
-                     <input dir="ltr" type="text" id="bgcolor" name="bgcolor" class="form-control" onchange="rowBgColorChange();"  placeholder=" ">
+                    <label class="form-label">@Language.GetString("design_bgColor")</label>
+                    <input dir="ltr" type="text" id="rowBgcolor" name="rowBgcolor" class="form-control" onchange="rowBgColorChange();" placeholder=" ">
                 </div>
             </div>
 
@@ -272,7 +272,7 @@
                 </div>
             </div>
             <div class="row">
-                 <div class="form-check m-auto d-inline-block pt-3">
+                <div class="form-check m-auto d-inline-block pt-3">
                     <input class="form-check-input rowbd" type="checkbox" value="border-top">
                     <label class="form-check-label" for="border-top">
                         border-top
@@ -298,21 +298,21 @@
                 </div>
             </div>
 
-         <div class="row">
-              <div class="col-12 bg-success bg-opacity-10 pt-2 mt-3">
-                  <label class="form-label fs-6">border thickness</label>
-              </div>
-              <div class="col-12">
-              <select id="borderThicknessRow" class="form-control selectpicker" data-live-search="true" onchange="addExtraClasses()">
-                  <option value="0">@Language.GetString("AlertAndMessage_Choose")</option>
-                  <option value="border-1">1</option>
-                  <option value="border-2">2</option>
-                  <option value="border-3">3</option>
-                  <option value="border-4">4</option>
-                  <option value="border-5">5</option>
-              </select>
-              </div>
-          </div>
+            <div class="row">
+                <div class="col-12 bg-success bg-opacity-10 pt-2 mt-3">
+                    <label class="form-label fs-6">border thickness</label>
+                </div>
+                <div class="col-12">
+                    <select id="borderThicknessRow" class="form-control selectpicker" data-live-search="true" onchange="addRowBorderThickness()">
+                        <option value="0">@Language.GetString("AlertAndMessage_Choose")</option>
+                        <option value="border-1">border-1</option>
+                        <option value="border-2">border-2</option>
+                        <option value="border-3">border-3</option>
+                        <option value="border-4">border-4</option>
+                        <option value="border-5">border-5</option>
+                    </select>
+                </div>
+            </div>
 
         </div>
     </div>
@@ -324,8 +324,8 @@
             <h5 class="offcanvas-title" id="offcanvasColLabel">borders</h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-         <div class="offcanvas-body">
-             <div class="row">
+        <div class="offcanvas-body">
+            <div class="row">
                 <div class="form-check m-auto d-inline-block pt-3">
                     <input class="form-check-input colBd" type="checkbox" value="border-top">
                     <label class="form-check-label" for="border-top">
@@ -350,22 +350,22 @@
                         border-end
                     </label>
                 </div>
-          </div>
-       
-          <div class="row">
-              <div class="col-12 bg-success bg-opacity-10 pt-2 mt-3">
-                  <label class="form-label fs-6">border thickness</label>
-              </div>
-              <select id="borderThicknessColumn" class="form-control selectpicker" data-live-search="true" onchange="addExtraClasses()">
-                  <option value="0">@Language.GetString("AlertAndMessage_Choose")</option>
-                  <option value="border-1">1</option>
-                  <option value="border-2">2</option>
-                  <option value="border-3">3</option>
-                  <option value="border-4">4</option>
-                  <option value="border-5">5</option>
-              </select>
-          </div>
-         </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 bg-success bg-opacity-10 pt-2 mt-3">
+                    <label class="form-label fs-6">border thickness</label>
+                </div>
+                <select id="borderThicknessColumn" class="form-control selectpicker" data-live-search="true" onchange="addBorderThicknessForColumn()">
+                    <option value="0">@Language.GetString("AlertAndMessage_Choose")</option>
+                    <option value="border-1">border-1</option>
+                    <option value="border-2">border-2</option>
+                    <option value="border-3">border-3</option>
+                    <option value="border-4">border-4</option>
+                    <option value="border-5">border-5</option>
+                </select>
+            </div>
+        </div>
 
     </div>
 
@@ -379,851 +379,888 @@
             <div class="row">
 
                 <div class="col">
-                     <label class="form-label">@Language.GetString("design_bgColor")</label>
-                     <input dir="ltr" type="text" id="bgcolor" name="bgcolor" class="form-control" onchange="bgColorChange();"  placeholder=" ">
+                    <label class="form-label">@Language.GetString("design_bgColor")</label>
+                    <input dir="ltr" type="text" id="bgcolor" name="bgcolor" class="form-control" onchange="bgColorChange();" placeholder=" ">
                 </div>
             </div>
             <div class="row">
                 <div class="col border pt-3">
-                <label class="form-label custom-file-label float-start pt-2" for="image">@Language.GetString("design_bgPhoto")</label>
-                <input accept="image/x-png,image/jpeg"
-                type="file" class="btn btn-sm bg-gradient float-end" name="image" id="image" onchange="getURL(this)" />
+                    <label class="form-label custom-file-label float-start pt-2" for="image">@Language.GetString("design_bgPhoto")</label>
+                    <input accept="image/x-png,image/jpeg"
+                           type="file" class="btn btn-sm bg-gradient float-end" name="image" id="image" onchange="getURL(this)" />
                 </div>
                 <div class="col my-1">
-                <label class="form-label">@Language.GetString("tbl_AspectRatioImage")</label>
-                <select id="imgAspectRatio" class="form-control selectpicker" data-live-search="true"
-                asp-items="@(new SelectList(ViewBag.ImageRatio,"Value","Text"))"></select>
+                    <label class="form-label">@Language.GetString("tbl_AspectRatioImage")</label>
+                    <select id="imgAspectRatio" class="form-control selectpicker" data-live-search="true"
+                            asp-items="@(new SelectList(ViewBag.ImageRatio,"Value","Text"))"></select>
                 </div>
                 <div class="col my-1">
-                     <label class="form-label" for="ImageFit">Image Fit</label>
-                      <select name="ImageFit" id="ImageFit" class="form-control" asp-items="Html.GetEnumSelectList<ImageFit>()"></select>
+                    <label class="form-label" for="ImageFit">Image Fit</label>
+                    <select name="ImageFit" id="ImageFit" class="form-control" asp-items="Html.GetEnumSelectList<ImageFit>()"></select>
                 </div>
                 <div class="col">
-                <input type="button" id="deleteBgImage" class="btn btn-danger btn-sm m-2"  value="@Language.GetString("design_ImageDelete")"  />
+                    <input type="button" id="deleteBgImage" class="btn btn-danger btn-sm m-2" value="@Language.GetString("design_ImageDelete")" />
                 </div>
-                </div>
+            </div>
         </div>
     </div>
 
     <script>
-             var selectedRow;
-             var colSelectedRow ;
-             var colSelectedNumber;
-             var selectedSection;
-             var footerBgColor = "";
-             var headerBgColor = "";
-             var isShop = true;
-             var isMultiLingual = true;
+                 var selectedRow;
+                 var colSelectedRow ;
+                 var colSelectedNumber;
+                 var selectedSection;
+                 var footerBgColor = "";
+                 var headerBgColor = "";
+                 var isShop = true;
+                 var isMultiLingual = true;
 
-             function bgColorChange()
-             {
-                
-                var color = $("#bgcolor").val();
-                if(selectedSection =="footer")
-                {
-                    footerBgColor = color;
-                    $(".dynamicFooterPart").css("background-color", footerBgColor);
-                }else if(selectedSection =="header")
-                {
-                    headerBgColor = color;
-                    $(".dynamicHeaderPart").css("background-color", headerBgColor);
-                }
-             }
-
-             function resetColor(sender)
-             {
-                 debugger;
-                 var sec = $(sender).attr("sec");
-                 if(sec == "header")
+                 function addRowBorderThickness()
                  {
-                     headerBgColor = "";
-                      $(".dynamicHeaderPart").css("background-color", headerBgColor);
-                 }else if(sec == "footer")
-                 {
-                     footerBgColor = "";
-                      $(".dynamicFooterPart"),css("background-color", "");
+                     var cls = $("#borderThicknessRow").val();
+                     var custClass = $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses");
+                     custClass = custClass.replace("border-1", "").replace("border-2", "").replace("border-3", "").replace("border-4", "").replace("border-5", "");
+                     custClass += ` ${cls}`;
+                     $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses", custClass);
                  }
-             }
-             
-             function doAnimations(elems) {
-                var animEndEv = "webkitAnimationEnd animationend";
 
-                elems.each(function () {
-                    var $this = $(this),
-                        $animationType = $this.data("animation");
-                    $this.addClass($animationType).one(animEndEv, function () {
-                        $this.removeClass($animationType);
+                 function addBorderThicknessForColumn()
+                 {
+                     var cls = $("#borderThicknessColumn").val();
+                     var custClass = $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames");
+                     var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames");
+
+                     $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass("border-1").removeClass("border-2").removeClass("border-3").removeClass("border-4").removeClass("border-5");
+                     custClass = custClass.replace("border-1", "").replace("border-2", "").replace("border-3", "").replace("border-4","").replace("border-5", "");
+                     pClass = pClass.replace("border-1", "").replace("border-2", "").replace("border-3", "").replace("border-4","").replace("border-5", "");
+
+
+                      $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).addClass(cls);
+
+                      custClass += ` ${cls}`;
+                      $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames", custClass);
+
+                      pClass += ` ${cls}`;
+                      $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames", pClass);
+
+                 }
+
+                 function bgColorChange()
+                 {
+
+                    var color = $("#bgcolor").val();
+                    if(selectedSection =="footer")
+                    {
+                        footerBgColor = color;
+                        $(".dynamicFooterPart").css("background-color", footerBgColor);
+                    }else if(selectedSection =="header")
+                    {
+                        headerBgColor = color;
+                        $(".dynamicHeaderPart").css("background-color", headerBgColor);
+                    }
+                 }
+
+                 function rowBgColorChange()
+                 {
+                      var color = $("#rowBgcolor").val();
+                      $(`.row.sectionRow[guid='${selectedRow}']`).css("background-color", color);
+
+                 }
+
+                 function resetColor(sender)
+                 {
+                     debugger;
+                     var sec = $(sender).attr("sec");
+                     if(sec == "header")
+                     {
+                         headerBgColor = "";
+                          $(".dynamicHeaderPart").css("background-color", headerBgColor);
+                     }else if(sec == "footer")
+                     {
+                         footerBgColor = "";
+                          $(".dynamicFooterPart"),css("background-color", "");
+                     }
+                 }
+
+                 function doAnimations(elems) {
+                    var animEndEv = "webkitAnimationEnd animationend";
+
+                    elems.each(function () {
+                        var $this = $(this),
+                            $animationType = $this.data("animation");
+                        $this.addClass($animationType).one(animEndEv, function () {
+                            $this.removeClass($animationType);
+                        });
                     });
-                });
-            }
+                }
 
-             function addCustomClass(type)
-             {
-                 debugger;
-                 var cls = "";
-                 var custClass = $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames");
-                  var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames");
-                 switch(type)
+                 function addCustomClass(type)
                  {
-                     case "vp":
-                     cls = $("#verticalPaddingSelect").val();
-                     $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass("py-0").removeClass("py-2").removeClass("py-4").removeClass("py-5").removeClass("py-10");
-                     custClass = custClass.replace("py-0", "").replace("py-2", "").replace("py-4", "").replace("py-5","").replace("py-10", "");
-                     pClass = pClass.replace("py-0", "").replace("py-2", "").replace("py-4", "").replace("py-5","").replace("py-10", "");
-                     break;
-                     case "hp":
-                     $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass("px-0").removeClass("px-2").removeClass("px-4").removeClass("px-5").removeClass("px-10");
-                     cls = $("#horizantalPaddingSelect").val();
-                      custClass = custClass.replace("px-0", "").replace("px-2", "").replace("px-4", "").replace("px-5","").replace("px-10", "");
-                       pClass = pClass.replace("px-0", "").replace("px-2", "").replace("px-4", "").replace("px-5","").replace("px-10", "");
-                     break;
-                     case "vm":
-                    $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass("mx-0").removeClass("mx-2").removeClass("mx-4").removeClass("mx-5").removeClass("mx-10");
-                     cls = $("#verticalMarginSelect").val();
-                    custClass = custClass.replace("mx-0", "").replace("mx-2", "").replace("mx-4", "").replace("mx-5","").replace("mx-10", "");
-                    pClass = pClass.replace("mx-0", "").replace("mx-2", "").replace("mx-4", "").replace("mx-5","").replace("mx-10", "");
-                     break;
-                     case "hm":
-                      $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass("my-0").removeClass("my-2").removeClass("my-4").removeClass("my-5").removeClass("my-10");
-                     cls = $("#horizantalMarginSelect").val();
-                     custClass = custClass.replace("my-0", "").replace("my-2", "").replace("my-4", "").replace("my-5","").replace("my-10", "");
-                     pClass = pClass.replace("my-0", "").replace("my-2", "").replace("my-4", "").replace("my-5","").replace("my-10", "");
-                     break;
+                     debugger;
+                     var cls = "";
+                     //var custClass = $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames");
+                     //var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames");
+
+                      var custClass = $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses");
+
+
+                     switch(type)
+                     {
+                         case "vp":
+                         cls = $("#verticalPaddingSelect").val();
+                         //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass("py-0").removeClass("py-2").removeClass("py-4").removeClass("py-5").removeClass("py-10");
+                         custClass = custClass.replace("py-0", "").replace("py-2", "").replace("py-4", "").replace("py-5","").replace("py-10", "");
+                         //pClass = pClass.replace("py-0", "").replace("py-2", "").replace("py-4", "").replace("py-5","").replace("py-10", "");
+                         break;
+                         case "hp":
+                         //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass("px-0").removeClass("px-2").removeClass("px-4").removeClass("px-5").removeClass("px-10");
+                         cls = $("#horizantalPaddingSelect").val();
+                         custClass = custClass.replace("px-0", "").replace("px-2", "").replace("px-4", "").replace("px-5","").replace("px-10", "");
+                         //pClass = pClass.replace("px-0", "").replace("px-2", "").replace("px-4", "").replace("px-5","").replace("px-10", "");
+                         break;
+                         case "vm":
+                        //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass("mx-0").removeClass("mx-2").removeClass("mx-4").removeClass("mx-5").removeClass("mx-10");
+                         cls = $("#verticalMarginSelect").val();
+                         custClass = custClass.replace("mx-0", "").replace("mx-2", "").replace("mx-4", "").replace("mx-5","").replace("mx-10", "");
+                         //pClass = pClass.replace("mx-0", "").replace("mx-2", "").replace("mx-4", "").replace("mx-5","").replace("mx-10", "");
+                         break;
+                         case "hm":
+                         //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass("my-0").removeClass("my-2").removeClass("my-4").removeClass("my-5").removeClass("my-10");
+                         cls = $("#horizantalMarginSelect").val();
+                         custClass = custClass.replace("my-0", "").replace("my-2", "").replace("my-4", "").replace("my-5","").replace("my-10", "");
+                         //pClass = pClass.replace("my-0", "").replace("my-2", "").replace("my-4", "").replace("my-5","").replace("my-10", "");
+                         break;
+                     }
+
+                      //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).addClass(cls);
+                      custClass += ` ${cls}`;
+                      //$(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames", custClass);
+                      $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses", custClass);
+
+                      //pClass += ` ${cls}`;
+                      //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames", pClass);
                  }
 
-                  $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).addClass(cls);
 
-                  custClass += ` ${cls}`;
-                  $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames", custClass);
+                  function getColTemplate(id, tag) {
 
-                  pClass += ` ${cls}`;
-                  $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames", pClass);
-             }
+                       colTemplate = "<div class='col-12 col-md-3 p-2'>" +
+                           "<label class='lblAlert form-label'>" + '@Language.GetString("AlertAndMessage_HowManyColumns")' + "</label><br />" +
+                           "<select  class='form-control selectpicker colCnt' onchange='selectColumns(this, \""+ id +"\" );' id='" + id + "' data-live-search='true'>" +
+                               "<option value='0'>" + '@Language.GetString("AlertAndMessage_Choose")' + "</option>" +
+                               "<option value='1'>" + '@Language.GetString("Template_OneCol")' + "</option>" +
+                               "<option value='2'>" + '@Language.GetString("Template_TwoCol")' + "</option>" +
+                               "<option value='3'>" + '@Language.GetString("Template_ThreeCol")' + "</option>" +
+                               "<option value='4'>" + '@Language.GetString("Template_FourCol")' + "</option>" +
+                               "<option value='6'>" + '@Language.GetString("Template_SixCol")' + "</option></select></div>"+
+                               "<div class='col-12 col-md-3 p-2'>" +
+                               "<label class='lblAlert form-label'>" + '@Language.GetString("design_ColSizeRatio")' + "</label><br />" +
+                               "<select  class='form-control selectpicker colWidth' onchange='selectColumnsWidthRatio(this, \""+ tag +"\" );' colWidthId='"+id+"' data-live-search='true'></select></div>" +
+                               "<div class='p-2 row justify-content-center'>"+
+                               "<div class='col-2 text-center'>"+
+                               "<button class='btn btn-sm m-2 pt-2 btn-dark btnRowStyle'  guid='" + id + "' data-bs-toggle='tooltip' data-bs-placement='top' title="+
+                               '@Language.GetString("design_RowStyles")' +
+                               "><i class='fs-4 fa fa-cog'></i></button>" +
+                               "</div><div class='ps-4 col-12 contentColumns' guid='"+ id + "'></div>";
+
+                       return colTemplate;
+                   }
 
 
-              function getColTemplate(id, tag) {
+                    function AfterCarouselLoad()
+                    {
+                        debugger;
+                          var $myCarousel = $("#sliderCarousel");
+                          $firstAnimatingElems = $myCarousel
+                                  .find(".carousel-item:first")
+                                 .find("[data-animation ^= 'animated']");
 
-                   colTemplate = "<div class='col-12 col-md-3 p-2'>" +
-                       "<label class='lblAlert form-label'>" + '@Language.GetString("AlertAndMessage_HowManyColumns")' + "</label><br />" +
-                       "<select  class='form-control selectpicker colCnt' onchange='selectColumns(this, \""+ id +"\" );' id='" + id + "' data-live-search='true'>" +
-                           "<option value='0'>" + '@Language.GetString("AlertAndMessage_Choose")' + "</option>" +
-                           "<option value='1'>" + '@Language.GetString("Template_OneCol")' + "</option>" +
-                           "<option value='2'>" + '@Language.GetString("Template_TwoCol")' + "</option>" +
-                           "<option value='3'>" + '@Language.GetString("Template_ThreeCol")' + "</option>" +
-                           "<option value='4'>" + '@Language.GetString("Template_FourCol")' + "</option>" +
-                           "<option value='6'>" + '@Language.GetString("Template_SixCol")' + "</option></select></div>"+
-                           "<div class='col-12 col-md-3 p-2'>" +
-                           "<label class='lblAlert form-label'>" + '@Language.GetString("design_ColSizeRatio")' + "</label><br />" +
-                           "<select  class='form-control selectpicker colWidth' onchange='selectColumnsWidthRatio(this, \""+ tag +"\" );' colWidthId='"+id+"' data-live-search='true'></select></div>" +
-                           "<div class='p-2 row justify-content-center'>"+
-                           "<div class='col-2 text-center'>"+
-                           "<button class='btn btn-sm m-2 pt-2 btn-dark btnRowStyle'  guid='" + id + "' data-bs-toggle='tooltip' data-bs-placement='top' title="+
-                           '@Language.GetString("design_RowStyles")' +
-                           "><i class='fs-4 fa fa-cog'></i></button>" +
-                           "</div><div class='ps-4 col-12 contentColumns' guid='"+ id + "'></div>";
+                        var carousel = new bootstrap.Carousel($myCarousel);
+                        doAnimations($firstAnimatingElems);
 
-                   return colTemplate;
-               }
+                        var myCarousel = document.getElementById('sliderCarousel');
+                        myCarousel.addEventListener("slide.bs.carousel", function (e) {
+                            var $animatingElems = $(e.relatedTarget).find(
+                                "[data-animation ^= 'animated']"
+                            );
+                            doAnimations($animatingElems);
+                        });
+                    }
 
-    function doAnimations(elems) {
-        var animEndEv = "webkitAnimationEnd animationend";
+           $(document).ready(function(){
 
-        elems.each(function () {
-            var $this = $(this),
-                $animationType = $this.data("animation");
-            $this.addClass($animationType).one(animEndEv, function () {
-                $this.removeClass($animationType);
-            });
-        });
-    }
+               debugger;
 
-    function AfterCarouselLoad()
-    {
-        debugger;
-          var $myCarousel = $("#sliderCarousel");
-          $firstAnimatingElems = $myCarousel
-                  .find(".carousel-item:first")
-                 .find("[data-animation ^= 'animated']");
+                $("#bgcolor").colorpicker();
+                $("#rowBgcolor").colorpicker();
 
-        var carousel = new bootstrap.Carousel($myCarousel);
-        doAnimations($firstAnimatingElems);
-           
-        var myCarousel = document.getElementById('sliderCarousel');
-        myCarousel.addEventListener("slide.bs.carousel", function (e) {
-            var $animatingElems = $(e.relatedTarget).find(
-                "[data-animation ^= 'animated']"
-            );
-            doAnimations($animatingElems);
-        });
-    }
+                changeScreen();
+                $(window).resize(changeScreen);
 
-       $(document).ready(function(){
+                $(".menu-area").mouseover(function () {
+                        var windowSize = $(window).width();
+                        if (windowSize > 975) {
+                            $(this).addClass("show");
+                            $(this).find(".dropdown-toggle").addClass("text-primary");
+                            $(this).find(".mega-area").addClass("show");
+                        }
+                });
 
-           debugger;
-          
-
-            $("#bgcolor").colorpicker();
-                                 
-            changeScreen();
-            $(window).resize(changeScreen);
-
-            $(".menu-area").mouseover(function () {
+                $(".menu-area").mouseleave(function () {
                     var windowSize = $(window).width();
                     if (windowSize > 975) {
-                        $(this).addClass("show");
-                        $(this).find(".dropdown-toggle").addClass("text-primary");
-                        $(this).find(".mega-area").addClass("show");
+                        $(this).removeClass("show");
+                        $(this).find(".dropdown-toggle").removeClass("text-primary");
+                        $(this).find(".mega-area").removeClass("show");
                     }
-            });
+                });
 
-            $(".menu-area").mouseleave(function () {
-                var windowSize = $(window).width();
-                if (windowSize > 975) {
-                    $(this).removeClass("show");
-                    $(this).find(".dropdown-toggle").removeClass("text-primary");
-                    $(this).find(".mega-area").removeClass("show");
-                }
-            });
+                $(".nav-item .nav-link").mouseover(function () {
+                        $(this).addClass("text-primary");
+                });
+                $(".nav-item .nav-link").mouseleave(function () {
+                        $(this).removeClass("text-primary");
+                });
 
-            $(".nav-item .nav-link").mouseover(function () {
-                    $(this).addClass("text-primary");
-            });
-            $(".nav-item .nav-link").mouseleave(function () {
-                    $(this).removeClass("text-primary");
-            });
+                $(".custmDrp").click(function () {
 
-            $(".custmDrp").click(function () {
+                    var item = $(this).parent().parent().siblings(".mega-area")
+                    if (item.hasClass("show")) {
+                        item.removeClass("show");
+                    } else {
+                        item.addClass("show");
+                    }
+                });
 
-                var item = $(this).parent().parent().siblings(".mega-area")
-                if (item.hasClass("show")) {
-                    item.removeClass("show");
-                } else {
-                    item.addClass("show");
-                }
-            });
+                $("#btnFlags").click(function(){
+                    var sender =  $(this);
+                    $(this).parent().remove();
+                    isMultiLingual = false;
+                });
 
-            $("#btnFlags").click(function(){
-                var sender =  $(this);
-                $(this).parent().remove();
-                isMultiLingual = false;
-            });
-
-            $("#btnIsShop").click(function(){
-                var sender = $(this);
-                $(this).parent().remove();
-                isShop = false;
-
-            });
+                $("#btnIsShop").click(function(){
+                    var sender = $(this);
+                    $(this).parent().remove();
+                    isShop = false;
+                });
 
 
-            $(".btnHFStyle").click(function(){
-                debugger;
-                selectedSection = $(this).attr("sec");
-                var offcanvas = $("#styleHeaderFooterDiv");
-                var off = new bootstrap.Offcanvas(offcanvas);
-                off.show();
-            });
+                $(".btnHFStyle").click(function(){
+                    debugger;
+                    selectedSection = $(this).attr("sec");
+                    var offcanvas = $("#styleHeaderFooterDiv");
+                    var off = new bootstrap.Offcanvas(offcanvas);
+                    off.show();
+                });
 
 
 
-                    $(document).on("click", ".columnStyles", function () {
-                           debugger;
-                           colSelectedRow = $(this).attr("rn");
-                           colSelectedNumber = $(this).attr("cn");
-                           var ofCanvas = $("#colStylesDiv");
-                           var of = new bootstrap.Offcanvas(ofCanvas);
-                           of.show();
-                           
-                       });
+                $(document).on("click", ".columnStyles", function () {
+                        debugger;
+                        selectedRow = $(this).attr("guid");
+                        colSelectedNumber = $(this).attr("cn");
+                        var ofCanvas = $("#colStylesDiv");
+                        var of = new bootstrap.Offcanvas(ofCanvas);
+                        of.show();
 
-                       $(".rowbd").change(function() {
-                           debugger;
-                           var cls = $(this).value;
-                            var custClass = $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames");
-                            var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames");
-                          if($(this).is(':checked')) 
-                          {
-                              $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).addClass(cls);
-                              custClass += ` ${cls}`;
-                              pClass +=  ` ${cls}`;
-                          }else
-                          {
-                              $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass(cls);
-                              custClass = custClass.replace(cls, "");
-                              pClass = pClass.replace(cls, "");
-                          }
+                  });
+                    $(document).on("click", ".btnRowStyle", function () {
+                        debugger;
+                        selectedRow = $(this).attr("guid");
+                        var offcanvas = $("#styleDiv");
+                        var off = new bootstrap.Offcanvas(offcanvas);
+                        off.show();
+                    });
 
-                          $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames", custClass);
-                          $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames", pClass);
-                       });
+                    $(".rowbd").change(function() {
+                        debugger;
+                        var cls = $(this).value;
+                         var custClass = $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses");
+                        //var custClass = $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames");
+                        //var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames");
 
-                        $("#deleteBgImage").click(function(){
-
-                        });
-
-                          $("#send_pic").click(function () {
-
-                                $("#uploadModal").modal("hide");
-                                var url = $("#galleryPic").attr("src");
-                                var model = {};
-                                var ratio="";
-                                 var width ="";
-                                var height ="";
-                                switch($("#imgAspectRatio").val())
-                                {
-                                    case "1":
-                                    ratio ="1*1";
-                                     width = 120;
-                                    height = 120;
-                                    break;
-                                    case "2":
-                                    ratio = "2*1";
-                                     width = 120;
-                                    height = 60;
-                                    break;
-                                    case "4":
-                                    ratio="4*1";
-                                     width = 120;
-                                    height = 30;
-                                    break;
-                                }
-                                model.ImageId = counter;
-                                model.Content = url;
-                                model.ImageRatioId =
-                                images.push(model);
-                       });
-
-                       $("#removeFlagPart").click(function(){
-
-                       $('#confirmDesignModalLabel').text('@Language.GetString("btn_Delete")');
-                       $('#confirmDesignModalBody').html('@Language.GetString("AlertAndMessage_RemoveBoxConfrim")');
-                       $('#confirmDesignModal').modal('show');
-                       });
-
-                       $(document).on("click", ".btnRowStyle", function () {
-                           debugger;
-                           selectedRow = $(this).attr("guid");
-                           var offcanvas = $("#styleDiv");
-                           var off = new bootstrap.Offcanvas(offcanvas);
-                           off.show();
-                       });
-                       //$(document).on("click", ".btnHFStyle", function () {
-                       //    debugger;
-                       //    var section = $(this).attr("sec");
-                       //    var offcanvas = $("#styleHeaderFooterDiv");
-                       //    var off = new bootstrap.Offcanvas(offcanvas);
-                       //    off.show();
-                       //});
-
-                       $("#btnSave").click(function(){
-                           debugger;
-                           //start of header section
-
-                            var header = {}; //an instance of headerPart
-                            header.CustomizedContent = [];
-
-                            //var regPart = document.getElementById("regPart").outerHTML;
-                            //var priorHeader = document.getElementById("regPart").outerHTML;
-                            //header.PriorFixedContent = priorHeader;
-                            if(headerBgColor != "")
-                            {
-                                header.BGTypeId = 1;
-                                header.CodeColor = headerBgColor;
-                            }
-
-                            var i = 1;
-                            var rn = 1000;
-                            $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
-                                debugger;
-                                rn = $(this).find(".row.sectionRow").attr("rn");
-                                var obj = {}; //an instance of RowContent
-                                obj.RowNumber = parseInt(rn) ;
-                                obj.OrderInRow = i ;
-                                obj.ColsContent = [] ;
-                                $(this).find(".row.parent .finalColumnContent").each(function(){
-                                    var colContent ={} ; //an instance of ColContent
-                                    colContent.Section = "headerSection";
-                                    colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
-                                    colContent.ColData = $(this).html();
-                                    colContent.ColumnClassNames = $(this).attr("classNames");
-
-                                    obj.ColsContent.push(colContent);
-                                });
-                                i++;
-                                header.CustomizedContent.push(obj);
-                            });
-
-                            //navbar
-                            var obj = {}; //an instance of RowContent for navbar Menu
-                            if($(".dynamicHeaderPart .firstLevel .contentColumns").length == 0 )
-                            {
-                                obj.RowNumber =  parseInt(rn);
-                            }else
-                            {
-                                obj.RowNumber =  parseInt(rn) + 1;
-                            }
-
-                            obj.RowNumber =  parseInt(rn) + 1;
-                            obj.OrderInRow = i ;
-                            obj.ExtraClassNames ="navbarMenu";
-                            obj.ColsContent =[] ;
-                            var singleCol = {};
-                            singleCol.Section ="";
-                            singleCol.ColNumber = 1;
-
-                            var menuModule = {};//an instance of ModuleWithParametersValue for menu
-                            menuModule.ModuleId = "f8865ffc-1653-41ba-a281-ee57fa7ffc09";
-                            menuModule.ModuleName = "HorizantalStoreMenu";
-                            menuModule.ParametersValue = {};
-                            menuModule.ParametersValue.domainId = '@domainId';
-                            menuModule.ParametersValue.languageId = $("#languageId").val();
-                            var data = JSON.stringify(menuModule);
-                            var menuData = `<div target='module'>${data}</div>`;
-
-                            singleCol.ColData = menuData;
-                            singleCol.ColumnClassNames = "";
-                            obj.ColsContent.push(singleCol);
-                            header.CustomizedContent.push(obj);
-                            //end of header section
-
-                            //start of container section
-                            i= 1;
-                            rn ="";
-                            var bodyContainer = {}; //an instance of MainPageContentPart
-                            bodyContainer.RowContents = [] ;
-                             $(".dynamicContainerPart .firstLevel .contentColumns").each(function()
-                             {
-                                 debugger;
-                                 rn = $(this).find(".row.sectionRow").attr("rn");
-                                var bodyRowContent = {}; //an instance of RowContent
-                                bodyRowContent.RowNumber = parseInt(rn) ;
-                                bodyRowContent.OrderInRow = i ;
-                                bodyRowContent.ColsContent = [] ;
-                                $(this).find(".row.parent .finalColumnContent").each(function(){
-                                    var colContent ={} ; //an instance of ColContent
-                                    colContent.Section = "containerSection";
-                                    colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
-                                    colContent.ColData = $(this).html();
-                                    colContent.ColumnClassNames = $(this).attr("classNames");
-                                    bodyRowContent.ColsContent.push(colContent);
-                                });
-                               i++;
-                               bodyContainer.RowContents.push(bodyRowContent);
-                             });
-                             //end of container section
-
-                             //start of footerSection
-                              i= 1;
-                              rn ="";
-                              var footerPart ={} ; //an instance of footerPart
-
-                               if(footerBgColor != "")
-                                {
-                                    footerPart.BGTypeId = 1;
-                                    footerPart.CodeColor = headerBgColor;
-                                }
-                              footerPart.CustomizedContent =[];
-                              $(".dynamicFooterPart .firstLevel .contentColumns").each(function()
-                              {
-                                  debugger;
-                                rn = $(this).find(".row.sectionRow").attr("rn");
-                                var footerRowContent = {}; //an instance of RowContent
-                                footerRowContent.RowNumber = parseInt(rn) ;
-                                footerRowContent.OrderInRow = i ;
-                                footerRowContent.ColsContent = [] ;
-                                $(this).find(".row.parent .finalColumnContent").each(function(){
-                                    var colContent ={} ; //an instance of ColContent
-                                    colContent.Section = "footerSection";
-                                    colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
-                                    colContent.ColData = $(this).html();
-                                    colContent.ColumnClassNames = $(this).attr("classNames");
-
-                                    footerRowContent.ColsContent.push(colContent);
-                                });
-                                 i++;
-                                footerPart.CustomizedContent.push(footerRowContent);
-                              });
-                              //end of footer section
-
-                            var model = {}; //an instance of DomainPageModel
-                           if($("#languageId").val() != "-1")
-                           {
-                               debugger;
-                                model.HeaderPart = header;
-                                model.MainPageContainerPart = bodyContainer;
-                                model.FooterPart = footerPart;
-                                model.DomainId = '@domainId';
-                                model.LanguageId = $("#languageId").val();
-                                model.IsMultiLinguals = isMultiLingual;
-                                model.isShop = isShop;
-
-
-                            $.ajax({
-                               type: "Post",
-                               url: '@Url.Action("SavePageContent", "Domain")',
-                               contentType : 'application/json',
-                               data : JSON.stringify(model),
-                               success: function (result) {
-                                   debugger;
-                                   $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_EditionDoneSuccessfully")');
-                                         $('#mainToastBody').addClass('alert-success');
-
-                                         var toastDiv = $("#mainToast");
-                                         $("#toastPanel").show();
-                                         var toast = new bootstrap.Toast(toastDiv);
-                                         toast.show();
-                                         //setTimeout(function(){
-                                            // toast.hide(),3000
-                                         //});
-                               },
-
-                            });
-                           }
-                           else
-                            {
-                                showError('@Language.GetString("AlertAndMessage_FillLangId")');
-                            }
-                           
-                       });
-
-                       $("#btnPreview").click(function(){
-                           debugger;
-                           var header ="";
-                           var container ="";
-                           var footer ="";
-
-                            //var regPart = document.getElementById("regPart").outerHTML;
-                            //var priorHeader = document.getElementById("regPart").outerHTML;
-                            //header = priorHeader;
-
-                            $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
-
-                                header += "<div class='row firstLevel'>";
-                                $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
-                                    var classNames = $(this).attr("classNames");
-                                    var columnContent = $(this).html();
-                                    header +=`<div class='${classNames}'>${columnContent}</div>` ;
-                                });
-                                header += "</div>";
-                            });
-
-                      if($("#languageId").val() != "-1")
-                         {
-
-                            $.ajax({
-                                url:"@Url.Action("GetMenuModuleViewComponent","Domain")"+"?domainId="+'@domainId'+"&languageId="+ $("#languageId").val(),
-                                type:'Get',
-                                statusCode:{
-                                    200:function(data){
-
-                                       header +=`<div class="navbar">${data}</div>` ;
-                                       $(".dynamicContainerPart .firstLevel .contentColumns").each(function()
-                                         {
-
-                                             container += "<div class='row firstLevel'>";
-                                            $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
-
-                                               var classNames = $(this).attr("classNames");
-                                                var columnContent = $(this).html();
-                                                container +=`<div class='${classNames}'>${columnContent}</div>` ;
-                                            });
-                                            container += "</div>";
-                                         });
-
-                                         //start of footerSection
-                                          $(".dynamicFooterPart .firstLevel .contentColumns").each(function()
-                                          {
-                                            footer += "<div class='row firstLevel'>";
-                                            $(this).find(".row.parent .finalColumnContent").each(function(){
-                                                var classNames = $(this).attr("classNames");
-                                                var columnContent = $(this).html();
-                                                footer +=`<div class='${classNames}'>${columnContent}</div>` ;
-                                            });
-                                             footer += "</div>";
-
-                                          });
-                                        //end of footer section
-
-                                       
-                                            var model = {}; //an instance of TemplateDesign
-                                            model.HeaderContent = header;
-                                            model.ContainerContent = container;
-                                            model.FooterContent = footer;
-                                            model.DomainId = '@domainId';
-                                            model.LanguageId = $("#languageId").val();
-                                            model.IsShop = isShop;
-                                            model.IsMultiLinguals = isMultiLingual;
-
-                                             $.ajax({
-                                               url: '@Url.Action("StoreDesignPreview")',
-                                               data : JSON.stringify(model),
-                                               contentType: 'application/json',
-                                               type: 'Post',
-                                               dataType: 'json',
-                                               success: function (result) {
-                                                   if(result != "")
-                                                   {
-                                                       window.open('@Url.Action("DesignPreview")'+'?key='+result.key , '_blank');
-                                                   }
-                                               }
-                                              });
-                                    }
-                                }
-                              });
-
-                          }
-                        else
+                        if($(this).is(':checked'))
                         {
-                            showError('@Language.GetString("AlertAndMessage_FillLangId")');
+                            custClass += ` ${cls}`;
+
+                        }else
+                        {
+                            //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass(cls);
+                            custClass = custClass.replace(cls, "");
+                            //pClass = pClass.replace(cls, "");
                         }
-                       });
 
-                           $(".owl-carousel").owlCarousel({
-                               loop: true,
-                               rtl: true,
-                               navigation : true,
-                               /* autoplay: true,*/
-                               margin: 10,
-                               animateOut: 'fadeOut',
-                               animateIn: 'fadeIn',
-                               nav: true,
-                               /*dots: true,*/
-                               autoplayHoverPause: false,
-                               items: 3,
-                               navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>",
-                                         "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
-                               responsive: {
-                                   0: {
-                                       items: 1
-                                   },
-                                   600: {
-                                       items: 3
-                                   },
-                                   1000: {
-                                       items: 5
-                                   }
-                               }
-                           });
+                        //$(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames", custClass);
+                        //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames", pClass);
+                        $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses", custClass);
+                    });
 
-                          
-                           $(".likeLink i").click(function () {
-                               if ($(this).hasClass("far fa-heart")) {
-                                   $(this).removeClass("far fa-heart");
-                                   $(this).addClass("fas fa-heart");
-                               } else {
-                                   $(this).removeClass("fas fa-heart");
-                                   $(this).addClass("far fa-heart");
-                               }
-                           });
-                   })
+                    $("#deleteBgImage").click(function(){
+                        //???
+                    });
+
+                    $("#send_pic").click(function () {
+
+                        $("#uploadModal").modal("hide");
+                        var url = $("#galleryPic").attr("src");
+                        var model = {};
+                        var ratio="";
+                            var width ="";
+                        var height ="";
+                        switch($("#imgAspectRatio").val())
+                        {
+                            case "1":
+                            ratio ="1*1";
+                                width = 120;
+                            height = 120;
+                            break;
+                            case "2":
+                            ratio = "2*1";
+                                width = 120;
+                            height = 60;
+                            break;
+                            case "4":
+                            ratio="4*1";
+                                width = 120;
+                            height = 30;
+                            break;
+                        }
+                        model.ImageId = counter;
+                        model.Content = url;
+                        model.ImageRatioId =
+                        images.push(model);
+                    });
+
+                    $("#removeFlagPart").click(function(){
+                        $('#confirmDesignModalLabel').text('@Language.GetString("btn_Delete")');
+                        $('#confirmDesignModalBody').html('@Language.GetString("AlertAndMessage_RemoveBoxConfrim")');
+                        $('#confirmDesignModal').modal('show');
+                    });
 
 
-                   function confirmation()
-                   {
-                       $(".flagPartDiv").addClass("d-none");
-                       $("#restoreRecord").removeClass("d-none");
-                   }
-
-                   function flagRestoration()
-                   {
-                       $(".flagPartDiv").removeClass("d-none");
-                       $("#restoreRecord").addClass("d-none");
-                   }
-                   function setLang(lang)
-                       {
-                           var currentCulture = '@CultureInfo.CurrentCulture.Name';
-                           if (currentCulture !== lang) {
-                               $.ajax({
-                                   type: "GET",
-                                   url: '/Account/changeLang?langId=' + lang,
-                                   success: function () {
-
-                                       window.location.reload();
+                     $(".owl-carousel").owlCarousel({
+                                   loop: true,
+                                   rtl: true,
+                                   navigation : true,
+                                   /* autoplay: true,*/
+                                   margin: 10,
+                                   animateOut: 'fadeOut',
+                                   animateIn: 'fadeIn',
+                                   nav: true,
+                                   /*dots: true,*/
+                                   autoplayHoverPause: false,
+                                   items: 3,
+                                   navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>",
+                                             "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
+                                   responsive: {
+                                       0: {
+                                           items: 1
+                                       },
+                                       600: {
+                                           items: 3
+                                       },
+                                       1000: {
+                                           items: 5
+                                       }
                                    }
                                });
+
+                           $("#btnSave").click(function(){
+                               debugger;
+                               //start of header section
+
+                                var header = {}; //an instance of headerPart
+                                header.CustomizedContent = [];
+
+                                //var regPart = document.getElementById("regPart").outerHTML;
+                                //var priorHeader = document.getElementById("regPart").outerHTML;
+                                //header.PriorFixedContent = priorHeader;
+                                if(headerBgColor != "")
+                                {
+                                    header.BGTypeId = 1;
+                                    header.CodeColor = headerBgColor;
+                                }
+
+                                var i = 1;
+                                var rn = 1000;
+                                $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
+                                    debugger;
+                                    rn = $(this).find(".row.sectionRow").attr("rn");
+                                    var obj = {}; //an instance of RowContent
+                                    obj.RowNumber = parseInt(rn) ;
+                                    obj.OrderInRow = i ;
+                                    obj.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+                                    obj.ColsContent = [] ;
+                                    $(this).find(".row.parent .finalColumnContent").each(function(){
+                                        var colContent ={} ; //an instance of ColContent
+                                        colContent.Section = "headerSection";
+                                        colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
+                                        colContent.ColData = $(this).html();
+                                        colContent.ColumnClassNames = $(this).attr("classNames");
+
+                                        obj.ColsContent.push(colContent);
+                                    });
+                                    i++;
+                                    header.CustomizedContent.push(obj);
+                                });
+
+                                //navbar
+                                //var obj = {}; //an instance of RowContent for navbar Menu
+                                //if($(".dynamicHeaderPart .firstLevel .contentColumns").length == 0 )
+                                //{
+                                //    obj.RowNumber =  parseInt(rn);
+                                //}else
+                                //{
+                                //    obj.RowNumber =  parseInt(rn) + 1;
+                                //}
+
+                                //obj.RowNumber =  parseInt(rn) + 1;
+                                //obj.OrderInRow = i ;
+                                //obj.ExtraClassNames ="navbarMenu";
+                                //obj.ColsContent =[] ;
+                                //var singleCol = {};
+                                //singleCol.Section ="";
+                                //singleCol.ColNumber = 1;
+
+                                //var menuModule = {};//an instance of ModuleWithParametersValue for menu
+                                //menuModule.ModuleId = "f8865ffc-1653-41ba-a281-ee57fa7ffc09";
+                                //menuModule.ModuleName = "HorizantalStoreMenu";
+                                //menuModule.ParametersValue = {};
+                                //menuModule.ParametersValue.domainId = '@domainId';
+                                //menuModule.ParametersValue.languageId = $("#languageId").val();
+                                //var data = JSON.stringify(menuModule);
+                                //var menuData = `<div target='module'>${data}</div>`;
+
+                                //singleCol.ColData = menuData;
+                                //singleCol.ColumnClassNames = "";
+                                //obj.ColsContent.push(singleCol);
+                                //header.CustomizedContent.push(obj);
+                                //end of header section
+
+
+                                //start of container section
+                                i= 1;
+                                rn ="";
+                                var bodyContainer = {}; //an instance of MainPageContentPart
+                                bodyContainer.RowContents = [] ;
+                                 $(".dynamicContainerPart .firstLevel .contentColumns").each(function()
+                                 {
+                                     debugger;
+                                     rn = $(this).find(".row.sectionRow").attr("rn");
+
+                                    var bodyRowContent = {}; //an instance of RowContent
+                                    bodyRowContent.RowNumber = parseInt(rn) ;
+                                    bodyRowContent.OrderInRow = i ;
+                                    bodyRowContent.ColsContent = [] ;
+                                    bodyRowContent.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+                                    if( $(this).find(".row.sectionRow").css("background-color") != undefined &&
+                                        $(this).find(".row.sectionRow").css("background-color") != "" )
+                                    {
+                                        bodyRowContent.BgCodeColor = $(this).find(".row.sectionRow").css("background-color");
+                                    }
+
+                                    $(this).find(".row.parent .finalColumnContent").each(function(){
+                                        var colContent ={} ; //an instance of ColContent
+                                        colContent.Section = "containerSection";
+                                        colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
+                                        colContent.ColData = $(this).html();
+                                        colContent.ColumnClassNames = $(this).attr("classNames");
+                                        bodyRowContent.ColsContent.push(colContent);
+                                    });
+                                   i++;
+                                   bodyContainer.RowContents.push(bodyRowContent);
+                                 });
+                                 //end of container section
+
+                                 //start of footerSection
+                                  i= 1;
+                                  rn ="";
+                                  var footerPart ={} ; //an instance of footerPart
+
+                                   if(footerBgColor != "")
+                                    {
+                                        footerPart.BGTypeId = 1;
+                                        footerPart.CodeColor = footerBgColor;
+                                    }
+                                  footerPart.CustomizedContent =[];
+                                  $(".dynamicFooterPart .firstLevel .contentColumns").each(function()
+                                  {
+                                      debugger;
+                                    rn = $(this).find(".row.sectionRow").attr("rn");
+                                    var footerRowContent = {}; //an instance of RowContent
+                                    footerRowContent.RowNumber = parseInt(rn) ;
+                                    footerRowContent.OrderInRow = i ;
+                                    footerRowContent.ColsContent = [] ;
+                                    footerRowContent.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+                                    $(this).find(".row.parent .finalColumnContent").each(function(){
+                                        var colContent ={} ; //an instance of ColContent
+                                        colContent.Section = "footerSection"
+                                        colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
+                                        colContent.ColData = $(this).html();
+                                        colContent.ColumnClassNames = $(this).attr("classNames");
+
+                                        footerRowContent.ColsContent.push(colContent);
+                                    });
+                                     i++;
+                                    footerPart.CustomizedContent.push(footerRowContent);
+                                  });
+                                  //end of footer section
+
+                                var model = {}; //an instance of DomainPageModel
+                               if($("#languageId").val() != "-1")
+                               {
+                                   debugger;
+                                    model.HeaderPart = header;
+                                    model.MainPageContainerPart = bodyContainer;
+                                    model.FooterPart = footerPart;
+                                    model.DomainId = '@domainId';
+                                    model.LanguageId = $("#languageId").val();
+                                    model.IsMultiLinguals = isMultiLingual;
+                                    model.isShop = isShop;
+
+
+                                $.ajax({
+                                   type: "Post",
+                                   url: '@Url.Action("SavePageContent", "Domain")',
+                                   contentType : 'application/json',
+                                   data : JSON.stringify(model),
+                                   success: function (result) {
+                                       debugger;
+                                       $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_EditionDoneSuccessfully")');
+                                             $('#mainToastBody').addClass('alert-success');
+
+                                             var toastDiv = $("#mainToast");
+                                             $("#toastPanel").show();
+                                             var toast = new bootstrap.Toast(toastDiv);
+                                             toast.show();
+                                             //setTimeout(function(){
+                                                // toast.hide(),3000
+                                             //});
+                                   },
+
+                                });
+                               }
+                               else
+                                {
+                                    showError('@Language.GetString("AlertAndMessage_FillLangId")');
+                                }
+
+                           });
+
+                           $("#btnPreview").click(function(){
+                               debugger;
+                               var header ="";
+                               var container ="";
+                               var footer ="";
+
+                                //var regPart = document.getElementById("regPart").outerHTML;
+                                //var priorHeader = document.getElementById("regPart").outerHTML;
+                                //header = priorHeader;
+
+                                $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
+                                    var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+                                    header += `<div class='row firstLevel ${extraClasses}'>`;
+                                    $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
+                                        var classNames = $(this).attr("classNames");
+                                        var columnContent = $(this).html();
+                                        header +=`<div class='${classNames}'>${columnContent}</div>` ;
+                                    });
+                                    header += "</div>";
+                                });
+
+                                  if($("#languageId").val() != "-1")
+                                     {
+
+                                        //$.ajax({
+                                        //    url:"@Url.Action("GetMenuModuleViewComponent","Domain")"+"?domainId="+'@domainId'+"&languageId="+ $("#languageId").val(),
+                                        //    type:'Get',
+                                        //    statusCode:{
+                                        //        200:function(data){
+
+                                        //           header +=`<div class="navbar">${data}</div>` ;
+                                                   $(".dynamicContainerPart .firstLevel .contentColumns").each(function()
+                                                   {
+                                                        var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+                                                         container += `<div class='row firstLevel ${extraClasses}'>`;
+                                                        $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
+
+                                                           var classNames = $(this).attr("classNames");
+                                                            var columnContent = $(this).html();
+                                                            container +=`<div class='${classNames}'>${columnContent}</div>` ;
+                                                        });
+                                                        container += "</div>";
+                                                    });
+
+                                                     //start of footerSection
+                                                      $(".dynamicFooterPart .firstLevel .contentColumns").each(function()
+                                                      {
+                                                        var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+                                                        footer += `<div class='row firstLevel ${extraClasses}'>`;
+                                                        $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
+                                                            var classNames = $(this).attr("classNames");
+                                                            var columnContent = $(this).html();
+                                                            footer +=`<div class= '${classNames}' > ${columnContent} </div>` ;
+                                                        });
+                                                         footer += "</div>";
+
+                                                      });
+                                                    //end of footer section
+
+
+                                                        var model = {}; //an instance of TemplateDesign
+                                                        model.HeaderContent = header;
+                                                        model.ContainerContent = container;
+                                                        model.FooterContent = footer;
+                                                        model.DomainId = '@domainId';
+                                                        model.LanguageId = $("#languageId").val();
+                                                        model.IsShop = isShop;
+                                                        model.IsMultiLinguals = isMultiLingual;
+
+                                                         $.ajax({
+                                                           url: '@Url.Action("StoreDesignPreview")',
+                                                           data : JSON.stringify(model),
+                                                           contentType: 'application/json',
+                                                           type: 'Post',
+                                                           dataType: 'json',
+                                                           success: function (result) {
+                                                               if(result != "")
+                                                               {
+                                                                   window.open('@Url.Action("DesignPreview")'+'?key='+result.key , '_blank');
+                                                               }
+                                                           }
+                                                          });
+                                                }
+                                            }
+                                          });
+
+                                      }
+                                    else
+                                    {
+                                        showError('@Language.GetString("AlertAndMessage_FillLangId")');
+                                    }
+                           });
+
+                              
+
+
+                               //$(".likeLink i").click(function () {
+                               //    if ($(this).hasClass("far fa-heart")) {
+                               //        $(this).removeClass("far fa-heart");
+                               //        $(this).addClass("fas fa-heart");
+                               //    } else {
+                               //        $(this).removeClass("fas fa-heart");
+                               //        $(this).addClass("far fa-heart");
+                               //    }
+                               //});
+                       })
+
+
+                       function confirmation()
+                       {
+                           $(".flagPartDiv").addClass("d-none");
+                           $("#restoreRecord").removeClass("d-none");
+                       }
+
+                       function flagRestoration()
+                       {
+                           $(".flagPartDiv").removeClass("d-none");
+                           $("#restoreRecord").addClass("d-none");
+                       }
+                       function setLang(lang)
+                           {
+                               var currentCulture = '@CultureInfo.CurrentCulture.Name';
+                               if (currentCulture !== lang) {
+                                   $.ajax({
+                                       type: "GET",
+                                       url: '/Account/changeLang?langId=' + lang,
+                                       success: function () {
+
+                                           window.location.reload();
+                                       }
+                                   });
+                               }
                            }
-                       }
-                       function setProductCountInCart(number) {
-                          $("#userBasketId .notifyBadge").html(number);
-                       }
-
-                       function changeScreen() {
-                           var windowSize = $(window).width();
-                           console.log(windowSize);
-                           if (windowSize <= 974) {
-                               $(".nascr").removeClass("d-none").addClass("d-block");
-                               $(".wiscr").removeClass("d-block").addClass("d-none");
-                           } else {
-                               $(".nascr").removeClass("d-block").addClass("d-none");
-                               $(".wiscr").removeClass("d-none").addClass("d-block");
+                           function setProductCountInCart(number) {
+                              $("#userBasketId .notifyBadge").html(number);
                            }
-                       }
 
-      function addToTable() {
-            debugger;
-            var flag = false;
-            var selectedLang = $('#multiLangId').val();
-            if(isUnique(selectedLang, 'multiLingualList', 1, '@Language.GetString("AlertAndMessage_LangUniqueness")'))
-            {
-                     $("span[data-val-result='multiLangId']").html("");
-                     $("span[data-val-result='productName']").html("");
+                           function changeScreen() {
+                               var windowSize = $(window).width();
+                               console.log(windowSize);
+                               if (windowSize <= 974) {
+                                   $(".nascr").removeClass("d-none").addClass("d-block");
+                                   $(".wiscr").removeClass("d-block").addClass("d-none");
+                               } else {
+                                   $(".nascr").removeClass("d-block").addClass("d-none");
+                                   $(".wiscr").removeClass("d-none").addClass("d-block");
+                               }
+                           }
 
-                    if ($("#multiLangId").val() == "") {
-                        $("span[data-val-result='multiLangId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
-                        flag = true;
-                    }
-                    if ($("#productName").val() == "") {
-                            $("span[data-val-result='productName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
-                        flag = true;
-                    }
-                    if (!flag) {
-                        debugger;
-                        var obj = {};
-                        obj.LanguageId = $('#multiLangId').val();
-                        obj.LanguageName = $("#multiLangId option:selected").text();
-                        obj.Name = $('#productName').val();
-                        obj.SeoTitle = $("#seoTitle").val();
-                        obj.SeoDescription = $("#seoDescription").val();
-                        obj.Description = $("#description").val();
-                        obj.UrlFriend = $("#urlFriend").val();
-                        obj.BodyContent = CKEDITOR.instances.editorCk.getData();
-                        obj.Tag = cnt.toString();
+          function addToTable() {
+                debugger;
+                var flag = false;
+                var selectedLang = $('#multiLangId').val();
+                if(isUnique(selectedLang, 'multiLingualList', 1, '@Language.GetString("AlertAndMessage_LangUniqueness")'))
+                {
+                         $("span[data-val-result='multiLangId']").html("");
+                         $("span[data-val-result='productName']").html("");
 
-                        multiLingualArr.push(obj);
-
-                        var tr = "<tr style='text-align:center;'><td>" + $("#multiLangId option:selected").text() +
-                            "</td><td style='display:none;'>" + $('#multiLangId').val() +
-                            "</td><td>" + $('#productName').val() +
-                            "</td><td>" + $("#seoTitle").val() +
-                            "</td><td>" + $("#seoDescription").val() +
-                            "</td><td>" + $("#description").val() +
-                            "</td><td>" + $("#urlFriend").val() +
-                            "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' cnt='" + obj.Tag + "' onclick='deleteFromTable(this);'>" +
-                            "<i class='fa fa-trash' ></i></button></td></tr>";
-
-                        if ($("#multiLingualList tr").length == 1 && $("#multiLingualList tr")[0].children.length == 1) {
-                            $("#multiLingualList tr")[0].remove();
+                        if ($("#multiLangId").val() == "") {
+                            $("span[data-val-result='multiLangId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                            flag = true;
                         }
+                        if ($("#productName").val() == "") {
+                                $("span[data-val-result='productName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                            flag = true;
+                        }
+                        if (!flag) {
+                            debugger;
+                            var obj = {};
+                            obj.LanguageId = $('#multiLangId').val();
+                            obj.LanguageName = $("#multiLangId option:selected").text();
+                            obj.Name = $('#productName').val();
+                            obj.SeoTitle = $("#seoTitle").val();
+                            obj.SeoDescription = $("#seoDescription").val();
+                            obj.Description = $("#description").val();
+                            obj.UrlFriend = $("#urlFriend").val();
+                            obj.BodyContent = CKEDITOR.instances.editorCk.getData();
+                            obj.Tag = cnt.toString();
 
-                        $("#multiLingualList").append(tr);
-                        cnt = cnt + 1;
-                        $("#multiLangId").val("@ViewBag.LangId");
-                        $("#multiLangId").selectpicker("refresh");
-                        $("#productName").val("");
-                        $("#seoTitle").val("");
-                        $("#seoDescription").val("");
-                        $("#description").val("");
-                        CKEDITOR.instances.editorCk.setData("");
-                       /* $("#urlFriend").val("");*/
-                    }
-            }
-         }
-        $("#uploadModal").on("shown.bs.modal", function() {
+                            multiLingualArr.push(obj);
 
-                  var image = document.getElementById('croppedImg');
-                  $("#send_pic").attr("disabled", true);
-                  debugger;
-                    var ratio = $("#imgAspectRatio").val();
-                    if (cropper !== null && cropper !== undefined) {
-                    cropper.destroy();
-                   }
+                            var tr = "<tr style='text-align:center;'><td>" + $("#multiLangId option:selected").text() +
+                                "</td><td style='display:none;'>" + $('#multiLangId').val() +
+                                "</td><td>" + $('#productName').val() +
+                                "</td><td>" + $("#seoTitle").val() +
+                                "</td><td>" + $("#seoDescription").val() +
+                                "</td><td>" + $("#description").val() +
+                                "</td><td>" + $("#urlFriend").val() +
+                                "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' cnt='" + obj.Tag + "' onclick='deleteFromTable(this);'>" +
+                                "<i class='fa fa-trash' ></i></button></td></tr>";
 
-                    cropper = new Cropper(image,
-                        {
-                            background: true,
-                            aspectRatio: ratio,
-                            viewMode: 1,
-                            responsive: true,
-                            rotatable: true
+                            if ($("#multiLingualList tr").length == 1 && $("#multiLingualList tr")[0].children.length == 1) {
+                                $("#multiLingualList tr")[0].remove();
+                            }
 
-                        });
-           });
-        $('#uploadModal').on('hidden.bs.modal',
-            function () {
-
-                cropper.destroy();
-                document.getElementById("image").value = "";
-                $("#cropped_result").remove();
-            });
-
-        function rotatePic() {
-            cropper.rotate(90);
-        }
-        $(document).on("click", "#crop_button",
-            function () {
-                    var imgUrl = cropper.getCroppedCanvas({imageSmoothingEnabled: true,
-                            imageSmoothingQuality: 'high' }).toDataURL('image/jpeg', 1);
-                var img = document.createElement("img");
-                img.setAttribute("id", "galleryPic");
-                img.setAttribute("class", "img-fluid");
-                var height = $("#container").attr("height");
-                var croppedContainer = document.createElement("div");
-                croppedContainer.setAttribute("id", "cropped_result");
-                croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
-                document.getElementById("rowContainer").appendChild(croppedContainer);
-                img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
-                img.src = imgUrl;
-                document.getElementById("cropped_result").innerHTML = "";
-                document.getElementById("cropped_result").appendChild(img);
-                $("#send_pic").attr("disabled", false);
-            });
-
-
-        function getURL(input)
-        {
-         $("#cropped_result").remove();
-         if (input.files && input.files[0]) {
-            var file = input.files[0];
-            currentFileName = file.name;
-            currentFileSize = file.size;
-
-            if (currentFileSize <= @ViewBag.PicSize) {
-                var reader = new FileReader();
-                try {
-                    reader.readAsDataURL(file);
-                } catch (e) {
-
+                            $("#multiLingualList").append(tr);
+                            cnt = cnt + 1;
+                            $("#multiLangId").val("@ViewBag.LangId");
+                            $("#multiLangId").selectpicker("refresh");
+                            $("#productName").val("");
+                            $("#seoTitle").val("");
+                            $("#seoDescription").val("");
+                            $("#description").val("");
+                            CKEDITOR.instances.editorCk.setData("");
+                           /* $("#urlFriend").val("");*/
+                        }
                 }
-                reader.onload = function (e) {
-                    var content = e.target.result;
-                    //if file format is incorrect, then the 'content' won't have any src.
-                    if (content !== "data:") {
-                        var reducedContent = content.slice(5);
+             }
+            $("#uploadModal").on("shown.bs.modal", function() {
 
-                        if (reducedContent.startsWith("image")) {
-                             $('#croppedImg').attr('src', content);
-                            $("#uploadModal").modal("show");
+                      var image = document.getElementById('croppedImg');
+                      $("#send_pic").attr("disabled", true);
+                      debugger;
+                        var ratio = $("#imgAspectRatio").val();
+                        if (cropper !== null && cropper !== undefined) {
+                        cropper.destroy();
+                       }
+
+                        cropper = new Cropper(image,
+                            {
+                                background: true,
+                                aspectRatio: ratio,
+                                viewMode: 1,
+                                responsive: true,
+                                rotatable: true
+
+                            });
+               });
+            $('#uploadModal').on('hidden.bs.modal',
+                function () {
+
+                    cropper.destroy();
+                    document.getElementById("image").value = "";
+                    $("#cropped_result").remove();
+                });
+
+            function rotatePic() {
+                cropper.rotate(90);
+            }
+            $(document).on("click", "#crop_button",
+                function () {
+                        var imgUrl = cropper.getCroppedCanvas({imageSmoothingEnabled: true,
+                                imageSmoothingQuality: 'high' }).toDataURL('image/jpeg', 1);
+                    var img = document.createElement("img");
+                    img.setAttribute("id", "galleryPic");
+                    img.setAttribute("class", "img-fluid");
+                    var height = $("#container").attr("height");
+                    var croppedContainer = document.createElement("div");
+                    croppedContainer.setAttribute("id", "cropped_result");
+                    croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
+                    document.getElementById("rowContainer").appendChild(croppedContainer);
+                    img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
+                    img.src = imgUrl;
+                    document.getElementById("cropped_result").innerHTML = "";
+                    document.getElementById("cropped_result").appendChild(img);
+                    $("#send_pic").attr("disabled", false);
+                });
+
+
+            function getURL(input)
+            {
+             $("#cropped_result").remove();
+             if (input.files && input.files[0]) {
+                var file = input.files[0];
+                currentFileName = file.name;
+                currentFileSize = file.size;
+
+                if (currentFileSize <= @ViewBag.PicSize) {
+                    var reader = new FileReader();
+                    try {
+                        reader.readAsDataURL(file);
+                    } catch (e) {
+
+                    }
+                    reader.onload = function (e) {
+                        var content = e.target.result;
+                        //if file format is incorrect, then the 'content' won't have any src.
+                        if (content !== "data:") {
+                            var reducedContent = content.slice(5);
+
+                            if (reducedContent.startsWith("image")) {
+                                 $('#croppedImg').attr('src', content);
+                                $("#uploadModal").modal("show");
+                            } else {
+                                showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
+                                document.getElementById("image").value = "";
+                                $("#cropped_result").remove();
+                            }
                         } else {
+
                             showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
                             document.getElementById("image").value = "";
                             $("#cropped_result").remove();
                         }
-                    } else {
+                    };
+                }
+                else
+                {
 
-                        showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
-                        document.getElementById("image").value = "";
-                        $("#cropped_result").remove();
-                    }
-                };
+                    showError('@Language.GetString("AlertAndMessage_InvalidFileSize")');
+                    document.getElementById("image").value = "";
+                    $("#cropped_result").remove();
+                }
             }
-            else
-            {
-
-                showError('@Language.GetString("AlertAndMessage_InvalidFileSize")');
-                document.getElementById("image").value = "";
-                $("#cropped_result").remove();
             }
-        }
-        }
 
-        function showError(msg) {
-        
-        document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
-        document.getElementById('mainToastBody').classList.add('alert-danger');
-        $("#toastPanel").show();
-        var toast = new bootstrap.Toast($("#mainToast"));
-        toast.show();
-    }
+            function showError(msg) {
+
+            document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
+            document.getElementById('mainToastBody').classList.add('alert-danger');
+            $("#toastPanel").show();
+            var toast = new bootstrap.Toast($("#mainToast"));
+            toast.show();
+        }
     </script>
 
 </body>

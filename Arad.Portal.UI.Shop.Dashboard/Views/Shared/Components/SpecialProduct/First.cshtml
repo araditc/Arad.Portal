@@ -1,12 +1,22 @@
 ﻿@using Arad.Portal.DataLayer.Entities.Shop.Promotion;
+@using Arad.Portal.DataLayer.Models.DesignStructure;
 @model List<Arad.Portal.DataLayer.Models.Product.ProductOutputDTO>
 @{
-
+    string outerElementAtr ="";
+    string innerElementsAtr = "";
+    var animationTarget = (LoadAnimationType)ViewBag.LoadAnimationType;
+    if(animationTarget == LoadAnimationType.OuterElement)
+    {
+        outerElementAtr = $"data-animation='animated {ViewBag.LoadAnimation}'";
+    }else
+    {
+        innerElementsAtr = $"data-animation='animated {ViewBag.LoadAnimation}'";
+    }
 }
 
 
 <div class="row mx-1" style="min-height:250px;">
-    <div class="owl-carousel" id="productCarousel">
+    <div class="owl-carousel" id="productCarousel" @outerElementAtr>
 
         @foreach (var item in Model)
         {
@@ -31,7 +41,7 @@
                     <span class="newp bg-light rounded m-1 ps-2 pe-2">NEW</span>
                 }
                
-                <img src="@($"../filemanager/GetScaledImageOnWidth?path={item.MainImageUrl}&width={150}")" class="img-fluid rounded-3" data-animation="animated @(ViewBag.LoadAnimation)" alt="">
+                <img src="@($"../filemanager/GetScaledImageOnWidth?path={item.MainImageUrl}&width={150}")" class="img-fluid rounded-3" alt="@item.MainAlt"  @innerElementsAtr>
                 <div class="star-rating">
                     <ul class="list-inline bg-white p-1 rounded">
                          @for (int i = (item.HalfLikeRate ? item.LikeRate + 2 : item.LikeRate + 1); i <= 5; i++)

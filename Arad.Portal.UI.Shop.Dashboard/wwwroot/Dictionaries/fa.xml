@@ -195,6 +195,12 @@
 	<string key="design_LayerType">
 		<value>نوع لایه</value>
 	</string>
+	<string key="design_loadAnimation">
+		<value>افکت زمان بارگزاری</value>
+	</string>
+	<string key="design_loadAnimationType">
+		<value>مقصد افکت</value>
+	</string>
 	<string key="design_ContentText">
 		<value>متن محتوا</value>
 	</string>

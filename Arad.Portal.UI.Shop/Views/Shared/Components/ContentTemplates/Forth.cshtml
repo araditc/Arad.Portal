@@ -1,15 +1,26 @@
 ﻿@using Arad.Portal.DataLayer.Models.Shared;
+@using Arad.Portal.DataLayer.Models.DesignStructure;
 @model List<Arad.Portal.DataLayer.Models.Content.ContentGlance>
 @{
     //Layout = "~/Views/Shared/_Layout.cshtml";
+    string outerElementAtr ="";
+    string innerElementsAtr = "";
+    var animationTarget = (LoadAnimationType)ViewBag.LoadAnimationType;
+    if(animationTarget == LoadAnimationType.OuterElement)
+    {
+        outerElementAtr = $"data-animation='animated {ViewBag.LoadAnimation}'";
+    }else
+    {
+        innerElementsAtr = $"data-animation='animated {ViewBag.LoadAnimation}'";
+    }
 }
 
 
 
-<ul class="list-group">
+<ul class="list-group" @outerElementAtr>
     @foreach (var item in Model)
     {
-         <li class="list-group-item border-0 contentForth">
+         <li class="list-group-item border-0 contentForth" @innerElementsAtr>
              <div class="row">
                <div class="col-3 col-md-2 col-lg-1">
                   <a href="@($"/blog/{item.ContentCode}")">

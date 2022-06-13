@@ -32,7 +32,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
                 _lanRepository = lanRepository;
                 _environment = env;
         }
-        public IViewComponentResult Invoke(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, int count, TransActionType loadAnimation, LoadAnimationType loadAnimationType)
+        public IViewComponentResult Invoke(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, 
+            int count, TransActionType loadAnimation, LoadAnimationType loadAnimationType)
         {
             var defaultCulture = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
             List<ContentGlance> lst = new List<ContentGlance>();

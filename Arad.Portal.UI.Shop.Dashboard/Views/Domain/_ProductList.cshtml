@@ -1,4 +1,5 @@
 ﻿@using Arad.Portal.DataLayer.Entities.General.SliderModule;
+@using Arad.Portal.DataLayer.Models.DesignStructure;
 <div class="row par mx-2" id="templateSection">
     <label class="form-label text-center">@Language.GetString("ViewTemplate")</label><br />
     @foreach (SelectImageListModel option in ViewBag.ProductTemplateList)
@@ -21,10 +22,15 @@
         <input type="number" id="countToShow" class="form-control par" value="" />
     </div>
     <div class="col-12 text-center loadAnimate">
-        <label class="form-label" for="LoadAnimation">@Language.GetString("design_LayerType")</label>
+        <label class="form-label" for="LoadAnimation">@Language.GetString("design_loadAnimation")</label>
         <select id="LoadAnimation" class="form-control selectpicker mt-2 par" asp-items="Html.GetEnumSelectList<TransActionType>()"></select>
         <span class="field-validation-error" data-val-result="LoadAnimation"></span>
     </div>
+     <div class="col-12 text-center loadAnimationType">
+          <label class="form-label" for="LoadAnimationType">@Language.GetString("design_loadAnimationType")</label>
+           <select id="LoadAnimationType" class="form-control selectpicker mt-2 par" asp-items="Html.GetEnumSelectList<LoadAnimationType>()"></select>
+        <span class="field-validation-error" data-val-result="LoadAnimation"></span>
+     </div>
     <div class="col-12 text-center">
         <button id="btnAddModuleWithParameters" class="btn btn-success bg-gradient btn-sm float-end m-1"
                 onclick="addModulesWithParams(this);" type="button">
@@ -38,6 +44,8 @@
     $(document).ready(function(){
         debugger;
          $("#typeList").selectpicker();
+         $("#LoadAnimation").selectpicker();
+         $("#LoadAnimationType").selectpicker();
     });
 
 

@@ -1,46 +1,71 @@
 ﻿@using Arad.Portal.DataLayer.Models.SlideModule;
 @model Arad.Portal.DataLayer.Entities.General.SliderModule.Slider
+@{
+    int i = 1;
     
-<div class="topSlider owl-carousel owl-theme ">
+}
+
+<div class="carousel slide" id="sliderCarousel">
     @if (Model != null)
     {
-        @foreach (var slide in Model.Slides)
-        {
-            if (slide.IsActive)
+        @*style="object-fit: @slide.ImageFit"*@
+      
+       
+        <div class="carousel-inner">
+            @foreach (var slide in Model.Slides)
             {
-                var itemBackground = string.IsNullOrEmpty(slide.ColoredBackground) ? "transparent" : slide.ColoredBackground;
-
-                if (string.IsNullOrWhiteSpace(slide.Link))
+                if (slide.IsActive)
                 {
-                    <div class="item" style="background-color: @itemBackground; position: relative;">
-                        <img class="animate__animated @($"animate__{slide.TransActionType}")" src="@slide.ImageUrl" alt="@slide.Alt" title="@slide.Title" />
-                        @if (slide.Layers.Count > 0)
-                        {
-                            foreach (var layer in slide.Layers)
+                    var itemBackground = string.IsNullOrEmpty(slide.ColoredBackground) ? "transparent" : slide.ColoredBackground;
+
+                    if (string.IsNullOrWhiteSpace(slide.Link))
+                    {
+                        <div class='carousel-item @(i == 1 ? "active" : "")' 
+                        style="background-color: @itemBackground;position: relative; z-index:0;">
+                            <img data-animation="animated @($"{slide.TransActionType}")"
+                             src='@($"../../filemanager/GetScaledImageOnWidth?path=/{slide.ImageUrl}&width={1000}")'
+                             class="w-100" alt="@slide.Alt" title="@slide.Title"  />
+                            @if (slide.Layers.Count > 0)
                             {
-                                @await Component.InvokeAsync("SliderLayer", layer)
+                                foreach (var layer in slide.Layers)
+                                {
+                                    @await Component.InvokeAsync("SliderLayer", layer)
 
+                                }
                             }
-                        }
 
-                    </div>
-                }
-                else
-                {
-                    <a href="@slide.Link" target="@slide.Target" class="item" style="background-color: @itemBackground;">
-                        <img class="animate__animated @($"animate__{slide.TransActionType}")" src="@slide.ImageUrl" alt="@slide.Alt" title="@slide.Title" />
-                        @if (slide.Layers.Count > 0)
-                        {
-                            foreach (var layer in slide.Layers)
+                        </div>
+                    }
+                    else
+                    {
+                        <a href="@slide.Link" target="@slide.Target" class="carousel-item @(i == 1 ? "active" : "")" 
+                               style="background-color: @itemBackground;position: relative; z-index:0;">
+                            <img data-animation="animated @($"{slide.TransActionType}")"
+                              src='@($"../../filemanager/GetScaledImageOnWidth?path=/{slide.ImageUrl}&width={1000}")' 
+                               class="w-100" alt="@slide.Alt" title="@slide.Title"  />
+                            @if (slide.Layers.Count > 0)
                             {
-                                @await Component.InvokeAsync("SliderLayer", layer)
+                                foreach (var layer in slide.Layers)
+                                {
+                                    @await Component.InvokeAsync("SliderLayer", layer)
 
+                                }
                             }
-                        }
-                    </a>
+                        </a>
+                    }
                 }
+                i += 1;
             }
+        </div>
 
-        }
+        <button class="carousel-control-prev" type="button" data-bs-target="#sliderCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#sliderCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     }
 </div>
+

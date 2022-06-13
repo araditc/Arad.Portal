@@ -169,6 +169,24 @@
                 $(".nav-item .nav-link").mouseleave(function () {
                         $(this).removeClass("text-primary");
                 });
+            $('@Model.IsShop' == "True")
+            {
+                $("#btnIsShop").parent().removeClass("border").removeClass("border-1");
+                $("#btnIsShop").remove();
+            }else
+            {
+                $("#btnIsShop").parent().remove();
+            }
+
+            if('@Model.IsMultiLinguals' == "True")
+            {
+                $("#btnFlags").parent().removeClass("border").removeClass("border-1");
+                $("#btnFlags").remove();
+            }else
+            {
+                 $("#btnFlags").parent().remove();
+            }
+
 
             $(".owl-carousel").owlCarousel({
                 loop: true,
@@ -196,26 +214,7 @@
                 }
             });
 
-            $('.custSlider').owlCarousel({
-                                rtl: true,
-                                center: true,
-                                loop: true,
-                                margin: 0,
-                                nav: false,
-                                dots: false,
-                                autoplay: true,
-                                responsive: {
-                                    0: {
-                                        items: 1
-                                    },
-                                    600: {
-                                        items: 1
-                                    },
-                                    1000: {
-                                        items: 1
-                                    }
-                                }
-                            });
+           
         });
 </script>
 </body>

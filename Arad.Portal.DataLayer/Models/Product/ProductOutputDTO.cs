@@ -47,6 +47,8 @@ namespace Arad.Portal.DataLayer.Models.Product
 
         public string MainImageUrl { get; set; }
 
+        public string MainAlt { get; set; }
+
         public bool ShowInLackOfInventory { get; set; }
 
         public string SellerUserId { get; set; }

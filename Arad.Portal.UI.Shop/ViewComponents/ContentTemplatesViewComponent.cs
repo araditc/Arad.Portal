@@ -1,7 +1,9 @@
 ﻿using Arad.Portal.DataLayer.Contracts.General.Content;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using Arad.Portal.DataLayer.Entities.General.DesignStructure;
+using Arad.Portal.DataLayer.Entities.General.SliderModule;
 using Arad.Portal.DataLayer.Models.Content;
+using Arad.Portal.DataLayer.Models.DesignStructure;
 using Arad.Portal.DataLayer.Models.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
@@ -25,7 +27,8 @@ namespace Arad.Portal.UI.Shop.ViewComponents
                 _accessor = accessor;
                _lanRepository = lanRepository;
         }
-        public IViewComponentResult Invoke(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, int count)
+        public IViewComponentResult Invoke(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, 
+            int count, TransActionType loadAnimation, LoadAnimationType loadAnimationType)
         {
             var defaultCulture = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
             List<ContentGlance> lst = new List<ContentGlance>();
@@ -33,7 +36,10 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             CultureInfo currentCultureInfo = new(defLangSymbol, false);
             var langId = _lanRepository.FetchBySymbol(defLangSymbol);
             ViewBag.CurLangId = langId;
-           
+
+            ViewBag.LoadAnimation = loadAnimation;
+            ViewBag.LoadAnimationType = loadAnimationType;
+
             //switch(selectionTemplate)
             //{
             //    case ContentTemplateDesign.First:
@@ -49,7 +55,7 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             //    case ContentTemplateDesign.Fifth :
             //        cnt = count.Value;
             //        break;
-                
+
             //}
             lst = _contentRepository.GetSpecialContent(count, contentType, false);
             switch (selectionTemplate)

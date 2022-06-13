@@ -1378,6 +1378,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 pro.DiscountType = res.DiscountType;
                 pro.DiscountValue = res.DiscountValue;
                 pro.MainImageUrl = pro.Images.Any(_ => _.IsMain) ? pro.Images.FirstOrDefault(_ => _.IsMain).Url : "";
+                pro.MainAlt = pro.Images.Any(_ => _.IsMain) ? (!string.IsNullOrWhiteSpace(pro.Images.FirstOrDefault(_ => _.IsMain).Title) ? pro.Images.FirstOrDefault(_ => _.IsMain).Title : "") : "";
                 var r = Helpers.Utilities.ConvertPopularityRate(pro.TotalScore ?? 0, pro.ScoredCount ?? 0);
                 pro.LikeRate = r.LikeRate;
                 pro.DisikeRate = r.DisikeRate;

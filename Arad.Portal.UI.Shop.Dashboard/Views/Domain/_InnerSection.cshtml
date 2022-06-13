@@ -14,7 +14,7 @@
 
 <div class="row justify-content-center">
     <div class="offset-8 col-4 offset-md-10 col-md-2">
-        <button class='btn btn-sm m-2 pt-2 btn-primary columnStyles float-end' data-bs-toggle="tooltip" data-bs-placement="top" title="@Language.GetString("design_ColumnStyles")" sec="@Model.Section" cn="@Model.ColNumber" rn="@ViewBag.RowNumber"><i class='fs-6 fa fa-cog'></i></button>
+        <button class='btn btn-sm m-2 pt-2 btn-primary columnStyles float-end' data-bs-toggle="tooltip" data-bs-placement="top" title="@Language.GetString("design_ColumnStyles")" sec="@Model.Section" cn="@Model.ColNumber" guid="@Model.RowGuid" rn="@ViewBag.RowNumber"><i class='fs-6 fa fa-cog'></i></button>
     </div>
 </div>
 
@@ -96,13 +96,13 @@
             @Language.GetString("btn_Validation")
         </button>
     </div>
-    <div class="row finalColumnContent d-none" guid="@Model.RowGuid" classNames="@Model.ColumnClassNames"></div>
-    <div class="row htmlColumnContentPreview d-none mx-2" guid="@Model.RowGuid" classNames="@Model.ColumnClassNames">
+    <div class="row finalColumnContent d-none" guid="@Model.RowGuid" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" classNames="@Model.ColumnClassNames"></div>
+    <div class="row htmlColumnContentPreview d-none mx-2" guid="@Model.RowGuid" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" classNames="@Model.ColumnClassNames">
     </div>
 
     @*difference between these finalColumnContent and htmlColumnContentPreview is about modules the first one store with parameters and second one html of executed module will render *@
     @*difference between moduleDatePreview and htmlColumnContentPreview is if we have more than one module in a column then mouleDataPreview is for the last module to show but htmlColumnContentPreview is all data of this columns*@
-    <div class="row moduleDataPreview d-none mx-2" guid="@Model.RowGuid">
+    <div class="row moduleDataPreview d-none mx-2" guid="@Model.RowGuid" cn="@Model.ColNumber" rn="@ViewBag.RowNumber">
     </div>
 </div>
 
@@ -220,6 +220,8 @@
         obj.ParametersValue ={};
          var targetParamsDiv = $(sender).closest(".paramsDiv");
          var count = 0;
+         var loadAnimation;
+         var loadAnimationType;
           var sliderId ="" ;
           var domainId = "@ViewBag.DomainId";
           var languageId = $("#languageId").val();
@@ -244,6 +246,12 @@
                          break;
                          case "countToShow":
                          count = parseInt($(this).val());
+                         break;
+                         case "LoadAnimation":
+                         loadAnimation = $(this).val();
+                         break;
+                         case "LoadAnimationType":
+                         loadAnimationType = $(this).val();
                          break;
                      }
                      break;
@@ -272,6 +280,12 @@
                          if(!$(".countSection").hasClass("d-none"))
                              count = parseInt($(this).val());
                          break;
+                         case "LoadAnimation":
+                            loadAnimation = $(this).val();
+                            break;
+                            case "LoadAnimationType":
+                            loadAnimationType = $(this).val();
+                            break;
                      }
                      break;
                      case "ImageTextSlider":
@@ -288,16 +302,20 @@
          switch(obj.ModuleName.toLowerCase())
          {
              case "productlist":
-                 url = "@Url.Action("GetProductModuleViewComponent", "Domain")"+"?productType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count;
+                 url = "@Url.Action("GetProductModuleViewComponent", "Domain")"+"?productType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count+ "&loadAnimation="+ loadAnimation + "&loadAnimationType=" + loadAnimationType ;
                  obj.ParametersValue.ProductTemplateDesign = selectedTemplate;
                  obj.ParametersValue.Count = count;
                  obj.ParametersValue.ProductOrContentType = selectedType;
+                 obj.ParametersValue.LoadAnimation = loadAnimation;
+                 obj.ParametersValue.loadAnimationType = loadAnimationType;
              break;
              case "contentlist":
-                 url = "@Url.Action("GetContentModuleViewComponent", "Domain")"+"?contentType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count;
+                 url = "@Url.Action("GetContentModuleViewComponent", "Domain")"+"?contentType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count+ "&loadAnimation="+ loadAnimation + "&loadAnimationType=" + loadAnimationType ;
                  obj.ParametersValue.ContentTemplateDesign = selectedTemplate;
                  obj.ParametersValue.Count = count;
-                  obj.ParametersValue.ProductOrContentType = selectedType;
+                 obj.ParametersValue.ProductOrContentType = selectedType;
+                 obj.ParametersValue.LoadAnimation = loadAnimation;
+                 obj.ParametersValue.loadAnimationType = loadAnimationType;
              break;
              case "imagetextslider":
                url = "@Url.Action("GetSliderViewComponent", "Domain")"+ "?sliderId="+ sliderId;
@@ -356,7 +374,6 @@
                      else if(obj.ModuleName.toLowerCase() =="imagetextslider")
                      {
                          debugger;
-                        
                          AfterCarouselLoad();
                      }
 
