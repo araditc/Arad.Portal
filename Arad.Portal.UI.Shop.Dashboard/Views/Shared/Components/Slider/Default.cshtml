@@ -14,14 +14,14 @@
         <div class="carousel-inner">
             @foreach (var slide in Model.Slides)
             {
-                if (slide.IsActive)
+                if (slide.IsActive && slide.IsDeleted != 1)
                 {
                     var itemBackground = string.IsNullOrEmpty(slide.ColoredBackground) ? "transparent" : slide.ColoredBackground;
 
                     if (string.IsNullOrWhiteSpace(slide.Link))
                     {
                         <div class='carousel-item @(i == 1 ? "active" : "")' 
-                        style="background-color: @itemBackground;position: relative; z-index:0;">
+                        style="background-color: @itemBackground;position: relative; z-index:0;" @*data-bs-interval="90000"*@>
                             <img data-animation="animated @($"{slide.TransActionType}")"
                              src='@($"../../filemanager/GetScaledImageOnWidth?path=/{slide.ImageUrl}&width={1000}")'
                              class="w-100" alt="@slide.Alt" title="@slide.Title"  />
@@ -29,7 +29,10 @@
                             {
                                 foreach (var layer in slide.Layers)
                                 {
-                                    @await Component.InvokeAsync("SliderLayer", layer)
+                                    if(layer.IsDeleted != 1)
+                                    {
+                                        @await Component.InvokeAsync("SliderLayer", layer)
+                                    }
 
                                 }
                             }
@@ -47,8 +50,10 @@
                             {
                                 foreach (var layer in slide.Layers)
                                 {
-                                    @await Component.InvokeAsync("SliderLayer", layer)
-
+                                    if(layer.IsDeleted != 1)
+                                    {
+                                        @await Component.InvokeAsync("SliderLayer", layer)
+                                    }
                                 }
                             }
                         </a>

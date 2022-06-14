@@ -38,7 +38,8 @@
                        alt="@layer.Attributes.Alt"
                        style="line-height: @layer.Styles.LineHeight; font-family: @layer.Styles.FontFamily;
                                        font-size: @layer.Styles.FontSize; color: @layer.Styles.Color;
-                                       word-wrap: @layer.Styles.WordWrap;">
+                                       word-wrap: @layer.Styles.WordWrap;
+                                       @layer.Styles.CustomCss;">
                         <span >@layer.Content</span>
                     </a>
                 }
@@ -51,7 +52,8 @@
                    alt="@layer.Attributes.Alt"
                    style="line-height: @layer.Styles.LineHeight; font-family: @layer.Styles.FontFamily;
                                        font-size: @layer.Styles.FontSize; color: @layer.Styles.Color;
-                                       word-wrap: @layer.Styles.WordWrap;">
+                                       word-wrap: @layer.Styles.WordWrap;
+                                       @layer.Styles.CustomCss;">
                     <span>@layer.Content</span>
                 </a>
             }

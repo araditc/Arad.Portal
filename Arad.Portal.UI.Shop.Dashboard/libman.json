@@ -3,22 +3,17 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "library": "animate.css@4.1.1",
-      "destination": "wwwroot/lib/animate.css/"
-    },
-    {
       "library": "bootstrap-colorpicker@3.4.0",
       "destination": "wwwroot/lib/bootstrap-colorpicker/"
     },
     {
       "library": "animate.css@3.5.2",
+      "destination": "wwwroot/lib/animate.css3.5.2/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "animate.css@4.1.1",
       "destination": "wwwroot/lib/animate.css/"
     }
-  ,
-{
-  "provider": "cdnjs",
-  "library": "animate.css@3.5.2",
-  "destination": "wwwroot/lib/animate.css/"
-}
-]
+  ]
 }

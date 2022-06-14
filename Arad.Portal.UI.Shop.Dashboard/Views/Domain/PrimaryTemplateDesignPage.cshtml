@@ -60,12 +60,11 @@
     <link href="~/css/header.css" rel="stylesheet" />
     <link href="~/css/StickyNavbar.css" rel="stylesheet" />
     <link href="~/lib/bootstrap-colorpicker/css/bootstrap-colorpicker.css" rel="stylesheet" />
-    <link href="~/lib/animate.css/animate.min.css" rel="stylesheet" />
+    <link href="~/lib/animate.css/animate.compat.css" rel="stylesheet" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
     <script src="~/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js"></script>
-    <script src="~/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js"></script>
     <script src="~/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js"></script>
     <script src="~/lib/owlCarousel/js/owl.carousel.min.js"></script>
     <script src="~/js/TemplateCreation.js"></script>
@@ -81,7 +80,7 @@
             text-align: center;
         }
     </style>
-    <div aria-hidden="true" aria-labelledby="confirmDesignModalLabel" class="modal fade" id="confirmDesignModal" tabindex="-1">
+    @*<div aria-hidden="true" aria-labelledby="confirmDesignModalLabel" class="modal fade" id="confirmDesignModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-light">
@@ -201,7 +200,11 @@
                          model='new TemplateSectionPart(){SectionTag = "footerSection", DomainId = @domainId}' />
             </div>
         </div>
-    </footer>
+    </footer>*@
+
+
+
+    @await Component.InvokeAsync("Slider", new { sliderId = "4964cd6e-1bfc-4ab1-b466-9c3da4977d68"});
 
     @*******row design offcanvas*******************@
     <div class="offcanvas offcanvas-end" tabindex="-1" id="styleDiv" aria-labelledby="offcanvasLabel">
@@ -569,7 +572,7 @@
 
                     function AfterCarouselLoad()
                     {
-                        debugger;
+                       
                           var $myCarousel = $("#sliderCarousel");
                           $firstAnimatingElems = $myCarousel
                                   .find(".carousel-item:first")
@@ -587,514 +590,519 @@
                         });
                     }
 
-           $(document).ready(function(){
+                    $(document).ready(function(){
+                       
+                        var $myCarousel = $("#sliderCarousel");
+                          $firstAnimatingElems = $myCarousel
+                                  .find(".carousel-item:first")
+                                 .find("[data-animation ^= 'animated']");
 
-               debugger;
+                        var carousel = new bootstrap.Carousel($myCarousel);
+                        doAnimations($firstAnimatingElems);
 
-                $("#bgcolor").colorpicker();
-                $("#rowBgcolor").colorpicker();
-
-                changeScreen();
-                $(window).resize(changeScreen);
-
-                $(".menu-area").mouseover(function () {
-                        var windowSize = $(window).width();
-                        if (windowSize > 975) {
-                            $(this).addClass("show");
-                            $(this).find(".dropdown-toggle").addClass("text-primary");
-                            $(this).find(".mega-area").addClass("show");
-                        }
-                });
-
-                $(".menu-area").mouseleave(function () {
-                    var windowSize = $(window).width();
-                    if (windowSize > 975) {
-                        $(this).removeClass("show");
-                        $(this).find(".dropdown-toggle").removeClass("text-primary");
-                        $(this).find(".mega-area").removeClass("show");
-                    }
-                });
-
-                $(".nav-item .nav-link").mouseover(function () {
-                        $(this).addClass("text-primary");
-                });
-                $(".nav-item .nav-link").mouseleave(function () {
-                        $(this).removeClass("text-primary");
-                });
-
-                $(".custmDrp").click(function () {
-
-                    var item = $(this).parent().parent().siblings(".mega-area")
-                    if (item.hasClass("show")) {
-                        item.removeClass("show");
-                    } else {
-                        item.addClass("show");
-                    }
-                });
-
-                $("#btnFlags").click(function(){
-                    var sender =  $(this);
-                    $(this).parent().remove();
-                    isMultiLingual = false;
-                });
-
-                $("#btnIsShop").click(function(){
-                    var sender = $(this);
-                    $(this).parent().remove();
-                    isShop = false;
-                });
-
-
-                $(".btnHFStyle").click(function(){
-                    debugger;
-                    selectedSection = $(this).attr("sec");
-                    var offcanvas = $("#styleHeaderFooterDiv");
-                    var off = new bootstrap.Offcanvas(offcanvas);
-                    off.show();
-                });
-
-
-
-                $(document).on("click", ".columnStyles", function () {
-                        debugger;
-                        selectedRow = $(this).attr("guid");
-                        colSelectedNumber = $(this).attr("cn");
-                        var ofCanvas = $("#colStylesDiv");
-                        var of = new bootstrap.Offcanvas(ofCanvas);
-                        of.show();
-
-                  });
-                    $(document).on("click", ".btnRowStyle", function () {
-                        debugger;
-                        selectedRow = $(this).attr("guid");
-                        var offcanvas = $("#styleDiv");
-                        var off = new bootstrap.Offcanvas(offcanvas);
-                        off.show();
+                        var myCarousel = document.getElementById('sliderCarousel');
+                        myCarousel.addEventListener("slide.bs.carousel", function (e) {
+                            var $animatingElems = $(e.relatedTarget).find(
+                                "[data-animation ^= 'animated']"
+                            );
+                            doAnimations($animatingElems);
+                        });
                     });
 
-                    $(".rowbd").change(function() {
-                        debugger;
-                        var cls = $(this).value;
-                         var custClass = $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses");
-                        //var custClass = $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames");
-                        //var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames");
+           //$(document).ready(function(){
+           //    debugger;
+           //     $("#bgcolor").colorpicker();
+           //     $("#rowBgcolor").colorpicker();
 
-                        if($(this).is(':checked'))
-                        {
-                            custClass += ` ${cls}`;
+           //     changeScreen();
+           //     $(window).resize(changeScreen);
 
-                        }else
-                        {
-                            //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass(cls);
-                            custClass = custClass.replace(cls, "");
-                            //pClass = pClass.replace(cls, "");
-                        }
+           //     $(".menu-area").mouseover(function () {
+           //             var windowSize = $(window).width();
+           //             if (windowSize > 975) {
+           //                 $(this).addClass("show");
+           //                 $(this).find(".dropdown-toggle").addClass("text-primary");
+           //                 $(this).find(".mega-area").addClass("show");
+           //             }
+           //     });
 
-                        //$(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames", custClass);
-                        //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames", pClass);
-                        $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses", custClass);
-                    });
+           //     $(".menu-area").mouseleave(function () {
+           //         var windowSize = $(window).width();
+           //         if (windowSize > 975) {
+           //             $(this).removeClass("show");
+           //             $(this).find(".dropdown-toggle").removeClass("text-primary");
+           //             $(this).find(".mega-area").removeClass("show");
+           //         }
+           //     });
 
-                    $("#deleteBgImage").click(function(){
-                        //???
-                    });
+           //     $(".nav-item .nav-link").mouseover(function () {
+           //             $(this).addClass("text-primary");
+           //     });
+           //     $(".nav-item .nav-link").mouseleave(function () {
+           //             $(this).removeClass("text-primary");
+           //     });
 
-                    $("#send_pic").click(function () {
+           //     $(".custmDrp").click(function () {
 
-                        $("#uploadModal").modal("hide");
-                        var url = $("#galleryPic").attr("src");
-                        var model = {};
-                        var ratio="";
-                            var width ="";
-                        var height ="";
-                        switch($("#imgAspectRatio").val())
-                        {
-                            case "1":
-                            ratio ="1*1";
-                                width = 120;
-                            height = 120;
-                            break;
-                            case "2":
-                            ratio = "2*1";
-                                width = 120;
-                            height = 60;
-                            break;
-                            case "4":
-                            ratio="4*1";
-                                width = 120;
-                            height = 30;
-                            break;
-                        }
-                        model.ImageId = counter;
-                        model.Content = url;
-                        model.ImageRatioId =
-                        images.push(model);
-                    });
+           //         var item = $(this).parent().parent().siblings(".mega-area")
+           //         if (item.hasClass("show")) {
+           //             item.removeClass("show");
+           //         } else {
+           //             item.addClass("show");
+           //         }
+           //     });
 
-                    $("#removeFlagPart").click(function(){
-                        $('#confirmDesignModalLabel').text('@Language.GetString("btn_Delete")');
-                        $('#confirmDesignModalBody').html('@Language.GetString("AlertAndMessage_RemoveBoxConfrim")');
-                        $('#confirmDesignModal').modal('show');
-                    });
+           //     $("#btnFlags").click(function(){
+           //         var sender =  $(this);
+           //         $(this).parent().remove();
+           //         isMultiLingual = false;
+           //     });
+
+           //     $("#btnIsShop").click(function(){
+           //         var sender = $(this);
+           //         $(this).parent().remove();
+           //         isShop = false;
+           //     });
 
 
-                     $(".owl-carousel").owlCarousel({
-                                   loop: true,
-                                   rtl: true,
-                                   navigation : true,
-                                   /* autoplay: true,*/
-                                   margin: 10,
-                                   animateOut: 'fadeOut',
-                                   animateIn: 'fadeIn',
-                                   nav: true,
-                                   /*dots: true,*/
-                                   autoplayHoverPause: false,
-                                   items: 3,
-                                   navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>",
-                                             "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
-                                   responsive: {
-                                       0: {
-                                           items: 1
-                                       },
-                                       600: {
-                                           items: 3
-                                       },
-                                       1000: {
-                                           items: 5
-                                       }
-                                   }
-                               });
-
-                           $("#btnSave").click(function(){
-                               debugger;
-                               //start of header section
-
-                                var header = {}; //an instance of headerPart
-                                header.CustomizedContent = [];
-
-                                //var regPart = document.getElementById("regPart").outerHTML;
-                                //var priorHeader = document.getElementById("regPart").outerHTML;
-                                //header.PriorFixedContent = priorHeader;
-                                if(headerBgColor != "")
-                                {
-                                    header.BGTypeId = 1;
-                                    header.CodeColor = headerBgColor;
-                                }
-
-                                var i = 1;
-                                var rn = 1000;
-                                $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
-                                    debugger;
-                                    rn = $(this).find(".row.sectionRow").attr("rn");
-                                    var obj = {}; //an instance of RowContent
-                                    obj.RowNumber = parseInt(rn) ;
-                                    obj.OrderInRow = i ;
-                                    obj.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses");
-                                    obj.ColsContent = [] ;
-                                    $(this).find(".row.parent .finalColumnContent").each(function(){
-                                        var colContent ={} ; //an instance of ColContent
-                                        colContent.Section = "headerSection";
-                                        colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
-                                        colContent.ColData = $(this).html();
-                                        colContent.ColumnClassNames = $(this).attr("classNames");
-
-                                        obj.ColsContent.push(colContent);
-                                    });
-                                    i++;
-                                    header.CustomizedContent.push(obj);
-                                });
-
-                                //navbar
-                                //var obj = {}; //an instance of RowContent for navbar Menu
-                                //if($(".dynamicHeaderPart .firstLevel .contentColumns").length == 0 )
-                                //{
-                                //    obj.RowNumber =  parseInt(rn);
-                                //}else
-                                //{
-                                //    obj.RowNumber =  parseInt(rn) + 1;
-                                //}
-
-                                //obj.RowNumber =  parseInt(rn) + 1;
-                                //obj.OrderInRow = i ;
-                                //obj.ExtraClassNames ="navbarMenu";
-                                //obj.ColsContent =[] ;
-                                //var singleCol = {};
-                                //singleCol.Section ="";
-                                //singleCol.ColNumber = 1;
-
-                                //var menuModule = {};//an instance of ModuleWithParametersValue for menu
-                                //menuModule.ModuleId = "f8865ffc-1653-41ba-a281-ee57fa7ffc09";
-                                //menuModule.ModuleName = "HorizantalStoreMenu";
-                                //menuModule.ParametersValue = {};
-                                //menuModule.ParametersValue.domainId = '@domainId';
-                                //menuModule.ParametersValue.languageId = $("#languageId").val();
-                                //var data = JSON.stringify(menuModule);
-                                //var menuData = `<div target='module'>${data}</div>`;
-
-                                //singleCol.ColData = menuData;
-                                //singleCol.ColumnClassNames = "";
-                                //obj.ColsContent.push(singleCol);
-                                //header.CustomizedContent.push(obj);
-                                //end of header section
+           //     $(".btnHFStyle").click(function(){
+           //         debugger;
+           //         selectedSection = $(this).attr("sec");
+           //         var offcanvas = $("#styleHeaderFooterDiv");
+           //         var off = new bootstrap.Offcanvas(offcanvas);
+           //         off.show();
+           //     });
 
 
-                                //start of container section
-                                i= 1;
-                                rn ="";
-                                var bodyContainer = {}; //an instance of MainPageContentPart
-                                bodyContainer.RowContents = [] ;
-                                 $(".dynamicContainerPart .firstLevel .contentColumns").each(function()
-                                 {
-                                     debugger;
-                                     rn = $(this).find(".row.sectionRow").attr("rn");
 
-                                    var bodyRowContent = {}; //an instance of RowContent
-                                    bodyRowContent.RowNumber = parseInt(rn) ;
-                                    bodyRowContent.OrderInRow = i ;
-                                    bodyRowContent.ColsContent = [] ;
-                                    bodyRowContent.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses");
-                                    if( $(this).find(".row.sectionRow").css("background-color") != undefined &&
-                                        $(this).find(".row.sectionRow").css("background-color") != "" )
-                                    {
-                                        bodyRowContent.BgCodeColor = $(this).find(".row.sectionRow").css("background-color");
-                                    }
+           //     $(document).on("click", ".columnStyles", function () {
+           //             debugger;
+           //             selectedRow = $(this).attr("guid");
+           //             colSelectedNumber = $(this).attr("cn");
+           //             var ofCanvas = $("#colStylesDiv");
+           //             var of = new bootstrap.Offcanvas(ofCanvas);
+           //             of.show();
 
-                                    $(this).find(".row.parent .finalColumnContent").each(function(){
-                                        var colContent ={} ; //an instance of ColContent
-                                        colContent.Section = "containerSection";
-                                        colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
-                                        colContent.ColData = $(this).html();
-                                        colContent.ColumnClassNames = $(this).attr("classNames");
-                                        bodyRowContent.ColsContent.push(colContent);
-                                    });
-                                   i++;
-                                   bodyContainer.RowContents.push(bodyRowContent);
-                                 });
-                                 //end of container section
+           //       });
+           //         $(document).on("click", ".btnRowStyle", function () {
+           //             debugger;
+           //             selectedRow = $(this).attr("guid");
+           //             var offcanvas = $("#styleDiv");
+           //             var off = new bootstrap.Offcanvas(offcanvas);
+           //             off.show();
+           //         });
 
-                                 //start of footerSection
-                                  i= 1;
-                                  rn ="";
-                                  var footerPart ={} ; //an instance of footerPart
+           //         $(".rowbd").change(function() {
+           //             debugger;
+           //             var cls = $(this).value;
+           //              var custClass = $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses");
+           //             //var custClass = $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames");
+           //             //var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames");
 
-                                   if(footerBgColor != "")
-                                    {
-                                        footerPart.BGTypeId = 1;
-                                        footerPart.CodeColor = footerBgColor;
-                                    }
-                                  footerPart.CustomizedContent =[];
-                                  $(".dynamicFooterPart .firstLevel .contentColumns").each(function()
-                                  {
-                                      debugger;
-                                    rn = $(this).find(".row.sectionRow").attr("rn");
-                                    var footerRowContent = {}; //an instance of RowContent
-                                    footerRowContent.RowNumber = parseInt(rn) ;
-                                    footerRowContent.OrderInRow = i ;
-                                    footerRowContent.ColsContent = [] ;
-                                    footerRowContent.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses");
-                                    $(this).find(".row.parent .finalColumnContent").each(function(){
-                                        var colContent ={} ; //an instance of ColContent
-                                        colContent.Section = "footerSection"
-                                        colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
-                                        colContent.ColData = $(this).html();
-                                        colContent.ColumnClassNames = $(this).attr("classNames");
+           //             if($(this).is(':checked'))
+           //             {
+           //                 custClass += ` ${cls}`;
 
-                                        footerRowContent.ColsContent.push(colContent);
-                                    });
-                                     i++;
-                                    footerPart.CustomizedContent.push(footerRowContent);
-                                  });
-                                  //end of footer section
+           //             }else
+           //             {
+           //                 //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass(cls);
+           //                 custClass = custClass.replace(cls, "");
+           //                 //pClass = pClass.replace(cls, "");
+           //             }
 
-                                var model = {}; //an instance of DomainPageModel
-                               if($("#languageId").val() != "-1")
-                               {
-                                   debugger;
-                                    model.HeaderPart = header;
-                                    model.MainPageContainerPart = bodyContainer;
-                                    model.FooterPart = footerPart;
-                                    model.DomainId = '@domainId';
-                                    model.LanguageId = $("#languageId").val();
-                                    model.IsMultiLinguals = isMultiLingual;
-                                    model.isShop = isShop;
+           //             //$(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames", custClass);
+           //             //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames", pClass);
+           //             $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses", custClass);
+           //         });
 
+           //         $("#deleteBgImage").click(function(){
+           //             //???
+           //         });
 
-                                $.ajax({
-                                   type: "Post",
-                                   url: '@Url.Action("SavePageContent", "Domain")',
-                                   contentType : 'application/json',
-                                   data : JSON.stringify(model),
-                                   success: function (result) {
-                                       debugger;
-                                       $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_EditionDoneSuccessfully")');
-                                             $('#mainToastBody').addClass('alert-success');
+           //         $("#send_pic").click(function () {
 
-                                             var toastDiv = $("#mainToast");
-                                             $("#toastPanel").show();
-                                             var toast = new bootstrap.Toast(toastDiv);
-                                             toast.show();
-                                             //setTimeout(function(){
-                                                // toast.hide(),3000
-                                             //});
-                                   },
+           //             $("#uploadModal").modal("hide");
+           //             var url = $("#galleryPic").attr("src");
+           //             var model = {};
+           //             var ratio="";
+           //                 var width ="";
+           //             var height ="";
+           //             switch($("#imgAspectRatio").val())
+           //             {
+           //                 case "1":
+           //                 ratio ="1*1";
+           //                     width = 120;
+           //                 height = 120;
+           //                 break;
+           //                 case "2":
+           //                 ratio = "2*1";
+           //                     width = 120;
+           //                 height = 60;
+           //                 break;
+           //                 case "4":
+           //                 ratio="4*1";
+           //                     width = 120;
+           //                 height = 30;
+           //                 break;
+           //             }
+           //             model.ImageId = counter;
+           //             model.Content = url;
+           //             model.ImageRatioId =
+           //             images.push(model);
+           //         });
 
-                                });
-                               }
-                               else
-                                {
-                                    showError('@Language.GetString("AlertAndMessage_FillLangId")');
-                                }
-
-                           });
-
-                           $("#btnPreview").click(function(){
-                               debugger;
-                               var header ="";
-                               var container ="";
-                               var footer ="";
-
-                                //var regPart = document.getElementById("regPart").outerHTML;
-                                //var priorHeader = document.getElementById("regPart").outerHTML;
-                                //header = priorHeader;
-
-                                $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
-                                    var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
-                                    header += `<div class='row firstLevel ${extraClasses}'>`;
-                                    $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
-                                        var classNames = $(this).attr("classNames");
-                                        var columnContent = $(this).html();
-                                        header +=`<div class='${classNames}'>${columnContent}</div>` ;
-                                    });
-                                    header += "</div>";
-                                });
-
-                                  if($("#languageId").val() != "-1")
-                                     {
-
-                                        //$.ajax({
-                                        //    url:"@Url.Action("GetMenuModuleViewComponent","Domain")"+"?domainId="+'@domainId'+"&languageId="+ $("#languageId").val(),
-                                        //    type:'Get',
-                                        //    statusCode:{
-                                        //        200:function(data){
-
-                                        //           header +=`<div class="navbar">${data}</div>` ;
-                                                   $(".dynamicContainerPart .firstLevel .contentColumns").each(function()
-                                                   {
-                                                        var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
-                                                         container += `<div class='row firstLevel ${extraClasses}'>`;
-                                                        $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
-
-                                                           var classNames = $(this).attr("classNames");
-                                                            var columnContent = $(this).html();
-                                                            container +=`<div class='${classNames}'>${columnContent}</div>` ;
-                                                        });
-                                                        container += "</div>";
-                                                    });
-
-                                                     //start of footerSection
-                                                      $(".dynamicFooterPart .firstLevel .contentColumns").each(function()
-                                                      {
-                                                        var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
-                                                        footer += `<div class='row firstLevel ${extraClasses}'>`;
-                                                        $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
-                                                            var classNames = $(this).attr("classNames");
-                                                            var columnContent = $(this).html();
-                                                            footer +=`<div class= '${classNames}' > ${columnContent} </div>` ;
-                                                        });
-                                                         footer += "</div>";
-
-                                                      });
-                                                    //end of footer section
+           //         $("#removeFlagPart").click(function(){
+           //             $('#confirmDesignModalLabel').text('@Language.GetString("btn_Delete")');
+           //             $('#confirmDesignModalBody').html('@Language.GetString("AlertAndMessage_RemoveBoxConfrim")');
+           //             $('#confirmDesignModal').modal('show');
+           //         });
 
 
-                                                        var model = {}; //an instance of TemplateDesign
-                                                        model.HeaderContent = header;
-                                                        model.ContainerContent = container;
-                                                        model.FooterContent = footer;
-                                                        model.DomainId = '@domainId';
-                                                        model.LanguageId = $("#languageId").val();
-                                                        model.IsShop = isShop;
-                                                        model.IsMultiLinguals = isMultiLingual;
+           //          $(".owl-carousel").owlCarousel({
+           //                        loop: true,
+           //                        rtl: true,
+           //                        navigation : true,
+           //                        /* autoplay: true,*/
+           //                        margin: 10,
+           //                        animateOut: 'fadeOut',
+           //                        animateIn: 'fadeIn',
+           //                        nav: true,
+           //                        /*dots: true,*/
+           //                        autoplayHoverPause: false,
+           //                        items: 3,
+           //                        navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>",
+           //                                  "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
+           //                        responsive: {
+           //                            0: {
+           //                                items: 1
+           //                            },
+           //                            600: {
+           //                                items: 3
+           //                            },
+           //                            1000: {
+           //                                items: 5
+           //                            }
+           //                        }
+           //                    });
 
-                                                         $.ajax({
-                                                           url: '@Url.Action("StoreDesignPreview")',
-                                                           data : JSON.stringify(model),
-                                                           contentType: 'application/json',
-                                                           type: 'Post',
-                                                           dataType: 'json',
-                                                           success: function (result) {
-                                                               if(result != "")
-                                                               {
-                                                                   window.open('@Url.Action("DesignPreview")'+'?key='+result.key , '_blank');
-                                                               }
-                                                           }
-                                                          });
-                                                }
-                                            }
-                                          });
+           //                $("#btnSave").click(function(){
+           //                    debugger;
+           //                    //start of header section
 
-                                      }
-                                    else
-                                    {
-                                        showError('@Language.GetString("AlertAndMessage_FillLangId")');
-                                    }
-                           });
+           //                     var header = {}; //an instance of headerPart
+           //                     header.CustomizedContent = [];
 
-                              
+           //                     //var regPart = document.getElementById("regPart").outerHTML;
+           //                     //var priorHeader = document.getElementById("regPart").outerHTML;
+           //                     //header.PriorFixedContent = priorHeader;
+           //                     if(headerBgColor != "")
+           //                     {
+           //                         header.BGTypeId = 1;
+           //                         header.CodeColor = headerBgColor;
+           //                     }
+
+           //                     var i = 1;
+           //                     var rn = 1000;
+           //                     $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
+           //                         debugger;
+           //                         rn = $(this).find(".row.sectionRow").attr("rn");
+           //                         var obj = {}; //an instance of RowContent
+           //                         obj.RowNumber = parseInt(rn) ;
+           //                         obj.OrderInRow = i ;
+           //                         obj.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+           //                         obj.ColsContent = [] ;
+           //                         $(this).find(".row.parent .finalColumnContent").each(function(){
+           //                             var colContent ={} ; //an instance of ColContent
+           //                             colContent.Section = "headerSection";
+           //                             colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
+           //                             colContent.ColData = $(this).html();
+           //                             colContent.ColumnClassNames = $(this).attr("classNames");
+
+           //                             obj.ColsContent.push(colContent);
+           //                         });
+           //                         i++;
+           //                         header.CustomizedContent.push(obj);
+           //                     });
+
+           //                     //navbar
+           //                     //var obj = {}; //an instance of RowContent for navbar Menu
+           //                     //if($(".dynamicHeaderPart .firstLevel .contentColumns").length == 0 )
+           //                     //{
+           //                     //    obj.RowNumber =  parseInt(rn);
+           //                     //}else
+           //                     //{
+           //                     //    obj.RowNumber =  parseInt(rn) + 1;
+           //                     //}
+
+           //                     //obj.RowNumber =  parseInt(rn) + 1;
+           //                     //obj.OrderInRow = i ;
+           //                     //obj.ExtraClassNames ="navbarMenu";
+           //                     //obj.ColsContent =[] ;
+           //                     //var singleCol = {};
+           //                     //singleCol.Section ="";
+           //                     //singleCol.ColNumber = 1;
+
+           //                     //var menuModule = {};//an instance of ModuleWithParametersValue for menu
+           //                     //menuModule.ModuleId = "f8865ffc-1653-41ba-a281-ee57fa7ffc09";
+           //                     //menuModule.ModuleName = "HorizantalStoreMenu";
+           //                     //menuModule.ParametersValue = {};
+           //                     //menuModule.ParametersValue.domainId = '@domainId';
+           //                     //menuModule.ParametersValue.languageId = $("#languageId").val();
+           //                     //var data = JSON.stringify(menuModule);
+           //                     //var menuData = `<div target='module'>${data}</div>`;
+
+           //                     //singleCol.ColData = menuData;
+           //                     //singleCol.ColumnClassNames = "";
+           //                     //obj.ColsContent.push(singleCol);
+           //                     //header.CustomizedContent.push(obj);
+           //                     //end of header section
 
 
-                               //$(".likeLink i").click(function () {
-                               //    if ($(this).hasClass("far fa-heart")) {
-                               //        $(this).removeClass("far fa-heart");
-                               //        $(this).addClass("fas fa-heart");
-                               //    } else {
-                               //        $(this).removeClass("fas fa-heart");
-                               //        $(this).addClass("far fa-heart");
-                               //    }
-                               //});
-                       })
+           //                     //start of container section
+           //                     i= 1;
+           //                     rn ="";
+           //                     var bodyContainer = {}; //an instance of MainPageContentPart
+           //                     bodyContainer.RowContents = [] ;
+           //                      $(".dynamicContainerPart .firstLevel .contentColumns").each(function()
+           //                      {
+           //                          debugger;
+           //                          rn = $(this).find(".row.sectionRow").attr("rn");
+
+           //                         var bodyRowContent = {}; //an instance of RowContent
+           //                         bodyRowContent.RowNumber = parseInt(rn) ;
+           //                         bodyRowContent.OrderInRow = i ;
+           //                         bodyRowContent.ColsContent = [] ;
+           //                         bodyRowContent.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+           //                         if( $(this).find(".row.sectionRow").css("background-color") != undefined &&
+           //                             $(this).find(".row.sectionRow").css("background-color") != "" )
+           //                         {
+           //                             bodyRowContent.BgCodeColor = $(this).find(".row.sectionRow").css("background-color");
+           //                         }
+
+           //                         $(this).find(".row.parent .finalColumnContent").each(function(){
+           //                             var colContent ={} ; //an instance of ColContent
+           //                             colContent.Section = "containerSection";
+           //                             colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
+           //                             colContent.ColData = $(this).html();
+           //                             colContent.ColumnClassNames = $(this).attr("classNames");
+           //                             bodyRowContent.ColsContent.push(colContent);
+           //                         });
+           //                        i++;
+           //                        bodyContainer.RowContents.push(bodyRowContent);
+           //                      });
+           //                      //end of container section
+
+           //                      //start of footerSection
+           //                       i= 1;
+           //                       rn ="";
+           //                       var footerPart ={} ; //an instance of footerPart
+
+           //                        if(footerBgColor != "")
+           //                         {
+           //                             footerPart.BGTypeId = 1;
+           //                             footerPart.CodeColor = footerBgColor;
+           //                         }
+           //                       footerPart.CustomizedContent =[];
+           //                       $(".dynamicFooterPart .firstLevel .contentColumns").each(function()
+           //                       {
+           //                           debugger;
+           //                         rn = $(this).find(".row.sectionRow").attr("rn");
+           //                         var footerRowContent = {}; //an instance of RowContent
+           //                         footerRowContent.RowNumber = parseInt(rn) ;
+           //                         footerRowContent.OrderInRow = i ;
+           //                         footerRowContent.ColsContent = [] ;
+           //                         footerRowContent.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+           //                         $(this).find(".row.parent .finalColumnContent").each(function(){
+           //                             var colContent ={} ; //an instance of ColContent
+           //                             colContent.Section = "footerSection"
+           //                             colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
+           //                             colContent.ColData = $(this).html();
+           //                             colContent.ColumnClassNames = $(this).attr("classNames");
+
+           //                             footerRowContent.ColsContent.push(colContent);
+           //                         });
+           //                          i++;
+           //                         footerPart.CustomizedContent.push(footerRowContent);
+           //                       });
+           //                       //end of footer section
+
+           //                     var model = {}; //an instance of DomainPageModel
+           //                    if($("#languageId").val() != "-1")
+           //                    {
+           //                        debugger;
+           //                         model.HeaderPart = header;
+           //                         model.MainPageContainerPart = bodyContainer;
+           //                         model.FooterPart = footerPart;
+           //                         model.DomainId = '@domainId';
+           //                         model.LanguageId = $("#languageId").val();
+           //                         model.IsMultiLinguals = isMultiLingual;
+           //                         model.isShop = isShop;
 
 
-                       function confirmation()
-                       {
-                           $(".flagPartDiv").addClass("d-none");
-                           $("#restoreRecord").removeClass("d-none");
-                       }
+           //                     $.ajax({
+           //                        type: "Post",
+           //                        url: '@Url.Action("SavePageContent", "Domain")',
+           //                        contentType : 'application/json',
+           //                        data : JSON.stringify(model),
+           //                        success: function (result) {
+           //                            debugger;
+           //                            $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_EditionDoneSuccessfully")');
+           //                                  $('#mainToastBody').addClass('alert-success');
 
-                       function flagRestoration()
-                       {
-                           $(".flagPartDiv").removeClass("d-none");
-                           $("#restoreRecord").addClass("d-none");
-                       }
-                       function setLang(lang)
-                           {
-                               var currentCulture = '@CultureInfo.CurrentCulture.Name';
-                               if (currentCulture !== lang) {
-                                   $.ajax({
-                                       type: "GET",
-                                       url: '/Account/changeLang?langId=' + lang,
-                                       success: function () {
+           //                                  var toastDiv = $("#mainToast");
+           //                                  $("#toastPanel").show();
+           //                                  var toast = new bootstrap.Toast(toastDiv);
+           //                                  toast.show();
+           //                                  //setTimeout(function(){
+           //                                     // toast.hide(),3000
+           //                                  //});
+           //                        },
 
-                                           window.location.reload();
-                                       }
-                                   });
-                               }
-                           }
-                           function setProductCountInCart(number) {
-                              $("#userBasketId .notifyBadge").html(number);
-                           }
+           //                     });
+           //                    }
+           //                    else
+           //                     {
+           //                         showError('@Language.GetString("AlertAndMessage_FillLangId")');
+           //                     }
 
-                           function changeScreen() {
-                               var windowSize = $(window).width();
-                               console.log(windowSize);
-                               if (windowSize <= 974) {
-                                   $(".nascr").removeClass("d-none").addClass("d-block");
-                                   $(".wiscr").removeClass("d-block").addClass("d-none");
-                               } else {
-                                   $(".nascr").removeClass("d-block").addClass("d-none");
-                                   $(".wiscr").removeClass("d-none").addClass("d-block");
-                               }
-                           }
+           //                });
+
+           //                $("#btnPreview").click(function(){
+           //                    debugger;
+           //                    var header ="";
+           //                    var container ="";
+           //                    var footer ="";
+
+           //                     //var regPart = document.getElementById("regPart").outerHTML;
+           //                     //var priorHeader = document.getElementById("regPart").outerHTML;
+           //                     //header = priorHeader;
+
+           //                     $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
+           //                         var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+           //                         header += `<div class='row firstLevel ${extraClasses}'>`;
+           //                         $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
+           //                             var classNames = $(this).attr("classNames");
+           //                             var columnContent = $(this).html();
+           //                             header +=`<div class='${classNames}'>${columnContent}</div>` ;
+           //                         });
+           //                         header += "</div>";
+           //                     });
+
+           //                       if($("#languageId").val() != "-1")
+           //                          {
+
+           //                             //$.ajax({
+           //                             //    url:"@Url.Action("GetMenuModuleViewComponent","Domain")"+"?domainId="+'@domainId'+"&languageId="+ $("#languageId").val(),
+           //                             //    type:'Get',
+           //                             //    statusCode:{
+           //                             //        200:function(data){
+
+           //                             //           header +=`<div class="navbar">${data}</div>` ;
+           //                                        $(".dynamicContainerPart .firstLevel .contentColumns").each(function()
+           //                                        {
+           //                                             var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+           //                                              container += `<div class='row firstLevel ${extraClasses}'>`;
+           //                                             $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
+
+           //                                                var classNames = $(this).attr("classNames");
+           //                                                 var columnContent = $(this).html();
+           //                                                 container +=`<div class='${classNames}'>${columnContent}</div>` ;
+           //                                             });
+           //                                             container += "</div>";
+           //                                         });
+
+           //                                          //start of footerSection
+           //                                           $(".dynamicFooterPart .firstLevel .contentColumns").each(function()
+           //                                           {
+           //                                             var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+           //                                             footer += `<div class='row firstLevel ${extraClasses}'>`;
+           //                                             $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
+           //                                                 var classNames = $(this).attr("classNames");
+           //                                                 var columnContent = $(this).html();
+           //                                                 footer +=`<div class= '${classNames}' > ${columnContent} </div>` ;
+           //                                             });
+           //                                              footer += "</div>";
+
+           //                                           });
+           //                                         //end of footer section
+
+
+           //                                             var model = {}; //an instance of TemplateDesign
+           //                                             model.HeaderContent = header;
+           //                                             model.ContainerContent = container;
+           //                                             model.FooterContent = footer;
+           //                                             model.DomainId = '@domainId';
+           //                                             model.LanguageId = $("#languageId").val();
+           //                                             model.IsShop = isShop;
+           //                                             model.IsMultiLinguals = isMultiLingual;
+
+           //                                              $.ajax({
+           //                                                url: '@Url.Action("StoreDesignPreview")',
+           //                                                data : JSON.stringify(model),
+           //                                                contentType: 'application/json',
+           //                                                type: 'Post',
+           //                                                dataType: 'json',
+           //                                                success: function (result) {
+           //                                                    if(result != "")
+           //                                                    {
+           //                                                        window.open('@Url.Action("DesignPreview")'+'?key='+result.key , '_blank');
+           //                                                    }
+           //                                                }
+           //                                               });
+           //                                    // }
+           //                                // }
+           //                              // });
+
+           //                           }
+           //                         else
+           //                         {
+           //                             showError('@Language.GetString("AlertAndMessage_FillLangId")');
+           //                         }
+           //                });
+                             
+           //            })
+
+
+           //            function confirmation()
+           //            {
+           //                $(".flagPartDiv").addClass("d-none");
+           //                $("#restoreRecord").removeClass("d-none");
+           //            }
+
+           //            function flagRestoration()
+           //            {
+           //                $(".flagPartDiv").removeClass("d-none");
+           //                $("#restoreRecord").addClass("d-none");
+           //            }
+           //            function setLang(lang)
+           //                {
+           //                    var currentCulture = '@CultureInfo.CurrentCulture.Name';
+           //                    if (currentCulture !== lang) {
+           //                        $.ajax({
+           //                            type: "GET",
+           //                            url: '/Account/changeLang?langId=' + lang,
+           //                            success: function () {
+
+           //                                window.location.reload();
+           //                            }
+           //                        });
+           //                    }
+           //                }
+           //                function setProductCountInCart(number) {
+           //                   $("#userBasketId .notifyBadge").html(number);
+           //                }
+
+           //                function changeScreen() {
+           //                    var windowSize = $(window).width();
+           //                    console.log(windowSize);
+           //                    if (windowSize <= 974) {
+           //                        $(".nascr").removeClass("d-none").addClass("d-block");
+           //                        $(".wiscr").removeClass("d-block").addClass("d-none");
+           //                    } else {
+           //                        $(".nascr").removeClass("d-block").addClass("d-none");
+           //                        $(".wiscr").removeClass("d-none").addClass("d-block");
+           //                    }
+           //                }
 
           function addToTable() {
                 debugger;
