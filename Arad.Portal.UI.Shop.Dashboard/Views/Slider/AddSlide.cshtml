@@ -113,6 +113,11 @@
                             <input dir="ltr" type="text" class="form-control" id="ColoredBackground" name="ColoredBackground" placeholder=" ">
                             <span class="field-validation-error" data-val-result="ColoredBackground"></span>
                         </div>
+                         <div class="col-12 col-lg-4">
+                            <label class="form-label" for="ColoredBackground">@Language.GetString("design_IntervalTime")</label>
+                            <input dir="ltr" type="text" class="form-control" id="IntervalTime" name="IntervalTime" placeholder="in miliseconds">
+                            <span class="field-validation-error" data-val-result="IntervalTime"></span>
+                        </div>
                        @* <div class="col-12 col-lg-4">
                             <label class="form-label" for="ImageFit">Image Fit</label>
                             <select name="ImageFit" id="ImageFit" class="form-control" asp-items="Html.GetEnumSelectList<ImageFit>()"></select>
@@ -168,47 +173,6 @@
         </table>
     </div>
 </div>
-
-@*<div class="table">
-    <div class="table-head d-none d-lg-block">
-        <div class="table-row">
-            <div class="row m-0">
-                <div class="table-col col-md-1">
-                    <span></span>
-                </div>
-                <div class="table-col col-md-1">
-                    <span></span>
-                </div>
-                <div class="table-col col-md-2">
-                    <span></span>
-                </div>
-                <div class="table-col col-md-1">
-                    <span></span>
-                </div>
-                <div class="table-col col-md-1">
-                    <span> </span>
-                </div>
-                <div class="table-col col-md-1">
-                    <span> </span>
-                </div>
-                <div class="table-col col-md-1">
-                    <span></span>
-                </div>
-                <div class="table-col col-md-1">
-                    <span></span>
-                </div>
-                <div class="table-col col-md-2">
-                    <span></span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="table" class="table-body">
-    </div>
-
-</div>*@
-
 
 <!-- Modal -->
 <div id="uploadModal" class="modal">
@@ -368,8 +332,13 @@ else
 
                         document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
                         document.getElementById('mainToastBody').classList.add('alert-success');
+                        $("#toastPanel").show();
                         var bsAlert = new bootstrap.Toast($("#mainToast"));
                         bsAlert.show();
+
+                        setTimeout(function(){
+                            $("#toastPanel").hide();
+                        }, 2500);
 
                          $("#add").removeClass("show");
 
@@ -417,13 +386,19 @@ else
 
                              document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
                             document.getElementById('mainToastBody').classList.add('alert-success');
+                            $("#toastPanel").show();
                             var bsAlert = new bootstrap.Toast($("#mainToast"));
                             bsAlert.show();
 
-                            $('#add').collapse('hide');
-                            clearForm("#addSlide");
-                            $(".ImageWrapper img").attr("src", "/images/blank.png");
-                            picSrc = "";
+                            setTimeout(function(){
+                                 $("#toastPanel").hide();
+                                 $('#add').collapse('hide');
+                                 clearForm("#addSlide");
+                                 $(".ImageWrapper img").attr("src", "/images/blank.png");
+                                 picSrc = "";
+                            }, 2500);
+
+                            
                         } else if (result.status === "error") {
                             if (spanErrorList.length > 1) {
                                 spanErrorList.each(function() {
@@ -552,8 +527,12 @@ else
                     location.reload();
                      document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
                         document.getElementById('mainToastBody').classList.add('alert-success');
+                         $("#toastPanel").show();
                         var bsAlert = new bootstrap.Toast($("#mainToast"));
                         bsAlert.show();
+                        setTimeout(function(){
+                              $("#toastPanel").hide();
+                        }, 2500);
 
                 } else {
                     showError(result.message);

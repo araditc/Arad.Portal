@@ -55,10 +55,21 @@
                         </div>
                     </div>
                     <div class="row">
+                        @if(ViewBag.IsSys)
+                        {
+                            <div class="form-group col-md-3">
+                                <label class="form-label" >@Language.GetString("AssociatedDomain")</label>
+                                <select class="form-control selectpicker"  asp-for="@Model.AssociatedDomainId"
+                                    asp-items="@(new SelectList(ViewBag.DomainList,"Value","Text"))" data-live-search="true">
+                                    </select>
+                                <span data-val-result="AssociatedDomainId" class="text-danger"></span>
+                            </div>
+                        }
+
                         <div class="form-group col-md-3">
                             <input type="hidden" value="@(string.IsNullOrWhiteSpace(Model.Icon) ? "fas fa-bomb" : Model.Icon)" asp-for="Icon" id="iconPick" />
 
-                            <label class="form-label">@Language.GetString("Menu_Icon")</label>
+                            <label class="form-label">@Language.GetString("Menu_Icon")</label><br/>
                             <button id="iconPicktarget" class="btn btn-primary bg-gradient"></button>
                         </div>
                         <div class="form-group col-md-3">
@@ -225,14 +236,18 @@
                      $("span[data-val-result='Url']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                     flag = true;
                 }
+                if("@ViewBag.IsSys" == "True" && $("#AssociatedDomainId").val() == "-1")
+                {
+                    $("span[data-val-result='AssociatedDomainId']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+                }
 
                 if (!flag) {
                     var dto = FillDataToSend();
                     $.ajax({
                         url: "@Model.MenuId" != "" ? "/Menu/Edit" : "/Menu/Add",
-                            /*data: dataModel,*/
-                            contentType: 'application/json',
-                            data: JSON.stringify(dto),
+                        contentType: 'application/json',
+                        data: JSON.stringify(dto),
                         type: 'Post',
                         beforeSend: function () {
                             debugger;
@@ -244,9 +259,11 @@
                                 document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
                                 document.getElementById('mainToastBody').classList.add('alert-success');
                                  var bsAlert = new bootstrap.Toast($("#mainToast"));
+                                 $("#toastPanel").show();
                                  bsAlert.show();
                                 setTimeout(function()
                                 {
+                                    $("#toastPanel").hide();
                                    window.location.href = '@Url.Action("List")';
                                 },
                                 3000);
@@ -421,6 +438,11 @@
             if ($("#ParentId").val() != null && $("#ParentId").val() != "-1") {
                 obj.ParentId = $("#ParentId").val();
                 obj.ParentName = $("#ParentId option:selected").text();
+            }
+
+            if("@ViewBag.IsSys" == "True")
+            {
+                obj.AssociatedDomainId = $("#AssociatedDomainId").val();
             }
 
             //if ($("#ModificationReason").length > 0) {

@@ -344,10 +344,12 @@
                         });*@
                             document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
                             document.getElementById('mainToastBody').classList.add('alert-success');
+                            $("#toastPanel").show();
                              var bsAlert = new bootstrap.Toast($("#mainToast"));
                             bsAlert.show();
                             setTimeout(function()
                             {
+                                $("#toastPanel").hide();
                                  window.location.href = '@Url.Action("List")';
                             },
                             1500);

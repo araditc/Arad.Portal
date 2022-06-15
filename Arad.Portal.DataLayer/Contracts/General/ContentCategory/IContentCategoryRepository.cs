@@ -29,11 +29,11 @@ namespace Arad.Portal.DataLayer.Contracts.General.ContentCategory
 
         List<ContentCategoryDTO> GetDirectChildrens(string contentCategoryId, int? count, int skip = 0);
 
-        List<ContentViewModel> GetContentsInCategory(string contentCategoryId, int? count, int skip = 0);
+        List<ContentViewModel> GetContentsInCategory(string domainId, string contentCategoryId, int? count, int skip = 0);
 
         ContentCategoryDTO FetchBySlug(string slug, string domainName);
 
-        CommonViewModel FetchByCode(long categoryCode);
+        CommonViewModel FetchByCode(long categoryCode, string domainId);
 
         List<SelectListModel> GetAllContentCategoryType();
 

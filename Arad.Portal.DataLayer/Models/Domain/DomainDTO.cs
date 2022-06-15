@@ -17,6 +17,7 @@ namespace Arad.Portal.DataLayer.Models.Domain
             Prices = new();
             DomainPaymentProviders = new();
             HomePageDesign = new();
+            HomePageHtmlContent = new();
         }
         public string DomainId { get; set; }
 
@@ -61,11 +62,10 @@ namespace Arad.Portal.DataLayer.Models.Domain
         public int? IncreasementValue { get; set; }
 
         public string MainPageTemplateId { get; set; }
-
-        //public PageHeaderPart HeaderPart { get; set; }
-        //public MainPageContentPart MainPageContainerPart { get; set; }
-        //public PageFooterPart FooterPart { get; set; }
+        
         public List<PageDesignContent> HomePageDesign { get; set; }
+
+        public List<HomePageHtmlContent> HomePageHtmlContent { get; set; }
 
     }
 

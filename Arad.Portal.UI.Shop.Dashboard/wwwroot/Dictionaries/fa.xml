@@ -120,6 +120,15 @@
 	</string>
 	<!--End [buttons text]-->
 	<!--Start Design Page-->
+	<string key="design_IsShopDomain">
+		<value>دامنه فروشگاهی</value>
+	</string>
+	<string key="design_IsMultiLingual">
+		<value>دامنه چندزبانه</value>
+	</string>
+	<string key="design_IntervalTime">
+		<value>فاصله زمانی تا اسلاید بعدی</value>
+	</string>
 	<string key="design_AnimationDelay">
 		<value>animation delay</value>
 	</string>
@@ -776,6 +785,9 @@
 		<value>شماره وارد شده مربوط به تلفن ثابت می باشد.</value>
 	</string>
 	<!--=================================================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_FirstChooseLanguage">
+		<value>لطفا در ابتدا زبان صفحه طراحی را مشخص کنید.</value>
+	</string>
 	<string key="AlertAndMessage_EndDateMustBeGreaterThanStartDate">
 		<value>تاریخ انقضا باید بعد از تاریخ انتشار باشد.</value>
 	</string>

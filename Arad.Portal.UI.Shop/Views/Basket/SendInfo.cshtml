@@ -170,6 +170,10 @@
                         $("#toastPanel").show();
                         var toast = new bootstrap.Toast(toastDiv);
                       toast.show();
+
+                      setTimeout(function(){
+                           $("#toastPanel").hide();
+                      }, 2500);
                       return ;
                 }
                 

@@ -43,8 +43,9 @@
 
   <ItemGroup>
     <Folder Include="Connected Services\" />
-    <Folder Include="Views\ContentCategory\" />
     <Folder Include="Views\Search\" />
+    <Folder Include="Views\Shared\Components\ContentCategorySection\" />
+    <Folder Include="Views\Shared\Components\ContentsInCategorySection\" />
     <Folder Include="wwwroot\css\imgs\" />
     <Folder Include="wwwroot\Images\" />
     <Folder Include="wwwroot\Files\" />

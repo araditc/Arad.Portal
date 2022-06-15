@@ -32,6 +32,7 @@ namespace Arad.Portal.DataLayer.Entities.General.SliderModule
         public DateTime? ExpireDate { get; set; }
         public bool IsActive { get; set; }
         public int IsDeleted { get; set; }
+        public int IntervalTime { get; set; }
         public string Title { get; set; }
         public string Alt { get; set; }
         public List<Layer> Layers { get; set; } = new List<Layer>();

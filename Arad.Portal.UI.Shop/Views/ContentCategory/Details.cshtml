@@ -1,0 +1,212 @@
+﻿@model Arad.Portal.DataLayer.Models.Shared.CommonViewModel
+@using Arad.Portal.DataLayer.Models.Shared;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var dir = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        dir = "rtl";
+    }
+    else
+    {
+        dir = "ltr";
+    }
+}
+
+@section Styles{
+  
+    <style>
+
+        .bbb_deals {
+            /*margin-right: 7%;*/
+            box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+          
+        }
+        .sold_stars i {
+            color: orange
+        }
+
+        .bbb_deals_title {
+            position: absolute;
+            font-size: 18px;
+            font-weight: 500;
+            color: #000000
+        }
+
+        .proImg {
+            width: 80%
+        }
+
+      
+        .bbb_deals_item_category a {
+            font-size: 14px;
+            font-weight: 400;
+            color: rgba(0, 0, 0, 0.5)
+        }
+
+        .bbb_deals_item_price_a {
+            font-size: 14px;
+            font-weight: 400;
+            color: rgba(0, 0, 0, 0.6)
+        }
+
+            .bbb_deals_item_price_a strike {
+                color: red
+            }
+
+       /* .bbb_deals_item_name {
+            font-size: 24px;
+            font-weight: 400;
+            color: #000000
+        }
+*/
+       /* .bbb_deals_item_price {
+            font-size: 24px;
+            font-weight: 500;
+            color: #6d6e73
+        }*/
+
+        .available {
+            margin-top: 19px
+        }
+
+        .available_title {
+            font-size: 16px;
+            color: rgba(0, 0, 0, 0.5);
+            font-weight: 400
+        }
+
+            .available_title span {
+                font-weight: 700
+            }
+
+        @@media only screen and (max-width: 991px) {
+            .bbb_deals {
+                width: 100%;
+                margin-right: 0px
+            }
+        }
+
+        @@media only screen and (max-width: 575px) {
+            .bbb_deals {
+                /*padding-left: 15px;
+                padding-right: 15px*/
+            }
+
+            .bbb_deals_title {
+               /* left: 15px;*/
+                font-size: 16px
+            }
+
+            /*.bbb_deals_slider_nav_container {
+                right: 5px
+            }*/
+
+            .bbb_deals_item_name,
+            .bbb_deals_item_price {
+                font-size: 20px
+            }
+            .card {
+                box-shadow: 0px 0px 5px 0px rgb(161 163 164) !important;
+            }
+        }
+    </style>
+}
+
+
+<div class="card mt-2" style="box-shadow: 0px 0px 5px 0px rgb(199 205 206) !important">
+    <div class="card-body">
+        <div id="groupSection">
+            @await Component.InvokeAsync("ContentCategorySection", Model.GroupSection)
+        </div>
+    </div>
+</div>
+<div class="row text-center">
+    <div >
+        <button class="btn btn-secondary bg-gradient m-4" id="btnMoreGroups">@Language.GetString("GetMore")</button>
+    </div>
+</div>
+
+<div class="card mt-2 border-0"  >
+    <div class="card-body">
+        <div id="productSection">
+            @await Component.InvokeAsync("ContentsInCategorySection", Model.ProductInGroupSection)
+        </div>
+    </div>
+</div>
+<div class="row text-center">
+    <div >
+        <button class="btn btn-secondary bg-gradient m-4" id="btnMoreProducts">@Language.GetString("GetMore")</button>
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+    var grpSkip;
+    var grpTake;
+    var prSkip;
+    var prTake;
+    $(document).ready(function () {
+        debugger;
+        grpSkip = parseInt('@Model.GroupSection.CountToSkip') + 4;
+        grpTake = parseInt('@Model.GroupSection.CountToTake');
+        prSkip = parseInt('@Model.ProductInGroupSection.CountToSkip') + 4;
+        prTake = parseInt('@Model.ProductInGroupSection.CountToTake');
+
+        $("#btnMoreGroups").click(function () {
+            debugger;
+                var obj = {};
+            obj.ProductGroupId = '@Model.GroupSection.ProductGroupId';
+            obj.GroupsWithProducts = @Json.Serialize(Model.GroupSection.GroupsWithProducts);
+            obj.CountToTake = grpTake;
+            obj.CountToSkip = grpSkip;
+            obj.DefaultLanguageId = '@Model.GroupSection.DefaultLanguageId'
+            var _url = '@Url.Action("GetMyGroupVC", "ProductGroup")';
+                $.ajax({
+                    type: "Post",
+                    dataType: "html",
+                    url: _url,
+                    data: obj ,
+                    success: function (result) {
+                        if (result != "") {
+                            grpSkip += 4;
+                            debugger;
+                            $("#groupSection").append(result);
+                        } else {
+                            $("#btnMoreGroups").css("display", "none");
+                        }
+                    },
+                });
+        });
+
+        $("#btnMoreProducts").click(function () {
+            debugger;
+            var obj = {};
+            obj.ProductGroupId = '@Model.ProductInGroupSection.ProductGroupId';
+            obj.CountToTake = prTake;
+            obj.CountToSkip = prSkip;
+            var url = '@Url.Action("GetProductsInGroupVC", "ProductGroup")';
+            $.ajax({
+                type: "GET",
+                dataType: "html",
+                contentType : false,
+                url: url,
+                data: obj,
+                success: function (result) {
+                    if (result != "" && result.length > 40)
+                    {
+                        prSkip += 4;
+                        debugger;
+                        $("#productSection").append(result);
+                    }
+                    else
+                    {
+                        $("#btnMoreProducts").css("display", "none");
+                    }
+                },
+            });
+        });
+    });
+
+    </script>
+}

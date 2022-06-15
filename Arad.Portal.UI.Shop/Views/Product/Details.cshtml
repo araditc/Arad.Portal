@@ -333,6 +333,10 @@ else
                 $("#toastPanel").show();
                 var toast = new bootstrap.Toast(toastDiv);
                 toast.show();
+
+                setTimeout(function(){
+                     $("#toastPanel").hide();
+                }, 3000);
             }
         });
 
@@ -358,8 +362,12 @@ else
 
                             $('#mainToastBody').html(`<i class="far fa-check-circle"></i> ${result.message}`);
                             $('#mainToastBody').addClass('alert-success');
+                             $("#toastPanel").show();
                             var toast = new bootstrap.Toast($("#mainToast"));
                             toast.show();
+                            setTimeout(function(){
+                                 $("#toastPanel").hide();
+                            }, 2500);
                         }
                         else {
 
@@ -368,6 +376,9 @@ else
                             $("#toastPanel").show();
                             var toast = new bootstrap.Toast($("#mainToast"));
                             toast.show();
+                            setTimeout(function(){
+                                 $("#toastPanel").hide();
+                            }, 2500);
                         }
 
                     }

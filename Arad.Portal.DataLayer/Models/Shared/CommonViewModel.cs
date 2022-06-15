@@ -12,13 +12,23 @@ namespace Arad.Portal.DataLayer.Models.Shared
 {
     public class CommonViewModel
     {
+        public CommonViewModel()
+        {
+            NotFound = false;
+        }
         public List<ProductGroupDTO> Groups { get; set; }
         public List<ProductOutputDTO> ProductList { get; set; }
         public List<ContentCategoryDTO> Categories { get; set; }
+
+        public List<ContentViewModel> ContentList { get; set; }
         public List<ContentViewModel> BlogList { get; set; }
         public ProductOutputDTO ProductDetail { get; set; }
         public ContentDTO ContentDetail { get; set; }
         public GroupSection GroupSection { get; set; }
         public ProductsInGroupSection ProductInGroupSection { get; set; }
+        public CategorySection CategorySection { get; set; }
+        public ContentsInCategorySection ContentsInCategorySection { get; set; }
+
+        public bool NotFound { get; set; }
     }
 }

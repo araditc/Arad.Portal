@@ -62,6 +62,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             PagedItems<MenuDTO> result = new PagedItems<MenuDTO>();
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            //var userEntity = await _userManager.FindByIdAsync(currentUserId);
+            //ViewBag.IsSys = userEntity.IsSystemAccount;
+            
           
             var domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
             var res = _domainRepository.FetchByName(domainName, false);
@@ -79,6 +83,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 }
                 var deflang = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
                 ViewBag.DefLangId = deflang;
+                //if user is systemaccount show all active menu for all domains otherwise it only shows the menu of current domain
                 ViewBag.MenuList = await _menuRepository.AllActiveMenues(domainId, deflang);
                 ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
                 result = await _menuRepository.AdminList(qs);
@@ -97,7 +102,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 model = res.ReturnValue;
             }
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userEntity = await _userManager.FindByIdAsync(currentUserId);
+            ViewBag.IsSys = userEntity.IsSystemAccount;
 
+            if (userEntity.IsSystemAccount)
+            {
+                var domainList = _domainRepository.GetAllActiveDomains();
+                ViewBag.DomainList = domainList;
+            }
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
             ViewBag.DefLangId = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
             ViewBag.ProductGroupList = await _productGroupRepository.GetAlActiveProductGroup(lan.LanguageId, currentUserId);
@@ -174,6 +186,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
+
+                var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userEntity = await _userManager.FindByIdAsync(currentUserId);
                 foreach (var item in dto.MenuTitles)
                 {
                     var lan = _lanRepository.FetchLanguage(item.LanguageId);
@@ -181,7 +196,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     item.LanguageName = lan.LanguageName;
                     item.LanguageSymbol = lan.Symbol;
                 }
-                dto.AssociatedDomainId = domainId;
+                dto.AssociatedDomainId = userEntity.IsSystemAccount ? dto.AssociatedDomainId  : domainId;
                 dto.MenuType = (MenuType)Convert.ToInt32(dto.MenuTypeId);
                 dto.MenuCode = await GetMenuCodeFromMenu(dto.MenuType, dto.SubId, dto.SubGroupId);
                 switch (dto.MenuType)

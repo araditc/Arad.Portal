@@ -30,105 +30,15 @@
     </div>
 </div>*@
 
-<script>
-    var headerRowNumber=1000;
-    var contentRowNumber = 2000;
-    var footerRowNumber = 3000;
+@*<script>
+    
 
     $(document).ready(function(){
         //debugger;
         //$(".colCnt").selectpicker();
     });
-    function addNewRow(sender, tag)
-    {
-      debugger; 
-        var divId = `#${tag}_paramSection`;
-        $(divId).find(".row.firstLevel").removeClass("active");
-        var currentRowNumber ;
-        switch(tag)
-        {
-            case "headerSection":
-            currentRowNumber = headerRowNumber;
-            headerRowNumber += 1;
-            break;
-            case "containerSection":
-            currentRowNumber = contentRowNumber;
-            contentRowNumber += 1;
-            break;
-            case "footerSection":
-            currentRowNumber = footerRowNumber;
-            footerRowNumber += 1;
-            break;
-        }
-         var guid = createGuid();
-        var template = getColTemplate(guid, tag);
+    
 
-        $(divId).append("<div rn='" + currentRowNumber + "' guid='"+guid+"' class='row " + currentRowNumber + " firstLevel align-middle active'></div>");
-       
-        $(`.firstLevel.active.${currentRowNumber}`).append(template);
-        var parentDivClass = `.div_${tag}`;
-        $(`#${guid}`).selectpicker();
-
-        $(parentDivClass).find(".lblAlertFirstRow").addClass("d-none");
-
-         $(sender).attr("disabled", true);
-    }
-
-    function selectColumns(sender, id)
-    {
-        debugger;
-        var col = parseInt($(sender).val());
-       
-        $.ajax({
-                 url:"@Url.Action("GetRelatedColsTemplateWidths","Domain")"+"?count="+col,
-                 type:'Get',
-                 statusCode:
-                 {
-                     200:function(result)
-                     {
-                         debugger;
-                         if(result.status == "success")
-                         {
-                             var options = "";
-                              if (result.data.length != 0) {
-                                    (result.data).forEach(function (item) {
-                                        var op = "<option value='" + item.value + "'>" + item.text + "</option>";
-                                        options += op;
-                                    });
-                                }
-
-                                $(`.colWidth[colWidthId='${id}']`).html(options);
-                                $(`.colWidth[colWidthId='${id}']`).selectpicker();
-                         }
-                     }
-                 }
-               });
-    }
-    function selectColumnsWidthRatio(sender, tag)
-    {
-        debugger;
-        var id = $(sender).attr("colWidthId");
-        var count = parseInt($(`.colCnt[id='${id}']`).val())
-        ;
-         var rowNumber = $(sender).closest(".row.firstLevel").attr("rn");
-        var guid = $(sender).closest(".row.firstLevel").attr("guid");
-       var colWidthEnumId = parseInt($(sender).val());
-
-        $.ajax({
-                 url:"@Url.Action("GetRowWithSelectedColumns","Domain")"+`?count=${count}&colWidth=${colWidthEnumId}&rn=${rowNumber}&d=${'@Model.DomainId'}&gu=${guid}`,
-                 type:'Get',
-                 statusCode:{
-                     200:function(data){
-                         debugger;
-                        
-                         var divId =  `#${tag}_paramSection`;
-                          $(divId).find(`.firstLevel.active.${rowNumber} .contentColumns`).html(data);
-                           $(".drpContentType").selectpicker();
-                           $(".moduleList").selectpicker();
-                            var buttonDivClass = `.row.div_${tag}`;
-                            $(buttonDivClass).find(".addNewRow").removeAttr("disabled");
-                     }
-                 }
-               });
-    }
-</script>
+    
+    
+</script>*@

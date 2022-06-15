@@ -157,14 +157,24 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
        public async Task<IActionResult> SavePageContent([FromBody]DomainPageModel model)
        {
             var domainEntity = _domainRepository.FetchDomain(model.DomainId);
+
             //var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
             //var languageId = _lanRepository.FetchBySymbol(lanIcon);
+
             var obj = new PageDesignContent()
             {
                 LanguageId = model.LanguageId,
                 HeaderPart = model.HeaderPart,
                 FooterPart = model.FooterPart,
                 MainPageContainerPart = model.MainPageContainerPart
+            };
+
+            var html = new HomePageHtmlContent()
+            {
+                LanguageId = model.LanguageId,
+                HeaderHtmlSection = model.HeaderHtmlSection,
+                BodyHtmlSection = model.BodyHtmlSection,
+                FooterHtmlSection = model.FooterHtmlSection
             };
 
             if(domainEntity.ReturnValue.HomePageDesign.Any(_=>_.LanguageId == model.LanguageId))
@@ -177,6 +187,19 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 domainEntity.ReturnValue.HomePageDesign.Add(obj);
             }
+
+
+            if(domainEntity.ReturnValue.HomePageHtmlContent.Any(_=>_.LanguageId == model.LanguageId))
+            {
+                var htmlObj = domainEntity.ReturnValue.HomePageHtmlContent.FirstOrDefault(_ => _.LanguageId == model.LanguageId);
+                htmlObj.HeaderHtmlSection = model.HeaderHtmlSection;
+                htmlObj.BodyHtmlSection = model.BodyHtmlSection;
+                htmlObj.FooterHtmlSection = model.FooterHtmlSection;
+            }else
+            {
+                domainEntity.ReturnValue.HomePageHtmlContent.Add(html);
+            }
+
             domainEntity.ReturnValue.IsMultiLinguals = model.IsMultiLinguals;
             domainEntity.ReturnValue.IsShop = model.IsShop;
 
@@ -238,8 +261,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             //var moduleList = _moduleRepository.GetAllModules();
             //ViewBag.ModuleList = moduleList;
+            var domainEntity = _domainRepository.FetchDomain(domainId).ReturnValue;
 
             ViewBag.DomainId = domainId;
+            ViewBag.IsShop = domainEntity.IsShop;
+            ViewBag.IsMultilingual = domainEntity.IsMultiLinguals;
+            ViewBag.HtmContents = domainEntity.HomePageHtmlContent;
+
+
             var lanList = _lanRepository.GetAllActiveLanguage();
             lanList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
             ViewBag.LangList = lanList;

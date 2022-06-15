@@ -114,6 +114,15 @@
 	</string>
 	<!--End [buttons text]-->
 	<!--Start Design Page-->
+	<string key="design_IsShopDomain">
+		<value>Shop Domain</value>
+	</string>
+	<string key="design_IsMultiLingual">
+		<value>MultiLingual Domain</value>
+	</string>
+	<string key="design_IntervalTime">
+		<value>time interval with next slide</value>
+	</string>
 	<string key="design_AnimationDelay">
 		<value>animation delay</value>
 	</string>
@@ -780,6 +789,9 @@
 		<value>Enter the number of fixed phone.</value>
 	</string>
 	<!--====================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_FirstChooseLanguage">
+		<value>please choose the language of design page at first.</value>
+	</string>
 	<string key="AlertAndMessage_EndDateMustBeGreaterThanStartDate">
 		<value>expire date must be greater than start date.</value>
 	</string>

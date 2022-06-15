@@ -160,16 +160,16 @@
 
                             if (result.status === "success") {
                                 list(pageSize, 1);
-                                //toastr.success(result.message);
-                                @*Swal.fire({
-                                    type: 'success',
-                                    text: result.message,
-                                    confirmButtonText:
-                                        '<i class="fa fa-thumbs-up"></i> @alert',
-                                });*@
+                               
                                 document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>' + result.message;
                                 document.getElementById('mainToastBody').classList.add('alert-success');
-                                  
+                                $("#toastPanel").show();
+                                 var bsAlert = new bootstrap.Toast($("#mainToast"));
+                                 bsAlert.show();
+
+                                setTimeout(function(){
+                                    $("#toastPanel").hide();
+                                }, 2500);
 
 
                             } else if (result.status === "error") {
@@ -386,21 +386,19 @@
                                 list(pageSize, $pagination.twbsPagination('getCurrentPage'));
 
                                 $("#removeModal").modal("hide");
-                                @*Swal.fire({
-                                    type: 'success',
-                                    text: result.message,
-                                    confirmButtonText:
-                                        '<i class="fa fa-thumbs-up"></i> @alert',
-                                });*@
+                              
                                 document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
                                 document.getElementById('mainToastBody').classList.add('alert-success');
+                                $("#toastPanel").show();
+                                 var bsAlert = new bootstrap.Toast($("#mainToast"));
+                                 bsAlert.show();
+                                 setTimeout(function()
+                                    {
+                                        $("#toastPanel").hide();
+                                    },
+                                    3000);
                             } else {
-                                @*Swal.fire({
-                                    type: 'error',
-                                    text: result.message,
-                                    confirmButtonText:
-                                        '@alert',
-                                });*@
+                                
                                 showError(result.message);
                             }
                         },

@@ -161,9 +161,11 @@
                             document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
                             document.getElementById('mainToastBody').classList.add('alert-success');
                             var bsAlert = new bootstrap.Toast($("#mainToast"));
+                            $("#toastPanel").show();
                             bsAlert.show();
                             setTimeout(function()
                             {
+                                $("#toastPanel").hide();
                                  window.location.href = '@Url.Action("List")';
                             },
                             3000);
@@ -233,7 +235,7 @@
         function addToTable() {
             var flag = false;
             debugger;
-            langId = var selectedLang = $('#languageId').val();
+            var selectedLang = $('#languageId').val();
             if (isUnique(selectedLang, 'multiLingualList', 2, '@Language.GetString("AlertAndMessage_LangUniqueness")')) {
                 if ($("#categoryName").val() == "") {
                     $("span[data-val-result='categoryName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');

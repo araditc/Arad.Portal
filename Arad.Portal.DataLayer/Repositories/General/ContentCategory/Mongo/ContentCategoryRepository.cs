@@ -178,7 +178,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             return result;
         }
 
-        public CommonViewModel FetchByCode(long categoryCode)
+        public CommonViewModel FetchByCode(long categoryCode, string domainId)
         {
             var result = new CommonViewModel();
             var categoryEntity = _categoryContext.Collection
@@ -186,7 +186,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             if(categoryEntity != null)
             {
                 result.Categories = GetDirectChildrens(categoryEntity.ContentCategoryId, 5);
-                result.BlogList = GetContentsInCategory(categoryEntity.ContentCategoryId, 5);
+                result.BlogList = GetContentsInCategory(domainId, categoryEntity.ContentCategoryId, 5);
+            }else
+            {
+                result.NotFound = true;
             }
             
             return result;
@@ -225,16 +228,16 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             return result;
         }
 
-        public List<ContentViewModel> GetContentsInCategory(string contentCategoryId,int? count, int skip = 0)
+        public List<ContentViewModel> GetContentsInCategory(string domainId, string contentCategoryId,int? count, int skip = 0)
         {
             var result = new List<ContentViewModel>();
             List<Entities.General.Content.Content> lst = new List<Entities.General.Content.Content>();
             if(count != null)
             {
-               lst = _contentContext.Collection.Find(_ => _.ContentCategoryId == contentCategoryId).Skip(0).Limit(count).ToList();
+               lst = _contentContext.Collection.Find(_ => _.ContentCategoryId == contentCategoryId && _.AssociatedDomainId == domainId).SortByDescending(_ => _.CreationDate).Skip(0).Limit(count).ToList();
             }else
             {
-                lst = _contentContext.Collection.Find(_ => _.ContentCategoryId == contentCategoryId).ToList();
+                lst = _contentContext.Collection.Find(_ => _.ContentCategoryId == contentCategoryId && _.AssociatedDomainId == domainId).SortByDescending(_ => _.CreationDate).ToList();
             }
             result = _mapper.Map<List<ContentViewModel>>(lst);
             return result;
@@ -293,7 +296,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
                        CategoryType = _.CategoryType,
                        IsDeleted = _.IsDeleted,
                        CategoryName = _.CategoryNames.Any(a=>a.LanguageId == langId) ?
-                       _.CategoryNames.FirstOrDefault(a => a.LanguageId == langId) : _.CategoryNames.FirstOrDefault()
+                       _.CategoryNames.First(a => a.LanguageId == langId) : _.CategoryNames.First()
                    }).ToList();
 
                 result.CurrentPage = page;

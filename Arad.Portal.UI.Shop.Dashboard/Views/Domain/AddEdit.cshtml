@@ -66,6 +66,34 @@
 
 
                 <div class="row m-1">
+                    
+                      <div class="form-group col-12 col-md-6 pt-1 pb-2 mt-3 mb-3 ms-4">
+
+                        <div class="form-check m-auto d-inline-block pt-3 fs-6 ms-1">
+                            <input class="form-check-input" type="checkbox" value="@Model.IsDefault" asp-for="@Model.IsDefault">
+                            <label class="form-check-label" for="IsDefault">
+                                @Language.GetString("DefaultDomain")
+                            </label>
+                        </div>
+
+                         <div class="form-check m-auto d-inline-block pt-3 fs-6 ms-4">
+                            <input class="form-check-input" type="checkbox" value="@Model.IsShop" asp-for="@Model.IsShop">
+                            <label class="form-check-label" for="IsShop">
+                                @Language.GetString("design_IsShopDomain")
+                            </label>
+                        </div>
+
+                         <div class="form-check m-auto d-inline-block pt-3 fs-6 ms-4">
+                            <input class="form-check-input" type="checkbox" value="@Model.IsMultiLinguals" asp-for="@Model.IsMultiLinguals">
+                            <label class="form-check-label" for="IsMultiLinguals">
+                                @Language.GetString("design_IsMultiLingual")
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-1">
+
+
                     <div class="form-group col-md-3">
                         <label class="form-label" for="DefaultLanguageId">@Language.GetString("DefaultLanguage")</label><br />
                         <select class="form-control selectpicker" data-live-search="true" asp-for="DefaultLanguageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text", Model.DefaultLanguageId))">
@@ -74,7 +102,7 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label class="form-label" for="groupName">@Language.GetString("DomainName")</label><br />
-                        <input type="text" class="form-control" asp-for="DomainName">
+                        <input type="text" class="form-control" asp-for="DomainName" dir="ltr">
                         <span data-val-result="DomainName" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
@@ -82,14 +110,6 @@
                         <select class="form-control selectpicker" data-live-search="true" asp-for="OwnerUserId" asp-items="@(new SelectList(ViewBag.Vendors,"Value","Text", Model.OwnerUserId))">
                         </select>
                         <span data-val-result="OwnerUserId" class="text-danger"></span>
-                    </div>
-                    <div class="form-group col-12 col-md-3 pt-1 pb-2">
-                        <div class="form-check m-auto d-inline-block pt-3">
-                            <input class="form-check-input" type="checkbox" value="@Model.IsDefault" asp-for="@Model.IsDefault">
-                            <label class="form-check-label" for="IsDefault">
-                                @Language.GetString("DefaultDomain")
-                            </label>
-                        </div>
                     </div>
                 </div>
                 <div class="row m-1">
@@ -115,8 +135,9 @@
                         <input type="text" class="form-control" asp-for="@Model.IncreasementValue" value="@Model.IncreasementValue" />
                         <span data-val-result="IncreasementValue" class="text-danger"></span>
                     </div>
-
                 </div>
+
+               
                 <div class="row m-1">
                     <div class="col-md-12">
                         <div class="card">
@@ -416,15 +437,15 @@
                     $("span[data-val-result='MultiLingualProperties']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
                     flag = true;
                 }
-                if ($("#gatewayInfoes tr").length == 0) {
+                if ($("IsShop").is(":checked") && ("#gatewayInfoes tr").length == 0) {
                     $("span[data-val-result='gatewayInfoes']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
                     flag = true;
                 }
-                if ($("#InvoiceNumberProcedure").val() == "" || $("#InvoiceNumberProcedure").val() == "-1") {
+                if ($("IsShop").is(":checked") && ($("#InvoiceNumberProcedure").val() == "" || $("#InvoiceNumberProcedure").val() == "-1")) {
                     $("span[data-val-result='InvoiceNumberProcedure']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
                     flag == true;
                 }
-                if ($("#InvoiceNumberProcedure").val() == "1" && $("#InvoiceNumberInitializer").val() == "") {
+                if ( $("IsShop").is(":checked") && $("#InvoiceNumberProcedure").val() == "1" && $("#InvoiceNumberInitializer").val() == "") {
                     $("span[data-val-result='InvoiceNumberInitializer']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                     flag = true;
                 }
@@ -447,10 +468,12 @@
                                 if (result.status === "Success") {
                                    document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
                                     document.getElementById('mainToastBody').classList.add('alert-success');
+                                    $("#toastPanel").show();
                                     var bsAlert = new bootstrap.Toast($("#mainToast"));
                                     bsAlert.show();
                                     setTimeout(function()
                                     {
+                                        $("#toastPanel").hide();
                                          window.location.href = '@Url.Action("List")';
                                     },
                                  1500);
@@ -493,15 +516,20 @@
             obj.DefaultLanguageName = $("#DefaultLanguageId option:selected").text();
             obj.DefaultCurrencyId = $("#DefaultCurrencyId").val();
             obj.DefaultCurrencyName = $("#DefaultCurrencyId option:selected").text();
-            obj.IsDefault = $("#chbDefaultDomain").is(":checked");
+            obj.IsDefault = $("#IsDefault").is(":checked");
+            obj.IsShop = $("#IsShop").is(":checked");
+            obj.IsMultiLinguals = $("#IsMultiLinguals").is(":checked");
 
 
-
-            obj.InvoiceNumberProcedure = $("#InvoiceNumberProcedure").val();
-            if ($("#InvoiceNumberProcedure").val() == "1") {
-                obj.InvoiceNumberInitializer = $("#InvoiceNumberInitializer").val();
-                obj.IncreasementValue = parseInt($("#IncreasementValue").val());
+            if($("#IsShop").is(":checked"))
+            {
+                 obj.InvoiceNumberProcedure = $("#InvoiceNumberProcedure").val();
+                    if ($("#InvoiceNumberProcedure").val() == "1") {
+                        obj.InvoiceNumberInitializer = $("#InvoiceNumberInitializer").val();
+                        obj.IncreasementValue = parseInt($("#IncreasementValue").val());
+                    }
             }
+           
             //prices
             $("#priceList tr").each(function () {
 
@@ -538,8 +566,9 @@
     function onConfirmDialog() {
         $(globalSender).parent().find("td:eq(5)").text(inActive);
          appendToPriceList(tr);
-        }
-       function addPriceToList() {
+    }
+      function addPriceToList() 
+      {
         debugger;
         var flag = false;
         $("span[data-val-result='priceValue']").html("");

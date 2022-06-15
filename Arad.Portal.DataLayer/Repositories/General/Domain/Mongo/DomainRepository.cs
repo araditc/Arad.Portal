@@ -57,11 +57,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                     equallentEntity.DomainId = Guid.NewGuid().ToString();
                     foreach (var price in dto.Prices)
                     {
-                        price.PriceId = Guid.NewGuid().ToString();
+                        //price.PriceId = Guid.NewGuid().ToString();
                     }
                     #region Prices
                     equallentEntity.Prices = new List<Price>();
-                    foreach (var price in dto.Prices.OrderBy(_ => _.StartDate))
+                    foreach (var price in dto.Prices.OrderBy(_ => _.SDate))
                     {
                         if (price.IsActive && string.IsNullOrWhiteSpace(price.EndDate))//price is valid from client
                         {
@@ -92,8 +92,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                     }
                     #endregion
 
+                   if(dto.IsShop)
+                    {
+                        equallentEntity.InvoiceNumberProcedure = (InvoiceNumberProcedure)Convert.ToInt32(dto.InvoiceNumberProcedure);
+                    }
                    
-                    equallentEntity.InvoiceNumberProcedure = (InvoiceNumberProcedure)Convert.ToInt32(dto.InvoiceNumberProcedure);
 
 
 

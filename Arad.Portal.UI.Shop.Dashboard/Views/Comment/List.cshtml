@@ -256,11 +256,12 @@
                               document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
                             document.getElementById('mainToastBody').classList.add('alert-success');
                             var toastDiv = $("#mainToast");
-                            //$("#toastPanel").show();
+                            $("#toastPanel").show();
                             var toast = new bootstrap.Toast(toastDiv);
                             toast.show();
                              setTimeout(function()
                             {
+                                $("#toastPanel").hide();
                                 window.location.reload();
                             },
                             2500);
