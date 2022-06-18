@@ -247,6 +247,22 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             return result;
         }
 
+        public bool IsUniqueUrlFriend(string urlFriend, string groupId = "")
+        {
+            if (string.IsNullOrWhiteSpace(groupId)) //insert
+            {
+                return !_productContext.ProductGroupCollection.Find(_ => _.MultiLingualProperties.Any(a => a.UrlFriend == urlFriend)).Any();
+            }
+            else
+            { //update
+                FilterDefinitionBuilder<Entities.Shop.ProductGroup.ProductGroup> groupBuilder = new();
+                FilterDefinitionBuilder<MultiLingualProperty> multiLingualBuilder = new();
+                FilterDefinition<MultiLingualProperty> multiLingualFilterDefinition = multiLingualBuilder.Eq("UrlFriend", urlFriend);
+
+                return !_productContext.ProductGroupCollection.Find(groupBuilder.ElemMatch("MultiLingualProperties", multiLingualFilterDefinition)).Any();
+            }
+        }
+
         public async Task<PagedItems<ProductGroupViewModel>> List(string queryString)
         {
             PagedItems<ProductGroupViewModel> result = new PagedItems<ProductGroupViewModel>();
@@ -285,7 +301,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                        ParentId = _.ParentId,
                        IsDeleted = _.IsDeleted,
                        MultiLingualProperty = _.MultiLingualProperties.Any(a => a.LanguageId == langId) ?
-                         _.MultiLingualProperties.FirstOrDefault(a => a.LanguageId == langId) : _.MultiLingualProperties.FirstOrDefault()
+                         _.MultiLingualProperties.First(a => a.LanguageId == langId) : _.MultiLingualProperties.First()
                    }).ToList();
                 result.CurrentPage = page;
                 result.Items = lst;
@@ -460,18 +476,31 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                  .Find(_ => _.GroupIds.Contains(productGroupId)).SortByDescending(_ => _.CreationDate).Skip(skip).Limit(count).ToList();
 
             result = _mapper.Map<List<ProductOutputDTO>>(list);
-            //foreach (var item in result)
-            //{
-
-            //}
+            foreach (var pro in result)
+            {
+                var r = Helpers.Utilities.ConvertPopularityRate(pro.TotalScore ?? 0, pro.ScoredCount ?? 0);
+                pro.LikeRate = r.LikeRate;
+                pro.DisikeRate = r.DisikeRate;
+                pro.HalfLikeRate = r.HalfLikeRate;
+            }
             return result;
         }
 
-        public string FetchByCode(long groupCode)
+        public string FetchByCode(string slugOrCode)
         {
             string result = "";
-            var entity = _productContext.ProductGroupCollection
-                .Find(_ => _.GroupCode == groupCode).FirstOrDefault();
+            long codeNumber;
+            var entity = new Entities.Shop.ProductGroup.ProductGroup();
+            if (long.TryParse(slugOrCode, out codeNumber))
+            {
+                entity = _productContext.ProductGroupCollection
+                 .Find(_ => _.GroupCode == codeNumber).FirstOrDefault();
+            }
+            else
+            {
+                entity = _productContext.ProductGroupCollection
+                    .Find(_ => _.MultiLingualProperties.Any(a => a.UrlFriend == $"/group/{slugOrCode}")).FirstOrDefault();
+            }
 
             if(entity != null)
             {

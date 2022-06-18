@@ -1,0 +1,50 @@
+﻿@model Arad.Portal.DataLayer.Models.Shared.CommonViewModel
+
+    @*https://bbbootstrap.com/snippets/bootstrap-ecommerce-product-quantity-and-star-ratings-76956573*@
+    <div class="row">
+        @foreach (var item in Model.ContentList)
+        {
+            <div class="col-6 col-md-3">
+                <div class="bbb_deals w-100 mt-0">
+                    <div class="w-100">
+                        <div class="w-100">
+                            <div class="text-center">
+                                <img class="proImg rounded m-2 mt-4 img-fluid" src="@($"../filemanager/getscaledimageOnWidth?path={(item.Images.Any(_=>_.IsMain) ? item.Images.FirstOrDefault(_=>_.IsMain).Url : "/img/NoImage.Png")}&width={500}")"  
+                                     alt="@(item.Images.Where(_=>_.IsMain).Any() ? item.Images.FirstOrDefault(_=>_.IsMain).Title : "ContentImage")" />
+                            </div>
+                            <div class="bbb_deals_content">
+                                
+                                <div class="bbb_deals_info_line d-flex flex-row justify-content-center">
+                                    <a class="text-decoration-none" href="/blog/@item.ContentCode">
+                                        @(item.Title)
+                                    </a>
+                                   
+                                </div>
+                                <div class="available">
+                                    <div class="available_line d-flex flex-row justify-content-center">
+                                      
+                                        <div class="sold_stars ml-auto">
+                                            @for (int i = 1; i <= item.LikeRate; i++)
+                                            {
+                                               <i class="fas fa-star"></i>
+                                            }
+                                            @if (item.HalfLikeRate)
+                                            {
+                                              <i class="fas fa-star-half-alt"></i>
+                                            }
+                                            @for (int i = (item.HalfLikeRate ? item.LikeRate + 2 : item.LikeRate + 1); i <= item.DisikeRate; i++)
+                                            {
+                                                <i class="far fa-star"></i>
+                                               
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="available_bar"><span style="width:17%"></span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>

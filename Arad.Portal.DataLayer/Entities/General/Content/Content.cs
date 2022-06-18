@@ -62,6 +62,7 @@ namespace Arad.Portal.DataLayer.Entities.General.Content
 
         //public int PopularityRate { get; set; }
         public long TotalScore { get; set; }
+
         public int ScoredCount { get; set; }
 
         public List<Comment.Comment> Comments { get; set; }

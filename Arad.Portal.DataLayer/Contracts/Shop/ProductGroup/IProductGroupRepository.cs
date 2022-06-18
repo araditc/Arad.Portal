@@ -16,8 +16,10 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductGroup
         ProductGroupDTO FetchBySlug(string slug, string domainName);
         //ProductGroupDTO FetchByCode(long groupCode);
         //CommonViewModel FetchByCode(long groupCode);
-        string FetchByCode(long groupCode);
+        string FetchByCode(string slugOrCode);
         bool GroupExistance(string productGroupId);
+
+        bool IsUniqueUrlFriend(string urlFriend, string groupId = "");
         Task<PagedItems<ProductGroupViewModel>> List(string queryString);
         Task<Result> Delete(string productGroupId, string modificationReason);
         Task<Result> Restore(string id);

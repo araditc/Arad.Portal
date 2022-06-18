@@ -205,6 +205,7 @@
                         <th>@Language.GetString("tbl_Inventory")</th>
                         <th>@Language.GetString("tbl_Price")</th>
                         <th>@Language.GetString("CreationDate")</th>
+                        <th>@Language.GetString("UrlFriend")</th>
                         <th>@* with urFriends goes to the related link in shop *@</th>
                         <th></th>
                     </tr>
@@ -229,9 +230,10 @@
                                 <td>@item.Inventory</td>
                                 <td>
                                     @(item.Prices.Any(_ =>_.StartDate <= DateTime.UtcNow && _.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate))
-                            ? item.Prices.First(_ => _.StartDate <= DateTime.UtcNow && _.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate)).PriceValue : "")
+                                        ? item.Prices.First(_ => _.StartDate <= DateTime.UtcNow && _.IsActive && DateTime.Now >= _.StartDate && (_.EndDate == null || DateTime.Now < _.EndDate)).PriceValue : "")
                                 </td>
                                 <td>@item.CreationDate</td>
+                                <td dir="ltr">@(item.MultiLingualProperties.Any(_=>_.LanguageId == langId) ? item.MultiLingualProperties.First(_ => _.LanguageId == langId).UrlFriend : "")</td>
                                 <td>
                                     <button class="btn btn-sm btn-dark bg-gradient">
                                         <i class="fa fa-eye"></i>@Language.GetString("btn_Show")

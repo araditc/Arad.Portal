@@ -21,6 +21,7 @@ using Arad.Portal.DataLayer.Entities.General.User;
 using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Models.Content;
 using Microsoft.AspNetCore.Hosting;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
 
 namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
 {
@@ -31,10 +32,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
         private readonly ContentContext _contentContext;
         private readonly LanguageContext _languageContext;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IDomainRepository _domainRepository;
 
         public ContentCategoryRepository(IHttpContextAccessor httpContextAccessor,
             IMapper mapper, ContentCategoryContext categoryContext,
             IWebHostEnvironment env,
+            IDomainRepository domainRepository,
             UserManager<ApplicationUser> userManager,
             LanguageContext langContext, ContentContext contentContext)
             : base(httpContextAccessor, env)
@@ -44,6 +47,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             _languageContext = langContext;
             _contentContext = contentContext;
             _userManager = userManager;
+            _domainRepository = domainRepository;
         }
         public async Task<Result> Add(ContentCategoryDTO dto)
         {
@@ -102,6 +106,45 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
            
             result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
             return result; ;
+        }
+
+        public async Task<List<string>> AllCategoryIdsWhichEndInContents(string domainName)
+        {
+            var currentDomain = _domainRepository.FetchByName(domainName, false);
+            var defDomain = _domainRepository.GetDefaultDomain();
+
+            FilterDefinitionBuilder<Entities.General.Content.Content> builder = new();
+            FilterDefinition<Entities.General.Content.Content> filterDef;
+           
+            filterDef = builder.Eq(nameof(Entities.General.Content.Content.AssociatedDomainId), currentDomain.ReturnValue.DomainId);
+           
+            //TODO : doesnt work
+            var cursor = await _contentContext.Collection.DistinctAsync<string>("ContentCategoryId", filterDef);
+            var lst = await cursor.ToListAsync();
+
+           
+            var finalList = new List<string>();
+            foreach (var catId in lst)
+            {
+                finalList.Add(catId);
+                var entity = _categoryContext.Collection
+                             .Find(_ => _.ContentCategoryId == catId).FirstOrDefault();
+                if (entity != null)
+                {
+                    var tmp = entity;
+                    while (tmp.ParentCategoryId != null)
+                    {
+                        finalList.Add(tmp.ParentCategoryId);
+                        tmp = _categoryContext.Collection
+                             .Find(_ => _.ContentCategoryId == tmp.ParentCategoryId).Any() ?
+                             _categoryContext.Collection
+                             .Find(_ => _.ContentCategoryId == tmp.ParentCategoryId).FirstOrDefault() : null;
+                    }
+                }
+
+            }
+           
+            return finalList;
         }
 
         public async Task<ContentCategoryDTO> ContentCategoryFetch(string contentCategoryId)
@@ -178,24 +221,27 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             return result;
         }
 
-        public CommonViewModel FetchByCode(long categoryCode, string domainId)
+        public string FetchByCode(string slugOrCode)
         {
-            var result = new CommonViewModel();
-            var categoryEntity = _categoryContext.Collection
-                .Find(_ => _.CategoryCode == categoryCode).FirstOrDefault();
-            if(categoryEntity != null)
+            string result = "";
+            long codeNumber;
+            var entity = new Entities.General.ContentCategory.ContentCategory();
+            if (long.TryParse(slugOrCode, out codeNumber))
             {
-                result.Categories = GetDirectChildrens(categoryEntity.ContentCategoryId, 5);
-                result.BlogList = GetContentsInCategory(domainId, categoryEntity.ContentCategoryId, 5);
+                entity = _categoryContext.Collection
+                 .Find(_ => _.CategoryCode == codeNumber).FirstOrDefault();
             }else
             {
-                result.NotFound = true;
+                entity = _categoryContext.Collection
+                       .Find(_ => _.CategoryNames.Any(a => a.UrlFriend == $"/category/{slugOrCode}")).FirstOrDefault();
             }
-            
+
+            if (entity != null)
+            {
+                result = entity.ContentCategoryId;
+            }
             return result;
         }
-
-
         
         public ContentCategoryDTO FetchBySlug(string slug, string domainName)
         {
@@ -240,6 +286,14 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
                 lst = _contentContext.Collection.Find(_ => _.ContentCategoryId == contentCategoryId && _.AssociatedDomainId == domainId).SortByDescending(_ => _.CreationDate).ToList();
             }
             result = _mapper.Map<List<ContentViewModel>>(lst);
+
+            foreach (var content in result)
+            {
+                var r = Helpers.Utilities.ConvertPopularityRate(content.TotalScore ?? 0, content.ScoredCount ?? 0);
+                content.LikeRate = r.LikeRate;
+                content.DisikeRate = r.DisikeRate;
+                content.HalfLikeRate = r.HalfLikeRate;
+            }
             return result;
         }
 

@@ -117,27 +117,27 @@
 
 <div class="card mt-2" style="box-shadow: 0px 0px 5px 0px rgb(199 205 206) !important">
     <div class="card-body">
-        <div id="groupSection">
-            @await Component.InvokeAsync("ContentCategorySection", Model.GroupSection)
+        <div id="categorySection">
+            @await Component.InvokeAsync("ContentCategorySection", Model.CategorySection)
         </div>
     </div>
 </div>
 <div class="row text-center">
     <div >
-        <button class="btn btn-secondary bg-gradient m-4" id="btnMoreGroups">@Language.GetString("GetMore")</button>
+        <button class="btn btn-secondary bg-gradient m-4" id="btnMoreCategories">@Language.GetString("GetMore")</button>
     </div>
 </div>
 
 <div class="card mt-2 border-0"  >
     <div class="card-body">
-        <div id="productSection">
-            @await Component.InvokeAsync("ContentsInCategorySection", Model.ProductInGroupSection)
+        <div id="contentSection">
+            @await Component.InvokeAsync("ContentsInCategorySection", Model.ContentsInCategorySection)
         </div>
     </div>
 </div>
 <div class="row text-center">
     <div >
-        <button class="btn btn-secondary bg-gradient m-4" id="btnMoreProducts">@Language.GetString("GetMore")</button>
+        <button class="btn btn-secondary bg-gradient m-4" id="btnMoreContents">@Language.GetString("GetMore")</button>
     </div>
 </div>
 @section Scripts{
@@ -148,20 +148,20 @@
     var prTake;
     $(document).ready(function () {
         debugger;
-        grpSkip = parseInt('@Model.GroupSection.CountToSkip') + 4;
-        grpTake = parseInt('@Model.GroupSection.CountToTake');
-        prSkip = parseInt('@Model.ProductInGroupSection.CountToSkip') + 4;
-        prTake = parseInt('@Model.ProductInGroupSection.CountToTake');
+        grpSkip = parseInt('@Model.CategorySection.CountToSkip') + 4;
+        grpTake = parseInt('@Model.CategorySection.CountToTake');
+        prSkip = parseInt('@Model.ContentsInCategorySection.CountToSkip') + 4;
+        prTake = parseInt('@Model.ContentsInCategorySection.CountToTake');
 
-        $("#btnMoreGroups").click(function () {
+        $("#btnMoreCategories").click(function () {
             debugger;
                 var obj = {};
-            obj.ProductGroupId = '@Model.GroupSection.ProductGroupId';
-            obj.GroupsWithProducts = @Json.Serialize(Model.GroupSection.GroupsWithProducts);
+            obj.ContentCategoryId = '@Model.CategorySection.ContentCategoryId';
+            obj.CategoriesWithContent = @Json.Serialize(Model.CategorySection.CategoriesWithContent);
             obj.CountToTake = grpTake;
             obj.CountToSkip = grpSkip;
-            obj.DefaultLanguageId = '@Model.GroupSection.DefaultLanguageId'
-            var _url = '@Url.Action("GetMyGroupVC", "ProductGroup")';
+            obj.DefaultLanguageId = '@Model.CategorySection.DefaultLanguageId'
+            var _url = '@Url.Action("GetMyCategoryVC", "ContentCategory")';
                 $.ajax({
                     type: "Post",
                     dataType: "html",
@@ -171,21 +171,21 @@
                         if (result != "") {
                             grpSkip += 4;
                             debugger;
-                            $("#groupSection").append(result);
+                            $("#categorySection").append(result);
                         } else {
-                            $("#btnMoreGroups").css("display", "none");
+                            $("#btnMoreCategories").css("display", "none");
                         }
                     },
                 });
         });
 
-        $("#btnMoreProducts").click(function () {
+        $("#btnMoreContents").click(function () {
             debugger;
             var obj = {};
-            obj.ProductGroupId = '@Model.ProductInGroupSection.ProductGroupId';
+            obj.ContentCategoryId = '@Model.ContentsInCategorySection.ContentCategoryId';
             obj.CountToTake = prTake;
             obj.CountToSkip = prSkip;
-            var url = '@Url.Action("GetProductsInGroupVC", "ProductGroup")';
+            var url = '@Url.Action("GetContentsInCategoryVC", "ContentCategory")';
             $.ajax({
                 type: "GET",
                 dataType: "html",
@@ -197,11 +197,11 @@
                     {
                         prSkip += 4;
                         debugger;
-                        $("#productSection").append(result);
+                        $("#contentSection").append(result);
                     }
                     else
                     {
-                        $("#btnMoreProducts").css("display", "none");
+                        $("#btnMoreContents").css("display", "none");
                     }
                 },
             });

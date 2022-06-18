@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
+using Arad.Portal.DataLayer.Models.Shared;
+using Arad.Portal.DataLayer.Contracts.General.Language;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -14,25 +16,78 @@ namespace Arad.Portal.UI.Shop.Controllers
     {
         private readonly IContentCategoryRepository _categoryRepository;
         private readonly IDomainRepository _domainRepository;
+        private readonly ILanguageRepository _languageRepository;
+        private readonly IHttpContextAccessor _accessor;
       
         public ContentCategoryController(IContentCategoryRepository categoryRepository,
             IWebHostEnvironment env,
             IDomainRepository domainRepository,
+            ILanguageRepository lanRepository,
             IHttpContextAccessor accessor):base(accessor, env)
         {
             _categoryRepository = categoryRepository;
             _domainRepository = domainRepository;
+            _accessor = accessor;
+            _languageRepository = lanRepository;
         }
         public IActionResult Index()
         {
             return View();
         }
         [Route("{language}/category/{**slug}")]
-        public IActionResult Details(long slug)
+        public async  Task<IActionResult> Details(string slug)
         {
+            //var domainEntity = _domainRepository.FetchByName(this.DomainName, true).ReturnValue;
+            //var entity = _categoryRepository.FetchByCode(slug, domainEntity.DomainId);
+            ////direct children in categories and contents in category in bloglist property
+            //return View(entity);
             var domainEntity = _domainRepository.FetchByName(this.DomainName, true).ReturnValue;
-            var entity = _categoryRepository.FetchByCode(slug, domainEntity.DomainId);
-            return View(entity);
+            CommonViewModel model = new CommonViewModel();
+            var path = _accessor.HttpContext.Request.Path.ToString();
+            var lanIcon = path.Split("/")[1].ToLower();
+
+            var langId = _languageRepository.FetchBySymbol(lanIcon);
+            ViewData["CurLangId"] = langId;
+            var id = _categoryRepository.FetchByCode(slug);
+            if(!string.IsNullOrWhiteSpace(id))
+            {
+                var catSection = new CategorySection()
+                {
+                    ContentCategoryId = id,
+                    CountToSkip = 0,
+                    CountToTake = 4,
+                    DefaultLanguageId = langId
+                };
+                catSection.CategoriesWithContent = await _categoryRepository.AllCategoryIdsWhichEndInContents(this.DomainName);
+                model.CategorySection = catSection;
+
+                var contentSection = new ContentsInCategorySection()
+                {
+                    ContentCategoryId = id,
+                    CountToSkip = 0,
+                    CountToTake = 4,
+                    DefaultLanguageId = langId
+                };
+                model.ContentsInCategorySection = contentSection;
+                //var model = _groupRepository.FetchByCode(slug);
+                return View(model);
+            }
+            else
+            {
+                return Redirect($"~/{lanIcon}/ExceptionHandler/PageNotFound");
+            }
+           
+        }
+
+        [HttpPost]
+        public IActionResult GetMyCategoryVC(CategorySection categorySection)
+        {
+            return ViewComponent("ContentCategorySection", categorySection);
+        }
+
+        public IActionResult GetContentsInCategoryVC(ContentsInCategorySection contentsInCategory)
+        {
+            return ViewComponent("ContentsInCategorySection", contentsInCategory);
         }
     }
 }

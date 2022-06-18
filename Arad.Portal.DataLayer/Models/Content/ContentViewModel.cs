@@ -14,6 +14,8 @@ namespace Arad.Portal.DataLayer.Models.Content
 
         public string ContentCategoryName { get; set; }
 
+        public long ContentCode { get; set; }
+
         public string Title { get; set; }
 
         public string SubTitle { get; set; }
@@ -51,6 +53,16 @@ namespace Arad.Portal.DataLayer.Models.Content
         public string ContentProviderName { get; set; }
 
         public bool IsDeleted { get; set; }
+
+        public long? TotalScore { get; set; }
+
+        public int? ScoredCount { get; set; }
+
+        public int LikeRate { get; set; }
+
+        public bool HalfLikeRate { get; set; }
+
+        public int DisikeRate { get; set; }
     }
 }
 

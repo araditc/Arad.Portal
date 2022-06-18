@@ -33,9 +33,11 @@ namespace Arad.Portal.DataLayer.Contracts.General.ContentCategory
 
         ContentCategoryDTO FetchBySlug(string slug, string domainName);
 
-        CommonViewModel FetchByCode(long categoryCode, string domainId);
+        string FetchByCode(string slugOrCode);
 
         List<SelectListModel> GetAllContentCategoryType();
+
+        Task<List<string>> AllCategoryIdsWhichEndInContents(string domainName);
 
     }
 }

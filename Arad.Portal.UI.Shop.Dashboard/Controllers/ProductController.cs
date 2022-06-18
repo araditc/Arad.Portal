@@ -183,6 +183,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             : new { Status = "Error", opResult.Message });
         }
 
+        [HttpGet]
+        public IActionResult CheckUrlFriendUniqueness(string id, string url)
+        {
+            var urlFriend = $"/product/{url}";
+            var res = _productRepository.IsUniqueUrlFriend(urlFriend, id);
+
+            return Json(res ? new { Status = "Success", Message = "url Is unique" }
+            : new { Status = "Error", Message = "url isnt unique" });
+        }
+
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] ProductInputDTO dto)
         {
@@ -202,6 +212,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
+               
+
                 if (_productRepository.IsCodeUnique(dto.UniqueCode))
                 {
 
@@ -210,6 +222,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         var lan = _lanRepository.FetchLanguage(item.LanguageId);
                         item.LanguageSymbol = lan.Symbol;
                         item.MultiLingualPropertyId = Guid.NewGuid().ToString();
+                        item.UrlFriend = $"/{lan.Symbol}{item.UrlFriend}";
                         item.ProductGroupNames = new();
                         foreach (var grp in dto.GroupIds)
                         {

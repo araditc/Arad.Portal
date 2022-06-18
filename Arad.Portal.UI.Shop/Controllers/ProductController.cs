@@ -52,14 +52,15 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
         [Route("{language}/product/{**slug}")]
-        public IActionResult Details(long slug)
+        public IActionResult Details(string slug)
         {
             var isLoggedUser = HttpContext.User.Identity.IsAuthenticated;
             string userId = "";
            
             userId = isLoggedUser ? HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value : "";
             var domainEntity = _domainRepository.FetchByName(_domainName, false);
-            ViewBag.Providers = domainEntity.ReturnValue.DomainPaymentProviders.Select(_ => new SelectListModel() { Text = _.PspType.ToString(), Value = ((int)_.PspType).ToString() });
+            ViewBag.Providers = domainEntity.ReturnValue.DomainPaymentProviders
+                .Select(_ => new SelectListModel() { Text = _.PspType.ToString(), Value = ((int)_.PspType).ToString() });
             var lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
             var entity = _productRepository.FetchByCode(slug, domainEntity.ReturnValue, userId);
             if(!string.IsNullOrEmpty(entity.ProductId))

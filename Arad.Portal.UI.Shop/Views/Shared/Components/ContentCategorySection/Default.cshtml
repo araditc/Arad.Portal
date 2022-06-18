@@ -1,0 +1,21 @@
+﻿@model Arad.Portal.DataLayer.Models.Shared.CommonViewModel
+
+<div class="row">
+    @foreach (var item in Model.Categories)
+    {
+        <div class="col-6 col-md-3">
+
+            <div class="card m-4 border-0" >
+               
+                <div class="card-body text-center" >
+                    <a href="/category/@item.CategoryCode" class="btn bg-gradient">
+                        <h6 class="card-title">@(item.CategoryNames.Any(_ => _.LanguageId == ViewBag.CurLangId) ? 
+                            item.CategoryNames.FirstOrDefault(_=>_.LanguageId == ViewBag.CurLangId).Name : item.CategoryNames.FirstOrDefault().Name)</h6>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    }
+</div>
+ 

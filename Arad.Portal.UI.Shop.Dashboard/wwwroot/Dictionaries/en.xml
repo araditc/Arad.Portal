@@ -789,6 +789,9 @@
 		<value>Enter the number of fixed phone.</value>
 	</string>
 	<!--====================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_UrlFriendIsNotUnique">
+		<value>url friend is not unique.</value>
+	</string>
 	<string key="AlertAndMessage_FirstChooseLanguage">
 		<value>please choose the language of design page at first.</value>
 	</string>

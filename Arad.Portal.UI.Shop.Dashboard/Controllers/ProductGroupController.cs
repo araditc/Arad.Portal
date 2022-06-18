@@ -133,6 +133,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         }
 
+        [HttpGet]
+        public IActionResult CheckUrlFriendUniqueness(string id, string url)
+        {
+            var urlFriend = $"/group/{url}";
+            var res = _productGroupRepository.IsUniqueUrlFriend(urlFriend, id);
+
+            return Json(res ? new { Status = "Success", Message = "url Is unique" }
+            : new { Status = "Error", Message = "url isnt unique" });
+        }
+
         [HttpPost]
         public async Task<IActionResult> Add([FromBody]ProductGroupDTO dto)
         {

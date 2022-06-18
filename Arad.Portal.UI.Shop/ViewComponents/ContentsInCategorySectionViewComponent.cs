@@ -36,7 +36,8 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             var result = new CommonViewModel();
             var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
             var domainEntity = _domainRepository.FetchByName(domainName, true).ReturnValue;
-            result.ContentList = _categoryRepository.GetContentsInCategory(domainEntity.DomainId, contentSection.ContentCategoryId, contentSection.CountToTake, contentSection.CountToSkip);
+            result.ContentList = _categoryRepository.GetContentsInCategory(domainEntity.DomainId, 
+                contentSection.ContentCategoryId, contentSection.CountToTake, contentSection.CountToSkip);
 
             var defaultCulture = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
             var defLangSymbol = defaultCulture.Split("|")[0][2..];

@@ -27,10 +27,37 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
         [Route("{language}/blog/{**slug}")]
-        public IActionResult Details(long slug)
+        public IActionResult Details(string slug)
         {
+            var isLoggedUser = HttpContext.User.Identity.IsAuthenticated;
+            string userId = "";
+            userId = isLoggedUser ? HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value : "";
+            var lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
             var entity = _contentRepository.FetchByCode(slug);
-            return View(entity);
+            if(entity != null)
+            {
+                if (isLoggedUser)
+                {
+                    #region check cookiepart for loggedUser
+                    var userProductRateCookieName = $"{userId}_c{entity.ContentId}";
+                    if (HttpContext.Request.Cookies[userProductRateCookieName] != null)
+                    {
+                        ViewBag.HasRateBefore = true;
+                        ViewBag.PreRate = HttpContext.Request.Cookies[userProductRateCookieName];
+                    }
+                    else
+                    {
+                        ViewBag.HasRateBefore = false;
+                    }
+                    #endregion
+                }
+
+                return View(entity);
+            }else
+            {
+                return Redirect($"~/{lanIcon}/ExceptionHandler/PageNotFound");
+            }
+           
         }
 
         [HttpPost]

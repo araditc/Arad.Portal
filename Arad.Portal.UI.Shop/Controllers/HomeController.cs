@@ -104,7 +104,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         //{
         //    var isLoggedUser = HttpContext.User.Identity.IsAuthenticated;
         //    string userId = "";
-            
+
         //    var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
         //    var lanId = _lanRepository.FetchBySymbol(lanIcon);
 
@@ -112,40 +112,41 @@ namespace Arad.Portal.UI.Shop.Controllers
         //    var domainEntity = _domainRepository.FetchByName(this.DomainName, false);
         //    bool isNumber;
         //    long codeNumber;
-        //    if(long.TryParse(slug, out codeNumber))
+        //    if (long.TryParse(slug, out codeNumber))
         //    {
         //        isNumber = true;
         //        var contentDto = _contentRepository.FetchByCode(codeNumber);
         //        var commonData = _contentCategoryRepository.FetchByCode(codeNumber);
         //        var productEntity = _productRepository.FetchByCode(codeNumber, domainEntity.ReturnValue, userId);
-        //        if(!string.IsNullOrWhiteSpace(productEntity.ProductId))
+        //        if (!string.IsNullOrWhiteSpace(productEntity.ProductId))
         //        {
         //            ViewBag.Providers = domainEntity.ReturnValue.DomainPaymentProviders.Select(_ => new SelectListModel()
-        //                                  { Text = _.PspType.ToString(), Value = ((int)_.PspType).ToString() });
-                    
-        //                if (isLoggedUser)
-        //                {
-        //                    #region check cookiepart for loggedUser
-        //                    var userProductRateCookieName = $"{userId}_p{productEntity.ProductId}";
-        //                    if (HttpContext.Request.Cookies[userProductRateCookieName] != null)
-        //                    {
-        //                        ViewBag.HasRateBefore = true;
-        //                        ViewBag.PreRate = HttpContext.Request.Cookies[userProductRateCookieName];
-        //                    }
-        //                    else
-        //                    {
-        //                        ViewBag.HasRateBefore = false;
-        //                    }
-        //                    #endregion
-        //                }
+        //            { Text = _.PspType.ToString(), Value = ((int)_.PspType).ToString() });
 
-                       
-        //                ViewBag.LanIcon = lanIcon;
-        //                ViewBag.CurCurrencyId = domainEntity.ReturnValue.DefaultCurrencyId;
-        //                ViewBag.CurLanguageId = lanId;
-        //                return View("~/Views/Product/Details.cshtml", productEntity);
-                    
-        //        }else if(!string.IsNullOrWhiteSpace(_productGroupRepository.FetchByCode(codeNumber)))
+        //            if (isLoggedUser)
+        //            {
+        //                #region check cookiepart for loggedUser
+        //                var userProductRateCookieName = $"{userId}_p{productEntity.ProductId}";
+        //                if (HttpContext.Request.Cookies[userProductRateCookieName] != null)
+        //                {
+        //                    ViewBag.HasRateBefore = true;
+        //                    ViewBag.PreRate = HttpContext.Request.Cookies[userProductRateCookieName];
+        //                }
+        //                else
+        //                {
+        //                    ViewBag.HasRateBefore = false;
+        //                }
+        //                #endregion
+        //            }
+
+
+        //            ViewBag.LanIcon = lanIcon;
+        //            ViewBag.CurCurrencyId = domainEntity.ReturnValue.DefaultCurrencyId;
+        //            ViewBag.CurLanguageId = lanId;
+        //            return View("~/Views/Product/Details.cshtml", productEntity);
+
+        //        }
+        //        else if (!string.IsNullOrWhiteSpace(_productGroupRepository.FetchByCode(codeNumber)))
         //        {
         //            CommonViewModel model = new CommonViewModel();
         //            ViewData["CurLangId"] = lanId;
@@ -170,10 +171,12 @@ namespace Arad.Portal.UI.Shop.Controllers
         //            model.ProductInGroupSection = proSection;
         //            //var model = _groupRepository.FetchByCode(slug);
         //            return View("~/Views/ProductGroup/Details.cshtml", model);
-        //        }else if(!string.IsNullOrWhiteSpace(contentDto.ContentId))
+        //        }
+        //        else if (!string.IsNullOrWhiteSpace(contentDto.ContentId))
         //        {
         //            return View("~/Views/Content/Details.cshtml", contentDto);
-        //        }else if(!commonData.NotFound)
+        //        }
+        //        else if (!commonData.NotFound)
         //        {
         //            return View("~/Views/ContentCategory/");
         //        }
@@ -184,8 +187,8 @@ namespace Arad.Portal.UI.Shop.Controllers
 
 
 
-            
-            
+
+
         //    var entity = _productRepository.FetchByCode(slug, domainEntity.ReturnValue, userId);
         //    if (!string.IsNullOrEmpty(entity.ProductId))
         //    {

@@ -21,7 +21,7 @@ namespace Arad.Portal.DataLayer.Entities.General.ContentCategory
 
         public string ParentCategoryId { get; set; }
         /// <summary>
-        /// name and languageId 
+        /// name and languageId and UrlFriend
         /// </summary>
         public List<MultiLingualProperty> CategoryNames { get; set; }
 
@@ -35,6 +35,5 @@ namespace Arad.Portal.DataLayer.Entities.General.ContentCategory
         News = 0,
         Blog = 1,
         //etc...
-
     }
 }

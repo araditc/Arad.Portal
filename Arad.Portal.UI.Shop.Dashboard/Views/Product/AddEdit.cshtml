@@ -289,7 +289,7 @@
                                                 else
                                                 {
                                                     <tr style="text-align:center;">
-                                                        <td colspan="6">@Language.GetString("AlertAndMessage_NoDataToShow")</td>
+                                                        <td colspan="8">@Language.GetString("AlertAndMessage_NoDataToShow")</td>
                                                     </tr>
                                                 }
                                             </tbody>
@@ -373,12 +373,13 @@
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label class="form-label">@Language.GetString("tbl_ProductName")</label>
-                                        <input type="text" class="form-control" id="productName" placeholder="" @*onblur="BuildUrlFriend();"*@>
+                                        <input type="text" class="form-control" id="productName" placeholder="" />
                                         <span data-val-result="productName" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label class="form-label">@Language.GetString("UrlFriend")</label>
-                                        <input type="text" class="form-control" id="urlFriend" readonly placeholder=" " />
+                                        <input type="text" class="form-control" dir="ltr" id="urlFriend"  placeholder=" "  />
+                                        <span data-val-result="urlFriend" class="text-danger"></span>
 
                                     </div>
                                     <div class="form-group col-md-3">
@@ -440,7 +441,7 @@
                                                             <td>@item.SeoTitle</td>
                                                             <td>@item.SeoDescription</td>
                                                             <td>@item.Description</td>
-                                                            <td>@item.UrlFriend</td>
+                                                            <td dir="ltr">@item.UrlFriend</td>
                                                             <td>
                                                                 <button type="button" class="btn btn-danger btnDel bg-gradient" cnt="@item.Tag" onclick="deleteFromTable(this);">
                                                                     <i class="fa fa-trash"></i>
@@ -676,10 +677,12 @@ else
     var counter = 1000;
     var active = '@Language.GetString("Active")';
     var inActive = '@Language.GetString("InActive")';
+    
+
     $(document).ready(function () {
 
-        var urlFriend = "product/" + '@Model.ProductCode';
-        $("#urlFriend").val(urlFriend);
+        //var urlFriend = "product/" + '@Model.ProductCode';
+        //$("#urlFriend").val(urlFriend);
         var multiLingualList = @Json.Serialize(@Model.MultiLingualProperties);
         for (var i = 0; i < multiLingualList.length; i++) {
             debugger;
@@ -1243,7 +1246,6 @@ else
              $("span[data-val-result='multiLangId']").html("");
             $("span[data-val-result='productName']").html("");
 
-
             if ($("#multiLangId").val() == "") {
                 $("span[data-val-result='multiLangId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
                 flag = true;
@@ -1252,46 +1254,72 @@ else
                     $("span[data-val-result='productName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
                 flag = true;
             }
+           
             if (!flag) {
-                debugger;
-                var obj = {};
-                obj.LanguageId = $('#multiLangId').val();
-                obj.LanguageName = $("#multiLangId option:selected").text();
-                obj.Name = $('#productName').val();
-                obj.SeoTitle = $("#seoTitle").val();
-                obj.SeoDescription = $("#seoDescription").val();
-                obj.Description = $("#description").val();
-                obj.UrlFriend = $("#urlFriend").val();
-                obj.BodyContent = CKEDITOR.instances.editorCk.getData();
-                obj.Tag = cnt.toString();
+              
+                $.ajax({
+                url: "/Product/CheckUrlFriendUniqueness?id="+ '@Model.ProductId' +"&url=" + $("#urlFriend").val(),
+                type: 'Get',
+                dataType: 'json',
+                success: function (result) {
+                    debugger;
+                    if(result.status =="Success")
+                    {
+                        var obj = {};
+                    var urlFriend = $("#urlFriend").val();
+                    var finalUrl = "";
+                    obj.LanguageId = $('#multiLangId').val();
+                    obj.LanguageName = $("#multiLangId option:selected").text();
+                    obj.Name = $('#productName').val();
+                    obj.SeoTitle = $("#seoTitle").val();
+                    obj.SeoDescription = $("#seoDescription").val();
+                    obj.Description = $("#description").val();
+                    if(urlFriend != "")
+                    {
+                         obj.UrlFriend = `/product/${urlFriend}`;
+                         finalUrl = `/product/${urlFriend}`;
+                    }
+               
+                    obj.BodyContent = CKEDITOR.instances.editorCk.getData();
+                    obj.Tag = cnt.toString();
 
-                multiLingualArr.push(obj);
+                    multiLingualArr.push(obj);
+               
+                    var tr = "<tr style='text-align:center;'><td>" + $("#multiLangId option:selected").text() +
+                        "</td><td style='display:none;'>" + $('#multiLangId').val() +
+                        "</td><td>" + $('#productName').val() +
+                        "</td><td>" + $("#seoTitle").val() +
+                        "</td><td>" + $("#seoDescription").val() +
+                        "</td><td>" + $("#description").val() +
+                        "</td><td dir='ltr'>" + finalUrl +
+                        "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' cnt='" + obj.Tag + "' onclick='deleteFromTable(this);'>" +
+                        "<i class='fa fa-trash' ></i></button></td></tr>";
 
-                var tr = "<tr style='text-align:center;'><td>" + $("#multiLangId option:selected").text() +
-                    "</td><td style='display:none;'>" + $('#multiLangId').val() +
-                    "</td><td>" + $('#productName').val() +
-                    "</td><td>" + $("#seoTitle").val() +
-                    "</td><td>" + $("#seoDescription").val() +
-                    "</td><td>" + $("#description").val() +
-                    "</td><td>" + $("#urlFriend").val() +
-                    "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' cnt='" + obj.Tag + "' onclick='deleteFromTable(this);'>" +
-                    "<i class='fa fa-trash' ></i></button></td></tr>";
+                    if ($("#multiLingualList tr").length == 1 && $("#multiLingualList tr")[0].children.length == 1) {
+                        $("#multiLingualList tr")[0].remove();
+                    }
 
-                if ($("#multiLingualList tr").length == 1 && $("#multiLingualList tr")[0].children.length == 1) {
-                    $("#multiLingualList tr")[0].remove();
+                    $("#multiLingualList").append(tr);
+                    cnt = cnt + 1;
+                    $("#multiLangId").val("@ViewBag.LangId");
+                    $("#multiLangId").selectpicker("refresh");
+                    $("#productName").val("");
+                    $("#seoTitle").val("");
+                    $("#seoDescription").val("");
+                    $("#description").val("");
+                    CKEDITOR.instances.editorCk.setData("");
+                    $("#urlFriend").val("");
+                    }else
+                    {
+                        $("span[data-val-result='urlFriend']").html('@Language.GetString("AlertAndMessage_UrlFriendIsNotUnique")');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    return false;
                 }
-
-                $("#multiLingualList").append(tr);
-                cnt = cnt + 1;
-                $("#multiLangId").val("@ViewBag.LangId");
-                $("#multiLangId").selectpicker("refresh");
-                $("#productName").val("");
-                $("#seoTitle").val("");
-                $("#seoDescription").val("");
-                $("#description").val("");
-                CKEDITOR.instances.editorCk.setData("");
-               /* $("#urlFriend").val("");*/
-            }
+            });
+                
+           }
         }
      }
     $("#uploadModal").on("shown.bs.modal", function() {

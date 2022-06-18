@@ -23,6 +23,6 @@ namespace Arad.Portal.DataLayer.Contracts.General.Content
         List<SelectListModel> GetAllSourceType();
         List<SelectListModel> GetAllImageRatio();
         ContentDTO FetchBySlug(string slug, string domainName);
-        ContentDTO FetchByCode(long contentCode);
+        ContentDTO FetchByCode(string slugOrCode);
     }
 }

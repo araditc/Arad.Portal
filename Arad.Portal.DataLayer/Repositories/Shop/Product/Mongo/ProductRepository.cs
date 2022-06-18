@@ -869,36 +869,61 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public ProductOutputDTO FetchBySlug(string slug, string domainName)
-        {
-            var result = new ProductOutputDTO();
-            var urlFriend = $"{domainName}/product/{slug}";
-            var productEntity = _context.ProductCollection
-                .Find(_ => _.MultiLingualProperties.Any(a => a.UrlFriend == urlFriend)).FirstOrDefault();
-            if(productEntity != null)
-            result = _mapper.Map<ProductOutputDTO>(productEntity);
-            result.MultiLingualProperties = productEntity.MultiLingualProperties;
+        //public ProductOutputDTO FetchBySlug(string slug, string domainName)
+        //{
+        //    var result = new ProductOutputDTO();
+        //    var urlFriend = $"{domainName}/product/{slug}";
+        //    var productEntity = _context.ProductCollection
+        //        .Find(_ => _.MultiLingualProperties.Any(a => a.UrlFriend == urlFriend)).FirstOrDefault();
+        //    if(productEntity != null)
+        //    result = _mapper.Map<ProductOutputDTO>(productEntity);
+        //    result.MultiLingualProperties = productEntity.MultiLingualProperties;
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        public ProductOutputDTO FetchByCode(long productCode, DomainDTO dto, string userId)
+        public ProductOutputDTO FetchByCode(string slugOrCode, DomainDTO dto, string userId)
         {
             var result = new ProductOutputDTO();
             var productEntity = new Entities.Shop.Product.Product();
-            if(!string.IsNullOrWhiteSpace(dto.DomainId))
+          
+            long codeNumber;
+            if (long.TryParse(slugOrCode, out codeNumber))
             {
-                if(dto.IsDefault)
-                {
-                    productEntity = _context.ProductCollection
-                       .Find(_ => (_.AssociatedDomainId == dto.DomainId && _.ProductCode == productCode)
-                    || (_.ProductCode == productCode && _.IsPublishedOnMainDomain)).FirstOrDefault();
-                }
-                else
-                {
-                    productEntity = _context.ProductCollection
-                      .Find(_ => _.AssociatedDomainId == dto.DomainId && _.ProductCode == productCode).FirstOrDefault();
 
+                if (!string.IsNullOrWhiteSpace(dto.DomainId))
+                {
+                    if (dto.IsDefault)
+                    {
+                        productEntity = _context.ProductCollection
+                           .Find(_ => (_.AssociatedDomainId == dto.DomainId && _.ProductCode == codeNumber)
+                        || (_.ProductCode == codeNumber && _.IsPublishedOnMainDomain)).FirstOrDefault();
+                    }
+                    else
+                    {
+                        productEntity = _context.ProductCollection
+                          .Find(_ => _.AssociatedDomainId == dto.DomainId && _.ProductCode == codeNumber).FirstOrDefault();
+
+                    }
+                }
+            }
+            else
+            {
+
+                if (!string.IsNullOrWhiteSpace(dto.DomainId))
+                {
+                    if (dto.IsDefault)
+                    {
+                        productEntity = _context.ProductCollection
+                           .Find(_ => (_.AssociatedDomainId == dto.DomainId && _.MultiLingualProperties.Any(a=> a.UrlFriend == $"/product/{slugOrCode}"))
+                        || (_.MultiLingualProperties.Any(a => a.UrlFriend == $"/product/{slugOrCode}") && _.IsPublishedOnMainDomain)).FirstOrDefault();
+                    }
+                    else
+                    {
+                        productEntity = _context.ProductCollection
+                          .Find(_ => _.AssociatedDomainId == dto.DomainId && _.MultiLingualProperties.Any(a => a.UrlFriend == $"/product/{slugOrCode}")).FirstOrDefault();
+
+                    }
                 }
             }
              
@@ -1417,6 +1442,22 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 return !_context.ProductCollection.Find(filter).Any();
             }
 
+        }
+
+        public  bool IsUniqueUrlFriend(string urlFriend, string productId = "")
+        {
+            if (string.IsNullOrWhiteSpace(productId)) //insert
+            {
+                return ! _context.ProductCollection.Find(_ => _.MultiLingualProperties.Any(a => a.UrlFriend == urlFriend)).Any();
+            }
+            else
+            { //update
+                FilterDefinitionBuilder<Entities.Shop.Product.Product> productBuilder = new();
+                FilterDefinitionBuilder<MultiLingualProperty> multiLingualBuilder = new();
+                FilterDefinition<MultiLingualProperty> multiLingualFilterDefinition = multiLingualBuilder.Eq("UrlFriend", urlFriend);
+                
+                return !_context.ProductCollection.Find(productBuilder.ElemMatch("MultiLingualProperties", multiLingualFilterDefinition)).Any();
+            }
         }
     }
 }

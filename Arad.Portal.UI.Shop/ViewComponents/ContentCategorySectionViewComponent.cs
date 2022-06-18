@@ -32,7 +32,8 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             var result = new CommonViewModel();
             var domainName = _domainRepository.GetDomainName();
 
-            result.Categories = _categoryRepository.GetDirectChildrens(categorySection.ContentCategoryId, categorySection.CountToTake, categorySection.CountToSkip);
+            result.Categories = _categoryRepository.GetDirectChildrens(categorySection.ContentCategoryId,
+                categorySection.CountToTake, categorySection.CountToSkip);
 
             
             ViewBag.CurLangId = categorySection.DefaultLanguageId;

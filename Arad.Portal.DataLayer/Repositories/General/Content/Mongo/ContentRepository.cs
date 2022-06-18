@@ -152,11 +152,22 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             return result;
         }
 
-        public ContentDTO FetchByCode(long contentCode)
+        public ContentDTO FetchByCode(string slugOrCode)
         {
             var result = new ContentDTO();
-            var contentEntity = _contentContext.Collection
-                .Find(_ => _.ContentCode == contentCode).FirstOrDefault();
+            var contentEntity = new Entities.General.Content.Content();
+            long codeNumber;
+            if (long.TryParse(slugOrCode, out codeNumber))
+            {
+                contentEntity = _contentContext.Collection
+                   .Find(_ => _.ContentCode == codeNumber).FirstOrDefault();
+            }
+            else
+            {
+                contentEntity = _contentContext.Collection
+                     .Find(_=>_.UrlFriend == $"/blog/{slugOrCode}").FirstOrDefault();
+            }
+
             if(contentEntity != null)
             {
                 result = _mapper.Map<ContentDTO>(contentEntity);

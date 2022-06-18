@@ -785,6 +785,9 @@
 		<value>شماره وارد شده مربوط به تلفن ثابت می باشد.</value>
 	</string>
 	<!--=================================================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_UrlFriendIsNotUnique">
+		<value> urlFriend تکراری است.</value>
+	</string>
 	<string key="AlertAndMessage_FirstChooseLanguage">
 		<value>لطفا در ابتدا زبان صفحه طراحی را مشخص کنید.</value>
 	</string>

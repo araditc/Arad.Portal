@@ -44,6 +44,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         Task<Result> DeleteProduct(string productId, string modificationReason);
 
         bool IsCodeUnique(string code, string productId ="");
+
+        bool IsUniqueUrlFriend(string urlFriend, string productId = "");
         Task<Result<EntityRate>> RateProduct(string productId, int score, bool isNew, int prevScore);
         List<Image> GetPictures(string productId);
 
@@ -67,9 +69,9 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         /// <param name="count"></param>
         /// <returns></returns>
         Task<Result> UpdateProductInventory(string productId, bool isIncreament, int count);
-        ProductOutputDTO FetchBySlug(string slug, string domainName);
+        //ProductOutputDTO FetchBySlug(string slug, string domainName);
 
-        ProductOutputDTO FetchByCode(long productCode, DomainDTO dto, string userId);
+        ProductOutputDTO FetchByCode(string slugOrCode, DomainDTO dto, string userId);
 
         List<ProductOutputDTO> GetSpecialProducts(int count, string currencyId, ProductOrContentType type);
 

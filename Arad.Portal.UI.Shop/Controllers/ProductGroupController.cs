@@ -34,36 +34,44 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
         [Route("{language}/group/{**slug}")]
-        public async Task<IActionResult> Details(long slug)
+        public async Task<IActionResult> Details(string slug)
         {
            
             CommonViewModel model = new CommonViewModel();
             var path = _accessor.HttpContext.Request.Path.ToString();
-            var langCode = path.Split("/")[1].ToLower();
+            var lanIcon = path.Split("/")[1].ToLower();
 
-            var langId = _languageRepository.FetchBySymbol(langCode);
+            var langId = _languageRepository.FetchBySymbol(lanIcon);
             ViewData["CurLangId"] = langId;
             var id = _groupRepository.FetchByCode(slug);
-            var grpSection = new GroupSection()
+            if(!string.IsNullOrWhiteSpace(id))
             {
-                ProductGroupId = id,
-                CountToSkip = 0,
-                CountToTake = 4,
-                DefaultLanguageId = langId
-            };
-            grpSection.GroupsWithProducts = await _groupRepository.AllGroupIdsWhichEndInProducts(_domainName);
-            model.GroupSection = grpSection;
+                var grpSection = new GroupSection()
+                {
+                    ProductGroupId = id,
+                    CountToSkip = 0,
+                    CountToTake = 4,
+                    DefaultLanguageId = langId
+                };
+                grpSection.GroupsWithProducts = await _groupRepository.AllGroupIdsWhichEndInProducts(_domainName);
+                model.GroupSection = grpSection;
 
-            var proSection = new ProductsInGroupSection()
+                var proSection = new ProductsInGroupSection()
+                {
+                    ProductGroupId = id,
+                    CountToSkip = 0,
+                    CountToTake = 4,
+                    DefaultLanguageId = langId
+                };
+                model.ProductInGroupSection = proSection;
+                //var model = _groupRepository.FetchByCode(slug);
+                return View(model);
+            }
+            else
             {
-                ProductGroupId = id,
-                CountToSkip = 0,
-                CountToTake = 4,
-                DefaultLanguageId = langId
-            };
-            model.ProductInGroupSection = proSection;
-            //var model = _groupRepository.FetchByCode(slug);
-            return View(model);
+                return Redirect($"~/{lanIcon}/ExceptionHandler/PageNotFound");
+            }
+            
         }
 
         [HttpPost]
