@@ -58,6 +58,11 @@
                         <input type="text" class="form-control" id="categoryName" placeholder=" ">
                         <span data-val-result="categoryName" class="text-danger"></span>
                     </div>
+                     <div class="form-group col-md-3">
+                        <label class="form-label" for="urlFriend">@Language.GetString("UrlFriend")</label><br />
+                        <input type="text" class="form-control" id="urlFriend" placeholder=" ">
+                        <span data-val-result="urlFriend" class="text-danger"></span>
+                    </div>
 
                     <div class="form-group col-md-1" style="text-align:center;margin:auto;">
                         <span data-val-result="MultiLingualProperties" class="text-danger"></span>
@@ -79,6 +84,7 @@
                                     <th>@Language.GetString("tbl_CategoryName")</th>
                                     <th>@Language.GetString("LanguageName")</th>
                                     <th style="display:none"></th>
+                                    <th>@Language.GetString("UrlFriend")</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -89,6 +95,7 @@
                                         <td>@item.Name</td>
                                         <td>@item.LanguageName</td>
                                         <td style="display:none;">@item.LanguageId</td>
+                                        <td>@item.UrlFriend</td>
                                         <td>
                                             <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromTable(this);">
                                                 <i class="fa fa-trash" ></i>
@@ -128,7 +135,7 @@
             }
 
             $("#btnAddContentCategory").click(function () {
-            debugger;
+                debugger;
                 var flag = false;
 
                 if ($("#multiLingualList tr").length == 0) {
@@ -150,14 +157,7 @@
                     success: function (result) {
                         debugger;
                         if (result.status === "Success") {
-                            @*Swal.fire({
-                                icon: 'success',
-                                text: result.message,
-                                showConfirmButton: false,
-                                timer: 3000
-                            }).then(() => {
-                                window.location.href = '@Url.Action("List")';
-                            });*@
+                           
                             document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
                             document.getElementById('mainToastBody').classList.add('alert-success');
                             var bsAlert = new bootstrap.Toast($("#mainToast"));
@@ -209,10 +209,7 @@
             if ($("#ParentCategoryId").val() != "-1") {
                 obj.ParentCategoryId = $("#ParentCategoryId").val();
             }
-
-            //if ($("#ModificationReason").length > 0) {
-            //    obj.ModificationReason = $("#ModificationReason").val();
-            //}
+            
             obj.CategoryTypeId = parseInt($("#categoryTypeId").val());
             obj.CategoryCode = Number($("#CategoryCode").val());
             $("#multiLingualList tr").each(function () {
@@ -221,6 +218,7 @@
                 innerModel.Name = $(this).find("td:eq(0)").text();
                 innerModel.LanguageName = $(this).find("td:eq(1)").text();
                 innerModel.LanguageId = $(this).find("td:eq(2)").text();
+                innerModel.urlFriend = $(this).find("td:eq(3)").text();
 
                 obj.CategoryNames.push(innerModel);
         });
@@ -245,16 +243,42 @@
                     $("span[data-val-result='languageId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
                     flag = true;
                 }
+                
                 if (!flag) {
-                    var tr = "<tr style='text-align:center;'><td>" + $("#categoryName").val() +
-                        "</td><td>" + $('#languageId option:selected').text() +
-                        "</td><td style='display:none;'>" + $("#languageId").val() +
-                        "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromTable(this);'>" +
-                        "<i class='fa fa-trash' ></i></button></td></tr>";
+                    $.ajax({
+                            url: "/ContentCategory/CheckUrlFriendUniqueness?id="+ '@Model.ContentCategoryId' +"&url=" + $("#urlFriend").val(),
+                            type: 'Get',
+                            dataType: 'json',
+                            success: function (result) {
 
-                    $("#multiLingualList").append(tr);
-                    $("#categoryName").val("");
-                    $("#languageId").val("@ViewBag.LangId");
+                                if(result.status =="Success")
+                                {
+                                   var urlFriend ="";
+                                    if($("#urlFriend").val() != "")
+                                    {
+                                        urlFriend = "/category/"+ $("#urlFriend").val();
+                                    }
+                                   var tr = "<tr style='text-align:center;'><td>" + $("#categoryName").val() +
+                                        "</td><td>" + $('#languageId option:selected').text() +
+                                        "</td><td style='display:none;'>" + $("#languageId").val() +
+                                        "</td><td>"+ urlFriend +"</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromTable(this);'>" +
+                                        "<i class='fa fa-trash' ></i></button></td></tr>";
+
+                                        $("#multiLingualList").append(tr);
+                                        $("#categoryName").val("");
+                                        $("#urlFriend").val("");
+                                        $("#languageId").val("@ViewBag.LangId");
+                                 }else
+                                 {
+                                     $("span[data-val-result='urlFriend']").html('@Language.GetString("AlertAndMessage_UrlFriendIsNotUnique")');
+                                 }
+
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                return false;
+                            }
+                        });
+                    
                 }
             }
         }

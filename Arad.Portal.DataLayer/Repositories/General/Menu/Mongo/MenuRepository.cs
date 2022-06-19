@@ -72,7 +72,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 
                 var domainId = _httpContextAccessor.HttpContext.User.FindFirst("RelatedDomain")?.Value;
                 
-                equallentModel.AssociatedDomainId = domainId;
+                //equallentModel.AssociatedDomainId = domainId;
                 await _context.Collection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;
                 result.Message = ConstMessages.SuccessfullyDone;
@@ -507,7 +507,19 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
             return result;
         }
+        public List<SelectListModel> MenuesOfSelectedDomain(string domainId, string langId)
+        {
+            var result = new List<SelectListModel>();
+            result = _context.Collection.Find(_ => _.IsActive && _.AssociatedDomainId == domainId)
+            .Project(_ => new SelectListModel()
+            {
+                Value = _.MenuId,
+                Text = _.MenuTitles.Any(a => a.LanguageId == langId) ? _.MenuTitles.FirstOrDefault(a => a.LanguageId == langId).Name : ""
+            }).ToList();
 
+            result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
+            return result;
+        }
         public StoreMenuVM GetByCode(long menuCode)
         {
             var result = new StoreMenuVM();
@@ -529,5 +541,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
            
             return result;
         }
+
+        
     }
 }

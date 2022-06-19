@@ -57,6 +57,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _codeGenerator = codeGenerator;
         }
 
+        [HttpGet]
+        public IActionResult CheckUrlFriendUniqueness(string id, string url)
+        {
+            var urlFriend = $"/blog/{url}";
+            var res = _contentRepository.IsUniqueUrlFriend(urlFriend, id);
+
+            return Json(res ? new { Status = "Success", Message = "url is unique" }
+            : new { Status = "Error", Message = "url isnt unique" });
+        }
+
         public async Task<IActionResult> List()
         {
             PagedItems<ContentViewModel> result = new PagedItems<ContentViewModel>();

@@ -20,7 +20,7 @@ namespace Arad.Portal.DataLayer.Entities.General.Menu
         public string MenuId { get; set; }
 
         /// <summary>
-        /// LanguageId and Name will be filled here
+        /// LanguageId and Name will be filled here and UrlFriend
         /// </summary>
         public List<MultiLingualProperty> MenuTitles { get; set; }
 

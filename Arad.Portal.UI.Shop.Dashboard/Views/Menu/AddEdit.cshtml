@@ -28,6 +28,36 @@
 
                 <div class="card-body">
                     <input type="hidden" value="@Model.MenuId" asp-for="MenuId" />
+                      <div class="row">
+                        @if(ViewBag.IsSys)
+                        {
+                            <div class="form-group col-md-3">
+                                <label class="form-label" >@Language.GetString("AssociatedDomain")</label>
+                                <select class="form-control selectpicker"  id="AssociatedDomainId"
+                                    asp-items="@(new SelectList(ViewBag.DomainList,"Value","Text"))" data-live-search="true">
+                                    </select>
+                                <span data-val-result="AssociatedDomainId" class="text-danger"></span>
+                            </div>
+                        }
+                        <div class="form-group col-md-3">
+                            <label class="form-label">@Language.GetString("Order")</label>
+                            <input type="number" class="form-control" asp-for="@Model.Order" />
+                            <span data-val-result="Order" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <input type="hidden" value="@(string.IsNullOrWhiteSpace(Model.Icon) ? "fas fa-bomb" : Model.Icon)" asp-for="Icon" id="iconPick" />
+
+                            <label class="form-label">@Language.GetString("Menu_Icon")</label><br/>
+                            <button id="iconPicktarget" class="btn btn-primary bg-gradient"></button>
+                        </div>
+                        
+                        <div class="form-group col-md-3 invisible" id="urlSection">
+                            <label class="form-label">@Language.GetString("Url")</label>
+                            <input type="text" class="form-control ltr" asp-for="@Model.Url" />
+                            <span data-val-result="Url" class="text-danger"></span>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="form-group col-md-3">
                             <label class="form-label" asp-for="@Model.ParentId">@Language.GetString("ParentMenu")</label>
@@ -54,38 +84,10 @@
                             <span data-val-result="ContentOrProductId" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="row">
-                        @if(ViewBag.IsSys)
-                        {
-                            <div class="form-group col-md-3">
-                                <label class="form-label" >@Language.GetString("AssociatedDomain")</label>
-                                <select class="form-control selectpicker"  asp-for="@Model.AssociatedDomainId"
-                                    asp-items="@(new SelectList(ViewBag.DomainList,"Value","Text"))" data-live-search="true">
-                                    </select>
-                                <span data-val-result="AssociatedDomainId" class="text-danger"></span>
-                            </div>
-                        }
-
-                        <div class="form-group col-md-3">
-                            <input type="hidden" value="@(string.IsNullOrWhiteSpace(Model.Icon) ? "fas fa-bomb" : Model.Icon)" asp-for="Icon" id="iconPick" />
-
-                            <label class="form-label">@Language.GetString("Menu_Icon")</label><br/>
-                            <button id="iconPicktarget" class="btn btn-primary bg-gradient"></button>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label class="form-label">@Language.GetString("Order")</label>
-                            <input type="number" class="form-control" asp-for="@Model.Order" />
-                            <span data-val-result="Order" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col-md-3 invisible" id="urlSection">
-                            <label class="form-label">@Language.GetString("Url")</label>
-                            <input type="text" class="form-control ltr" asp-for="@Model.Url" />
-                            <span data-val-result="Url" class="text-danger"></span>
-                        </div>
-                    </div>
+                  
 
 
-                    <div class="row" >
+                    <div class="row border-top mt-3" >
                         <div class="form-group col-md-3">
                             <label class="form-label" for="languageId">@Language.GetString("LanguageName")</label><br />
                             <select class="form-control selectpicker" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))" data-live-search="true">
@@ -162,6 +164,7 @@
 
             if ("@Model.MenuId" != "") {
                 LoadData();
+            
             } else if("@Model.MenuId" == ""){
                 $("#MenuType").val("-1");
             }
@@ -184,6 +187,39 @@
                 searchText: '@(Language.GetString("Search"))',
                 selectedClass: 'btn-warning',
                 unselectedClass: ''
+            });
+
+            $("#AssociatedDomainId").change(function(){
+                debugger;
+                if($(this).val() != "-1")
+                {
+                    $.ajax({
+                         url: "/Menu/GetRelatedMenues/?domainId=" + $(this).val(),
+                            type: 'Get',
+                            dataType : 'json',
+                            success: function (result) {
+                                if (result.status === "success") {
+                                    debugger;
+                                    if (result.data.length != 0)
+                                    {
+                                        var options = "";
+                                        (result.data).forEach(function (item) {
+                                            var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                            options += op;
+                                        });
+                                        debugger;
+                                        $("#ParentId").html(options);
+                                        $("#ParentId").selectpicker("refresh");
+                                    }
+                                }
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                alert("@error");
+                                alert(xhr.status);
+                                alert(thrownError);
+                             }
+                      });
+                }
             });
 
             $('#iconPicktarget').on('change',
@@ -213,6 +249,7 @@
             });
             $("#btnAddMenu").click(function () {
             debugger;
+            clearFormValidation();
                 var flag = false;
                 if ($("#multiLingualList tr").length == 0) {
                     $("span[data-val-result='MultiLingualProperties']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
@@ -269,18 +306,9 @@
                                 3000);
                             }else
                             if (result.status === "ModelError") {
-                                var spanErrorList = $('span[data-val-result]');
-                                if (spanErrorList.length > 1) {
-                                    spanErrorList.each(function() {
-                                        $(this).html("");
-                                        $(this).parent().removeClass("has-error");
-                                    });
-                                } else {
-                                    spanErrorList.html("");
-                                    spanErrorList.parent().removeClass("has-error");
-                                }
+                                 clearFormValidation();
                                 if (result.modelStateErrors != null && result.modelStateErrors.length > 0) {
-                            debugger;
+                                   debugger;
                                     result.modelStateErrors.forEach(function(value, index) {
                                     $('[data-val-result=' + value.key + ']').append(value.errorMessage);
                                     $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
@@ -341,6 +369,13 @@
         }
         function LoadData() {
             debugger;
+            if($("#AssociatedDomainId") != undefined)
+            {
+                $("#AssociatedDomainId").val('@Model.AssociatedDomainId');
+                $("#AssociatedDomainId").selectpicker("refresh");
+            }
+
+
             if ("@Model.ParentId" != "") {
                 $("#ParentId").val('@Model.ParentId');
             }
@@ -354,9 +389,11 @@
                 }
                 else if ($("#MenuType").val() == "3") {
                     fillContentList('@Model.SubGroupId', '@Model.SubId');
-                } else if ($("#MenuType").val() == "4") {
-                    $("#Url").val("@Model.Url");
-                }
+                } 
+            }else if($("#MenuType").val() == "4")
+            {
+                 $("#Url").val("@Model.Url");
+                 $("#urlSection").removeClass("invisible");
             }
             $("#Order").val("@Model.Order");
             $("#iconPicker").iconpicker("setIcon", "@Model.Icon");

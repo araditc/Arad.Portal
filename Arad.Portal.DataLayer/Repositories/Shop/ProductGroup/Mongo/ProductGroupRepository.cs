@@ -259,7 +259,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                 FilterDefinitionBuilder<MultiLingualProperty> multiLingualBuilder = new();
                 FilterDefinition<MultiLingualProperty> multiLingualFilterDefinition = multiLingualBuilder.Eq("UrlFriend", urlFriend);
 
-                return !_productContext.ProductGroupCollection.Find(groupBuilder.ElemMatch("MultiLingualProperties", multiLingualFilterDefinition)).Any();
+                return !_productContext.ProductGroupCollection.Find(groupBuilder.ElemMatch("MultiLingualProperties", multiLingualFilterDefinition) & groupBuilder.Ne("ProductGroupId", groupId)).Any();
             }
         }
 

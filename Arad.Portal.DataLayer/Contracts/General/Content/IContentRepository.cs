@@ -24,5 +24,6 @@ namespace Arad.Portal.DataLayer.Contracts.General.Content
         List<SelectListModel> GetAllImageRatio();
         ContentDTO FetchBySlug(string slug, string domainName);
         ContentDTO FetchByCode(string slugOrCode);
+        bool IsUniqueUrlFriend(string urlFriend, string contentId = "");
     }
 }

@@ -441,5 +441,21 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             }
             return result;
         }
+
+        public bool IsUniqueUrlFriend(string urlFriend, string contentCategoryId = "")
+        {
+            if (string.IsNullOrWhiteSpace(contentCategoryId)) //insert
+            {
+                return !_categoryContext.Collection.Find(_ => _.CategoryNames.Any(a => a.UrlFriend == urlFriend)).Any();
+            }
+            else
+            { //update
+                FilterDefinitionBuilder<Entities.General.ContentCategory.ContentCategory> categoryBuilder = new();
+                FilterDefinitionBuilder<MultiLingualProperty> multiLingualBuilder = new();
+                FilterDefinition<MultiLingualProperty> multiLingualFilterDefinition = multiLingualBuilder.Eq("UrlFriend", urlFriend) ;
+
+                return !_categoryContext.Collection.Find(categoryBuilder.ElemMatch("CategoryNames", multiLingualFilterDefinition) & categoryBuilder.Ne("ContentCategoryId", contentCategoryId)).Any();
+            }
+        }
     }
 }

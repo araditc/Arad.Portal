@@ -189,7 +189,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var urlFriend = $"/product/{url}";
             var res = _productRepository.IsUniqueUrlFriend(urlFriend, id);
 
-            return Json(res ? new { Status = "Success", Message = "url Is unique" }
+            return Json(res ? new { Status = "Success", Message = "url is unique" }
             : new { Status = "Error", Message = "url isnt unique" });
         }
 

@@ -49,6 +49,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return View(result);
         }
 
+
+        [HttpGet]
+        public IActionResult CheckUrlFriendUniqueness(string id, string url)
+        {
+            var urlFriend = $"/category/{url}";
+            var res = _contentCategoryRepository.IsUniqueUrlFriend(urlFriend, id);
+
+            return Json(res ? new { Status = "Success", Message = "url is unique" }
+            : new { Status = "Error", Message = "url isnt unique" });
+        }
         public async Task<IActionResult> AddEdit(string id = "")
         {
             var model = new ContentCategoryDTO();

@@ -369,6 +369,20 @@
         var toast = new bootstrap.Toast($("#mainToast"));
         toast.show();
     }
+
+    function clearFormValidation()
+    {
+        var spanErrorList = $('span[data-val-result]');
+        if (spanErrorList.length > 1) {
+            spanErrorList.each(function() {
+                $(this).html("");
+                $(this).parent().removeClass("has-error");
+            });
+        } else {
+            spanErrorList.html("");
+            spanErrorList.parent().removeClass("has-error");
+        }
+    }
     </script>
 
 </body>

@@ -120,6 +120,24 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             
             return View(model);
         }
+
+        [HttpGet]
+        public IActionResult GetRelatedMenues(string domainId)
+        {
+            JsonResult result;
+            List<SelectListModel> lst;
+            var domainObj = _domainRepository.FetchDomain(domainId).ReturnValue;
+            lst = _menuRepository.MenuesOfSelectedDomain(domainId, domainObj.DefaultLanguageId);
+            if(lst.Count() > 0)
+            {
+                result = new JsonResult(new { Status = "success", Data = lst });
+            }
+            else
+            {
+                result = new JsonResult(new { Status = "error", Message = "" });
+            }
+            return result;
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -189,16 +207,20 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                 var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var userEntity = await _userManager.FindByIdAsync(currentUserId);
+               
+                dto.AssociatedDomainId = userEntity.IsSystemAccount ? dto.AssociatedDomainId  : domainId;
+                dto.MenuType = (MenuType)Convert.ToInt32(dto.MenuTypeId);
+                dto.MenuCode = await GetMenuCodeFromMenu(dto.MenuType, dto.SubId, dto.SubGroupId);
+
                 foreach (var item in dto.MenuTitles)
                 {
                     var lan = _lanRepository.FetchLanguage(item.LanguageId);
                     item.MultiLingualPropertyId = Guid.NewGuid().ToString();
                     item.LanguageName = lan.LanguageName;
                     item.LanguageSymbol = lan.Symbol;
+                    item.UrlFriend = await GetUrlFriend(dto.MenuType, dto.SubId, dto.SubGroupId, item.LanguageId);
                 }
-                dto.AssociatedDomainId = userEntity.IsSystemAccount ? dto.AssociatedDomainId  : domainId;
-                dto.MenuType = (MenuType)Convert.ToInt32(dto.MenuTypeId);
-                dto.MenuCode = await GetMenuCodeFromMenu(dto.MenuType, dto.SubId, dto.SubGroupId);
+
                 switch (dto.MenuType)
                 {
                     case MenuType.ProductGroup:
@@ -214,6 +236,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         dto.Url = $"/blog/{dto.MenuCode}";
                         break;
                 }
+
                 Result saveResult = await _menuRepository.AddMenu(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
@@ -246,16 +269,18 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     return RedirectToAction("PageOrItemNotFound", "Account");
                 }
             }
-
+            dto.MenuType = (MenuType)Convert.ToInt32(dto.MenuTypeId);
+            dto.MenuCode = await GetMenuCodeFromMenu(dto.MenuType, dto.SubId, dto.SubGroupId);
             foreach (var item in dto.MenuTitles)
             {
                 var lan = _lanRepository.FetchLanguage(item.LanguageId);
                 item.MultiLingualPropertyId = Guid.NewGuid().ToString();
                 item.LanguageName = lan.LanguageName;
                 item.LanguageSymbol = lan.Symbol;
+                item.UrlFriend = await GetUrlFriend(dto.MenuType, dto.SubId, dto.SubGroupId, item.LanguageId);
             }
-            dto.MenuType = (MenuType)Convert.ToInt32(dto.MenuTypeId);
-            dto.MenuCode = await GetMenuCodeFromMenu(dto.MenuType, dto.SubId, dto.SubGroupId);
+            
+            
             switch (dto.MenuType)
             {
                 case MenuType.ProductGroup:
@@ -283,7 +308,36 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             : new { Status = "Error", saveResult.Message });
             return result;
         }
-
+        private async Task<string> GetUrlFriend(MenuType type, string subId, string subGroupId, string lanId)
+        {
+            var res = "";
+            switch (type)
+            {
+                case MenuType.ProductGroup:
+                    var grp = _productGroupRepository.ProductGroupFetch(subGroupId);
+                    res = grp.MultiLingualProperties.Any(_=>_.LanguageId == lanId) ? grp.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).UrlFriend : "" ;
+                    break;
+                case MenuType.Product:
+                    var pro = await _productRepository.ProductFetch(subId);
+                    res = pro.MultiLingualProperties.Any(_=>_.LanguageId == lanId) ? pro.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == lanId).UrlFriend : "";
+                    break;
+                case MenuType.CategoryContent:
+                    var category = await _contentCategoryRepository.ContentCategoryFetch(subGroupId);
+                    res = category.CategoryNames.Any(_=>_.LanguageId == lanId) ? category.CategoryNames.FirstOrDefault(_ => _.LanguageId == lanId).UrlFriend : "";
+                    break;
+                case MenuType.Content:
+                    var content = await _contentRepository.ContentFetch(subId);
+                    res = content.LanguageId == lanId ? content.UrlFriend : "";
+                    break;
+                    //case MenuType.DirectLink:
+                    //    break;
+                    //case MenuType.Module:
+                    //    break;
+                    //default:
+                    //    break;
+            }
+            return res;
+        }
         private async Task<long> GetMenuCodeFromMenu(MenuType type, string subId,string subGroupId)
         {
             long res = 0;

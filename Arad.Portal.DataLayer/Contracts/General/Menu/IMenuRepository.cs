@@ -20,6 +20,8 @@ namespace Arad.Portal.DataLayer.Contracts.General.Menu
         /// <returns></returns>
         List<StoreMenuVM> StoreList(string domainId, string langId);
         Task<List<SelectListModel>> AllActiveMenues(string domainId, string langId);
+
+        List<SelectListModel> MenuesOfSelectedDomain(string domainId, string langId);
         Task<PagedItems<MenuDTO>> AdminList(string queryString);
          Task<Result> DeleteMenu(string menuId);
          Result<MenuDTO> FetchMenu(string menuId);

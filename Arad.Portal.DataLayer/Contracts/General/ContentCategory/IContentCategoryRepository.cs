@@ -39,5 +39,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.ContentCategory
 
         Task<List<string>> AllCategoryIdsWhichEndInContents(string domainName);
 
+        bool IsUniqueUrlFriend(string urlFriend, string contentCategoryId = "");
+
     }
 }

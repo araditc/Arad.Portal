@@ -564,5 +564,24 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             }
             return lst;
         }
+
+        public bool IsUniqueUrlFriend(string urlFriend, string contentId = "")
+        {
+            if (string.IsNullOrWhiteSpace(contentId)) //insert
+            {
+                return !_contentContext.Collection.Find(_ => _.UrlFriend == urlFriend).Any();
+            }
+            else
+            { //update
+                FilterDefinitionBuilder<Entities.General.Content.Content> contentBuilder = new();
+                FilterDefinition<Entities.General.Content.Content> filterDef = null;
+
+                filterDef = contentBuilder.Ne("ContentId", contentId);
+                filterDef = contentBuilder.And(filterDef, contentBuilder.Eq(nameof(Entities.General.Content.Content.UrlFriend), urlFriend));
+
+
+                return !_contentContext.Collection.Find(filterDef).Any();
+            }
+        }
     }
 }
