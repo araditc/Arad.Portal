@@ -43,13 +43,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
             string domainName;
             
             //string domainName = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
-            //if (domainName.ToString().ToLower().StartsWith("localhost"))
-            //{
-            //    //prevent port of localhost
-            //    domainName = HttpContext.Request.Host.ToString().Substring(0, 9);
-            //}
-            
-
             try
             {
                 var cookieVal = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
@@ -62,6 +55,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
                 {
                     var domainEntity = result.ReturnValue;
                     menues = _menuRepository.StoreList(domainEntity.DomainId, langId);
+                   //menues = _menuRepository.StoreList("1e336912-00e4-4a0a-bee6-20ce8ae49855", "0f0815fb-5fca-470c-bbfd-4d8c162de05a");
                 }
             }
             catch (Exception e)

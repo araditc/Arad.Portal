@@ -29,7 +29,6 @@
                         </ul>
                     </div>
                 }
-
             }
 
         </div>
@@ -85,15 +84,16 @@
                                             <a asp-controller="Account" asp-action="Profile">@Language.GetString("Menu_Profile")</a>
 
                                         </li>
+                                        @{
+                                           @if (process.LayoutModel.IsShop)
+                                            {
+                                                <li> 
+                                                     <a asp-controller="Payment" asp-action="ListPayments">@Language.GetString("Menu_MyOrders")</a>
+                                                </li>
+                                            }
+                                        }
                                         <li>
-
-                                            <a asp-controller="Payment" asp-action="ListPayments">@Language.GetString("Menu_MyOrders")</a>
-
-                                        </li>
-                                        <li>
-
                                             <a asp-controller="Account" asp-action="Logout">@Language.GetString("Exit")</a>
-
                                         </li>
                                     </ul>
                                 </div>

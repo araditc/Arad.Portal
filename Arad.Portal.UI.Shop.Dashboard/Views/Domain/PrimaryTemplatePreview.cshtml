@@ -27,7 +27,7 @@
     //        break;
     //}
 
-    if(Model.LangSymbol == "fa")
+    if (Model.LangSymbol == "fa")
     {
         direction = "rtl";
     }
@@ -55,17 +55,17 @@
     <link rel="stylesheet" href="~/css/Menu/Bootstrap4MegaMenu.css" />
     <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
-     <link href="~/lib/owlCarousel/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/lib/owlCarousel/css/owl.carousel.min.css" rel="stylesheet" />
     <link href="~/lib/owlCarousel/css/owl.theme.default.min.css" rel="stylesheet" />
     <link href="~/lib/owlCarousel/css/CarouselCustomArrowKeys.css" rel="stylesheet" />
-     <link href="~/css/SpecialProduct.css" rel="stylesheet" />
-     <link href="~/css/siteTemplate/FirstContentTemplate.css" rel="stylesheet" />
+    <link href="~/css/SpecialProduct.css" rel="stylesheet" />
+    <link href="~/css/siteTemplate/FirstContentTemplate.css" rel="stylesheet" />
     <link href="~/css/siteTemplate/ThirdContentTemplate.css" rel="stylesheet" />
     <link href="~/css/siteTemplate/ForthContentTemplate.css" rel="stylesheet" />
     <link href="~/css/siteTemplate/FifthContentTemplate.css" rel="stylesheet" />
     <link href="~/css/header.css" rel="stylesheet" />
     <link href="~/css/StickyNavbar.css" rel="stylesheet" />
-    <link href = "~/lib/animate.css/animate.min.css" rel="stylesheet"/>
+    <link href="~/lib/animate.css/animate.min.css" rel="stylesheet" />
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
@@ -75,7 +75,7 @@
     <script src="~/lib/owlCarousel/js/owl.carousel.min.js"></script>
     <script src="~/js/TemplateCreation.js"></script>
     <script src="~/js/StickyNavbar.js"></script>
-    
+
 </head>
 <body>
     <div id="loading" class="text-center">
@@ -84,20 +84,110 @@
         </div>
     </div>
     <header>
-         <partial name="~/Views/Shared/_PriorFixedHeader.cshtml" />
+        <div class="top-nav">
+            <div class="row gx-0">
+                <div class="col-4 offset-1 offset-md-1 col-md-2 offset-lg-1 col-lg-1 ">
+                    @{
+                        @if (@Model.IsMultiLinguals)
+                        {
+                            <div class="ms-2">
+                                <ul class="langUl list-group list-group-horizontal">
+                                    <li class="list-group-item lan border-0 pt-2 px-1">
+                                        <a title="@Language.GetString("Persian")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                            <img src="~/imgs/IRAN.png" onclick="setLang('fa-IR')" />
+                                        </a>
+
+                                    </li>
+                                    <li class="list-group-item lan border-0 pt-2 px-1">
+                                        <a title="@Language.GetString("English")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                            <img src="~/imgs/USA.png" onclick="setLang('en-US')" />
+                                        </a>
+
+                                    </li>
+                                </ul>
+                            </div>
+                        }
+
+                    }
+
+                </div>
+                <div class="offset-2 col-4 offset-md-3 col-md-3 offset-lg-7 col-lg-2">
+                    <div class="account-wrapper pt-2">
+                        <ul>
+                            @{
+                                if (@Model.IsShop)
+                                {
+                                    <li class="shopping_cart home_cart">
+                                        <a href="#" title="" class="r-cart">
+
+                                            <span class="head-shoppings">
+                                                <i class="fa fa-shopping-basket shopping-basket"></i>
+                                                <span class="display-none count-basket" data-count="0">@($"{@ViewBag.BasketCount?? 0} {@Language.GetString("Stuff")}") </span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                }
+                            }
+
+                            <li class="login">
+                                @{
+
+                                    @if (!@User.Identity.IsAuthenticated)
+                                    {
+                                        <a href="#" class="openLoginModal">
+                                            <span class="title">
+                                                <i class="fa fa-user"></i>
+                                                <span class="display-none ">@Language.GetString("User_LoginRegister")</span>
+                                            </span>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <div class="dropdown" id="myUserProfile">
+                                            <a class="openLoginModal btn dropdown-toggle" role="button" id="drpUserProfile" placement="bottom right" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <span class="title">
+                                                    <i class="fa fa-user"></i>
+                                                    <span class="display-none">@User.Identity.Name</span>
+                                                </span>
+                                            </a>
+                                            <ul class="dropdown-menu" aria-labelledby="drpUserProfile">
+                                                <li>
+                                                    <a href="#">@Language.GetString("User_ManagementPanel")</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">@Language.GetString("Menu_Profile")</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">@Language.GetString("Menu_MyOrders")</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">@Language.GetString("Exit")</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    }
+                                }
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
         @if (!string.IsNullOrEmpty(Model.HeaderContent))
         {
             @Html.Raw(Model.HeaderContent);
-            
         }
         @*<div class="navbarMenu">
             @await Component.InvokeAsync("StoreMenuModule", new {domainId = Model.DomainId, languageId = Model.LanguageId});
-        </div>*@
-       
+            </div>*@
+
     </header>
     <div class="container">
-         <main role="main" class="pb-3">
-            @if(!string.IsNullOrEmpty(Model.ContainerContent))
+        <main role="main" class="pb-3">
+            @if (!string.IsNullOrEmpty(Model.ContainerContent))
             {
                 @Html.Raw(Model.ContainerContent)
             }
@@ -111,111 +201,111 @@
         }
     </footer>
     <script>
-      function doAnimations(elems) {
-        var animEndEv = "webkitAnimationEnd animationend";
+          function doAnimations(elems) {
+            var animEndEv = "webkitAnimationEnd animationend";
 
-        elems.each(function () {
-            var $this = $(this),
-                $animationType = $this.data("animation");
-            $this.addClass($animationType).one(animEndEv, function () {
-                $this.removeClass($animationType);
+            elems.each(function () {
+                var $this = $(this),
+                    $animationType = $this.data("animation");
+                $this.addClass($animationType).one(animEndEv, function () {
+                    $this.removeClass($animationType);
+                });
             });
-        });
-    }
+        }
 
-    function AfterCarouselLoad()
-    {
-        debugger;
-          var $myCarousel = $("#sliderCarousel");
-          $firstAnimatingElems = $myCarousel
-                  .find(".carousel-item:first")
-                 .find("[data-animation ^= 'animated']");
+        function AfterCarouselLoad()
+        {
+            debugger;
+              var $myCarousel = $("#sliderCarousel");
+              $firstAnimatingElems = $myCarousel
+                      .find(".carousel-item:first")
+                     .find("[data-animation ^= 'animated']");
 
-        var carousel = new bootstrap.Carousel($myCarousel);
-        doAnimations($firstAnimatingElems);
-           
-        var myCarousel = document.getElementById('sliderCarousel');
-        myCarousel.addEventListener("slide.bs.carousel", function (e) {
-            var $animatingElems = $(e.relatedTarget).find(
-                "[data-animation ^= 'animated']"
-            );
-            doAnimations($animatingElems);
-        });
-    }  
+            var carousel = new bootstrap.Carousel($myCarousel);
+            doAnimations($firstAnimatingElems);
 
-        $(document).ready(function(){
-            
-                $(".menu-area").mouseover(function () {
+            var myCarousel = document.getElementById('sliderCarousel');
+            myCarousel.addEventListener("slide.bs.carousel", function (e) {
+                var $animatingElems = $(e.relatedTarget).find(
+                    "[data-animation ^= 'animated']"
+                );
+                doAnimations($animatingElems);
+            });
+        }
+
+            $(document).ready(function(){
+
+                    $(".menu-area").mouseover(function () {
+                            var windowSize = $(window).width();
+                            if (windowSize > 975) {
+                                $(this).addClass("show");
+                                $(this).find(".dropdown-toggle").addClass("text-primary");
+                                $(this).find(".mega-area").addClass("show");
+                            }
+                    });
+
+                    $(".menu-area").mouseleave(function () {
                         var windowSize = $(window).width();
                         if (windowSize > 975) {
-                            $(this).addClass("show");
-                            $(this).find(".dropdown-toggle").addClass("text-primary");
-                            $(this).find(".mega-area").addClass("show");
+                            $(this).removeClass("show");
+                            $(this).find(".dropdown-toggle").removeClass("text-primary");
+                            $(this).find(".mega-area").removeClass("show");
                         }
-                });
+                    });
 
-                $(".menu-area").mouseleave(function () {
-                    var windowSize = $(window).width();
-                    if (windowSize > 975) {
-                        $(this).removeClass("show");
-                        $(this).find(".dropdown-toggle").removeClass("text-primary");
-                        $(this).find(".mega-area").removeClass("show");
-                    }
-                });
-
-                $(".nav-item .nav-link").mouseover(function () {
-                        $(this).addClass("text-primary");
-                });
-                $(".nav-item .nav-link").mouseleave(function () {
-                        $(this).removeClass("text-primary");
-                });
-            $('@Model.IsShop' == "True")
-            {
-                $("#btnIsShop").parent().removeClass("border").removeClass("border-1");
-                $("#btnIsShop").remove();
-            }else
-            {
-                $("#btnIsShop").parent().remove();
-            }
-
-            if('@Model.IsMultiLinguals' == "True")
-            {
-                $("#btnFlags").parent().removeClass("border").removeClass("border-1");
-                $("#btnFlags").remove();
-            }else
-            {
-                 $("#btnFlags").parent().remove();
-            }
-
-
-            $(".owl-carousel").owlCarousel({
-                loop: true,
-                rtl: true,
-                navigation : true,
-                /* autoplay: true,*/
-                margin: 10,
-                animateOut: 'fadeOut',
-                animateIn: 'fadeIn',
-                nav: true,
-                /*dots: true,*/
-                autoplayHoverPause: false,
-                items: 3,
-                navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>", "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
-                responsive: {
-                    0: {
-                        items: 1
-                    },
-                    600: {
-                        items: 3
-                    },
-                    1000: {
-                        items: 5
-                    }
+                    $(".nav-item .nav-link").mouseover(function () {
+                            $(this).addClass("text-primary");
+                    });
+                    $(".nav-item .nav-link").mouseleave(function () {
+                            $(this).removeClass("text-primary");
+                    });
+                $('@Model.IsShop' == "True")
+                {
+                    $("#btnIsShop").parent().removeClass("border").removeClass("border-1");
+                    $("#btnIsShop").remove();
+                }else
+                {
+                    $("#btnIsShop").parent().remove();
                 }
-            });
 
-           
-        });
-</script>
+                if('@Model.IsMultiLinguals' == "True")
+                {
+                    $("#btnFlags").parent().removeClass("border").removeClass("border-1");
+                    $("#btnFlags").remove();
+                }else
+                {
+                     $("#btnFlags").parent().remove();
+                }
+
+
+                $(".owl-carousel").owlCarousel({
+                    loop: true,
+                    rtl: true,
+                    navigation : true,
+                    /* autoplay: true,*/
+                    margin: 10,
+                    animateOut: 'fadeOut',
+                    animateIn: 'fadeIn',
+                    nav: true,
+                    /*dots: true,*/
+                    autoplayHoverPause: false,
+                    items: 3,
+                    navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>", "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
+                    responsive: {
+                        0: {
+                            items: 1
+                        },
+                        600: {
+                            items: 3
+                        },
+                        1000: {
+                            items: 5
+                        }
+                    }
+                });
+
+
+            });
+    </script>
 </body>
 </html>

@@ -14,10 +14,15 @@
             <div class="col-12">
         
                 <nav class="navbar navbar-expand-lg navbar-light bg-light rounded mt-0">
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>
               
                     <div class="collapse navbar-collapse" id="navbar">
-                        <ul class="navbar-nav  @(ViewBag.dir=="rtl" ? "ml-auto" : "mr-auto")">
-                            @foreach (var item in Model.Where(_ => _.ParentId == null && _.IsFull).OrderBy(_ => _.Order))
+                        <ul class="navbar-nav  me-auto">
+                            @foreach (var item in Model.Where(_ => _.ParentId == null && _.IsFull).OrderBy(_ => _.Order)) //first level
                             {
                                 if (item.Childrens.Count() == 0)
                                 {
@@ -33,17 +38,17 @@
                                             @item.MenuTitle.Name
                                         </a>
                                         <div class="dropdown-menu ps-1 mega-area" aria-labelledby='@($"st_mn_{item.MenuCode}")'>
-
-                                            <div class="d-none d-lg-flex" style="height: 50vh !important; width: 80%; flex-wrap: wrap; flex-direction: column">
+                                            
+                                            <div class="d-none d-lg-flex flex-wrap flex-column justify-content-start w-75" style="@(item.Childrens.Count == 1 ? "min-height:3vh;max-height:8vh;" : ((item.Childrens.Count > 1  && item.Childrens.Count <= 3) ? "max-height: 15vh" : "max-height: 40vh" ))">
                                                 @for (int i = 0; i < item.Childrens.Count; i++)
                                                 {
                                                     var child = item.Childrens[i];
-                                                    <div style='flex-shrink : @(child.Childrens.Count== 0 ? "5" : "0")'>
+                                                    <div @*class="border-end"*@ style='flex-shrink : @(child.Childrens.Count== 0 ? "4" : "0")'>
                                                         <h6><a class="nav-link text-start" href="@child.Url">@child.MenuTitle.Name</a></h6>
                                                    
                                                         @for(int j = 0; j < 3 && child.Childrens.Count > j; j++)
                                                         {
-                                                            <a class="dropdown-item text-start" href="@child.Childrens[j].Url">@child.Childrens[j].MenuTitle.Name</a>
+                                                            <a class="ms-2 dropdown-item text-start" href="@child.Childrens[j].Url">@child.Childrens[j].MenuTitle.Name</a>
                                                         }
                                                         @if(child.Childrens.Count > 3)
                                                         {
@@ -69,7 +74,7 @@
                                                         <h6><a class="nav-link" href="@child.Url">@child.MenuTitle.Name</a></h6>
                                                         @for(int j = 0; j < 3 && child.Childrens.Count > j; j++)
                                                         {
-                                                             <a class="dropdown-item" href="@child.Childrens[j].Url">@child.Childrens[j].MenuTitle.Name</a>
+                                                             <a class="ms-2 dropdown-item" href="@child.Childrens[j].Url">@child.Childrens[j].MenuTitle.Name</a>
                                                         }
                                                         @if (child.Childrens.Count > 3)
                                                         {
@@ -106,31 +111,6 @@
                                         </div>
                                         <div class="dropdown-menu ps-1 mega-area" aria-labelledby='@($"st_mn_{item.MenuCode}")'>
 
-                                            <div class="d-none d-lg-flex" style="height: 50vh !important; width: 80%; flex-wrap: wrap; flex-direction: column">
-                                                @for (int i = 0; i < item.Childrens.Count; i++)
-                                                {
-                                                    var child = item.Childrens[i];
-                                                
-                                                    <div style='flex-shrink : @(child.Childrens.Count== 0 ? "5" : "0")'>
-                                                        <h6><a class="nav-link text-start" href="@child.Url">@child.MenuTitle.Name</a></h6>
-                                                        @for(int j = 0; j < 3 && child.Childrens.Count > j; j++)
-                                                        {
-                                                             <a class="dropdown-item text-start" href="@child.Childrens[j].Url">@child.Childrens[j].MenuTitle.Name</a>
-                                                        }
-                                                        @if (child.Childrens.Count > 3)
-                                                        {
-                                                            @if (ViewBag.dir == "rtl")
-                                                            {
-                                                                 <a class="dropdown-item text-start link-primary mt-3 mb-3 all" href="@child.Url">@($"{@Language.GetString("All")} {@child.MenuTitle.Name}")<span class="ms-3"></span><i class="fas fa-arrow-left align-middle"></i></a>
-                                                            }else
-                                                            {
-                                                                <a class="dropdown-item text-start link-primary mt-3 mb-3 all" href="@child.Url">@($"{@Language.GetString("All")} {@child.MenuTitle.Name}")<span class="ms-3"></span><i class="fas fa-arrow-right align-middle"></i></a>
-                                                            }
-                                                        }
-                                                    </div>
-                                                }
-
-                                            </div>
 
                                             <div class="row d-block d-lg-none">
                                                 @for (int i = 0; i < item.Childrens.Count; i++)
@@ -141,7 +121,7 @@
                                                     
                                                         @for(int j = 0; j < 3 && child.Childrens.Count > j; j++)
                                                         {
-                                                             <a class="dropdown-item text-start" href="@child.Childrens[j].Url">@child.Childrens[j].MenuTitle.Name</a>
+                                                             <a class="ms-2 dropdown-item text-start" href="@child.Childrens[j].Url">@child.Childrens[j].MenuTitle.Name</a>
                                                         }
                                                          @if (child.Childrens.Count > 3)
                                                         {

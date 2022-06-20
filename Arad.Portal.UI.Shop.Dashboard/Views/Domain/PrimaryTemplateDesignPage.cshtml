@@ -180,6 +180,9 @@
 
         <div class="position-fixed p-5 left-50 top-0" id="toastPanel" style="z-index: 11;">
             <div aria-atomic="true" aria-live="assertive" class="toast" id="mainToast" role="alert" autohide="false">
+                  <div class="toast-header">
+                     <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                 </div>
                 <div class="toast-body p-3 fs-5 rounded-3 text-center" id="mainToastBody">
                 </div>
             </div>
@@ -416,8 +419,8 @@
                  var selectedSection;
                  var footerBgColor = "";
                  var headerBgColor = "";
-                 var isShop = '@ViewBag.IsShop';
-                 var isMultiLingual = '@ViewBag.IsMultilingual';
+                 var isShop = '@ViewBag.IsShop' == "True";
+                 var isMultiLingual = '@ViewBag.IsMultilingual' == "True";
 
                  function addRowBorderThickness()
                  {
@@ -626,7 +629,7 @@
                 $("#languageId").change(function(){
                     if($("#languageId").val() != "-1")
                     {
-                        if(htmlList.Any(_=> _.LanguageId == $("#languageId").val()))
+                        if(htmlList.length > 0 && htmlList.Any(_=> _.LanguageId == $("#languageId").val()))
                         {
                             var currentData = htmlList.FirstOrDefault(_=> _.LanguageId == $("#languageId").val());
                             $("#PrimaryTemplateHeaderPart").html(currentData.headerHtmlSection);
@@ -721,7 +724,7 @@
 
                     $(".rowbd").change(function() {
                         debugger;
-                        var cls = $(this).value;
+                        var cls = $(this).val();
                          var custClass = $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses");
                         //var custClass = $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames");
                         //var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames");
@@ -1059,7 +1062,7 @@
                                                       });
                                                     //end of footer section
 
-
+                                                    debugger;
                                                         var model = {}; //an instance of TemplateDesign
                                                         model.HeaderContent = header;
                                                         model.ContainerContent = container;
@@ -1460,9 +1463,9 @@
                              toast.show();
 
                            var data = `<div target='editor'>${htmlData}</div>`;
-                           $(sender).closest(".parent").find(".finalColumnContent").append(data);
+                           $(sender).closest(".parent").find(".finalColumnContent").html(data);
 
-                           $(sender).closest(".parent").find(".htmlColumnContentPreview").append(htmlData);
+                           $(sender).closest(".parent").find(".htmlColumnContentPreview").html(htmlData);
                          }
                       }
                   }

@@ -167,8 +167,11 @@
     </div>
     
     <div class="position-fixed left-50 top-0 p-5" id="toastPanel" style="z-index: 11;">
-         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+
         <div aria-atomic="true" aria-live="assertive" class="toast" id="mainToast" role="alert" autohide="false">
+            <div class="toast-header">
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
             <div class="toast-body p-3 fs-5 rounded-3 text-center" id="mainToastBody" >
             </div>
         </div>
@@ -368,6 +371,9 @@
         $("#toastPanel").show();
         var toast = new bootstrap.Toast($("#mainToast"));
         toast.show();
+        setTimeout(function(){
+            $("#toastPanel").hide();
+        }, 2000)
     }
 
     function clearFormValidation()
