@@ -10,6 +10,8 @@
     <Content Remove="Views\Shared\Components\ContentTemplates\Forth.cshtml" />
     <Content Remove="Views\Shared\Components\ContentTemplates\Second.cshtml" />
     <Content Remove="Views\Shared\Components\ContentTemplates\Third.cshtml" />
+    <Content Remove="Views\Shared\Components\LoginProfile\Default.cshtml" />
+    <Content Remove="Views\Shared\Components\MultiLingual\Default.cshtml" />
     <Content Remove="Views\Shared\Components\Slider\Default.cshtml" />
     <Content Remove="Views\Shared\Components\SliderLayer\Default.cshtml" />
   </ItemGroup>
@@ -56,6 +58,8 @@
     <None Include="Views\Shared\Components\ContentTemplates\Forth.cshtml" />
     <None Include="Views\Shared\Components\ContentTemplates\Second.cshtml" />
     <None Include="Views\Shared\Components\ContentTemplates\Third.cshtml" />
+    <None Include="Views\Shared\Components\LoginProfile\Default.cshtml" />
+    <None Include="Views\Shared\Components\MultiLingual\Default.cshtml" />
     <None Include="Views\Shared\Components\Slider\Default.cshtml" />
     <None Include="Views\Shared\Components\SliderLayer\Default.cshtml" />
     <None Include="wwwroot\lib\counter\counter.js" />

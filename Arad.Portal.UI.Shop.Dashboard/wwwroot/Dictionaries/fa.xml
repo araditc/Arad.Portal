@@ -785,6 +785,9 @@
 		<value>شماره وارد شده مربوط به تلفن ثابت می باشد.</value>
 	</string>
 	<!--=================================================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_ModuleWithoutParameters">
+		<value>این ماژول دارای پارارمتر نمیباشد تنها دکمه افزودن را کلیک کنید.</value>
+	</string>
 	<string key="AlertAndMessage_UrlFriendIsNotUnique">
 		<value> urlFriend تکراری است.</value>
 	</string>

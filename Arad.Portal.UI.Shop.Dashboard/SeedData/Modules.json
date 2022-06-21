@@ -41,7 +41,27 @@
     "IsActive": true,
     "ComponentName": "Slider",
     "ModuleParameters": {
-      "SliderId" :  ""
+      "SliderId": ""
+    }
+  },
+  {
+    "ModuleId": "j6554ffc-1653-41ba-a281-ee57fa7ffc09",
+    "ModuleName": "LoginAndProfile",
+    "ModuleCategoryType": 4,
+    "IsActive": true,
+    "ComponentName": "LoginProfile",
+    "ModuleParameters": {
+      "DomainId": "",
+      "IsShop": false
+    }
+  },
+  {
+    "ModuleId": "h7854ffc-1653-41ba-a281-ee57fa7ffc09",
+    "ModuleName": "MultiLingualFlags",
+    "ModuleCategoryType": 4,
+    "IsActive": true,
+    "ComponentName": "MultiLingual",
+    "ModuleParameters": {
     }
   }
 ]

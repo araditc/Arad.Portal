@@ -9,12 +9,13 @@
     {
         lan = "en";
     }
-
+    bool isEdit = Model.ColData != null;
 }
 
 <div class="row justify-content-center">
     <div class="offset-8 col-4 offset-md-10 col-md-2">
-        <button class='btn btn-sm m-2 pt-2 btn-primary columnStyles float-end' data-bs-toggle="tooltip" data-bs-placement="top" title="@Language.GetString("design_ColumnStyles")" sec="@Model.Section" cn="@Model.ColNumber" guid="@Model.RowGuid" rn="@ViewBag.RowNumber"><i class='fs-6 fa fa-cog'></i></button>
+        <button class='btn btn-sm m-2 pt-2 btn-primary columnStyles float-end' data-bs-toggle="tooltip" data-bs-placement="top" 
+        title="@Language.GetString("design_ColumnStyles")" sec="@Model.Section" cn="@Model.ColNumber" guid="@Model.RowGuid" rn="@ViewBag.RowNumber"><i class='fs-6 fa fa-cog'></i></button>
     </div>
 </div>
 
@@ -22,7 +23,8 @@
     <div class="col-12">
         <label class="form-label">@Language.GetString("Template_ContentType")</label>
         <br />
-        <select class="form-control selectpicker drpContentType" onchange="selectDrpContentType(this);" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section" data-live-search="true">
+        <select class="form-control selectpicker drpContentType" onchange="selectDrpContentType(this);" 
+                cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section" data-live-search="true">
             <option value="0">@Language.GetString("AlertAndMessage_Choose")</option>
             <option value="1">@Language.GetString("Template_SystemModules")</option>
             <option value="2">@Language.GetString("Template_Editor")</option>

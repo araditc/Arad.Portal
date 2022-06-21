@@ -1,4 +1,5 @@
 ﻿@using Arad.Portal.DataLayer.Models.DesignStructure;
+@model Arad.Portal.DataLayer.Models.DesignStructure.RowContent;
 @{
     var section = "";
     if(@ViewBag.RowNumber.ToString().StartsWith("1"))
@@ -14,6 +15,16 @@
     string first = "";
     string second = "";
     string third = "";
+    ColContent firstColContent = null;
+    ColContent secondColContent = null;
+    ColContent thirdColContent = null;
+    if(Model != null)
+    {
+        firstColContent = Model.ColsContent.FirstOrDefault(_ => _.ColNumber == 1);
+        secondColContent = Model.ColsContent.FirstOrDefault(_ => _.ColNumber == 2);
+        thirdColContent = Model.ColsContent.FirstOrDefault(_ => _.ColNumber == 3);
+        
+    }
 
     switch((Enums.ThreeColsTemplateWidth)@ViewBag.ColWidth)
     {
@@ -49,12 +60,12 @@
 }
 <div class="row sectionRow mx-2" rn="@ViewBag.RowNumber" rowCustomClasses="" guid="@guid">
     <div class="@first" colnum="1" did='@ViewBag.DomainId' cnt ="3">
-          <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section, ColumnClassNames = first.Replace("border", "").Replace("border-1", ""), RowGuid = guid}'/>
+          <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section, ColumnClassNames = first.Replace("border-1", "").Replace("border", ""), RowGuid = guid, ColData = firstColContent != null ? firstColContent.ColData : ""}'/>
     </div>
      <div class="@second" colnum="2 did='@ViewBag.DomainId' cnt ="3">
-           <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 2, Section = section, ColumnClassNames = second.Replace("border", "").Replace("border-1", ""), RowGuid = guid }'/>
+           <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 2, Section = section, ColumnClassNames = second.Replace("border-1", "").Replace("border", ""), RowGuid = guid, ColData = secondColContent != null ? secondColContent.ColData : "" }'/>
      </div>
       <div class="@third" colnum="3" did='@ViewBag.DomainId' cnt ="3">
-            <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 3, Section = section, ColumnClassNames = third.Replace("border", "").Replace("border-1", ""), RowGuid = guid }'/>
+            <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 3, Section = section, ColumnClassNames = third.Replace("border-1", "").Replace("border", ""), RowGuid = guid , ColData = thirdColContent != null ? thirdColContent.ColData : ""}'/>
       </div>
 </div>

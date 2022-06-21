@@ -72,26 +72,26 @@ header {
     }
 }
 
-.langUl li {
+/*.langUl li {
     background: #f3f3f3;
-}
+}*/
 
 
 .top-nav {
-    padding: 0 50px;
-    background: #f3f3f3;
+   /* padding: 0 50px;
+    background: #f3f3f3;*/
     /*height: 25px;*/
 }
 
-    .top-nav .logo-wrapper h1 {
+   /* .top-nav .logo-wrapper h1 {
         font-size: .8rem;
         margin: 1.7rem auto auto;
         float: right;
         font-weight: 700;
         color: #292929;
-    }
+    }*/
 
-    .top-nav .logo-wrapper h2 {
+   /* .top-nav .logo-wrapper h2 {
         font-size: 13px;
         color: grey;
         font-weight: 300;
@@ -100,7 +100,7 @@ header {
         position: relative;
         right: -132px;
         top: 45px;
-    }
+    }*/
 
 .account-wrapper {
     display: inline-block;

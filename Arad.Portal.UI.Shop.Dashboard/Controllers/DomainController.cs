@@ -188,18 +188,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 domainEntity.ReturnValue.HomePageDesign.Add(obj);
             }
 
-
-            if(domainEntity.ReturnValue.HomePageHtmlContent.Any(_=>_.LanguageId == model.LanguageId))
-            {
-                var htmlObj = domainEntity.ReturnValue.HomePageHtmlContent.FirstOrDefault(_ => _.LanguageId == model.LanguageId);
-                htmlObj.HeaderHtmlSection = model.HeaderHtmlSection;
-                htmlObj.BodyHtmlSection = model.BodyHtmlSection;
-                htmlObj.FooterHtmlSection = model.FooterHtmlSection;
-            }else
-            {
-                domainEntity.ReturnValue.HomePageHtmlContent.Add(html);
-            }
-
             domainEntity.ReturnValue.IsMultiLinguals = model.IsMultiLinguals;
             domainEntity.ReturnValue.IsShop = model.IsShop;
 
@@ -266,8 +254,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.DomainId = domainId;
             ViewBag.IsShop = domainEntity.IsShop;
             ViewBag.IsMultilingual = domainEntity.IsMultiLinguals;
-            ViewBag.HtmContents = domainEntity.HomePageHtmlContent;
-
 
             var lanList = _lanRepository.GetAllActiveLanguage();
             lanList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
@@ -276,25 +262,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.ImageRatio = imageRatioList;
             var imageSize = _configuration["ProductImageSize:Size"];
             ViewBag.PicSize = imageSize;
-            return View("~/Views/Domain/PrimaryTemplateDesignPage.cshtml");
+            return View("~/Views/Domain/PrimaryTemplateDesignPage.cshtml", domainEntity.HomePageDesign);
         }
 
-        /// <summary>
-        /// id is domainId
-        /// </summary>
-        /// <param name="templateName"></param>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public IActionResult GetSpecificTemplateView(string templateName, string id)
-        {
-            var template = _moduleRepository.FetchTemplateByName(templateName);
-            var moduleList = _moduleRepository.GetAllModules();
-            ViewBag.DomainId = id;
-            ViewBag.ModuleList = moduleList;
-            ViewBag.TemplateId = template.TemplateId;
-            var viewName = $"_{templateName}.cshtml";
-            return PartialView($"~/Views/Domain/{viewName}");
-        }
 
         [HttpPost]
         public IActionResult StoreDesignPreview([FromBody] TemplateDesign model)
@@ -318,6 +288,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return View("PrimaryTemplatePreview", data);
         }
 
+
+        #region GetModulesViewComponents
         [HttpGet]
         public IActionResult GetProductModuleViewComponent(ProductOrContentType productType, ProductTemplateDesign selectionTemplate,
             int count, DataLayer.Entities.General.SliderModule.TransActionType loadAnimation, LoadAnimationType loadAnimationType)
@@ -325,90 +297,18 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return ViewComponent("SpecialProduct", new { productType, selectionTemplate, count, loadAnimation, loadAnimationType });
         }
 
-        public IActionResult GetMenuModuleViewComponent(string domainId, string languageId)
+
+        [HttpGet]
+        public IActionResult GetLoginProfileModuleViewComponent(string domainId, bool isShop)
         {
-            return ViewComponent("StoreMenuModule", new { domainId = domainId, languageId = languageId });
+            return ViewComponent("LoginProfile", new { domainId = domainId, isShop = isShop });
         }
 
-
-        //[HttpPost]
-        //public async  Task<IActionResult> SendModuleParams([FromBody]DomainPageModel model)
-        //{
-        //    var domainDto = _domainRepository.FetchDomain(model.DomainId).ReturnValue;
-        //    switch (model.PageType)
-        //    {
-        //        case PageType.MainPage:
-        //            domainDto.MainPageTemplateId = model.TemplateId;
-        //            domainDto.MainPageTemplateParamsValue = model.ParamsValue;
-        //            domainDto.MainPageModuleParamsWithValues = model.ModuleParams;
-        //            break;
-        //        case PageType.contentPage:
-        //            domainDto.ContentTemplateId = model.TemplateId;
-        //            domainDto.ContentTemplateParamsValue = model.ParamsValue;
-        //            domainDto.ContentModuleParamsWithValues = model.ModuleParams;
-        //            break;
-        //        case PageType.ProductPage:
-        //            domainDto.ProductTemplateId = model.TemplateId;
-        //            domainDto.ProductTemplateParamsValue = model.ParamsValue;
-        //            domainDto.ProductModuleParamsWithValues = model.ModuleParams;
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //    var res = await _domainRepository.EditDomain(domainDto);
-        //    return Json(res.Succeeded ? new { Status = "Success", res.Message }
-        //         : new { Status = "Error", res.Message });
-        //}
-
-
-        //[HttpGet]
-        //public async Task<IActionResult> GetPageFromDomain(string domainId, PageType pageType)
-        //{
-        //    var domainEntity = _domainRepository.FetchDomain(domainId).ReturnValue;
-        //    Template templateEntity = new Template();
-        //    var allModules = _moduleRepository.GetAllModuleList();
-        //    switch (pageType)
-        //    {
-        //        case PageType.MainPage:
-        //            templateEntity = _moduleRepository.FetchTemplateById(domainEntity.MainPageTemplateId);
-        //            foreach (var par in domainEntity.MainPageTemplateParamsValue)
-        //            {
-        //                string htmlPart = "";
-        //                var moduleList = par.Val.Split("<br/>");
-        //                foreach (var moduleId in moduleList)
-        //                {
-        //                    var moduleEntity = allModules.FirstOrDefault(_ => _.ModuleId == moduleId);
-        //                    var moduleParameters = domainEntity.MainPageModuleParamsWithValues
-        //                        .FirstOrDefault(_ => _.Place == par.Key && _.ModuleId == moduleId);
-        //                    switch (moduleEntity.ModuleCategoryType)
-        //                    {
-        //                        //case ModuleCategoryType.Advertisement:
-        //                        //    break;
-        //                        //case ModuleCategoryType.ImageSlider:
-        //                        //    break;
-        //                        case ModuleCategoryType.Product:
-        //                            htmlPart += await RenderViewComponent("SpecialProduct", moduleParameters.ParamsValue);
-        //                            break;
-        //                        case ModuleCategoryType.Content:
-        //                            htmlPart += await RenderViewComponent("ContentTemplates", moduleParameters.ParamsValue);
-        //                            break;
-        //                        default:
-        //                            break;
-        //                    }
-        //                    htmlPart += "<br/>";
-        //                }
-        //                templateEntity.HtmlContent = templateEntity.HtmlContent.Replace(par.Key, htmlPart);
-        //            }
-        //            break;
-        //        //case PageType.contentPage:
-        //        //    break;
-        //        //case PageType.ProductPage:
-        //        //    break;
-        //        default:
-        //            break;
-        //    }
-        //    return View(templateEntity);
-        //}
+        [HttpGet]
+        public IActionResult GetMultiLingualModuleViewComponent()
+        {
+            return ViewComponent("MultiLingual");
+        }
 
         [HttpGet]
         public IActionResult GetContentModuleViewComponent(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, int? count,
@@ -427,6 +327,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             return ViewComponent("StoreMenuModule", new { domainId, languageId });
         }
+
+        #endregion GetModulesViewComponents
 
         public IActionResult GetSpecificModule(string moduleName, string id, int colCount)
         {
@@ -687,7 +589,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetRowWithSelectedColumns(int count,int colWidth, string rn, string d, string gu)
+        public IActionResult GetRowWithSelectedColumns(int count,int colWidth, string rn, string d, string gu, RowContent rowData = null)
         {
 
             var moduleList = _moduleRepository.GetAllModules();

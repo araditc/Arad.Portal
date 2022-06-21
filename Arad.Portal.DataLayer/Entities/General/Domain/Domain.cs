@@ -20,7 +20,6 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
             Prices = new();
             DomainPaymentProviders = new();
             HomePageDesign = new();
-            HomePageHtmlContent = new();
         }
 
         [BsonId]
@@ -71,8 +70,6 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
         public string DefaultShippingTypeId { get; set; }
 
         public List<PageDesignContent> HomePageDesign { get; set; }
-
-        public List<HomePageHtmlContent> HomePageHtmlContent { get; set; }
 
     }
     public class ProviderDetail

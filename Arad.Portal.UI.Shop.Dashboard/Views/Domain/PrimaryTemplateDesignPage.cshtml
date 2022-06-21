@@ -3,6 +3,7 @@
 @using Arad.Portal.DataLayer.Entities.General.SliderModule;
 @using Arad.Portal.GeneralLibrary.Utilities;
 @using Arad.Portal.DataLayer.Models.Domain;
+@model List<Arad.Portal.DataLayer.Models.DesignStructure.PageDesignContent>;
 
 @{
     Layout = null;
@@ -28,8 +29,9 @@
             lang = "en";
             break;
     }
-    var htmlContentList =(List<HomePageHtmlContent>)@ViewBag.HtmContents;
+
     var domainId = @ViewBag.DomainId;
+    var rowCount = @Model.Count;
 }
 <html dir="@direction" lang="@lang">
 <head>
@@ -59,7 +61,7 @@
     <link href="~/css/siteTemplate/ForthContentTemplate.css" rel="stylesheet" />
     <link href="~/css/siteTemplate/FifthContentTemplate.css" rel="stylesheet" />
     <link href="~/css/header.css" rel="stylesheet" />
-    <link href="~/css/StickyNavbar.css" rel="stylesheet" />
+    @*<link href="~/css/StickyNavbar.css" rel="stylesheet" />*@
     <link href="~/lib/bootstrap-colorpicker/css/bootstrap-colorpicker.css" rel="stylesheet" />
     <link href="~/lib/animate.css/animate.compat.css" rel="stylesheet" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -166,7 +168,6 @@
                     <button class='btn btn-sm  btn-success btnNoColor p-2 m-2' sec="header" onclick="resetColor(this);">@Language.GetString("design_NoColor")</button>
                 </div>
             </div>
-            <partial name="~/Views/Shared/_PriorFixedHeader.cshtml" />
             <div class="border border-3 border-secondary m-1 mx-0 dynamicHeaderPart p-2" style="min-height: 150px;">
                 <partial name="_PageDesign.cshtml" model='new TemplateSectionPart(){SectionTag = "headerSection", DomainId = @domainId}' />
             </div>
@@ -180,9 +181,9 @@
 
         <div class="position-fixed p-5 left-50 top-0" id="toastPanel" style="z-index: 11;">
             <div aria-atomic="true" aria-live="assertive" class="toast" id="mainToast" role="alert" autohide="false">
-                  <div class="toast-header">
-                     <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                 </div>
+                <div class="toast-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
                 <div class="toast-body p-3 fs-5 rounded-3 text-center" id="mainToastBody">
                 </div>
             </div>
@@ -208,7 +209,7 @@
 
 
 
-  @*  @await Component.InvokeAsync("Slider", new { sliderId = "4964cd6e-1bfc-4ab1-b466-9c3da4977d68"});*@
+    @*  @await Component.InvokeAsync("Slider", new { sliderId = "4964cd6e-1bfc-4ab1-b466-9c3da4977d68"});*@
 
     @*******row design offcanvas*******************@
     <div class="offcanvas offcanvas-end" tabindex="-1" id="styleDiv" aria-labelledby="offcanvasLabel">
@@ -413,1256 +414,1360 @@
     </div>
 
     <script>
-                 var selectedRow;
-                 var colSelectedRow ;
-                 var colSelectedNumber;
-                 var selectedSection;
-                 var footerBgColor = "";
-                 var headerBgColor = "";
-                 var isShop = '@ViewBag.IsShop' == "True";
-                 var isMultiLingual = '@ViewBag.IsMultilingual' == "True";
+                //load in edit mode//
+                         var loadInEditMode = false;
+               //////////load in edit mode/////////
+                         var selectedRow;
+                         var colSelectedRow ;
+                         var colSelectedNumber;
+                         var selectedSection;
+                         var footerBgColor = "";
+                         var headerBgColor = "";
+                         var isShop = '@ViewBag.IsShop' == "True";
+                         var isMultiLingual = '@ViewBag.IsMultilingual' == "True";
 
-                 function addRowBorderThickness()
-                 {
-                     var cls = $("#borderThicknessRow").val();
-                     var custClass = $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses");
-                     custClass = custClass.replace("border-1", "").replace("border-2", "").replace("border-3", "").replace("border-4", "").replace("border-5", "");
-                     custClass += ` ${cls}`;
-                     $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses", custClass);
-                 }
+                         function addRowBorderThickness()
+                         {
+                             var cls = $("#borderThicknessRow").val();
+                             var custClass = $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses");
+                             custClass = custClass.replace("border-1", "").replace("border-2", "").replace("border-3", "").replace("border-4", "").replace("border-5", "");
+                             custClass += ` ${cls}`;
+                             $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses", custClass);
+                         }
 
-                 function addBorderThicknessForColumn()
-                 {
-                     var cls = $("#borderThicknessColumn").val();
-                     var custClass = $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames");
-                     var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames");
+                         function addBorderThicknessForColumn()
+                         {
+                             var cls = $("#borderThicknessColumn").val();
+                             var custClass = $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames");
+                             var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames");
 
-                     $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass("border-1").removeClass("border-2").removeClass("border-3").removeClass("border-4").removeClass("border-5");
-                     custClass = custClass.replace("border-1", "").replace("border-2", "").replace("border-3", "").replace("border-4","").replace("border-5", "");
-                     pClass = pClass.replace("border-1", "").replace("border-2", "").replace("border-3", "").replace("border-4","").replace("border-5", "");
+                             $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass("border-1").removeClass("border-2").removeClass("border-3").removeClass("border-4").removeClass("border-5");
+                             custClass = custClass.replace("border-1", "").replace("border-2", "").replace("border-3", "").replace("border-4","").replace("border-5", "");
+                             pClass = pClass.replace("border-1", "").replace("border-2", "").replace("border-3", "").replace("border-4","").replace("border-5", "");
 
 
-                      $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).addClass(cls);
+                              $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).addClass(cls);
 
-                      custClass += ` ${cls}`;
-                      $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames", custClass);
+                              custClass += ` ${cls}`;
+                              $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames", custClass);
 
-                      pClass += ` ${cls}`;
-                      $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames", pClass);
+                              pClass += ` ${cls}`;
+                              $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames", pClass);
 
-                 }
+                         }
 
-                 function bgColorChange()
-                 {
+                         function bgColorChange()
+                         {
 
-                    var color = $("#bgcolor").val();
-                    if(selectedSection =="footer")
-                    {
-                        footerBgColor = color;
-                        $(".dynamicFooterPart").css("background-color", footerBgColor);
-                    }else if(selectedSection =="header")
-                    {
-                        headerBgColor = color;
-                        $(".dynamicHeaderPart").css("background-color", headerBgColor);
-                    }
-                 }
+                            var color = $("#bgcolor").val();
+                            if(selectedSection =="footer")
+                            {
+                                footerBgColor = color;
+                                $(".dynamicFooterPart").css("background-color", footerBgColor);
+                            }else if(selectedSection =="header")
+                            {
+                                headerBgColor = color;
+                                $(".dynamicHeaderPart").css("background-color", headerBgColor);
+                            }
+                         }
 
-                 function rowBgColorChange()
-                 {
-                      var color = $("#rowBgcolor").val();
-                      $(`.row.sectionRow[guid='${selectedRow}']`).css("background-color", color);
+                         function rowBgColorChange()
+                         {
+                              var color = $("#rowBgcolor").val();
+                              $(`.row.sectionRow[guid='${selectedRow}']`).css("background-color", color);
 
-                 }
+                         }
 
-                 function resetColor(sender)
-                 {
-                     debugger;
-                     var sec = $(sender).attr("sec");
-                     if(sec == "header")
-                     {
-                         headerBgColor = "";
-                          $(".dynamicHeaderPart").css("background-color", headerBgColor);
-                     }else if(sec == "footer")
-                     {
-                         footerBgColor = "";
-                          $(".dynamicFooterPart"),css("background-color", "");
-                     }
-                 }
+                         function resetColor(sender)
+                         {
+                             debugger;
+                             var sec = $(sender).attr("sec");
+                             if(sec == "header")
+                             {
+                                 headerBgColor = "";
+                                  $(".dynamicHeaderPart").css("background-color", headerBgColor);
+                             }else if(sec == "footer")
+                             {
+                                 footerBgColor = "";
+                                  $(".dynamicFooterPart"),css("background-color", "");
+                             }
+                         }
 
-                 function doAnimations(elems) {
-                    var animEndEv = "webkitAnimationEnd animationend";
+                         function doAnimations(elems) {
+                            var animEndEv = "webkitAnimationEnd animationend";
 
-                    elems.each(function () {
-                        var $this = $(this),
-                            $animationType = $this.data("animation");
-                        $this.addClass($animationType).one(animEndEv, function () {
-                            $this.removeClass($animationType);
+                            elems.each(function () {
+                                var $this = $(this),
+                                    $animationType = $this.data("animation");
+                                $this.addClass($animationType).one(animEndEv, function () {
+                                    $this.removeClass($animationType);
+                                });
+                            });
+                        }
+
+                         function addCustomClass(type)
+                         {
+                             debugger;
+                             var cls = "";
+                             //var custClass = $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames");
+                             //var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames");
+
+                              var custClass = $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses");
+
+
+                             switch(type)
+                             {
+                                 case "vp":
+                                 cls = $("#verticalPaddingSelect").val();
+                                 //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass("py-0").removeClass("py-2").removeClass("py-4").removeClass("py-5").removeClass("py-10");
+                                 custClass = custClass.replace("py-0", "").replace("py-2", "").replace("py-4", "").replace("py-5","").replace("py-10", "");
+                                 //pClass = pClass.replace("py-0", "").replace("py-2", "").replace("py-4", "").replace("py-5","").replace("py-10", "");
+                                 break;
+                                 case "hp":
+                                 //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass("px-0").removeClass("px-2").removeClass("px-4").removeClass("px-5").removeClass("px-10");
+                                 cls = $("#horizantalPaddingSelect").val();
+                                 custClass = custClass.replace("px-0", "").replace("px-2", "").replace("px-4", "").replace("px-5","").replace("px-10", "");
+                                 //pClass = pClass.replace("px-0", "").replace("px-2", "").replace("px-4", "").replace("px-5","").replace("px-10", "");
+                                 break;
+                                 case "vm":
+                                //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass("mx-0").removeClass("mx-2").removeClass("mx-4").removeClass("mx-5").removeClass("mx-10");
+                                 cls = $("#verticalMarginSelect").val();
+                                 custClass = custClass.replace("mx-0", "").replace("mx-2", "").replace("mx-4", "").replace("mx-5","").replace("mx-10", "");
+                                 //pClass = pClass.replace("mx-0", "").replace("mx-2", "").replace("mx-4", "").replace("mx-5","").replace("mx-10", "");
+                                 break;
+                                 case "hm":
+                                 //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass("my-0").removeClass("my-2").removeClass("my-4").removeClass("my-5").removeClass("my-10");
+                                 cls = $("#horizantalMarginSelect").val();
+                                 custClass = custClass.replace("my-0", "").replace("my-2", "").replace("my-4", "").replace("my-5","").replace("my-10", "");
+                                 //pClass = pClass.replace("my-0", "").replace("my-2", "").replace("my-4", "").replace("my-5","").replace("my-10", "");
+                                 break;
+                             }
+
+                              //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).addClass(cls);
+                              custClass += ` ${cls}`;
+                              //$(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames", custClass);
+                              $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses", custClass);
+
+                              //pClass += ` ${cls}`;
+                              //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames", pClass);
+                         }
+
+
+                          function getColTemplate(id, tag) {
+
+                               colTemplate = "<div class='col-12 col-md-3 p-2'>" +
+                                   "<label class='lblAlert form-label'>" + '@Language.GetString("AlertAndMessage_HowManyColumns")' + "</label><br />" +
+                                   "<select  class='form-control selectpicker colCnt' onchange='selectColumns(this, \""+ id +"\" );' id='" + id + "' data-live-search='true'>" +
+                                       "<option value='0'>" + '@Language.GetString("AlertAndMessage_Choose")' + "</option>" +
+                                       "<option value='1'>" + '@Language.GetString("Template_OneCol")' + "</option>" +
+                                       "<option value='2'>" + '@Language.GetString("Template_TwoCol")' + "</option>" +
+                                       "<option value='3'>" + '@Language.GetString("Template_ThreeCol")' + "</option>" +
+                                       "<option value='4'>" + '@Language.GetString("Template_FourCol")' + "</option>" +
+                                       "<option value='6'>" + '@Language.GetString("Template_SixCol")' + "</option></select></div>"+
+                                       "<div class='col-12 col-md-3 p-2'>" +
+                                       "<label class='lblAlert form-label'>" + '@Language.GetString("design_ColSizeRatio")' + "</label><br />" +
+                                       "<select  class='form-control selectpicker colWidth' onchange='selectColumnsWidthRatio(this, \""+ tag +"\" );' colWidthId='"+id+"' data-live-search='true'></select></div>" +
+                                       "<div class='p-2 row justify-content-center'>"+
+                                       "<div class='col-2 text-center'>"+
+                                       "<button class='btn btn-sm m-2 pt-2 btn-dark btnRowStyle'  guid='" + id + "' data-bs-toggle='tooltip' data-bs-placement='top' title="+
+                                       '@Language.GetString("design_RowStyles")' +
+                                       "><i class='fs-4 fa fa-cog'></i></button>" +
+                                       "</div><div class='ps-4 col-12 contentColumns' guid='"+ id + "'></div>";
+
+                               return colTemplate;
+                           }
+
+
+                            function AfterCarouselLoad()
+                            {
+
+                                  var $myCarousel = $("#sliderCarousel");
+                                  $firstAnimatingElems = $myCarousel
+                                          .find(".carousel-item:first")
+                                         .find("[data-animation ^= 'animated']");
+
+                                var carousel = new bootstrap.Carousel($myCarousel);
+                                doAnimations($firstAnimatingElems);
+
+                                var myCarousel = document.getElementById('sliderCarousel');
+                                myCarousel.addEventListener("slide.bs.carousel", function (e) {
+                                    var $animatingElems = $(e.relatedTarget).find(
+                                        "[data-animation ^= 'animated']"
+                                    );
+                                    doAnimations($animatingElems);
+                                });
+                            }
+
+                            //$(document).ready(function(){
+
+                            //    var $myCarousel = $("#sliderCarousel");
+                            //      $firstAnimatingElems = $myCarousel
+                            //              .find(".carousel-item:first")
+                            //             .find("[data-animation ^= 'animated']");
+
+                            //    var carousel = new bootstrap.Carousel($myCarousel);
+                            //    doAnimations($firstAnimatingElems);
+
+                            //    var myCarousel = document.getElementById('sliderCarousel');
+                            //    myCarousel.addEventListener("slide.bs.carousel", function (e) {
+                            //        var $animatingElems = $(e.relatedTarget).find(
+                            //            "[data-animation ^= 'animated']"
+                            //        );
+                            //        doAnimations($animatingElems);
+                            //    });
+                            //});
+                    var ContentListForEdition ;
+                    var currentDesignForLanguage;
+                   $(document).ready(function(){
+                       debugger;
+                        $(window).resize(changeScreen);
+
+                        $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_FirstChooseLanguage")');
+                        $('#mainToastBody').addClass('alert-success');
+
+                        var toastDiv = $("#mainToast");
+                        $("#toastPanel").show();
+                        var toast = new bootstrap.Toast(toastDiv);
+                        toast.show();
+
+                        if(parseInt('@rowCount') > 0)
+                        {
+                            ContentListForEdition = @Json.Serialize(@Model);
+                        }
+
+                        $("#languageId").change(function(){
+                            debugger;
+                            if($("#languageId").val() != "-1")
+                            {
+                               currentDesignForLanguage = ContentListForEdition.find(_=>_.languageId == $("#languageId").val());
+                               if(currentDesignForLanguage != undefined)
+                               {
+                                   loadInEditMode = true;
+                                   //headerPart
+                                   var senderHeaderCaller = $(".div_headerSection .addNewRow");
+                                   var senderBodyCaller = $(".div_containerSection .addNewRow");
+                                   var senderFooterCaller = $(".div_footerSection .addNewRow");
+                                   currentDesignForLanguage.headerPart.customizedContent.forEach(function(){
+
+                                       addNewRow(senderHeaderCaller,"headerSection");
+                                       var colCount = $(this).colsContent.length;
+                                       va enumColsId = $(this).enumColsId;
+                                        $(`#${currentGuid}`).val(colCount);
+                                        $(`#${currentGuid}`).selectpicker("refresh");
+                                       
+                                        $.ajax({
+                                                 url:"@Url.Action("GetRelatedColsTemplateWidths","Domain")"+"?count="+colCount,
+                                                 type:'Get',
+                                                 statusCode:
+                                                 {
+                                                     200:function(result)
+                                                     {
+                                                         debugger;
+                                                         if(result.status == "success")
+                                                         {
+                                                             var options = "";
+                                                              if (result.data.length != 0) {
+                                                                    (result.data).forEach(function (item) {
+                                                                        var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                                                        options += op;
+                                                                    });
+                                                                }
+                                                                $(`.colWidth[colwidthid='${currentGuid}']`).html(options);
+                                                                $(`.colWidth[colwidthid='${currentGuid}']`).selectpicker();
+                                                                $(`.colWidth[colWidthId='${currentGuid}']`).val(enumColsId);
+                                                                $(`.colWidth[colWidthId='${currentGuid}']`).selectpicker("refresh");
+
+
+                                                                var selectedElement =  $(`.colWidth[colWidthId='${currentGuid}']`);
+
+                                                                var id = $(selectedElement).attr("colWidthId");
+                                                                var count = parseInt($(`.colCnt[id='${id}']`).val());
+
+                                                                 var rowNumber = $(selectedElement).closest(".row.firstLevel").attr("rn");
+                                                                 //var guid = $(selectedElement).closest(".row.firstLevel").attr("guid");
+                                                                 var colWidthEnumId = parseInt($(selectedElement).val());
+                                                                 var tag = "headerSection";
+                                                                $.ajax({
+                                                                         url:"@Url.Action("GetRowWithSelectedColumns","Domain")"+
+                                                                                `?count=${count}&colWidth=${colWidthEnumId}&rn=${rowNumber}&d=${'@ViewBag.DomainId'}&gu=${currentGuid}`,
+                                                                         type:'Get',
+                                                                         statusCode:
+                                                                         {
+                                                                             200:function(data)
+                                                                             {
+                                                                                 debugger;
+
+                                                                                 var divId =  `#${tag}_paramSection`;
+                                                                                  $(divId).find(`.firstLevel.active.${rowNumber} .contentColumns`).html(data);
+                                                                                   $(".drpContentType").selectpicker();
+                                                                                   $(".moduleList").selectpicker();
+                                                                                    var buttonDivClass = `.row.div_${tag}`;
+                                                                                    $(buttonDivClass).find(".addNewRow").removeAttr("disabled");
+                                                                             }
+                                                                         }
+                                                                       });
+
+                                                         }
+                                                     }
+                                                 }
+                                            });
+
+
+
+
+
+
+
+                                        
+
+
+
+                               });
+                                   //bodyPart
+
+                                   //footerPart
+                               }
+                            }
                         });
-                    });
-                }
-
-                 function addCustomClass(type)
-                 {
-                     debugger;
-                     var cls = "";
-                     //var custClass = $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames");
-                     //var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames");
-
-                      var custClass = $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses");
 
 
-                     switch(type)
-                     {
-                         case "vp":
-                         cls = $("#verticalPaddingSelect").val();
-                         //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass("py-0").removeClass("py-2").removeClass("py-4").removeClass("py-5").removeClass("py-10");
-                         custClass = custClass.replace("py-0", "").replace("py-2", "").replace("py-4", "").replace("py-5","").replace("py-10", "");
-                         //pClass = pClass.replace("py-0", "").replace("py-2", "").replace("py-4", "").replace("py-5","").replace("py-10", "");
-                         break;
-                         case "hp":
-                         //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass("px-0").removeClass("px-2").removeClass("px-4").removeClass("px-5").removeClass("px-10");
-                         cls = $("#horizantalPaddingSelect").val();
-                         custClass = custClass.replace("px-0", "").replace("px-2", "").replace("px-4", "").replace("px-5","").replace("px-10", "");
-                         //pClass = pClass.replace("px-0", "").replace("px-2", "").replace("px-4", "").replace("px-5","").replace("px-10", "");
-                         break;
-                         case "vm":
-                        //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass("mx-0").removeClass("mx-2").removeClass("mx-4").removeClass("mx-5").removeClass("mx-10");
-                         cls = $("#verticalMarginSelect").val();
-                         custClass = custClass.replace("mx-0", "").replace("mx-2", "").replace("mx-4", "").replace("mx-5","").replace("mx-10", "");
-                         //pClass = pClass.replace("mx-0", "").replace("mx-2", "").replace("mx-4", "").replace("mx-5","").replace("mx-10", "");
-                         break;
-                         case "hm":
-                         //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass("my-0").removeClass("my-2").removeClass("my-4").removeClass("my-5").removeClass("my-10");
-                         cls = $("#horizantalMarginSelect").val();
-                         custClass = custClass.replace("my-0", "").replace("my-2", "").replace("my-4", "").replace("my-5","").replace("my-10", "");
-                         //pClass = pClass.replace("my-0", "").replace("my-2", "").replace("my-4", "").replace("my-5","").replace("my-10", "");
-                         break;
-                     }
+                        $("#bgcolor").colorpicker();
+                        $("#rowBgcolor").colorpicker();
 
-                      //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).addClass(cls);
-                      custClass += ` ${cls}`;
-                      //$(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames", custClass);
-                      $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses", custClass);
-
-                      //pClass += ` ${cls}`;
-                      //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames", pClass);
-                 }
+                        changeScreen();
 
 
-                  function getColTemplate(id, tag) {
-
-                       colTemplate = "<div class='col-12 col-md-3 p-2'>" +
-                           "<label class='lblAlert form-label'>" + '@Language.GetString("AlertAndMessage_HowManyColumns")' + "</label><br />" +
-                           "<select  class='form-control selectpicker colCnt' onchange='selectColumns(this, \""+ id +"\" );' id='" + id + "' data-live-search='true'>" +
-                               "<option value='0'>" + '@Language.GetString("AlertAndMessage_Choose")' + "</option>" +
-                               "<option value='1'>" + '@Language.GetString("Template_OneCol")' + "</option>" +
-                               "<option value='2'>" + '@Language.GetString("Template_TwoCol")' + "</option>" +
-                               "<option value='3'>" + '@Language.GetString("Template_ThreeCol")' + "</option>" +
-                               "<option value='4'>" + '@Language.GetString("Template_FourCol")' + "</option>" +
-                               "<option value='6'>" + '@Language.GetString("Template_SixCol")' + "</option></select></div>"+
-                               "<div class='col-12 col-md-3 p-2'>" +
-                               "<label class='lblAlert form-label'>" + '@Language.GetString("design_ColSizeRatio")' + "</label><br />" +
-                               "<select  class='form-control selectpicker colWidth' onchange='selectColumnsWidthRatio(this, \""+ tag +"\" );' colWidthId='"+id+"' data-live-search='true'></select></div>" +
-                               "<div class='p-2 row justify-content-center'>"+
-                               "<div class='col-2 text-center'>"+
-                               "<button class='btn btn-sm m-2 pt-2 btn-dark btnRowStyle'  guid='" + id + "' data-bs-toggle='tooltip' data-bs-placement='top' title="+
-                               '@Language.GetString("design_RowStyles")' +
-                               "><i class='fs-4 fa fa-cog'></i></button>" +
-                               "</div><div class='ps-4 col-12 contentColumns' guid='"+ id + "'></div>";
-
-                       return colTemplate;
-                   }
-
-
-                    function AfterCarouselLoad()
-                    {
-                       
-                          var $myCarousel = $("#sliderCarousel");
-                          $firstAnimatingElems = $myCarousel
-                                  .find(".carousel-item:first")
-                                 .find("[data-animation ^= 'animated']");
-
-                        var carousel = new bootstrap.Carousel($myCarousel);
-                        doAnimations($firstAnimatingElems);
-
-                        var myCarousel = document.getElementById('sliderCarousel');
-                        myCarousel.addEventListener("slide.bs.carousel", function (e) {
-                            var $animatingElems = $(e.relatedTarget).find(
-                                "[data-animation ^= 'animated']"
-                            );
-                            doAnimations($animatingElems);
+                        $(".menu-area").mouseover(function () {
+                                var windowSize = $(window).width();
+                                if (windowSize > 975) {
+                                    $(this).addClass("show");
+                                    $(this).find(".dropdown-toggle").addClass("text-primary");
+                                    $(this).find(".mega-area").addClass("show");
+                                }
                         });
-                    }
 
-                    //$(document).ready(function(){
-                       
-                    //    var $myCarousel = $("#sliderCarousel");
-                    //      $firstAnimatingElems = $myCarousel
-                    //              .find(".carousel-item:first")
-                    //             .find("[data-animation ^= 'animated']");
+                        $(".menu-area").mouseleave(function () {
+                            var windowSize = $(window).width();
+                            if (windowSize > 975) {
+                                $(this).removeClass("show");
+                                $(this).find(".dropdown-toggle").removeClass("text-primary");
+                                $(this).find(".mega-area").removeClass("show");
+                            }
+                        });
 
-                    //    var carousel = new bootstrap.Carousel($myCarousel);
-                    //    doAnimations($firstAnimatingElems);
+                        $(".nav-item .nav-link").mouseover(function () {
+                                $(this).addClass("text-primary");
+                        });
+                        $(".nav-item .nav-link").mouseleave(function () {
+                                $(this).removeClass("text-primary");
+                        });
 
-                    //    var myCarousel = document.getElementById('sliderCarousel');
-                    //    myCarousel.addEventListener("slide.bs.carousel", function (e) {
-                    //        var $animatingElems = $(e.relatedTarget).find(
-                    //            "[data-animation ^= 'animated']"
-                    //        );
-                    //        doAnimations($animatingElems);
-                    //    });
-                    //});
-            var htmlList ;
-           $(document).ready(function(){
-               debugger;
-                
-                $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_FirstChooseLanguage")');
-                $('#mainToastBody').addClass('alert-success');
+                        $(".custmDrp").click(function () {
 
-                var toastDiv = $("#mainToast");
-                $("#toastPanel").show();
-                var toast = new bootstrap.Toast(toastDiv);
-                toast.show();
+                            var item = $(this).parent().parent().siblings(".mega-area")
+                            if (item.hasClass("show")) {
+                                item.removeClass("show");
+                            } else {
+                                item.addClass("show");
+                            }
+                        });
 
-                htmlList = @Json.Serialize(@htmlContentList);
+                        $("#btnFlags").click(function(){
+                            var sender =  $(this);
+                            $(this).parent().remove();
+                            isMultiLingual = false;
+                        });
 
-                $("#languageId").change(function(){
-                    if($("#languageId").val() != "-1")
-                    {
-                        if(htmlList.length > 0 && htmlList.Any(_=> _.LanguageId == $("#languageId").val()))
-                        {
-                            var currentData = htmlList.FirstOrDefault(_=> _.LanguageId == $("#languageId").val());
-                            $("#PrimaryTemplateHeaderPart").html(currentData.headerHtmlSection);
-                            $("#PrimaryTemplateContainerPart").html(currentData.bodyHtmlSection);
-                            $("#PrimaryTemplateFooterPart").html(currentData.footerHtmlSection);
-                        }
-                       
-                    }
-                });
+                        $("#btnIsShop").click(function(){
+                            var sender = $(this);
+                            $(this).parent().remove();
+                            isShop = false;
+                        });
 
 
-                $("#bgcolor").colorpicker();
-                $("#rowBgcolor").colorpicker();
-
-                changeScreen();
-                $(window).resize(changeScreen);
-
-                $(".menu-area").mouseover(function () {
-                        var windowSize = $(window).width();
-                        if (windowSize > 975) {
-                            $(this).addClass("show");
-                            $(this).find(".dropdown-toggle").addClass("text-primary");
-                            $(this).find(".mega-area").addClass("show");
-                        }
-                });
-
-                $(".menu-area").mouseleave(function () {
-                    var windowSize = $(window).width();
-                    if (windowSize > 975) {
-                        $(this).removeClass("show");
-                        $(this).find(".dropdown-toggle").removeClass("text-primary");
-                        $(this).find(".mega-area").removeClass("show");
-                    }
-                });
-
-                $(".nav-item .nav-link").mouseover(function () {
-                        $(this).addClass("text-primary");
-                });
-                $(".nav-item .nav-link").mouseleave(function () {
-                        $(this).removeClass("text-primary");
-                });
-
-                $(".custmDrp").click(function () {
-
-                    var item = $(this).parent().parent().siblings(".mega-area")
-                    if (item.hasClass("show")) {
-                        item.removeClass("show");
-                    } else {
-                        item.addClass("show");
-                    }
-                });
-
-                $("#btnFlags").click(function(){
-                    var sender =  $(this);
-                    $(this).parent().remove();
-                    isMultiLingual = false;
-                });
-
-                $("#btnIsShop").click(function(){
-                    var sender = $(this);
-                    $(this).parent().remove();
-                    isShop = false;
-                });
-
-
-                $(".btnHFStyle").click(function(){
-                    debugger;
-                    selectedSection = $(this).attr("sec");
-                    var offcanvas = $("#styleHeaderFooterDiv");
-                    var off = new bootstrap.Offcanvas(offcanvas);
-                    off.show();
-                });
+                        $(".btnHFStyle").click(function(){
+                            debugger;
+                            selectedSection = $(this).attr("sec");
+                            var offcanvas = $("#styleHeaderFooterDiv");
+                            var off = new bootstrap.Offcanvas(offcanvas);
+                            off.show();
+                        });
 
 
 
-                $(document).on("click", ".columnStyles", function () {
-                        debugger;
-                        selectedRow = $(this).attr("guid");
-                        colSelectedNumber = $(this).attr("cn");
-                        var ofCanvas = $("#colStylesDiv");
-                        var of = new bootstrap.Offcanvas(ofCanvas);
-                        of.show();
+                        $(document).on("click", ".columnStyles", function () {
+                                debugger;
+                                selectedRow = $(this).attr("guid");
+                                colSelectedNumber = $(this).attr("cn");
+                                var ofCanvas = $("#colStylesDiv");
+                                var of = new bootstrap.Offcanvas(ofCanvas);
+                                of.show();
 
-                  });
-                    $(document).on("click", ".btnRowStyle", function () {
-                        debugger;
-                        selectedRow = $(this).attr("guid");
-                        var offcanvas = $("#styleDiv");
-                        var off = new bootstrap.Offcanvas(offcanvas);
-                        off.show();
-                    });
+                          });
+                            $(document).on("click", ".btnRowStyle", function () {
+                                debugger;
+                                selectedRow = $(this).attr("guid");
+                                var offcanvas = $("#styleDiv");
+                                var off = new bootstrap.Offcanvas(offcanvas);
+                                off.show();
+                            });
 
-                    $(".rowbd").change(function() {
-                        debugger;
-                        var cls = $(this).val();
-                         var custClass = $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses");
-                        //var custClass = $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames");
-                        //var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames");
+                            $(".rowbd").change(function() {
+                                debugger;
+                                var cls = $(this).val();
+                                 var custClass = $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses");
+                                //var custClass = $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames");
+                                //var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames");
 
-                        if($(this).is(':checked'))
-                        {
-                            custClass += ` ${cls}`;
+                                if($(this).is(':checked'))
+                                {
+                                    custClass += ` ${cls}`;
 
-                        }else
-                        {
-                            //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass(cls);
-                            custClass = custClass.replace(cls, "");
-                            //pClass = pClass.replace(cls, "");
-                        }
+                                }else
+                                {
+                                    //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).removeClass(cls);
+                                    custClass = custClass.replace(cls, "");
+                                    //pClass = pClass.replace(cls, "");
+                                }
 
-                        //$(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames", custClass);
-                        //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames", pClass);
-                        $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses", custClass);
-                    });
+                                //$(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames", custClass);
+                                //$(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames", pClass);
+                                $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses", custClass);
+                            });
 
-                    $("#deleteBgImage").click(function(){
-                        //???
-                    });
+                            $("#deleteBgImage").click(function(){
+                                //???
+                            });
 
-                    $("#send_pic").click(function () {
+                            $("#send_pic").click(function () {
 
-                        $("#uploadModal").modal("hide");
-                        var url = $("#galleryPic").attr("src");
-                        var model = {};
-                        var ratio="";
-                            var width ="";
-                        var height ="";
-                        switch($("#imgAspectRatio").val())
-                        {
-                            case "1":
-                            ratio ="1*1";
-                                width = 120;
-                            height = 120;
-                            break;
-                            case "2":
-                            ratio = "2*1";
-                                width = 120;
-                            height = 60;
-                            break;
-                            case "4":
-                            ratio="4*1";
-                                width = 120;
-                            height = 30;
-                            break;
-                        }
-                        model.ImageId = counter;
-                        model.Content = url;
-                        model.ImageRatioId =
-                        images.push(model);
-                    });
+                                $("#uploadModal").modal("hide");
+                                var url = $("#galleryPic").attr("src");
+                                var model = {};
+                                var ratio="";
+                                    var width ="";
+                                var height ="";
+                                switch($("#imgAspectRatio").val())
+                                {
+                                    case "1":
+                                    ratio ="1*1";
+                                        width = 120;
+                                    height = 120;
+                                    break;
+                                    case "2":
+                                    ratio = "2*1";
+                                        width = 120;
+                                    height = 60;
+                                    break;
+                                    case "4":
+                                    ratio="4*1";
+                                        width = 120;
+                                    height = 30;
+                                    break;
+                                }
+                                model.ImageId = counter;
+                                model.Content = url;
+                                model.ImageRatioId =
+                                images.push(model);
+                            });
 
-                    $("#removeFlagPart").click(function(){
-                        $('#confirmDesignModalLabel').text('@Language.GetString("btn_Delete")');
-                        $('#confirmDesignModalBody').html('@Language.GetString("AlertAndMessage_RemoveBoxConfrim")');
-                        $('#confirmDesignModal').modal('show');
-                    });
+                            $("#removeFlagPart").click(function(){
+                                $('#confirmDesignModalLabel').text('@Language.GetString("btn_Delete")');
+                                $('#confirmDesignModalBody').html('@Language.GetString("AlertAndMessage_RemoveBoxConfrim")');
+                                $('#confirmDesignModal').modal('show');
+                            });
 
 
-                     $(".owl-carousel").owlCarousel({
-                                   loop: true,
-                                   rtl: true,
-                                   navigation : true,
-                                   /* autoplay: true,*/
-                                   margin: 10,
-                                   animateOut: 'fadeOut',
-                                   animateIn: 'fadeIn',
-                                   nav: true,
-                                   /*dots: true,*/
-                                   autoplayHoverPause: false,
-                                   items: 3,
-                                   navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>",
-                                             "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
-                                   responsive: {
-                                       0: {
-                                           items: 1
-                                       },
-                                       600: {
-                                           items: 3
-                                       },
-                                       1000: {
-                                           items: 5
+                             $(".owl-carousel").owlCarousel({
+                                           loop: true,
+                                           rtl: true,
+                                           navigation : true,
+                                           /* autoplay: true,*/
+                                           margin: 10,
+                                           animateOut: 'fadeOut',
+                                           animateIn: 'fadeIn',
+                                           nav: true,
+                                           /*dots: true,*/
+                                           autoplayHoverPause: false,
+                                           items: 3,
+                                           navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>",
+                                                     "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
+                                           responsive: {
+                                               0: {
+                                                   items: 1
+                                               },
+                                               600: {
+                                                   items: 3
+                                               },
+                                               1000: {
+                                                   items: 5
+                                               }
+                                           }
+                                       });
+
+                                   $("#btnSave").click(function(){
+                                       debugger;
+                                       //start of header section
+
+                                        var header = {}; //an instance of headerPart
+                                        header.CustomizedContent = [];
+
+                                        if(headerBgColor != "")
+                                        {
+                                            header.BGTypeId = 1;
+                                            header.CodeColor = headerBgColor;
+                                        }
+
+                                        var i = 1;
+                                        var rn = 1000;
+                                        $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
+                                            debugger;
+                                            rn = $(this).find(".row.sectionRow").attr("rn");
+                                            var obj = {}; //an instance of RowContent
+                                            obj.RowNumber = parseInt(rn) ;
+                                            obj.OrderInRow = i ;
+                                            obj.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+                                            obj.ColsContent = [] ;
+                                            $(this).find(".row.parent .finalColumnContent").each(function(){
+                                                var colContent ={} ; //an instance of ColContent
+                                                colContent.Section = "headerSection";
+                                                colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
+                                                colContent.ColData = $(this).html();
+                                                colContent.ColumnClassNames = $(this).attr("classNames");
+
+                                                obj.ColsContent.push(colContent);
+                                            });
+                                            i++;
+                                            header.CustomizedContent.push(obj);
+                                        });
+
+                                        //navbar
+                                        //var obj = {}; //an instance of RowContent for navbar Menu
+                                        //if($(".dynamicHeaderPart .firstLevel .contentColumns").length == 0 )
+                                        //{
+                                        //    obj.RowNumber =  parseInt(rn);
+                                        //}else
+                                        //{
+                                        //    obj.RowNumber =  parseInt(rn) + 1;
+                                        //}
+
+                                        //obj.RowNumber =  parseInt(rn) + 1;
+                                        //obj.OrderInRow = i ;
+                                        //obj.ExtraClassNames ="navbarMenu";
+                                        //obj.ColsContent =[] ;
+                                        //var singleCol = {};
+                                        //singleCol.Section ="";
+                                        //singleCol.ColNumber = 1;
+
+                                        //var menuModule = {};//an instance of ModuleWithParametersValue for menu
+                                        //menuModule.ModuleId = "f8865ffc-1653-41ba-a281-ee57fa7ffc09";
+                                        //menuModule.ModuleName = "HorizantalStoreMenu";
+                                        //menuModule.ParametersValue = {};
+                                        //menuModule.ParametersValue.domainId = '@domainId';
+                                        //menuModule.ParametersValue.languageId = $("#languageId").val();
+                                        //var data = JSON.stringify(menuModule);
+                                        //var menuData = `<div target='module'>${data}</div>`;
+
+                                        //singleCol.ColData = menuData;
+                                        //singleCol.ColumnClassNames = "";
+                                        //obj.ColsContent.push(singleCol);
+                                        //header.CustomizedContent.push(obj);
+                                        //end of header section
+
+
+                                        //start of container section
+                                        i= 1;
+                                        rn ="";
+                                        var bodyContainer = {}; //an instance of MainPageContentPart
+                                        bodyContainer.RowContents = [] ;
+                                         $(".dynamicContainerPart .firstLevel .contentColumns").each(function()
+                                         {
+                                             debugger;
+                                             rn = $(this).find(".row.sectionRow").attr("rn");
+
+                                            var bodyRowContent = {}; //an instance of RowContent
+                                            bodyRowContent.RowNumber = parseInt(rn) ;
+                                            bodyRowContent.OrderInRow = i ;
+                                            bodyRowContent.ColsContent = [] ;
+                                            bodyRowContent.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+                                            if( $(this).find(".row.sectionRow").css("background-color") != undefined &&
+                                                $(this).find(".row.sectionRow").css("background-color") != "" )
+                                            {
+                                                bodyRowContent.BgCodeColor = $(this).find(".row.sectionRow").css("background-color");
+                                            }
+
+                                            $(this).find(".row.parent .finalColumnContent").each(function(){
+                                                var colContent ={} ; //an instance of ColContent
+                                                colContent.Section = "containerSection";
+                                                colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
+                                                colContent.ColData = $(this).html();
+                                                colContent.ColumnClassNames = $(this).attr("classNames");
+                                                bodyRowContent.ColsContent.push(colContent);
+                                            });
+                                           i++;
+                                           bodyContainer.RowContents.push(bodyRowContent);
+                                         });
+                                         //end of container section
+
+                                         //start of footerSection
+                                          i= 1;
+                                          rn ="";
+                                          var footerPart ={} ; //an instance of footerPart
+
+                                           if(footerBgColor != "")
+                                            {
+                                                footerPart.BGTypeId = 1;
+                                                footerPart.CodeColor = footerBgColor;
+                                            }
+                                          footerPart.CustomizedContent =[];
+                                          $(".dynamicFooterPart .firstLevel .contentColumns").each(function()
+                                          {
+                                              debugger;
+                                            rn = $(this).find(".row.sectionRow").attr("rn");
+                                            var footerRowContent = {}; //an instance of RowContent
+                                            footerRowContent.RowNumber = parseInt(rn) ;
+                                            footerRowContent.OrderInRow = i ;
+                                            footerRowContent.ColsContent = [] ;
+                                            footerRowContent.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+                                            $(this).find(".row.parent .finalColumnContent").each(function(){
+                                                var colContent ={} ; //an instance of ColContent
+                                                colContent.Section = "footerSection"
+                                                colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
+                                                colContent.ColData = $(this).html();
+                                                colContent.ColumnClassNames = $(this).attr("classNames");
+
+                                                footerRowContent.ColsContent.push(colContent);
+                                            });
+                                             i++;
+                                            footerPart.CustomizedContent.push(footerRowContent);
+                                          });
+                                          //end of footer section
+
+                                        var model = {}; //an instance of DomainPageModel
+
+                                       if($("#languageId").val() != "-1")
+                                       {
+                                           debugger;
+                                            model.HeaderPart = header;
+                                            model.MainPageContainerPart = bodyContainer;
+                                            model.FooterPart = footerPart;
+                                            model.DomainId = '@ViewBag.DomainId';
+                                            model.LanguageId = $("#languageId").val();
+                                            model.IsMultiLinguals = isMultiLingual;
+                                            model.isShop = isShop;
+                                           $("#PrimaryTemplateHeaderPart textarea").each(function(){
+                                               var id= $(this).attr("id");
+                                               $(`div#${id}`)
+                                           })
+
+                                           model.HeaderHtmlSection = $("#PrimaryTemplateHeaderPart").html();
+                                           model.BodyHtmlSection = $("#PrimaryTemplateContainerPart").html();
+                                           model.FooterHtmlSection = $("#PrimaryTemplateFooterPart").html();
+
+
+                                        $.ajax({
+                                           type: "Post",
+                                           url: '@Url.Action("SavePageContent", "Domain")',
+                                           contentType : 'application/json',
+                                           data : JSON.stringify(model),
+                                           success: function (result) {
+                                               debugger;
+                                               $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_EditionDoneSuccessfully")');
+                                                     $('#mainToastBody').addClass('alert-success');
+
+                                                     var toastDiv = $("#mainToast");
+                                                     $("#toastPanel").show();
+                                                     var toast = new bootstrap.Toast(toastDiv);
+                                                     toast.show();
+                                                     //setTimeout(function(){
+                                                        // toast.hide(),3000
+                                                     //});
+                                           },
+
+                                        });
+                                       }
+                                       else
+                                        {
+                                            showError('@Language.GetString("AlertAndMessage_FillLangId")');
+                                        }
+
+                                   });
+
+                                   $("#btnPreview").click(function(){
+                                       debugger;
+                                       var header ="";
+                                       var container ="";
+                                       var footer ="";
+
+                                        //var regPart = document.getElementById("regPart").outerHTML;
+                                        //var priorHeader = document.getElementById("regPart").outerHTML;
+                                        //header = priorHeader;
+
+                                        $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
+                                            var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+                                            header += `<div class='row firstLevel ${extraClasses}'>`;
+                                            $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
+                                                var classNames = $(this).attr("classNames");
+                                                var columnContent = $(this).html();
+                                                header +=`<div class='${classNames}'>${columnContent}</div>` ;
+                                            });
+                                            header += "</div>";
+                                        });
+
+                                          if($("#languageId").val() != "-1")
+                                             {
+
+                                                $(".dynamicContainerPart .firstLevel .contentColumns").each(function()
+                                                {
+                                                    var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+                                                        container += `<div class='row firstLevel ${extraClasses}'>`;
+                                                    $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
+
+                                                        var classNames = $(this).attr("classNames");
+                                                        var columnContent = $(this).html();
+                                                        container +=`<div class='${classNames}'>${columnContent}</div>` ;
+                                                    });
+                                                    container += "</div>";
+                                                });
+
+                                                    //start of footerSection
+                                                    $(".dynamicFooterPart .firstLevel .contentColumns").each(function()
+                                                    {
+                                                    var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+                                                    footer += `<div class='row firstLevel ${extraClasses}'>`;
+                                                    $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
+                                                        var classNames = $(this).attr("classNames");
+                                                        var columnContent = $(this).html();
+                                                        footer +=`<div class= '${classNames}' > ${columnContent} </div>` ;
+                                                    });
+                                                        footer += "</div>";
+
+                                                    });
+                                                //end of footer section
+
+                                                debugger;
+                                                    var model = {}; //an instance of TemplateDesign
+                                                    model.HeaderContent = header;
+                                                    model.ContainerContent = container;
+                                                    model.FooterContent = footer;
+                                                    model.DomainId = '@domainId';
+                                                    model.LanguageId = $("#languageId").val();
+                                                    model.IsShop = isShop;
+                                                    model.IsMultiLinguals = isMultiLingual;
+
+                                                        $.ajax({
+                                                        url: '@Url.Action("StoreDesignPreview")',
+                                                        data : JSON.stringify(model),
+                                                        contentType: 'application/json',
+                                                        type: 'Post',
+                                                        dataType: 'json',
+                                                        success: function (result) {
+                                                            if(result != "")
+                                                            {
+                                                                window.open('@Url.Action("DesignPreview")'+'?key='+result.key , '_blank');
+                                                            }
+                                                        }
+                                                        });
+
+                                              }
+                                            else
+                                            {
+                                                showError('@Language.GetString("AlertAndMessage_FillLangId")');
+                                            }
+                                   });
+
+                               })
+
+
+                               function confirmation()
+                               {
+                                   $(".flagPartDiv").addClass("d-none");
+                                   $("#restoreRecord").removeClass("d-none");
+                               }
+
+                               function flagRestoration()
+                               {
+                                   $(".flagPartDiv").removeClass("d-none");
+                                   $("#restoreRecord").addClass("d-none");
+                               }
+                               function setLang(lang)
+                                   {
+                                       var currentCulture = '@CultureInfo.CurrentCulture.Name';
+                                       if (currentCulture !== lang) {
+                                           $.ajax({
+                                               type: "GET",
+                                               url: '/Account/changeLang?langId=' + lang,
+                                               success: function () {
+
+                                                   window.location.reload();
+                                               }
+                                           });
                                        }
                                    }
-                               });
+                                   function setProductCountInCart(number) {
+                                      $("#userBasketId .notifyBadge").html(number);
+                                   }
 
-                           $("#btnSave").click(function(){
-                               debugger;
-                               //start of header section
-
-                                var header = {}; //an instance of headerPart
-                                header.CustomizedContent = [];
-
-                                //var regPart = document.getElementById("regPart").outerHTML;
-                                //var priorHeader = document.getElementById("regPart").outerHTML;
-                                //header.PriorFixedContent = priorHeader;
-                                if(headerBgColor != "")
-                                {
-                                    header.BGTypeId = 1;
-                                    header.CodeColor = headerBgColor;
-                                }
-
-                                var i = 1;
-                                var rn = 1000;
-                                $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
-                                    debugger;
-                                    rn = $(this).find(".row.sectionRow").attr("rn");
-                                    var obj = {}; //an instance of RowContent
-                                    obj.RowNumber = parseInt(rn) ;
-                                    obj.OrderInRow = i ;
-                                    obj.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses");
-                                    obj.ColsContent = [] ;
-                                    $(this).find(".row.parent .finalColumnContent").each(function(){
-                                        var colContent ={} ; //an instance of ColContent
-                                        colContent.Section = "headerSection";
-                                        colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
-                                        colContent.ColData = $(this).html();
-                                        colContent.ColumnClassNames = $(this).attr("classNames");
-
-                                        obj.ColsContent.push(colContent);
-                                    });
-                                    i++;
-                                    header.CustomizedContent.push(obj);
-                                });
-
-                                //navbar
-                                //var obj = {}; //an instance of RowContent for navbar Menu
-                                //if($(".dynamicHeaderPart .firstLevel .contentColumns").length == 0 )
-                                //{
-                                //    obj.RowNumber =  parseInt(rn);
-                                //}else
-                                //{
-                                //    obj.RowNumber =  parseInt(rn) + 1;
-                                //}
-
-                                //obj.RowNumber =  parseInt(rn) + 1;
-                                //obj.OrderInRow = i ;
-                                //obj.ExtraClassNames ="navbarMenu";
-                                //obj.ColsContent =[] ;
-                                //var singleCol = {};
-                                //singleCol.Section ="";
-                                //singleCol.ColNumber = 1;
-
-                                //var menuModule = {};//an instance of ModuleWithParametersValue for menu
-                                //menuModule.ModuleId = "f8865ffc-1653-41ba-a281-ee57fa7ffc09";
-                                //menuModule.ModuleName = "HorizantalStoreMenu";
-                                //menuModule.ParametersValue = {};
-                                //menuModule.ParametersValue.domainId = '@domainId';
-                                //menuModule.ParametersValue.languageId = $("#languageId").val();
-                                //var data = JSON.stringify(menuModule);
-                                //var menuData = `<div target='module'>${data}</div>`;
-
-                                //singleCol.ColData = menuData;
-                                //singleCol.ColumnClassNames = "";
-                                //obj.ColsContent.push(singleCol);
-                                //header.CustomizedContent.push(obj);
-                                //end of header section
-
-
-                                //start of container section
-                                i= 1;
-                                rn ="";
-                                var bodyContainer = {}; //an instance of MainPageContentPart
-                                bodyContainer.RowContents = [] ;
-                                 $(".dynamicContainerPart .firstLevel .contentColumns").each(function()
-                                 {
-                                     debugger;
-                                     rn = $(this).find(".row.sectionRow").attr("rn");
-
-                                    var bodyRowContent = {}; //an instance of RowContent
-                                    bodyRowContent.RowNumber = parseInt(rn) ;
-                                    bodyRowContent.OrderInRow = i ;
-                                    bodyRowContent.ColsContent = [] ;
-                                    bodyRowContent.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses");
-                                    if( $(this).find(".row.sectionRow").css("background-color") != undefined &&
-                                        $(this).find(".row.sectionRow").css("background-color") != "" )
-                                    {
-                                        bodyRowContent.BgCodeColor = $(this).find(".row.sectionRow").css("background-color");
-                                    }
-
-                                    $(this).find(".row.parent .finalColumnContent").each(function(){
-                                        var colContent ={} ; //an instance of ColContent
-                                        colContent.Section = "containerSection";
-                                        colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
-                                        colContent.ColData = $(this).html();
-                                        colContent.ColumnClassNames = $(this).attr("classNames");
-                                        bodyRowContent.ColsContent.push(colContent);
-                                    });
-                                   i++;
-                                   bodyContainer.RowContents.push(bodyRowContent);
-                                 });
-                                 //end of container section
-
-                                 //start of footerSection
-                                  i= 1;
-                                  rn ="";
-                                  var footerPart ={} ; //an instance of footerPart
-
-                                   if(footerBgColor != "")
-                                    {
-                                        footerPart.BGTypeId = 1;
-                                        footerPart.CodeColor = footerBgColor;
-                                    }
-                                  footerPart.CustomizedContent =[];
-                                  $(".dynamicFooterPart .firstLevel .contentColumns").each(function()
-                                  {
-                                      debugger;
-                                    rn = $(this).find(".row.sectionRow").attr("rn");
-                                    var footerRowContent = {}; //an instance of RowContent
-                                    footerRowContent.RowNumber = parseInt(rn) ;
-                                    footerRowContent.OrderInRow = i ;
-                                    footerRowContent.ColsContent = [] ;
-                                    footerRowContent.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses");
-                                    $(this).find(".row.parent .finalColumnContent").each(function(){
-                                        var colContent ={} ; //an instance of ColContent
-                                        colContent.Section = "footerSection"
-                                        colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
-                                        colContent.ColData = $(this).html();
-                                        colContent.ColumnClassNames = $(this).attr("classNames");
-
-                                        footerRowContent.ColsContent.push(colContent);
-                                    });
-                                     i++;
-                                    footerPart.CustomizedContent.push(footerRowContent);
-                                  });
-                                  //end of footer section
-
-                                var model = {}; //an instance of DomainPageModel
-                                
-                               if($("#languageId").val() != "-1")
-                               {
-                                   debugger;
-                                    model.HeaderPart = header;
-                                    model.MainPageContainerPart = bodyContainer;
-                                    model.FooterPart = footerPart;
-                                    model.DomainId = '@ViewBag.DomainId';
-                                    model.LanguageId = $("#languageId").val();
-                                    model.IsMultiLinguals = isMultiLingual;
-                                    model.isShop = isShop;
-
-                                 
-                                   model.HeaderHtmlSection = $("#PrimaryTemplateHeaderPart").html();
-                                   model.BodyHtmlSection = $("#PrimaryTemplateContainerPart").html();
-                                   model.FooterHtmlSection = $("#PrimaryTemplateFooterPart").html();
-
-
-                                $.ajax({
-                                   type: "Post",
-                                   url: '@Url.Action("SavePageContent", "Domain")',
-                                   contentType : 'application/json',
-                                   data : JSON.stringify(model),
-                                   success: function (result) {
-                                       debugger;
-                                       $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_EditionDoneSuccessfully")');
-                                             $('#mainToastBody').addClass('alert-success');
-
-                                             var toastDiv = $("#mainToast");
-                                             $("#toastPanel").show();
-                                             var toast = new bootstrap.Toast(toastDiv);
-                                             toast.show();
-                                             //setTimeout(function(){
-                                                // toast.hide(),3000
-                                             //});
-                                   },
-
-                                });
-                               }
-                               else
-                                {
-                                    showError('@Language.GetString("AlertAndMessage_FillLangId")');
-                                }
-
-                           });
-
-                           $("#btnPreview").click(function(){
-                               debugger;
-                               var header ="";
-                               var container ="";
-                               var footer ="";
-
-                                //var regPart = document.getElementById("regPart").outerHTML;
-                                //var priorHeader = document.getElementById("regPart").outerHTML;
-                                //header = priorHeader;
-
-                                $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
-                                    var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
-                                    header += `<div class='row firstLevel ${extraClasses}'>`;
-                                    $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
-                                        var classNames = $(this).attr("classNames");
-                                        var columnContent = $(this).html();
-                                        header +=`<div class='${classNames}'>${columnContent}</div>` ;
-                                    });
-                                    header += "</div>";
-                                });
-
-                                  if($("#languageId").val() != "-1")
-                                     {
-
-                                        //$.ajax({
-                                        //    url:"@Url.Action("GetMenuModuleViewComponent","Domain")"+"?domainId="+'@domainId'+"&languageId="+ $("#languageId").val(),
-                                        //    type:'Get',
-                                        //    statusCode:{
-                                        //        200:function(data){
-
-                                        //           header +=`<div class="navbar">${data}</div>` ;
-                                                   $(".dynamicContainerPart .firstLevel .contentColumns").each(function()
-                                                   {
-                                                        var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
-                                                         container += `<div class='row firstLevel ${extraClasses}'>`;
-                                                        $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
-
-                                                           var classNames = $(this).attr("classNames");
-                                                            var columnContent = $(this).html();
-                                                            container +=`<div class='${classNames}'>${columnContent}</div>` ;
-                                                        });
-                                                        container += "</div>";
-                                                    });
-
-                                                     //start of footerSection
-                                                      $(".dynamicFooterPart .firstLevel .contentColumns").each(function()
-                                                      {
-                                                        var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
-                                                        footer += `<div class='row firstLevel ${extraClasses}'>`;
-                                                        $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
-                                                            var classNames = $(this).attr("classNames");
-                                                            var columnContent = $(this).html();
-                                                            footer +=`<div class= '${classNames}' > ${columnContent} </div>` ;
-                                                        });
-                                                         footer += "</div>";
-
-                                                      });
-                                                    //end of footer section
-
-                                                    debugger;
-                                                        var model = {}; //an instance of TemplateDesign
-                                                        model.HeaderContent = header;
-                                                        model.ContainerContent = container;
-                                                        model.FooterContent = footer;
-                                                        model.DomainId = '@domainId';
-                                                        model.LanguageId = $("#languageId").val();
-                                                        model.IsShop = isShop;
-                                                        model.IsMultiLinguals = isMultiLingual;
-
-                                                         $.ajax({
-                                                           url: '@Url.Action("StoreDesignPreview")',
-                                                           data : JSON.stringify(model),
-                                                           contentType: 'application/json',
-                                                           type: 'Post',
-                                                           dataType: 'json',
-                                                           success: function (result) {
-                                                               if(result != "")
-                                                               {
-                                                                   window.open('@Url.Action("DesignPreview")'+'?key='+result.key , '_blank');
-                                                               }
-                                                           }
-                                                          });
-                                               // }
-                                           // }
-                                         // });
-
-                                      }
-                                    else
-                                    {
-                                        showError('@Language.GetString("AlertAndMessage_FillLangId")');
-                                    }
-                           });
-                             
-                       })
-
-
-                       function confirmation()
-                       {
-                           $(".flagPartDiv").addClass("d-none");
-                           $("#restoreRecord").removeClass("d-none");
-                       }
-
-                       function flagRestoration()
-                       {
-                           $(".flagPartDiv").removeClass("d-none");
-                           $("#restoreRecord").addClass("d-none");
-                       }
-                       function setLang(lang)
-                           {
-                               var currentCulture = '@CultureInfo.CurrentCulture.Name';
-                               if (currentCulture !== lang) {
-                                   $.ajax({
-                                       type: "GET",
-                                       url: '/Account/changeLang?langId=' + lang,
-                                       success: function () {
-
-                                           window.location.reload();
+                                   function changeScreen() {
+                                       var windowSize = $(window).width();
+                                       console.log(windowSize);
+                                       if (windowSize <= 974) {
+                                           $(".nascr").removeClass("d-none").addClass("d-block");
+                                           $(".wiscr").removeClass("d-block").addClass("d-none");
+                                       } else {
+                                           $(".nascr").removeClass("d-block").addClass("d-none");
+                                           $(".wiscr").removeClass("d-none").addClass("d-block");
                                        }
-                                   });
+                                   }
+
+
+
+                  function addToTable() {
+                        debugger;
+                        var flag = false;
+                        var selectedLang = $('#multiLangId').val();
+                        if(isUnique(selectedLang, 'multiLingualList', 1, '@Language.GetString("AlertAndMessage_LangUniqueness")'))
+                        {
+                                 $("span[data-val-result='multiLangId']").html("");
+                                 $("span[data-val-result='productName']").html("");
+
+                                if ($("#multiLangId").val() == "") {
+                                    $("span[data-val-result='multiLangId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                                    flag = true;
+                                }
+                                if ($("#productName").val() == "") {
+                                        $("span[data-val-result='productName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                                    flag = true;
+                                }
+                                if (!flag) {
+                                    debugger;
+                                    var obj = {};
+                                    obj.LanguageId = $('#multiLangId').val();
+                                    obj.LanguageName = $("#multiLangId option:selected").text();
+                                    obj.Name = $('#productName').val();
+                                    obj.SeoTitle = $("#seoTitle").val();
+                                    obj.SeoDescription = $("#seoDescription").val();
+                                    obj.Description = $("#description").val();
+                                    obj.UrlFriend = $("#urlFriend").val();
+                                    obj.BodyContent = CKEDITOR.instances.editorCk.getData();
+                                    obj.Tag = cnt.toString();
+
+                                    multiLingualArr.push(obj);
+
+                                    var tr = "<tr style='text-align:center;'><td>" + $("#multiLangId option:selected").text() +
+                                        "</td><td style='display:none;'>" + $('#multiLangId').val() +
+                                        "</td><td>" + $('#productName').val() +
+                                        "</td><td>" + $("#seoTitle").val() +
+                                        "</td><td>" + $("#seoDescription").val() +
+                                        "</td><td>" + $("#description").val() +
+                                        "</td><td>" + $("#urlFriend").val() +
+                                        "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' cnt='" + obj.Tag + "' onclick='deleteFromTable(this);'>" +
+                                        "<i class='fa fa-trash' ></i></button></td></tr>";
+
+                                    if ($("#multiLingualList tr").length == 1 && $("#multiLingualList tr")[0].children.length == 1) {
+                                        $("#multiLingualList tr")[0].remove();
+                                    }
+
+                                    $("#multiLingualList").append(tr);
+                                    cnt = cnt + 1;
+                                    $("#multiLangId").val("@ViewBag.LangId");
+                                    $("#multiLangId").selectpicker("refresh");
+                                    $("#productName").val("");
+                                    $("#seoTitle").val("");
+                                    $("#seoDescription").val("");
+                                    $("#description").val("");
+                                    CKEDITOR.instances.editorCk.setData("");
+                                   /* $("#urlFriend").val("");*/
+                                }
+                        }
+                     }
+                    $("#uploadModal").on("shown.bs.modal", function() {
+
+                              var image = document.getElementById('croppedImg');
+                              $("#send_pic").attr("disabled", true);
+                              debugger;
+                                var ratio = $("#imgAspectRatio").val();
+                                if (cropper !== null && cropper !== undefined) {
+                                cropper.destroy();
                                }
-                           }
-                           function setProductCountInCart(number) {
-                              $("#userBasketId .notifyBadge").html(number);
-                           }
 
-                           function changeScreen() {
-                               var windowSize = $(window).width();
-                               console.log(windowSize);
-                               if (windowSize <= 974) {
-                                   $(".nascr").removeClass("d-none").addClass("d-block");
-                                   $(".wiscr").removeClass("d-block").addClass("d-none");
-                               } else {
-                                   $(".nascr").removeClass("d-block").addClass("d-none");
-                                   $(".wiscr").removeClass("d-none").addClass("d-block");
-                               }
-                           }
+                                cropper = new Cropper(image,
+                                    {
+                                        background: true,
+                                        aspectRatio: ratio,
+                                        viewMode: 1,
+                                        responsive: true,
+                                        rotatable: true
 
-          
+                                    });
+                       });
+                    $('#uploadModal').on('hidden.bs.modal',
+                        function () {
 
-          function addToTable() {
-                debugger;
-                var flag = false;
-                var selectedLang = $('#multiLangId').val();
-                if(isUnique(selectedLang, 'multiLingualList', 1, '@Language.GetString("AlertAndMessage_LangUniqueness")'))
-                {
-                         $("span[data-val-result='multiLangId']").html("");
-                         $("span[data-val-result='productName']").html("");
+                            cropper.destroy();
+                            document.getElementById("image").value = "";
+                            $("#cropped_result").remove();
+                        });
 
-                        if ($("#multiLangId").val() == "") {
-                            $("span[data-val-result='multiLangId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
-                            flag = true;
-                        }
-                        if ($("#productName").val() == "") {
-                                $("span[data-val-result='productName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
-                            flag = true;
-                        }
-                        if (!flag) {
-                            debugger;
-                            var obj = {};
-                            obj.LanguageId = $('#multiLangId').val();
-                            obj.LanguageName = $("#multiLangId option:selected").text();
-                            obj.Name = $('#productName').val();
-                            obj.SeoTitle = $("#seoTitle").val();
-                            obj.SeoDescription = $("#seoDescription").val();
-                            obj.Description = $("#description").val();
-                            obj.UrlFriend = $("#urlFriend").val();
-                            obj.BodyContent = CKEDITOR.instances.editorCk.getData();
-                            obj.Tag = cnt.toString();
-
-                            multiLingualArr.push(obj);
-
-                            var tr = "<tr style='text-align:center;'><td>" + $("#multiLangId option:selected").text() +
-                                "</td><td style='display:none;'>" + $('#multiLangId').val() +
-                                "</td><td>" + $('#productName').val() +
-                                "</td><td>" + $("#seoTitle").val() +
-                                "</td><td>" + $("#seoDescription").val() +
-                                "</td><td>" + $("#description").val() +
-                                "</td><td>" + $("#urlFriend").val() +
-                                "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' cnt='" + obj.Tag + "' onclick='deleteFromTable(this);'>" +
-                                "<i class='fa fa-trash' ></i></button></td></tr>";
-
-                            if ($("#multiLingualList tr").length == 1 && $("#multiLingualList tr")[0].children.length == 1) {
-                                $("#multiLingualList tr")[0].remove();
-                            }
-
-                            $("#multiLingualList").append(tr);
-                            cnt = cnt + 1;
-                            $("#multiLangId").val("@ViewBag.LangId");
-                            $("#multiLangId").selectpicker("refresh");
-                            $("#productName").val("");
-                            $("#seoTitle").val("");
-                            $("#seoDescription").val("");
-                            $("#description").val("");
-                            CKEDITOR.instances.editorCk.setData("");
-                           /* $("#urlFriend").val("");*/
-                        }
-                }
-             }
-            $("#uploadModal").on("shown.bs.modal", function() {
-
-                      var image = document.getElementById('croppedImg');
-                      $("#send_pic").attr("disabled", true);
-                      debugger;
-                        var ratio = $("#imgAspectRatio").val();
-                        if (cropper !== null && cropper !== undefined) {
-                        cropper.destroy();
-                       }
-
-                        cropper = new Cropper(image,
-                            {
-                                background: true,
-                                aspectRatio: ratio,
-                                viewMode: 1,
-                                responsive: true,
-                                rotatable: true
-
-                            });
-               });
-            $('#uploadModal').on('hidden.bs.modal',
-                function () {
-
-                    cropper.destroy();
-                    document.getElementById("image").value = "";
-                    $("#cropped_result").remove();
-                });
-
-            function rotatePic() {
-                cropper.rotate(90);
-            }
-            $(document).on("click", "#crop_button",
-                function () {
-                        var imgUrl = cropper.getCroppedCanvas({imageSmoothingEnabled: true,
-                                imageSmoothingQuality: 'high' }).toDataURL('image/jpeg', 1);
-                    var img = document.createElement("img");
-                    img.setAttribute("id", "galleryPic");
-                    img.setAttribute("class", "img-fluid");
-                    var height = $("#container").attr("height");
-                    var croppedContainer = document.createElement("div");
-                    croppedContainer.setAttribute("id", "cropped_result");
-                    croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
-                    document.getElementById("rowContainer").appendChild(croppedContainer);
-                    img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
-                    img.src = imgUrl;
-                    document.getElementById("cropped_result").innerHTML = "";
-                    document.getElementById("cropped_result").appendChild(img);
-                    $("#send_pic").attr("disabled", false);
-                });
-
-
-            function getURL(input)
-            {
-             $("#cropped_result").remove();
-             if (input.files && input.files[0]) {
-                var file = input.files[0];
-                currentFileName = file.name;
-                currentFileSize = file.size;
-
-                if (currentFileSize <= @ViewBag.PicSize) {
-                    var reader = new FileReader();
-                    try {
-                        reader.readAsDataURL(file);
-                    } catch (e) {
-
+                    function rotatePic() {
+                        cropper.rotate(90);
                     }
-                    reader.onload = function (e) {
-                        var content = e.target.result;
-                        //if file format is incorrect, then the 'content' won't have any src.
-                        if (content !== "data:") {
-                            var reducedContent = content.slice(5);
+                    $(document).on("click", "#crop_button",
+                        function () {
+                                var imgUrl = cropper.getCroppedCanvas({imageSmoothingEnabled: true,
+                                        imageSmoothingQuality: 'high' }).toDataURL('image/jpeg', 1);
+                            var img = document.createElement("img");
+                            img.setAttribute("id", "galleryPic");
+                            img.setAttribute("class", "img-fluid");
+                            var height = $("#container").attr("height");
+                            var croppedContainer = document.createElement("div");
+                            croppedContainer.setAttribute("id", "cropped_result");
+                            croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
+                            document.getElementById("rowContainer").appendChild(croppedContainer);
+                            img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
+                            img.src = imgUrl;
+                            document.getElementById("cropped_result").innerHTML = "";
+                            document.getElementById("cropped_result").appendChild(img);
+                            $("#send_pic").attr("disabled", false);
+                        });
 
-                            if (reducedContent.startsWith("image")) {
-                                 $('#croppedImg').attr('src', content);
-                                $("#uploadModal").modal("show");
-                            } else {
-                                showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
-                                document.getElementById("image").value = "";
-                                $("#cropped_result").remove();
+
+                    function getURL(input)
+                    {
+                     $("#cropped_result").remove();
+                     if (input.files && input.files[0]) {
+                        var file = input.files[0];
+                        currentFileName = file.name;
+                        currentFileSize = file.size;
+
+                        if (currentFileSize <= @ViewBag.PicSize) {
+                            var reader = new FileReader();
+                            try {
+                                reader.readAsDataURL(file);
+                            } catch (e) {
+
                             }
-                        } else {
+                            reader.onload = function (e) {
+                                var content = e.target.result;
+                                //if file format is incorrect, then the 'content' won't have any src.
+                                if (content !== "data:") {
+                                    var reducedContent = content.slice(5);
 
-                            showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
+                                    if (reducedContent.startsWith("image")) {
+                                         $('#croppedImg').attr('src', content);
+                                        $("#uploadModal").modal("show");
+                                    } else {
+                                        showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
+                                        document.getElementById("image").value = "";
+                                        $("#cropped_result").remove();
+                                    }
+                                } else {
+
+                                    showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
+                                    document.getElementById("image").value = "";
+                                    $("#cropped_result").remove();
+                                }
+                            };
+                        }
+                        else
+                        {
+
+                            showError('@Language.GetString("AlertAndMessage_InvalidFileSize")');
                             document.getElementById("image").value = "";
                             $("#cropped_result").remove();
                         }
-                    };
+                    }
+                    }
+
+                    function showError(msg) {
+
+                    document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
+                    document.getElementById('mainToastBody').classList.add('alert-danger');
+                    $("#toastPanel").show();
+                    var toast = new bootstrap.Toast($("#mainToast"));
+                    toast.show();
                 }
-                else
+
+        ////////////////////_pagedesign.cshtml codes////////////////////
+            var headerRowNumber=1000;
+            var contentRowNumber = 2000;
+            var footerRowNumber = 3000;
+            var currentGuid;
+
+            function addNewRow(sender, tag)
+            {
+              debugger;
+                var divId = `#${tag}_paramSection`;
+                $(divId).find(".row.firstLevel").removeClass("active");
+                var currentRowNumber ;
+                switch(tag)
                 {
-
-                    showError('@Language.GetString("AlertAndMessage_InvalidFileSize")');
-                    document.getElementById("image").value = "";
-                    $("#cropped_result").remove();
+                    case "headerSection":
+                    currentRowNumber = headerRowNumber;
+                    headerRowNumber += 1;
+                    break;
+                    case "containerSection":
+                    currentRowNumber = contentRowNumber;
+                    contentRowNumber += 1;
+                    break;
+                    case "footerSection":
+                    currentRowNumber = footerRowNumber;
+                    footerRowNumber += 1;
+                    break;
                 }
+                currentGuid = createGuid();
+                var template = getColTemplate(currentGuid, tag);
+
+                $(divId).append("<div rn='" + currentRowNumber + "' guid='"+currentGuid+"' class='row " + currentRowNumber + " firstLevel align-middle active'></div>");
+
+                $(`.firstLevel.active.${currentRowNumber}`).append(template);
+                var parentDivClass = `.div_${tag}`;
+                $(`#${currentGuid}`).selectpicker();
+
+                $(parentDivClass).find(".lblAlertFirstRow").addClass("d-none");
+
+                 $(sender).attr("disabled", true);
             }
-            }
 
-            function showError(msg) {
+            function selectColumns(sender, id)
+            {
+                debugger;
+                if(!loadInEditMode)
+                {
+                     var col = parseInt($(sender).val());
 
-            document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
-            document.getElementById('mainToastBody').classList.add('alert-danger');
-            $("#toastPanel").show();
-            var toast = new bootstrap.Toast($("#mainToast"));
-            toast.show();
-        }
+                    $.ajax({
+                             url:"@Url.Action("GetRelatedColsTemplateWidths","Domain")"+"?count="+col,
+                             type:'Get',
+                             statusCode:
+                             {
+                                 200:function(result)
+                                 {
+                                     debugger;
+                                     if(result.status == "success")
+                                     {
+                                         var options = "";
+                                          if (result.data.length != 0) {
+                                                (result.data).forEach(function (item) {
+                                                    var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                                    options += op;
+                                                });
+                                            }
 
-////////////////////_pagedesign.cshtml codes////////////////////
-    var headerRowNumber=1000;
-    var contentRowNumber = 2000;
-    var footerRowNumber = 3000;
-
-    function addNewRow(sender, tag)
-    {
-      debugger; 
-        var divId = `#${tag}_paramSection`;
-        $(divId).find(".row.firstLevel").removeClass("active");
-        var currentRowNumber ;
-        switch(tag)
-        {
-            case "headerSection":
-            currentRowNumber = headerRowNumber;
-            headerRowNumber += 1;
-            break;
-            case "containerSection":
-            currentRowNumber = contentRowNumber;
-            contentRowNumber += 1;
-            break;
-            case "footerSection":
-            currentRowNumber = footerRowNumber;
-            footerRowNumber += 1;
-            break;
-        }
-         var guid = createGuid();
-        var template = getColTemplate(guid, tag);
-
-        $(divId).append("<div rn='" + currentRowNumber + "' guid='"+guid+"' class='row " + currentRowNumber + " firstLevel align-middle active'></div>");
-       
-        $(`.firstLevel.active.${currentRowNumber}`).append(template);
-        var parentDivClass = `.div_${tag}`;
-        $(`#${guid}`).selectpicker();
-
-        $(parentDivClass).find(".lblAlertFirstRow").addClass("d-none");
-
-         $(sender).attr("disabled", true);
-    }
-
-    function selectColumns(sender, id)
-    {
-        debugger;
-        var col = parseInt($(sender).val());
-       
-        $.ajax({
-                 url:"@Url.Action("GetRelatedColsTemplateWidths","Domain")"+"?count="+col,
-                 type:'Get',
-                 statusCode:
-                 {
-                     200:function(result)
-                     {
-                         debugger;
-                         if(result.status == "success")
-                         {
-                             var options = "";
-                              if (result.data.length != 0) {
-                                    (result.data).forEach(function (item) {
-                                        var op = "<option value='" + item.value + "'>" + item.text + "</option>";
-                                        options += op;
-                                    });
-                                }
-
-                                $(`.colWidth[colWidthId='${id}']`).html(options);
-                                $(`.colWidth[colWidthId='${id}']`).selectpicker();
-                         }
-                     }
-                 }
-               });
-    }
-
-    function selectColumnsWidthRatio(sender, tag)
-    {
-        debugger;
-        var id = $(sender).attr("colWidthId");
-        var count = parseInt($(`.colCnt[id='${id}']`).val())
-        ;
-         var rowNumber = $(sender).closest(".row.firstLevel").attr("rn");
-        var guid = $(sender).closest(".row.firstLevel").attr("guid");
-       var colWidthEnumId = parseInt($(sender).val());
-
-        $.ajax({
-                 url:"@Url.Action("GetRowWithSelectedColumns","Domain")"+`?count=${count}&colWidth=${colWidthEnumId}&rn=${rowNumber}&d=${'@ViewBag.DomainId'}&gu=${guid}`,
-                 type:'Get',
-                 statusCode:{
-                     200:function(data){
-                         debugger;
-                        
-                         var divId =  `#${tag}_paramSection`;
-                          $(divId).find(`.firstLevel.active.${rowNumber} .contentColumns`).html(data);
-                           $(".drpContentType").selectpicker();
-                           $(".moduleList").selectpicker();
-                            var buttonDivClass = `.row.div_${tag}`;
-                            $(buttonDivClass).find(".addNewRow").removeAttr("disabled");
-                     }
-                 }
-               });
-    }
-    //////////////////////////_InnerSection.cshtml/////////////////
-    function addModule(sender)
-     {
-         debugger;
-         var parentDiv = $(sender).closest(".parent");
-         var colnumber =  $(sender).attr("cn");
-         var cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
-
-              var selectedModuleName = $(parentDiv).find(".moduleList").find("option:selected").text();
-             var selectedModuleId = $(parentDiv).find(".moduleList").find("option:selected").val();
-             var paramDiv = $(parentDiv).find(".paramsDiv");
-             $.ajax({
-                  url:"@Url.Action("GetSpecificModule","Domain")"+"?moduleName="+selectedModuleName+"&id="+'@ViewBag.DomainId'+"&colCount="+cnt,
-                  type:'Get',
-                  statusCode:{
-                      200:function(data){
-                           $(paramDiv).html(data);
-                           $(".typeList").selectpicker();
-                      }
-                  }
-                });
-     }
-
-     function sinitize(sender)
-     {
-      debugger;
-         editorId  =$(sender).attr("editorId");
-             var htmlData = CKEDITOR.instances[editorId].getData();
-             var dataToSend= JSON.stringify(htmlData);
-             $.ajax({
-                  url:"@Url.Action("SanitizeCkEditorContent","Domain")",
-                  type:'Post',
-                  data: dataToSend,
-                  contentType: "application/json; charset=utf-8",
-                  statusCode:{
-                      200:function(data){
-
-                         //show whether this html is valid or not
-                         if(!data.isvalid)
-                         {
-                           $('#mainToastBody').html('<i class="fas fa-exclamation-triangle"></i>@Language.GetString("AlertAndMessage_InvalidEditorContent")');
-                           $('#mainToastBody').addClass('alert-danger');
-                           var toastDiv = $("#mainToast");
-                           $("#toastPanel").show();
-                           var toast = new bootstrap.Toast(toastDiv);
-                           toast.show();
-                           setTimeout(function(){
-                               CKEDITOR.instances.editorId.setData(""),3000
-                           });
-                         }else //it is valid
-                         {
-                             $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_ValidEditorContent")');
-                             $('#mainToastBody').addClass('alert-success');
-                             var toast = new bootstrap.Toast($("#mainToast"));
-                             toast.show();
-
-                           var data = `<div target='editor'>${htmlData}</div>`;
-                           $(sender).closest(".parent").find(".finalColumnContent").html(data);
-
-                           $(sender).closest(".parent").find(".htmlColumnContentPreview").html(htmlData);
-                         }
-                      }
-                  }
-                });
-     }
-
-     function selectDrpContentType(sender)
-     {
-       debugger;
-         var colnumber = $(sender).attr("cn");
-         domainId = $(sender).closest(`div[colnum='${colnumber}']`).attr("did");
-         cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
-
-         var val = $(sender).val();
-         var targetDiv = $(sender).closest(".row").siblings(".row.parent");
-         //var targetDivId =`#${targetDivId}`;
-         switch(val)
-         {
-             case "1":
-             $(targetDiv).find(".modulePart").removeClass("d-none");
-             $(targetDiv).find(".editorPart").addClass("d-none");
-             break;
-             case "2":
-             $(targetDiv).find(".editorPart").removeClass("d-none");
-             $(targetDiv).find(".modulePart").addClass("d-none");
-             break;
-         }
-     }
-
-    function addModulesWithParams(sender)
-    {
-       debugger;
-        var obj = {};//an instance of ModuleWithParametersValue
-        obj.ParametersValue ={};
-         var targetParamsDiv = $(sender).closest(".paramsDiv");
-         var count = 0;
-         var loadAnimation;
-         var loadAnimationType;
-          var sliderId ="" ;
-          var domainId = "@ViewBag.DomainId";
-          var languageId = $("#languageId").val();
-         var parent =  $(sender).closest(".parent");
-         var targetDivId ="";
-
-             obj.ModuleId = $(sender).closest(".modulePart").find(".moduleList option:selected").val()
-             obj.ModuleName = $(sender).closest(".modulePart").find(".moduleList option:selected").text();
-
-             $(targetParamsDiv).find(".par").each(function(){
-                 var id = $(this).attr("id");
-                 switch(obj.ModuleName)
-                 {
-                     case "ProductList":
-                     switch(id)
-                     {
-                         case "templateSection":
-                         selectedTemplate = $("input[name='rdbProductTemplateList']:checked").val();
-                         break;
-                         case "typeList":
-                         selectedType = $(this).val();
-                         break;
-                         case "countToShow":
-                         count = parseInt($(this).val());
-                         break;
-                         case "LoadAnimation":
-                         loadAnimation = $(this).val();
-                         break;
-                         case "LoadAnimationType":
-                         loadAnimationType = $(this).val();
-                         break;
-                     }
-                     break;
-                     case "ContentList":
-                     switch(id)
-                     {
-                         case "templateSection":
-                         selectedTemplate = $("input[name='rdbContentTemplateList']:checked").val();
-                         switch(selectedTemplate)
-                         {
-                             case "First":
-                             count = 6;
-                             break;
-                             case "Second":
-                             count = 4;
-                             break;
-                             case "Third":
-                             count = 8;
-                             break;
-                         }
-                         break;
-                         case "typeList":
-                         selectedType = $(this).val();
-                         break;
-                         case "countToShow":
-                         if(!$(".countSection").hasClass("d-none"))
-                             count = parseInt($(this).val());
-                         break;
-                         case "LoadAnimation":
-                            loadAnimation = $(this).val();
-                            break;
-                            case "LoadAnimationType":
-                            loadAnimationType = $(this).val();
-                            break;
-                     }
-                     break;
-                     case "ImageTextSlider":
-                     if(id ="sliderList")
-                     {
-                         sliderId = $(this).val();
-                     }
-                     break;
-                     case "HorizantalStoreMenu":
-                     break;
-               }
-         });
-         var url = "";
-         switch(obj.ModuleName.toLowerCase())
-         {
-             case "productlist":
-                 url = "@Url.Action("GetProductModuleViewComponent", "Domain")"+"?productType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count+ "&loadAnimation="+ loadAnimation + "&loadAnimationType=" + loadAnimationType ;
-                 obj.ParametersValue.ProductTemplateDesign = selectedTemplate;
-                 obj.ParametersValue.Count = count;
-                 obj.ParametersValue.ProductOrContentType = selectedType;
-                 obj.ParametersValue.LoadAnimation = loadAnimation;
-                 obj.ParametersValue.loadAnimationType = loadAnimationType;
-             break;
-             case "contentlist":
-                 url = "@Url.Action("GetContentModuleViewComponent", "Domain")"+"?contentType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count+ "&loadAnimation="+ loadAnimation + "&loadAnimationType=" + loadAnimationType ;
-                 obj.ParametersValue.ContentTemplateDesign = selectedTemplate;
-                 obj.ParametersValue.Count = count;
-                 obj.ParametersValue.ProductOrContentType = selectedType;
-                 obj.ParametersValue.LoadAnimation = loadAnimation;
-                 obj.ParametersValue.loadAnimationType = loadAnimationType;
-             break;
-             case "imagetextslider":
-               url = "@Url.Action("GetSliderViewComponent", "Domain")"+ "?sliderId="+ sliderId;
-               obj.ParametersValue.SliderId = sliderId;
-             break;
-             case "horizantalstoremenu":
-               url = "@Url.Action("GetStoreMenuViewComponent", "Domain")"+"?domainId=" + domainId +"&languageId="+ languageId;
-               obj.ParametersValue.DomainId = domainId;
-               obj.ParametersValue.languageId = languageId ;
-             break;
-
-         }
-
-
-         var data = JSON.stringify(obj);
-         data =`<div target='module'>${data}</div>`;
-         var finalData = $(parent).find(".finalColumnContent").append(data);
-
-         $.ajax({
-             type: "Get",
-             dataType: "html",
-             url: url,
-             success: function (result) {
-                 debugger;
-                 if (result != "") {
-                     $(parent).find(".moduleDataPreview").html(result).removeClass("d-none");
-                     $(parent).find(".htmlColumnContentPreview").append(result);
-                     if(obj.ModuleName.toLowerCase() =="productlist")
-                     {
-                          $(".owl-carousel").owlCarousel({
-                                 loop: true,
-                                 rtl: true,
-                                 navigation : true,
-                                 /* autoplay: true,*/
-                                 margin: 10,
-                                 animateOut: 'fadeOut',
-                                 animateIn: 'fadeIn',
-                                 nav: true,
-                                 /*dots: true,*/
-                                 autoplayHoverPause: false,
-                                 items: 3,
-                                 navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>", "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
-                                 responsive: {
-                                     0: {
-                                         items: 1
-                                     },
-                                     600: {
-                                         items: 3
-                                     },
-                                     1000: {
-                                         items: 5
+                                            $(`.colWidth[colwidthid='${id}']`).html(options);
+                                            $(`.colWidth[colwidthid='${id}']`).selectpicker();
                                      }
                                  }
-                            });
-                     }
-                     else if(obj.ModuleName.toLowerCase() =="imagetextslider")
-                     {
-                         debugger;
-                         AfterCarouselLoad();
-                     }
+                             }
+                           });
+                }
+
+            }
+
+            function selectColumnsWidthRatio(sender, tag)
+            {
+                debugger;
+                if(!loadInEditMode)
+                {
+                    var id = $(sender).attr("colWidthId");
+                    var count = parseInt($(`.colCnt[id='${id}']`).val());
+
+                     var rowNumber = $(sender).closest(".row.firstLevel").attr("rn");
+                    var guid = $(sender).closest(".row.firstLevel").attr("guid");
+                   var colWidthEnumId = parseInt($(sender).val());
+
+                    $.ajax({
+                             url:"@Url.Action("GetRowWithSelectedColumns","Domain")"+`?count=${count}&colWidth=${colWidthEnumId}&rn=${rowNumber}&d=${'@ViewBag.DomainId'}&gu=${guid}`,
+                             type:'Get',
+                             statusCode:{
+                                 200:function(data){
+                                     debugger;
+
+                                     var divId =  `#${tag}_paramSection`;
+                                      $(divId).find(`.firstLevel.active.${rowNumber} .contentColumns`).html(data);
+                                       $(".drpContentType").selectpicker();
+                                       $(".moduleList").selectpicker();
+                                        var buttonDivClass = `.row.div_${tag}`;
+                                        $(buttonDivClass).find(".addNewRow").removeAttr("disabled");
+                                 }
+                             }
+                           });
+               }
+            }
+            //////////////////////////_InnerSection.cshtml/////////////////
+            function addModule(sender)
+             {
+                 debugger;
+                 var parentDiv = $(sender).closest(".parent");
+                 var colnumber =  $(sender).attr("cn");
+                 var cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
+
+                      var selectedModuleName = $(parentDiv).find(".moduleList").find("option:selected").text();
+                     var selectedModuleId = $(parentDiv).find(".moduleList").find("option:selected").val();
+                     var paramDiv = $(parentDiv).find(".paramsDiv");
+                     $.ajax({
+                          url:"@Url.Action("GetSpecificModule","Domain")"+"?moduleName="+selectedModuleName+"&id="+'@ViewBag.DomainId'+"&colCount="+cnt,
+                          type:'Get',
+                          statusCode:{
+                              200:function(data){
+                                   $(paramDiv).html(data);
+                                   $(".typeList").selectpicker();
+                              }
+                          }
+                        });
+             }
+
+             function sinitize(sender)
+             {
+              debugger;
+                 editorId  =$(sender).attr("editorId");
+                     var htmlData = CKEDITOR.instances[editorId].getData();
+                     var dataToSend= JSON.stringify(htmlData);
+                     $.ajax({
+                          url:"@Url.Action("SanitizeCkEditorContent","Domain")",
+                          type:'Post',
+                          data: dataToSend,
+                          contentType: "application/json; charset=utf-8",
+                          statusCode:{
+                              200:function(data){
+
+                                 //show whether this html is valid or not
+                                 if(!data.isvalid)
+                                 {
+                                   $('#mainToastBody').html('<i class="fas fa-exclamation-triangle"></i>@Language.GetString("AlertAndMessage_InvalidEditorContent")');
+                                   $('#mainToastBody').addClass('alert-danger');
+                                   var toastDiv = $("#mainToast");
+                                   $("#toastPanel").show();
+                                   var toast = new bootstrap.Toast(toastDiv);
+                                   toast.show();
+                                   setTimeout(function(){
+                                       CKEDITOR.instances.editorId.setData(""),3000
+                                   });
+                                 }else //it is valid
+                                 {
+                                     $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_ValidEditorContent")');
+                                     $('#mainToastBody').addClass('alert-success');
+                                     var toast = new bootstrap.Toast($("#mainToast"));
+                                     toast.show();
+
+                                   var data = `<div target='editor'>${htmlData}</div>`;
+                                   $(sender).closest(".parent").find(".finalColumnContent").html(data);
+
+                                   $(sender).closest(".parent").find(".htmlColumnContentPreview").html(htmlData);
+                                 }
+                              }
+                          }
+                        });
+             }
+
+             function selectDrpContentType(sender)
+             {
+               debugger;
+                 var colnumber = $(sender).attr("cn");
+                 domainId = $(sender).closest(`div[colnum='${colnumber}']`).attr("did");
+                 cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
+
+                 var val = $(sender).val();
+                 var targetDiv = $(sender).closest(".row").siblings(".row.parent");
+                 //var targetDivId =`#${targetDivId}`;
+                 switch(val)
+                 {
+                     case "1":
+                     $(targetDiv).find(".modulePart").removeClass("d-none");
+                     $(targetDiv).find(".editorPart").addClass("d-none");
+                     break;
+                     case "2":
+                     $(targetDiv).find(".editorPart").removeClass("d-none");
+                     $(targetDiv).find(".modulePart").addClass("d-none");
+                     break;
+                 }
+             }
+
+            function addModulesWithParams(sender)
+            {
+               debugger;
+                var obj = {};//an instance of ModuleWithParametersValue
+                obj.ParametersValue ={};
+                 var targetParamsDiv = $(sender).closest(".paramsDiv");
+                 var count = 0;
+                 var loadAnimation;
+                 var isShop = false;
+                 var loadAnimationType;
+                  var sliderId ="" ;
+                  var domainId = "@ViewBag.DomainId";
+                  var languageId = $("#languageId").val();
+                 var parent =  $(sender).closest(".parent");
+                 var targetDivId ="";
+
+                     obj.ModuleId = $(sender).closest(".modulePart").find(".moduleList option:selected").val()
+                     obj.ModuleName = $(sender).closest(".modulePart").find(".moduleList option:selected").text();
+
+                     $(targetParamsDiv).find(".par").each(function(){
+                         var id = $(this).attr("id");
+                         switch(obj.ModuleName)
+                         {
+                             case "ProductList":
+                             switch(id)
+                             {
+                                 case "templateSection":
+                                 selectedTemplate = $("input[name='rdbProductTemplateList']:checked").val();
+                                 break;
+                                 case "typeList":
+                                 selectedType = $(this).val();
+                                 break;
+                                 case "countToShow":
+                                 count = parseInt($(this).val());
+                                 break;
+                                 case "LoadAnimation":
+                                 loadAnimation = $(this).val();
+                                 break;
+                                 case "LoadAnimationType":
+                                 loadAnimationType = $(this).val();
+                                 break;
+                             }
+                             break;
+                             case "ContentList":
+                             switch(id)
+                             {
+                                 case "templateSection":
+                                 selectedTemplate = $("input[name='rdbContentTemplateList']:checked").val();
+                                 switch(selectedTemplate)
+                                 {
+                                     case "First":
+                                     count = 6;
+                                     break;
+                                     case "Second":
+                                     count = 4;
+                                     break;
+                                     case "Third":
+                                     count = 8;
+                                     break;
+                                 }
+                                 break;
+                                 case "typeList":
+                                 selectedType = $(this).val();
+                                 break;
+                                 case "countToShow":
+                                 if(!$(".countSection").hasClass("d-none"))
+                                     count = parseInt($(this).val());
+                                 break;
+                                 case "LoadAnimation":
+                                    loadAnimation = $(this).val();
+                                    break;
+                                    case "LoadAnimationType":
+                                    loadAnimationType = $(this).val();
+                                    break;
+                             }
+                             break;
+                             case "ImageTextSlider":
+                             if(id ="sliderList")
+                             {
+                                 sliderId = $(this).val();
+                             }
+                             break;
+                             case "HorizantalStoreMenu":
+                             break;
+                             case "LoginAndProfile":
+                              if(id = "isShop")
+                              {
+                                  isShop = $("#isShop").is(":checked");
+                              }
+                             break;
+                             case "MultiLingualFlags":
+                             break;
+
+                       }
+                 });
+                 var url = "";
+                 switch(obj.ModuleName.toLowerCase())
+                 {
+                     case "productlist":
+                         url = "@Url.Action("GetProductModuleViewComponent", "Domain")"+"?productType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count+ "&loadAnimation="+ loadAnimation + "&loadAnimationType=" + loadAnimationType ;
+                         obj.ParametersValue.ProductTemplateDesign = selectedTemplate;
+                         obj.ParametersValue.Count = count;
+                         obj.ParametersValue.ProductOrContentType = selectedType;
+                         obj.ParametersValue.LoadAnimation = loadAnimation;
+                         obj.ParametersValue.loadAnimationType = loadAnimationType;
+                     break;
+                     case "contentlist":
+                         url = "@Url.Action("GetContentModuleViewComponent", "Domain")"+"?contentType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count+ "&loadAnimation="+ loadAnimation + "&loadAnimationType=" + loadAnimationType ;
+                         obj.ParametersValue.ContentTemplateDesign = selectedTemplate;
+                         obj.ParametersValue.Count = count;
+                         obj.ParametersValue.ProductOrContentType = selectedType;
+                         obj.ParametersValue.LoadAnimation = loadAnimation;
+                         obj.ParametersValue.loadAnimationType = loadAnimationType;
+                     break;
+                     case "imagetextslider":
+                       url = "@Url.Action("GetSliderViewComponent", "Domain")"+ "?sliderId="+ sliderId;
+                       obj.ParametersValue.SliderId = sliderId;
+                     break;
+                     case "horizantalstoremenu":
+                       url = "@Url.Action("GetStoreMenuViewComponent", "Domain")"+"?domainId=" + domainId +"&languageId="+ languageId;
+                       obj.ParametersValue.DomainId = domainId;
+                       obj.ParametersValue.languageId = languageId ;
+                     break;
+                     case "loginandprofile":
+                         url = "@Url.Action("GetLoginProfileModuleViewComponent", "Domain")"+"?domainId=" + domainId +"&isShop="+ isShop;
+                         obj.ParametersValue.DomainId = domainId;
+                         obj.ParametersValue.IsShop = isShop ;
+                     break;
+                     case "multilingualflags":
+                     url = "@Url.Action("GetMultiLingualModuleViewComponent", "Domain")";
+                     break;
 
                  }
-             },
-         });
-    }
+
+                 var data = JSON.stringify(obj);
+                 data =`<div target='module'>${data}</div>`;
+                 var finalData = $(parent).find(".finalColumnContent").append(data);
+
+                 $.ajax({
+                     type: "Get",
+                     dataType: "html",
+                     url: url,
+                     success: function (result) {
+                         debugger;
+                         if (result != "") {
+                             $(parent).find(".moduleDataPreview").html(result).removeClass("d-none");
+                             $(parent).find(".htmlColumnContentPreview").append(result);
+                             if(obj.ModuleName.toLowerCase() =="productlist")
+                             {
+                                  $(".owl-carousel").owlCarousel({
+                                         loop: true,
+                                         rtl: true,
+                                         navigation : true,
+                                         /* autoplay: true,*/
+                                         margin: 10,
+                                         animateOut: 'fadeOut',
+                                         animateIn: 'fadeIn',
+                                         nav: true,
+                                         /*dots: true,*/
+                                         autoplayHoverPause: false,
+                                         items: 3,
+                                         navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>", "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
+                                         responsive: {
+                                             0: {
+                                                 items: 1
+                                             },
+                                             600: {
+                                                 items: 3
+                                             },
+                                             1000: {
+                                                 items: 5
+                                             }
+                                         }
+                                    });
+                             }
+                             else if(obj.ModuleName.toLowerCase() =="imagetextslider")
+                             {
+                                 debugger;
+                                 AfterCarouselLoad();
+                             }
+
+                         }
+                     },
+                 });
+            }
     </script>
 
 </body>

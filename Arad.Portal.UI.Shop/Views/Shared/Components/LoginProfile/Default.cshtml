@@ -1,0 +1,63 @@
+﻿@using Arad.Portal.GeneralLibrary.Utilities;
+@model bool;
+
+<div class="col-4 col-md-3 col-lg-2">
+    <div class="account-wrapper pt-2">
+        <ul>
+           @if(Model) //isshop == true then it has basket
+            {
+                <li class="shopping_cart home_cart">
+                <a href="#" title="" class="r-cart">
+                    <span class="head-shoppings">
+                        <i class="fa fa-shopping-basket shopping-basket"></i>
+                        <span class="display-none count-basket" data-count="0">@($"{@ViewBag.BasketCount?? 0} {@Language.GetString("Stuff")}") </span>
+                    </span>
+                </a>
+               </li>
+            }
+            
+            <li class="login">
+                @{
+
+                    @if (!@User.Identity.IsAuthenticated)
+                    {
+                        <a href="#" class="openLoginModal">
+                            <span class="title">
+                                <i class="fa fa-user"></i>
+                                <span class="display-none ">@Language.GetString("User_LoginRegister")</span>
+                            </span>
+                        </a>
+                    }
+                    else
+                    {
+                        <div class="dropdown" id="myUserProfile">
+                            <a class="openLoginModal btn dropdown-toggle" role="button" id="drpUserProfile"
+                           placement="bottom right" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="title">
+                                    <i class="fa fa-user"></i>
+                                    <span class="display-none">@User.Identity.Name</span>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="drpUserProfile">
+                                <li>
+                                    <a href="#">@Language.GetString("User_ManagementPanel")</a>
+                                </li>
+                                <li>
+                                    <a href="#">@Language.GetString("Menu_Profile")</a>
+                                </li>
+                                <li>
+                                    <a href="#">@Language.GetString("Menu_MyOrders")</a>
+                                </li>
+                                <li>
+                                    <a href="#">@Language.GetString("Exit")</a>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                }
+            </li>
+
+        </ul>
+
+    </div>
+</div>

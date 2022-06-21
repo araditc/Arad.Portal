@@ -204,7 +204,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
             return result;
         }
 
-        public  List<StoreMenuVM> StoreList(string domainId, string langId)
+        public  List<StoreMenuVM> StoreList(string domainId, string langId, bool isDesign)
         {
             var result = new List<StoreMenuVM>();
             string finalLangId;
@@ -241,47 +241,50 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                         IsFull = true
                     }).ToList();
                 //those menues which have isFull = true will be shown in UI
-                #region check isFull
-                var productGroupsMenu = result.Where(_ => _.MenuType == MenuType.ProductGroup);
-                var prodctGroupMenuLeaves = productGroupsMenu.Where(_ => _.Childrens.Count() == 0);
-                foreach (var leaf in prodctGroupMenuLeaves)
+                if(!isDesign)
                 {
-                    var tmp = new StoreMenuVM();
-                    var productsInGroupCounts = _productContext.ProductCollection.Find(_ => _.GroupIds.Contains(leaf.SubGroupId)).CountDocuments();
-                    if (productsInGroupCounts == 0)
+                    #region check isFull
+                    var productGroupsMenu = result.Where(_ => _.MenuType == MenuType.ProductGroup);
+                    var prodctGroupMenuLeaves = productGroupsMenu.Where(_ => _.Childrens.Count() == 0);
+                    foreach (var leaf in prodctGroupMenuLeaves)
                     {
-                        leaf.IsFull = false;
-                        tmp = leaf;
-                        while (tmp.ParentId != null)
+                        var tmp = new StoreMenuVM();
+                        var productsInGroupCounts = _productContext.ProductCollection.Find(_ => _.GroupIds.Contains(leaf.SubGroupId)).CountDocuments();
+                        if (productsInGroupCounts == 0)
                         {
-                            tmp = result.FirstOrDefault(_ => _.MenuId == tmp.ParentId);
+                            leaf.IsFull = false;
+                            tmp = leaf;
+                            while (tmp.ParentId != null)
+                            {
+                                tmp = result.FirstOrDefault(_ => _.MenuId == tmp.ParentId);
+                                tmp.IsFull = false;
+                            }
                             tmp.IsFull = false;
                         }
-                        tmp.IsFull = false;
                     }
-                }
-                var contentCategoryMenu = result.Where(_ => _.MenuType == MenuType.CategoryContent);
-                var contentCategoryLeaves = contentCategoryMenu.Where(_ => _.Childrens.Count() == 0);
-                foreach (var leaf in contentCategoryLeaves)
-                {
-                    var tmp = new StoreMenuVM();
-                    var contentsInCategoryCounts = _contentContext.Collection
-                        .Find(_ => _.ContentCategoryId == leaf.SubGroupId).CountDocuments();
-                    if (contentsInCategoryCounts == 0)
+                    var contentCategoryMenu = result.Where(_ => _.MenuType == MenuType.CategoryContent);
+                    var contentCategoryLeaves = contentCategoryMenu.Where(_ => _.Childrens.Count() == 0);
+                    foreach (var leaf in contentCategoryLeaves)
                     {
-                        leaf.IsFull = false;
-                        tmp = leaf;
-                        while (tmp.ParentId != null)
+                        var tmp = new StoreMenuVM();
+                        var contentsInCategoryCounts = _contentContext.Collection
+                            .Find(_ => _.ContentCategoryId == leaf.SubGroupId).CountDocuments();
+                        if (contentsInCategoryCounts == 0)
                         {
-                            tmp = result.FirstOrDefault(_ => _.MenuId == tmp.ParentId);
+                            leaf.IsFull = false;
+                            tmp = leaf;
+                            while (tmp.ParentId != null)
+                            {
+                                tmp = result.FirstOrDefault(_ => _.MenuId == tmp.ParentId);
+                                tmp.IsFull = false;
+                            }
                             tmp.IsFull = false;
                         }
-                        tmp.IsFull = false;
                     }
+                    #endregion
                 }
-                #endregion
-            }
 
+            }
 
             return result;
         }

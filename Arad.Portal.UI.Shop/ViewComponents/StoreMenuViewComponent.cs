@@ -54,7 +54,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
                 if(result.Succeeded)
                 {
                     var domainEntity = result.ReturnValue;
-                    menues = _menuRepository.StoreList(domainEntity.DomainId, langId);
+                    menues = _menuRepository.StoreList(domainEntity.DomainId, langId, false);
                    //menues = _menuRepository.StoreList("1e336912-00e4-4a0a-bee6-20ce8ae49855", "0f0815fb-5fca-470c-bbfd-4d8c162de05a");
                 }
             }

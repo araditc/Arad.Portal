@@ -18,7 +18,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Menu
         /// <param name="domainId"></param>
         /// <param name="langId"></param>
         /// <returns></returns>
-        List<StoreMenuVM> StoreList(string domainId, string langId);
+        List<StoreMenuVM> StoreList(string domainId, string langId, bool isDesign);
         Task<List<SelectListModel>> AllActiveMenues(string domainId, string langId);
 
         List<SelectListModel> MenuesOfSelectedDomain(string domainId, string langId);

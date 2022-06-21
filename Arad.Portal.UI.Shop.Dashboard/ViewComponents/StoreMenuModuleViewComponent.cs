@@ -53,7 +53,7 @@ namespace Arad.Portal.UI.Shop.ViewComponents
                     languageId = _languageRepository.FetchBySymbol(symbol.ToLower());
                 }
 
-                menues = _menuRepository.StoreList(domainEntity.DomainId, languageId);
+                menues = _menuRepository.StoreList(domainEntity.DomainId, languageId, true);
             }
             catch (Exception e)
             {

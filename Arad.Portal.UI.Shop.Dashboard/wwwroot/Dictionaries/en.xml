@@ -789,6 +789,9 @@
 		<value>Enter the number of fixed phone.</value>
 	</string>
 	<!--====================ALERTANDMESSAGES====================================================================-->
+	<string key="AlertAndMessage_ModuleWithoutParameters">
+		<value>this module hast any parameter just click add botton.</value>
+	</string>
 	<string key="AlertAndMessage_UrlFriendIsNotUnique">
 		<value>url friend is not unique.</value>
 	</string>

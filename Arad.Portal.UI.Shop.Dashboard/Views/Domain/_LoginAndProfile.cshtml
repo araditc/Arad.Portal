@@ -1,7 +1,11 @@
 ﻿<div class="row mx-2">
-     <div class="col-12 text-center">
-         <label class="form-label" >@Language.GetString("AlertAndMessage_ModuleWithoutParameters")</label><br/>
-      </div>
+     <div class="col-12">
+          <input class="form-check-input par" type="checkbox" value="" id="isShop" >
+            <label class="form-check-label" for="IsShop">
+                @Language.GetString("design_IsShopDomain")
+            </label>
+    </div>
+    
       <div class="col-12 text-center">
            <button id="btnAddModuleWithParameters" class="btn btn-success bg-gradient btn-sm float-end m-1"
                    onclick="addModulesWithParams(this);" type="button">@Language.GetString("btn_Add")</button>

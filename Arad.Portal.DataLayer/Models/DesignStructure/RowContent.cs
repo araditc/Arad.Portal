@@ -22,6 +22,8 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
 
         public int? Order { get; set; }
 
+        public string EnumColsId { get; set; }
+
         public List<ColContent> ColsContent { get; set; }
 
 

@@ -37,12 +37,12 @@ namespace Arad.Portal.DataLayer.Entities.General.DesignStructure
         Content = 1,
         Advertisement = 2,
         Slider = 3,
+        SiteSetting = 4,
         Menu = 5
     }
    
     public enum ProductOrContentType
     {
-       
         Newest = 0,
         MostPopular = 1,
         BestSale = 2,

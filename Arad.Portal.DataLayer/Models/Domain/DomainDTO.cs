@@ -17,7 +17,6 @@ namespace Arad.Portal.DataLayer.Models.Domain
             Prices = new();
             DomainPaymentProviders = new();
             HomePageDesign = new();
-            HomePageHtmlContent = new();
         }
         public string DomainId { get; set; }
 
@@ -64,8 +63,6 @@ namespace Arad.Portal.DataLayer.Models.Domain
         public string MainPageTemplateId { get; set; }
         
         public List<PageDesignContent> HomePageDesign { get; set; }
-
-        public List<HomePageHtmlContent> HomePageHtmlContent { get; set; }
 
     }
 

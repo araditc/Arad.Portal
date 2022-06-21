@@ -28,6 +28,9 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
         public string DomainId { get; set; }
 
         [BsonIgnoreIfNull]
+        public bool IsShop { get; set; }
+
+        [BsonIgnoreIfNull]
         public string LanguageId { get; set; }
 
         [BsonIgnoreIfNull]
