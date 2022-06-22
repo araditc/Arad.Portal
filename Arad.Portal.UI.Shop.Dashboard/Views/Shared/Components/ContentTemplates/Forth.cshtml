@@ -23,14 +23,14 @@
          <li class="list-group-item border-0 contentForth" @innerElementsAtr>
              <div class="row">
                <div class="col-3 col-md-2 col-lg-1">
-                  <a href="@($"/blog/{item.ContentCode}")">
+                  <a href="@(!string.IsNullOrWhiteSpace(item.UrlFriend) ? item.UrlFriend :  $"/blog/{item.ContentCode}")">
                     <img src="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].DesiredImageUrl}&width={35}")"
                          class="img-fluid rounded-circle"
                          alt=@(Model[0].Images.Any(_=>_.ImageRatio == ImageRatio.Square) ? Model[0].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title : "") />
                   </a>
                </div>
                <div class="col-9 col-md-10 col-lg-11">
-                   <a href="@($"/blog/{item.ContentCode}")">
+                   <a href="@(!string.IsNullOrWhiteSpace(item.UrlFriend) ? item.UrlFriend :  $"/blog/{item.ContentCode}")">
                    <span>@item.Title</span>
                    <br/>
                    <span style="font-size:small;">@item.ContentProviderName</span>

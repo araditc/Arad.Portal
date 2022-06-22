@@ -1,0 +1,55 @@
+﻿@using Arad.Portal.DataLayer.Models.Shared;
+@using Arad.Portal.DataLayer.Models.DesignStructure;
+@using Arad.Portal.DataLayer.Models.Content;
+@model List<Arad.Portal.DataLayer.Models.Content.ContentGlance>
+@{
+}
+
+
+
+<div id="contentTemplateSliderSubtitle" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <div class="carousel-item @(i == 0 ? "active" : "")">
+                <div class="row">
+                    <div class="col">
+                        <picture>
+                            <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={360}")" />
+                            <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={460}")">
+                            <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={650}")">
+                            <img class="d-block w-100"
+                             src="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={460}")"
+                             alt="@(Model[i].Images.Any(_=>_.ImageRatio == ImageRatio.Square) ? Model[i].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title : "")">
+                        </picture>
+                    </div>
+                    <div class="col">
+                        <div class="card m-0 p-2" style="background-color: #e9f8f8;">
+                            <div class="card-body">
+                            <p class="text-start fs-4 fw-bold text-decoration-underline">@Model[i].Title</p>
+                            <div class="row w-75 fs-4 fw-light">@Model[i].SubTitle</div>
+                            <div  class="float-start ms-4 m-2">
+                                <a class="btn btn-lg btn-dark" href="@(!string.IsNullOrWhiteSpace(Model[i].UrlFriend) ? Model[i].UrlFriend : $"/blog/{Model[0].ContentCode}")" role="button">
+                                    @Language.GetString("design_Continue")
+                                </a>
+                            </div>
+                            </div>
+                            <div class="card-footer m-3 border-top">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+       
+   </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#contentTemplateSliderSubtitle" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">@Language.GetString("tbl_PreviousPage")</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#contentTemplateSliderSubtitle" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">@Language.GetString("tbl_NextPage")</span>
+    </button>
+</div>

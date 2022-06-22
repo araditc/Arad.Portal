@@ -687,9 +687,10 @@
                                                                  //var guid = $(selectedElement).closest(".row.firstLevel").attr("guid");
                                                                  var colWidthEnumId = parseInt($(selectedElement).val());
                                                                  var tag = "headerSection";
+                                                                 var currentRowContent = $(this);
                                                                 $.ajax({
                                                                          url:"@Url.Action("GetRowWithSelectedColumns","Domain")"+
-                                                                                `?count=${count}&colWidth=${colWidthEnumId}&rn=${rowNumber}&d=${'@ViewBag.DomainId'}&gu=${currentGuid}`,
+                                                                                `?count=${count}&colWidth=${colWidthEnumId}&rn=${rowNumber}&d=${'@ViewBag.DomainId'}&gu=${currentGuid}&rowData=${currentRowContent}`,
                                                                          type:'Get',
                                                                          statusCode:
                                                                          {
@@ -711,21 +712,13 @@
                                                      }
                                                  }
                                             });
-
-
-
-
-
-
-
-                                        
-
-
-
-                               });
+                                      });
                                    //bodyPart
 
                                    //footerPart
+
+
+                                   loadInEditMode = false;
                                }
                             }
                         });
@@ -926,6 +919,7 @@
                                             var obj = {}; //an instance of RowContent
                                             obj.RowNumber = parseInt(rn) ;
                                             obj.OrderInRow = i ;
+                                            obj.EnumColsId = $(this).find(".row.sectionRow").attr("enumcolid");
                                             obj.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses");
                                             obj.ColsContent = [] ;
                                             $(this).find(".row.parent .finalColumnContent").each(function(){
@@ -940,38 +934,7 @@
                                             i++;
                                             header.CustomizedContent.push(obj);
                                         });
-
-                                        //navbar
-                                        //var obj = {}; //an instance of RowContent for navbar Menu
-                                        //if($(".dynamicHeaderPart .firstLevel .contentColumns").length == 0 )
-                                        //{
-                                        //    obj.RowNumber =  parseInt(rn);
-                                        //}else
-                                        //{
-                                        //    obj.RowNumber =  parseInt(rn) + 1;
-                                        //}
-
-                                        //obj.RowNumber =  parseInt(rn) + 1;
-                                        //obj.OrderInRow = i ;
-                                        //obj.ExtraClassNames ="navbarMenu";
-                                        //obj.ColsContent =[] ;
-                                        //var singleCol = {};
-                                        //singleCol.Section ="";
-                                        //singleCol.ColNumber = 1;
-
-                                        //var menuModule = {};//an instance of ModuleWithParametersValue for menu
-                                        //menuModule.ModuleId = "f8865ffc-1653-41ba-a281-ee57fa7ffc09";
-                                        //menuModule.ModuleName = "HorizantalStoreMenu";
-                                        //menuModule.ParametersValue = {};
-                                        //menuModule.ParametersValue.domainId = '@domainId';
-                                        //menuModule.ParametersValue.languageId = $("#languageId").val();
-                                        //var data = JSON.stringify(menuModule);
-                                        //var menuData = `<div target='module'>${data}</div>`;
-
-                                        //singleCol.ColData = menuData;
-                                        //singleCol.ColumnClassNames = "";
-                                        //obj.ColsContent.push(singleCol);
-                                        //header.CustomizedContent.push(obj);
+                                       
                                         //end of header section
 
 
@@ -1098,11 +1061,7 @@
                                        var header ="";
                                        var container ="";
                                        var footer ="";
-
-                                        //var regPart = document.getElementById("regPart").outerHTML;
-                                        //var priorHeader = document.getElementById("regPart").outerHTML;
-                                        //header = priorHeader;
-
+                                      
                                         $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
                                             var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
                                             header += `<div class='row firstLevel ${extraClasses}'>`;
@@ -1494,280 +1453,7 @@
                            });
                }
             }
-            //////////////////////////_InnerSection.cshtml/////////////////
-            function addModule(sender)
-             {
-                 debugger;
-                 var parentDiv = $(sender).closest(".parent");
-                 var colnumber =  $(sender).attr("cn");
-                 var cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
-
-                      var selectedModuleName = $(parentDiv).find(".moduleList").find("option:selected").text();
-                     var selectedModuleId = $(parentDiv).find(".moduleList").find("option:selected").val();
-                     var paramDiv = $(parentDiv).find(".paramsDiv");
-                     $.ajax({
-                          url:"@Url.Action("GetSpecificModule","Domain")"+"?moduleName="+selectedModuleName+"&id="+'@ViewBag.DomainId'+"&colCount="+cnt,
-                          type:'Get',
-                          statusCode:{
-                              200:function(data){
-                                   $(paramDiv).html(data);
-                                   $(".typeList").selectpicker();
-                              }
-                          }
-                        });
-             }
-
-             function sinitize(sender)
-             {
-              debugger;
-                 editorId  =$(sender).attr("editorId");
-                     var htmlData = CKEDITOR.instances[editorId].getData();
-                     var dataToSend= JSON.stringify(htmlData);
-                     $.ajax({
-                          url:"@Url.Action("SanitizeCkEditorContent","Domain")",
-                          type:'Post',
-                          data: dataToSend,
-                          contentType: "application/json; charset=utf-8",
-                          statusCode:{
-                              200:function(data){
-
-                                 //show whether this html is valid or not
-                                 if(!data.isvalid)
-                                 {
-                                   $('#mainToastBody').html('<i class="fas fa-exclamation-triangle"></i>@Language.GetString("AlertAndMessage_InvalidEditorContent")');
-                                   $('#mainToastBody').addClass('alert-danger');
-                                   var toastDiv = $("#mainToast");
-                                   $("#toastPanel").show();
-                                   var toast = new bootstrap.Toast(toastDiv);
-                                   toast.show();
-                                   setTimeout(function(){
-                                       CKEDITOR.instances.editorId.setData(""),3000
-                                   });
-                                 }else //it is valid
-                                 {
-                                     $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_ValidEditorContent")');
-                                     $('#mainToastBody').addClass('alert-success');
-                                     var toast = new bootstrap.Toast($("#mainToast"));
-                                     toast.show();
-
-                                   var data = `<div target='editor'>${htmlData}</div>`;
-                                   $(sender).closest(".parent").find(".finalColumnContent").html(data);
-
-                                   $(sender).closest(".parent").find(".htmlColumnContentPreview").html(htmlData);
-                                 }
-                              }
-                          }
-                        });
-             }
-
-             function selectDrpContentType(sender)
-             {
-               debugger;
-                 var colnumber = $(sender).attr("cn");
-                 domainId = $(sender).closest(`div[colnum='${colnumber}']`).attr("did");
-                 cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
-
-                 var val = $(sender).val();
-                 var targetDiv = $(sender).closest(".row").siblings(".row.parent");
-                 //var targetDivId =`#${targetDivId}`;
-                 switch(val)
-                 {
-                     case "1":
-                     $(targetDiv).find(".modulePart").removeClass("d-none");
-                     $(targetDiv).find(".editorPart").addClass("d-none");
-                     break;
-                     case "2":
-                     $(targetDiv).find(".editorPart").removeClass("d-none");
-                     $(targetDiv).find(".modulePart").addClass("d-none");
-                     break;
-                 }
-             }
-
-            function addModulesWithParams(sender)
-            {
-               debugger;
-                var obj = {};//an instance of ModuleWithParametersValue
-                obj.ParametersValue ={};
-                 var targetParamsDiv = $(sender).closest(".paramsDiv");
-                 var count = 0;
-                 var loadAnimation;
-                 var isShop = false;
-                 var loadAnimationType;
-                  var sliderId ="" ;
-                  var domainId = "@ViewBag.DomainId";
-                  var languageId = $("#languageId").val();
-                 var parent =  $(sender).closest(".parent");
-                 var targetDivId ="";
-
-                     obj.ModuleId = $(sender).closest(".modulePart").find(".moduleList option:selected").val()
-                     obj.ModuleName = $(sender).closest(".modulePart").find(".moduleList option:selected").text();
-
-                     $(targetParamsDiv).find(".par").each(function(){
-                         var id = $(this).attr("id");
-                         switch(obj.ModuleName)
-                         {
-                             case "ProductList":
-                             switch(id)
-                             {
-                                 case "templateSection":
-                                 selectedTemplate = $("input[name='rdbProductTemplateList']:checked").val();
-                                 break;
-                                 case "typeList":
-                                 selectedType = $(this).val();
-                                 break;
-                                 case "countToShow":
-                                 count = parseInt($(this).val());
-                                 break;
-                                 case "LoadAnimation":
-                                 loadAnimation = $(this).val();
-                                 break;
-                                 case "LoadAnimationType":
-                                 loadAnimationType = $(this).val();
-                                 break;
-                             }
-                             break;
-                             case "ContentList":
-                             switch(id)
-                             {
-                                 case "templateSection":
-                                 selectedTemplate = $("input[name='rdbContentTemplateList']:checked").val();
-                                 switch(selectedTemplate)
-                                 {
-                                     case "First":
-                                     count = 6;
-                                     break;
-                                     case "Second":
-                                     count = 4;
-                                     break;
-                                     case "Third":
-                                     count = 8;
-                                     break;
-                                 }
-                                 break;
-                                 case "typeList":
-                                 selectedType = $(this).val();
-                                 break;
-                                 case "countToShow":
-                                 if(!$(".countSection").hasClass("d-none"))
-                                     count = parseInt($(this).val());
-                                 break;
-                                 case "LoadAnimation":
-                                    loadAnimation = $(this).val();
-                                    break;
-                                    case "LoadAnimationType":
-                                    loadAnimationType = $(this).val();
-                                    break;
-                             }
-                             break;
-                             case "ImageTextSlider":
-                             if(id ="sliderList")
-                             {
-                                 sliderId = $(this).val();
-                             }
-                             break;
-                             case "HorizantalStoreMenu":
-                             break;
-                             case "LoginAndProfile":
-                              if(id = "isShop")
-                              {
-                                  isShop = $("#isShop").is(":checked");
-                              }
-                             break;
-                             case "MultiLingualFlags":
-                             break;
-
-                       }
-                 });
-                 var url = "";
-                 switch(obj.ModuleName.toLowerCase())
-                 {
-                     case "productlist":
-                         url = "@Url.Action("GetProductModuleViewComponent", "Domain")"+"?productType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count+ "&loadAnimation="+ loadAnimation + "&loadAnimationType=" + loadAnimationType ;
-                         obj.ParametersValue.ProductTemplateDesign = selectedTemplate;
-                         obj.ParametersValue.Count = count;
-                         obj.ParametersValue.ProductOrContentType = selectedType;
-                         obj.ParametersValue.LoadAnimation = loadAnimation;
-                         obj.ParametersValue.loadAnimationType = loadAnimationType;
-                     break;
-                     case "contentlist":
-                         url = "@Url.Action("GetContentModuleViewComponent", "Domain")"+"?contentType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count+ "&loadAnimation="+ loadAnimation + "&loadAnimationType=" + loadAnimationType ;
-                         obj.ParametersValue.ContentTemplateDesign = selectedTemplate;
-                         obj.ParametersValue.Count = count;
-                         obj.ParametersValue.ProductOrContentType = selectedType;
-                         obj.ParametersValue.LoadAnimation = loadAnimation;
-                         obj.ParametersValue.loadAnimationType = loadAnimationType;
-                     break;
-                     case "imagetextslider":
-                       url = "@Url.Action("GetSliderViewComponent", "Domain")"+ "?sliderId="+ sliderId;
-                       obj.ParametersValue.SliderId = sliderId;
-                     break;
-                     case "horizantalstoremenu":
-                       url = "@Url.Action("GetStoreMenuViewComponent", "Domain")"+"?domainId=" + domainId +"&languageId="+ languageId;
-                       obj.ParametersValue.DomainId = domainId;
-                       obj.ParametersValue.languageId = languageId ;
-                     break;
-                     case "loginandprofile":
-                         url = "@Url.Action("GetLoginProfileModuleViewComponent", "Domain")"+"?domainId=" + domainId +"&isShop="+ isShop;
-                         obj.ParametersValue.DomainId = domainId;
-                         obj.ParametersValue.IsShop = isShop ;
-                     break;
-                     case "multilingualflags":
-                     url = "@Url.Action("GetMultiLingualModuleViewComponent", "Domain")";
-                     break;
-
-                 }
-
-                 var data = JSON.stringify(obj);
-                 data =`<div target='module'>${data}</div>`;
-                 var finalData = $(parent).find(".finalColumnContent").append(data);
-
-                 $.ajax({
-                     type: "Get",
-                     dataType: "html",
-                     url: url,
-                     success: function (result) {
-                         debugger;
-                         if (result != "") {
-                             $(parent).find(".moduleDataPreview").html(result).removeClass("d-none");
-                             $(parent).find(".htmlColumnContentPreview").append(result);
-                             if(obj.ModuleName.toLowerCase() =="productlist")
-                             {
-                                  $(".owl-carousel").owlCarousel({
-                                         loop: true,
-                                         rtl: true,
-                                         navigation : true,
-                                         /* autoplay: true,*/
-                                         margin: 10,
-                                         animateOut: 'fadeOut',
-                                         animateIn: 'fadeIn',
-                                         nav: true,
-                                         /*dots: true,*/
-                                         autoplayHoverPause: false,
-                                         items: 3,
-                                         navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>", "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
-                                         responsive: {
-                                             0: {
-                                                 items: 1
-                                             },
-                                             600: {
-                                                 items: 3
-                                             },
-                                             1000: {
-                                                 items: 5
-                                             }
-                                         }
-                                    });
-                             }
-                             else if(obj.ModuleName.toLowerCase() =="imagetextslider")
-                             {
-                                 debugger;
-                                 AfterCarouselLoad();
-                             }
-
-                         }
-                     },
-                 });
-            }
+          
     </script>
 
 </body>

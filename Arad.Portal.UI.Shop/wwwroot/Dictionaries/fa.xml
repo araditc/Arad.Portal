@@ -49,6 +49,9 @@
 	<string key="GetMore">
 		<value>بیشتر</value>
 	</string>
+	<string key="design_Continue">
+		<value>ادامه</value>
+	</string>
 	<string key="design_bgColor">
 		<value>رنگ پس زمینه</value>
 	</string>

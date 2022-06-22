@@ -17,51 +17,24 @@ namespace Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo
     {
         private readonly ModuleContext _context;
         public IMongoCollection<Module> Modules { get; set; }
-
-        public IMongoCollection<Template> Templates { get; set; }
         public ModuleRepository(ModuleContext context,
             IHttpContextAccessor accessor,
             IWebHostEnvironment env):base(accessor, env)
         {
             _context = context;
             Modules = _context.ModuleCollection;
-            Templates = _context.TemplateCollection;
+            
         }
         public bool HasAnyModule()
         {
             return _context.ModuleCollection.AsQueryable().Any();
         }
 
-        public bool HasAnyTemplate()
-        {
-            return _context.TemplateCollection.AsQueryable().Any();
-        }
-
         public void InsertOneModule(Module module)
         {
             _context.ModuleCollection.InsertOne(module);
         }
-
-        public void InsertOneTemplate(Template template)
-        {
-            _context.TemplateCollection.InsertOne(template);
-        }
-
-        public List<SelectListModel> GetAllTemplate()
-        {
-            FilterDefinitionBuilder<Template> builder = new();
-            FilterDefinition<Template> filterDef;
-            filterDef = builder.Empty;
-            var lst = _context.TemplateCollection
-                .Find(filterDef)
-                .Project(_=> new SelectListModel() 
-                {
-                    Value = _.TemplateId, 
-                    Text = _.TemplateName
-                }).ToList();
-            return lst;
-        }
-
+      
         public List<SelectListModel> GetAllModules()
         {
             FilterDefinitionBuilder<Module> builder = new();
@@ -76,13 +49,6 @@ namespace Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo
                 }).ToList();
             lst.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("Choose"), Value = "-1" });
             return lst;
-        }
-
-        public Template FetchTemplateByName(string templateName)
-        {
-            var tem = _context.TemplateCollection
-                .Find(_ => _.TemplateName.ToLower() == templateName.ToLower()).FirstOrDefault();
-            return tem;
         }
 
         public Module FetchModuleByName(string moduleName)
@@ -179,12 +145,6 @@ namespace Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo
             return result;
         }
 
-        public Template FetchTemplateById(string templateId)
-        {
-            var tem = _context.TemplateCollection
-                .Find(_ => _.TemplateId == templateId).FirstOrDefault();
-            return tem;
-        }
 
         public Module FetchById(string moduleId)
         {

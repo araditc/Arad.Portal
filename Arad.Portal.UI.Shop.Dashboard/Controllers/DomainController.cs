@@ -330,7 +330,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         #endregion GetModulesViewComponents
 
-        public IActionResult GetSpecificModule(string moduleName, string id, int colCount)
+        public IActionResult GetSpecificModule(string moduleName, string id, int colCount, string rn, string cn, string sec)
         {
             var module = _moduleRepository.FetchModuleByName(moduleName);
             
@@ -384,7 +384,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 default:
                     break;
             }
+
             ViewBag.ColCnt =  colCount;
+            ViewBag.RowNumber = rn;
+            ViewBag.ColNumber = cn;
+            ViewBag.Section = sec;
             return PartialView($"~/Views/Domain/{viewName}");
         }
 
@@ -623,7 +627,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.RowNumber = rn;
             ViewBag.DomainId = d;
             ViewBag.Guid = gu;
-            return PartialView($"~/Views/Domain/{viewName}");
+            return PartialView($"~/Views/Domain/{viewName}", rowData);
         }
     }
 }

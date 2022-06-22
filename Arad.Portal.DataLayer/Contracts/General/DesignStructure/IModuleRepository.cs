@@ -10,10 +10,10 @@ namespace Arad.Portal.DataLayer.Contracts.General.DesignStructure
     public interface IModuleRepository
     {
         void InsertOneModule(Entities.General.DesignStructure.Module module);
-        void InsertOneTemplate(Entities.General.DesignStructure.Template template);
+        //void InsertOneTemplate(Entities.General.DesignStructure.Template template);
         bool HasAnyModule();
-        bool HasAnyTemplate();
-        List<SelectListModel> GetAllTemplate();
+        //bool HasAnyTemplate();
+        //List<SelectListModel> GetAllTemplate();
         List<SelectListModel> GetAllModules();
 
         List<Entities.General.DesignStructure.Module> GetAllModuleList();
@@ -28,13 +28,13 @@ namespace Arad.Portal.DataLayer.Contracts.General.DesignStructure
 
         List<SelectImageListModel> GetAllImageSliderTemplateDesign();
         
-        Entities.General.DesignStructure.Template FetchTemplateByName(string templateName);
+        //Entities.General.DesignStructure.Template FetchTemplateByName(string templateName);
 
-        Entities.General.DesignStructure.Template FetchTemplateById(string templateId);
+        //Entities.General.DesignStructure.Template FetchTemplateById(string templateId);
 
         Entities.General.DesignStructure.Module FetchById(string moduleId);
 
-       Entities.General.DesignStructure.Module FetchModuleByName(string moduleName);
+         Entities.General.DesignStructure.Module FetchModuleByName(string moduleName);
 
     }
 }

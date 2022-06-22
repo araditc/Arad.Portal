@@ -130,13 +130,20 @@
                                                 case "HorizantalStoreMenu":
                                                     @await Component.InvokeAsync("StoreMenu");
                                                     break;
+                                                    case "ImageTextSlider":
+                                                    @await Component.InvokeAsync("Slider", new { sliderId =  module.ParametersValue.SliderId });
+                                                    break;
+                                                case "LoginAndProfile":
+                                                    @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId, isShop = module.ParametersValue.IsShop });
+                                                    break;
+                                                case "MultiLingualFlags":
+                                                    @await Component.InvokeAsync("MultiLingual");
+                                                    break;
                                             }
                                         }
                                         else if (div.Attributes["target"].Value == "editor")
                                         {
-                                            @Html.Raw(column.ColData.Replace("<div target=\"editor\">", "")
-                .Replace("</div>", ""))
-                                            ; ;
+                                            @Html.Raw(column.ColData.Replace("<div target=\"editor\">", "").Replace("</div>", ""));
                                         }
                                     }
                                 }

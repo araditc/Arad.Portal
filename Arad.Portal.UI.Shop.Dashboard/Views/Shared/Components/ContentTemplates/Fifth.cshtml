@@ -22,7 +22,7 @@
          <li class="list-group-item  fifthContent" @innerElementsAtr>
              <div class="row">
                <div class="col-12 text-center">
-                   <a href="@($"/blog/{item.ContentCode}")">
+                   <a href="@(!string.IsNullOrWhiteSpace(item.UrlFriend) ? item.UrlFriend :  $"/blog/{item.ContentCode}")">
                        <span>@item.Title</span>
                    </a>
                </div>

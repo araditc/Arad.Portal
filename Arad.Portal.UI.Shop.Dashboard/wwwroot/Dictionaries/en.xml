@@ -117,6 +117,9 @@
 	<string key="design_IsShopDomain">
 		<value>Shop Domain</value>
 	</string>
+	<string key="design_Continue">
+		<value>Continue</value>
+	</string>
 	<string key="design_IsMultiLingual">
 		<value>MultiLingual Domain</value>
 	</string>

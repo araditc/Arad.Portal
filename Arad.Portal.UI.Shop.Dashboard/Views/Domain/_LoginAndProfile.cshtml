@@ -1,13 +1,14 @@
 ﻿<div class="row mx-2">
      <div class="col-12">
-          <input class="form-check-input par" type="checkbox" value="" id="isShop" >
+          <input class="form-check-input par" type="checkbox" value="" parid="isShop" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" >
             <label class="form-check-label" for="IsShop">
                 @Language.GetString("design_IsShopDomain")
             </label>
     </div>
     
       <div class="col-12 text-center">
-           <button id="btnAddModuleWithParameters" class="btn btn-success bg-gradient btn-sm float-end m-1"
+           <button btnid="btnAddModuleWithParameters" class="btn btn-success bg-gradient btn-sm float-end m-1"
+            cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section"
                    onclick="addModulesWithParams(this);" type="button">@Language.GetString("btn_Add")</button>
       </div>
 </div>

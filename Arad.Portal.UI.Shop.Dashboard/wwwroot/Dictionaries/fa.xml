@@ -123,6 +123,9 @@
 	<string key="design_IsShopDomain">
 		<value>دامنه فروشگاهی</value>
 	</string>
+	<string key="design_Continue">
+		<value>ادامه</value>
+	</string>
 	<string key="design_IsMultiLingual">
 		<value>دامنه چندزبانه</value>
 	</string>

@@ -46,6 +46,9 @@
 	<string key="GetMore">
 		<value>more</value>
 	</string>
+	<string key="design_Continue">
+		<value>Continue</value>
+	</string>
 	<string key="design_bgColor">
 		<value>background color</value>
 	</string>

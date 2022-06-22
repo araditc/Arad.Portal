@@ -39,24 +39,7 @@ namespace Arad.Portal.UI.Shop.ViewComponents
 
             ViewBag.LoadAnimation = loadAnimation;
             ViewBag.LoadAnimationType = loadAnimationType;
-
-            //switch(selectionTemplate)
-            //{
-            //    case ContentTemplateDesign.First:
-            //        cnt = 6;
-            //        break;
-            //    case ContentTemplateDesign.Second:
-            //        cnt = 4;
-            //        break;
-            //    case ContentTemplateDesign.Third:
-            //        cnt = 8;
-            //        break;
-            //    case ContentTemplateDesign.Forth :
-            //    case ContentTemplateDesign.Fifth :
-            //        cnt = count.Value;
-            //        break;
-
-            //}
+            
             lst = _contentRepository.GetSpecialContent(count, contentType, false);
             switch (selectionTemplate)
             {
@@ -148,6 +131,20 @@ namespace Arad.Portal.UI.Shop.ViewComponents
                     return View("Forth", lst);
                 case ContentTemplateDesign.Fifth:
                     return View("Fifth", lst);
+                case ContentTemplateDesign.SliderWithSubtitle:
+                    foreach (var item in lst)
+                    {
+                        if (item.Images.Any(_ => _.ImageRatio == ImageRatio.Square))
+                        {
+                            item.DesiredImageUrl = item.Images
+                                .FirstOrDefault(_ => _.ImageRatio == ImageRatio.Square).Url;
+                        }
+                        else
+                        {
+                            item.DesiredImageUrl = "/imgs/NoImage.png";
+                        }
+                    }
+                    return View("SliderWithSubtitle", lst);
                 default:
                     return View(lst);
             }

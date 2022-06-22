@@ -508,6 +508,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                                    SubTitle = _.SubTitle,
                                    TagKeywords = _.TagKeywords,
                                    Title = _.Title,
+                                   UrlFriend = _.UrlFriend,
                                    ContentCode = _.ContentCode
                                }).Sort(Builders<Entities.General.Content.Content>.Sort.Descending(_ => _.CreationDate)).Limit(count).ToList();
                         break;
@@ -528,6 +529,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                                SubTitle = _.SubTitle,
                                TagKeywords = _.TagKeywords,
                                Title = _.Title,
+                               UrlFriend = _.UrlFriend,
                                ContentCode = _.ContentCode
                            }).Sort(Builders<Entities.General.Content.Content>.Sort.Descending(_ => (float)_.TotalScore / _.ScoredCount)).Limit(count).ToList();
                         break;
@@ -548,6 +550,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                                SubTitle = _.SubTitle,
                                TagKeywords = _.TagKeywords,
                                Title = _.Title,
+                               UrlFriend = _.UrlFriend,
                                ContentCode = _.ContentCode
                            }).Sort(Builders<Entities.General.Content.Content>.Sort.Descending(_ => _.VisitCount)).Limit(count).ToList();
                         break;

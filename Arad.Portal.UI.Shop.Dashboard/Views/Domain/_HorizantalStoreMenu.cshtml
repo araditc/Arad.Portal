@@ -3,7 +3,8 @@
          <label class="form-label" >@Language.GetString("AlertAndMessage_ModuleWithoutParameters")</label><br/>
       </div>
       <div class="col-12 text-center">
-           <button id="btnAddModuleWithParameters" class="btn btn-success bg-gradient btn-sm float-end m-1"
+           <button btnid="btnAddModuleWithParameters" class="btn btn-success bg-gradient btn-sm float-end m-1"
+                   cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section"
                    onclick="addModulesWithParams(this);" type="button">@Language.GetString("btn_Add")</button>
       </div>
 </div>

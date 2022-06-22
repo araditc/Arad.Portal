@@ -5,7 +5,7 @@
     @foreach (SelectImageListModel option in ViewBag.ProductTemplateList)
     {
         <div class="col-12 @(@ViewBag.ColCnt == 1 || @ViewBag.ColCnt == 2 ? "col-md-3" : "") text-center">
-            <input class="form-check-input" name="rdbProductTemplateList" type="radio" value="@(option.Text)" /><br />
+            <input class="form-check-input" name="rdbProductTemplateList" type="radio" value="@(option.Text)" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" /><br />
             <img class="img-fluid m-2" src="@($"../filemanager/GetScaledImageOnWidth?path={option.ImageUrl}&width=300")" />
         </div>
     }
@@ -13,27 +13,27 @@
 <div class="row mx-2">
     <div class="col-12 text-center">
         <label class="form-label">@Language.GetString("Type")</label><br />
-        <select class="form-control selectpicker par" data-live-search="true" id="typeList"
+        <select class="form-control selectpicker par" data-live-search="true" parid="typeList" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section"
                 asp-items="@(new SelectList(ViewBag.ProductOrContentTypeList,"Value","Text"))">
         </select>
     </div>
     <div class="col-12 text-center countSection">
         <label class="form-label">@Language.GetString("CountToShow")</label><br />
-        <input type="number" id="countToShow" class="form-control par" value="" />
+        <input type="number" parid="countToShow" class="form-control par" value="" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" />
     </div>
     <div class="col-12 text-center loadAnimate">
-        <label class="form-label" for="LoadAnimation">@Language.GetString("design_loadAnimation")</label>
-        <select id="LoadAnimation" class="form-control selectpicker mt-2 par" asp-items="Html.GetEnumSelectList<TransActionType>()"></select>
+        <label class="form-label" for="loadAnimation">@Language.GetString("design_loadAnimation")</label>
+        <select parid="loadAnimation" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" class="form-control selectpicker mt-2 par" asp-items="Html.GetEnumSelectList<TransActionType>()"></select>
         <span class="field-validation-error" data-val-result="LoadAnimation"></span>
     </div>
      <div class="col-12 text-center loadAnimationType">
-          <label class="form-label" for="LoadAnimationType">@Language.GetString("design_loadAnimationType")</label>
-           <select id="LoadAnimationType" class="form-control selectpicker mt-2 par" asp-items="Html.GetEnumSelectList<LoadAnimationType>()"></select>
+          <label class="form-label" for="loadAnimationType">@Language.GetString("design_loadAnimationType")</label>
+           <select parid="loadAnimationType" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" class="form-control selectpicker mt-2 par" asp-items="Html.GetEnumSelectList<LoadAnimationType>()"></select>
         <span class="field-validation-error" data-val-result="LoadAnimation"></span>
      </div>
     <div class="col-12 text-center">
-        <button id="btnAddModuleWithParameters" class="btn btn-success bg-gradient btn-sm float-end m-1"
-                onclick="addModulesWithParams(this);" type="button">
+        <button btnid="btnAddModuleWithParameters" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section"
+            class="btn btn-success bg-gradient btn-sm float-end m-1" onclick="addModulesWithParams(this);" type="button">
             @Language.GetString("btn_Add")
         </button>
     </div>
@@ -43,9 +43,10 @@
 <script>
     $(document).ready(function(){
         debugger;
-         $("#typeList").selectpicker();
-         $("#LoadAnimation").selectpicker();
-         $("#LoadAnimationType").selectpicker();
+        
+        $("[parid='typeList'][cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").selectpicker();
+        $("[parid='loadAnimation'][cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").selectpicker();
+        $("[parid='loadAnimationType'][cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").selectpicker();
     });
 
 

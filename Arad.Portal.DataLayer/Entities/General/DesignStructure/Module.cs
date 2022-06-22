@@ -69,6 +69,7 @@ namespace Arad.Portal.DataLayer.Entities.General.DesignStructure
         Second = 1,
         Third = 2,
         Forth = 3,
-        Fifth = 4
+        Fifth = 4,
+        SliderWithSubtitle = 5
     }
 }
