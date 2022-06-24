@@ -598,24 +598,7 @@
                                 });
                             }
 
-                            //$(document).ready(function(){
-
-                            //    var $myCarousel = $("#sliderCarousel");
-                            //      $firstAnimatingElems = $myCarousel
-                            //              .find(".carousel-item:first")
-                            //             .find("[data-animation ^= 'animated']");
-
-                            //    var carousel = new bootstrap.Carousel($myCarousel);
-                            //    doAnimations($firstAnimatingElems);
-
-                            //    var myCarousel = document.getElementById('sliderCarousel');
-                            //    myCarousel.addEventListener("slide.bs.carousel", function (e) {
-                            //        var $animatingElems = $(e.relatedTarget).find(
-                            //            "[data-animation ^= 'animated']"
-                            //        );
-                            //        doAnimations($animatingElems);
-                            //    });
-                            //});
+                           
                     var ContentListForEdition ;
                     var currentDesignForLanguage;
                    $(document).ready(function(){
@@ -639,87 +622,87 @@
                             debugger;
                             if($("#languageId").val() != "-1")
                             {
-                               currentDesignForLanguage = ContentListForEdition.find(_=>_.languageId == $("#languageId").val());
-                               if(currentDesignForLanguage != undefined)
-                               {
-                                   loadInEditMode = true;
-                                   //headerPart
-                                   var senderHeaderCaller = $(".div_headerSection .addNewRow");
-                                   var senderBodyCaller = $(".div_containerSection .addNewRow");
-                                   var senderFooterCaller = $(".div_footerSection .addNewRow");
-                                   currentDesignForLanguage.headerPart.customizedContent.forEach(function(){
+                                debugger;
+                                if (ContentListForEdition != undefined)
+                                {
+                                    currentDesignForLanguage = ContentListForEdition.find(_ => _.languageId == $("#languageId").val());
+                                    if (currentDesignForLanguage != undefined) {
+                                        loadInEditMode = true;
+                                        //headerPart
+                                        var senderHeaderCaller = $(".div_headerSection .addNewRow");
+                                        var senderBodyCaller = $(".div_containerSection .addNewRow");
+                                        var senderFooterCaller = $(".div_footerSection .addNewRow");
+                                        currentDesignForLanguage.headerPart.customizedContent.forEach(function() {
 
-                                       addNewRow(senderHeaderCaller,"headerSection");
-                                       var colCount = $(this).colsContent.length;
-                                       va enumColsId = $(this).enumColsId;
-                                        $(`#${currentGuid}`).val(colCount);
-                                        $(`#${currentGuid}`).selectpicker("refresh");
-                                       
-                                        $.ajax({
-                                                 url:"@Url.Action("GetRelatedColsTemplateWidths","Domain")"+"?count="+colCount,
-                                                 type:'Get',
-                                                 statusCode:
-                                                 {
-                                                     200:function(result)
-                                                     {
-                                                         debugger;
-                                                         if(result.status == "success")
-                                                         {
-                                                             var options = "";
-                                                              if (result.data.length != 0) {
-                                                                    (result.data).forEach(function (item) {
-                                                                        var op = "<option value='" + item.value + "'>" + item.text + "</option>";
-                                                                        options += op;
-                                                                    });
+                                            addNewRow(senderHeaderCaller, "headerSection");
+                                            var colCount = $(this).colsContent.length;
+                                            var enumColsId = $(this).enumColsId;
+                                            $(`#${currentGuid}`).val(colCount);
+                                            $(`#${currentGuid}`).selectpicker("refresh");
+
+                                            $.ajax({
+                                                url: "@Url.Action("GetRelatedColsTemplateWidths","Domain")" + "?count=" + colCount,
+                                                type: 'Get',
+                                                statusCode:
+                                                {
+                                                    200: function(result) {
+                                                        debugger;
+                                                        if (result.status == "success") {
+                                                            var options = "";
+                                                            if (result.data.length != 0) {
+                                                                (result.data).forEach(function(item) {
+                                                                    var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                                                    options += op;
+                                                                });
+                                                            }
+                                                            $(`.colWidth[colwidthid='${currentGuid}']`).html(options);
+                                                            $(`.colWidth[colwidthid='${currentGuid}']`).selectpicker();
+                                                            $(`.colWidth[colWidthId='${currentGuid}']`).val(enumColsId);
+                                                            $(`.colWidth[colWidthId='${currentGuid}']`).selectpicker("refresh");
+
+
+                                                            var selectedElement = $(`.colWidth[colWidthId='${currentGuid}']`);
+
+                                                            var id = $(selectedElement).attr("colWidthId");
+                                                            var count = parseInt($(`.colCnt[id='${id}']`).val());
+
+                                                            var rowNumber = $(selectedElement).closest(".row.firstLevel").attr("rn");
+                                                            //var guid = $(selectedElement).closest(".row.firstLevel").attr("guid");
+                                                            var colWidthEnumId = parseInt($(selectedElement).val());
+                                                            var tag = "headerSection";
+                                                            var currentRowContent = $(this);
+                                                            $.ajax({
+                                                                url: "@Url.Action("GetRowWithSelectedColumns","Domain")" +
+                                                                    `?count=${count}&colWidth=${colWidthEnumId}&rn=${rowNumber}&d=${'@ViewBag.DomainId'}&gu=${currentGuid}&rowData=${currentRowContent}`,
+                                                                type: 'Get',
+                                                                statusCode:
+                                                                {
+                                                                    200: function(data) {
+                                                                        debugger;
+
+                                                                        var divId = `#${tag}_paramSection`;
+                                                                        $(divId).find(`.firstLevel.active.${rowNumber} .contentColumns`).html(data);
+                                                                        $(".drpContentType").selectpicker();
+                                                                        $(".moduleList").selectpicker();
+                                                                        var buttonDivClass = `.row.div_${tag}`;
+                                                                        $(buttonDivClass).find(".addNewRow").removeAttr("disabled");
+                                                                    }
                                                                 }
-                                                                $(`.colWidth[colwidthid='${currentGuid}']`).html(options);
-                                                                $(`.colWidth[colwidthid='${currentGuid}']`).selectpicker();
-                                                                $(`.colWidth[colWidthId='${currentGuid}']`).val(enumColsId);
-                                                                $(`.colWidth[colWidthId='${currentGuid}']`).selectpicker("refresh");
+                                                            });
 
-
-                                                                var selectedElement =  $(`.colWidth[colWidthId='${currentGuid}']`);
-
-                                                                var id = $(selectedElement).attr("colWidthId");
-                                                                var count = parseInt($(`.colCnt[id='${id}']`).val());
-
-                                                                 var rowNumber = $(selectedElement).closest(".row.firstLevel").attr("rn");
-                                                                 //var guid = $(selectedElement).closest(".row.firstLevel").attr("guid");
-                                                                 var colWidthEnumId = parseInt($(selectedElement).val());
-                                                                 var tag = "headerSection";
-                                                                 var currentRowContent = $(this);
-                                                                $.ajax({
-                                                                         url:"@Url.Action("GetRowWithSelectedColumns","Domain")"+
-                                                                                `?count=${count}&colWidth=${colWidthEnumId}&rn=${rowNumber}&d=${'@ViewBag.DomainId'}&gu=${currentGuid}&rowData=${currentRowContent}`,
-                                                                         type:'Get',
-                                                                         statusCode:
-                                                                         {
-                                                                             200:function(data)
-                                                                             {
-                                                                                 debugger;
-
-                                                                                 var divId =  `#${tag}_paramSection`;
-                                                                                  $(divId).find(`.firstLevel.active.${rowNumber} .contentColumns`).html(data);
-                                                                                   $(".drpContentType").selectpicker();
-                                                                                   $(".moduleList").selectpicker();
-                                                                                    var buttonDivClass = `.row.div_${tag}`;
-                                                                                    $(buttonDivClass).find(".addNewRow").removeAttr("disabled");
-                                                                             }
-                                                                         }
-                                                                       });
-
-                                                         }
-                                                     }
-                                                 }
+                                                        }
+                                                    }
+                                                }
                                             });
-                                      });
-                                   //bodyPart
+                                        });
+                                        //bodyPart
 
-                                   //footerPart
+                                        //footerPart
 
 
-                                   loadInEditMode = false;
-                               }
+                                        loadInEditMode = false;
+                                    }
+                                }
                             }
                         });
 

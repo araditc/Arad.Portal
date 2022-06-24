@@ -20,11 +20,11 @@
     ColContent fifthColContent = null;
     if(Model != null)
     {
-        firstColContent = Model.ColsContent.FirstOrDefault(_ => _.ColNumber == 1);
-        secondColContent = Model.ColsContent.FirstOrDefault(_ => _.ColNumber == 2);
-        thirdColContent = Model.ColsContent.FirstOrDefault(_ => _.ColNumber == 3);
-        forthColContent = Model.ColsContent.FirstOrDefault(_ => _.ColNumber == 4);
-        fifthColContent = Model.ColsContent.FirstOrDefault(_ => _.ColNumber == 5);
+        firstColContent = Model.ColsContent.Count() > 0 ? Model.ColsContent.FirstOrDefault(_ => _.ColNumber == 1) : null;
+        secondColContent = Model.ColsContent.Count() > 1 ? Model.ColsContent.FirstOrDefault(_ => _.ColNumber == 2) : null;
+        thirdColContent = Model.ColsContent.Count() > 2 ? Model.ColsContent.FirstOrDefault(_ => _.ColNumber == 3) : null;
+        forthColContent = Model.ColsContent.Count() > 3 ? Model.ColsContent.FirstOrDefault(_ => _.ColNumber == 4) : null;
+        fifthColContent = Model.ColsContent.Count() > 4 ? Model.ColsContent.FirstOrDefault(_ => _.ColNumber == 5): null;
         
     }
 

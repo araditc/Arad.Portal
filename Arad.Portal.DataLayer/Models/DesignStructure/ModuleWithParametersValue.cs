@@ -8,6 +8,10 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
 {
     public class ModuleWithParametersValue
     {
+        public ModuleWithParametersValue()
+        {
+            ParametersValue = new ModuleParameters();
+        }
         public string ModuleId { get; set; }
 
         public string ModuleName { get; set; }

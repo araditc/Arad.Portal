@@ -169,14 +169,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 MainPageContainerPart = model.MainPageContainerPart
             };
 
-            var html = new HomePageHtmlContent()
-            {
-                LanguageId = model.LanguageId,
-                HeaderHtmlSection = model.HeaderHtmlSection,
-                BodyHtmlSection = model.BodyHtmlSection,
-                FooterHtmlSection = model.FooterHtmlSection
-            };
-
+           
             if(domainEntity.ReturnValue.HomePageDesign.Any(_=>_.LanguageId == model.LanguageId))
             {
                 var m = domainEntity.ReturnValue.HomePageDesign.FirstOrDefault(_ => _.LanguageId == model.LanguageId);

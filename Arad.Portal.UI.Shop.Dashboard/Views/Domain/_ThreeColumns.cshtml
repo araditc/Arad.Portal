@@ -20,9 +20,9 @@
     ColContent thirdColContent = null;
     if(Model != null)
     {
-        firstColContent = Model.ColsContent.FirstOrDefault(_ => _.ColNumber == 1);
-        secondColContent = Model.ColsContent.FirstOrDefault(_ => _.ColNumber == 2);
-        thirdColContent = Model.ColsContent.FirstOrDefault(_ => _.ColNumber == 3);
+        firstColContent = Model.ColsContent.Count() > 0 ? Model.ColsContent.FirstOrDefault(_ => _.ColNumber == 1) : null;
+        secondColContent = Model.ColsContent.Count() > 1 ? Model.ColsContent.FirstOrDefault(_ => _.ColNumber == 2) : null;
+        thirdColContent = Model.ColsContent.Count() > 2 ? Model.ColsContent.FirstOrDefault(_ => _.ColNumber == 3) : null;
         
     }
 

@@ -30,12 +30,5 @@ namespace Arad.Portal.DataLayer.Models.Domain
         public bool IsMultiLinguals { get; set; }
 
         public bool IsShop { get; set; }
-
-        public string HeaderHtmlSection { get; set; }
-
-        public string BodyHtmlSection { get; set; }
-
-        public string FooterHtmlSection { get; set; }
-
     }
 }

@@ -14,7 +14,7 @@
     }
     var guid = @ViewBag.Guid;
     ColContent firstColContent = null;
-    if(Model != null)
+    if(Model != null && Model.ColsContent.Count() > 0)
     {
        firstColContent = Model.ColsContent.First();
     }
