@@ -21,6 +21,6 @@
 }
 <div class="row sectionRow mx-2" rn="@ViewBag.RowNumber" enumcolid="@ViewBag.ColWidth" rowCustomClasses="@(Model != null ? Model.ExtraClassNames : "")" guid="@guid">
     <div class="col-12 border border-1" colnum="1" did='@ViewBag.DomainId' cnt="1" colClassNames="@(firstColContent != null ? firstColContent.ColumnClassNames : "" )">
-         <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1,Section = section, ColumnClassNames = firstColContent != null ? firstColContent.ColumnClassNames : "col-12", RowGuid = guid , ColData =  firstColContent != null ? firstColContent.ColData : ""}'/>
+         <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section, ColumnClassNames = firstColContent != null ? firstColContent.ColumnClassNames : "col-12", RowGuid = guid , ColData =  firstColContent != null ? firstColContent.ColData : ""}'/>
     </div>
 </div>

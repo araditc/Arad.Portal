@@ -21,14 +21,21 @@
         var htmlDoc = new HtmlDocument();
         var htmlRaw = "";
         htmlDoc.LoadHtml(Model.ColData);
-        var divs = htmlDoc.DocumentNode.Descendants("div");
+        var divs = htmlDoc.DocumentNode.Elements("div");//divs in first level
         foreach (var div in divs) //surely it is one
         {
             if (div.Attributes["target"].Value == "module")
             {
-                module = JsonConvert
-                .DeserializeObject<ModuleWithParametersValue>(Model.ColData.Replace("<div target='module'>", "").Replace("</div>", ""));
-                contentType = "module";
+                try
+                {
+                    module = JsonConvert
+                      .DeserializeObject<ModuleWithParametersValue>(Model.ColData.Replace("<div target=\"module\">", "").Replace("</div>", ""));
+                    contentType = "module";
+                } catch(Exception ex)
+                {
+
+                }
+       
             }
             else
             {
@@ -81,14 +88,13 @@
             @{
                 if (contentType != "" && contentType == "editor")
                 {
-                    @Html.Raw(Model.ColData.Replace("<div target=\"editor\">", "").Replace("</div>", ""))
-                    ;
+                    @Html.Raw(Model.ColData.Replace("<div target=\"editor\">", "").Replace("</div>", ""));
                 }
             }
         </textarea>
         <script>
 
-            editorId = `editor_${'@Model.ColNumber'}_${'@ViewBag.RowNumber'}`;
+            editorId = "editor_"+"@Model.ColNumber"+"_"+"@ViewBag.RowNumber";
             var config =
                      {
                      height: 300,
@@ -124,8 +130,6 @@
                  'Shabnam';
 
              config.extraPlugins = '';
-             //config.htmlEncodeOutput = false;
-             //var editor = document.getElementById("editorCk");
              CKEDITOR.replace(editorId, config);
              CKEDITOR.dtd.$removeEmpty['i'] = false;
              CKEDITOR.dtd.$removeEmpty['span'] = false;
@@ -164,6 +168,7 @@
 <script>
     $(document).ready(function()
     {
+        //alert("@ViewBag.RowNumber");
         if('@contentType' != "")
         {
             loadData();
@@ -177,31 +182,34 @@
         debugger;
           if('@contentType' == "module")
             {
-                $(`.drpContentType[cn='${@Model.ColNumber}'][rn='${@ViewBag.RowNumber}'][sec='${@Model.Section}']`).val("1");
+                $('.drpContentType[cn="@Model.ColNumber"][rn="@ViewBag.RowNumber"][sec="@Model.Section"]').val("1");
             }else
             {
-                $(`.drpContentType[cn='${@Model.ColNumber}'][rn='${@ViewBag.RowNumber}'][sec='${@Model.Section}']`).val("2");
+                $('.drpContentType[cn="@Model.ColNumber"][rn="@ViewBag.RowNumber"][sec="@Model.Section"]').val("2");
             }
-            $(`.drpContentType[cn='${@Model.ColNumber}'][rn='${@ViewBag.RowNumber}'][sec='${@Model.Section}']`).selectpicker("refresh");
+            $('.drpContentType[cn="@Model.ColNumber"][rn="@ViewBag.RowNumber"][sec="@Model.Section"]').selectpicker("refresh");
 
-
+            var sender = $('.drpContentType[cn="@Model.ColNumber"][rn="@ViewBag.RowNumber"][sec="@Model.Section"]');
+            selectDrpContentType(sender);
+            debugger;
             if('@contentType' == "module")
             {
-                $(`.moduleList[cn='${@Model.ColNumber}'][rn='${@ViewBag.RowNumber}'][sec='${@Model.Section}']`).val("@module.ModuleId");
-                $(`.moduleList[cn='${@Model.ColNumber}'][rn='${@ViewBag.RowNumber}'][sec='${@Model.Section}']`).selectpicker("refresh");
+                $('.moduleList[cn="@Model.ColNumber"][rn="@ViewBag.RowNumber"][sec="@Model.Section"]').val("@module.ModuleId");
+                $('.moduleList[cn="{@Model.ColNumber"][rn="@ViewBag.RowNumber"][sec="${@Model.Section"]').selectpicker("refresh");
 
 
-
-                var sender = $(`.btnAddModule[cn='${@Model.ColNumber}'][rn='${@ViewBag.RowNumber}'][sec='${@Model.Section}']`);
+                debugger;
+                var sender = $('.btnAddModule[cn="@Model.ColNumber"][rn="@ViewBag.RowNumber"][sec="@Model.Section"]');
                 var parentDiv = $(sender).closest(".parent");
                 var colnumber =  $(sender).attr("cn");
                 var cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
                 var selectedModuleName = $(parentDiv).find(".moduleList").find("option:selected").text();
                 var selectedModuleId = $(parentDiv).find(".moduleList").find("option:selected").val();
                 var paramDiv = $(parentDiv).find(".paramsDiv");
+                debugger;
                 $.ajax({
                     url:"@Url.Action("GetSpecificModule","Domain")"+
-                      "?moduleName="+'@module.ModuleName'+"&id="+'@ViewBag.DomainId'+"&colCount="+cnt +"&rn" +"@ViewBag.RowNumber"+"&cn="+"@Model.ColNumber"+"&sec="+"@Model.Section",
+                      "?moduleName="+'@module.ModuleName'+"&id="+'@ViewBag.DomainId'+"&colCount="+cnt +"&rn=" +"@ViewBag.RowNumber"+"&cn="+"@Model.ColNumber"+"&sec="+"@Model.Section",
                     type:'Get',
                     statusCode:{
                         200:function(data){
@@ -369,6 +377,7 @@
                  var targetParamsDiv = $(sender).closest(".paramsDiv");
                  var count = 0;
                  var loadAnimation;
+                 var selectedTemplate = "";
                  var isShop = false;
                  var loadAnimationType;
                   var sliderId ="" ;
@@ -457,6 +466,7 @@
                        }
                  });
                  var url = "";
+                 debugger;
                  switch(obj.ModuleName.toLowerCase())
                  {
                      case "productlist":

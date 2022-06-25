@@ -14,9 +14,15 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
         }
         public int RowNumber { get; set; }
 
-        public string ExtraClassNames { get; set; }
+        public BGType BGType { get; set; }
+
+        public int BGTypeId { get; set; }
+
+        public string BgImage { get; set; }
 
         public string BgCodeColor { get; set; }
+
+        public string ExtraClassNames { get; set; }
 
         public string InlineStyles { get; set; }
 

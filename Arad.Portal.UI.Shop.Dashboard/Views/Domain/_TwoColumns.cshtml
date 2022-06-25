@@ -77,10 +77,12 @@
 
 
     <div class="@firstClass" colnum="1" did='@ViewBag.DomainId' cnt ="2" colClassNames="@(firstColContent != null ? firstColContent.ColumnClassNames : "" )">
-         <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section, ColumnClassNames = firstColContent != null ? firstColContent.ColumnClassNames :   firstClass.Replace("border-1", "").Replace("border", ""), RowGuid = guid, ColData = firstColContent != null ? firstColContent.ColData : "" }'/>
+         <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section, ColumnClassNames = firstColContent != null ? firstColContent.ColumnClassNames :   firstClass.Replace("border-1", "").Replace("border", ""),
+                        RowGuid = guid, ColData = firstColContent != null ? firstColContent.ColData : "" }'/>
     </div>
 
      <div class="@secondClass" colnum="2" did='@ViewBag.DomainId' cnt ="2" colClassNames="@(secondColContent != null ? secondColContent.ColumnClassNames : "")">
-          <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 2, Section = section, ColumnClassNames = secondColContent != null ? secondColContent.ColumnClassNames :  secondClass.Replace("border-1", "").Replace("border", ""), RowGuid = guid, ColData = secondColContent != null ? secondColContent.ColData : "" }'/>
+          <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 2, Section = section,
+                  ColumnClassNames = secondColContent != null ? secondColContent.ColumnClassNames :  secondClass.Replace("border-1", "").Replace("border", ""), RowGuid = guid, ColData = secondColContent != null ? secondColContent.ColData : "" }'/>
      </div>
 </div>

@@ -379,6 +379,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
 
             ViewBag.ColCnt =  colCount;
+
             ViewBag.RowNumber = rn;
             ViewBag.ColNumber = cn;
             ViewBag.Section = sec;
@@ -585,15 +586,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return result;
         }
 
-        [HttpGet]
-        public IActionResult GetRowWithSelectedColumns(int count,int colWidth, string rn, string d, string gu, RowContent rowData = null)
+        [HttpPost]
+        public IActionResult GetRowWithSelectedColumns([FromBody]RowSelectedColumnsModel obj)
         {
 
             var moduleList = _moduleRepository.GetAllModules();
             ViewBag.ModuleList = moduleList;
 
             var viewName = "";
-            switch(count)
+            switch(obj.Count)
             {
                 case 1:
                     viewName = "_OneColumn.cshtml";
@@ -616,11 +617,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
               
             }
             
-            ViewBag.ColWidth = colWidth;
-            ViewBag.RowNumber = rn;
-            ViewBag.DomainId = d;
-            ViewBag.Guid = gu;
-            return PartialView($"~/Views/Domain/{viewName}", rowData);
+            ViewBag.ColWidth = obj.ColumnWidth;
+            ViewBag.RowNumber = obj.RowNumber;
+            ViewBag.DomainId = obj.DomainId;
+            ViewBag.Guid = obj.RowGuid;
+            return PartialView($"~/Views/Domain/{viewName}", obj.RowData);
         }
     }
 }

@@ -482,9 +482,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             }
             
             FilterDefinitionBuilder<Entities.General.Content.Content> builder = new();
-            FilterDefinition<Entities.General.Content.Content> filterDef;
-            filterDef = builder.Gte(nameof(Entities.General.Content.Content.EndShowDate), DateTime.Now);
-            filterDef &= builder.Lte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.Now);
+            FilterDefinition<Entities.General.Content.Content> filterDef = builder.Empty;
+            //filterDef = builder.Gte(nameof(Entities.General.Content.Content.EndShowDate), DateTime.Now);
+            //filterDef &= builder.Lte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.Now);
             if (domainEntity != null)
             {
                 //???

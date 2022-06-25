@@ -1,6 +1,6 @@
 ﻿@using Arad.Portal.DataLayer.Entities.General.SliderModule;
 @using Arad.Portal.DataLayer.Models.DesignStructure;
-<div class="row par mx-2" id="templateSection">
+<div class="row par mx-2" parid="templateSection">
     <label class="form-label text-center">@Language.GetString("ViewTemplate")</label><br />
     @foreach (SelectImageListModel option in ViewBag.ProductTemplateList)
     {
@@ -43,6 +43,8 @@
 <script>
     $(document).ready(function(){
         debugger;
+
+        //alert("@ViewBag.RowNumber");
         
         $("[parid='typeList'][cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").selectpicker();
         $("[parid='loadAnimation'][cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").selectpicker();

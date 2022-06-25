@@ -19,7 +19,8 @@ namespace Arad.Portal.UI.Shop.Controllers
             IWebHostEnvironment env,
             IHttpContextAccessor accessor):base(accessor, env)
         {
-            _contentRepository = contentRepository;  
+            _contentRepository = contentRepository;
+            _accessor = accessor;
         }
         public IActionResult Index()
         {

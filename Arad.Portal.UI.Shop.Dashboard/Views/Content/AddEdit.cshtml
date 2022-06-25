@@ -560,12 +560,13 @@
                     $("span[data-val-result='dtpEndShowDate']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                      flag = true;
             }
-                if ($("#ContentProviderName").val() == "" && $("#SourceType").val() != "1") {
+                if ($("#ContentProviderName").val() == "" && $("#SourceType").val() != "0") {
                     $("span[data-val-result='ContentProviderName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                     flag =  true;
             }
             //console.log("validation passed");
-            if (!flag) {
+            if (!flag)
+            {
                 $.ajax({
                     url: "/Content/CheckUrlFriendUniqueness?id="+ '@Model.ContentId' +"&url=" + $("#urlFriend").val(),
                     type: 'Get',
@@ -583,7 +584,8 @@
                                     debugger;
                                     /*  AddLoading($("#addContentCardBody"));*/
                                 },
-                                success: function (result) {
+                                success: function (result)
+                                {
                                     debugger;
                                     if (result.status === "Success") {
                                         document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
@@ -618,7 +620,6 @@
                                         }
                                         else if (result.status === "Error") {
                                             showError(result.message);
-                                        }
                                         }
                                 },
                

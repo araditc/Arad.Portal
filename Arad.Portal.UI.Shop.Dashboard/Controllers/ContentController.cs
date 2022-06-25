@@ -214,6 +214,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 }
                 //if (dto.LogoContent != "")
                 //    dto.FileLogo = dto.LogoContent;
+                dto.UrlFriend = $"/blog/{dto.UrlFriend}";
                 Result saveResult = await _contentRepository.Add(dto);
                 if(saveResult.Succeeded)
                 {
