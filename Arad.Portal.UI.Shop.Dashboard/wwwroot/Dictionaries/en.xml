@@ -2256,6 +2256,12 @@
 	</string>
 	<!--/.Messege Content of AdminLTE-->
 	<!--START [Action]-->
+	<string key="Content_IsCommentBoxShowing">
+		<value>Is commenting allowed on?</value>
+	</string>
+	<string key="Content_IsRateBoxShowing">
+		<value>Is rating allowed on?</value>
+	</string>
 	<string key="Exit">
 		<value>Exit</value>
 	</string>

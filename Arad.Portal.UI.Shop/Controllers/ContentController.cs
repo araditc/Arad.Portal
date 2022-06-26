@@ -22,6 +22,8 @@ namespace Arad.Portal.UI.Shop.Controllers
             _contentRepository = contentRepository;
             _accessor = accessor;
         }
+
+        [Route("{language?}/blog")]
         public IActionResult Index()
         {
             return View();

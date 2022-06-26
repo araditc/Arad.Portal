@@ -185,10 +185,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> Add([FromBody] ContentDTO dto)
         {
             JsonResult result;
+            var errors = new List<AjaxValidationErrorModel>();
             if (!ModelState.IsValid)
             {
-                var errors = new List<AjaxValidationErrorModel>();
-
                 foreach (var modelStateKey in ModelState.Keys)
                 {
                     var modelStateVal = ModelState[modelStateKey];
@@ -199,29 +198,39 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
+                var isCkEditorContentValid = HtmlSanitizer.SanitizeHtml(dto.Contents);
+                if(!isCkEditorContentValid)
+                {
+                    errors.Add(new AjaxValidationErrorModel() {Key = "Contents", ErrorMessage = Language.GetString("AlertAndMessage_InvalidEditorContent") });
+                    result = Json(new { Status = "ModelError", ModelStateErrors = errors });
+                }
+                else
+                {
+                    dto.UrlFriend = $"/blog/{dto.UrlFriend}";
 
-                var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
-                var path = "images/Contents";
-                foreach (var pic in dto.Images)
-                {
-                    var res = ImageFunctions.SaveImageModel(pic, path, localStaticFileStorageURL);
-                    if (res.Key != Guid.Empty.ToString())
+                    var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
+                    var path = "images/Contents";
+                    foreach (var pic in dto.Images)
                     {
-                        pic.ImageId = res.Key;
-                        pic.Url = res.Value;
-                        pic.Content = "";
+                        var res = ImageFunctions.SaveImageModel(pic, path, localStaticFileStorageURL);
+                        if (res.Key != Guid.Empty.ToString())
+                        {
+                            pic.ImageId = res.Key;
+                            pic.Url = res.Value;
+                            pic.Content = "";
+                        }
                     }
+                    //if (dto.LogoContent != "")
+                    //    dto.FileLogo = dto.LogoContent;
+                    
+                    Result saveResult = await _contentRepository.Add(dto);
+                    if (saveResult.Succeeded)
+                    {
+                        _codeGenerator.SaveToDB(dto.ContentCode);
+                    }
+                    result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
+                    : new { Status = "Error", saveResult.Message });
                 }
-                //if (dto.LogoContent != "")
-                //    dto.FileLogo = dto.LogoContent;
-                dto.UrlFriend = $"/blog/{dto.UrlFriend}";
-                Result saveResult = await _contentRepository.Add(dto);
-                if(saveResult.Succeeded)
-                {
-                    _codeGenerator.SaveToDB(dto.ContentCode);
-                }
-                result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
-                : new { Status = "Error", saveResult.Message });
             }
             return result;
         }
@@ -230,9 +239,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> Edit([FromBody] ContentDTO dto)
         {
             JsonResult result;
+            var errors = new List<AjaxValidationErrorModel>();
             if (!ModelState.IsValid)
             {
-                var errors = new List<AjaxValidationErrorModel>();
                 foreach (var modelStateKey in ModelState.Keys)
                 {
                     var modelStateVal = ModelState[modelStateKey];
@@ -244,28 +253,36 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             else
             {
                 //if (dto.LogoContent != "")
-                //    dto.FileLogo = dto.LogoContent;
-
-                var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
-                var path = "images/Contents";
-                foreach (var pic in dto.Images)
+                //dto.FileLogo = dto.LogoContent;
+                var isCkEditorContentValid = HtmlSanitizer.SanitizeHtml(dto.Contents);
+                if (!isCkEditorContentValid)
                 {
-                    if(!string.IsNullOrEmpty(pic.Content))
+                    errors.Add(new AjaxValidationErrorModel() { Key = "Contents", ErrorMessage = Language.GetString("AlertAndMessage_InvalidEditorContent") });
+                    result = Json(new { Status = "ModelError", ModelStateErrors = errors });
+                }
+                else
+                {
+                    dto.UrlFriend = $"/blog/{dto.UrlFriend}";
+                    var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
+                    var path = "images/Contents";
+                    foreach (var pic in dto.Images)
                     {
-                        var res = ImageFunctions.SaveImageModel(pic, path, localStaticFileStorageURL);
-                        if (res.Key != Guid.Empty.ToString())
+                        if (!string.IsNullOrEmpty(pic.Content))
                         {
-                            pic.ImageId = res.Key;
-                            pic.Url = res.Value;
-                            pic.Content = "";
+                            var res = ImageFunctions.SaveImageModel(pic, path, localStaticFileStorageURL);
+                            if (res.Key != Guid.Empty.ToString())
+                            {
+                                pic.ImageId = res.Key;
+                                pic.Url = res.Value;
+                                pic.Content = "";
+                            }
                         }
                     }
-                    
-                }
 
-                Result saveResult = await _contentRepository.Update(dto);
-                result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
-                : new { Status = "Error", saveResult.Message });
+                    Result saveResult = await _contentRepository.Update(dto);
+                    result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
+                    : new { Status = "Error", saveResult.Message });
+                }
             }
             return result;
         }

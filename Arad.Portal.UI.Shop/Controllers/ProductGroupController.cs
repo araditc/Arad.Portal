@@ -28,11 +28,13 @@ namespace Arad.Portal.UI.Shop.Controllers
             _menuRepository = menuRepository;
             _domainName = base.DomainName;
         }
+
+        [Route("{language}/group")]
         public IActionResult Index()
         {
             return View();
         }
-
+        //[Route("group/{**slug}")]
         [Route("{language}/group/{**slug}")]
         public async Task<IActionResult> Details(string slug)
         {

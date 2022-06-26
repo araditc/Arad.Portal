@@ -17,14 +17,14 @@ using Serilog;
 
 namespace Arad.Portal.UI.Shop.Middlewares
 {
-    public class UseLanguageMapperMiddleware
+    public class UseLanguageMapperMiddleware0
     {
         private RequestDelegate _next;
         private readonly DomainContext _domainContext;
         private readonly LanguageContext _languageContext;
         private readonly IWebHostEnvironment _env;
 
-        public UseLanguageMapperMiddleware(RequestDelegate next, DomainContext domainContext,
+        public UseLanguageMapperMiddleware0(RequestDelegate next, DomainContext domainContext,
             IWebHostEnvironment environment,
             LanguageContext languageContext)
         {
@@ -37,36 +37,36 @@ namespace Arad.Portal.UI.Shop.Middlewares
         {
             Log.Fatal($"In middleware:{context.Request.Path}");
             string defLangSymbol = "";
+            string defaultDomainLangSymbol = "";
             string pathRequest = "";
             var langSymbolList = _languageContext.Collection.Find(_ => _.IsActive).Project(_ => _.Symbol.ToLower()).ToList();
             string newPath = "";
             string domainName = "";
-            
+
             domainName = $"{context.Request.Host}";
-            
+
 
             if (context.Request.Path.ToString().Contains("/FileManager/GetScaledImage") ||
-                context.Request.Path.ToString().Contains("/FileManager/GetImage") ||
-                 context.Request.Path.ToString().Contains("/FileManager/GetScaledImageOnWidth") ||
-                 context.Request.Path.ToString().Contains("/CkEditor/") ||
+                  context.Request.Path.ToString().Contains("/FileManager/GetImage") ||
+                  context.Request.Path.ToString().Contains("/FileManager/GetScaledImageOnWidth") ||
                   context.Request.Path.ToString().Contains("/fonts") ||
                   context.Request.Path.ToString().Contains("/ImageSlider/") ||
                   context.Request.Path.ToString().Contains("/fonts/") ||
                   context.Request.Path.ToString().Contains("/imgs") ||
-                context.Request.Path.ToString().Contains("/lib/") ||
-                context.Request.Path.ToString().Contains("/css/") ||
-                context.Request.Path.ToString().Contains("/js/") ||
-
-                context.Request.Path.ToString().Contains("/plugins/"))
+                  context.Request.Path.ToString().Contains("/img") ||
+                  context.Request.Path.ToString().Contains("/lib/") ||
+                  context.Request.Path.ToString().Contains("/css/") ||
+                  context.Request.Path.ToString().Contains("/js/") ||
+                  context.Request.Path.ToString().Contains("/plugins/"))
             {
                 await _next.Invoke(context);
             }
             else
             {
-                if (domainName.ToString().ToLower().StartsWith("localhost"))
-                {
-                    domainName = context.Request.Host.ToString().Substring(0, 9);
-                }
+                //if (domainName.ToString().ToLower().StartsWith("localhost"))
+                //{
+                //    domainName = context.Request.Host.ToString().Substring(0, 9);
+                //}
 
                 //first step checke whether this cookie exist or not
                 var cookieName = CookieRequestCultureProvider.DefaultCookieName;
@@ -95,6 +95,21 @@ namespace Arad.Portal.UI.Shop.Middlewares
                     }
 
                     defLangSymbol = result.DefaultLangSymbol;
+                    defaultDomainLangSymbol = result.DefaultLangSymbol;
+                }
+
+                if (defaultDomainLangSymbol == "")
+                {
+                    DataLayer.Entities.General.Domain.Domain result = null;
+                    if (_domainContext.Collection.Find(_ => _.DomainName == $"{context.Request.Scheme}://{domainName}").Any())
+                    {
+                        result = _domainContext.Collection.Find(_ => _.DomainName == $"{context.Request.Scheme}://{domainName}").FirstOrDefault();
+                    }
+                    else
+                    {
+                        result = _domainContext.Collection.Find(_ => _.IsDefault).FirstOrDefault();
+                    }
+                    defaultDomainLangSymbol = result.DefaultLangSymbol;
                 }
 
                 //if cookie is null we write the cookie
@@ -105,21 +120,20 @@ namespace Arad.Portal.UI.Shop.Middlewares
                         new CookieOptions() { Domain = domainName, Expires = DateTime.Now.AddDays(7) });
                 }
 
-                var lang = _languageContext.Collection.Find(_ => _.Symbol == defLangSymbol).FirstOrDefault();
-                //var redirectUrl = $"{domainName}/{lang.Symbol}";
-                if (context.Request.Path.Value.Length == 1)
+
+                if (context.Request.Path.Value.Length == 1 && defLangSymbol.ToLower() != defaultDomainLangSymbol.ToLower())
                 {
-                    newPath = context.Request.Path + lang.Symbol.ToLower();
+                    newPath = context.Request.Path + defLangSymbol.ToLower();
                     context.Response.Redirect(newPath, true);
                 }
                 else
-                if (!context.Request.Path.Value.StartsWith($"/{lang.Symbol.ToLower()}"))
+                if (defLangSymbol.ToLower() != defaultDomainLangSymbol.ToLower() && !context.Request.Path.Value.StartsWith($"/{defLangSymbol.ToLower()}"))
                 {
                     if (langSymbolList.Contains(context.Request.Path.Value.Split("/")[1]))
                     {
                         foreach (var symbol in langSymbolList)
                         {
-                            if (context.Request.Path.Value.StartsWith($"/{symbol}"))
+                            if (context.Request.Path.Value.StartsWith($"/{symbol.ToLower()}"))
                             {
                                 if (symbol.Length + 2 > context.Request.Path.Value.Length)
                                 {
@@ -133,7 +147,7 @@ namespace Arad.Portal.UI.Shop.Middlewares
                             }
                         }
                     }
-                    newPath = $"/{lang.Symbol.ToLower()}" +
+                    newPath = $"/{defLangSymbol.ToLower()}" +
                    $"{(!string.IsNullOrWhiteSpace(pathRequest) ? pathRequest : context.Request.Path.Value) + (context.Request.QueryString.Value != "/" ? context.Request.QueryString : "")}";
                     if (newPath.EndsWith("/"))
                     {
@@ -141,13 +155,18 @@ namespace Arad.Portal.UI.Shop.Middlewares
                     }
                     context.Response.Redirect(newPath, true);
                 }
+                else if (context.Request.Path.Value.StartsWith($"/{defaultDomainLangSymbol.ToLower()}"))
+                {
+
+                    newPath = context.Request.Path.Value.Replace($"/{defaultDomainLangSymbol.ToLower()}", "");
+                    context.Response.Redirect(newPath, true);
+
+                }
                 else
                 {
                     await _next.Invoke(context);
                 }
             }
-            //await _next.Invoke(context);
-
         }
     }
 }

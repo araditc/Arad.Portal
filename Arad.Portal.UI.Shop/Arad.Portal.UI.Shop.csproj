@@ -46,6 +46,8 @@
   <ItemGroup>
     <Folder Include="Connected Services\" />
     <Folder Include="Views\Search\" />
+    <Folder Include="wwwroot\CkEditor\Domain\" />
+    <Folder Include="wwwroot\CkEditor\Product\" />
     <Folder Include="wwwroot\css\imgs\" />
     <Folder Include="wwwroot\Images\" />
     <Folder Include="wwwroot\Files\" />
@@ -66,6 +68,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="wwwroot\CkEditor\Content\4f34f19e-9199-4230-856f-1329ab7ef23b.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\CkEditor\Content\709a8ac0-fd5d-4f21-b62e-c091a8732f6e.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\CkEditor\Content\712c6d1c-ea87-4a81-82ec-747c2cf838a7.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Update="wwwroot\imgs\NoImage.png">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

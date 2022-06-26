@@ -284,9 +284,25 @@
                         <span data-val-result="ContentCode" class="text-danger"></span>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label" for="urlFriend">@Language.GetString("UrlFriend")</label><br />
-                        <input type="text" class="form-control" asp-for="@Model.UrlFriend" placeholder=" ">
+                        <label class="form-label" for="UrlFriend">@Language.GetString("UrlFriend")</label><br />
+                        <input type="text" class="form-control" id="UrlFriend" value="@(!string.IsNullOrWhiteSpace(Model.UrlFriend) ? Model.UrlFriend.Replace("/blog/", "") : Model.UrlFriend)" placeholder="">
                         <span data-val-result="UrlFriend" class="text-danger"></span>
+                    </div>
+                    <div class="col-12 col-md-3 pt-1 pb-2">
+                        <div class="form-check m-auto d-inline-block pt-3">
+                            <input class="form-check-input" type="checkbox" value="@Model.IsCommentBoxShowing" asp-for="@Model.IsCommentBoxShowing" min="0">
+                            <label class="form-check-label" for="IsCommentBoxShowing">
+                                @Language.GetString("Content_IsCommentBoxShowing")
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3 pt-1 pb-2">
+                        <div class="form-check m-auto d-inline-block pt-3">
+                            <input class="form-check-input" type="checkbox" value="@Model.IsRateBoxShowing" asp-for="@Model.IsRateBoxShowing" min="0">
+                            <label class="form-check-label" for="IsRateBoxShowing">
+                                @Language.GetString("Content_IsRateBoxShowing")
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -389,7 +405,7 @@
                                             var config = {
                                                 height: 300,
                                                 filebrowserUploadUrl: '/Image/ContentImageUpload',
-                                               // filebrowserBrowseUrl: '/Image/ContentFileBrows',
+                                                //filebrowserBrowseUrl: 'E:/AradProject/AradPortalFileStorage',
                                                 language: '@lan',
                                                 scayt_sLang: '@lan',
                                                 allowedContent: true,
@@ -568,7 +584,7 @@
             if (!flag)
             {
                 $.ajax({
-                    url: "/Content/CheckUrlFriendUniqueness?id="+ '@Model.ContentId' +"&url=" + $("#urlFriend").val(),
+                    url: "/Content/CheckUrlFriendUniqueness?id="+ '@Model.ContentId' +"&url=" + $("#UrlFriend").val(),
                     type: 'Get',
                     dataType: 'json',
                     success: function (result) {
@@ -799,6 +815,8 @@
         obj.SeoDescription = $("#SeoDescription").val();
          obj.UrlFriend = $("#UrlFriend").val();
         obj.ContentCode = Number($("#ContentCode").val());
+        obj.IsCommentBoxShowing = $("#IsCommentBoxShowing").is(":checked");
+        obj.IsRateBoxShowing = $("#IsRateBoxShowing").is(":checked");
         debugger;
         obj.Contents = CKEDITOR.instances.editorCk.getData();
         var commaseperatedTags = $("#tagKeyWords").val();

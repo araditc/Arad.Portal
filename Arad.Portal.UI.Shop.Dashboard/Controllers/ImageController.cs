@@ -37,27 +37,26 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             if (upload.Length >= 524288) return null;
 
             var filename = Guid.NewGuid() + Path.GetExtension(upload.FileName).ToLower();
-            var path = Path.Combine(Directory.GetCurrentDirectory(),
-               _env.WebRootPath, "CkEditor/Content");
-
-            if (!Directory.Exists(path))
-            {
-                DirectoryInfo di = Directory.CreateDirectory(path);
-            }
-            //$"/{fileName}"
-             path = Path.Combine(path, filename);
-            //var directory = Path.Combine(_localStorage, "ckEditorContentImages").Replace("\\", "/");
-            //if (!Directory.Exists(directory))
+            //var path = Path.Combine(Directory.GetCurrentDirectory(),
+            //   _env.WebRootPath, "CkEditor/Content");
+            //if (!Directory.Exists(path))
             //{
-            //    Directory.CreateDirectory(directory);
+            //    DirectoryInfo di = Directory.CreateDirectory(path);
             //}
-            //var path = Path.Combine(_localStorage, "ckEditorContentImages", filename).Replace("\\", "/");
+            //$"/{fileName}"
+            //path = Path.Combine(path, filename);
+            var directory = Path.Combine(_localStorage, "ckEditorContentImages").Replace("\\", "/");
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+            var path = Path.Combine(_localStorage, "ckEditorContentImages", filename).Replace("\\", "/");
             using (var stream = new FileStream(path, FileMode.Create))
             {
                 upload.CopyTo(stream);
             }
-            var url = "/CkEditor/Content/" + filename;
-           // var url = $"{"/ckEditorContentImages/"}{filename}";
+            //var url = "/CkEditor/Content/" + filename;
+            var url = $"/ckEditorContentImages/{filename}";
             return Json(new { uploaded = true, url = url });
            // return new JsonResult(new { uploaded = 1, fileName = filename, url = url, error = "The file is too big." });
         }

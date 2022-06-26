@@ -2299,6 +2299,12 @@
 	<!--/.Messege Content of AdminLTE-->
 	<!--END [Dashboard]-->
 	<!--START [Action]-->
+	<string key="Content_IsCommentBoxShowing">
+		<value>امکان نظر دادن برای محتوا</value>
+	</string>
+	<string key="Content_IsRateBoxShowing">
+		<value>امکان امتیازدهی به محتوا</value>
+	</string>
 	<string key="Exit">
 		<value>خروج</value>
 	</string>

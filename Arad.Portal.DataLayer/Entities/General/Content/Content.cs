@@ -65,6 +65,10 @@ namespace Arad.Portal.DataLayer.Entities.General.Content
 
         public int ScoredCount { get; set; }
 
+        public bool IsCommentBoxShowing { get; set; }
+
+        public bool IsRateBoxShowing { get; set; }
+
         public List<Comment.Comment> Comments { get; set; }
 
         public SourceType SourceType { get; set; }

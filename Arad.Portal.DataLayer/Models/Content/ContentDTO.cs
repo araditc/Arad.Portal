@@ -66,6 +66,9 @@ namespace Arad.Portal.DataLayer.Models.Content
         public List<string> TagKeywords { get; set; }
 
         //public int? PopularityRate { get; set; }
+
+        public bool IsCommentBoxShowing { get; set; }
+        public bool IsRateBoxShowing { get; set; }
         public long TotalScore { get; set; }
         public int ScoredCount { get; set; }
         public int LikeRate { get; set; }

@@ -30,6 +30,8 @@ namespace Arad.Portal.UI.Shop.Controllers
             _accessor = accessor;
             _languageRepository = lanRepository;
         }
+
+        [Route("{language}/category")]
         public IActionResult Index()
         {
             return View();

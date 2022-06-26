@@ -95,7 +95,7 @@
                                         <td>@item.Name</td>
                                         <td>@item.LanguageName</td>
                                         <td style="display:none;">@item.LanguageId</td>
-                                        <td>@item.UrlFriend</td>
+                                        <td>@(!string.IsNullOrWhiteSpace(item.UrlFriend) ? item.UrlFriend.Replace("/category/", "") : item.UrlFriend)</td>
                                         <td>
                                             <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromTable(this);">
                                                 <i class="fa fa-trash" ></i>

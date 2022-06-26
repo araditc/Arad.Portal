@@ -45,12 +45,12 @@ namespace Arad.Portal.UI.Shop.Controllers
             //_enyimMemcachedMethods = enyimMemcachedMethods;
         }
 
-        [Route("{language}/product")]
+        [Route("{language?}/product")]
         public IActionResult Index()
         {
             return View();
         }
-
+        //[Route("product/{**slug}")]
         [Route("{language}/product/{**slug}")]
         public IActionResult Details(string slug)
         {
