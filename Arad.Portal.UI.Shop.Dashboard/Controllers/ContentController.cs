@@ -135,6 +135,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var staticFileStorageURL = _configuration["LocalStaticFileStorage"];
+
+            var fileShown = _configuration["LocalStaticFileShown"];
+            ViewBag.Url = fileShown;
             var model = new ContentDTO();
             if (!string.IsNullOrWhiteSpace(id))
             {

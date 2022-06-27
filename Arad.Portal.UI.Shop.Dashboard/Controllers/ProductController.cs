@@ -124,6 +124,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             ViewBag.ActivePromotionId = "-1";
 
+            var fileShown = _configuration["LocalStaticFileShown"];
+            ViewBag.Url = fileShown;
+
             var imageRatioList = _productRepository.GetAllImageRatio();
             ViewBag.ImageRatio = imageRatioList;
 
@@ -234,7 +237,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                             }
                         }
                     }
-
                     foreach (var item in dto.Prices)
                     {
                         var cur = _curRepository.FetchCurrency(item.CurrencyId);

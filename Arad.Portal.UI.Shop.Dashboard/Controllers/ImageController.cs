@@ -69,24 +69,24 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             if (upload.Length >= 524288) return null;
 
             var filename = Guid.NewGuid() + Path.GetExtension(upload.FileName).ToLower();
-            var path = Path.Combine(Directory.GetCurrentDirectory(),
-               _env.WebRootPath, "CkEditor/Product");
-            if (!Directory.Exists(path))
-            {
-                DirectoryInfo di = Directory.CreateDirectory(path);
-            }
-            //var directory = Path.Combine(_localStorage, "ckEditorProductImages").Replace("\\", "/");
-            //if (!Directory.Exists(directory))
+            //var path = Path.Combine(Directory.GetCurrentDirectory(),
+            //   _env.WebRootPath, "CkEditor/Product");
+            //if (!Directory.Exists(path))
             //{
-            //    Directory.CreateDirectory(directory);
+            //    DirectoryInfo di = Directory.CreateDirectory(path);
             //}
-            //var path = Path.Combine(_localStorage, "ckEditorProductImages", filename).Replace("\\", "/");
+            var directory = Path.Combine(_localStorage, "ckEditorProductImages").Replace("\\", "/");
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+            var path = Path.Combine(_localStorage, "ckEditorProductImages", filename).Replace("\\", "/");
             using (var stream = new FileStream(path, FileMode.Create))
             {
                 upload.CopyTo(stream);
             }
-            var url = "/CkEditor/Product/" + filename;
-            //var url = $"/ckEditorProductImages/{filename}";
+            //var url = "/CkEditor/Product/" + filename;
+            var url = $"/ckEditorProductImages/{filename}";
             
             return Json(new { uploaded = true, url });
         }
@@ -99,20 +99,25 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             if (upload.Length >= 524288) return null;
 
             var filename = Guid.NewGuid() + Path.GetExtension(upload.FileName).ToLower();
-            var path = Path.Combine(Directory.GetCurrentDirectory(),
-               _env.WebRootPath, "CkEditor/Domain");
+            //var path = Path.Combine(Directory.GetCurrentDirectory(),
+            //   _env.WebRootPath, "CkEditor/Domain");
 
-            if (!Directory.Exists(path))
+            //if (!Directory.Exists(path))
+            //{
+            //    DirectoryInfo di = Directory.CreateDirectory(path);
+            //}
+
+            var directory = Path.Combine(_localStorage, "ckEditorDomainImages").Replace("\\", "/");
+            if (!Directory.Exists(directory))
             {
-                DirectoryInfo di = Directory.CreateDirectory(path);
+                Directory.CreateDirectory(directory);
             }
-          
-            path = Path.Combine(path, filename);
+            var path = Path.Combine(_localStorage, "ckEditorDomainImages", filename).Replace("\\", "/");
             using (var stream = new FileStream(path, FileMode.Create))
             {
                 upload.CopyTo(stream);
             }
-            var url = "/CkEditor/Domain/" + filename;
+            var url = "/ckEditorDomainImages/" + filename;
             // var url = $"{"/ckEditorContentImages/"}{filename}";
             return Json(new { uploaded = true, url = url });
             

@@ -19,6 +19,9 @@ using Arad.Portal.DataLayer.Contracts.General.ContentCategory;
 using Arad.Portal.DataLayer.Contracts.General.Content;
 using System.Security.Claims;
 using Arad.Portal.DataLayer.Models.Shared;
+using Microsoft.Extensions.Configuration;
+using System.IO;
+using Arad.Portal.UI.Shop.Helpers;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -27,30 +30,59 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IDomainRepository _domainRepository;
         private readonly ILanguageRepository _lanRepository;
-        private readonly IProductRepository _productRepository;
-        private readonly IProductGroupRepository _productGroupRepository;
-        private readonly IContentCategoryRepository _contentCategoryRepository;
-        private readonly IContentRepository _contentRepository;
         private readonly IHttpContextAccessor _accessor;
-
+        private readonly IConfiguration _configuration;
         public HomeController(ILogger<HomeController> logger,
             IHttpContextAccessor accessor,
             ILanguageRepository lanRepo,
             IWebHostEnvironment env,
-            IProductRepository productRepository,
-            IProductGroupRepository groupRepository,
-            IContentCategoryRepository contentCategoryRepository,
-            IContentRepository contentRepository,
+            IConfiguration config,
             IDomainRepository domainRepository) : base(accessor, env)
         {
             _logger = logger;
             _domainRepository = domainRepository;
             _lanRepository = lanRepo;
-            _productRepository = productRepository;
-            _productGroupRepository = groupRepository;
-            _contentRepository = contentRepository;
             _accessor = accessor;
-            _contentCategoryRepository = contentCategoryRepository;
+            _configuration = config;
+        }
+
+        //[AllowAnonymous]
+        //[HttpGet]
+        //[Route("{language}/ckEditorContentImages/{**slug}")]
+        //public IActionResult GetCkEditorContentImages(string slug)
+        //{
+        //    var path = $"/ckEditorContentImages/{slug}";
+        //    (byte[] fileContents, string mimeType) = GetImageWithActualSize(path);
+        //    return File(fileContents, mimeType);
+        //}
+
+        private (byte[], string) GetImageWithActualSize(string path)
+        {
+            var localStaticFileStorage = _configuration["LocalStaticFileStorage"];
+            string finalPath;
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                if (path.StartsWith("/"))
+                    path = path[1..];
+                finalPath = Path.Combine(localStaticFileStorage, path).Replace("\\", "/");
+
+                if (!System.IO.File.Exists(finalPath))
+                {
+                    finalPath = "/imgs/NoImage.png";
+                }
+                var fileName = Path.GetFileName(finalPath);
+                var mimeType = ImageFunctions.GetMIMEType(fileName);
+                byte[] fileContent = System.IO.File.ReadAllBytes(finalPath);
+                return (fileContent, mimeType);
+            }
+            else
+            {
+                finalPath = "/imgs/NoImage.png";
+                var fileName = Path.GetFileName(finalPath);
+                var mimeType = ImageFunctions.GetMIMEType(fileName);
+                byte[] fileContent = System.IO.File.ReadAllBytes(finalPath);
+                return (fileContent, mimeType);
+            }
         }
 
         [AllowAnonymous]
@@ -92,7 +124,6 @@ namespace Arad.Portal.UI.Shop.Controllers
                 return View(new DataLayer.Models.DesignStructure.MainPageContentPart());
             }
         }
-
         public IActionResult Privacy()
         {
             return View();

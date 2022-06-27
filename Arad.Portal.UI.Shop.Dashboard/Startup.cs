@@ -215,15 +215,18 @@ namespace Arad.Portal.UI.Shop.Dashboard
                 //app.UseHsts();
             }
 
-            //   app.UseHttpsRedirection();
-            if (!Directory.Exists(Configuration["LocalStaticFileStorage"]))
+            if (_environment.IsDevelopment())
             {
-                Directory.CreateDirectory(Configuration["LocalStaticFileStorage"]);
+                if (!Directory.Exists(Configuration["LocalStaticFileStorage"]))
+                {
+                    Directory.CreateDirectory(Configuration["LocalStaticFileStorage"]);
+                }
             }
+
             var path1 = Path.Combine(Configuration["LocalStaticFileStorage"], "Contents");
             var path2 = Path.Combine(Configuration["LocalStaticFileStorage"], "ProductGroups");
             var path3 = Path.Combine(Configuration["LocalStaticFileStorage"], "Products");
-            if(!Directory.Exists(path1))
+            if (!Directory.Exists(path1))
             {
                 Directory.CreateDirectory(path1);
             }
@@ -235,7 +238,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             {
                 Directory.CreateDirectory(path3);
             }
-           
+
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions()
             {

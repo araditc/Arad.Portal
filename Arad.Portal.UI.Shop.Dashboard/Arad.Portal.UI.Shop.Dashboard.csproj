@@ -39,11 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\CkEditor\Content\" />
-    <Folder Include="wwwroot\CkEditor\Domain\" />
-    <Folder Include="wwwroot\CkEditor\Product\" />
     <Folder Include="wwwroot\Files\" />
-    <Folder Include="wwwroot\ckEditorContentImages\" />
   </ItemGroup>
 
   <ItemGroup>
