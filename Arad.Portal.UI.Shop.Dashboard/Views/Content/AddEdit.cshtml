@@ -273,24 +273,24 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-12 col-md-3">
                         <label class="form-label" asp-for="SeoTitle">@Language.GetString("SeoTitle")</label>
                         <input type="text" class="form-control" asp-for="@Model.SeoTitle" placeholder="">
                         <span data-val-result="SeoTitle" class="text-danger"></span>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-12 col-md-3">
                         <label class="form-label" asp-for="@Model.ContentCode">@Language.GetString("tbl_ContentCode")</label>
                         <input type="text" class="form-control" asp-for="@Model.ContentCode" value="@Model.ContentCode" disabled />
                         <span data-val-result="ContentCode" class="text-danger"></span>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-12 col-md-3">
                         <label class="form-label" for="UrlFriend">@Language.GetString("UrlFriend")</label><br />
                         <input type="text" class="form-control" id="UrlFriend" value="@(!string.IsNullOrWhiteSpace(Model.UrlFriend) ? Model.UrlFriend.Replace("/blog/", "") : Model.UrlFriend)" placeholder="">
                         <span data-val-result="UrlFriend" class="text-danger"></span>
                     </div>
                     <div class="col-12 col-md-3 pt-1 pb-2">
                         <div class="form-check m-auto d-inline-block pt-3">
-                            <input class="form-check-input" type="checkbox" value="@Model.IsCommentBoxShowing" asp-for="@Model.IsCommentBoxShowing" min="0">
+                            <input class="form-check-input" type="checkbox" value="@Model.IsCommentBoxShowing" asp-for="@Model.IsCommentBoxShowing" >
                             <label class="form-check-label" for="IsCommentBoxShowing">
                                 @Language.GetString("Content_IsCommentBoxShowing")
                             </label>
@@ -298,11 +298,32 @@
                     </div>
                     <div class="col-12 col-md-3 pt-1 pb-2">
                         <div class="form-check m-auto d-inline-block pt-3">
-                            <input class="form-check-input" type="checkbox" value="@Model.IsRateBoxShowing" asp-for="@Model.IsRateBoxShowing" min="0">
+                            <input class="form-check-input" type="checkbox" value="@Model.IsRateBoxShowing" asp-for="@Model.IsRateBoxShowing" >
                             <label class="form-check-label" for="IsRateBoxShowing">
                                 @Language.GetString("Content_IsRateBoxShowing")
                             </label>
                         </div>
+                    </div>
+                     <div class="col-12 col-md-3 pt-1 pb-2">
+                        <div class="form-check m-auto d-inline-block pt-3">
+                            <input class="form-check-input" type="checkbox" value="@Model.IsSliderShowing" asp-for="@Model.IsSliderShowing" >
+                            <label class="form-check-label" for="IsSliderShowing">
+                                @Language.GetString("Content_IsSliderShowing")
+                            </label>
+                        </div>
+                    </div>
+                     <div class="col-12 col-md-3 pt-1 pb-2">
+                        <div class="form-check m-auto d-inline-block pt-3">
+                            <input class="form-check-input" type="checkbox" value="@Model.IsSidebarContentsShowing" onchange="showCountSection(this);" asp-for="@Model.IsSidebarContentsShowing" >
+                            <label class="form-check-label" for="IsSliderShowing">
+                                @Language.GetString("Content_IsSidebarContentsShowing")
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3  sidebarContentCountSection d-none">
+                          <label class="form-label" asp-for="SidebarContentCount">@Language.GetString("Content_CountToShow")</label>
+                           <input type="text" class="form-control" asp-for="@Model.SidebarContentCount" placeholder="">
+                           <span data-val-result="SidebarContentCount" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="row">
@@ -504,14 +525,20 @@
         //datetimepicker
         if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
         {
-        kamaDatepicker('dtpStartShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
-        kamaDatepicker('dtpEndShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+                kamaDatepicker('dtpStartShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
+                kamaDatepicker('dtpEndShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
         }
         else
         {
             $('.datepicker').datepicker();
         }
         if ("@Model.ContentId" != "") {
+
+            if($("#IsSidebarContentsShowing").is(":checked"))
+            {
+                $(".sidebarContentCountSection").removeClass("d-none");
+            }
+
             $("#LanguageId").val('@Model.LanguageId');
              $("#LanguageId").selectpicker("refresh");
             if ("@Model.PersianStartShowDate" != "") {
@@ -787,6 +814,16 @@
        });
     });
 
+    function showCountSection(sender)
+    {
+        if($(sender).is(":checked"))
+        {
+            $(".sidebarContentCountSection").removeClass("d-none");
+        }else
+        {
+            $(".sidebarContentCountSection").addClass("d-none");
+        }
+    }
     
     function deleteFromImageList(sender) {
         debugger;
@@ -819,6 +856,12 @@
         obj.ContentCode = Number($("#ContentCode").val());
         obj.IsCommentBoxShowing = $("#IsCommentBoxShowing").is(":checked");
         obj.IsRateBoxShowing = $("#IsRateBoxShowing").is(":checked");
+        obj.IsSliderShowing = $("#IsSliderShowing").is(":checked");
+        obj.IsSidebarContentsShowing = $("#IsSidebarContentsShowing").is(":checked");
+        if($("#IsSidebarContentsShowing").is(":checked"))
+        {
+            obj.SidebarContentCount = $("#SidebarContentCount").val();
+        }
         debugger;
         obj.Contents = CKEDITOR.instances.editorCk.getData();
         var commaseperatedTags = $("#tagKeyWords").val();

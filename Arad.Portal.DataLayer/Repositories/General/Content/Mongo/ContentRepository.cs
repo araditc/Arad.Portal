@@ -471,7 +471,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             return result;
         }
 
-        public List<ContentGlance> GetSpecialContent(int count, ProductOrContentType contentType, bool isDevelopment)
+        public List<ContentGlance> GetSpecialContent(int count, ProductOrContentType contentType, bool isDevelopment = false)
         {
             Entities.General.Domain.Domain domainEntity = new Entities.General.Domain.Domain();
             List<ContentGlance> lst = new List<ContentGlance>();
@@ -510,7 +510,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                                    Title = _.Title,
                                    UrlFriend = _.UrlFriend,
                                    ContentCode = _.ContentCode
-                               }).Sort(Builders<Entities.General.Content.Content>.Sort.Descending(_ => _.CreationDate)).Limit(count).ToList();
+                               }).Sort(Builders<Entities.General.Content.Content>.Sort.Descending(_ => _.StartShowDate)).Limit(count).ToList();
                         break;
                     case ProductOrContentType.MostPopular:
                         lst = _contentContext.Collection
@@ -568,11 +568,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             return lst;
         }
 
-        public bool IsUniqueUrlFriend(string urlFriend, string contentId = "")
+        public bool IsUniqueUrlFriend(string urlFriend, string domainId, string contentId = "")
         {
             if (string.IsNullOrWhiteSpace(contentId)) //insert
             {
-                return !_contentContext.Collection.Find(_ => _.UrlFriend == urlFriend).Any();
+                return !_contentContext.Collection.Find(_ => _.UrlFriend == urlFriend && _.AssociatedDomainId == domainId).Any();
             }
             else
             { //update
@@ -581,10 +581,170 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
 
                 filterDef = contentBuilder.Ne("ContentId", contentId);
                 filterDef = contentBuilder.And(filterDef, contentBuilder.Eq(nameof(Entities.General.Content.Content.UrlFriend), urlFriend));
+                filterDef = contentBuilder.And(filterDef, contentBuilder.Eq(nameof(Entities.General.Content.Content.AssociatedDomainId), domainId));
 
 
                 return !_contentContext.Collection.Find(filterDef).Any();
             }
+        }
+
+        public List<ContentGlance> GetContentInCategory(int count, ProductOrContentType contentType, string contentCategoryId, bool isDevelopment = false)
+        {
+            Entities.General.Domain.Domain domainEntity = new Entities.General.Domain.Domain();
+            List<ContentGlance> lst = new List<ContentGlance>();
+            if (!isDevelopment)
+            {
+                var domainName = this.GetCurrentDomainName();
+                domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
+            }
+
+            FilterDefinitionBuilder<Entities.General.Content.Content> builder = new();
+            FilterDefinition<Entities.General.Content.Content> filterDef = builder.Empty;
+            filterDef &= builder.Eq(nameof(Entities.General.Content.Content.ContentCategoryId), contentCategoryId);
+            //filterDef = builder.Gte(nameof(Entities.General.Content.Content.EndShowDate), DateTime.Now);
+            //filterDef &= builder.Lte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.Now);
+            if (domainEntity != null)
+            {
+                //??? should be uncommented
+                //filterDef &= builder.Eq(nameof(Entities.General.Content.Content.AssociatedDomainId), domainEntity.DomainId);
+                switch (contentType)
+                {
+                    case ProductOrContentType.Newest:
+                        lst = _contentContext.Collection
+                           .Find(filterDef)
+                           .Project(_ =>
+                               new ContentGlance()
+                               {
+                                   TotalScore = _.TotalScore,
+                                   ScoredCount = _.ScoredCount,
+                                   VisitCount = _.VisitCount,
+                                   CategoryName = _.ContentCategoryName,
+                                   ContentCategoryId = _.ContentCategoryId,
+                                   ContentId = _.ContentId,
+                                   ContentProviderName = _.ContentProviderName,
+                                   Images = _.Images,
+                                   SubTitle = _.SubTitle,
+                                   TagKeywords = _.TagKeywords,
+                                   Title = _.Title,
+                                   UrlFriend = _.UrlFriend,
+                                   ContentCode = _.ContentCode
+                               }).Sort(Builders<Entities.General.Content.Content>.Sort.Descending(_ => _.StartShowDate)).Limit(count).ToList();
+                        break;
+                    case ProductOrContentType.MostPopular:
+                        lst = _contentContext.Collection
+                       .Find(filterDef)
+                       .Project(_ =>
+                           new ContentGlance()
+                           {
+                               TotalScore = _.TotalScore,
+                               ScoredCount = _.ScoredCount,
+                               VisitCount = _.VisitCount,
+                               CategoryName = _.ContentCategoryName,
+                               ContentCategoryId = _.ContentCategoryId,
+                               ContentId = _.ContentId,
+                               ContentProviderName = _.ContentProviderName,
+                               Images = _.Images,
+                               SubTitle = _.SubTitle,
+                               TagKeywords = _.TagKeywords,
+                               Title = _.Title,
+                               UrlFriend = _.UrlFriend,
+                               ContentCode = _.ContentCode
+                           }).Sort(Builders<Entities.General.Content.Content>.Sort.Descending(_ => (float)_.TotalScore / _.ScoredCount)).Limit(count).ToList();
+                        break;
+                    case ProductOrContentType.MostVisited:
+                        lst = _contentContext.Collection
+                       .Find(filterDef)
+                       .Project(_ =>
+                           new ContentGlance()
+                           {
+                               TotalScore = _.TotalScore,
+                               ScoredCount = _.ScoredCount,
+                               VisitCount = _.VisitCount,
+                               CategoryName = _.ContentCategoryName,
+                               ContentCategoryId = _.ContentCategoryId,
+                               ContentId = _.ContentId,
+                               ContentProviderName = _.ContentProviderName,
+                               Images = _.Images,
+                               SubTitle = _.SubTitle,
+                               TagKeywords = _.TagKeywords,
+                               Title = _.Title,
+                               UrlFriend = _.UrlFriend,
+                               ContentCode = _.ContentCode
+                           }).Sort(Builders<Entities.General.Content.Content>.Sort.Descending(_ => _.VisitCount)).Limit(count).ToList();
+                        break;
+                    default:
+                        break;
+                }
+                foreach (var con in lst)
+                {
+                    var r = Helpers.Utilities.ConvertPopularityRate(con.TotalScore, con.ScoredCount);
+                    con.LikeRate = r.LikeRate;
+                    con.HalfLikeRate = r.HalfLikeRate;
+                    con.DisikeRate = r.DisikeRate;
+                }
+            }
+            return lst;
+        }
+
+
+        public PagedItems<ContentGlance> GetAllBlogList(string queryString, string domainId, string languageId)
+        {
+            var result = new PagedItems<ContentGlance>();
+            NameValueCollection filter = HttpUtility.ParseQueryString(queryString);
+
+            if (string.IsNullOrWhiteSpace(filter["page"]))
+            {
+                filter.Set("page", "1");
+            }
+            if (string.IsNullOrWhiteSpace(filter["pageSize"]))
+            {
+                filter.Set("pageSize", "5");
+            }
+            var page = Convert.ToInt32(filter["page"]);
+            var pageSize = Convert.ToInt32(filter["pageSize"]);
+            try
+            {
+                FilterDefinitionBuilder<Entities.General.Content.Content> builder = new();
+                FilterDefinition<Entities.General.Content.Content> filterDef = builder.Empty;
+
+                //???
+                //filterDef = builder.Eq(nameof(Entities.General.Content.Content.AssociatedDomainId), domainId);
+                filterDef = builder.And(filterDef, builder.Eq(nameof(Entities.General.Content.Content.LanguageId), languageId));
+                filterDef = builder.And(filterDef, builder.Eq(nameof(Entities.General.Content.Content.IsDeleted), false));
+
+                long totalCount = _contentContext.Collection.Find(filterDef).CountDocuments();
+                var lst = _contentContext.Collection
+                           .Find(filterDef)
+                           .Project(_ =>
+                               new ContentGlance()
+                               {
+                                   TotalScore = _.TotalScore,
+                                   ScoredCount = _.ScoredCount,
+                                   VisitCount = _.VisitCount,
+                                   CategoryName = _.ContentCategoryName,
+                                   ContentCategoryId = _.ContentCategoryId,
+                                   ContentId = _.ContentId,
+                                   ContentProviderName = _.ContentProviderName,
+                                   Images = _.Images,
+                                   SubTitle = _.SubTitle,
+                                   TagKeywords = _.TagKeywords,
+                                   Title = _.Title,
+                                   UrlFriend = _.UrlFriend,
+                                   ContentCode = _.ContentCode
+                               }).Sort(Builders<Entities.General.Content.Content>.Sort.Descending(_ => _.StartShowDate)).Skip((page - 1) * pageSize).Limit(pageSize).ToList();
+
+                result.Items = lst;
+                result.CurrentPage = page;
+                result.ItemsCount = totalCount;
+                result.PageSize = pageSize;
+                result.QueryString = queryString;
+
+            }
+            catch (Exception ex)
+            {
+               
+            }
+            return result;
         }
     }
 }

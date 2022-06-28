@@ -40,34 +40,23 @@ namespace Arad.Portal.DataLayer.Models.Content
         /// main content from textEditor
         /// </summary>
         public string Contents { get; set; }
-
-        //public string FileLogo { get; set; }
-
-        //public string LogoContent { get; set; }
-
-        //public string LogoName { get; set; }
-
         public long ContentCode { get; set; }
-
         /// <summary>
         /// Ismain = true is for fileLogo
         /// </summary>
         public List<Shared.Image> Images { get; set; }
         public DateTime? StartShowDate { get; set; }
-
         public  string PersianStartShowDate { get; set; }
-
         public DateTime? EndShowDate { get; set; }
-
         public string PersianEndShowDate { get; set; }
-
         public int? VisitCount { get; set; }
-
         public List<string> TagKeywords { get; set; }
 
         //public int? PopularityRate { get; set; }
-
         public bool IsCommentBoxShowing { get; set; }
+        public bool IsSidebarContentsShowing { get; set; }
+        public bool IsSliderShowing { get; set; }
+        public int? SidebarContentCount { get; set; }
         public bool IsRateBoxShowing { get; set; }
         public long TotalScore { get; set; }
         public int ScoredCount { get; set; }

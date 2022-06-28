@@ -61,7 +61,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public IActionResult CheckUrlFriendUniqueness(string id, string url)
         {
             var urlFriend = $"/blog/{url}";
-            var res = _contentRepository.IsUniqueUrlFriend(urlFriend, id);
+            var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+            var res = _contentRepository.IsUniqueUrlFriend(urlFriend, domainId, id);
 
             return Json(res ? new { Status = "Success", Message = "url is unique" }
             : new { Status = "Error", Message = "url isnt unique" });

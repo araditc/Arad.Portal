@@ -43,7 +43,6 @@ namespace Arad.Portal.DataLayer.Entities.General.Content
         /// main content from textEditor
         /// </summary>
         public string Contents { get; set; }
-
         public long ContentCode { get; set; }
         /// <summary>
         /// Ismain = true is for fileLogo
@@ -66,7 +65,9 @@ namespace Arad.Portal.DataLayer.Entities.General.Content
         public int ScoredCount { get; set; }
 
         public bool IsCommentBoxShowing { get; set; }
-
+        public bool IsSidebarContentsShowing { get; set; }
+        public bool IsSliderShowing { get; set; }
+        public int? SidebarContentCount { get; set; }
         public bool IsRateBoxShowing { get; set; }
 
         public List<Comment.Comment> Comments { get; set; }

@@ -13,7 +13,8 @@ namespace Arad.Portal.DataLayer.Contracts.General.Content
     {
         Task<Result> Add(ContentDTO dto);
         Task<PagedItems<ContentViewModel>> List(string queryString);
-        List<ContentGlance> GetSpecialContent(int count, ProductOrContentType contentType, bool isDevelopment);
+        List<ContentGlance> GetSpecialContent(int count, ProductOrContentType contentType, bool isDevelopment = false);
+        List<ContentGlance> GetContentInCategory(int count, ProductOrContentType contentType, string contentCategoryId, bool isDevelopment = false);
         Task<ContentDTO> ContentFetch(string contentId);
         Task<Result> Update(ContentDTO dto);
         Task<Result> Delete(string contentId, string modificationReason);
@@ -22,8 +23,13 @@ namespace Arad.Portal.DataLayer.Contracts.General.Content
         List<SelectListModel> GetContentsList(string domainId, string currentUserId, string categoryId);
         List<SelectListModel> GetAllSourceType();
         List<SelectListModel> GetAllImageRatio();
+        /// <param name="queryString">guerystring contains pageIndex and pageCount</param>
+        /// <param name="domainId"></param>
+        /// <param name="languageId"></param>
+        /// <returns></returns>
+        PagedItems<ContentGlance> GetAllBlogList(string queryString, string domainId, string languageId);
         ContentDTO FetchBySlug(string slug, string domainName);
         ContentDTO FetchByCode(string slugOrCode);
-        bool IsUniqueUrlFriend(string urlFriend, string contentId = "");
+        bool IsUniqueUrlFriend(string urlFriend, string domainId, string contentId = "");
     }
 }

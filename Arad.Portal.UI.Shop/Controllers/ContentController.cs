@@ -7,6 +7,12 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
+using Arad.Portal.DataLayer.Contracts.General.Language;
+using System.Web;
+using System.Collections.Specialized;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -14,19 +20,49 @@ namespace Arad.Portal.UI.Shop.Controllers
     {
         private readonly IContentRepository _contentRepository;
         private readonly IHttpContextAccessor _accessor;
+        private readonly ILanguageRepository _lanRepository;
+        private readonly IDomainRepository _domainrepository;
 
         public ContentController(IContentRepository contentRepository,
             IWebHostEnvironment env,
+            IDomainRepository domainRepository,
+            ILanguageRepository lanRepository,
             IHttpContextAccessor accessor):base(accessor, env)
         {
             _contentRepository = contentRepository;
             _accessor = accessor;
+            _domainrepository = domainRepository;
+            _lanRepository = lanRepository;
         }
 
         [Route("{language?}/blog")]
         public IActionResult Index()
         {
-            return View();
+            var domainName = this.DomainName;
+            var domainEntity = _domainrepository.FetchByName(domainName, false).ReturnValue;
+            string lanSymbol = "";
+            string lanId = "";
+            if(CultureInfo.CurrentCulture.Name != null)
+            {
+                lanSymbol = CultureInfo.CurrentCulture.Name;
+                lanId = _lanRepository.FetchBySymbol(lanSymbol);
+            }
+            else
+            {
+                lanId = domainEntity.DefaultLanguageId;
+            }
+            
+            //var cookieName = CookieRequestCultureProvider.DefaultCookieName;
+
+            
+           
+            var lst = _contentRepository.GetAllBlogList(Request.QueryString.ToString(), domainEntity.DomainId, lanId);
+            foreach (var item in lst.Items)
+            {
+                item.DesiredImageUrl = item.Images.Any(_ => _.IsMain) ? item.Images.FirstOrDefault(_ => _.IsMain).Url : "/imgs/NoImage21.jpg";
+            }
+
+            return View("Index",lst);
         }
 
         [Route("{language}/blog/{**slug}")]
@@ -39,6 +75,17 @@ namespace Arad.Portal.UI.Shop.Controllers
             var entity = _contentRepository.FetchByCode(slug);
             if(entity != null)
             {
+                if(entity.IsSidebarContentsShowing)
+                {
+                    var sidebars = _contentRepository.GetContentInCategory(entity.SidebarContentCount?? 3, 
+                                      DataLayer.Entities.General.DesignStructure.ProductOrContentType.Newest, entity.ContentCategoryId,  false);
+                    foreach (var item in sidebars)
+                    {
+                        item.DesiredImageUrl = item.Images.Any(_ => _.IsMain) ? item.Images.FirstOrDefault(_ => _.IsMain).Url : $"/imgs/NoImage21.jpg";
+                    }
+
+                    ViewBag.Sidbars = sidebars;
+                }
                 if (isLoggedUser)
                 {
                     #region check cookiepart for loggedUser

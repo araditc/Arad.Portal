@@ -118,13 +118,13 @@ namespace Arad.Portal.UI.Shop.Controllers
         {
             string finalPath = "";
             var localStaticFileStorage = _configuration["LocalStaticFileStorage"];
-            if(!string.IsNullOrWhiteSpace(path))
+            if (!string.IsNullOrWhiteSpace(path))
             {
                 if (path.StartsWith("/"))
                     path = path[1..];
-                finalPath = "/imgs/NoImage.png";
+                finalPath = Path.Combine(localStaticFileStorage, path).Replace("\\", "/");
             }
-           
+
             if (string.IsNullOrWhiteSpace(finalPath) || !System.IO.File.Exists(finalPath))
             {
                 finalPath = Path.Combine(localStaticFileStorage, "images/imgs/NoImage.png").Replace("\\", "/");

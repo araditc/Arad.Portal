@@ -2305,6 +2305,15 @@
 	<string key="Content_IsRateBoxShowing">
 		<value>امکان امتیازدهی به محتوا</value>
 	</string>
+	<string key="Content_IsSliderShowing">
+		<value>اسلایدر عکس نمایش داده شود؟</value>
+	</string>
+	<string key="Content_IsSidebarContentsShowing">
+		<value>نمایش ماژول محتواهای گروه در کنار محتوای جاری</value>
+	</string>
+	<string key="Content_CountToShow">
+		<value>تعداد نمایش</value>
+	</string>
 	<string key="Exit">
 		<value>خروج</value>
 	</string>
