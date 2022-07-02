@@ -53,13 +53,10 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
             
             //var cookieName = CookieRequestCultureProvider.DefaultCookieName;
-
-            
-           
             var lst = _contentRepository.GetAllBlogList(Request.QueryString.ToString(), domainEntity.DomainId, lanId);
             foreach (var item in lst.Items)
             {
-                item.DesiredImageUrl = item.Images.Any(_ => _.IsMain) ? item.Images.FirstOrDefault(_ => _.IsMain).Url : "/imgs/NoImage21.jpg";
+                item.DesiredImageUrl = item.Images.Any(_ => _.IsMain) ? item.Images.FirstOrDefault(_ => _.IsMain).Url : "";
             }
 
             return View("Index",lst);
@@ -101,7 +98,6 @@ namespace Arad.Portal.UI.Shop.Controllers
                     }
                     #endregion
                 }
-
                 return View(entity);
             }else
             {

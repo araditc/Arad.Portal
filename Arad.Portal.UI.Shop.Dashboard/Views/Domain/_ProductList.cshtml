@@ -1,11 +1,15 @@
 ﻿@using Arad.Portal.DataLayer.Entities.General.SliderModule;
 @using Arad.Portal.DataLayer.Models.DesignStructure;
+@using Arad.Portal.DataLayer.Entities.General.DesignStructure;
+@model Arad.Portal.DataLayer.Models.DesignStructure.ModuleWithParametersValue;
 <div class="row par mx-2" parid="templateSection">
     <label class="form-label text-center">@Language.GetString("ViewTemplate")</label><br />
     @foreach (SelectImageListModel option in ViewBag.ProductTemplateList)
     {
         <div class="col-12 @(@ViewBag.ColCnt == 1 || @ViewBag.ColCnt == 2 ? "col-md-3" : "") text-center">
-            <input class="form-check-input" name="rdbProductTemplateList" type="radio" value="@(option.Text)" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" /><br />
+            <input class="form-check-input" name="rdbProductTemplateList" type="radio" value="@(option.Text)"
+             @(Model.ParametersValue.ProductTemplateDesign.ToString() == option.Text ? "checked='checked'" : "" )
+            cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" /><br />
             <img class="img-fluid m-2" src="@($"../filemanager/GetScaledImageOnWidth?path={option.ImageUrl}&width=300")" />
         </div>
     }
@@ -13,22 +17,24 @@
 <div class="row mx-2">
     <div class="col-12 text-center">
         <label class="form-label">@Language.GetString("Type")</label><br />
-        <select class="form-control selectpicker par" data-live-search="true" parid="typeList" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section"
+        <select class="form-control selectpicker par" data-live-search="true" sel="@Model.ParametersValue.ProductOrContentType" parid="typeList" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section"
                 asp-items="@(new SelectList(ViewBag.ProductOrContentTypeList,"Value","Text"))">
         </select>
     </div>
     <div class="col-12 text-center countSection">
         <label class="form-label">@Language.GetString("CountToShow")</label><br />
-        <input type="number" parid="countToShow" class="form-control par" value="" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" />
+        <input type="number" parid="countToShow" class="form-control par" value="@Model.ParametersValue.Count" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" />
     </div>
     <div class="col-12 text-center loadAnimate">
         <label class="form-label" for="loadAnimation">@Language.GetString("design_loadAnimation")</label>
-        <select parid="loadAnimation" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" class="form-control selectpicker mt-2 par" asp-items="Html.GetEnumSelectList<TransActionType>()"></select>
+        <select parid="loadAnimation" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" sel="@Model.ParametersValue.LoadAnimation"
+        class="form-control selectpicker mt-2 par" asp-items="@(new SelectList(ViewBag.TransactionType, "Value", "Text"))"></select>
         <span class="field-validation-error" data-val-result="LoadAnimation"></span>
     </div>
      <div class="col-12 text-center loadAnimationType">
           <label class="form-label" for="loadAnimationType">@Language.GetString("design_loadAnimationType")</label>
-           <select parid="loadAnimationType" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" class="form-control selectpicker mt-2 par" asp-items="Html.GetEnumSelectList<LoadAnimationType>()"></select>
+           <select parid="loadAnimationType" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" sel ="@Model.ParametersValue.LoadAnimationType"
+           class="form-control selectpicker mt-2 par"  asp-items="@(new SelectList(ViewBag.LoadAnimationType, "Value", "Text"))"></select>
         <span class="field-validation-error" data-val-result="LoadAnimation"></span>
      </div>
     <div class="col-12 text-center">
@@ -46,9 +52,9 @@
 
         //alert("@ViewBag.RowNumber");
         
-        $("[parid='typeList'][cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").selectpicker();
-        $("[parid='loadAnimation'][cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").selectpicker();
-        $("[parid='loadAnimationType'][cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").selectpicker();
+        //$("[parid='typeList'][cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").selectpicker();
+        //$("[parid='loadAnimation'][cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").selectpicker();
+        //$("[parid='loadAnimationType'][cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").selectpicker();
     });
 
 

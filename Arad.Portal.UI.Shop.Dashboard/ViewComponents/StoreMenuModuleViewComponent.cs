@@ -32,13 +32,15 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             _languageRepository = languageRepository;
             _menuRepository = menuRepository;
         }
-        public  IViewComponentResult Invoke(string domainId, string languageId)
+        public  IViewComponentResult Invoke()
         {
             var menues = new List<StoreMenuVM>();
             //var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
-            var result = _domainRepository.FetchDomain(domainId);
+            //??? for testing
+            var domainName = "http://localhost:3214";
+            var result = _domainRepository.FetchByName(domainName, true);
             var domainEntity = result.ReturnValue;
-
+           
             //domainName = _accessor.HttpContext.Request.Host.ToString();
             //if (domainName.ToString().ToLower().StartsWith("localhost"))
             //{
@@ -46,7 +48,8 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             //}
             try
             {
-                if(string.IsNullOrWhiteSpace(languageId))
+                var languageId = domainEntity.DefaultLanguageId;
+                if (string.IsNullOrWhiteSpace(domainEntity.DefaultLanguageId))
                 {
                     var cookieVal = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
                     string symbol = cookieVal.Split("|")[0][2..];

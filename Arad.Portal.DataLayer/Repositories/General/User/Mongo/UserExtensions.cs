@@ -10,9 +10,7 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
 {
-    //???
-    //this part should be added userContext and userRepository
-    //should be removed and extension methods should be added
+    
     public  class UserExtensions
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -55,13 +53,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
                 }
                 if (search.StartRegisterDate != null)
                 {
-                    //???? univeral or not
+                   
                     users = users.Where(_ => _.CreationDate >= search.StartRegisterDate.Value.ToUniversalTime());
                 }
 
                 if (search.EndRegisterDate != null)
                 {
-                    //??? adding one day or not
+                    
                     users = users.Where(_ => _.CreationDate < search.EndRegisterDate.Value.ToUniversalTime());
                 }
                 if (!string.IsNullOrWhiteSpace(search.UserRoleId))

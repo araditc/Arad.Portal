@@ -18,6 +18,65 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             _configuration = configuration;
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("ckEditorContentImages/{**slug}")]
+        public IActionResult GetCkEditorContentImages(string slug)
+        {
+            var path = $"/ckEditorContentImages/{slug}";
+            (byte[] fileContents, string mimeType) = GetImageWithActualSize(path);
+            return File(fileContents, mimeType);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("ckEditorProductImages/{**slug}")]
+        public IActionResult GetCKEditorProductImages(string slug)
+        {
+            var path = $"/ckEditorProductImages/{slug}";
+            (byte[] fileContents, string mimeType) = GetImageWithActualSize(path);
+            return File(fileContents, mimeType);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("ckEditorDomainImages/{**slug}")]
+        public IActionResult GetCKEditorDomainImages(string slug)
+        {
+            var path = $"/ckEditorDomainImages/{slug}";
+            (byte[] fileContents, string mimeType) = GetImageWithActualSize(path);
+            return File(fileContents, mimeType);
+        }
+
+        private (byte[], string) GetImageWithActualSize(string path)
+        {
+            var localStaticFileStorage = _configuration["LocalStaticFileStorage"];
+            string finalPath;
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                if (path.StartsWith("/"))
+                    path = path[1..];
+                finalPath = Path.Combine(localStaticFileStorage, path).Replace("\\", "/");
+
+                if (!System.IO.File.Exists(finalPath))
+                {
+                    finalPath = "/imgs/NoImage.png";
+                }
+                var fileName = Path.GetFileName(finalPath);
+                var mimeType = ImageFunctions.GetMIMEType(fileName);
+                byte[] fileContent = System.IO.File.ReadAllBytes(finalPath);
+                return (fileContent, mimeType);
+            }
+            else
+            {
+                finalPath = "/imgs/NoImage.png";
+                var fileName = Path.GetFileName(finalPath);
+                var mimeType = ImageFunctions.GetMIMEType(fileName);
+                byte[] fileContent = System.IO.File.ReadAllBytes(finalPath);
+                return (fileContent, mimeType);
+            }
+        }
         public IActionResult Index()
 
         {

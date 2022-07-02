@@ -75,10 +75,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                 //??? this part should be checked in mongo
                 var check = _productContext.ProductCollection
                     .AsQueryable()
-                    .Any(baseProduct => 
-                        baseProduct.Specifications
-                    .Any(_=> _.SpecificationId == specificationId));
-
+                    .Any(baseProduct => baseProduct.Specifications.Any(_ => _.SpecificationId == specificationId));
                 if (check)
                 {
                     allowDeletion = false;

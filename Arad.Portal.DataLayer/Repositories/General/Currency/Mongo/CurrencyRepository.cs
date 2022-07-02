@@ -98,7 +98,6 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
                 {
                     result.Succeeded = true;
                     result.Message = ConstMessages.SuccessfullyDone;
-                    //??? we have to update this entity wherever it is used in other entities
                 }
                 else
                 {

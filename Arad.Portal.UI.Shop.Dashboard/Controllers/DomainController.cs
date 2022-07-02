@@ -247,7 +247,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.DomainId = domainId;
             ViewBag.IsShop = domainEntity.IsShop;
             ViewBag.IsMultilingual = domainEntity.IsMultiLinguals;
-
+            ViewBag.Url =  _configuration["LocalStaticFileShown"];
             var lanList = _lanRepository.GetAllActiveLanguage();
             lanList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
             ViewBag.LangList = lanList;
@@ -341,6 +341,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                        item.ImageUrl = Path.Combine(imageTemplatePath, $"Template/Product/{item.Text}.jpg");
                     }
                     ViewBag.ProductTemplateList = productTemplateList;
+                    ViewBag.TransactionType = _moduleRepository.GetAllTransactionType();
+                    ViewBag.LoadAnimationType = _moduleRepository.GetAllLoadAnimationType();
                     break;
                 case "contentlist":
                     var contentTemplateDesigns = _moduleRepository.GetAllContentTemplateDesign();
@@ -363,6 +365,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         }
                     }
                     ViewBag.ContentTemplateList = contentTemplateDesigns;
+                    ViewBag.TransactionType = _moduleRepository.GetAllTransactionType();
+                    ViewBag.LoadAnimationType = _moduleRepository.GetAllLoadAnimationType();
                     break;
                 case "imagetextslider":
 
@@ -383,7 +387,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.RowNumber = rn;
             ViewBag.ColNumber = cn;
             ViewBag.Section = sec;
-            return PartialView($"~/Views/Domain/{viewName}");
+            return PartialView($"~/Views/Domain/{viewName}", null);
         }
 
 

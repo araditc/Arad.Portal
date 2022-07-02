@@ -81,22 +81,34 @@
 }
 <div class="row sectionRow mx-2" rn="@ViewBag.RowNumber" enumcolid="@ViewBag.ColWidth" rowCustomClasses="@(Model != null ? Model.ExtraClassNames : "")" guid="@guid">
     <div class="col-12 col-md-2 border border-1" colnum="1" did='@ViewBag.DomainId' cnt="6" colClassNames="@(firstColContent != null ? firstColContent.ColumnClassNames : "" )">
-         <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section, ColumnClassNames = firstColContent != null ? firstColContent.ColumnClassNames : first.Replace("border-1", "").Replace("border", ""), RowGuid = guid , ColData = firstColContent != null ? firstColContent.ColData : ""}'/>
+         <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section, 
+                   ColumnClassNames = firstColContent != null ? firstColContent.ColumnClassNames : first.Replace("border-1", "").Replace("border", ""), 
+                   RowGuid = guid , ColData = firstColContent != null ? firstColContent.ColData : ""}'/>
     </div>
      <div class="col-12 col-md-2 border" colnum="2" did='@ViewBag.DomainId' cnt="6" colClassNames="@(secondColContent != null ? secondColContent.ColumnClassNames : "")">
-          <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 2, Section = section, ColumnClassNames = secondColContent != null ? secondColContent.ColumnClassNames : second.Replace("border-1", "").Replace("border", ""), RowGuid = guid , ColData = secondColContent != null ? secondColContent.ColData : ""}'/>
+          <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 2, Section = section, 
+                 ColumnClassNames = secondColContent != null ? secondColContent.ColumnClassNames : second.Replace("border-1", "").Replace("border", ""), 
+                 RowGuid = guid , ColData = secondColContent != null ? secondColContent.ColData : ""}'/>
      </div>
       <div class="col-12 col-md-2 border" colnum="3" did='@ViewBag.DomainId' cnt="6" colClassNames="@(thirdColContent != null ? thirdColContent.ColumnClassNames : "")">
-           <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 3, Section = section, ColumnClassNames = thirdColContent != null ? thirdColContent.ColumnClassNames : third.Replace("border-1", "").Replace("border", ""), RowGuid = guid, ColData = thirdColContent != null ? thirdColContent.ColData : "" }'/>
+           <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 3, Section = section, 
+                ColumnClassNames = thirdColContent != null ? thirdColContent.ColumnClassNames : third.Replace("border-1", "").Replace("border", ""), 
+                RowGuid = guid, ColData = thirdColContent != null ? thirdColContent.ColData : "" }'/>
       </div>
        <div class="col-12 col-md-2 border" colnum="4" did='@ViewBag.DomainId' cnt="6" colClassNames="@(forthColContent != null ? forthColContent.ColumnClassNames : "")">
-            <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 4, Section = section, ColumnClassNames = forthColContent != null ? forthColContent.ColumnClassNames : forth.Replace("border-1", "").Replace("border", ""), RowGuid = guid , ColData = forthColContent != null ? forthColContent.ColData : ""}'/>
+            <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 4, Section = section, 
+                 ColumnClassNames = forthColContent != null ? forthColContent.ColumnClassNames : forth.Replace("border-1", "").Replace("border", ""), 
+                 RowGuid = guid , ColData = forthColContent != null ? forthColContent.ColData : ""}'/>
        </div>
         <div class="col-12 col-md-2 border" colnum="5" did='@ViewBag.DomainId' cnt="6" colClassNames="@(fifthColContent != null ? fifthColContent.ColumnClassNames : "")">
-             <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 5, Section = section, ColumnClassNames = fifthColContent != null ? fifthColContent.ColumnClassNames : fifth.Replace("border-1", "").Replace("border", ""), RowGuid = guid , ColData = fifthColContent != null? fifthColContent.ColData : ""}'/>
+             <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 5, Section = section, 
+                 ColumnClassNames = fifthColContent != null ? fifthColContent.ColumnClassNames : fifth.Replace("border-1", "").Replace("border", ""), 
+                 RowGuid = guid , ColData = fifthColContent != null? fifthColContent.ColData : ""}'/>
         </div>
          <div class="col-12 col-md-2 border" colnum="6" did='@ViewBag.DomainId' cnt="6" colClassNames="@(sixthColContent != null ? sixthColContent.ColumnClassNames : "")">
-              <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 6, Section = section, ColumnClassNames = sixthColContent != null ? sixthColContent.ColumnClassNames : sixth.Replace("border-1", "").Replace("border", ""), RowGuid = guid, ColData = sixthColContent != null ? sixthColContent.ColData : "" }'/>
+              <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 6, Section = section, 
+                  ColumnClassNames = sixthColContent != null ? sixthColContent.ColumnClassNames : sixth.Replace("border-1", "").Replace("border", ""), 
+                  RowGuid = guid, ColData = sixthColContent != null ? sixthColContent.ColData : "" }'/>
          </div>
 </div>
 

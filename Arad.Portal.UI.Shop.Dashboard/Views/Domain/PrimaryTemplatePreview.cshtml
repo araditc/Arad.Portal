@@ -89,12 +89,8 @@
         {
             @Html.Raw(Model.HeaderContent);
         }
-        @*<div class="navbarMenu">
-            @await Component.InvokeAsync("StoreMenuModule", new {domainId = Model.DomainId, languageId = Model.LanguageId});
-            </div>*@
-
     </header>
-    <div class="container">
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @if (!string.IsNullOrEmpty(Model.ContainerContent))
             {

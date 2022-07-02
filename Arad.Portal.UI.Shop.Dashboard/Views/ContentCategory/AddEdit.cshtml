@@ -95,7 +95,7 @@
                                         <td>@item.Name</td>
                                         <td>@item.LanguageName</td>
                                         <td style="display:none;">@item.LanguageId</td>
-                                        <td>@(!string.IsNullOrWhiteSpace(item.UrlFriend) ? item.UrlFriend.Replace("/category/", "") : item.UrlFriend)</td>
+                                        <td dir="ltr">@(!string.IsNullOrWhiteSpace(item.UrlFriend) ? item.UrlFriend.Replace("/category/", "") : item.UrlFriend)</td>
                                         <td>
                                             <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromTable(this);">
                                                 <i class="fa fa-trash" ></i>
@@ -261,7 +261,7 @@
                                    var tr = "<tr style='text-align:center;'><td>" + $("#categoryName").val() +
                                         "</td><td>" + $('#languageId option:selected').text() +
                                         "</td><td style='display:none;'>" + $("#languageId").val() +
-                                        "</td><td>"+ urlFriend +"</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromTable(this);'>" +
+                                        "</td><td dir='ltr'>"+ urlFriend +"</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromTable(this);'>" +
                                         "<i class='fa fa-trash' ></i></button></td></tr>";
 
                                         $("#multiLingualList").append(tr);

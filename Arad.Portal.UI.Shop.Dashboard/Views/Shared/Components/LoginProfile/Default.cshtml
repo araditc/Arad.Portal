@@ -17,20 +17,18 @@
             }
             
             <li class="login">
-                @{
-
-                    @if (!@User.Identity.IsAuthenticated)
-                    {
+                    @*@if (!@User.Identity.IsAuthenticated)
+                    {*@
                         <a href="#" class="openLoginModal">
                             <span class="title">
                                 <i class="fa fa-user"></i>
                                 <span class="display-none ">@Language.GetString("User_LoginRegister")</span>
                             </span>
                         </a>
-                    }
+                    @*}
                     else
                     {
-                        <div class="dropdown" id="myUserProfile">
+                      <div class="dropdown" id="myUserProfile">
                             <a class="openLoginModal btn dropdown-toggle" role="button" id="drpUserProfile"
                            placement="bottom right" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span class="title">
@@ -53,10 +51,8 @@
                                 </li>
                             </ul>
                         </div>
-                    }
-                }
+                    }*@
             </li>
-
         </ul>
 
     </div>

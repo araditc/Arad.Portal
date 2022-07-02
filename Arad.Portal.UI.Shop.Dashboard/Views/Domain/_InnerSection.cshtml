@@ -3,18 +3,11 @@
 @using Arad.Portal.DataLayer.Models.DesignStructure;
 @model Arad.Portal.DataLayer.Models.DesignStructure.ColContent
 @{
-    var lan = "";
-    if (CultureInfo.CurrentCulture.Name == "fa-IR")
-    {
-        lan = "fa";
-    }
-    else
-    {
-        lan = "en";
-    }
+    
     ModuleWithParametersValue module = new ModuleWithParametersValue();
     string contentType = "";
-
+    string modulePartClass = "d-none";
+    string editorPartClass = "d-none";
     bool isEdit = Model.ColData != null;
     if (!string.IsNullOrWhiteSpace(Model.ColData))
     {
@@ -22,6 +15,7 @@
         var htmlRaw = "";
         htmlDoc.LoadHtml(Model.ColData);
         var divs = htmlDoc.DocumentNode.Elements("div");//divs in first level
+
         foreach (var div in divs) //surely it is one
         {
             if (div.Attributes["target"].Value == "module")
@@ -31,18 +25,18 @@
                     module = JsonConvert
                       .DeserializeObject<ModuleWithParametersValue>(Model.ColData.Replace("<div target=\"module\">", "").Replace("</div>", ""));
                     contentType = "module";
+                    modulePartClass = "";
                 } catch(Exception ex)
                 {
 
                 }
-       
             }
             else
             {
                 htmlRaw = Model.ColData.Replace("<div target=\"editor\">", "").Replace("</div>", "");
                 contentType = "editor";
+                editorPartClass = "";
             }
-
         }
     }
 }
@@ -61,17 +55,18 @@
         <label class="form-label">@Language.GetString("Template_ContentType")</label>
         <br />
         <select class="form-control selectpicker drpContentType" onchange="selectDrpContentType(this);"
-                cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section" data-live-search="true">
-            <option value="0">@Language.GetString("AlertAndMessage_Choose")</option>
-            <option value="1">@Language.GetString("Template_SystemModules")</option>
-            <option value="2">@Language.GetString("Template_Editor")</option>
+                cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section" data-live-search="true" sel=@(contentType == "module" ? "1" :(contentType == "editor" ? "2" : "0")) >
+            <option value="0" >@Language.GetString("AlertAndMessage_Choose")</option>
+            <option value="1" >@Language.GetString("Template_SystemModules")</option>
+            <option value="2" >@Language.GetString("Template_Editor")</option>
         </select>
     </div>
 </div>
 
 <div class="row parent" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section" style="min-height:300px;">
-    <div class="col-12 modulePart d-none">
-        <select class="form-control selectpicker moduleList" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section" data-live-search="true" asp-items="@(new SelectList(ViewBag.ModuleList,"Value","Text"))">
+    <div class="col-12 modulePart @modulePartClass" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section">
+        <select class="form-control selectpicker moduleList" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section" sel="@module.ModuleId"
+             data-live-search="true" asp-items="@(new SelectList(ViewBag.ModuleList,"Value","Text"))">
         </select>
         <br />
         <div class="d-flex justify-content-end">
@@ -81,10 +76,37 @@
             </button>
         </div>
         <br />
-        <div class="paramsDiv" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section"></div>
+        <div class="paramsDiv" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section">
+            @{
+                if(contentType == "module")
+                {
+                    switch(module.ModuleName)
+                    {
+                        case "ProductList":
+                          <partial name="_ProductList.cshtml" model="@module"/>
+                        break;
+                         case "ContentList":
+                          <partial name="_ContentList.cshtml" model="@module"/>
+                        break;
+                         case "HorizantalStoreMenu":
+                          <partial name="_HorizantalStoreMenu.cshtml" model="@module"/>
+                        break;
+                         case "ImageTextSlider":
+                          <partial name="_ImageTextSlider.cshtml" model="@module"/>
+                        break;
+                         case "LoginAndProfile":
+                          <partial name="_LoginAndProfile.cshtml" model="@module"/>
+                        break;
+                         case "MultiLingualFlags":
+                          <partial name="_MultiLingualFlags.cshtml" model="@module"/>
+                        break;
+                    }
+                }
+            }
+        </div>
     </div>
-    <div class="col-12 editorPart d-none">
-        <textarea id='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")' name='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")' class="form-control" rows="40">
+    <div class="col-12 editorPart @editorPartClass"  cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section">
+        <textarea id='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")' name='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")'  class="form-control txtEditorCK" rows="40">
             @{
                 if (contentType != "" && contentType == "editor")
                 {
@@ -92,75 +114,110 @@
                 }
             }
         </textarea>
-        <script>
+      @*  <script>
 
             editorId = "editor_"+"@Model.ColNumber"+"_"+"@ViewBag.RowNumber";
-            var config =
-                     {
-                     height: 300,
-                     filebrowserUploadUrl: '/Image/DomainImageUpload',
-                     // filebrowserBrowseUrl: '/Image/ContentFileBrows',
-                     language: '@lan',
-                     scayt_sLang: '@lan',
-                     allowedContent: true,
-                     toolbarGroups: [
-                         { name: 'clipboard', groups: ['clipboard', 'undo'] },
-                         { name: 'editing', groups: ['find', 'selection', 'spellchecker'] },
-                         { name: 'links' },
-                         { name: 'insert' },
-                         { name: 'forms' },
-                         { name: 'tools' },
-                         { name: 'document', groups: ['mode', 'document', 'doctools'] },
-                         { name: 'others' },
-                         '/',
-                         { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
-                         { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi'] },
-                         { name: 'styles' },
-                         { name: 'colors' },
-                         { name: 'about' }
-                     ]
-                 };
-             config.font_names =
-                 'Arial/Arial, Helvetica, sans-serif;' +
-                 'Times New Roman/Times New Roman, Times, serif;' +
-                 'Verdana;' +
-                 'IRANSansWeb;' +
-                 'WeblogmaYekan;' +
-                 'Vazir;' +
-                 'Shabnam';
-             config.baseHref ="@ViewBag.Url";
-             config.extraPlugins = '';
+           
+             
+            
              CKEDITOR.replace(editorId, config);
              CKEDITOR.dtd.$removeEmpty['i'] = false;
              CKEDITOR.dtd.$removeEmpty['span'] = false;
-        </script>
+        </script>*@
         <button class="btn btn-success bg-gradient btn-sm float-end btnHtmlSanitizer m-1" onclick="sinitize(this);" editorid='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")' cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section"
                 type="button">
             @Language.GetString("btn_Validation")
         </button>
     </div>
-    <div class="row finalColumnContent d-none" classNames="@Model.ColumnClassNames" guid="@Model.RowGuid" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" >
+    <div class="row finalColumnContent d-none" classNames="@Model.ColumnClassNames" guid="@Model.RowGuid" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section" >
         @{
-            if (contentType != "" && contentType == "editor")
+            if (contentType != "")
             {
-                @Model.ColData
-                ;
+                @Model.ColData;
             }
         }
     </div>
-    <div class="row htmlColumnContentPreview d-none mx-2" classNames="@Model.ColumnClassNames" guid="@Model.RowGuid" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" >
+    <div class="row htmlColumnContentPreview d-none mx-2" classNames="@Model.ColumnClassNames" guid="@Model.RowGuid" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section">
         @{
-            if (contentType != "" && contentType == "editor")
+            if(contentType != "")
             {
-                @Model.ColData.Replace("<div target=\"editor\">", "").Replace("</div>", "")
-                ;
+                if(contentType == "editor")
+                {
+                    @Model.ColData.Replace("<div target=\"editor\">", "").Replace("</div>", "");
+                }else
+                {
+                     switch (module.ModuleName)
+                                {
+                                    case "ProductList":
+                                         @await Component.InvokeAsync("SpecialProduct",
+                                        new { productType = module.ParametersValue.ProductOrContentType,
+                                        selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count,
+                                        loadAnimation = module.ParametersValue.LoadAnimation, loadAnimationType = module.ParametersValue.LoadAnimationType } );
+                                        break;
+                                    case "ContentList":
+                                        @await Component.InvokeAsync("ContentTemplates", new { contentType = module.ParametersValue.ProductOrContentType,
+                                        selectionTemplate = module.ParametersValue.ContentTemplateDesign ,  count = module.ParametersValue.Count,
+                                        loadAnimation = module.ParametersValue.LoadAnimation, loadAnimationType = module.ParametersValue.LoadAnimationType });
+                                        break;
+                                    case "HorizantalStoreMenu":
+                                        @await Component.InvokeAsync("StoreMenuModule")
+                                        ;
+                                        break;
+                                    case "ImageTextSlider":
+                                        @await Component.InvokeAsync("Slider", new { sliderId =  module.ParametersValue.SliderId })
+                                        ;
+                                        break;
+                                    case "LoginAndProfile":
+                                        @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId, isShop = module.ParametersValue.IsShop })
+                                        ;
+                                        break;
+                                    case "MultiLingualFlags":
+                                        @await Component.InvokeAsync("MultiLingual")
+                                        ;
+                                        break;
+
+                                }
+                }
             }
+           
         }
     </div>
 
-    @*difference between these finalColumnContent and htmlColumnContentPreview is about modules the first one store with parameters and second one html of executed module will render *@
+    @*difference between these finalColumnContent and htmlColumnContentPreview is about modules the first one store with parameters and second one render html of executed module*@
     @*difference between moduleDatePreview and htmlColumnContentPreview is if we have more than one module in a column then mouleDataPreview is for the last module to show but htmlColumnContentPreview is all data of this columns*@
-    <div class="row moduleDataPreview d-none mx-2" guid="@Model.RowGuid" cn="@Model.ColNumber" rn="@ViewBag.RowNumber">
+    <div class="row moduleDataPreview mx-2 @(contentType != "" && contentType == "module" ? "" : "d-none")" guid="@Model.RowGuid" cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section">
+        @{
+            if (contentType != "" && contentType == "module")
+            {
+                switch (module.ModuleName)
+                                {
+                                    case "ProductList":
+                                        @await Component.InvokeAsync("SpecialProduct",
+                                        new { productType = module.ParametersValue.ProductOrContentType,
+                                        selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count,
+                                        loadAnimation = module.ParametersValue.LoadAnimation, loadAnimationType = module.ParametersValue.LoadAnimationType } );
+                                        break;
+                                    case "ContentList":
+                                        @await Component.InvokeAsync("ContentTemplates", new { contentType = module.ParametersValue.ProductOrContentType,
+                                        selectionTemplate = module.ParametersValue.ContentTemplateDesign ,  count = module.ParametersValue.Count,
+                                        loadAnimation = module.ParametersValue.LoadAnimation, loadAnimationType = module.ParametersValue.LoadAnimationType });
+                                        break;
+                                    case "HorizantalStoreMenu":
+                                        @await Component.InvokeAsync("StoreMenuModule");
+                                        break;
+                                    case "ImageTextSlider":
+                                        @await Component.InvokeAsync("Slider", new { sliderId =  module.ParametersValue.SliderId });
+                                        break;
+                                    case "LoginAndProfile":
+                                        @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId, isShop = module.ParametersValue.IsShop });
+                                        break;
+                                    case "MultiLingualFlags":
+                                        @await Component.InvokeAsync("MultiLingual");
+                                        break;
+
+                                }
+            }
+        }
     </div>
 </div>
 
@@ -169,392 +226,102 @@
     $(document).ready(function()
     {
         //alert("@ViewBag.RowNumber");
-        if('@contentType' != "")
-        {
-            loadData();
-        }
+        //if('@contentType' != "")
+        //{
+        //    loadData();
+        //}
 
     });
 
 
-    function loadData()
-    {
-        debugger;
-          if('@contentType' == "module")
-            {
-                $('.drpContentType[cn="@Model.ColNumber"][rn="@ViewBag.RowNumber"][sec="@Model.Section"]').val("1");
-            }else
-            {
-                $('.drpContentType[cn="@Model.ColNumber"][rn="@ViewBag.RowNumber"][sec="@Model.Section"]').val("2");
-            }
-            $('.drpContentType[cn="@Model.ColNumber"][rn="@ViewBag.RowNumber"][sec="@Model.Section"]').selectpicker("refresh");
+    //function loadData()
+    //{
+    //    debugger;
+          
+    //        debugger;
+    //        if('@contentType' == "module")
+    //        {
+    //            $('.moduleList[cn="@Model.ColNumber"][rn="@ViewBag.RowNumber"][sec="@Model.Section"]').selectpicker("val","@module.ModuleId");
+                
 
-            var sender = $('.drpContentType[cn="@Model.ColNumber"][rn="@ViewBag.RowNumber"][sec="@Model.Section"]');
-            selectDrpContentType(sender);
-            debugger;
-            if('@contentType' == "module")
-            {
-                $('.moduleList[cn="@Model.ColNumber"][rn="@ViewBag.RowNumber"][sec="@Model.Section"]').val("@module.ModuleId");
-                $('.moduleList[cn="{@Model.ColNumber"][rn="@ViewBag.RowNumber"][sec="${@Model.Section"]').selectpicker("refresh");
+    //            debugger;
+    //            var sender = $('.btnAddModule[cn="@Model.ColNumber"][rn="@ViewBag.RowNumber"][sec="@Model.Section"]');
+    //            var parentDiv = $(sender).closest(".parent");
+    //            var colnumber =  $(sender).attr("cn");
+    //            var cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
+    //            var selectedModuleName = $(parentDiv).find(".moduleList").find("option:selected").text();
+    //            var selectedModuleId = $(parentDiv).find(".moduleList").find("option:selected").val();
+    //            var paramDiv = $(parentDiv).find(".paramsDiv");
+    //            debugger;
+    //            $.ajax({
+    //                url:"@Url.Action("GetSpecificModule","Domain")"+
+    //                  "?moduleName="+'@module.ModuleName'+"&id="+'@ViewBag.DomainId'+"&colCount="+cnt +"&rn=" +"@ViewBag.RowNumber"+"&cn="+"@Model.ColNumber"+"&sec="+"@Model.Section",
+    //                type:'Get',
+    //                statusCode:{
+    //                    200:function(data){
+    //                        $(paramDiv).html(data);
+    //                        $(".typeList").selectpicker();
+    //                        var sender;
+    //                        switch('@module.ModuleName')
+    //                        {
+    //                            case "ProductList":
+    //                             $("input[name='rdbProductTemplateList'][value='@module.ParametersValue.ProductTemplateDesign'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").attr("checked", "checked");
 
+    //                             $("[parid='typeList'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").selectpicker("val","@module.ParametersValue.ProductOrContentType");
+                                
 
-                debugger;
-                var sender = $('.btnAddModule[cn="@Model.ColNumber"][rn="@ViewBag.RowNumber"][sec="@Model.Section"]');
-                var parentDiv = $(sender).closest(".parent");
-                var colnumber =  $(sender).attr("cn");
-                var cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
-                var selectedModuleName = $(parentDiv).find(".moduleList").find("option:selected").text();
-                var selectedModuleId = $(parentDiv).find(".moduleList").find("option:selected").val();
-                var paramDiv = $(parentDiv).find(".paramsDiv");
-                debugger;
-                $.ajax({
-                    url:"@Url.Action("GetSpecificModule","Domain")"+
-                      "?moduleName="+'@module.ModuleName'+"&id="+'@ViewBag.DomainId'+"&colCount="+cnt +"&rn=" +"@ViewBag.RowNumber"+"&cn="+"@Model.ColNumber"+"&sec="+"@Model.Section",
-                    type:'Get',
-                    statusCode:{
-                        200:function(data){
-                            $(paramDiv).html(data);
-                            $(".typeList").selectpicker();
-                            var sender;
-                            switch('@module.ModuleName')
-                            {
-                                case "ProductList":
-                                 $("input[name='rdbProductTemplateList'][value='@module.ParametersValue.ProductTemplateDesign'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").attr("checked", "checked");
+    //                             $("[parid='countToShow'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").val("@module.ParametersValue.Count");
 
-                                 $("[parid='typeList'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").val("@module.ParametersValue.ProductOrContentType");
-                                 $("[parid='typeList'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").selectpicker("refresh");
+    //                             $("[parid='loadAnimation'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").selectpicker("val", "@module.ParametersValue.LoadAnimation");
+                                
 
-                                 $("[parid='countToShow'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").val("@module.ParametersValue.Count");
+    //                             $("[parid='loadAnimationType'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").selectpicker("val", "@module.ParametersValue.LoadAnimationType")
+                                
 
-                                 $("[parid='loadAnimation'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").val("@module.ParametersValue.LoadAnimation");
-                                 $("[parid='loadAnimation'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").selectpicker("refresh");
+    //                            break;
+    //                            case "ContentList":
 
-                                 $("[parid='loadAnimationType'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").val("@module.ParametersValue.LoadAnimationType")
-                                 $("[parid='loadAnimationType'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").selectpicker("refresh");
+    //                            $("input[name='rdbContentTemplateList'][value='@module.ParametersValue.ProductTemplateDesign'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").attr("checked", "checked");
 
-                                break;
-                                case "ContentList":
+    //                             $("[parid='typeList'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").selectpicker("val", "@module.ParametersValue.ProductOrContentType");
+                                
 
-                                $("input[name='rdbContentTemplateList'][value='@module.ParametersValue.ProductTemplateDesign'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").attr("checked", "checked");
+    //                             if(!$(".countSection[cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").hasClass("d-none"))
+    //                             {
+    //                                 $("[parid='countToShow'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").val("@module.ParametersValue.Count");
+    //                             }
 
-                                 $("[parid='typeList'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").val("@module.ParametersValue.ProductOrContentType");
-                                 $("[parid='typeList'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").selectpicker("refresh");
+    //                             $("[parid='loadAnimation'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").selectpicker("val", "@module.ParametersValue.LoadAnimation");
+                                 
 
-                                 if(!$(".countSection[cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").hasClass("d-none"))
-                                 {
-                                     $("[parid='countToShow'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").val("@module.ParametersValue.Count");
-                                 }
+    //                             $("[parid='loadAnimationType'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").selectpicker("val", "@module.ParametersValue.LoadAnimationType");
+                                 
+    //                            break;
+    //                            case "HorizantalStoreMenu":
+    //                            break;
+    //                            case "ImageTextSlider":
+    //                            $("[parid='sliderList'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").selectpicker("val", "@module.ParametersValue.SliderId");
+                                
+    //                            break;
+    //                            case "LoginAndProfile":
+    //                            if('@module.ParametersValue.IsShop' == "True")
+    //                            {
+    //                                $("[parid='isShop'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").attr("checked", "checked");
+    //                            }
+    //                            break;
+    //                            case "MultiLingualFlags":
+    //                            break;
+    //                        }
 
-                                 $("[parid='loadAnimation'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").val("@module.ParametersValue.LoadAnimation");
-                                 $("[parid='loadAnimation'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").selectpicker("refresh");
+    //                        sender = $("[btnid='btnAddModuleWithParameters'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']");
+    //                        addModulesWithParams(sender);
 
-                                 $("[parid='loadAnimationType'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").val("@module.ParametersValue.LoadAnimationType");
-                                 $("[parid='loadAnimationType'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").selectpicker("refresh");
-                                break;
-                                case "HorizantalStoreMenu":
-                                break;
-                                case "ImageTextSlider":
-                                $("[parid='sliderList'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").val("@module.ParametersValue.SliderId");
-                                $("[parid='sliderList'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").selectpicker("refresh");
-                                break;
-                                case "LoginAndProfile":
-                                if('@module.ParametersValue.IsShop' == "True")
-                                {
-                                    $("[parid='isShop'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").attr("checked", "checked");
-                                }
-                                break;
-                                case "MultiLingualFlags":
-                                break;
-                            }
+    //                    }
+    //                }
+    //            });
+    //        }
+    //}
 
-                            sender = $("[btnid='btnAddModuleWithParameters'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']");
-                            addModulesWithParams(sender);
-
-                        }
-                    }
-                });
-            }
-    }
-
-             function addModule(sender)
-             {
-                 debugger;
-                 var parentDiv = $(sender).closest(".parent");
-                 var colnumber =  $(sender).attr("cn");
-                 var cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
-
-                      var selectedModuleName = $(parentDiv).find(".moduleList").find("option:selected").text();
-                     var selectedModuleId = $(parentDiv).find(".moduleList").find("option:selected").val();
-                     var paramDiv = $(parentDiv).find(".paramsDiv");
-                     $.ajax({
-                          url:"@Url.Action("GetSpecificModule","Domain")"+"?moduleName="+selectedModuleName+"&id="+
-                                '@ViewBag.DomainId'+"&colCount="+cnt+"&rn" +"@ViewBag.RowNumber"+"&cn="+"@Model.ColNumber"+"&sec="+"@Model.Section",
-                          type:'Get',
-                          statusCode:
-                          {
-                              200:function(data)
-                              {
-                                   $(paramDiv).html(data);
-                                   $("[parid='typeList']").selectpicker();
-                                   $("[parid='loadAnimation']").selectpicker();
-                                   $("[parid='loadAnimationType']").selectpicker();
-                              }
-                          }
-                        });
-             }
-
-             function sinitize(sender)
-             {
-              debugger;
-                 editorId  =$(sender).attr("editorId");
-                     var htmlData = CKEDITOR.instances[editorId].getData();
-                     var dataToSend= JSON.stringify(htmlData);
-                     $.ajax({
-                          url:"@Url.Action("SanitizeCkEditorContent","Domain")",
-                          type:'Post',
-                          data: dataToSend,
-                          contentType: "application/json; charset=utf-8",
-                          statusCode:{
-                              200:function(data){
-
-                                 //show whether this html is valid or not
-                                 if(!data.isvalid)
-                                 {
-                                   $('#mainToastBody').html('<i class="fas fa-exclamation-triangle"></i>@Language.GetString("AlertAndMessage_InvalidEditorContent")');
-                                   $('#mainToastBody').addClass('alert-danger');
-                                   var toastDiv = $("#mainToast");
-                                   $("#toastPanel").show();
-                                   var toast = new bootstrap.Toast(toastDiv);
-                                   toast.show();
-                                   setTimeout(function(){
-                                       CKEDITOR.instances.editorId.setData(""),3000
-                                   });
-                                 }else //it is valid
-                                 {
-                                     $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_ValidEditorContent")');
-                                     $('#mainToastBody').addClass('alert-success');
-                                     var toast = new bootstrap.Toast($("#mainToast"));
-                                     toast.show();
-
-                                   var res = `<div target='editor'>${htmlData}</div>`;
-                                   $(sender).closest(".parent").find(".finalColumnContent").html(res);
-
-                                   $(sender).closest(".parent").find(".htmlColumnContentPreview").html(htmlData);
-                                 }
-                              }
-                          }
-                        });
-             }
-
-             function selectDrpContentType(sender)
-             {
-               debugger;
-                 var colnumber = $(sender).attr("cn");
-                 domainId = $(sender).closest(`div[colnum='${colnumber}']`).attr("did");
-                 cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
-
-                 var val = $(sender).val();
-                 var targetDiv = $(sender).closest(".row").siblings(".row.parent");
-                 //var targetDivId =`#${targetDivId}`;
-                 switch(val)
-                 {
-                     case "1":
-                     $(targetDiv).find(".modulePart").removeClass("d-none");
-                     $(targetDiv).find(".editorPart").addClass("d-none");
-                     break;
-                     case "2":
-                     $(targetDiv).find(".editorPart").removeClass("d-none");
-                     $(targetDiv).find(".modulePart").addClass("d-none");
-                     break;
-                 }
-             }
-
-            function addModulesWithParams(sender)
-            {
-               debugger;
-                var obj = {};//an instance of ModuleWithParametersValue
-                obj.ParametersValue ={};
-                 var targetParamsDiv = $(sender).closest(".paramsDiv");
-                 var count = 0;
-                 var loadAnimation;
-                 var selectedTemplate = "";
-                 var isShop = false;
-                 var loadAnimationType;
-                  var sliderId ="" ;
-                  var domainId = "@ViewBag.DomainId";
-                  var languageId = $("#languageId").val();
-                 var parent =  $(sender).closest(".parent");
-                 var targetDivId ="";
-
-                     obj.ModuleId = $(sender).closest(".modulePart").find(".moduleList option:selected").val()
-                     obj.ModuleName = $(sender).closest(".modulePart").find(".moduleList option:selected").text();
-
-                     $(targetParamsDiv).find(".par").each(function(){
-                         var parid = $(this).attr("parid");
-                         switch(obj.ModuleName)
-                         {
-                             case "ProductList":
-                             switch(parid)
-                             {
-                                 case "templateSection":
-                                 selectedTemplate = $("input[name='rdbProductTemplateList']:checked").val();
-                                 break;
-                                 case "typeList":
-                                 selectedType = $(this).val();
-                                 break;
-                                 case "countToShow":
-                                 count = parseInt($(this).val());
-                                 break;
-                                 case "loadAnimation":
-                                 loadAnimation = $(this).val();
-                                 break;
-                                 case "loadAnimationType":
-                                 loadAnimationType = $(this).val();
-                                 break;
-                             }
-                             break;
-                             case "ContentList":
-                             switch(parid)
-                             {
-                                 case "templateSection":
-                                 selectedTemplate = $("input[name='rdbContentTemplateList']:checked").val();
-                                 switch(selectedTemplate)
-                                 {
-                                     case "First":
-                                     count = 6;
-                                     break;
-                                     case "Second":
-                                     count = 4;
-                                     break;
-                                     case "Third":
-                                     count = 8;
-                                     break;
-                                 }
-                                 break;
-                                 case "typeList":
-                                 selectedType = $(this).val();
-                                 break;
-                                 case "countToShow":
-                                 if(!$(".countSection").hasClass("d-none"))
-                                     count = parseInt($(this).val());
-                                 break;
-                                 case "loadAnimation":
-                                    loadAnimation = $(this).val();
-                                    break;
-                                    case "loadAnimationType":
-                                    loadAnimationType = $(this).val();
-                                    break;
-                             }
-                             break;
-                             case "ImageTextSlider":
-                             if(parid ="sliderList")
-                             {
-                                 sliderId = $(this).val();
-                             }
-                             break;
-                             case "HorizantalStoreMenu":
-                             break;
-                             case "LoginAndProfile":
-                              if(parid = "isShop")
-                              {
-                                  isShop = $("#isShop").is(":checked");
-                              }
-                             break;
-                             case "MultiLingualFlags":
-                             break;
-
-                       }
-                 });
-                 var url = "";
-                 debugger;
-                 switch(obj.ModuleName.toLowerCase())
-                 {
-                     case "productlist":
-                         url = "@Url.Action("GetProductModuleViewComponent", "Domain")"+"?productType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count+ "&loadAnimation="+ loadAnimation + "&loadAnimationType=" + loadAnimationType ;
-                         obj.ParametersValue.ProductTemplateDesign = selectedTemplate;
-                         obj.ParametersValue.Count = count;
-                         obj.ParametersValue.ProductOrContentType = selectedType;
-                         obj.ParametersValue.LoadAnimation = loadAnimation;
-                         obj.ParametersValue.loadAnimationType = loadAnimationType;
-                     break;
-                     case "contentlist":
-                         url = "@Url.Action("GetContentModuleViewComponent", "Domain")"+"?contentType="+ selectedType +"&selectionTemplate="+selectedTemplate+"&count="+ count+ "&loadAnimation="+ loadAnimation + "&loadAnimationType=" + loadAnimationType ;
-                         obj.ParametersValue.ContentTemplateDesign = selectedTemplate;
-                         obj.ParametersValue.Count = count;
-                         obj.ParametersValue.ProductOrContentType = selectedType;
-                         obj.ParametersValue.LoadAnimation = loadAnimation;
-                         obj.ParametersValue.loadAnimationType = loadAnimationType;
-                     break;
-                     case "imagetextslider":
-                       url = "@Url.Action("GetSliderViewComponent", "Domain")"+ "?sliderId="+ sliderId;
-                       obj.ParametersValue.SliderId = sliderId;
-                     break;
-                     case "horizantalstoremenu":
-                       url = "@Url.Action("GetStoreMenuViewComponent", "Domain")"+"?domainId=" + domainId +"&languageId="+ languageId;
-                       obj.ParametersValue.DomainId = domainId;
-                       obj.ParametersValue.languageId = languageId ;
-                     break;
-                     case "loginandprofile":
-                         url = "@Url.Action("GetLoginProfileModuleViewComponent", "Domain")"+"?domainId=" + domainId +"&isShop="+ isShop;
-                         obj.ParametersValue.DomainId = domainId;
-                         obj.ParametersValue.IsShop = isShop ;
-                     break;
-                     case "multilingualflags":
-                     url = "@Url.Action("GetMultiLingualModuleViewComponent", "Domain")";
-                     break;
-
-                 }
-
-                 var data = JSON.stringify(obj);
-                 data =`<div target='module'>${data}</div>`;
-                 var finalData = $(parent).find(".finalColumnContent").append(data);
-
-                 $.ajax({
-                     type: "Get",
-                     dataType: "html",
-                     url: url,
-                     success: function (result) {
-                         debugger;
-                         if (result != "") {
-                             $(parent).find(".moduleDataPreview").html(result).removeClass("d-none");
-                             $(parent).find(".htmlColumnContentPreview").html(result);
-                             if(obj.ModuleName.toLowerCase() =="productlist")
-                             {
-                                  $(".owl-carousel").owlCarousel({
-                                         loop: true,
-                                         rtl: true,
-                                         navigation : true,
-                                         /* autoplay: true,*/
-                                         margin: 10,
-                                         animateOut: 'fadeOut',
-                                         animateIn: 'fadeIn',
-                                         nav: true,
-                                         /*dots: true,*/
-                                         autoplayHoverPause: false,
-                                         items: 3,
-                                         navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>", "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
-                                         responsive: {
-                                             0: {
-                                                 items: 1
-                                             },
-                                             600: {
-                                                 items: 3
-                                             },
-                                             1000: {
-                                                 items: 5
-                                             }
-                                         }
-                                    });
-                             }
-                             else if(obj.ModuleName.toLowerCase() =="imagetextslider")
-                             {
-                                 debugger;
-                                 AfterCarouselLoad();
-                             }
-
-                         }
-                     },
-                 });
-            }
+             
 
 </script>

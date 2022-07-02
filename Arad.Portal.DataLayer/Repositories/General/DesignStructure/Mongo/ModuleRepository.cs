@@ -10,6 +10,8 @@ using Arad.Portal.GeneralLibrary.Utilities;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Arad.Portal.DataLayer.Entities.General.SliderModule;
+using Arad.Portal.DataLayer.Models.DesignStructure;
 
 namespace Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo
 {
@@ -157,6 +159,40 @@ namespace Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo
         {
             var moduleList = _context.ModuleCollection.Find(_ => _.IsActive).ToList();
             return moduleList;
+        }
+
+        public List<SelectListModel> GetAllTransactionType()
+        {
+            var result = new List<SelectListModel>();
+            foreach (int i in Enum.GetValues(typeof(TransActionType)))
+            {
+                string name = Enum.GetName(typeof(TransActionType), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("Choose"), Value = "-1" });
+            return result;
+        }
+
+        public List<SelectListModel> GetAllLoadAnimationType()
+        {
+            var result = new List<SelectListModel>();
+            foreach (int i in Enum.GetValues(typeof(LoadAnimationType)))
+            {
+                string name = Enum.GetName(typeof(LoadAnimationType), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("Choose"), Value = "-1" });
+            return result;
         }
     }
 }

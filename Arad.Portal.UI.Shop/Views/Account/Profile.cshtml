@@ -129,7 +129,7 @@
 										<span class="text-danger pe-1">*</span>@Language.GetString("User_FirstName")
 									</label>
 									<input asp-for="@Model.FirstName" class="form-control" type="text" value="@Model.FirstName" />
-									<span data-val-result="@Model.FirstName" class="text-danger form-validation-alert">
+									<span data-val-result="FirstName" class="text-danger form-validation-alert">
 									</span>
 								</div>
 
@@ -138,7 +138,7 @@
 										<span class="text-danger pe-1">*</span>@Language.GetString("User_LastName")
 									</label>
 									<input asp-for="@Model.LastName" class="form-control" type="text" value="@Model.LastName" />
-									<span data-val-result="@Model.LastName" class="text-danger form-validation-alert">
+									<span data-val-result="LastName" class="text-danger form-validation-alert">
 									</span>
 								</div>
 
@@ -146,7 +146,7 @@
 									<label asp-for="@Model.FatherName" class="form-label">
 										@Language.GetString("User_FatherName")
 									</label>
-									<input asp-for="@Model.FatherName" class="form-control" type="text" value="@Model.FatherName" />
+									<input asp-for="FatherName" class="form-control" type="text" value="@Model.FatherName" />
 								</div>
 
 								<div class="col-md-4">
@@ -154,7 +154,7 @@
 										<span class="text-danger pe-1">*</span>@Language.GetString("User_NationalCode")
 									</label>
 									<input asp-for="@Model.NationalCode" class="form-control" type="text" value="@Model.NationalCode" />
-									<span data-val-result="@Model.NationalCode" class="text-danger form-validation-alert">
+									<span data-val-result="NationalCode" class="text-danger form-validation-alert">
 									</span>
 								</div>
 								<div class="col-md-4">
@@ -162,7 +162,7 @@
 										   @Language.GetString("User_CompanyName")
 									</label>
 									<input asp-for="@Model.CompanyName" class="form-control" type="text" value="@Model.CompanyName" />
-									<span data-val-result="@Model.CompanyName" class="text-danger form-validation-alert">
+									<span data-val-result="CompanyName" class="text-danger form-validation-alert">
 									</span>
 								</div>
 								
@@ -189,7 +189,7 @@
 												</span>
 											</div>
 										}
-									<span data-val-result="@Model.BirthDate" class="text-danger form-validation-alert">
+									<span data-val-result="BirthDate" class="text-danger form-validation-alert">
 									</span>
 								</div>
 

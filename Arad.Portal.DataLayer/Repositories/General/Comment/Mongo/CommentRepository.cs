@@ -350,13 +350,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
                 }
                 if (!string.IsNullOrWhiteSpace(filter["from"]))
                 {
-                    //???
                     totalList = totalList
                         .Where(_ => _.CreationDate >= filter["from"].ToString().ToEnglishDate().ToUniversalTime());
                 }
                 if (!string.IsNullOrWhiteSpace(filter["to"]))
                 {
-                    //???
                     totalList = totalList
                         .Where(_ => _.CreationDate <= filter["to"].ToString().ToEnglishDate().ToUniversalTime());
                 }

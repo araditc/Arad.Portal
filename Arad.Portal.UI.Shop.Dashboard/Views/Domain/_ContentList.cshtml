@@ -1,11 +1,31 @@
 ﻿@using Arad.Portal.DataLayer.Entities.General.SliderModule;
 @using Arad.Portal.DataLayer.Models.DesignStructure;
+@model Arad.Portal.DataLayer.Models.DesignStructure.ModuleWithParametersValue;
+@{
+    var countSectionClass = "";
+    if(Model == null)
+    {
+        countSectionClass = "d-none";
+    }else
+    {
+        if(Model.ParametersValue.ContentTemplateDesign.ToString() == "Forth" || Model.ParametersValue.ContentTemplateDesign.ToString() == "Fifth" )
+        {
+            countSectionClass = "d-block";
+        }else
+        {
+            countSectionClass = "d-none";
+        }
+
+    }
+}
 <div class="row par mx-2" parid="templateSection">
      <label class="form-label" >@Language.GetString("ViewTemplate")</label><br/>
     @foreach(SelectImageListModel option in ViewBag.ContentTemplateList)
     {
         <div class="col-12 @(@ViewBag.ColCnt == 1 || @ViewBag.ColCnt == 2 ? "col-md-3" : "")">
-            <input class="form-check-input" name="rdbContentTemplateList" type="radio" value="@(option.Text)" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" /><br/>
+            <input class="form-check-input" name="rdbContentTemplateList" type="radio" 
+           @((Model != null && Model.ParametersValue.ContentTemplateDesign.ToString() == option.Text) ? "checked='checked'" : "" )
+            value="@(option.Text)" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" /><br/>
             <img class="img-fluid m-2" src="@($"../filemanager/GetScaledImageOnWidth?path={option.ImageUrl}&width=180")" />
         </div>
     }
@@ -13,21 +33,26 @@
 <div class="row mx-2">
     <div class="col-12">
           <label class="form-label" >@Language.GetString("Type")</label><br/>
-          <select class="form-control selectpicker par typeList" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" data-live-search="true" parid="typeList"  asp-items ="@(new SelectList(ViewBag.ProductOrContentTypeList,"Value","Text"))" >
+          <select class="form-control selectpicker par typeList" cn="@ViewBag.ColNumber" 
+             rn="@ViewBag.RowNumber" sec="@ViewBag.Section" data-live-search="true" parid="typeList" sel="@Model.ParametersValue.ProductOrContentType"
+             asp-items ="@(new SelectList(ViewBag.ProductOrContentTypeList,"Value","Text"))" >
           </select>
     </div>
-    <div class="col-12 countSection d-none" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" >
+    <div class="col-12 countSection @countSectionClass" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" >
           <label class="form-label" >@Language.GetString("CountToShow")</label><br/>
-          <input type="number" parid="countToShow" class="form-control par" value="" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" />
+          <input type="number" parid="countToShow" class="form-control par" value="@Model.ParametersValue.Count" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" />
     </div>
     <div class="col-12 text-center loadAnimate">
         <label class="form-label" for="loadAnimation">@Language.GetString("design_loadAnimation")</label>
-        <select parid="loadAnimation" class="form-control selectpicker mt-2 par" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" asp-items="Html.GetEnumSelectList<TransActionType>()"></select>
+        <select parid="loadAnimation" class="form-control selectpicker mt-2 par" sel = "@Model.ParametersValue.LoadAnimation"
+         cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" asp-items="@(new SelectList(ViewBag.TransactionType, "Value", "Text"))"></select>
         <span class="field-validation-error" data-val-result="LoadAnimation"></span>
     </div>
      <div class="col-12 text-center loadAnimationType">
           <label class="form-label" for="loadAnimationType">@Language.GetString("design_loadAnimationType")</label>
-           <select parid="loadAnimationType" class="form-control selectpicker mt-2 par" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" asp-items="Html.GetEnumSelectList<LoadAnimationType>()"></select>
+           <select parid="loadAnimationType" class="form-control selectpicker mt-2 par" sel ="@Model.ParametersValue.LoadAnimationType"
+           cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" 
+           asp-items="@(new SelectList(ViewBag.LoadAnimationType, "Value", "Text"))"></select>
         <span class="field-validation-error" data-val-result="LoadAnimation"></span>
      </div>
     <div class="col-12">
@@ -41,36 +66,36 @@
 <script>
     $(document).ready(function(){
         //var cnt ="";
-        $("[parid='typeList'][cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").selectpicker();
-        $("[parid='loadAnimation'][cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").selectpicker();
-        $("[parid='loadAnimationType'][cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").selectpicker();
+        //$("[parid='typeList'][cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").selectpicker();
+        //$("[parid='loadAnimation'][cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").selectpicker();
+        //$("[parid='loadAnimationType'][cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").selectpicker();
 
-        $("input[name='rdbContentTemplateList'][cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").change(function () {
-             var selectedRadio = $("input[name='rdbContentTemplateList'][cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']:checked").val();
+        //$("input[name='rdbContentTemplateList'][cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").change(function () {
+        //     var selectedRadio = $("input[name='rdbContentTemplateList'][cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']:checked").val();
              
-             switch(selectedRadio)
-             {
-                 case "First":
-                 $(".countSection[cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").removeClass("d-block").addClass("d-none");
-                 //cnt = 6;
-                 break;
-                 case "Second":
-                  $(".countSection[cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").removeClass("d-block").addClass("d-none");
-                 //cnt = 4;
-                 break;
-                 case "Third":
-                  $(".countSection[cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").removeClass("d-block").addClass("d-none");
-                 //cnt = 8;
-                 break;
-                 case "Forth":
-                 case "Fifth":
-                 if($(".countSection[cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").hasClass("d-none"))
-                 {
-                     $(".countSection[cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']") .removeClass("d-none").addClass("d-block");
-                 }
-                 break;
-             }
+        //     switch(selectedRadio)
+        //     {
+        //         case "First":
+        //         $(".countSection[cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").removeClass("d-block").addClass("d-none");
+        //         //cnt = 6;
+        //         break;
+        //         case "Second":
+        //          $(".countSection[cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").removeClass("d-block").addClass("d-none");
+        //         //cnt = 4;
+        //         break;
+        //         case "Third":
+        //          $(".countSection[cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").removeClass("d-block").addClass("d-none");
+        //         //cnt = 8;
+        //         break;
+        //         case "Forth":
+        //         case "Fifth":
+        //         if($(".countSection[cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").hasClass("d-none"))
+        //         {
+        //             $(".countSection[cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']") .removeClass("d-none").addClass("d-block");
+        //         }
+        //         break;
+        //     }
 
-        });
+        //});
     });
 </script>

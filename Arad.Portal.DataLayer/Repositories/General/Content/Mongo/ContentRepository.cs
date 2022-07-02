@@ -320,13 +320,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                 }
                 if (!string.IsNullOrWhiteSpace(filter["from"]))
                 {
-                    //???
+                   
                     totalList = totalList
                         .Where(_ => _.StartShowDate >= filter["from"].ToString().ToEnglishDate().ToUniversalTime());
                 }
                 if (!string.IsNullOrWhiteSpace(filter["to"]))
                 {
-                    //???
+                    
                     totalList = totalList
                         .Where(_ => _.EndShowDate <= filter["to"].ToString().ToEnglishDate().ToUniversalTime());
                 }
@@ -483,8 +483,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             
             FilterDefinitionBuilder<Entities.General.Content.Content> builder = new();
             FilterDefinition<Entities.General.Content.Content> filterDef = builder.Empty;
-            //filterDef = builder.Gte(nameof(Entities.General.Content.Content.EndShowDate), DateTime.Now);
-            //filterDef &= builder.Lte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.Now);
+            filterDef = builder.Gte(nameof(Entities.General.Content.Content.EndShowDate), DateTime.Now);
+            filterDef = builder.And(filterDef, builder.Lte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.Now));
             if (domainEntity != null)
             {
                 //???
@@ -601,8 +601,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             FilterDefinitionBuilder<Entities.General.Content.Content> builder = new();
             FilterDefinition<Entities.General.Content.Content> filterDef = builder.Empty;
             filterDef &= builder.Eq(nameof(Entities.General.Content.Content.ContentCategoryId), contentCategoryId);
-            //filterDef = builder.Gte(nameof(Entities.General.Content.Content.EndShowDate), DateTime.Now);
-            //filterDef &= builder.Lte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.Now);
+            filterDef = builder.Gte(nameof(Entities.General.Content.Content.EndShowDate), DateTime.Now);
+            filterDef &= builder.Lte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.Now);
             if (domainEntity != null)
             {
                 //??? should be uncommented

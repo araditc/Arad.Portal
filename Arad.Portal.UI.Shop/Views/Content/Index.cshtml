@@ -9,47 +9,58 @@
 }
 
 <style>
-    .articleListCard{
+    .articleListCard {
         background: #fff;
         border-radius: 6px;
         position: relative;
         box-shadow: 1px 3px 4px 2px rgb(0 0 0 / 10%);
     }
 
-    .articleItem{
+    .articleItem {
         box-shadow: -1px 4px 7px 0 #e9e9e9;
         border-top: 1px solid #dad9d9;
     }
 </style>
 
 <div class="card" id="articleListCard">
-    
+
     <div class="card-body">
-        @foreach(var item in Model.Items)
+        @foreach (var item in Model.Items)
         {
-                <div class="card articleItem mb-4" >
-                        <a href="@(!string.IsNullOrWhiteSpace(item.UrlFriend) ? item.UrlFriend : $"/blog/{item.ContentCode}")" class="d-block">
-                            <div class="row">
-                                <div class="col-md-4 d-inline-block">
-                                    <img src="@($"../filemanager/GetScaledImageOnWidth?path={item.DesiredImageUrl}&width={535}")" class="w-100" >
-                                </div>
-                                <div class="col-md-8 d-inline-block" >
-                                    <h2 style="color: #222;font-size: 1.5rem;">@item.Title</h2>
-                                    <p class="me-10 text-start" style="color: #555;font-size: 1rem;">@item.SubTitle</p>
-                                </div>
+            <div class="card articleItem mb-4">
+                <a href="@(!string.IsNullOrWhiteSpace(item.UrlFriend) ? item.UrlFriend : $"/blog/{item.ContentCode}")" class="d-block text-decoration-none">
+                    <div class="row">
+                        @if (!string.IsNullOrWhiteSpace(item.DesiredImageUrl))
+                        {
+                            <div class="col-4 d-inline-block">
+                                <img src="@($"../filemanager/GetScaledImageOnWidth?path={item.DesiredImageUrl}&width={535}")" class="w-100 rounded-0">
                             </div>
-                        </a>
+                            <div class="col-8 d-inline-block">
+                                <h2 class="m-4" style="color: #222;font-size: 1.5rem;">@item.Title</h2>
+                                <p class="me-10 text-start" style="color: #555;font-size: 1rem;">@item.SubTitle</p>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-12 d-inline-block">
+                                <h2 class="m-4" style="color: #222;font-size: 1.5rem;">@item.Title</h2>
+                                <p class="me-10 text-start" style="color: #555;font-size: 1rem;">@item.SubTitle</p>
+                            </div>
+                        }
+
                     </div>
+                </a>
+            </div>
         }
     </div>
     <div class="card-footer">
         @await Component.InvokeAsync("Pagination", new PageViewModel()
         {
-            CurrentPage = Model.CurrentPage,
-            ItemsCount = Model.ItemsCount,
-            PageSize = Model.PageSize,
-            Navigation = Url.Action("Index", "Content"),
-            QueryParams = Model.QueryString
+        CurrentPage = Model.CurrentPage,
+        ItemsCount = Model.ItemsCount,
+        PageSize = Model.PageSize,
+        Navigation = Url.Action("Index", "Content"),
+        QueryParams = Model.QueryString
         })
     </div>
 

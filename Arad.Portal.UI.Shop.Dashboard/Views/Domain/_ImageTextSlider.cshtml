@@ -1,7 +1,14 @@
-﻿<div class="row mx-2">
+﻿@model Arad.Portal.DataLayer.Models.DesignStructure.ModuleWithParametersValue;
+@{
+    var sel = "";
+    if (Model != null)
+        sel = @Model.ParametersValue.SliderId;
+}
+<div class="row mx-2">
      <div class="col-12">
           <label class="form-label" >@Language.GetString("design_Slider")</label><br/>
-          <select class="form-control selectpicker par sliderlist" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" data-live-search="true" parid="sliderList" asp-items ="@(new SelectList(ViewBag.SliderList,"Value","Text"))" >
+          <select class="form-control selectpicker par sliderlist" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section" sel="@sel"
+          data-live-search="true" parid="sliderList" asp-items ="@(new SelectList(ViewBag.SliderList,"Value","Text"))" >
           </select>
     </div>
 
@@ -16,6 +23,6 @@
 <script>
      $(document).ready(function(){
         debugger;
-         $("[parid='sliderList'][cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").selectpicker();
+        // $("[parid='sliderList'][cn='@ViewBag.ColNumber'][rn='@ViewBag.RowNumber'][sec='@ViewBag.Section']").selectpicker();
     });
 </script>

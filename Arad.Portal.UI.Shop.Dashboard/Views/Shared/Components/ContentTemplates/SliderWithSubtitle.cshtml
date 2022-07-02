@@ -26,10 +26,10 @@
                     <div class="col">
                         <div class="card m-0 p-2 h-100" style="background-color: #e9f8f8;">
                             <div class="card-body">
-                            <p class="text-start fs-4 fw-bold text-decoration-underline">@Model[i].Title</p>
+                            <h4 class="text-start fs-4 fw-bold pb-4 border-bottom">@Model[i].Title</h4>
                             <div class="row w-75 fs-4 fw-light">@Model[i].SubTitle</div>
                             <div  class="float-start ms-4 m-2">
-                                <a class="btn btn-lg btn-dark" href="@(!string.IsNullOrWhiteSpace(Model[i].UrlFriend) ? Model[i].UrlFriend : $"/blog/{Model[0].ContentCode}")" role="button">
+                                <a class="btn btn-lg btn-dark text-decoration-none" role="button" href="@(!string.IsNullOrWhiteSpace(Model[i].UrlFriend) ? Model[i].UrlFriend : $"/blog/{Model[0].ContentCode}")" role="button">
                                     @Language.GetString("design_Continue")
                                 </a>
                             </div>
