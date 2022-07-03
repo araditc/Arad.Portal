@@ -176,7 +176,7 @@
             </div>
         </div>
     </header>
-    <div class="container" id="PrimaryTemplateContainerPart">
+    <div class="container-fluid" id="PrimaryTemplateContainerPart">
         <h3 class="text-center bg-secondary bg-opacity-10">Body</h3>
          <input type="hidden" id="containerPartCurrentGuid" />
         <div class="border border-3 border-secondary m-1 dynamicContainerPart p-2" style="min-height: 150px;">
@@ -212,10 +212,6 @@
         </div>
     </footer>
 
-
-
-     @* @await Component.InvokeAsync("ContentTemplates", new { contentType = ProductOrContentType.Newest, selectionTemplate = ContentTemplateDesign.SliderWithSubtitle, 
-       count = 10, loadAnimation = TransActionType.backInDown , loadAnimationType = LoadAnimationType.OuterElement});*@
 
     @*******row design offcanvas*******************@
     <div class="offcanvas offcanvas-end" tabindex="-1" id="styleDiv" aria-labelledby="offcanvasLabel">
@@ -467,6 +463,14 @@
                          var isShop = '@ViewBag.IsShop' == "True";
                          var isMultiLingual = '@ViewBag.IsMultilingual' == "True";
 
+                         function validateEditors()
+                         {
+                             $(".txtEditorCK").each(function(){
+                                 var id = $(this).attr("id");
+                                 sanitize(id, false);
+                             })
+                         }
+
                          function addRowBorderThickness()
                          {
                              var cls = $("#borderThicknessRow").val();
@@ -593,7 +597,7 @@
                                        "<option value='6'>" + '@Language.GetString("Template_SixCol")' + "</option></select></div>"+
                                        "<div class='col-12 col-md-3 p-2'>" +
                                        "<label class='lblAlert form-label'>" + '@Language.GetString("design_ColSizeRatio")' + "</label><br />" +
-                                       "<select  class='form-control selectpicker colWidth' onchange='selectColumnsWidthRatio(this, \""+ tag +"\" );' colWidthId='"+id+"' data-live-search='true'></select></div>" +
+                                       "<select  class='form-control selectpicker colWidth' onchange='selectColumnsWidthRatio(this, \""+ tag +"\" );' colwidthid='"+id+"' data-live-search='true'></select></div>" +
                                        "<div class='p-2 row justify-content-center'>"+
                                        "<div class='col-2 text-center'>"+
                                        "<button class='btn btn-sm m-2 pt-2 btn-dark btnRowStyle'  guid='" + id + "' data-bs-toggle='tooltip' data-bs-placement='top' title="+
@@ -754,6 +758,7 @@
                             });
 
                             $(".colBd").change(function(){
+                                debugger;
                                  var cls = $(this).val();
                                  var custClass = $(`.row.finalColumnContent[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames");
                                  var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames");
@@ -844,8 +849,8 @@
 
                                    $("#btnSave").click(function(){
                                        debugger;
+                                       validateEditors();
                                        //start of header section
-
                                         var header = {}; //an instance of headerPart
                                         header.CustomizedContent = [];
 
@@ -865,21 +870,40 @@
                                             obj.RowGuid = $(this).find(".row.sectionRow").attr("guid");
                                             obj.OrderInRow = i ;
                                             obj.EnumColsId = $(this).find(".row.sectionRow").attr("enumcolid");
-                                            obj.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+                                            obj.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses").trim();
                                             obj.ColsContent = [] ;
                                             $(this).find(".row.parent .finalColumnContent").each(function(){
+                                                debugger;
                                                 var colContent ={} ; //an instance of ColContent
                                                 colContent.Section = "headerSection";
                                                 colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
-                                                colContent.ColData = $(this).html();
-                                                colContent.ColumnClassNames = $(this).attr("classNames");
+                                                debugger;
+                                                var tmp = "";
+                                                if(!$(this).closest(".row.parent").find(".editorPart").hasClass("d-none") ||
+                                                   !$(this).closest(".row.parent").find(".modulePart").hasClass("d-none") )
+                                                   {
+                                                        if(!$(this).closest(".row.parent").find(".modulePart").hasClass("d-none")) //module
+                                                        {
+                                                            tmp = '<div target="module">'+ $(this).text().trim() +"</div>";
+                                                        }else
+                                                        {
+                                                            tmp = $(this).html().toString().trim();
+                                                        }
+                                                   }
+                                               
+                                                if(tmp.substring(0,1) == "\n")
+                                                {
+                                                    tmp = tmp.substring(1);
+                                                }
+                                                colContent.ColData = tmp;
+                                                colContent.ColumnClassNames = $(this).attr("classNames").trim();
+                                                colContent.RowGuid = obj.RowGuid;
 
                                                 obj.ColsContent.push(colContent);
                                             });
                                             i++;
                                             header.CustomizedContent.push(obj);
                                         });
-                                       
                                         //end of header section
 
 
@@ -897,8 +921,9 @@
                                             bodyRowContent.RowNumber = parseInt(rn) ;
                                             bodyRowContent.RowGuid = $(this).find(".row.sectionRow").attr("guid");
                                             bodyRowContent.OrderInRow = i ;
+                                            bodyRowContent.EnumColsId = $(this).find(".row.sectionRow").attr("enumcolid");
                                             bodyRowContent.ColsContent = [] ;
-                                            bodyRowContent.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+                                            bodyRowContent.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses").trim();
                                             if( $(this).find(".row.sectionRow").css("background-color") != undefined &&
                                                 $(this).find(".row.sectionRow").css("background-color") != "" )
                                             {
@@ -909,8 +934,27 @@
                                                 var colContent ={} ; //an instance of ColContent
                                                 colContent.Section = "containerSection";
                                                 colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
-                                                colContent.ColData = $(this).html();
-                                                colContent.ColumnClassNames = $(this).attr("classNames");
+                                                debugger;
+                                               var tmp = "";
+                                                if(!$(this).closest(".row.parent").find(".editorPart").hasClass("d-none") ||
+                                                   !$(this).closest(".row.parent").find(".modulePart").hasClass("d-none") )
+                                                   {
+                                                        if(!$(this).closest(".row.parent").find(".modulePart").hasClass("d-none")) //module
+                                                        {
+                                                            tmp = '<div target="module">'+ $(this).text().trim() +"</div>";
+                                                        }else
+                                                        {
+                                                            tmp = $(this).html().toString().trim();
+                                                        }
+                                                   }
+                                               
+                                                if(tmp.substring(0,1) == "\n")
+                                                {
+                                                    tmp = tmp.substring(1);
+                                                }
+                                                colContent.ColData = tmp;
+                                                colContent.ColumnClassNames = $(this).attr("classNames").trim();
+                                                colContent.RowGuid = bodyRowContent.RowGuid;
                                                 bodyRowContent.ColsContent.push(colContent);
                                             });
                                            i++;
@@ -937,15 +981,35 @@
                                             footerRowContent.RowNumber = parseInt(rn) ;
                                             footerRowContent.RowGuid = $(this).find(".row.sectionRow").attr("guid");
                                             footerRowContent.OrderInRow = i ;
+                                            footerRowContent.EnumColsId = $(this).find(".row.sectionRow").attr("enumcolid");
                                             footerRowContent.ColsContent = [] ;
-                                            footerRowContent.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+                                            footerRowContent.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses").trim();
                                             $(this).find(".row.parent .finalColumnContent").each(function(){
+                                                debugger;
                                                 var colContent ={} ; //an instance of ColContent
                                                 colContent.Section = "footerSection"
                                                 colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
-                                                colContent.ColData = $(this).html();
-                                                colContent.ColumnClassNames = $(this).attr("classNames");
-
+                                                debugger;
+                                                var tmp = "";
+                                                if(!$(this).closest(".row.parent").find(".editorPart").hasClass("d-none") ||
+                                                   !$(this).closest(".row.parent").find(".modulePart").hasClass("d-none") )
+                                                   {
+                                                        if(!$(this).closest(".row.parent").find(".modulePart").hasClass("d-none")) //module
+                                                        {
+                                                            tmp = '<div target="module">'+ $(this).text().trim() +"</div>";
+                                                        }else
+                                                        {
+                                                            tmp = $(this).html().toString().trim();
+                                                        }
+                                                   }
+                                               
+                                                if(tmp.substring(0,1) == "\n")
+                                                {
+                                                    tmp = tmp.substring(1);
+                                                }
+                                                colContent.ColData = tmp;
+                                                colContent.ColumnClassNames = $(this).attr("classNames").trim();
+                                                colContent.RowGuid = footerRowContent.RowGuid;
                                                 footerRowContent.ColsContent.push(colContent);
                                             });
                                              i++;
@@ -969,11 +1033,6 @@
                                                var id= $(this).attr("id");
                                                $(`div#${id}`)
                                            })
-
-                                           model.HeaderHtmlSection = $("#PrimaryTemplateHeaderPart").html();
-                                           model.BodyHtmlSection = $("#PrimaryTemplateContainerPart").html();
-                                           model.FooterHtmlSection = $("#PrimaryTemplateFooterPart").html();
-
 
                                         $.ajax({
                                            type: "Post",
@@ -1005,24 +1064,28 @@
 
                                    $("#btnPreview").click(function(){
                                        debugger;
+                                       validateEditors();
                                        var header ="";
                                        var container ="";
                                        var footer ="";
-                                      
-                                        $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
-                                            var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
-                                            header += `<div class='row firstLevel ${extraClasses}'>`;
-                                            $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
-                                                var classNames = $(this).attr("classNames");
-                                                var columnContent = $(this).html();
-                                                header +=`<div class='${classNames}'>${columnContent}</div>` ;
-                                            });
-                                            header += "</div>";
-                                        });
 
                                           if($("#languageId").val() != "-1")
                                              {
+                                                 //header
+                                                 $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
+                                                     debugger;
+                                                    var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
+                                                    header += `<div class='row firstLevel ${extraClasses}'>`;
+                                                    $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
+                                                        var classNames = $(this).attr("classNames");
+                                                        var columnContent = $(this).html();
+                                                       
+                                                        header +=`<div class='${classNames}'>${columnContent}</div>` ;
+                                                    });
+                                                    header += "</div>";
+                                                });
 
+                                                //container
                                                 $(".dynamicContainerPart .firstLevel .contentColumns").each(function()
                                                 {
                                                     var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
@@ -1173,13 +1236,13 @@
                                                     }
                                                     $(`.colWidth[colwidthid='${element.rowGuid}']`).html(options);
                                                     $(`.colWidth[colwidthid='${element.rowGuid}']`).selectpicker();
-                                                    $(`.colWidth[colWidthId='${element.rowGuid}']`).val(enumColsId);
-                                                    $(`.colWidth[colWidthId='${element.rowGuid}']`).selectpicker("refresh");
+                                                    $(`.colWidth[colwidthid='${element.rowGuid}']`).val(enumColsId);
+                                                    $(`.colWidth[colwidthid='${element.rowGuid}']`).selectpicker("refresh");
 
 
-                                                    var selectedElement = $(`.colWidth[colWidthId='${element.rowGuid}']`);
+                                                    var selectedElement = $(`.colWidth[colwidthid='${element.rowGuid}']`);
 
-                                                    var id = $(selectedElement).attr("colWidthId");
+                                                    var id = $(selectedElement).attr("colwidthid");
                                                     var count = parseInt($(`.colCnt[id='${id}']`).val());
 
                                                     var rowNumber = $(selectedElement).closest(".row.firstLevel").attr("rn");
@@ -1233,7 +1296,7 @@
                                 var senderBodyCaller = $(".div_containerSection .addNewRow");
                                 currentDesignForLanguage.mainPageContainerPart.rowContents.forEach(function(element, index) {
                                     debugger;
-                                    addNewRow(senderBodyCaller, "containerSection");
+                                    addNewRow(senderBodyCaller, "containerSection", element.rowGuid);
                                     var colCount = element.colsContent.length;
                                     var enumColsId = element.enumColsId;
                                     //var currentGuid = $("#containerPartCurrentGuid").val();
@@ -1258,13 +1321,13 @@
                                                     }
                                                     $(`.colWidth[colwidthid='${element.rowGuid}']`).html(options);
                                                     $(`.colWidth[colwidthid='${element.rowGuid}']`).selectpicker();
-                                                    $(`.colWidth[colWidthId='${element.rowGuid}']`).val(enumColsId);
-                                                    $(`.colWidth[colWidthId='${element.rowGuid}']`).selectpicker("refresh");
+                                                    $(`.colWidth[colwidthid='${element.rowGuid}']`).val(enumColsId);
+                                                    $(`.colWidth[colwidthid='${element.rowGuid}']`).selectpicker("refresh");
 
 
-                                                    var selectedElement = $(`.colWidth[colWidthId='${element.rowGuid}']`);
+                                                    var selectedElement = $(`.colWidth[colwidthid='${element.rowGuid}']`);
 
-                                                    var id = $(selectedElement).attr("colWidthId");
+                                                    var id = $(selectedElement).attr("colwidthid");
                                                     var count = parseInt($(`.colCnt[id='${id}']`).val());
 
                                                     var rowNumber = $(selectedElement).closest(".row.firstLevel").attr("rn");
@@ -1319,7 +1382,7 @@
                                     var senderFooterCaller = $(".div_footerSection .addNewRow");
                                     currentDesignForLanguage.footerPart.customizedContent.forEach(function(element, index) {
                                     debugger;
-                                    addNewRow(senderFooterCaller, "footerSection");
+                                    addNewRow(senderFooterCaller, "footerSection", element.rowGuid);
                                     var colCount = element.colsContent.length;
                                     var enumColsId = element.enumColsId;
                                     //var currentGuid = $("#footerPartCurrentGuid").val();
@@ -1344,13 +1407,13 @@
                                                     }
                                                     $(`.colWidth[colwidthid='${element.rowGuid}']`).html(options);
                                                     $(`.colWidth[colwidthid='${element.rowGuid}']`).selectpicker();
-                                                    $(`.colWidth[colWidthId='${element.rowGuid}']`).val(enumColsId);
-                                                    $(`.colWidth[colWidthId='${element.rowGuid}']`).selectpicker("refresh");
+                                                    $(`.colWidth[colwidthid='${element.rowGuid}']`).val(enumColsId);
+                                                    $(`.colWidth[colwidthid='${element.rowGuid}']`).selectpicker("refresh");
 
 
-                                                    var selectedElement = $(`.colWidth[colWidthId='${element.rowGuid}']`);
+                                                    var selectedElement = $(`.colWidth[colwidthid='${element.rowGuid}']`);
 
-                                                    var id = $(selectedElement).attr("colWidthId");
+                                                    var id = $(selectedElement).attr("colwidthid");
                                                     var count = parseInt($(`.colCnt[id='${id}']`).val());
 
                                                     var rowNumber = $(selectedElement).closest(".row.firstLevel").attr("rn");
@@ -1669,7 +1732,7 @@
                
                 if(!loadInEditMode)
                 {
-                    var id = $(sender).attr("colWidthId");
+                    var id = $(sender).attr("colwidthid");
                     var count = parseInt($(`.colCnt[id='${id}']`).val());
 
                      var rowNumber = $(sender).closest(".row.firstLevel").attr("rn");
@@ -1757,20 +1820,30 @@
                         });
              }
 
-             function sinitize(sender)
+             function sanitize(sender, flag)
              {
-              debugger;
-                 editorId  =$(sender).attr("editorId");
-                     var htmlData = CKEDITOR.instances[editorId].getData();
-                     var dataToSend= JSON.stringify(htmlData);
+                      debugger;
+                      editorId ="";
+                      if(flag)
+                      {
+                          editorId = $(sender).attr("editorId");
+                      }else
+                      {
+                          editorId = sender;
+                      }
+                 
+                     var htmlData = CKEDITOR.instances[editorId].getData().trim();
+                     if(htmlData != "")
+                     {
+                          var dataToSend= JSON.stringify(htmlData);
                      $.ajax({
                           url:"@Url.Action("SanitizeCkEditorContent","Domain")",
                           type:'Post',
                           data: dataToSend,
+                          async: false,
                           contentType: "application/json; charset=utf-8",
                           statusCode:{
                               200:function(data){
-
                                  //show whether this html is valid or not
                                  if(!data.isvalid)
                                  {
@@ -1791,13 +1864,22 @@
                                      toast.show();
 
                                    var res = `<div target='editor'>${htmlData}</div>`;
-                                   $(sender).closest(".parent").find(".finalColumnContent").html(res);
-
-                                   $(sender).closest(".parent").find(".htmlColumnContentPreview").html(htmlData);
+                                   if(flag)
+                                   {
+                                       $(sender).closest(".parent").find(".finalColumnContent").html(res);
+                                       $(sender).closest(".parent").find(".htmlColumnContentPreview").html(htmlData);
+                                   }else
+                                   {
+                                       $(`#${sender}`).closest(".parent").find(".finalColumnContent").html(res);
+                                       $(`#${sender}`).closest(".parent").find(".htmlColumnContentPreview").html(htmlData);
+                                   }
+                                   
                                  }
                               }
                           }
                         });
+                     }
+                    
              }
 
              function selectDrpContentType(sender)

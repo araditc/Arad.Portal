@@ -18,7 +18,7 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
 
         public BGType BGType { get; set; }
 
-        public int BGTypeId { get; set; }
+        public int? BGTypeId { get; set; }
 
         public string BgImage { get; set; }
 

@@ -3,16 +3,17 @@
 @using Arad.Portal.DataLayer.Models.DesignStructure;
 @model Arad.Portal.DataLayer.Models.DesignStructure.ColContent
 @{
-    
+
     ModuleWithParametersValue module = new ModuleWithParametersValue();
     string contentType = "";
     string modulePartClass = "d-none";
     string editorPartClass = "d-none";
     bool isEdit = Model.ColData != null;
+    var htmlRaw = "";
     if (!string.IsNullOrWhiteSpace(Model.ColData))
     {
         var htmlDoc = new HtmlDocument();
-        var htmlRaw = "";
+
         htmlDoc.LoadHtml(Model.ColData);
         var divs = htmlDoc.DocumentNode.Elements("div");//divs in first level
 
@@ -33,9 +34,14 @@
             }
             else
             {
-                htmlRaw = Model.ColData.Replace("<div target=\"editor\">", "").Replace("</div>", "");
-                contentType = "editor";
-                editorPartClass = "";
+
+                var index = Model.ColData.LastIndexOf("</div>");
+                var data = Model.ColData.Substring(0, index);
+                htmlRaw = data.Replace("<div target=\"editor\">", "");
+               contentType = "editor";
+               editorPartClass = "";
+                
+               
             }
         }
     }
@@ -110,21 +116,12 @@
             @{
                 if (contentType != "" && contentType == "editor")
                 {
-                    @Html.Raw(Model.ColData.Replace("<div target=\"editor\">", "").Replace("</div>", ""));
+                    @Html.Raw(htmlRaw);
                 }
             }
         </textarea>
-      @*  <script>
-
-            editorId = "editor_"+"@Model.ColNumber"+"_"+"@ViewBag.RowNumber";
-           
-             
-            
-             CKEDITOR.replace(editorId, config);
-             CKEDITOR.dtd.$removeEmpty['i'] = false;
-             CKEDITOR.dtd.$removeEmpty['span'] = false;
-        </script>*@
-        <button class="btn btn-success bg-gradient btn-sm float-end btnHtmlSanitizer m-1" onclick="sinitize(this);" editorid='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")' cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section"
+     
+        <button class="btn btn-success bg-gradient btn-sm float-end btnHtmlSanitizer m-1" onclick="sanitize(this, true);" editorid='@($"editor_{Model.ColNumber}_{ViewBag.RowNumber}")' cn="@Model.ColNumber" rn="@ViewBag.RowNumber" sec="@Model.Section"
                 type="button">
             @Language.GetString("btn_Validation")
         </button>
@@ -133,7 +130,7 @@
         @{
             if (contentType != "")
             {
-                @Model.ColData;
+                @Model.ColData.Trim();
             }
         }
     </div>
@@ -143,7 +140,7 @@
             {
                 if(contentType == "editor")
                 {
-                    @Model.ColData.Replace("<div target=\"editor\">", "").Replace("</div>", "");
+                  @htmlRaw.Trim();
                 }else
                 {
                      switch (module.ModuleName)
@@ -222,106 +219,3 @@
 </div>
 
 
-<script>
-    $(document).ready(function()
-    {
-        //alert("@ViewBag.RowNumber");
-        //if('@contentType' != "")
-        //{
-        //    loadData();
-        //}
-
-    });
-
-
-    //function loadData()
-    //{
-    //    debugger;
-          
-    //        debugger;
-    //        if('@contentType' == "module")
-    //        {
-    //            $('.moduleList[cn="@Model.ColNumber"][rn="@ViewBag.RowNumber"][sec="@Model.Section"]').selectpicker("val","@module.ModuleId");
-                
-
-    //            debugger;
-    //            var sender = $('.btnAddModule[cn="@Model.ColNumber"][rn="@ViewBag.RowNumber"][sec="@Model.Section"]');
-    //            var parentDiv = $(sender).closest(".parent");
-    //            var colnumber =  $(sender).attr("cn");
-    //            var cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
-    //            var selectedModuleName = $(parentDiv).find(".moduleList").find("option:selected").text();
-    //            var selectedModuleId = $(parentDiv).find(".moduleList").find("option:selected").val();
-    //            var paramDiv = $(parentDiv).find(".paramsDiv");
-    //            debugger;
-    //            $.ajax({
-    //                url:"@Url.Action("GetSpecificModule","Domain")"+
-    //                  "?moduleName="+'@module.ModuleName'+"&id="+'@ViewBag.DomainId'+"&colCount="+cnt +"&rn=" +"@ViewBag.RowNumber"+"&cn="+"@Model.ColNumber"+"&sec="+"@Model.Section",
-    //                type:'Get',
-    //                statusCode:{
-    //                    200:function(data){
-    //                        $(paramDiv).html(data);
-    //                        $(".typeList").selectpicker();
-    //                        var sender;
-    //                        switch('@module.ModuleName')
-    //                        {
-    //                            case "ProductList":
-    //                             $("input[name='rdbProductTemplateList'][value='@module.ParametersValue.ProductTemplateDesign'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").attr("checked", "checked");
-
-    //                             $("[parid='typeList'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").selectpicker("val","@module.ParametersValue.ProductOrContentType");
-                                
-
-    //                             $("[parid='countToShow'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").val("@module.ParametersValue.Count");
-
-    //                             $("[parid='loadAnimation'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").selectpicker("val", "@module.ParametersValue.LoadAnimation");
-                                
-
-    //                             $("[parid='loadAnimationType'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").selectpicker("val", "@module.ParametersValue.LoadAnimationType")
-                                
-
-    //                            break;
-    //                            case "ContentList":
-
-    //                            $("input[name='rdbContentTemplateList'][value='@module.ParametersValue.ProductTemplateDesign'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").attr("checked", "checked");
-
-    //                             $("[parid='typeList'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").selectpicker("val", "@module.ParametersValue.ProductOrContentType");
-                                
-
-    //                             if(!$(".countSection[cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").hasClass("d-none"))
-    //                             {
-    //                                 $("[parid='countToShow'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").val("@module.ParametersValue.Count");
-    //                             }
-
-    //                             $("[parid='loadAnimation'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").selectpicker("val", "@module.ParametersValue.LoadAnimation");
-                                 
-
-    //                             $("[parid='loadAnimationType'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").selectpicker("val", "@module.ParametersValue.LoadAnimationType");
-                                 
-    //                            break;
-    //                            case "HorizantalStoreMenu":
-    //                            break;
-    //                            case "ImageTextSlider":
-    //                            $("[parid='sliderList'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").selectpicker("val", "@module.ParametersValue.SliderId");
-                                
-    //                            break;
-    //                            case "LoginAndProfile":
-    //                            if('@module.ParametersValue.IsShop' == "True")
-    //                            {
-    //                                $("[parid='isShop'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']").attr("checked", "checked");
-    //                            }
-    //                            break;
-    //                            case "MultiLingualFlags":
-    //                            break;
-    //                        }
-
-    //                        sender = $("[btnid='btnAddModuleWithParameters'][cn='@Model.ColNumber'][rn='@ViewBag.RowNumber'][sec='@Model.Section']");
-    //                        addModulesWithParams(sender);
-
-    //                    }
-    //                }
-    //            });
-    //        }
-    //}
-
-             
-
-</script>

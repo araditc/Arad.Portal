@@ -326,7 +326,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public IActionResult GetSpecificModule(string moduleName, string id, int colCount, string rn, string cn, string sec)
         {
             var module = _moduleRepository.FetchModuleByName(moduleName);
-            
+            //??? testing
+            id = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004";
+
+
             var viewName = $"_{moduleName}.cshtml";
             var imageTemplatePath = _webHostEnvironment.WebRootPath;
             var productOrContentTypes = _moduleRepository.GetAllProductOrContentTypes();
@@ -596,6 +599,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
             var moduleList = _moduleRepository.GetAllModules();
             ViewBag.ModuleList = moduleList;
+            var imageTemplatePath = _webHostEnvironment.WebRootPath;
 
             var viewName = "";
             switch(obj.Count)
@@ -620,7 +624,35 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     break;
               
             }
-            
+            ViewBag.ProductOrContentTypeList = _moduleRepository.GetAllProductOrContentTypes();
+            var productTemplateList = _moduleRepository.GetAllProductTemplateDesign();
+            ViewBag.ProductTemplateList = productTemplateList;
+            ViewBag.TransactionType = _moduleRepository.GetAllTransactionType();
+            ViewBag.LoadAnimationType = _moduleRepository.GetAllLoadAnimationType();
+            var contentTemplateDesigns = _moduleRepository.GetAllContentTemplateDesign();
+            foreach (var item in contentTemplateDesigns)
+            {
+                if (item.Text.ToLower() != "forth")
+                {
+                    item.ImageUrl = Path.Combine(imageTemplatePath, $"Template/Content/{item.Text}.jpg");
+                }
+                else
+                {
+                    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+                    {
+                        item.ImageUrl = Path.Combine(imageTemplatePath, "Template/Content/Forth-rtl.jpg");
+                    }
+                    else
+                    {
+                        item.ImageUrl = Path.Combine(imageTemplatePath, "Template/Content/Forth-ltr.jpg");
+                    }
+                }
+            }
+            ViewBag.ContentTemplateList = contentTemplateDesigns;
+            //??? testing
+            obj.DomainId = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004";
+            ViewBag.SliderList = _sliderRepository.ActiveSliderList(obj.DomainId);
+
             ViewBag.ColWidth = obj.ColumnWidth;
             ViewBag.RowNumber = obj.RowNumber;
             ViewBag.DomainId = obj.DomainId;
