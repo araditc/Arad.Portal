@@ -21,13 +21,30 @@
     var selcontentType = "";
     var selLoadAnimation ="";
     var selloadAnimationType = "";
+    var selectedType = "";
+    var selectedCategoryId = "";
+    var selectedContentIds = new List<string>();
     var cnt = "";
+    var categoryListSectionClass = "d-none";
+    var contentListSectionClass = "d-none";
     if(Model != null)
     {
-        selcontentType = @Model.ParametersValue.ProductOrContentType.ToString();
-        selLoadAnimation = @Model.ParametersValue.LoadAnimation.ToString();
-        selloadAnimationType = @Model.ParametersValue.LoadAnimationType.ToString();
+        selcontentType = ((int)@Model.ParametersValue.ProductOrContentType).ToString();
+        selLoadAnimation = ((int)@Model.ParametersValue.LoadAnimation).ToString();
+        selloadAnimationType = ((int)@Model.ParametersValue.LoadAnimationType).ToString();
         cnt = @Model.ParametersValue.Count.ToString();
+        selectedType = ((int)@Model.ParametersValue.SelectionType).ToString();
+        if(@Model.ParametersValue.SelectionType == SelectionType.LatestFromProductOrContentTypeSelectedCategory)
+        {
+            selectedCategoryId = @Model.ParametersValue.CatId;
+            categoryListSectionClass = "";
+        }
+        else
+        if(@Model.ParametersValue.SelectionType == SelectionType.LatestFromProductOrContentTypeInAllCategories)
+        {
+            selectedContentIds = @Model.ParametersValue.SelectedIds;
+            contentListSectionClass = "";
+        }
     }
 }
 <div class="row par mx-2" parid="templateSection">
@@ -67,6 +84,24 @@
            asp-items="@(new SelectList(ViewBag.LoadAnimationType, "Value", "Text"))"></select>
         <span class="field-validation-error" data-val-result="LoadAnimation"></span>
      </div>
+     <div class="col-12 text-center selectionType">
+          <label class="form-label" for="selectionType">@Language.GetString("design_SelectionType")</label>
+          <select parid="selectionType" class="form-control selectpicker mt-2 par selectionType" sel="@selectedType"
+             cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section"
+             asp-items="@(new SelectList(ViewBag.SelectionType, "Value", "Text"))"></select>
+     </div>
+    <div class="col-12 text-center categoryListSection @categoryListSectionClass">
+         <label class="form-label" for="categoryList">@Language.GetString("design_CategoryList")</label>
+          <select parid="categoryList" class="form-control selectpicker mt-2 par" sel="@selectedCategoryId"
+             cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section"
+             asp-items="@(new SelectList(ViewBag.CategoryList, "Value", "Text"))"></select>
+    </div>
+    <div class="col-12 text-center contentListSection @contentListSectionClass">
+         <label class="form-label" for="selectionType">@Language.GetString("design_ContentList")</label>
+          <select parid="contentList" class="form-control selectpicker mt-2 par" 
+             cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section"
+             asp-items="@(new MultiSelectList(ViewBag.ContentList, "Value", "Text", selectedContentIds))"></select>
+    </div>
     <div class="col-12">
         <button btnid="btnAddModuleWithParameters" onclick="addModulesWithParams(this);" cn="@ViewBag.ColNumber" rn="@ViewBag.RowNumber" sec="@ViewBag.Section"
         class="btn btn-success bg-gradient btn-sm float-end m-1" type="button">@Language.GetString("btn_Add")</button>

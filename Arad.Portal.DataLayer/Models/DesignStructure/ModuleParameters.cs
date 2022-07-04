@@ -1,6 +1,7 @@
 ﻿using Arad.Portal.DataLayer.Entities.General.DesignStructure;
+using Arad.Portal.GeneralLibrary.CustomAttributes;
 using MongoDB.Bson.Serialization.Attributes;
-
+using System.Collections.Generic;
 
 namespace Arad.Portal.DataLayer.Models.DesignStructure
 {
@@ -25,6 +26,15 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
         public AdvertisementTemplateDesign? AdvertisementTemplateDesign { get; set; }
 
         [BsonIgnoreIfNull]
+        public SelectionType? SelectionType { get; set; }
+
+        [BsonIgnoreIfNull]
+        public string CatId { get; set; }
+
+        [BsonIgnoreIfNull]
+        public List<string> SelectedIds { get; set; }
+
+        [BsonIgnoreIfNull]
         public string DomainId { get; set; }
 
         [BsonIgnoreIfNull]
@@ -45,9 +55,24 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
 
     }
 
+    public enum SelectionType
+    {
+        [CustomDescription("EnumDesc_SelectionTypeAllCategories")]
+        LatestFromProductOrContentTypeInAllCategories = 1,
+
+        [CustomDescription("EnumDesc_SelectionTypeSelectedCategory")]
+        LatestFromProductOrContentTypeSelectedCategory = 2,
+
+        [CustomDescription("EnumDesc_SelectionTypeSelectedIds")]
+        CustomizedSelection = 3
+    }
+
     public enum LoadAnimationType
     {
+        [CustomDescription("EnumDesc_LoadAnimationTypeInner")]
         InnerElements,
+
+        [CustomDescription("EnumDesc_LoadAnimationTypeOuter")]
         OuterElement
     }
 }

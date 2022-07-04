@@ -32,8 +32,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
                 _lanRepository = lanRepository;
                 _environment = env;
         }
-        public IViewComponentResult Invoke(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, 
-            int count, TransActionType loadAnimation, LoadAnimationType loadAnimationType)
+        //public IViewComponentResult Invoke(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, 
+        //    int count, TransActionType loadAnimation, LoadAnimationType loadAnimationType)
+        public IViewComponentResult Invoke(ModuleParameters moduleParameters)
         {
             var defaultCulture = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
             List<ContentGlance> lst = new List<ContentGlance>();
@@ -42,11 +43,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
             var langId = _lanRepository.FetchBySymbol(defLangSymbol);
             ViewBag.CurLangId = langId;
 
-            ViewBag.LoadAnimation = loadAnimation;
-            ViewBag.LoadAnimationType = loadAnimationType;
+            ViewBag.LoadAnimation = moduleParameters.LoadAnimation;
+            ViewBag.LoadAnimationType = moduleParameters.LoadAnimationType;
             
-            lst = _contentRepository.GetSpecialContent(count,contentType, _environment.IsDevelopment());
-            switch (selectionTemplate)
+            lst = _contentRepository.GetSpecialContent(moduleParameters.Count.Value, moduleParameters.ProductOrContentType.Value, moduleParameters.SelectionType.Value, moduleParameters.CatId, moduleParameters.SelectedIds, _environment.IsDevelopment());
+            switch (moduleParameters.ContentTemplateDesign)
             {
                 case ContentTemplateDesign.First:
                     foreach (var item in lst)

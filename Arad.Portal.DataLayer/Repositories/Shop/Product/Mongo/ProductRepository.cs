@@ -31,6 +31,7 @@ using Arad.Portal.DataLayer.Entities.General.DesignStructure;
 using MongoDB.Bson;
 using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.DataLayer.Repositories.General.Comment.Mongo;
+using Arad.Portal.DataLayer.Models.DesignStructure;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 {
@@ -1283,17 +1284,20 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             filterDef = builder.Eq(nameof(Entities.Shop.Product.Product.IsActive), true);
             if (!domainEntity.IsDefault)
             {
-                filterDef = builder.And(nameof(Entities.Shop.Product.Product.AssociatedDomainId), domainEntity.DomainId);
+                filterDef = builder.And(filterDef, builder.Eq(nameof(Entities.Shop.Product.Product.AssociatedDomainId), domainEntity.DomainId));
             }
             else
             {
-                var filter1 = builder.Eq(nameof(Entities.Shop.Product.Product.AssociatedDomainId), domainEntity.DomainId);
-                var filter2 = builder.Eq(nameof(Entities.Shop.Product.Product.IsPublishedOnMainDomain), true);
+                var filter1 = builder.And(filterDef, builder.Eq(nameof(Entities.Shop.Product.Product.AssociatedDomainId), domainEntity.DomainId));
+                var filter2 = builder.And(filter1, builder.Eq(nameof(Entities.Shop.Product.Product.IsPublishedOnMainDomain), true));
                 var orFilter = builder.Or(filter1, filter2);
                 filterDef = builder.And(orFilter);
             }
-            filterDef = builder.And(builder.Gt(nameof(Entities.Shop.Product.Product.Inventory), 0));
-            filterDef &= builder.And(builder.Ne(nameof(Entities.Shop.Product.Product.ScoredCount), 0));
+            filterDef = builder.And(filterDef, builder.Gt(nameof(Entities.Shop.Product.Product.Inventory), 0));
+
+            //???
+            //filterDef &= builder.And(builder.Ne(nameof(Entities.Shop.Product.Product.ScoredCount), 0));
+
             List<ProductOutputDTO> lst = new List<ProductOutputDTO>();
             switch (type)
             {

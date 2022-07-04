@@ -21,6 +21,7 @@ using Arad.Portal.DataLayer.Entities.General.User;
 using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Entities.General.DesignStructure;
 using Microsoft.AspNetCore.Hosting;
+using Arad.Portal.DataLayer.Models.DesignStructure;
 
 namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
 {
@@ -256,6 +257,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             return result;
         }
 
+        /// <summary>
+        /// if categoryId is empty or null it returns all categories
+        /// </summary>
+        /// <param name="domainId"></param>
+        /// <param name="currentUserId"></param>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
         public List<SelectListModel> GetContentsList(string domainId, string currentUserId, string categoryId)
         {
             var result = new List<SelectListModel>();
@@ -264,26 +272,29 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             {
                 domainEntity = _domainContext.Collection.Find(_ => _.IsDefault).FirstOrDefault();
             }
-            if (currentUserId == Guid.Empty.ToString())//systemAccount
+            if(currentUserId != Guid.Empty.ToString())
             {
-                result = _contentContext.Collection.Find(_ => _.ContentCategoryId == categoryId && _.IsActive &&_.LanguageId == domainEntity.DefaultLanguageId)
+                if(!string.IsNullOrWhiteSpace(categoryId))
+                {
+                    result = _contentContext.Collection.Find(_ => _.ContentCategoryId == categoryId && _.IsActive && _.LanguageId == domainEntity.DefaultLanguageId)
                   .Project(_ => new SelectListModel()
                   {
                       Text = _.Title,
                       Value = _.ContentId
                   }).ToList();
-            }
-            else
-            {
-                result = _contentContext.Collection
-                    .Find(_ => _.ContentCategoryId == categoryId && _.AssociatedDomainId == domainId 
-                                 && _.IsActive && _.LanguageId == domainEntity.DefaultLanguageId)
+                }
+                else
+                {
+                    result = _contentContext.Collection.Find(_ => _.IsActive && _.LanguageId == domainEntity.DefaultLanguageId)
                   .Project(_ => new SelectListModel()
                   {
                       Text = _.Title,
                       Value = _.ContentId
                   }).ToList();
+
+                }
             }
+
             return result;
         }
 
@@ -471,7 +482,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             return result;
         }
 
-        public List<ContentGlance> GetSpecialContent(int count, ProductOrContentType contentType, bool isDevelopment = false)
+        public List<ContentGlance> GetSpecialContent(int count, ProductOrContentType contentType, SelectionType selectionType, 
+            string categoryId, List<string> selectedIds = null, bool isDevelopment = false)
         {
             Entities.General.Domain.Domain domainEntity = new Entities.General.Domain.Domain();
             List<ContentGlance> lst = new List<ContentGlance>();
@@ -483,8 +495,22 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             
             FilterDefinitionBuilder<Entities.General.Content.Content> builder = new();
             FilterDefinition<Entities.General.Content.Content> filterDef = builder.Empty;
-            filterDef = builder.Gte(nameof(Entities.General.Content.Content.EndShowDate), DateTime.Now);
-            filterDef = builder.And(filterDef, builder.Lte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.Now));
+            
+
+            if(selectionType == SelectionType.CustomizedSelection && selectedIds != null && selectedIds.Count > 0)
+            {
+                filterDef =  builder.In(nameof(Entities.General.Content.Content.ContentId), selectedIds);
+            }
+            else
+            {
+                filterDef = builder.Gte(nameof(Entities.General.Content.Content.EndShowDate), DateTime.Now);
+                filterDef = builder.And(filterDef, builder.Lte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.Now));
+
+                if(selectionType == SelectionType.LatestFromProductOrContentTypeSelectedCategory)
+                {
+                    filterDef = builder.And(filterDef, builder.Eq(nameof(Entities.General.Content.Content.ContentCategoryId), categoryId));
+                }
+            }
             if (domainEntity != null)
             {
                 //???
@@ -685,7 +711,6 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             }
             return lst;
         }
-
 
         public PagedItems<ContentGlance> GetAllBlogList(string queryString, string domainId, string languageId)
         {

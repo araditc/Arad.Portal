@@ -525,7 +525,7 @@
 
                          function resetColor(sender)
                          {
-                             debugger;
+                           
                              var sec = $(sender).attr("sec");
                              if(sec == "header")
                              {
@@ -552,7 +552,7 @@
 
                          function addCustomClass(type)
                          {
-                             debugger;
+                          
                              var cls = "";
                              //var custClass = $(`.row.finalColumnContent[guid='${selectedRow}']`).attr("classNames");
                              //var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}']`).attr("classNames");
@@ -630,7 +630,7 @@
                             }
                     
                    $(document).ready(function(){
-                       debugger;
+                     
                         $(window).resize(changeScreen);
 
                         $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_FirstChooseLanguage")');
@@ -647,10 +647,10 @@
                         }
 
                         $("#languageId").change(function(){
-                            debugger;
+                          
                             if($("#languageId").val() != "-1")
                             {
-                                debugger;
+                              
                                 if (ContentListForEdition != undefined)
                                 {
                                    loadDataForEdition();
@@ -663,7 +663,52 @@
                         $("#rowBgcolor").colorpicker();
 
                         changeScreen();
+                        $(document).on("change", "select.selectionType", function(){
+                            debugger;
+                            var selectedVal = $(this).val();
+                            var parent = $(this).closest(".row");
+                            var categorylist = $(parent).find(".categoryListSection");
+                            var contentList = $(parent).find(".contentListSection");
+                            switch(selectedVal)
+                            {
+                                case "1"://LatestFromProductOrContentTypeInAllCategories
+                                   $(categorylist).addClass("d-none");
+                                   $(contentList).addClass("d-none");
+                                break
+                                case "2"://LatestFromProductOrContentTypeSelectedCategory
+                                   $(categorylist).removeClass("d-none");
+                                   $(contentList).addClass("d-none");
+                                break;
+                                case "3"://CustomizedSelection
+                                   $(categorylist).addClass("d-none");
+                                   $(contentList).removeClass("d-none");
+                                break;
+                            }
+                        });
 
+
+
+                        $(document).on("change", "input[name='rdbContentTemplateList']", function () {
+                            if($(this).is(":checked"))
+                            {
+                                var parent = $(this).closest(".row.par").parent();
+                                var val = $(this).val();
+                                switch(val)
+                                {
+                                    case "First":
+                                    case "Second":
+                                    case "Third":
+                                    $(parent).find(".countSection").addClass("d-none");
+                                    break;
+                                    case "Forth":
+                                    case "Fifth":
+                                    case "SliderWithSubtitle":
+                                     $(parent).find(".countSection").removeClass("d-none");
+                                    break;
+                                }
+                            }
+                        });
+                       
 
                         $(".menu-area").mouseover(function () {
                                 var windowSize = $(window).width();
@@ -714,7 +759,7 @@
 
 
                         $(".btnHFStyle").click(function(){
-                            debugger;
+                         
                             selectedSection = $(this).attr("sec");
                             var offcanvas = $("#styleHeaderFooterDiv");
                             var off = new bootstrap.Offcanvas(offcanvas);
@@ -724,7 +769,7 @@
 
 
                         $(document).on("click", ".columnStyles", function () {
-                                debugger;
+                              
                                 selectedRow = $(this).attr("guid");
                                 colSelectedNumber = $(this).attr("cn");
                                 var ofCanvas = $("#colStylesDiv");
@@ -733,7 +778,7 @@
 
                           });
                             $(document).on("click", ".btnRowStyle", function () {
-                                debugger;
+                               
                                 selectedRow = $(this).attr("guid");
                                 var siblingContentColumns = $(this).parent().next(); //class ='contentColumns'
                                 var rowExtraClasses =  $(this).find(".row.sectionRow").attr("rowCustomClasses");
@@ -743,34 +788,41 @@
                             });
 
                             $(".rowbd").change(function() {
-                                debugger;
+                             
                                 var cls = $(this).val();
                                  var custClass = $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses");
                                 if($(this).is(':checked'))
                                 {
-                                    custClass += ` ${cls}`;
-
+                                   if(!custClass.includes(cls))  //prevent adding double classes
+                                   {
+                                       custClass += ` ${cls}`;
+                                   }
                                 }else
                                 {
-                                    custClass = custClass.replace(cls, "");
+                                    custClass = custClass.replace(cls, "").trimEnd();
                                 }
                                 $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses", custClass);
                             });
 
                             $(".colBd").change(function(){
-                                debugger;
+                              
                                  var cls = $(this).val();
                                  var custClass = $(`.row.finalColumnContent[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames");
                                  var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames");
                                  if($(this).is(':checked'))
                                 {
-                                    custClass += ` ${cls}`;
-                                    pClass += ` ${cls}`;
-
+                                    if(!custClass.includes(cls)) //prevent adding double classes
+                                    {
+                                        custClass += ` ${cls}`;
+                                    }
+                                    if(!pClass.includes(cls)) //prevent adding double classes
+                                    {
+                                        pClass += ` ${cls}`;
+                                    }
                                 }else
                                 {
-                                    custClass = custClass.replace(cls, "");
-                                    pClass = pClass.replace(cls, "");
+                                    custClass = custClass.replace(cls, "").trimEnd();
+                                    pClass = pClass.replace(cls, "").trimEnd();
                                 }
 
                                 $(`.row.finalColumnContent[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames", custClass);
@@ -848,7 +900,7 @@
                                        });
 
                                    $("#btnSave").click(function(){
-                                       debugger;
+                                     
                                        validateEditors();
                                        //start of header section
                                         var header = {}; //an instance of headerPart
@@ -861,7 +913,7 @@
                                         }
 
                                         var i = 1;
-                                        var rn = 1000;
+                                        var rn = "";
                                         $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
                                             debugger;
                                             rn = $(this).find(".row.sectionRow").attr("rn");
@@ -877,7 +929,7 @@
                                                 var colContent ={} ; //an instance of ColContent
                                                 colContent.Section = "headerSection";
                                                 colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
-                                                debugger;
+                                             
                                                 var tmp = "";
                                                 if(!$(this).closest(".row.parent").find(".editorPart").hasClass("d-none") ||
                                                    !$(this).closest(".row.parent").find(".modulePart").hasClass("d-none") )
@@ -909,7 +961,6 @@
 
                                         //start of container section
                                         i= 1;
-                                        rn ="";
                                         var bodyContainer = {}; //an instance of MainPageContentPart
                                         bodyContainer.RowContents = [] ;
                                          $(".dynamicContainerPart .firstLevel .contentColumns").each(function()
@@ -964,7 +1015,6 @@
 
                                          //start of footerSection
                                           i= 1;
-                                          rn ="";
                                           var footerPart ={} ; //an instance of footerPart
 
                                            if(footerBgColor != "")
@@ -989,7 +1039,7 @@
                                                 var colContent ={} ; //an instance of ColContent
                                                 colContent.Section = "footerSection"
                                                 colContent.ColNumber = $(this).closest(".row.parent").attr("cn");
-                                                debugger;
+                                              
                                                 var tmp = "";
                                                 if(!$(this).closest(".row.parent").find(".editorPart").hasClass("d-none") ||
                                                    !$(this).closest(".row.parent").find(".modulePart").hasClass("d-none") )
@@ -1273,8 +1323,8 @@
                                                                 $(divId).find(`.firstLevel.active.${rowNumber} .contentColumns`).html(data);
                                                                 var buttonDivClass = `.row.div_${tag}`;
                                                                 $(buttonDivClass).find(".addNewRow").removeAttr("disabled");
-
-                                                                var editorelements = $(divId).find(".txtEditorCK");
+                                                                debugger;
+                                                                var editorelements = $(divId).find(`.firstLevel.active.${rowNumber} .contentColumns .txtEditorCK`);
                                                                 editorelements.each(function(elem){
 
                                                                     var editorId = $(this).attr("id");
@@ -1359,7 +1409,7 @@
                                                                 var buttonDivClass = `.row.div_${tag}`;
                                                                 $(buttonDivClass).find(".addNewRow").removeAttr("disabled");
                                                                
-                                                                var editorelements = $(divId).find(".txtEditorCK");
+                                                                var editorelements = $(divId).find(`.firstLevel.active.${rowNumber} .contentColumns .txtEditorCK`);
                                                                 editorelements.each(function(elem){
 
                                                                     var editorId = $(this).attr("id");
@@ -1447,7 +1497,7 @@
                                                                 var buttonDivClass = `.row.div_${tag}`;
                                                                 $(buttonDivClass).find(".addNewRow").removeAttr("disabled");
                                                                 
-                                                                var editorelements = $(divId).find(".txtEditorCK");
+                                                                var editorelements = $(divId).find(`.firstLevel.active.${rowNumber} .contentColumns .txtEditorCK`);
                                                                 editorelements.each(function(elem){
 
                                                                     var editorId = $(this).attr("id");
@@ -1665,17 +1715,17 @@
                     case "headerSection":
                     currentRowNumber = headerRowNumber;
                     headerRowNumber += 1;
-                    $("#headerPartCurrentGuid").val(guid);
+                    //$("#headerPartCurrentGuid").val(guid);
                     break;
                     case "containerSection":
                     currentRowNumber = contentRowNumber;
                     contentRowNumber += 1;
-                    $("#containerPartCurrentGuid").val(guid);
+                    //$("#containerPartCurrentGuid").val(guid);
                     break;
                     case "footerSection":
                     currentRowNumber = footerRowNumber;
                     footerRowNumber += 1;
-                    $("#footerPartCurrentGuid").val(guid);
+                    //$("#footerPartCurrentGuid").val(guid);
                     break;
                 }
                 
@@ -1772,7 +1822,7 @@
                                             lan = "en";
                                         }
                                         var config = ckConfig(lan);
-                                        var editorelements = $(divId).find(".txtEditorCK");
+                                        var editorelements = $(divId).find(`.firstLevel.active.${rowNumber} .contentColumns .txtEditorCK`);
                                         editorelements.each(function(elem){
 
                                             var editorId = $(this).attr("id");
@@ -1790,7 +1840,7 @@
             /////////////////////////InnerSection.cshtml codes ///////////
             function addModule(sender)
              {
-               
+               debugger;
                  var rowNumber = $(sender).attr("rn");
                  var colNumber = $(sender).attr("cn");
                  var sec = $(sender).attr("sec");
@@ -1804,7 +1854,7 @@
                      var paramDiv = $(parentDiv).find(".paramsDiv");
                      $.ajax({
                           url:"@Url.Action("GetSpecificModule","Domain")"+"?moduleName="+selectedModuleName+"&id="+
-                                '@ViewBag.DomainId'+"&colCount="+cnt+"&rn" + rowNumber +"&cn="+ colNumber +"&sec="+ sec ,
+                                '@ViewBag.DomainId'+"&colCount="+cnt+"&rn=" + rowNumber +"&cn="+ colNumber +"&sec="+ sec + "&langId=" + $("#languageId").val(),
                           type:'Get',
                           statusCode:
                           {
@@ -1815,6 +1865,9 @@
                                    $(paramDiv).find("[parid='loadAnimation']").selectpicker();
                                    $(paramDiv).find("[parid='loadAnimationType']").selectpicker();
                                    $(paramDiv).find("[parid='sliderList']").selectpicker();
+                                   $(paramDiv).find("[parid='selectionType']").selectpicker();
+                                   $(paramDiv).find("[parid='categoryList']").selectpicker();
+                                   $(paramDiv).find("[parid='contentList']").selectpicker();
                               }
                           }
                         });
@@ -1822,7 +1875,6 @@
 
              function sanitize(sender, flag)
              {
-                      debugger;
                       editorId ="";
                       if(flag)
                       {
@@ -1884,7 +1936,7 @@
 
              function selectDrpContentType(sender)
              {
-               debugger;
+              
                  var colnumber = $(sender).attr("cn");
                  domainId = $(sender).closest(`div[colnum='${colnumber}']`).attr("did");
                  cnt = $(sender).closest(`div[colnum='${colnumber}']`).attr("cnt");
@@ -1907,20 +1959,26 @@
 
             function addModulesWithParams(sender)
             {
-               debugger;
-                var obj = {};//an instance of ModuleWithParametersValue
-                obj.ParametersValue ={};
-                 var targetParamsDiv = $(sender).closest(".paramsDiv");
-                 var count = 0;
-                 var loadAnimation;
-                 var selectedTemplate = "";
-                 var isShop = false;
-                 var loadAnimationType;
-                  var sliderId ="" ;
+             
+                  var dataToSend ;
+                  var ajaxType ="GET";
+                  var moduleParameter = {}; //an Instance of ModuleParameter
+                  var obj = {};//an instance of ModuleWithParametersValue
+                  obj.ParametersValue = {};
+                  var targetParamsDiv = $(sender).closest(".paramsDiv");
+                  var count = 0;
+                  var loadAnimation;
+                  var selectedTemplate = "";
+                  var isShop = false;
+                  var loadAnimationType;
+                  var sliderId = "" ;
                   var domainId = "@ViewBag.DomainId";
                   var languageId = $("#languageId").val();
-                 var parent =  $(sender).closest(".parent");
-                 var targetDivId ="";
+                  var parent =  $(sender).closest(".parent");
+                  var targetDivId = "";
+                  var selectionType = "";
+                  var catId ="";
+                  var selectedIds = [];
 
                      obj.ModuleId = $(sender).closest(".modulePart").find(".moduleList option:selected").val()
                      obj.ModuleName = $(sender).closest(".modulePart").find(".moduleList option:selected").text();
@@ -1950,6 +2008,8 @@
                              }
                              break;
                              case "ContentList":
+                             debugger;
+                             ajaxType = "POST";
                              switch(parid)
                              {
                                  case "templateSection":
@@ -1971,7 +2031,8 @@
                                  selectedType = $(this).val();
                                  break;
                                  case "countToShow":
-                                 if(!$(".countSection").hasClass("d-none"))
+                                 var parent = $(this).parent();
+                                 if(!$(parent).hasClass("d-none"))
                                      count = parseInt($(this).val());
                                  break;
                                  case "loadAnimation":
@@ -1980,6 +2041,29 @@
                                     case "loadAnimationType":
                                     loadAnimationType = $(this).val();
                                     break;
+                                 case "selectionType":
+                                    selectionType  = $(this).val();
+                                 break;
+                                  case "categoryList":
+                                  debugger;
+                                  var parent = $(this).closest(".categoryListSection");
+                                  if(!$(parent).hasClass("d-none"))
+                                  {
+                                      catId  = $(this).val();
+                                  }
+                                 break;
+                                  case "contentList":
+                                  debugger;
+                                  var parent = $(this).closest(".contentListSection");
+                                  if(!$(parent).hasClass("d-none"))
+                                  {
+                                       //multiselect
+                                        for (var i = 0; i < $(this).val().length; i++) {
+                                            debugger;
+                                            selectedIds.push($(this).val()[i]);
+                                        }
+                                  }
+                                 break;
                              }
                              break;
                              case "ImageTextSlider":
@@ -2015,13 +2099,22 @@
                          obj.ParametersValue.loadAnimationType = loadAnimationType;
                      break;
                      case "contentlist":
-                         url = "@Url.Action("GetContentModuleViewComponent", "Domain")"+"?contentType="+ selectedType 
-                            +"&selectionTemplate="+selectedTemplate+"&count="+ count+ "&loadAnimation="+ loadAnimation + "&loadAnimationType=" + loadAnimationType ;
+                         
+                          url = "@Url.Action("GetContentModuleViewComponent", "Domain")"+"?contentType="+ selectedType 
+                            +"&selectionTemplate="+selectedTemplate+"&count="+ count+ "&loadAnimation="+ loadAnimation +
+                            "&loadAnimationType=" + loadAnimationType+"&selectedType=" + selectedType +"&catId="+ catId  ;
+                         dataToSend = JSON.stringify(selectedIds);
+
+                         //url = "@Url.Action("GetContentModuleViewComponent", "Domain")";
+                         obj.ParametersValue.ProductOrContentType = selectedType;
                          obj.ParametersValue.ContentTemplateDesign = selectedTemplate;
                          obj.ParametersValue.Count = count;
-                         obj.ParametersValue.ProductOrContentType = selectedType;
                          obj.ParametersValue.LoadAnimation = loadAnimation;
-                         obj.ParametersValue.loadAnimationType = loadAnimationType;
+                         obj.ParametersValue.LoadAnimationType = loadAnimationType;
+                         obj.ParametersValue.SelectionType = selectionType ;
+                         obj.ParametersValue.CatId = catId ;
+                         obj.ParametersValue.SelectedIds = selectedIds ;
+                         
                      break;
                      case "imagetextslider":
                        url = "@Url.Action("GetSliderViewComponent", "Domain")"+ "?sliderId="+ sliderId;
@@ -2042,14 +2135,18 @@
                      break;
 
                  }
-
+                 debugger;
                  var data = JSON.stringify(obj);
                  data =`<div target='module'>${data}</div>`;
                  var finalData = $(parent).find(".finalColumnContent").append(data);
-
-                 $.ajax({
-                     type: "Get",
+                
+                 if(ajaxType == "GET")
+                 {
+                      $.ajax({
+                     type: ajaxType,
                      dataType: "html",
+                     //contentType : "'application/json",
+                     //data : dataToSend,
                      url: url,
                      success: function (result) {
                          debugger;
@@ -2087,13 +2184,31 @@
                              }
                              else if(obj.ModuleName.toLowerCase() =="imagetextslider")
                              {
-                                 debugger;
                                  AfterCarouselLoad();
                              }
 
                          }
                      },
-                 });
+                       });
+                 }else //contentTemplateModule
+                 {
+                      $.ajax({
+                     type: ajaxType,
+                     dataType: "html",
+                     contentType : "application/json",
+                     data : dataToSend,
+                     url: url,
+                     success: function (result) {
+                         debugger;
+                         if (result != "") {
+                             $(parent).find(".moduleDataPreview").html(result).removeClass("d-none");
+                             $(parent).find(".htmlColumnContentPreview").html(result);
+                         }
+                         },
+                    });
+
+                 }
+                
             }
 
             function ckConfig(lan)
@@ -2132,7 +2247,6 @@
                  'WeblogmaYekan;' +
                  'Vazir;' +
                  'Shabnam';
-                 debugger;
                   config.baseHref ='@ViewBag.Url';
                   config.extraPlugins = '';
 

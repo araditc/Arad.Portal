@@ -213,6 +213,15 @@
 	<string key="design_loadAnimationType">
 		<value>مقصد افکت</value>
 	</string>
+	<string key="design_SelectionType">
+		<value>نوع انتخاب آیتم ها</value>
+	</string>
+	<string key="design_CategoryList">
+		<value>گروهها</value>
+	</string>
+	<string key="design_ContentList">
+		<value>محتواها</value>
+	</string>
 	<string key="design_ContentText">
 		<value>متن محتوا</value>
 	</string>
@@ -739,6 +748,21 @@
 	</string>
 	<string key="EnumDesc_Active">
 		<value>فعال بودن</value>
+	</string>
+	<string key="EnumDesc_SelectionTypeAllCategories">
+		<value>انتخاب آخرین ایتم ها بر اساس نوع محتوا از تمام گروه ها</value>
+	</string>
+	<string key="EnumDesc_SelectionTypeSelectedCategory">
+		<value>انتخاب آخرین ایتم ها بر اساس نوع محتوا از گروه انتخابی</value>
+	</string>
+	<string key="EnumDesc_SelectionTypeSelectedIds">
+		<value>انتخاب از لیست محتواها</value>
+	</string>
+	<string key="EnumDesc_LoadAnimationTypeInner">
+		<value>انیمیشن بر المان های داخلی</value>
+	</string>
+	<string key="EnumDesc_LoadAnimationTypeOuter">
+		<value>انیمیشن بر المان های خارجی</value>
 	</string>
 	<string key="EnumDesc_Dependency">
 		<value>وابستگی</value>

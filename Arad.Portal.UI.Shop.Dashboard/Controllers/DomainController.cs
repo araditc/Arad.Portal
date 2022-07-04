@@ -34,6 +34,8 @@ using Arad.Portal.DataLayer.Contracts.Shop.Product;
 using Microsoft.Extensions.Configuration;
 using Arad.Portal.DataLayer.Models.DesignStructure;
 using Arad.Portal.DataLayer.Contracts.General.SliderModule;
+using Arad.Portal.DataLayer.Contracts.General.Content;
+using Arad.Portal.DataLayer.Contracts.General.ContentCategory;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -42,6 +44,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
     {
         private readonly IDomainRepository _domainRepository;
         private readonly IModuleRepository _moduleRepository;
+        private readonly IContentRepository _contentRepository;
+        private readonly IContentCategoryRepository _categoryRepository;
         private readonly IProviderRepository _providerRepository;
         private readonly IProductRepository _productRepository;
         private readonly ILanguageRepository _lanRepository;
@@ -60,6 +64,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ILanguageRepository lanRepository,
             ISliderRepository sliderRepository,
             IConfiguration configuration,
+            IContentRepository contentRepository,
+            IContentCategoryRepository categoryRepository,
             ICurrencyRepository currencyRepository)
         {
             _domainRepository = domainRepository;
@@ -72,6 +78,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _productRepository = productRepository;
             _configuration = configuration;
             _sliderRepository = sliderRepository;
+            _contentRepository = contentRepository;
+            _categoryRepository = categoryRepository;
         }
 
         public async Task<string> RenderViewComponent(string viewComponent, object args)
@@ -303,11 +311,25 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return ViewComponent("MultiLingual");
         }
 
-        [HttpGet]
+       
+        [HttpPost]
         public IActionResult GetContentModuleViewComponent(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, int? count,
-            DataLayer.Entities.General.SliderModule.TransActionType loadAnimation, LoadAnimationType loadAnimationType)
+            DataLayer.Entities.General.SliderModule.TransActionType loadAnimation, LoadAnimationType loadAnimationType, SelectionType selectedType, string catId,
+            [FromBody]List<string> selectedIds)
         {
-            return ViewComponent("ContentTemplates", new { contentType, selectionTemplate, count, loadAnimation, loadAnimationType });
+
+            var moduleParameters = new ModuleParameters()
+            {
+                ProductOrContentType = contentType,
+                ContentTemplateDesign = selectionTemplate,
+                Count = count,
+                LoadAnimation = loadAnimation,
+                LoadAnimationType = loadAnimationType,
+                SelectionType = selectedType,
+                CatId = catId,
+                SelectedIds = selectedIds
+            };
+            return ViewComponent("ContentTemplates", moduleParameters);
         }
 
         [HttpGet]
@@ -316,25 +338,27 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return ViewComponent("Slider", new { sliderId });
         }
 
-        public IActionResult GetStoreMenuViewComponent(string domainId, string languageId)
+        public IActionResult GetStoreMenuViewComponent()
         {
-            return ViewComponent("StoreMenuModule", new { domainId, languageId });
+            return ViewComponent("StoreMenuModule");
         }
 
         #endregion GetModulesViewComponents
 
-        public IActionResult GetSpecificModule(string moduleName, string id, int colCount, string rn, string cn, string sec)
+        public async Task<IActionResult> GetSpecificModule(string moduleName, string id, int colCount, string rn, string cn, string sec, string langId)
         {
             var module = _moduleRepository.FetchModuleByName(moduleName);
             //??? testing
             id = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004";
 
-
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            
             var viewName = $"_{moduleName}.cshtml";
             var imageTemplatePath = _webHostEnvironment.WebRootPath;
             var productOrContentTypes = _moduleRepository.GetAllProductOrContentTypes();
             ViewBag.ProductOrContentTypeList = productOrContentTypes;
             ViewBag.DomainId = id;
+           
             switch (moduleName.ToLower())
             {
                 case "productlist":
@@ -370,12 +394,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     ViewBag.ContentTemplateList = contentTemplateDesigns;
                     ViewBag.TransactionType = _moduleRepository.GetAllTransactionType();
                     ViewBag.LoadAnimationType = _moduleRepository.GetAllLoadAnimationType();
+                    ViewBag.SelectionType = _moduleRepository.GetAllSelectionType();
+                    ViewBag.CategoryList = await _categoryRepository.AllActiveContentCategory(langId, currentUserId);
+                    ViewBag.ContentList = _contentRepository.GetContentsList(id, currentUserId, "");
                     break;
                 case "imagetextslider":
 
                     var sliderList = _sliderRepository.ActiveSliderList(id);
                     ViewBag.SliderList = sliderList;
-
                     break;
                 case "horizantalstoremenu":
                 break;
@@ -397,21 +423,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpPost]
         public IActionResult SanitizeCkEditorContent([FromBody]string html)
         {
-            var res = Helpers.HtmlSanitizer.SanitizeHtml(html);
+            var res = HtmlSanitizer.SanitizeHtml(html);
             return Json(new { isvalid = res });
         }
-
-        //[HttpGet]
-        //public IActionResult ContentPageDesign(string domainId)
-        //{
-        //    return View();
-        //}
-
-        //[HttpGet]
-        //public IActionResult ProductPageDesign(string domainId)
-        //{
-        //    return View();
-        //}
 
         [HttpPost]
         public IActionResult GetProviderParams([FromQuery] int pspVal)
@@ -500,13 +514,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = new List<AjaxValidationErrorModel>();
-
                 foreach (var modelStateKey in ModelState.Keys)
                 {
                     var modelStateVal = ModelState[modelStateKey];
                     errors.AddRange(modelStateVal.Errors.Select(error => new AjaxValidationErrorModel { Key = modelStateKey, ErrorMessage = error.ErrorMessage }));
                 }
-
                 result = Json(new { Status = "ModelError", ModelStateErrors = errors });
             }
             else
@@ -594,13 +606,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetRowWithSelectedColumns([FromBody]RowSelectedColumnsModel obj)
+        public async Task<IActionResult> GetRowWithSelectedColumns([FromBody]RowSelectedColumnsModel obj)
         {
 
             var moduleList = _moduleRepository.GetAllModules();
             ViewBag.ModuleList = moduleList;
             var imageTemplatePath = _webHostEnvironment.WebRootPath;
-
+            var domainEntity = _domainRepository.FetchDomain(obj.DomainId).ReturnValue;
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var viewName = "";
             switch(obj.Count)
             {
@@ -649,10 +662,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 }
             }
             ViewBag.ContentTemplateList = contentTemplateDesigns;
+            ViewBag.SelectionType = _moduleRepository.GetAllSelectionType();
+            ViewBag.CategoryList = await _categoryRepository.AllActiveContentCategory(domainEntity.DefaultLanguageId, currentUserId);
+            ViewBag.ContentList = _contentRepository.GetContentsList(obj.DomainId, currentUserId, "");
             //??? testing
             obj.DomainId = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004";
             ViewBag.SliderList = _sliderRepository.ActiveSliderList(obj.DomainId);
-
             ViewBag.ColWidth = obj.ColumnWidth;
             ViewBag.RowNumber = obj.RowNumber;
             ViewBag.DomainId = obj.DomainId;

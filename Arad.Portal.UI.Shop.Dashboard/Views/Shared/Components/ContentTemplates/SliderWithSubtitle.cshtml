@@ -14,29 +14,32 @@
             <div class="carousel-item @(i == 0 ? "active" : "")">
                 <div class="row">
                     <div class="col">
-                        <picture>
-                            <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={360}")" />
-                            <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={460}")">
-                            <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={650}")">
-                            <img class="d-block w-100"
-                             src="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={460}")"
-                             alt="@(Model[i].Images.Any(_=>_.ImageRatio == ImageRatio.Square) ? Model[i].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title : "")">
-                        </picture>
-                    </div>
-                    <div class="col">
-                        <div class="card m-0 p-2 h-100" style="background-color: #e9f8f8;">
-                            <div class="card-body">
-                            <h4 class="text-start fs-4 fw-bold pb-4 border-bottom">@Model[i].Title</h4>
-                            <div class="row w-75 fs-4 fw-light">@Model[i].SubTitle</div>
-                            <div  class="float-start ms-4 m-2">
-                                <a class="btn btn-lg btn-dark text-decoration-none" role="button" href="@(!string.IsNullOrWhiteSpace(Model[i].UrlFriend) ? Model[i].UrlFriend : $"/blog/{Model[0].ContentCode}")" role="button">
+                        <div class="w-50 float-start card m-0 p-2 h-100" style="background-color: #e9f8f8;">
+                            <div class="card-body m-5">
+                            <h5 class="text-start fs-4 fw-bold pb-4 border-bottom">@Model[i].Title</h5>
+                            <div class="row fs-6">@Model[i].SubTitle</div>
+                            <div  class="float-start ms-4 mt-5">
+                                <a class="btn btn-lg btn-dark text-decoration-none mt-5" role="button" href="@(!string.IsNullOrWhiteSpace(Model[i].UrlFriend) ? Model[i].UrlFriend : $"/blog/{Model[0].ContentCode}")" role="button">
                                     @Language.GetString("design_Continue")
                                 </a>
                             </div>
                             </div>
-                            <div class="card-footer m-3 border-top">
+                            <div class="mt-5 m-3 border-top">
                             </div>
                         </div>
+
+
+
+                        <picture class="w-50 float-end">
+                            <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={360}")" />
+                            <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={460}")">
+                            <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={650}")">
+                            <img class="d-block w-100 rounded-0"
+                             src="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={460}")" style="object-fit:contain;"
+                             alt="@(Model[i].Images.Any(_=>_.ImageRatio == ImageRatio.Square) ? Model[i].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title : "")">
+                        </picture>
+                    
+                        
                     </div>
                 </div>
             </div>

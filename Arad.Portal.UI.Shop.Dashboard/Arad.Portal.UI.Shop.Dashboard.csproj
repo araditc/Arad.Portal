@@ -10,6 +10,7 @@
     <Content Remove="Views\Shared\Components\MultiLingual\Default.cshtml" />
     <Content Remove="Views\Shared\Components\SliderLayer\Default.cshtml" />
     <Content Remove="Views\Shared\Components\Slider\Default.cshtml" />
+    <Content Remove="wwwroot\Template\Content\SliderWithSubtitle.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -575,6 +576,7 @@
     <None Include="wwwroot\lib\jsTree\jstree.min.js" />
     <None Include="wwwroot\lib\ms-DropdownImg\images\icons\Thumbs.db" />
     <None Include="wwwroot\lib\ms-DropdownImg\js\dd.min.js" />
+    <None Include="wwwroot\Template\Content\SliderWithSubtitle.jpg" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">

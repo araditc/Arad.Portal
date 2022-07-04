@@ -2,6 +2,7 @@
 using Arad.Portal.DataLayer.Entities.General.Comment;
 using Arad.Portal.DataLayer.Entities.General.DesignStructure;
 using Arad.Portal.DataLayer.Entities.General.User;
+using Arad.Portal.DataLayer.Models.DesignStructure;
 using Arad.Portal.DataLayer.Models.Domain;
 using Arad.Portal.DataLayer.Models.Product;
 using Arad.Portal.DataLayer.Models.ProductSpecification;

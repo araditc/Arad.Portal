@@ -204,6 +204,15 @@
 	<string key="design_loadAnimationType">
 		<value>effect target</value>
 	</string>
+	<string key="design_SelectionType">
+		<value>selection item types</value>
+	</string>
+	<string key="design_CategoryList">
+		<value>category list</value>
+	</string>
+	<string key="design_ContentList">
+		<value>content list</value>
+	</string>
 	<string key="design_ContentText">
 		<value>content text</value>
 	</string>
@@ -737,6 +746,21 @@
 	</string>
 	<string key="EnumDesc_Active">
 		<value>Active</value>
+	</string>
+	<string key="EnumDesc_SelectionTypeAllCategories">
+		<value>select latest based on content type from all categories</value>
+	</string>
+	<string key="EnumDesc_SelectionTypeSelectedCategory">
+		<value>select latest based on content type from selected category</value>
+	</string>
+	<string key="EnumDesc_SelectionTypeSelectedIds">
+		<value>select items from content list</value>
+	</string>
+	<string key="EnumDesc_LoadAnimationTypeInner">
+		<value>animation on inner elements</value>
+	</string>
+	<string key="EnumDesc_LoadAnimationTypeOuter">
+		<value>animation on outer elements</value>
 	</string>
 	<string key="Download">
 		<value>download</value>

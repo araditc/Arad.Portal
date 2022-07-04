@@ -194,5 +194,22 @@ namespace Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo
             result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("Choose"), Value = "-1" });
             return result;
         }
+
+        public List<SelectListModel> GetAllSelectionType()
+        {
+            var result = new List<SelectListModel>();
+            foreach (int i in Enum.GetValues(typeof(SelectionType)))
+            {
+                string name = Enum.GetName(typeof(SelectionType), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("Choose"), Value = "-1" });
+            return result;
+        }
     }
 }

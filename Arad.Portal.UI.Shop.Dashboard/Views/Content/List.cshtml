@@ -62,7 +62,7 @@
 
         </div>
         <div class="card-footer">
-            <button id="btnSearch" class="btn btn-primary bg-gradient" type="submit">
+            <button id="btnSearch" class="btn btn-primary bg-gradient" type="button">
                 <i style="position: relative; left: 5px; top: 1px;" class="fa fa-search"></i>
                 @Language.GetString("btn_Search")
             </button>
@@ -214,11 +214,11 @@
              $("#btnSearch").click(function () {
                 debugger;
                  var queryString = "?LanguageId=" + $("#cmbLangIdFilter").val();
-                 if ($("#CategoryContentId").val() != "-1") {
+                 if ($("#contentCategoryId").val() != "-1") {
                      if (queryString != "") {
-                         queryString += "&catId=" + $("#CategoryContentId").val();
+                         queryString += "&catId=" + $("#contentCategoryId").val();
                      } else {
-                         queryString += "?catId=" + $("#CategoryContentId").val();
+                         queryString += "?catId=" + $("#contentCategoryId").val();
                      }
                  }
                  if ($("#filter").val() != "") {

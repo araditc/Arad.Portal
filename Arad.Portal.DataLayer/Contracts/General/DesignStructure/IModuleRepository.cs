@@ -24,6 +24,8 @@ namespace Arad.Portal.DataLayer.Contracts.General.DesignStructure
 
         List<SelectListModel> GetAllLoadAnimationType();
 
+        List<SelectListModel> GetAllSelectionType();
+
         List<SelectImageListModel> GetAllContentTemplateDesign();
 
         List<SelectImageListModel> GetAllProductTemplateDesign();

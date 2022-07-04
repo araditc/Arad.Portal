@@ -27,8 +27,9 @@ namespace Arad.Portal.UI.Shop.ViewComponents
                 _accessor = accessor;
                _lanRepository = lanRepository;
         }
-        public IViewComponentResult Invoke(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, 
-            int count, TransActionType loadAnimation, LoadAnimationType loadAnimationType)
+        //public IViewComponentResult Invoke(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, 
+        //    int count, TransActionType loadAnimation, LoadAnimationType loadAnimationType)
+        public IViewComponentResult Invoke(ModuleParameters moduleParameters)
         {
             var defaultCulture = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
             List<ContentGlance> lst = new List<ContentGlance>();
@@ -37,11 +38,13 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             var langId = _lanRepository.FetchBySymbol(defLangSymbol);
             ViewBag.CurLangId = langId;
 
-            ViewBag.LoadAnimation = loadAnimation;
-            ViewBag.LoadAnimationType = loadAnimationType;
+            ViewBag.LoadAnimation = moduleParameters.LoadAnimation;
+            ViewBag.LoadAnimationType = moduleParameters.LoadAnimationType;
             
-            lst = _contentRepository.GetSpecialContent(count, contentType, false);
-            switch (selectionTemplate)
+            lst = _contentRepository.GetSpecialContent(moduleParameters.Count.Value, 
+                moduleParameters.ProductOrContentType.Value,moduleParameters.SelectionType.Value,moduleParameters.CatId, 
+                 moduleParameters.SelectedIds, false);
+            switch (moduleParameters.ContentTemplateDesign)
             {
                 case ContentTemplateDesign.First:
                     foreach (var item in lst)
