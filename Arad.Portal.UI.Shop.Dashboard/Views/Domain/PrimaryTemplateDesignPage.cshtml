@@ -323,6 +323,11 @@
                     </select>
                 </div>
             </div>
+            <div class="row">
+                 <label class="form-label fs-6">bootstrap 5.1  or customize class for this row</label>
+                 <br/>
+                 <input class="form-control" value="" id="txtRowCustClass" onblure="addRowCustomizeClass(this);" />
+            </div>
 
              <div class="row">
                 <div class="col">
@@ -400,6 +405,11 @@
                     <option value="border-4">border-4</option>
                     <option value="border-5">border-5</option>
                 </select>
+            </div>
+             <div class="row">
+                 <label class="form-label fs-6">bootstrap 5.1  or customize class for this column</label>
+                 <br/>
+                 <input class="form-control" value="" id="txtColumnCustClass" onblure="addColumnCustomizeClass(this);" />
             </div>
         </div>
 
@@ -786,6 +796,9 @@
                                 var off = new bootstrap.Offcanvas(offcanvas);
                                 off.show();
                             });
+
+
+                           
 
                             $(".rowbd").change(function() {
                              
@@ -1196,6 +1209,37 @@
                                    });
 
                                })
+                            function addRowCustomizeClass(sender)
+                            {
+                               if($(sender).val().trim() != "")
+                               {
+                                   var customCls = $(sender).val().trim();
+                                    var precustClass = $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses");
+                                    if(!precustClass.includes(customCls))
+                                    {
+                                        precustClass += ` ${customCls}`;
+                                        $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses", precustClass);
+                                    }
+                               }
+                            }
+
+                            function addColumnCustomizeClass(sender)
+                            {
+                               if($(sender).val().trim() != "")
+                               {
+                                     var inputCls = $(sender).val().trim();
+                                     var custClass = $(`.row.finalColumnContent[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames");
+                                     var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames");
+                                     if(!custClass.includes(inputCls))
+                                     {
+                                         custClass += ` ${inputCls}`;
+                                         pClass += ` ${inputCls}`;
+                                         $(`.row.finalColumnContent[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames", custClass);
+                                         $(`.row.htmlColumnContentPreview[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames", pClass);
+                                     }
+                               }
+                            }
+
 
 
                                function confirmation()
