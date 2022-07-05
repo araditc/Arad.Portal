@@ -67,6 +67,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Shared\Components\ContentTemplates\SliderWithSubtitle.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Update="wwwroot\imgs\NoImage.png">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

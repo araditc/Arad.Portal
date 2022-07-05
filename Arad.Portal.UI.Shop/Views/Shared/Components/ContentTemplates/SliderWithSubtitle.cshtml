@@ -3,47 +3,61 @@
 @using Arad.Portal.DataLayer.Models.Content;
 @model List<Arad.Portal.DataLayer.Models.Content.ContentGlance>
 @{
+
+    string outerElementAtr ="";
+    string innerElementsAtr = "";
+    var animationTarget = (LoadAnimationType)ViewBag.LoadAnimationType;
+    if(animationTarget == LoadAnimationType.OuterElement)
+    {
+        outerElementAtr = $"data-animation='animated {ViewBag.LoadAnimation}'";
+    }else
+    {
+        innerElementsAtr = $"data-animation='animated {ViewBag.LoadAnimation}'";
+    }
 }
 
 
 
-<div id="contentTemplateSliderSubtitle" class="carousel slide" data-bs-ride="carousel">
+<div id="contentTemplateSliderSubtitle" class="carousel slide" data-bs-ride="carousel"  @outerElementAtr>
     <div class="carousel-inner">
         @for (int i = 0; i < Model.Count; i++)
         {
-            <div class="carousel-item @(i == 0 ? "active" : "")">
+            <div class="carousel-item @(i == 0 ? "active" : "")" @innerElementsAtr>
                 <div class="row">
                     <div class="col">
-                        <picture>
-                            <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={360}")" />
-                            <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={460}")">
-                            <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={650}")">
-                            <img class="d-block w-100"
-                             src="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={460}")"
-                             alt="@(Model[i].Images.Any(_=>_.ImageRatio == ImageRatio.Square) ? Model[i].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title : "")">
-                        </picture>
-                    </div>
-                    <div class="col">
-                        <div class="card m-0 p-2" style="background-color: #e9f8f8;">
-                            <div class="card-body">
-                            <p class="text-start fs-4 fw-bold text-decoration-underline">@Model[i].Title</p>
-                            <div class="row w-75 fs-4 fw-light">@Model[i].SubTitle</div>
-                            <div  class="float-start ms-4 m-2">
-                                <a class="btn btn-lg btn-dark" href="@(!string.IsNullOrWhiteSpace(Model[i].UrlFriend) ? Model[i].UrlFriend : $"/blog/{Model[0].ContentCode}")" role="button">
+                        <div class="w-50 float-start card m-0 p-2 h-100" style="background-color: #e9f8f8;">
+                            <div class="card-body m-5">
+                            <h5 class="text-start fs-4 fw-bold pb-4 border-bottom">@Model[i].Title</h5>
+                            <div class="row fs-6">@Model[i].SubTitle</div>
+                            <div  class="float-start ms-4 mt-5">
+                                <a class="btn btn-lg btn-dark text-decoration-none mt-5" role="button" href="@(!string.IsNullOrWhiteSpace(Model[i].UrlFriend) ? Model[i].UrlFriend : $"/blog/{Model[0].ContentCode}")" role="button">
                                     @Language.GetString("design_Continue")
                                 </a>
                             </div>
                             </div>
-                            <div class="card-footer m-3 border-top">
+                            <div class="mt-5 m-3 border-top">
                             </div>
                         </div>
+
+
+
+                        <picture class="w-50 float-end">
+                            <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={360}")" />
+                            <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={460}")">
+                            <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={650}")">
+                            <img class="d-block w-100 rounded-0"
+                             src="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={460}")" style="object-fit:contain;"
+                             alt="@(Model[i].Images.Any(_=>_.ImageRatio == ImageRatio.Square) ? Model[i].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title : "")">
+                        </picture>
+                    
+                        
                     </div>
                 </div>
             </div>
         }
-
-       
    </div>
+
+
     <button class="carousel-control-prev" type="button" data-bs-target="#contentTemplateSliderSubtitle" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">@Language.GetString("tbl_PreviousPage")</span>

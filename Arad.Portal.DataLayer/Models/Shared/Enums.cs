@@ -39,7 +39,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
 
         public enum OneColsTemplateWidth
         {
-            One
+            One = 1
         }
 
         public enum TwoColsTemplateWidth

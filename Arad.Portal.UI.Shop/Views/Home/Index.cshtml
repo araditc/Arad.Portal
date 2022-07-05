@@ -36,9 +36,7 @@
 
                                         break;
                                     case "ContentList":
-                                        @await Component.InvokeAsync("ContentTemplates", new { contentType = module.ParametersValue.ProductOrContentType,
-        selectionTemplate = module.ParametersValue.ContentTemplateDesign ,  count = module.ParametersValue.Count,
-        loadAnimation = module.ParametersValue.LoadAnimation, loadAnimationType = module.ParametersValue.LoadAnimationType })
+                                        @await Component.InvokeAsync("ContentTemplates", module.ParametersValue)
                                         ;
                                         break;
                                     case "HorizantalStoreMenu":
@@ -62,9 +60,10 @@
                             }
                             else if (div.Attributes["target"].Value == "editor")
                             {
-                                @Html.Raw(column.ColData.Replace("<div target=\"editor\">", "")
-        .Replace("</div>", ""))
-                                ; ;
+                                var index = column.ColData.LastIndexOf("</div>");
+                                var data = column.ColData.Substring(0, index);
+                                var htmlRaw = column.ColData.Replace("<div target=\"editor\">", "");
+                                @Html.Raw(@htmlRaw);
                             }
                         }
                     }

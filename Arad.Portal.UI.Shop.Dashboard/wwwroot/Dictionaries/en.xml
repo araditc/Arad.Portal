@@ -747,13 +747,13 @@
 	<string key="EnumDesc_Active">
 		<value>Active</value>
 	</string>
-	<string key="EnumDesc_SelectionTypeAllCategories">
+	<string key="EnumDesc_LatestFromProductOrContentTypeInAllCategories">
 		<value>select latest based on content type from all categories</value>
 	</string>
-	<string key="EnumDesc_SelectionTypeSelectedCategory">
+	<string key="EnumDesc_LatestFromProductOrContentTypeSelectedCategory">
 		<value>select latest based on content type from selected category</value>
 	</string>
-	<string key="EnumDesc_SelectionTypeSelectedIds">
+	<string key="EnumDesc_CustomizedSelection">
 		<value>select items from content list</value>
 	</string>
 	<string key="EnumDesc_LoadAnimationTypeInner">

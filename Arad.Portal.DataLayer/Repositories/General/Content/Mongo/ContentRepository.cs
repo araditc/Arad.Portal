@@ -503,8 +503,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             }
             else
             {
-                filterDef = builder.Gte(nameof(Entities.General.Content.Content.EndShowDate), DateTime.Now);
-                filterDef = builder.And(filterDef, builder.Lte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.Now));
+                filterDef = builder.Lte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.Now);
+                filterDef = builder.And(filterDef, builder.Gte(nameof(Entities.General.Content.Content.EndShowDate), DateTime.Now));
 
                 if(selectionType == SelectionType.LatestFromProductOrContentTypeSelectedCategory)
                 {

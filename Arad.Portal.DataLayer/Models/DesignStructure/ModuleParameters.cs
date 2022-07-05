@@ -57,13 +57,13 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
 
     public enum SelectionType
     {
-        [CustomDescription("EnumDesc_SelectionTypeAllCategories")]
+        [CustomDescription("EnumDesc_LatestFromProductOrContentTypeInAllCategories")]
         LatestFromProductOrContentTypeInAllCategories = 1,
 
-        [CustomDescription("EnumDesc_SelectionTypeSelectedCategory")]
+        [CustomDescription("EnumDesc_LatestFromProductOrContentTypeSelectedCategory")]
         LatestFromProductOrContentTypeSelectedCategory = 2,
 
-        [CustomDescription("EnumDesc_SelectionTypeSelectedIds")]
+        [CustomDescription("EnumDesc_CustomizedSelection")]
         CustomizedSelection = 3
     }
 

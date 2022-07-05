@@ -237,7 +237,7 @@
                         <option value="py-0">py-0</option>
                         <option value="py-2">py-2</option>
                         <option value="py-4">py-4</option>
-                        <option value="py-5">py-4</option>
+                        <option value="py-5">py-5</option>
                         <option value="py-10">py-10</option>
                     </select>
                 </div>
@@ -245,13 +245,26 @@
             <div class="row">
                 <div class="col">@Language.GetString("design_HorizantalPadding")</div>
                 <div class="col">
-                    <select id="horizantalPaddingSelect" class="form-control selectpicker" onchange="addCustomClass('hp');" data-live-search="true">
+                    <select id="verticalPaddingSelect" class="form-control selectpicker" onchange="addCustomClass('hp');" data-live-search="true">
                         <option value=""></option>
                         <option value="px-0">px-0</option>
                         <option value="px-2">px-2</option>
                         <option value="px-4">px-4</option>
                         <option value="px-5">px-5</option>
                         <option value="px-10">px-10</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">@Language.GetString("design_HorizantalMargin")</div>
+                <div class="col">
+                    <select id="horizantalPaddingSelect" class="form-control selectpicker" onchange="addCustomClass('hm');" data-live-search="true">
+                        <option value=""></option>
+                        <option value="gx-0">gx-0</option>
+                        <option value="gx-2">gx-2</option>
+                        <option value="gx-4">gx-4</option>
+                        <option value="gx-5">gx-5</option>
+                        <option value="gx-10">gx-10</option>
                     </select>
                 </div>
             </div>
@@ -265,19 +278,6 @@
                         <option value="my-4">my-4</option>
                         <option value="my-5">my-5</option>
                         <option value="my-10">my-10</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">@Language.GetString("design_HorizantalMargin")</div>
-                <div class="col">
-                    <select id="horizantalMarginSelect" class="form-control selectpicker" onchange="addCustomClass('hm');" data-live-search="true">
-                        <option value=""></option>
-                        <option value="mx-0">mx-0</option>
-                        <option value="mx-2">mx-2</option>
-                        <option value="mx-4">mx-4</option>
-                        <option value="mx-5">mx-5</option>
-                        <option value="mx-10">mx-10</option>
                     </select>
                 </div>
             </div>
@@ -572,7 +572,7 @@
                                  break;
                                  case "vm":
                                  cls = $("#verticalMarginSelect").val();
-                                 custClass = custClass.replace("mx-0", "").replace("mx-2", "").replace("mx-4", "").replace("mx-5","").replace("mx-10", "");
+                                 custClass = custClass.replace("gx-0", "").replace("gx-2", "").replace("gx-4", "").replace("gx-5","").replace("gx-10", "");
                                  break;
                                  case "hm":
                                  cls = $("#horizantalMarginSelect").val();
@@ -1518,7 +1518,7 @@
                                 loadInEditMode = false;
                             }
                             debugger;
-                            $(".selectpicker").each(function(){
+                            $(".row.firstLevel .selectpicker").each(function(){
                                 var sel = $(this).attr("sel");
                                 $(this).selectpicker("val", sel);
                             });

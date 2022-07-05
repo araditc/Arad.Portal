@@ -749,13 +749,13 @@
 	<string key="EnumDesc_Active">
 		<value>فعال بودن</value>
 	</string>
-	<string key="EnumDesc_SelectionTypeAllCategories">
+	<string key="EnumDesc_LatestFromProductOrContentTypeInAllCategories">
 		<value>انتخاب آخرین ایتم ها بر اساس نوع محتوا از تمام گروه ها</value>
 	</string>
-	<string key="EnumDesc_SelectionTypeSelectedCategory">
+	<string key="EnumDesc_LatestFromProductOrContentTypeSelectedCategory">
 		<value>انتخاب آخرین ایتم ها بر اساس نوع محتوا از گروه انتخابی</value>
 	</string>
-	<string key="EnumDesc_SelectionTypeSelectedIds">
+	<string key="EnumDesc_CustomizedSelection">
 		<value>انتخاب از لیست محتواها</value>
 	</string>
 	<string key="EnumDesc_LoadAnimationTypeInner">

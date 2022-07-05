@@ -69,7 +69,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo
                 var obj = new SelectListModel()
                 {
                     Text = GeneralLibrary.Utilities.Language.GetString($"Enum_{name}"),
-                    Value = name
+                    Value = i.ToString()
                 };
                 result.Add(obj);
             }
@@ -203,7 +203,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo
                 string name = Enum.GetName(typeof(SelectionType), i);
                 var obj = new SelectListModel()
                 {
-                    Text = name,
+                    Text = GeneralLibrary.Utilities.Language.GetString($"Enum_{name}"),
                     Value = i.ToString()
                 };
                 result.Add(obj);

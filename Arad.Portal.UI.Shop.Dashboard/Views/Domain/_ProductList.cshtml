@@ -9,9 +9,9 @@
     var cnt = "";
     if(Model != null)
     {
-        selproType = @Model.ParametersValue.ProductOrContentType.ToString();
-        selLoadAnimation = @Model.ParametersValue.LoadAnimation.ToString();
-        selloadAnimationType = @Model.ParametersValue.LoadAnimationType.ToString();
+        selproType = ((int)@Model.ParametersValue.ProductOrContentType).ToString();
+        selLoadAnimation = ((int)@Model.ParametersValue.LoadAnimation).ToString();
+        selloadAnimationType = ((int)@Model.ParametersValue.LoadAnimationType).ToString();
         cnt = @Model.ParametersValue.Count.ToString();
     }
 }
