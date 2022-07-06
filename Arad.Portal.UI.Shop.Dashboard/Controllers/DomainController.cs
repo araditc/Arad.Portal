@@ -168,6 +168,24 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
             //var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
             //var languageId = _lanRepository.FetchBySymbol(lanIcon);
+            if(model.HeaderPart.BGTypeId != null)
+            {
+                model.HeaderPart.BGType = (BGType)model.HeaderPart.BGTypeId.Value;
+            }
+
+            if (model.FooterPart.BGTypeId != null)
+            {
+                model.FooterPart.BGType = (BGType)model.FooterPart.BGTypeId.Value;
+            }
+
+            foreach (RowContent item in model.MainPageContainerPart.RowContents)
+            {
+                if(item.BGTypeId != null)
+                {
+                    item.BGType = (BGType)item.BGTypeId.Value;
+
+                }
+            }
 
             var obj = new PageDesignContent()
             {
@@ -604,6 +622,33 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
             return result;
         }
+        [HttpPost]
+        public IActionResult SaveBackgroundImageToServer([FromBody] BgImage model)
+        {
+            JsonResult result;
+            var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
+            var path = "images/DomainDesign";
+            
+            var url = ImageFunctions.SaveBackgroundImage(model.Base64ImageContent, path, localStaticFileStorageURL);
+            if (!string.IsNullOrWhiteSpace(url))
+            {
+                 result = Json(new { status = "success", url = $"/{url}" , selectedRowGuid = model.SelectedRowGuid , section = model.SelectedSection  });
+            }else
+            {
+                 result = Json(new { status = "failed", selectedRowGuid = model.SelectedRowGuid, section = model.SelectedSection });
+            }
+            return result;
+        }
+
+        [HttpGet]
+        [Route("images/DomainDesign/{**slug}")]
+        public IActionResult GetDomainDesignImages(string slug)
+        {
+            var path = $"/images/DomainDesign/{slug}";
+            (byte[] fileContents, string mimeType) = ImageFunctions.GetImageWithActualSize(path, _configuration["LocalStaticFileStorage"]);
+            return File(fileContents, mimeType);
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> GetRowWithSelectedColumns([FromBody]RowSelectedColumnsModel obj)

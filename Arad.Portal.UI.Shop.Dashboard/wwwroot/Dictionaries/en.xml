@@ -1216,6 +1216,9 @@
 	<string key="AlertAndMessage_ErrorInSaving">
 		<value>Error storing data.</value>
 	</string>
+	<string key="AlertAndMessage_ErrorInLoadingImage">
+		<value>Error in loading image.</value>
+	</string>
 	<string key="AlertAndMessage_InvalidDate">
 		<value>Invalid date.</value>
 	</string>

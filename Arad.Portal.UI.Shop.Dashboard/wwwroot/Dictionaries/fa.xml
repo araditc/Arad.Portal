@@ -1248,6 +1248,9 @@
 	<string key="AlertAndMessage_ErrorInSaving">
 		<value>خطا در ذخیره سازی داده!</value>
 	</string>
+	<string key="AlertAndMessage_ErrorInLoadingImage">
+		<value>خطا در بارگزاری عکس</value>
+	</string>
 	<string key="AlertAndMessage_InvalidDate">
 		<value>تاریخ نامعتبر است.</value>
 	</string>

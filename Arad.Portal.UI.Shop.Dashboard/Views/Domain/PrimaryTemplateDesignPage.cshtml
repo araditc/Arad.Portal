@@ -85,6 +85,11 @@
             width: 300px;
             text-align: center;
         }
+        .bgCover{
+            background-size : cover;
+            background-attachment: fixed;
+            background-position: center bottom;
+        }
     </style>
     <div aria-hidden="true" aria-labelledby="confirmDesignModalLabel" class="modal fade" id="confirmDesignModal" tabindex="-1">
         <div class="modal-dialog">
@@ -281,7 +286,7 @@
                     </select>
                 </div>
             </div>
-            <div class="row">
+            <div class="row my-2">
                 <div class="form-check m-auto d-inline-block pt-3">
                     <input class="form-check-input rowbd" type="checkbox" value="border-top">
                     <label class="form-check-label" for="border-top">
@@ -308,7 +313,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row my-2">
                 <div class="col-12 bg-success bg-opacity-10 pt-2 mt-3">
                     <label class="form-label fs-6">border thickness</label>
                 </div>
@@ -324,27 +329,26 @@
                 </div>
             </div>
 
-             <div class="row">
-                <div class="col">
+             <div class="row my-2">
+                 <label class="form-label fs-6">bootstrap 5.1  or customize class for this row</label>
+                 <br/>
+                 <input class="form-control" value="" id="txtRowCustClass" onblure="addRowCustomizeClass(this);" />
+            </div>
+
+             <div class="row my-2">
+                <div class="col-12">
                     <label class="form-label">@Language.GetString("design_bgColor")</label>
                     <input dir="ltr" type="text" id="bgcolor" name="bgcolor" class="form-control" onchange="bgColorChange();" placeholder=" ">
                 </div>
             </div>
-            <div class="row">
+            <div class="row border-top border-1">
                 <div class="col-12 border pt-3">
                     <label class="form-label custom-file-label float-start pt-2" for="image">@Language.GetString("design_bgPhoto")</label>
                     <input accept="image/x-png,image/jpeg"
                            type="file" class="btn btn-sm bg-gradient float-end" name="image" id="image" onchange="getURL(this)" />
                 </div>
-                <div class="col-12 my-1">
-                    <label class="form-label">@Language.GetString("tbl_AspectRatioImage")</label>
-                    <select id="imgAspectRatio" class="form-control selectpicker" data-live-search="true"
-                            asp-items="@(new SelectList(ViewBag.ImageRatio,"Value","Text"))"></select>
-                </div>
-                <div class="col-12 my-1">
-                    <label class="form-label" for="ImageFit">Image Fit</label>
-                    <select name="ImageFit" id="ImageFit" class="form-control" asp-items="Html.GetEnumSelectList<ImageFit>()"></select>
-                </div>
+              
+               
                 <div class="col-12">
                     <input type="button" id="deleteBgImage" class="btn btn-danger btn-sm m-2" value="@Language.GetString("design_ImageDelete")" />
                 </div>
@@ -388,7 +392,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row my-2">
                 <div class="col-12 bg-success bg-opacity-10 pt-2 mt-3">
                     <label class="form-label fs-6">border thickness</label>
                 </div>
@@ -402,6 +406,11 @@
                 </select>
             </div>
         </div>
+         <div class="row my-2">
+                 <label class="form-label fs-6">bootstrap 5.1  or customize class for this column</label>
+                 <br/>
+                 <input class="form-control" value="" id="txtColumnCustClass" onblure="addColumnCustomizeClass(this);" />
+            </div>
 
     </div>
 
@@ -419,22 +428,14 @@
                     <input dir="ltr" type="text" id="bgcolor" name="bgcolor" class="form-control" onchange="bgColorChange();" placeholder=" ">
                 </div>
             </div>
-            <div class="row">
+            <div class="row my-2 border-top">
                 <div class="col-12 border pt-3">
                     <label class="form-label custom-file-label float-start pt-2" for="image">@Language.GetString("design_bgPhoto")</label>
                     <input accept="image/x-png,image/jpeg"
                            type="file" class="btn btn-sm bg-gradient float-end" name="image" id="image" onchange="getURL(this)" />
                 </div>
-                <div class="col-12 my-1">
-                    <label class="form-label">@Language.GetString("tbl_AspectRatioImage")</label>
-                    <select id="imgAspectRatio" class="form-control selectpicker" data-live-search="true"
-                            asp-items="@(new SelectList(ViewBag.ImageRatio,"Value","Text"))"></select>
-                </div>
-                <div class="col-12 my-1">
-                    <label class="form-label" for="ImageFit">Image Fit</label>
-                    <select name="ImageFit" id="ImageFit" class="form-control" asp-items="Html.GetEnumSelectList<ImageFit>()"></select>
-                </div>
-                <div class="col-12">
+              
+                <div class="col-12 mt-2">
                     <input type="button" id="deleteBgImage" class="btn btn-danger btn-sm m-2" value="@Language.GetString("design_ImageDelete")" />
                 </div>
             </div>
@@ -456,13 +457,27 @@
                         var rowFileName;
                          var selectedRow;
                          var colSelectedRow ;
-                         var colSelectedNumber;
-                         var selectedSection;
+                         var colSelectedNumber ;
+                         var selectedSection = "";
                          var footerBgColor = "";
                          var headerBgColor = "";
+                         var footerBgImage ="";
+                         var  headerBgImage ="";
                          var isShop = '@ViewBag.IsShop' == "True";
                          var isMultiLingual = '@ViewBag.IsMultilingual' == "True";
-
+                         var offCanvasRows = document.getElementById('styleDiv');
+                         var offvanvasCols = document.getElementById('colStylesDiv');
+                         var offCanvasHeaderFooter = document.getElementById('styleHeaderFooterDiv');
+                         offCanvasRows.addEventListener('hidden.bs.offcanvas', function () {
+                             selectedRow = "";
+                             });
+                        offvanvasCols.addEventListener('hidden.bs.offcanvas', function () {
+                             selectedRow = "";
+                             colSelectedNumber = "";
+                        });
+                        offCanvasHeaderFooter.addEventListener('hidden.bs.offcanvas', function () {
+                                  selectedSection = "";
+                        });
                          function validateEditors()
                          {
                              $(".txtEditorCK").each(function(){
@@ -470,6 +485,36 @@
                                  sanitize(id, false);
                              })
                          }
+                          function addRowCustomizeClass(sender)
+                            {
+                               if($(sender).val().trim() != "")
+                               {
+                                   var customCls = $(sender).val().trim();
+                                    var precustClass = $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses");
+                                    if(!precustClass.includes(customCls))
+                                    {
+                                        precustClass += ` ${customCls}`;
+                                        $(`.row.sectionRow[guid='${selectedRow}']`).attr("rowCustomClasses", precustClass);
+                                    }
+                               }
+                            }
+
+                            function addColumnCustomizeClass(sender)
+                            {
+                               if($(sender).val().trim() != "")
+                               {
+                                     var inputCls = $(sender).val().trim();
+                                     var custClass = $(`.row.finalColumnContent[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames");
+                                     var pClass = $(`.row.htmlColumnContentPreview[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames");
+                                     if(!custClass.includes(inputCls))
+                                     {
+                                         custClass += ` ${inputCls}`;
+                                         pClass += ` ${inputCls}`;
+                                         $(`.row.finalColumnContent[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames", custClass);
+                                         $(`.row.htmlColumnContentPreview[guid='${selectedRow}'][cn='${colSelectedNumber}']`).attr("classNames", pClass);
+                                     }
+                               }
+                            }
 
                          function addRowBorderThickness()
                          {
@@ -503,7 +548,7 @@
 
                          function bgColorChange()
                          {
-
+                            debugger;
                             var color = $("#bgcolor").val();
                             if(selectedSection =="footer")
                             {
@@ -518,8 +563,14 @@
 
                          function rowBgColorChange()
                          {
+                             debugger;
+                             if($("#rowBgcolor").val() != "")
+                             {
                               var color = $("#rowBgcolor").val();
                               $(`.row.sectionRow[guid='${selectedRow}']`).css("background-color", color);
+                               $(`.row.sectionRow[guid='${selectedRow}']`).attr("bgtype", "1");
+                             }
+                              
 
                          }
 
@@ -630,7 +681,9 @@
                             }
                     
                    $(document).ready(function(){
-                     
+                       debugger;
+                       $("#bgcolor").colorpicker();
+                        $("#rowBgcolor").colorpicker();
                         $(window).resize(changeScreen);
 
                         $('#mainToastBody').html('<i class="fas fa-check-circle"></i>@Language.GetString("AlertAndMessage_FirstChooseLanguage")');
@@ -659,8 +712,7 @@
                         });
 
 
-                        $("#bgcolor").colorpicker();
-                        $("#rowBgcolor").colorpicker();
+                       
 
                         changeScreen();
                         $(document).on("change", "select.selectionType", function(){
@@ -778,7 +830,7 @@
 
                           });
                             $(document).on("click", ".btnRowStyle", function () {
-                               
+                              
                                 selectedRow = $(this).attr("guid");
                                 var siblingContentColumns = $(this).parent().next(); //class ='contentColumns'
                                 var rowExtraClasses =  $(this).find(".row.sectionRow").attr("rowCustomClasses");
@@ -834,35 +886,63 @@
                             });
 
                             $("#send_pic").click(function () {
-
+                                debugger;
                                 $("#uploadModal").modal("hide");
                                 var url = $("#galleryPic").attr("src");
                                 var model = {};
-                                var ratio="";
+                                var ratio=1;
                                 var width ="";
                                 var height ="";
-                                switch($("#imgAspectRatio").val())
-                                {
-                                    case "1":
-                                    ratio ="1*1";
-                                        width = 120;
-                                    height = 120;
-                                    break;
-                                    case "2":
-                                    ratio = "2*1";
-                                        width = 120;
-                                    height = 60;
-                                    break;
-                                    case "4":
-                                    ratio="4*1";
-                                        width = 120;
-                                    height = 30;
-                                    break;
-                                }
-                                //model.ImageId = counter;
-                                //model.Content = url;
-                                //model.ImageRatioId =
-                                //images.push(model);
+                                width = 120;
+                                height = 120;
+                                    
+                              
+                            var model ={} //an instance of BgImage
+                            model.Base64ImageContent = url;
+                            model.SelectedRowGuid = selectedRow;
+                            model.SelectedSection = selectedSection;
+                           
+                            $.ajax({
+                                        type: "Post",
+                                        url: '@Url.Action("SaveBackgroundImageToServer", "Domain")',
+                                        contentType : 'application/json',
+                                        data : JSON.stringify(model),
+                                        success: function (result) {
+                                            if(result.status == "success")
+                                            {
+                                                debugger;
+                                                if(selectedSection != "")//it is for header or footer
+                                                {
+                                                    if(selectedSection =="footer")
+                                                    {
+                                                        footerBgImage  = result.url;
+                                                         $(".dynamicFooterPart").addClass("bgCover");
+                                                        $(".dynamicFooterPart").css("background-image", `url(${footerBgImage})`);
+                                                        
+                                                    }else if(selectedSection =="header")
+                                                    {
+                                                            headerBgImage  = result.url;
+                                                             $(".dynamicFooterPart").addClass("bgCover");
+                                                            $(".dynamicHeaderPart").css("background-image", `url(${headerBgImage})`);
+                                                            
+                                                    }
+                                                }else //it is for a row in container
+                                                {
+                                                    $(`.row.sectionRow[guid='${selectedRow}']`).attr("bgurl", result.url);
+                                                    $(`.row.sectionRow[guid='${selectedRow}']`).attr("bgtype", "2");
+                                                     $(`.row.sectionRow[guid='${selectedRow}']`).addClass("bgCover");
+                                                    $(`.row.sectionRow[guid='${selectedRow}']`).css("background-image", `url(${result.url})`);
+                                                   
+                                                }
+
+                                            }else
+                                            {
+                                                showError('@Language.GetString("AlertAndMessage_ErrorInLoadingImage")');
+                                            }
+                                        },
+
+                                    });
+                              
                             });
 
                             $("#removeFlagPart").click(function(){
@@ -911,12 +991,18 @@
                                             header.BGTypeId = 1;
                                             header.CodeColor = headerBgColor;
                                         }
-
+                                        else
+                                        if(headerBgImage != "")
+                                        {
+                                             header.BGTypeId = 2;
+                                             header.BgImage = headerBgImage;
+                                        }
                                         var i = 1;
                                         var rn = "";
                                         $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
                                             debugger;
                                             rn = $(this).find(".row.sectionRow").attr("rn");
+                                            
                                             var obj = {}; //an instance of RowContent
                                             obj.RowNumber = parseInt(rn) ;
                                             obj.RowGuid = $(this).find(".row.sectionRow").attr("guid");
@@ -975,12 +1061,24 @@
                                             bodyRowContent.EnumColsId = $(this).find(".row.sectionRow").attr("enumcolid");
                                             bodyRowContent.ColsContent = [] ;
                                             bodyRowContent.ExtraClassNames = $(this).find(".row.sectionRow").attr("rowCustomClasses").trim();
-                                            if( $(this).find(".row.sectionRow").css("background-color") != undefined &&
-                                                $(this).find(".row.sectionRow").css("background-color") != "" )
+                                            //if( $(this).find(".row.sectionRow").css("background-color") != undefined &&
+                                            //    $(this).find(".row.sectionRow").css("background-color") != "" )
+                                            //{
+                                            //    bodyRowContent.BgCodeColor = $(this).find(".row.sectionRow").css("background-color");
+                                            //}
+                                            if($(this).find(".row.sectionRow").attr("bgtype") != undefined)
                                             {
-                                                bodyRowContent.BgCodeColor = $(this).find(".row.sectionRow").css("background-color");
-                                            }
+                                                if($(this).find(".row.sectionRow").attr("bgtype") =="1")
+                                                {
+                                                    bodyRowContent.BGTypeId = 1;
+                                                    bodyRowContent.BgCodeColor = $(this).find(".row.sectionRow").style("background-color");
 
+                                                }else //== 2
+                                                {
+                                                    bodyRowContent.BGTypeId = 2;
+                                                    bodyRowContent.BgImage = $(this).find(".row.sectionRow").attr("bgurl");
+                                                }
+                                            }
                                             $(this).find(".row.parent .finalColumnContent").each(function(){
                                                 var colContent ={} ; //an instance of ColContent
                                                 colContent.Section = "containerSection";
@@ -1021,7 +1119,13 @@
                                             {
                                                 footerPart.BGTypeId = 1;
                                                 footerPart.CodeColor = footerBgColor;
+                                            }else if(footerBgImage != "")
+                                            {
+                                                footerPart.BGTypeId = 2;
+                                                footerPart.BgImage = footerBgImage;
                                             }
+
+                                          
                                           footerPart.CustomizedContent =[];
                                           $(".dynamicFooterPart .firstLevel .contentColumns").each(function()
                                           {
@@ -1123,7 +1227,7 @@
                                              {
                                                  //header
                                                  $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
-                                                     debugger;
+                                                    
                                                     var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
                                                     header += `<div class='row firstLevel ${extraClasses}'>`;
                                                     $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
@@ -1138,8 +1242,24 @@
                                                 //container
                                                 $(".dynamicContainerPart .firstLevel .contentColumns").each(function()
                                                 {
+                                                    debugger;
                                                     var extraClasses = $(this).find(".row.sectionRow").attr("rowCustomClasses");
-                                                        container += `<div class='row firstLevel ${extraClasses}'>`;
+                                                    var bgColor="";
+                                                    var bgImage = "";
+                                                    if($(this).find(".row.sectionRow").attr("bgtype") != undefined)
+                                                    {
+                                                        if($(this).find(".row.sectionRow").attr("bgtype") == "1")
+                                                        {
+                                                            var color = $(this).find(".row.sectionRow").css("background-color");
+                                                            bgColor = `background-color:${color};`;
+                                                        }else 
+                                                        if($(this).find(".row.sectionRow").attr("bgtype") == "2")
+                                                        {
+                                                            var image = $(this).find(".row.sectionRow").css("background-image");
+                                                            bgImage = `background-image:${image};`;
+                                                        }
+                                                    }
+                                                    container += `<div class='row firstLevel ${extraClasses}' style='${bgColor}${bgImage}'>`;
                                                     $(this).find(".row.parent .htmlColumnContentPreview").each(function(){
 
                                                         var classNames = $(this).attr("classNames");
@@ -1587,7 +1707,7 @@
                               var image = document.getElementById('croppedImg');
                               $("#send_pic").attr("disabled", true);
                               debugger;
-                                var ratio = $("#imgAspectRatio").val();
+                               
                                 if (cropper !== null && cropper !== undefined) {
                                 cropper.destroy();
                                }
@@ -1595,7 +1715,7 @@
                                 cropper = new Cropper(image,
                                     {
                                         background: true,
-                                        aspectRatio: ratio,
+                                        aspectRatio: 1,
                                         viewMode: 1,
                                         responsive: true,
                                         rotatable: true

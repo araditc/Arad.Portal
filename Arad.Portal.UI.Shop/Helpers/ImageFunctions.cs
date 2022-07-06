@@ -51,6 +51,35 @@ namespace Arad.Portal.UI.Shop.Helpers
             return Convert.ToBase64String(byteArray);
         }
 
+        public static (byte[], string) GetImageWithActualSize(string path, string localStaticFileStorage)
+        {
+
+            string finalPath;
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                if (path.StartsWith("/"))
+                    path = path[1..];
+                finalPath = Path.Combine(localStaticFileStorage, path).Replace("\\", "/");
+
+                if (!File.Exists(finalPath))
+                {
+                    finalPath = "/imgs/NoImage.png";
+                }
+                var fileName = Path.GetFileName(finalPath);
+                var mimeType = GetMIMEType(fileName);
+                byte[] fileContent = File.ReadAllBytes(finalPath);
+                return (fileContent, mimeType);
+            }
+            else
+            {
+                finalPath = "/imgs/NoImage.png";
+                var fileName = Path.GetFileName(finalPath);
+                var mimeType = GetMIMEType(fileName);
+                byte[] fileContent = File.ReadAllBytes(finalPath);
+                return (fileContent, mimeType);
+            }
+        }
+
         public static byte[] GetResizedImage(string filePath, int desiredHeight/*pixel*/)
         {
             byte[] byteArray;

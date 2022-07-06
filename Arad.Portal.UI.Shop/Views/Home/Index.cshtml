@@ -10,7 +10,7 @@
 {
     @foreach (RowContent row in Model.RowContents.OrderBy(_ => _.RowNumber))
     {
-        <div class="row @row.ExtraClassNames">
+        <div class="row @row.ExtraClassNames" @(row.BGTypeId != null ? (row.BGTypeId.Value == 1 ?  $"style:background-color:{row.BgCodeColor};" : $"style=background-image:url({row.BgImage});") : "")>
             @foreach (ColContent column in row.ColsContent.OrderBy(_ => _.ColNumber))
             {
                 <div class="@column.ColumnClassNames">

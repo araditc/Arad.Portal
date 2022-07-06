@@ -14,7 +14,7 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
         }
         public BGType BGType { get; set; }
 
-        public int BGTypeId { get; set; }
+        public int? BGTypeId { get; set; }
         public string BgImage { get; set; }
         public string CodeColor { get; set; }
         public string PriorFixedContent { get; set; }
@@ -25,7 +25,7 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
 
     public enum BGType
     {
-        Color,
-        Image
+        Color = 1,
+        Image = 2
     }
 }

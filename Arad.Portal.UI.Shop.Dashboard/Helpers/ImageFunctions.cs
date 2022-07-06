@@ -111,6 +111,59 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
             return image;
         }
 
+        public static string SaveBackgroundImage(string base64Content, string pathToSave, string staticFileStorageURL)
+        {
+            string finalUrl;
+            var fileName = Guid.NewGuid().ToString();
+            var path = Path.Combine(staticFileStorageURL, pathToSave);
+            try
+            {
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                finalUrl = Path.Combine(pathToSave, $"{fileName}.png").Replace("\\", "/");
+                byte[] bytes = Convert.FromBase64String(base64Content.Replace("data:image/jpeg;base64,", ""));
+                Image image = Image.Load(bytes);
+                image.Save(Path.Combine(path, $"{fileName}.png"), new JpegEncoder() { Quality = 100 });
+            }
+            catch (Exception ex)
+            {
+                finalUrl = "";
+            }
+            return finalUrl;
+        }
+
+        public static (byte[], string) GetImageWithActualSize(string path, string localStaticFileStorage)
+        {
+           
+            string finalPath;
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                if (path.StartsWith("/"))
+                    path = path[1..];
+                finalPath = Path.Combine(localStaticFileStorage, path).Replace("\\", "/");
+
+                if (!System.IO.File.Exists(finalPath))
+                {
+                    finalPath = "/imgs/NoImage.png";
+                }
+                var fileName = Path.GetFileName(finalPath);
+                var mimeType = ImageFunctions.GetMIMEType(fileName);
+                byte[] fileContent = System.IO.File.ReadAllBytes(finalPath);
+                return (fileContent, mimeType);
+            }
+            else
+            {
+                finalPath = "/imgs/NoImage.png";
+                var fileName = Path.GetFileName(finalPath);
+                var mimeType = ImageFunctions.GetMIMEType(fileName);
+                byte[] fileContent = System.IO.File.ReadAllBytes(finalPath);
+                return (fileContent, mimeType);
+            }
+        }
+
+
         public static KeyValuePair<string, string> SaveImageModel(DataLayer.Models.Shared.Image picture, string pathToSave,
                string staticFileStorageURL, string webRootPath)
         {

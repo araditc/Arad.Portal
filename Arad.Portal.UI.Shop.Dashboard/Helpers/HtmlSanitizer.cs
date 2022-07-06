@@ -15,7 +15,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                 { "form" },
                 { "object" },
                 { "embed" },
-                { "link" },
+                //{ "link" },
                 { "head" },
                 { "meta" }
         };
@@ -88,19 +88,19 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                 }
 
                 // remove CSS Expressions and embedded script links
-                if (node.Name == "style")
-                {
-                    var val = node.InnerHtml;
-                    if (string.IsNullOrEmpty(node.InnerText))
-                    {
-                        if (HasExpressionLinks(val) || HasScriptLinks(val))
-                        {
-                            node.ParentNode.RemoveChild(node);
-                            isValid = false;
-                            return isValid;
-                        } 
-                    }
-                }
+                //if (node.Name == "style")
+                //{
+                //    var val = node.InnerHtml;
+                //    if (string.IsNullOrEmpty(node.InnerText))
+                //    {
+                //        if (HasExpressionLinks(val) || HasScriptLinks(val))
+                //        {
+                //            node.ParentNode.RemoveChild(node);
+                //            isValid = false;
+                //            return isValid;
+                //        } 
+                //    }
+                //}
 
                 // remove script attributes
                 if (node.HasAttributes)
@@ -111,15 +111,15 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 
                         var attr = currentAttribute.Name.ToLower();
                         var val = currentAttribute.Value.ToLower();
-                       
-                        if (attr.StartsWith("on") && attr != "onload")
+
+                        if (false/*attr.StartsWith("on") && attr != "onload"*/)
                         {
                             node.Attributes.Remove(currentAttribute);
                             isValid = false;
                             return isValid;
 
                         }
-                            
+
 
                         // Remove CSS Expressions
                         else if (/*attr == "style" &&*/
