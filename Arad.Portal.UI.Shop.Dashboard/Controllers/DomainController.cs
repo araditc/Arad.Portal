@@ -367,7 +367,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             var module = _moduleRepository.FetchModuleByName(moduleName);
             //??? testing
-            id = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004";
+            //id = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004";
 
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             
@@ -711,7 +711,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.CategoryList = await _categoryRepository.AllActiveContentCategory(domainEntity.DefaultLanguageId, currentUserId);
             ViewBag.ContentList = _contentRepository.GetContentsList(obj.DomainId, currentUserId, "");
             //??? testing
-            obj.DomainId = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004";
+            //obj.DomainId = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004";
             ViewBag.SliderList = _sliderRepository.ActiveSliderList(obj.DomainId);
             ViewBag.ColWidth = obj.ColumnWidth;
             ViewBag.RowNumber = obj.RowNumber;

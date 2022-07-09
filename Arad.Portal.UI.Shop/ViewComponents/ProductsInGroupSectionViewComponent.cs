@@ -30,7 +30,7 @@ namespace Arad.Portal.UI.Shop.ViewComponents
         public IViewComponentResult Invoke(ProductsInGroupSection productSection)
         {
             var result = new CommonViewModel();
-            var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
+            var domainName = $"{_accessor.HttpContext.Request.Host}";
             result.ProductList = _groupRepository
                 .GetLatestProductInThisGroup(domainName, productSection.ProductGroupId, productSection.CountToTake, productSection.CountToSkip);
             var defaultCulture = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];

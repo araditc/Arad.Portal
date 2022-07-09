@@ -210,7 +210,7 @@
                     <button class='btn btn-sm btn-success btnNoColor p-2 m-2' sec="footer" onclick="resetColor(this);">@Language.GetString("design_NoColor")</button>
                 </div>
             </div>
-            <div class="container">
+            <div class="container-fluid">
                 <partial name="_PageDesign.cshtml"
                          model='new TemplateSectionPart(){SectionTag = "footerSection", DomainId = @domainId}' />
             </div>
@@ -435,7 +435,7 @@
 
                 <div class="col">
                     <label class="form-label">@Language.GetString("design_bgColor")</label>
-                    <input dir="ltr" type="text" id="bgcolor" name="bgcolor" class="form-control" onchange="bgColorChange();" placeholder=" ">
+                    <input dir="ltr" type="text" id="hFBgcolor" name="hFBgcolor" class="form-control" onchange="bgColorChange();" placeholder=" ">
                 </div>
             </div>
             <div class="row my-2 border-top">
@@ -559,7 +559,7 @@
                          function bgColorChange()
                          {
                             debugger;
-                            var color = $("#bgcolor").val();
+                            var color = $("#hFBgcolor").val();
                             if(selectedSection =="footer")
                             {
                                 footerBgColor = color;
@@ -595,7 +595,7 @@
                              }else if(sec == "footer")
                              {
                                  footerBgColor = "";
-                                  $(".dynamicFooterPart"),css("background-color", "");
+                                  $(".dynamicFooterPart").css("background-color", "");
                              }
                          }
 
@@ -692,7 +692,7 @@
                     
                    $(document).ready(function(){
                        debugger;
-                       $("#bgcolor").colorpicker();
+                       $("#hFBgcolor").colorpicker();
                         $("#rowBgcolor").colorpicker();
                         $(window).resize(changeScreen);
 
@@ -1238,6 +1238,22 @@
 
                                           if($("#languageId").val() != "-1")
                                              {
+                                                var headerImg = "";
+                                                var headerColor ="";
+                                                if($(".dynamicHeaderPart").css("background-color") != undefined && $(".dynamicHeaderPart").css("background-color") != "" )
+                                                {
+                                                    var color = $(".dynamicHeaderPart").css("background-color");
+                                                    headerColor =`background-color:${color};`;
+
+                                                }
+                                                else if($(".dynamicHeaderPart").css("background-image") != undefined && $(".dynamicHeaderPart").css("background-image") != "")
+                                                {
+                                                    var img = $(".dynamicHeaderPart").css("background-image");
+                                                    headerImg = `background-image:${img};`;
+                                                }
+                                                 var header = `<div class="dynamicHeaderPart" style="${headerColor}${headerImg}">`;
+
+
                                                  //header
                                                  $(".dynamicHeaderPart .firstLevel .contentColumns").each(function(){
                                                     
@@ -1281,6 +1297,21 @@
                                                     });
                                                     container += "</div>";
                                                 });
+
+                                                var footerImg = "";
+                                                var footerColor ="";
+                                                if($(".dynamicFooterPart").css("background-color") != undefined && $(".dynamicFooterPart").css("background-color") != "" )
+                                                {
+                                                    var color = $(".dynamicFooterPart").css("background-color");
+                                                    footerColor =`background-color:${color};`;
+
+                                                }
+                                                else if($(".dynamicFooterPart").css("background-image") != undefined && $(".dynamicFooterPart").css("background-image") != "")
+                                                {
+                                                    var img = $(".dynamicFooterPart").css("background-image");
+                                                    footerImg = `background-image:${img};`;
+                                                }
+                                                 footer = `<div class="dynamicFooterPart" style="${footerColor}${footerImg}">`;
 
                                                     //start of footerSection
                                                     $(".dynamicFooterPart .firstLevel .contentColumns").each(function()

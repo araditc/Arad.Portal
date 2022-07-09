@@ -513,8 +513,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             }
             if (domainEntity != null)
             {
-                //???
-                //filterDef &= builder.Eq(nameof(Entities.General.Content.Content.AssociatedDomainId), domainEntity.DomainId);
+               //??? should be uncommented in development mode
+                filterDef &= builder.Eq(nameof(Entities.General.Content.Content.AssociatedDomainId), domainEntity.DomainId);
                 switch (contentType)
                 {
                     case ProductOrContentType.Newest:
@@ -631,8 +631,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             filterDef &= builder.Lte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.Now);
             if (domainEntity != null)
             {
-                //??? should be uncommented
-                //filterDef &= builder.Eq(nameof(Entities.General.Content.Content.AssociatedDomainId), domainEntity.DomainId);
+                //??? should be uncommented in development mode
+                filterDef &= builder.Eq(nameof(Entities.General.Content.Content.AssociatedDomainId), domainEntity.DomainId);
                 switch (contentType)
                 {
                     case ProductOrContentType.Newest:
@@ -732,8 +732,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                 FilterDefinitionBuilder<Entities.General.Content.Content> builder = new();
                 FilterDefinition<Entities.General.Content.Content> filterDef = builder.Empty;
 
-                //???
-                //filterDef = builder.Eq(nameof(Entities.General.Content.Content.AssociatedDomainId), domainId);
+                //??? should be uncommented in development mode
+                filterDef = builder.Eq(nameof(Entities.General.Content.Content.AssociatedDomainId), domainId);
                 filterDef = builder.And(filterDef, builder.Eq(nameof(Entities.General.Content.Content.LanguageId), languageId));
                 filterDef = builder.And(filterDef, builder.Eq(nameof(Entities.General.Content.Content.IsDeleted), false));
 

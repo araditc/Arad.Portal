@@ -42,19 +42,21 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
             var menues = new List<StoreMenuVM>();
             string domainName;
             
-            //string domainName = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
             try
             {
                 var cookieVal = _accessor.HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
                 string symbol = cookieVal.Split("|")[0][2..];
                 var langId = _languageRepository.FetchBySymbol(symbol.ToLower());
-                domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
-               
-                var result = _domainRepository.FetchByName(domainName, false);
+
+                domainName = $"{_accessor.HttpContext.Request.Host}";
+                ///??? fortesting in debugging mode
+                //domainName = "www.arad-itc.com";
+               var result = _domainRepository.FetchByName(domainName, false);
                 if(result.Succeeded)
                 {
                     var domainEntity = result.ReturnValue;
                     menues = _menuRepository.StoreList(domainEntity.DomainId, langId, false);
+                    //debugging mode
                    //menues = _menuRepository.StoreList("1e336912-00e4-4a0a-bee6-20ce8ae49855", "0f0815fb-5fca-470c-bbfd-4d8c162de05a");
                 }
             }

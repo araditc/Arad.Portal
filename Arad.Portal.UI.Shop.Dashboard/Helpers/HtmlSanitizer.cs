@@ -112,7 +112,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                         var attr = currentAttribute.Name.ToLower();
                         var val = currentAttribute.Value.ToLower();
 
-                        if (false/*attr.StartsWith("on") && attr != "onload"*/)
+                        if (attr.StartsWith("on") && attr != "onload" && attr == "onclick" && !val.StartsWith("window.open"))
                         {
                             node.Attributes.Remove(currentAttribute);
                             isValid = false;

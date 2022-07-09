@@ -87,28 +87,6 @@ namespace Arad.Portal.UI.Shop.Controllers
                             ReservationNumber = $"{GetLocalIPAddress()}{DateTime.Now.Ticks}"
                         };
 
-                        // var transaction = new Transaction()
-                        //{
-                        //    TransactionId = Guid.NewGuid().ToString(),
-                        //    //???
-                        //    MainInvoiceNumber = Guid.NewGuid().ToString(),
-                        //    FinalPriceToPay = result.ReturnValue.FinalPriceToPay,
-                        //    CustomerData = new CustomerData()
-                        //    {
-                        //        UserId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value,
-                        //        UserName = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.Name).Value,
-                        //        UserFullName = userEntity.Profile.FullName??""
-                        //    },
-                        //    BasicData = new PaymentGatewayData()
-                        //    {
-                        //        //PaymentId = Guid.NewGuid().ToString(),
-                        //        CreationDateTime = DateTime.Now,
-                        //        Stage = PaymentStage.Initialized,
-                        //        PspType = (PspType)model.PspTypeId,
-                        //        ShoppinCartId = result.ReturnValue.ShoppingCartId,
-                        //        ReservationNumber =  $"{GetLocalIPAddress()}{DateTime.Now.Ticks}"
-                        //    }
-                        //};
                         var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
                         foreach (var invoice in result.ReturnValue.Details)
                         {

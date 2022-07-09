@@ -21,7 +21,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         {
             _accessor = accessor;
             _env = environment;
-            DomainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
+            DomainName = $"{_accessor.HttpContext.Request.Host}";
 
 
             if (User != null && User.Identity.IsAuthenticated)

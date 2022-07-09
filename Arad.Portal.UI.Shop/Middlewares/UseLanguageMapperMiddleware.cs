@@ -36,6 +36,7 @@ namespace Arad.Portal.UI.Shop.Middlewares
         public async Task Invoke(HttpContext context)
         {
             Log.Fatal($"In middleware:{context.Request.Path}");
+            Log.Fatal($"domainName: {context.Request.Host}");
             string defLangSymbol = "";
             string pathRequest = "";
             var langSymbolList = _languageContext.Collection.Find(_ => _.IsActive).Project(_ => _.Symbol.ToLower()).ToList();
@@ -56,7 +57,6 @@ namespace Arad.Portal.UI.Shop.Middlewares
                 context.Request.Path.ToString().Contains("/lib/") ||
                 context.Request.Path.ToString().Contains("/css/") ||
                 context.Request.Path.ToString().Contains("/js/") ||
-
                 context.Request.Path.ToString().Contains("/plugins/"))
             {
                 await _next.Invoke(context);
@@ -85,9 +85,9 @@ namespace Arad.Portal.UI.Shop.Middlewares
                 else if (defLangSymbol == "")
                 {
                     DataLayer.Entities.General.Domain.Domain result = null;
-                    if (_domainContext.Collection.Find(_ => _.DomainName == $"{context.Request.Scheme}://{domainName}").Any())
+                    if (_domainContext.Collection.Find(_ => _.DomainName == $"{domainName}").Any())
                     {
-                        result = _domainContext.Collection.Find(_ => _.DomainName == $"{context.Request.Scheme}://{domainName}").FirstOrDefault();
+                        result = _domainContext.Collection.Find(_ => _.DomainName == $"{domainName}").FirstOrDefault();
                     }
                     else
                     {

@@ -5,12 +5,10 @@
     
 }
 
-<div class="carousel slide" id="sliderCarousel">
+<div class="carousel slide" id="sliderCarousel" data-bs-ride="carousel">
     @if (Model != null)
     {
-        @*style="object-fit: @slide.ImageFit"*@
       
-       
         <div class="carousel-inner">
             @foreach (var slide in Model.Slides)
             {

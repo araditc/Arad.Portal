@@ -1295,9 +1295,6 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             }
             filterDef = builder.And(filterDef, builder.Gt(nameof(Entities.Shop.Product.Product.Inventory), 0));
 
-            //???
-            //filterDef &= builder.And(builder.Ne(nameof(Entities.Shop.Product.Product.ScoredCount), 0));
-
             List<ProductOutputDTO> lst = new List<ProductOutputDTO>();
             switch (type)
             {

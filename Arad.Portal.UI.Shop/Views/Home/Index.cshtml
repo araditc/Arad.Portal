@@ -17,55 +17,53 @@
                     @{
                         var htmlDoc = new HtmlDocument();
                         htmlDoc.LoadHtml(column.ColData);
-                        var divs = htmlDoc.DocumentNode.Descendants("div");
-                        foreach (var div in divs)
+                        var div = htmlDoc.DocumentNode.Element("div");
+                        if (div.Attributes["target"].Value == "module")
                         {
-                            if (div.Attributes["target"].Value == "module")
+                            var module = JsonConvert
+                            .DeserializeObject<ModuleWithParametersValue>(column.ColData.Replace("<div target=\"module\">", "")
+                            .Replace("</div>", ""));
+                            switch (module.ModuleName)
                             {
-                                var module = JsonConvert
-                                .DeserializeObject<ModuleWithParametersValue>(column.ColData.Replace("<div target=\"module\">", "")
-                                .Replace("</div>", ""));
-                                switch (module.ModuleName)
-                                {
-                                    case "ProductList":
-                                        @await Component.InvokeAsync("SpecialProduct",
-        new { productType = module.ParametersValue.ProductOrContentType,
-        selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count,
-        loadAnimation = module.ParametersValue.LoadAnimation, loadAnimationType = module.ParametersValue.LoadAnimationType } )
-                                        ;
+                                case "ProductList":
+                                    @await Component.InvokeAsync("SpecialProduct",
+                                    new { productType = module.ParametersValue.ProductOrContentType,
+                                    selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count,
+                                    loadAnimation = module.ParametersValue.LoadAnimation, loadAnimationType = module.ParametersValue.LoadAnimationType } )
+                                                                    ;
 
-                                        break;
-                                    case "ContentList":
-                                        @await Component.InvokeAsync("ContentTemplates", module.ParametersValue)
-                                        ;
-                                        break;
-                                    case "HorizantalStoreMenu":
-                                        @await Component.InvokeAsync("StoreMenu")
-                                        ;
-                                        break;
-                                    case "ImageTextSlider":
-                                        @await Component.InvokeAsync("Slider", new { sliderId =  module.ParametersValue.SliderId })
-                                        ;
-                                        break;
-                                    case "LoginAndProfile":
-                                        @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId, isShop = module.ParametersValue.IsShop })
-                                        ;
-                                        break;
-                                    case "MultiLingualFlags":
-                                        @await Component.InvokeAsync("MultiLingual")
-                                        ;
-                                        break;
+                                    break;
+                                case "ContentList":
+                                    @await Component.InvokeAsync("ContentTemplates", module.ParametersValue)
+                                    ;
+                                    break;
+                                case "HorizantalStoreMenu":
+                                    @await Component.InvokeAsync("StoreMenu")
+                                    ;
+                                    break;
+                                case "ImageTextSlider":
+                                    @await Component.InvokeAsync("Slider", new { sliderId =  module.ParametersValue.SliderId })
+                                    ;
+                                    break;
+                                case "LoginAndProfile":
+                                    @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId, isShop = module.ParametersValue.IsShop })
+                                    ;
+                                    break;
+                                case "MultiLingualFlags":
+                                    @await Component.InvokeAsync("MultiLingual")
+                                    ;
+                                    break;
 
-                                }
-                            }
-                            else if (div.Attributes["target"].Value == "editor")
-                            {
-                                var index = column.ColData.LastIndexOf("</div>");
-                                var data = column.ColData.Substring(0, index);
-                                var htmlRaw = column.ColData.Replace("<div target=\"editor\">", "");
-                                @Html.Raw(@htmlRaw);
                             }
                         }
+                        else if (div.Attributes["target"].Value == "editor")
+                        {
+                            var index = column.ColData.LastIndexOf("</div>");
+                            var data = column.ColData.Substring(0, index);
+                            var htmlRaw = data.Replace("<div target=\"editor\">", "");
+                            @Html.Raw(@htmlRaw);
+                        }
+                       
                     }
                 </div>
             }

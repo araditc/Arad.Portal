@@ -34,7 +34,7 @@ namespace Arad.Portal.UI.Shop.ViewComponents
         public IViewComponentResult Invoke(ContentsInCategorySection contentSection)
         {
             var result = new CommonViewModel();
-            var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
+            var domainName = $"{_accessor.HttpContext.Request.Host}";
             var domainEntity = _domainRepository.FetchByName(domainName, true).ReturnValue;
             result.ContentList = _categoryRepository.GetContentsInCategory(domainEntity.DomainId, 
                 contentSection.ContentCategoryId, contentSection.CountToTake, contentSection.CountToSkip);

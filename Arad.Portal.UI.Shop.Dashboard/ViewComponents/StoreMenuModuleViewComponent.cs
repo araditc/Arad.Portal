@@ -35,17 +35,13 @@ namespace Arad.Portal.UI.Shop.ViewComponents
         public  IViewComponentResult Invoke()
         {
             var menues = new List<StoreMenuVM>();
-            //var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
+            var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
             //??? for testing
-            var domainName = "http://localhost:3214";
+            //var domainName = "http://localhost:3214";
             var result = _domainRepository.FetchByName(domainName, true);
             var domainEntity = result.ReturnValue;
            
-            //domainName = _accessor.HttpContext.Request.Host.ToString();
-            //if (domainName.ToString().ToLower().StartsWith("localhost"))
-            //{
-            //    domainName = _accessor.HttpContext.Request.Host.ToString().Substring(0, 9);
-            //}
+           
             try
             {
                 var languageId = domainEntity.DefaultLanguageId;

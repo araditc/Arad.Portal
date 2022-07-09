@@ -134,10 +134,10 @@
     }
 }
 
-.imgsmall {
+.colRow .imgsmall {
     flex-shrink: 2;
 }
 
-img {
+.colRow img {
     border-radius: 0.65rem !important;
 }

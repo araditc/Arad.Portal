@@ -92,8 +92,10 @@
         </div>
     </div>
 
-    <header class="container-fluid ps-0 pe-0" style=@(process.LayoutModel.HeaderPart != null && !string.IsNullOrWhiteSpace(process.LayoutModel.HeaderPart.CodeColor) ? $"background-color:{process.LayoutModel.HeaderPart.CodeColor}" : "")>
-        <partial name="~/Views/Shared/_PriorFixedHeader.cshtml" />
+  <header class="dynamicHeaderPart" style=@(process.LayoutModel.HeaderPart != null && !string.IsNullOrWhiteSpace(process.LayoutModel.HeaderPart.CodeColor) ?
+    $"background-color:{process.LayoutModel.HeaderPart.CodeColor}" :  (process.LayoutModel.HeaderPart != null && !string.IsNullOrWhiteSpace(process.LayoutModel.HeaderPart.BgImage) ?
+    $"background-image:{process.LayoutModel.HeaderPart.BgImage}" :""))>
+       @* <partial name="~/Views/Shared/_PriorFixedHeader.cshtml" />*@
         @if (process.LayoutModel.HasCustomizedHeader)
         {
             @if (!string.IsNullOrWhiteSpace(process.LayoutModel.HeaderPart.PriorFixedContent))
@@ -104,54 +106,60 @@
             {
                 foreach (RowContent row in process.LayoutModel.HeaderPart.CustomizedContent.OrderBy(_ => _.RowNumber))
                 {
-                    <div class="row firstLevel @row.ExtraClassNames">
+                    <div class="row @row.ExtraClassNames">
                         @foreach (ColContent column in row.ColsContent.OrderBy(_ => _.ColNumber))
                         {
                             <div class="@column.ColumnClassNames">
                                 @{
                                     var htmlDoc = new HtmlDocument();
                                     htmlDoc.LoadHtml(column.ColData);
-                                    var divs = htmlDoc.DocumentNode.Descendants("div");
-                                    foreach (var div in divs)
+                                    var div = htmlDoc.DocumentNode.Element("div");
+
+                                    if (div.Attributes["target"].Value == "module")
                                     {
-                                        if (div.Attributes["target"].Value == "module")
+                                        try
                                         {
+                                           
                                             var module = JsonConvert
-                                            .DeserializeObject<ModuleWithParametersValue>(column.ColData.Replace("<div target='module'>", "")
-                                            .Replace("</div>", ""));
-                                            switch (module.ModuleName)
-                                            {
-                                                case "ProductList":
-                                                    @await Component.InvokeAsync("SpecialProduct",
-                                                   new { productType = module.ParametersValue.ProductOrContentType,
-                                                   selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count,
-                                                   loadAnimation = module.ParametersValue.LoadAnimation, loadAnimationType = module.ParametersValue.LoadAnimationType });
-                                                    break;
-                                                case "ContentList":
-                                                    @await Component.InvokeAsync("ContentTemplates", module.ParametersValue);
-                                                    break;
-                                                case "HorizantalStoreMenu":
-                                                    @await Component.InvokeAsync("StoreMenu");
-                                                    break;
-                                                    case "ImageTextSlider":
-                                                    @await Component.InvokeAsync("Slider", new { sliderId =  module.ParametersValue.SliderId });
-                                                    break;
-                                                case "LoginAndProfile":
-                                                    @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId, isShop = module.ParametersValue.IsShop });
-                                                    break;
-                                                case "MultiLingualFlags":
-                                                    @await Component.InvokeAsync("MultiLingual");
-                                                    break;
-                                            }
-                                        }
-                                        else if (div.Attributes["target"].Value == "editor")
+                                        .DeserializeObject<ModuleWithParametersValue>(column.ColData.Replace("<div target=\"module\">", "")
+                                        .Replace("</div>", ""));
+                                        switch (module.ModuleName)
                                         {
-                                            //@Html.Raw(column.ColData.Replace("<div target=\"editor\">", "").Replace("</div>", ""));
-                                            var index = column.ColData.LastIndexOf("</div>");
-                                            var data = column.ColData.Substring(0, index);
-                                            var htmlRaw = column.ColData.Replace("<div target=\"editor\">", "");
-                                            @Html.Raw(@htmlRaw);
+                                            case "ProductList":
+                                                @await Component.InvokeAsync("SpecialProduct",
+                                                new { productType = module.ParametersValue.ProductOrContentType,
+                                                selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count,
+                                                loadAnimation = module.ParametersValue.LoadAnimation, loadAnimationType = module.ParametersValue.LoadAnimationType });
+                                                break;
+                                            case "ContentList":
+                                                @await Component.InvokeAsync("ContentTemplates", module.ParametersValue);
+                                                break;
+                                            case "HorizantalStoreMenu":
+                                                @await Component.InvokeAsync("StoreMenu");
+                                                break;
+                                                case "ImageTextSlider":
+                                                @await Component.InvokeAsync("Slider", new { sliderId =  module.ParametersValue.SliderId });
+                                                break;
+                                            case "LoginAndProfile":
+                                                @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId, isShop = module.ParametersValue.IsShop });
+                                                break;
+                                            case "MultiLingualFlags":
+                                                @await Component.InvokeAsync("MultiLingual");
+                                                break;
                                         }
+                                        } 
+                                        catch(Exception ex)
+                                        {
+                                            
+                                        }
+                                       
+                                    }
+                                    else if (div.Attributes["target"].Value == "editor")
+                                    {
+                                        var index = column.ColData.LastIndexOf("</div>");
+                                        var data = column.ColData.Substring(0, index);
+                                        var htmlRaw = data.Replace("<div target=\"editor\">", "");
+                                        @Html.Raw(@htmlRaw);
                                     }
                                 }
                             </div>
@@ -174,7 +182,7 @@
     </header>
 
 
-    <div class="container">
+    <div class="container-fluid">
 
         <div class="position-fixed left-50 top-0 p-5" id="toastPanel" style="z-index: 11;">
             <div aria-atomic="true" aria-live="assertive" class="toast" id="mainToast" role="alert" autohide="false">
@@ -187,8 +195,10 @@
             @RenderBody()
         </main>
     </div>
-    <footer>
-        <div class="footer" style=@(process.LayoutModel.FooterPart != null && !string.IsNullOrWhiteSpace(process.LayoutModel.FooterPart.CodeColor) ? $"background-color:{process.LayoutModel.FooterPart.CodeColor}" : "")>
+    
+    <footer class="dynamicFooterPart" style=@(process.LayoutModel.FooterPart != null && !string.IsNullOrWhiteSpace(process.LayoutModel.FooterPart.CodeColor) ?
+    $"background-color:{process.LayoutModel.FooterPart.CodeColor}" :  (process.LayoutModel.FooterPart != null && !string.IsNullOrWhiteSpace(process.LayoutModel.FooterPart.BgImage) ?
+    $"background-image:{process.LayoutModel.FooterPart.BgImage}" :""))>
             @if (process.LayoutModel.HasCustomizedFooter)
             {
                 @if (!string.IsNullOrWhiteSpace(process.LayoutModel.FooterPart.PriorFixedContent))
@@ -199,19 +209,18 @@
                 {
                     foreach (RowContent row in process.LayoutModel.FooterPart.CustomizedContent.OrderBy(_ => _.RowNumber))
                     {
-                        <div class="row firstLevel @row.ExtraClassNames">
+                        <div class="row  @row.ExtraClassNames">
                             @foreach (ColContent column in row.ColsContent.OrderBy(_ => _.ColNumber))
                             {
                                 <div class="@column.ColumnClassNames">
                                     @{
                                         var htmlDoc = new HtmlDocument();
                                         htmlDoc.LoadHtml(column.ColData);
-                                        var divs = htmlDoc.DocumentNode.Descendants("div");
-                                        foreach (var div in divs)
-                                        {
+                                        var div = htmlDoc.DocumentNode.Element("div");
+                                        
                                             if (div.Attributes["target"].Value == "module")
                                             {
-                                                var module = JsonConvert.DeserializeObject<ModuleWithParametersValue>(column.ColData.Replace("<div target='module'>", "")
+                                                var module = JsonConvert.DeserializeObject<ModuleWithParametersValue>(column.ColData.Replace("<div target=\"module\">", "")
                                                 .Replace("</div>", ""));
                                                 switch (module.ModuleName)
                                                 {
@@ -231,14 +240,13 @@
                                             }
                                             else if (div.Attributes["target"].Value == "editor")
                                             {
-                                                //@Html.Raw(column.ColData.Replace("<div target=\"editor\">", "").Replace("</div>", ""));
                                                  var index = column.ColData.LastIndexOf("</div>");
                                                  var data = column.ColData.Substring(0, index);
-                                                 var htmlRaw = column.ColData.Replace("<div target=\"editor\">", "");
+                                                 var htmlRaw = data.Replace("<div target=\"editor\">", "");
                                                  
                                                  @Html.Raw(@htmlRaw);
                                             }
-                                        }
+                                        
                                     }
                                 </div>
                             }
@@ -254,8 +262,8 @@
             {
 
             }
-        </div>
     </footer>
+    
 
     <script>
         function setLang(lang)
@@ -277,6 +285,18 @@
             debugger;
            $("span.count-basket").text(`${number} ${'@Language.GetString("Stuff")'}`);
         }
+
+         function doAnimations(elems) {
+                            var animEndEv = "webkitAnimationEnd animationend";
+
+                            elems.each(function () {
+                                var $this = $(this),
+                                    $animationType = $this.data("animation");
+                                $this.addClass($animationType).one(animEndEv, function () {
+                                    $this.removeClass($animationType);
+                                });
+                            });
+                        }
 
         function changeScreen() {
             var windowSize = $(window).width();
@@ -327,6 +347,22 @@
                         item.addClass("show");
                     }
                 })
+
+                 var $myCarousel = $("#sliderCarousel");
+                 $firstAnimatingElems = $myCarousel
+                            .find(".carousel-item:first")
+                            .find("[data-animation ^= 'animated']");
+
+                var carousel = new bootstrap.Carousel($myCarousel);
+                doAnimations($firstAnimatingElems);
+
+                var myCarousel = document.getElementById('sliderCarousel');
+                myCarousel.addEventListener("slide.bs.carousel", function (e) {
+                    var $animatingElems = $(e.relatedTarget).find(
+                        "[data-animation ^= 'animated']"
+                    );
+                    doAnimations($animatingElems);
+                });
             });
     </script>
 </body>

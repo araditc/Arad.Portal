@@ -19,6 +19,7 @@ namespace Arad.Portal.UI.Shop
         private static string _path;
         public static void Main(string[] args)
         {
+           
             var config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetCurrentDirectory())
                .AddJsonFile("appsettings.json", optional: true)

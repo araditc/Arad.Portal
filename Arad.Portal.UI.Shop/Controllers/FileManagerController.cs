@@ -36,6 +36,15 @@ namespace Arad.Portal.UI.Shop.Controllers
             return File(fileContents, mimeType);
         }
 
+        [HttpGet]
+        [Route("{language}/images/DomainDesign/{**slug}")]
+        public IActionResult GetDomainDesignImages(string slug)
+        {
+            var path = $"/images/DomainDesign/{slug}";
+            (byte[] fileContents, string mimeType) = ImageFunctions.GetImageWithActualSize(path, _configuration["LocalStaticFileStorage"]);
+            return File(fileContents, mimeType);
+        }
+
         [AllowAnonymous]
         [HttpGet]
         [Route("{language}/ckEditorProductImages/{**slug}")]

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using System.Linq;
+using Serilog;
 
 namespace Arad.Portal.UI.Shop.Helpers
 {
@@ -32,7 +33,8 @@ namespace Arad.Portal.UI.Shop.Helpers
         public void CalculateLayoutContent()
         {
 
-            string domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
+            string domainName = $"{_accessor.HttpContext.Request.Host}";
+            Log.Fatal($"domainName in layoutContentProcess:{domainName}");
             var lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
 
             var languageId = _lanRepository.FetchBySymbol(lanIcon);
