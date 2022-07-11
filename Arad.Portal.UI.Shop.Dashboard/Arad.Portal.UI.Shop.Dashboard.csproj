@@ -8,8 +8,6 @@
     <Content Remove="Views\Account\Profile.cshtml" />
     <Content Remove="Views\Shared\Components\LoginProfile\Default.cshtml" />
     <Content Remove="Views\Shared\Components\MultiLingual\Default.cshtml" />
-    <Content Remove="Views\Shared\Components\SliderLayer\Default.cshtml" />
-    <Content Remove="Views\Shared\Components\Slider\Default.cshtml" />
     <Content Remove="wwwroot\Template\Content\SliderWithSubtitle.jpg" />
   </ItemGroup>
 
@@ -51,10 +49,6 @@
     <None Include="Views\Shared\Components\ContentTemplates\Third.cshtml" />
     <None Include="Views\Shared\Components\LoginProfile\Default.cshtml" />
     <None Include="Views\Shared\Components\MultiLingual\Default.cshtml" />
-    <None Include="Views\Shared\Components\SliderLayer0\Default.cshtml" />
-    <None Include="Views\Shared\Components\Slider0\Default.cshtml" />
-    <None Include="Views\Shared\Components\SliderLayer\Default.cshtml" />
-    <None Include="Views\Shared\Components\Slider\Default.cshtml" />
     <None Include="Views\Shared\Components\SpecialProduct\First.cshtml" />
     <None Include="wwwroot\lib\bootstrap-select\css\bootstrap-select.css.map" />
     <None Include="wwwroot\lib\bootstrap-select\js\bootstrap-select.js" />

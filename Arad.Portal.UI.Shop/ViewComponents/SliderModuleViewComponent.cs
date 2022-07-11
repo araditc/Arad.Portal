@@ -1,22 +1,25 @@
 ﻿using Arad.Portal.DataLayer.Contracts.General.SliderModule;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
+using System.Threading.Tasks;
 
 namespace Arad.Portal.UI.Shop.ViewComponents
 {
-    public class Slider : ViewComponent
+    public class SliderModuleViewComponent : ViewComponent
     {
         private readonly ISliderRepository _sliderRepository;
 
-        public Slider(ISliderRepository sliderRepository)
+        public SliderModuleViewComponent(ISliderRepository sliderRepository)
         {
             _sliderRepository = sliderRepository;
         }
 
-        public IViewComponentResult Invoke(string sliderId)
+        public async Task<IViewComponentResult> InvokeAsync(string sliderId)
         {
             var slider = _sliderRepository.GetSlider(sliderId);
-
-            return View("Default", slider);
+            Log.Fatal($"find slider={slider.SliderId}");
+          
+            return View(slider);
         }
     }
 }

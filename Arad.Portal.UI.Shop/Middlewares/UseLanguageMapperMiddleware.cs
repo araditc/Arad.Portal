@@ -35,6 +35,7 @@ namespace Arad.Portal.UI.Shop.Middlewares
         }
         public async Task Invoke(HttpContext context)
         {
+            Log.Fatal($"In middleware:{context.Request.PathBase}");
             Log.Fatal($"In middleware:{context.Request.Path}");
             Log.Fatal($"domainName: {context.Request.Host}");
             string defLangSymbol = "";
@@ -63,17 +64,16 @@ namespace Arad.Portal.UI.Shop.Middlewares
             }
             else
             {
-                if (domainName.ToString().ToLower().StartsWith("localhost"))
-                {
-                    domainName = context.Request.Host.ToString().Substring(0, 9);
-                }
+
 
                 //first step checke whether this cookie exist or not
                 var cookieName = CookieRequestCultureProvider.DefaultCookieName;
-
+                Log.Fatal($"cookiename is:{cookieName}");
                 if (context.Request.Cookies[cookieName] != null)
                 {
+                    Log.Fatal("context.Request.Cookies[cookieName] isnt null;");
                     var cookieValue = context.Request.Cookies[cookieName];
+                    Log.Fatal($"cookieValue : {cookieValue}");
                     defLangSymbol = cookieValue.Split("|")[0][2..];
                 }
                 else if (false)
@@ -82,19 +82,24 @@ namespace Arad.Portal.UI.Shop.Middlewares
                     //IP Address and then check if we support this culture or not
                     //defLang =...
                 }
-                else if (defLangSymbol == "")
+                else
+                if (defLangSymbol == "")
                 {
+                    Log.Fatal("defLangSymbol is empty");
                     DataLayer.Entities.General.Domain.Domain result = null;
                     if (_domainContext.Collection.Find(_ => _.DomainName == $"{domainName}").Any())
                     {
                         result = _domainContext.Collection.Find(_ => _.DomainName == $"{domainName}").FirstOrDefault();
+                        Log.Fatal("result with domainName found");
                     }
                     else
                     {
                         result = _domainContext.Collection.Find(_ => _.IsDefault).FirstOrDefault();
+                        Log.Fatal("result with default domain Found");
                     }
-
-                    defLangSymbol = result.DefaultLangSymbol;
+                    var lanEntity = _languageContext.Collection.Find(_ => _.LanguageId == result.DefaultLanguageId).FirstOrDefault();
+                    defLangSymbol = lanEntity.Symbol;
+                    Log.Fatal($"defLangSymbol is: {defLangSymbol}");
                 }
 
                 //if cookie is null we write the cookie
@@ -103,17 +108,17 @@ namespace Arad.Portal.UI.Shop.Middlewares
                     context.Response.Cookies.Append(cookieName,
                         CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(defLangSymbol)),
                         new CookieOptions() { Domain = domainName, Expires = DateTime.Now.AddDays(7) });
+                    Log.Fatal("coockie set because it was null");
                 }
-
-                var lang = _languageContext.Collection.Find(_ => _.Symbol == defLangSymbol).FirstOrDefault();
-                //var redirectUrl = $"{domainName}/{lang.Symbol}";
+                
+                
                 if (context.Request.Path.Value.Length == 1)
                 {
-                    newPath = context.Request.Path + lang.Symbol.ToLower();
+                    newPath = context.Request.Path + defLangSymbol.ToLower();
                     context.Response.Redirect(newPath, true);
                 }
                 else
-                if (!context.Request.Path.Value.StartsWith($"/{lang.Symbol.ToLower()}"))
+                if (!context.Request.Path.Value.StartsWith($"/{defLangSymbol.ToLower()}"))
                 {
                     if (langSymbolList.Contains(context.Request.Path.Value.Split("/")[1]))
                     {
@@ -133,7 +138,7 @@ namespace Arad.Portal.UI.Shop.Middlewares
                             }
                         }
                     }
-                    newPath = $"/{lang.Symbol.ToLower()}" +
+                    newPath = $"/{defLangSymbol.ToLower()}" +
                    $"{(!string.IsNullOrWhiteSpace(pathRequest) ? pathRequest : context.Request.Path.Value) + (context.Request.QueryString.Value != "/" ? context.Request.QueryString : "")}";
                     if (newPath.EndsWith("/"))
                     {

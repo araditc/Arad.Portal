@@ -1,8 +1,9 @@
 ﻿@using Arad.Portal.DataLayer.Models.SlideModule;
+@using Serilog;
 @model Arad.Portal.DataLayer.Entities.General.SliderModule.Slider
 @{
     int i = 1;
-    
+    Log.Fatal($"Find defauil.cshtml for slider model.slides count ={Model.Slides.Count}");
 }
 
 <div class="carousel slide" id="sliderCarousel" data-bs-ride="carousel">
@@ -66,4 +67,28 @@
         </button>
     }
 </div>
+
+<script on-content-loaded="true">
+    $(document).ready(function(){
+        console.log("default.cshtml in slider");
+         var $myCarousel = $("#sliderCarousel");
+                 if($myCarousel != undefined && $myCarousel.length > 0 )
+                 {
+                      $firstAnimatingElems = $myCarousel
+                            .find(".carousel-item:first")
+                            .find("[data-animation ^= 'animated']");
+
+                        var carousel = new bootstrap.Carousel($myCarousel);
+                        doAnimations($firstAnimatingElems);
+
+                        var myCarousel = document.getElementById('sliderCarousel');
+                        myCarousel.addEventListener("slide.bs.carousel", function (e) {
+                            var $animatingElems = $(e.relatedTarget).find(
+                                "[data-animation ^= 'animated']"
+                            );
+                            doAnimations($animatingElems);
+                        });
+                 }
+    })
+</script>
 

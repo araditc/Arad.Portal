@@ -53,6 +53,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
             
             //var cookieName = CookieRequestCultureProvider.DefaultCookieName;
+            
             var lst = _contentRepository.GetAllBlogList(Request.QueryString.ToString(), domainEntity.DomainId, lanId);
             foreach (var item in lst.Items)
             {

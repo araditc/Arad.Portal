@@ -7,7 +7,7 @@ namespace Arad.Portal.UI.Shop.ViewComponents
     {
         public IViewComponentResult Invoke(Layer model)
         {
-            return View("Default", model);
+            return View(model);
         }
     }
 }
