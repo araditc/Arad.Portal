@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authorization;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -16,7 +17,7 @@ namespace Arad.Portal.UI.Shop.Controllers
     {
         private readonly IConfiguration _configuration;
         public FileManagerController(IConfiguration configuration, 
-            IHttpContextAccessor accessor, IWebHostEnvironment env):base(accessor, env)
+            IHttpContextAccessor accessor, IDomainRepository  domRepository):base(accessor, domRepository)
         {
             _configuration = configuration;
         }

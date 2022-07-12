@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -20,7 +21,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly IHttpContextAccessor _accessor;
         private readonly string _domainName ;
         public ProductGroupController(IProductGroupRepository groupRepository, IHttpContextAccessor accessor,
-            ILanguageRepository lanRepository, IMenuRepository menuRepository, IWebHostEnvironment env):base(accessor, env)
+            ILanguageRepository lanRepository, IMenuRepository menuRepository, IDomainRepository  domainRepository):base(accessor, domainRepository)
         {
             _groupRepository = groupRepository;
             _accessor = accessor;

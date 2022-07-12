@@ -9,7 +9,7 @@
     }
 </style>
 <div  id="navbar">
-    <div class="border-top-0 w-100 m-2" id="navbar">
+    <div class="border-top-0 w-100 m-2" id="navbar" style="overflow: hidden;">
         <div class="row gx-0">
             <div class="col-12">
                 <nav class="navbar navbar-expand-lg rounded navbar-light  mt-0">
@@ -19,7 +19,7 @@
                     <span class="navbar-toggler-icon"></span>
                     </button>
               
-                    <div class="collapse navbar-collapse" id="navbar">
+                    <div class="collapse navbar-collapse" >
                         <ul class="navbar-nav  me-auto">
                             @foreach (var item in Model.Where(_ => _.ParentId == null && _.IsFull).OrderBy(_ => _.Order)) //first level
                             {
@@ -153,19 +153,23 @@
 </div>
 
 <script on-content-loaded="true">
-     window.onscroll = function ()
-    {
-        // Get the offset position of the navbar
-        var x = $("#navbar").offset();
-        var sticky = x.top;
+   
+   window.onscroll = function() {myFunction()};
 
-          if (window.pageYOffset >= sticky)
-          { 
-               $("#navbar").addClass("sticky");
-          } else
-          {
-             $("#navbar").removeClass("sticky");
-          }
-    };
+   var navbar = document.getElementById("navbar");
+   var sticky = navbar.offsetTop;
+
+    function myFunction() {
+
+         console.log("sticky: "+ sticky + ", window.pageYOffset: "+ window.pageYOffset);
+      if (window.pageYOffset >= sticky)
+      {
+        navbar.classList.add("sticky")
+      } 
+      else 
+      {
+        navbar.classList.remove("sticky");
+      }
+    }
 </script> 
                                                 

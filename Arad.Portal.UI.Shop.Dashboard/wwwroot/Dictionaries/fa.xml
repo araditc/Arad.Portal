@@ -815,6 +815,9 @@
 	<string key="AlertAndMessage_ModuleWithoutParameters">
 		<value>این ماژول دارای پارارمتر نمیباشد تنها دکمه افزودن را کلیک کنید.</value>
 	</string>
+	<string key="AlertAndMessage_CopyDesigntFromOtherLanguage">
+		<value>کپی طراحی صفحه از زبان دیگر</value>
+	</string>
 	<string key="AlertAndMessage_UrlFriendIsNotUnique">
 		<value> urlFriend تکراری است.</value>
 	</string>
@@ -2442,6 +2445,9 @@
 	</string>
 	<string key="LanguageName">
 		<value>نام زبان</value>
+	</string>
+	<string key="LanguageToCopy">
+		<value>زبان مبدا برای کپی</value>
 	</string>
 	<string key="GetFromExcelFile">
 		<value>دریافت از فایل اکسل</value>

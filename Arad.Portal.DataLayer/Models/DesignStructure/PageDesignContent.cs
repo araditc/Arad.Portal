@@ -17,6 +17,8 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
         }
         public string LanguageId { get; set; }
 
+        public string LanguageName { get; set; }
+
         public PageHeaderPart HeaderPart { get; set; }
 
         public MainPageContentPart MainPageContainerPart { get; set; }

@@ -46,6 +46,15 @@
 	<string key="GetMore">
 		<value>more</value>
 	</string>
+	<string key="design_Articles">
+		<value>Articles</value>
+	</string>
+	<string key="design_Products">
+		<value>Products</value>
+	</string>
+	<string key="design_HomePage">
+		<value>HomePage</value>
+	</string>
 	<string key="design_Continue">
 		<value>Continue</value>
 	</string>

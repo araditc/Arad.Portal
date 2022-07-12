@@ -16,6 +16,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Arad.Portal.GeneralLibrary.Utilities;
+using Microsoft.AspNetCore.Localization;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -33,7 +35,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         public ProductController(IProductRepository productRepository, IHttpContextAccessor accessor,
             UserManager<ApplicationUser> userManager,
             IWebHostEnvironment env,
-            ILanguageRepository lanRepository, IDomainRepository domainRepository, ICommentRepository commentRepository):base(accessor, env)
+            ILanguageRepository lanRepository, IDomainRepository domainRepository, ICommentRepository commentRepository):base(accessor, domainRepository)
         {
             _productRepository = productRepository;
             _accessor = accessor;
@@ -48,20 +50,26 @@ namespace Arad.Portal.UI.Shop.Controllers
         [Route("{language?}/product")]
         public IActionResult Index()
         {
+            ViewData["DomainTitle"] = this.DomainTitle;
+            ViewData["PageTitle"] = Language.GetString("design_Products");
             return View();
         }
-        //[Route("product/{**slug}")]
+       
         [Route("{language}/product/{**slug}")]
         public IActionResult Details(string slug)
         {
             var isLoggedUser = HttpContext.User.Identity.IsAuthenticated;
             string userId = "";
-           
+            ViewData["DomainTitle"] = this.DomainTitle;
             userId = isLoggedUser ? HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value : "";
             var domainEntity = _domainRepository.FetchByName(_domainName, false);
             ViewBag.Providers = domainEntity.ReturnValue.DomainPaymentProviders
                 .Select(_ => new SelectListModel() { Text = _.PspType.ToString(), Value = ((int)_.PspType).ToString() });
             var lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
+            //???
+            var cookieName = CookieRequestCultureProvider.DefaultCookieName;
+            var lanSymbol = HttpContext.Request.Cookies[cookieName];
+
             var entity = _productRepository.FetchByCode(slug, domainEntity.ReturnValue, userId);
             if(!string.IsNullOrEmpty(entity.ProductId))
             {
@@ -85,6 +93,9 @@ namespace Arad.Portal.UI.Shop.Controllers
                 ViewBag.LanIcon = lanIcon;
                 ViewBag.CurCurrencyId = domainEntity.ReturnValue.DefaultCurrencyId;
                 ViewBag.CurLanguageId = lanId;
+                //??? should find current language and fetch the title of current language
+                //string lanId = "";
+                //ViewData["PageTitle"] = entity.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == lanId).Name;
                 return View(entity);
             }else
             {

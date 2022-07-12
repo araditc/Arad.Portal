@@ -45,7 +45,7 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="Arad Portal" name="description">
-    <title>@ViewData["Title"] - Arad.Portal.UI.Shop</title>
+    <title>@($"{@ViewData["PageTitle"]}-{ViewData["DomainTitle"]}")</title>
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
     @if (direction == "ltr")
     {
@@ -67,6 +67,7 @@
     <link href="~/css/siteTemplate/ThirdContentTemplate.css" rel="stylesheet" />
     <link href="~/css/siteTemplate/ForthContentTemplate.css" rel="stylesheet" />
     <link href="~/css/siteTemplate/FifthContentTemplate.css" rel="stylesheet" />
+    <link href ="~/css/StickyNavbar.css" rel ="stylesheet" />
     <link href="~/css/header.css" rel="stylesheet" />
     <link href="~/lib/animate.css/animate.compat.css" rel="stylesheet" />
     @await RenderSectionAsync("Styles", required: false)

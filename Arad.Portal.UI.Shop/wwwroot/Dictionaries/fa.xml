@@ -49,6 +49,15 @@
 	<string key="GetMore">
 		<value>بیشتر</value>
 	</string>
+	<string key="design_Articles">
+		<value>مقالات</value>
+	</string>
+	<string key="design_Products">
+		<value>محصولات</value>
+	</string>
+	<string key="design_HomePage">
+		<value>خانه</value>
+	</string>
 	<string key="design_Continue">
 		<value>ادامه</value>
 	</string>

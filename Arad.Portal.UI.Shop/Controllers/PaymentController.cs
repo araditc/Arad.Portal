@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using static Arad.Portal.DataLayer.Models.Shared.Enums;
 using System.Security.Claims;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -35,8 +36,8 @@ namespace Arad.Portal.UI.Shop.Controllers
         public PaymentController(IProductRepository productRepository, IHttpContextAccessor accessor,
             UserManager<ApplicationUser> userManager, ITransactionRepository transationRepository,
             SharedRuntimeData sharedRuntimeData,
-            IWebHostEnvironment env,
-            IMapper mapper, IShoppingCartRepository shoppingCartRepository):base(accessor, env)
+            IDomainRepository domRepository,
+            IMapper mapper, IShoppingCartRepository shoppingCartRepository):base(accessor, domRepository)
         {  
             _productRepository = productRepository;
             _userManager = userManager;

@@ -17,6 +17,7 @@ using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.DataLayer.Models.Product;
 using Arad.Portal.DataLayer.Contracts.Shop.Product;
 using Microsoft.AspNetCore.Authorization;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -31,9 +32,9 @@ namespace Arad.Portal.UI.Shop.Controllers
         public CommentController(ICommentRepository commentRepository,
                                  ContentContext contentContext,
                                  ProductContext productContext,
-                                 IWebHostEnvironment env,
+                                 IDomainRepository domainRepository,
                                  IProductRepository productRepository,
-                                 IHttpContextAccessor accessor):base(accessor, env)
+                                 IHttpContextAccessor accessor):base(accessor, domainRepository)
         {
             _commentRepository = commentRepository;
             _productContext = productContext;

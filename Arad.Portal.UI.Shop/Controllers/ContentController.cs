@@ -13,6 +13,7 @@ using System.Globalization;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using System.Web;
 using System.Collections.Specialized;
+using Arad.Portal.GeneralLibrary.Utilities;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -24,10 +25,9 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly IDomainRepository _domainrepository;
 
         public ContentController(IContentRepository contentRepository,
-            IWebHostEnvironment env,
             IDomainRepository domainRepository,
             ILanguageRepository lanRepository,
-            IHttpContextAccessor accessor):base(accessor, env)
+            IHttpContextAccessor accessor):base(accessor, domainRepository)
         {
             _contentRepository = contentRepository;
             _accessor = accessor;
@@ -39,6 +39,8 @@ namespace Arad.Portal.UI.Shop.Controllers
         public IActionResult Index()
         {
             var domainName = this.DomainName;
+            ViewData["DomainTitle"] = this.DomainTitle;
+            ViewData["PageTitle"] = Language.GetString("design_Articles");
             var domainEntity = _domainrepository.FetchByName(domainName, false).ReturnValue;
             string lanSymbol = "";
             string lanId = "";
@@ -66,6 +68,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         [Route("{language}/blog/{**slug}")]
         public IActionResult Details(string slug)
         {
+            ViewData["DomainTitle"] = this.DomainTitle;
             var isLoggedUser = HttpContext.User.Identity.IsAuthenticated;
             string userId = "";
             userId = isLoggedUser ? HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value : "";
@@ -99,6 +102,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                     }
                     #endregion
                 }
+                ViewData["PageTitle"] = entity.Title;
                 return View(entity);
             }else
             {

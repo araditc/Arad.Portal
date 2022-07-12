@@ -281,6 +281,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.ImageRatio = imageRatioList;
             var imageSize = _configuration["ProductImageSize:Size"];
             ViewBag.PicSize = imageSize;
+            foreach (var design in domainEntity.HomePageDesign)
+            {
+                if(string.IsNullOrWhiteSpace(design.LanguageName))
+                {
+                    design.LanguageName = _lanRepository.FetchLanguage(design.LanguageId).LanguageName;
+                }
+            }
             return View("~/Views/Domain/PrimaryTemplateDesignPage.cshtml", domainEntity.HomePageDesign);
         }
 

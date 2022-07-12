@@ -17,6 +17,8 @@ namespace Arad.Portal.DataLayer.Models.Domain
 
         public string DomainName { get; set; }
 
+        public string Title { get; set; }
+
         public string OwnerUserId { get; set; }
 
         public string OwnerUserName { get; set; }

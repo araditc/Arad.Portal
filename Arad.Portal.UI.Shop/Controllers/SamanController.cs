@@ -42,9 +42,8 @@ namespace Arad.Portal.UI.Shop.Controllers
             IHttpContextAccessor accessor,
             IDomainRepository domainRepository,
              SharedRuntimeData sharedRuntimeData,
-             IWebHostEnvironment env,
              UserManager<ApplicationUser> userManager,
-            HttpClientHelper httpClientHelper, IConfiguration configuration) : base(accessor, env)
+            HttpClientHelper httpClientHelper, IConfiguration configuration) : base(accessor, domainRepository)
         {
             _domainRepository = domainRepository;
             //MethodInfo method = typeof(XmlSerializer)

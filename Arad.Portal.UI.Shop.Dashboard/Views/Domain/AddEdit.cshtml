@@ -92,8 +92,6 @@
                     </div>
                 </div>
                 <div class="row m-1">
-
-
                     <div class="form-group col-md-3">
                         <label class="form-label" for="DefaultLanguageId">@Language.GetString("DefaultLanguage")</label><br />
                         <select class="form-control selectpicker" data-live-search="true" asp-for="DefaultLanguageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text", Model.DefaultLanguageId))">
@@ -104,6 +102,11 @@
                         <label class="form-label" for="groupName">@Language.GetString("DomainName")</label><br />
                         <input type="text" class="form-control" asp-for="DomainName" dir="ltr">
                         <span data-val-result="DomainName" class="text-danger"></span>
+                    </div>
+                     <div class="form-group col-md-3">
+                        <label class="form-label" for="groupName">@Language.GetString("Title")</label><br />
+                        <input type="text" class="form-control" asp-for="Title" dir="ltr">
+                        <span data-val-result="Title" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
                         <label class="form-label" for="languageId">@Language.GetString("DomainOwner")</label><br />
@@ -424,6 +427,11 @@
             $("#btnAddDomain").click(function () {
             debugger;
                 var flag = false;
+                if($("#DomainName").val() == "")
+                {
+                     $("span[data-val-result='DomainName']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                    flag = true;
+                }
                 if ($("#DefaultLanguageId").val() == "" || $("#DefaultLanguageId").val() == "-1" )
                 {
                     $("span[data-val-result='DefaultLanguageId']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
@@ -509,7 +517,11 @@
             obj.Prices = [];
             obj.DomainPaymentProviders = [];
             obj.DomainId = $("#DomainId").val();
-            obj.DomainName = $("#DomainName").val();
+            if($("#DomainName").val() != "")
+            {
+                 obj.DomainName = $("#DomainName").val();
+            }
+            obj.Title = $("#Title").val();
             obj.OwnerUserId = $("#OwnerUserId").val();
             obj.OwnerUserName = $("#OwnerUserId option:selected").text();
             obj.DefaultLanguageId = $("#DefaultLanguageId").val();

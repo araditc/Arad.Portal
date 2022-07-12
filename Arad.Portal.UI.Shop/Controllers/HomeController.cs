@@ -22,6 +22,7 @@ using Arad.Portal.DataLayer.Models.Shared;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 using Arad.Portal.UI.Shop.Helpers;
+using Arad.Portal.GeneralLibrary.Utilities;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -35,9 +36,8 @@ namespace Arad.Portal.UI.Shop.Controllers
         public HomeController(ILogger<HomeController> logger,
             IHttpContextAccessor accessor,
             ILanguageRepository lanRepo,
-            IWebHostEnvironment env,
             IConfiguration config,
-            IDomainRepository domainRepository) : base(accessor, env)
+            IDomainRepository domainRepository) : base(accessor, domainRepository)
         {
             _logger = logger;
             _domainRepository = domainRepository;
@@ -54,6 +54,8 @@ namespace Arad.Portal.UI.Shop.Controllers
             var result = _domainRepository.FetchByName(DomainName, false);
             var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
             var lanId = _lanRepository.FetchBySymbol(lanIcon);
+            ViewData["DomainTitle"] = this.DomainTitle;
+            ViewData["PageTitle"] = Language.GetString("design_HomePage");
 
             if (result.Succeeded )
             {
@@ -85,6 +87,8 @@ namespace Arad.Portal.UI.Shop.Controllers
             {
                 return View(new DataLayer.Models.DesignStructure.MainPageContentPart());
             }
+
+            
         }
         public IActionResult Privacy()
         {

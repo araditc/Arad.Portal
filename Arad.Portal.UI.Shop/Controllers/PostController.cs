@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authorization;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -15,8 +16,8 @@ namespace Arad.Portal.UI.Shop.Controllers
     {
         private readonly HttpClientHelper _httpClientHelper;
         private readonly IHttpContextAccessor _accessor;
-        public PostController(HttpClientHelper httpClientHelper, IHttpContextAccessor accessor, IWebHostEnvironment env)
-            : base(accessor, env)
+        public PostController(HttpClientHelper httpClientHelper, IHttpContextAccessor accessor, IDomainRepository domRepository)
+            : base(accessor, domRepository)
         {
             _httpClientHelper = httpClientHelper;
         }

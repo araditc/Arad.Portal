@@ -819,6 +819,9 @@
 	<string key="AlertAndMessage_ModuleWithoutParameters">
 		<value>this module hast any parameter just click add botton.</value>
 	</string>
+	<string key="AlertAndMessage_CopyDesigntFromOtherLanguage">
+		<value>copy page design from other language.</value>
+	</string>
 	<string key="AlertAndMessage_UrlFriendIsNotUnique">
 		<value>url friend is not unique.</value>
 	</string>
@@ -2400,6 +2403,9 @@
 	</string>
 	<string key="LanguageName">
 		<value>Language Name</value>
+	</string>
+	<string key="LanguageToCopy">
+		<value>source language to copy</value>
 	</string>
 	<string key="GetFromExcelFile">
 		<value>get from excel file</value>

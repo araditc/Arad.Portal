@@ -52,10 +52,9 @@ namespace Arad.Portal.UI.Shop.Controllers
             IDomainRepository domainRepository,
             IHttpContextAccessor accessor,
             ICountryRepository countryRepository,
-            IWebHostEnvironment env,
             ICurrencyRepository curRepo,
             ILanguageRepository lanRepo,
-            SignInManager<ApplicationUser> signInManager):base(accessor, env)
+            SignInManager<ApplicationUser> signInManager):base(accessor, domainRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;

@@ -20,10 +20,9 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly IHttpContextAccessor _accessor;
       
         public ContentCategoryController(IContentCategoryRepository categoryRepository,
-            IWebHostEnvironment env,
             IDomainRepository domainRepository,
             ILanguageRepository lanRepository,
-            IHttpContextAccessor accessor):base(accessor, env)
+            IHttpContextAccessor accessor):base(accessor, domainRepository)
         {
             _categoryRepository = categoryRepository;
             _domainRepository = domainRepository;

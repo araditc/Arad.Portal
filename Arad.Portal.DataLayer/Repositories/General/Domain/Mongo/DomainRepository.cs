@@ -328,6 +328,21 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             return result;
         }
 
+        public string FetchDomainTitle(string domainName)
+        {
+            var title = "";
+            var dbEntity = _context.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
+            if(dbEntity != null && !string.IsNullOrWhiteSpace(dbEntity.Title))
+            {
+                title = dbEntity.Title;
+            }
+            if(string.IsNullOrWhiteSpace(title))
+            {
+                title = domainName;
+            }
+            return title;
+        }
+
         public async Task<Result> Restore(string id)
         {
             var result = new Result();
@@ -692,5 +707,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             });
             return result;
         }
+
+        
     }
 }

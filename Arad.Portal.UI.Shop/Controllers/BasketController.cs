@@ -24,9 +24,8 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly IDomainRepository _domainRepository;
         public BasketController(IHttpContextAccessor accessor,
             IShoppingCartRepository shoppingCartRepository,
-            IWebHostEnvironment env,
             UserManager<ApplicationUser> userManager,
-            IDomainRepository domainRepository) : base(accessor, env)
+            IDomainRepository domainRepository) : base(accessor, domainRepository)
         {
             _shoppingCartRepository = shoppingCartRepository;
             _domainRepository = domainRepository;
