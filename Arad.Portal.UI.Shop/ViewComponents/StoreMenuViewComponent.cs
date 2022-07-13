@@ -50,7 +50,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
 
                 domainName = $"{_accessor.HttpContext.Request.Host}";
                 ///??? fortesting in debugging mode
-                //domainName = "www.arad-itc.com";
+                //domainName = "arad-itc.com";
                var result = _domainRepository.FetchByName(domainName, false);
                 if(result.Succeeded)
                 {

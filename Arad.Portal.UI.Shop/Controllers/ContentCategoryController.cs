@@ -33,6 +33,8 @@ namespace Arad.Portal.UI.Shop.Controllers
         [Route("{language}/category")]
         public IActionResult Index()
         {
+            ViewData["DomainTitle"] = this.DomainTitle;
+            ViewData["PageTitle"] = GeneralLibrary.Utilities.Language.GetString("design_ArticleCategories");
             return View();
         }
         [Route("{language}/category/{**slug}")]
@@ -46,7 +48,8 @@ namespace Arad.Portal.UI.Shop.Controllers
             CommonViewModel model = new CommonViewModel();
             var path = _accessor.HttpContext.Request.Path.ToString();
             var lanIcon = path.Split("/")[1].ToLower();
-
+            ViewData["DomainTitle"] = this.DomainTitle;
+            ViewData["PageTitle"] = slug.Replace("-", " ");
             var langId = _languageRepository.FetchBySymbol(lanIcon);
             ViewData["CurLangId"] = langId;
             var id = _categoryRepository.FetchByCode(slug);

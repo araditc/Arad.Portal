@@ -18,6 +18,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Domain
         Task<Result> DeleteDomain(string domainId, string modificationReason);
         Result<DomainDTO> FetchDomain(string domainId);
         Result<DomainDTO> FetchByName(string domainName, bool isDef);
+        Result<DomainDTO> FetchDefaultDomain();
 
         string FetchDomainTitle(string domainName);
         string GetDomainName();

@@ -33,7 +33,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IContentRepository _contentRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IContentCategoryRepository _contentCategoryRepository;
-       
+        private readonly IDomainRepository _domainRepository;
         private readonly ILanguageRepository _lanRepository;
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -44,6 +44,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                                     IContentCategoryRepository contentCategoryRepository,
                                     ILanguageRepository languageRepository, UserManager<ApplicationUser> userManager,
                                     CodeGenerator codeGenerator,
+                                    IDomainRepository domainRepository,
                                     IHttpContextAccessor accessor, IConfiguration configuration)
         {
             _contentRepository = contentRepository;
@@ -52,6 +53,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _lanRepository = languageRepository;
             _userManager = userManager;
             _configuration = configuration;
+            _domainRepository = domainRepository;
             _httpContextAccessor = accessor;
             imageSize = _configuration["ContentImageSize:Size"];
             _codeGenerator = codeGenerator;
@@ -62,6 +64,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             var urlFriend = $"/blog/{url}";
             var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+            if (domainId == null)
+            {
+                domainId = _domainRepository.FetchDefaultDomain().ReturnValue.DomainId;
+            }
             var res = _contentRepository.IsUniqueUrlFriend(urlFriend, domainId, id);
 
             return Json(res ? new { Status = "Success", Message = "url is unique" }

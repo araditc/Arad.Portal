@@ -52,8 +52,14 @@
 	<string key="design_Articles">
 		<value>مقالات</value>
 	</string>
+	<string key="design_ArticleCategories">
+		<value>گروه مقالات</value>
+	</string>
 	<string key="design_Products">
 		<value>محصولات</value>
+	</string>
+	<string key="design_ProductGroups">
+		<value>گروه های محصولات</value>
 	</string>
 	<string key="design_HomePage">
 		<value>خانه</value>

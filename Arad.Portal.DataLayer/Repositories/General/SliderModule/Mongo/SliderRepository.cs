@@ -8,6 +8,7 @@ using Arad.Portal.DataLayer.Contracts.General.SliderModule;
 using Arad.Portal.DataLayer.Entities.General.SliderModule;
 using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Models.SlideModule;
+using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using MongoDB.Driver;
@@ -18,12 +19,15 @@ namespace Arad.Portal.DataLayer.Repositories.General.SliderModule.Mongo
     public class SliderRepository: BaseRepository, ISliderRepository
     {
         private readonly SliderContext _context;
+        private readonly DomainContext _domainContext;
 
         public SliderRepository(SliderContext context,
+            DomainContext domainContext,
             IHttpContextAccessor httpContextAccessor,
             IWebHostEnvironment env):base(httpContextAccessor, env)
         {
             _context = context;
+            _domainContext = domainContext;
         }
 
         public List<Slider> GetSliders()
@@ -48,6 +52,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.SliderModule.Mongo
                 model.SliderId = Guid.NewGuid().ToString();
 
                 var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+                if (domainId == null)
+                {
+                    domainId = _domainContext.Collection.Find(_ => _.IsDefault == true).FirstOrDefault().DomainId;
+                }
 
                 model.AssociatedDomainId = domainId;
                 _context.Collection.InsertOne(model);

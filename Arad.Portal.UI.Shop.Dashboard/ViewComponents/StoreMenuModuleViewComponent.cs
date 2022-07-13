@@ -37,7 +37,7 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             var menues = new List<StoreMenuVM>();
             var domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
             //??? for testing
-            //var domainName = "http://localhost:3214";
+            //var domainName = "localhost:3214";
             var result = _domainRepository.FetchByName(domainName, true);
             var domainEntity = result.ReturnValue;
            

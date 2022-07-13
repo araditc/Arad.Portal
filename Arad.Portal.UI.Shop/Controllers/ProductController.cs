@@ -66,9 +66,19 @@ namespace Arad.Portal.UI.Shop.Controllers
             ViewBag.Providers = domainEntity.ReturnValue.DomainPaymentProviders
                 .Select(_ => new SelectListModel() { Text = _.PspType.ToString(), Value = ((int)_.PspType).ToString() });
             var lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
-            //???
+            string languageId;
             var cookieName = CookieRequestCultureProvider.DefaultCookieName;
-            var lanSymbol = HttpContext.Request.Cookies[cookieName];
+            if(HttpContext.Request.Cookies[cookieName] != null)
+            {
+                var lanSymbol = HttpContext.Request.Cookies[cookieName];
+                languageId = _lanRepository.FetchBySymbol(lanSymbol);
+                
+            }else
+            {
+                var lanEntity = _lanRepository.FetchLanguage(domainEntity.ReturnValue.DefaultLanguageId);
+                languageId = lanEntity.LanguageId;
+            }
+             
 
             var entity = _productRepository.FetchByCode(slug, domainEntity.ReturnValue, userId);
             if(!string.IsNullOrEmpty(entity.ProductId))
@@ -93,9 +103,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 ViewBag.LanIcon = lanIcon;
                 ViewBag.CurCurrencyId = domainEntity.ReturnValue.DefaultCurrencyId;
                 ViewBag.CurLanguageId = lanId;
-                //??? should find current language and fetch the title of current language
-                //string lanId = "";
-                //ViewData["PageTitle"] = entity.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == lanId).Name;
+                ViewData["PageTitle"] = entity.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == languageId).Name;
                 return View(entity);
             }else
             {

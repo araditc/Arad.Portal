@@ -79,6 +79,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                 //var claims = ClaimsPrincipal.Current.Identities.FirstOrDefault().Claims.ToList();
                 //Filter specific claim    
                 var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+                if(domainId == null)
+                {
+                    domainId = _domainContext.Collection.Find(_ => _.IsDefault == true).FirstOrDefault().DomainId;
+                }
                 equallentModel.AssociatedDomainId = domainId;
 
                 await _contentContext.Collection.InsertOneAsync(equallentModel);
@@ -489,6 +493,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             List<ContentGlance> lst = new List<ContentGlance>();
             if (!isDevelopment)
             {
+               
+                //var domainName = "arad-itc.com";
                 var domainName = this.GetCurrentDomainName();
                 domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
             }

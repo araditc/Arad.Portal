@@ -21,47 +21,48 @@
         border-top: 1px solid #dad9d9;
     }
 </style>
+<div class="col-10 m-auto">
+    <div class="card" id="articleListCard">
 
-<div class="card" id="articleListCard">
+        <div class="card-body">
+            @foreach (var item in Model.Items)
+            {
+                <div class="card articleItem mb-4">
+                    <a href="@(!string.IsNullOrWhiteSpace(item.UrlFriend) ? item.UrlFriend : $"/blog/{item.ContentCode}")" class="d-block text-decoration-none">
+                        <div class="row">
+                            @if (!string.IsNullOrWhiteSpace(item.DesiredImageUrl))
+                            {
+                                <div class="col-4 d-inline-block">
+                                    <img src="@($"../filemanager/GetScaledImageOnWidth?path={item.DesiredImageUrl}&width={535}")" class="w-100 rounded-0">
+                                </div>
+                                <div class="col-8 d-inline-block">
+                                    <h2 class="m-4" style="color: #222;font-size: 1.5rem;">@item.Title</h2>
+                                    <p class="me-10 text-start" style="color: #555;font-size: 1rem;">@item.SubTitle</p>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-12 d-inline-block">
+                                    <h2 class="m-4" style="color: #222;font-size: 1.5rem;">@item.Title</h2>
+                                    <p class="me-10 text-start" style="color: #555;font-size: 1rem;">@item.SubTitle</p>
+                                </div>
+                            }
 
-    <div class="card-body">
-        @foreach (var item in Model.Items)
-        {
-            <div class="card articleItem mb-4">
-                <a href="@(!string.IsNullOrWhiteSpace(item.UrlFriend) ? item.UrlFriend : $"/blog/{item.ContentCode}")" class="d-block text-decoration-none">
-                    <div class="row">
-                        @if (!string.IsNullOrWhiteSpace(item.DesiredImageUrl))
-                        {
-                            <div class="col-4 d-inline-block">
-                                <img src="@($"../filemanager/GetScaledImageOnWidth?path={item.DesiredImageUrl}&width={535}")" class="w-100 rounded-0">
-                            </div>
-                            <div class="col-8 d-inline-block">
-                                <h2 class="m-4" style="color: #222;font-size: 1.5rem;">@item.Title</h2>
-                                <p class="me-10 text-start" style="color: #555;font-size: 1rem;">@item.SubTitle</p>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="col-12 d-inline-block">
-                                <h2 class="m-4" style="color: #222;font-size: 1.5rem;">@item.Title</h2>
-                                <p class="me-10 text-start" style="color: #555;font-size: 1rem;">@item.SubTitle</p>
-                            </div>
-                        }
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+        <div class="card-footer">
+            @await Component.InvokeAsync("Pagination", new PageViewModel()
+            {
+            CurrentPage = Model.CurrentPage,
+            ItemsCount = Model.ItemsCount,
+            PageSize = Model.PageSize,
+            Navigation = Url.Action("Index", "Content"),
+            QueryParams = Model.QueryString
+            })
+        </div>
 
-                    </div>
-                </a>
-            </div>
-        }
     </div>
-    <div class="card-footer">
-        @await Component.InvokeAsync("Pagination", new PageViewModel()
-        {
-        CurrentPage = Model.CurrentPage,
-        ItemsCount = Model.ItemsCount,
-        PageSize = Model.PageSize,
-        Navigation = Url.Action("Index", "Content"),
-        QueryParams = Model.QueryString
-        })
-    </div>
-
 </div>

@@ -71,7 +71,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 equallentModel.IsActive = true;
                 
                 var domainId = _httpContextAccessor.HttpContext.User.FindFirst("RelatedDomain")?.Value;
-                
+                if (domainId == null)
+                {
+                    domainId = _domainContext.Collection.Find(_ => _.IsDefault == true).FirstOrDefault().DomainId;
+                }
+
                 //equallentModel.AssociatedDomainId = domainId;
                 await _context.Collection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;

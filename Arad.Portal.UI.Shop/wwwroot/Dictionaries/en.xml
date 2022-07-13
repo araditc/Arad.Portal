@@ -49,8 +49,14 @@
 	<string key="design_Articles">
 		<value>Articles</value>
 	</string>
+	<string key="design_ArticleCategories">
+		<value>Atricle Categories</value>
+	</string>
 	<string key="design_Products">
 		<value>Products</value>
+	</string>
+	<string key="design_ProductGroups">
+		<value>Product Groups</value>
 	</string>
 	<string key="design_HomePage">
 		<value>HomePage</value>

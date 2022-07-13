@@ -708,6 +708,35 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             return result;
         }
 
-        
+        public Result<DomainDTO> FetchDefaultDomain()
+        {
+            Result<DomainDTO> result = new Result<DomainDTO>();
+            try
+            {
+
+                var dbEntity = _context.Collection.Find(_ => _.IsDefault).FirstOrDefault();
+               
+
+                if (dbEntity != null)
+                {
+                    var dto = _mapper.Map<DomainDTO>(dbEntity);
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                    result.ReturnValue = dto;
+                }
+                else
+                {
+                    result.Message = ConstMessages.ObjectNotFound;
+                    result.ReturnValue = new DomainDTO();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result.Message = ConstMessages.ExceptionOccured;
+            }
+
+            return result;
+        }
     }
 }
