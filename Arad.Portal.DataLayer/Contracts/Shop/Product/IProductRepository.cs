@@ -27,6 +27,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 
         Task<Result> AddCommentToProduct(string productId, Comment comment);
 
+        Task<Result> UpdateVisitCount(string productId);
         Task<Result> ChangeUnitOfProduct(string productId,
             string unitId, string modificationReason);
 

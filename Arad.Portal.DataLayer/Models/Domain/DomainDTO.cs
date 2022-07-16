@@ -66,6 +66,10 @@ namespace Arad.Portal.DataLayer.Models.Domain
         
         public List<PageDesignContent> HomePageDesign { get; set; }
 
+        public List<PageDesignContent> ProductPageDesign { get; set; }
+
+        public List<PageDesignContent> BlogPageDesign { get; set; }
+
     }
 
     public class ProviderDetailDTO

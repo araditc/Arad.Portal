@@ -73,7 +73,7 @@
    
 }
 
-<div class="row sectionRow mx-2" rn="@ViewBag.RowNumber" enumcolid="@ViewBag.ColWidth" rowCustomClasses="@(Model != null ? Model.ExtraClassNames : "")" guid="@guid" @(Model.BGTypeId != null ? (Model.BGTypeId == 1 ? $"style=background-color:{Model.BgCodeColor}" : $"style=background-image:url('{Model.BgImage}')") : "")>
+<div class="row sectionRow mx-2" rn="@ViewBag.RowNumber" enumcolid="@ViewBag.ColWidth" rowCustomClasses="@(Model != null ? Model.ExtraClassNames : "")" guid="@guid" @(Model.BGType != null ? ((int)Model.BGType == 1 ? $"style=background-color:{Model.BgCodeColor}" : $"style=background-image:url('{Model.BgImage}')") : "")>
 
 
     <div class="@firstClass" colnum="1" did='@ViewBag.DomainId' cnt ="2" colClassNames="@(firstColContent != null ? firstColContent.ColumnClassNames : "" )">

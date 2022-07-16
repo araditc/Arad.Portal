@@ -16,9 +16,7 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
 
         public string RowGuid { get; set; }
 
-        public BGType BGType { get; set; }
-
-        public int? BGTypeId { get; set; }
+        public BGType? BGType { get; set; }
 
         public string BgImage { get; set; }
 

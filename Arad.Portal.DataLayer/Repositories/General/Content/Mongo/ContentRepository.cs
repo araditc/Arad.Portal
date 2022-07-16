@@ -777,5 +777,30 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             }
             return result;
         }
+
+        public async Task<Result> UpdateVisitCount(string contentId)
+        {
+            var result = new Result();
+            var entity = _contentContext.Collection.Find(_ => _.ContentId == contentId).FirstOrDefault();
+            if(entity != null)
+            {
+                entity.VisitCount += 1;
+                var updateResult = await _contentContext.Collection.ReplaceOneAsync(_ => _.ContentId == contentId, entity);
+                if (updateResult.IsAcknowledged)
+                {
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                }
+                else
+                {
+                    result.Message = ConstMessages.GeneralError;
+                }
+            }
+            else
+            {
+                result.Message = ConstMessages.ObjectNotFound;
+            }
+            return result;
+        }
     }
 }

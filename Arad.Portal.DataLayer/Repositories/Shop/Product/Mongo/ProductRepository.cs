@@ -1466,6 +1466,31 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 return !_context.ProductCollection.Find(productBuilder.ElemMatch("MultiLingualProperties", multiLingualFilterDefinition) & productBuilder.Ne("ProductId", productId)).Any();
             }
         }
+
+        public async Task<Result> UpdateVisitCount(string productId)
+        {
+            var result = new Result();
+            var entity = _context.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
+            if (entity != null)
+            {
+                entity.VisitCount += 1;
+                var updateResult = await _context.ProductCollection.ReplaceOneAsync(_ => _.ProductId == productId, entity);
+                if (updateResult.IsAcknowledged)
+                {
+                    result.Succeeded = true;
+                    result.Message = ConstMessages.SuccessfullyDone;
+                }
+                else
+                {
+                    result.Message = ConstMessages.GeneralError;
+                }
+            }
+            else
+            {
+                result.Message = ConstMessages.ObjectNotFound;
+            }
+            return result;
+        }
     }
 }
 

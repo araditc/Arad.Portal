@@ -5,6 +5,8 @@
 @using Arad.Portal.DataLayer.Models.Domain;
 @using Arad.Portal.DataLayer.Entities.General.DesignStructure;
 @using Arad.Portal.DataLayer.Models.DesignStructure;
+@using Arad.Portal.DataLayer.Models.Shared;
+
 @model List<Arad.Portal.DataLayer.Models.DesignStructure.PageDesignContent>;
 @{
     Layout = null;
@@ -33,13 +35,14 @@
 
     var domainId = @ViewBag.DomainId;
     var rowCount = @Model.Count;
+    var pageType = (int)((Enums.PageType)@ViewBag.PageType);
 }
 <html dir="@direction" lang="@lang">
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="Arad Portal" name="description">
-    <title>@ViewData["Title"] - Arad.Portal.UI.Shop</title>
+    <title>@ViewData["Title"] - AradPortalDesignPage</title>
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
     @if (direction == "ltr")
     {
@@ -344,7 +347,8 @@
             <div class="row my-2">
                  <label class="form-label fs-6">bootstrap 5.1  or customize class for this row</label>
                  <br/>
-                 <input class="form-control" value="" id="txtRowCustClass" onblure="addRowCustomizeClass(this);" />
+                 <input class="form-control" value="" id="txtRowCustClass"  />
+                 <input type="button" value="@Language.GetString("btn_ClassApply")" class="btn btn-success" onclick="addRowCustomizeClass(this);"/>
             </div>
 
              <div class="row my-2">
@@ -420,7 +424,8 @@
              <div class="row my-2">
                  <label class="form-label fs-6">bootstrap 5.1  or customize class for this column</label>
                  <br/>
-                 <input class="form-control" value="" id="txtColumnCustClass" onblure="addColumnCustomizeClass(this);" />
+                 <input class="form-control" value="" id="txtColumnCustClass"  />
+                  <input type="button" value="@Language.GetString("btn_ClassApply")" class="btn btn-success" onclick="addColumnCustomizeClass(this);"/>
             </div>
         </div>
 
@@ -514,6 +519,7 @@
 
                             function addColumnCustomizeClass(sender)
                             {
+                                debugger;
                                if($(sender).val().trim() != "")
                                {
                                      var inputCls = $(sender).val().trim();
@@ -1210,13 +1216,13 @@
 
                                         if(headerBgColor != "")
                                         {
-                                            header.BGTypeId = 1;
+                                            header.BGType = 1;
                                             header.CodeColor = headerBgColor;
                                         }
                                         else
                                         if(headerBgImage != "")
                                         {
-                                             header.BGTypeId = 2;
+                                             header.BGType = 2;
                                              header.BgImage = headerBgImage;
                                         }
                                         var i = 1;
@@ -1296,12 +1302,12 @@
                                             {
                                                 if($(this).find(".row.sectionRow").attr("bgtype") =="1")
                                                 {
-                                                    bodyRowContent.BGTypeId = 1;
+                                                    bodyRowContent.BGType = 1;
                                                     bodyRowContent.BgCodeColor = $(this).find(".row.sectionRow").style("background-color");
 
                                                 }else //== 2
                                                 {
-                                                    bodyRowContent.BGTypeId = 2;
+                                                    bodyRowContent.BGType = 2;
                                                     bodyRowContent.BgImage = $(this).find(".row.sectionRow").attr("bgurl");
                                                 }
                                             }
@@ -1351,11 +1357,11 @@
 
                                            if(footerBgColor != "")
                                             {
-                                                footerPart.BGTypeId = 1;
+                                                footerPart.BGType = 1;
                                                 footerPart.CodeColor = footerBgColor;
                                             }else if(footerBgImage != "")
                                             {
-                                                footerPart.BGTypeId = 2;
+                                                footerPart.BGType = 2;
                                                 footerPart.BgImage = footerBgImage;
                                             }
 
@@ -1425,7 +1431,8 @@
                                             model.LanguageId = $("#languageId").val();
                                             model.LanguageName = $("#languageId  option:selected").text();
                                             model.IsMultiLinguals = isMultiLingual;
-                                            model.isShop = isShop;
+                                            model.IsShop = isShop;
+                                            model.PageType = @pageType;
                                            $("#PrimaryTemplateHeaderPart textarea").each(function(){
                                                var id= $(this).attr("id");
                                                $(`div#${id}`)
@@ -1679,9 +1686,9 @@
 
                             //headerPart
                             //image and color for header//
-                            if(currentDesignForLanguage.headerPart.bgTypeId != null)
+                            if(currentDesignForLanguage.headerPart.bGType != null)
                             {
-                                if(currentDesignForLanguage.headerPart.bgTypeId == 1) //color
+                                if(currentDesignForLanguage.headerPart.bGType.toLowerCase() == "color") //color
                                 {
                                     $(".dynamicHeaderPart").css("background-color", currentDesignForLanguage.headerPart.codeColor);
                                 }else //image
@@ -1862,9 +1869,9 @@
                             //footerPart
                             //image and color for footer//
                             debugger;
-                            if(currentDesignForLanguage.footerPart.bgTypeId != null)
+                            if(currentDesignForLanguage.footerPart.bGType != null)
                             {
-                                if(currentDesignForLanguage.footerPart.bgTypeId == 1) //color
+                                if(currentDesignForLanguage.footerPart.bGType.toLowerCase() == "color") //color
                                 {
                                     $(".dynamicFooterPart").css("background-color", currentDesignForLanguage.footerPart.codeColor);
                                 }else //image

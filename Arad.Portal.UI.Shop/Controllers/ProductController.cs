@@ -56,7 +56,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
        
         [Route("{language}/product/{**slug}")]
-        public IActionResult Details(string slug)
+        public async Task<IActionResult> Details(string slug)
         {
             var isLoggedUser = HttpContext.User.Identity.IsAuthenticated;
             string userId = "";
@@ -83,6 +83,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             var entity = _productRepository.FetchByCode(slug, domainEntity.ReturnValue, userId);
             if(!string.IsNullOrEmpty(entity.ProductId))
             {
+                var updateVisitCount = await _productRepository.UpdateVisitCount(entity.ProductId);
                 if (isLoggedUser)
                 {
                     #region check cookiepart for loggedUser

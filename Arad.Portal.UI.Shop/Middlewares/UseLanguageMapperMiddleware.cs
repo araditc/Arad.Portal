@@ -47,7 +47,8 @@ namespace Arad.Portal.UI.Shop.Middlewares
             domainName = $"{context.Request.Host}";
             
 
-            if (context.Request.Path.ToString().Contains("/FileManager/GetScaledImage") ||
+            if (context.Request.Path.ToString().Contains("/Admin") ||
+                context.Request.Path.ToString().Contains("/FileManager/GetScaledImage") ||
                 context.Request.Path.ToString().Contains("/FileManager/GetImage") ||
                  context.Request.Path.ToString().Contains("/FileManager/GetScaledImageOnWidth") ||
                  context.Request.Path.ToString().Contains("/CkEditor/") ||

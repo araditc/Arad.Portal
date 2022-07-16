@@ -66,7 +66,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
         [Route("{language}/blog/{**slug}")]
-        public IActionResult Details(string slug)
+        public async Task<IActionResult> Details(string slug)
         {
             ViewData["DomainTitle"] = this.DomainTitle;
             var isLoggedUser = HttpContext.User.Identity.IsAuthenticated;
@@ -76,6 +76,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             var entity = _contentRepository.FetchByCode(slug);
             if(entity != null)
             {
+                var updateVisitCount = await _contentRepository.UpdateVisitCount(entity.ContentId);
                 if(entity.IsSidebarContentsShowing)
                 {
                     var sidebars = _contentRepository.GetContentInCategory(entity.SidebarContentCount?? 3, 

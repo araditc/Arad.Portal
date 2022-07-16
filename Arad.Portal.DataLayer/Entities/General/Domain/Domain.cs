@@ -73,6 +73,10 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
 
         public List<PageDesignContent> HomePageDesign { get; set; }
 
+        public List<PageDesignContent> ProductPageDesign { get; set; }
+
+        public List<PageDesignContent> BlogPageDesign { get; set; }
+
     }
     public class ProviderDetail
     {

@@ -55,6 +55,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
         
+      
 
         public DomainController(IDomainRepository domainRepository, UserManager<ApplicationUser> userManager,
             IProviderRepository providerRepository,
@@ -168,24 +169,24 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
             //var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
             //var languageId = _lanRepository.FetchBySymbol(lanIcon);
-            if(model.HeaderPart.BGTypeId != null)
-            {
-                model.HeaderPart.BGType = (BGType)model.HeaderPart.BGTypeId.Value;
-            }
+            //if(model.HeaderPart.BGTypeId != null)
+            //{
+            //    model.HeaderPart.BGType = (BGType)model.HeaderPart.BGTypeId.Value;
+            //}
 
-            if (model.FooterPart.BGTypeId != null)
-            {
-                model.FooterPart.BGType = (BGType)model.FooterPart.BGTypeId.Value;
-            }
+            //if (model.FooterPart.BGTypeId != null)
+            //{
+            //    model.FooterPart.BGType = (BGType)model.FooterPart.BGTypeId.Value;
+            //}
 
-            foreach (RowContent item in model.MainPageContainerPart.RowContents)
-            {
-                if(item.BGTypeId != null)
-                {
-                    item.BGType = (BGType)item.BGTypeId.Value;
+            //foreach (RowContent item in model.MainPageContainerPart.RowContents)
+            //{
+            //    if(item.BGTypeId != null)
+            //    {
+            //        item.BGType = (BGType)item.BGTypeId.Value;
 
-                }
-            }
+            //    }
+            //}
 
             var obj = new PageDesignContent()
             {
@@ -195,7 +196,18 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 MainPageContainerPart = model.MainPageContainerPart
             };
 
-           
+            //???
+            switch (model.PageType)
+            {
+                case PageType.MainPage:
+                    break;
+                case PageType.contentPage:
+                    break;
+                case PageType.ProductPage:
+                    break;
+               
+            }
+
             if(domainEntity.ReturnValue.HomePageDesign.Any(_=>_.LanguageId == model.LanguageId))
             {
                 var m = domainEntity.ReturnValue.HomePageDesign.FirstOrDefault(_ => _.LanguageId == model.LanguageId);
@@ -264,12 +276,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpGet]
-        public IActionResult HomePageDesign(string domainId)
+        public IActionResult HomePageDesign(string domainId, PageType pageType)
         {
             //var moduleList = _moduleRepository.GetAllModules();
             //ViewBag.ModuleList = moduleList;
             var domainEntity = _domainRepository.FetchDomain(domainId).ReturnValue;
 
+            ViewBag.PageType = pageType;
+            List<PageDesignContent> finalModel = new List<PageDesignContent>();
             ViewBag.DomainId = domainId;
             ViewBag.IsShop = domainEntity.IsShop;
             ViewBag.IsMultilingual = domainEntity.IsMultiLinguals;
@@ -281,14 +295,42 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.ImageRatio = imageRatioList;
             var imageSize = _configuration["ProductImageSize:Size"];
             ViewBag.PicSize = imageSize;
-            foreach (var design in domainEntity.HomePageDesign)
+            switch (pageType)
             {
-                if(string.IsNullOrWhiteSpace(design.LanguageName))
-                {
-                    design.LanguageName = _lanRepository.FetchLanguage(design.LanguageId).LanguageName;
-                }
+                case PageType.HomePage:
+                    foreach (var design in domainEntity.HomePageDesign)
+                    {
+                        if (string.IsNullOrWhiteSpace(design.LanguageName))
+                        {
+                            design.LanguageName = _lanRepository.FetchLanguage(design.LanguageId).LanguageName;
+                        }
+                    }
+                    finalModel = domainEntity.HomePageDesign;
+                    break;
+                case PageType.ProductPage:
+                    foreach (var design in domainEntity.ProductPageDesign)
+                    {
+                        if (string.IsNullOrWhiteSpace(design.LanguageName))
+                        {
+                            design.LanguageName = _lanRepository.FetchLanguage(design.LanguageId).LanguageName;
+                        }
+                    }
+                    finalModel = domainEntity.ProductPageDesign;
+                    break;
+                  
+                case PageType.BlogPage:
+                    foreach (var design in domainEntity.BlogPageDesign)
+                    {
+                        if (string.IsNullOrWhiteSpace(design.LanguageName))
+                        {
+                            design.LanguageName = _lanRepository.FetchLanguage(design.LanguageId).LanguageName;
+                        }
+                    }
+                    finalModel = domainEntity.BlogPageDesign;
+                    break;
+                 
             }
-            return View("~/Views/Domain/PrimaryTemplateDesignPage.cshtml", domainEntity.HomePageDesign);
+            return View("~/Views/Domain/PrimaryTemplateDesignPage.cshtml", finalModel);
         }
 
 

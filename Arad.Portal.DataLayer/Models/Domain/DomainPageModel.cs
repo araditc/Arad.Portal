@@ -27,6 +27,8 @@ namespace Arad.Portal.DataLayer.Models.Domain
 
         public PageFooterPart FooterPart { get; set; }
 
+        public PageType PageType { get; set; }
+
         public bool IsMultiLinguals { get; set; }
 
         public bool IsShop { get; set; }
