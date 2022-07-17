@@ -2,6 +2,7 @@
 @using Arad.Portal.GeneralLibrary.Utilities;
 @using Arad.Portal.DataLayer.Models.Domain;
 @using Arad.Portal.UI.Shop.Dashboard.ViewComponents;
+@using Arad.Portal.DataLayer.Models.Shared;
 
 @model PagedItems<DomainViewModel>
 @{
@@ -14,11 +15,12 @@
         queryString = System.Web.HttpUtility.ParseQueryString(Model.QueryString);
         queryString.Remove("page");
     }
-   if(langId == "")
+    if (langId == "")
     {
         langId = ViewBag.DefLangId;
     }
     var searchCollapseClass = isSearch ? "collapse show" : "collapse";
+    
 }
 
 
@@ -64,9 +66,9 @@
             </div>
             <div class="col-md-4 offset-md-5">
                 <div class="card-tools float-end">
-                        <a asp-action="AddEdit" asp-controller="Domain" class="btn btn-success bg-gradient btn-sm">
-                            <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_Add")
-                        </a>
+                    <a asp-action="AddEdit" asp-controller="Domain" class="btn btn-success bg-gradient btn-sm">
+                        <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_Add")
+                    </a>
                 </div>
             </div>
         </div>
@@ -83,7 +85,8 @@
                     <th>@Language.GetString("DefaultCurrency")</th>
                     <th>@Language.GetString("DefaultDomain")</th>
                     <th></th>
-.First            </thead>
+                </tr>
+            </thead>
             <tbody>
                 @if (Model.Items.Any())
                 {
@@ -102,10 +105,10 @@
                             <td class="ListCell">@item.DefaultCurrencyName</td>
                             <td class="ListCell">@(item.IsDefault ? Language.GetString("Yes") : Language.GetString("No"))</td>
                             <td>
-                               
-                                    <a asp-action="AddEdit" asp-controller="Domain" asp-route-id="@item.DomainId" class="btn btn-sm btn-warning bg-gradient">
-                                        <i class="fa fa-edit"></i>@Language.GetString("btn_Edit")
-                                    </a>
+
+                                <a asp-action="AddEdit" asp-controller="Domain" asp-route-id="@item.DomainId" class="btn btn-sm btn-warning bg-gradient">
+                                    <i class="fa fa-edit"></i>@Language.GetString("btn_Edit")
+                                </a>
                                 @if (!item.IsDeleted)
                                 {
                                     <button onclick="EntityDelete('@item.DomainId')" class="btn btn-sm btn-danger bg-gradient">
@@ -119,11 +122,19 @@
                                         @Language.GetString("btn_Restore")
                                     </button>
                                 }
-                               
-                                    <a asp-action="HomePageDesign" asp-controller="Domain" asp-route-domainId="@item.DomainId" class="btn btn-success bg-gradient btn-sm">
-                                        <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_HomePageDesign")
-                                    </a>
-                              
+
+                                <a asp-action="PageDesign" asp-controller="Domain" asp-route-pageType="@(Enums.PageType.HomePage)" asp-route-domainId="@item.DomainId" class="btn btn-success bg-gradient btn-sm">
+                                    <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_HomePageDesign")
+                                </a>
+
+                                 <a asp-action="PageDesign" asp-controller="Domain" asp-route-pageType="@(Enums.PageType.BlogPage)" asp-route-domainId="@item.DomainId" class="btn btn-success bg-gradient btn-sm">
+                                    <i style="position: relative; top: 2px;" class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_ContentPageDesign")
+                                </a>
+
+                                 <a asp-action="PageDesign" asp-controller="Domain" asp-route-pageType="@(Enums.PageType.ProductPage)" asp-route-domainId="@item.DomainId" class="btn btn-success bg-gradient btn-sm">
+                                    <i style="position: relative; top: 2px;" class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_ProductPageDesign")
+                                </a>
+
                             </td>
                         </tr>
                     }
@@ -154,27 +165,27 @@
 
 @section Scripts{
 
-<script>
+    <script>
 
-    function EntityDelete(id) {
-        debugger;
-         entityId = id;
-        typeOfRequest = 'Get';
-        confirmUrl = '@Url.Action("Delete", "Domain")' + "/" + id,
-        document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Delete")';
-        document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_DeletionSureness")';
-        $('#confirmModal').modal('show');
+        function EntityDelete(id) {
+            debugger;
+            entityId = id;
+            typeOfRequest = 'Get';
+            confirmUrl = '@Url.Action("Delete", "Domain")' + "/" + id,
+                document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Delete")';
+            document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_DeletionSureness")';
+            $('#confirmModal').modal('show');
 
-    }
-
-    function EntityRestore(id) {
-        debugger;
-          entityId = id;
-        typeOfRequest = 'Get';
-        confirmUrl = '@Url.Action("Restore", "Domain")' + '?id=' + id,
-        document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
-        document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';
-        $('#confirmModal').modal('show');
         }
-</script>
+
+        function EntityRestore(id) {
+            debugger;
+            entityId = id;
+            typeOfRequest = 'Get';
+            confirmUrl = '@Url.Action("Restore", "Domain")' + '?id=' + id,
+                document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
+            document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';
+            $('#confirmModal').modal('show');
+        }
+    </script>
 }

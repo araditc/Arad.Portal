@@ -58,7 +58,8 @@
      var guid = @ViewBag.Guid;
 
 }
-<div class="row sectionRow mx-2" rn="@ViewBag.RowNumber" enumcolid="@ViewBag.ColWidth" rowCustomClasses="@(Model != null ? Model.ExtraClassNames : "")" guid="@guid" @(Model.BGType != null ? ((int)Model.BGType == 1 ? $"style=background-color:{Model.BgCodeColor}" : $"style=background-image:url('{Model.BgImage}')") : "")>
+<div class="row sectionRow mx-2" rn="@ViewBag.RowNumber" enumcolid="@ViewBag.ColWidth" rowCustomClasses="@(Model != null ? Model.ExtraClassNames : "")" 
+guid="@guid" @(Model != null && Model.BGType != null ? ((int)Model.BGType.Value == 1 ? $"style=background-color:{Model.BgCodeColor}" : $"style=background-image:url('{Model.BgImage}')") : "")>
     <div class="@first" colnum="1" did='@ViewBag.DomainId' cnt ="3" colClassNames="@(firstColContent != null ? firstColContent.ColumnClassNames : "" )">
           <partial name="_InnerSection.cshtml" model='new ColContent(){ColNumber = 1, Section = section,
                     ColumnClassNames = firstColContent != null ? firstColContent.ColumnClassNames : first.Replace("border-1", "").Replace("border", ""),

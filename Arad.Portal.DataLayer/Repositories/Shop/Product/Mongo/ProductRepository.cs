@@ -94,7 +94,6 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 equallentModel.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
 
-                //var claims = ClaimsPrincipal.Current.Identities.FirstOrDefault().Claims.ToList();
                 var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
                 if (domainId == null)
                 {

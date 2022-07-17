@@ -184,7 +184,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecificationGroup.Mong
                    {
                        SpecificationGroupId = _.SpecificationGroupId,
                        IsDeleted = _.IsDeleted,
-                       GroupName = _.GroupNames.Any(a => a.LanguageId == langId) ? _.GroupNames.FirstOrDefault(a => a.LanguageId == langId) : _.GroupNames.FirstOrDefault()
+                       GroupName = _.GroupNames.Any(a => a.LanguageId == langId) ? _.GroupNames.First(a => a.LanguageId == langId) : _.GroupNames.First()
                    }).ToList();
 
                 result.CurrentPage = page;

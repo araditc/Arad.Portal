@@ -12,8 +12,8 @@ namespace Arad.Portal.DataLayer.Models.Shared
     {
         public enum PageType
         {
-            MainPage,
-            contentPage,
+            HomePage,
+            BlogPage,
             ProductPage
         }
 

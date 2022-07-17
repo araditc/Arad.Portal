@@ -219,8 +219,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                       ProductSpecificationId = _.ProductSpecificationId,
                       SpecificationGroupId = _.SpecificationGroupId,
                       SpecificationNameValues = _.SpecificationNameValues.Any(a=>a.LanguageId == langId) ?
-                      _.SpecificationNameValues.FirstOrDefault(a => a.LanguageId == langId) : 
-                      _.SpecificationNameValues.FirstOrDefault()
+                      _.SpecificationNameValues.First(a => a.LanguageId == langId) : 
+                      _.SpecificationNameValues.First()
                      
                    }).ToList();
 

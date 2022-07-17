@@ -11,9 +11,8 @@
 @if (Model != null && Model.RowContents.Count() > 0)
 {
     @foreach (RowContent row in Model.RowContents.OrderBy(_ => _.RowNumber))
-  @* @Parallel.ForEach(orderdedRows, row=>*@
     {
-        <div class="row gx-0 @row.ExtraClassNames" @(row.BGTypeId != null ? (row.BGTypeId.Value == 1 ?  $"style:background-color:{row.BgCodeColor};" : $"style=background-image:url({row.BgImage});") : "")>
+        <div class="row gx-0 @row.ExtraClassNames" @(row.BGType != null ? ((int)row.BGType.Value == 1 ?  $"style:background-color:{row.BgCodeColor};" : $"style=background-image:url({row.BgImage});") : "")>
             @foreach (ColContent column in row.ColsContent.OrderBy(_ => _.ColNumber))
             {
                 <div class="@column.ColumnClassNames">
@@ -111,7 +110,6 @@
                                         {
                                             Log.Fatal("error in loading multilingual flags");
                                         }
-
                                         break;
 
                                 }
@@ -122,9 +120,9 @@
                             try
                             {
                                 var index = column.ColData.LastIndexOf("</div>");
-                            var data = column.ColData.Substring(0, index);
-                            var htmlRaw = data.Replace("<div target=\"editor\">", "");
-                            @Html.Raw(@htmlRaw);
+                                var data = column.ColData.Substring(0, index);
+                                var htmlRaw = data.Replace("<div target=\"editor\">", "");
+                                @Html.Raw(@htmlRaw);
                             }
                             catch (Exception ex)
                             {
@@ -138,7 +136,7 @@
             }
         </div>
     }
-    //);
+   
 }
 
 

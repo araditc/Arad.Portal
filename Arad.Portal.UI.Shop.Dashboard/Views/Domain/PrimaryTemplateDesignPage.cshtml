@@ -175,7 +175,7 @@
 
                 <button id="btnSave" class="btn btn-success bg-gradient btn-sm float-end m-2" type="button">@Language.GetString("btn_Save")</button>
                 <button id="btnPreview" class="btn btn-primary bg-gradient btn-sm float-end m-2" type="button">@Language.GetString("btn_Preview")</button>
-                <a id="btnBack" asp-action="Index" asp-controller="Home" class="btn btn-secondary bg-gradient btn-sm float-end m-2" type="button">@Language.GetString("btn_Back")</a>
+                <a id="btnBack" asp-action="List" asp-controller="Domain" class="btn btn-secondary bg-gradient btn-sm float-end m-2" type="button">@Language.GetString("btn_Back")</a>
 
             </div>
         </div>
@@ -480,8 +480,6 @@
                          var headerBgColor = "";
                          var footerBgImage ="";
                          var  headerBgImage ="";
-                         var isShop = '@ViewBag.IsShop' == "True";
-                         var isMultiLingual = '@ViewBag.IsMultilingual' == "True";
                          var offCanvasRows = document.getElementById('styleDiv');
                          var offvanvasCols = document.getElementById('colStylesDiv');
                          var offCanvasHeaderFooter = document.getElementById('styleHeaderFooterDiv');
@@ -807,18 +805,6 @@
                             } else {
                                 item.addClass("show");
                             }
-                        });
-
-                        $("#btnFlags").click(function(){
-                            var sender =  $(this);
-                            $(this).parent().remove();
-                            isMultiLingual = false;
-                        });
-
-                        $("#btnIsShop").click(function(){
-                            var sender = $(this);
-                            $(this).parent().remove();
-                            isShop = false;
                         });
 
 
@@ -1430,8 +1416,6 @@
                                             model.DomainId = '@ViewBag.DomainId';
                                             model.LanguageId = $("#languageId").val();
                                             model.LanguageName = $("#languageId  option:selected").text();
-                                            model.IsMultiLinguals = isMultiLingual;
-                                            model.IsShop = isShop;
                                             model.PageType = @pageType;
                                            $("#PrimaryTemplateHeaderPart textarea").each(function(){
                                                var id= $(this).attr("id");
@@ -1572,8 +1556,6 @@
                                                     model.FooterContent = footer;
                                                     model.DomainId = '@domainId';
                                                     model.LanguageId = $("#languageId").val();
-                                                    model.IsShop = isShop;
-                                                    model.IsMultiLinguals = isMultiLingual;
 
                                                         $.ajax({
                                                         url: '@Url.Action("StoreDesignPreview")',
@@ -2314,7 +2296,6 @@
                              dataType : "html",
                              statusCode:{
                                  200:function(data){
-                                   
 
                                      var divId =  `#${tag}_paramSection`;
                                       $(divId).find(`.firstLevel.active.${rowNumber} .contentColumns`).html(data);

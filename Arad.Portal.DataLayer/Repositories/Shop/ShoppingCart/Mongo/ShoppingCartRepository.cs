@@ -116,8 +116,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                         {
                             ProductId = productEntity.ProductId,
                             ProductName = productEntity
-                                .MultiLingualProperties.FirstOrDefault(a => a.LanguageId
-                                == userCartEntity.ShoppingCartCulture.LanguageId).Name,
+                                .MultiLingualProperties.FirstOrDefault(a => a.LanguageId == userCartEntity.ShoppingCartCulture.LanguageId).Name,
                             CreationDate = DateTime.Now,
                             CreatorUserId = userId,
                             AssociatedDomainId = domainEntity.DomainId,

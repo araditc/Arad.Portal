@@ -179,7 +179,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                             MenuId = _.MenuId,
                             Icon = _.Icon,
                             MenuTitle = _.MenuTitles.Any(_=>_.LanguageId == languageId) ? 
-                            _.MenuTitles.FirstOrDefault(_ => _.LanguageId == languageId).Name : _.MenuTitles.FirstOrDefault().Name,
+                            _.MenuTitles.FirstOrDefault(_ => _.LanguageId == languageId).Name : _.MenuTitles.First().Name,
                             LanguageId = languageId,
                             MenuTitles = _.MenuTitles,
                             MenuType = _.MenuType,

@@ -207,7 +207,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductUnit.Mongo
                    {
                       ProductUnitId = _.ProductUnitId,
                       UnitName = _.UnitNames.Any(a => a.LanguageId == langId) ?
-                      _.UnitNames.Where(a => a.LanguageId == langId).FirstOrDefault() : _.UnitNames.FirstOrDefault(),
+                      _.UnitNames.Where(a => a.LanguageId == langId).First() : _.UnitNames.First(),
                       IsDeleted = _.IsDeleted
                    }).ToList();
 

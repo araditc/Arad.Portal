@@ -76,7 +76,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                 equallentModel.ContentId = Guid.NewGuid().ToString();
 
 
-                //var claims = ClaimsPrincipal.Current.Identities.FirstOrDefault().Claims.ToList();
+              
                 //Filter specific claim    
                 var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
                 if(domainId == null)

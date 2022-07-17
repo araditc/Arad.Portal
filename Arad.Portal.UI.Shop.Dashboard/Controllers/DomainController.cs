@@ -169,24 +169,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
             //var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
             //var languageId = _lanRepository.FetchBySymbol(lanIcon);
-            //if(model.HeaderPart.BGTypeId != null)
-            //{
-            //    model.HeaderPart.BGType = (BGType)model.HeaderPart.BGTypeId.Value;
-            //}
-
-            //if (model.FooterPart.BGTypeId != null)
-            //{
-            //    model.FooterPart.BGType = (BGType)model.FooterPart.BGTypeId.Value;
-            //}
-
-            //foreach (RowContent item in model.MainPageContainerPart.RowContents)
-            //{
-            //    if(item.BGTypeId != null)
-            //    {
-            //        item.BGType = (BGType)item.BGTypeId.Value;
-
-            //    }
-            //}
 
             var obj = new PageDesignContent()
             {
@@ -195,33 +177,49 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 FooterPart = model.FooterPart,
                 MainPageContainerPart = model.MainPageContainerPart
             };
-
-            //???
+           
             switch (model.PageType)
             {
-                case PageType.MainPage:
+                case PageType.HomePage:
+                    if (domainEntity.ReturnValue.HomePageDesign.Any(_ => _.LanguageId == model.LanguageId))
+                    {
+                        var home = domainEntity.ReturnValue.HomePageDesign.FirstOrDefault(_ => _.LanguageId == model.LanguageId);
+                        home.HeaderPart = obj.HeaderPart;
+                        home.FooterPart = obj.FooterPart;
+                        home.MainPageContainerPart = obj.MainPageContainerPart;
+                    }
+                    else
+                    {
+                        domainEntity.ReturnValue.HomePageDesign.Add(obj);
+                    }
                     break;
-                case PageType.contentPage:
+                case PageType.BlogPage:
+                    if (domainEntity.ReturnValue.BlogPageDesign.Any(_ => _.LanguageId == model.LanguageId))
+                    {
+                        var blog = domainEntity.ReturnValue.BlogPageDesign.FirstOrDefault(_ => _.LanguageId == model.LanguageId);
+                        blog.HeaderPart = obj.HeaderPart;
+                        blog.FooterPart = obj.FooterPart;
+                        blog.MainPageContainerPart = obj.MainPageContainerPart;
+                    }
+                    else
+                    {
+                        domainEntity.ReturnValue.BlogPageDesign.Add(obj);
+                    }
                     break;
                 case PageType.ProductPage:
+                    if (domainEntity.ReturnValue.ProductPageDesign.Any(_ => _.LanguageId == model.LanguageId))
+                    {
+                        var pro = domainEntity.ReturnValue.ProductPageDesign.FirstOrDefault(_ => _.LanguageId == model.LanguageId);
+                        pro.HeaderPart = obj.HeaderPart;
+                        pro.FooterPart = obj.FooterPart;
+                        pro.MainPageContainerPart = obj.MainPageContainerPart;
+                    }
+                    else
+                    {
+                        domainEntity.ReturnValue.ProductPageDesign.Add(obj);
+                    }
                     break;
-               
             }
-
-            if(domainEntity.ReturnValue.HomePageDesign.Any(_=>_.LanguageId == model.LanguageId))
-            {
-                var m = domainEntity.ReturnValue.HomePageDesign.FirstOrDefault(_ => _.LanguageId == model.LanguageId);
-                m.HeaderPart = obj.HeaderPart;
-                m.FooterPart = obj.FooterPart;
-                m.MainPageContainerPart = obj.MainPageContainerPart;
-            }else
-            {
-                domainEntity.ReturnValue.HomePageDesign.Add(obj);
-            }
-
-            domainEntity.ReturnValue.IsMultiLinguals = model.IsMultiLinguals;
-            domainEntity.ReturnValue.IsShop = model.IsShop;
-
             var result = await _domainRepository.EditDomain(domainEntity.ReturnValue);
 
             return Json(result.Succeeded ? new { Status = "Success", result.Message }
@@ -276,7 +274,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpGet]
-        public IActionResult HomePageDesign(string domainId, PageType pageType)
+        public IActionResult PageDesign(string domainId, PageType pageType)
         {
             //var moduleList = _moduleRepository.GetAllModules();
             //ViewBag.ModuleList = moduleList;
@@ -285,8 +283,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.PageType = pageType;
             List<PageDesignContent> finalModel = new List<PageDesignContent>();
             ViewBag.DomainId = domainId;
-            ViewBag.IsShop = domainEntity.IsShop;
-            ViewBag.IsMultilingual = domainEntity.IsMultiLinguals;
+            //ViewBag.IsShop = domainEntity.IsShop;
+            //ViewBag.IsMultilingual = domainEntity.IsMultiLinguals;
             ViewBag.Url =  _configuration["LocalStaticFileShown"];
             var lanList = _lanRepository.GetAllActiveLanguage();
             lanList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
