@@ -20,6 +20,7 @@
             lang = "en";
             break;
     }
+    var baseAdd = Config["BaseAddress"];
 }
 <html style="height: auto;" dir="@dir" lang="@lang">
 <head>
@@ -29,16 +30,16 @@
 
     @if (dir == "ltr")
     {
-        <link href="~/lib/bootstrap5/css/bootstrap.min.css" rel="stylesheet" />
+        <link href=@($"~{baseAdd}/lib/bootstrap5/css/bootstrap.min.css") rel="stylesheet" />
     }
     else
     {
-        <link href="~/lib/bootstrap5/css/bootstrap.rtl.min.css" rel="stylesheet" />
-        <link href="~/Fonts/IranSans/css/fontiran.css" rel="stylesheet" />
+        <link href=@($"~{baseAdd}/lib/bootstrap5/css/bootstrap.rtl.min.css") rel="stylesheet" />
+        <link href=@($"~{baseAdd}/Fonts/IranSans/css/fontiran.css") rel="stylesheet" />
     }
-    <link href="~/css/login.css"
-          rel="stylesheet" />
-    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    <link href=@($"~{baseAdd}/css/login.css") rel="stylesheet" />
+          
+    <link href=@($"~{baseAdd}/lib/font-awesome/css/all.css") rel="stylesheet" />
 
 </head>
 <body style="height: auto;">
@@ -61,8 +62,8 @@
         </section>
 
     </div>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap5/js/bootstrap.bundle.js"></script>
+    <script src=@($"~{baseAdd}/lib/jquery/dist/jquery.min.js") ></script>
+    <script src=@($"~{baseAdd}/lib/bootstrap5/js/bootstrap.bundle.js")></script>
 
 </body>
 </html>

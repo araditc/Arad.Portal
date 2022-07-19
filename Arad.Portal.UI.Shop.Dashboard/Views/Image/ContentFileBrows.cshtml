@@ -1,6 +1,8 @@
-﻿
+﻿@using Microsoft.Extensions.Configuration;
+@inject IConfiguration _configuration;
 @{
     Layout = null;
+     var baseAdd = _configuration["BaseAddress"];
 }
 
 <!DOCTYPE html>
@@ -9,7 +11,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>File Browser</title>
-    <link rel="stylesheet" href="~/lib/bootstrap5/css/bootstrap.min.css" />
+    <link rel="stylesheet" href=@($"~{baseAdd}/lib/bootstrap5/css/bootstrap.min.css") />
     <style>
         #form {
             width: 600px;
@@ -44,8 +46,8 @@
         }
     </style>
 
-   <script src="~/js/plugins/jquery/jquery.min.js"></script>
-    <script src="~/lib/ckeditor/ckeditor.js"></script>
+   <script src=@($"~{baseAdd}/js/plugins/jquery/jquery.min.js")></script>
+    <script src=@($"~{baseAdd}/lib/ckeditor/ckeditor.js")></script>
    
 </head>
 

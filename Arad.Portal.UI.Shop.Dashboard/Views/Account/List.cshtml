@@ -295,7 +295,7 @@
         function restoreUser(id) {
             entityId = id;
 			typeOfRequest = 'PUT';
-			confirmUrl = '@Url.Action("Restore", "Account")' + "?id=" + id,
+			confirmUrl = '@Url.Action("Restore", "Account")' + "/" + id,
 			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';
 			$('#confirmModal').modal('show');
@@ -304,7 +304,7 @@
         function changePassword(id) {
             entityId = id;
 			typeOfRequest = 'PUT';
-			confirmUrl = '@Url.Action("ChangePassword", "Account")' + "?id=" + id,
+			confirmUrl = '@Url.Action("ChangePassword", "Account")' + "/" + id,
 			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_ChangePass")';
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_ChangePassSureness")';
 			$('#confirmModal').modal('show');

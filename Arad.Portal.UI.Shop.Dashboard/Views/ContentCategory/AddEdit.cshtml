@@ -3,6 +3,7 @@
     //Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
+    var baseAdd = Config["BaseAddress"];
 }
 @section Styles{
     <style>
@@ -146,7 +147,7 @@
 
                 var dto = FillDataToSend();
                     $.ajax({
-                        url: "@Model.ContentCategoryId" != "" ? "/ContentCategory/Edit" : "/ContentCategory/Add",
+                        url: "@Model.ContentCategoryId" != "" ? '@Url.Action("Edit","ContentCategory")' : @Url.Action("Add","ContentCategory"),
                         contentType: 'application/json',
                         data: JSON.stringify(dto),
                     type: 'Post',
@@ -243,10 +244,10 @@
                     $("span[data-val-result='languageId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
                     flag = true;
                 }
-                
+                var urlFriend = $("#urlFriend").val();
                 if (!flag) {
                     $.ajax({
-                            url: "/ContentCategory/CheckUrlFriendUniqueness?id="+ '@Model.ContentCategoryId' +"&url=" + $("#urlFriend").val(),
+                            url: `@Url.Action("CheckUrlFriendUniqueness", "ContentCategory")?id=${@Model.ContentCategoryId}&url=${urlFriend}`, 
                             type: 'Get',
                             dataType: 'json',
                             success: function (result) {

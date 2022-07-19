@@ -2,6 +2,7 @@
 @using System.Globalization;
 @using Arad.Portal.GeneralLibrary.Utilities;
 @using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor _accessor
 @{
     var direction = "";
 
@@ -33,11 +34,11 @@
             lang = "en";
             break;
     }
-    //OperationResult operationResult = ViewBag.OperationResult ?? new OperationResult();
-    //bool isNotNullOperationResult = ViewBag.OperationResult is not null;
-    //bool isSuccess = operationResult is { Succeeded: true };
+   
+    var baseAdd = Config["BaseAddress"];
+   
 }
-@inject IHttpContextAccessor _accessor
+
 
 <html dir="@direction" lang="@lang">
 
@@ -56,27 +57,27 @@
 
     @if (direction == "ltr")
     {
-        <link href="~/lib/bootstrap5/css/bootstrap.min.css" rel="stylesheet" />
+        <link href=@($"~{baseAdd}/lib/bootstrap5/css/bootstrap.min.css") rel="stylesheet" />
     }
     else
     {
-        <link href="~/lib/bootstrap5/css/bootstrap.rtl.min.css" rel="stylesheet" />
-        <link href="~/Fonts/IranSans/css/fontiran.css" rel="stylesheet" />
+        <link href=@($"~{baseAdd}/lib/bootstrap5/css/bootstrap.rtl.min.css") rel="stylesheet" />
+        <link href=@($"~{baseAdd}/Fonts/IranSans/css/fontiran.css") rel="stylesheet" />
 
     }
 
 
-    <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
-    <link href="~/css/site.css" rel="stylesheet" />
-    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
-    <link href = "~/lib/animate.css/animate.compat.css" rel="stylesheet"/>
+    <link href=@($"~{baseAdd}/lib/bootstrap-select/css/bootstrap-select.min.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/css/site.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/lib/font-awesome/css/all.css") rel="stylesheet" />
+    <link href = @($"~{baseAdd}/lib/animate.css/animate.compat.css") rel="stylesheet"/>
 
     @await RenderSectionAsync("Styles", required: false)
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
-    <script src="~/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js"></script>
-    <script src="~/js/LangUniqueness.js"></script>
+    <script src=@($"~{baseAdd}/lib/jquery/dist/jquery.min.js")></script>
+    <script src=@($"~{baseAdd}/lib/bootstrap5/js/bootstrap.bundle.min.js")></script>
+    <script src=@($"~{baseAdd}/lib/bootstrap-select/bootstrap-select.min.js")></script>
+    <script src=@($"~{baseAdd}/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js")></script>
+    <script src=@($"~{baseAdd}/js/LangUniqueness.js")></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 
@@ -200,7 +201,7 @@
         </div>
     </div>
 
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src=@($"~{baseAdd}/js/site.js") asp-append-version="true"></script>
     <script>
 
     $(document).ready(function () {

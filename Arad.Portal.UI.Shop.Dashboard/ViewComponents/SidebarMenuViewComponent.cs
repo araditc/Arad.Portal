@@ -15,6 +15,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using Microsoft.AspNetCore.Routing;
 using Arad.Portal.DataLayer.Models.Permission;
+using Microsoft.Extensions.Configuration;
 
 namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
 {
@@ -23,15 +24,18 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
         private readonly IHttpContextAccessor _accessor;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IPermissionRepository _permissionRepository;
+        private readonly IConfiguration _configuration;
 
         public SidebarMenu(
             IHttpContextAccessor accessor,
             IPermissionRepository permissionRepository,
+            IConfiguration configuration,
             UserManager<ApplicationUser> userManager)
         {
             _accessor = accessor;
             _permissionRepository = permissionRepository;
             _userManager = userManager;
+            _configuration = configuration;
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
@@ -41,13 +45,18 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
                 string userId = _accessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
                 var route = _accessor.HttpContext.GetRouteData();
-               
 
+                var baseAddress = _configuration["BaseAddress"];
+                if(string.IsNullOrWhiteSpace(baseAddress))
+                {
+                    baseAddress = "/Admin";
+                }
+                ViewBag.BasePath = baseAddress;
                 var req = _accessor.HttpContext.Request;
                 var obj = new RequestMenuModel()
                 {
                     PathString = req.Path,
-                    Domain = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}"
+                    Domain = $"{_accessor.HttpContext.Request.Host}"
                 };
 
                 

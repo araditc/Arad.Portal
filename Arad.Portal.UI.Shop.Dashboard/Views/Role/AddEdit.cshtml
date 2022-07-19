@@ -3,14 +3,15 @@
     //Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
+    var baseAdd = Config["BaseAddress"];
    
 }
 
 
-<link href="~/css/jquerysctipttop.css" rel="stylesheet" />
-@*<script src="~/js/plugins/jquery/jquery.min.js"></script>*@
-<link href="~/css/jqueryTreeview/jquery.treeview.css" rel="stylesheet" />
-<script src="~/js/jqueryTreeview/jquery.treeview.js"></script>
+<link href=@($"~{baseAdd}/css/jquerysctipttop.css") rel="stylesheet" />
+
+<link href=@($"~{baseAdd}/css/jqueryTreeview/jquery.treeview.css") rel="stylesheet" />
+<script src=@($"~{baseAdd}/js/jqueryTreeview/jquery.treeview.js") ></script>
 
 <style>
     .text-danger {

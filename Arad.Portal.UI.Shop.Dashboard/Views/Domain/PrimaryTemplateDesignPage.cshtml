@@ -6,7 +6,8 @@
 @using Arad.Portal.DataLayer.Entities.General.DesignStructure;
 @using Arad.Portal.DataLayer.Models.DesignStructure;
 @using Arad.Portal.DataLayer.Models.Shared;
-
+@using Microsoft.Extensions.Configuration;
+@inject IConfiguration _configuration;
 @model List<Arad.Portal.DataLayer.Models.DesignStructure.PageDesignContent>;
 @{
     Layout = null;
@@ -36,6 +37,7 @@
     var domainId = @ViewBag.DomainId;
     var rowCount = @Model.Count;
     var pageType = (int)((Enums.PageType)@ViewBag.PageType);
+    var baseAdd = _configuration["BaseAddress"];
 }
 <html dir="@direction" lang="@lang">
 <head>
@@ -43,41 +45,40 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="Arad Portal" name="description">
     <title>@ViewData["Title"] - AradPortalDesignPage</title>
-    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    <link href=@($"~{baseAdd}/lib/font-awesome/css/all.css") rel="stylesheet" />
     @if (direction == "ltr")
     {
-        <link href="~/lib/bootstrap5/css/bootstrap.min.css" rel="stylesheet" />
+        <link href=@($"~{baseAdd}/lib/bootstrap5/css/bootstrap.min.css") rel="stylesheet" />
     }
     else
     {
-        <link href="~/lib/bootstrap5/css/bootstrap.rtl.min.css" rel="stylesheet" />
-        <link href="~/Fonts/IranSans/css/fontiran.css" rel="stylesheet" />
+        <link href=@($"~{baseAdd}/lib/bootstrap5/css/bootstrap.rtl.min.css") rel="stylesheet" />
+        <link href=@($"~{baseAdd}/Fonts/IranSans/css/fontiran.css") rel="stylesheet" />
     }
-    <link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/css/Menu/Bootstrap4MegaMenu.css" />
-    <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
-    <link href="~/css/site.css" rel="stylesheet" />
-    <link href="~/lib/owlCarousel/css/owl.carousel.min.css" rel="stylesheet" />
-    <link href="~/lib/owlCarousel/css/owl.theme.default.min.css" rel="stylesheet" />
-    <link href="~/lib/owlCarousel/css/CarouselCustomArrowKeys.css" rel="stylesheet" />
-    <link href="~/css/SpecialProduct.css" rel="stylesheet" />
-    <link href="~/css/siteTemplate/FirstContentTemplate.css" rel="stylesheet" />
-    <link href="~/css/siteTemplate/ThirdContentTemplate.css" rel="stylesheet" />
-    <link href="~/css/siteTemplate/ForthContentTemplate.css" rel="stylesheet" />
-    <link href="~/css/siteTemplate/FifthContentTemplate.css" rel="stylesheet" />
-    <link href="~/css/header.css" rel="stylesheet" />
-    @*<link href="~/css/StickyNavbar.css" rel="stylesheet" />*@
-    <link href="~/lib/bootstrap-colorpicker/css/bootstrap-colorpicker.css" rel="stylesheet" />
-    <link href="~/lib/animate.css/animate.compat.css" rel="stylesheet" />
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
-    <script src="~/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js"></script>
-    <script src="~/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js"></script>
-    <script src="~/lib/owlCarousel/js/owl.carousel.min.js"></script>
-    <script src="~/js/TemplateCreation.js"></script>
-    <script src="~/lib/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
-    <script src="~/lib/cropperjs/cropper.js"></script>
+    <link href=@($"~{baseAdd}/lib/cropperjs/cropper.css") rel="stylesheet" />
+    <link rel="stylesheet" href=@($"~{baseAdd}/css/Menu/Bootstrap4MegaMenu.css") />
+    <link href=@($"~{baseAdd}/lib/bootstrap-select/css/bootstrap-select.min.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/css/site.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/lib/owlCarousel/css/owl.carousel.min.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/lib/owlCarousel/css/owl.theme.default.min.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/lib/owlCarousel/css/CarouselCustomArrowKeys.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/css/SpecialProduct.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/css/siteTemplate/FirstContentTemplate.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/css/siteTemplate/ThirdContentTemplate.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/css/siteTemplate/ForthContentTemplate.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/css/siteTemplate/FifthContentTemplate.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/css/header.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/lib/bootstrap-colorpicker/css/bootstrap-colorpicker.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/lib/animate.css/animate.compat.css") rel="stylesheet" />
+    <script src=@($"~{baseAdd}/lib/jquery/dist/jquery.min.js")></script>
+    <script src=@($"~{baseAdd}/lib/bootstrap5/js/bootstrap.bundle.min.js")></script>
+    <script src=@($"~{baseAdd}/lib/bootstrap-select/bootstrap-select.min.js")></script>
+    <script src=@($"~{baseAdd}/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js")></script>
+    <script src=@($"~{baseAdd}/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js")></script>
+    <script src=@($"~{baseAdd}/lib/owlCarousel/js/owl.carousel.min.js")></script>
+    <script src=@($"~{baseAdd}/js/TemplateCreation.js")></script>
+    <script src=@($"~{baseAdd}/lib/bootstrap-colorpicker/js/bootstrap-colorpicker.js")></script>
+    <script src=@($"~{baseAdd}/lib/cropperjs/cropper.js")></script>
     
 
 </head>

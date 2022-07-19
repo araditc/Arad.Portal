@@ -23,6 +23,7 @@
         langId = ViewBag.DefLangId;
     }
     var searchCollapseClass = isSearch ? "collapse show" : "collapse";
+    var baseAdd = Config["BaseAddress"];
 }
 
 
@@ -167,7 +168,7 @@
         function EntityRestore(id) {
               entityId = id;
 			typeOfRequest = 'Get';
-			confirmUrl = '@Url.Action("Restore", "ContentCategory")' + '?id=' + id,
+			confirmUrl = '@Url.Action("Restore", "ContentCategory")' + '/' + id,
 			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';
 			$('#confirmModal').modal('show');

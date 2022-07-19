@@ -454,7 +454,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                 model.DefaultCurrencyId = currencyDto.CurrencyId;
                 model.DefaultCurrencyName = currencyDto.CurrencyName;
-                var currentDomain = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
+                var currentDomain = $"{_httpContextAccessor.HttpContext.Request.Host}";
                 string associatedDomainId = "";
                 if (!string.IsNullOrWhiteSpace(model.DomainId))
                 {

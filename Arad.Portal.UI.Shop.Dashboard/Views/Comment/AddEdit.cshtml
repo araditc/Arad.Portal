@@ -3,6 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
+    var baseAdd = Config["BaseAddress"];
 }
 @section Styles{
     <style>
@@ -84,7 +85,7 @@
             var isApproved = $("input[type=checkbox][id='IsApproved']").is(":checked");
 
                 $.ajax({
-                    url: "/Comment/ApproveComment?commentId=" + commenId + "&isApproved=" + isApproved ,
+                    url: `@Url.Action("ApproveComment", "Comment")?commentId=${commenId}&isApproved=${isApproved}`, 
                     type: 'Get',
                     processData: false,
                     contentType: false,

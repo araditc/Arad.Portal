@@ -47,7 +47,7 @@
         $("#btnDownloadTemplate").click(function () {
             debugger;
             var lanId = $("#languageId").val();
-            window.location.href = '/Excel/DownloadTemplate?languageId=' + lanId;
+            window.location.href = `@Url.Action("DownloadTemplate", "Excel")?languageId=${lanId}`, 
             $("#loading").removeClass('is-active');
         });
     });

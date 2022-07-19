@@ -1,18 +1,19 @@
 ﻿@model Arad.Portal.DataLayer.Models.Domain.DomainDTO
 @using Arad.Portal.UI.Shop.Dashboard.Helpers;
 @{
-    //Layout = "~/Views/Shared/_Layout.cshtml";
+   
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
+    var baseAdd = Config["BaseAddress"];
 }
 @section Styles{
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
+        <link href=@($"~{baseAdd}/plugins/datePicker/kamadatepicker.css") rel="stylesheet" />
     }
     else
     {
-        <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css" rel="stylesheet" />
+        <link href=@($"~{baseAdd}/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css") rel="stylesheet" />
     }
     <style>
         .text-danger {
@@ -331,11 +332,11 @@
 @section Scripts{
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <script src="~/plugins/datePicker/kamadatepicker.min.js"></script>
+        <script src=@($"~{baseAdd}/plugins/datePicker/kamadatepicker.min.js")></script>
     }
     else
     {
-        <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+        <script src=@($"~{baseAdd}/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")></script>
     }
 
     <script>
@@ -377,9 +378,9 @@
 
             $("#providerId").change(function () {
                 if ($(this).val() != "" && $(this).val() != "-1") {
-
+                    var pspVal = $(this).val();
                     $.ajax({
-                        url: "/Domain/GetProviderParams?pspVal=" + $(this).val(),
+                        url: `@Url.Action("GetProviderParams", "Domain")?pspVal=${pspVal}`, 
                         contentType: 'application/json',
                         type: 'Post',
                         dataType: 'html',
@@ -462,8 +463,7 @@
                     var dto = FillDataToSend();
                     debugger;
                         $.ajax({
-                            url: "@Model.DomainId" != "" ? "/Domain/Edit" : "/Domain/Add",
-                            /*data: dataModel,*/
+                            url: "@Model.DomainId" != "" ? `@Url.Action("Edit", "Domain")` : `@Url.Action("Add", "Domain")`,
                             contentType: 'application/json',
                             data: JSON.stringify(dto),
                             type: 'Post',
@@ -604,29 +604,10 @@
                     debugger;
                     if ($(this).text() == currencyId && $(this).parent().find("td:eq(4)").text() == "" &&
                         $(this).parent().find("td:eq(5)").text() == active) {
-                        /*confirm = false;*/
-                        @*Swal.fire({
-                            title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-                            text: '@Language.GetString("AlertAndMessage_PricePerCurrencyUniqueness")',
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#d51c1c',
-                            cancelButtonColor: '#009c09db',
-                            confirmButtonText: '@Language.GetString("btn_Confirm")',
-                            cancelButtonText: '@Language.GetString("btn_NotConfirm")'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                debugger;
-                                /*confirm = true;*/
-                                $(this).parent().find("td:eq(5)").text(inActive);
-                                appendToPriceList(tr);
-                            }
-                        });*@
                         globalSender = this;
                         document.getElementById('confirmLabel').innerHTML = '@Language.GetString("AlertAndMessage_AreYouSure")';
 			            document.getElementById('confirmBody').innerHTML = '@Language.GetString("AlertAndMessage_PricePerCurrencyUniqueness")';
                         $('#showModal').modal('show');
-
                     }
                 });
             } else {

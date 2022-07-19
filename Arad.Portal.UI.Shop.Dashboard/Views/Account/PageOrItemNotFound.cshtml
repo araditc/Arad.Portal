@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Config
+@{
     Layout = null;
     string lang = "";
     var dir = "";
@@ -20,6 +22,7 @@
             lang = "en";
             break;
     }
+     var baseAdd = Config["BaseAddress"];
 }
 <html style="height: auto;" dir="@dir" lang="@lang">
 <head>
@@ -31,16 +34,16 @@
    
     @if (dir == "rtl")
     {
-        <link href="~/lib/bootstrap5/css/bootstrap.min.css" rel="stylesheet" />
+        <link href=@($"~{baseAdd}/lib/bootstrap5/css/bootstrap.min.css") rel="stylesheet" />
     }
     else
 
     {
-     <link href="~/lib/bootstrap5/css/bootstrap.rtl.min.css" rel="stylesheet" />
+     <link href=@($"~{baseAdd}/lib/bootstrap5/css/bootstrap.rtl.min.css") rel="stylesheet" />
     }
-    <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
-    <link href="~/css/site.css" rel="stylesheet" />
-    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    <link href=@($"~{baseAdd}/lib/bootstrap-select/css/bootstrap-select.min.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/css/site.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/lib/font-awesome/css/all.css") rel="stylesheet" />
 
 </head>
 <body style="height: auto;">
@@ -67,10 +70,10 @@
         </section>
         <!-- /.content -->
     </div>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
-    <script src="~/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js"></script>
+    <script src=@($"~{baseAdd}/lib/jquery/dist/jquery.min.js")></script>
+    <script src=@($"~{baseAdd}/lib/bootstrap5/js/bootstrap.bundle.min.js")></script>
+    <script src=@($"~{baseAdd}/lib/bootstrap-select/bootstrap-select.min.js")></script>
+    <script src=@($"~{baseAdd}/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js")></script>
 
 </body>
 </html>

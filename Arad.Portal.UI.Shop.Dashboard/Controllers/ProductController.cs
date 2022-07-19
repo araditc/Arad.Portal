@@ -225,7 +225,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         var lan = _lanRepository.FetchLanguage(item.LanguageId);
                         item.LanguageSymbol = lan.Symbol;
                         item.MultiLingualPropertyId = Guid.NewGuid().ToString();
-                        item.UrlFriend = $"/{lan.Symbol}{item.UrlFriend}";
+                        item.UrlFriend = $"{item.UrlFriend}";
                         item.ProductGroupNames = new();
                         foreach (var grp in dto.GroupIds)
                         {

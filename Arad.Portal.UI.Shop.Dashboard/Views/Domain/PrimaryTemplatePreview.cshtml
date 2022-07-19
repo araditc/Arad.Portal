@@ -1,31 +1,14 @@
 ﻿<!DOCTYPE html>
 @model Arad.Portal.DataLayer.Models.Shared.TemplateDesign
 @using System.Globalization;
+@using Microsoft.Extensions.Configuration;
+@inject IConfiguration _configuration;
 @using Arad.Portal.GeneralLibrary.Utilities;
 @{
     Layout = null;
     var direction = "";
     var langList = new List<string>() { "fa", "en" };
-    string lang = "";
-    //if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-    //{
-    //    direction = "rtl";
-    //    ViewBag.dir = "rtl";
-    //}
-    //else
-    //{
-    //    direction = "ltr";
-    //    ViewBag.dir = "ltr";
-    //}
-    //switch (CultureInfo.CurrentCulture.Name)
-    //{
-    //    case "fa-IR":
-    //        lang = "fa";
-    //        break;
-    //    case "en-US":
-    //        lang = "en";
-    //        break;
-    //}
+   
 
     if (Model.LangSymbol == "fa")
     {
@@ -35,6 +18,7 @@
     {
         direction = "ltr";
     }
+     var baseAdd = _configuration["BaseAddress"];
 }
 <html dir="@direction" lang="@Model.LangSymbol">
 <head>
@@ -45,36 +29,34 @@
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
     @if (direction == "ltr")
     {
-        <link href="~/lib/bootstrap5/css/bootstrap.min.css" rel="stylesheet" />
+        <link href=@($"~{baseAdd}/lib/bootstrap5/css/bootstrap.min.css") rel="stylesheet" />
     }
     else
     {
-        <link href="~/lib/bootstrap5/css/bootstrap.rtl.min.css" rel="stylesheet" />
-        <link href="~/Fonts/IranSans/css/fontiran.css" rel="stylesheet" />
+        <link href=@($"~{baseAdd}/lib/bootstrap5/css/bootstrap.rtl.min.css") rel="stylesheet" />
+        <link href=@($"~{baseAdd}/Fonts/IranSans/css/fontiran.css") rel="stylesheet" />
     }
-    <link rel="stylesheet" href="~/css/Menu/Bootstrap4MegaMenu.css" />
-    <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
-    <link href="~/css/site.css" rel="stylesheet" />
-    <link href="~/lib/owlCarousel/css/owl.carousel.min.css" rel="stylesheet" />
-    <link href="~/lib/owlCarousel/css/owl.theme.default.min.css" rel="stylesheet" />
-    <link href="~/lib/owlCarousel/css/CarouselCustomArrowKeys.css" rel="stylesheet" />
-    <link href="~/css/SpecialProduct.css" rel="stylesheet" />
-    <link href="~/css/siteTemplate/FirstContentTemplate.css" rel="stylesheet" />
-    <link href="~/css/siteTemplate/ThirdContentTemplate.css" rel="stylesheet" />
-    <link href="~/css/siteTemplate/ForthContentTemplate.css" rel="stylesheet" />
-    <link href="~/css/siteTemplate/FifthContentTemplate.css" rel="stylesheet" />
-    <link href="~/css/header.css" rel="stylesheet" />
-   @* <link href="~/css/StickyNavbar.css" rel="stylesheet" />*@
-    <link href="~/lib/animate.css/animate.compat.css" rel="stylesheet" />
-
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
-    <script src="~/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js"></script>
-    <script src="~/lib/ckeditor/ckeditor.js"></script>
-    <script src="~/lib/owlCarousel/js/owl.carousel.min.js"></script>
-    <script src="~/js/TemplateCreation.js"></script>
-    <script src="~/js/StickyNavbar.js"></script>
+    <link rel="stylesheet" href=@($"~{baseAdd}/css/Menu/Bootstrap4MegaMenu.css") />
+    <link href=@($"~{baseAdd}/lib/bootstrap-select/css/bootstrap-select.min.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/css/site.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/lib/owlCarousel/css/owl.carousel.min.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/lib/owlCarousel/css/owl.theme.default.min.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/lib/owlCarousel/css/CarouselCustomArrowKeys.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/css/SpecialProduct.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/css/siteTemplate/FirstContentTemplate.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/css/siteTemplate/ThirdContentTemplate.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/css/siteTemplate/ForthContentTemplate.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/css/siteTemplate/FifthContentTemplate.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/css/header.css") rel="stylesheet" />
+    <link href=@($"~{baseAdd}/lib/animate.css/animate.compat.css") rel="stylesheet" />
+    <script src=@($"~{baseAdd}/lib/jquery/dist/jquery.min.js")></script>
+    <script src=@($"~{baseAdd}/lib/bootstrap5/js/bootstrap.bundle.min.js")></script>
+    <script src=@($"~{baseAdd}/lib/bootstrap-select/bootstrap-select.min.js")></script>
+    <script src=@($"~{baseAdd}/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js")></script>
+    <script src=@($"~{baseAdd}/lib/ckeditor/ckeditor.js")></script>
+    <script src=@($"~{baseAdd}/lib/owlCarousel/js/owl.carousel.min.js")></script>
+    <script src=@($"~{baseAdd}/js/TemplateCreation.js")></script>
+    <script src=@($"~{baseAdd}/js/StickyNavbar.js")></script>
 
 </head>
 <body>

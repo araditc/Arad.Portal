@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Serilog;
+using Microsoft.Extensions.Configuration;
 
 namespace Arad.Portal.UI.Shop.Middlewares
 {
@@ -23,21 +24,25 @@ namespace Arad.Portal.UI.Shop.Middlewares
         private readonly DomainContext _domainContext;
         private readonly LanguageContext _languageContext;
         private readonly IWebHostEnvironment _env;
+        private readonly IConfiguration _configuration;
 
         public UseLanguageMapperMiddleware(RequestDelegate next, DomainContext domainContext,
             IWebHostEnvironment environment,
-            LanguageContext languageContext)
+            LanguageContext languageContext,
+            IConfiguration configuration)
         {
             _next = next;
             _domainContext = domainContext;
             _languageContext = languageContext;
             _env = environment;
+            _configuration = configuration;
+
         }
         public async Task Invoke(HttpContext context)
         {
-            Log.Fatal($"In middleware:{context.Request.PathBase}");
-            Log.Fatal($"In middleware:{context.Request.Path}");
-            Log.Fatal($"domainName: {context.Request.Host}");
+            Log.Fatal($"In middleware context.Request.PathBase : {context.Request.PathBase}");
+            Log.Fatal($"In middleware context.Request.Path : {context.Request.Path}");
+            Log.Fatal($"domainName context.Request.Host : {context.Request.Host}");
             string defLangSymbol = "";
             string pathRequest = "";
             var langSymbolList = _languageContext.Collection.Find(_ => _.IsActive).Project(_ => _.Symbol.ToLower()).ToList();
@@ -45,21 +50,24 @@ namespace Arad.Portal.UI.Shop.Middlewares
             string domainName = "";
             
             domainName = $"{context.Request.Host}";
-            
+            var baseAddressAdmin = _configuration["BaseAddress"];
+            if(!string.IsNullOrWhiteSpace(baseAddressAdmin))
+            {
+                baseAddressAdmin = "/Admin";
+            }
 
-            if (context.Request.Path.ToString().Contains("/Admin") ||
-                context.Request.Path.ToString().Contains("/FileManager/GetScaledImage") ||
-                context.Request.Path.ToString().Contains("/FileManager/GetImage") ||
-                 context.Request.Path.ToString().Contains("/FileManager/GetScaledImageOnWidth") ||
-                 context.Request.Path.ToString().Contains("/CkEditor/") ||
-                  context.Request.Path.ToString().Contains("/fonts") ||
-                  context.Request.Path.ToString().Contains("/ImageSlider/") ||
-                  context.Request.Path.ToString().Contains("/fonts/") ||
-                  context.Request.Path.ToString().Contains("/imgs") ||
-                context.Request.Path.ToString().Contains("/lib/") ||
-                context.Request.Path.ToString().Contains("/css/") ||
-                context.Request.Path.ToString().Contains("/js/") ||
-                context.Request.Path.ToString().Contains("/plugins/"))
+            if (context.Request.Path.ToString().Contains(baseAddressAdmin, StringComparison.OrdinalIgnoreCase) ||
+                context.Request.Path.ToString().Contains("/FileManager/GetScaledImage", StringComparison.OrdinalIgnoreCase) ||
+                context.Request.Path.ToString().Contains("/FileManager/GetImage", StringComparison.OrdinalIgnoreCase) ||
+                context.Request.Path.ToString().Contains("/FileManager/GetScaledImageOnWidth", StringComparison.OrdinalIgnoreCase) ||
+                context.Request.Path.ToString().Contains("/CkEditor/", StringComparison.OrdinalIgnoreCase) ||
+                context.Request.Path.ToString().Contains("/ImageSlider/", StringComparison.OrdinalIgnoreCase) ||
+                context.Request.Path.ToString().Contains("/fonts/", StringComparison.OrdinalIgnoreCase) ||
+                context.Request.Path.ToString().Contains("/imgs", StringComparison.OrdinalIgnoreCase) ||
+                context.Request.Path.ToString().Contains("/lib/", StringComparison.OrdinalIgnoreCase) ||
+                context.Request.Path.ToString().Contains("/css/", StringComparison.OrdinalIgnoreCase) ||
+                context.Request.Path.ToString().Contains("/js/", StringComparison.OrdinalIgnoreCase) ||
+                context.Request.Path.ToString().Contains("/plugins/", StringComparison.OrdinalIgnoreCase))
             {
                 await _next.Invoke(context);
             }

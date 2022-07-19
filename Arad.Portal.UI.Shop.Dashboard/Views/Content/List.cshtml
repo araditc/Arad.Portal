@@ -24,6 +24,7 @@
         langId = ViewBag.DefLangId;
     }
     var searchCollapseClass = isSearch ? "collapse show" : "collapse";
+    var baseAdd = Config["BaseAddress"];
 }
 
 <div class="card card-dark">
@@ -184,7 +185,7 @@
                 var langId = $("#cmbLangIdFilter").val();
             if (langId != "-1") {
                 $.ajax({
-                    url: "/ContentCategory/GetContentCategoryList/" + langId,
+                    url: `@Url.Action("GetContentCategoryList", "ContentCategory")/${langId}`, 
                     type: 'Get',
                     dataType: 'json',
                     success: function (result) {
@@ -235,7 +236,7 @@
         function EntityDelete(id) {
             entityId = id;
 			typeOfRequest = 'Get';
-			confirmUrl = '@Url.Action("Delete", "Content")' + "/" + id,
+			confirmUrl = `@Url.Action("Delete", "Content")/${id}`,
 			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Delete")';
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_DeletionSureness")';
 			$('#confirmModal').modal('show');
@@ -243,7 +244,7 @@
         function EntityRestore(id) {
              entityId = id;
 			typeOfRequest = 'Get';
-			confirmUrl = '@Url.Action("Restore", "Content")' + '?id=' + id,
+			confirmUrl = `@Url.Action("Restore", "Content")/${id}`,
 			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';
 			$('#confirmModal').modal('show');

@@ -3,19 +3,9 @@
 @{
     ViewData["Title"] = "Index";
     var alert = Language.GetString("AlertAndMessage_GotIt");
+     var baseAdd = Config["BaseAddress"];
 }
 
-@section Styles{
-    @*@if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-    {
-        <link href="~/css/siteTemplate/rtl/form.css" rel="stylesheet" />
-    }
-    else
-    {
-        <link href="~/css/siteTemplate/ltr/form.css" rel="stylesheet" />
-    }
-    <link href="~/css/data-grid.css" rel="stylesheet" />*@
-}
 
 <div class="headPage text-right">
     <h5>@Language.GetString("Menu_Roles")</h5>
@@ -94,8 +84,8 @@
 
 @section Scripts{
 
-    <script src="~/lib/twbs-pagination/jquery.twbsPagination.js"></script>
-    <script src="~/js/tree.js"></script>
+    <script src=@($"~{baseAdd}/lib/twbs-pagination/jquery.twbsPagination.js")></script>
+    <script src=@($"~{baseAdd}/js/tree.js")></script>
     @if (@Model["List"])
     {
         <script>
@@ -187,12 +177,7 @@
                                         $("#addRole").find('[data-val-result=' + value.key + ']').parent().addClass("has-error");
                                     });
                                 } else {
-                                    @*Swal.fire({
-                                        type: 'error',
-                                        text: result.message,
-                                        confirmButtonText:
-                                            '<i class="fa fa-thumbs-up"></i> @alert',
-                                    });*@
+                                  
                                     showError(result.message);
                                 }
                             }
@@ -330,12 +315,6 @@
                                         .addClass("has-error");
                                 });
                             } else {
-                                @*Swal.fire({
-                                    type: 'error',
-                                    text: result.message,
-                                    confirmButtonText:
-                                        '<i class="fa fa-thumbs-up"></i> @alert',
-                                });*@
                                 showError(result.message);
                             }
                         }

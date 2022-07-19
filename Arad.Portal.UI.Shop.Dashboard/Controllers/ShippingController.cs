@@ -70,7 +70,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             var model = new ShippingSettingDTO();
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            string domainName = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}";
+            string domainName = $"{_accessor.HttpContext.Request.Host}";
             var domainEntity = _domainRepository.FetchByName(domainName, false).ReturnValue;
 
             model.CurrencyId = domainEntity.DefaultCurrencyId;

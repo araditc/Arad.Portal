@@ -1,11 +1,12 @@
 ﻿@model Arad.Portal.DataLayer.Models.Menu.MenuDTO
 @{
-    //Layout = "~/Views/Shared/_Layout.cshtml";
+   
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
+     var baseAdd = Config["BaseAddress"];
 }
 @section Styles{
-    <link href="~/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css" rel="stylesheet" />
+    <link href=@($"~{baseAdd}/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css") rel="stylesheet" />
     <style>
         .text-danger {
             font-size: 12px;
@@ -156,7 +157,7 @@
 </div>
 
 @section Scripts{
-    <script src="~/lib/bootstrap-iconpicker/js/bootstrap-iconpicker.bundle.min.js"></script>
+    <script src=@($"~{baseAdd}/lib/bootstrap-iconpicker/js/bootstrap-iconpicker.bundle.min.js")></script>
     <script>
 
         $(document).ready(function () {
@@ -193,8 +194,9 @@
                 debugger;
                 if($(this).val() != "-1")
                 {
+                    var domId = $(this).val();
                     $.ajax({
-                         url: "/Menu/GetRelatedMenues/?domainId=" + $(this).val(),
+                         url: `@Url.Action("GetRelatedMenues", "Menu")?domainId=${domId}`, //"/Menu/GetRelatedMenues/?domainId=" + $(this).val(),
                             type: 'Get',
                             dataType : 'json',
                             success: function (result) {
@@ -282,7 +284,7 @@
                 if (!flag) {
                     var dto = FillDataToSend();
                     $.ajax({
-                        url: "@Model.MenuId" != "" ? "/Menu/Edit" : "/Menu/Add",
+                        url: "@Model.MenuId" != "" ? '@Url.Action("Edit", "Menu")': '@Url.Action("Add", "Menu")',
                         contentType: 'application/json',
                         data: JSON.stringify(dto),
                         type: 'Post',
@@ -435,7 +437,7 @@
         function fillProductList(groupId, selectedVal) {
             debugger;
              $.ajax({
-                 url: "/Menu/GetProductList/?groupId=" + groupId,
+                 url:`@Url.Action("GetProductList", "Menu")?groupId=${groupId}`,  
                     type: 'Get',
                     dataType : 'json',
                     success: function (result) {

@@ -4,6 +4,7 @@
 @using Arad.Portal.UI.Shop.Dashboard.ViewComponents;
 @model PagedItems<CommentViewModel>
 @{
+   
     var i = ((Model.CurrentPage - 1) * Model.PageSize);
     bool isSearch = false;
     System.Collections.Specialized.NameValueCollection queryString = null;
@@ -23,16 +24,17 @@
         langId = ViewBag.DefLangId;
     }
     var searchCollapseClass = isSearch ? "collapse show" : "collapse";
+     var baseAdd = Config["BaseAddress"];
 }
 @section Styles
 {
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
+        <link href=@($"~{baseAdd}/plugins/datePicker/kamadatepicker.css") rel="stylesheet" />
     }
     else
     {
-        <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css" rel="stylesheet" />
+        <link href=@($"~{baseAdd}/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css") rel="stylesheet" />
     }
 }
 
@@ -207,11 +209,11 @@
 @section Scripts{
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <script src="~/plugins/datePicker/kamadatepicker.min.js"></script>
+        <script src=@($"~{baseAdd}/plugins/datePicker/kamadatepicker.min.js")></script>
     }
     else
     {
-    <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src=@($"~{baseAdd}/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")></script>
     }
 <script>
         $(document).ready(function () {
