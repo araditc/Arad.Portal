@@ -115,6 +115,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
                 var domainId = filter["domainId"].ToString();
                 var parentId = "";
+                //var filter = "";
                 if (string.IsNullOrWhiteSpace(filter["LanguageId"]))
                 {
                     lan = _languageContext.Collection.Find(_ => _.IsDefault).FirstOrDefault();
@@ -129,6 +130,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 {
                     parentId = filter["Id"].ToString();
                 }
+
+                //if (!string.IsNullOrWhiteSpace(filter["filter"]))
+                //{
+                //    filter = filter["filter"].ToString();
+                //}
                 var domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
 
                 FilterDefinitionBuilder<Entities.General.Menu.Menu> builder = new();
@@ -145,7 +151,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 {
                     filterDef = builder.And(filterDef, builder.Eq(nameof(Entities.General.Menu.Menu.ParentId), parentId));
                 }
-              
+               //??? adding filter to db
                 long totalCount = 0;
                 if(parentId == "")
                 {
