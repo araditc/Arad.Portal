@@ -1,7 +1,10 @@
 ﻿@using System.Drawing.Text
 @using Microsoft.AspNetCore.Html
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Config
 @{
     Layout = null;
+    var baseAdd = Config["BaseAddress"];
 }
 
 
@@ -13,13 +16,13 @@
                 <ul class="langUl list-group list-group-horizontal">
                     <li class="list-group-item lan border-0 pt-2 px-1">
                         <a title="@Language.GetString("Persian")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                            <img src="~/imgs/IRAN.png" onclick="setLang('fa-IR')" />
+                            <img src="@Url.Content($"~{baseAdd}/imgs/IRAN.png")" onclick="setLang('fa-IR')" />
                         </a>
 
                     </li>
                     <li class="list-group-item lan border-0 pt-2 px-1">
                         <a title="@Language.GetString("English")" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                            <img src="~/imgs/USA.png" onclick="setLang('en-US')" />
+                            <img src="@Url.Content($"~{baseAdd}/imgs/USA.png")" onclick="setLang('en-US')" />
                         </a>
 
                     </li>

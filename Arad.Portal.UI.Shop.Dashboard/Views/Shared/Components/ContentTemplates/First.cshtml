@@ -14,6 +14,7 @@
     {
         innerElementsAtr = $"data-animation='animated {ViewBag.LoadAnimation}'";
     }
+    var baseAdd = Config["BaseAddress"];
 
 }
 
@@ -21,7 +22,7 @@
 {
 <div class="row firstTemp m-10" @outerElementAtr>
     <div class="col-12 col-md-9 col-lg-4 g-1 ">
-        <a href="@(!string.IsNullOrWhiteSpace(Model[0].UrlFriend) ? Model[0].UrlFriend :  $"/blog/{Model[0].ContentCode}")" role="button">
+        <a href="@(!string.IsNullOrWhiteSpace(Model[0].UrlFriend) ? $"~{baseAdd}{Model[0].UrlFriend}" :  $"~{baseAdd}/blog/{Model[0].ContentCode}")" role="button">
             <picture>
                 <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].DesiredImageUrl}&width={535}")" />
                 <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[0].DesiredImageUrl}&width={550}")">
@@ -35,7 +36,7 @@
 
     </div>
     <div class="col-12 col-md-3 col-lg-2 g-1">
-        <a href="@(!string.IsNullOrWhiteSpace(Model[1].UrlFriend) ? Model[1].UrlFriend :  $"/blog/{Model[1].ContentCode}")" role="button">
+        <a href="@(!string.IsNullOrWhiteSpace(Model[1].UrlFriend) ? $"~{baseAdd}{Model[1].UrlFriend}" :  $"~{baseAdd}/blog/{Model[1].ContentCode}")" role="button">
             <picture>
                 <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[1].DesiredImageUrl}&width={260}")" />
                 <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[1].DesiredImageUrl}&width={190}")">
@@ -47,7 +48,7 @@
             </picture>
         </a>
 
-        <a href="@(!string.IsNullOrWhiteSpace(Model[2].UrlFriend) ? Model[2].UrlFriend :  $"/blog/{Model[2].ContentCode}")" role="button">
+        <a href="@(!string.IsNullOrWhiteSpace(Model[2].UrlFriend) ? $"~{baseAdd}{Model[2].UrlFriend}" :  $"~{baseAdd}/blog/{Model[2].ContentCode}")" role="button">
             <picture>
                 <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[2].DesiredImageUrl}&width={260}")" />
                 <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[2].DesiredImageUrl}&width={190}")">
@@ -61,7 +62,7 @@
 
     </div>
     <div class="col-12 col-md-9 col-lg-4 g-1">
-        <a href="@(!string.IsNullOrWhiteSpace(Model[3].UrlFriend) ? Model[3].UrlFriend :  $"/blog/{Model[3].ContentCode}")" role="button">
+        <a href="@(!string.IsNullOrWhiteSpace(Model[3].UrlFriend) ? $"~{baseAdd}{Model[3].UrlFriend}" :  $"~{baseAdd}/blog/{Model[3].ContentCode}")" role="button">
             <picture>
                 <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[3].DesiredImageUrl}&width={535}")" />
                 <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[3].DesiredImageUrl}&width={550}")">
@@ -74,7 +75,7 @@
         </a>
     </div>
     <div class="col-12 col-md-3 col-lg-2 g-1">
-        <a href="@(!string.IsNullOrWhiteSpace(Model[4].UrlFriend) ? Model[4].UrlFriend :  $"/blog/{Model[4].ContentCode}")" role="button">
+        <a href="@(!string.IsNullOrWhiteSpace(Model[4].UrlFriend) ? $"~{baseAdd}{Model[4].UrlFriend}" :  $"~{baseAdd}/blog/{Model[4].ContentCode}")" role="button">
             <picture>
                 <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[4].DesiredImageUrl}&width={260}")" />
                 <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[4].DesiredImageUrl}&width={190}")">
@@ -85,7 +86,7 @@
                      alt="@(Model[4].Images.Any(_=>_.ImageRatio == ImageRatio.Square) ? Model[4].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title : "")">
             </picture>
         </a>
-        <a href="@(!string.IsNullOrWhiteSpace(Model[5].UrlFriend) ? Model[5].UrlFriend :  $"/blog/{Model[5].ContentCode}")" role="button">
+        <a href="@(!string.IsNullOrWhiteSpace(Model[5].UrlFriend) ? $"~{baseAdd}{Model[5].UrlFriend}" :  $"~{baseAdd}/blog/{Model[5].ContentCode}")" role="button">
             <picture>
                 <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[5].DesiredImageUrl}&width={260}")" />
                 <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[5].DesiredImageUrl}&width={190}")">

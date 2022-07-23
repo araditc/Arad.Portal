@@ -45,40 +45,40 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="Arad Portal" name="description">
     <title>@ViewData["Title"] - AradPortalDesignPage</title>
-    <link href=@($"~{baseAdd}/lib/font-awesome/css/all.css") rel="stylesheet" />
+    <link href="@Url.Content($"~{baseAdd}/lib/font-awesome/css/all.css")" rel="stylesheet" />
     @if (direction == "ltr")
     {
-        <link href=@($"~{baseAdd}/lib/bootstrap5/css/bootstrap.min.css") rel="stylesheet" />
+        <link href="@Url.Content($"~{baseAdd}/lib/bootstrap5/css/bootstrap.min.css")" rel="stylesheet" />
     }
     else
     {
-        <link href=@($"~{baseAdd}/lib/bootstrap5/css/bootstrap.rtl.min.css") rel="stylesheet" />
-        <link href=@($"~{baseAdd}/Fonts/IranSans/css/fontiran.css") rel="stylesheet" />
+        <link href="@Url.Content($"~{baseAdd}/lib/bootstrap5/css/bootstrap.rtl.min.css")" rel="stylesheet" />
+        <link href="@Url.Content($"~{baseAdd}/Fonts/IranSans/css/fontiran.css") rel="stylesheet" />
     }
-    <link href=@($"~{baseAdd}/lib/cropperjs/cropper.css") rel="stylesheet" />
-    <link rel="stylesheet" href=@($"~{baseAdd}/css/Menu/Bootstrap4MegaMenu.css") />
-    <link href=@($"~{baseAdd}/lib/bootstrap-select/css/bootstrap-select.min.css") rel="stylesheet" />
-    <link href=@($"~{baseAdd}/css/site.css") rel="stylesheet" />
-    <link href=@($"~{baseAdd}/lib/owlCarousel/css/owl.carousel.min.css") rel="stylesheet" />
-    <link href=@($"~{baseAdd}/lib/owlCarousel/css/owl.theme.default.min.css") rel="stylesheet" />
-    <link href=@($"~{baseAdd}/lib/owlCarousel/css/CarouselCustomArrowKeys.css") rel="stylesheet" />
-    <link href=@($"~{baseAdd}/css/SpecialProduct.css") rel="stylesheet" />
-    <link href=@($"~{baseAdd}/css/siteTemplate/FirstContentTemplate.css") rel="stylesheet" />
-    <link href=@($"~{baseAdd}/css/siteTemplate/ThirdContentTemplate.css") rel="stylesheet" />
-    <link href=@($"~{baseAdd}/css/siteTemplate/ForthContentTemplate.css") rel="stylesheet" />
-    <link href=@($"~{baseAdd}/css/siteTemplate/FifthContentTemplate.css") rel="stylesheet" />
-    <link href=@($"~{baseAdd}/css/header.css") rel="stylesheet" />
-    <link href=@($"~{baseAdd}/lib/bootstrap-colorpicker/css/bootstrap-colorpicker.css") rel="stylesheet" />
-    <link href=@($"~{baseAdd}/lib/animate.css/animate.compat.css") rel="stylesheet" />
-    <script src=@($"~{baseAdd}/lib/jquery/dist/jquery.min.js")></script>
-    <script src=@($"~{baseAdd}/lib/bootstrap5/js/bootstrap.bundle.min.js")></script>
-    <script src=@($"~{baseAdd}/lib/bootstrap-select/bootstrap-select.min.js")></script>
-    <script src=@($"~{baseAdd}/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js")></script>
-    <script src=@($"~{baseAdd}/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js")></script>
-    <script src=@($"~{baseAdd}/lib/owlCarousel/js/owl.carousel.min.js")></script>
-    <script src=@($"~{baseAdd}/js/TemplateCreation.js")></script>
-    <script src=@($"~{baseAdd}/lib/bootstrap-colorpicker/js/bootstrap-colorpicker.js")></script>
-    <script src=@($"~{baseAdd}/lib/cropperjs/cropper.js")></script>
+    <link href="@Url.Content($"~{baseAdd}/lib/cropperjs/cropper.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~{baseAdd}/css/Menu/Bootstrap4MegaMenu.css")" rel="stylesheet"/>
+    <link href="@Url.Content($"~{baseAdd}/lib/bootstrap-select/css/bootstrap-select.min.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~{baseAdd}/css/site.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~{baseAdd}/lib/owlCarousel/css/owl.carousel.min.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~{baseAdd}/lib/owlCarousel/css/owl.theme.default.min.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~{baseAdd}/lib/owlCarousel/css/CarouselCustomArrowKeys.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~{baseAdd}/css/SpecialProduct.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~{baseAdd}/css/siteTemplate/FirstContentTemplate.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~{baseAdd}/css/siteTemplate/ThirdContentTemplate.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~{baseAdd}/css/siteTemplate/ForthContentTemplate.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~{baseAdd}/css/siteTemplate/FifthContentTemplate.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~{baseAdd}/css/header.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~{baseAdd}/lib/bootstrap-colorpicker/css/bootstrap-colorpicker.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~{baseAdd}/lib/animate.css/animate.compat.css")" rel="stylesheet" />
+    <script src="@Url.Content($"~{baseAdd}/lib/jquery/dist/jquery.min.js")"></script>
+    <script src="@Url.Content($"~{baseAdd}/lib/bootstrap5/js/bootstrap.bundle.min.js")"></script>
+    <script src="@Url.Content($"~{baseAdd}/lib/bootstrap-select/bootstrap-select.min.js")"></script>
+    <script src="@Url.Content($"~{baseAdd}/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js")"></script>
+    <script src="@Url.Content($"~{baseAdd}/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js")"></script>
+    <script src="@Url.Content($"~{baseAdd}/lib/owlCarousel/js/owl.carousel.min.js")"></script>
+    <script src="@Url.Content($"~{baseAdd}/js/TemplateCreation.js")"></script>
+    <script src="@Url.Content($"~{baseAdd}/lib/bootstrap-colorpicker/js/bootstrap-colorpicker.js")"></script>
+    <script src="@Url.Content($"~{baseAdd}/lib/cropperjs/cropper.js")"></script>
     
 
 </head>
@@ -1631,9 +1631,8 @@
                                        if (currentCulture !== lang) {
                                            $.ajax({
                                                type: "GET",
-                                               url: '/Account/changeLang?langId=' + lang,
+                                               url: '@Url.Action("changeLang", "Account")'+ "?langId=" + lang,
                                                success: function () {
-
                                                    window.location.reload();
                                                }
                                            });
@@ -2708,8 +2707,7 @@
                  var config =
                      {
                      height: 300,
-                     filebrowserUploadUrl: '/Image/DomainImageUpload',
-                     // filebrowserBrowseUrl: '/Image/ContentFileBrows',
+                     filebrowserUploadUrl: @Url.Action("DomainImageUpload", "Image"),
                      language: lan,
                      scayt_sLang: lan,
                      allowedContent: true,

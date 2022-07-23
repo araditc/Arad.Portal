@@ -4,9 +4,10 @@
     //Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
+     var baseAdd = Config["BaseAddress"];
 }
 @section Styles{
-    <link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
+    <link href="@Url.Content($"~{baseAdd}/lib/cropperjs/cropper.css")" rel="stylesheet" />
     <style>
         .text-danger {
             font-size: 12px;
@@ -278,7 +279,7 @@
 
 
 @section Scripts{
-    <script src="~/lib/cropperjs/cropper.js"></script>
+    <script src="@Url.Content($"~{baseAdd}/lib/cropperjs/cropper.js")"></script>
     <script>
         var fileName;
         var fileContent = "";
@@ -286,27 +287,7 @@
         var currentFileSize;
         var currentFileName;
         var modelUrl;
-    //function isUrlFriendUnique(groupId)
-    //{
-    //   $.ajax({
-    //            url: "/ProductGroup/CheckUrlFriendUniqueness?id="+ groupId +"&url=" + $("#urlFriend").val(),
-    //            type: 'Get',
-    //            dataType: 'json',
-    //            success: function (result) {
-    //                debugger;
-    //                if(result.status =="success")
-    //                {
-    //                    return true;
-    //                }else
-    //                {
-    //                    return false;
-    //                }
-    //            },
-    //            error: function (xhr, ajaxOptions, thrownError) {
-    //                return false;
-    //            }
-    //        });
-    //}
+    
         $(document).ready(function () {
             debugger;
             var entity =  @Json.Serialize(@Model.GroupImage);
@@ -328,7 +309,7 @@
             $("#languageId").change(function(){
                   var langId = $("#languageId").val();
                 $.ajax({
-                    url: "/ProductGroup/GetProductGroupList/" + langId,
+                    url: '@Url.Action("GetProductGroupList", "ProductGroup")'+"/"+langId,
                     type: 'Get',
                     dataType : 'json',
                     success: function (result) {
@@ -368,8 +349,7 @@
                    
                         var dto = FillDataToSend();
                         $.ajax({
-                                url: "@Model.ProductGroupId" != "" ? "/ProductGroup/Edit" : "/ProductGroup/Add",
-                                
+                                url: "@Model.ProductGroupId" != "" ? '@Url.Action("Edit", "ProductGroup")' : '@Url.Action("Add", "ProductGroup")',
                                 contentType: 'application/json',
                                 data: JSON.stringify(dto),
                                 type: 'Post',
@@ -588,7 +568,7 @@
                 if (!flag) {
 
                      $.ajax({
-                        url: "/ProductGroup/CheckUrlFriendUniqueness?id="+ '@Model.ProductGroupId' +"&url=" + $("#urlFriend").val(),
+                        url: '@Url.Action("CheckUrlFriendUniqueness", "ProductGroup")'+ "?id=" + '@Model.ProductGroupId' +"&url=" + $("#urlFriend").val(),
                         type: 'Get',
                         dataType: 'json',
                         success: function (result) {

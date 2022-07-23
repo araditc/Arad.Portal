@@ -3,6 +3,7 @@
     //Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
+    var baseAdd = Config["BaseAddress"];
 }
 @section Styles{
     <style>
@@ -169,7 +170,7 @@
                 var langId = $("#languageId").val();
                 if (langId != "-1") {
                 $.ajax({
-                    url: "/ProductSpecification/GetSpecificationGroupList/" + langId,
+                    url:'@Url.Action("GetSpecificationGroupList", "ProductSpecification")'+"/"+ langId, 
                     type: 'Get',
                     dataType : 'json',
                     success: function (result) {
@@ -217,7 +218,7 @@
            if (!flag) {
             var dataModel = FillDataToSend();
                $.ajax({
-                   url: "@Model.ProductSpecificationId" != "" ? "/ProductSpecification/Edit" : "/ProductSpecification/Add",
+                   url: "@Model.ProductSpecificationId" != "" ? '@Url.Action("Edit", "ProductSpecification")' : '@Url.Action("Add", "ProductSpecification")',
                    data: dataModel,
                    contentType: 'application/json',
                    data: JSON.stringify(dataModel),
@@ -227,15 +228,9 @@
                 },
                 success: function (result) {
                     debugger;
-                    if (result.status === "Success") {
-                        @*Swal.fire({
-                            icon: 'success',
-                            text: result.message,
-                            showConfirmButton: false,
-                            timer: 3000
-                        }).then(() => {
-                            window.location.href = '@Url.Action("List")';
-                        });*@
+                    if (result.status === "Success") 
+                    {
+                       
                         document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
                         document.getElementById('mainToastBody').classList.add('alert-success');
                         $("#toastPanel").show();
@@ -310,18 +305,6 @@
         function deleteValue(sender) {
             debugger;
             globalSender = sender;
-            @*Swal.fire({
-                title: '@Language.GetString("AlertAndMessage_AreYouSure")',
-                text: '@Language.GetString("AlertAndMessage_DeleteSpecificationValue")',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d51c1c',
-                cancelButtonColor: '#009c09db',
-                confirmButtonText: '@Language.GetString("btn_Confirm")',
-                cancelButtonText: '@Language.GetString("btn_NotConfirm")'
-            }).then((result) => {
-               $(sender).closest("li").remove();
-            });*@
             document.getElementById('confirmLabel').innerHTML = '@Language.GetString("AlertAndMessage_AreYouSure")';
 			document.getElementById('confirmBody').innerHTML = '@Language.GetString("AlertAndMessage_DeleteSpecificationValue")';
 			$('#showModal').modal('show');
@@ -334,9 +317,7 @@
                 obj.ProductSpecificationId = $("#ProductSpecificationId").val();
 
             obj.SpecificationGroupId = $("#SpecificationGroupId").val();
-            //if ($("#ModificationReason").length > 0) {
-            //    obj.ModificationReason = $("#ModificationReason").val();
-            //}
+           
             $("#multiLingualList tr").each(function () {
                 debugger;
 

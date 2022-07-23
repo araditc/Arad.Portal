@@ -2,6 +2,7 @@
 @{
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
+     var baseAdd = Config["BaseAddress"];
 }
 @section Styles{
     <style>
@@ -11,11 +12,11 @@
     </style>
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
+        <link href="@Url.Content($"~{baseAdd}/plugins/datePicker/kamadatepicker.css")" rel="stylesheet" />
     }
     else
     {
-        <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css" rel="stylesheet" />
+        <link href="@Url.Content($"~{baseAdd}/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css")" rel="stylesheet" />
     }
 }
 
@@ -228,11 +229,11 @@
 @section Scripts{
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <script src="~/plugins/datePicker/kamadatepicker.min.js"></script>
+        <script src="@Url.Content($"~{baseAdd}/plugins/datePicker/kamadatepicker.min.js")"></script>
     }
     else
     {
-<script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+       <script src="@Url.Content($"~{baseAdd}/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
     }
   
 
@@ -301,7 +302,7 @@
                }
                if ($("#promotionTypeId").val() == "1" && $("#productVendor").length == 0) {
                     $.ajax({
-                       url: "/Promotion/GetFilteredProductGroup?vendorId=-1",
+                       url: '@Url.Action("GetFilteredProductGroup", "Promotion")'+`vendorId=${-1}`,
                         type: 'Get',
                         dataType: 'json',
                         success: function (result) {
@@ -362,8 +363,9 @@
       $(document).on("change", "#productVendor", function () {
           debugger;
           if ($("#productVendor").val() != "-1") {
+              var vendorId = $("#productVendor").val();
                     $.ajax({
-                        url: "/Promotion/GetFilteredProductGroup?vendorId=" + $("#productVendor").val(),
+                        url: "@Url.Action("GetFilteredProductGroup", "Promotion")" +`?vendorId=${vendorId}`,
                         type: 'Get',
                         dataType: 'json',
                         success: function (result) {
@@ -403,8 +405,10 @@
        $(document).on("change", "#productGroupId", function () {
                if ($("#productGroupId").val() != "-1" && $("#promotionTypeId").val() == "2")
                 {
+                    var groupId = $("#productGroupId").val();
+                   var vendorId = $("#productVendor").val();
                     $.ajax({
-                    url: "/Promotion/GetFilteredProduct?productGroupId=" + $("#productGroupId").val() + "&vendorId=" + $("#productVendor").val(),
+                    url: '@Url.Action("GetFilteredProduct", "Promotion")' +`?productGroupId=${groupId}&vendorId=${vendorId}`, 
                     type: 'Get',
                     dataType : 'json',
                   success: function (result) {
@@ -515,13 +519,13 @@
          if (!flag) {
              var dataModel = FillDataToSend();
             $.ajax({
-                url: "@Model.PromotionId" != "" ? "/Promotion/Edit" : "/Promotion/Add",
+                url: "@Model.PromotionId" != "" ? '@Url.Action("Edit", "Promotion")' : '@Url.Action("Add", "Promotion")',
                     contentType: 'application/json',
                     data: JSON.stringify(dataModel),
                 type: 'Post',
                 beforeSend: function () {
                     debugger;
-                    /*AddLoading($("#addPromotionCard"));*/
+                  
                 },
                 success: function (result) {
                     debugger;
@@ -561,7 +565,7 @@
                                     else
                                     {
                                         showError(result.message);
-                                   }
+                                    }
                                    }
                     },
               
@@ -672,7 +676,7 @@
                         }
                         debugger;
                         $.ajax({
-                            url: "/Promotion/GetFilteredProductGroup?vendorId=" + vendorId,
+                            url: '@Url.Action("GetFilteredProductGroup", "Promotion")'+ `?vendorId=${vendorId}`,
                             type: 'Get',
                             dataType: 'json',
                             success: function (result) {
@@ -755,7 +759,7 @@
                 vendorId = $("#productVendor").val();
             }
              $.ajax({
-                 url: "/Promotion/GetFilteredProductGroup?vendorId=" + vendorId ,
+                 url: '@Url.Action("GetFilteredProductGroup", "Promotion")'+ `?vendorId=${vendorId}`, 
                         type: 'Get',
                         dataType: 'json',
                         success: function (result) {
@@ -801,10 +805,11 @@
               if ($("#productVendor").length != 0) {
                   vendorId = $("#productVendor").val();
               }
+              var productGroupType = $("#productGroupType").val();
                     $.ajax({
-                        url: "/Promotion/GetFilteredProduct?productGroupId=" + $("#productGroupType").val() + "&vendorId=" + vendorId,
-                    type: 'Get',
-                    dataType : 'json',
+                        url: '@Url.Action("GetFilteredProduct", "Promotion")'+ `?productGroupId=${productGroupType}&vendorId=${vendorId}`, 
+                        type: 'Get',
+                        dataType : 'json',
                   success: function (result) {
                       debugger;
                       var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";

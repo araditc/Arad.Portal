@@ -11,7 +11,7 @@
             font-size: 12px;
         }
     </style>
-    <link href=@($"~{baseAdd}/lib/intl-tel-input/css/intlTelInput.css") rel="stylesheet" />
+    <link href="@Url.Content($"~{baseAdd}/lib/intl-tel-input/css/intlTelInput.css")" rel="stylesheet" />
 
 }
 
@@ -143,10 +143,10 @@
 
 @section Scripts
 {
-    <script src=@($"~{baseAdd}/lib/twbs-pagination/jquery.twbsPagination.js")></script>
-    <script src=@($"~{baseAdd}/lib/intl-tel-input/js/intlTelInput-jquery.min.js")></script>
-    <script src=@($"~{baseAdd}/lib/intl-tel-input/js/intlTelInput.js")></script>
-    <script src=@($"~{baseAdd}/lib/MD.BootstrapPersianDateTimePicker/dist/jquery.md.bootstrap.datetimepicker.js")></script>
+    <script src="@Url.Content($"~{baseAdd}/lib/twbs-pagination/jquery.twbsPagination.js")"></script>
+    <script src="@Url.Content($"~{baseAdd}/lib/intl-tel-input/js/intlTelInput-jquery.min.js")"></script>
+    <script src="@Url.Content($"~{baseAdd}/lib/intl-tel-input/js/intlTelInput.js")"></script>
+    <script src="@Url.Content($"~{baseAdd}/lib/MD.BootstrapPersianDateTimePicker/dist/jquery.md.bootstrap.datetimepicker.js")"></script>
 
     <script type="text/javascript">
             $(document).ready(function () {

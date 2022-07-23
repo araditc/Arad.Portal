@@ -6,7 +6,7 @@
      var baseAdd = Config["BaseAddress"];
 }
 @section Styles{
-    <link href=@($"~{baseAdd}/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css") rel="stylesheet" />
+    <link href="@Url.Content($"~{baseAdd}/lib/bootstrap-iconpicker/css/bootstrap-iconpicker.css")" rel="stylesheet" />
     <style>
         .text-danger {
             font-size: 12px;
@@ -157,7 +157,7 @@
 </div>
 
 @section Scripts{
-    <script src=@($"~{baseAdd}/lib/bootstrap-iconpicker/js/bootstrap-iconpicker.bundle.min.js")></script>
+    <script src="@Url.Content($"~{baseAdd}/lib/bootstrap-iconpicker/js/bootstrap-iconpicker.bundle.min.js")"></script>
     <script>
 
         $(document).ready(function () {
@@ -403,7 +403,7 @@
         function fillContentList(categoryId, selectedVal) {
             debugger;
             $.ajax({
-                url: "/Menu/GetContentList/?categoryId=" + categoryId,
+                url: '@Url.Action("GetContentList", "Menu")'+"?categoryId=" + categoryId,
                 type: 'Get',
                 dataType : 'json',
                 success: function (result) {

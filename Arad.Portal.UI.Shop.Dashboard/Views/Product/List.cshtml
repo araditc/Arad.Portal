@@ -24,6 +24,7 @@
     }
     var searchCollapseClass = isSearch ? "collapse show" : "collapse";
     Layout = "~/Views/Shared/_Layout.cshtml";
+     var baseAdd = Config["BaseAddress"];
 }
 @section Styles
 {
@@ -36,11 +37,11 @@
 
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
+        <link href = "@Url.Content($"~{baseAdd}/plugins/datePicker/kamadatepicker.css")" rel="stylesheet" />
     }
     else
     {
-        <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css" rel="stylesheet" />
+        <link href = "@Url.Content($"~{baseAdd}/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css")" rel="stylesheet" />
     }
 }
 
@@ -217,14 +218,14 @@
                         @foreach (var item in Model.Items)
                         {
                             var src = item.Images.Any(_ => _.IsMain) ?
-                                item.Images.FirstOrDefault(_ => _.IsMain).Url : "/imgs/NoImage.png";
+                                item.Images.FirstOrDefault(_ => _.IsMain).Url : @Url.Content($"~{baseAdd}/imgs/NoImage.png");
 
-                            var img = $"<img class='smlImg' src='{$"../filemanager/getscaledimageOnWidth?path={src}&width={75}"}'>";
+                            var img = $"<img class='smlImg' src='{$"../../filemanager/getscaledimageOnWidth?path={src}&width={75}"}'>";
                             <tr class="ListCell">
                                 <td>@(++i)</td>
                                 <td>@Html.Raw(img)</td>
                                 <td>@(item.MultiLingualProperties.Any(_=>_.LanguageId == langId) ? item.MultiLingualProperties.First(_ => _.LanguageId == langId).Name : "")</td>
-                                <td>@(item.Unit.UnitNames.Any(_=>_.LanguageId == langId) ? item.Unit.UnitNames.First(_ => _.LanguageId == langId).Name : "")</td>
+                                <td>@(item.Unit != null && item.Unit.UnitNames.Any(_=>_.LanguageId == langId) ? item.Unit.UnitNames.First(_ => _.LanguageId == langId).Name : "")</td>
                                 <td>@(string.Join("|", item.GroupNames))</td>
                                 <td>@item.UniqueCode</td>
                                 <td>@item.Inventory</td>
@@ -235,15 +236,16 @@
                                 <td>@item.CreationDate</td>
                                 <td dir="ltr">@(item.MultiLingualProperties.Any(_=>_.LanguageId == langId) ? item.MultiLingualProperties.First(_ => _.LanguageId == langId).UrlFriend : "")</td>
                                 <td>
-                                    <button class="btn btn-sm btn-dark bg-gradient">
+                                    <a class="btn btn-sm btn-dark bg-gradient" 
+                                    href=@((item.MultiLingualProperties.Any(_=>_.LanguageId == langId) && !string.IsNullOrWhiteSpace(item.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == langId).UrlFriend)) ? $"~{baseAdd}{item.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == langId).UrlFriend}"  : $"~{baseAdd}/product/{item.ProductCode}" ) >
                                         <i class="fa fa-eye"></i>@Language.GetString("btn_Show")
-                                    </button>
+                                    </a>
                                 </td>
                                 <td>
                                     
-                                        <a asp-action="AddEdit" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-warning bg-gradient">
-                                            <i class="fa fa-edit"></i>@Language.GetString("btn_Edit")
-                                        </a>
+                                    <a asp-action="AddEdit" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-warning bg-gradient">
+                                        <i class="fa fa-edit"></i>@Language.GetString("btn_Edit")
+                                    </a>
                                    
                                     @if (!item.IsDeleted)
                                     {
@@ -293,11 +295,11 @@
 
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <script src="~/plugins/datePicker/kamadatepicker.min.js"></script>
+        <script src="@Url.Content($"~{baseAdd}/plugins/datePicker/kamadatepicker.min.js")"></script>
     }
     else
     {
-       <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+       <script src="@Url.Content($"~{baseAdd}/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
     }
 
 
@@ -369,7 +371,7 @@
         function EntityRestore(id) {
              entityId = id;
 			typeOfRequest = 'Get';
-			confirmUrl = '@Url.Action("Restore", "Product")' + '?id=' + id,
+			confirmUrl = '@Url.Action("Restore", "Product")' + '/' + id,
 			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';
             $('#confirmModal').modal('show');

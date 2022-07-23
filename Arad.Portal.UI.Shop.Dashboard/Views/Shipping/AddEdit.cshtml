@@ -3,15 +3,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
+    var baseAdd = Config["BaseAddress"];
 }
 @section Styles{
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
+        <link href==@($"~{baseAdd}/plugins/datePicker/kamadatepicker.css") rel="stylesheet" />
     }
     else
     {
-        <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css" rel="stylesheet" />
+        <link href==@($"~{baseAdd}/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css") rel="stylesheet" />
     }
     <style>
         .text-danger {
@@ -241,11 +242,11 @@
 @section Scripts{
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <script src="~/plugins/datePicker/kamadatepicker.min.js"></script>
+        <script src="@Url.Content($"~{baseAdd}/plugins/datePicker/kamadatepicker.min.js")"></script>
     }
     else
     {
-        <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+        <script src="@Url.Content($"~{baseAdd}/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
     }
 
     <script>
@@ -271,8 +272,9 @@
 
             $("#CurrencyId").change(function () {
                 if ($("#CurrencyId").val() != "" && $("#CurrencyId").val() != "-1") {
+                    var currencyId = $("#CurrencyId").val();
                     $.ajax({
-                        url: "/Shipping/GetSymbolOfCurrency?currencyId" + $("#CurrencyId").val(),
+                        url: '@Url.Action("GetSymbolOfCurrency", "Shipping")'+ `?currencyId=${currencyId}`,
                         /*data: dataModel,*/
                         contentType: 'application/json',
                         type: 'Get',
@@ -322,7 +324,7 @@
 
             var dto = FillDataToSend();
                     $.ajax({
-                        url: "@Model.ShippingSettingId" != "" ? "/Shipping/Edit" : "/Shipping/Add",
+                        url: "@Model.ShippingSettingId" != "" ? '@Url.Action("Edit", "Shipping")' : '@Url.Action("Add", "Shipping")',
                     /*data: dataModel,*/
                     contentType: 'application/json',
                     data: JSON.stringify(dto),

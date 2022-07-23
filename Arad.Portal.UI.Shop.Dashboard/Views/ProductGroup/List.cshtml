@@ -185,7 +185,7 @@
             debugger;
             entityId = id;
 			typeOfRequest = 'Get';
-			confirmUrl = '@Url.Action("Restore", "ProductGroup")' + '?id=' + id,
+			confirmUrl = '@Url.Action("Restore", "ProductGroup")' + '/' + id,
 			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';
 			$('#confirmModal').modal('show');

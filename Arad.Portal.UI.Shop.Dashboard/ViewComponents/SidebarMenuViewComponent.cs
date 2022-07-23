@@ -47,10 +47,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.ViewComponents
                 var route = _accessor.HttpContext.GetRouteData();
 
                 var baseAddress = _configuration["BaseAddress"];
-                if(string.IsNullOrWhiteSpace(baseAddress))
-                {
-                    baseAddress = "/Admin";
-                }
+                //if(string.IsNullOrWhiteSpace(baseAddress))
+                //{
+                //    baseAddress = "/Admin";
+                //}
                 ViewBag.BasePath = baseAddress;
                 var req = _accessor.HttpContext.Request;
                 var obj = new RequestMenuModel()

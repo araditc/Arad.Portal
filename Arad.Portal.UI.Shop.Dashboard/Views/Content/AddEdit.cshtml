@@ -16,8 +16,8 @@
     var baseAdd = Config["BaseAddress"];
 }
 @section Styles{
-<link href=@($"~{baseAdd}/lib/cropperjs/cropper.css") rel="stylesheet" />
-<link href=@($"~{baseAdd}/plugins/TagInput/amsify.suggestags.css") rel="stylesheet" />
+<link href="@Url.Content($"~{baseAdd}/lib/cropperjs/cropper.css")" rel="stylesheet" />
+<link href="@Url.Content($"~{baseAdd}/plugins/TagInput/amsify.suggestags.css")" rel="stylesheet" />
 
  
 <style>
@@ -73,7 +73,7 @@
 </style>
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-<link href=@($"~{baseAdd}/plugins/datePicker/kamadatepicker.css") rel="stylesheet" />
+<link href="@Url.Content($"~{baseAdd}/plugins/datePicker/kamadatepicker.css")" rel="stylesheet" />
 <style>
   
     .text-danger {
@@ -115,7 +115,7 @@
     }
     else
     {
-            <link href=@($"~{baseAdd}/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css") rel="stylesheet" />
+            <link href="@Url.Content($"~{baseAdd}/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css")" rel="stylesheet" />
     }
 }
 
@@ -409,14 +409,9 @@
                                         <textarea id="editorCk" name="editorCk" class="form-control" rows="40">@Html.Raw(Model.Contents)</textarea>
 
                                    
-                                      <script src=@($"~{baseAdd}/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js")></script>
+                                      <script src="@Url.Content($"~{baseAdd}/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js")"></script>
                                         <script>
-                                            //var config = {
-                                            //    filebrowserImageUploadUrl: 'Image/content-file-upload',
-                                            //   // language: '@lan'
-                                            //   language : 'en'
-                                            //}
-                                            //CKEDITOR.replace("editorCk", config);
+                                            
 
                                            //CKEditor
                                             var config = {
@@ -486,16 +481,16 @@
 
 
 @section Scripts{
-<script src=@($"~{baseAdd}/lib/cropperjs/cropper.js")></script>
-<script src=@($"~{baseAdd}/plugins/TagInput/jquery.amsify.suggestags.js")></script>
+<script src="@Url.Content($"~{baseAdd}/lib/cropperjs/cropper.js")"></script>
+<script src="@Url.Content($"~{baseAdd}/plugins/TagInput/jquery.amsify.suggestags.js")"></script>
   
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-<script src=@($"~{baseAdd}/plugins/datePicker/kamadatepicker.min.js")></script>
+      <script src="@Url.Content($"~{baseAdd}/plugins/datePicker/kamadatepicker.min.js")"></script>
     }
     else
     {
-<script src=@($"~{baseAdd}/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")></script>
+     <script src="@Url.Content($"~{baseAdd}/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
     }
 
 <script>

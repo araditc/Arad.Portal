@@ -30,16 +30,16 @@
 
     @if (dir == "ltr")
     {
-        <link href=@($"~{baseAdd}/lib/bootstrap5/css/bootstrap.min.css") rel="stylesheet" />
+        <link href="@Url.Content($"~{baseAdd}/lib/bootstrap5/css/bootstrap.min.css")" rel="stylesheet" />
     }
     else
     {
-        <link href=@($"~{baseAdd}/lib/bootstrap5/css/bootstrap.rtl.min.css") rel="stylesheet" />
-        <link href=@($"~{baseAdd}/Fonts/IranSans/css/fontiran.css") rel="stylesheet" />
+        <link href="@Url.Content($"~{baseAdd}/lib/bootstrap5/css/bootstrap.rtl.min.css")" rel="stylesheet" />
+        <link href="@Url.Content($"~{baseAdd}/Fonts/IranSans/css/fontiran.css")" rel="stylesheet" />
     }
-    <link href=@($"~{baseAdd}/css/login.css") rel="stylesheet" />
+    <link href="@Url.Content($"~{baseAdd}/css/login.css")" rel="stylesheet" />
           
-    <link href=@($"~{baseAdd}/lib/font-awesome/css/all.css") rel="stylesheet" />
+    <link href="@Url.Content($"~{baseAdd}/lib/font-awesome/css/all.css")" rel="stylesheet" />
 
 </head>
 <body style="height: auto;">
@@ -62,8 +62,8 @@
         </section>
 
     </div>
-    <script src=@($"~{baseAdd}/lib/jquery/dist/jquery.min.js") ></script>
-    <script src=@($"~{baseAdd}/lib/bootstrap5/js/bootstrap.bundle.js")></script>
+    <script src="@Url.Content($"~{baseAdd}/lib/jquery/dist/jquery.min.js")" ></script>
+    <script src="@Url.Content($"~{baseAdd}/lib/bootstrap5/js/bootstrap.bundle.js")"></script>
 
 </body>
 </html>

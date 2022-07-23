@@ -6,9 +6,7 @@
 @{
     var i = ((Model.CurrentPage - 1) * Model.PageSize);
     System.Collections.Specialized.NameValueCollection queryString = HttpUtility.ParseQueryString(Model.QueryString);
-
     queryString.Remove("page");
-
     Layout = "~/Views/Shared/_Layout.cshtml";
    
 }
@@ -111,7 +109,7 @@
             debugger;
              entityId = id;
 			typeOfRequest = 'Get';
-            confirmUrl = '@Url.Action("Delete", "Permission")' + '?id=' + id,
+            confirmUrl = '@Url.Action("Delete", "Permission")' + '/' + id,
 			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Delete")';
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_DeletionSureness")';
 			$('#confirmModal').modal('show');
@@ -121,7 +119,7 @@
              debugger;
                entityId = id;
 			   typeOfRequest = 'PUT';
-			   confirmUrl = '@Url.Action("Restore", "Permission")' + '?id=' + id,
+			   confirmUrl = '@Url.Action("Restore", "Permission")' + '/' + id,
 			   document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
 			   document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';
                $('#confirmModal').modal('show');

@@ -11,7 +11,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>File Browser</title>
-    <link rel="stylesheet" href=@($"~{baseAdd}/lib/bootstrap5/css/bootstrap.min.css") />
+    <link rel="stylesheet" href="@Url.Content($"~{baseAdd}/lib/bootstrap5/css/bootstrap.min.css")" />
     <style>
         #form {
             width: 600px;
@@ -46,8 +46,8 @@
         }
     </style>
 
-    <script src=@($"~{baseAdd}/js/plugins/jquery/jquery.min.js")></script>
-    <script src=@($"~{baseAdd}/lib/ckeditor/ckeditor.js")></script>
+    <script src="@Url.Content($"~{baseAdd}/js/plugins/jquery/jquery.min.js")"></script>
+    <script src="@Url.Content($"~{baseAdd}/lib/ckeditor/ckeditor.js")"></script>
     <script>
         $(document).ready(function() {
             //var funcNum = '@(Context.Request.Query["CKEditorFuncNum"])';
@@ -72,7 +72,7 @@
     @foreach (var fileInfo in ViewBag.fileInfos)
     {
         <div class="thumbnail">
-            <img  src=@($"../filemanager/getscaledimageOnWidth?path=ckEditorProductImages/{fileInfo.Name}&width={100}") alt="thumb" title="@fileInfo.Name" />
+            <img  src="@Url.Content($"../filemanager/getscaledimageOnWidth?path=ckEditorProductImages/{fileInfo.Name}&width={100}")" alt="thumb" title="@fileInfo.Name" />
             <br />
             @fileInfo.Name
         </div>

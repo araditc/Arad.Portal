@@ -13,6 +13,7 @@
         lan = "en";
     }
     var count = @Model.MultiLingualProperties.Count + 1;
+     var baseAdd = Config["BaseAddress"];
 }
 
 @section Styles{
@@ -53,15 +54,15 @@
     }
 </style>
 
-<link href="~/lib/cropperjs/cropper.css" rel="stylesheet" />
+<link href="@Url.Content($"~{baseAdd}/lib/cropperjs/cropper.css")" rel="stylesheet" />
    @* <link href="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.css" rel="stylesheet" />*@
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-<link href="~/plugins/datePicker/kamadatepicker.css" rel="stylesheet" />
+       <link href="@Url.Content($"~{baseAdd}/plugins/datePicker/kamadatepicker.css")" rel="stylesheet" />
     }
     else
     {
-<link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css" rel="stylesheet" />
+       <link href="@Url.Content($"~{baseAdd}/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css")" rel="stylesheet" />
     }
 }
 <h4>@Language.GetString("Menu_Products")</h4>
@@ -312,39 +313,32 @@
                                     <div class="form-group col-md-12">
                                         <label class="form-label">@Language.GetString("ProductSpecs")</label>
                                         <textarea id="editorCk" name="editorCk" class="form-control" rows="30"></textarea>
-
-                                        @* <script src="~/lib/ckeditor/ckeditor.js"></script>*@
-                                        <script src="~/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js"></script>
+                                       
+                                        <script src="@Url.Content($"~{baseAdd}/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js")"></script>
                                         <script>
-                                                //var config = {
-                                                //    filebrowserImageUploadUrl: 'Image/ProductFileUpload',
-                                                //    language: '@lan'
-                                                //}
-                                                //CKEDITOR.replace("editorCk", config);
                                                 var config =
                                                 {
-                                                height: 300,
-                                                filebrowserUploadUrl: '/Image/ProductImageUpload',
-                                               // filebrowserBrowseUrl: '/Image/ContentFileBrows',
-                                                language: '@lan',
-                                                scayt_sLang: '@lan',
-                                                allowedContent: true,
-                                                toolbarGroups: [
-                                                    { name: 'clipboard', groups: ['clipboard', 'undo'] },
-                                                    { name: 'editing', groups: ['find', 'selection', 'spellchecker'] },
-                                                    { name: 'links' },
-                                                    { name: 'insert' },
-                                                    { name: 'forms' },
-                                                    { name: 'tools' },
-                                                    { name: 'document', groups: ['mode', 'document', 'doctools'] },
-                                                    { name: 'others' },
-                                                    '/',
-                                                    { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
-                                                    { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi'] },
-                                                    { name: 'styles' },
-                                                    { name: 'colors' },
-                                                    { name: 'about' }
-                                                ]
+                                                    height: 300,
+                                                    filebrowserUploadUrl: '@Url.Action("ProductImageUpload", "Image")',
+                                                    language: '@lan',
+                                                    scayt_sLang: '@lan',
+                                                    allowedContent: true,
+                                                    toolbarGroups: [
+                                                        { name: 'clipboard', groups: ['clipboard', 'undo'] },
+                                                        { name: 'editing', groups: ['find', 'selection', 'spellchecker'] },
+                                                        { name: 'links' },
+                                                        { name: 'insert' },
+                                                        { name: 'forms' },
+                                                        { name: 'tools' },
+                                                        { name: 'document', groups: ['mode', 'document', 'doctools'] },
+                                                        { name: 'others' },
+                                                        '/',
+                                                        { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+                                                        { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi'] },
+                                                        { name: 'styles' },
+                                                        { name: 'colors' },
+                                                        { name: 'about' }
+                                                    ]
                                             };
                                             config.font_names =
                                                 'Arial/Arial, Helvetica, sans-serif;' +
@@ -652,16 +646,16 @@
     </div>
 </div>
 
-<script src="~/lib/cropperjs/cropper.js"></script>
+<script src="@Url.Content($"~{baseAdd}/lib/cropperjs/cropper.js")"></script>
 @*<script src="~/plugins/select2/js/select2.js"></script>*@
 
 @if (CultureInfo.CurrentCulture.Name == "fa-IR")
 {
-    <script src="~/plugins/datePicker/kamadatepicker.min.js"></script>
+    <script src="@Url.Content($"~{baseAdd}/plugins/datePicker/kamadatepicker.min.js")"></script>
 }
 else
 {
-    <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="@Url.Content($"~{baseAdd}/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
 }
 
 <script>
@@ -782,7 +776,7 @@ else
                 if (!flag) {
                     var dto = FillDataToSend();
                     $.ajax({
-                        url: "@Model.ProductId" != "" ? "/Product/Edit" : "/Product/Add",
+                        url: "@Model.ProductId" != "" ? '@Url.Action("Edit", "Product")' : '@Url.Action("Add", "Product")',
                         contentType: 'application/json',
                         data:  JSON.stringify(dto),
                         type: 'Post',
@@ -889,7 +883,7 @@ else
 
                 var langId = $("#languageId").val();
                 $.ajax({
-                    url: "/ProductSpecification/GetSpecificationGroupList/" + langId,
+                    url: '@Url.Action("GetSpecificationGroupList", "ProductSpecification")'+"/"+ langId,
                     type: 'Get',
                     dataType : 'json',
                     success: function (result) {
@@ -922,7 +916,7 @@ else
             var groupId = $("#specGroupId").val();
             if (groupId != "") {
                 $.ajax({
-                    url: "/ProductSpecification/GetSpecificationInGroupAndLang?groupId=" + groupId + "&langId=" + langId,
+                    url: '@Url.Action("GetSpecificationInGroupAndLang", "ProductSpecification")'+"?groupId=" + groupId + "&langId=" + langId,
                     type: 'Get',
                     dataType : 'json',
                     success: function (result) {
@@ -956,7 +950,7 @@ else
             var specId = $("#specificationId").val();
             if (specId != "-1") {
                 $.ajax({
-                    url: "/ProductSpecification/GetSpecificationValuesInLanguage?specId=" + specId + "&langId=" + langId,
+                    url: '@Url.Action("GetSpecificationValuesInLanguage", "ProductSpecification")'+"?specId=" + specId + "&langId=" + langId,
                     type: 'Get',
                     dataType : 'json',
                     success: function (result) {
@@ -1259,7 +1253,7 @@ else
             {
 
                 $.ajax({
-                url: "/Product/CheckUrlFriendUniqueness?id="+ '@Model.ProductId' +"&url=" + $("#urlFriend").val(),
+                url: '@Url.Action("CheckUrlFriendUniqueness", "Product")'+"?id="+ '@Model.ProductId' +"&url=" + $("#urlFriend").val(),
                 type: 'Get',
                 dataType: 'json',
                         success: function(result) {

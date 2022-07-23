@@ -3,13 +3,13 @@
 @model Arad.Portal.DataLayer.Models.SlideModule.LayerView
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    var baseAdd = Config["BaseAddress"];
 }
 
 @section Styles{
-    <link href="~/css/form.css" rel="stylesheet" />
-    <link href="~/css/slider.css" rel="stylesheet" />
-    <link href="~/lib/bootstrap-colorpicker/css/bootstrap-colorpicker.css" rel="stylesheet" />
+    <link href="@Url.Content($"~{baseAdd}/css/form.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~{baseAdd}/css/slider.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~{baseAdd}/lib/bootstrap-colorpicker/css/bootstrap-colorpicker.css")" rel="stylesheet" />
 }
 
 <div class="card">
@@ -223,7 +223,7 @@
 
 @section Scripts
 {
-    <script src="~/lib/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+    <script src="@Url.Content($"~{baseAdd}/lib/bootstrap-colorpicker/js/bootstrap-colorpicker.js")"></script>
 
     @if (ViewBag.Error != null)
     {

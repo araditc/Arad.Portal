@@ -20,6 +20,7 @@ namespace Arad.Portal.DataLayer.Models.Product
         public List<string> GroupNames { get; set; }
         public List<string> GroupIds { get; set; }
         public string UniqueCode { get; set; }
+        public long ProductCode { get; set; }
         public int Inventory { get; set; }
         public List<MultiLingualProperty> MultiLingualProperties { get; set; }
         public List<Image> Images { get; set; }

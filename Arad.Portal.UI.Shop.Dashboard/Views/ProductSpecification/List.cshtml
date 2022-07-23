@@ -23,6 +23,7 @@
         langId = ViewBag.DefLangId;
     }
     var searchCollapseClass = isSearch ? "collapse show" : "collapse";
+    var baseAdd = Config["BaseAddress"];
 }
 
 
@@ -154,7 +155,7 @@
             debugger;
             entityId = id;
 			typeOfRequest = 'Get';
-            confirmUrl = '@Url.Action("Delete", "ProductSpecification")' + '?id=' + id,
+            confirmUrl = '@Url.Action("Delete", "ProductSpecification")' + '/' + id,
 			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Delete")';
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_DeletionSureness")';
 			$('#confirmModal').modal('show');
@@ -164,7 +165,7 @@
             debugger;
             entityId = id;
 			typeOfRequest = 'Get';
-			confirmUrl = '@Url.Action("Restore", "ProductSpecification")' + '?id=' + id,
+			confirmUrl = '@Url.Action("Restore", "ProductSpecification")' + '/' + id,
 			document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Restore")';
 			document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_RestorationSureness")';
 			$('#confirmModal').modal('show');

@@ -264,16 +264,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                         {
                             ClaimType = "AppRole",
                             ClaimValue = true.ToString(),
-                        }
+                        },
                         //,???
-                        //new IdentityUserClaim<string>()
-                        //{
-                        //    ClaimType = "RelatedDomain",
-                        //    ClaimValue = "f4dd87ab-cf2f-4711-9e1e-64735aa364de",
-                        //    //testing
-                        //    UserId = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa"
-                           
-                        //}
+                        new IdentityUserClaim<string>()
+                        {
+                            ClaimType = "RelatedDomain",
+                            ClaimValue = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004",
+                            //testing
+                            UserId = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa"
+
+                        }
                     },
                     PhoneNumber = "989309910790",
                     IsActive = true,

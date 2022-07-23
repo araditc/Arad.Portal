@@ -3,6 +3,7 @@
     //Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
+    var baseAdd = Config["BaseAddress"];
 }
 @section Styles{
     <style>
@@ -27,18 +28,6 @@
 
             <div class="card-body" id="addEditProductGroupCard">
                 <input type="hidden" value="@Model.SpecificationGroupId" asp-for="SpecificationGroupId" />
-                @*<div class="row">
-            @{
-                if (!string.IsNullOrWhiteSpace(Model.SpecificationGroupId))
-                {
-                    <div class="form-group col-md-6">
-                        <label class="form-label" asp-for="ModificationReason">@Language.GetString("ModificationReason")</label>
-                        <textarea dir="rtl" asp-for="ModificationReason" class="form-control" rows="3"></textarea>
-                        <span data-val-result="ModificationReason" class="text-danger"></span>
-                    </div>
-                }
-            }
-        </div>*@
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label class="form-label" for="groupName">@Language.GetString("tbl_GroupName")</label><br />
@@ -134,7 +123,7 @@
                 }
                 if (!flag) {
             $.ajax({
-                url: "@Model.SpecificationGroupId" != "" ? "/ProductSpecificationGroup/Edit" : "/ProductSpecificationGroup/Add",
+                url: "@Model.SpecificationGroupId" != "" ? '@Url.Action("Edit", "ProductSpecificationGroup")': '@Url.Action("Add", "ProductSpecificationGroup")',
                   /*  data: dataModel,*/
                     contentType: 'application/json',
                     data: JSON.stringify(dataModel),

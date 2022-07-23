@@ -1,13 +1,13 @@
 ﻿@model string;
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    var baseAdd = Config["BaseAddress"];
 }
 
 @section Styles{
-<link href="~/css/form.css" rel="stylesheet" />
-<link href="~/css/data-grid.css" rel="stylesheet" />
-<link href="~/css/slider.css" rel="stylesheet" />
+<link href="@Url.Content($"~{baseAdd}/css/form.css")" rel="stylesheet" />
+<link href="@Url.Content($"~{baseAdd}/css/data-grid.css")" rel="stylesheet" />
+<link href="@Url.Content($"~{baseAdd}/css/slider.css")" rel="stylesheet" />
 }
 
 <div class="row text-start">
@@ -32,7 +32,7 @@
                     <th class="text-center">Position-Right</th>
                     <th class="text-center">Position-Bottom</th>
                     <th class="text-center">Position-Left</th>
-                    <th></th>
+                    <th></th>src 
                 </tr>
             </thead>
             <tbody id="table"></tbody>
@@ -41,9 +41,9 @@
 </div>
 
 @section Scripts{
-<script src="~/lib/cropperjs/cropper.min.js"></script>
-<script src="~/js/cropper.js"></script>
-<script src="~/lib/twbs-pagination/jquery.twbsPagination.js"></script>
+<script src="@Url.Content($"~{baseAdd}/lib/cropperjs/cropper.min.js")"></script>
+<script src="@Url.Content($"~{baseAdd}/js/cropper.js")"></script>
+<script src="@Url.Content($"~{baseAdd}/lib/twbs-pagination/jquery.twbsPagination.js")"></script>
 
     @if (ViewBag.Success != null)
     {
@@ -222,7 +222,7 @@
         debugger;
           entityId = id;
             typeOfRequest = 'Get';
-            confirmUrl = '@Url.Action("DeleteLayer", "Slider")' + "?id=" + id,
+            confirmUrl = '@Url.Action("DeleteLayer", "Slider")' + "/" + id,
             document.getElementById('confirmModalLabel').innerHTML = '@Language.GetString("btn_Delete")';
             document.getElementById('confirmModalBody').innerHTML = '@Language.GetString("AlertAndMessage_DeletionSureness")';
             $('#confirmModal').modal('show');

@@ -629,6 +629,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                        GroupIds = _.GroupIds,
                        Inventory = _.Inventory,
                        UniqueCode = _.UniqueCode,
+                       ProductCode = _.ProductCode,
                        IsDeleted = _.IsDeleted,
                        MultiLingualProperties = _.MultiLingualProperties,
                        Images = _.Images,
