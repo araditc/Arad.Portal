@@ -57,6 +57,7 @@ namespace Arad.Portal.UI.Shop.Controllers
        
         [Route("{language}/product/{**slug}")]
         public async Task<IActionResult> Details(string slug)
+        
         {
             var isLoggedUser = HttpContext.User.Identity.IsAuthenticated;
             string userId = "";
@@ -71,7 +72,8 @@ namespace Arad.Portal.UI.Shop.Controllers
             if(HttpContext.Request.Cookies[cookieName] != null)
             {
                 var lanSymbol = HttpContext.Request.Cookies[cookieName];
-                languageId = _lanRepository.FetchBySymbol(lanSymbol);
+                var defLangSymbol = lanSymbol.Split("|")[0][2..];
+                languageId = _lanRepository.FetchBySymbol(defLangSymbol);
                 
             }else
             {

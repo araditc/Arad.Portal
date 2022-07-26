@@ -4,10 +4,12 @@ using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Contracts.General.Error;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using Arad.Portal.DataLayer.Contracts.General.User;
+using Arad.Portal.DataLayer.Contracts.Shop.Transaction;
 using Arad.Portal.DataLayer.Entities.General.Error;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Helpers;
 using Arad.Portal.DataLayer.Models.Shared;
+using Arad.Portal.DataLayer.Models.Transaction;
 using Arad.Portal.DataLayer.Models.User;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.UI.Shop.Helpers;
@@ -40,6 +42,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly ICountryRepository _countryRepository;
         private readonly IUserRepository _userRepository;
         private readonly ILanguageRepository _lanRepository;
+        private readonly ITransactionRepository _traRepository;
         private readonly ICurrencyRepository _curRepository;
         private readonly string _domainName;
         private readonly IMapper _mapper;
@@ -54,6 +57,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             ICountryRepository countryRepository,
             ICurrencyRepository curRepo,
             ILanguageRepository lanRepo,
+            ITransactionRepository transactionRepository,
             SignInManager<ApplicationUser> signInManager):base(accessor, domainRepository)
         {
             _userManager = userManager;
@@ -65,6 +69,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             _domainName = DomainName;
             _lanRepository = lanRepo;
             _curRepository = curRepo;
+            _traRepository = transactionRepository;
             _mapper = mapper;
             _countryRepository = countryRepository;
         }
@@ -73,13 +78,19 @@ namespace Arad.Portal.UI.Shop.Controllers
             return View();
         }
 
-        [Authorize(Policy = "Role")]
+       
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
-            var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
-            return Redirect($"/{lanIcon}/Account/Login");
+            if (User.Identity.IsAuthenticated)
+            {
+                await _signInManager.SignOutAsync();
+                var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
+                return Redirect($"/{lanIcon}/Account/Login");
+            }
+            else
+                return null;
+          
         }
 
         [HttpGet]
@@ -204,6 +215,45 @@ namespace Arad.Portal.UI.Shop.Controllers
         {
             return Ok(HttpContext.Session.ValidateCaptcha(captcha) ? new { Status = "success" } : new { Status = "error" });
         }
+
+        [HttpGet]
+        public IActionResult GetUserOrders()
+        {
+            var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
+            ViewBag.LanIcon = lanIcon;
+            if (User != null && User.Identity.IsAuthenticated)
+            {
+                var domainName = base.DomainName;
+                var currentUserId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+                var res = _domainRepository.FetchByName(domainName, false);
+                if (res.Succeeded)
+                {
+                    var model = _traRepository.GetUserOrderHistory(currentUserId);
+                    return View(model);
+                }
+                else
+                {
+                    var model = new List<TransactionDTO>();
+                    return View(model);
+                }
+
+            }
+            else
+            {
+                return Redirect($"~/{lanIcon}/Account/Login?returnUr=/{lanIcon}/basket/get");
+            }
+
+        }
+
+
+        //public ActionResult GetUserOrders()
+        //{
+        //    if(User.Identity.IsAuthenticated)
+        //    {
+        //        var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+        //    }
+
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -735,8 +785,6 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
             return Ok(false);
         }
-
-        
 
 
         [HttpGet]

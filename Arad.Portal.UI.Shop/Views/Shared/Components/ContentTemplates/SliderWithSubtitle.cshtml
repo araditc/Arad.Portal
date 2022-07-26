@@ -42,11 +42,11 @@
                             </div>
                             <div class="col-6 m-0 p-0">
                                 <picture>
-                                    <source media="(max-width: 767px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={360}")" />
-                                    <source media="(min-width: 768px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={460}")">
-                                    <source media="(min-width: 992px)" srcset="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={650}")">
+                                    <source media="(max-width: 767px)" srcset="@Url.Content($"~/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={360}")" />
+                                    <source media="(min-width: 768px)" srcset="@Url.Content($"~/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={460}")">
+                                    <source media="(min-width: 992px)" srcset="@Url.Content($"~/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={650}")">
                                     <img class="d-block w-100 h-100 rounded-0"
-                                     src="@($"../filemanager/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={460}")" style="object-fit:contain;"
+                                     src="@Url.Content($"~/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={460}")" style="object-fit:contain;"
                                      @($" {@innerElementsAtr} " )
                                      alt="@(Model[i].Images.Any(_=>_.ImageRatio == ImageRatio.Square) ? Model[i].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title : "")">
                                 </picture>

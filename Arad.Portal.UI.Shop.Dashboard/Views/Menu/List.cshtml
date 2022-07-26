@@ -176,6 +176,10 @@
                 var queryString = '?LanguageId=' + $("#cmbLangIdFilter").val();
                 if($("#cmbParentIdFilter").val() != "-1")
                 queryString += "&Id=" + $("#cmbParentIdFilter").val();
+                if($("#filter").val() != "")
+                {
+                    queryString += "&filter=" + $("#filter").val();
+                }
                window.location.href = '@Url.Action("List", "Menu")' + queryString;
             });
         });

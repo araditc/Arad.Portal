@@ -37,11 +37,11 @@
 
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <link href = "@Url.Content($"~{baseAdd}/plugins/datePicker/kamadatepicker.css")" rel="stylesheet" />
+        <link href = "@Url.Content($"~/plugins/datePicker/kamadatepicker.css")" rel="stylesheet" />
     }
     else
     {
-        <link href = "@Url.Content($"~{baseAdd}/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css")" rel="stylesheet" />
+        <link href = "@Url.Content($"~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css")" rel="stylesheet" />
     }
 }
 
@@ -218,7 +218,7 @@
                         @foreach (var item in Model.Items)
                         {
                             var src = item.Images.Any(_ => _.IsMain) ?
-                                item.Images.FirstOrDefault(_ => _.IsMain).Url : @Url.Content($"~{baseAdd}/imgs/NoImage.png");
+                                item.Images.FirstOrDefault(_ => _.IsMain).Url : @Url.Content($"~/imgs/NoImage.png");
 
                             var img = $"<img class='smlImg' src='{$"../../filemanager/getscaledimageOnWidth?path={src}&width={75}"}'>";
                             <tr class="ListCell">
@@ -237,7 +237,7 @@
                                 <td dir="ltr">@(item.MultiLingualProperties.Any(_=>_.LanguageId == langId) ? item.MultiLingualProperties.First(_ => _.LanguageId == langId).UrlFriend : "")</td>
                                 <td>
                                     <a class="btn btn-sm btn-dark bg-gradient" 
-                                    href=@((item.MultiLingualProperties.Any(_=>_.LanguageId == langId) && !string.IsNullOrWhiteSpace(item.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == langId).UrlFriend)) ? $"~{baseAdd}{item.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == langId).UrlFriend}"  : $"~{baseAdd}/product/{item.ProductCode}" ) >
+                                    href=@((item.MultiLingualProperties.Any(_=>_.LanguageId == langId) && !string.IsNullOrWhiteSpace(item.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == langId).UrlFriend)) ? $"~{item.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == langId).UrlFriend}"  : $"~/product/{item.ProductCode}" ) >
                                         <i class="fa fa-eye"></i>@Language.GetString("btn_Show")
                                     </a>
                                 </td>
@@ -295,11 +295,11 @@
 
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <script src="@Url.Content($"~{baseAdd}/plugins/datePicker/kamadatepicker.min.js")"></script>
+        <script src="@Url.Content($"~/plugins/datePicker/kamadatepicker.min.js")"></script>
     }
     else
     {
-       <script src="@Url.Content($"~{baseAdd}/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
+       <script src="@Url.Content($"~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
     }
 
 

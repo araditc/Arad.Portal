@@ -580,10 +580,27 @@
           ]
         },
         {
+          "PermissionId": "efg3534a-1586-4b64-56fb-19b6127fa322",
+          "Title": "Orders",
+          "LevelNo": 2,
+          "Priority": 4,
+          "Icon": "fab fa-product-hunt",
+          "ClientAddress": "/Order/List",
+          "Actions": [
+            {
+              "PermissionId": "ghu3534a-1586-4b64-80fb-19b6127fa322",
+              "Title": "ChangeStatus",
+              "ClientAddress": "/Order/ChangeStatus",
+              "Urls": [
+              ]
+            }
+          ]
+        },
+        {
           "PermissionId": "acd3534a-1586-4b64-80fb-19b6127fa322",
           "Title": "ShippingSetting",
           "LevelNo": 2,
-          "Priority": 4,
+          "Priority": 5,
           "Icon": "fas fa-shipping-fast",
           "ClientAddress": "/Shipping/List",
           "Actions": [

@@ -6,7 +6,7 @@
      var baseAdd = Config["BaseAddress"];
 }
 
-<link href="@Url.Content($"~{baseAdd}/lib/jsTree/themes/default/style.min.css")" rel="stylesheet"/>
+<link href="@Url.Content($"~/lib/jsTree/themes/default/style.min.css")" rel="stylesheet"/>
 
 <style>
     .treeview .item i { margin: 10px; }
@@ -61,7 +61,7 @@
 
 @section scripts
 {
-    <script src="@Url.Content($"~{baseAdd}/lib/jsTree/jstree.min.js")"></script>
+    <script src="@Url.Content($"~/lib/jsTree/jstree.min.js")"></script>
     <script>
         $(document)
             .ready(function()

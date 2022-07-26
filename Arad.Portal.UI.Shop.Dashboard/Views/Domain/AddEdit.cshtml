@@ -9,11 +9,11 @@
 @section Styles{
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <link href="@Url.Content($"~{baseAdd}/plugins/datePicker/kamadatepicker.css")" rel="stylesheet" />
+        <link href="@Url.Content($"~/plugins/datePicker/kamadatepicker.css")" rel="stylesheet" />
     }
     else
     {
-        <link href="@Url.Content($"~{baseAdd}/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css")" rel="stylesheet" />
+        <link href="@Url.Content($"~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css")" rel="stylesheet" />
     }
     <style>
         .text-danger {
@@ -332,11 +332,11 @@
 @section Scripts{
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <script src="@Url.Content($"~{baseAdd}/plugins/datePicker/kamadatepicker.min.js")"></script>
+        <script src="@Url.Content($"~/plugins/datePicker/kamadatepicker.min.js")"></script>
     }
     else
     {
-        <script src="@Url.Content($"~{baseAdd}/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
+        <script src="@Url.Content($"~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
     }
 
     <script>

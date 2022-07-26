@@ -115,7 +115,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
                 var domainId = filter["domainId"].ToString();
                 var parentId = "";
-                //var filter = "";
+                var keyToFilter = "";
                 if (string.IsNullOrWhiteSpace(filter["LanguageId"]))
                 {
                     lan = _languageContext.Collection.Find(_ => _.IsDefault).FirstOrDefault();
@@ -131,54 +131,40 @@ namespace Arad.Portal.DataLayer.Repositories.General.Menu.Mongo
                     parentId = filter["Id"].ToString();
                 }
 
-                //if (!string.IsNullOrWhiteSpace(filter["filter"]))
-                //{
-                //    filter = filter["filter"].ToString();
-                //}
+                if (!string.IsNullOrWhiteSpace(filter["filter"]))
+                {
+                    keyToFilter = filter["filter"].ToString();
+                }
                 var domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
 
-                FilterDefinitionBuilder<Entities.General.Menu.Menu> builder = new();
-                FilterDefinition<Entities.General.Menu.Menu> filterDef = null;
+                FilterDefinitionBuilder<Entities.General.Menu.Menu> menuBuilder = new();
+                FilterDefinitionBuilder<MultiLingualProperty> menuTitlesBuilder = new();
+                FilterDefinition<Entities.General.Menu.Menu> menuFilterDef = null;
+                FilterDefinition<MultiLingualProperty> menuTitleFilterDef = null;
                 if (userEntity.IsSystemAccount)
-                    filterDef = builder.Empty;
+                    menuFilterDef = menuBuilder.Empty;
                 else if (domainEntity != null)
-                    filterDef = builder.Eq(nameof(Entities.General.Menu.Menu.AssociatedDomainId), domainEntity.DomainId);
+                    menuFilterDef = menuBuilder.Eq(nameof(Entities.General.Menu.Menu.AssociatedDomainId), domainEntity.DomainId);
                 else
                     return result;
                
-                filterDef = builder.And(filterDef, builder.Eq(nameof(Entities.General.Menu.Menu.IsActive), true));
+                menuFilterDef = menuBuilder.And(menuFilterDef, menuBuilder.Eq(nameof(Entities.General.Menu.Menu.IsActive), true));
                 if(parentId != "")
                 {
-                    filterDef = builder.And(filterDef, builder.Eq(nameof(Entities.General.Menu.Menu.ParentId), parentId));
+                    menuFilterDef = menuBuilder.And(menuFilterDef, menuBuilder.Eq(nameof(Entities.General.Menu.Menu.ParentId), parentId));
                 }
-               //??? adding filter to db
-                long totalCount = 0;
-                if(parentId == "")
+               
+                if(keyToFilter != "")
                 {
-                    if(userEntity.IsSystemAccount)
-                    {
-                        totalCount = await _context.Collection.Find(new FilterDefinitionBuilder<Entities.General.Menu.Menu>().Empty).CountDocumentsAsync();
-                    }
-                    else
-                    {
-                        totalCount = await _context.Collection.Find(_ => _.AssociatedDomainId == domainEntity.DomainId).CountDocumentsAsync();
-                    }
+                    menuTitleFilterDef = menuTitlesBuilder.Regex(_ => _.Name, new($".*{keyToFilter}.*"));
+                    menuFilterDef = menuBuilder.And(menuFilterDef, menuBuilder.ElemMatch("MenuTitles", menuTitleFilterDef));
                    
                 }
-                else
-                {
-                    if (userEntity.IsSystemAccount)
-                    {
-                        totalCount = await _context.Collection.Find(_ => _.ParentId == parentId).CountDocumentsAsync();
-                    }
-                    else
-                    {
-                        totalCount = await _context.Collection.Find(_ => _.AssociatedDomainId == domainEntity.DomainId && _.ParentId == parentId).CountDocumentsAsync();
-                    }
-                }
-
+                long totalCount = 0;
+                
+                totalCount = await _context.Collection.Find(menuFilterDef).CountDocumentsAsync();
                 var lst = _context.Collection
-                  .Find(filterDef)
+                  .Find(menuFilterDef)
                     .Project(_ =>
                         new MenuDTO()
                         {

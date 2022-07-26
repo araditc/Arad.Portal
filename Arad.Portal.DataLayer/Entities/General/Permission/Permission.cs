@@ -35,6 +35,8 @@ namespace Arad.Portal.DataLayer.Entities.General.Permission
 
         public short LevelNo { get; set; }
 
+        public bool IsUI { get; set; }
+
         public string ParentId { get; set; }
 
         public short Priority { get; set; }

@@ -6,7 +6,7 @@
         <div class="col-6 col-md-3">
 
             <div class="card m-4 pgCard border-0" >
-                <img class="card-img-top rounded img-fluid" src="@($"../filemanager/getscaledimageOnWidth?path={item.GroupImage.Url}&width={500}")"  alt="@item.GroupImage.Title">
+                <img class="card-img-top rounded img-fluid" src="@Url.Content($"~/getscaledimageOnWidth?path={item.GroupImage.Url}&width={500}")"  alt="@item.GroupImage.Title">
                 <div class="card-body text-center" >
                     <a href="/group/@item.GroupCode" class="btn bg-gradient">
                         <h6 class="card-title">@(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ? 

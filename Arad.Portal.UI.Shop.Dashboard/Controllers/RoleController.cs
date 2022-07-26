@@ -453,13 +453,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         JsTree actionJsTree = new() { Id = action.PermissionId, Text = Language.GetString($"PermissionTitle_{action.Title}"), State = new State(), Children = new() };
                         jsTree.Children.Add(actionJsTree);
 
-                        if (roleDto != null && roleDto.PermissionIds.Contains(action.PermissionId))
+                        if (roleDto != null && !string.IsNullOrWhiteSpace(roleDto.PermissionIds) && roleDto.PermissionIds.Contains(action.PermissionId))
                         {
                             actionJsTree.State.Selected = true;
                         }
                     }
 
-                    if (roleDto != null && roleDto.PermissionIds.Contains(permission.PermissionId))
+                    if (roleDto != null && !string.IsNullOrWhiteSpace(roleDto.PermissionIds) && roleDto.PermissionIds.Contains(permission.PermissionId))
                     {
                         jsTree.State.Selected = true;
                     }

@@ -316,6 +316,9 @@
   <string key="PermissionTitle_ActionNew">
     <value>Action New</value>
   </string>
+	<string key="PermissionTitle_ChangeStatus">
+		<value>change status</value>
+	</string>
   <string key="PermissionTitle_ActionEdit">
     <value>Action Edit</value>
   </string>
@@ -490,6 +493,9 @@
   <string key="PermissionTitle_StoreSettings">
     <value>Store Settings</value>
   </string>
+	<string key="PermissionTitle_Orders">
+		<value>Orders</value>
+	</string>
   <string key="PermissionTitle_StoreMenues">
     <value>Store Menues</value>
   </string>
@@ -501,6 +507,24 @@
   </string>
   <string key="PermissionTitle_ShippingSetting">
     <value>Shipping Setting</value>
+  </string>
+	<string key="PermissionTitle_StoreLinksAccess">
+    <value>Store links access</value>
+  </string>
+	<string key="PermissionTitle_CartShopping">
+    <value>User Cart Shopping</value>
+  </string>
+	<string key="PermissionTitle_Comments">
+    <value>Comments</value>
+  </string>
+	<string key="PermissionTitle_RatingProduct">
+    <value>Rating Products</value>
+  </string>
+	<string key="PermissionTitle_AddingLikeDislike">
+    <value>Adding like and dislike</value>
+  </string>
+	<string key="PermissionTitle_Payments">
+    <value>Payments</value>
   </string>
   <string key="TemplateName_TemplateNumber1">
     <value>Template Number1</value>

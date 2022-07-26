@@ -1,0 +1,121 @@
+﻿@model List<Arad.Portal.DataLayer.Models.Transaction.TransactionDTO>
+@{
+   
+}
+<style>
+    .pInTb {
+        display: inline-block;
+    }
+    .basket th{
+        text-align : center;
+    }
+     .basket td{
+        text-align : center;
+    }
+</style>
+<div class="container">
+<div class="card">
+    <div class="card-body">
+        @if (@Model.Any())
+        {
+
+            @foreach (var item in @Model)
+            {
+                    <div class="card m-3 border-1 rounded-3">
+                        <div class="card-header bg-success bg-opacity-10">
+                            <div class="row gy-2 align-middle pt-2">
+                                <div class="col-4 offset-2 col-md-2  offset-4">
+                                    <label class="form-label"> @Language.GetString("OrderDate") : </label>
+                                </div>
+                                <div class="col-4 col-md-2">
+                                    <p><strong>@item.RegisteredDate</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                           <div class="row">
+                               <div class="col-6 col-md-3">
+                                   <label class="form-label"> @Language.GetString("InvoiceNumber") : </label> <br/>
+                                    <label class="form-label"> @item.MainInvoiceNumber </label>
+                               </div>
+                               <div class="col-6 col-md-3">
+                                    <label class="form-label"> @Language.GetString("OrderItemCount") : </label> <br/>
+                                    <label class="form-label"> @item.OrderItemsCount </label>
+                               </div>
+                                <div class="col-6 col-md-3">
+                                    <label class="form-label"> @Language.GetString("PaymentStatus") : </label> <br/>
+                                    <label class="form-label"> @item.PaymentStage.GetDescription() </label>
+                                </div>
+                               <div class="col-6 col-md-3">
+                                    <label class="form-label"> @Language.GetString("OrderStatus") : </label> <br/>
+                                    <label class="form-label">@(@item.OrderStatus != null ? @item.OrderStatus.Value.GetDescription() : "")</label>
+                                 
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="col-6 col-md-3">
+                                    <label class="form-label"> @Language.GetString("OrderAmount") : </label> <br/>
+                                    <label class="form-label">@item.FinalPriceToPay</label>
+                               </div>
+                               <div class="col-6 col-md-3">
+                                    <a class="btn btn-success btn-sm" data-bs-toggle="collapse" href="@($"#{item.MainInvoiceNumber}")" role="button" aria-expanded="false" aria-controls="@item.MainInvoiceNumber">
+                                   @Language.GetString("btn_Detail")
+                                  </a>
+                               </div>
+                            </div>
+                            <div class="row collapse" id="@item.MainInvoiceNumber">
+                                @foreach (var detail in item.Details)
+                                {
+                                   <div class="card m-2 border border-secondary rounded border-1">
+                                       <div class="card-header">
+                                           <div class="row justify-content-center">
+                                               <div class="col-6">
+                                                    <label class="form-label d-inline-block" > @Language.GetString("SellerName") : </label>
+                                                    <label class="form-label d-inline-block">@detail.SellerUserName</label>
+                                               </div>
+                                           </div>
+                                       </div>
+                                       <div class="card-body border-bottom">
+                                           @foreach (var pro in detail.Products)
+                                            {
+                                                <div class="row border-top">
+                                                    <div class="col-6 col-md-2">
+                                                        <label class="form-label d-inline-block"> @Language.GetString("OrderCnt") : </label>
+                                                          <label class="form-label d-inline-block">@pro.OrderCount</label>
+                                                    </div>
+                                                    <div class="col-6 col-md-4">
+                                                         <label class="form-label d-inline-block"> @Language.GetString("tbl_ProductName") : </label>
+                                                          <a class="d-inline-block link-secondary" href="text-decoration-none"><label class="form-label ">@pro.ProductName</label></a>
+                                                    </div>
+                                                    
+                                                      <div class="col-6 col-md-6">
+                                                            <label class="form-label d-inline-block"> @Language.GetString("PricePerUnitWithDiscount") : </label>
+                                                          <label class="form-label d-inline-block">@pro.PriceWithDiscountPerUnit</label>
+                                                      </div>
+                                                </div>
+                                            }
+                                       </div>
+                                   </div>
+                                }
+
+                            </div>
+                               
+                           </div>
+                           
+                        </div>
+                    
+            }
+
+           
+
+        }
+        else
+        {
+            <div class="row">
+                <p class="text-center m-1 p-1"><strong>@Language.GetString("AlertAndMessage_NoOrderToShow")</strong></p>
+            </div>
+        }
+    </div>
+</div>
+</div>
+

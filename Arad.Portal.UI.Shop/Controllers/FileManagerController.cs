@@ -66,7 +66,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             return File(fileContents, mimeType);
         }
 
-        
+        [Route("GetImage")]
         public IActionResult GetImage(string path)
         {
             
@@ -97,6 +97,8 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
            
         }
+
+        [Route("GetScaledImage")]
         public IActionResult GetScaledImage(string path, int height)
         {
             string finalPath = "";
@@ -118,6 +120,8 @@ namespace Arad.Portal.UI.Shop.Controllers
             return File(fileContent, mimeType);
         }
 
+
+        [Route("GetScaledImageOnWidth")]
         public IActionResult GetScaledImageOnWidth(string path, int width)
         {
             string finalPath = "";

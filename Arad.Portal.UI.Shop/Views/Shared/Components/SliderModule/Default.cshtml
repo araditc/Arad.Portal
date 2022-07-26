@@ -22,7 +22,7 @@
                         <div class='carousel-item @(i == 1 ? "active" : "")' 
                         style="background-color: @itemBackground;position: relative; z-index:0;">
                             <img data-animation="animated @($"{slide.TransActionType}")"
-                             src='@($"../../filemanager/GetScaledImageOnWidth?path=/{slide.ImageUrl}&width={1000}")'
+                             src="@Url.Content($"~/GetScaledImageOnWidth?path=/{slide.ImageUrl}&width={1000}")"
                              class="w-100" alt="@slide.Alt" title="@slide.Title"  />
                             @if (slide.Layers.Count > 0)
                             {
@@ -40,7 +40,7 @@
                         <a href="@slide.Link" target="@slide.Target" class="carousel-item @(i == 1 ? "active" : "")" 
                                style="background-color: @itemBackground;position: relative; z-index:0;">
                             <img data-animation="animated @($"{slide.TransActionType}")"
-                              src='@($"../../filemanager/GetScaledImageOnWidth?path=/{slide.ImageUrl}&width={1000}")' 
+                              src="@Url.Content($"~/GetScaledImageOnWidth?path=/{slide.ImageUrl}&width={1000}")" 
                                class="w-100" alt="@slide.Alt" title="@slide.Title"  />
                             @if (slide.Layers.Count > 0)
                             {

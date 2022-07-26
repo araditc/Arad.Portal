@@ -37,6 +37,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
         }
         public string SellerId { get; set; }
 
+        /// <summary>
+        /// //??? should be changed to seller full name
+        /// </summary>
         public string SellerUserName { get; set; }
 
         public List<ShoppingCartDetail> Products { get; set; }

@@ -562,6 +562,9 @@
   <string key="tbl_RowName">
     <value>Row</value>
   </string>
+	<string key="tbl_RowName">
+		<value>Row</value>
+	</string>
   <string key="tbl_ShippingTypes">
     <value>Shipping types</value>
   </string>
@@ -751,6 +754,21 @@
   <string key="EnumDesc_Notification">
     <value>Notification</value>
   </string>
+	<string key="Enum_OrderRegistered">
+		<value>order registered</value>
+	</string>
+	<string key="Enum_OrderApproved">
+		<value>order approved</value>
+	</string>
+	<string key="Enum_CanceledByUser">
+		<value>canceled by user</value>
+	</string>
+	<string key="Enum_ReadyToSend">
+		<value>ready to send</value>
+	</string>
+	<string key="Enum_Sent">
+		<value>sent</value>
+	</string>
   <string key="Enum_ContentCategoryType">
     <value>Category Type</value>
   </string>
@@ -2296,6 +2314,30 @@
   <string key="OrderCnt">
     <value>order count</value>
   </string>
+	<string key="PricePerUnitWithDiscount">
+		<value>price per unit with discount</value>
+	</string>
+	<string key="OrderItemCount">
+		<value>order items Count</value>
+	</string>
+	<string key="OrderStatus">
+		<value>order status</value>
+	</string>
+	<string key="PaymentStatus">
+		<value>payment status</value>
+	</string>
+	<string key="OrderAmount">
+		<value>order amount</value>
+	</string>
+	<string key="SellerName">
+		<value>vendor name</value>
+	</string>
+	<string key="OrderDate">
+    <value>OrderDate</value>
+  </string>
+	<string key="InvoiceNumber">
+		<value>InvoiceNumber</value>
+	</string>
   <string key="Return">
     <value>Go back</value>
   </string>
@@ -2785,6 +2827,9 @@
   <string key="AlertAndMessage_ShoppingCartIsEmpty">
     <value>Your basket is empty.</value>
   </string>
+	<string key="AlertAndMessage_NoOrderToShow">
+		<value>you havent registered any order yet.</value>
+	</string>
   <string key="AlertAndMessage_ProductPriceIncrease">
     <value>Unfortunatelly, the price of product [0] have been increased.</value>
   </string>

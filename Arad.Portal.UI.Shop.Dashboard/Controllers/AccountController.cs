@@ -927,6 +927,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return Ok(result.Succeeded ? new { Status = "Success", result.Message } : new { Status = "Error", result.Message });
         }
 
+
+        [AllowAnonymous]
         public IActionResult UnAuthorize()
         {
             return View();

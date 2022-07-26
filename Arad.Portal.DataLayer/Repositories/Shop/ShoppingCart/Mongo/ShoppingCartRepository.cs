@@ -139,7 +139,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                             var purchase = new PurchasePerSeller()
                             {
                                 SellerId = productEntity.SellerUserId,
-                                SellerUserName = (await _userManager.FindByIdAsync(productEntity.SellerUserId)).UserName,
+                                SellerUserName = (await _userManager.FindByIdAsync(productEntity.SellerUserId)).Profile.FullName,
                                 Products = new()
                             };
                       
@@ -312,6 +312,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             if(userCartEntity != null)
             {
                 userCartEntity.IsDeleted = true;
+                userCartEntity.IsActive = false;
                 var updateResult = await _context.Collection
                                 .ReplaceOneAsync(_ => _.ShoppingCartId == userCartEntity.ShoppingCartId, userCartEntity);
                 if (updateResult.IsAcknowledged)

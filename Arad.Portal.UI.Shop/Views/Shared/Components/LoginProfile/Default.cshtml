@@ -7,7 +7,7 @@
            @if(Model) //isshop == true then it has basket
             {
                 <li class="shopping_cart home_cart">
-                <a href="#" title="" class="r-cart">
+                <a asp-controller="basket" asp-action="get" title="" class="r-cart">
                     <span class="head-shoppings">
                         <i class="fa fa-shopping-basket shopping-basket"></i>
                         <span class="display-none count-basket" data-count="0">@($"{@ViewBag.BasketCount?? 0} {@Language.GetString("Stuff")}") </span>
@@ -39,17 +39,17 @@
                                 </span>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="drpUserProfile">
+                                @*<li>
+                                    <a asp-controller="" asp-action="">@Language.GetString("User_ManagementPanel")</a>
+                                </li>*@
                                 <li>
-                                    <a href="#">@Language.GetString("User_ManagementPanel")</a>
+                                    <a asp-controller="account" asp-action="profile">@Language.GetString("Menu_Profile")</a>
                                 </li>
                                 <li>
-                                    <a href="#">@Language.GetString("Menu_Profile")</a>
+                                    <a asp-controller="account" asp-action="GetUserOrders">@Language.GetString("Menu_MyOrders")</a>
                                 </li>
                                 <li>
-                                    <a href="#">@Language.GetString("Menu_MyOrders")</a>
-                                </li>
-                                <li>
-                                    <a href="#">@Language.GetString("Exit")</a>
+                                    <a asp-controller="account" asp-action="logout">@Language.GetString("Exit")</a>
                                 </li>
                             </ul>
                         </div>

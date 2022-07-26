@@ -65,12 +65,18 @@ namespace Arad.Portal.UI.Shop.Dashboard.Authorization
                     context.Succeed(requirement);
                     return Task.CompletedTask;
                 }
-
+                
                 string path = $"{route?.Values["controller"]}/{route?.Values["action"]}".ToLower();
 
 
                 var roleDto = _roleRepository.FetchRole(user.UserRoleId).Result;
                 List<Permission> roots = _permissionRepository.GetAllListViewCustom().Result;
+
+                if(path.Contains("home/Index", StringComparison.OrdinalIgnoreCase))
+                {
+                    context.Succeed(requirement);
+                    return Task.CompletedTask;
+                }
 
                 if (!CheckAccess(roots))
                 {
@@ -97,7 +103,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Authorization
                             accessUrl.AddRange(permissionAction.Urls.Select(u => u.ToLower()));
                         }
 
-                        if (roleDto.PermissionIds.Any(r => r.Equals(permission.PermissionId)) && accessUrl.Any(r => r.Equals(path)))
+                        if (roleDto.PermissionIds.Split(",").Any(r => r.Equals(permission.PermissionId)) && accessUrl.Any(r => r.Equals($"/{path}")))
                         {
                             return true;
                         }

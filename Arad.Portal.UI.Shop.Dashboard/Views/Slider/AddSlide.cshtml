@@ -6,19 +6,19 @@
 }
 
 @section Styles{
-<link href="@Url.Content($"~{baseAdd}/css/form.css")" rel="stylesheet" />
-<link href="@Url.Content($"~{baseAdd}/css/data-grid.css")" rel="stylesheet" />
-<link href="@Url.Content($"~{baseAdd}/lib/cropperjs/cropper.min.css")" rel="stylesheet" />
-<link href="@Url.Content($"~{baseAdd}/css/slider.css")" rel="stylesheet" />
-<link href="@Url.Content($"~{baseAdd}/lib/bootstrap-colorpicker/css/bootstrap-colorpicker.css")" rel="stylesheet" />
+<link href="@Url.Content($"~/css/form.css")" rel="stylesheet" />
+<link href="@Url.Content($"~/css/data-grid.css")" rel="stylesheet" />
+<link href="@Url.Content($"~/lib/cropperjs/cropper.min.css")" rel="stylesheet" />
+<link href="@Url.Content($"~/css/slider.css")" rel="stylesheet" />
+<link href="@Url.Content($"~/lib/bootstrap-colorpicker/css/bootstrap-colorpicker.css")" rel="stylesheet" />
 
  @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-    <link href="@Url.Content($"~{baseAdd}/plugins/datePicker/kamadatepicker.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/plugins/datePicker/kamadatepicker.css")" rel="stylesheet" />
     }
     else
     {
-    <link href="@Url.Content($"~{baseAdd}/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css")" rel="stylesheet" />
     }
 }
 
@@ -48,7 +48,7 @@
                         <div id="ImageWrap" class="" style="background: #f3f3f3;padding: 10px 10px;">
                             <span class="field-validation-error" data-val-result="Pic"></span>
                             <div class="ImageWrapper">
-                                <img src="@($"~{baseAdd}/imgs/blank.png") />
+                                <img src="@Url.Content("~/imgs/blank.png")" />
                             </div>
                             <label class="custom-upload text-center" for="Image" style="width: 100%;padding: 2px 10px;">
                                 <input type="file" accept="image/x-png,image/jpeg" name="Image" id="Image" onchange="CropperShow(this)" />@Language.GetString("design_SlideImages")
@@ -206,19 +206,19 @@
 
 
 
-<script src="@Url.Content($"~{baseAdd}/lib/cropperjs/cropper.min.js")"></script>
-<script src="@Url.Content($"~{baseAdd}/js/cropper.js")"></script>
-<script src="@Url.Content($"~{baseAdd}/lib/twbs-pagination/jquery.twbsPagination.js")"></script>
-<script src="@Url.Content($"~{baseAdd}/lib/bootstrap-colorpicker/js/bootstrap-colorpicker.js")"></script>
+<script src="@Url.Content($"~/lib/cropperjs/cropper.min.js")"></script>
+<script src="@Url.Content($"~/js/cropper.js")"></script>
+<script src="@Url.Content($"~/lib/twbs-pagination/jquery.twbsPagination.js")"></script>
+<script src="@Url.Content($"~/lib/bootstrap-colorpicker/js/bootstrap-colorpicker.js")"></script>
 
 
 @if (CultureInfo.CurrentCulture.Name == "fa-IR")
 {
-    <script src="@Url.Content($"~{baseAdd}/plugins/datePicker/kamadatepicker.min.js")"></script>
+    <script src="@Url.Content($"~/plugins/datePicker/kamadatepicker.min.js")"></script>
 }
 else
 {
-    <script src="@Url.Content($"~{baseAdd}/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
+    <script src="@Url.Content($"~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
 }
 
 <script>

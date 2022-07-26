@@ -751,6 +751,21 @@
   <string key="EnumDesc_Notification">
     <value>اعلان</value>
   </string>
+	<string key="Enum_OrderRegistered">
+		<value>ثبت سفارش</value>
+	</string>
+	<string key="Enum_OrderApproved">
+		<value>تایید سفارش</value>
+	</string>
+	<string key="Enum_CanceledByUser">
+		<value>لغو شده توسط کاربر</value>
+	</string>
+	<string key="Enum_ReadyToSend">
+		<value>آماده برای ارسال</value>
+	</string>
+	<string key="Enum_Sent">
+		<value>ارسال شده</value>
+	</string>
   <string key="Enum_ContentCategoryType">
     <value>نوع گروه</value>
   </string>
@@ -2350,6 +2365,30 @@
   <string key="OrderCnt">
     <value>تعداد سفارش</value>
   </string>
+	<string key="PricePerUnitWithDiscount">
+		<value>قیمت واحد پس از اعمال تخفیف</value>
+	</string>
+	<string key="OrderItemCount">
+		<value>تعداداقلام سفارش</value>
+	</string>
+	<string key="OrderStatus">
+		<value>وضعیت سفارش</value>
+	</string>
+	<string key="PaymentStatus">
+		<value>وضعیت پرداخت</value>
+	</string>
+	<string key="OrderAmount">
+		<value>مبلغ سفارش</value>
+	</string>
+	<string key="SellerName">
+		<value>نام فروشنده</value>
+	</string>
+	<string key="OrderDate">
+		<value>تاریخ سفارش</value>
+	</string>
+	<string key="InvoiceNumber">
+		<value>شماره سفارش</value>
+	</string>
   <string key="Return">
     <value>برگشت</value>
   </string>
@@ -2692,6 +2731,9 @@
   <string key="AlertAndMessage_ShoppingCartIsEmpty">
     <value>سبد خرید شما خالی است.</value>
   </string>
+	<string key="AlertAndMessage_NoOrderToShow">
+		<value>تاکنون سفارشی ثبت نکرده اید.</value>
+	</string>
   <string key="AlertAndMessage_ProductPriceIncrease">
     <value>متاسفانه این محصول [0] افزایش قیمت داشته است.</value>
   </string>

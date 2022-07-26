@@ -68,7 +68,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             
           
             var domainName = $"{_httpContextAccessor.HttpContext.Request.Host}";
-            var res = _domainRepository.FetchByName(domainName, false);
+            var res = _domainRepository.FetchByName(domainName, true);
             var domainId = res.Succeeded ? res.ReturnValue.DomainId : Guid.Empty.ToString();
            
             try

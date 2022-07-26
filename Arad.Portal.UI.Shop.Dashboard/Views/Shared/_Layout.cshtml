@@ -57,27 +57,27 @@
 
     @if (direction == "ltr")
     {
-        <link href="@Url.Content($"~{baseAdd}/lib/bootstrap5/css/bootstrap.min.css")" rel="stylesheet" />
+        <link href="@Url.Content($"~/lib/bootstrap5/css/bootstrap.min.css")" rel="stylesheet" />
     }
     else
     {
-        <link href="@Url.Content($"~{baseAdd}/lib/bootstrap5/css/bootstrap.rtl.min.css")" rel="stylesheet" />
-        <link href="@Url.Content($"~{baseAdd}/Fonts/IranSans/css/fontiran.css")" rel="stylesheet" />
+        <link href="@Url.Content($"~/lib/bootstrap5/css/bootstrap.rtl.min.css")" rel="stylesheet" />
+        <link href="@Url.Content($"~/Fonts/IranSans/css/fontiran.css")" rel="stylesheet" />
 
     }
 
 
-    <link href="@Url.Content($"~{baseAdd}/lib/bootstrap-select/css/bootstrap-select.min.css")" rel="stylesheet" />
-    <link href="@Url.Content($"~{baseAdd}/css/site.css")" rel="stylesheet" />
-    <link href="@Url.Content($"~{baseAdd}/lib/font-awesome/css/all.css")" rel="stylesheet" />
-    <link href ="@Url.Content($"~{baseAdd}/lib/animate.css/animate.compat.css")" rel="stylesheet"/>
+    <link href="@Url.Content($"~/lib/bootstrap-select/css/bootstrap-select.min.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/css/site.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/lib/font-awesome/css/all.css")" rel="stylesheet" />
+    <link href ="@Url.Content($"~/lib/animate.css/animate.compat.css")" rel="stylesheet"/>
 
     @await RenderSectionAsync("Styles", required: false)
-    <script src="@Url.Content($"~{baseAdd}/lib/jquery/dist/jquery.min.js")"></script>
-    <script src="@Url.Content($"~{baseAdd}/lib/bootstrap5/js/bootstrap.bundle.min.js")"></script>
-    <script src="@Url.Content($"~{baseAdd}/lib/bootstrap-select/bootstrap-select.min.js")"></script>
-    <script src="@Url.Content($"~{baseAdd}/lib/bootstrap-select/js/i18n/defaults-{jsFileName}.js")"></script>
-    <script src="@Url.Content($"~{baseAdd}/js/LangUniqueness.js")"></script>
+    <script src="@Url.Content($"~/lib/jquery/dist/jquery.min.js")"></script>
+    <script src="@Url.Content($"~/lib/bootstrap5/js/bootstrap.bundle.min.js")"></script>
+    <script src="@Url.Content($"~/lib/bootstrap-select/bootstrap-select.min.js")"></script>
+    <script src="@Url.Content($"~/lib/bootstrap-select/js/i18n/defaults-{jsFileName}.js")"></script>
+    <script src="@Url.Content($"~/js/LangUniqueness.js")"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 
@@ -106,12 +106,12 @@
                 <ul class="list-group list-group-horizontal">
                     <li class="list-group-item border-0 p-0">
                         <a class="nav-link  p-1" role="button">
-                            <img src="@Url.Content($"~{baseAdd}/imgs/USA.png")" onclick="setLang('en-US')" />
+                            <img src="@Url.Content($"~/imgs/USA.png")" onclick="setLang('en-US')" />
                         </a>
                     </li>
                     <li class="list-group-item border-0 p-0">
                         <a class="nav-link p-1" role="button">
-                            <img src="@Url.Content($"~{baseAdd}/imgs/IRAN.png")" onclick="setLang('fa-IR')" />
+                            <img src="@Url.Content($"~/imgs/IRAN.png")" onclick="setLang('fa-IR')" />
                         </a>
                     </li>
 
@@ -201,7 +201,7 @@
         </div>
     </div>
 
-    <script src="@Url.Content($"~{baseAdd}/js/site.js")" asp-append-version="true"></script>
+    <script src="@Url.Content($"~/js/site.js")" asp-append-version="true"></script>
     <script>
 
     $(document).ready(function () {

@@ -1,5 +1,6 @@
 ﻿using Arad.Portal.DataLayer.Entities.Shop.ShoppingCart;
 using Arad.Portal.DataLayer.Models.Shared;
+using Arad.Portal.GeneralLibrary.CustomAttributes;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
@@ -34,18 +35,36 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
 
         public PaymentGatewayData BasicData { get; set; }
 
-        public bool FinalSettlement { get; set; }
+        //public bool FinalSettlement { get; set; }
 
         public long FinalPriceToPay { get; set; }
 
         public CustomerData CustomerData { get; set; }
+        /// <summary>
+        /// order status surely initialized after successfull payment
+        /// </summary>
+        public  OrderStatus? OrderStatus { get; set; }
 
         public List<InvoicePerSeller> SubInvoices { get; set; }
       
         public List<Parameter<string, string>> AdditionalData { get; set; }
     }
 
-    
+   
+
+    public enum OrderStatus
+    {
+        [CustomDescription("Enum_OrderRegistered")]
+        OrderRegitered = 1,
+        [CustomDescription("Enum_OrderApproved")]
+        Approved,
+        [CustomDescription("Enum_CanceledByUser")]
+        CanceledByUser,
+        [CustomDescription("Enum_ReadyToSend")]
+        ReadyToSend,
+        [CustomDescription("Enum_Sent")]
+        Sent
+    }
     public class InvoicePerSeller
     {
         /// <summary>

@@ -51,23 +51,23 @@ namespace Arad.Portal.UI.Shop.Middlewares
             
             domainName = $"{context.Request.Host}";
             var baseAddressAdmin = _configuration["BaseAddress"];
-            if(!string.IsNullOrWhiteSpace(baseAddressAdmin))
+            if(string.IsNullOrWhiteSpace(baseAddressAdmin))
             {
                 baseAddressAdmin = "/Admin";
             }
 
             if (context.Request.Path.ToString().Contains(baseAddressAdmin, StringComparison.OrdinalIgnoreCase) ||
-                context.Request.Path.ToString().Contains("/FileManager/GetScaledImage", StringComparison.OrdinalIgnoreCase) ||
-                context.Request.Path.ToString().Contains("/FileManager/GetImage", StringComparison.OrdinalIgnoreCase) ||
-                context.Request.Path.ToString().Contains("/FileManager/GetScaledImageOnWidth", StringComparison.OrdinalIgnoreCase) ||
-                context.Request.Path.ToString().Contains("/CkEditor/", StringComparison.OrdinalIgnoreCase) ||
-                context.Request.Path.ToString().Contains("/ImageSlider/", StringComparison.OrdinalIgnoreCase) ||
-                context.Request.Path.ToString().Contains("/fonts/", StringComparison.OrdinalIgnoreCase) ||
-                context.Request.Path.ToString().Contains("/imgs", StringComparison.OrdinalIgnoreCase) ||
-                context.Request.Path.ToString().Contains("/lib/", StringComparison.OrdinalIgnoreCase) ||
-                context.Request.Path.ToString().Contains("/css/", StringComparison.OrdinalIgnoreCase) ||
-                context.Request.Path.ToString().Contains("/js/", StringComparison.OrdinalIgnoreCase) ||
-                context.Request.Path.ToString().Contains("/plugins/", StringComparison.OrdinalIgnoreCase))
+                 context.Request.Path.ToString().Contains("/GetScaledImage", StringComparison.OrdinalIgnoreCase) ||
+                 context.Request.Path.ToString().Contains("/GetImage", StringComparison.OrdinalIgnoreCase) ||
+                 context.Request.Path.ToString().Contains("/GetScaledImageOnWidth", StringComparison.OrdinalIgnoreCase) ||
+                 context.Request.Path.ToString().Contains("/CkEditor/", StringComparison.OrdinalIgnoreCase) ||
+                 context.Request.Path.ToString().Contains("/ImageSlider/", StringComparison.OrdinalIgnoreCase) ||
+                 context.Request.Path.ToString().Contains("/fonts/", StringComparison.OrdinalIgnoreCase) ||
+                 context.Request.Path.ToString().Contains("/imgs", StringComparison.OrdinalIgnoreCase) ||
+                 context.Request.Path.ToString().Contains("/lib/", StringComparison.OrdinalIgnoreCase) ||
+                 context.Request.Path.ToString().Contains("/css/", StringComparison.OrdinalIgnoreCase) ||
+                 context.Request.Path.ToString().Contains("/js/", StringComparison.OrdinalIgnoreCase) ||
+                 context.Request.Path.ToString().Contains("/plugins/", StringComparison.OrdinalIgnoreCase))
             {
                 await _next.Invoke(context);
             }

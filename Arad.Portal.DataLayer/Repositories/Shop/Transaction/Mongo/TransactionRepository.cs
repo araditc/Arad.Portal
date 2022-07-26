@@ -10,6 +10,10 @@ using System.Text;
 using System.Threading.Tasks;
 using static Arad.Portal.DataLayer.Models.Shared.Enums;
 using Microsoft.AspNetCore.Hosting;
+using Arad.Portal.DataLayer.Models.Transaction;
+using Arad.Portal.DataLayer.Entities.Shop.Transaction;
+using Arad.Portal.GeneralLibrary.Utilities;
+using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
 {
@@ -17,15 +21,29 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
     {
         private readonly TransactionContext _context;
         private readonly DomainContext _domainContext;
+        private readonly ProductContext _productContext;
        
         public TransactionRepository(IHttpContextAccessor httpContextAccessor,
             DomainContext domainContext,
             IWebHostEnvironment env,
+            ProductContext productContext,
             TransactionContext context)
             : base(httpContextAccessor, env)
         {
             _context = context;
             _domainContext = domainContext;
+            _productContext = productContext;
+        }
+
+        private long  GetProductCode(string productId)
+        {
+            long result = 0;
+            var entity = _productContext.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
+            if (entity != null)
+            {
+                result = entity.ProductCode;
+            }
+            return result;
         }
 
         public TransactionItems CreateTransactionItemsModel(string transactionId)
@@ -50,6 +68,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
             return model;
         }
 
+
+
         public Entities.Shop.Transaction.Transaction FetchById(string transactionId)
         {
             var entity = _context.Collection
@@ -64,6 +84,56 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
                 .Find(_ => _.BasicData.ReservationNumber == reservationNumber).FirstOrDefault();
 
             return entity;
+        }
+
+        public List<TransactionDTO> GetUserOrderHistory(string userId)
+        {
+            var result = new List<TransactionDTO>();
+            FilterDefinitionBuilder<Entities.Shop.Transaction.Transaction> transBuilder = new();
+            FilterDefinitionBuilder<CustomerData> customerBuilder = new();
+            FilterDefinition<Entities.Shop.Transaction.Transaction> transFilterDef = null;
+            FilterDefinition<CustomerData> customerFilterDef = null;
+            customerFilterDef = customerBuilder.Eq(nameof(CustomerData.UserId), userId);
+            transFilterDef = transBuilder.ElemMatch("CustomerData", customerFilterDef);
+            var lst = _context.Collection.Find(transFilterDef).ToList();
+            foreach (var item in lst)
+            {
+                var dto = new TransactionDTO();
+                dto.TransactionId = item.TransactionId;
+                dto.UserId = userId;
+                dto.MainInvoiceNumber = item.MainInvoiceNumber;
+                dto.FinalPriceToPay = item.FinalPriceToPay;
+                dto.PaymentDate = DateTime.Parse(item.AdditionalData.FirstOrDefault(_ => _.Key == "CreationDate").Value);
+                dto.RegisteredDate = item.CreationDate;
+                dto.OrderStatus = item.OrderStatus;
+                dto.PaymentStage = item.BasicData.Stage;
+                int itemCount = 0;
+                foreach (var sub in item.SubInvoices)
+                {
+                    var detail = new TransactionDetail();
+                    detail.SellerId = sub.ParchasePerSeller.SellerId;
+                    detail.SellerUserName = sub.ParchasePerSeller.SellerUserName;
+                    detail.TotalDetailsAmountToPayWithShipping = sub.ParchasePerSeller.TotalDetailsAmountWithShipping;
+                    foreach (var pro in sub.ParchasePerSeller.Products)
+                    {
+                        var obj = new ProductOrderDetail();
+
+                        obj.ProductId = pro.ProductId;
+                        obj.ProductCode = this.GetProductCode(pro.ProductId);
+                        obj.ProductName = pro.ProductName;
+                        obj.OrderCount = pro.OrderCount;
+                        obj.PriceWithDiscountPerUnit = pro.PricePerUnit - pro.DiscountPricePerUnit;
+
+                        detail.Products.Add(obj);
+                        itemCount += 1;
+                    }
+                    dto.Details.Add(detail);
+                }
+                dto.OrderItemsCount = itemCount;
+                result.Add(dto);
+            }
+
+            return result;
         }
 
         public async Task InsertTransaction(Entities.Shop.Transaction.Transaction transaction)
@@ -122,6 +192,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
             {
                 await _context.Collection.ReplaceOneAsync(_ => _.TransactionId == transaction.TransactionId, transaction);
             }
+        }
+
+        public List<TransactionGlanceAdminView> GetSiteAdminTransactionList(string domainId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

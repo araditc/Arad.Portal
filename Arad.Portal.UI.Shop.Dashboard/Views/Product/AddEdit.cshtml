@@ -54,15 +54,15 @@
     }
 </style>
 
-<link href="@Url.Content($"~{baseAdd}/lib/cropperjs/cropper.css")" rel="stylesheet" />
+<link href="@Url.Content($"~/lib/cropperjs/cropper.css")" rel="stylesheet" />
    @* <link href="~/lib/ckeditor/prism_1.0.1/prism/lib/prism/prism_patched.min.css" rel="stylesheet" />*@
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-       <link href="@Url.Content($"~{baseAdd}/plugins/datePicker/kamadatepicker.css")" rel="stylesheet" />
+       <link href="@Url.Content($"~/plugins/datePicker/kamadatepicker.css")" rel="stylesheet" />
     }
     else
     {
-       <link href="@Url.Content($"~{baseAdd}/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css")" rel="stylesheet" />
+       <link href="@Url.Content($"~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css")" rel="stylesheet" />
     }
 }
 <h4>@Language.GetString("Menu_Products")</h4>
@@ -314,7 +314,7 @@
                                         <label class="form-label">@Language.GetString("ProductSpecs")</label>
                                         <textarea id="editorCk" name="editorCk" class="form-control" rows="30"></textarea>
                                        
-                                        <script src="@Url.Content($"~{baseAdd}/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js")"></script>
+                                        <script src="@Url.Content($"~/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js")"></script>
                                         <script>
                                                 var config =
                                                 {
@@ -646,16 +646,16 @@
     </div>
 </div>
 
-<script src="@Url.Content($"~{baseAdd}/lib/cropperjs/cropper.js")"></script>
+<script src="@Url.Content($"~/lib/cropperjs/cropper.js")"></script>
 @*<script src="~/plugins/select2/js/select2.js"></script>*@
 
 @if (CultureInfo.CurrentCulture.Name == "fa-IR")
 {
-    <script src="@Url.Content($"~{baseAdd}/plugins/datePicker/kamadatepicker.min.js")"></script>
+    <script src="@Url.Content($"~/plugins/datePicker/kamadatepicker.min.js")"></script>
 }
 else
 {
-    <script src="@Url.Content($"~{baseAdd}/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
+    <script src="@Url.Content($"~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
 }
 
 <script>

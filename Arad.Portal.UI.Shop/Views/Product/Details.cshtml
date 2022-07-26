@@ -62,16 +62,16 @@
     }
 </style>
 	}
-
+<div class="container">
 <div class="row">
-    <div class="col-6" @*dir="ltr"*@>
+    <div class="col-12 col-lg-6" @*dir="ltr"*@>
         <div id="detail">
             <div class="product-images demo-gallery">
                 <div class="main-img-slider">
                     @foreach (var item in Model.Images)
                     {
-                        <a data-fancybox="gallery" href=@($"../filemanager/getscaledimageOnWidth?path={item.Url}&width={1000}")>
-                            <img src=@($"../filemanager/getscaledimageOnWidth?path={item.Url}&width={800}") class="img-fluid">
+                        <a data-fancybox="gallery" href=@Url.Content($"~/getscaledimageOnWidth?path={item.Url}&width={1000}")>
+                            <img src="@Url.Content($"~/getscaledimageOnWidth?path={item.Url}&width={800}")" class="img-fluid">
                         </a>
                     }
                 </div>
@@ -79,13 +79,13 @@
                 <ul class="thumb-nav">
                     @foreach (var item in Model.Images)
                     {
-                        <li><img class="smlImg" src=@($"../filemanager/getscaledimageOnWidth?path={item.Url}&width={75}")></li>
+                        <li><img class="smlImg" src="@Url.Content($"~/getscaledimageOnWidth?path={item.Url}&width={75}")"></li>
                     }
                 </ul>
             </div>
         </div>
         <div class="row">
-            <div class="sold_stars ratePart col-4 offset-4">
+            <div class="sold_stars ratePart col-12 col-md-4 offset-md-4">
                 @for (int i = 1; i <= Model.LikeRate; i++)
                 {
                     <a href="#"
@@ -118,7 +118,7 @@
         </div>
 
     </div>
-    <div class="col-6">
+    <div class="col-12 col-lg-6">
         <div class="card" style="border: none;">
             <div class="card-header"></div>
             <div class="card-body">
@@ -126,119 +126,127 @@
                     @(Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
                     Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).Name : "")
                 </h6>
-                <p class="card-text text-start" style="height : 500px;overflow-y: auto">
+                <p class="card-text text-start" style="max-height: 260px;overflow-y: auto">
                     @*text-truncate*@
                     @(Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
                     Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).Description : "")
                 </p>
+                <div class="border rounded-3 m-2 mb-4 p-2" style="max-height: 260px;overflow-y: auto">
+                    @{
+                        if (Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) &&
+                        !string.IsNullOrEmpty(Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).BodyContent))
+                        {
+                                    @Html.Raw(Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).BodyContent)
+                        }
+                    }
+                </div>
                 @{
-                    @foreach (var spec in @Model.Specifications.Where(_ => _.LanguageId == ViewBag.CurLanguageId))
+                            @foreach (var spec in @Model.Specifications.Where(_ => _.LanguageId == ViewBag.CurLanguageId))
                     {
-                        <div class="row border-top m-1">
-                            <div class="col-6">
-                                <span>@spec.SpecificationName :</span>
-                            </div>
-                            <div class="col-6">
-                                <span>@spec.Values.Replace("|",",")</span>
-                            </div>
-                        </div>
+                                <div class="row border-top m-1 py-2">
+                                    <div class="col-6">
+                                        <span>@spec.SpecificationName :</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <span>@spec.Values.Replace("|",",")</span>
+                                    </div>
+                                </div>
                     }
 
                     if (Model.Inventory > 0)
                     {
-                        <div class="mt-4 p-2 bg-secondary bg-opacity-10 border rounded-3">
-                            <div class="row  mt-2">
-                                <div class="col-md-2">
-                                    <span>@Language.GetString("PriceValue")</span>
-                                    <span> : </span>
-                                </div>
-                                @if (realPrice == Model.PriceValWithPromotion && Model.GiftProduct == null)
+                                <div class="mt-4 p-2 bg-secondary bg-opacity-10 border rounded-3">
+                                    <div class="row  mt-2">
+                                        <div class="col-12 col-md-3 col-lg-2">
+                                            <span>@Language.GetString("PriceValue") :</span>
+                                        </div>
+                                        @if (realPrice == Model.PriceValWithPromotion && Model.GiftProduct == null)
                                 {
-                                    <div class="col-md-3">
-                                        <p>
-                                            <mark>
-                                                @($"{@Model.PriceValWithPromotion} {@price.Prefix}")
-                                            </mark>
-                                        <p>
-                                    </div>
+                                            <div class="col-12 col-md-3">
+                                                <p>
+                                                    <mark>
+                                                        @($"{@Model.PriceValWithPromotion} {@price.Prefix}")
+                                                    </mark>
+                                                <p>
+                                            </div>
                                 }
                                 else
                                 {
-                                    @if (Model.GiftProduct == null)
+                                            @if (Model.GiftProduct == null)
                                     {
-                                        <div class="col-md-2">
-                                            <p>
-                                                <mark>
-                                                    @Model.PriceValWithPromotion + @price.Prefix;
-                                                </mark>
-                                            </p>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <p>
-                                                <s>
-                                                    @realPrice + @price.Prefix ;
-                                                </s>
-                                            </p>
-                                        </div>
+                                                <div class="col-12 col-md-4 col-lg-3">
+                                                    <p>
+                                                        <mark>
+                                                            @Model.PriceValWithPromotion + @price.Prefix;
+                                                        </mark>
+                                                    </p>
+                                                </div>
+                                                <div class="col-12 col-md-4 col-lg-3">
+                                                    <p>
+                                                        <s>
+                                                            @realPrice + @price.Prefix ;
+                                                        </s>
+                                                    </p>
+                                                </div>
                                     }
                                     else
                                     {
-                                        <div class="col-md-2">
-                                            <p>
-                                                <mark>
-                                                    @Model.PriceValWithPromotion + @price.Prefix;
-                                                </mark>
-                                            </p>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <p>@Language.GetString("byBuying")</p>
-                                            <span>@Model.Promotion.BoughtCount.Value</span>
-                                            <p>@Language.GetString("AsGift")</p>
-                                            <span>@Model.Promotion.PromotedCountofUnit.Value</span>
-                                            <a class="bbb_deals_item_name" href="/product/@Model.GiftProduct.ProductCode">
-                                                @(Model.GiftProduct.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
+                                                <div class="col-12 col-md-4 col-lg-3">
+                                                    <p>
+                                                        <mark>
+                                                            @Model.PriceValWithPromotion + @price.Prefix;
+                                                        </mark>
+                                                    </p>
+                                                </div>
+                                                <div class="col-12 col-md-4 col-lg-3">
+                                                    <p>@Language.GetString("byBuying")</p>
+                                                    <span>@Model.Promotion.BoughtCount.Value</span>
+                                                    <p>@Language.GetString("AsGift")</p>
+                                                    <span>@Model.Promotion.PromotedCountofUnit.Value</span>
+                                                    <a class="bbb_deals_item_name" href="/product/@Model.GiftProduct.ProductCode">
+                                                        @(Model.GiftProduct.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
                                 Model.GiftProduct.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).Name :
                                 Model.GiftProduct.MultiLingualProperties.FirstOrDefault().Name )
-                                            </a>
-                                        </div>
+                                                    </a>
+                                                </div>
                                     }
 
                                 }
 
-                                <div class="col-md-3 text-start">
-                                    <span>@Language.GetString("InventoryInStore")</span>
-                                    <span>@Model.Inventory</span>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <label class="lblMdl">@Language.GetString("OrderCnt")</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="number" class="form-control" id="orderCnt" name="orderCnt" min="0" value="1" />
-                                </div>
-                                <div class="col-6 offset-1">
-                                    <button type="button" id="btnAddToCart" class="btn btn-success  @(@Model.Inventory <= 0 ? "disabled" : "")" prid="@Model.ProductId">
-                                        <span class="shopping-cart">
-                                            <em class="fa fa-shopping-basket"></em>
-                                        </span>
-                                        <span> @Language.GetString("btn_AddToShoppingCart")</span>
-                                    </button>
-                                </div>
-                            </div>
+                                        <div class="col-12 col-md-3 text-start">
+                                            <span>@Language.GetString("InventoryInStore")</span>
+                                            <span>@Model.Inventory</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-md-3 d-flex justify-content-center">
+                                            <label class="lblMdl">@Language.GetString("OrderCnt") :</label>
+                                        </div>
+                                        <div class="col-12 col-md-3">
+                                            <input type="number" class="form-control" id="orderCnt" name="orderCnt" min="0" value="1" />
+                                        </div>
+                                        <div class="col-12 col-md-6 d-flex justify-content-center">
+                                            <button type="button" id="btnAddToCart" class="btn btn-success  @(@Model.Inventory <= 0 ? "disabled" : "")" prid="@Model.ProductId">
+                                                <span class="shopping-cart">
+                                                    <em class="fa fa-shopping-basket"></em>
+                                                </span>
+                                                <span> @Language.GetString("btn_AddToShoppingCart")</span>
+                                            </button>
+                                        </div>
+                                    </div>
 
-                        </div>
+                                </div>
                     }
                     else
                     {
-                        <div class="row">
-                            <div class="col-md-3 offset-3">
-                                <button class="btn btn-light bg-gradient" disabled>@Language.GetString("UnAvailable")</button>
-                            </div>
-                            <div class="col-md-3">
-                                <button class="btn btn-danger bg-gradient">@Language.GetString("btn_InformMe")</button>
-                            </div>
-                        </div>
+                                <div class="row">
+                                    <div class="col-6 col-md-3 offset-md-3">
+                                        <button class="btn btn-light bg-gradient" disabled>@Language.GetString("UnAvailable")</button>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <button class="btn btn-danger bg-gradient">@Language.GetString("btn_InformMe")</button>
+                                    </div>
+                                </div>
                     }
                 }
             </div>
@@ -246,10 +254,10 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-12">
         <div class="mb-3 mt-3 px-3 bg-secondary bg-opacity-10">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-12">
 
                     @foreach (var item in Model.Comments)
                     {
@@ -262,169 +270,170 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6 txtAlign">
-        <div class="border rounded-3 m-2 p-2">
-            @{
+    @*<div class="col-md-6 txtAlign">
+                <div class="border rounded-3 m-2 p-2">
+                    @{
                 if (Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) &&
                 !string.IsNullOrEmpty(Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).BodyContent))
                 {
-                    @Html.Raw(Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).BodyContent)
+                                    @Html.Raw(Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).BodyContent)
                 }
-            }
-        </div>
+                    }
+                </div>
+            </div>
+      }*@
     </div>
-</div>
+    </div>
+    <script src="~/js/CommentSection/cmt.js"></script>
+    <script src="~/ImageSlider/slick.min.js"></script>
 
-<script src="~/js/CommentSection/cmt.js"></script>
-<script src="~/ImageSlider/slick.min.js"></script>
-@*<script src="~/lib/slick-carousel/slick.min.js"></script>*@
-<script src="~/ImageSlider/jquery.fancybox.min.js"></script>
-@*<script src="~/lib/fancybox/jquery.fancybox.min.js"></script>*@
+    <script src="~/ImageSlider/jquery.fancybox.min.js"></script>
+    @*<script src="~/lib/fancybox/jquery.fancybox.min.js"></script>*@
 
-@if (dir == "rtl")
+    @if (dir == "rtl")
 {
-    <script src="~/ImageSlider/ImageSlider-rtl.js"></script>
+        <script src="~/ImageSlider/ImageSlider-rtl.js"></script>
 }
 else
 {
-    <script src="~/ImageSlider/ImageSlider-ltr.js"></script>
+        <script src="~/ImageSlider/ImageSlider-ltr.js"></script>
 }
 
-<script type="text/javascript">
-    var DivId;
-    var Sender;
-    $(document).ready(function() {
-        debugger;
-        $("#btnAddComment").click(function(e) {
+    <script type="text/javascript">
+        var DivId;
+        var Sender;
+        $(document).ready(function() {
             debugger;
-            if ('@User.Identity.IsAuthenticated' === 'True') {
-                if ($("#commentPart").val() != "") {
+            $("#btnAddComment").click(function(e) {
+                debugger;
+                if ('@User.Identity.IsAuthenticated' === 'True') {
+                    if ($("#commentPart").val() != "") {
 
-                    var obj = {};
-                    obj.ReferenceId = `p*${'@Model.ProductId'}`;
-                    obj.Content = $("#commentPart").val();
-                    obj.ParentId = null;
+                        var obj = {};
+                        obj.ReferenceId = `p*${'@Model.ProductId'}`;
+                        obj.Content = $("#commentPart").val();
+                        obj.ParentId = null;
+
+                        $.ajax({
+                            url: '@Url.Action("SubmitComment", "Comment")',
+                            contentType: "application/json",
+                            data: JSON.stringify(obj),
+                            type: "Post",
+                            beforeSend: function() {
+                            },
+                            success: function(result) {
+                                debugger;
+                                if (result.status === "Success") {
+
+                                    $("#commentPart").val("@Language.GetString("AlertAndMessage_SubmitComment")");
+                                    setTimeout(function() {
+                                        $("#commentPart").val("");
+                                    },
+                                        3000);
+                                    //location.reload();
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${'@Language.GetString("AlertAndMessage_LoginFirst")'}`;
+                    document.getElementById('mainToastBody').classList.add('alert-danger');
+                    var toastDiv = $("#mainToast");
+                    $("#toastPanel").show();
+                    var toast = new bootstrap.Toast(toastDiv);
+                    toast.show();
+
+                    setTimeout(function(){
+                         $("#toastPanel").hide();
+                    }, 3000);
+                }
+            });
+
+
+            $("#btnAddToCart").click(function() {
+                debugger;
+                var cnt = $("#orderCnt").val();
+                if ('@User.Identity.IsAuthenticated' === 'True')//user is authenticated and can add product to its cart
+                {
+                    debugger;
 
                     $.ajax({
-                        url: '@Url.Action("SubmitComment", "Comment")',
-                        contentType: "application/json",
-                        data: JSON.stringify(obj),
-                        type: "Post",
+                        url: `/${'@ViewBag.LanIcon'}/Basket/AddProToBasket?productId=` + '@Model.ProductId' + "&cnt=" + cnt,
+                        contentType: 'application/json',
+                        type: 'Get',
+                        dataType: 'json',
                         beforeSend: function() {
                         },
                         success: function(result) {
-                            debugger;
-                            if (result.status === "Success") {
+                            if (result.status == "Succeed") {
+                                debugger;
+                                setProductCountInCart(result.cnt);
 
-                                $("#commentPart").val("@Language.GetString("AlertAndMessage_SubmitComment")");
-                                setTimeout(function() {
-                                    $("#commentPart").val("");
-                                },
-                                    3000);
-                                //location.reload();
+                                $('#mainToastBody').html(`<i class="far fa-check-circle"></i> ${result.message}`);
+                                $('#mainToastBody').addClass('alert-success');
+                                 $("#toastPanel").show();
+                                var toast = new bootstrap.Toast($("#mainToast"));
+                                toast.show();
+                                setTimeout(function(){
+                                     $("#toastPanel").hide();
+                                }, 2500);
                             }
+                            else {
+
+                                document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${result.message}`;
+                                document.getElementById('mainToastBody').classList.add('alert-danger');
+                                $("#toastPanel").show();
+                                var toast = new bootstrap.Toast($("#mainToast"));
+                                toast.show();
+                                setTimeout(function(){
+                                     $("#toastPanel").hide();
+                                }, 2500);
+                            }
+
                         }
                     });
+                } else {
+                    window.location.href = `/${"@ViewBag.LanIcon"}/Account/login?returnUrl=/${"@ViewBag.LanIcon"}/Product/${'@Model.ProductCode'}`;
                 }
-            } else {
-                document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${'@Language.GetString("AlertAndMessage_LoginFirst")'}`;
-                document.getElementById('mainToastBody').classList.add('alert-danger');
-                var toastDiv = $("#mainToast");
-                $("#toastPanel").show();
-                var toast = new bootstrap.Toast(toastDiv);
-                toast.show();
+            });
 
-                setTimeout(function(){
-                     $("#toastPanel").hide();
-                }, 3000);
-            }
+
         });
 
-
-        $("#btnAddToCart").click(function() {
+        function Rate(score) {
             debugger;
-            var cnt = $("#orderCnt").val();
-            if ('@User.Identity.IsAuthenticated' === 'True')//user is authenticated and can add product to its cart
-            {
-                debugger;
+            var isAllow = false;
+            if ('@User.Identity.IsAuthenticated' == 'True') {
+                if ('@ViewBag.HasRateBefore' == 'True') {
+                    if (score != parseInt('@ViewBag.PreRate'))
+                        isAllow = true;
+                }
+                else {
+                    isAllow = true;
+                }
+            }
+            var obj = {};
+            if (isAllow) {
 
+                obj.ProductId = '@Model.ProductId';
+                obj.IsNew = '@ViewBag.HasRateBefore' == 'False';
+                obj.Score = parseInt(score);
                 $.ajax({
-                    url: `/${'@ViewBag.LanIcon'}/Basket/AddProToBasket?productId=` + '@Model.ProductId' + "&cnt=" + cnt,
-                    contentType: 'application/json',
-                    type: 'Get',
-                    dataType: 'json',
+                    url: '@Url.Action("RatingProduct", "Comment")',
+                    contentType: "application/json",
+                    data: JSON.stringify(obj),
+                    type: "Post",
                     beforeSend: function() {
                     },
                     success: function(result) {
+                        debugger;
                         if (result.status == "Succeed") {
-                            debugger;
-                            setProductCountInCart(result.cnt);
 
-                            $('#mainToastBody').html(`<i class="far fa-check-circle"></i> ${result.message}`);
-                            $('#mainToastBody').addClass('alert-success');
-                             $("#toastPanel").show();
-                            var toast = new bootstrap.Toast($("#mainToast"));
-                            toast.show();
-                            setTimeout(function(){
-                                 $("#toastPanel").hide();
-                            }, 2500);
+                            window.location.reload();
                         }
-                        else {
-
-                            document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${result.message}`;
-                            document.getElementById('mainToastBody').classList.add('alert-danger');
-                            $("#toastPanel").show();
-                            var toast = new bootstrap.Toast($("#mainToast"));
-                            toast.show();
-                            setTimeout(function(){
-                                 $("#toastPanel").hide();
-                            }, 2500);
-                        }
-
                     }
                 });
-            } else {
-                window.location.href = `/${"@ViewBag.LanIcon"}/Account/login?returnUrl=/${"@ViewBag.LanIcon"}/Product/${'@Model.ProductCode'}`;
-            }
-        });
-
-
-    });
-
-    function Rate(score) {
-        debugger;
-        var isAllow = false;
-        if ('@User.Identity.IsAuthenticated' == 'True') {
-            if ('@ViewBag.HasRateBefore' == 'True') {
-                if (score != parseInt('@ViewBag.PreRate'))
-                    isAllow = true;
-            }
-            else {
-                isAllow = true;
             }
         }
-        var obj = {};
-        if (isAllow) {
 
-            obj.ProductId = '@Model.ProductId';
-            obj.IsNew = '@ViewBag.HasRateBefore' == 'False';
-            obj.Score = parseInt(score);
-            $.ajax({
-                url: '@Url.Action("RatingProduct", "Comment")',
-                contentType: "application/json",
-                data: JSON.stringify(obj),
-                type: "Post",
-                beforeSend: function() {
-                },
-                success: function(result) {
-                    debugger;
-                    if (result.status == "Succeed") {
-
-                        window.location.reload();
-                    }
-                }
-            });
-        }
-    }
-
-</script>
+    </script>

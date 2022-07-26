@@ -13,7 +13,7 @@
                 <div class="accordion-item border-0">
                     <h2 class="accordion-header py-1"
                         id="@($"heading{item.PermissionId}")">
-                        <a href="@Url.Content($"~{ViewBag.BasePath}{item.ClientAddress}")"
+                        <a href="@Url.Content($"~{item.ClientAddress}")"
                            class="btn btn-sm bg-gradient text-start text-nowrap lh-lg @(item.IsActive ? "text-primary" : "")">
                             <i class="@item.Icon"></i>
                            @Language.GetString($"PermissionTitle_{item.Title}") 

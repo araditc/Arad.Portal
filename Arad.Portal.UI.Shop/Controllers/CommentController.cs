@@ -21,7 +21,7 @@ using Arad.Portal.DataLayer.Contracts.General.Domain;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
-   [Authorize(Policy = "Role")]
+  
     public class CommentController : BaseController
     {
         private readonly ICommentRepository _commentRepository;

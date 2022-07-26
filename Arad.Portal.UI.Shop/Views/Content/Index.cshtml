@@ -33,7 +33,7 @@
                             @if (!string.IsNullOrWhiteSpace(item.DesiredImageUrl))
                             {
                                 <div class="col-4 d-inline-block">
-                                    <img src="@($"../filemanager/GetScaledImageOnWidth?path={item.DesiredImageUrl}&width={535}")" class="w-100 rounded-0">
+                                    <img src="@Url.Content($"~/GetScaledImageOnWidth?path={item.DesiredImageUrl}&width={535}")" class="w-100 rounded-0">
                                 </div>
                                 <div class="col-8 d-inline-block">
                                     <h2 class="m-4" style="color: #222;font-size: 1.5rem;">@item.Title</h2>

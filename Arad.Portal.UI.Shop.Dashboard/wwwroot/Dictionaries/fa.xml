@@ -322,6 +322,9 @@
   <string key="PermissionTitle_ActionNew">
     <value>عملیات ثبت</value>
   </string>
+	<string key="PermissionTitle_ChangeStatus">
+		<value>تغییر وضعیت</value>
+	</string>
   <string key="PermissionTitle_ActionEdit">
     <value>عملیات ویرایش</value>
   </string>
@@ -496,6 +499,9 @@
   <string key="PermissionTitle_StoreSettings">
     <value>تنظیمات فروشگاه</value>
   </string>
+	<string key="PermissionTitle_Orders">
+		<value>سفارشات</value>
+	</string>
   <string key="PermissionTitle_StoreMenues">
     <value>منوهای فروشگاه</value>
   </string>
@@ -508,6 +514,24 @@
   <string key="PermissionTitle_ShippingSetting">
     <value>تنظیمات حمل و نقل کالا</value>
   </string>
+<string key="PermissionTitle_StoreLinksAccess">
+	<value>دسترسی لینک های فروشگاه</value>
+</string>
+	<string key="PermissionTitle_CartShopping">
+		<value>دسترسی منوهای فروشگاه</value>
+	</string>
+	<string key="PermissionTitle_Comments">
+		<value>نظرات</value>
+	</string>
+	<string key="PermissionTitle_RatingProduct">
+		<value>امتیاز دهی محصولات</value>
+	</string>
+	<string key="PermissionTitle_AddingLikeDislike">
+		<value>افزودن علاقمندی یا عدم علاقمندی</value>
+	</string>
+	<string key="PermissionTitle_Payments">
+		<value>پرداخت</value>
+	</string>
   <string key="TemplateName_TemplateNumber1">
     <value>قالب شماره یک</value>
   </string>

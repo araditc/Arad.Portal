@@ -21,6 +21,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 
         Task<Result> Add(ProductInputDTO dto);
 
+
+        long GetProductCode(string productId);
         Task<ProductOutputDTO> ProductFetch(string productId);
 
         ProductOutputDTO FetchProductWithSlug(string slug, string domainName);

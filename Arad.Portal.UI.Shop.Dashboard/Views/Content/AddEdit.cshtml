@@ -16,8 +16,8 @@
     var baseAdd = Config["BaseAddress"];
 }
 @section Styles{
-<link href="@Url.Content($"~{baseAdd}/lib/cropperjs/cropper.css")" rel="stylesheet" />
-<link href="@Url.Content($"~{baseAdd}/plugins/TagInput/amsify.suggestags.css")" rel="stylesheet" />
+<link href="@Url.Content($"~/lib/cropperjs/cropper.css")" rel="stylesheet" />
+<link href="@Url.Content($"~/plugins/TagInput/amsify.suggestags.css")" rel="stylesheet" />
 
  
 <style>
@@ -73,7 +73,7 @@
 </style>
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-<link href="@Url.Content($"~{baseAdd}/plugins/datePicker/kamadatepicker.css")" rel="stylesheet" />
+<link href="@Url.Content($"~/plugins/datePicker/kamadatepicker.css")" rel="stylesheet" />
 <style>
   
     .text-danger {
@@ -115,7 +115,7 @@
     }
     else
     {
-            <link href="@Url.Content($"~{baseAdd}/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css")" rel="stylesheet" />
+            <link href="@Url.Content($"~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css")" rel="stylesheet" />
     }
 }
 
@@ -409,7 +409,7 @@
                                         <textarea id="editorCk" name="editorCk" class="form-control" rows="40">@Html.Raw(Model.Contents)</textarea>
 
                                    
-                                      <script src="@Url.Content($"~{baseAdd}/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js")"></script>
+                                      <script src="@Url.Content($"~/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js")"></script>
                                         <script>
                                             
 
@@ -481,16 +481,16 @@
 
 
 @section Scripts{
-<script src="@Url.Content($"~{baseAdd}/lib/cropperjs/cropper.js")"></script>
-<script src="@Url.Content($"~{baseAdd}/plugins/TagInput/jquery.amsify.suggestags.js")"></script>
+<script src="@Url.Content($"~/lib/cropperjs/cropper.js")"></script>
+<script src="@Url.Content($"~/plugins/TagInput/jquery.amsify.suggestags.js")"></script>
   
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-      <script src="@Url.Content($"~{baseAdd}/plugins/datePicker/kamadatepicker.min.js")"></script>
+      <script src="@Url.Content($"~/plugins/datePicker/kamadatepicker.min.js")"></script>
     }
     else
     {
-     <script src="@Url.Content($"~{baseAdd}/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
+     <script src="@Url.Content($"~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
     }
 
 <script>

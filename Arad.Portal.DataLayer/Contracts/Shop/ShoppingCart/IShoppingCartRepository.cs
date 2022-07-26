@@ -36,7 +36,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart
         bool UserCartShoppingValidation(string userCartId);
 
         /// <summary>
-        /// the return type Of rResult is UserCartId
+        /// the return type Of Result is UserCartId
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>

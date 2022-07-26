@@ -101,7 +101,7 @@ namespace Arad.Portal.UI.Shop.Authorization
                             accessUrl.AddRange(permissionAction.Urls.Select(u => u.ToLower()));
                         }
 
-                        if (roleDto.PermissionIds.Any(r => r.Equals(permission.PermissionId)) && accessUrl.Any(r => r.Equals(path)))
+                        if (roleDto.PermissionIds.Split(",").Any(r => r.Equals(permission.PermissionId)) && accessUrl.Any(r => r.Equals($"/{path}")))
                         {
                             return true;
                         }

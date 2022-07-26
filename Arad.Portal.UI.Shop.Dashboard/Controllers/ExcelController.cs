@@ -17,9 +17,11 @@ using System.Security.Claims;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using System.IO.Compression;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
+    [Authorize(Policy = "Role")]
     public class ExcelController : Controller
     {
         private readonly IConfiguration _configuration;

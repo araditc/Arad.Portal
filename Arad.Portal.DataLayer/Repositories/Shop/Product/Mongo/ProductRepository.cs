@@ -13,7 +13,6 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo;
 using System.Security.Claims;
-using Arad.Portal.DataLayer.Repositories.Shop.Order.Mongo;
 using Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo;
 using System.Collections.Specialized;
 using System.Web;
@@ -31,14 +30,14 @@ using Arad.Portal.DataLayer.Entities.General.DesignStructure;
 using MongoDB.Bson;
 using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.DataLayer.Repositories.General.Comment.Mongo;
-using Arad.Portal.DataLayer.Models.DesignStructure;
+
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 {
     public class ProductRepository : BaseRepository, IProductRepository
     {
         private readonly ProductContext _context;
-        //private readonly OrderContext _orderContext;
+       
         private readonly FilterDefinitionBuilder<Entities.Shop.Product.Product> _builder = new();
         private readonly DomainContext _domainContext;
         private readonly CurrencyContext _currencyContext;
@@ -49,16 +48,13 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         private readonly IConfiguration _configuration;
         private readonly CommentContext _commentContext;
         private readonly IMapper _mapper;
-        //private readonly IHttpContextAccessor _accessor;
-        //private readonly UserManager<ApplicationUser> _userManager;
+       
 
         public ProductRepository(IHttpContextAccessor httpContextAccessor,
             ProductContext context, IMapper mapper,
             PromotionContext promotionContext,
             CurrencyContext currencyContext,
             CommentContext commentContext,
-            //OrderContext orderContext,
-            //UserManager<ApplicationUser> userManager,
             ShoppingCartContext shoppingCartContext,
             IConfiguration configuration,
             LanguageContext languageContext,
@@ -70,7 +66,6 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         {
             _context = context;
             _mapper = mapper;
-            //_userManager = userManager;
             _promotionContext = promotionContext;
             _transactionContext = transactionContext;
             _languageContext = languageContext;
@@ -1488,6 +1483,17 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             else
             {
                 result.Message = ConstMessages.ObjectNotFound;
+            }
+            return result;
+        }
+
+        public long GetProductCode(string productId)
+        {
+            long result = 0;
+            var entity = _context.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
+            if(entity != null)
+            {
+                result = entity.ProductCode;
             }
             return result;
         }

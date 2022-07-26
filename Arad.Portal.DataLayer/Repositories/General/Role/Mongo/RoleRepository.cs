@@ -208,8 +208,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
 
                 long totalCount = await _context.Collection.Find(c => true).CountDocumentsAsync();
-                var list = _context.Collection.AsQueryable().Skip((page - 1) * pageSize)
-                   .Take(pageSize).Select(_ => new RoleDTO()
+                var list = _context.Collection.Find(_=> true)
+                   .Project(_ => new RoleDTO()
                    { 
                      RoleId = _.RoleId,
                      RoleName = _.RoleName,

@@ -16,7 +16,7 @@ using Arad.Portal.DataLayer.Models.ShoppingCart;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
-    [Authorize(Policy = "Role")]
+   
     public class BasketController : BaseController
     {
         private readonly IShoppingCartRepository _shoppingCartRepository;
@@ -110,25 +110,31 @@ namespace Arad.Portal.UI.Shop.Controllers
             var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
             try
             {
+               
                 var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                
                 var user = await _userManager.FindByIdAsync(userId);
-                var addresses = user.Profile.Addresses;
-                var item = addresses.SingleOrDefault(a => a.Id == addressId);
-                if (item != null) addresses.Remove(item);
-
-                var result = await _userManager.UpdateAsync(user);
-
-                if (result.Succeeded)
+                if (User != null && User.Identity.IsAuthenticated)
                 {
-                    
-                    TempData["MessageResult"] = true;
-                    return Redirect($"/{lanIcon}/Basket/SendInfo");
-                }
+                    var addresses = user.Profile.Addresses;
+                    var item = addresses.SingleOrDefault(a => a.Id == addressId);
+                    if (item != null) addresses.Remove(item);
 
-                
-                TempData["MessageResult"] = false;
-                return Redirect($"/{lanIcon}/Basket/SendInfo");
+                    var result = await _userManager.UpdateAsync(user);
+
+                    if (result.Succeeded)
+                    {
+
+                        TempData["MessageResult"] = true;
+                        return Redirect($"/{lanIcon}/Basket/SendInfo");
+                    }
+
+
+                    TempData["MessageResult"] = false;
+                    return Redirect($"/{lanIcon}/Basket/SendInfo");
+                }else
+                {
+                    return Redirect($"~/{lanIcon}/Account/Login?returnUrl=/{lanIcon}/basket/DeleteAddress?addressId={addressId}");
+                }
             }
             catch (Exception x)
             {
@@ -139,11 +145,5 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
 
-
-
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
     }
 }

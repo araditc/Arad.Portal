@@ -27,7 +27,6 @@ using Microsoft.AspNetCore.Cors;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
-    [Authorize(Policy = "Role")]
     public class SamanController : BaseController
     {
         private readonly ITransactionRepository _transactionRepository;
@@ -164,6 +163,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                     {
                         transaction.EventsData.FirstOrDefault(_ => _.ActionType == PspActions.PspTokenResponse).additionalData =
                         $"token error desc : {tokenResponse.ErrorDesc}, errorCode: {tokenResponse.ErrorCode}";
+                       
                         await _transactionRepository.UpdateTransaction(transaction);
                         //Log.Error($"token error desc : {tokenResponse.ErrorDesc}, errorCode: {tokenResponse.ErrorCode}");
                         TempData["Psp"] = transaction.BasicData.PspType.GetDescription();
@@ -174,6 +174,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 }
                 catch (Exception ex)
                 {
+                    
                     await _transactionRepository.UpdateTransaction(transaction);
                     //Log.Error($"overal error : {e.Message}");
                     TempData["Psp"] = transaction.BasicData.PspType.GetDescription();
@@ -368,6 +369,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                                         ActionType = PspActions.PspResponseReverseTransaction
                                     });
                                     transaction.BasicData.Stage = Enums.PaymentStage.Failed;
+                                    
                                     await _transactionRepository.UpdateTransaction(transaction);
                                     TempData["Psp"] = "Saman";
                                     await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
@@ -384,6 +386,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                                         ActionType = PspActions.PspResponseReverseTransaction
                                     });
                                     transaction.BasicData.Stage = Enums.PaymentStage.Failed;
+                                  
                                     await _transactionRepository.UpdateTransaction(transaction);
                                     TempData["Psp"] = "Saman";
                                     await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
@@ -402,7 +405,9 @@ namespace Arad.Portal.UI.Shop.Controllers
                                     additionalData = PspActions.PspVerifyResponse.GetDescription(),
                                     ActionType = PspActions.PspVerifyResponse
                                 });
+                                transaction.AdditionalData.Add(new Parameter<string, string>() { Key = "CreationDate", Value = DateTime.Now.ToString() });
                                 transaction.BasicData.Stage = Enums.PaymentStage.DoneAndConfirmed;
+                                transaction.OrderStatus = OrderStatus.OrderRegitered;
                                 transaction.BasicData.ReferenceId = verifyOutPutModel.TransactionDetail.RefNum;
                                 await _transactionRepository.UpdateTransaction(transaction);
 
@@ -431,6 +436,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                                 ActionType = PspActions.PspVerifyResponse
                             });
                             transaction.BasicData.Stage = Enums.PaymentStage.Failed;
+                            
                             await _transactionRepository.UpdateTransaction(transaction);
                             TempData["Psp"] = "Saman";
                             TempData["PaymentErrorMessage"] = "خطا در تایید تراکنش توسط درگاه";

@@ -74,7 +74,7 @@
                 @foreach (var img in Model.Images)
                 {
                     <div class="carousel-item active">
-                        <img src='@($"../filemanager/getscaledimageOnWidth?path={img.Url}&width={1000}")' class="d-block w-100" alt="@img.Title">
+                        <img src="@Url.Content($"~/getscaledimageOnWidth?path={img.Url}&width={1000}")" class="d-block w-100" alt="@img.Title">
                     </div>
                 }
             </div>
@@ -141,7 +141,7 @@
                         <li class="pb-10 list-group-item border-0">
                             <div class="w-100 mb-5">
                                 <a href="@(!string.IsNullOrWhiteSpace(content.UrlFriend) ? content.UrlFriend : $"/blog/{content.ContentCode}")" class="d-block h-100 text-decoration-none" style="position: relative;color: #777;">
-                                    <img src="@($"../filemanager/GetScaledImageOnWidth?path={content.DesiredImageUrl}&width={300}")" class="w-100" >
+                                    <img src="@Url.Content($"~/GetScaledImageOnWidth?path={content.DesiredImageUrl}&width={300}")" class="w-100" >
                                     <div class="">
                                         <h5 class="fs-6" >@content.Title</h5>
                                     </div>

@@ -23,7 +23,7 @@
         {
              <a   href="@(item.MultiLingualProperties.Any(_=>_.LanguageId == @ViewBag.CurLangId) && 
                                       !string.IsNullOrWhiteSpace(item.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == @ViewBag.CurLangId).UrlFriend) ? 
-                                 $"~{baseAdd}{item.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == @ViewBag.CurLangId).UrlFriend}"  : $"~{baseAdd}/product/{item.ProductCode}"  )" role="button">
+                                 $"~{item.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == @ViewBag.CurLangId).UrlFriend}"  : $"~/product/{item.ProductCode}"  )" role="button">
                     <div class="thumb-wrapper m-1 text-center">
                         <div class="img-overlay-wrap">
                             @if ((item.DiscountType != null && (item.DiscountType == DiscountType.Percentage || item.DiscountType == DiscountType.Fixed)) )
