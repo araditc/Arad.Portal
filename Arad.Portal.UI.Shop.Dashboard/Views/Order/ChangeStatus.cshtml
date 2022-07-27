@@ -1,0 +1,73 @@
+﻿@model Arad.Portal.DataLayer.Entities.Shop.Transaction.OrderStatus
+@{
+
+}
+
+<h4>@Language.GetString("Order_changeOrderStatus")</h4>
+
+ 
+<input type="hidden" id="transactionId"  value="@ViewBag.traId" />
+
+<div class="row justify-content-around">
+    <div class="col-4 col-md-3">
+         <select class="form-control selectpicker" data-live-search="true" name="newStatus" id="orderStatusList" asp-items="@(new SelectList(ViewBag.OrderStatusList,"Value","Text", (int)Model))">
+                        </select>
+    </div>
+     <div class="col-2 text-center">
+           <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+           <input type="button" id="btnChangeStatus" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
+     </div>
+    
+</div>
+
+
+<script>
+$(document).ready(function() {
+      $("#orderStatusList").val('@Model');
+      $("#orderStatusList").selectpicker("refresh");
+
+    $("#btnChangeStatus").click(function(){
+        var obj = {};
+        obj.TransactionId = $("#transactionId").val();
+        obj.OrderStatus = $("#orderStatusList").val();
+
+         $.ajax({
+                        url:  '@Url.Action("ChangeStatus", "Order")',
+                        contentType: 'application/json',
+                        data:  JSON.stringify(obj),
+                        type: 'Post',
+                        dataType:'json',
+                        beforeSend: function () {
+                           /* AddLoading($("#addProductCard"));*/
+                        },
+                        success: function (result) {
+
+                            if (result.status === "Success") {
+                                debugger;
+                                document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
+                                document.getElementById('mainToastBody').classList.add('alert-success');
+                                $("#toastPanel").show();
+                                var bsAlert = new bootstrap.Toast($("#mainToast"));
+                                bsAlert.show();
+                                setTimeout(function()
+                                {
+                                    $("#toastPanel").hide();
+                                     window.location.href = '@Url.Action("List")';
+                                },
+                                3000);
+                            }else
+                            {
+                                showError(result.message);
+                            },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                           
+                            alert(xhr.status);
+                            alert(thrownError);
+                        },
+                        complete: function () {
+                          
+                        }
+                });
+    });
+})
+</script>

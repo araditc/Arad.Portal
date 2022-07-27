@@ -289,6 +289,9 @@
   <string key="FileImportExport_NoFileSelected">
     <value>فایلی انتخاب نشده است.</value>
   </string>
+	<string key="PermissionTitle_OrderDetail">
+		<value>جزییات سفارش</value>
+	</string>
   <string key="PermissionTitle_MainPage">
     <value>داشبورد</value>
   </string>
@@ -1507,6 +1510,9 @@
   <string key="AlertAndMessage_Username">
     <value>نام کاربری</value>
   </string>
+	<string key="AlertAndMessage_UserfullName">
+		<value>نام کاربر</value>
+	</string>
   <string key="AlertAndMessage_Password">
     <value>گذرواژه</value>
   </string>
@@ -2371,6 +2377,45 @@
   <string key="Order">
     <value>ترتیب</value>
   </string>
+	<string key="Order_Detail">
+		<value>جزییات سفارش</value>
+	</string>
+	<string key="Order_changeOrderStatus">
+		<value>تغییر وضعیت سفارش</value>
+	</string>
+	<string key="Order_RegisteredDate">
+		<value>تاریخ ثبت اولیه</value>
+	</string>
+	<string key="Order_DiscountPerUnit">
+		<value>تخفبف واحد</value>
+	</string>
+	<string key="Order_FinlaPriceAfterDiscount">
+		<value>قیمت نهایی پس از تخفیف</value>
+	</string>
+	<string key="Order_InvoiceNumber">
+		<value>شماره فاکتور</value>
+	</string>
+	<string key="Order_PaymentDate">
+		<value>تاریخ پرداخت</value>
+	</string>
+	<string key="Order_UserFullName">
+		<value>نام کاربر</value>
+	</string>
+	<string key="Order_UserName">
+		<value>نام کاربری</value>
+	</string>
+	<string key="Order_Amount">
+		<value>مبلغ سفارش</value>
+	</string>
+	<string key="Order_OrderItemCount">
+		<value>تعداد اقلام سفارش</value>
+	</string>
+	<string key="Order_PaymentStatus">
+		<value>وضعیت پرداخت</value>
+	</string>
+	<string key="Order_OrderStatus">
+		<value>وضعیت سفارش</value>
+	</string>
   <string key="OrderCnt">
     <value>تعداد سفارش</value>
   </string>

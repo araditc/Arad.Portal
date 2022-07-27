@@ -562,9 +562,6 @@
   <string key="tbl_RowName">
     <value>Row</value>
   </string>
-	<string key="tbl_RowName">
-		<value>Row</value>
-	</string>
   <string key="tbl_ShippingTypes">
     <value>Shipping types</value>
   </string>

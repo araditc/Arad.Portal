@@ -283,6 +283,9 @@
   <string key="ProductCommentApprove">
     <value>comment approve</value>
   </string>
+	<string key="PermissionTitle_OrderDetail">
+		<value>order details</value>
+	</string>
   <string key="PermissionTitle_MainPage">
     <value>Dashboard</value>
   </string>
@@ -1456,6 +1459,9 @@
   <string key="AlertAndMessage_Username">
     <value>Username</value>
   </string>
+	<string key="AlertAndMessage_UserfullName">
+		<value>user full name</value>
+	</string>
   <string key="AlertAndMessage_Password">
     <value>Password</value>
   </string>
@@ -2317,6 +2323,46 @@
   <string key="Order">
     <value>Order</value>
   </string>
+	 <string key="Order_Detail">
+    <value>order detail</value>
+  </string>
+	 <string key="Order_changeOrderStatus">
+    <value>change order status</value>
+  </string>
+  <string key="Order_RegisteredDate">
+    <value>Registered Date</value>
+  </string>
+	 <string key="Order_DiscountPerUnit">
+    <value>discount per unit</value>
+  </string>
+	 <string key="Order_FinlaPriceAfterDiscount">
+    <value>final price after discount</value>
+  </string>
+	 <string key="Order_InvoiceNumber">
+    <value>invoice number</value>
+  </string>
+	<string key="Order_PaymentDate">
+    <value>Payment Date</value>
+  </string>
+	<string key="Order_UserFullName">
+    <value>user fullname</value>
+  </string>
+	<string key="Order_UserName">
+    <value>username</value>
+  </string>
+	<string key="Order_Amount">
+    <value>order amount</value>
+  </string>
+	<string key="Order_OrderItemCount">
+    <value>order item count</value>
+  </string>
+	<string key="Order_PaymentStatus">
+    <value>payment status</value>
+  </string>
+	<string key="Order_OrderStatus">
+    <value>order status</value>
+  </string>
+	
   <string key="OrderCnt">
     <value>order count</value>
   </string>

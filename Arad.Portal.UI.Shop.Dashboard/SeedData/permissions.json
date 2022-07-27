@@ -593,6 +593,13 @@
               "ClientAddress": "/Order/ChangeStatus",
               "Urls": [
               ]
+            },
+            {
+              "PermissionId": "YTR3534a-1586-4b64-80fb-19b6127fa322",
+              "Title": "OrderDetail",
+              "ClientAddress": "/Order/Details",
+              "Urls": [
+              ]
             }
           ]
         },

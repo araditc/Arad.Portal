@@ -1,0 +1,110 @@
+﻿@using Arad.Portal.DataLayer.Entities.General.User
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<ApplicationUser> userManager;
+@using System.Collections.Generic;
+@using System;
+@model Arad.Portal.DataLayer.Entities.Shop.Transaction.Transaction
+@{
+   
+    List<KeyValuePair<string, long>> codeList = (List<KeyValuePair<string, long>>)ViewBag.CodeList;
+       
+}
+
+<h4>@Language.GetString("Order_Detail")</h4>
+
+   <div class="card m-3 border-1 rounded-3">
+                        <div class="card-header bg-success bg-opacity-10">
+                            <div class="row gy-2 align-middle pt-2">
+                                <div class="col-6 col-md-4">
+                                    <label class="form-label d-inline-block"> @Language.GetString("Order_RegisteredDate") : </label>
+                                    <p class="d-inline-block"><@(CultureInfo.CurrentCulture.Name == "fa-IR" ? DateHelper.ToPersianDdate(@Model.CreationDate) : @Model.CreationDate.ToString() )</p>
+                                </div>
+                                <div class="col-6 col-md-2">
+                                    <label class="form-label d-inline-block"> @Language.GetString("Order_PaymentDate") : </label>
+                                      <p class="d-inline-block"><@(CultureInfo.CurrentCulture.Name == "fa-IR" ? DateHelper.ToPersianDdate(DateTime.Parse(@ViewBag.PaymentDate)) : @ViewBag.PaymentDate.ToString() )</p>
+                                </div>
+                                <div class="col-6 col-md-4">
+                                     <label class="form-label"> @Language.GetString("AlertAndMessage_UserfullName") : </label>
+                                     <p>@ViewBag.UserFullName</p>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="card-body">
+                           <div class="row">
+                               <div class="col-6 col-md-3">
+                                   <label class="form-label"> @Language.GetString("Order_InvoiceNumber") : </label> <br/>
+                                    <label class="form-label"> Model.MainInvoiceNumber </label>
+                               </div>
+                               <div class="col-6 col-md-3">
+                                    <label class="form-label"> @Language.GetString("Order_OrderItemCount") : </label> <br/>
+                                    <label class="form-label"> @ViewBag.OrderItemCount </label>
+                               </div>
+                                <div class="col-6 col-md-3">
+                                    <label class="form-label"> @Language.GetString("Order_PaymentStatus") : </label> <br/>
+                                    <label class="form-label"> @Model.BasicData.Stage.GetDescription() </label>
+                                </div>
+                               <div class="col-6 col-md-3">
+                                    <label class="form-label"> @Language.GetString("Order_OrderStatus") : </label> <br/>
+                                    <label class="form-label">@(Model.OrderStatus != null ? @Model.OrderStatus.Value.GetDescription() : "")</label>
+                                 
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="col-6 col-md-3">
+                                    <label class="form-label"> @Language.GetString("Order_Amount") : </label> <br/>
+                                    <label class="form-label">@Model.FinalPriceToPay</label>
+                               </div>
+                               <div class="col-6 col-md-3">
+                                    <a class="btn btn-success btn-sm" data-bs-toggle="collapse" href="@($"#{Model.MainInvoiceNumber}")" role="button" aria-expanded="false" aria-controls="@Model.MainInvoiceNumber">
+                                   @Language.GetString("btn_Detail")
+                                  </a>
+                               </div>
+                            </div>
+                            <div class="row collapse" id="@Model.MainInvoiceNumber">
+                                @foreach (var detail in Model.SubInvoices)
+                                {
+                                   <div class="card m-2 border border-secondary rounded border-1">
+                                       <div class="card-header">
+                                           <div class="row justify-content-center">
+                                               <div class="col-6">
+                                                    <label class="form-label d-inline-block" > @Language.GetString("tbl_VendorName") : </label>
+                                                    <label class="form-label d-inline-block">@((await userManager.FindByIdAsync(detail.ParchasePerSeller.SellerId)).Profile.FullName)</label>
+                                               </div>
+                                           </div>
+                                       </div>
+                                       <div class="card-body border-bottom">
+                                           @foreach (var pro in detail.ParchasePerSeller.Products)
+                                            {
+                                                <div class="row border-top">
+                                                    <div class="col-6 col-md-4">
+                                                        <label class="form-label d-inline-block"> @Language.GetString("OrderCnt") : </label>
+                                                          <label class="form-label d-inline-block">@pro.OrderCount</label>
+                                                    </div>
+                                                    <div class="col-6 col-md-4">
+                                                         <label class="form-label d-inline-block"> @Language.GetString("tbl_ProductName") : </label>
+                                                          <a class="d-inline-block link-secondary text-decoration-none" href=@($"~/product/{@codeList.FirstOrDefault(_=> _.Key == pro.ProductId).Value.ToString()}")><label class="form-label ">@pro.ProductName</label></a>
+                                                    </div>
+                                                    <div class="col-6 col-md-4">
+                                                            <label class="form-label d-inline-block"> @Language.GetString("PricePerUnit") : </label>
+                                                          <label class="form-label d-inline-block">@pro.PricePerUnit</label>
+                                                      </div>
+                                                      <div class="col-6 col-md-4">
+                                                            <label class="form-label d-inline-block"> @Language.GetString("Order_DiscountPerUnit") : </label>
+                                                          <label class="form-label d-inline-block">@pro.DiscountPricePerUnit</label>
+                                                      </div>
+                                                       <div class="col-6 col-md-4">
+                                                            <label class="form-label d-inline-block"> @Language.GetString("Order_FinlaPriceAfterDiscount") : </label>
+                                                          <label class="form-label d-inline-block">@(@pro.PricePerUnit - @pro.DiscountPricePerUnit)</label>
+                                                      </div>
+                                                </div>
+                                            }
+                                       </div>
+                                   </div>
+                                }
+
+                            </div>
+                               
+                           </div>
+                           
+                        </div>

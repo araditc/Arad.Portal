@@ -84,8 +84,9 @@
                                                           <label class="form-label d-inline-block">@pro.OrderCount</label>
                                                     </div>
                                                     <div class="col-6 col-md-4">
+                                                        
                                                          <label class="form-label d-inline-block"> @Language.GetString("tbl_ProductName") : </label>
-                                                          <a class="d-inline-block link-secondary" href="text-decoration-none"><label class="form-label ">@pro.ProductName</label></a>
+                                                          <a class="d-inline-block link-secondary text-decoration-none" asp-controller="product" asp-action="Details" asp-route-slug="@pro.ProductCode"><label class="form-label ">@pro.ProductName</label></a>
                                                     </div>
                                                     
                                                       <div class="col-6 col-md-6">

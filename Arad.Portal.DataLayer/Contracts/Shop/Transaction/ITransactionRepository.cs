@@ -22,12 +22,18 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Transaction
 
         List<TransactionDTO> GetUserOrderHistory(string userId);
 
-        List<TransactionGlanceAdminView> GetSiteAdminTransactionList(string domainId);
+        Task<PagedItems<TransactionGlanceAdminView>> GetSiteAdminTransactionList(string queryString);
 
         bool IsRefNumberUnique(string referenceNumber, PspType pspType);
 
         Task UpdateTransaction(Entities.Shop.Transaction.Transaction transaction);
 
+        Task<bool> ChangeOrderStatus(string transactionId, OrderStatus status);
+
         Task<Result> RollBackPayingTransaction();
+
+        List<SelectListModel> GetAllOrderStatusType();
+
+        List<SelectListModel> GetAllPaymentStageList();
     }
 }

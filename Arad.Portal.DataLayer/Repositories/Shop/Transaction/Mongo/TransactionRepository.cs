@@ -14,6 +14,8 @@ using Arad.Portal.DataLayer.Models.Transaction;
 using Arad.Portal.DataLayer.Entities.Shop.Transaction;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
+using System.Collections.Specialized;
+using System.Web;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
 {
@@ -67,8 +69,6 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
 
             return model;
         }
-
-
 
         public Entities.Shop.Transaction.Transaction FetchById(string transactionId)
         {
@@ -194,9 +194,125 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
             }
         }
 
-        public List<TransactionGlanceAdminView> GetSiteAdminTransactionList(string domainId)
+        public async Task<PagedItems<TransactionGlanceAdminView>> GetSiteAdminTransactionList(string queryString)
         {
-            throw new NotImplementedException();
+            var result = new PagedItems<TransactionGlanceAdminView>();
+            FilterDefinitionBuilder<Entities.Shop.Transaction.Transaction> traBuilder = new();
+            FilterDefinition<Entities.Shop.Transaction.Transaction> transFilterDef = null;
+
+            try
+            {
+                NameValueCollection filter = HttpUtility.ParseQueryString(queryString);
+
+                if (string.IsNullOrWhiteSpace(filter["page"]))
+                {
+                    filter.Set("page", "1");
+                }
+
+                if (string.IsNullOrWhiteSpace(filter["PageSize"]))
+                {
+                    filter.Set("PageSize", "20");
+                }
+                var page = Convert.ToInt32(filter["page"]);
+                var pageSize = Convert.ToInt32(filter["PageSize"]);
+                long totalCount = 0;
+                if(!string.IsNullOrWhiteSpace(filter["domainId"]))
+                {
+                    totalCount = await _context.Collection.Find(_ => _.AssociatedDomainId == filter["domainId"]).CountDocumentsAsync();
+                }else
+                {
+                    totalCount = await _context.Collection.Find(_ => true).CountDocumentsAsync();
+                }
+
+                if (!string.IsNullOrWhiteSpace(filter["domainId"]))
+                {
+                    transFilterDef = traBuilder.Eq(nameof(Entities.Shop.Transaction.Transaction.AssociatedDomainId), filter["domainId"]);
+                }
+                else
+                {
+                    transFilterDef = traBuilder.Empty;
+                }
+                var list = _context.Collection.Find(transFilterDef)
+                    .Project(_=> new TransactionGlanceAdminView
+                    {
+                        MainInvoiceNumber =_.MainInvoiceNumber,
+                        OrderStatus = _.OrderStatus,
+                        PaymentDate = DateTime.Parse(_.AdditionalData.FirstOrDefault(_ => _.Key == "CreationDate").Value),
+                        PaymentStage = _.BasicData.Stage,
+                        RegisteredDate = _.CreationDate,
+                        TotalAmount = _.FinalPriceToPay,
+                        TransactionId = _.TransactionId,
+                        UserId = _.CustomerData.UserId,
+                        UserFullName = _.CustomerData.UserFullName,
+                        UserName = _.CustomerData.UserName,
+                       // OrderItemCount = _.SubInvoices.Sum(a=> a.ParchasePerSeller.Products.Count())
+                    } ).Sort(Builders<Entities.Shop.Transaction.Transaction>.Sort.Descending(a => DateTime.Parse(a.AdditionalData.FirstOrDefault(_ => _.Key == "CreationDate").Value))).Skip((page - 1) * pageSize).Limit(pageSize).ToList();
+                
+                result.Items = list;
+                result.CurrentPage = page;
+                result.ItemsCount = totalCount;
+                result.PageSize = pageSize;
+                result.QueryString = queryString;
+
+            }
+            catch (Exception)
+            {
+                result.CurrentPage = 1;
+                result.Items = new List<TransactionGlanceAdminView>();
+                result.ItemsCount = 0;
+                result.PageSize = 10;
+                result.QueryString = queryString;
+            }
+            return result;
+        }
+
+        public List<SelectListModel> GetAllOrderStatusType()
+        {
+            var result = new List<SelectListModel>();
+            foreach (int i in Enum.GetValues(typeof(OrderStatus)))
+            {
+                string name = Enum.GetName(typeof(OrderStatus), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            result.Insert(0, new SelectListModel() { Text = Language.GetString("Choose"), Value = "-1" });
+            return result;
+        }
+
+        public List<SelectListModel> GetAllPaymentStageList()
+        {
+            var result = new List<SelectListModel>();
+            foreach (int i in Enum.GetValues(typeof(PaymentStage)))
+            {
+                string name = Enum.GetName(typeof(PaymentStage), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            result.Insert(0, new SelectListModel() { Text = Language.GetString("Choose"), Value = "-1" });
+            return result;
+        }
+
+        public async Task<bool> ChangeOrderStatus(string transactionId, OrderStatus status)
+        {
+            var entity = _context.Collection.Find(_ => _.TransactionId == transactionId).FirstOrDefault();
+            if(entity != null)
+            {
+                entity.OrderStatus = status;
+                var updateRes = await _context.Collection.ReplaceOneAsync(_ => _.TransactionId == transactionId, entity);
+                if(updateRes.IsAcknowledged)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

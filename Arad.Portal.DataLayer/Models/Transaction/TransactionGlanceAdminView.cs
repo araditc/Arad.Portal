@@ -30,6 +30,6 @@ namespace Arad.Portal.DataLayer.Models.Transaction
 
         public PaymentStage PaymentStage { get; set; }
 
-        public OrderStatus OrderStatus { get; set; }
+        public OrderStatus? OrderStatus { get; set; }
     }
 }
