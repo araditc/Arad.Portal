@@ -15,6 +15,6 @@ namespace Arad.Portal.DataLayer.Models.ShoppingCart
         public string ProductName { get; set; }
         public int InventoryCount { get; set; }
         public int OrderCount { get; set; }
-        public decimal PricePerUnit { get; set; }
+        public long PricePerUnit { get; set; }
     }
 }

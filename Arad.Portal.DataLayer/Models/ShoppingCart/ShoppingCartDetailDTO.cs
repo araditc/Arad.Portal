@@ -20,7 +20,9 @@ namespace Arad.Portal.DataLayer.Models.ShoppingCart
         /// <summary>
         /// finalPricePerUnit means discountPerUnit subtract From PricePerUnit
         /// </summary>
-        public decimal PreviousFinalPricePerUnit { get; set; }
+        public long PreviousFinalPricePerUnit { get; set; }
+
+        public string ShoppingCartDetailId { get; set; }
 
         public Image ProductImage { get; set; }
 

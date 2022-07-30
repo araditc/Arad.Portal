@@ -36,6 +36,7 @@ using Arad.Portal.DataLayer.Models.DesignStructure;
 using Arad.Portal.DataLayer.Contracts.General.SliderModule;
 using Arad.Portal.DataLayer.Contracts.General.Content;
 using Arad.Portal.DataLayer.Contracts.General.ContentCategory;
+using Arad.Portal.DataLayer.Contracts.General.BasicData;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -52,6 +53,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly ICurrencyRepository _curRepository;
         private readonly ISliderRepository _sliderRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IBasicDataRepository _basicDataRepository;
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
         
@@ -63,6 +65,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             IProductRepository productRepository,
             IModuleRepository moduleRepository,
             ILanguageRepository lanRepository,
+            IBasicDataRepository basicDataRepository,
             ISliderRepository sliderRepository,
             IConfiguration configuration,
             IContentRepository contentRepository,
@@ -80,6 +83,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _configuration = configuration;
             _sliderRepository = sliderRepository;
             _contentRepository = contentRepository;
+            _basicDataRepository = basicDataRepository;
             _categoryRepository = categoryRepository;
         }
 
@@ -150,6 +154,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
             ViewBag.LangId = lan.LanguageId;
             ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
+
+            var shippingTypelist = _basicDataRepository.GetList("ShippingType");
+            ViewBag.ShippingTypeList = shippingTypelist;
 
             var currencyList = _curRepository.GetAllActiveCurrency();
             ViewBag.CurrencyList = currencyList;

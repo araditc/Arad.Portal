@@ -69,7 +69,7 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
         /// <summary>
         /// روش حمل پیش فرض فروشنده
         /// </summary>
-        public string DefaultShippingTypeId { get; set; }
+        public int DefaultShippingTypeId { get; set; }
 
         public List<PageDesignContent> HomePageDesign { get; set; }
 

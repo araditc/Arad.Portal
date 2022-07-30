@@ -13,6 +13,7 @@
         text-align : center;
     }
 </style>
+<div class="container">
 <div class="card">
     <div class="card-body">
         @if (@Model.Details.Any())
@@ -33,7 +34,8 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <table class="table basket">
+                            <div class="table-responsive">
+                            <table class="table basket table-bordered table-hover align-middle">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
@@ -42,7 +44,8 @@
                                         <th scope="col" >@Language.GetString("PricePerUnit")</th>
                                         <th scope="col" >@Language.GetString("Count")</th>
                                         <th scope="col" >@Language.GetString("FinalPrice")</th>
-                                        <th scope="col" >@Language.GetString("Shopping_Changes")</th>
+                                        <th scope="col"></th>
+                                        <th scope="col" ></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -80,6 +83,11 @@
                                                     </div>
                                                 </td>
                                                 <td class="align-middle">
+                                                <button asp-controller="basket" asp-action="DeleteItemFromCart" asp-route-ParId="@Model.UserCartId" asp-route-Id="@item.ShoppingCartDetailId" class="btn btn-sm btn-danger bg-gradient">
+                                                        <i class="fa fa-trash"></i>@Language.GetString("btn_Delete")
+                                                    </button>
+                                                </td>
+                                                <td class="align-middle">
                                                     <div >
                                                         @{
                                                             foreach (var not in item.Notifications)
@@ -95,6 +103,7 @@
                                     }
                                 </tbody>
                             </table>
+                            </div>
                         </div>
                         <div class="card-footer">
                             <div class="row mt-2">
@@ -141,7 +150,7 @@
         }
     </div>
 </div>
-
+</div>
 
 <script type="text/javascript">
         $(document).ready(function ()
@@ -153,7 +162,7 @@
                 $.ajax({
                     url: "/"+"@ViewBag.LanIcon"+"/basket/AddProToBasket?productId=" + productId + "&cnt=" + cnt,
                     contentType: 'application/json',
-                    type: 'Post',
+                    type: 'Get',
                     dataType: 'json',
                     beforeSend: function () {
                     },

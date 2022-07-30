@@ -16,6 +16,7 @@ using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
 using Microsoft.AspNetCore.Hosting;
 using Serilog;
 
+
 namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
 {
     public class BasicDataRepository: BaseRepository, IBasicDataRepository
@@ -45,6 +46,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
                 .Find(_ => _.GroupKey.ToLower() == groupKey.ToLower()).ToList();
 
             result = _mapper.Map<List<BasicDataModel>>(lst);
+            result.Insert(0, new BasicDataModel() { Text = GeneralLibrary.Utilities.Language.GetString("Choose"), Value = "-1" });
             return result;
         }
 

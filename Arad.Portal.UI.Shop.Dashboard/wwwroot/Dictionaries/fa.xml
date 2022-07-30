@@ -1684,7 +1684,7 @@
   <string key="EditDomain_Title">
     <value>ویرایش دامنه</value>
   </string>
-  <string key="EditShippingSetting">
+  <string key="Edit_ShippingSetting">
     <value>ویرایش تنظیمات حمل بار</value>
   </string>
   <string key="Add_ShippingSetting">
@@ -2455,6 +2455,9 @@
   <string key="DefaultLanguage">
     <value>زبان پیش فرض</value>
   </string>
+	<string key="DefaultShippingType">
+		<value>روش حمل پیش فرض</value>
+	</string>
   <string key="ProductTemplateLanguage">
     <value>زبان فایل قالب محصولات</value>
   </string>

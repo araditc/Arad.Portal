@@ -444,6 +444,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
 
                 entity.InvoiceNumberProcedure = (InvoiceNumberProcedure)Convert.ToInt32(dto.InvoiceNumberProcedure);
                 entity.DomainPaymentProviders = _mapper.Map<List<ProviderDetail>>(dto.DomainPaymentProviders);
+                entity.DefaultShippingTypeId = dto.DefaultShippingTypeId;
 
                 entity.HomePageDesign = dto.HomePageDesign;
 

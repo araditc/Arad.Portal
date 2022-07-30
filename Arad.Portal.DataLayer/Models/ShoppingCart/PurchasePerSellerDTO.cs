@@ -21,8 +21,8 @@ namespace Arad.Portal.DataLayer.Models.ShoppingCart
 
         public int ShippingTypeId { get; set; }
 
-        public decimal ShippingExpense { get; set; }
+        public long ShippingExpense { get; set; }
 
-        public decimal TotalDetailsAmountWithShipping { get; set; }
+        public long TotalDetailsAmountWithShipping { get; set; }
     }
 }

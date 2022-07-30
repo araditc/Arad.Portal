@@ -365,8 +365,9 @@ namespace Arad.Portal.UI.Shop.Controllers
                 PhoneNumberConfirmed = true,
                 Modifications = new(),
                 Claims = claims,
+                DomainId = domainId
             };
-            user.DomainId.Add(domainId);
+            
             string pass = Shop.Helpers.Utilities.GenerateRandomPassword(new() { RequireDigit = true, RequireLowercase = true, 
                 RequireNonAlphanumeric = false, RequireUppercase = true, RequiredLength = 6, RequiredUniqueChars = 0 });
             IdentityResult insertResult = await _userManager.CreateAsync(user, pass);

@@ -38,7 +38,6 @@
                  .FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value);
         ViewBag.BasketCount = res;
     }
-    var orderedHeaderRows = process.LayoutModel.HeaderPart.CustomizedContent.OrderBy(_ => _.RowNumber);
 }
 <html dir="@direction" lang="@lang">
 <head>
@@ -114,7 +113,6 @@
             @if (process.LayoutModel.HeaderPart.CustomizedContent.Count > 0)
             {
                 foreach (RowContent row in process.LayoutModel.HeaderPart.CustomizedContent.OrderBy(_ => _.RowNumber))
-              @* @Parallel.ForEach(orderedHeaderRows, row =>*@
                 {
                     <div class="row gx-0 @row.ExtraClassNames">
                         @foreach (ColContent column in row.ColsContent.OrderBy(_ => _.ColNumber))
@@ -183,7 +181,7 @@
                         }
                     </div>
                 }
-               @* };*@
+             
                 
             }
             @if (!string.IsNullOrWhiteSpace(process.LayoutModel.HeaderPart.LatterFixedContent))

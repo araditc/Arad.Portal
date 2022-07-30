@@ -2402,6 +2402,9 @@
   <string key="DefaultLanguage">
     <value>Default Language</value>
   </string>
+	<string key="DefaultShippingType">
+		<value>Default Shipping Type</value>
+	</string>
   <string key="ProductTemplateLanguage">
     <value>Product Template File Language</value>
   </string>

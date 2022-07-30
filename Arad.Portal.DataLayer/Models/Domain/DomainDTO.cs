@@ -38,6 +38,8 @@ namespace Arad.Portal.DataLayer.Models.Domain
 
         public string DefaultCurrencyId { get; set; }
 
+        public int DefaultShippingTypeId { get; set; }
+
         public bool IsDefault { get; set; }
 
         //public Price  DomainPrice { get; set; }

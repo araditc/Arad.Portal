@@ -17,6 +17,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Hosting;
+using Arad.Portal.DataLayer.Entities.Shop.Setting;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo
 {
@@ -114,6 +115,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo
                 }
             }
             return result;
+        }
+
+        public ShippingSetting FetchShippingSettingOfDomain(string domainId)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<PagedItems<ShippingSettingDTO>> List(string queryString)

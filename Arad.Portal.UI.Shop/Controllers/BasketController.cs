@@ -34,7 +34,7 @@ namespace Arad.Portal.UI.Shop.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> AddProToBasket([FromQuery]string productId, [FromQuery]int cnt)
+        public async Task<IActionResult> AddProToBasket(string productId, int cnt)
         {
             var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
             if (User != null && User.Identity.IsAuthenticated)
@@ -82,6 +82,13 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
 
         }
+        //[HttpPost]
+        //public IActionResult DeleteItemFromCart(string parId, string Id)
+        //{
+
+        //}
+
+
 
         [HttpGet]
         public async Task<IActionResult> SendInfo()
@@ -98,7 +105,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             {
                 Addresses = user.Profile.Addresses.Where(_=>_.AddressType == DataLayer.Models.User.AddressType.ShippingAddress).ToList(),
                 CurrencySymbol = shoppingCart.ReturnValue.ShoppingCartCulture.CurrencySymbol,
-                TotalCost = Math.Round(shoppingCart.ReturnValue.FinalPriceForPay).ToString(),
+                TotalCost = shoppingCart.ReturnValue.FinalPriceForPay.ToString(),
                 UserCartId = shoppingCart.ReturnValue.UserCartId
             };
             return View(model);

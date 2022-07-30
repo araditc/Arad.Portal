@@ -484,7 +484,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         IsActive = model.IsActive,
                         UserRoleId = model.UserRoleId,
                         CreationDate = DateTime.UtcNow,
-                        CreatorId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
+                        CreatorId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier),
+                        DomainId = associatedDomainId
                     };
                     if(model.IsVendor)
                     {

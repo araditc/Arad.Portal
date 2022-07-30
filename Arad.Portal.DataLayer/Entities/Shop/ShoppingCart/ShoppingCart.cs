@@ -51,10 +51,13 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
 
         public long ShippingExpense { get; set; }
 
-        public long  TotalDetailsAmountWithShipping { get; set; }
+        public long TotalDetailsAmountWithShipping { get; set; }
     }
     public class ShoppingCartDetail : BaseEntity
     {
+
+        public string ShoppingCartDetailId { get; set; }
+
         public string ProductId { get; set; }
 
         public string ProductName { get; set; }

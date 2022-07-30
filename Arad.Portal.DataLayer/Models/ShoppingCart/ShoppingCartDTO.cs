@@ -20,7 +20,7 @@ namespace Arad.Portal.DataLayer.Models.ShoppingCart
 
         public string DomainId { get; set; }
 
-        public decimal FinalPriceForPay { get; set; }
+        public long FinalPriceForPay { get; set; }
 
         public EntityCulture ShoppingCartCulture { get; set; }
 

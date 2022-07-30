@@ -16,7 +16,6 @@ namespace Arad.Portal.DataLayer.Entities.General.User
         public ApplicationUser()
         {
             FavoriteList = new();
-            DomainId = new();
             LoginData = new();
             Profile = new();
             LoginData = new();
@@ -30,7 +29,7 @@ namespace Arad.Portal.DataLayer.Entities.General.User
         public OTP Otp { get; set; }
         public bool IsDeleted { get; set; }
         public List<string> FavoriteList { get; set; }
-        public List<string> DomainId { get; set; }
+        public string DomainId { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime CreationDate { get; set; }

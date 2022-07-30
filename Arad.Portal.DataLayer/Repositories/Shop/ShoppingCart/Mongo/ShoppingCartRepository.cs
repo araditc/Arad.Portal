@@ -20,7 +20,7 @@ using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
 using Microsoft.AspNetCore.Hosting;
-
+using Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
 {
@@ -28,6 +28,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
     {
         private readonly ShoppingCartContext _context;
         private readonly DomainContext _domainContext;
+        private readonly ShippingSettingContext _shippingContext;
         private readonly LanguageContext _languageContext;
         private readonly CurrencyContext _currencyContext;
         private readonly ProductContext _productContext;
@@ -42,6 +43,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             LanguageContext languageContext,
             CurrencyContext currencyContext,
             UserManager<ApplicationUser> userManager,
+            ShippingSettingContext shippingSettingContext,
             IWebHostEnvironment env,
             IMapper mapper)
             : base(httpContextAccessor, env)
@@ -54,6 +56,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             _currencyContext = currencyContext;
             _mapper = mapper;
             _languageContext = languageContext;
+            _shippingContext = shippingSettingContext;
         }
         public Result<string> FindCurrentUserShoppingCart(string userId, string domainId)
         {
@@ -114,6 +117,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                         int finalOrderCnt = productEntity.Inventory > orderCount ? orderCount : productEntity.Inventory;
                         var shopCartDetail = new ShoppingCartDetail()
                         {
+                            ShoppingCartDetailId = Guid.NewGuid().ToString(),
                             ProductId = productEntity.ProductId,
                             ProductName = productEntity
                                 .MultiLingualProperties.FirstOrDefault(a => a.LanguageId == userCartEntity.ShoppingCartCulture.LanguageId).Name,
@@ -136,11 +140,35 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                         }
                         else
                         {
+                            var sellerEntity = await _userManager.FindByIdAsync(productEntity.SellerUserId);
+                            var sellerDomainEntity = _domainContext.Collection.Find(_ => _.DomainId == sellerEntity.DomainId).FirstOrDefault();
+                           
+                            var relatedDomain = "";
+                            if(domainEntity.IsDefault)
+                            {
+                                relatedDomain = domainEntity.DomainId;
+                            }else
+                            {
+                                relatedDomain = sellerDomainEntity.DomainId;
+                            }
+                            Entities.Shop.Setting.ShippingSetting settingEntity = null;
+                            FilterDefinitionBuilder<Entities.Shop.Setting.ShippingSetting> shippingBuilder = new();
+                            FilterDefinitionBuilder<Entities.Shop.Setting.ShippingTypeDetail> detailBuilder = new();
+                            FilterDefinition<Entities.Shop.Setting.ShippingSetting> shippingFilterDef = null;
+                            FilterDefinition<Entities.Shop.Setting.ShippingTypeDetail> detailFilterDef = null;
+                            detailFilterDef = detailBuilder.Eq(nameof(Entities.Shop.Setting.ShippingTypeDetail.HasFixedExpense), true);
+                            shippingFilterDef = shippingBuilder.Eq(nameof(Entities.Shop.Setting.ShippingSetting.AssociatedDomainId), relatedDomain);
+                            settingEntity = _shippingContext.Collection.Find(shippingFilterDef).FirstOrDefault();
+
+
+                            var finalShippingTypeId = domainEntity.IsDefault ? domainEntity.DefaultShippingTypeId : sellerDomainEntity.DefaultShippingTypeId;
                             var purchase = new PurchasePerSeller()
                             {
                                 SellerId = productEntity.SellerUserId,
-                                SellerUserName = (await _userManager.FindByIdAsync(productEntity.SellerUserId)).Profile.FullName,
-                                Products = new()
+                                SellerUserName = sellerEntity.Profile.FullName,
+                                Products = new(),
+                                ShippingTypeId = finalShippingTypeId,
+                                ShippingExpense = settingEntity != null ? settingEntity.AllowedShippingTypes.FirstOrDefault(a => a.ShippingTypeId == finalShippingTypeId && a.HasFixedExpense).FixedExpenseValue : 0
                             };
                       
                             purchase.Products.Add(shopCartDetail);
@@ -357,15 +385,16 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                 var perSellerList = new List<PurchasePerSeller>();
                 result.ReturnValue.Details = new List<PurchasePerSellerDTO>();
                 int rowNumber = 1;
-                decimal finalPaymentPrice = 0;
+                long finalPaymentPrice = 0;
                 //each time we fetch cartshopping data should be updated in it
                 foreach (var sellerPurchase in userCartEntity.Details)
                 {
                     var obj = new PurchasePerSellerDTO();
                     obj.SellerId = sellerPurchase.SellerId;
-                    decimal sellerFactor = 0;
+                    long sellerFactor = 0;
                     obj.SellerUserName = sellerPurchase.SellerUserName;
                     obj.ShippingTypeId = sellerPurchase.ShippingTypeId;
+                   obj.ShippingExpense = sellerPurchase.ShippingExpense;
                     //??? update shippingExpense if seller change it
                     //TODO
                     finalPaymentPrice += sellerPurchase.ShippingExpense;
@@ -389,6 +418,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                                 CreatorUserName = userCartEntity.CreatorUserName,
                                 ProductId = productId,
                                 ProductName = pro.ProductName,
+                                ShoppingCartDetailId = pro.ShoppingCartDetailId,
                                 OrderCount = pro.OrderCount,
                                 PricePerUnit = activePriceValue,
                                 DiscountPricePerUnit = discountPerUnit.DiscountPerUnit,
@@ -400,8 +430,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                             sellerFactor += det.TotalAmountToPay;
 
                             #region changing in final amount pre unit
-                            decimal previousAmountPerUnit = pro.PricePerUnit - pro.DiscountPricePerUnit;
-                            decimal currentAmountPerUnit = det.PricePerUnit - det.DiscountPricePerUnit;
+                            long previousAmountPerUnit = pro.PricePerUnit - pro.DiscountPricePerUnit;
+                            long currentAmountPerUnit = det.PricePerUnit - det.DiscountPricePerUnit;
                             if (previousAmountPerUnit != currentAmountPerUnit)
                             {
                                 det.PreviousFinalPricePerUnit = previousAmountPerUnit; 
@@ -700,7 +730,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                 var perSellerList = new List<PurchasePerSeller>();
                 result.ReturnValue.Details = new List<PurchasePerSeller>();
                 int rowNumber = 1;
-                decimal finalPaymentPrice = 0;
+                long finalPaymentPrice = 0;
                 //each time we fetch cartshopping data should be updated in it
                 foreach (var sellerPurchase in userCartEntity.Details)
                 {

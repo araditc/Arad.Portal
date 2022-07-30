@@ -43,7 +43,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Setting
 
         public bool HasFixedExpense { get; set; }
 
-        public decimal FixedExpenseValue { get; set; }
+        public long FixedExpenseValue { get; set; }
 
         /// <summary>
         /// if it has any provider then it used that provider for calculating expense
@@ -58,11 +58,11 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Setting
     {
         //public string ShippingCouponId { get; set; }
 
-        public decimal FromInvoiceExpense { get; set; }
+        public long FromInvoiceExpense { get; set; }
         /// <summary>
         /// if shipping expense equal zero it means shipping is free
         /// </summary>
-        public decimal ShippingExpense { get; set; }
+        public long ShippingExpense { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime StartDate { get; set; }

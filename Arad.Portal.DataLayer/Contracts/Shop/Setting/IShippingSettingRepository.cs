@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Models.Setting;
+﻿using Arad.Portal.DataLayer.Entities.Shop.Setting;
+using Arad.Portal.DataLayer.Models.Setting;
 using Arad.Portal.DataLayer.Models.Shared;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Setting
         Task<PagedItems<ShippingSettingDTO>> List(string queryString);
 
         ShippingSettingDTO FetchById(string shippingSettingId);
+
+        ShippingSetting FetchShippingSettingOfDomain(string domainId); 
 
         Task<Result> AddShippingSetting(ShippingSettingDTO dto);
 

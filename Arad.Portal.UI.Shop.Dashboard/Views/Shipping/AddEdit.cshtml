@@ -8,11 +8,11 @@
 @section Styles{
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <link href=@($"~/plugins/datePicker/kamadatepicker.css") rel="stylesheet" />
+        <link href=@Url.Content("~/plugins/datePicker/kamadatepicker.css") rel="stylesheet" />
     }
     else
     {
-        <link href=@($"~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css") rel="stylesheet" />
+        <link href=@Url.Content($"~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css") rel="stylesheet" />
     }
     <style>
         .text-danger {
@@ -80,10 +80,10 @@
                                     <div class="form-group col-md-2">
 
 
-                                        <div class="form-group col-12 col-md-4 pt-1 pb-2">
-                                            <div class="form-check m-auto d-inline-block pt-3">
-                                                <input class="form-check-input" type="checkbox">
-                                                <label class="form-check-label" for="IsDefault">
+                                        <div class="form-group col-12 col-md-4 pt-1 pb-2 m-auto">
+                                            <div class="form-check d-inline-block pt-3">
+                                                <input class="form-check-input" type="checkbox" id="chbIsFixedExpense">
+                                                <label class="form-check-label" for="chbIsFixedExpense">
                                                     @Language.GetString("tbl_HasFixedExpense")
                                                 </label>
                                             </div>
@@ -510,6 +510,14 @@
     function appendToList() {
         debugger;
         var col = "";
+        var providerName = "";
+        var providerId = "";
+        if($("#ProviderId").val() != "-1")
+        {
+            providerId = $("#ProviderId").val();
+            providerName = $("#ProviderId option:selected").text();
+        }
+       
 
         if (currentCurrencySymbol == "")
         {
@@ -524,7 +532,7 @@
             "</td><td class='d-none'>" + $('#shippingTypeId').val()  +
             "</td><td>" + col +
             "</td><td>" + `${$("#fixedExpenseValue").val()} ${currentCurrencySymbol}` +
-            "</td><td>" + $("#ProviderId option:selected").text()+"</td><td class='d-none'>" + $("#ProviderId").val() +
+            "</td><td>" + providerName +"</td><td class='d-none'>" + providerId  +
                     "</td><td><button type='button' class='btn btn-sm btn-danger bg-gradient' onclick='deleteFromList(this);'>" +
                     "<i class='fa fa-trash' ></i></button></td></tr>";
         if ($("#shippingList tr").length == 1 && $("#shippingList tr")[0].children.length == 1) {
