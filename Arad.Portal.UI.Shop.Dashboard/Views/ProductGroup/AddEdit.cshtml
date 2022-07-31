@@ -617,12 +617,7 @@
         function ViewImage(address) {
         debugger;
         var tag = '<img src="' + address + '" width="500px" />';
-        @*Swal.fire({
-            html: tag,
-            width: 'auto',
-            showConfirmButton: true,
-            confirmButtonText: '@Language.GetString("Close")'
-        });*@
+       
 		document.getElementById('confirmBody').innerHTML = tag;
         $('#showModalId').modal('show');
     }

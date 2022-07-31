@@ -13,6 +13,8 @@ namespace Arad.Portal.DataLayer.Models.User
         public UserProfileDTO()
         {
             Addresses = new();
+            ProfilePhoto = new();
+            BankAccount = new();
         }
         public string UserID { get; set; }
         public string UserName { get; set; }

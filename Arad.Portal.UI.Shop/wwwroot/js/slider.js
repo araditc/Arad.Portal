@@ -15,7 +15,7 @@ $(document).ready(function () {
         nav:true,
         dots:true,
         rtl:true,
-        navText: ['<img src="../img/slider/arrow.png">','<img src="../img/slider/arrow.png">'],
+        navText: ['<img src="../../img/slider/arrow.png">','<img src="../../img/slider/arrow.png">'],
         responsive:{
             0:{
                 items:1,

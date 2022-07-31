@@ -1,30 +1,37 @@
 ﻿@using Arad.Portal.GeneralLibrary.Utilities;
 @model bool;
 
-<div class="col-4 col-md-3 col-lg-2">
+<div class="col-6  col-lg-3">
     <div class="account-wrapper pt-2">
         <ul>
            @if(Model) //isshop == true then it has basket
             {
-                <li class="shopping_cart home_cart">
-                <a asp-controller="basket" asp-action="get" title="" class="r-cart">
-                    <span class="head-shoppings">
-                        <i class="fa fa-shopping-basket shopping-basket"></i>
-                        <span class="display-none count-basket" data-count="0">@($"{@ViewBag.BasketCount?? 0} {@Language.GetString("Stuff")}") </span>
-                    </span>
-                </a>
-               </li>
+                    <li class="shopping_cart home_cart">
+                        <a asp-controller="basket" asp-action="get" title="" class="r-cart">
+                            <span class="head-shoppings">
+                                <i class="fa fa-shopping-basket shopping-basket"></i>
+                                <span class="display-none count-basket" data-count="0">@($"{@ViewBag.BasketCount?? 0} {@Language.GetString("Stuff")}") </span>
+                            </span>
+                        </a>
+                    </li>
             }
             
-            <li class="login">
+            <li class="d-flex justify-content-center">
                 @{
 
                     @if (!@User.Identity.IsAuthenticated)
                     {
-                        <a href="#" class="openLoginModal">
-                            <span class="title">
+                        <a asp-controller="account" asp-action="Login" class="d-inline-block">
+                            <span class="title text-secondary">
                                 <i class="fa fa-user"></i>
-                                <span class="display-none ">@Language.GetString("User_LoginRegister")</span>
+                                <span >@Language.GetString("User_Login")</span>
+                            </span>
+                        </a>
+                        <span class="d-inline-block">/</span>
+                         <a asp-controller="account" asp-action="Register" class="d-inline-block">
+                            <span class="title text-secondary">
+                                <i class="fa fa-user"></i>
+                                <span >@Language.GetString("User_Register")</span>
                             </span>
                         </a>
                     }
@@ -35,7 +42,7 @@
                            placement="bottom right" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span class="title">
                                     <i class="fa fa-user"></i>
-                                    <span class="display-none">@User.Identity.Name</span>
+                                    <span >@User.Identity.Name</span>
                                 </span>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="drpUserProfile">

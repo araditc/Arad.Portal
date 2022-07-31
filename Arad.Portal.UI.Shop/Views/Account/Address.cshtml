@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = Language.GetString("User_AddressInfoes");
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -9,7 +8,7 @@
     @*<link href="~/lib/intl-tel-input/css/intlTelInput.css" rel="stylesheet" />*@
     <link href="~/css/edit-address.css" rel="stylesheet" />
 }
-<div class="container-fluid container-body address">
+<div class="container-fluid address">
     <section class="section-full">
         <div class="head head-address col-xs-12">
             <h3>
@@ -19,84 +18,66 @@
         <div class="row pt-5">
             <div class="col-12">
                 <form id="address" class="form-address row text-right">
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-6 col-md-3">
                         <label class="form-label" for="AddressType">@Language.GetString("Profile_AddressType")</label><br />
-                        <select class="form-control selectpicker" id="AddressTypeId" data-live-search="true"
+                        <select class="form-control selectpicker" id="AddressTypeId" name="AddressType" data-live-search="true" 
                                 asp-items="@(new SelectList(ViewBag.AddressTypes,"Value","Text"))">
                         </select>
                         <span data-val-result="AddressType" class="text-danger"></span>
                     </div>
-
-
-                      <div class="col-2 rtl">
-                        <label>@Language.GetString("Profile_Country")</label>
-                    </div>
-                    <div class="col-5 rtl">
+                    <div class="form-group col-6 col-md-3">
+                        <label>@Language.GetString("Profile_Country")</label><br />
                         <div class="form-group textPlaceholder">
-                            <select id="ProvinceId" name="ProvinceId" class="form-select selectpicker"
-                            data-placeholder="@Language.GetString("Profile_Country")"  tabindex="2" placeholder="@Language.GetString("Profile_Province")">
+                            <select id="CountryId" name="CountryId" class="form-select selectpicker" asp-items="@(new SelectList(ViewBag.CountryList , "Value", "Text"))"
+                           tabindex="2" placeholder="@Language.GetString("Profile_Province")">
                             </select>
                             <span class="field-validation-error" data-val-result="CountryId"></span>
                         </div>
                     </div>
-                     <div class="col-2 rtl">
-                        <label>@Language.GetString("Profile_StateCity")</label>
-                    </div>
-                    <div class="col-5 rtl">
-                        <div class="form-group textPlaceholder">
+                    
+                   
+                        <div class="form-group col-6 col-md-3">
+                            <label>@Language.GetString("Profile_State")</label><br />
                             <select id="ProvinceId" name="ProvinceId" class="form-select selectpicker" 
-                            data-placeholder="@Language.GetString("Profile_Province")"  tabindex="2" placeholder="@Language.GetString("Profile_Province")">
+                              tabindex="2">
                             </select>
                             <span class="field-validation-error" data-val-result="ProvinceId"></span>
                         </div>
-                    </div>
+                   
 
 
-                    <div class="col-5 rtl">
-                        <div class="form-group textPlaceholder">
+                    <div class="form-group col-6 col-md-3">
+                             <label>@Language.GetString("Profile_City")</label><br />
                             <select id="CityId" name="CityId" class="form-select selectpicker" data-placeholder="@Language.GetString("Profile_City")" 
-                            tabindex="2" placeholder="@Language.GetString("Profile_City")" >
+                            tabindex="2" >
                             </select>
                             <span class="field-validation-error" data-val-result="CityId"></span>
-                        </div>
+                       
                     </div>
-
-
-                    <div class="col-2  rtl" style="margin-top: 10px;">
-                        <label>@Language.GetString("Profile_ZipCode") : </label>
+                   
+                    <div class="form-group col-6 col-md-3" style="margin-top: 10px;">
+                         <label>@Language.GetString("Profile_ZipCode") : </label>
+                        <input id="PostalCode" name="PostalCode" class="form-control" type="text" dir="rtl" maxlength="10" minlenght="10" />
+                        <span class="field-validation-error" data-val-result="PostalCode"></span>
+                        
                     </div>
-                    <div class="col-10 rtl" style="margin-top: 10px;">
-                        <div class="form-group textPlaceholder rtl">
-                            <input id="PostalCode" name="PostalCode" class="form-control" type="text" dir="rtl" maxlength="10" minlenght="10" />
-                            <span class="field-validation-error" data-val-result="PostalCode"></span>
-                        </div>
-                    </div>
-
-
-                    <div class="col-2 rtl">
-                        <label>@Language.GetString("Profile_Address1"): </label>
-                    </div>
-                    <div class="col-10 rtl">
+                    <div class="col-12 mt-2">
+                        <label>@Language.GetString("Profile_Address1"): </label><br />
                         <div class="form-group textPlaceholder rtl">
                             <input id="Address1" name="Address1" class="form-control" type="text" dir="rtl" placeholder="">
                             <span style="display: block;" class="field-validation-error" data-val-result="Address1"></span>
                         </div>
                     </div>
-
-
-                    <div class="col-2 rtl" style="margin-top: 10px;">
-                        <label>@Language.GetString("Profile_Address2"):</label>
-                    </div>
-                    <div class="col-10 rtl" style="margin-top: 10px;">
-                        <div class="form-group textPlaceholder rtl">
-                            <input id="Address2" name="Address2" class="form-control" type="text" dir="rtl" maxlength="10" minlenght="10" />
-                            <span class="field-validation-error" data-val-result="Address2"></span>
-                        </div>
+                    <div class="col-12 mt-2" >
+                         <label>@Language.GetString("Profile_Address2"):</label><br />
+                        <input id="Address2" name="Address2" class="form-control" type="text" dir="rtl" maxlength="10" minlenght="10" />
+                        <span class="field-validation-error" data-val-result="Address2"></span>
+                      
                     </div>
 
                  
 
-                    <div class="col-lg-12 text-center pt-5">
+                    <div class="col-12 col-md-2 text-center pt-5">
                         <button id="addressBtn" type="submit" class="btn btn-success btn-block float-end">@Language.GetString("Profile_AddAddress")</button>
                     </div>
                 </form>
@@ -110,34 +91,6 @@
    
     <script>
         $(document).ready(function() {
-
-             $.ajax({
-                type: "Get",
-                url: "@Url.Action("GetCountries","Account")",
-                success: function (result) {
-                    var data = result.data;
-                    var html = '';
-                    html += '<option disabled value=null selected>'+'@Language.GetString("AlertAndMessage_Choose")'+'</option>';
-                    if (result.status === "success") {
-                        debugger;
-                        data.forEach(function (item) {
-                            html += '<option value="' + item.value + '">' + item.text + '</option>';
-                        });
-                        $("#CountryId").html(html);
-                        $("#CountryId").selectpicker('refresh');
-                    } else {
-
-                    }
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-                    alert(xhr.status);
-                },
-                complete: function() {
-                
-                }
-            });
-
-           
 
              $(document).on("change", "#CountryId", function (e) {
                 debugger;

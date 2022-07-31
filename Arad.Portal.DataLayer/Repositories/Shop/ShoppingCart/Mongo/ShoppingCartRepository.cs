@@ -205,7 +205,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             var totalCount = 0;
             foreach (var item in entity.Details)
             {
-                totalCount += item.Products.Count;
+                var productCount = item.Products.Where(_ => !_.IsDeleted).Count();
+                totalCount += productCount;
             }
             return totalCount;
         }
@@ -332,6 +333,29 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             return result;
         }
 
+        public async Task<Result> DeleteShoppingCartItem(string shoppingCartId, string shoppingCartDetailId)
+        {
+            var result = new Result();
+            var userCart = _context.Collection.Find(_ => _.ShoppingCartId == shoppingCartId).FirstOrDefault();
+
+            var item = userCart.Details.SelectMany(_ => _.Products).ToList().FirstOrDefault(_ => _.ShoppingCartDetailId == shoppingCartDetailId);
+            item.IsDeleted = true;
+            //var res = userCart.Details.SelectMany(_ => _.Products).ToList().Remove(item);
+
+            var updateResult = await _context.Collection.ReplaceOneAsync(_ => _.ShoppingCartId == shoppingCartId, userCart);
+            if (updateResult.IsAcknowledged)
+            {
+                result.Succeeded = true;
+                result.Message = ConstMessages.SuccessfullyDone;
+            }
+            else
+            {
+                result.Succeeded = false;
+                result.Message = ConstMessages.ErrorInSaving;
+            }
+            return result;
+        }
+
         public async Task<Result> DeleteWholeUserShoppingCart(string userId)
         {
             var result = new Result();
@@ -399,7 +423,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                     //TODO
                     finalPaymentPrice += sellerPurchase.ShippingExpense;
                     sellerFactor += sellerPurchase.ShippingExpense;
-                    foreach (var pro in sellerPurchase.Products)
+                    foreach (var pro in sellerPurchase.Products.Where(_=>!_.IsDeleted))
                     {
                         var productId = pro.ProductId;
                         var productEntity = _productContext.ProductCollection

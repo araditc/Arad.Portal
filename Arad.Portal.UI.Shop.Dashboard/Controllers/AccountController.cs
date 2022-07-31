@@ -149,7 +149,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             await HttpContext.SignOutAsync();
             ApplicationUser user = await _userManager.FindByNameAsync(model.Username);
 
-            if (user == null || await _userManager.CheckPasswordAsync(user, model.Password) != true)
+            if (user == null || await _userManager.CheckPasswordAsync(user, model.Password) != true || (user != null && user.IsSiteUser))
             {
                 ViewBag.Message = Language.GetString("AlertAndMessage_InvalidUsernameOrPassword");
                 return View(model);
@@ -485,7 +485,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         UserRoleId = model.UserRoleId,
                         CreationDate = DateTime.UtcNow,
                         CreatorId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier),
-                        DomainId = associatedDomainId
+                        DomainId = associatedDomainId,
+                        IsSiteUser = false
                     };
                     if(model.IsVendor)
                     {

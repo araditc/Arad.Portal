@@ -27,58 +27,58 @@
                 <div class="errors text-right" style="font-size: 14px;">
 
                 </div>
-                <div class="text-left">
+              @*  <div class="text-left">
                     <a asp-action="Address" asp-controller="Account" asp-area="" class="btn btn-add-address">@Language.GetString("AddNewAddress")</a>
-                </div>
+                </div>*@
                 <div class="owl-carousel owl-theme addresses-slider">
                     @{
                         if (Model.Addresses.Count != 0)
                         {
                             var i = 0;
-                        @foreach (var item in Model.Addresses)
+                                            @foreach (var item in Model.Addresses)
                              {
                                  ++i;
-                        <div class="card-view-wrap">
-                            @*<input id="@item.Id" type="radio" name="address" class="form-rsdio" @(i == 1 ? "checked" : "")>*@
-                            <label class="card-view-address" for="@item.Id">
-                                <div class="name">
-                                    <span></span>
+                                            <div class="card-view-wrap">
+                                              
+                                                <div class="card-view-address" for="@item.Id">
+                                                    <div class="name">
+                                                        <span></span>
 
-                                    <div class="action-wrap">
-                                        <a asp-action="DeleteAddress" asp-controller="Basket" asp-area="" asp-route-addressId="@item.Id" class="delete"><i class="fa fa-times"></i></a>
-                                    </div>
+                                                        <div class="action-wrap">
+                                                            <a asp-action="DeleteAddress" asp-controller="Basket" asp-area="" asp-route-addressId="@item.Id" class="delete"><i class="fa fa-times"></i></a>
+                                                        </div>
 
-                                </div>
-                                <div class="address-details row">
-                                    <div class="col-xs-12 col-md-3 rtl location">
-                                        <p><span>@Language.GetString("Profile_Province"):&nbsp</span><span>@item.ProvinceName</span></p>
-                                        <p><span>@Language.GetString("Profile_City"):&nbsp</span><span>@item.CityName</span></p>
-                                        <p><span>@Language.GetString("Profile_Address1"):&nbsp</span><span>@item.Address1</span></p>
-                                        <p><span>@Language.GetString("Profile_Address2"):&nbsp</span><span>@item.Address2</span></p>
-                                    </div>
-                                   
-                                    <div class="select-wrap col-xs-12 text-center">
-                                        <p class="title-select">
-                                            <div class="custom-control custom-checkbox">
-                                                <input id="@item.Id" type="checkbox" name="address" class="custom-control-input form-rsdio selectAddress">
-                                                <label class="form-label" for="@item.Id"></label>
+                                                    </div>
+                                                    <div class="address-details row">
+                                                        <div class="col-xs-12 col-md-3 rtl location">
+                                                            <p><span>@Language.GetString("Profile_Province"):&nbsp</span><span>@item.ProvinceName</span></p>
+                                                            <p><span>@Language.GetString("Profile_City"):&nbsp</span><span>@item.CityName</span></p>
+                                                            <p><span>@Language.GetString("Profile_Address1"):&nbsp</span><span>@item.Address1</span></p>
+                                                            <p><span>@Language.GetString("Profile_Address2"):&nbsp</span><span>@item.Address2</span></p>
+                                                        </div>
+                                                       
+                                                        <div class="select-wrap col-xs-12 text-center">
+                                                            <p class="title-select">
+                                                                <div class="custom-control custom-checkbox">
+                                                                    <input id="@item.Id" type="radio" name="address" class="custom-control-input form-rsdio selectAddress">
+                                                                    <label class="form-label" for="@item.Id"></label>
+                                                                </div>
+
+                                                                <span>@Language.GetString("Shopping_Senttothisaddress")</span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </div>
-
-                                            <span>@Language.GetString("Shopping_Senttothisaddress")</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </label>
-
-                        </div>
                              }
                         }
                         else
                         {
-                        <div class="card-view-wrap-empty">
-                            <div class=""> <i class="fa fa-exclamation-triangle"></i> @Language.GetString("AlertAndMessage_AddressInsert")</div>
-                            <a asp-action="Address" asp-controller="Account" asp-area="" class="btn btn-add-address">@Language.GetString("btn_AddNewAddress")</a>
-                        </div>
+                                            <div class="card-view-wrap-empty">
+                                                <div class=""> <i class="fa fa-exclamation-triangle"></i> @Language.GetString("AlertAndMessage_AddressInsert")</div>
+                                                <a asp-action="Address" asp-controller="Account" asp-area="" class="btn btn-add-address">@Language.GetString("btn_AddNewAddress")</a>
+                                            </div>
                         }
                     }
 
@@ -89,20 +89,6 @@
             <div class="col-md-12 col-lg-4 sum-factor">
                 <div class="sum-box">
                     <div class="price-basket-shop">
-                        @*<div class="col-xs-12 price-factor">
-                            <i>@Language.GetString("FinalPriceForPayment"):</i>
-                            <span class="price">
-                                <span data-pf='@Model.TotalCost'>@($"{Convert.ToInt64(Model.TotalCost):n0}")</span>
-                                <span>@Model.CurrencySymbol</span>
-                            </span>
-                        </div>
-                        <div class="col-xs-12 discount" style="display: none;">
-                            <i>مجموع تخفیف:</i>
-                            <span class="price">
-                                <span id="DiscountAmount" data-discount='0'>0</span>
-                                <span>ریال</span>
-                            </span>
-                        </div>*@
                         <div class="col-xs-12 price-all pay">
                             <i>@Language.GetString("FinalPriceForPayment"):</i>
                             <span class="price">
@@ -131,35 +117,30 @@
 
         var token;
         var address = "";
+$(document).ready(function() { 
+     //$(".selectAddress").click(function () {
+     //       debugger;
+     //       var parent = $(this).closest(".card-view-wrap");
+     //       var label = $(parent).find(">:first-child");
 
-        $(".selectAddress").on("change", function () {
-          
-            var parent = $(this).closest(".card-view-wrap");
-            var label = $(parent).find(">:first-child");
-            var $box = $(this);
+     //       if ($(this).is(':checked')) {
+     //           $(".selectAddress").prop("checked", false);
+     //           $("label.select").removeClass("select");
 
-            if ($box.is(':checked')) {
-                $(".selectAddress").prop("checked", false);
-                $("label.select").removeClass("select");
+     //           $(label).addClass("select");
+     //           $(this).prop("checked", true);
+     //           address = $(this).attr("id");
 
-                $(label).addClass("select");
-                $box.prop("checked", true);
-                address = $box.attr("id");
+     //       } else {
+     //           $(label).removeClass("select");
+     //           $(this).prop("checked", false);
+     //           address = "";
+     //       }
+     //   });
 
-            } else {
-                $(label).removeClass("select");
-                $box.prop("checked", false);
-                address = "";
-            }
-        });
-
-        $(document).on("click",
-            "#OnlinePay",
-            function(e) {
-                debugger;
+    $("#OnlinePay").click(function(e) {
+        debugger;
                 e.preventDefault();
-             
-               
                 //var giftText = "";
                 var address = $('input[name="address"]:checked').attr("id");
                 if($('input[name="address"]:checked').length == 0)
@@ -176,9 +157,8 @@
                       }, 2500);
                       return ;
                 }
-                
-                
-                var obj = {};
+
+                 var obj = {};
                 obj.UserCartId = '@Model.UserCartId';
                 obj.Address = address;
                 obj.PspType = "Saman";
@@ -201,10 +181,11 @@
                         }
                     }
                 });
-            });
+    });
+})
+       
 
-      
-
+       
         function ConfirmPay() {
             $.ajax({
                 url: "@Url.Action("Ipg","Basket",new {area = ""})",

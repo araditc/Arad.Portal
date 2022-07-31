@@ -14,6 +14,9 @@ namespace Arad.Portal.DataLayer.Models.User
         public Profile()
         {
             Addresses = new();
+            ProfilePhoto = new();
+            BankAccount = new();
+            Access = new();
         }
         public string FirstName { get; set; }
 

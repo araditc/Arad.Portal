@@ -24,6 +24,7 @@ namespace Arad.Portal.DataLayer.Entities.General.User
         public bool IsSystemAccount { get; set; }
         public bool IsDomainAdmin { get; set; }
         public bool IsActive { get; set; }
+        public bool IsSiteUser { get; set; }
         public Profile Profile { get; set; }
         public string UserRoleId { get; set; }
         public OTP Otp { get; set; }

@@ -82,11 +82,24 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
 
         }
-        //[HttpPost]
-        //public IActionResult DeleteItemFromCart(string parId, string Id)
-        //{
-
-        //}
+        [HttpGet]
+        //parId is userCartId and Id is shoppingcartDetailId
+        public async Task<IActionResult> DeleteItemFromCart(string parId, string id)
+        {
+            var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
+            if (User != null && User.Identity.IsAuthenticated)
+            {
+                var res = await _shoppingCartRepository.DeleteShoppingCartItem(parId, id);
+                return Json(new
+                {
+                    status = res.Succeeded ? "Succeed" : "Error",
+                    message = res.Succeeded ? res.Message : Language.GetString("AlertAndMessage_DeleteError") 
+                });
+            }else
+            {
+                return Redirect($"~/{lanIcon}/Account/Login?returnUr=/{lanIcon}/basket/get");
+            }
+        }
 
 
 

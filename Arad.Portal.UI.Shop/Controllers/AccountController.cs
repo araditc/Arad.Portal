@@ -3,11 +3,13 @@ using Arad.Portal.DataLayer.Contracts.General.Currency;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Contracts.General.Error;
 using Arad.Portal.DataLayer.Contracts.General.Language;
+using Arad.Portal.DataLayer.Contracts.General.Notification;
 using Arad.Portal.DataLayer.Contracts.General.User;
 using Arad.Portal.DataLayer.Contracts.Shop.Transaction;
 using Arad.Portal.DataLayer.Entities.General.Error;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Helpers;
+using Arad.Portal.DataLayer.Models.Notification;
 using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Models.Transaction;
 using Arad.Portal.DataLayer.Models.User;
@@ -44,6 +46,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly ILanguageRepository _lanRepository;
         private readonly ITransactionRepository _traRepository;
         private readonly ICurrencyRepository _curRepository;
+        private readonly INotificationRepository _notificationrepository;
         private readonly string _domainName;
         private readonly IMapper _mapper;
         
@@ -57,6 +60,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             ICountryRepository countryRepository,
             ICurrencyRepository curRepo,
             ILanguageRepository lanRepo,
+            INotificationRepository notificationRepository,
             ITransactionRepository transactionRepository,
             SignInManager<ApplicationUser> signInManager):base(accessor, domainRepository)
         {
@@ -71,6 +75,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             _curRepository = curRepo;
             _traRepository = transactionRepository;
             _mapper = mapper;
+            _notificationrepository = notificationRepository;
             _countryRepository = countryRepository;
         }
         public IActionResult Index()
@@ -98,6 +103,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         {
             var returnUrl = HttpContext.Request.Headers["Referer"].ToString();
             var lst = _userRepository.GetAddressTypes();
+            ViewBag.CountryList = _countryRepository.GetAllCountries();
             ViewBag.AddressTypes = lst;
             TempData["ReturnUrl"] = returnUrl;
             return View();
@@ -365,6 +371,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 PhoneNumberConfirmed = true,
                 Modifications = new(),
                 Claims = claims,
+                IsSiteUser = true,
                 DomainId = domainId
             };
             
@@ -665,8 +672,22 @@ namespace Arad.Portal.UI.Shop.Controllers
                 return Ok(new { Status = "Error", Message = Language.GetString("Validation_MobileNumberAlreadyRegistered") });
             }
             #endregion
-
-            return Ok(new { Status = "Success", Message = "" });
+           
+                var notification = new NotificationDTO()
+                {
+                    NotificationId = Guid.NewGuid().ToString(),
+                    CreationDate = DateTime.Now.ToUniversalTime(),
+                    MessageText = DataLayer.Helpers.Utilities.GenerateOtp(),
+                    SendStatus = Enums.NotificationSendStatus.Store,
+                    TemplateName = "SendOtp",
+                    Title = "",
+                    Type = Enums.NotificationType.Sms,
+                    From = this.DomainName,
+                    To = "dear user"
+                };
+                var res = _notificationrepository.AddNewNotification(notification);
+               
+                return Ok(new { Status = res.Succeeded ? "Success" : "Error", Message = res.Succeeded ? Language.GetString("AlertAndMessage_OperationSuccess") :Language.GetString("AlertAndMessage_InsertError") });
         }
 
         [HttpGet]

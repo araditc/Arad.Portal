@@ -232,6 +232,7 @@
             </div>
         </div>
     </div>
+    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
@@ -313,12 +314,16 @@
 
         if (!cellPhone)
         {
-            Swal.fire({
-                icon: 'error',
-                title: '@Language.GetString("Validation_EnterMobileNumber")',
-                showConfirmButton: false,
-                timer: 1500
-            });
+            document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${'@Language.GetString("Validation_EnterMobileNumber")'}`;
+            document.getElementById('mainToastBody').classList.add('alert-danger');
+            var toastDiv = $("#mainToast");
+            $("#toastPanel").show();
+            var toast = new bootstrap.Toast(toastDiv);
+            toast.show();
+
+            setTimeout(function(){
+                    $("#toastPanel").hide();
+            }, 3000);
             return;
         }
 
@@ -331,30 +336,21 @@
             {
                 if (resultData.status === "error")
                 {
-                    Swal.fire({
-                        icon: 'error',
-                        title: '@Language.GetString("AlertAndMessage_CaptchaIncorrectOrExpired")',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
+                    document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${'@Language.GetString("AlertAndMessage_CaptchaIncorrectOrExpired")'}`;
+                    document.getElementById('mainToastBody').classList.add('alert-danger');
+                    var toastDiv = $("#mainToast");
+                    $("#toastPanel").show();
+                    var toast = new bootstrap.Toast(toastDiv);
+                    toast.show();
+
+                    setTimeout(function(){
+                            $("#toastPanel").hide();
+                    }, 3000);
+			        bsAlert.show();
                 }
                 else
-                {
-                    Swal.fire({
-                            title: '@Language.GetString("Title_AreYouSure")',
-                            text: "@Language.GetString("AlertAndMessage_SendSecurityCode")".replace("{0}", $("#CellPhone").val()),
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#0069D9',
-                            cancelButtonColor: '#009c09db',
-                            confirmButtonText: '@Language.GetString("Action_YesSend")',
-                            cancelButtonText: '@Language.GetString("Action_No")'
-                        })
-                        .then((result) =>
-                        {
-                            if (result.isConfirmed)
-                            {
-                                $.ajax({
+                {    
+                    $.ajax({
                                     type: 'Get',
                                     url: `@Url.Action("AlreadyRegisteredCellPhoneNumber")?cellPhoneNumber=${cellPhone}`,
                                     beforeSend: function()
@@ -363,61 +359,36 @@
                                     },
                                     success: function(resultData)
                                     {
+                                        debugger;
                                         $("#loading").removeClass('is-active');
                                         if (resultData.status === "Success")
                                         {
-                                            $.ajax({
-                                                type: 'Get',
-                                                url: `@Url.Action("SendSecurityCode")?cellPhoneNumber=${cellPhone}`,
-                                                beforeSend: function()
-                                                {
-                                                    $("#loading").addClass('is-active');
-                                                },
-                                                success: function(resultData)
-                                                {
-                                                    $("#loading").removeClass('is-active');
-                                                    if (resultData.status === "Success")
-                                                    {
-                                                        $(".step1").hide();
-                                                        $(".step2").show();
-                                                        refreshCaptcha();
-                                                        startTimer();
-                                                        $("#SecurityCode").val('');
-
-                                                        Swal.fire({
-                                                            icon: 'success',
-                                                            title: resultData.message,
-                                                            showConfirmButton: false,
-                                                            timer: 1500
-                                                        });
-                                                    }
-
-                                                    if (resultData.status === "Error")
-                                                    {
-                                                        Swal.fire({
-                                                            icon: 'error',
-                                                            title: resultData.message,
-                                                            showConfirmButton: false,
-                                                            timer: 1500
-                                                        });
-                                                    }
-                                                }
-                                            });
+                                            $('#mainToastBody').html(`<i class="far fa-check-circle"></i> ${resultData.message}`);
+                                            $('#mainToastBody').addClass('alert-success');
+                                            $("#toastPanel").show();
+                                            var toast = new bootstrap.Toast($("#mainToast"));
+                                            toast.show();
+                                            setTimeout(function(){
+                                                    $("#toastPanel").hide();
+                                            }, 2500);
                                         }
-
+                                        else
                                         if (resultData.status === "Error")
                                         {
-                                            Swal.fire({
-                                                icon: 'error',
-                                                title: resultData.message,
-                                                showConfirmButton: false,
-                                                timer: 1500
-                                            });
+                                            document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${resultData.message}`;
+                                            document.getElementById('mainToastBody').classList.add('alert-danger');
+                                            var toastDiv = $("#mainToast");
+                                            $("#toastPanel").show();
+                                            var toast = new bootstrap.Toast(toastDiv);
+                                            toast.show();
+
+                                            setTimeout(function(){
+                                                    $("#toastPanel").hide();
+                                            }, 3000);
                                         }
                                     }
                                 });
-                            }
-                        });
+                           
                 }
             }
         });
@@ -456,16 +427,15 @@
                         $("#loading").removeClass('is-active');
                         if (result.status === "Success")
                         {
-                            Swal.fire({
-                                    icon: 'success',
-                                    title: result.message,
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                })
-                                .then(() =>
-                                {
-                                    window.location.href = '@Url.Action("Index", "Home")';
-                                });
+                            $('#mainToastBody').html(`<i class="far fa-check-circle"></i> ${result.message}`);
+                            $('#mainToastBody').addClass('alert-success');
+                            $("#toastPanel").show();
+                            var toast = new bootstrap.Toast($("#mainToast"));
+                            toast.show();
+                            setTimeout(function(){
+                                    $("#toastPanel").hide();
+                                window.location.href = '@Url.Action("Index", "Home")';
+                            }, 2500);
                         }
                         if (result.status === "ModelError")
                         {
@@ -496,12 +466,18 @@
                         }
                         if (result.status === "Error")
                         {
-                            Swal.fire({
-                                icon: 'error',
-                                title: result.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
+                           
+
+                             document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${result.message}`;
+                                document.getElementById('mainToastBody').classList.add('alert-danger');
+                                var toastDiv = $("#mainToast");
+                                $("#toastPanel").show();
+                                var toast = new bootstrap.Toast(toastDiv);
+                                toast.show();
+
+                                setTimeout(function(){
+                                        $("#toastPanel").hide();
+                                }, 1500);
 
                             $("#btnSubmit").prop('disabled', false);
                         }

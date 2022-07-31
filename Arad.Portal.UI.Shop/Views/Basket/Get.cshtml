@@ -14,13 +14,13 @@
     }
 </style>
 <div class="container">
-<div class="card">
-    <div class="card-body">
-        @if (@Model.Details.Any())
-        {
-
-            @foreach (var seller in @Model.Details)
+    <div class="card">
+        <div class="card-body">
+            @if (@Model.Details.Any())
             {
+
+                @foreach (var seller in @Model.Details)
+                {
                     <div class="card m-3 border-1 rounded-3">
                         <div class="card-header bg-success bg-opacity-10">
                             <div class="row gy-2 align-middle pt-2">
@@ -35,74 +35,81 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                            <table class="table basket table-bordered table-hover align-middle">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">@Language.GetString("Image")</th>
-                                        <th scope="col" >@Language.GetString("tbl_ProductName")</th>
-                                        <th scope="col" >@Language.GetString("PricePerUnit")</th>
-                                        <th scope="col" >@Language.GetString("Count")</th>
-                                        <th scope="col" >@Language.GetString("FinalPrice")</th>
-                                        <th scope="col"></th>
-                                        <th scope="col" ></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @{
-                                        foreach (var item in seller.Products)
-                                        {
-                                            <tr>
-                                                <th scope="row">@item.RowNumber</th>
-                                                <td>
-                                                    @if (item.ProductImage != null)
-                                                    {
-                                                        <img class="smlImg" src=@Url.Content($"~/getscaledimageonwidth?path={item.ProductImage.Url}&width={75}")>
-                                                    }
-                                                </td>
-                                                <td class="align-middle"><span >@item.ProductName</span></td>
-                                                <td class="align-middle">
-                                                    @{
-                                                        if (item.PreviousFinalPricePerUnit != item.PricePerUnit - item.DiscountPricePerUnit)
+                                <table class="table basket table-bordered table-hover align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">@Language.GetString("Image")</th>
+                                            <th scope="col">@Language.GetString("tbl_ProductName")</th>
+                                            <th scope="col">@Language.GetString("PricePerUnit")</th>
+                                            <th scope="col">@Language.GetString("Count")</th>
+                                            <th scope="col">@Language.GetString("FinalPrice")</th>
+                                            <th scope="col"></th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            foreach (var item in seller.Products)
+                                            {
+                                                <tr>
+                                                    <th scope="row">@item.RowNumber</th>
+                                                    <td>
+                                                        @if (item.ProductImage != null)
                                                         {
-                                                            <div >
-                                                                <p class="pInTb"><s>@($"{item.PreviousFinalPricePerUnit} {Model.ShoppingCartCulture.CurrencySymbol}")</s></p>
-                                                                <p class="pInTb"><mark>@($"{item.PricePerUnit - item.DiscountPricePerUnit} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
-                                                            </div>
+                                                            <img class="smlImg" src=@Url.Content($"~/getscaledimageonwidth?path={item.ProductImage.Url}&width={75}")>
                                                         }
-                                                    }
-                                                </td>
-                                                <td class="align-middle">
-                                                    <div class="w-75">
-                                                        <input type="number" class="form-control orderCnt" proid='@item.ProductId' min="1" value="@item.OrderCount" />
-                                                    </div>
-                                                </td>
-                                                <td class="align-middle">
-                                                    <div >
-                                                        <p><mark>@($"{@item.TotalAmountToPay} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
-                                                    </div>
-                                                </td>
-                                                <td class="align-middle">
-                                                <button asp-controller="basket" asp-action="DeleteItemFromCart" asp-route-ParId="@Model.UserCartId" asp-route-Id="@item.ShoppingCartDetailId" class="btn btn-sm btn-danger bg-gradient">
-                                                        <i class="fa fa-trash"></i>@Language.GetString("btn_Delete")
-                                                    </button>
-                                                </td>
-                                                <td class="align-middle">
-                                                    <div >
+                                                    </td>
+                                                    <td class="align-middle"><span>@item.ProductName</span></td>
+                                                    <td class="align-middle">
                                                         @{
-                                                            foreach (var not in item.Notifications)
+                                                            if (item.PreviousFinalPricePerUnit != 0 && item.PreviousFinalPricePerUnit != item.PricePerUnit - item.DiscountPricePerUnit)
                                                             {
-                                                                <p>@not</p>
-                                                                <br />
+                                                                <div>
+                                                                    <p class="pInTb"><s>@($"{Convert.ToInt64(item.PreviousFinalPricePerUnit):n0} {Model.ShoppingCartCulture.CurrencySymbol}")</s></p>
+                                                                    <p class="pInTb"><mark>@($"{Convert.ToInt64(item.PricePerUnit - item.DiscountPricePerUnit): n0} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div>
+                                                                    <p class="pInTb"><mark>@($"{Convert.ToInt64(item.PricePerUnit - item.DiscountPricePerUnit):n0} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
+                                                                </div>
+
                                                             }
                                                         }
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <div class="w-75">
+                                                            <input type="number" class="form-control orderCnt" proid='@item.ProductId' min="1" value="@item.OrderCount" />
+                                                        </div>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <div>
+                                                            <p><mark>@($"{Convert.ToInt64(@item.TotalAmountToPay) :n0} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
+                                                        </div>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <button class="btn btn-sm btn-danger bg-gradient deleteItem" parId="@Model.UserCartId" detailId="@item.ShoppingCartDetailId">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <div>
+                                                            @{
+                                                                foreach (var not in item.Notifications)
+                                                                {
+                                                                    <p class="fw-lighter">@not</p>
+                                                                    <br />
+                                                                }
+                                                            }
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
                                         }
-                                    }
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                         <div class="card-footer">
@@ -111,7 +118,7 @@
                                     <label class="form-label"> @Language.GetString("ShippingExpense") : </label>
                                 </div>
                                 <div class="col-4 col-md-2 align-middle">
-                                    <label class="form-control">@($"{seller.ShippingExpense} {Model.ShoppingCartCulture.CurrencySymbol}")</label>
+                                    <label class="form-control">@($"{Convert.ToInt64(seller.ShippingExpense):n0} {Model.ShoppingCartCulture.CurrencySymbol}")</label>
                                 </div>
                             </div>
                             <div class="row mt-2">
@@ -119,66 +126,106 @@
                                     <label class="form-label"> @Language.GetString("SumOfAmount") : </label>
                                 </div>
                                 <div class="col-4 col-md-2 align-middle">
-                                    <p><mark class="fs-5">@($"{seller.Products.Sum(_=>_.TotalAmountToPay) + seller.ShippingExpense} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
+                                    <p><mark class="fs-5">@($"{Convert.ToInt64(seller.Products.Sum(_=>_.TotalAmountToPay) + seller.ShippingExpense):n0} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
                                 </div>
                             </div>
                         </div>
                     </div>
+                }
+
+                <div class="row mt-2">
+                    <div class="col-3 offset-3 col-md-2 offset-md-2">
+                        <label class="form-control bg-secondary bg-opacity-10 text-center"> @Language.GetString("FinalPriceForPayment") : </label>
+                    </div>
+                    <div class="col-3 col-md-2">
+                        <p><strong>@($"{Convert.ToInt64(Model.FinalPriceForPay):n0} {Model.ShoppingCartCulture.CurrencySymbol}")</strong></p>
+                    </div>
+                    <div class="col-2 col-md-2">
+                        @if (@Model.Details.Any())
+                        {
+                            <a class="btn btn-success bg-gradient" asp-action="SendInfo">@Language.GetString("btn_ContinueBuyingOnline")</a>
+                        }
+                    </div>
+                </div>
+
             }
-
-            <div class="row mt-2">
-                <div class="col-3 offset-3 col-md-2 offset-md-2">
-                    <label class="form-control bg-secondary bg-opacity-10 text-center"> @Language.GetString("FinalPriceForPayment") : </label>
+            else
+            {
+                <div class="row">
+                    <p class="text-center m-1 p-1"><strong>@Language.GetString("AlertAndMessage_ShoppingCartIsEmpty")</strong></p>
                 </div>
-                <div class="col-3 col-md-2">
-                    <p><strong>@($"{Model.FinalPriceForPay} {Model.ShoppingCartCulture.CurrencySymbol}")</strong></p>
-                </div>
-                <div class="col-2 col-md-2">
-                    @if (@Model.Details.Any())
-                    {
-                        <a class="btn btn-success bg-gradient" asp-action="SendInfo">@Language.GetString("btn_ContinueBuyingOnline")</a>
-                    }
-                </div>
-            </div>
-
-        }
-        else
-        {
-            <div class="row">
-                <p class="text-center m-1 p-1"><strong>@Language.GetString("AlertAndMessage_ShoppingCartIsEmpty")</strong></p>
-            </div>
-        }
+            }
+        </div>
     </div>
-</div>
 </div>
 
 <script type="text/javascript">
-        $(document).ready(function ()
-        {
-           $("input.orderCnt").bind('keyup mouseup', function () {
-               debugger;
-               var cnt = $(this).val();
-               var productId = $(this).attr("proid");
+    $(document).ready(function() {
+        $("input.orderCnt").bind('keyup mouseup', function() {
+            debugger;
+            var cnt = $(this).val();
+            var productId = $(this).attr("proid");
+            $.ajax({
+                url: "/" + "@ViewBag.LanIcon" + "/basket/AddProToBasket?productId=" + productId + "&cnt=" + cnt,
+                contentType: 'application/json',
+                type: 'Get',
+                dataType: 'json',
+                beforeSend: function() {
+                },
+                success: function(result) {
+                    debugger;
+                    if (result.status == "Succeed") {
+                        window.location.reload();
+                    }
+                }
+            });
+        });
+
+        $(".deleteItem").click(function() {
+            debugger;
+            var parId = $(this).attr("parId");
+            var itemId = $(this).attr("detailId");
+
+            if ('@User.Identity.IsAuthenticated' === 'True') {
+                debugger;
+
                 $.ajax({
-                    url: "/"+"@ViewBag.LanIcon"+"/basket/AddProToBasket?productId=" + productId + "&cnt=" + cnt,
-                    contentType: 'application/json',
+                    url: `/${'@ViewBag.LanIcon'}/Basket/DeleteItemFromCart?parId=` + parId + "&id=" + itemId,
+                    //contentType: 'application/json',
                     type: 'Get',
                     dataType: 'json',
-                    beforeSend: function () {
+                    beforeSend: function() {
                     },
-                    success: function (result) {
-                        debugger;
-                        if(result.status =="Succeed")
-                        {
+                    success: function(result) {
+                        if (result.status == "Succeed") {
+                            debugger;
                             window.location.reload();
-                        }
-                    }
-                  });
-           });
-        });
-    //function changeOrderCount(sender, productId) {
-    //    debugger;
-    //    var cnt = $(sender).val();
 
-    //}
+                            $('#mainToastBody').html(`<i class="far fa-check-circle"></i> ${result.message}`);
+                            $('#mainToastBody').addClass('alert-success');
+                            $("#toastPanel").show();
+                            var toast = new bootstrap.Toast($("#mainToast"));
+                            toast.show();
+                            setTimeout(function() {
+                                $("#toastPanel").hide();
+                            }, 2500);
+                        }
+                        else {
+
+                            document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${result.message}`;
+                            document.getElementById('mainToastBody').classList.add('alert-danger');
+                            $("#toastPanel").show();
+                            var toast = new bootstrap.Toast($("#mainToast"));
+                            toast.show();
+                            setTimeout(function() {
+                                $("#toastPanel").hide();
+                            }, 2500);
+                        }
+
+                    }
+                });
+            }
+        });
+    });
+
 </script>

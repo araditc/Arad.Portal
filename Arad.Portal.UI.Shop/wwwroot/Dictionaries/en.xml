@@ -815,8 +815,14 @@
     <value>Fill All Payment Gateway Informations.</value>
   </string>
   <string key="AlertAndMessage_InsertError">
-    <value>Error i Inserting informations.</value>
+    <value>Error in Inserting informations.</value>
   </string>
+	 <string key="AlertAndMessage_WaitingForSms">
+    <value>Please waiting for sms on your phone.</value>
+  </string>
+	<string key="AlertAndMessage_DeleteError">
+		<value>Error in deleting</value>
+	</string>
   <string key="AlertAndMessage_DuplicateUniqueCode">
     <value>UniqueCode is duplicate.</value>
   </string>
@@ -2017,6 +2023,12 @@
   <string key="User_LoginRegister">
     <value>Login/Register</value>
   </string>
+	 <string key="User_Login">
+    <value>Login</value>
+  </string>
+	 <string key="User_Register">
+    <value>Register</value>
+  </string>
   <string key="FromDate">
     <value>From Date</value>
   </string>
@@ -2852,7 +2864,7 @@
     <value>The verification code has expired.</value>
   </string>
   <string key="AlertAndMessage_ProfileConfirmPhoneError">
-    <value>Confirmation of number with error encountered.</value>
+    <value>error encountered in phone number confirmation.</value>
   </string>
   <string key="AlertAndMessage_OperationSuccess">
     <value>The operation was successful.</value>
@@ -2938,8 +2950,8 @@
   <string key="Profile_Address1">
     <value>Address1</value>
   </string>
-  <string key="Profile_StateCity">
-    <value>State/City</value>
+  <string key="Profile_State">
+    <value>State</value>
   </string>
   <string key="Profile_Address2">
     <value>Address2</value>

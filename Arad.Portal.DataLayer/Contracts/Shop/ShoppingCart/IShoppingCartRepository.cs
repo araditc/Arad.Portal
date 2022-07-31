@@ -28,6 +28,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart
         Task<Result> DeleteProductFromUserShoppingCart(string userId, string productId);
 
         Task<Result> DeleteWholeUserShoppingCart(string userId);
+
+        Task<Result> DeleteShoppingCartItem(string shoppingCartId, string shoppingCartDetailId);
         /// <summary>
         /// checking the price and inventory of products 
         /// </summary>

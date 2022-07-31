@@ -130,12 +130,7 @@
                         } 
                         else 
                         {
-                            //Swal.fire({
-                            //    type: 'error',
-                            //    title: result.message,
-                            //    confirmButtonText:
-                            //        '<i class="fa fa-thumbs-up"></i> متوجه شدم!',
-                            //});
+                           
                             document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${result.message}`;
                             document.getElementById('mainToastBody').classList.add('alert-danger');
                             var toastDiv = $("#mainToast");

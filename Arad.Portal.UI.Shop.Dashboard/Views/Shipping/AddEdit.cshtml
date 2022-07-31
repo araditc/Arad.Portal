@@ -336,14 +336,7 @@
                 success: function (result) {
                     debugger;
                     if (result.status === "Success") {
-                        @*Swal.fire({
-                            icon: 'success',
-                            text: result.message,
-                            showConfirmButton: false,
-                            timer: 3000
-                        }).then(() => {
-                            window.location.href = '@Url.Action("List")';
-                        });*@
+                       
                             document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
                             document.getElementById('mainToastBody').classList.add('alert-success');
                             $("#toastPanel").show();

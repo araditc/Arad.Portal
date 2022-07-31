@@ -88,7 +88,7 @@
 						</div>
 						<div class="card-body">
                             <div class="text-center">
-                                <img id="userProfileImage" onclick="ViewImage('@Model.ProfilePhoto.Url')" style="cursor: pointer"
+                                <img id="userProfileImage" onclick="ViewImage(@(@Model.ProfilePhoto.Url?? ""))" style="cursor: pointer"
 									 imgid="@(!string.IsNullOrWhiteSpace(@Model.ProfilePhoto.ImageId) ? @Model.ProfilePhoto.ImageId : "-1")"
                                      class="img-fluid rounded-circle" src="@(!string.IsNullOrWhiteSpace(@Model.ProfilePhoto.Content) ? @Model.ProfilePhoto.Content : "/imgs/NoImage.png")" alt="user Image">
                             </div>
@@ -429,14 +429,6 @@
 </div>
 
 
-
-<div class="position-fixed bottom-0 start-0 p-5" style="z-index: 11">
-	<div aria-atomic="true" aria-live="assertive" class="toast" id="notificationToast" role="alert">
-		<div class="toast-body alert-danger" id="notificationToastBody">
-		</div>
-	</div>
-</div>
-
 @section scripts
 {
 	
@@ -702,7 +694,6 @@
 		$(document)
 			.ready(function()
 			{
-
 				$("#AddressCountryId").selectpicker();
 
                 $("#btnSave").click(function() {
@@ -823,7 +814,15 @@
                 });
             });
 
-
+	function ViewImage(address) {
+        debugger;
+		if(address == "")
+		address = "/imgs/NoImage.png"
+        var tag = '<img src="' + address + '" width="500px" />';
+       
+		document.getElementById('confirmBody').innerHTML = tag;
+        $('#showModalId').modal('show');
+    }
 	
 
 	</script>

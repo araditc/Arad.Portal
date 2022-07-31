@@ -817,6 +817,12 @@
   <string key="AlertAndMessage_InsertError">
     <value>خطا در ثبت اطلاعات.</value>
   </string>
+	<string key="AlertAndMessage_WaitingForSms">
+		<value></value>
+	</string>
+	<string key="AlertAndMessage_DeleteError">
+		<value>خطا در حذف.</value>
+	</string>
   <string key="AlertAndMessage_DuplicateUniqueCode">
     <value>کد انحصاری تکراری است.</value>
   </string>
@@ -2071,6 +2077,12 @@
   <string key="User_LoginRegister">
     <value>ورود/ ثبت نام</value>
   </string>
+	<string key="User_Login">
+		<value>ورود</value>
+	</string>
+	<string key="User_Register">
+		<value>ثبت نام</value>
+	</string>
   <string key="FromDate">
     <value>از تاریخ</value>
   </string>
@@ -2842,9 +2854,9 @@
   <string key="Profile_Address1">
     <value>آدرس یک</value>
   </string>
-  <string key="Profile_StateCity">
-    <value>استان/شهر</value>
-  </string>
+	<string key="Profile_State">
+		<value>استان</value>
+	</string>
   <string key="Profile_Address2">
     <value>آدرس دو</value>
   </string>

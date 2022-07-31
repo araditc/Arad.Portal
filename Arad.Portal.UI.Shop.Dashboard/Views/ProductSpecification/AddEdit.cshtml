@@ -293,12 +293,7 @@
                 $("#nameValuesList").append(li);
                 $("#nameValuesInput").val("");
             } else {
-                @*Swal.fire({
-                    icon: 'warning',
-                    text: '@Language.GetString("AlertAndMessage_FillSpecificationValue")',
-                    showConfirmButton: false,
-                    timer: 1500
-                });*@
+               
                 showError('@Language.GetString("AlertAndMessage_FillSpecificationValue")');
             }
         }
