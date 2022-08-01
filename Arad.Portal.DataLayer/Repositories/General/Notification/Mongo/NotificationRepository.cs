@@ -42,11 +42,21 @@ namespace Arad.Portal.DataLayer.Repositories.General.Notification.Mongo
             var equallentModel = _mapper.Map<Entities.General.Notify.Notification>(dto);
 
             equallentModel.CreationDate = DateTime.Now;
-            equallentModel.CreatorUserId = _httpContextAccessor.HttpContext.User.Claims
-                .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            equallentModel.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
-                .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
-            try
+            if(_httpContextAccessor.HttpContext.User.Claims
+               .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier) != null)
+            {
+                equallentModel.CreatorUserId = _httpContextAccessor.HttpContext.User.Claims
+               .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            }
+             if(_httpContextAccessor.HttpContext.User.Claims
+                    .FirstOrDefault(c => c.Type == ClaimTypes.Name) != null)
+            {
+                equallentModel.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
+                    .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+            }
+                
+           
+           try
             {
                 equallentModel.NotificationId = Guid.NewGuid().ToString();
                 _context.Collection.InsertOne(equallentModel);

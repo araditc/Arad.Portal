@@ -60,17 +60,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo
 
         public async Task<List<Entities.General.MessageTemplate.MessageTemplate>> GetAllByName(string templateName)
         {
-            
-            var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == GetCurrentDomainName()).FirstOrDefault();
-            if(domainEntity != null)
-            {
-                return await _context.Collection
-                .Find(m => m.TemplateName.Equals(templateName) && m.AssociatedDomainId == domainEntity.DomainId).ToListAsync();
-            }else
-            {
-                return new List<Entities.General.MessageTemplate.MessageTemplate>();
-            }
-            
+            return await _context.Collection
+            .Find(m => m.TemplateName.Equals(templateName)).ToListAsync();
         }
     }
 

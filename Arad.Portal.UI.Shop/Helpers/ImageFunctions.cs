@@ -172,14 +172,14 @@ namespace Arad.Portal.UI.Shop.Helpers
             KeyValuePair<string, string> res;
            
             picture.ImageId = Guid.NewGuid().ToString();
-            var path = Path.Combine(localStaticFileStorageURL, pathToSave).Replace("\\", "/");
+            var path = Path.Combine(localStaticFileStorageURL,  pathToSave).Replace("\\", "/");
             try
             {
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
                 }
-                picture.Url = Path.Combine("/Images", pathToSave, $"{picture.ImageId}.jpg").Replace("\\", "/");
+                picture.Url = Path.Combine(pathToSave, $"{picture.ImageId}.jpg").Replace("\\", "/");
                 byte[] bytes = Convert.FromBase64String(picture.Content.Replace("data:image/jpeg;base64,", ""));
                 Image image = Image.Load(bytes);
                 image.Save(Path.Combine(path, $"{picture.ImageId}.jpg").Replace("\\", "/"), new JpegEncoder() { Quality = 100 });

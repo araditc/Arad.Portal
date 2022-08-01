@@ -49,8 +49,12 @@ namespace Arad.Portal.DataLayer.Repositories
         }
         protected string GetUserId()
         {
-            return _httpContextAccessor.HttpContext.User.Claims
+            if(_httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier) != null)
+            {
+                return _httpContextAccessor.HttpContext.User.Claims
                  .FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+            }return "";
+            
         }
     }
 }

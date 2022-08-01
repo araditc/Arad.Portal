@@ -706,6 +706,12 @@
   <string key="EnumDesc_List">
     <value>لیست</value>
   </string>
+	<string key="EnumDesc_Male">
+		<value>مرد</value>
+	</string>
+	<string key="EnumDesc_Female">
+		<value>زن</value>
+	</string>
   <string key="EnumDesc_Add">
     <value>افزودن</value>
   </string>
@@ -1765,6 +1771,9 @@
   <string key="User_Profile">
     <value>پروفایل کاربری</value>
   </string>
+	<string key="User_NationalCode">
+		<value>کد ملی</value>
+	</string>
   <string key="User_Captcha">
     <value>کپچا</value>
   </string>

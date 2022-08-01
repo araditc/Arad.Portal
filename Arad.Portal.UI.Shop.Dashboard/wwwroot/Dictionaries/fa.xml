@@ -733,6 +733,12 @@
   <string key="EnumDesc_List">
     <value>لیست</value>
   </string>
+	<string key="EnumDesc_Male">
+		<value>مرد</value>
+	</string>
+	<string key="EnumDesc_Female">
+		<value>زن</value>
+	</string>
   <string key="EnumDesc_Add">
     <value>افزودن</value>
   </string>

@@ -82,7 +82,7 @@ namespace Arad.Portal.DataLayer.Helpers
             _sendSmsConfig = sendSmsConfig;
             _domainRepository = domainRepository;
 
-            _domainName = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
+            _domainName = $"{_httpContextAccessor.HttpContext.Request.Host}";
 
         }
 
@@ -608,7 +608,7 @@ namespace Arad.Portal.DataLayer.Helpers
             text = text.Replace("{$date}", CultureInfo.CurrentCulture.Name == "fa-IR" ? DateTime.Now.ToPersianLetDateTime() : DateTime.Now.ToString(_setting.DateFormat));
             text = text.Replace("{$time}", DateTime.Now.ToString("HH:mm"));
             text = text.Replace("{$otp}", IsNullOrEmpty(otp));
-            text = text.Replace("{$company_name}", _domainName);
+            text = text.Replace("{$domainName}", _domainName);
 
 
             if (!string.IsNullOrWhiteSpace(callbackUrl))
@@ -616,8 +616,6 @@ namespace Arad.Portal.DataLayer.Helpers
                 string url = $"<a href='{callbackUrl}'>{Language.GetString("Action_Confirmation")}</a>";
                 text = text.Replace("{$client_email_verification_link}", url);
             }
-
-
 
             if (user != null)
             {
@@ -651,6 +649,8 @@ namespace Arad.Portal.DataLayer.Helpers
                 //    text = text.Replace("{$client_country}", IsNullOrEmpty(user.Address.CountyName));
                 //}
             }
+
+
 
             //SystemSetting setting = (await _systemSettingRepository.GetAll()).FirstOrDefault();
 

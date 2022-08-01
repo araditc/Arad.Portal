@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Configuration;
 using PhoneNumbers;
 using System;
 using System.Collections.Generic;
@@ -46,7 +47,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly ILanguageRepository _lanRepository;
         private readonly ITransactionRepository _traRepository;
         private readonly ICurrencyRepository _curRepository;
-        private readonly INotificationRepository _notificationrepository;
+        private readonly IConfiguration _configuration;
         private readonly string _domainName;
         private readonly IMapper _mapper;
         
@@ -59,8 +60,8 @@ namespace Arad.Portal.UI.Shop.Controllers
             IHttpContextAccessor accessor,
             ICountryRepository countryRepository,
             ICurrencyRepository curRepo,
+            IConfiguration configuration, 
             ILanguageRepository lanRepo,
-            INotificationRepository notificationRepository,
             ITransactionRepository transactionRepository,
             SignInManager<ApplicationUser> signInManager):base(accessor, domainRepository)
         {
@@ -75,7 +76,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             _curRepository = curRepo;
             _traRepository = transactionRepository;
             _mapper = mapper;
-            _notificationrepository = notificationRepository;
+            _configuration = configuration;
             _countryRepository = countryRepository;
         }
         public IActionResult Index()
@@ -528,50 +529,50 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<IActionResult> ChangePassword(ChangePassword model)
-        {
-            JsonResult result;
-            if (!ModelState.IsValid)
-            {
-                List<ClientValidationErrorModel> errors = new List<ClientValidationErrorModel>();
+        //[HttpPost]
+        //public async Task<IActionResult> ChangePassword(ChangePassword model)
+        //{
+        //    JsonResult result;
+        //    if (!ModelState.IsValid)
+        //    {
+        //        List<ClientValidationErrorModel> errors = new List<ClientValidationErrorModel>();
 
-                foreach (var modelStateKey in ModelState.Keys)
-                {
-                    var modelStateVal = ModelState[modelStateKey];
-                    foreach (var error in modelStateVal.Errors)
-                    {
-                        var obj = new ClientValidationErrorModel
-                        {
-                            Key = modelStateKey,
-                            ErrorMessage = error.ErrorMessage,
-                        };
+        //        foreach (var modelStateKey in ModelState.Keys)
+        //        {
+        //            var modelStateVal = ModelState[modelStateKey];
+        //            foreach (var error in modelStateVal.Errors)
+        //            {
+        //                var obj = new ClientValidationErrorModel
+        //                {
+        //                    Key = modelStateKey,
+        //                    ErrorMessage = error.ErrorMessage,
+        //                };
 
-                        errors.Add(obj);
-                    }
-                }
-                result = Json(new { Status = "ModelError", ModelStateErrors = errors });
-            }
+        //                errors.Add(obj);
+        //            }
+        //        }
+        //        result = Json(new { Status = "ModelError", ModelStateErrors = errors });
+        //    }
 
-            try
-            {
-                var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                var user = await _userManager.FindByIdAsync(userId);
+        //    try
+        //    {
+        //        var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        //        var user = await _userManager.FindByIdAsync(userId);
 
-                var res = await _userManager.ChangePasswordAsync(user, model.Password, model.NewPassword);
+        //        var res = await _userManager.ChangePasswordAsync(user, model.Password, model.NewPassword);
 
-                if (res.Succeeded)
-                {
-                    result = Json(new { status = "success", Message = Language.GetString("AlertAndMessage_PasswordChangeSuccessfully") });
-                }
-               result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_ErrorTryAgain"), ModelStateErrors = new List<string>() });
-            }
-            catch (Exception e)
-            {
-                result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_ErrorTryAgain"), ModelStateErrors = new List<string>() });
-            }
-            return result;
-        }
+        //        if (res.Succeeded)
+        //        {
+        //            result = Json(new { status = "success", Message = Language.GetString("AlertAndMessage_PasswordChangeSuccessfully") });
+        //        }
+        //       result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_ErrorTryAgain"), ModelStateErrors = new List<string>() });
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_ErrorTryAgain"), ModelStateErrors = new List<string>() });
+        //    }
+        //    return result;
+        //}
 
        
         [HttpGet]
@@ -589,7 +590,10 @@ namespace Arad.Portal.UI.Shop.Controllers
             var lst = _userRepository.GetAddressTypes();
             ViewBag.AddressTypes = lst;
             UserProfileDTO dto = _mapper.Map<UserProfileDTO>(user.Profile);
-            var countries = this.GetCountries();
+            dto.UserName = user.UserName;
+            dto.UserID = user.Id;
+           
+            var countries = _countryRepository.GetAllCountries();
             ViewBag.Countries = countries;
             ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
             var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
@@ -622,10 +626,30 @@ namespace Arad.Portal.UI.Shop.Controllers
             {
                 var user =await _userManager.FindByIdAsync(dto.UserID);
                 var pro = _mapper.Map<DataLayer.Models.User.Profile>(dto);
+                var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
+                var path = "Images/UserProfiles";
+                var img = new Image()
+                {
+                    Content = dto.FileContent,
+                    Title = dto.FileName
+                };
+                
+
+                var res = ImageFunctions.SaveImageModel(img, path, localStaticFileStorageURL);
+                if (res.Key != Guid.Empty.ToString())
+                {
+                    pro.ProfilePhoto.ImageId = res.Key;
+                    pro.ProfilePhoto.Url = res.Value;
+                    pro.ProfilePhoto.Content = "";
+                }
+
+                pro.FullName = dto.FirstName + " " + dto.LastName;
+               user.UserName = dto.UserName;
                 user.Profile = pro;
-                var res = await _userManager.UpdateAsync(user);
                
-                    result = Json(res.Succeeded ? new { Status = "Success", Message = Language.GetString("AlertAndMessage_OperationSuccess") }
+                var updateRes = await _userManager.UpdateAsync(user);
+               
+                    result = Json(updateRes.Succeeded ? new { Status = "Success", Message = Language.GetString("AlertAndMessage_OperationSuccess") }
                    : new { Status = "Error", Message = Language.GetString("AlertAndMessage_OperationFailed") });
                
             }
@@ -672,22 +696,8 @@ namespace Arad.Portal.UI.Shop.Controllers
                 return Ok(new { Status = "Error", Message = Language.GetString("Validation_MobileNumberAlreadyRegistered") });
             }
             #endregion
-           
-                var notification = new NotificationDTO()
-                {
-                    NotificationId = Guid.NewGuid().ToString(),
-                    CreationDate = DateTime.Now.ToUniversalTime(),
-                    MessageText = DataLayer.Helpers.Utilities.GenerateOtp(),
-                    SendStatus = Enums.NotificationSendStatus.Store,
-                    TemplateName = "SendOtp",
-                    Title = "",
-                    Type = Enums.NotificationType.Sms,
-                    From = this.DomainName,
-                    To = "dear user"
-                };
-                var res = _notificationrepository.AddNewNotification(notification);
                
-                return Ok(new { Status = res.Succeeded ? "Success" : "Error", Message = res.Succeeded ? Language.GetString("AlertAndMessage_OperationSuccess") :Language.GetString("AlertAndMessage_InsertError") });
+             return Ok(new { Status = "Success" , Message = Language.GetString("AlertAndMessage_OperationSuccess") });
         }
 
         [HttpGet]

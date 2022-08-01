@@ -92,7 +92,7 @@ namespace Arad.Portal.DataLayer.Models.User
 
     public enum Gender
     {
-        [CustomDescription("EnumDesc_Men")]
+        [CustomDescription("EnumDesc_Male")]
         Male,
         [CustomDescription("EnumDesc_Female")]
         Female

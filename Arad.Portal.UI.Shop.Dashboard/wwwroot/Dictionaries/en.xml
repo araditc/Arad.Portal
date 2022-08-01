@@ -727,6 +727,12 @@
   <string key="EnumDesc_List">
     <value>List</value>
   </string>
+	<string key="EnumDesc_Male">
+    <value>Male</value>
+  </string>
+	<string key="EnumDesc_Female">
+    <value>Female</value>
+  </string>
   <string key="EnumDesc_Add">
     <value>Add</value>
   </string>
