@@ -799,6 +799,9 @@
   <string key="Enum_MostVisited">
     <value>پربازدیدترین ها</value>
   </string>
+	<string key="ValidationCode">
+		<value>کد اعتبارسنجی</value>
+	</string>
   <string key="Validation_EnterUsername">
     <value>نام کاربری را وارد کنید.</value>
   </string>
@@ -814,6 +817,12 @@
   <string key="Validation_MobileNumberInvalid2">
     <value>شماره وارد شده مربوط به تلفن ثابت می باشد.</value>
   </string>
+	<string key="AlertAndMessage_EnterOtp">
+		<value>لطفا کد وارد شده به گوشی همراه خود را وارد کنید.</value>
+	</string>
+	<string key="AlertAndMessage_RequestChangePassword">
+		<value>درخواست تغییر کلمه عبور</value>
+	</string>
   <string key="AlertAndMessage_ModuleWithoutParameters">
     <value>این ماژول دارای پارارمتر نمیباشد تنها دکمه افزودن را کلیک کنید.</value>
   </string>

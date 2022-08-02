@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace Arad.Portal.UI.Shop.ViewComponents
 {
@@ -20,6 +21,7 @@ namespace Arad.Portal.UI.Shop.ViewComponents
         }
         public async Task<IViewComponentResult> InvokeAsync(string domainId)
         {
+            Log.Fatal($"Hit ViewComponent with domainId ={domainId}");
             var domainObj = _domainRepository.FetchDomain(domainId).ReturnValue;
             if(User.Identity.IsAuthenticated)
             {
@@ -32,7 +34,7 @@ namespace Arad.Portal.UI.Shop.ViewComponents
                     ViewBag.ProfileUrl = user.Profile.ProfilePhoto.Url;
                 }
             }
-           
+            Log.Fatal("Going to View Of LoginProfile with domainObject");
             return View("Default", domainObj.IsShop);
         }
     }

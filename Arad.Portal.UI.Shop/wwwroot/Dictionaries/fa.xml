@@ -2929,6 +2929,9 @@
   <string key="Action_SignIn">
     <value>ورود</value>
   </string>
+	<string key="Action_Send">
+		<value>ارسال</value>
+	</string>
   <string key="Action_Register">
     <value>ثبت نام</value>
   </string>

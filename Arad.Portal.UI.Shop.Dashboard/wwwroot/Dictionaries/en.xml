@@ -799,6 +799,9 @@
   <string key="Enum_MostVisited">
     <value>most visited</value>
   </string>
+	<string key="ValidationCode">
+		<value>Validation Code</value>
+	</string>
   <string key="Validation_EnterUsername">
     <value>Please select a username.</value>
   </string>
@@ -814,6 +817,12 @@
   <string key="Validation_MobileNumberInvalid2">
     <value>Enter the number of fixed phone.</value>
   </string>
+	<string key="AlertAndMessage_EnterOtp">
+		<value>please enter otp which sent to your phone.</value>
+	</string>
+	<string key="AlertAndMessage_RequestChangePassword">
+		<value>request for changing password</value>
+	</string>
   <string key="AlertAndMessage_ModuleWithoutParameters">
     <value>this module hast any parameter just click add botton.</value>
   </string>

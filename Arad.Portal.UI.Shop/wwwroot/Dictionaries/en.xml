@@ -3029,6 +3029,9 @@
   <string key="Action_SignIn">
     <value>Sign In</value>
   </string>
+	<string key="Action_Send">
+		<value>Send</value>
+	</string>
   <string key="Action_Register">
     <value>Register</value>
   </string>

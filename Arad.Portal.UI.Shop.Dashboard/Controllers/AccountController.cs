@@ -774,6 +774,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         }
 
+
+
+        
+
         [HttpGet]
         public async Task<IActionResult> ChangeActivation(string id)
         {

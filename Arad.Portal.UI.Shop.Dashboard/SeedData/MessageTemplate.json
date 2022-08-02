@@ -43,7 +43,7 @@
       {
         "LanguageName": "fa-IR",
         "Subject": "خوش آمدید",
-        "Body": "<p>{$client_first_name} گرامی,</p><p>از ایجاد حساب {$company_name} سپاسگذاریم. خواهشمندیم این ایمیل را به طور کامل مرور کنید زیرا حاوی اطلاعات مهمی است.</p><p><strong>ورود به سیستم</strong></p><p>در <span style=\"background-color:rgb(255,255,255);color:rgb(33,37,41);\">{$system_url}</span> می توانید به منطقه مشتری ما دسترسی داشته باشید</p><p>برای ورود به سیستم به آدرس ایمیل و رمز عبوری که هنگام ثبت نام انتخاب کرده اید نیاز دارید.</p><p>اگر به عنوان بخشی از ثبت سفارش جدید با ما یک حساب ایجاد کرده اید ، به زودی یک ایمیل تأیید سفارش دریافت خواهید کرد.</p><p><strong>دریافت پشتیبانی</strong></p><p>در صورت نیاز به کمک یا کمک ، می توانید به منابع پشتیبانی ما در زیر دسترسی پیدا کنید.</p><ul><li><a href=\"https://cp.arad-itc.com/admin/%7B$whmcs_url%7D/knowledgebase.php\">Knowledgebase</a></li><li><a href=\"https://cp.arad-itc.com/admin/%7B$whmcs_url%7D/submitticket.php\">Submit a Ticket</a></li></ul><p>{$signature}</p>"
+        "Body": "<p>{$client_first_name} گرامی,</p><p>از ایجاد حساب {$company_name} سپاسگذاریم. خواهشمندیم این ایمیل را به طور کامل مرور کنید زیرا حاوی اطلاعات مهمی است.</p><p><strong>ورود به سیستم</strong></p><p>در <span style=\"background-color:rgb(255,255,255);color:rgb(33,37,41);\">{domainName}</span> می توانید به منطقه مشتری ما دسترسی داشته باشید</p><p>برای ورود به سیستم به آدرس ایمیل و رمز عبوری که هنگام ثبت نام انتخاب کرده اید نیاز دارید.</p><p>اگر به عنوان بخشی از ثبت سفارش جدید با ما یک حساب ایجاد کرده اید ، به زودی یک ایمیل تأیید سفارش دریافت خواهید کرد.</p><p><strong>دریافت پشتیبانی</strong></p><p>در صورت نیاز به کمک یا کمک ، می توانید به منابع پشتیبانی ما در زیر دسترسی پیدا کنید.</p><ul><li><a href=\"https://cp.arad-itc.com/admin/%7B$whmcs_url%7D/knowledgebase.php\">Knowledgebase</a></li><li><a href=\"https://cp.arad-itc.com/admin/%7B$whmcs_url%7D/submitticket.php\">Submit a Ticket</a></li></ul><p>{$signature}</p>"
       },
       {
         "LanguageName": "en-US",
@@ -121,7 +121,7 @@
       {
         "LanguageName": "fa-IR",
         "Subject": "گذر واژه جدید شما برای {$company_name}",
-        "Body": "<p>Dear {$client_name},</p><p>همانگونه که درخواست کرده اید ، رمز عبور شما بازنشانی شده است. اطلاعات ورود به سیستم جدید شما به شرح زیر است:</p><p><span style=\"background-color:rgb(255,255,255);color:rgb(33,37,41);\">{$system_url}</span><br>نام کاربری: <span style=\"background-color:rgb(255,255,255);color:rgb(33,37,41);\">{$client_name}</span><br>گذر واژه: {$client_password}</p><p>برای تغییر گذر واژه خود به چیزی به یاد ماندنی ، پس از ورود به سیستم ، به پروفایل/تغییر گذر واژه بروید.</p><p>{$signature}</p>"
+        "Body": "<p>Dear {$client_name},</p><p>همانگونه که درخواست کرده اید ، رمز عبور شما بازنشانی شده است. اطلاعات ورود به سیستم جدید شما به شرح زیر است:</p><p><span style=\"background-color:rgb(255,255,255);color:rgb(33,37,41);\">{$domainName}</span><br>نام کاربری: <span style=\"background-color:rgb(255,255,255);color:rgb(33,37,41);\">{$client_name}</span><br>گذر واژه: {$client_password}</p><p>برای تغییر گذر واژه خود به چیزی به یاد ماندنی ، پس از ورود به سیستم ، به پروفایل/تغییر گذر واژه بروید.</p><p>{$signature}</p>"
       },
       {
         "LanguageName": "en-US",
@@ -197,7 +197,7 @@
     "MessageTemplateMultiLingual": [
       {
         "LanguageName": "fa-IR",
-        "Subject": "جزئیات ورود شما برای {$company_name}",
+        "Subject": "جزئیات ورود شما برای {$domainName}",
         "Body": "<p>{$client_name} گرامی,</p><p>اخیراً درخواستی مبنی بر بازنشانی گذرواژه برای شما&nbsp; ارسال شده است. اگر شما این را درخواست نکرده اید ، خواهشمندیم این ایمیل را نادیده بگیرید. منقضی می شود و در مدت 2 ساعت بی فایده می شود.</p><p>برای بازنشانی گذرواژه خود ، خواهشمندیم&nbsp;از آدرس اینترنتی زیر دیدن کنید:<br><a href=\"https://cp.arad-itc.com/admin/%7B$pw_reset_url%7D\">{$pw_reset_url}</a></p><p>همنگامی که از پیوند بالا دیدن می کنید ، این فرصت را خواهید داشت که رمز جدیدی را انتخاب کنید.</p><p>{$signature}</p>"
       },
       {
@@ -223,13 +223,13 @@
     "MessageTemplateMultiLingual": [
       {
         "LanguageName": "fa-IR",
-        "Subject": "گذرواژه شما برای {$company_name} بازنشانی شده است",
-        "Body": "<p>{$client_name} گرامی,</p><p>همانطور که درخواست کرده اید ، رمز عبور شما برای منطقه مشتری ما بازنشانی شده است.</p><p>اگر به درخواست شما نبود ، لطفاً بلافاصله با پشتیبانی تماس بگیرید.</p><p>{$signature}</p>"
+        "Subject": "گذرواژه شما برای {$domainName} بازنشانی شده است",
+        "Body": "<p>{$client_name} گرامی,</p><p>همانطور که درخواست کرده اید ، رمز عبور شما برای منطقه مشتری ما بازنشانی شده است.</p><p>اگر به درخواست شما نبود ، لطفاً بلافاصله با پشتیبانی تماس بگیرید.</p>"
       },
       {
         "LanguageName": "en-US",
-        "Subject": "Your password has been reset for {$company_name}",
-        "Body": "<p>Dear {$client_name},</p><p>As you requested, your password for our client area has now been reset.</p><p>If it was not at your request, then please contact support immediately.</p><p>{$signature}</p>"
+        "Subject": "Your password has been reset for {$domainName}",
+        "Body": "<p>Dear {$client_name},</p><p>As you requested, your password for our client area has now been reset.</p><p>If it was not at your request, then please contact support immediately.</p>"
       }
     ]
   },
@@ -254,6 +254,30 @@
         "LanguageName": "en-US",
         "Subject": null,
         "Body": "{$domainName}\\nYour code : {$otp}"
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "ff734992-c679-443d-b18f-36a2b4688509",
+    "CreationDate": "2021-09-01T05:22:07.268+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [],
+    "IsActive": true,
+    "TemplateName": "AutomatedPasswordReset",
+    "TemplateDescription": "بازنشانی خودکار گذر واژه",
+    "IsSystemTemplate": true,
+    "NotificationType": "2",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": null,
+        "Body": "{$domainName}\\n کلمه عبور جدید شما : {$otp}"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": null,
+        "Body": "{$domainName}\\n Your New Password : {$otp}"
       }
     ]
   },

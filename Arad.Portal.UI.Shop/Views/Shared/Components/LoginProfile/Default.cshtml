@@ -19,60 +19,59 @@
             <li class="d-flex justify-content-center">
                 @{
 
-                    @if (!@User.Identity.IsAuthenticated)
+                        @if (!@User.Identity.IsAuthenticated)
                     {
-                        <a asp-controller="account" asp-action="Login" class="d-inline-block">
-                            <span class="title text-secondary">
-                                <i class="fa fa-user"></i>
-                                <span>@Language.GetString("User_Login")</span>
-                            </span>
-                        </a>
-                        <span class="d-inline-block">/</span>
-                        <a asp-controller="account" asp-action="Register" class="d-inline-block">
-                            <span class="title text-secondary">
-                                <i class="fa fa-user"></i>
-                                <span>@Language.GetString("User_Register")</span>
-                            </span>
-                        </a>
+                            <a asp-controller="account" asp-action="Login" class="d-inline-block">
+                                <span class="title text-secondary">
+                                    <i class="fa fa-user"></i>
+                                    <span>@Language.GetString("User_Login")</span>
+                                </span>
+                            </a>
+                            <span class="d-inline-block">/</span>
+                            <a asp-controller="account" asp-action="Register" class="d-inline-block">
+                                <span class="title text-secondary">
+                                    <i class="fa fa-user"></i>
+                                    <span>@Language.GetString("User_Register")</span>
+                                </span>
+                            </a>
                     }
                     else
                     {
-                        <div class="dropdown" id="myUserProfile">
-                            <a class="openLoginModal btn dropdown-toggle" role="button" id="drpUserProfile"
-                           placement="bottom right" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <span class="title">
-                                        <i class="fa fa-user"></i>
-                                        <span>@ViewBag.FullName</span>
-                                    </span>
+                            <div class="dropdown" id="myUserProfile">
+                                <a class="openLoginModal btn dropdown-toggle" role="button" id="drpUserProfile"
+                               placement="bottom right" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="title">
+                                            <i class="fa fa-user"></i>
+                                            <span>@(ViewBag.FullName != null ? ViewBag.FullName : "" ) </span>
+                                        </span>
 
-                            </a>
-                            <div class="dropdown-menu p-2" aria-labelledby="drpUserProfile" style="font-size: 0.8rem;">
-                                <div class="d-flex justify-content-center">
+                                </a>
+                                <div class="dropdown-menu p-2" aria-labelledby="drpUserProfile" style="font-size: 0.8rem;width: 18rem;">
+                                    <div class="d-flex justify-content-center">
+                                        <span class="">
+                                            <img src="@Url.Content($"~/getscaledImageOnWidth?path={@ViewBag.ProfileUrl}&width={50}")" class="rounded-circle" />
+                                        </span>
+                                    </div>
+                                    <div class="d-flex justify-content-center border-bottom">
 
-                                    <span class="">
-                                        <img src="@Url.Content($"~/getscaledImageOnWidth?path={@ViewBag.ProfileUrl}&width={50}")" class="rounded-circle" />
-                                    </span>
-                                    <br />
-                                    <p>@ViewBag.FullName</p>
+                                           <p class="my-2">@ViewBag.FullName</p>
+                                    </div>
+                                    <ul class="list-group">
+                                        <li class="list-group-item border-0 d-none">
+                                            <a asp-controller="account" asp-action="resetpassword">@Language.GetString("User_ChangePass")</a>
+                                        </li>
+                                        <li class="list-group-item border-0">
+                                            <a asp-controller="account" asp-action="profile">@Language.GetString("Menu_Profile")</a>
+                                        </li>
+                                        <li class="list-group-item border-0">
+                                            <a asp-controller="account" asp-action="GetUserOrders">@Language.GetString("Menu_MyOrders")</a>
+                                        </li>
+                                        <li class="list-group-item border-0">
+                                            <a asp-controller="account" asp-action="logout">@Language.GetString("Exit")</a>
+                                        </li>
+                                    </ul>
                                 </div>
-
-
-                                <ul class="list-group">
-                                    <li class="list-group-item border-0">
-                                        <a asp-controller="account" asp-action="resetpassword">@Language.GetString("User_ChangePass")</a>
-                                    </li>
-                                    <li class="list-group-item border-0">
-                                        <a asp-controller="account" asp-action="profile">@Language.GetString("Menu_Profile")</a>
-                                    </li>
-                                    <li class="list-group-item border-0">
-                                        <a asp-controller="account" asp-action="GetUserOrders">@Language.GetString("Menu_MyOrders")</a>
-                                    </li>
-                                    <li class="list-group-item border-0">
-                                        <a asp-controller="account" asp-action="logout">@Language.GetString("Exit")</a>
-                                    </li>
-                                </ul>
                             </div>
-                        </div>
 
                     }
                 }

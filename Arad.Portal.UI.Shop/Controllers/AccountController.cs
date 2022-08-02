@@ -827,6 +827,13 @@ namespace Arad.Portal.UI.Shop.Controllers
             return View("ResetPassword", model);
         }
 
+        [HttpGet]
+        public IActionResult EnterOtp()
+        {
+            var model = new EnterOtpModel();
+            return View(model);
+        }
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -890,7 +897,8 @@ namespace Arad.Portal.UI.Shop.Controllers
             {
                 return Ok(new { Status = "Error", Message = Language.GetString("AlertAndMessage_NotFoundUser") });
             }
-
+            if (model.FullCellPhoneNumber.StartsWith("+"))
+                model.FullCellPhoneNumber = model.FullCellPhoneNumber.Substring(1);
             if (user.PhoneNumber != model.FullCellPhoneNumber)
             {
                 return Ok(new { Status = "Error", Message = Language.GetString("AlertAndMessage_NotFoundUser") });
@@ -901,7 +909,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             HttpContext.Session.SetString("UserName", user.UserName);
             HttpContext.Session.SetString("OtpTime", DateTime.Now.ToString(CultureInfo.CurrentCulture));
 
-            Result result = await _createNotification.SendOtp("SendOtpForResetPassword", user, otp);
+            Result result = await _createNotification.SendOtp("AutomatedPasswordReset", user, otp);
 
             if (!result.Succeeded)
             {

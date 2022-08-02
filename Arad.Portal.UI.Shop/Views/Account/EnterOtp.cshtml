@@ -1,0 +1,207 @@
+﻿@inject Arad.Portal.DataLayer.Contracts.General.SystemSetting.ISystemSettingRepository _systemSettingRepository
+@{
+    Layout = null;
+    Arad.Portal.DataLayer.Entities.General.SystemSetting.SystemSetting systemSetting
+        = (await _systemSettingRepository.GetAll()).FirstOrDefault();
+    var direction = "";
+    var langList = new List<string>() { "fa", "en" };
+    string lang = "";
+    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
+    {
+        direction = "rtl";
+        ViewBag.dir = "rtl";
+    }
+    else
+    {
+        direction = "ltr";
+        ViewBag.dir = "ltr";
+    }
+    switch (CultureInfo.CurrentCulture.Name)
+    {
+        case "fa-IR":
+            lang = "fa";
+            break;
+        case "en-US":
+            lang = "en";
+            break;
+    }
+}
+
+@model Arad.Portal.DataLayer.Models.Shared.EnterOtpModel
+<!DOCTYPE html>
+<html>
+<head>
+      <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible"
+          content="IE=edge">
+
+  
+
+    <title> @Language.GetString("AlertAndMessage_RequestChangePassword")</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+    @if (direction == "ltr")
+    {
+        <link href="~/lib/bootstrap5/css/bootstrap.min.css" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="~/lib/bootstrap5/css/bootstrap.rtl.min.css" rel="stylesheet" />
+        
+    }
+    <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="~/lib/intl-tel-input/css/intlTelInput.css" rel="stylesheet" />
+    <style>
+        input::placeholder {
+            text-align: right;
+        }
+    </style>
+</head>
+<body style="font-family: IransansWeb" class="hold-transition login-page">
+    <div class="loader loader-double" id="loading">
+
+        @*<img style="width:50px;" src="~/25.svg" />*@
+
+    </div>
+    <div class="wrapper">
+
+        <div>
+            <!-- Content Header (Page header) -->
+            <!-- /.content-header -->
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid col-md-6" style="padding: 30px">
+                    <!-- Small boxes (Stat box) -->
+                    <!-- /.row -->
+                    <!-- Main row -->
+                    <div class="col-md-12">
+                        <form id="submitOtpForm" asp-action="SubmitOtp" asp-controller="Account" autocomplete="off">
+                            <div class="card">
+                                <div class="card-header">
+                                    @Language.GetString("AlertAndMessage_EnterOtp")
+                                </div>
+                                <div class="card-body">
+
+                                    <div class="row">
+                                        <div class="form-group col-md-3">
+                                            <label><span style="color: red; margin-left: 5px;">*</span>@Language.GetString("ValidationCode") :</label>
+                                            <input dir="ltr" asp-for="Otp" class="form-control" type="text" value="@Model.Otp" />
+                                            <span data-val-result="Otp" style="color: red; font-size: 12px"></span>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                                <div class="card-footer">
+                                    <button class="btn btn-sm btn-primary" type="submit">ارسال</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.row (main row) -->
+                </div><!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+
+
+    </div>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js"></script>
+    <script src="~/lib/intl-tel-input/js/intlTelInput-jquery.min.js"></script>
+    <script src="~/lib/intl-tel-input/js/intlTelInput.js"></script>
+    <script src="~/lib/intl-tel-input/js/utils.js"></script>
+
+    <script>
+
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
+        });
+
+        window.addEventListener("beforeunload",
+            function (event) {
+                $("#loading").addClass('is-active');
+            });
+
+
+        $('#submitOtpForm').submit(function(e) {
+            e.preventDefault();
+            var form = $(this).serialize();
+            $.ajax({
+                type: 'Post',
+                url: $(this).attr('action'),
+                data: form,
+                beforeSend: function() {
+                    $("#loading").addClass('is-active');
+                },
+                statusCode: {
+                    200: function (result) {
+                        $("#loading").removeClass('is-active');
+
+                        if (result.status === "Success") {
+                           
+                            document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>' + '@Language.GetString("AlertAndMessage_OperationDoneSuccessfully")';
+                                document.getElementById('mainToastBody').classList.add('alert-success');
+                                $("#toastPanel").show();
+                                var bsAlert = new bootstrap.Toast($("#mainToast"));
+                                bsAlert.show();
+                                setTimeout(function() {
+                                    $("#toastPanel").hide();
+                                    window.location.href = '@Url.Action("login", "Account")';
+                                },
+                                    1500);
+                        }
+
+                        if (result.status === "ModelError") {
+                            var spanErrorList = $('span[data-val-result]');
+                            if (spanErrorList.length > 1) {
+                                spanErrorList.each(function () {
+                                    $(this).html("");
+                                    $(this).parent().removeClass("has-error");
+                                });
+                            } else {
+                                spanErrorList.html("");
+                                spanErrorList.parent().removeClass("has-error");
+                            }
+
+                            if (result.modelStateErrors !== null) {
+                                result.modelStateErrors.forEach(function (value, index) {
+
+                                    $('[data-val-result=' + value.key + ']').html(value.errorMessage);
+                                    $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                });
+                            }
+                        }
+
+                        if (result.status === "Error") {
+                         
+                             $('#mainToastBody').html(`<i class="far fa-check-circle"></i> ${result.message}`);
+                            $('#mainToastBody').addClass('alert-success');
+                            $("#toastPanel").show();
+                            var toast = new bootstrap.Toast($("#mainToast"));
+                            toast.show();
+                            setTimeout(function(){
+                                    $("#toastPanel").hide();
+                              
+                            }, 2500);
+                        }
+                    }
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>

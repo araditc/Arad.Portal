@@ -178,7 +178,7 @@
                                                     ;
                                                     break;
                                                 case "LoginAndProfile":
-                                                    @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId, isShop = module.ParametersValue.IsShop })
+                                                    @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId})
                                                     ;
                                                     break;
                                                 case "MultiLingualFlags":
@@ -189,7 +189,7 @@
                                         }
                                         catch (Exception ex)
                                         {
-                                            Log.Fatal($"error in loading layout header={ex.InnerException}");
+                                            Log.Fatal($"error in loading layout header={ex.ToString()}");
                                         }
 
                                     }
@@ -288,7 +288,7 @@
                                                     ;
                                                     break;
                                                 case "LoginAndProfile":
-                                                    @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId, isShop = module.ParametersValue.IsShop })
+                                                    @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId})
                                                     ;
                                                     break;
                                                 case "MultiLingualFlags":
