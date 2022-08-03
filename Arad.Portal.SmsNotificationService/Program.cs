@@ -38,6 +38,7 @@ namespace Arad.Portal.SmsNotificationService
                            Setting setting = new();
                            hostContext.Configuration.Bind(nameof(Setting), setting);
                            services.AddSingleton(setting);
+
                            services.AddSingleton(mapper);
                            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
                            services.AddTransient<NotificationContext, NotificationContext>();

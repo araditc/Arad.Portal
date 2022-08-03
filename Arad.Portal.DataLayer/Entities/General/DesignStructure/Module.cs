@@ -49,6 +49,9 @@ namespace Arad.Portal.DataLayer.Entities.General.DesignStructure
         MostVisited = 3
     }
 
+    /// <summary>
+    /// each elemnt of this enum is one exact design for slider 
+    /// </summary>
     public enum ImageSliderTemplateDesign
     {
         First = 0
@@ -62,7 +65,9 @@ namespace Arad.Portal.DataLayer.Entities.General.DesignStructure
     {
         First = 0
     }
-    
+    /// <summary>
+    /// in belowing enum we have several design implemented that the overview of this designs is in the Arad.Portal.UI.Shop/Views/Shared/ContentTemplates/
+    /// </summary>
     public enum ContentTemplateDesign
     {
         First = 0,

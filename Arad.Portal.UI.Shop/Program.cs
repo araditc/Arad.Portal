@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Serilog;
+using Arad.Portal.DataLayer.Models.Shared;
 
 namespace Arad.Portal.UI.Shop
 {
@@ -62,9 +63,17 @@ namespace Arad.Portal.UI.Shop
 
             return Host.CreateDefaultBuilder(args)
                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
-                .ConfigureServices(services =>
+                .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<ConfigureMongoDbIndexesService>();
+
+                    DatabaseConfig databaseConfig = new();
+                    hostContext.Configuration.Bind(nameof(DatabaseConfig), databaseConfig);
+                    services.AddSingleton(databaseConfig);
+
+                    Setting setting = new();
+                    hostContext.Configuration.Bind(nameof(Setting), setting);
+                    services.AddSingleton(setting);
                 })
                .UseSerilog(
                    (hostingContext, loggerConfiguration) => loggerConfiguration

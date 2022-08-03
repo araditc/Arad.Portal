@@ -11,14 +11,18 @@ namespace Arad.Portal.UI.Shop.Helpers
 {
     public class SharedRuntimeData
     {
+        /// <summary>
+        /// first parameter which is string is  ar_TransactionId
+        /// </summary>
         private readonly ConcurrentDictionary<string, TransactionItems> _PayingOrders
                         = new ConcurrentDictionary<string, TransactionItems>();
+
+
         private readonly IProductRepository _productRepository;
-        //private readonly ITransactionRepository _transactionRepository;
-        public SharedRuntimeData(IProductRepository productRepository/*, ITransactionRepository transactionRepository*/)
+       
+        public SharedRuntimeData(IProductRepository productRepository)
         {
             _productRepository = productRepository;
-            //_transactionRepository = transactionRepository;
         }
       
         public ConcurrentDictionary<string, TransactionItems> PayingOrders => _PayingOrders;
@@ -29,7 +33,8 @@ namespace Arad.Portal.UI.Shop.Helpers
         }
 
         /// <summary>
-        /// after successfull respone payment from psp
+        /// after successfull response which comes from 
+        /// successfull payment
         /// </summary>
         /// <param name="transactionId"></param>
         public void DeleteDataWithoutRollBack(string transactionId)
@@ -37,7 +42,12 @@ namespace Arad.Portal.UI.Shop.Helpers
             PayingOrders.TryRemove($"ar_{transactionId}", out _);
         }
 
-        
+        /// <summary>
+        /// this method called when transaction is being cancelled
+        /// or the time of creation passed more than  20 minutes
+        /// </summary>
+        /// <param name="transactionId"></param>
+        /// <returns></returns>
         public async Task<bool> DeleteDataWithRollBack(string transactionId)
         {
             bool result = true;
@@ -62,7 +72,8 @@ namespace Arad.Portal.UI.Shop.Helpers
         }
 
         /// <summary>
-        /// this is the method which is called in schedule task
+        /// this is the method which is called in schedule 
+        /// task delete all orders that creation time passed more than 20 minutes
         /// </summary>
         public  async void DeleteAllUnusedData()
         {
@@ -76,6 +87,7 @@ namespace Arad.Portal.UI.Shop.Helpers
         }
         /// <summary>
         /// this method called when application forced to stopped
+        /// /count of deleted product should be returns to inventory
         /// </summary>
         public async void DeleteAllDataWithRoleBack()
         {

@@ -83,6 +83,7 @@ using Arad.Portal.DataLayer.Contracts.General.DesignStructure;
 using Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.SliderModule;
 using Arad.Portal.DataLayer.Repositories.General.SliderModule.Mongo;
+using Serilog;
 
 namespace Arad.Portal.UI.Shop.Dashboard
 {
@@ -215,29 +216,37 @@ namespace Arad.Portal.UI.Shop.Dashboard
                 //app.UseHsts();
             }
 
-            if (_environment.IsDevelopment())
+            try
             {
                 if (!Directory.Exists(Configuration["LocalStaticFileStorage"]))
                 {
                     Directory.CreateDirectory(Configuration["LocalStaticFileStorage"]);
                 }
-            }
+                var path1 = Path.Combine(Configuration["LocalStaticFileStorage"], "images/Contents");
+                var path2 = Path.Combine(Configuration["LocalStaticFileStorage"], "images/ProductGroups");
+                var path3 = Path.Combine(Configuration["LocalStaticFileStorage"], "images/Products");
+                var path4 = Path.Combine(Configuration["LocalStaticFileStorage"], "images/UserProfiles");
+                var path5 = Path.Combine(Configuration["LocalStaticFileStorage"], "images/SliderModule");
+                var path6 = Path.Combine(Configuration["LocalStaticFileStorage"], "images/DomainDesign");
+                var path7 = Path.Combine(Configuration["LocalStaticFileStorage"], "ckEditorContentImages");
+                var path8 = Path.Combine(Configuration["LocalStaticFileStorage"], "ckEditorDomainImages");
+                var path9 = Path.Combine(Configuration["LocalStaticFileStorage"], "ckEditorProductImages");
+                var path10 = Path.Combine(Configuration["LocalStaticFileStorage"], "Log");
+                List<string> pathes = new List<string>() { path1, path2, path3, path4, path5, path6, path7, path8, path9, path10 };
 
-            var path1 = Path.Combine(Configuration["LocalStaticFileStorage"], "Contents");
-            var path2 = Path.Combine(Configuration["LocalStaticFileStorage"], "ProductGroups");
-            var path3 = Path.Combine(Configuration["LocalStaticFileStorage"], "Products");
-            if (!Directory.Exists(path1))
-            {
-                Directory.CreateDirectory(path1);
+                foreach (var path in pathes)
+                {
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                }
             }
-            if (!Directory.Exists(path2))
+            catch (Exception ex)
             {
-                Directory.CreateDirectory(path2);
+                Log.Fatal($"Couldnt Find Or Create one of default directories for storage ex= {ex.ToString()}");
             }
-            if (!Directory.Exists(path3))
-            {
-                Directory.CreateDirectory(path3);
-            }
+            
 
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions()
@@ -263,11 +272,6 @@ namespace Arad.Portal.UI.Shop.Dashboard
 
             app.UseEndpoints(endpoints =>
             {
-                //if (env.IsDevelopment())
-                //    endpoints.MapControllers().WithMetadata(new AllowAnonymousAttribute());
-                //else
-                //    endpoints.MapControllers();
-
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

@@ -216,8 +216,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var dicKey = await _permissionViewManager.PermissionsViewGet(HttpContext);
-
                 try
                 {
                     PagedItems<Slide> data = _sliderRepository.ListSlides(searchParam);
@@ -279,7 +277,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     ModelState.AddModelError(nameof(model.StartDate), Language.GetString("AlertAndMessage_FieldEssential"));
                 }
-
             }
             else
             {

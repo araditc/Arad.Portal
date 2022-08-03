@@ -107,79 +107,59 @@ namespace Arad.Portal.UI.Shop.Helpers
             #endregion currency
 
             #region domain
-            var domainRepository =
-               (DomainRepository)scope.ServiceProvider.GetService(typeof(IDomainRepository));
-            if (!domainRepository.HasAny())
-            {
-                var dom = new Domain()
-                {
-                    //DomainId = Guid.NewGuid().ToString(),
-                    DomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf",
-                    DomainName = "https://localhost:3214",//store
-                    OwnerUserName = "superadmin",
-                    IsActive = true,
-                    DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
-                    DefaultLanguageName = "فارسی",
-                    DefaultLangSymbol = "fa-IR",
-                    DefaultCurrencyId = "f6a41b2d-3ed5-412b-b511-68498a7b62f3",
-                    DefaultCurrencyName = "ریال",
-                    IsDefault = true,
-                    CreationDate = DateTime.Now,
-                    SMTPAccount = new DataLayer.Entities.General.Email.SMTP() //testing
-                    {
-                        EmailAddress = "azizi@arad-itc.org",
-                        Encryption = DataLayer.Models.Shared.Enums.EmailEncryptionType.None,
-                        IgnoreSSLWarning = true,
-                        IsDefault = true,
-                        Server = "https://mail.arad-itc.org/",
-                        SMTPAuthPassword = "",
-                        SMTPAuthUsername = "azizi@arad-itc.org",
-                        ServerPort = 465
-                    }
-                };
-                var dom2 = new Domain()
-                {
-                    //DomainId = Guid.NewGuid().ToString(),
-                    DomainId = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004",
-                    DomainName = "http://localhost:17951/",//dashboard
-                    OwnerUserName = "superadmin",
-                    IsActive = true,
-                    DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
-                    DefaultLanguageName = "فارسی",
-                    DefaultLangSymbol = "fa-IR",
-                    DefaultCurrencyId = "f6a41b2d-3ed5-412b-b511-68498a7b62f3",
-                    DefaultCurrencyName = "ریال",
-                    IsDefault = true,
-                    CreationDate = DateTime.Now,
-                    SMTPAccount = new DataLayer.Entities.General.Email.SMTP()
-                    {
-                        EmailAddress = "azizi@arad-itc.com",
-                        Encryption = DataLayer.Models.Shared.Enums.EmailEncryptionType.None,
-                        IgnoreSSLWarning = true,
-                        IsDefault = true,
-                        Server = "https://mail.arad-itc.org/",
-                        SMTPAuthPassword = "",
-                        SMTPAuthUsername = "azizi",
-                        ServerPort = 465
-                    }
-                };
-                var dom3 = new Domain()
-                {
-                    DomainId = Guid.NewGuid().ToString(),
-                    DomainName = "https://www.hajibazar.com",
-                    OwnerUserName = "superadmin",
-                    IsActive = true,
-                    DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
-                    DefaultLanguageName = "فارسی",
-                    DefaultLangSymbol = "fa-IR",
-                    DefaultCurrencyId = "f6a41b2d-3ed5-412b-b511-68498a7b62f3",
-                    DefaultCurrencyName = "ریال",
-                    IsDefault = true,
-                    CreationDate = DateTime.Now,
-                };
+            //var domainRepository =
+            //   (DomainRepository)scope.ServiceProvider.GetService(typeof(IDomainRepository));
+            //if (!domainRepository.HasAny())
+            //{
+            //    var dom = new Domain()
+            //    {
+            //        //DomainId = Guid.NewGuid().ToString(),
+            //        DomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf",
+            //        DomainName = "https://localhost:3214",//store
+            //        OwnerUserName = "superadmin",
+            //        IsActive = true,
+            //        DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
+            //        DefaultLanguageName = "فارسی",
+            //        DefaultLangSymbol = "fa-IR",
+            //        DefaultCurrencyId = "f6a41b2d-3ed5-412b-b511-68498a7b62f3",
+            //        DefaultCurrencyName = "ریال",
+            //        IsDefault = true,
+            //        CreationDate = DateTime.Now
+                   
+            //    };
+            //    var dom2 = new Domain()
+            //    {
+            //        //DomainId = Guid.NewGuid().ToString(),
+            //        DomainId = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004",
+            //        DomainName = "http://localhost:17951/",//dashboard
+            //        OwnerUserName = "superadmin",
+            //        IsActive = true,
+            //        DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
+            //        DefaultLanguageName = "فارسی",
+            //        DefaultLangSymbol = "fa-IR",
+            //        DefaultCurrencyId = "f6a41b2d-3ed5-412b-b511-68498a7b62f3",
+            //        DefaultCurrencyName = "ریال",
+            //        IsDefault = true,
+            //        CreationDate = DateTime.Now
+                    
+            //    };
+            //    var dom3 = new Domain()
+            //    {
+            //        DomainId = Guid.NewGuid().ToString(),
+            //        DomainName = "https://www.hajibazar.com",
+            //        OwnerUserName = "superadmin",
+            //        IsActive = true,
+            //        DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
+            //        DefaultLanguageName = "فارسی",
+            //        DefaultLangSymbol = "fa-IR",
+            //        DefaultCurrencyId = "f6a41b2d-3ed5-412b-b511-68498a7b62f3",
+            //        DefaultCurrencyName = "ریال",
+            //        IsDefault = true,
+            //        CreationDate = DateTime.Now
+            //    };
 
-                domainRepository.InsertMany(new List<Domain>() { dom, dom2, dom3 }).Wait();
-            }
+            //    domainRepository.InsertMany(new List<Domain>() { dom, dom2, dom3 }).Wait();
+            //}
             #endregion
 
             #region permission
@@ -250,52 +230,52 @@ namespace Arad.Portal.UI.Shop.Helpers
 
             if (userManager != null && !userManager.Users.Any())
             {
-                var user = new ApplicationUser()
-                {
-                    //just for testing
-                    //???
-                    //Id = Guid.NewGuid().ToString(),
-                    Id = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa",
-                    UserName = "SuperAdmin",
-                    Claims = new List<IdentityUserClaim<string>>()
-                    {
-                        new IdentityUserClaim<string>()
-                        {
-                            ClaimType = "AppRole",
-                            ClaimValue = true.ToString(),
-                        },
-                        //,???
-                        new IdentityUserClaim<string>()
-                        {
-                            ClaimType = "RelatedDomain",
-                            ClaimValue = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004",
-                            //testing
-                            UserId = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa"
+                //var user = new ApplicationUser()
+                //{
+                //    //just for testing
+                //    //???
+                //    //Id = Guid.NewGuid().ToString(),
+                //    Id = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa",
+                //    UserName = "SuperAdmin",
+                //    Claims = new List<IdentityUserClaim<string>>()
+                //    {
+                //        new IdentityUserClaim<string>()
+                //        {
+                //            ClaimType = "AppRole",
+                //            ClaimValue = true.ToString(),
+                //        },
+                //        //,???
+                //        new IdentityUserClaim<string>()
+                //        {
+                //            ClaimType = "RelatedDomain",
+                //            ClaimValue = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004",
+                //            //testing
+                //            UserId = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa"
 
-                        }
-                    },
-                    PhoneNumber = "989309910790",
-                    IsActive = true,
-                    IsSystemAccount = true,
-                    UserRoleId = "0e1643a3-1212-485b-862f-45147532427c",
-                    Profile = new Profile()
-                    {
-                        Gender = Gender.Female,
-                        FatherName = "نام پدر",
-                        FirstName = "ادمین",
-                        LastName = "شماره یک",
-                        FullName = "ادمین" + " " + "شماره یک",
-                        BirthDate = new DateTime(1987, 8, 26).ToUniversalTime(),
-                        NationalCode = "1292086734",
-                        CompanyName = "Arad",
-                        DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
-                        DefaultCurrencyId = "f6a41b2d-3ed5-412b-b511-68498a7b62f3",
-                        UserType = UserType.Admin
-                    },
-                    CreationDate = DateTime.UtcNow
-                };
+                //        }
+                //    },
+                //    PhoneNumber = "989309910790",
+                //    IsActive = true,
+                //    IsSystemAccount = true,
+                //    UserRoleId = "0e1643a3-1212-485b-862f-45147532427c",
+                //    Profile = new Profile()
+                //    {
+                //        Gender = Gender.Female,
+                //        FatherName = "نام پدر",
+                //        FirstName = "ادمین",
+                //        LastName = "شماره یک",
+                //        FullName = "ادمین" + " " + "شماره یک",
+                //        BirthDate = new DateTime(1987, 8, 26).ToUniversalTime(),
+                //        NationalCode = "1292086734",
+                //        CompanyName = "Arad",
+                //        DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
+                //        DefaultCurrencyId = "f6a41b2d-3ed5-412b-b511-68498a7b62f3",
+                //        UserType = UserType.Admin
+                //    },
+                //    CreationDate = DateTime.UtcNow
+                //};
 
-                userManager.CreateAsync(user, "Sa@12345").Wait();
+                //userManager.CreateAsync(user, "Sa@12345").Wait();
             }
             #endregion user
 
@@ -386,30 +366,6 @@ namespace Arad.Portal.UI.Shop.Helpers
               (ProviderRepository)scope.ServiceProvider.GetService(typeof(IProviderRepository));
             if (providerRepository.GetProvidersPerType(DataLayer.Entities.General.Service.ProviderType.Payment).Count() == 0)
             {
-                var parsianGateway = new DataLayer.Entities.General.Service.Provider()
-                {
-                    ProviderId = Guid.NewGuid().ToString(),
-                    CreationDate = DateTime.Now,
-                    IsActive = true,
-                    Template = "{'BaseUrl','UserName','PINCode', 'TerminalId'}",
-                    ProviderType = DataLayer.Entities.General.Service.ProviderType.Payment,
-                    ProviderName = "Parsian",
-                    AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf"
-                };
-                providerRepository.InsertOne(parsianGateway);
-
-                var iranKishGateway = new DataLayer.Entities.General.Service.Provider()
-                {
-                    ProviderId = Guid.NewGuid().ToString(),
-                    CreationDate = DateTime.Now,
-                    IsActive = true,
-                    Template = "{'BaseUrl','UserName', 'Password', 'MerchantId','TerminalId','AcceptorId', 'AccountIban', 'Sha1'}",
-                    ProviderType = DataLayer.Entities.General.Service.ProviderType.Payment,
-                    ProviderName = "IranKish",
-                    AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf"
-                };
-                providerRepository.InsertOne(iranKishGateway);
-
                 var samanGateway = new DataLayer.Entities.General.Service.Provider()
                 {
                     ProviderId = Guid.NewGuid().ToString(),

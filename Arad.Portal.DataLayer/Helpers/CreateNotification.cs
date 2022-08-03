@@ -624,20 +624,11 @@ namespace Arad.Portal.DataLayer.Helpers
                 text = text.Replace("{$client_first_name}", IsNullOrEmpty(user.Profile.FirstName));
                 text = text.Replace("{$client_last_name}", IsNullOrEmpty(user.Profile.LastName));
 
-                //if (user.UserLegal != null)
-                //{
-                //    text = text.Replace("{$client_company_name}", IsNullOrEmpty(user.UserLegal.Name));
-                //    text = text.Replace("{$client_tax_id}", IsNullOrEmpty(user.UserLegal.TaxNo));
-                //}
-
+               
                 text = text.Replace("{$client_email}", IsNullOrEmpty(user.Email));
                 text = text.Replace("{$client_signup_date}", CultureInfo.CurrentCulture.Name == "fa-IR" ? user.CreationDate.ToPersianLetDateTime() : user.CreationDate.ToString(_setting.DateFormat));
                 text = text.Replace("{$client_phonenumber}", IsNullOrEmpty(user.PhoneNumber));
-                //text = text.Replace("{$client_group_id}", user.DefaultGroup.Id);
-                //text = text.Replace("{$client_group_name}", user.DefaultGroup.GroupName);
-                text = text.Replace("{$client_due_invoices_balance}", "0"); //TODO {$client_due_invoices_balance}
                 text = text.Replace("{$client_status}", user.IsActive ? Language.GetString("Action_Active") : Language.GetString("Action_Inactive"));
-                //text = text.Replace("{$signature}", user.Profile.Signature);
                 text = text.Replace("{$client_password}", passwordBeforeHash);
 
                 //if (user.Addresses != null)
@@ -649,30 +640,6 @@ namespace Arad.Portal.DataLayer.Helpers
                 //    text = text.Replace("{$client_country}", IsNullOrEmpty(user.Address.CountyName));
                 //}
             }
-
-
-
-            //SystemSetting setting = (await _systemSettingRepository.GetAll()).FirstOrDefault();
-
-            //if (setting != null)
-            //{
-            //text = text.Replace("{$company_name}", IsNullOrEmpty(setting.CompanyName));
-            //text = text.Replace("{$company_logo_url}", IsNullOrEmpty(setting.CompanyLogoUrl));
-            //text = text.Replace("{$company_domain}", IsNullOrEmpty(setting.CompanyDomain));
-            //text = text.Replace("{$company_tax_code}", IsNullOrEmpty(setting.CompanyTaxId));
-
-            //if (!string.IsNullOrWhiteSpace(setting.CompanyDomain))
-            //{
-            //    string url = $"<a href='{setting.CompanyDomain}'>{setting.CompanyName}</a>";
-            //    text = text.Replace("{$company_domain}", url);
-            //}
-
-            //if (!string.IsNullOrWhiteSpace(setting.CompanyLogoUrl))
-            //{
-            //    string url = $"<img src='{setting.CompanyLogoUrl}'/>";
-            //    text = text.Replace("{$company_logo_url}", url);
-            //}
-            //}
 
             return text;
 

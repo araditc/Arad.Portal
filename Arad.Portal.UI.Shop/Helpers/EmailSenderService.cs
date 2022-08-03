@@ -1,5 +1,4 @@
-﻿
-using Arad.Portal.DataLayer.Contracts.General.Notification;
+﻿using Arad.Portal.DataLayer.Contracts.General.Notification;
 using Arad.Portal.DataLayer.Entities.General.Notify;
 using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.GeneralLibrary.Utilities;
@@ -14,26 +13,24 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using static Arad.Portal.DataLayer.Models.Shared.Enums;
-
-namespace Arad.Portal.EmailNotificationService
+namespace Arad.Portal.UI.Shop.Helpers
 {
-    public class SendEmailWorker : BackgroundService
+    public class EmailSenderService
     {
         private readonly INotificationRepository _notificationRepository;
         private readonly Setting _setting;
         private Timer _timer;
         private bool _flag = true;
-
-        public SendEmailWorker(INotificationRepository notificationRepository, Setting setting)
+        public EmailSenderService(INotificationRepository notificationRepository, Setting setting)
         {
             _notificationRepository = notificationRepository;
             _setting = setting;
         }
 
-        protected async override Task ExecuteAsync(CancellationToken stoppingToken)
+        public void StartTimer()
         {
-            Logger.WriteLogFile($"Service started at: {DateTime.Now}");
-            _timer = new(OnTimeEvent, null, 1000, 1000);
+            TimerCallback cb = new(OnTimeEvent);
+            _timer = new(OnTimeEvent, null, 1000, 10000);
         }
 
         private async void OnTimeEvent(object state)

@@ -89,6 +89,7 @@ using System.Linq;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace Arad.Portal.UI.Shop
 {
@@ -103,7 +104,7 @@ namespace Arad.Portal.UI.Shop
             Configuration = configuration;
             GeneralLibrary.Utilities.Language._hostingEnvironment = env.WebRootPath;
             ApplicationPath = env.ContentRootPath;
-            _environment = env;
+            _environment = env; 
         }
 
 
@@ -180,13 +181,7 @@ namespace Arad.Portal.UI.Shop
                 mongoIdentityOptions.ConnectionString = Configuration["DatabaseConfig:ConnectionString"];
             });
 
-            //if (!_environment.IsDevelopment())
-            //{
-            //    services.AddAntiforgery(options =>
-            //    {
-            //        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-            //    });
-            //}
+           
            
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                  .AddCookie(opt =>
@@ -211,34 +206,46 @@ namespace Arad.Portal.UI.Shop
             
 
 
-            //services.AddTransient<IPermissionView, PermissionView>();
+          
             services.AddTransient<RemoteServerConnection>();
             services.AddTransient<CreateNotification>();
-            //services.AddTransient(typeof(EnyimMemcachedMethods<>));
             services.AddTransient<HttpClientHelper>();
             services.AddTransient<LayoutContentProcess>();
-            
-            //services.AddSingleton<IHostedService, CacheCleanerService>();
-            //services.AddSingleton<IHostedService, LifetimeEventsHostedService>();
-            //services.AddTransient<ServiceResolver>(serviceProvider => key =>
+
+
+             services.AddSingleton<IHostedService, LifetimeEventsHostedService>();
+            ServiceProvider sp = services.BuildServiceProvider();
+
+            //cacheCleaner
+            CacheCleanerService cachCleaner = sp.GetService<CacheCleanerService>();
+            if (cachCleaner != null)
+            {
+                cachCleaner.startTimer();
+            }
+
+            //smsService
+            SmsSenderService smsSender = sp.GetService<SmsSenderService>();
+            if(smsSender != null)
+            {
+                smsSender.StartTimer();
+            }
+
+            //email Service 
+            //EmailSenderService emailSender = sp.GetService<EmailSenderService>();
+            //if(emailSender != null)
             //{
-            //    switch (key)
-            //    {
-            //        case "Cache":
-            //            return serviceProvider.GetService<CacheCleanerService>();
-            //        case "LifeTime":
-            //            return serviceProvider.GetService<LifetimeEventsHostedService>();
-            //        default:
-            //            throw null; // or maybe return exception keynotfound
-            //    }
-            //});
+            //    emailSender.StartTimer();
+            //}
+
+
+            
             services.AddLocalization();
             AddRepositoryServices(services);
             services.AddSingleton<SharedRuntimeData>();
-            //services.AddProgressiveWebApp();
+           // services.AddProgressiveWebApp();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+      
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env/*, IHostApplicationLifetime applicationLifetime*/)
         {
             if (env.IsDevelopment())
@@ -248,31 +255,40 @@ namespace Arad.Portal.UI.Shop
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
-            // app.UseHttpsRedirection();
-            if (!Directory.Exists(Configuration["LocalStaticFileStorage"]))
+            try
             {
-                Directory.CreateDirectory(Configuration["LocalStaticFileStorage"]);
+                if (!Directory.Exists(Configuration["LocalStaticFileStorage"]))
+                {
+                    Directory.CreateDirectory(Configuration["LocalStaticFileStorage"]);
+                }
+                var path1 = Path.Combine(Configuration["LocalStaticFileStorage"], "images/Contents");
+                var path2 = Path.Combine(Configuration["LocalStaticFileStorage"], "images/ProductGroups");
+                var path3 = Path.Combine(Configuration["LocalStaticFileStorage"], "images/Products");
+                var path4 = Path.Combine(Configuration["LocalStaticFileStorage"], "images/UserProfiles");
+                var path5 = Path.Combine(Configuration["LocalStaticFileStorage"], "images/SliderModule");
+                var path6 = Path.Combine(Configuration["LocalStaticFileStorage"], "images/DomainDesign");
+                var path7 = Path.Combine(Configuration["LocalStaticFileStorage"], "ckEditorContentImages");
+                var path8 = Path.Combine(Configuration["LocalStaticFileStorage"], "ckEditorDomainImages");
+                var path9 = Path.Combine(Configuration["LocalStaticFileStorage"], "ckEditorProductImages");
+                var path10 = Path.Combine(Configuration["LocalStaticFileStorage"], "Log");
+                List<string> pathes = new List<string>() { path1, path2, path3, path4, path5, path6, path7, path8, path9, path10 };
+
+                foreach (var path in pathes)
+                {
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                }
             }
-            var path1 = Path.Combine(Configuration["LocalStaticFileStorage"], "Contents");
-            var path2 = Path.Combine(Configuration["LocalStaticFileStorage"], "ProductGroups");
-            var path3 = Path.Combine(Configuration["LocalStaticFileStorage"], "Products");
-            if (!Directory.Exists(path1))
+            catch (Exception ex)
             {
-                Directory.CreateDirectory(path1);
+                Log.Fatal($"Couldnt Find Or Create one of default directories for storage ex= {ex.ToString()}");
             }
-            if (!Directory.Exists(path2))
-            {
-                Directory.CreateDirectory(path2);
-            }
-            if (!Directory.Exists(path3))
-            {
-                Directory.CreateDirectory(path3);
-            }
-         //   app.UseEnyimMemcached();
+          
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions()
             {
@@ -286,9 +302,6 @@ namespace Arad.Portal.UI.Shop
             app.UseCors("CSP");
             var options = new CookiePolicyOptions()
             {
-                //HttpOnly = HttpOnlyPolicy.Always,
-
-                //MinimumSameSitePolicy = SameSiteMode.Strict
             };
            // app.UseCookiePolicy(options);
 
@@ -301,22 +314,9 @@ namespace Arad.Portal.UI.Shop
            
             app.UseEndpoints(endpoints =>
             {
-                //if (env.IsDevelopment())
-                //{
-                //    endpoints.MapControllers().WithMetadata(new AllowAnonymousAttribute());
-                //}
-                //else
-                //{
-                //    endpoints.MapControllers();
-                //}
-
-
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{language?}/{controller=Home}/{action=Index}/{id?}");
-                //endpoints.MapControllerRoute(
-                //            name: "default",
-                //           pattern: "{controller=Home}/{action=Index}/{id?}");
             });
             app.UseSeedDatabase(ApplicationPath);
         }
@@ -349,7 +349,6 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<PermissionContext>();
             services.AddTransient<RoleContext>();
             services.AddTransient<UserContext>();
-            //services.AddTransient<OrderContext>();
             services.AddTransient<ProductContext>();
             services.AddTransient<PromotionContext>();
             services.AddTransient<ShoppingCartContext>();
@@ -371,10 +370,10 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<CountryContext>();
             services.AddTransient<ModuleContext>();
             services.AddTransient<SliderContext>();
-           
+
             #endregion
 
-
+            #region repositories
             services.AddTransient<ICurrencyRepository, CurrencyRepository>();
             services.AddTransient<IErrorLogRepository, ErrorLogRepository>();
             services.AddTransient<IDomainRepository, DomainRepository>();
@@ -383,7 +382,6 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<IRoleRepository, RoleRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<UserExtensions, UserExtensions>();
-            //services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IProductGroupRepository, ProductGroupRepository>();
             services.AddTransient<IProductSpecificationRepository, ProductSpecificationRepository>();
@@ -408,10 +406,11 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<ICountryRepository, CountryRepository>();
             services.AddTransient<IModuleRepository, ModuleRepository>();
             services.AddTransient<ISliderRepository, SliderRepository>();
+            #endregion repositories
 
-         
+
 
         }
-       
+
     }
 }

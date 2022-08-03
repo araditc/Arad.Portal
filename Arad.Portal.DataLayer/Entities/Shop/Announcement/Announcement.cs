@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Entities.Shop.Announcement
 {
+    //not been implemented yest
     public class Announcement
     {
         public string AnnouncementId { get; set; }

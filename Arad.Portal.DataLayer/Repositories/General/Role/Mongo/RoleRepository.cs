@@ -13,8 +13,6 @@ using System.Security.Claims;
 using MongoDB.Bson;
 using System.Collections.Specialized;
 using System.Web;
-using Arad.Portal.DataLayer.Entities.General.District;
-using Arad.Portal.DataLayer.Entities.General.County;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Hosting;
 

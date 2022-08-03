@@ -366,8 +366,6 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                        Description = _.Description,
                        SeoTitle = _.SeoTitle,
                        StartShowDate = _.StartShowDate,
-                       //PersianEndShowDate = _.EndShowDate,
-                       //PersianStartShowDate = DateHelper.ToPersianDdate(_.StartShowDate),
                        SourceType = _.SourceType,
                        SubTitle = _.SubTitle,
                        TagKeywords = _.TagKeywords,

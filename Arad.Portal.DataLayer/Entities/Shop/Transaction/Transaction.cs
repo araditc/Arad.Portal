@@ -133,6 +133,8 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
     public class EventData
     {
         public PspActions ActionType { get; set; }
+
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime ActionDateTime { get; set; }
         public string JsonContent { get; set; }
         public string additionalData { get; set; }

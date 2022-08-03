@@ -149,9 +149,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                         transaction.BasicData.Stage = Enums.PaymentStage.RedirectToIPG;
 
                         await _transactionRepository.UpdateTransaction(transaction);
-
-                        var path = Flurl.Url.Combine(_samanModel.BaseAddress, _samanModel.GatewayEndPoint) + "?token=" + tokenResponse.Token;
-                        //path = $"https://sep.shaparak.ir/OnlinePG/SendToken?token={tokenResponse.Token}";
+                        var path = $"https://sep.shaparak.ir/OnlinePG/SendToken?token={tokenResponse.Token}";
 
                         //ViewBag.Token = tokenResponse.Token;
                         //ViewBag.RedirectAddress = path;

@@ -16,6 +16,9 @@ namespace Arad.Portal.DataLayer.Entities.General.Currency
 
         public string CurrencyName { get; set; }
 
+        /// <summary>
+        /// each currency has a prefix that define that currency it is that prefix
+        /// </summary>
         public string Prefix { get; set; }
 
         public string Symbol { get; set; }

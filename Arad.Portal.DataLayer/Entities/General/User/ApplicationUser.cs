@@ -47,18 +47,4 @@ namespace Arad.Portal.DataLayer.Entities.General.User
 
     }
 
-    //public enum AccountType
-    //{
-    //    [Description("کاربر سیستمی")]
-    //    System = 0,
-
-    //    [Description("سوپرادمین")]
-    //    SuperAdmin = 1,
-
-    //    [Description("کاربر ادمین")]
-    //    Admin = 2,
-
-    //    [Description("کاربر عادی")]
-    //    User = 3
-    //}
 }
