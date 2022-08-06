@@ -17,8 +17,14 @@ namespace Arad.Portal.DataLayer.Entities.General.Language
 
         public string Symbol { get; set; }
 
+        /// <summary>
+        /// whether this language is rtl or ltr
+        /// </summary>
         public Direction Direction { get; set; }
 
+        /// <summary>
+        /// one language in the language document
+        /// </summary>
         public bool IsDefault { get; set; }
     }
 

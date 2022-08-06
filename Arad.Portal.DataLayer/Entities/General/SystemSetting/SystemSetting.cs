@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Entities.General.SystemSetting
 {
+    /// <summary>
+    /// this entity store some settings of site owner which cann access in different part of site
+    /// </summary>
     public class SystemSetting : BaseEntity
     {
         [BsonId]

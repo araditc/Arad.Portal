@@ -29,10 +29,16 @@ namespace Arad.Portal.DataLayer.Entities.General.Email
 
         public DefaultEncoding DefaultEncoding { get; set; }
 
-        public int DeleteFailedEmailsAfter { get; set; } // Days
+        /// <summary>
+        /// delete those emails which fail to send after x days
+        /// </summary>
+        public int DeleteFailedEmailsAfter { get; set; } 
 
-        public string EmailBlacklist { get; set; } // Comma separated
+        /// <summary>
+        /// black list email put in string with comma seperated
+        /// </summary>
+        public string EmailBlacklist { get; set; } 
 
-        public bool FilterDuplicateIncomingEmail { get; set; } //
+        public bool FilterDuplicateIncomingEmail { get; set; }
     }
 }

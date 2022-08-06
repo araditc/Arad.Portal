@@ -18,39 +18,74 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
         public string PromotionId { get; set; }
 
         public string Title { get; set; }
-
+        /// <summary>
+        /// what is the source of this promotion
+        /// whether it is on productGroup or Product or all products
+        /// </summary>
         public PromotionType PromotionType { get; set; }
 
+
+        /// <summary>
+        /// what is the type of this discount whethere it is fixed or percentage of whole price or another product
+        /// </summary>
         public DiscountType DiscountType { get; set; }
 
+        /// <summary>
+        /// if DiscountType = Fixed it is fixed amount of discount 
+        /// if discountType = percentage it is the percentage value of discount for example 10 which means 10% of price
+        /// and if discountType = product it is null or zero
+        /// </summary>
         public long? Value { get; set; }
 
+        /// <summary>
+        /// currency of this promotion primary key of currency entity
+        /// </summary>
         public string CurrencyId { get; set; }
 
         public string CurrencyName { get; set; }
 
         /// <summary>
-        /// this promotion is assigned to a product ,
-        /// or list of products or a productGroup or list of productGroups
+        /// if PromotionType = Group then for each object in this list AffectedProductGroupId and AffectedProductGroupName will be filled this list can be one or more
+        /// if PromotionType = Product then for each object in this list AffectedProductId and AffectedProductName will be filled here 
+        /// if PromotionType = All no filed require to fill here
         /// </summary>
         public List<PromotionInfo> Infoes { get; set; }
 
         /// <summary>
-        /// productId of which is as praise in this promotion
+        /// if DiscountType = Product then this field is
+        /// productId of which is as given as a gift in this promotion
         /// </summary>
         public string PromotedProductId { get; set; }
 
+
+        /// <summary>
+        /// if DiscountType = Product then this field is
+        /// productName of which is given as a gift in this promotion
+        /// </summary>
         public string PromotedProductName { get; set; }
 
-        public string GroupIdOfPromotedProduct { get; set; }    
 
+        /// <summary>
+        /// if DiscountType = Product then this field is
+        /// productGroupId of product which is given as a gift in this promotion
+        /// </summary>
+        public string GroupIdOfPromotedProduct { get; set; }
+
+
+        /// <summary>
+        /// if DiscountType = Product then this field is
+        /// productGroupName of product which is given as a gift in this promotion
+        /// </summary>
         public string GroupNameofPromotedProduct { get; set; }
 
         /// <summary>
-        /// how many units of promotedProduct with assign to this promotion as praise
+        /// determin how many units of promotedProduct will assign to this promotion as gift
         /// </summary>
         public int? PromotedCountofUnit { get; set; }
 
+        /// <summary>
+        /// determin how many units of product you should buy to use this this promotion for example if you buy "two" of this one of product in Infoes list then you can use this promotion
+        /// </summary>
         public int? BoughtCount { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
@@ -59,8 +94,6 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime? EDate { get; set; }
-
-
     }
 
     public class PromotionInfo
@@ -89,7 +122,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
         Fixed,
         Percentage,
         /// <summary>
-        /// for example if you buy one you get another free
+        /// for example if you buy one you get another one free
         /// </summary>
         Product
     }

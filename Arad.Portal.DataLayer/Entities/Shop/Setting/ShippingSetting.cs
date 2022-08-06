@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Entities.Shop.Setting
 {
+    /// <summary>
+    /// if the site has shopping which buy any product to end user this entity explain detail of how product deliver to endUser
+    /// </summary>
     public class ShippingSetting: BaseEntity
     {
         public ShippingSetting()
@@ -19,6 +22,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Setting
         [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string ShippingSettingId { get; set; }
         
+
         public List<ShippingTypeDetail> AllowedShippingTypes { get; set; }
 
         public ShippingCoupon ShippingCoupon { get; set; }
@@ -41,12 +45,19 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Setting
         /// </summary>
         public string ShippingTypeText { get; set; }
 
+        /// <summary>
+        /// wether this shipping hasFixed expense or based on the weight and distance is dynamic expense
+        /// </summary>
         public bool HasFixedExpense { get; set; }
 
+        /// <summary>
+        /// if HasFixedExpense = true then it is the fixed value of it
+        /// </summary>
         public long FixedExpenseValue { get; set; }
 
         /// <summary>
         /// if it has any provider then it used that provider for calculating expense
+        /// no provider has been implemented yet
         /// </summary>
         public string ProviderId { get; set; }
 
@@ -56,8 +67,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Setting
 
     public class ShippingCoupon
     {
-        //public string ShippingCouponId { get; set; }
-
+        /// <summary>
+        /// it is minimum price of invoice which need to use this shipping coupon
+        /// </summary>
         public long FromInvoiceExpense { get; set; }
         /// <summary>
         /// if shipping expense equal zero it means shipping is free

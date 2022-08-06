@@ -30,9 +30,14 @@ namespace Arad.Portal.DataLayer.Entities.General.Notify
         public string Body { get; set; }
 
         public SMTP SMTP { get; set; }
-
+        /// <summary>
+        /// the config of sms line which we use for sending sms
+        /// </summary>
         public SendSmsConfig SendSmsConfig { get; set; }
 
+        /// <summary>
+        /// the fullname (FirstName + ' '+ LastName of user who is creator of this notification
+        /// </summary>
         public string UserFullName { get; set; }
 
         public string UserEmail { get; set; }

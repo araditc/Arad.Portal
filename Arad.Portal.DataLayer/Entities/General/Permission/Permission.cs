@@ -9,6 +9,12 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Entities.General.Permission
 {
+    /// <summary>
+    /// this entity is used in admin part for creating menues of admin and accessibility of user based on his role
+    /// each role has several permission that user who have that role can access all permissions of that role
+    /// these permissions are nested and can have deep up to 3 levels here the permission entity whill be filled with our permissions.json which cover all available links 
+    /// but if any new links in admin constructed its url should be added to this file for access and this access should be added to role too
+    /// </summary>
     public class Permission : BaseEntity
     {
         public Permission()

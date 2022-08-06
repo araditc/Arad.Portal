@@ -1033,6 +1033,7 @@ else
             }
         }
     }
+
     function appendToPriceList(tr) {
          tr = "<tr style='text-align:center;'><td>" + $("#currencyId option:selected").text() +
                     "</td><td style='display:none;'>" + $('#currencyId').val() +
@@ -1341,6 +1342,7 @@ else
              }
         }
      }
+
     $("#uploadModal").on("shown.bs.modal", function() {
 
               var image = document.getElementById('croppedImg');
@@ -1361,6 +1363,7 @@ else
 
                     });
        });
+
     $('#uploadModal').on('hidden.bs.modal',
         function () {
 
@@ -1372,6 +1375,7 @@ else
     function rotatePic() {
         cropper.rotate(90);
     }
+
     $(document).on("click", "#crop_button",
         function () {
                 var imgUrl = cropper.getCroppedCanvas({imageSmoothingEnabled: true,
@@ -1390,7 +1394,6 @@ else
             document.getElementById("cropped_result").appendChild(img);
             $("#send_pic").attr("disabled", false);
         });
-
 
     function getURL(input)
     {

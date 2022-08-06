@@ -24,7 +24,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ProductSpecification
         public string SpecificationGroupId { get; set; }
 
         /// <summary>
-        /// languageId, specificationGroupName, specificationName and list of its values
+        /// languageId, GroupName for SpecificationGroupName, Name for SpecificationName and NameValues (as list of avalable values for this specification) will be filled here
         /// </summary>
         public List<MultiLingualProperty> SpecificationNameValues { get; set; }
     }

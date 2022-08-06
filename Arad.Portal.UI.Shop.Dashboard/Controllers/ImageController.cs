@@ -117,7 +117,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 upload.CopyTo(stream);
             }
-            var url = "/ckEditorDomainImages/" + filename;
+
+            var url = $"/ckEditorDomainImages/" + filename;
             // var url = $"{"/ckEditorContentImages/"}{filename}";
             return Json(new { uploaded = true, url = url });
             

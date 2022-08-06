@@ -29,19 +29,30 @@ namespace Arad.Portal.DataLayer.Models.Shared
         /// </summary>
         public string BodyContent { get; set; }
 
+        /// <summary>
+        /// the title which is used in serach engin optimization
+        /// </summary>
         public string SeoTitle { get; set; }
 
+
+        /// <summary>
+        /// the description which is used in serach engin optimization
+        /// </summary>
         public string SeoDescription { get; set; }
 
+        /// <summary>
+        /// the customized url to access entity it is based on language
+        /// </summary>
         public string UrlFriend { get; set; }
 
         /// <summary>
-        /// the help for purchasing each product
+        /// the help for purchasing each product (not implemented)
         /// </summary>
         public string PurchaseHelp { get; set; }
 
         ///// <summary>
         ///// all possible values which this Name has
+        /// this field is using in specification
         ///// </summary>
         public List<string> NameValues { get; set; }
 
@@ -59,8 +70,14 @@ namespace Arad.Portal.DataLayer.Models.Shared
 
         public string CurrencyName { get; set; }
 
+        /// <summary>
+        /// it store the rowNumber of this object in ProductEntity for insertion and edition
+        /// </summary>
         public string Tag { get; set; }
 
+        /// <summary>
+        /// tag keywords which can be used in searching 
+        /// </summary>
         public List<string> TagKeywords { get; set; }
 
     }

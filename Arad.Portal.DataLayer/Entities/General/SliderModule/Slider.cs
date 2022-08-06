@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Entities.General.SliderModule
 {
+    /// <summary>
+    /// this entity stores all images with effects which belongs to slider module
+    /// an slider can be added in admin each slider contains list of slides which can be Image or video (uploading video not implemented yet)
+    /// and each slide contains list of layer a layer can be a button or a text in front of the image or video
+    /// </summary>
     public class Slider : BaseEntity
     {
         [BsonId]
@@ -99,7 +104,7 @@ namespace Arad.Portal.DataLayer.Entities.General.SliderModule
         public string CustomCss { get; set; }
 
         /// <summary>
-        /// animation-delay
+        /// animation-delay in seconds
         /// </summary>
         public string AnimationDelay { get; set; }
     }
@@ -116,7 +121,9 @@ namespace Arad.Portal.DataLayer.Entities.General.SliderModule
         /// </summary>
         scaledown //the image is scaled down to the smallest version of none or contain
     }
-
+    /// <summary>
+    /// this enum extracted from all available effects in animate.css cause we use this plugin for animation 
+    /// </summary>
     public enum TransActionType
     {
         none = 1,

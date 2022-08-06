@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Entities.Shop.ProductSpecificationGroup
 {
+    /// <summary>
+    /// eac specification belongs to a ProductSpecGroup and each ProductSpecGroup can Have aone or more Specification
+    /// </summary>
     public class ProductSpecGroup : BaseEntity
     {
         public ProductSpecGroup()
@@ -18,6 +21,11 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ProductSpecificationGroup
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string SpecificationGroupId { get; set; }
+        
+
+        /// <summary>
+        /// Language, Currency and Name as productSpecGroupName will be filled here
+        /// </summary>
         public List<MultiLingualProperty> GroupNames { get; set; }
     }
 }

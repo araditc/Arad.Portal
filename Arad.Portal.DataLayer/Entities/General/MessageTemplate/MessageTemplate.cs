@@ -21,6 +21,9 @@ using static Arad.Portal.DataLayer.Models.Shared.Enums;
 
 namespace Arad.Portal.DataLayer.Entities.General.MessageTemplate
 {
+    /// <summary>
+    /// this entity define all template which can be used in sending sms or email for different purpose
+    /// </summary>
     public class MessageTemplate : BaseEntity
     {
         public MessageTemplate()
@@ -32,7 +35,7 @@ namespace Arad.Portal.DataLayer.Entities.General.MessageTemplate
         public string MessageTemplateId { get; set; }
 
         public string TemplateName { get; set; }
-
+       
         public string TemplateDescription { get; set; }
        
         public bool IsSystemTemplate { get; set; }
@@ -45,7 +48,7 @@ namespace Arad.Portal.DataLayer.Entities.General.MessageTemplate
     public class MessageTemplateMultiLingual
     {
         /// <summary>
-        /// this is symbol in languageTemplate
+        /// this is symbol of language
         /// </summary>
         public string LanguageName { get; set; }
 

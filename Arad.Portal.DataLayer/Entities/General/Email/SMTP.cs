@@ -22,6 +22,9 @@ using static Arad.Portal.DataLayer.Models.Shared.Enums;
 
 namespace Arad.Portal.DataLayer.Entities.General.Email
 {
+    /// <summary>
+    // smtp stand for simple mail transfer protocol if using this protocole for sending email fields have to be filled
+    /// </summary>
     public class SMTP 
     {
         public string SMTPId { get; set; }
