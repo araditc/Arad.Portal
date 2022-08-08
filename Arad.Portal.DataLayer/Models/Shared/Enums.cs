@@ -20,8 +20,14 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public enum PspType
         {
             //[Description(" ایران کیش")]
-            IranKish,
+             IranKish,
             //[Description("سامان")]
+
+
+
+            /// <summary>
+            /// the saman payment gateway implemented here
+            /// </summary>
             Saman
             //[Description(" پارسیان")]
             //Parsian,
@@ -93,17 +99,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
             
         }
 
-        /// <summary>
-        /// شناسه واریز
-        /// </summary>
-        public enum PaymentIdentifierMethod
-        {
-            None = 0,
-            FromUser = 1,
-            FromProduct = 3,
-            FixedForAll = 4
-        }
-
+       
         public enum DefaultEncoding
         { 
             ASCII,
@@ -116,19 +112,19 @@ namespace Arad.Portal.DataLayer.Models.Shared
         }
         public enum PaymentStage
         {
-            [Description("ثبت اولیه تراکنش")]
+            [CustomDescription("EnumDesc_InitialTransaction")]
             Initialized,
-            [Description("ایجاد توکن.")]
+            [CustomDescription("EnumDesc_TokenGeneration")]
             GenerateToken,
-            [Description("هدایت به درگاه پرداخت.")]
+            [CustomDescription("EnumDesc_LeadToPaymentGateway")]
             RedirectToIPG,
-            [Description("در حال انتظار برای تایید تراکنش ")]
+            [CustomDescription("EnumDesc_WaitingforTransactionApproval")]
             DoneButNotConfirmed,
-            [Description("موفق و تایید شده")]
+            [CustomDescription("EnumDesc_SuccessfullAndApproved")]
             DoneAndConfirmed,
-            [Description("ناموفق و تایید شده")]
+            [CustomDescription("EnumDesc_UnsuccessfullAndApproved")]
             Failed,
-            [Description("درحین پرداخت اپلیکیشن استاپ شده و پرداخت  رول بک میشود")]
+            [CustomDescription("EnumDesc_RollBack")]
             ForcedToCancelledBySystem
         }
 

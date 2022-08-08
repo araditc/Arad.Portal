@@ -69,12 +69,12 @@
                                            <div class="row justify-content-center">
                                                <div class="col-6">
                                                     <label class="form-label d-inline-block" > @Language.GetString("tbl_VendorName") : </label>
-                                                    <label class="form-label d-inline-block">@((await userManager.FindByIdAsync(detail.ParchasePerSeller.SellerId)).Profile.FullName)</label>
+                                                    <label class="form-label d-inline-block">@((await userManager.FindByIdAsync(detail.PurchasePerSeller.SellerId)).Profile.FullName)</label>
                                                </div>
                                            </div>
                                        </div>
                                        <div class="card-body border-bottom">
-                                           @foreach (var pro in detail.ParchasePerSeller.Products)
+                                           @foreach (var pro in detail.PurchasePerSeller.Products)
                                             {
                                                 <div class="row border-top">
                                                     <div class="col-6 col-md-4">

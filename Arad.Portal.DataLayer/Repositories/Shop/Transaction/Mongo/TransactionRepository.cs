@@ -55,7 +55,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
                .Find(_ => _.TransactionId == transactionId).FirstOrDefault();
             foreach (var seller in entity.SubInvoices)
             {
-                foreach (var pro in seller.ParchasePerSeller.Products)
+                foreach (var pro in seller.PurchasePerSeller.Products)
                 {
                     var obj = new ProductOrder()
                     {
@@ -111,10 +111,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
                 foreach (var sub in item.SubInvoices)
                 {
                     var detail = new TransactionDetail();
-                    detail.SellerId = sub.ParchasePerSeller.SellerId;
-                    detail.SellerUserName = sub.ParchasePerSeller.SellerUserName;
-                    detail.TotalDetailsAmountToPayWithShipping = sub.ParchasePerSeller.TotalDetailsAmountWithShipping;
-                    foreach (var pro in sub.ParchasePerSeller.Products)
+                    detail.SellerId = sub.PurchasePerSeller.SellerId;
+                    detail.SellerUserName = sub.PurchasePerSeller.SellerUserName;
+                    detail.TotalDetailsAmountToPayWithShipping = sub.PurchasePerSeller.TotalDetailsAmountWithShipping;
+                    foreach (var pro in sub.PurchasePerSeller.Products)
                     {
                         var obj = new ProductOrderDetail();
 

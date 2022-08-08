@@ -31,20 +31,25 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
         /// </summary>
         public string MainInvoiceNumber { get; set; }
 
+        /// <summary>
+        /// all detail information for logging
+        /// </summary>
         public List<EventData> EventsData { get; set; }
 
         public PaymentGatewayData BasicData { get; set; }
 
-        //public bool FinalSettlement { get; set; }
-
         public long FinalPriceToPay { get; set; }
 
+        /// <summary>
+        /// information of user who has done this transaction
+        /// </summary>
         public CustomerData CustomerData { get; set; }
+
         /// <summary>
         /// order status surely initialized after successfull payment
         /// </summary>
         public  OrderStatus? OrderStatus { get; set; }
-
+        
         public List<InvoicePerSeller> SubInvoices { get; set; }
       
         public List<Parameter<string, string>> AdditionalData { get; set; }
@@ -68,32 +73,44 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
     public class InvoicePerSeller
     {
         /// <summary>
-        /// شماره فاکتور فروشنده
+        /// seller invoice Number
+        /// maybe shoppingCart contains products from differennt seller so each seller has individual invoice and invoicenumber
         /// </summary>
         public string SellerInvoiceId { get; set; }
+
         /// <summary>
-        /// اطلاعات تسویه با فروشنده
+        /// if a siteOwner sells his product in mainDomain and this transaction happen on main Domain then this is information about how main domain reach a settlement with the site owner 
         /// </summary>
         public SettlementInfo SettlementInfo { get; set; }
-        
-        public PurchasePerSeller ParchasePerSeller { get; set; }
+
+        /// <summary>
+        /// list of product of  seller in this transaction (if transaction happens in any domain rather than main Domain then it has only one seller
+        /// who is site owner but if transaction happens on mainDomain other site that have purpose to sale their product one main Domain too have to set IsPublishedOnMainDomain field of product entity to true then they can sale that product on Main Domain too  
+        /// </summary>
+        public PurchasePerSeller PurchasePerSeller { get; set; }
     }
 
     public class SettlementInfo
     {
         /// <summary>
-        /// شماره پرداخت یا تراکنش واریز وجه به حساب فروشنده
+        ///  payment number or deposite number to seller bank account
         /// </summary>
         public string DepositeNumber { get; set; }
 
         /// <summary>
-        /// شماره پیگیری تراکنش پرداخت به فروشنده
+        /// refrenceNumber of payment transaction to seller bank account
         /// </summary>
         public string ReferenceId { get; set; }
 
+        /// <summary>
+        /// the date which this payment for settlement happens
+        /// </summary>
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime SettlementDate { get; set; }
 
+        /// <summary>
+        /// the way of this settlement
+        /// </summary>
         public PaymentType PayementType { get; set; }
 
         public string AdditionalData { get; set; }
@@ -111,9 +128,12 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
         public string ShoppinCartId { get; set; }
         public string OverallConcatDescription { get; set; }
         
+        /// <summary>
+        /// a customize string to access our Data in differenct places
+        /// </summary>
         public string ReservationNumber { get; set; }
         /// <summary>
-       ///شماره پیگیری تراکنش که از درگاه بانکی دریافت میشود
+        ///reference number which is given by payment Gateway
         /// </summary>
         public string ReferenceId { get; set; }
         public Enums.PaymentStage Stage { get; set; }
@@ -127,6 +147,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
         public string UserId { get; set; }
         public string UserName { get; set; }
         public string UserFullName { get; set; }
+        /// <summary>
+        /// the Id of address which user has purpose to recieve gis payment stuffs
+        /// </summary>
         public string ShippingAddressId { get; set; }
     }
 
@@ -150,47 +173,56 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
     {
         /// <summary>
         /// واریز به شماره حساب فروشنده
+        /// deposite to seller bank account
         /// </summary>
         DepositToBankAccount,
         /// <summary>
         /// انتقال وجه کارت به کارت
+        /// transfer money via card to card
         /// </summary>
         CardToCard,
+        /// <summary>
+        /// any other way which not mentionded here
+        /// </summary>
         Others
     }
+    /// <summary>
+    /// this enum is for interacting with payment gateway during online payment in application
+    /// </summary>
     public enum PspActions
     {
-        [Description("درخواست توکن")]
+       
+        [CustomDescription("EnumDesc_ClientTokenRequest")]
         ClientTokenRequest = 1,
-
-        [Description("پاسخ درخواست توکن از سمت درگاه")]
+     
+        [CustomDescription("EnumDesc_PspTokenResponse")]
         PspTokenResponse = 2,
-
-        [Description("ارسال اطلاعات به درگاه جهت لاگین")]
+      
+        [CustomDescription("EnumDesc_ClientRequestToLogin")]
         ClientRequestToLogin = 3,
-
-        [Description("دریافت پاسخ لاگین از درگاه")]
+     
+        [CustomDescription("EnumDesc_PspLoginResponse")]
         PspLoginResponse = 4,
-
-        [Description("ارسال اطلاعات تراکنش جهت ساین")]
+      
+        [CustomDescription("EnumDesc_ClientRequestDataToSignIn")]
         ClientRequestGenerateTransactionDataToSign = 5,
-
-        [Description("پاسخ درگاه برای ساین اطلاعات تراکنش")]
+      
+        [CustomDescription("EnumDesc_PspResponseToDataToSignIn")]
         PspResponseGenerateTransactionDataToSign = 6,
-
-        [Description("ارسال اطلاعات پرداخت از سمت درگاه ")]
+      
+        [CustomDescription("EnumDesc_PspSendCallback")]
         PspSendCallback = 7,
-
-        [Description("درخواست تایید تراکنش از سمت کلاینت")]
+       
+        [CustomDescription("EnumDesc_ClientVerifyRequest")]
         ClientVerifyRequest = 8,
-
-        [Description("پاسخ تایید تراکنش از درگاه")]
+      
+        [CustomDescription("EnumDesc_PspVerifyResponse")]
         PspVerifyResponse = 9,
-
-        [Description("درخواست برگشت تراکنش از سمت کلاینت")]
+     
+        [CustomDescription("EnumDesc_ClientRequestReverseTransaction")]
         ClientRequestReverseTransaction = 10,
-
-        [Description("پاسخ درگاه برای برگشت تراکنش")]
+      
+        [CustomDescription("EnumDesc_PspResponseReverseTransaction")]
         PspResponseReverseTransaction = 11
     }
 

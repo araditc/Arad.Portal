@@ -40,14 +40,9 @@
           content="website" />
 
 
-    <meta name="apple-mobile-web-app-title" content=">@(systemSetting == null ? "Arad Portal" : systemSetting.SystemTitle)">
+    <meta name="apple-mobile-web-app-title" content="@(systemSetting == null ? "Arad Portal" : systemSetting.SystemTitle)">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    @*<link rel="apple-touch-icon" href="~/@(string.IsNullOrWhiteSpace(systemSetting?.SystemIcon) ? " favicon.ico" : $"SystemIcon/{systemSetting.SystemIcon}")">*@
-
-    @*<link rel="shortcut icon"
-          href="~/@(string.IsNullOrWhiteSpace(systemSetting?.CompanyLogoUrl) ? "favicon.ico" : $"SystemIcon/{systemSetting.SystemIcon}")"
-          type="image/x-icon" />*@
     <title>@systemSetting?.SystemTitle - @Language.GetString("TextAndPlaceholder_LogIn")</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport"
@@ -102,7 +97,9 @@
                                 </button>
                             </div>
                             <span asp-validation-for="Password" class="text-danger form-validation-alert"></span>
-                            <a class="link-primary small" href="#" style="text-decoration: none">@Language.GetString("AlertAndMessage_ForgetPassword")</a>
+
+                            <a class="link-primary small fs-4" asp-controller="account" asp-action="RequestResetPassword" style="text-decoration: none">@Language.GetString("AlertAndMessage_ForgetPassword")</a>
+
                             <div class="input-group p-0 mb-1">
 
                                 @if (dir == "rtl")
@@ -112,14 +109,14 @@
                                     </button>
                                     <input asp-for="Captcha" class="form-control" id="Captcha" placeholder="@Language.GetString("User_ResultOfSum")" type="text" value="">
                                     <span class="form-control p-0">
-                                       @* src="@Url.Action("CaptchaImage", "Captcha")"*@
+                                       
                                         <img alt="Captcha" id="imgCpatcha" src="@ViewBag.Captcha" style="height: 100% !important; width: 100% !important;">
                                     </span>
                                 }
                                 else
                                 {
                                     <span class="form-control p-0">
-                                        @*src="@Url.Action("CaptchaImage", "Captcha")"*@
+                                       
                                         <img alt="Captcha" id="imgCpatcha" src="@ViewBag.Captcha" style="height: 100% !important; width: 100% !important;">
                                     </span>
 

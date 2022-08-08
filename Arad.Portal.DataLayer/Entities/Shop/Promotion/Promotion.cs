@@ -88,9 +88,16 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
         /// </summary>
         public int? BoughtCount { get; set; }
 
+        /// <summary>
+        /// the startDate which this promotion occure
+        /// </summary>
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime SDate { get; set; }
 
+
+        /// <summary>
+        /// expire date of this promotion
+        /// </summary>
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime? EDate { get; set; }

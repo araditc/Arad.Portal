@@ -42,6 +42,10 @@ namespace Arad.Portal.DataLayer.Entities
         public DateTime DateTime { get; set; }
         public string UserId { get; set; }
         public string UserName { get; set; }
+
+        /// <summary>
+        /// the reason of updating this entity written by application for logging
+        /// </summary>
         public string ModificationReason { get; set; }
     }
 }

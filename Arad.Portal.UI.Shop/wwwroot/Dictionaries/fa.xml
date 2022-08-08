@@ -703,7 +703,62 @@
   <string key="tbl_ShippingCoupon">
     <value>برای سفارش از [0] هزینه ارسال [1]</value>
   </string>
-  <string key="EnumDesc_List">
+	<string key="EnumDesc_InitialTransaction">
+		<value>ثبت اولیه تراکنش</value>
+	</string>
+	<string key="EnumDesc_TokenGeneration">
+		<value>ایجاد توکن</value>
+	</string>
+	<string key="EnumDesc_LeadToPaymentGateway">
+		<value>هدایت به درگاه پرداخت</value>
+	</string>
+	<string key="EnumDesc_WaitingforTransactionApproval">
+		<value>در حال انتظار برای تایید تراکنش</value>
+	</string>
+	<string key="EnumDesc_SuccessfullAndApproved">
+		<value>موفق و تایید شده</value>
+	</string>
+	<string key="EnumDesc_UnsuccessfullAndApproved">
+		<value>ناموفق و تایید شده</value>
+	</string>
+	<string key="EnumDesc_RollBack">
+		<value>درحین پرداخت اپلیکیشن استاپ شده و پرداخت  رول بک میشود</value>
+	</string>
+	<string key="EnumDesc_ClientTokenRequest">
+		<value>درخواست توکن</value>
+	</string>
+	<string key="EnumDesc_PspTokenResponse">
+		<value>پاسخ درخواست توکن از سمت درگاه</value>
+	</string>
+	<string key="EnumDesc_ClientRequestToLogin">
+		<value>ارسال اطلاعات به درگاه جهت لاگین</value>
+	</string>
+	<string key="EnumDesc_PspLoginResponse">
+		<value>دریافت پاسخ لاگین از درگاه</value>
+	</string>
+	<string key="EnumDesc_ClientRequestDataToSignIn">
+		<value>ارسال اطلاعات تراکنش جهت ساین</value>
+	</string>
+	<string key="EnumDesc_PspResponseToDataToSignIn">
+		<value>پاسخ درگاه برای ساین اطلاعات تراکنش</value>
+	</string>
+	<string key="EnumDesc_PspSendCallback">
+		<value>ارسال اطلاعات پرداخت از سمت درگاه</value>
+	</string>
+	<string key="EnumDesc_ClientVerifyRequest">
+		<value>درخواست تایید تراکنش از سمت کلاینت</value>
+	</string>
+	<string key="EnumDesc_PspVerifyResponse">
+		<value>پاسخ تایید تراکنش از درگاه</value>
+	</string>
+	<string key="EnumDesc_ClientRequestReverseTransaction">
+		<value>درخواست برگشت تراکنش از سمت کلاینت</value>
+	</string>
+	<string key="EnumDesc_PspResponseReverseTransaction">
+		<value>پاسخ درگاه برای برگشت تراکنش</value>
+	</string>
+
+	<string key="EnumDesc_List">
     <value>لیست</value>
   </string>
 	<string key="EnumDesc_Male">

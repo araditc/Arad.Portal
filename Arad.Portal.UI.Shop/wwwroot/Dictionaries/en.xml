@@ -736,12 +736,67 @@
   <string key="EnumDesc_LoadAnimationTypeOuter">
     <value>animation on outer elements</value>
   </string>
+	<string key="EnumDesc_InitialTransaction">
+		<value>initial transaction registeration</value>
+	</string>
+	<string key="EnumDesc_TokenGeneration">
+		<value>token generation</value>
+	</string>
+	<string key="EnumDesc_LeadToPaymentGateway">
+		<value>lead to payment gateway</value>
+	</string>
+	<string key="EnumDesc_WaitingforTransactionApproval">
+		<value>waiting for transaction approval</value>
+	</string>
+	<string key="EnumDesc_SuccessfullAndApproved">
+		<value>successfull and approved</value>
+	</string>
+	<string key="EnumDesc_UnsuccessfullAndApproved">
+		<value>unsuccessfull and approved</value>
+	</string>
+	<string key="EnumDesc_RollBack">
+		<value>application has been stopped while payment occurred then transaction will roll back</value>
+	</string>
   <string key="Download">
     <value>download</value>
   </string>
   <string key="GetExcelTemplate">
     <value>Get Product Excel Template</value>
   </string>
+	<string key="EnumDesc_ClientTokenRequest">
+		<value>client reguest for getting token</value>
+	</string>
+	<string key="EnumDesc_PspTokenResponse">
+		<value>Psp response to token request</value>
+	</string>
+	<string key="EnumDesc_ClientRequestToLogin">
+		<value>client request to login</value>
+	</string>
+	<string key="EnumDesc_PspLoginResponse">
+		<value>Psp response to client request for login</value>
+	</string>
+	<string key="EnumDesc_ClientRequestDataToSignIn">
+		<value>client send transaction data for sign in</value>
+	</string>
+	<string key="EnumDesc_PspResponseToDataToSignIn">
+		<value>Psp response to transaction Data for sign in</value>
+	</string>
+	<string key="EnumDesc_PspSendCallback">
+		<value>Psp send payment information to client after payment</value>
+	</string>
+	<string key="EnumDesc_ClientVerifyRequest">
+		<value>client request for transaction approval</value>
+	</string>
+	<string key="EnumDesc_PspVerifyResponse">
+		<value>Psp verify transaction and send response to client</value>
+	</string>
+	<string key="EnumDesc_ClientRequestReverseTransaction">
+		<value>client request to reverse transaction</value>
+	</string>
+	<string key="EnumDesc_PspResponseReverseTransaction">
+		<value>psp reverse the transaction and respond to client</value>
+	</string>
+	
   <string key="EnumDesc_Dependency">
     <value>Dependency</value>
   </string>

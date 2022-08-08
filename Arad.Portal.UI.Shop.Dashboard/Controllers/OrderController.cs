@@ -79,8 +79,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var cnt = 0;
             foreach (var item in model.SubInvoices)
             {
-                cnt += item.ParchasePerSeller.Products.Count;
-                foreach (var pro in item.ParchasePerSeller.Products)
+                cnt += item.PurchasePerSeller.Products.Count;
+                foreach (var pro in item.PurchasePerSeller.Products)
                 {
                     var code  = _productRepository.GetProductCode(pro.ProductId);
                     productCodeList.Add(new KeyValuePair<string, long>(pro.ProductId, code));

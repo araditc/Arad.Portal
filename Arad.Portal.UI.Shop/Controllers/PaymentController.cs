@@ -96,7 +96,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                             {
                                 var obj = new InvoicePerSeller()
                                 {
-                                    ParchasePerSeller = invoice,
+                                    PurchasePerSeller = invoice,
                                     SellerInvoiceId = Guid.NewGuid().ToString(),
                                     SettlementInfo = new SettlementInfo()
                                 };

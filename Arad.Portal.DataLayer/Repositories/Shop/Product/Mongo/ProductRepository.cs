@@ -343,7 +343,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 check = _shoppingCartContext.Collection.Find(_ => _.Details.Any(a => a.Products.Any(b => b.ProductId == productId))
                 && !_.IsDeleted && _.IsActive).Any();
                 check &= _transactionContext.Collection
-                    .Find(_ => _.SubInvoices.Any(a => a.ParchasePerSeller.Products.Any(b => b.ProductId == productId))).Any();
+                    .Find(_ => _.SubInvoices.Any(a => a.PurchasePerSeller.Products.Any(b => b.ProductId == productId))).Any();
 
                 allowDeletion = !check;
 

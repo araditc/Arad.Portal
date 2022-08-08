@@ -76,9 +76,14 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Setting
         /// </summary>
         public long ShippingExpense { get; set; }
 
+        /// <summary>
+        ///  date when this shippingCoupon is valid
+        /// </summary>
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime StartDate { get; set; }
-
+        /// <summary>
+        /// expire date of this shipping coupon
+        /// </summary>
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime? EndDate { get; set; }
     }
