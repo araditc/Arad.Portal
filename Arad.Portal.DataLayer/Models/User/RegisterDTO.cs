@@ -19,5 +19,11 @@ namespace Arad.Portal.DataLayer.Models.User
         public string Captcha { get; set; }
 
         public string SecurityCode { get; set; }
+
+        public string CurrentPass { get; set; }
+
+        public string NewPass { get; set; }
+
+        public string ReNewPass { get; set; }
     }
 }

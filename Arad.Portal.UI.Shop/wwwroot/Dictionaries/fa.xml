@@ -908,6 +908,9 @@
   <string key="AlertAndMessage_CreateNewRow">
     <value>لطفا در ابتدا سطر جدید ایجاد کنید</value>
   </string>
+	<string key="AlertAndMessage_InCorrectPassword">
+		<value>کلمه عبور کنونی شما اشتباه است</value>
+	</string>
   <string key="AlertAndMessage_RemoveBoxConfrim">
     <value>آیا برای حذف این قسمت از صفه مطمئن هستید؟</value>
   </string>
@@ -1052,6 +1055,12 @@
   <string key="AlertAndMessage_UserNameRequired">
     <value>لطفا نام کاربری را وارد کنید.</value>
   </string>
+	<string key="AlertAndMessage_UsernameIncorrect">
+		<value>نام کاربری یا کلمه عبور اشتباه است</value>
+	</string>
+	<string key="AlertAndMessage_PassWordAndRePassNotEqual">
+		<value>کلمه عبور و تکرار کلمه عبور یکسان نیست</value>
+	</string>
   <string key="AlertAndMessage_NameRequired">
     <value>لطفا نام کاربر را وارد کنید.</value>
   </string>
@@ -1535,6 +1544,9 @@
   <string key="AlertAndMessage_CurrentPassword">
     <value>گذرواژه فعلی: </value>
   </string>
+	<string key="AlertAndMessage_RepeatPassword">
+		<value>تکرار گذروازه جدید</value>
+	</string>
   <string key="AlertAndMessage_NewPassword">
     <value>گذرواژه جدید: </value>
   </string>

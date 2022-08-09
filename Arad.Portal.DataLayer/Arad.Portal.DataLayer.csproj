@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Arad.Portal.Abstraction\Arad.Portal.Abstraction.csproj" />
     <ProjectReference Include="..\Arad.Portal.GeneralLibrary\Arad.Portal.GeneralLibrary.csproj" />
   </ItemGroup>
 

@@ -908,6 +908,9 @@
   <string key="AlertAndMessage_CreateNewRow">
     <value>First of all plaese create new row</value>
   </string>
+	<string key="AlertAndMessage_InCorrectPassword">
+		<value>your current password is incorrect</value>
+	</string>
   <string key="AlertAndMessage_RemoveBoxConfrim">
     <value>Are you Sure for removing this part from page?</value>
   </string>
@@ -1061,6 +1064,12 @@
   <string key="AlertAndMessage_UserNameRequired">
     <value>Please fill username.</value>
   </string>
+	<string key="AlertAndMessage_UsernameIncorrect">
+		<value>username or password is incorrect</value>
+	</string>
+	<string key="AlertAndMessage_PassWordAndRePassNotEqual">
+		<value>new password and repeat new password isnt equal</value>
+	</string>
   <string key="AlertAndMessage_NameRequired">
     <value>Please fill Name.</value>
   </string>
@@ -1484,6 +1493,9 @@
   <string key="AlertAndMessage_CurrentPassword">
     <value>Current password</value>
   </string>
+	<string key="AlertAndMessage_RepeatPassword">
+		<value>Repeat new password</value>
+	</string>
   <string key="AlertAndMessage_NewPassword">
     <value>New password</value>
   </string>
