@@ -20,8 +20,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
         {
             bool added = false;
             var lst = _basicDataRepository.GetList("LastId");
-
-            long newId = long.Parse(lst[0].Value) + 1;
+            //first item is choose
+            long newId = long.Parse(lst[1].Value) + 1;
             while (!added)
             {
                 added = dict.TryAdd(newId, newId);

@@ -1,0 +1,5 @@
+_config = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory).AddJsonFile("appsettings.json").Build().Get<Config>();
+
+
+string appSettingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
+                                await File.WriteAllTextAsync(appSettingsPath, JsonConvert.SerializeObject(_config, Formatting.Indented));

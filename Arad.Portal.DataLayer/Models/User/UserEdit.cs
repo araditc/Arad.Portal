@@ -29,9 +29,10 @@ namespace Arad.Portal.DataLayer.Models.User
         //[Required(ErrorMessage = "لطفا شماره موبایل را وارد نمایید.")]
         [CustomErrorMessage("AlertAndMessage_PhoneNumberRequired")]
         public string PhoneNumber { get; set; }
-
-        //[CustomDisplayName("IsVendor")]
+       
         public bool IsVendor { get; set; }
+
+        public bool  IsSiteUser { get; set; }
 
         [CustomDisplayName("User_FullMobile")]
         public string FullMobile { get; set; }

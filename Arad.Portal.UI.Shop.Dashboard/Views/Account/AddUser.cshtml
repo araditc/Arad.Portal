@@ -110,15 +110,22 @@
                         @{
                             if (Convert.ToBoolean(ViewBag.IsSystem))
                             {
-                                            <div class="form-group col-md-4 p-2">
-                                                <label class="form-label">@Language.GetString("AssociatedDomain")</label>
-                                                <select class="form-select selectpicker" asp-for="DomainId" asp-items="@(new SelectList(ViewBag.DomainList, "Value", "Text"))" data-live-search="true">
-                                                </select>
-                                                <span data-val-result="DomainId" class="text-danger"></span>
-                                            </div>
+                                                <div class="form-group col-12 col-md-4 p-2">
+                                                    <label class="form-label">@Language.GetString("AssociatedDomain")</label>
+                                                    <select class="form-select selectpicker" asp-for="DomainId" asp-items="@(new SelectList(ViewBag.DomainList, "Value", "Text"))" data-live-search="true">
+                                                    </select>
+                                                    <span data-val-result="DomainId" class="text-danger"></span>
+                                                </div>
                             }
-
                         }
+                        <div class="form-group col-12 col-md-4 pt-4 pb-2">
+                                <div class="form-check m-auto d-inline-block pt-3">
+                                    <input class="form-check-input" type="checkbox" value="IsSiteUser" asp-for="IsSiteUser">
+                                    <label class="form-check-label" for="IsSiteUser">
+                                        @Language.GetString("User_IsSiteUser")
+                                    </label>
+                                </div>
+                        </div>
                     </div>
                 </div>
 
@@ -175,6 +182,7 @@
             var frm = document.getElementById('addUserFrm');
             var form = new FormData(frm);
             form.set("IsVendor", $("#IsVendor").is(":checked"));
+            form.set("IsSiteUser", $("#IsSiteUser").is(":checked"));
             form.append("IsActive", $("input[name='IsActive']:checked").val() == "true");
 
             $.ajax({

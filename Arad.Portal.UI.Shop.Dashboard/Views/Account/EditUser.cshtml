@@ -26,39 +26,46 @@
                             <input asp-for="Id" type="hidden" class="form-control" />
                             <label asp-for="PhoneNumber" class="form-label"></label>
                             <input asp-for="PhoneNumber" type="tel" class="form-control" style="direction:ltr;" />
-                            @*<input id="hidePhone" type="hidden" value="" name="FullMobile" />*@
                             <span data-val-result="PhoneNumber" class="text-danger"></span>
                         </div>
                         <div class="form-group col-12 col-md-4 p-2">
                             <label asp-for="FirstName" class="form-label"></label>
                             <input asp-for="FirstName" class="form-control" />
-                            <span data-val-result="UserProfile.FirstName" class="text-danger"></span>
+                            <span data-val-result="FirstName" class="text-danger"></span>
                         </div>
                         <div class="form-group col-12 col-md-4 p-2">
                             <label asp-for="LastName" class="form-label"></label>
                             <input asp-for="LastName" class="form-control" />
-                            <span data-val-result="UserProfile.LastName" class="text-danger"></span>
+                            <span data-val-result="LastName" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-12 col-md-4 p-2">
+                        <div class="form-group col-12 col-md-3 p-2">
                             <label asp-for="UserRoleId" class="form-label"></label>
                             <br/>
                             <select class="form-select selectpicker" asp-for="UserRoleId" asp-items="@(new SelectList(ViewBag.Roles,"Id","Title"))" data-live-search="true">
                             </select>
                             <span data-val-result="UserRoleId" class="text-danger"></span>
                         </div>
-                        <div class="form-group col-12 col-md-4 p-2">
+                        <div class="form-group col-12 col-md-3 p-2">
                             <label class="form-label">@Language.GetString("DefaultLanguage")</label>
                             <select class="form-select  selectpicker" asp-for="DefaultLanguageId" data-live-search="true" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                             </select>
                             <span data-val-result="DefaultLanguageId" class="text-danger"></span>
                         </div>
-                        <div class="form-group col-md-4 col-12 pt-4 pb-2">
+                        <div class="form-group col-md-3 col-12 pt-4 pb-2">
                             <div class="form-check m-auto d-inline-block pt-3">
                                 <input class="form-check-input" type="checkbox" value="IsVendor" asp-for="IsVendor">
                                 <label class="form-check-label" for="IsVendor">
                                     @Language.GetString("IsVendor")
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3 col-12 pt-4 pb-2">
+                            <div class="form-check m-auto d-inline-block pt-3">
+                                <input class="form-check-input" type="checkbox" value="IsSiteUser" asp-for="IsSiteUser">
+                                <label class="form-check-label" for="IsSiteUser">
+                                    @Language.GetString("User_IsSiteUser")
                                 </label>
                             </div>
                         </div>
@@ -113,6 +120,7 @@
              var form = new FormData(frm);
              /*form.append("FullMobile", $("#hidePhone").val());*/
           form.set("IsVendor", $("#IsVendor").is(":checked"));
+          form.set("IsSiteUser", $("#IsSiteUser").is(":checked"));
 
              $.ajax({
                  url: $(this).attr('action'),

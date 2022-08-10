@@ -1789,6 +1789,9 @@
   <string key="User_Profile">
     <value>پروفایل کاربری</value>
   </string>
+	<string key="User_IsSiteUser">
+		<value>کاربر سایت است؟</value>
+	</string>
   <string key="User_Captcha">
     <value>کپچا</value>
   </string>
@@ -2135,7 +2138,7 @@
     <value>عنوان محتوا</value>
   </string>
   <string key="ProductSpecs">
-    <value>ویژگیهای محصول</value>
+    <value>ویژگیهای محصول(توضیحات اضافه درباره محصول)</value>
   </string>
   <string key="Menu_StoreMenues">
     <value>منوهای فروشگاه</value>

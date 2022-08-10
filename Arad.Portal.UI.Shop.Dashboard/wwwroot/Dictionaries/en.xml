@@ -1741,6 +1741,9 @@
   <string key="User_Profile">
     <value>User Profile</value>
   </string>
+	<string key="User_IsSiteUser">
+		<value>is site user</value>
+	</string>
   <string key="User_Captcha">
     <value>Captcha</value>
   </string>
@@ -2081,7 +2084,7 @@
     <value>Content Title</value>
   </string>
   <string key="ProductSpecs">
-    <value>Product Specs</value>
+    <value>Product Specs(extra infoes about product)</value>
   </string>
   <string key="Menu_StoreMenues">
     <value>Store Menues</value>

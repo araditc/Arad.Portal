@@ -482,11 +482,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         PhoneNumber = model.FullMobile.Replace("+", ""),
                         UserName = model.UserName,
                         IsActive = model.IsActive,
+                        IsSiteUser = model.IsSiteUser,
                         UserRoleId = model.UserRoleId,
                         CreationDate = DateTime.UtcNow,
                         CreatorId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier),
-                        DomainId = associatedDomainId,
-                        IsSiteUser = false
+                        DomainId = associatedDomainId
+                       
                     };
                     if(model.IsVendor)
                     {
@@ -657,7 +658,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         //user.Profile.DefaultLanguageName
                         user.PhoneNumber = model.FullMobile.Replace("+", "");
                         user.UserRoleId = model.UserRoleId;
-
+                        user.IsSiteUser = model.IsSiteUser;
                         if (model.IsVendor)
                         {
                             user.Claims.Add(new IdentityUserClaim<string>
