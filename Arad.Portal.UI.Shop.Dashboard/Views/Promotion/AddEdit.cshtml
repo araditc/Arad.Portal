@@ -12,7 +12,7 @@
     </style>
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <link href="@Url.Content($"~/plugins/datePicker/kamadatepicker.css")" rel="stylesheet" />
+        <link href="@Url.Content($"~/lib/datePicker/kamadatepicker.css")" rel="stylesheet" />
     }
     else
     {
@@ -229,7 +229,7 @@
 @section Scripts{
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <script src="@Url.Content($"~/plugins/datePicker/kamadatepicker.min.js")"></script>
+        <script src="@Url.Content($"~/lib/datePicker/kamadatepicker.min.js")"></script>
     }
     else
     {
@@ -257,7 +257,12 @@
                if ($("#promotionTypeId").val() != "-1") {
                    if ($("#promotionTypeId").val() == "1" || $("#promotionTypeId").val() == "2")
                    {
-                       $("#firstRow").append(generateVendorSection());
+                       var vendorPart = generateVendorSection();
+                       if( $("#firstRow").find("#vendorSection").length == 0)
+                       {
+                            $("#firstRow").append(vendorPart);
+                       }
+                      
                        $("#productVendor").selectpicker();
                        if ($("#promotionTypeId").val() == "2") {
                            $(".proSec").css("display", "block");
@@ -302,7 +307,7 @@
                }
                if ($("#promotionTypeId").val() == "1" && $("#productVendor").length == 0) {
                     $.ajax({
-                       url: '@Url.Action("GetFilteredProductGroup", "Promotion")'+`vendorId=${-1}`,
+                       url: '@Url.Action("GetFilteredProductGroup", "Promotion")'+`?vendorId=${-1}`,
                         type: 'Get',
                         dataType: 'json',
                         success: function (result) {
@@ -598,7 +603,6 @@
             var obj = {};
            obj.Infoes = [];
            obj.PromotionId = $("#PromotionId").val();
-          /* obj.ModificationReason = $("#ModificationReason").val();*/
             obj.Title = $("#title").val();
             obj.CurrencyId = $("#currencyId").val();
             obj.CurrencyName = $("#currencyId option:selected").text();
@@ -662,7 +666,8 @@
                 if (model.promotionTypeId == "1") {
                     {
                         //vendor
-                        $("#firstRow").append(generateVendorSection());
+                         $("#firstRow").append(generateVendorSection());
+
                         debugger;
                         if (model.infoes.length > 0) {
                             $("#productVendor").selectpicker('val', model.infoes[0].productVendorId);
