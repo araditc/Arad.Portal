@@ -53,15 +53,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Comment.Mongo
             try
             {
                 var equallentModel = _mapper.Map<Entities.General.Comment.Comment>(dto);
-
-               
-                //equallentModel.CreationDate = DateTime.Now.ToUniversalTime();
-                //equallentModel.CreatorUserId = _httpContextAccessor.HttpContext.User.Claims
-                //    .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-                //equallentModel.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
-                //    .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
                 equallentModel.IsActive = true;
-                //equallentModel.CommentId = Guid.NewGuid().ToString();
+               
                 
                 await _commentContext.Collection.InsertOneAsync(equallentModel);
                 var comment = _commentContext.Collection.Find(_ => _.CommentId == equallentModel.CommentId).FirstOrDefault();

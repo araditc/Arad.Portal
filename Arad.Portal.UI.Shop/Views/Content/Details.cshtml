@@ -64,22 +64,23 @@
 
 }
 
-
+<div class="container">
 <div class="row">
 
     @if (Model.IsSliderShowing)
     {
-        <div id="carouselImages" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                @foreach (var img in Model.Images)
-                {
-                    <div class="carousel-item active">
-                        <img src="@Url.Content($"~/getscaledimageOnWidth?path={img.Url}&width={1000}")" class="d-block w-100" alt="@img.Title">
-                    </div>
-                }
-            </div>
-            @if (Model.Images.Count > 1)
-            {
+        @if (Model.Images.Count > 1)
+        {
+            <div id="carouselImages" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    @foreach (var img in Model.Images)
+                    {
+                        <div class="carousel-item active">
+                            <img src="@Url.Content($"~/getscaledimageOnWidth?path={img.Url}&width={1000}")" class="d-block w-100" alt="@img.Title">
+                        </div>
+                    }
+                </div>
+           
                 <a class="carousel-control-prev" href="#carouselImages" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="sr-only">@Language.GetString("tbl_PreviousPage")</span>
@@ -88,9 +89,8 @@
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="sr-only">@Language.GetString("tbl_NextPage")</span>
                 </a>
-            }
-
         </div>
+        }
     }
 
 </div>
@@ -180,7 +180,7 @@
         </div>
     </div>
 }
-
+</div>
 <script src="~/js/CommentSection/cmt.js"></script>
 <script type="text/javascript">
      $(document).ready(function () {

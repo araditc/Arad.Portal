@@ -113,7 +113,7 @@ namespace Arad.Portal.UI.Shop
         {
             services.AddCors(x =>
             {
-                x.AddPolicy("CSP", y =>
+                x.AddPolicy("Role", y =>
                 {
                     y.AllowAnyOrigin();
                     y.AllowAnyMethod();
@@ -191,21 +191,11 @@ namespace Arad.Portal.UI.Shop
                  });
             
             services.AddTransient<IAuthorizationHandler, RoleHandler>();
+
+            services.AddAuthorization();
            
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("Role", policy =>
-                {
-                    policy.RequireAuthenticatedUser();
-                    policy.Requirements.Add(new RoleRequirement());
-                });
-            });
            
             services.AddAutoMapper(typeof(Startup));
-
-            
-
-
           
             services.AddTransient<RemoteServerConnection>();
             services.AddTransient<CreateNotification>();
@@ -230,15 +220,13 @@ namespace Arad.Portal.UI.Shop
                 smsSender.StartTimer();
             }
 
-            //email Service 
-            //EmailSenderService emailSender = sp.GetService<EmailSenderService>();
-            //if(emailSender != null)
-            //{
-            //    emailSender.StartTimer();
-            //}
+            //email Service
+            EmailSenderService emailSender = sp.GetService<EmailSenderService>();
+            if (emailSender != null)
+            {
+                emailSender.StartTimer();
+            }
 
-
-            
             services.AddLocalization();
             AddRepositoryServices(services);
             services.AddSingleton<SharedRuntimeData>();
@@ -299,15 +287,12 @@ namespace Arad.Portal.UI.Shop
             app.UseRequestLocalization(AddMultilingualSettings());
 
             app.UseRouting();
-            app.UseCors("CSP");
+            app.UseCors("Role");
             var options = new CookiePolicyOptions()
             {
             };
-           // app.UseCookiePolicy(options);
-
+          
             app.UseAuthentication();
-            
-
             app.UseAuthorization();
             app.UseSession();
             app.ApplyLanguageMapper();

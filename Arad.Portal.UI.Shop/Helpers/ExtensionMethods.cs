@@ -105,62 +105,7 @@ namespace Arad.Portal.UI.Shop.Helpers
                 currencyRepository.InsertOne(currency);
             }
             #endregion currency
-
-            #region domain
-            //var domainRepository =
-            //   (DomainRepository)scope.ServiceProvider.GetService(typeof(IDomainRepository));
-            //if (!domainRepository.HasAny())
-            //{
-            //    var dom = new Domain()
-            //    {
-            //        //DomainId = Guid.NewGuid().ToString(),
-            //        DomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf",
-            //        DomainName = "https://localhost:3214",//store
-            //        OwnerUserName = "superadmin",
-            //        IsActive = true,
-            //        DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
-            //        DefaultLanguageName = "فارسی",
-            //        DefaultLangSymbol = "fa-IR",
-            //        DefaultCurrencyId = "f6a41b2d-3ed5-412b-b511-68498a7b62f3",
-            //        DefaultCurrencyName = "ریال",
-            //        IsDefault = true,
-            //        CreationDate = DateTime.Now
-                   
-            //    };
-            //    var dom2 = new Domain()
-            //    {
-            //        //DomainId = Guid.NewGuid().ToString(),
-            //        DomainId = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004",
-            //        DomainName = "http://localhost:17951/",//dashboard
-            //        OwnerUserName = "superadmin",
-            //        IsActive = true,
-            //        DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
-            //        DefaultLanguageName = "فارسی",
-            //        DefaultLangSymbol = "fa-IR",
-            //        DefaultCurrencyId = "f6a41b2d-3ed5-412b-b511-68498a7b62f3",
-            //        DefaultCurrencyName = "ریال",
-            //        IsDefault = true,
-            //        CreationDate = DateTime.Now
-                    
-            //    };
-            //    var dom3 = new Domain()
-            //    {
-            //        DomainId = Guid.NewGuid().ToString(),
-            //        DomainName = "https://www.hajibazar.com",
-            //        OwnerUserName = "superadmin",
-            //        IsActive = true,
-            //        DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
-            //        DefaultLanguageName = "فارسی",
-            //        DefaultLangSymbol = "fa-IR",
-            //        DefaultCurrencyId = "f6a41b2d-3ed5-412b-b511-68498a7b62f3",
-            //        DefaultCurrencyName = "ریال",
-            //        IsDefault = true,
-            //        CreationDate = DateTime.Now
-            //    };
-
-            //    domainRepository.InsertMany(new List<Domain>() { dom, dom2, dom3 }).Wait();
-            //}
-            #endregion
+            
 
             #region permission
             var permissionRepository =
@@ -179,49 +124,49 @@ namespace Arad.Portal.UI.Shop.Helpers
             }
             #endregion permission
 
-            #region role
-            var roleRepository =
-               (RoleRepository)scope.ServiceProvider.GetService(typeof(IRoleRepository));
+            //#region role
+            //var roleRepository =
+            //   (RoleRepository)scope.ServiceProvider.GetService(typeof(IRoleRepository));
 
 
-            if (!roleRepository.HasAny())
-            {
-                var role = new Role()
-                {
-                    // RoleId = Guid.NewGuid().ToString(), it will be changed for publish
-                    RoleId = "0e1643a3-1212-485b-862f-45147532427c",
-                    RoleName = "سوپر ادمین",
-                    CreationDate = DateTime.Now,
-                    IsActive = true,
-                    PermissionIds = permissionRepository.GetAllPermissionIds()
-                };
-                var role2 = new Role()
-                {
-                    RoleId = Guid.NewGuid().ToString(),
-                    RoleName = "مدیریت کاربران",
-                    CreationDate = DateTime.Now,
-                    IsActive = true
-                };
-                var role3 = new Role()
-                {
-                    RoleId = Guid.NewGuid().ToString(),
-                    RoleName = "مشتری",
-                    CreationDate = DateTime.Now,
-                    IsActive = true
-                };
-                var role4 = new Role()
-                {
-                    RoleId = Guid.NewGuid().ToString(),
-                    RoleName = "فروشنده",
-                    CreationDate = DateTime.Now,
-                    IsActive = true
-                };
-                List<Role> items = new List<Role>();
-                items.AddRange(new List<Role> { role, role2, role3, role4 });
-                roleRepository.InsertMany(items).Wait();
+            //if (!roleRepository.HasAny())
+            //{
+            //    var role = new Role()
+            //    {
+            //        // RoleId = Guid.NewGuid().ToString(), it will be changed for publish
+            //        RoleId = "0e1643a3-1212-485b-862f-45147532427c",
+            //        RoleName = "سوپر ادمین",
+            //        CreationDate = DateTime.Now,
+            //        IsActive = true,
+            //        PermissionIds = permissionRepository.GetAllPermissionIds()
+            //    };
+            //    var role2 = new Role()
+            //    {
+            //        RoleId = Guid.NewGuid().ToString(),
+            //        RoleName = "مدیریت کاربران",
+            //        CreationDate = DateTime.Now,
+            //        IsActive = true
+            //    };
+            //    var role3 = new Role()
+            //    {
+            //        RoleId = Guid.NewGuid().ToString(),
+            //        RoleName = "مشتری",
+            //        CreationDate = DateTime.Now,
+            //        IsActive = true
+            //    };
+            //    var role4 = new Role()
+            //    {
+            //        RoleId = Guid.NewGuid().ToString(),
+            //        RoleName = "فروشنده",
+            //        CreationDate = DateTime.Now,
+            //        IsActive = true
+            //    };
+            //    List<Role> items = new List<Role>();
+            //    items.AddRange(new List<Role> { role, role2, role3, role4 });
+            //    roleRepository.InsertMany(items).Wait();
 
-            }
-            #endregion role
+            //}
+            //#endregion role
 
             #region user
             var userManager =
@@ -233,7 +178,6 @@ namespace Arad.Portal.UI.Shop.Helpers
                 //var user = new ApplicationUser()
                 //{
                 //    //just for testing
-                //    //???
                 //    //Id = Guid.NewGuid().ToString(),
                 //    Id = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa",
                 //    UserName = "SuperAdmin",
@@ -265,8 +209,7 @@ namespace Arad.Portal.UI.Shop.Helpers
                 //        FirstName = "ادمین",
                 //        LastName = "شماره یک",
                 //        FullName = "ادمین" + " " + "شماره یک",
-                //        BirthDate = new DateTime(1987, 8, 26).ToUniversalTime(),
-                //        NationalCode = "1292086734",
+                //        NationalCode = ""
                 //        CompanyName = "Arad",
                 //        DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
                 //        DefaultCurrencyId = "f6a41b2d-3ed5-412b-b511-68498a7b62f3",
@@ -374,7 +317,7 @@ namespace Arad.Portal.UI.Shop.Helpers
                     Template = "{'BaseAddress', 'TokenEndPoint', 'GatewayEndPoint', 'VerifyEndpoint', 'Password', 'TerminalId'}",
                     ProviderType = DataLayer.Entities.General.Service.ProviderType.Payment,
                     ProviderName = "Saman",
-                    AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf"
+                    AssociatedDomainId = null
                 };
                 providerRepository.InsertOne(samanGateway);
             }

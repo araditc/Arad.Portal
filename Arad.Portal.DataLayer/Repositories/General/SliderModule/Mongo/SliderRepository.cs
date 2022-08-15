@@ -216,8 +216,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.SliderModule.Mongo
             if (slider != null)
             {
                 var slidesForShow = slider.Slides
-                    .Where(s => s.StartDate <= DateTime.Now &&
-                                (s.ExpireDate >= DateTime.Now || s.ExpireDate == null) &&
+                    .Where(s => s.StartDate <= DateTime.UtcNow &&
+                                (s.ExpireDate >= DateTime.UtcNow || s.ExpireDate == null) &&
                                 s.IsDeleted != 1).ToList();
 
                 slidesForShow

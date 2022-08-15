@@ -167,8 +167,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
             equallentModel.CreatorUserName = GetUserName();
             equallentModel.PromotionType = (PromotionType)dto.PromotionTypeId;
             equallentModel.DiscountType = (DiscountType)dto.DiscountTypeId;
-            equallentModel.SDate = dto.PersianStartDate.ToEnglishDate().ToUniversalTime();
-            equallentModel.EDate =dto.PersianEndDate.ToEnglishDate().ToUniversalTime();
+            equallentModel.SDate = dto.PersianStartDate.ToEnglishDate();
+            equallentModel.EDate =dto.PersianEndDate.ToEnglishDate();
 
                 await _context.Collection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;
@@ -351,8 +351,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
 
         public List<SelectListModel> GetActivePromotionsOfCurrentUser(string userId, PromotionType type)
         {
-            var alltypes = _context.Collection.Find(_ => _.CreatorUserId == userId && _.SDate <= DateTime.Now &&
-            (_.EDate >= DateTime.Now || _.EDate == null) && _.IsActive);
+            var alltypes = _context.Collection.Find(_ => _.CreatorUserId == userId && _.SDate <= DateTime.UtcNow &&
+            (_.EDate >= DateTime.UtcNow || _.EDate == null) && _.IsActive);
             var res = alltypes.ToList().Where(_=>_.PromotionType == type).Select(_ => new SelectListModel() 
             { 
                 Text = _.Title,

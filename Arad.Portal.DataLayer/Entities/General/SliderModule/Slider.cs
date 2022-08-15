@@ -33,7 +33,11 @@ namespace Arad.Portal.DataLayer.Entities.General.SliderModule
         public TransActionType TransActionType { get; set; }
         public string Link { get; set; }
         public Target Target { get; set; }
+
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime? StartDate { get; set; }
+
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime? ExpireDate { get; set; }
         public bool IsActive { get; set; }
         public int IsDeleted { get; set; }

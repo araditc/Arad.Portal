@@ -1,0 +1,139 @@
+[
+  {
+    "_id": "36dbec86-e524-483e-a670-a797796e375a",
+    "CreationDate": "2021-09-04T10:59:39.583+0000",
+    "CreatorUserId": "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsDeleted": false,
+    "IsActive": true,
+    "AssociatedDomainId": null,
+    "ParentCategoryId": null,
+    "CategoryNames": [
+      {
+        "MultiLingualPropertyId": "c1a76e47-5089-40d7-8eeb-658d3dbc07a0",
+        "Name": "تکنولوژی روز",
+        "GroupName": null,
+        "Description": null,
+        "SeoTitle": null,
+        "SeoDescription": null,
+        "UrlFriend": null,
+        "NameValues": null,
+        "LanguageId": "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
+        "LanguageName": "فارسی",
+        "LanguageSymbol": "fa-IR",
+        "CurrencyId": null,
+        "CurrencyPrefix": null,
+        "CurrencySymbol": null,
+        "CurrencyName": null
+      },
+      {
+        "MultiLingualPropertyId": "c558921e-209d-4c28-9e53-822b21d5fa2b",
+        "Name": "Daily Technology",
+        "GroupName": null,
+        "Description": null,
+        "SeoTitle": null,
+        "SeoDescription": null,
+        "UrlFriend": null,
+        "NameValues": null,
+        "LanguageId": "9cbda53a-f5ca-47df-a648-44de1c06c75c",
+        "LanguageName": "English",
+        "LanguageSymbol": "en-US",
+        "CurrencyId": null,
+        "CurrencyPrefix": null,
+        "CurrencySymbol": null,
+        "CurrencyName": null
+      }
+    ],
+    "CategoryType": "0",
+    "CategoryCode": "9"
+  },
+  {
+    "_id": "9799607a-8186-4122-aee7-fd4dff9f8219",
+    "CreationDate": "2022-06-15T09:03:28.160+0000",
+    "CreatorUserId": "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsDeleted": false,
+    "IsActive": true,
+    "AssociatedDomainId": null,
+    "ParentCategoryId": null,
+    "CategoryNames": [
+      {
+        "MultiLingualPropertyId": "95030a2f-d58a-46da-a149-7d7cae793bfd",
+        "Name": "عمومی",
+        "GroupName": null,
+        "ProductGroupNames": [
+
+        ],
+        "Description": null,
+        "BodyContent": null,
+        "SeoTitle": null,
+        "SeoDescription": null,
+        "UrlFriend": null,
+        "PurchaseHelp": null,
+        "NameValues": null,
+        "LanguageId": "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
+        "LanguageName": "فارسی",
+        "LanguageSymbol": "fa-IR",
+        "CurrencyId": null,
+        "CurrencyPrefix": null,
+        "CurrencySymbol": null,
+        "CurrencyName": null,
+        "Tag": null,
+        "TagKeywords": [
+
+        ]
+      }
+    ],
+    "CategoryCode": "88",
+    "CategoryType": "0"
+  },
+  {
+    "_id": "a5e7b99e-de0e-49c0-ba8e-ddab17c63a62",
+    "CreationDate": "2022-06-29T04:49:21.171+0000",
+    "CreatorUserId": "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [
+
+    ],
+    "IsDeleted": false,
+    "IsActive": true,
+    "AssociatedDomainId": null,
+    "ParentCategoryId": null,
+    "CategoryNames": [
+      {
+        "MultiLingualPropertyId": "089aff6c-1b1f-4b3a-9c4d-34689577e6b6",
+        "Name": "مقالات",
+        "GroupName": null,
+        "ProductGroupNames": [
+
+        ],
+        "Description": null,
+        "BodyContent": null,
+        "SeoTitle": null,
+        "SeoDescription": null,
+        "UrlFriend": "/category/مقالات",
+        "PurchaseHelp": null,
+        "NameValues": null,
+        "LanguageId": "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
+        "LanguageName": "فارسی",
+        "LanguageSymbol": "fa-IR",
+        "CurrencyId": null,
+        "CurrencyPrefix": null,
+        "CurrencySymbol": null,
+        "CurrencyName": null,
+        "Tag": null,
+        "TagKeywords": [
+
+        ]
+      }
+    ],
+    "CategoryCode": "110",
+    "CategoryType": "0"
+  }
+]

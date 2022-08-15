@@ -52,7 +52,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                 var equallentModel = _mapper.Map<Entities.General.Content.Content>(dto);
                 if(!string.IsNullOrEmpty(dto.PersianStartShowDate))
                 {
-                    equallentModel.StartShowDate = dto.PersianStartShowDate.ToEnglishDate().ToUniversalTime();
+                    equallentModel.StartShowDate = dto.PersianStartShowDate.ToEnglishDate();
                 }else if(dto.StartShowDate != null)
                 {
                     equallentModel.StartShowDate = dto.StartShowDate.Value;
@@ -61,13 +61,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
 
                 if(!string.IsNullOrEmpty(dto.PersianEndShowDate))
                 {
-                    equallentModel.EndShowDate = dto.PersianEndShowDate.ToEnglishDate().ToUniversalTime();
+                    equallentModel.EndShowDate = dto.PersianEndShowDate.ToEnglishDate();
                 }else if(dto.EndShowDate != null)
                 {
                     equallentModel.EndShowDate = dto.EndShowDate.Value;
                 }
                
-                equallentModel.CreationDate = DateTime.Now.ToUniversalTime();
+                equallentModel.CreationDate = DateTime.Now;
                 equallentModel.CreatorUserId = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
                 equallentModel.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
@@ -507,8 +507,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             }
             else
             {
-                filterDef = builder.Lte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.Now);
-                filterDef = builder.And(filterDef, builder.Gte(nameof(Entities.General.Content.Content.EndShowDate), DateTime.Now));
+                filterDef = builder.Lte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.UtcNow);
+                filterDef = builder.And(filterDef, builder.Gte(nameof(Entities.General.Content.Content.EndShowDate), DateTime.UtcNow));
 
                 if(selectionType == SelectionType.LatestFromProductOrContentTypeSelectedCategory)
                 {
@@ -631,8 +631,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             FilterDefinitionBuilder<Entities.General.Content.Content> builder = new();
             FilterDefinition<Entities.General.Content.Content> filterDef = builder.Empty;
             filterDef &= builder.Eq(nameof(Entities.General.Content.Content.ContentCategoryId), contentCategoryId);
-            filterDef = builder.Gte(nameof(Entities.General.Content.Content.EndShowDate), DateTime.Now);
-            filterDef &= builder.Lte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.Now);
+            filterDef = builder.Gte(nameof(Entities.General.Content.Content.EndShowDate), DateTime.UtcNow);
+            filterDef &= builder.Lte(nameof(Entities.General.Content.Content.StartShowDate), DateTime.UtcNow);
             if (domainEntity != null)
             {
                 //??? should be uncommented in development mode

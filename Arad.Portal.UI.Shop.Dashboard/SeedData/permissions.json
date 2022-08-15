@@ -1,99 +1,98 @@
 ﻿[
     //------------------------------------------User Management------------------------------------
-
-    {
-        "PermissionId": "86deb739-c63a-460d-8c31-86c80b2a85b1",
-        "Title": "UserManagement",
-        "LevelNo": 1,
+  {
+    "PermissionId": "86deb739-c63a-460d-8c31-86c80b2a85b1",
+    "Title": "UserManagement",
+    "LevelNo": 1,
+    "Priority": 1,
+    "Icon": "fas fa-user-cog",
+    "ClientAddress": "#",
+    "Children": [
+      {
+        "PermissionId": "90d3381a-d733-4775-9a16-5e93a74c6958",
+        "Title": "Users",
+        "LevelNo": 2,
         "Priority": 1,
-        "Icon": "fas fa-user-cog",
-        "ClientAddress": "#",
-        "Children": [
-            {
-                "PermissionId": "90d3381a-d733-4775-9a16-5e93a74c6958",
-                "Title": "Users",
-                "LevelNo": 2,
-                "Priority": 1,
-                "Icon": "fa fa-users",
-                "ClientAddress": "/Account/List",
-                "Actions": [
-                    {
-                        "PermissionId": "de565b89-504f-4360-a71a-f94de6f70374",
-                        "Title": "AddUser",
-                        "ClientAddress": "/Account/AddUser",
-                        "Urls": [ "Account/Add", "Account/List" ]
-                    },
-                    {
-                        "PermissionId": "abcd7707-1a33-44f6-9f34-af35280cbd4a",
-                        "Title": "UserEdit",
-                        "ClientAddress": "/Account/EditUser",
-                        "Urls": [ "/Account/Edit" ]
-                    },
-                    {
-                        "PermissionId": "f4adf45a-53df-4311-be6a-cc97159a260a",
-                        "Title": "UserDelete",
-                        "ClientAddress": "/Account/Delete",
-                        "Urls": []
-                    },
-                    {
-                        "PermissionId": "1a593865-862a-430e-9065-a84eeaaf7666",
-                        "Title": "UserChangePassword",
-                        "ClientAddress": "/Account/ChangePassword",
-                        "Urls": []
-                    },
-                    {
-                        "PermissionId": "4ae20a38-5079-4a2a-95a7-7c667ba052da",
-                        "Title": "UserRestore",
-                        "ClientAddress": "/Account/Restore",
-                        "Urls": []
-                    },
-                    {
-                        "PermissionId": "3c84e79a-5aca-4b4b-b9ae-54d136927a35",
-                        "Title": "UserChangeActivation",
-                        "ClientAddress": "/Account/ChangeActivation",
-                        "Urls": []
-                    }
-                ]
-
-            },
-            {
-                "PermissionId": "3c84e79a-5aca-4b4b-b9ae-54d136927a35",
-                "Title": "Roles",
-                "LevelNo": 2,
-                "Priority": 2,
-                "Icon": "fa fa-tags",
-                "ClientAddress": "/Role/List",
-                "Actions": [
-                    {
-                        "PermissionId": "de565b89-504f-4361-a71a-f94de6f70374",
-                        "Title": "RoleAdd",
-                        "ClientAddress": "/Role/New",
-                        "Urls": [ "Role/Upsert", "Role/ListPermissions" ]
-                    },
-                    {
-                        "PermissionId": "abcd7707-1a23-44f6-9f34-af35280cbd4a",
-                        "Title": "RoleEdit",
-                        "ClientAddress": "/Role/Edit",
-                        "Urls": [ "Role/Upsert", "Role/ListPermissions" ]
-                    },
-                    {
-                        "PermissionId": "f4adf45a-53df-4300-be6a-cc97159a260a",
-                        "Title": "ActionDelete",
-                        "ClientAddress": "/Role/Delete",
-                        "Urls": []
-                    },
-                    {
-                        "PermissionId": "f4adf45a-53df-4300-be6a-cc97159a260a",
-                        "Title": "ChangeActivation",
-                        "ClientAddress": "/Role/ChangeActivation",
-                        "Urls": []
-                    }
-                ]
-            }
+        "Icon": "fa fa-users",
+        "ClientAddress": "/Account/List",
+        "Actions": [
+          {
+            "PermissionId": "de565b89-504f-4360-a71a-f94de6f70374",
+            "Title": "AddUser",
+            "ClientAddress": "/Account/AddUser",
+            "Urls": [ "Account/Add", "Account/List" ]
+          },
+          {
+            "PermissionId": "abcd7707-1a33-44f6-9f34-af35280cbd4a",
+            "Title": "UserEdit",
+            "ClientAddress": "/Account/EditUser",
+            "Urls": [ "/Account/Edit" ]
+          },
+          {
+            "PermissionId": "f4adf45a-53df-4311-be6a-cc97159a260a",
+            "Title": "UserDelete",
+            "ClientAddress": "/Account/Delete",
+            "Urls": []
+          },
+          {
+            "PermissionId": "1a593865-862a-430e-9065-a84eeaaf7666",
+            "Title": "UserChangePassword",
+            "ClientAddress": "/Account/ChangePassword",
+            "Urls": []
+          },
+          {
+            "PermissionId": "4ae20a38-5079-4a2a-95a7-7c667ba052da",
+            "Title": "UserRestore",
+            "ClientAddress": "/Account/Restore",
+            "Urls": []
+          },
+          {
+            "PermissionId": "3c84e79a-5aca-4b4b-b9ae-54d136927a35",
+            "Title": "UserChangeActivation",
+            "ClientAddress": "/Account/ChangeActivation",
+            "Urls": []
+          }
         ]
-    },
-    //------------------------------------Product Management--------------------------
 
+      },
+      {
+        "PermissionId": "3c84e79a-5aca-4b4b-b9ae-54d136927a35",
+        "Title": "Roles",
+        "LevelNo": 2,
+        "Priority": 2,
+        "Icon": "fa fa-tags",
+        "ClientAddress": "/Role/List",
+        "Actions": [
+          {
+            "PermissionId": "de565b89-504f-4361-a71a-f94de6f70374",
+            "Title": "RoleAdd",
+            "ClientAddress": "/Role/New",
+            "Urls": [ "Role/Upsert", "Role/ListPermissions" ]
+          },
+          {
+            "PermissionId": "abcd7707-1a23-44f6-9f34-af35280cbd4a",
+            "Title": "RoleEdit",
+            "ClientAddress": "/Role/Edit",
+            "Urls": [ "Role/Upsert", "Role/ListPermissions" ]
+          },
+          {
+            "PermissionId": "f4adf45a-53df-4300-be6a-cc97159a260a",
+            "Title": "ActionDelete",
+            "ClientAddress": "/Role/Delete",
+            "Urls": []
+          },
+          {
+            "PermissionId": "f4adf45a-53df-4300-be6a-cc97159a260a",
+            "Title": "ChangeActivation",
+            "ClientAddress": "/Role/ChangeActivation",
+            "Urls": []
+          }
+        ]
+      }
+    ]
+  },
+
+  //------------------------------------Product Management--------------------------
     {
         "PermissionId": "8cae0481-d040-4ea2-94b3-486af69aa9dc",
         "Title": "ProductManagement",
@@ -338,116 +337,119 @@
         ]
     },
     //--------------------------------------------ContentManagement------------------------
-    {
-        "PermissionId": "6cae0481-d040-4ea2-94b3-486af69aa9dc",
-        "Title": "ContentManagement",
-        "LevelNo": 1,
-        "Priority": 3,
-        "Icon": "fa fa-rss",
-        "ClientAddress": "#",
-        "Children": [
-            {
-                "PermissionId": "400c8796-17c3-484f-b285-92f00e0ce937",
-                "Title": "ContentCategories",
-                "LevelNo": 2,
-                "Priority": 1,
-                "Icon": "fa fa-object-group",
-                "ClientAddress": "/ContentCategory/List",
-                "Actions": [
-                    {
-                        "PermissionId": "0b5bc48c-7adc-47a8-8f64-8240c742f638",
-                        "Title": "ActionNew",
-                        "ClientAddress": "/ContentCategory/AddEdit",
-                        "Urls": [ "/ContentCategory/Add", "/ContentCategory/List" ]
-                    },
-                    {
-                        "PermissionId": "fd8db2fa-f935-48e2-be47-c626ed3c4780",
-                        "Title": "ActionEdit",
-                        "ClientAddress": "/ContentCategory/AddEdit",
-                        "Urls": [ "/ContentCategory/Edit", "/ContentCategory/List" ]
-                    },
-                    {
-                        "PermissionId": "6919831b-e978-40c9-b103-80a3aa576c34",
-                        "Title": "ActionDelete",
-                        "ClientAddress": "/ContentCategory/Delete",
-                        "Urls": []
-                    },
-                    {
-                        "PermissionId": "eaa29555-0f0e-408a-82c5-d2388d40b910",
-                        "Title": "ActionRestore",
-                        "ClientAddress": "/ContentCategory/Restore",
-                        "Urls": []
-                    }
-                ]
-            },
-            {
-                "PermissionId": "400c7696-17c3-484f-b285-92f00e0ce937",
-                "Title": "Contents",
-                "LevelNo": 2,
-                "Priority": 2,
-                "Icon": "fa fa-rss-square",
-                "ClientAddress": "/Content/List",
-                "Actions": [
-                    {
-                        "PermissionId": "6ad1cd07-7416-480e-9c86-8e34dab21301",
-                        "Title": "ActionNew",
-                        "ClientAddress": "/Content/AddEdit",
-                        "Urls": [
-                            "/ContentCategory/GetContentCategoryList",
-                            "/Content/List",
-                            "Content/Add"
-                        ]
-                    },
-                    {
-                        "PermissionId": "df5f29a0-7839-46e9-9c80-9b231fd502fe",
-                        "Title": "ActionEdit",
-                        "ClientAddress": "/Content/AddEdit",
-                        "Urls": [
-                            "/ContentCategory/GetContentCategoryList",
-                            "/Content/List",
-                            "Content/Edit"
-                        ]
-                    },
-                    {
-                        "PermissionId": "03951b79-7916-40b3-b2a2-31a8022ce5a2",
-                        "Title": "ActionDelete",
-                        "ClientAddress": "/Content/Delete",
-                        "Urls": []
-                    },
-                    {
-                        "PermissionId": "f2021ec4-f134-45db-aa62-36aa90602c38",
-                        "Title": "ActionRestore",
-                        "ClientAddress": "/Content/Restore",
-                        "Urls": []
-                    }
-                ]
-
-            },
-            {
-                "PermissionId": "400c6596-17c3-484f-b285-92f00e0ce937",
-                "Title": "ContentComments",
-                "LevelNo": 2,
-                "Priority": 3,
-                "Icon": "fa fa-comments",
-                "ClientAddress": "/ContentComments/List",
-                "Actions": [
-                    {
-                        "PermissionId": "430da501-4b02-4cb2-9e65-f2b203545580",
-                        "Title": "ContentCommentDelete",
-                        "ClientAddress": "/ContentComments/Delete",
-                        "Urls": []
-                    },
-                    {
-                        "PermissionId": "7009a72d-e2df-4030-86d0-2bca7417a5d6",
-                        "Title": "ContentCommentApprove",
-                        "ClientAddress": "/ContentComments/Approve",
-                        "Urls": []
-                    }
-                ]
-
-            }
+  {
+    "PermissionId": "6cae0481-d040-4ea2-94b3-486af69aa9dc",
+    "Title": "ContentManagement",
+    "LevelNo": 1,
+    "Priority": 3,
+    "Icon": "fa fa-rss",
+    "ClientAddress": "#",
+    "Children": [
+      {
+        "PermissionId": "400c8796-17c3-484f-b285-92f00e0ce937",
+        "Title": "ContentCategories",
+        "LevelNo": 2,
+        "Priority": 1,
+        "Icon": "fa fa-object-group",
+        "ClientAddress": "/ContentCategory/List",
+        "Actions": [
+          {
+            "PermissionId": "0b5bc48c-7adc-47a8-8f64-8240c742f638",
+            "Title": "ActionNew",
+            "ClientAddress": "/ContentCategory/AddEdit",
+            "Urls": [ "/ContentCategory/Add", "/ContentCategory/List" ]
+          },
+          {
+            "PermissionId": "fd8db2fa-f935-48e2-be47-c626ed3c4780",
+            "Title": "ActionEdit",
+            "ClientAddress": "/ContentCategory/AddEdit",
+            "Urls": [ "/ContentCategory/Edit", "/ContentCategory/List" ]
+          },
+          {
+            "PermissionId": "6919831b-e978-40c9-b103-80a3aa576c34",
+            "Title": "ActionDelete",
+            "ClientAddress": "/ContentCategory/Delete",
+            "Urls": []
+          },
+          {
+            "PermissionId": "eaa29555-0f0e-408a-82c5-d2388d40b910",
+            "Title": "ActionRestore",
+            "ClientAddress": "/ContentCategory/Restore",
+            "Urls": []
+          }
         ]
-    },
+      },
+      {
+        "PermissionId": "400c7696-17c3-484f-b285-92f00e0ce937",
+        "Title": "Contents",
+        "LevelNo": 2,
+        "Priority": 2,
+        "Icon": "fa fa-rss-square",
+        "ClientAddress": "/Content/List",
+        "Actions": [
+          {
+            "PermissionId": "6ad1cd07-7416-480e-9c86-8e34dab21301",
+            "Title": "ActionNew",
+            "ClientAddress": "/Content/AddEdit",
+            "Urls": [
+              "/ContentCategory/GetContentCategoryList",
+              "/Content/List",
+              "Content/Add"
+            ]
+          },
+          {
+            "PermissionId": "df5f29a0-7839-46e9-9c80-9b231fd502fe",
+            "Title": "ActionEdit",
+            "ClientAddress": "/Content/AddEdit",
+            "Urls": [
+              "/ContentCategory/GetContentCategoryList",
+              "/Content/List",
+              "Content/Edit"
+            ]
+          },
+          {
+            "PermissionId": "03951b79-7916-40b3-b2a2-31a8022ce5a2",
+            "Title": "ActionDelete",
+            "ClientAddress": "/Content/Delete",
+            "Urls": []
+          },
+          {
+            "PermissionId": "f2021ec4-f134-45db-aa62-36aa90602c38",
+            "Title": "ActionRestore",
+            "ClientAddress": "/Content/Restore",
+            "Urls": []
+          }
+        ]
+
+      },
+      {
+        "PermissionId": "400c6596-17c3-484f-b285-92f00e0ce937",
+        "Title": "ContentComments",
+        "LevelNo": 2,
+        "Priority": 3,
+        "Icon": "fa fa-comments",
+        "ClientAddress": "/ContentComments/List",
+        "Actions": [
+          {
+            "PermissionId": "430da501-4b02-4cb2-9e65-f2b203545580",
+            "Title": "ContentCommentDelete",
+            "ClientAddress": "/ContentComments/Delete",
+            "Urls": []
+          },
+          {
+            "PermissionId": "7009a72d-e2df-4030-86d0-2bca7417a5d6",
+            "Title": "ContentCommentApprove",
+            "ClientAddress": "/ContentComments/Approve",
+            "Urls": []
+          }
+        ]
+
+      }
+    ]
+  },
+
+
+
     //-----------------------------------------------------------------StoreSetting-----------------------------
     {
         "PermissionId": "923a54be-abe1-4190-9634-dd7f36ee0615",
