@@ -20,11 +20,8 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public enum PspType
         {
             //[Description(" ایران کیش")]
-             IranKish,
-            //[Description("سامان")]
-
-
-
+             //IranKish,
+            [Description("سامان")]
             /// <summary>
             /// the saman payment gateway implemented here
             /// </summary>

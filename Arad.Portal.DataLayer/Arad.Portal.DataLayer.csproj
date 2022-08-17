@@ -10,8 +10,4 @@
     <ProjectReference Include="..\Arad.Portal.GeneralLibrary\Arad.Portal.GeneralLibrary.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Entities\General\Domain\" />
-  </ItemGroup>
-
 </Project>

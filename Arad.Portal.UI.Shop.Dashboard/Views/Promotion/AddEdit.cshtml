@@ -306,6 +306,7 @@
                    $(".proSec").css("display", "none");
                }
                if ($("#promotionTypeId").val() == "1" && $("#productVendor").length == 0) {
+                   debugger;
                     $.ajax({
                        url: '@Url.Action("GetFilteredProductGroup", "Promotion")'+`?vendorId=${-1}`,
                         type: 'Get',
@@ -342,20 +343,14 @@
           if ($(this).val() != "-1") {
               switch ($(this).val()) {
 
-                  case "0":
+                  case "0": //Fixed
+                   case "1": //Percentage
                       $("#PriceOrDiscount").css("display", "block");
                       $("#productGroupTypeSection").css("display", "none");
                       $("#productTypeSection").css("display", "none");
                       $(".type2").css("display", "none");
                       break;
-                  case "1":
-                      $("#PriceOrDiscount").css("display", "block");
-                      $("#productGroupTypeSection").css("display", "block");
-                      $("#productTypeSection").css("display", "none");
-                      $(".type2").css("display", "none");
-
-                      break;
-                  case "2":
+                  case "2": //product
                       $("#PriceOrDiscount").css("display", "none");
                       $("#productGroupTypeSection").css("display", "block");
                       $("#productTypeSection").css("display", "block");
@@ -368,6 +363,7 @@
       $(document).on("change", "#productVendor", function () {
           debugger;
           if ($("#productVendor").val() != "-1") {
+              debugger;
               var vendorId = $("#productVendor").val();
                     $.ajax({
                         url: "@Url.Action("GetFilteredProductGroup", "Promotion")" +`?vendorId=${vendorId}`,

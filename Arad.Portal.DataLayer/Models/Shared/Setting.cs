@@ -6,12 +6,6 @@ using System.Threading.Tasks;
 
 namespace Arad.Portal.DataLayer.Models.Shared
 {
-    public class DatabaseConfig
-    {
-        public string ConnectionString { get; set; }
-
-        public string DbName { get; set; }
-    }
     public class Setting
     {
         public string DateFormat { get; set; }

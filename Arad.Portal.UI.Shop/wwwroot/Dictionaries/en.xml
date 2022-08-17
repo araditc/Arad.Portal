@@ -45,6 +45,9 @@
   <string key="btn_Save">
     <value>Save</value>
   </string>
+	<string key="btn_Install">
+		<value>Install</value>
+	</string>
   <string key="btn_Edit">
     <value>Edit</value>
   </string>
@@ -1658,12 +1661,45 @@
   <string key="AlertAndMessage_PasswordandRepeatIsNotEqual">
     <value>password and password repitation isnt equal.</value>
   </string>
+	<string key="AlertAndMessage_HomepageDefaultDesign">
+		<value>Do you plane to have a sample design in home Page?</value>
+	</string>
   <string key="Choose">
     <value>choose ...</value>
   </string>
-  <string key="SpecificationGroupName">
-    <value>Specification group name</value>
-  </string>
+	<string key="Setting">
+		<value>Setting</value>
+	</string>
+	<string key="ConnectionString">
+		<value>Database Connection String</value>
+	</string>
+	<string key="LogFileDirectory">
+		<value>Logging File Directory</value>
+	</string>
+	<string key="LocalStaticFileStorage">
+		<value>Local Static File Storage Path</value>
+	</string>
+	
+	<string key="SmsLineInformation">
+		<value>SMS Line Information</value>
+	</string>
+	<string key="Sms_LinkAddress">
+		<value>Link Address</value>
+	</string>
+	<string key="Sms_UserName">
+		<value>UserName</value>
+	</string>
+	<string key="Sms_Passworrd">
+		<value>Password</value>
+	</string>
+	<string key="Sms_LineNumber">
+		<value>LineNumber</value>
+	</string>
+	<string key="Sms_ComapnyName">
+		<value>Company Name</value>
+	</string>
+	
+ 
   <string key="SpecificationGroup">
     <value>Specification group</value>
   </string>
@@ -1790,6 +1826,9 @@
   <string key="User_Profile">
     <value>User Profile</value>
   </string>
+	<string key="User_SysAccount">
+		<value>System Account User</value>
+	</string>
 	<string key="User_NationalCode">
 		<value>national code</value>
 	</string>

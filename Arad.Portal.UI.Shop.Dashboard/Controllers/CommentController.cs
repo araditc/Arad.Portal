@@ -61,7 +61,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             try
             {
                 var queryString = "";
-                if(!string.IsNullOrEmpty(Request.QueryString.ToString()))
+                if(!string.IsNullOrEmpty(Request.Path.ToString()))
                 {
                     queryString = Request.QueryString.ToString();
                     queryString += $"&refType={(referenceSource == "ProductComments" ? ReferenceType.Product : ReferenceType.Content)}";
@@ -70,7 +70,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     queryString = $"?refType={(referenceSource == "ProductComments" ? ReferenceType.Product : ReferenceType.Content)}";
                 }
-                result = await _commentRepository.List(Request.QueryString.ToString());
+                result = await _commentRepository.List(queryString);
                 var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
                 ViewBag.ReferenceTypes = _commentRepository.GetAllReferenceType();

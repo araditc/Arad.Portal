@@ -51,6 +51,9 @@
   <string key="btn_Save">
     <value>ذخیره</value>
   </string>
+	<string key="btn_Install">
+		<value>ذخیره</value>
+	</string>
   <string key="btn_Edit">
     <value>ویرایش</value>
   </string>
@@ -1706,9 +1709,44 @@
   <string key="AlertAndMessage_PasswordandRepeatIsNotEqual">
     <value>پسورد و تکرار آن یکسان نیستند.</value>
   </string>
+	<string key="AlertAndMessage_HomepageDefaultDesign">
+		<value>آیا قصد دارید صفحه نمونه خانه را ببینید؟</value>
+	</string>
   <string key="Choose">
     <value>انتخاب کنید ...</value>
   </string>
+	<string key="Setting">
+		<value>تنظیمات</value>
+	</string>
+	<string key="ConnectionString">
+		<value>Database Connection String</value>
+	</string>
+	<string key="LogFileDirectory">
+		<value>آدرس پوشه برای ذخیره سازی فایل های لاگ برنامه</value>
+	</string>
+	<string key="LocalStaticFileStorage">
+		<value>آدرس پوشه برای ذخیره سازی عکسها و فایل های برنامه</value>
+	</string>
+	<string key="SmsLineInformation">
+		<value>اطلاعات خط ارسال sms</value>
+	</string>
+	<string key="Sms_LinkAddress">
+		<value>لینک آدرس</value>
+	</string>
+	<string key="Sms_UserName">
+		<value>نام کاربری</value>
+	</string>
+	<string key="Sms_Passworrd">
+		<value>کلمه عبور</value>
+	</string>
+	<string key="Sms_LineNumber">
+		<value>شماره خط</value>
+	</string>
+	<string key="Sms_ComapnyName">
+		<value>نام شرکت</value>
+	</string>
+	
+
   <string key="SpecificationGroupName">
     <value>نام گروه مشخصات محصول</value>
   </string>
@@ -1838,6 +1876,9 @@
   <string key="User_Profile">
     <value>پروفایل کاربری</value>
   </string>
+	<string key="User_SysAccount">
+		<value>کاربر System Account</value>
+	</string>
 	<string key="User_NationalCode">
 		<value>کد ملی</value>
 	</string>

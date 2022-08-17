@@ -165,48 +165,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
             }
             #endregion
 
-            #region BasicData
-            var basicDataRepository =
-                 (BasicDataRepository)scope.ServiceProvider.GetService(typeof(IBasicDataRepository));
-            if (!basicDataRepository.HasLastID())
-            {
-                var def = new DataLayer.Entities.General.BasicData.BasicData
-                {
-                    BasicDataId = Guid.NewGuid().ToString(),
-                    GroupKey = "lastid",
-                    Text = "0",
-                    Value = "0",
-                    Order = 1
-                };
-                basicDataRepository.InsertOne(def);
-            }
-
-            if (!basicDataRepository.HasShippingType())
-            {
-                var post = new DataLayer.Entities.General.BasicData.BasicData
-                {
-                    BasicDataId = Guid.NewGuid().ToString(),
-                    GroupKey = "ShippingType",
-                    Text = "Post",
-                    Value = "1",
-                    Order = 1
-                };
-                basicDataRepository.InsertOne(post);
-
-
-                var courier = new DataLayer.Entities.General.BasicData.BasicData
-                {
-                    BasicDataId = Guid.NewGuid().ToString(),
-                    GroupKey = "ShippingType",
-                    Text = "Courier",
-                    Value = "2",
-                    Order = 2
-
-                };
-                basicDataRepository.InsertOne(courier);
-            }
-            #endregion
-
             #region providers diffrenet Types
             var providerRepository =
               (ProviderRepository)scope.ServiceProvider.GetService(typeof(IProviderRepository));

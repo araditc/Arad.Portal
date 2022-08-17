@@ -12,7 +12,7 @@ namespace Arad.Portal.UI.Shop.Helpers
         {
             return new List<PaymentServiceProvider>()
             {
-                GetPSP(Enums.PspType.IranKish),
+                //GetPSP(Enums.PspType.IranKish),
                 //GetPSP(Enums.PspType.Parsian),
                 GetPSP(Enums.PspType.Saman)
             };
@@ -22,26 +22,26 @@ namespace Arad.Portal.UI.Shop.Helpers
         {
             switch (type)
             {
-                case Enums.PspType.IranKish:
-                    return new PaymentServiceProvider()
-                    {
-                        Type = Enums.PspType.IranKish,
-                        Parameters = new List<Parameter>
-                        {
-                            new Parameter()
-                            {
-                                Key = "merchant Id"
+                //case Enums.PspType.IranKish:
+                //    return new PaymentServiceProvider()
+                //    {
+                //        Type = Enums.PspType.IranKish,
+                //        Parameters = new List<Parameter>
+                //        {
+                //            new Parameter()
+                //            {
+                //                Key = "merchant Id"
 
-                            },
-                            new Parameter()
-                            {
-                                Key = "Sha1Key"
+                //            },
+                //            new Parameter()
+                //            {
+                //                Key = "Sha1Key"
 
-                            }
+                //            }
 
-                        },
-                        //IconAddress = "/PspImages/Irankish.jpg"
-                    };
+                //        },
+                //        //IconAddress = "/PspImages/Irankish.jpg"
+                //    };
 
                 //case Enums.PspType.Parsian:
                 //    return new PaymentServiceProvider()

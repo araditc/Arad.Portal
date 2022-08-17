@@ -126,6 +126,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             return View(result);
         }
+
         public async Task<IActionResult> AddEdit(string id = "")
         {
             var model = new DomainDTO();
@@ -154,7 +155,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
             ViewBag.LangId = lan.LanguageId;
             ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
-
+            
             var shippingTypelist = _basicDataRepository.GetList("ShippingType");
             ViewBag.ShippingTypeList = shippingTypelist;
 
@@ -506,9 +507,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var psp = (PspType)pspVal;
             switch (psp)
             {
-                case PspType.IranKish:
-                    htmlResult = GenerateForm(typeof(IrankishModel).GetProperties());
-                    break;
+                //case PspType.IranKish:
+                //    htmlResult = GenerateForm(typeof(IrankishModel).GetProperties());
+                //    break;
                 case PspType.Saman:
                     htmlResult = GenerateForm(typeof(SamanModel).GetProperties());
                     break;

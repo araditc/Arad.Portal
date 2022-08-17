@@ -15,8 +15,6 @@ namespace Arad.Portal.DataLayer.Contracts.General.BasicData
 
         bool SaveLastId(long id);
 
-        List<BasicDataModel> GetListPerDomain(string groupKey);
-
         bool HasShippingType();
 
         

@@ -42,34 +42,58 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
         public List<BasicDataModel> GetList(string groupKey)
         {
             var result = new List<BasicDataModel>();
+            var domainName = base.GetCurrentDomainName();
+            var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).Any() ?
+            _domainContext.Collection.Find(_ => _.DomainName == domainName).First() :
+            _domainContext.Collection.Find(_ => _.IsDefault).First();
+            if (groupKey.ToLower() == "shippingType")
+            {
+                var hasShippingType = HasShippingType();
+                if(!hasShippingType)
+                {
+                    var post = new Entities.General.BasicData.BasicData
+                    {
+                        BasicDataId = Guid.NewGuid().ToString(),
+                        GroupKey = "ShippingType",
+                        Text = "Post",
+                        Value = "1",
+                        Order = 1, 
+                        AssociatedDomainId = domainEntity.DomainId
+                    };
+                    _context.Collection.InsertOne(post);
+
+
+                    var courier = new Entities.General.BasicData.BasicData
+                    {
+                        BasicDataId = Guid.NewGuid().ToString(),
+                        GroupKey = "ShippingType",
+                        Text = "Courier",
+                        Value = "2",
+                        Order = 2,
+                        AssociatedDomainId = domainEntity.DomainId
+
+                    };
+                    _context.Collection.InsertOne(courier);
+                }
+            }
+          
             var lst = _context.Collection
-                .Find(_ => _.GroupKey.ToLower() == groupKey.ToLower()).ToList();
+                .Find(_ => _.GroupKey.ToLower() == groupKey.ToLower() && _.AssociatedDomainId == domainEntity.DomainId).ToList();
 
             result = _mapper.Map<List<BasicDataModel>>(lst);
             result.Insert(0, new BasicDataModel() { Text = GeneralLibrary.Utilities.Language.GetString("Choose"), Value = "-1" });
             return result;
         }
 
-        public List<BasicDataModel> GetListPerDomain(string groupKey)
-        {
-            var result = new List<BasicDataModel>();
-           var domainName = base.GetCurrentDomainName();
-            var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).Any() ?
-                _domainContext.Collection.Find(_ => _.DomainName == domainName).First() :
-                _domainContext.Collection.Find(_ => _.IsDefault).First();
-
-            var lst = _context.Collection
-                  .Find(_ => _.GroupKey.ToLower() == groupKey.ToLower() 
-                          && ( _.AssociatedDomainId == domainEntity.DomainId || _.AssociatedDomainId ==null)).ToList();
-
-            result = _mapper.Map<List<BasicDataModel>>(lst);
-            return result;
-        }
 
         public bool HasLastID()
         {
             var result = false;
-            if (_context.Collection.Find(_ => _.GroupKey.ToLower() == "lastid").Any())
+            var domainName = base.GetCurrentDomainName();
+            var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).Any() ?
+                _domainContext.Collection.Find(_ => _.DomainName == domainName).First() :
+                _domainContext.Collection.Find(_ => _.IsDefault).First();
+            if (_context.Collection.Find(_ => _.GroupKey.ToLower() == "lastid" && _.AssociatedDomainId == domainEntity.DomainId).Any())
             {
                 result = true;
             }
@@ -79,7 +103,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
         public bool HasShippingType()
         {
             var result = false;
-            if (_context.Collection.Find(_ => _.GroupKey.ToLower() == "shippingtype").Any())
+            var domainName = base.GetCurrentDomainName();
+            var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).Any() ?
+               _domainContext.Collection.Find(_ => _.DomainName == domainName).First() :
+               _domainContext.Collection.Find(_ => _.IsDefault).First();
+            if (_context.Collection.Find(_ => _.GroupKey.ToLower() == "shippingtype" && _.AssociatedDomainId == domainEntity.DomainId).Any())
             {
                 result = true;
             }
@@ -102,7 +130,25 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
         public bool SaveLastId(long id)
         {
             var result = false;
-            var entity = _context.Collection.Find(_ => _.GroupKey.ToLower() == "lastid").FirstOrDefault();
+            var domainName = base.GetCurrentDomainName();
+            var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).Any() ?
+              _domainContext.Collection.Find(_ => _.DomainName == domainName).First() :
+              _domainContext.Collection.Find(_ => _.IsDefault).First();
+            var hasLastId = this.HasLastID();
+            if(!hasLastId)
+            {
+                var def = new Entities.General.BasicData.BasicData
+                {
+                    BasicDataId = Guid.NewGuid().ToString(),
+                    GroupKey = "lastid",
+                    Text = "0",
+                    Value = "0",
+                    Order = 1,
+                    AssociatedDomainId = domainEntity.DomainId
+                };
+                _context.Collection.InsertOne(def);
+            }
+            var entity = _context.Collection.Find(_ => _.GroupKey.ToLower() == "lastid" && _.AssociatedDomainId == domainEntity.DomainId ).FirstOrDefault();
             entity.Text = id.ToString();
             entity.Value = id.ToString();
             var updateResult = _context.Collection.ReplaceOne(_ => _.BasicDataId == entity.BasicDataId, entity);
