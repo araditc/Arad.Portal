@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Microsoft.AspNetCore.Localization;
+using Arad.Portal.DataLayer.Contracts.General.User;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -29,12 +30,13 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly IDomainRepository _domainRepository;
         //private readonly EnyimMemcachedMethods<DataLayer.Entities.Shop.Transaction.Transaction> _enyimMemcachedMethods;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserRepository _userRepository;
         private readonly ICommentRepository _commentRepository;
         private readonly string _domainName;
 
         public ProductController(IProductRepository productRepository, IHttpContextAccessor accessor,
             UserManager<ApplicationUser> userManager,
-            IWebHostEnvironment env,
+            IWebHostEnvironment env, IUserRepository userRepository,
             ILanguageRepository lanRepository, IDomainRepository domainRepository, ICommentRepository commentRepository):base(accessor, domainRepository)
         {
             _productRepository = productRepository;
@@ -44,6 +46,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             _userManager = userManager;
             _commentRepository = commentRepository;
             _domainName = this.DomainName;
+            _userRepository = userRepository;
             //_enyimMemcachedMethods = enyimMemcachedMethods;
         }
 
@@ -57,7 +60,6 @@ namespace Arad.Portal.UI.Shop.Controllers
        
         [Route("{language}/product/{**slug}")]
         public async Task<IActionResult> Details(string slug)
-        
         {
             var isLoggedUser = HttpContext.User.Identity.IsAuthenticated;
             string userId = "";
@@ -98,6 +100,19 @@ namespace Arad.Portal.UI.Shop.Controllers
                     else
                     {
                         ViewBag.HasRateBefore = false;
+                    }
+                    #endregion
+                    #region FavoriteList
+                    var userEntity = await _userManager.FindByIdAsync(userId);
+                    var userFavoriteList = _userRepository.GetUserFavoriteList(userId, FavoriteType.Product);
+
+                    if(userFavoriteList.Any(_=>_.EntityId == entity.ProductId))
+                    {
+                        ViewBag.Like = true;
+                    }
+                    else
+                    {
+                        ViewBag.Like = false;
                     }
                     #endregion
                 }

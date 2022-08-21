@@ -15,425 +15,485 @@
                                         Model.Prices.FirstOrDefault(_ => _.StartDate <= DateTime.Now && _.CurrencyId == ViewBag.CurCurrencyId && _.IsActive && _.EndDate == null) : null;
     var realPrice = price.PriceValue;
     var score = @Language.GetString("ProductScore");
+    var like = User.Identity.IsAuthenticated && ViewBag.Like ? true : false;
 }
 @section Styles
-	{
-	
-<link href="~/ImageSlider/slick.css" rel="stylesheet" />
+    {
 
-<link href="~/ImageSlider/jquery.fancybox.min.css" rel="stylesheet" />
-<link href="~/ImageSlider/ImageSlider.css" rel="stylesheet" />
-<style>
-    .smlImg {
-        border-radius: 10%;
-    }
+    <link href="~/ImageSlider/slick.css" rel="stylesheet" />
 
-    .card {
-        position: relative;
-        display: flex;
-        padding: 20px;
-        flex-direction: column;
-        min-width: 0;
-        word-wrap: break-word;
-        background-color: #fff;
-        background-clip: border-box;
-        border: 1px solid #d2d2dc;
-        border-radius: 11px;
-        -webkit-box-shadow: 0px 0px 5px 0px rgb(249, 249, 250);
-        -moz-box-shadow: 0px 0px 5px 0px rgba(212, 182, 212, 1);
-        box-shadow: 0px 0px 5px 0px rgb(161, 163, 164)
-    }
+    <link href="~/ImageSlider/jquery.fancybox.min.css" rel="stylesheet" />
+    <link href="~/ImageSlider/ImageSlider.css" rel="stylesheet" />
+    <style>
+        .smlImg {
+            border-radius: 10%;
+        }
 
-    .media img {
-        width: 60px;
-        height: 60px
-    }
+        a.ratePro {
+            color: transparent;
+        }
 
-    .reply a {
-        text-decoration: none
-    }
+            a.ratePro:hover {
+                color: transparent;
+            }
 
-    .sold_stars i {
-        color: orange
-    }
+        .card {
+            position: relative;
+            display: flex;
+            padding: 20px;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 1px solid #d2d2dc;
+            border-radius: 11px;
+            -webkit-box-shadow: 0px 0px 5px 0px rgb(249, 249, 250);
+            -moz-box-shadow: 0px 0px 5px 0px rgba(212, 182, 212, 1);
+            box-shadow: 0px 0px 5px 0px rgb(161, 163, 164)
+        }
 
-    .lblMdl {
-        padding: 0.5rem 0rem;
-    }
-</style>
+        .media img {
+            width: 60px;
+            height: 60px
+        }
+
+        .reply a {
+            text-decoration: none
+        }
+
+        .sold_stars i {
+            color: orange
+        }
+
+        .lblMdl {
+            padding: 0.5rem 0rem;
+        }
+        .imgParent{
+            position: relative;
+        }
+        .imgParent .fa-heart
+        {
+            position: absolute;
+            left :2%;
+            top: 2%;
+        }
+    </style>
 	}
-<div class="container">
-<div class="row">
-    <div class="col-12 col-lg-6" @*dir="ltr"*@>
-        <div id="detail">
-            <div class="product-images demo-gallery">
-                <div class="main-img-slider">
-                    @foreach (var item in Model.Images)
-                    {
-                        <a data-fancybox="gallery" href=@Url.Content($"~/getscaledimageOnWidth?path={item.Url}&width={1000}")>
-                            <img src="@Url.Content($"~/getscaledimageOnWidth?path={item.Url}&width={800}")" class="img-fluid">
-                        </a>
-                    }
-                </div>
-
-                <ul class="thumb-nav">
-                    @foreach (var item in Model.Images)
-                    {
-                        <li><img class="smlImg" src="@Url.Content($"~/getscaledimageOnWidth?path={item.Url}&width={75}")"></li>
-                    }
-                </ul>
-            </div>
-        </div>
+    <div class="container">
         <div class="row">
-            <div class="sold_stars ratePart col-12 col-md-4 offset-md-4">
-                @for (int i = 1; i <= Model.LikeRate; i++)
-                {
-                    <a href="#"
-                   role="button" title='@($"{score}_{i}")' onclick="Rate(@i);">
-                        <i class="fas fa-star"></i>
-                    </a>
-                }
-                @if (Model.HalfLikeRate)
-                {
-                    <a href="#"
-                   role="button" onclick="Rate(@Model.LikeRate+1);">
-                        <i class="fas fa-star-half-alt"></i>
-                    </a>
-                }
-                @for (int i = (Model.HalfLikeRate ? Model.LikeRate + 2 : Model.LikeRate + 1); i <= 5; i++)
-                {
-                    <a href="#"
-                   role="button" onclick="Rate(@i);" title='@($"{score}_{i}")'>
-                        <i class="far fa-star"></i>
-                    </a>
-                }
-            </div>
-        </div>
-        <div class="row commentSection">
-
-
-            <textarea class="form-control text-start w-100 bg-light" id="commentPart" name="content" rows="3" placeholder="@Language.GetString("AlertAndMessage_WriteComment")"></textarea>
-            <input type="button" class="btn btn-secondary bg-gradient mt-2 float-end" id="btnAddComment" value="@Language.GetString("btn_Insert")" />
-
-        </div>
-
-    </div>
-    <div class="col-12 col-lg-6">
-        <div class="card" style="border: none;">
-            <div class="card-header"></div>
-            <div class="card-body">
-                <h6 class="card-title text-start">
-                    @(Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
-                    Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).Name : "")
-                </h6>
-                <p class="card-text text-start" style="max-height: 260px;overflow-y: auto">
-                    @*text-truncate*@
-                    @(Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
-                    Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).Description : "")
-                </p>
-                <div class="border rounded-3 m-2 mb-4 p-2" style="max-height: 260px;overflow-y: auto">
-                    @{
-                        if (Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) &&
-                        !string.IsNullOrEmpty(Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).BodyContent))
+            <div class="col-12 col-lg-6 border border-1 rounded py-1" @*dir="ltr"*@>
+                <div class="row g-2">
+                    <div class="sold_stars ratePart col-10 col-md-4 px-1">
+                        @for (int i = 1; i <= Model.LikeRate; i++)
                         {
-                                    @Html.Raw(Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).BodyContent)
+                            <a href="#"
+                           role="button" data-bs-toggle="tooltip"  data-bs-placement="bottom" title='@($"{score}_{i}")' onclick="Rate(@i);" class="ratePro">
+                                <i class="fas fa-star"></i>
+                            </a>
                         }
-                    }
+                        @if (Model.HalfLikeRate)
+                        {
+                            <a href="#" class="ratePro"
+                           role="button" data-bs-toggle="tooltip"  data-bs-placement="bottom" onclick="Rate(@Model.LikeRate+1);">
+                                <i class="fas fa-star-half-alt"></i>
+                            </a>
+                        }
+                        @for (int i = (Model.HalfLikeRate ? Model.LikeRate + 2 : Model.LikeRate + 1); i <= 5; i++)
+                        {
+                            <a href="#" class="ratePro"
+                           role="button" data-bs-toggle="tooltip"  data-bs-placement="bottom" onclick="Rate(@i);" title='@($"{score}_{i}")'>
+                                <i class="far fa-star"></i>
+                            </a>
+                        }
                 </div>
-                @{
-                            @foreach (var spec in @Model.Specifications.Where(_ => _.LanguageId == ViewBag.CurLanguageId))
-                    {
-                                <div class="row border-top m-1 py-2">
-                                    <div class="col-6">
-                                        <span>@spec.SpecificationName :</span>
-                                    </div>
-                                    <div class="col-6">
-                                        <span>@spec.Values.Replace("|",",")</span>
-                                    </div>
-                                </div>
-                    }
+                <div class="col-1 offset-1 col-md-4 offset-md-4 px-3">
+                    <a href="#" role="button" class="float-end fs-4" data-bs-toggle="tooltip" onclick="AddToFavoriteList('@Model.ProductCode');"
+                         data-bs-placement="bottom" title="@Language.GetString("AlertAndMessage_AddToFavoriteList")">
+                         @if(!like)
+                        {
+                             <i class="far fa-heart"></i>
+                        }else
+                        {
+                            <i class="fas fa-heart"></i>
+                        }
+                       
+                     </a>
+                </div>
+            </div>
+            <div id="detail">
+                <div class="product-images demo-gallery border-0">
+                    <div class="main-img-slider">
+                        @foreach (var item in Model.Images)
+                        {
+                            <a data-fancybox="gallery" class="d-block" href=@Url.Content($"~/getscaledimageOnWidth?path={item.Url}&width={1000}")>
+                                <img src="@Url.Content($"~/getscaledimageOnWidth?path={item.Url}&width={800}")" class="img-fluid">
+                            </a>
+                        }
+                    </div>
 
-                    if (Model.Inventory > 0)
-                    {
-                                <div class="mt-4 p-2 bg-secondary bg-opacity-10 border rounded-3">
-                                    <div class="row  mt-2">
-                                        <div class="col-12 col-md-3 col-lg-2">
-                                            <span>@Language.GetString("PriceValue") :</span>
-                                        </div>
-                                        @if (realPrice == Model.PriceValWithPromotion && Model.GiftProduct == null)
-                                {
-                                            <div class="col-12 col-md-3">
-                                                <p>
-                                                    <mark>
-                                                        @($"{@Model.PriceValWithPromotion} {@price.Prefix}")
-                                                    </mark>
-                                                <p>
-                                            </div>
-                                }
-                                else
-                                {
-                                            @if (Model.GiftProduct == null)
+                    <ul class="thumb-nav">
+                        @foreach (var item in Model.Images)
+                        {
+                            <li><img class="smlImg" src="@Url.Content($"~/getscaledimageOnWidth?path={item.Url}&width={75}")"></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row commentSection">
+
+
+                <textarea class="form-control text-start w-100 bg-light" id="commentPart" name="content" rows="3" placeholder="@Language.GetString("AlertAndMessage_WriteComment")"></textarea>
+                <input type="button" class="btn btn-secondary bg-gradient mt-2 float-end" id="btnAddComment" value="@Language.GetString("btn_Insert")" />
+
+            </div>
+
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="card" style="border: none;">
+                <div class="card-header"></div>
+                <div class="card-body">
+                    <h6 class="card-title text-start">
+                        @(Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
+                        Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).Name : "")
+                    </h6>
+                    <p class="card-text text-start" style="max-height: 260px;overflow-y: auto">
+                        @*text-truncate*@
+                        @(Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
+                        Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).Description : "")
+                    </p>
+                    <div class="border rounded-3 m-2 mb-4 p-2" style="max-height: 260px;overflow-y: auto">
+                        @{
+                            if (Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) &&
+                            !string.IsNullOrEmpty(Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).BodyContent))
+                            {
+                                                            @Html.Raw(Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).BodyContent)
+                            }
+                        }
+                    </div>
+                    @{
+                                                    @foreach (var spec in @Model.Specifications.Where(_ => _.LanguageId == ViewBag.CurLanguageId))
+                        {
+                                                        <div class="row border-top m-1 py-2">
+                                                            <div class="col-6">
+                                                                <span>@spec.SpecificationName :</span>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <span>@spec.Values.Replace("|",",")</span>
+                                                            </div>
+                                                        </div>
+                        }
+
+                        if (Model.Inventory > 0)
+                        {
+                                                        <div class="mt-4 p-2 bg-secondary bg-opacity-10 border rounded-3">
+                                                            <div class="row  mt-2">
+                                                                <div class="col-12 col-md-3 col-lg-2">
+                                                                    <span>@Language.GetString("PriceValue") :</span>
+                                                                </div>
+                                                                @if (realPrice == Model.PriceValWithPromotion && Model.GiftProduct == null)
                                     {
-                                                <div class="col-12 col-md-4 col-lg-3">
-                                                    <p>
-                                                        <mark>
-                                                            @Model.PriceValWithPromotion + @price.Prefix;
-                                                        </mark>
-                                                    </p>
-                                                </div>
-                                                <div class="col-12 col-md-4 col-lg-3">
-                                                    <p>
-                                                        <s>
-                                                            @realPrice + @price.Prefix ;
-                                                        </s>
-                                                    </p>
-                                                </div>
+                                                                    <div class="col-12 col-md-3">
+                                                                        <p>
+                                                                            <mark>
+                                                                                @($"{Convert.ToInt64(@Model.PriceValWithPromotion):n0} {@price.Prefix}")
+                                                                            </mark>
+                                                                        <p>
+                                                                    </div>
                                     }
                                     else
                                     {
-                                                <div class="col-12 col-md-4 col-lg-3">
-                                                    <p>
-                                                        <mark>
-                                                            @Model.PriceValWithPromotion + @price.Prefix;
-                                                        </mark>
-                                                    </p>
-                                                </div>
-                                                <div class="col-12 col-md-4 col-lg-3">
-                                                    <p>@Language.GetString("byBuying")</p>
-                                                    <span>@Model.Promotion.BoughtCount.Value</span>
-                                                    <p>@Language.GetString("AsGift")</p>
-                                                    <span>@Model.Promotion.PromotedCountofUnit.Value</span>
-                                                    <a class="bbb_deals_item_name" href="/product/@Model.GiftProduct.ProductCode">
-                                                        @(Model.GiftProduct.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
-                                Model.GiftProduct.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).Name :
-                                Model.GiftProduct.MultiLingualProperties.FirstOrDefault().Name )
-                                                    </a>
-                                                </div>
+                                                                    @if (Model.GiftProduct == null)
+                                        {
+                                                                        <div class="col-12 col-md-4 col-lg-3">
+                                                                            <p>
+                                                                                <mark>
+                                                                                    @($"{Convert.ToInt64(@Model.PriceValWithPromotion):n0}  {@price.Prefix}");
+                                                                                </mark>
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="col-12 col-md-4 col-lg-3">
+                                                                            <p>
+                                                                                <s>
+                                                                                    @realPrice + @price.Prefix ;
+                                                                                </s>
+                                                                            </p>
+                                                                        </div>
+                                        }
+                                        else
+                                        {
+                                                                        <div class="col-12 col-md-4 col-lg-3">
+                                                                            <p>
+                                                                                <mark>
+                                                                                    @($"{Convert.ToInt64(@Model.PriceValWithPromotion):n0} {@price.Prefix}");
+                                                                                </mark>
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="col-12 col-md-4 col-lg-3">
+                                                                            <p>@Language.GetString("byBuying")</p>
+                                                                            <span>@Model.Promotion.BoughtCount.Value</span>
+                                                                            <p>@Language.GetString("AsGift")</p>
+                                                                            <span>@Model.Promotion.PromotedCountofUnit.Value</span>
+                                                                            <a class="bbb_deals_item_name" href="/product/@Model.GiftProduct.ProductCode">
+                                                                                @(Model.GiftProduct.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
+                                    Model.GiftProduct.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).Name :
+                                    Model.GiftProduct.MultiLingualProperties.FirstOrDefault().Name )
+                                                                            </a>
+                                                                        </div>
+                                        }
+
                                     }
 
-                                }
+                                                                <div class="col-12 col-md-3 text-start">
+                                                                    <span>@Language.GetString("InventoryInStore")</span>
+                                                                    <span>@Model.Inventory</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-12 col-md-3 d-flex justify-content-center">
+                                                                    <label class="lblMdl">@Language.GetString("OrderCnt") :</label>
+                                                                </div>
+                                                                <div class="col-12 col-md-3">
+                                                                    <input type="number" class="form-control" id="orderCnt" name="orderCnt" min="0" value="1" />
+                                                                </div>
+                                                                <div class="col-12 col-md-6 d-flex justify-content-center">
+                                                                    <button type="button" id="btnAddToCart" class="btn btn-success  @(@Model.Inventory <= 0 ? "disabled" : "")" prid="@Model.ProductId">
+                                                                        <span class="shopping-cart">
+                                                                            <em class="fa fa-shopping-basket"></em>
+                                                                        </span>
+                                                                        <span> @Language.GetString("btn_AddToShoppingCart")</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
 
-                                        <div class="col-12 col-md-3 text-start">
-                                            <span>@Language.GetString("InventoryInStore")</span>
-                                            <span>@Model.Inventory</span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 col-md-3 d-flex justify-content-center">
-                                            <label class="lblMdl">@Language.GetString("OrderCnt") :</label>
-                                        </div>
-                                        <div class="col-12 col-md-3">
-                                            <input type="number" class="form-control" id="orderCnt" name="orderCnt" min="0" value="1" />
-                                        </div>
-                                        <div class="col-12 col-md-6 d-flex justify-content-center">
-                                            <button type="button" id="btnAddToCart" class="btn btn-success  @(@Model.Inventory <= 0 ? "disabled" : "")" prid="@Model.ProductId">
-                                                <span class="shopping-cart">
-                                                    <em class="fa fa-shopping-basket"></em>
-                                                </span>
-                                                <span> @Language.GetString("btn_AddToShoppingCart")</span>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                </div>
+                                                        </div>
+                        }
+                        else
+                        {
+                                                        <div class="row">
+                                                            <div class="col-6 col-md-3 offset-md-3">
+                                                                <button class="btn btn-light bg-gradient" disabled>@Language.GetString("UnAvailable")</button>
+                                                            </div>
+                                                            <div class="col-6 col-md-3">
+                                                                <button class="btn btn-danger bg-gradient d-none">@Language.GetString("btn_InformMe")</button>
+                                                            </div>
+                                                        </div>
+                        }
                     }
-                    else
-                    {
-                                <div class="row">
-                                    <div class="col-6 col-md-3 offset-md-3">
-                                        <button class="btn btn-light bg-gradient" disabled>@Language.GetString("UnAvailable")</button>
-                                    </div>
-                                    <div class="col-6 col-md-3">
-                                        <button class="btn btn-danger bg-gradient d-none">@Language.GetString("btn_InformMe")</button>
-                                    </div>
-                                </div>
-                    }
-                }
+                </div>
             </div>
         </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="mb-3 mt-3 px-3 bg-secondary bg-opacity-10">
+                <div class="row">
+                    <div class="col-12">
+
+                        @foreach (var item in Model.Comments)
+                        {
+                            @await Component.InvokeAsync("CommentSection", item)
+                            ;
+
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*<div class="col-md-6 txtAlign">
+        <div class="border rounded-3 m-2 p-2">
+        @{
+        if (Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) &&
+        !string.IsNullOrEmpty(Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).BodyContent))
+        {
+        @Html.Raw(Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).BodyContent)
+        }
+        }
+        </div>
+        </div>
+        }*@
     </div>
 </div>
-<div class="row">
-    <div class="col-12">
-        <div class="mb-3 mt-3 px-3 bg-secondary bg-opacity-10">
-            <div class="row">
-                <div class="col-12">
+<script src="~/js/CommentSection/cmt.js"></script>
+<script src="~/ImageSlider/slick.min.js"></script>
 
-                    @foreach (var item in Model.Comments)
-                    {
-                        @await Component.InvokeAsync("CommentSection", item)
-                        ;
+<script src="~/ImageSlider/jquery.fancybox.min.js"></script>
 
-                    }
 
-                </div>
-            </div>
-        </div>
-    </div>
-    @*<div class="col-md-6 txtAlign">
-                <div class="border rounded-3 m-2 p-2">
-                    @{
-                if (Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) &&
-                !string.IsNullOrEmpty(Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).BodyContent))
-                {
-                                    @Html.Raw(Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).BodyContent)
-                }
-                    }
-                </div>
-            </div>
-      }*@
-    </div>
-    </div>
-    <script src="~/js/CommentSection/cmt.js"></script>
-    <script src="~/ImageSlider/slick.min.js"></script>
-
-    <script src="~/ImageSlider/jquery.fancybox.min.js"></script>
-  
-
-    @if (dir == "rtl")
+@if (dir == "rtl")
 {
-        <script src="~/ImageSlider/ImageSlider-rtl.js"></script>
+    <script src="~/ImageSlider/ImageSlider-rtl.js"></script>
 }
 else
 {
-        <script src="~/ImageSlider/ImageSlider-ltr.js"></script>
+    <script src="~/ImageSlider/ImageSlider-ltr.js"></script>
 }
 
-    <script type="text/javascript">
-        var DivId;
-        var Sender;
-        $(document).ready(function() {
+<script type="text/javascript">
+    var DivId;
+    var Sender;
+    $(document).ready(function() {
+        debugger;
+        $("#btnAddComment").click(function(e) {
             debugger;
-            $("#btnAddComment").click(function(e) {
-                debugger;
-                if ('@User.Identity.IsAuthenticated' === 'True') {
-                    if ($("#commentPart").val() != "") {
+            if ('@User.Identity.IsAuthenticated' === 'True') {
+                if ($("#commentPart").val() != "") {
 
-                        var obj = {};
-                        obj.ReferenceId = `p*${'@Model.ProductId'}`;
-                        obj.Content = $("#commentPart").val();
-                        obj.ParentId = null;
-
-                        $.ajax({
-                            url: '@Url.Action("SubmitComment", "Comment")',
-                            contentType: "application/json",
-                            data: JSON.stringify(obj),
-                            type: "Post",
-                            beforeSend: function() {
-                            },
-                            success: function(result) {
-                                debugger;
-                                if (result.status === "Success") {
-
-                                    $("#commentPart").val("@Language.GetString("AlertAndMessage_SubmitComment")");
-                                    setTimeout(function() {
-                                        $("#commentPart").val("");
-                                    },
-                                        3000);
-                                    //location.reload();
-                                }
-                            }
-                        });
-                    }
-                } else {
-                    document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${'@Language.GetString("AlertAndMessage_LoginFirst")'}`;
-                    document.getElementById('mainToastBody').classList.add('alert-danger');
-                    var toastDiv = $("#mainToast");
-                    $("#toastPanel").show();
-                    var toast = new bootstrap.Toast(toastDiv);
-                    toast.show();
-
-                    setTimeout(function(){
-                         $("#toastPanel").hide();
-                    }, 3000);
-                }
-            });
-
-
-            $("#btnAddToCart").click(function() {
-                debugger;
-                var cnt = $("#orderCnt").val();
-                if ('@User.Identity.IsAuthenticated' === 'True')//user is authenticated and can add product to its cart
-                {
-                    debugger;
+                    var obj = {};
+                    obj.ReferenceId = `p*${'@Model.ProductId'}`;
+                    obj.Content = $("#commentPart").val();
+                    obj.ParentId = null;
 
                     $.ajax({
-                        url: `/${'@ViewBag.LanIcon'}/Basket/AddProToBasket?productId=` + '@Model.ProductId' + "&cnt=" + cnt,
-                        contentType: 'application/json',
-                        type: 'Get',
-                        dataType: 'json',
+                        url: '@Url.Action("SubmitComment", "Comment")',
+                        contentType: "application/json",
+                        data: JSON.stringify(obj),
+                        type: "Post",
                         beforeSend: function() {
                         },
                         success: function(result) {
-                            if (result.status == "Succeed") {
-                                debugger;
-                                setProductCountInCart(result.cnt);
+                            debugger;
+                            if (result.status === "Success") {
 
-                                $('#mainToastBody').html(`<i class="far fa-check-circle"></i> ${result.message}`);
-                                $('#mainToastBody').addClass('alert-success');
-                                 $("#toastPanel").show();
-                                var toast = new bootstrap.Toast($("#mainToast"));
-                                toast.show();
-                                setTimeout(function(){
-                                     $("#toastPanel").hide();
-                                }, 2500);
+                                $("#commentPart").val("@Language.GetString("AlertAndMessage_SubmitComment")");
+                                setTimeout(function() {
+                                    $("#commentPart").val("");
+                                },
+                                    3000);
+                                //location.reload();
                             }
-                            else {
-
-                                document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${result.message}`;
-                                document.getElementById('mainToastBody').classList.add('alert-danger');
-                                $("#toastPanel").show();
-                                var toast = new bootstrap.Toast($("#mainToast"));
-                                toast.show();
-                                setTimeout(function(){
-                                     $("#toastPanel").hide();
-                                }, 2500);
-                            }
-
                         }
                     });
-                } else {
-                    window.location.href = `/${"@ViewBag.LanIcon"}/Account/login?returnUrl=/${"@ViewBag.LanIcon"}/Product/${'@Model.ProductCode'}`;
                 }
-            });
+            } else {
+                document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${'@Language.GetString("AlertAndMessage_LoginFirst")'}`;
+                document.getElementById('mainToastBody').classList.add('alert-danger');
+                var toastDiv = $("#mainToast");
+                $("#toastPanel").show();
+                var toast = new bootstrap.Toast(toastDiv);
+                toast.show();
 
-
+                setTimeout(function() {
+                    $("#toastPanel").hide();
+                }, 3000);
+            }
         });
 
-        function Rate(score) {
-            debugger;
-            var isAllow = false;
-            if ('@User.Identity.IsAuthenticated' == 'True') {
-                if ('@ViewBag.HasRateBefore' == 'True') {
-                    if (score != parseInt('@ViewBag.PreRate'))
-                        isAllow = true;
-                }
-                else {
-                    isAllow = true;
-                }
-            }
-            var obj = {};
-            if (isAllow) {
 
-                obj.ProductId = '@Model.ProductId';
-                obj.IsNew = '@ViewBag.HasRateBefore' == 'False';
-                obj.Score = parseInt(score);
+        $("#btnAddToCart").click(function() {
+            debugger;
+            var cnt = $("#orderCnt").val();
+            if ('@User.Identity.IsAuthenticated' === 'True')//user is authenticated and can add product to its cart
+            {
+                debugger;
+
                 $.ajax({
-                    url: '@Url.Action("RatingProduct", "Comment")',
-                    contentType: "application/json",
-                    data: JSON.stringify(obj),
-                    type: "Post",
+                    url: `/${'@ViewBag.LanIcon'}/Basket/AddProToBasket?code=` + '@Model.ProductCode' + "&cnt=" + cnt,
+                    contentType: 'application/json',
+                    type: 'Get',
+                    dataType: 'json',
                     beforeSend: function() {
                     },
                     success: function(result) {
-                        debugger;
                         if (result.status == "Succeed") {
+                            debugger;
+                            setProductCountInCart(result.cnt);
 
-                            window.location.reload();
+                            $('#mainToastBody').html(`<i class="far fa-check-circle"></i> ${result.message}`);
+                            $('#mainToastBody').addClass('alert-success');
+                            $("#toastPanel").show();
+                            var toast = new bootstrap.Toast($("#mainToast"));
+                            toast.show();
+                            setTimeout(function() {
+                                $("#toastPanel").hide();
+                            }, 2500);
                         }
+                        else {
+
+                            document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${result.message}`;
+                            document.getElementById('mainToastBody').classList.add('alert-danger');
+                            $("#toastPanel").show();
+                            var toast = new bootstrap.Toast($("#mainToast"));
+                            toast.show();
+                            setTimeout(function() {
+                                $("#toastPanel").hide();
+                            }, 2500);
+                        }
+
                     }
                 });
+            } else {
+                window.location.href = `/${"@ViewBag.LanIcon"}/Account/login?returnUrl=/${"@ViewBag.LanIcon"}/Product/${'@Model.ProductCode'}`;
+            }
+        });
+
+
+    });
+
+
+
+    function AddToFavoriteList(productCode)
+    {
+        debugger;
+        if ('@like' == "True") {
+            window.location.href = '@Url.Action("GetUserFavList", "Comment")';
+        }
+        else if ('@User.Identity.IsAuthenticated' == "True") {
+            $.ajax({
+                url: '@Url.Action("AddToFavList", "Comment")' + `?code=${productCode}&name=product`,
+                contentType: "application/json",
+                type: "Get",
+                beforeSend: function() {
+                },
+                success: function(result) {
+                    debugger;
+                    if (result.status == "Succeed") {
+
+                        window.location.reload();
+                    }
+                }
+            });
+        } else
+            window.location.href = `@Url.Action("Login", "Account")?product/${productCode}`;
+
+    }
+
+    function Rate(score) {
+        debugger;
+        var isAllow = false;
+        if ('@User.Identity.IsAuthenticated' == 'True') {
+            if ('@ViewBag.HasRateBefore' == 'True') {
+                if (score != parseInt('@ViewBag.PreRate'))
+                    isAllow = true;
+            }
+            else {
+                isAllow = true;
             }
         }
+        var obj = {};
+        if (isAllow) {
 
-    </script>
+            obj.ProductId = '@Model.ProductId';
+            obj.IsNew = '@ViewBag.HasRateBefore' == 'False';
+            obj.Score = parseInt(score);
+            $.ajax({
+                url: '@Url.Action("RatingProduct", "Comment")',
+                contentType: "application/json",
+                data: JSON.stringify(obj),
+                type: "Post",
+                beforeSend: function() {
+                },
+                success: function(result) {
+                    debugger;
+                    if (result.status == "Succeed") {
+
+                        window.location.reload();
+                    }
+                }
+            });
+        }
+    }
+
+</script>

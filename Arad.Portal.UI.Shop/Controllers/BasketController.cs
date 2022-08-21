@@ -13,6 +13,7 @@ using System.Security.Claims;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Models.ShoppingCart;
+using Arad.Portal.DataLayer.Contracts.Shop.Product;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -22,21 +23,25 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly IShoppingCartRepository _shoppingCartRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDomainRepository _domainRepository;
+        private readonly IProductRepository _productRepository;
         public BasketController(IHttpContextAccessor accessor,
             IShoppingCartRepository shoppingCartRepository,
             UserManager<ApplicationUser> userManager,
+            IProductRepository productRepository,
             IDomainRepository domainRepository) : base(accessor, domainRepository)
         {
             _shoppingCartRepository = shoppingCartRepository;
             _domainRepository = domainRepository;
             _userManager = userManager;
+            _productRepository = productRepository;
         }
 
 
         [HttpGet]
-        public async Task<IActionResult> AddProToBasket(string productId, int cnt)
+        public async Task<IActionResult> AddProToBasket(string code, int cnt)
         {
             var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
+            var productId = _productRepository.FetchIdByCode(Convert.ToInt64(code));
             if (User != null && User.Identity.IsAuthenticated)
             {
                 var res = await _shoppingCartRepository.AddOrChangeProductToUserCart(productId, cnt);
@@ -51,7 +56,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             else
             {
                 //return RedirectToAction("Login", "Account", new { returnUrl = "/basket/AddProToBasket" });
-                return Redirect($"~/{lanIcon}/Account/Login?returnUrl=/{lanIcon}/basket/AddProToBasket?productId={productId}&cnt={cnt}");
+                return Redirect($"~/{lanIcon}/Account/Login?returnUrl=/{lanIcon}/basket/AddProToBasket?code={code}&cnt={cnt}");
             }
         }
 

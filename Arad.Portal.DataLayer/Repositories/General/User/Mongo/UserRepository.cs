@@ -40,6 +40,35 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             _mapper = mapper;
         }
 
+        public Result AddToUserFavoriteList(string userId, FavoriteType type, string entityId, string url, string domainId)
+        {
+            var result = new Result();
+            try
+            {
+                var obj = new UserFavorites()
+                {
+                    UserFavoritesId = Guid.NewGuid().ToString(),
+                    CreationDate = DateTime.Now,
+                    CreatorUserId = userId,
+                    AssociatedDomainId = domainId,
+                    EntityId = entityId,
+                    FavoriteType = type,
+                    IsActive = true,
+                    IsDeleted = false,
+                    Url = url
+                };
+
+                _context.UserFavoritesCollection.InsertOne(obj);
+                result.Succeeded = true;
+            }
+            catch (Exception ex)
+            {
+                result.Succeeded = false;
+            }
+            return result;
+
+        }
+
         public bool CountPhone(string phoneNumber, string userPhone)
         {
             bool result;
@@ -184,6 +213,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
 
             }
             return result;
+        }
+
+        public List<UserFavorites> GetUserFavoriteList(string userId, FavoriteType type)
+        {
+            var list = _context.UserFavoritesCollection.Find(_ => _.CreatorUserId == userId && _.FavoriteType == type).ToList();
+            return list;
         }
 
         public UserDTO GetUserWithPhone(string phoneNumber)

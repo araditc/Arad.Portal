@@ -3,6 +3,7 @@
 
 @{
     var dir = "";
+    var error = Language.GetString("AlertAndMessage_Error");
     var langList = new List<string>() { "fa", "en" };
     string lang = "";
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
@@ -59,6 +60,16 @@
 
 </head>
 <body>
+
+     <div class="position-fixed left-50 top-0 p-5" id="toastPanel" style="z-index: 11;">
+        <div aria-atomic="true" aria-live="assertive" class="toast" id="mainToast" role="alert" autohide="false">
+            <div class="toast-header">
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body p-3 fs-5 rounded-3 text-center" id="mainToastBody" >
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-12">
             <form role="form" id="installForm" asp-action="SaveData" asp-controller="Install" method="post">
@@ -67,45 +78,46 @@
                         <h5 class="card-title">@Language.GetString("User_SysAccount")</h5>
                     </div>
                     <div class="card-body">
+                       
                         <div class="row">
                             <div class="form-group col-12 col-md-4 p-2">
                                 <label for="Name" class="form-label">@Language.GetString("User_FirstName")</label>
-                                <input asp-for="@Model.SystemAccountUser.Profile.FirstName" type="text" class="form-control" placeholder=" ">
-                                <span data-val-result="@Model.SystemAccountUser.Profile.FirstName" class="text-danger"></span>
+                                <input asp-for="FirstName" type="text" class="form-control" placeholder="">
+                                <span data-val-result="FirstName" class="text-danger"></span>
                             </div>
                             <div class="form-group col-12 col-md-4 p-2">
                                 <label for="LastName" class="form-label">@Language.GetString("User_LastName")</label>
-                                <input asp-for="@Model.SystemAccountUser.Profile.LastName" type="text" class="form-control" placeholder=" ">
-                                <span data-val-result="@Model.SystemAccountUser.Profile.LastName" class="text-danger"></span>
+                                <input asp-for="LastName" type="text" class="form-control" placeholder="">
+                                <span data-val-result="LastName" class="text-danger"></span>
                             </div>
                             <div class="form-group col-12 col-md-4 p-2">
-                                <label asp-for="@Model.SystemAccountUser.UserName" class="form-label">@Language.GetString("User_UserName")</label>
-                                <input asp-for="@Model.SystemAccountUser.UserName" type="text" class="form-control" placeholder=" " autocomplete="off">
+                                <label asp-for="UserName" class="form-label">@Language.GetString("User_UserName")</label>
+                                <input asp-for="UserName" type="text" class="form-control" placeholder="" autocomplete="off">
                                 <span data-val-result="UserName" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-12 col-md-4 p-2">
-                                <label for="@Model.Password" class="form-label">@Language.GetString("User_Password")</label>
-                                <input asp-for="@Model.Password" type="password" class="form-control" placeholder=" " autocomplete="new-password">
-                                <span data-val-result="@Model.Password" class="text-danger"></span>
+                                <label for="Password" class="form-label">@Language.GetString("User_Password")</label>
+                                <input asp-for="Password" type="password" class="form-control" placeholder="" autocomplete="new-password">
+                                <span data-val-result="Password" class="text-danger"></span>
                             </div>
                             <div class="form-group col-12 col-md-4 p-2">
                                 <label class="form-label" for="RePassword">@Language.GetString("User_RePassword")</label>
-                                <input asp-for="@Model.RePassword" type="password" class="form-control" placeholder=" " autocomplete="new-password">
-                                <span data-val-result="@Model.RePassword" class="text-danger"></span>
+                                <input asp-for="RePassword" type="password" class="form-control" placeholder="" autocomplete="new-password">
+                                <span data-val-result="RePassword" class="text-danger"></span>
                             </div>
                             <div class="form-group col-12 col-md-4 p-2">
                                 <label asp-for="PhoneNumber" class="form-label">@Language.GetString("User_PhoneNumber")</label><br />
-                                <input asp-for="PhoneNumber" type="tel" class="form-control" placeholder=" "><br />
+                                <input asp-for="PhoneNumber" type="tel" class="form-control" placeholder=""><br />
                                 <span data-val-result="PhoneNumber" class="text-danger"></span>
                                 <input id="hidePhone" type="hidden" value="" name="FullMobile" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-12 col-md-4 p-2">
-                                <label class="form-label" asp-for="@Model.SystemAccountUser.Profile.DefaultLanguageId">@Language.GetString("DefaultLanguage")</label>
-                                <select class="form-select selectpicker" asp-for="@Model.SystemAccountUser.Profile.DefaultLanguageId" asp-items="@(new SelectList(ViewBag.LangList, "Value", "Text"))" data-live-search="true">
+                                <label class="form-label" asp-for="DefaultLanguageId">@Language.GetString("DefaultLanguage")</label>
+                                <select class="form-select selectpicker" asp-for="DefaultLanguageId" asp-items="@(new SelectList(ViewBag.LangList, "Value", "Text"))" data-live-search="true">
                                 </select>
                                 <span data-val-result="DefaultLanguageId" class="text-danger"></span>
                             </div>
@@ -119,27 +131,27 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="form-check m-auto d-inline-block pt-3 fs-6 ms-4">
-                                <input class="form-check-input" type="checkbox" value="@Model.DefaultDomain.IsShop" asp-for="@Model.DefaultDomain.IsShop">
+                                <input class="form-check-input" type="checkbox" value="IsShop" asp-for="IsShop">
                                 <label class="form-check-label" for="IsShop">
                                     @Language.GetString("design_IsShopDomain")
                                 </label>
                             </div>
 
                             <div class="form-check m-auto d-inline-block pt-3 fs-6 ms-4">
-                                <input class="form-check-input" type="checkbox" value="@Model.DefaultDomain.IsMultiLinguals" asp-for="@Model.DefaultDomain.IsMultiLinguals">
+                                <input class="form-check-input" type="checkbox" value="IsMultiLinguals" asp-for="IsMultiLinguals">
                                 <label class="form-check-label" for="IsMultiLinguals">
                                     @Language.GetString("design_IsMultiLingual")
                                 </label>
 
                             </div>
                             <div class="form-group col-12 col-md-3">
-                                <label class="form-label" for="@Model.DefaultDomain.DomainName">@Language.GetString("DomainName")</label><br />
-                                <input type="text" class="form-control" asp-for="@Model.DefaultDomain.DomainName" dir="ltr">
+                                <label class="form-label" for="DomainName">@Language.GetString("DomainName")</label><br />
+                                <input type="text" class="form-control" asp-for="DomainName" dir="ltr">
                                 <span data-val-result="DomainName" class="text-danger"></span>
                             </div>
                             <div class="form-group col-12 col-md-3">
                                 <label class="form-label" for="">@Language.GetString("Title")</label><br />
-                                <input type="text" class="form-control" asp-for="@Model.DefaultDomain.Title" >
+                                <input type="text" class="form-control" asp-for="Title" >
                                 <span data-val-result="Title" class="text-danger"></span>
                             </div>
                         </div>
@@ -147,7 +159,7 @@
                         <div class="row m-1">
                             <div class="form-group col-12 col-md-3">
                                 <label class="form-label">@Language.GetString("Currency")</label>
-                                <select class="form-control selectpicker" data-live-search="true" id="currencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
+                                <select class="form-control selectpicker" data-live-search="true" name ="CurrencyId" id="CurrencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
                                 </select>
                                 <span data-val-result="CurrencyId" class="text-danger"></span>
                             </div>
@@ -169,17 +181,17 @@
                         <div class="row">
                             <div class="fom-group col-12 col-md-4">
                                  <label class="form-label">@Language.GetString("ConnectionString")</label>
-                                  <input type="text" class="form-control" asp-for="@Model.AppSetting.DatabaseConfig.ConnectionString" dir="ltr">
+                                  <input type="text" class="form-control" asp-for="ConnectionString" dir="ltr">
                                 <span data-val-result="ConnectionString" class="text-danger"></span>
                             </div>
                              <div class="fom-group col-12 col-md-4">
                                  <label class="form-label">@Language.GetString("LogFileDirectory")</label>
-                                 <input type="text" class="form-control" asp-for="@Model.AppSetting.LogConfiguration.LogFileDirectory" dir="ltr">
+                                 <input type="text" class="form-control" asp-for="LogFileDirectory" dir="ltr">
                                   <span data-val-result="LogFileDirectory" class="text-danger"></span>
                             </div>
                              <div class="fom-group col-12 col-md-4">
                                  <label class="form-label">@Language.GetString("LocalStaticFileStorage")</label>
-                                 <input type="text" class="form-control" asp-for="@Model.AppSetting.LocalStaticFileStorage" dir="ltr">
+                                 <input type="text" class="form-control" asp-for="LocalStaticFileStorage" dir="ltr">
                                   <span data-val-result="LocalStaticFileStorage" class="text-danger"></span>
                             </div>
                         </div>
@@ -191,19 +203,19 @@
                         <div class="row">
                              <div class="fom-group col-12 col-md-4">
                                   <label class="form-label">@Language.GetString("Sms_LinkAddress")</label>
-                                     <input type="text" class="form-control" asp-for="@Model.AppSetting.SendSmsConfig.AradVas_Link_1" dir="ltr">
+                                     <input type="text" class="form-control" asp-for="AradVas_Link_1" dir="ltr">
                                   <span data-val-result="AradVas_Link_1" class="text-danger"></span>
 
                              </div>
                              <div class="fom-group col-12 col-md-4">
                                   <label class="form-label">@Language.GetString("Sms_UserName")</label>
-                                   <input type="text" class="form-control" asp-for="@Model.AppSetting.SendSmsConfig.AradVas_UserName" dir="ltr">
+                                   <input type="text" class="form-control" asp-for="AradVas_UserName" dir="ltr">
                                   <span data-val-result="AradVas_UserName" class="text-danger"></span>
 
                              </div>
                              <div class="fom-group col-12 col-md-4">
                                   <label class="form-label">@Language.GetString("Sms_Passworrd")</label>
-                                   <input type="text" class="form-control" asp-for="@Model.AppSetting.SendSmsConfig.AradVas_Password" dir="ltr">
+                                   <input type="text" class="form-control" asp-for="AradVas_Password" dir="ltr">
                                   <span data-val-result="AradVas_Password" class="text-danger"></span>
 
                              </div>
@@ -211,24 +223,32 @@
                         <div class="row">
                             <div class="fom-group col-12 col-md-4">
                                  <label class="form-label">@Language.GetString("Sms_LineNumber")</label>
-                                  <input type="text" class="form-control" asp-for="@Model.AppSetting.SendSmsConfig.AradVas_Number" dir="ltr">
+                                  <input type="text" class="form-control" asp-for="AradVas_Number" dir="ltr">
                                   <span data-val-result="AradVas_Number" class="text-danger"></span>
 
                             </div>
                             <div class="fom-group col-12 col-md-4">
                                  <label class="form-label">@Language.GetString("Sms_ComapnyName")</label>
-                                  <input type="text" class="form-control" asp-for="@Model.AppSetting.SendSmsConfig.AradVas_Domain" dir="ltr">
+                                  <input type="text" class="form-control" asp-for="AradVas_Domain" dir="ltr">
                                   <span data-val-result="AradVas_Domain" class="text-danger"></span>
 
                             </div>
 
+                        </div>
+                        <div class="row">
+                            <div class="form-check m-auto d-inline-block pt-3 fs-6 ms-4">
+                                <input class="form-check-input" type="checkbox" value="HasDefaultHomeTemplate" asp-for="HasDefaultHomeTemplate">
+                                <label class="form-check-label" for="HasDefaultHomeTemplate">
+                                    @Language.GetString("AlertAndMessage_HomepageDefaultDesign")
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
                         <div class="col-md-4 offset-md-8 col-12">
-                            <input type="submit" value="@Language.GetString("btn_Install")" class="btn btn-primary bg-gradient float-end m-2" />
+                            <input type="submit" value="@Language.GetString("btn_Install")" id="btnSubmit" class="btn btn-primary bg-gradient float-end m-2" />
                         </div>
                     </div>
             </form>
@@ -241,6 +261,222 @@
     <script src="~/lib/bootstrap-select/js/i18n/defaults-@(CultureInfo.CurrentCulture.Name.Replace('-', '_')).js"></script>
     <script src="~/lib/intl-tel-input/js/intlTelInput.js"></script>
     <script src="~/lib/intl-tel-input/js/utils.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $("#DefaultLanguageId").selectpicker();
+        $("#CurrencyId").selectpicker();
+        var input = document.querySelector("#PhoneNumber");
+            window.intlTelInput(input,
+            {
+            initialCountry: "IR",
+            placeholderNumberType: "MOBILE",
+            separateDialCode: true,
+            utilsScript: "../../lib/intl-tel-input/js/utils.js",
+            nationalMode: true,
+            hiddenInput: "FullMobile"
+            });
+
+        $("#installForm").submit(function(e) {
+            e.preventDefault();
+             $('span[data-val-result]').each(function () {
+                    $(this).html("");
+                });
+           if(!checkValidation())
+           {
+               var frm = document.getElementById('installForm');
+            var form = new FormData(frm);
+
+             $.ajax({
+            url: $(this).attr('action'),
+            data: form,
+            type: 'Post',
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+          /*  AddLoading($("#addUserCard"));*/
+            },
+            success: function (result)
+            {
+                debugger;
+                    if (result.status === "success")
+                    {
+
+                            document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
+                            document.getElementById('mainToastBody').classList.add('alert-success');
+                            var toastDiv = $("#mainToast");
+                            $("#toastPanel").show();
+                            var toast = new bootstrap.Toast(toastDiv);
+                            toast.show();
+                            setTimeout(function()
+                                {
+                                     $("#toastPanel").hide();
+                                     window.location.href = '@Url.Action("List")';
+                                },
+                                3000);
+                        }
+                    else if (result.status === "error")
+                      {
+                            var spanErrorList = $('span[data-val-result]');
+
+                            if (spanErrorList.length > 0)
+                            {
+                            spanErrorList.each(function() {
+                                $(this).html("");
+                                $(this).parent().removeClass("has-error");
+                                });
+                            } 
+                            else {
+                            spanErrorList.html("");
+                            spanErrorList.parent().removeClass("has-error");
+                            }
+
+                            if (result.modelStateErrors.length > 0) {
+                            debugger;
+                            result.modelStateErrors.forEach(function(value, index) {
+                            $('[data-val-result=' + value.key + ']').append(value.errorMessage);
+                            $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                            });
+                            }
+                            else
+                            {
+                                showError(result.message);
+                           }
+                       }
+
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert("@error");
+                alert(xhr.status);
+                alert(thrownError);
+            },
+            complete: function () {
+           /* removeLoading($("#addUserCard"));*/
+            }
+            });
+           }else
+           {
+                document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${'@Language.GetString("AlertAndMessage_FillEssentialFields")'}`;
+                document.getElementById('mainToastBody').classList.add('alert-danger');
+                $("#toastPanel").show();
+                var toast = new bootstrap.Toast($("#mainToast"));
+                toast.show();
+                setTimeout(function(){
+                    $("#toastPanel").hide();
+                }, 2000)
+                }
+            
+        });
+    });
+
+    function checkValidation()
+    {
+         var flag = false;
+        if($("#FirstName").val().trim() == "")
+        {
+             $("span[data-val-result='FirstName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+             flag = true;
+        }
+        if($("#LastName").val().trim() == "")
+        {
+             $("span[data-val-result='LastName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+             flag = true;
+        }
+        if($("#UserName").val().trim() == "")
+        {
+             $("span[data-val-result='UserName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+             flag = true;
+        }
+        if($("#Password").val().trim() == "")
+        {
+             $("span[data-val-result='Password']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+             flag = true;
+        }
+        if($("#RePassword").val().trim() == "")
+        {
+             $("span[data-val-result='RePassword']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+             flag = true;
+        }
+        if($("#PhoneNumber").val().trim() == "")
+        {
+             $("span[data-val-result='PhoneNumber']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+             flag = true;
+        }
+        if($("#Password").val().trim() != "" && $("#RePassword").val().trim() != "" && $("#Password").val().trim() !=  $("#RePassword").val().trim())
+        {
+            $("span[data-val-result='RePassword']").html('@Language.GetString("AlertAndMessage_PasswordRepassWordCompare")');
+            flag = true;
+        }
+
+        if($("#DefaultLanguageId").val() == "-1")
+        {
+            $("span[data-val-result='DefaultLanguageId']").html('@Language.GetString("AlertAndMessage_OptionEssential")');
+            flag = true;
+        }
+
+        if($("#DomainName").val().trim() == "")
+        {
+            $("span[data-val-result='DomainName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            flag = true;
+        }
+        if($("#Title").val().trim() == "")
+        {
+            $("span[data-val-result='Title']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            flag = true;
+        }
+        if($("#CurrencyId").val() == "-1")
+        {
+            $("span[data-val-result='CurrencyId']").html('@Language.GetString("AlertAndMessage_OptionEssential")');
+            flag = true;
+        }
+
+        if($("#PriceValue").val() == "" || $("#PriceValue").val() =="0" )
+        {
+            $("span[data-val-result='PriceValue']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            flag = true;
+        }
+        if($("#ConnectionString").val().trim() == "")
+        {
+            $("span[data-val-result='ConnectionString']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            flag = true;
+        }
+        if($("#LogFileDirectory").val().trim() == "")
+        {
+            $("span[data-val-result='LogFileDirectory']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            flag = true;
+        }
+        if($("#LocalStaticFileStorage").val().trim() == "")
+        {
+            $("span[data-val-result='LocalStaticFileStorage']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            flag = true;
+        }
+        if($("#AradVas_Link_1").val().trim() == "")
+        {
+            $("span[data-val-result='AradVas_Link_1']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            flag = true;
+        }
+        if($("#AradVas_UserName").val().trim() == "")
+        {
+            $("span[data-val-result='AradVas_UserName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            flag = true;
+        }
+        if($("#AradVas_Password").val().trim() == "")
+        {
+            $("span[data-val-result='AradVas_Password']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            flag = true;
+        }
+         if($("#AradVas_Number").val().trim() == "")
+        {
+            $("span[data-val-result='AradVas_Number']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            flag = true;
+        }
+          if($("#AradVas_Domain").val().trim() == "")
+        {
+            $("span[data-val-result='AradVas_Domain']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            flag = true;
+        }
+
+    }
+    </script>
 
 </body>
 </html>

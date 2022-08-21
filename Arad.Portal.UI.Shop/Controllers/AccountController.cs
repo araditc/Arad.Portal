@@ -753,6 +753,14 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
         }
 
+        public IActionResult Favorites(string type)
+        {
+            FavoriteType favType = type.ToLower() == "product" ? FavoriteType.Product : FavoriteType.Content;
+            var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+            var lst = _userRepository.GetUserFavoriteList(userId, favType);
+            return View(lst);
+        }
+
 
         //[HttpPost]
         //public async Task<IActionResult> ChangePassword(ChangePassword model)

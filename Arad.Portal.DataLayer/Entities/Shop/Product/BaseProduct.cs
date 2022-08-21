@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Arad.Portal.DataLayer.Entities.General.Comment;
+using Arad.Portal.GeneralLibrary.CustomAttributes;
+using static Arad.Portal.DataLayer.Models.Shared.Enums;
 
 namespace Arad.Portal.DataLayer.Entities.Shop.Product
 {
@@ -58,6 +60,16 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Product
         public long ProductCode { get; set; }
 
         public List<ProductSpecificationValue> Specifications { get; set; }
+        /// <summary>
+        /// it defines type of product whether it is a phisical stuff or a file which can be downloaded
+        /// </summary>
+        //public ProductType ProductType { get; set; }
+
+        //public DownloadLimitationType DownloadLimitationType { get; set; }
+
+        //public int? AllowedDownloadDurationDay { get; set; }
+
+        //public int? AllowedDownloadCount { get; set; }
 
         /// <summary>
         /// all images of product will be store here
@@ -125,4 +137,5 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Product
         public List<Comment> Comments { get; set; }
         
     }
+    
 }

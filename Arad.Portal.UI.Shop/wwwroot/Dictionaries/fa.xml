@@ -860,6 +860,9 @@
   <string key="Validation_MobileNumberInvalid2">
     <value>شماره وارد شده مربوط به تلفن ثابت می باشد.</value>
   </string>
+	<string key="AlertAndMessage_AddToFavoriteList">
+		<value>افزودن به لیست علاقمندیها</value>
+	</string>
   <string key="AlertAndMessage_ModuleWithoutParameters">
     <value>این ماژول دارای پارارمتر نمیباشد تنها دکمه افزودن را کلیک کنید.</value>
   </string>
@@ -1178,6 +1181,9 @@
   <string key="AlertAndMessage_DeletionDoneSuccessfully">
     <value>عملیات حذف با موفقیت انجام گردید.</value>
   </string>
+	<string key="AlertAndMessage_OperarationDoneSuccessfully">
+		<value>عملیات با موفقیت انجام شد.</value>
+	</string>
   <string key="AlertAndMessage_DeletionNotAllowed">
     <value>امکان حذف وجود ندارد.</value>
   </string>
@@ -1876,6 +1882,12 @@
   <string key="User_Profile">
     <value>پروفایل کاربری</value>
   </string>
+	<string key="User_FavoritProductList">
+		<value>لیست محصولات مورد علاقه</value>
+	</string>
+	<string key="User_FavoritContentList">
+		<value>لیست محتوای مورد علاقه</value>
+	</string>
 	<string key="User_SysAccount">
 		<value>کاربر System Account</value>
 	</string>

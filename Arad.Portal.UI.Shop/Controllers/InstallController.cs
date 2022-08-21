@@ -17,6 +17,13 @@ using MongoDB.Driver;
 using System.Threading.Tasks;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using Arad.Portal.DataLayer.Contracts.General.Currency;
+using System.Collections.Generic;
+using System.Security.Claims;
+using Arad.Portal.DataLayer.Models.User;
+using System.IO;
+using MongoDB.Bson.IO;
+using System.Xml;
+using Newtonsoft.Json;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -54,26 +61,132 @@ namespace Arad.Portal.UI.Shop.Controllers
         {
             var model = new InstallModel();
             _appSetting = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory).AddJsonFile("appsettings.json").Build().Get<AppSetting>();
-            model.AppSetting = _appSetting;
-            var defaultDomainResult = _domainRepository.FetchDefaultDomain();
-            if(defaultDomainResult.Succeeded)
-            {
-                model.DefaultDomain = _mapper.Map<Domain>(defaultDomainResult.ReturnValue);
-            }
-            var sysAccountUser = _userManager.Users.FirstOrDefault(_ => _.IsSystemAccount);
-            if(sysAccountUser != null)
-            {
-                model.SystemAccountUser = sysAccountUser;
-            }
+            //model.AradVas_Domain = _appSetting.SendSmsConfig.AradVas_Domain;
+            //model.AradVas_Number = _appSetting.SendSmsConfig.AradVas_Number;
+            //model.AradVas_Link_1 = _appSetting.SendSmsConfig.AradVas_Link_1;
+            //model.AradVas_Password = _appSetting.SendSmsConfig.AradVas_Password;
+            //model.AradVas_UserName = _appSetting.SendSmsConfig.AradVas_UserName;
+            //var defaultDomainResult = _domainRepository.FetchDefaultDomain();
+            //var domainEntity = _mapper.Map<Domain>(defaultDomainResult.ReturnValue);
+            //if(defaultDomainResult.Succeeded)
+            //{
+            //    model.DomainName = domainEntity.DomainName;
+            //    model.DomainId = domainEntity.DomainId;
+            //    model.Title = domainEntity.Title;
+            //    model.PriceValue = domainEntity.Prices.Any(_ => _.EndDate == null && _.IsActive && _.StartDate <= DateTime.UtcNow) ? domainEntity.Prices.FirstOrDefault(_ => _.EndDate == null && _.IsActive && _.StartDate <= DateTime.UtcNow).PriceValue : 0;
+            //    model.IsShop = domainEntity.IsShop;
+            //    model.IsMultiLinguals = domainEntity.IsMultiLinguals;
+            //    model.CurrencyId = domainEntity.DefaultCurrencyId;
+            //}
+            //var sysAccountUser = _userManager.Users.FirstOrDefault(_ => _.IsSystemAccount);
+            //if(sysAccountUser != null)
+            //{
+            //    model.UserId = sysAccountUser.Id;
+            //    model.FirstName = sysAccountUser.Profile.FirstName;
+            //    model.LastName = sysAccountUser.Profile.LastName;
+            //    model.UserName = sysAccountUser.UserName;
+            //}
             var currencyList = _currencyRepository.GetAllActiveCurrency();
             ViewBag.CurrencyList = currencyList;
-            ViewBag.LangList = _languageRepository.GetAllActiveLanguage();
+            var res = _languageRepository.GetAllActiveLanguage();
+            res.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
+            ViewBag.LangList = res;
             return View(model);
         }
 
-        //public IActionResult SaveData()
-        //{
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SaveData([FromForm] InstallModel model)
+        {
+            JsonResult result;
+            try
+            {
+               
+                #region domain
+                var domain = new Domain()
+                {
+                    DomainName = model.DomainName,
+                    DomainId = Guid.NewGuid().ToString(),
+                    Title = model.Title,
+                    CreationDate = DateTime.Now,
+                    DefaultCurrencyId = model.CurrencyId,
+                    DefaultLanguageId = model.DefaultLanguageId,
+                    IsShop = model.IsShop,
+                    IsMultiLinguals = model.IsMultiLinguals
+                };
 
-        //}
+                var price = new Price() { CurrencyId = model.CurrencyId, StartDate = DateTime.Now, IsActive = true, PriceValue = model.PriceValue, EndDate = null };
+                domain.Prices.Add(price);
+
+                _domainRepository.InsertOne(domain);
+                #endregion domain
+
+
+                #region user
+                #region Set claim
+                List<IdentityUserClaim<string>> claims = new()
+                {
+                    new() { ClaimType = ClaimTypes.GivenName, ClaimValue = model.FullMobile },
+                    new() { ClaimType = "IsActive", ClaimValue = true.ToString() },
+                    new() { ClaimType = "IsSystemAccount", ClaimValue = false.ToString() }
+                };
+                #endregion
+                ApplicationUser user = new()
+                {
+                    UserName = model.UserName,
+                    IsSystemAccount = true,
+                    Id = Guid.NewGuid().ToString(),
+                    IsDomainAdmin = true,
+                    Profile = new DataLayer.Models.User.Profile() { UserType = UserType.Admin, DefaultCurrencyId = model.CurrencyId, DefaultLanguageId = model.DefaultLanguageId },
+                    IsDeleted = false,
+                    CreatorId = Guid.NewGuid().ToString(),
+                    CreatorUserName = model.UserName,
+                    CreationDate = DateTime.Now,
+                    IsActive = true,
+                    PhoneNumber = model.FullMobile,
+                    PhoneNumberConfirmed = true,
+                    Modifications = new(),
+                    Claims = claims,
+                    IsSiteUser = true,
+                    DomainId = domain.DomainId
+                };
+
+                IdentityResult insertResult = await _userManager.CreateAsync(user, model.Password);
+                #endregion
+
+                #region update domain
+                var domainDto = _domainRepository.FetchDomain(domain.DomainId);
+                domainDto.ReturnValue.OwnerUserId = user.Id;
+                var res = _domainRepository.EditDomain(domainDto.ReturnValue);
+                #endregion
+
+                #region appsetting
+                _appSetting.SendSmsConfig.AradVas_Number = model.AradVas_Number;
+                _appSetting.SendSmsConfig.AradVas_UserName = model.AradVas_UserName;
+                _appSetting.SendSmsConfig.AradVas_Domain = model.AradVas_Domain;
+                _appSetting.SendSmsConfig.AradVas_Password = model.AradVas_Password;
+                _appSetting.SendSmsConfig.AradVas_Link_1 = model.AradVas_Link_1;
+
+                _appSetting.DatabaseConfig.ConnectionString = model.ConnectionString;
+                _appSetting.LocalStaticFileStorage = model.LocalStaticFileStorage;
+                _appSetting.LogConfiguration.LogFileDirectory = model.LogFileDirectory;
+                _appSetting.LocalStaticFileShown = domain.DomainName;
+
+                string appSettingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
+                await System.IO.File.WriteAllTextAsync(appSettingsPath, Newtonsoft.Json.JsonConvert.SerializeObject(_appSetting, Newtonsoft.Json.Formatting.Indented));
+                #endregion
+
+               
+
+               result = new JsonResult(new { Status = "Success", Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_OperarationDoneSuccessfully") });
+
+            }
+            catch (Exception)
+            {
+                result = new JsonResult(new { Status = "Error", Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ErrorInSaving") });
+            }
+
+            return result;
+        }
     }
 }

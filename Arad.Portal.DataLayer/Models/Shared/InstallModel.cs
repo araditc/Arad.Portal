@@ -10,14 +10,16 @@ namespace Arad.Portal.DataLayer.Models.Shared
     {
         public InstallModel()
         {
-            DefaultDomain = new();
-            SystemAccountUser = new();
-            AppSetting = new();
+           
         }
 
-        public Entities.General.Domain.Domain DefaultDomain { get; set; } // if there is an smtp account it should set here for domain
+        public bool HasDefaultHomeTemplate { get; set; }
 
-        public Entities.General.User.ApplicationUser SystemAccountUser { get; set; }
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string UserName { get; set; }
 
         public string Password { get; set; }
 
@@ -25,14 +27,32 @@ namespace Arad.Portal.DataLayer.Models.Shared
 
         public string PhoneNumber { get; set; }
 
-        public string CurrencyId { get; set; }
-
         public long PriceValue { get; set; }
 
         public string FullMobile { get; set; }
 
-        public AppSetting AppSetting { get; set; }
+        public string DefaultLanguageId { get; set; }
 
-        public bool HaveDefaultHomeTemplate { get; set; }
+        public bool IsShop { get; set; }
+
+        public bool IsMultiLinguals { get; set; }
+
+        public string DomainName { get; set; }
+
+        public string Title { get; set; }
+
+        public string CurrencyId { get; set; }
+
+        public string ConnectionString { get; set; }
+
+        public string LogFileDirectory { get; set; }
+
+        public string LocalStaticFileStorage { get; set; }
+
+        public string AradVas_Link_1 { get; set; }
+        public string AradVas_UserName { get; set; }
+        public string AradVas_Password { get; set; }
+        public string AradVas_Number { get; set; }
+        public string AradVas_Domain { get; set; }
     }
 }

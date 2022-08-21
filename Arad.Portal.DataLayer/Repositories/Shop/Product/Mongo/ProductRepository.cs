@@ -1497,6 +1497,30 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             }
             return result;
         }
+
+        public string FetchIdByCode(long productCode)
+        {
+            var entity = _context.ProductCollection.Find(_ => _.ProductCode == productCode).FirstOrDefault();
+            if(entity != null)
+            {
+                return entity.ProductId;
+            }else
+            {
+                return "";
+            }
+        }
+
+        public string FetchUrlFriendById(string productId)
+        {
+            var entity = _context.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
+            if(entity != null)
+            {
+                return entity.ProductCode.ToString();
+            }else
+            {
+                return "";
+            }
+        }
     }
 }
 

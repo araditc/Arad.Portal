@@ -784,6 +784,25 @@
   <string key="EnumDesc_Notification">
     <value>Notification</value>
   </string>
+	<string key="EnumDesc_PhisicalStuff">
+		<value>phisical stuff</value>
+	</string>
+	<string key="EnumDesc_File">
+		<value>file</value>
+	</string>
+	<string key="EnumDesc_NoLimitation">
+		<value>No Limitation For Downloading</value>
+	</string>
+	<string key="EnumDesc_TimeDuration">
+		<value>Can Be Downloaded in Duration</value>
+	</string>
+	<string key="EnumDesc_TimeDurationWithCnt">
+		<value>Can Be Downloaded in Duration at maximum specific Times</value>
+	</string>
+	<string key="EnumDesc_DownloadCount">
+		<value>Can Be Downloaded at Maximum specific Times</value>
+	</string>
+	
   <string key="Enum_ContentCategoryType">
     <value>Category Type</value>
   </string>
@@ -1141,6 +1160,9 @@
   <string key="AlertAndMessage_DeletionDoneSuccessfully">
     <value>Deletion done successfully.</value>
   </string>
+	<string key="AlertAndMessage_OperarationDoneSuccessfully">
+		<value>Operation done successfully.</value>
+	</string>
   <string key="AlertAndMessage_DeletionNotAllowed">
     <value>Deletion not allowed.</value>
   </string>

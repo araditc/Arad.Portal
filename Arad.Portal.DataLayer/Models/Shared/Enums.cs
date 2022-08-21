@@ -33,6 +33,26 @@ namespace Arad.Portal.DataLayer.Models.Shared
            
         }
 
+        public enum ProductType
+        {
+            [CustomDescription("EnumDesc_PhisicalStuff")]
+            PhisicalStuff = 1,
+            [CustomDescription("EnumDesc_File")]
+            File = 2
+        }
+
+        public enum DownloadLimitationType
+        {
+            [CustomDescription("EnumDesc_NoLimitation")]
+            NoLimitation = 1,
+            [CustomDescription("EnumDesc_TimeDuration")]
+            TimeDuration = 2,
+            [CustomDescription("EnumDesc_TimeDurationWithCnt")]
+            TimeDurationWithCnt = 3,
+            [CustomDescription("EnumDesc_DownloadCount")]
+            DownloadCount = 4
+        }
+
         public enum EmailEncryptionType
         {
             None = 1,

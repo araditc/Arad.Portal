@@ -19,7 +19,6 @@ namespace Arad.Portal.DataLayer.Entities.General.User
     {
         public ApplicationUser()
         {
-            FavoriteList = new();
             LoginData = new();
             Profile = new();
             LoginData = new();
@@ -63,13 +62,7 @@ namespace Arad.Portal.DataLayer.Entities.General.User
         /// we have soft deleted all deleted entities store with isdeleted = true
         /// </summary>
         public bool IsDeleted { get; set; }
-
-
-        /// <summary>
-        /// the links of the page which user linke whether its is the product or a content
-        /// </summary>
-        public List<string> FavoriteList { get; set; }
-
+       
         /// <summary>
         /// the primary key of domain which user belongs to
         /// </summary>

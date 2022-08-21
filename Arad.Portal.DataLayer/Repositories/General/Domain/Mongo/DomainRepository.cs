@@ -34,7 +34,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                                 IHttpContextAccessor httpContextAccessor,
                                 UserManager<ApplicationUser> userManager,
                                 IWebHostEnvironment env,
-                                IMapper mapper): base(httpContextAccessor, env)
+                                IMapper mapper) : base(httpContextAccessor, env)
         {
             _context = context;
             _userManager = userManager;
@@ -68,7 +68,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                             if (equallentEntity.Prices.Any(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive))
                             {
                                 var exist = equallentEntity.Prices.FirstOrDefault(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive);
-                                if(exist != null)
+                                if (exist != null)
                                 {
                                     exist.IsActive = false;
                                     exist.EndDate = DateTime.UtcNow;
@@ -92,11 +92,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                     }
                     #endregion
 
-                   if(dto.IsShop)
+                    if (dto.IsShop)
                     {
                         equallentEntity.InvoiceNumberProcedure = (InvoiceNumberProcedure)Convert.ToInt32(dto.InvoiceNumberProcedure);
                     }
-                   
+
 
 
 
@@ -105,7 +105,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                     equallentEntity.CreatorUserId = this.GetUserId();
                     equallentEntity.CreatorUserName = this.GetUserName();
                     equallentEntity.IsActive = true;
-                    
+
 
 
                     await _context.Collection.InsertOneAsync(equallentEntity);
@@ -119,7 +119,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             }
             return result;
         }
-       
+
         public async Task<PagedItems<DomainViewModel>> AllDomainList(string queryString)
         {
 
@@ -147,16 +147,16 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                    {
                        DomainId = _.DomainId,
                        DomainName = _.DomainName,
-                       Prices = _.Prices, 
+                       Prices = _.Prices,
                        //DomainPrice  = _.Prices.FirstOrDefault(_=>_.IsActive),
                        OwnerUserId = _.OwnerUserId.ToString(),
                        OwnerUserName = _.OwnerUserName,
                        DefaultLanguageId = _.DefaultLanguageId,
-                       DefaultLanguageName =_.DefaultLanguageName,
+                       DefaultLanguageName = _.DefaultLanguageName,
                        IsDefault = _.IsDefault,
                        DefaultCurrencyId = _.DefaultCurrencyId,
                        DefaultCurrencyName = _.DefaultCurrencyName
-                      
+
                    }).ToList();
 
                 result.CurrentPage = page;
@@ -189,10 +189,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 var allowDeletion = true;
                 #endregion
 
-                if(allowDeletion)
+                if (allowDeletion)
                 {
                     var entity = _context.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
-                    if(entity != null)
+                    if (entity != null)
                     {
                         entity.IsDeleted = true;
 
@@ -211,16 +211,18 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                         {
                             result.Message = ConstMessages.GeneralError;
                         }
-                    }else
+                    }
+                    else
                     {
                         result.Message = ConstMessages.ObjectNotFound;
                     }
-                    
-                }else
+
+                }
+                else
                 {
                     result.Message = ConstMessages.DeletedNotAllowedForDependencies;
                 }
-               
+
             }
             catch (Exception e)
             {
@@ -235,7 +237,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
 
 
             var dbEntity = _context.Collection.Find(_ => _.DomainId == dto.DomainId).FirstOrDefault();
-            if(dbEntity != null)
+            if (dbEntity != null)
             {
                 dbEntity.Prices.FirstOrDefault(_ => _.IsActive).EndDate = DateTime.Now;
                 dbEntity.Prices.FirstOrDefault(_ => _.IsActive).IsActive = false;
@@ -258,11 +260,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                     result.Message = ConstMessages.ErrorInSaving;
 
                 }
-            }else
+            }
+            else
             {
                 result.Message = ConstMessages.ObjectNotFound;
             }
-            
+
             return result;
         }
 
@@ -271,7 +274,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             Result<DomainDTO> result = new Result<DomainDTO>();
             try
             {
-                
+
                 var dbEntity = _context.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
                 if (dbEntity == null && isDef)
                 {
@@ -279,7 +282,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 }
 
 
-                if(dbEntity != null)
+                if (dbEntity != null)
                 {
                     var dto = _mapper.Map<DomainDTO>(dbEntity);
                     result.Succeeded = true;
@@ -291,7 +294,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                     result.Message = ConstMessages.ObjectNotFound;
                     result.ReturnValue = new DomainDTO();
                 }
-               
+
             }
             catch (Exception ex)
             {
@@ -332,11 +335,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
         {
             var title = "";
             var dbEntity = _context.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
-            if(dbEntity != null && !string.IsNullOrWhiteSpace(dbEntity.Title))
+            if (dbEntity != null && !string.IsNullOrWhiteSpace(dbEntity.Title))
             {
                 title = dbEntity.Title;
             }
-            if(string.IsNullOrWhiteSpace(title))
+            if (string.IsNullOrWhiteSpace(title))
             {
                 title = domainName;
             }
@@ -348,7 +351,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             var result = new Result();
             var entity = _context.Collection
               .Find(_ => _.DomainId == id).FirstOrDefault();
-            if(entity != null)
+            if (entity != null)
             {
                 entity.IsDeleted = false;
                 var updateResult = await _context.Collection
@@ -368,13 +371,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             {
                 result.Message = ConstMessages.ObjectNotFound;
             }
-           
+
             return result;
         }
 
         public async Task InsertMany(List<Entities.General.Domain.Domain> domains)
         {
-           await _context.Collection.InsertManyAsync(domains);
+            await _context.Collection.InsertManyAsync(domains);
         }
 
         public bool HasAny()
@@ -389,7 +392,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 .Find(_ => _.DomainId == dto.DomainId).FirstOrDefault();
             if (entity != null)
             {
-                
+
                 #region Add Modification
                 var currentModifications = entity.Modifications;
                 var mod = GetCurrentModification($"Change domain by userId={this.GetUserId()} and UserName={this.GetUserName()} at datetime={DateTime.Now.ToPersianDdate()}");
@@ -415,12 +418,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                         {
                             var exist = entity.Prices.FirstOrDefault(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive);
                             //entity.Prices.Remove(exist);
-                            if(exist != null)
+                            if (exist != null)
                             {
                                 exist.IsActive = false;
                                 exist.EndDate = DateTime.UtcNow;
                             }
-                            
+
                             //entity.Prices.Add(exist);
 
                         }
@@ -479,9 +482,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                   Value = _.DomainId
               }).ToList();
             result.Insert(0, new SelectListModel()
-            { 
-                Text = GeneralLibrary.Utilities.Language.GetString("Choose"), 
-                Value = "-1" 
+            {
+                Text = GeneralLibrary.Utilities.Language.GetString("Choose"),
+                Value = "-1"
             });
             return result;
         }
@@ -490,12 +493,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
         {
             var result = new Result<DomainDTO>();
             var entity = _context.Collection.Find(_ => _.IsDefault).FirstOrDefault();
-            if(entity != null)
+            if (entity != null)
             {
                 result.Succeeded = true;
                 result.ReturnValue = _mapper.Map<DomainDTO>(entity);
                 result.Message = ConstMessages.SuccessfullyDone;
-            }else
+            }
+            else
             {
                 result.Succeeded = false;
                 result.Message = ConstMessages.ObjectNotFound;
@@ -507,7 +511,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
         {
             SMTP result = null;
             var domainEntity = _context.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
-            if(domainEntity != null && domainEntity.SMTPAccount != null)
+            if (domainEntity != null && domainEntity.SMTPAccount != null)
             {
                 return domainEntity.SMTPAccount;
             }
@@ -549,10 +553,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 };
                 result.Add(obj);
             }
-            result.Insert(0, new SelectListModel() 
-            { 
-              Text = GeneralLibrary.Utilities.Language.GetString("Choose"),
-              Value = "-1" 
+            result.Insert(0, new SelectListModel()
+            {
+                Text = GeneralLibrary.Utilities.Language.GetString("Choose"),
+                Value = "-1"
             });
             return result;
         }
@@ -580,7 +584,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
         public List<SelectListModel> GetTwoColsTemplateWidthEnum()
         {
             var result = new List<SelectListModel>();
-            
+
             foreach (int i in Enum.GetValues(typeof(TwoColsTemplateWidth)))
             {
                 string name = Enum.GetName(typeof(TwoColsTemplateWidth), i);
@@ -716,7 +720,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             {
 
                 var dbEntity = _context.Collection.Find(_ => _.IsDefault).FirstOrDefault();
-               
+
 
                 if (dbEntity != null)
                 {
@@ -739,5 +743,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
 
             return result;
         }
+
+        public void InsertOne(Entities.General.Domain.Domain entity)
+        {
+            _context.Collection.InsertOne(entity);
+        }
+
     }
 }

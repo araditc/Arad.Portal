@@ -784,6 +784,24 @@
   <string key="EnumDesc_Notification">
     <value>اعلان</value>
   </string>
+	<string key="EnumDesc_PhisicalStuff">
+		<value>کالای فیزیکی</value>
+	</string>
+	<string key="EnumDesc_File">
+		<value>فایل</value>
+	</string>
+	<string key="EnumDesc_NoLimitation">
+		<value>بدون محدودیت دانلود</value>
+	</string>
+	<string key="EnumDesc_TimeDuration">
+		<value>در یک بازه زمانی مشخص قابل دانلود است</value>
+	</string>
+	<string key="EnumDesc_TimeDurationWithCnt">
+		<value>در یک بازه زمانی مشخص به تعداد مشخص قابل دانلود است</value>
+	</string>
+	<string key="EnumDesc_DownloadCount">
+		<value>به تعداد مشخص قابل دانلود است</value>
+	</string>
   <string key="Enum_ContentCategoryType">
     <value>نوع گروه</value>
   </string>

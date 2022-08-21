@@ -199,12 +199,12 @@
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label class="form-label" asp-for="Description">@Language.GetString("Description")</label>
-                        <textarea dir="rtl" asp-for="Description" class="form-control" rows="3">@Model.Description</textarea>
+                        <textarea dir="@ViewBag.dir" asp-for="Description" class="form-control" rows="3">@Model.Description</textarea>
                         <span data-val-result="Description" class="text-danger"></span>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label" asp-for="SeoDescription">@Language.GetString("SeoDescription")</label>
-                        <textarea dir="rtl" asp-for="SeoDescription" class="form-control" rows="3">@Model.SeoDescription</textarea>
+                        <textarea dir="@ViewBag.dir" asp-for="SeoDescription" class="form-control" rows="3" maxlength="150" >@Model.SeoDescription</textarea>
                         <span data-val-result="SeoDescription" class="text-danger"></span>
                     </div>
                 </div>
@@ -271,7 +271,7 @@
                 <div class="row">
                     <div class="col-12 col-md-3">
                         <label class="form-label" asp-for="SeoTitle">@Language.GetString("SeoTitle")</label>
-                        <input type="text" class="form-control" asp-for="@Model.SeoTitle" placeholder="">
+                        <input type="text" class="form-control" asp-for="@Model.SeoTitle" placeholder="" maxlength="70">
                         <span data-val-result="SeoTitle" class="text-danger"></span>
                     </div>
                     <div class="col-12 col-md-3">
@@ -483,6 +483,7 @@
 @section Scripts{
 <script src="@Url.Content($"~/lib/cropperjs/cropper.js")"></script>
 <script src="@Url.Content($"~/plugins/TagInput/jquery.amsify.suggestags.js")"></script>
+<script src="@Url.Content($"~/js/character-counter.js")"></script>
   
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
@@ -506,7 +507,16 @@
         var inActive = '@Language.GetString("InActive")';
         var editorBodyVar;
         $(document).ready(function () {
-
+            $("#SeoTitle").characterCounter(function() {
+                  //opacity : ".8",
+                     max: 70,
+                     color : "red"
+            });
+            $("#SeoDescription").characterCounter(function() {
+                   //opacity : ".8",
+                     max: 150,
+                     color : "red"
+            });
         //TagInput
         $("input[name='tagKeyWords']").amsifySuggestags();
         //datetimepicker

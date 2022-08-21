@@ -18,6 +18,9 @@ using Arad.Portal.DataLayer.Models.Product;
 using Arad.Portal.DataLayer.Contracts.Shop.Product;
 using Microsoft.AspNetCore.Authorization;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
+using Arad.Portal.DataLayer.Entities.General.User;
+using Microsoft.AspNetCore.Identity;
+using Arad.Portal.DataLayer.Contracts.General.User;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -25,21 +28,29 @@ namespace Arad.Portal.UI.Shop.Controllers
     public class CommentController : BaseController
     {
         private readonly ICommentRepository _commentRepository;
+        private readonly IUserRepository _userRepository;
         private readonly ProductContext _productContext;
         private readonly ContentContext _contentContex;
+        private readonly IDomainRepository _domainRepository;
         private readonly IProductRepository _productRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
        
         public CommentController(ICommentRepository commentRepository,
                                  ContentContext contentContext,
                                  ProductContext productContext,
                                  IDomainRepository domainRepository,
                                  IProductRepository productRepository,
+                                 UserManager<ApplicationUser> userManager,
+                                 IUserRepository userRepository,
                                  IHttpContextAccessor accessor):base(accessor, domainRepository)
         {
             _commentRepository = commentRepository;
             _productContext = productContext;
             _contentContex = contentContext;
             _productRepository = productRepository;
+            _userManager = userManager;
+            _userRepository = userRepository;
+            _domainRepository = domainRepository;
         }
         
 
@@ -146,11 +157,49 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
         }
 
+        [HttpGet]
+        public  IActionResult AddToFavList(string code, string name)
+        {
+            var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
+            var domainName = base.DomainName;
+            var domainResult = _domainRepository.FetchByName(domainName, false);
+            if (User != null && User.Identity.IsAuthenticated)
+            {
+                var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+                var productId = _productRepository.FetchIdByCode(Convert.ToInt64(code));
+               
+                FavoriteType type;
+                if(name.ToLower() == "product")
+                {
+                    type = FavoriteType.Product;
+                }else
+                {
+                    type = FavoriteType.Content;
+                }
+                var finalRes = _userRepository.AddToUserFavoriteList(userId, type, productId, $"/product/{code}", domainResult.ReturnValue.DomainId);
+                if (finalRes.Succeeded)
+                {
+                    return
+                        Json(new
+                        {
+                            status = "Succeed"
+                        });
+                }
+                else
+                {
+                    return Json(new { status = "error" });
+                }
+
+            }
+            return Redirect($"{lanIcon}/Account/Login?returnUrl={lanIcon}/Product/{code}");
+        }
+
         [HttpPost]
         public async Task<IActionResult> RatingProduct([FromBody] RateProduct model)
         {
             var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
-            if (User.Identity.IsAuthenticated)
+            var productCode = _productRepository.GetProductCode(model.ProductId);
+            if (User != null && User.Identity.IsAuthenticated)
             {
 
                 var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
@@ -181,7 +230,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                     return Json(new { status = "error" });
                 }
             }
-            return Redirect($"{lanIcon}/Account/Login");
+            return Redirect($"{lanIcon}/Account/Login?returnUrl={lanIcon}/Product/{productCode}");
         }
 
         [HttpPost]

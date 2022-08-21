@@ -860,6 +860,9 @@
   <string key="Validation_MobileNumberInvalid2">
     <value>Enter the number of fixed phone.</value>
   </string>
+	<string key="AlertAndMessage_AddToFavoriteList">
+		<value>Add to Favorite List</value>
+	</string>
   <string key="AlertAndMessage_ModuleWithoutParameters">
     <value>this module hast any parameter just click add botton.</value>
   </string>
@@ -1193,6 +1196,9 @@
   <string key="AlertAndMessage_DeletionDoneSuccessfully">
     <value>Deletion done successfully.</value>
   </string>
+	<string key="AlertAndMessage_OperarationDoneSuccessfully">
+		<value>Operation done successfully.</value>
+	</string>
   <string key="AlertAndMessage_DeletionNotAllowed">
     <value>Deletion not allowed.</value>
   </string>
@@ -1826,6 +1832,12 @@
   <string key="User_Profile">
     <value>User Profile</value>
   </string>
+	<string key="User_FavoritProductList">
+		<value>Favorite Product List</value>
+	</string>
+	<string key="User_FavoritContentList">
+		<value>Favorite Content List</value>
+	</string>
 	<string key="User_SysAccount">
 		<value>System Account User</value>
 	</string>

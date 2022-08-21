@@ -19,7 +19,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Domain
         Result<DomainDTO> FetchDomain(string domainId);
         Result<DomainDTO> FetchByName(string domainName, bool isDef);
         Result<DomainDTO> FetchDefaultDomain();
-
+        void InsertOne(Entities.General.Domain.Domain entity);
         string FetchDomainTitle(string domainName);
         string GetDomainName();
         Entities.General.Domain.Domain FetchDomainByName(string domainName);
