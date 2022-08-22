@@ -16,7 +16,7 @@
 <h4>  @Language.GetString(@ViewBag.Title) </h4>
 <hr />
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-12">
         <div class="card" id="addEditCommentCard">
             <form asp-controller="Comment" asp-action="ApproveComment" id="approveCommentFrm">
                 <div class="card-header">
@@ -27,7 +27,7 @@
                     <div class="row">
                         <input type="hidden" value="@Model.CommentId" asp-for="CommentId" />
                         <input type="hidden" value="@Model.ParentCommentId" asp-for="@Model.ParentCommentId" />
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-12 col-md-3">
                             <label class="form-label" asp-for="@Model.ReferenceTitle">@Language.GetString(ViewBag.lbl)</label>
                             <input type="text" asp-for="@Model.ReferenceTitle" value="@Model.ReferenceTitle" class="form-control" readonly="readonly" />
                         </div>
@@ -43,12 +43,12 @@
                     </div>
 
                     <div class="row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-12 col-md-6">
                             <label class="form-label" asp-for="@Model.ParentCommentId">@Language.GetString("ParentComment")</label>
                             <input type="text" asp-for="@Model.ParentCommentContent" value="@Model.ParentCommentContent" class="form-control" readonly="readonly" />
                             <span data-val-result="ParentCommentContent" class="text-danger"></span>
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-12 col-md-6">
                             <label class="form-label" asp-for="@Model.Content">@Language.GetString("ContentComment")</label>
                             <input type="text" asp-for="@Model.Content" value="@Model.Content" class="form-control" readonly="readonly" />
                             <span data-val-result="Content" class="text-danger"></span>

@@ -62,27 +62,27 @@
         <div class="card-body">
 
             <div class="row">
-                <div class="form-group col-md-3">
+                <div class="form-group col-12 col-md-3">
                     <label class="form-label">@Language.GetString("tbl_ProductGroup")</label>
                     <select class="form-control selectpicker" data-live-search="true"
                             multiple="multiple" id="cmbProductGroupFilter" asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))" >
                     </select>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-12 col-md-3">
                     <label class="form-label">@Language.GetString("tbl_ProductName")</label>
                     <input type="text" class="form-control" id="txtProductNameFilter" />
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-12 col-md-2">
                     <label class="form-label">@Language.GetString("tbl_UniqeCode")</label>
                     <input type="text" class="form-control" id="txtUniqueCodeFilter" />
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-12 col-md-4">
                     <label class="form-label">@Language.GetString("Description")</label>
                     <input type="text" class="form-control" id="txtDescriptionFilter" />
                 </div>
             </div>
             <div class="row">
-                <div class="form-group col-md-3">
+                <div class="form-group col-12 col-md-3">
                     <label class="form-label">@Language.GetString("fromCreationDate")</label>
                     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
                     {
@@ -103,7 +103,7 @@
                         </div>
                     }
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-12 col-md-3">
                     <label class="form-label">@Language.GetString("toCreationDate")</label>
                     
                     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
@@ -126,7 +126,7 @@
                     }
 
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-12 col-md-2">
                     <label class="form-label">@Language.GetString("ProductInventoryLessThan")</label>
                     <input type="number" id="txtLeastProduct" class="form-control" min="0" />
                 </div>
@@ -165,10 +165,10 @@
 <div class="card" id="productListCard">
     <div class="card-header">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-12 col-md-3">
                 <h5 class="card-title">@Language.GetString("Menu_Products")</h5>
             </div>
-            <div class="col-md-3 offset-md-6">
+            <div class="col-12col-md-3 offset-md-6">
                 <div class="card-tools float-end">
                    
                         <a asp-action="ImportProductFromExcel" asp-controller="Excel" class="btn btn-success btn-sm bg-gradient">
@@ -185,11 +185,11 @@
     </div>
     <div class="card-body table-bordered  p-0">
         <div class="row m-2">
-            <div class="col-md-1 offset-md-1 pt-2 text-center">
-                <label class="form-label">@Language.GetString("LanguageName")</label>
+            <div class="col-4 col-md-1 offset-md-1 pt-2 text-center">
+                <label class="form-label float-end">@Language.GetString("LanguageName")</label>
             </div>
-            <div class="col-md-2">
-                <select class="form-control border" data-live-search="true" id="cmbLangIdFilter" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
+            <div class="col-4 col-md-2">
+                <select class="form-control border float-start" data-live-search="true" id="cmbLangIdFilter" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                 </select>
             </div>
         </div>

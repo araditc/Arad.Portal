@@ -2451,6 +2451,18 @@
   <string key="LanguageName">
     <value>Language Name</value>
   </string>
+	<string key="ProductType">
+    <value>Product Type</value>
+  </string>
+	<string key="DownloadLimitation">
+    <value>Download Limitation</value>
+  </string>
+	<string key="AllowedDownloadDuration">
+    <value>day count for allowed download duration</value>
+  </string>
+	<string key="AllowedDownloadNumber">
+    <value>Allowed download count</value>
+  </string>
   <string key="LanguageToCopy">
     <value>source language to copy</value>
   </string>

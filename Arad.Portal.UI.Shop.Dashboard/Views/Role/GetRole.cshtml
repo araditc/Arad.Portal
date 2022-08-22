@@ -14,11 +14,11 @@
 <div class="card-body">
 
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-12 col-md-2">
             <input asp-for="RoleId" type="hidden">
             <label class="form-label" for="RoleName">@Language.GetString("Role_Name") </label>
         </div>
-        <div class="col-md-3">
+        <div class="col-12 col-md-3">
             <input asp-for="RoleName" class="form-control" placeholder=" ">
             <span asp-validation-for="RoleName" class="text-danger"></span>
         </div>

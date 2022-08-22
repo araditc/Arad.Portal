@@ -28,6 +28,7 @@ using Arad.Portal.DataLayer.Contracts.General.Domain;
 using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using SixLabors.ImageSharp.Formats;
+using Arad.Portal.DataLayer.Contracts.General.User;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -39,7 +40,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IProductUnitRepository _unitRepository;
         private readonly IProductGroupRepository _productGroupRepository;
         private readonly IProductSpecGroupRepository _specGroupRepository;
-       
+        private readonly IUserRepository _userRepository;
         private readonly ILanguageRepository _lanRepository;
         private readonly ICurrencyRepository _curRepository;
         private readonly IConfiguration _configuration;
@@ -51,7 +52,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly CodeGenerator _codeGenerator;
         
         public ProductController(UserManager<ApplicationUser> userManager,CodeGenerator codeGenerator,
-            IProductRepository productRepository,
+            IProductRepository productRepository,IUserRepository userRepository,
             ILanguageRepository languageRepository, IProductGroupRepository productGroupRepository,
             ICurrencyRepository currencyRepository, IProductUnitRepository unitRepository,
             IProductSpecGroupRepository specGroupRepository,IPromotionRepository promotionRepository,
@@ -71,6 +72,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _promotionRepository = promotionRepository;
             _webHostEnvironment = webHostEnvironment;
             _codeGenerator = codeGenerator;
+            _userRepository = userRepository;
             imageSize = _configuration["ProductImageSize:Size"];
         }
 
@@ -126,6 +128,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
             var fileShown = _configuration["LocalStaticFileShown"];
             ViewBag.Url = fileShown;
+
+            ViewBag.ProductType = _userRepository.GetAllProductType();
+            ViewBag.DownloadOptions = _userRepository.GetAllDownloadLimitationType();
 
             var imageRatioList = _productRepository.GetAllImageRatio();
             ViewBag.ImageRatio = imageRatioList;

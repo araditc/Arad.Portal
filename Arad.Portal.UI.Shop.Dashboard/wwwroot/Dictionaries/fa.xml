@@ -2500,6 +2500,18 @@
   <string key="LanguageName">
     <value>نام زبان</value>
   </string>
+	<string key="ProductType">
+		<value>نوع محصول</value>
+	</string>
+	<string key="DownloadLimitation">
+		<value>محدودیت دانلود</value>
+	</string>
+	<string key="AllowedDownloadDuration">
+		<value>تعداد روز مجاز برای  دانلود</value>
+	</string>
+	<string key="AllowedDownloadNumber">
+		<value>تعداد دفعات مجاز برای دانلود</value>
+	</string>
   <string key="LanguageToCopy">
     <value>زبان مبدا برای کپی</value>
   </string>

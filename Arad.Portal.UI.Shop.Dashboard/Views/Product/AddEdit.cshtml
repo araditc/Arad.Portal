@@ -137,25 +137,49 @@
 
             <div class="card-body" id="addEditProductCard">
                 <input type="hidden" value="@Model.ProductId" asp-for="ProductId" />
+                <div class="row">
+                    <div class="form-group col-12 col-md-3">
+                          <label class="form-label">@Language.GetString("ProductType")</label>
+                          <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.ProductType" asp-items="@(new MultiSelectList(ViewBag.ProductType,"Value","Text"))">
+                        </select>
+                        <span data-val-result="ProductType" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12 col-md-3 d-none fileSec downloadType">
+                         <label class="form-label">@Language.GetString("DownloadLimitation")</label>
+                         <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.DownloadLimitationType" asp-items="@(new MultiSelectList(ViewBag.DownloadOptions,"Value","Text"))">
+                        </select>
+                        <span data-val-result="DownloadLimitationType" class="text-danger"></span>
+                    </div>
+                     <div class="form-group col-12 col-md-3 d-none fileSec timeDuration">
+                          <label class="form-label">@Language.GetString("AllowedDownloadDuration")</label>
+                          <input type="number" min="1" class="form-control" asp-for="@Model.AllowedDownloadDurationDay" />
+
+                     </div>
+                      <div class="form-group col-12 col-md-3 d-none fileSec downloadCnt">
+                           <label class="form-label">@Language.GetString("AllowedDownloadNumber")</label>
+                            <input type="number" min="1" class="form-control" asp-for="@Model.AllowedDownloadCount" />
+
+                      </div>
+                </div>
 
                 <div class="row">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label">@Language.GetString("tbl_ProductGroup")</label>
                         <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.GroupIds" asp-items="@(new MultiSelectList(ViewBag.ProductGroupList,"Value","Text"))">
                         </select>
                         <span data-val-result="GroupIds" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label">@Language.GetString("tbl_UniqeCode")</label>
                         <input type="text" class="form-control" asp-for="@Model.UniqueCode" value="@Model.UniqueCode" />
                         <span data-val-result="UniqueCode" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label">@Language.GetString("tbl_Inventory")</label>
                         <input type="number" class="form-control" asp-for="@Model.Inventory" value="@Model.Inventory" min="0" />
                         <span data-val-result="Inventory" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label">@Language.GetString("Menu_ProductUnit")</label>
                         <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.Unit.ProductUnitId" asp-items="@(new SelectList(ViewBag.ProductUnitList,"Value","Text"))">
                         </select>
@@ -163,7 +187,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <lable> @Language.GetString("AlertAndMessage_NotifyWhenCountIsLessThan")</lable>
                         <input type="number" class="form-control" asp-for="@Model.MinimumCount" value="@Model.MinimumCount" min="0" />
 
@@ -176,7 +200,7 @@
                             </label>
                         </div>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         @if (ViewBag.Vendors != "-1")
                         {
                             <label class="form-label">@Language.GetString("ProductVendor")</label>
@@ -195,50 +219,50 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label">@Language.GetString("tbl_ProductCode")</label>
                         <input type="text" class="form-control" asp-for="@Model.ProductCode" value="@Model.ProductCode" placeholder=" " disabled>
                         <span data-val-result="ProductCode" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label">@Language.GetString("Promotion")</label>
                         <select class="form-control selectpicker" data-live-search="true" id="PromotionId" asp-items="@(new SelectList(ViewBag.PromotionList,"Value","Text"))">
                         </select>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-12">
                         <div class="card border border-dark m-2">
                             <div class="card-header">
                                 <div class="card-title">@Language.GetString("Menu_ProductSpecifications")</div>
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group col-12 col-md-2">
                                         <label class="form-label">@Language.GetString("LanguageName")</label>
                                         <select class="form-control selectpicker" data-live-search="true" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))" data-live-search="true">
                                         </select>
                                         <span data-val-result="languageId" class="text-danger"></span>
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-12 col-md-3">
                                         <label class="form-label">@Language.GetString("SpecificationGroup")</label>
                                         <select class="form-control selectpicker" data-live-search="true" id="specGroupId" asp-items="@(new SelectList(ViewBag.SpecificationGroupList,"Value","Text"))" data-live-search="true">
                                         </select>
                                         <span data-val-result="specGroupId" class="text-danger"></span>
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-12 col-md-3">
                                         <label class="form-label">@Language.GetString("tbl_SpecificationName")</label>
                                         <select class="form-control selectpicker" data-live-search="true" id="specificationId">
                                         </select>
                                         <span data-val-result="specificationId" class="text-danger"></span>
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-11 col-md-3">
                                         <label class="form-label">@Language.GetString("tbl_SpecificationValues")</label>
                                         <select class="form-control selectpicker" multiple="multiple" id="specValues" data-live-search="true">
                                         </select>
                                         <span data-val-result="specValues" class="text-danger"></span>
                                     </div>
-                                    <div class="form-group col-md-1" style="text-align:center;margin:auto;">
+                                    <div class="form-group col-1 col-md-1" style="text-align:center;margin:auto;">
                                         <div style="margin:auto;display:inline-block;">
                                             <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addSpecToList();">
                                                 <i class="fa fa-plus pt-1"></i>
@@ -247,12 +271,12 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-3 offset-md-3">
+                                    <div class="col-12 col-md-3 offset-md-3">
                                         <span data-val-result="specifications" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="row" style="margin-top:1%;">
-                                    <div class="col-md-12">
+                                    <div class="col-12">
                                         <table class="table table-hover table-bordered">
                                             <thead>
                                                 <tr style="text-align:center;">
@@ -303,14 +327,14 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-12">
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title">@Language.GetString("MultiLingualProperty")</div>
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="form-group col-md-12">
+                                    <div class="form-group col-12">
                                         <label class="form-label">@Language.GetString("ProductSpecs")</label>
                                         <textarea id="editorCk" name="editorCk" class="form-control" rows="30"></textarea>
                                        
@@ -359,44 +383,44 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group col-12 col-md-2">
                                         <label class="form-label">@Language.GetString("LanguageName")</label>
                                         <select class="form-control selectpicker" data-live-search="true" id="multiLangId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                                         </select>
                                         <span data-val-result="multiLangId" class="text-danger"></span>
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-12 col-md-3">
                                         <label class="form-label">@Language.GetString("tbl_ProductName")</label>
                                         <input type="text" class="form-control" id="productName" placeholder="" />
                                         <span data-val-result="productName" class="text-danger"></span>
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-12 col-md-3">
                                         <label class="form-label">@Language.GetString("UrlFriend")</label>
                                         <input type="text" class="form-control" dir="ltr" id="urlFriend" placeholder=" " />
                                         <span data-val-result="urlFriend" class="text-danger"></span>
 
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-12 col-md-3">
                                         <label class="form-label">@Language.GetString("SeoTitle")</label>
                                         <input type="text" class="form-control" id="seoTitle" placeholder=" " maxlength="70">
 
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-12 col-md-3">
                                         <label class="form-label">@Language.GetString("SeoDescription")</label>
                                         <input type="text" class="form-control" id="seoDescription" placeholder=" " maxlength="150">
 
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-12 col-md-3">
                                         <label class="form-label">@Language.GetString("Description")</label>
                                         <input type="text" class="form-control" id="description" placeholder=" ">
 
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-12 col-md-3">
                                         <span data-val-result="multiLinguals" class="text-danger"></span>
                                     </div>
-                                    <div class="form-group col-md-3" style="text-align:center;margin:auto;">
+                                    <div class="form-group col-12 col-md-3" style="text-align:center;margin:auto;">
                                         <div style="margin:auto;display:inline-block;">
                                             <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addToTable();">
                                                 <i class="fa fa-plus pt-1"></i>
@@ -409,7 +433,7 @@
 
 
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-12">
                                         <table class="table table-hover table-bordered">
                                             <thead>
                                                 <tr style="text-align:center;">
@@ -462,25 +486,25 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-12">
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title">@Language.GetString("PriceHistory")</div>
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-12 col-md-3">
                                         <label class="form-label">@Language.GetString("Currency")</label>
                                         <select class="form-control selectpicker" data-live-search="true" id="currencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
                                         </select>
                                         <span data-val-result="currencyId" class="text-danger"></span>
                                     </div>
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group col-12 col-md-2">
                                         <label class="form-label">@Language.GetString("PriceValue")</label>
                                         <input type="number" class="form-control" id="priceValue" />
                                         <span data-val-result="priceValue" class="text-danger"></span>
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-11 col-md-3">
                                         <label class="form-label">@Language.GetString("StartDate")</label>
 
                                         @if (CultureInfo.CurrentCulture.Name == "fa-IR")
@@ -503,7 +527,7 @@
                                         }
                                         <span data-val-result="startDate" class="text-danger"></span>
                                     </div>
-                                    <div class="form-group col-md-1" style="text-align:center;margin:auto;">
+                                    <div class="form-group col-1" style="text-align:center;margin:auto;">
                                         <div style="margin:auto;display:inline-block;">
                                             <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addPriceToList();">
                                                 <i class="fa fa-plus pt-1"></i>
@@ -512,12 +536,12 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-12 col-md-3">
                                         <span data-val-result="priceList" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-12">
                                         <table class="table table-hover table-bordered">
                                             <thead>
                                                 <tr style="text-align:center;">
@@ -567,26 +591,26 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-12">
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title">@Language.GetString("tbl_ProductImages")</div>
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-4 border pt-3">
+                                    <div class="col-12 col-md-4 border pt-3">
                                         <label class="form-label custom-file-label float-start pt-2" for="image">@Language.GetString("btn_UploadImage")</label>
                                         <input accept="image/x-png,image/jpeg"
                                                type="file" class="btn btn-sm bg-gradient float-end" name="image" id="image" onchange="getURL(this)" />
                                     </div>
-                                    <div class="col-md-2 mb-1">
+                                    <div class="col-12 col-md-2 mb-1">
                                         <label class="form-label">@Language.GetString("tbl_AspectRatioImage")</label>
                                         <select id="imgAspectRatio" class="form-control selectpicker" data-live-search="true"
                                                 asp-items="@(new SelectList(ViewBag.ImageRatio,"Value","Text"))"></select>
                                     </div>
                                 </div>
                                 <div class="row" id="proGallery" style="padding:1%;">
-                                    <div class="col-md-12">
+                                    <div class="col-12">
                                         <table class="table table-hover table-bordered">
                                             <thead>
                                                 <tr>
@@ -983,6 +1007,41 @@ else
                         alert(thrownError);
                     }
             });
+            }
+        });
+
+        $("#ProductType").change(function(){
+
+            var typeId = $("#ProductType").val();
+            if(typeId = "2") //file
+            {
+                $(".downloadType").removeClass("d-none");
+            }else
+            {
+                $(".fileSec").addClass("d-none");
+            }
+        });
+
+        $("#DownloadLimitationType").change(function(){
+            var typeId = $("DownloadLimitationType").val();
+            switch(typeId)
+            {
+                case "1": //nolimitation
+                   $(".timeDuration").addClass("d-none");
+                   $(".downloadCnt").addClass("d-none");
+                break;
+                case "2": //timeduration
+                 $(".timeDuration").removeClass("d-none");
+                  $(".downloadCnt").addClass("d-none");
+                break;
+                case "3": //timedurationwithcount
+                 $(".timeDuration").removeClass("d-none");
+                   $(".downloadCnt").removeClass("d-none");
+                break;
+                case "4"://downloadedcount
+                   $(".timeDuration").addClass("d-none");
+                   $(".downloadCnt").removeClass("d-none");
+                break;
             }
         });
     });

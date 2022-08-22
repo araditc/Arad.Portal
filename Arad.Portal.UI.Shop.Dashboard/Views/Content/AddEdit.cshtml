@@ -124,13 +124,13 @@
 
 <div class="modal fade" id="uploadModal" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-        <div class="modal-content col-md-12">
+        <div class="modal-content col-12">
             <div class="modal-header">
-                <div class="col-md-1">
+                <div class="col-1">
                     <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
                     </button>
                 </div>
-                <div class="col-md-11" style="text-align: center">
+                <div class="col-11" style="text-align: center">
                     <h5 class="modal-title align-content-center" id="ModalLongTitle">@Language.GetString("CropImage")</h5>
                 </div>
             </div>
@@ -163,7 +163,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-12">
         <div class="card" id="addContentCardTitle">
             <div class="card-header">
                 <h5 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.ContentId) ? Language.GetString("EditContent_Title") : Language.GetString("AddContent_Title"))</h5>
@@ -172,24 +172,24 @@
             <div class="card-body" id="addContentCardBody">
                 <input type="hidden" value="@Model.ContentId" asp-for="ContentId" />
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-12 col-md-3">
                         <label class="form-label" asp-for="@Model.LanguageId">@Language.GetString("RelatedLanguage")</label>
                         <select class="form-control selectpicker" asp-for="@Model.LanguageId" data-live-search="true" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text", Model.LanguageId))">
                         </select>
                         <span data-val-result="LanguageId" class="text-danger"></span>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-12 col-md-3">
                         <label class="form-label" asp-for="@Model.ContentCategoryId">@Language.GetString("Menu_ContentCategory")</label>
                         <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.ContentCategoryId" asp-items="@(new SelectList(ViewBag.CatList,"Value","Text", Model.ContentCategoryId))">
                         </select>
                         <span data-val-result="ContentCategoryId" class="text-danger"></span>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-12 col-md-3">
                         <label class="form-label" asp-for="Title">@Language.GetString("Entities_Title")</label>
                         <input type="text" class="form-control" asp-for="@Model.Title" placeholder=" " value="@Model.Title">
                         <span data-val-result="Title" class="text-danger"></span>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-12 col-md-3">
                         <label class="form-label" asp-for="SubTitle">@Language.GetString("Entities_SubTitle")</label>
                         <input type="text" class="form-control" asp-for="@Model.SubTitle" placeholder=" " value="@Model.SubTitle">
                         <span data-val-result="SubTitle" class="text-danger"></span>
@@ -197,19 +197,19 @@
 
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-12 col-md-6">
                         <label class="form-label" asp-for="Description">@Language.GetString("Description")</label>
                         <textarea dir="@ViewBag.dir" asp-for="Description" class="form-control" rows="3">@Model.Description</textarea>
                         <span data-val-result="Description" class="text-danger"></span>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-12 col-md-6">
                         <label class="form-label" asp-for="SeoDescription">@Language.GetString("SeoDescription")</label>
                         <textarea dir="@ViewBag.dir" asp-for="SeoDescription" class="form-control" rows="3" maxlength="150" >@Model.SeoDescription</textarea>
                         <span data-val-result="SeoDescription" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-12 col-md-3">
                         <label class="form-label">@Language.GetString("StartShowDate")</label>
 
                         @if (CultureInfo.CurrentCulture.Name == "fa-IR")
@@ -233,7 +233,7 @@
 
                         <span data-val-result="dtpStartShowDate" class="text-danger"></span>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-12 col-md-3">
                         <label class="form-label">@Language.GetString("EndShowDate")</label>
 
                         @if (CultureInfo.CurrentCulture.Name == "fa-IR")
@@ -256,7 +256,7 @@
                         }
                         <span data-val-result="dtpEndShowDate" class="text-danger"></span>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-12 col-md-3">
                         <label class="form-label">@Language.GetString("SourceType")</label>
                         <select class="form-control selectpicker" asp-for="SourceType" asp-items="@(new SelectList(ViewBag.AllSourceType,"Value","Text"))" data-live-search="true">
                         </select>
@@ -323,26 +323,26 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-12">
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title">@Language.GetString("tbl_ContentImages")</div>
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-4 border pt-3">
+                                    <div class="col-10 col-md-4 border pt-3">
                                         <label class="form-label custom-file-label float-start pt-2" for="image">@Language.GetString("btn_UploadImage")</label>
                                         <input accept="image/x-png,image/jpeg"
                                                type="file" class="btn btn-sm bg-gradient float-end" name="image" id="image" onchange="getURL(this)" />
                                     </div>
-                                    <div class="col-md-2 mb-1">
+                                    <div class="col-2 col-md-2 mb-1">
                                         <label class="form-label">@Language.GetString("tbl_AspectRatioImage")</label>
                                         <select id="imgAspectRatio" class="form-control selectpicker" data-live-search="true"
                                                 asp-items="@(new SelectList(ViewBag.ImageRatio,"Value","Text"))"></select>
                                     </div>
                                 </div>
                                 <div class="row" id="proGallery" style="padding:1%;">
-                                    <div class="col-md-12">
+                                    <div class="col-12">
                                         <table class="table table-hover table-bordered">
                                             <thead>
                                                 <tr>
@@ -390,13 +390,13 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-12">
                         <label class="form-label" for="tagKeywords">@Language.GetString("TagKeywords")</label>
                         <input type="text" class="form-control" id="tagKeyWords" name="tagKeyWords" value="@(Model.TagKeywords.Count > 0 ? string.Join(',', @Model.TagKeywords) : "")" />
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-12">
                         <div class="card" id="ContentCardTitle">
                             <div class="card-header">
                                 <h5 class="card-title" data-toggle="tab">@Language.GetString("Menu_Content")</h5>
@@ -404,7 +404,7 @@
                             <div class="card-body">
                                 <div class="row">
 
-                                    <div class="col-md-12">
+                                    <div class="col-12">
                                         <span data-val-result="editorCk" class="text-danger"></span>
                                         <textarea id="editorCk" name="editorCk" class="form-control" rows="40">@Html.Raw(Model.Contents)</textarea>
 

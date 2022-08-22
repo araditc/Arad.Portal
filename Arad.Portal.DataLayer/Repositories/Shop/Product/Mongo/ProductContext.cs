@@ -13,6 +13,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         public IMongoCollection<Entities.Shop.ProductSpecification.ProductSpecification> SpecificationCollection;
         public IMongoCollection<Entities.Shop.ProductSpecificationGroup.ProductSpecGroup> SpecGroupCollection;
         public IMongoCollection<Entities.Shop.ProductUnit.ProductUnit> ProductUnitCollection;
+        public IMongoCollection<Entities.General.User.DownloadLimitation> DownloadLimitationCollection;
 
 
         public IMongoCollection<BsonDocument> BsonProductUnitCollection;
@@ -20,7 +21,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         public IMongoCollection<BsonDocument> BsonProductGroupCollection;
         public IMongoCollection<BsonDocument> BsonSpecificationCollection;
         public IMongoCollection<BsonDocument> BsonSpecGroupCollection;
-       
+        public IMongoCollection<BsonDocument> BsonDownloadLimitationCollection;
         private readonly IConfiguration _configuration;
 
         public ProductContext(IConfiguration configuration)
@@ -48,6 +49,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 db.GetCollection<BsonDocument>("ProductSpecGroup");
             BsonProductUnitCollection =
                 db.GetCollection<BsonDocument>("ProductUnit");
+            DownloadLimitationCollection = db.GetCollection<Entities.General.User.DownloadLimitation>("DownloadLimitations");
+            BsonDownloadLimitationCollection = db.GetCollection<BsonDocument>("DownloadLimitations");
         }
     }
 }

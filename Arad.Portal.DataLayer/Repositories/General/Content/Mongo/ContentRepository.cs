@@ -800,5 +800,17 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             }
             return result;
         }
+
+        public List<Image> GetPictures(string contentId)
+        {
+            var result = new List<Image>();
+            var entity = _contentContext.Collection
+                .Find(_ => _.ContentId == contentId).FirstOrDefault();
+            if (entity != null)
+            {
+                result = entity.Images;
+            }
+            return result;
+        }
     }
 }

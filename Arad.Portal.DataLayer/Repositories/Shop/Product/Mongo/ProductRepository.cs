@@ -115,6 +115,48 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
+
+        public async Task<Result> InsertDownloadLimitation(string shoppingCartDetailId, string productId, string userId, string domainId)
+        {
+            var result = new Result();
+            try
+            {
+                var productEntity = _context.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
+                if (productEntity != null && productEntity.ProductType == Enums.ProductType.File)
+                {
+                    var obj = new DownloadLimitation()
+                    {
+                        DownloadLimitId = Guid.NewGuid().ToString(),
+                        AssociatedDomainId = domainId,
+                        CreatorUserId = userId,
+                        CreationDate = DateTime.Now
+                    };
+                    if (productEntity.DownloadLimitationType == Enums.DownloadLimitationType.TimeDuration)
+                    {
+                        obj.StartDate = DateTime.Now;
+                    }
+                    else if (productEntity.DownloadLimitationType == Enums.DownloadLimitationType.DownloadCount)
+                    {
+                        obj.DownloadedCount = 0;
+                    }
+                    else if (productEntity.DownloadLimitationType == Enums.DownloadLimitationType.TimeDurationWithCnt)
+                    {
+                        obj.StartDate = DateTime.Now;
+                        obj.DownloadedCount = 0;
+                    }
+                    await _context.DownloadLimitationCollection.InsertOneAsync(obj);
+                }
+                result.Succeeded = true;
+                result.Message = ConstMessages.SuccessfullyDone;
+            }
+            catch (Exception)
+            {
+                result.Succeeded = false;
+                result.Message = ConstMessages.InternalServerErrorMessage;
+            }
+            return result;
+           
+        }
         public async Task<Result> AddCommentToProduct(string productId, Comment comment)
         {
             var result = new Result();

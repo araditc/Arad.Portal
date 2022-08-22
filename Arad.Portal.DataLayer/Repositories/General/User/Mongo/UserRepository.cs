@@ -17,6 +17,8 @@ using MongoDB.Bson;
 using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.DataLayer.Repositories.General.Role.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Permission.Mongo;
+using Arad.Portal.GeneralLibrary.Utilities;
+using static Arad.Portal.DataLayer.Models.Shared.Enums;
 
 
 namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
@@ -164,6 +166,40 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             return result;
         }
 
+        public List<SelectListModel> GetAllDownloadLimitationType()
+        {
+            var result = new List<SelectListModel>();
+            foreach (int i in Enum.GetValues(typeof(DownloadLimitationType)))
+            {
+                string name = Enum.GetName(typeof(DownloadLimitationType), i);
+                var obj = new SelectListModel()
+                {
+                    Text = Arad.Portal.GeneralLibrary.Utilities.Language.GetString($"EnumDesc_{name}"),
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("Choose"), Value = "-1" });
+            return result;
+        }
+
+        public List<SelectListModel> GetAllProductType()
+        {
+            var result = new List<SelectListModel>();
+            foreach (int i in Enum.GetValues(typeof(ProductType)))
+            {
+                string name = Enum.GetName(typeof(ProductType), i);
+                var obj = new SelectListModel()
+                {
+                    Text = Arad.Portal.GeneralLibrary.Utilities.Language.GetString($"EnumDesc_{name}"),
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            //result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("Choose"), Value = "-1" });
+            return result;
+        }
+
         public List<Entities.General.Permission.Permission> GetPermissionsOfUser(ApplicationUser user)
         {
             List<Entities.General.Permission.Permission> permissionList = new();
@@ -220,7 +256,6 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             var list = _context.UserFavoritesCollection.Find(_ => _.CreatorUserId == userId && _.FavoriteType == type).ToList();
             return list;
         }
-
         public UserDTO GetUserWithPhone(string phoneNumber)
         {
             var result = new UserDTO();
@@ -239,7 +274,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             }
             return result;
         }
-        public List<UserDTO> search(string word)
+
+        public List<UserDTO> Search(string word)
         {
             var result = new List<UserDTO>();
             try

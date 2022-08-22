@@ -53,7 +53,7 @@
 
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-12">
         <div class="card" id="addDomainCard">
             <div class="card-header">
                 <h5 class="card-title" data-toggle="tab">
@@ -99,23 +99,23 @@
                     </div>
                 </div>
                 <div class="row m-1">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label" for="DefaultLanguageId">@Language.GetString("DefaultLanguage")</label><br />
                         <select class="form-control selectpicker" data-live-search="true" asp-for="DefaultLanguageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text", Model.DefaultLanguageId))">
                         </select>
                         <span data-val-result="DefaultLanguageId" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label" for="groupName">@Language.GetString("DomainName")</label><br />
                         <input type="text" class="form-control" asp-for="DomainName" dir="ltr">
                         <span data-val-result="DomainName" class="text-danger"></span>
                     </div>
-                     <div class="form-group col-md-3">
+                     <div class="form-group col-12 col-md-3">
                         <label class="form-label" for="groupName">@Language.GetString("Title")</label><br />
                         <input type="text" class="form-control" asp-for="Title" dir="ltr">
                         <span data-val-result="Title" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label" for="languageId">@Language.GetString("DomainOwner")</label><br />
                         <select class="form-control selectpicker" data-live-search="true" asp-for="OwnerUserId" asp-items="@(new SelectList(ViewBag.Vendors,"Value","Text", Model.OwnerUserId))">
                         </select>
@@ -123,24 +123,24 @@
                     </div>
                 </div>
                 <div class="row m-1 InvoiceSection d-none">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label" for="DefaultCurrencyId">@Language.GetString("DefaultCurrency")</label><br />
                         <select class="form-control selectpicker" data-live-search="true" asp-for="DefaultCurrencyId" asp-items="@(new SelectList( ViewBag.CurrencyList,"Value","Text", Model.DefaultCurrencyId))">
                         </select>
                         <span data-val-result="DefaultCurrencyId" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label" for="InvoiceNumberProcedure">@Language.GetString("tbl_InvoiceNumberCreationWay")</label><br />
                         <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.InvoiceNumberProcedure" asp-items="@(new SelectList( ViewBag.InvoiceNumberEnum,"Value","Text", Model.InvoiceNumberProcedure))">
                         </select>
                         <span data-val-result="InvoiceNumberProcedure" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3 invoiceInitialise">
+                    <div class="form-group col-12 col-md-3 invoiceInitialise">
                         <label class="form-label" for="InvoiceNumberInitializer">@Language.GetString("FirstInvoiceNumberPattern")</label><br />
                         <input type="text" class="form-control" asp-for="@Model.InvoiceNumberInitializer" value="@Model.InvoiceNumberInitializer" />
                         <span data-val-result="InvoiceNumberInitializer" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3 invoiceInitialise">
+                    <div class="form-group col-12 col-md-3 invoiceInitialise">
                         <label class="form-label" for="IncreasementValue">@Language.GetString("IncreasementLevel")</label><br />
                         <input type="text" class="form-control" asp-for="@Model.IncreasementValue" value="@Model.IncreasementValue" />
                         <span data-val-result="IncreasementValue" class="text-danger"></span>
@@ -149,25 +149,25 @@
 
                
                 <div class="row m-1">
-                    <div class="col-md-12">
+                    <div class="col-12">
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title">@Language.GetString("PriceHistory")</div>
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-12 col-md-3">
                                         <label class="form-label">@Language.GetString("Currency")</label>
                                         <select class="form-control selectpicker" data-live-search="true" id="currencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
                                         </select>
                                         <span data-val-result="currencyId" class="text-danger"></span>
                                     </div>
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group col-12 col-md-2">
                                         <label class="form-label">@Language.GetString("PriceValue")</label>
                                         <input type="number" class="form-control" id="priceValue" />
                                         <span data-val-result="priceValue" class="text-danger"></span>
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-11 col-md-3">
                                         <label class="form-label">@Language.GetString("StartDate")</label>
                                         
                                         @if (CultureInfo.CurrentCulture.Name == "fa-IR")
@@ -190,7 +190,7 @@
                                         }
                                         <span data-val-result="dtpStartDate" class="text-danger"></span>
                                     </div>
-                                    <div class="form-group col-md-1" style="text-align:center;margin:auto;">
+                                    <div class="form-group col-1" style="text-align:center;margin:auto;">
                                         <div style="margin:auto;display:inline-block;">
                                             <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addPriceToList();">
                                                 <i class="fa fa-plus pt-1"></i>
@@ -199,12 +199,12 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-12 col-md-3">
                                         <span data-val-result="priceList" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-12">
                                         <table class="table table-hover table-bordered">
                                             <thead>
                                                 <tr style="text-align:center;">
@@ -255,21 +255,21 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-12">
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title">@Language.GetString("tbl_DomainPaymentGatewaysInfoes")</div>
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-10 col-md-3">
                                         <label class="form-label" for="languageId">@Language.GetString("tbl_PaymentGateways")</label><br />
                                         <select class="form-control selectpicker" id="providerId" asp-items="@(new SelectList(ViewBag.Providers, "Value","Text"))" data-live-search="true">
                                         </select>
                                         <span data-val-result="providerId" class="text-danger"></span>
                                     </div>
 
-                                    <div class="form-group col-md-2" style="text-align:center;margin:auto;">
+                                    <div class="form-group col-2" style="text-align:center;margin:auto;">
 
                                         <div id="btnAddSection" style="margin:auto;display:inline-block;">
                                             <button type="button" id="addProviderParam" class="btn btn-primary bg-gradient d-none btn-sm">

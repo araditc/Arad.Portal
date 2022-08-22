@@ -13,6 +13,7 @@ namespace Arad.Portal.DataLayer.Entities.General.User
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string DownloadLimitId { get; set; }
+        public string ShoppingCartDetailId { get; set; }
 
         public string ProductId { get; set; }
 

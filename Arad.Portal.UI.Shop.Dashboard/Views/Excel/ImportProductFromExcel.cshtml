@@ -15,7 +15,7 @@
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="offset-md-8 col-md-4">
+            <div class="col-12 offset-md-8 col-md-4">
                  <a asp-action="GetTemplate" class="float-end btn btn-dark p-3 m-2" >
                     <i class="fa fa-download px-1 mt-1">
                     </i>@Language.GetString("GetExcelTemplate")
@@ -27,14 +27,14 @@
         
         <form asp-action="ImportProductFromExcel" class="row g-3" enctype="multipart/form-data" method="post" role="form">
             <div class="row">
-                <div class="form-group col-md-4">
+                <div class="form-group col-12 col-md-4">
                     <label class="form-label" asp-for="@Model.ProductGroupIds">@Language.GetString("tbl_ProductGroup")</label>
                     <select class="form-control selectpicker" multiple="multiple"
                             asp-for="@Model.ProductGroupIds" asp-items="@(new MultiSelectList(ViewBag.ProductGroupList,"Value","Text"))" data-live-search="true">
                     </select>
                     <span data-val-result="GroupIds" class="text-danger"></span>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-3 col-md-4">
 
                     <label class="form-label" asp-for="ProductsExcelFile">
                         @Language.GetString("FileImportExport_ProductExcelFile")
@@ -43,7 +43,7 @@
                     <span class="text-danger form-validation-alert" asp-validation-for="ProductsExcelFile">
                     </span>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-3 col-md-4">
                     <label class="form-label" asp-for="ProductImages">
                         @Language.GetString("FileImportExport_ProductImages")
                     </label>
@@ -55,7 +55,7 @@
 
             </div>
 
-            <div class="col-md-12 text-end">
+            <div class="col-12 text-end">
                 <button class="btn btn-success btn-sm pe-3" type="submit">
                     <i class="far fa-save px-1 mt-1">
                     </i>@Language.GetString("btn_Save")

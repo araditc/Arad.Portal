@@ -27,7 +27,7 @@
             <input asp-for="RoleId" data-val="true" type="hidden" value="@Model.RoleId">
             
 
-            <div class="col-md-4">
+            <div class="col-12 col-md-4">
                 <label class="form-label" for="@(nameof(Model.RoleName))">
                     @Language.GetString("tbl_RoleName")
                 </label>
@@ -36,7 +36,7 @@
                 </span>
             </div>
 
-            <div class="col-md-12">
+            <div class="col-12">
                 <label class="form-label" for="@(nameof(Model.PermissionIds))">
                    @Language.GetString("Role_Name")
                 </label>
@@ -47,7 +47,7 @@
                 </span>
             </div>
 
-            <div class="col-md-12 text-end">
+            <div class="col-12 text-end">
                 <input type="submit" value="@Language.GetString("btn_Save")" class="btn btn-primary bg-gradient float-end m-2" />
                
                 <a asp-action="List" class="btn btn-light border border-1 btn-sm m-2">

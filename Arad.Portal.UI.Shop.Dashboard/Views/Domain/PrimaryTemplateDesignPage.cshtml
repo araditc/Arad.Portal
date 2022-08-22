@@ -121,12 +121,12 @@
 
     <div class="modal fade" id="uploadModal" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-            <div class="modal-content col-md-12">
+            <div class="modal-content col-12">
                 <div class="modal-header">
-                    <div class="col-md-1">
+                    <div class="col-1">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="col-md-11" style="text-align: center">
+                    <div class="col-11" style="text-align: center">
                         <h5 class="modal-title align-content-center" id="exampleModalLongTitle">@Language.GetString("CropImage")</h5>
                     </div>
                 </div>
@@ -155,12 +155,12 @@
 
     <div class="container-fluid">
         <div class="row mt-3">
-            <div class="col-3">
+            <div class="col-12 col-md-3">
                 <label class="form-label">@Language.GetString("LanguageName")</label>
                 <select class="form-control selectpicker" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))" data-live-search="true">
                 </select>
             </div>
-            <div class="col-3 pt-3 pb-2 copySection d-none">
+            <div class="col-12 col-md-3 pt-3 pb-2 copySection d-none">
                  <div class="form-check m-auto d-inline-block pt-3">
                     <input class="form-check-input mt-1" id="copyDesignChb" type="checkbox" onchange="ChangeCopyDesignChb(this);">
                     <label class="form-check-label fw-bolder lh-lg" for="copyDesignChb">
@@ -168,12 +168,12 @@
                     </label>
                  </div>
             </div>
-            <div class="col-3 languageSelection d-none">
+            <div class="col-12 col-md-3 languageSelection d-none">
                 <label class="form-label">@Language.GetString("LanguageToCopy")</label>
                 <select class="form-control selectpicker" data-live-search="true" id="languageForCopy" onchange="copydesignfromLanguage(this);" >
                 </select>
             </div>
-            <div class="col-3 float-end">
+            <div class="col-12 col-md-3 float-end">
 
                 <button id="btnSave" class="btn btn-success bg-gradient btn-sm float-end m-2" type="button">@Language.GetString("btn_Save")</button>
                 <button id="btnPreview" class="btn btn-primary bg-gradient btn-sm float-end m-2" type="button">@Language.GetString("btn_Preview")</button>

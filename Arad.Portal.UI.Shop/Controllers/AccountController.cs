@@ -1,10 +1,12 @@
-﻿using Arad.Portal.DataLayer.Contracts.General.CountryParts;
+﻿using Arad.Portal.DataLayer.Contracts.General.Content;
+using Arad.Portal.DataLayer.Contracts.General.CountryParts;
 using Arad.Portal.DataLayer.Contracts.General.Currency;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Contracts.General.Error;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using Arad.Portal.DataLayer.Contracts.General.Notification;
 using Arad.Portal.DataLayer.Contracts.General.User;
+using Arad.Portal.DataLayer.Contracts.Shop.Product;
 using Arad.Portal.DataLayer.Contracts.Shop.Transaction;
 using Arad.Portal.DataLayer.Entities.General.Error;
 using Arad.Portal.DataLayer.Entities.General.User;
@@ -48,6 +50,8 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly ITransactionRepository _traRepository;
         private readonly ICurrencyRepository _curRepository;
         private readonly IConfiguration _configuration;
+        private readonly IProductRepository _productRepository;
+        private readonly IContentRepository _contentRepository;
         private readonly string _domainName;
         private readonly IMapper _mapper;
         
@@ -62,6 +66,8 @@ namespace Arad.Portal.UI.Shop.Controllers
             ICurrencyRepository curRepo,
             IConfiguration configuration, 
             ILanguageRepository lanRepo,
+            IProductRepository productRepository,
+            IContentRepository contentRepository,
             ITransactionRepository transactionRepository,
             SignInManager<ApplicationUser> signInManager):base(accessor, domainRepository)
         {
@@ -76,6 +82,8 @@ namespace Arad.Portal.UI.Shop.Controllers
             _curRepository = curRepo;
             _traRepository = transactionRepository;
             _mapper = mapper;
+            _contentRepository = contentRepository;
+            _productRepository = productRepository;
             _configuration = configuration;
             _countryRepository = countryRepository;
         }
@@ -194,7 +202,7 @@ namespace Arad.Portal.UI.Shop.Controllers
 
             if (!string.IsNullOrWhiteSpace(model.ReturnUrl) && model.ReturnUrl != "/")
             {
-                return Redirect(model.ReturnUrl);
+                return Redirect("/"+model.ReturnUrl);
             }
 
             //???
@@ -753,12 +761,66 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
         }
 
-        public IActionResult Favorites(string type)
+        [HttpGet]
+        public async Task<IActionResult> Favorites(string type)
         {
+            var List = new List<UserFavoritesDTO>();
+            var domainName = this.DomainName;
+            var domainRes = _domainRepository.FetchByName(domainName, false);
+            var images = new List<Image>();
             FavoriteType favType = type.ToLower() == "product" ? FavoriteType.Product : FavoriteType.Content;
             var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
             var lst = _userRepository.GetUserFavoriteList(userId, favType);
-            return View(lst);
+            string lanSymbol = string.Empty;
+            string lanId = string.Empty;
+            if (CultureInfo.CurrentCulture.Name != null)
+            {
+                lanSymbol = CultureInfo.CurrentCulture.Name;
+                lanId = _lanRepository.FetchBySymbol(lanSymbol);
+            }
+            else
+            {
+                lanId = domainRes.ReturnValue.DefaultLanguageId;
+            }
+
+            foreach (var item in lst)
+                {
+                    var obj = new UserFavoritesDTO();
+                    obj = _mapper.Map<UserFavoritesDTO>(item);
+                    
+                    if(type.ToLower() == "product")
+                    {
+                        var res =await _productRepository.ProductFetch(item.EntityId);
+                        images = res.Images;
+                        obj.Name = res.MultiLingualProperties.Any(_ => _.LanguageId == lanId) ? 
+                        res.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).Name : res.MultiLingualProperties.FirstOrDefault().Name;
+                    }
+                    else
+                    {
+                        var res = await _contentRepository.ContentFetch(item.EntityId);
+                        images = res.Images;
+                        obj.Name = res.Title;
+                    }
+                    
+                    var mainImage = images.FirstOrDefault(_ => _.IsMain);
+                    if (mainImage == null)
+                    {
+                        mainImage = images.FirstOrDefault(_ => _.ImageRatio == ImageRatio.Square);
+                    }
+                    if (mainImage == null)
+                    {
+                       obj.ImagePath = "";
+                    obj.NoImage = true;
+                    }
+                    else
+                    {
+                        obj.ImagePath = mainImage.Url;
+                    }
+                    List.Add(obj);
+                }
+
+            ViewBag.Type = type;
+            return View(List);
         }
 
 

@@ -17,7 +17,7 @@
 <h4>  @Language.GetString("Menu_ContentCategory") </h4>
 <hr />
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-12">
         <div class="card" id="addContentCategoryCardTitle">
             <div class="card-header">
                 <h5 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.ContentCategoryId) ? Language.GetString("EditContentCategory_Title") : Language.GetString("AddContentCategory_Title"))</h5>
@@ -26,20 +26,20 @@
             <div class="card-body" id="addContentCategoryCardBody">
                 <input type="hidden" value="@Model.ContentCategoryId" asp-for="ContentCategoryId" />
                 <div class="row">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label" asp-for="@Model.ParentCategoryId">@Language.GetString("ParentGroup")</label>
                         <select class="form-control selectpicker" asp-for="@Model.ParentCategoryId" asp-items="@(new SelectList(ViewBag.CategoryList,"Value","Text"))" data-live-search="true">
                         </select>
                         <span data-val-result="ParentId" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label" for="categoryTypeId">@Language.GetString("Enum_ContentCategoryType")</label>
                         <select class="form-control selectpicker" id="categoryTypeId" data-live-search="true"
                                 asp-items="@(new SelectList(ViewBag.CategoryTypes,"Value","Text", (int)Model.CategoryType))">
                         </select>
                         <span data-val-result="categoryTypeId" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label" for="@Model.CategoryCode">@Language.GetString("tbl_ContentCategoryCode")</label>
                         <input type="text" class="form-control" asp-for="@Model.CategoryCode" value="@Model.CategoryCode" disabled />
                         <span data-val-result="CategoryCode" class="text-danger"></span>
@@ -48,24 +48,24 @@
                 </div>
 
                 <div class="row">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label" for="languageId">@Language.GetString("LanguageName")</label><br />
                         <select class="form-control selectpicker" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))" data-live-search="true">
                         </select>
                         <span data-val-result="languageId" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label" for="categoryName">@Language.GetString("tbl_CategoryName")</label><br />
                         <input type="text" class="form-control" id="categoryName" placeholder=" ">
                         <span data-val-result="categoryName" class="text-danger"></span>
                     </div>
-                     <div class="form-group col-md-3">
+                     <div class="form-group col-11 col-md-3">
                         <label class="form-label" for="urlFriend">@Language.GetString("UrlFriend")</label><br />
                         <input type="text" class="form-control" id="urlFriend" placeholder=" ">
                         <span data-val-result="urlFriend" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group col-md-1" style="text-align:center;margin:auto;">
+                    <div class="form-group col-1" style="text-align:center;margin:auto;">
                         <span data-val-result="MultiLingualProperties" class="text-danger"></span>
                         <div style="margin:auto;display:inline-block;">
                             <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addToTable();">
@@ -73,7 +73,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="form-group col-md-5"></div>
+                    <div class="form-group col-12 col-md-5"></div>
 
                 </div>
 
@@ -113,7 +113,7 @@
             </div>
             <div class="card-footer">
                 <div class="row">
-                    <div class="col-md-4 offset-md-8 col-12">
+                    <div class="col-12 col-md-4 offset-md-8 col-12">
                         <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
                         <input type="button" id="btnAddContentCategory" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
                     </div>

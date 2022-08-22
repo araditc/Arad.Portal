@@ -9,11 +9,11 @@
 <input type="hidden" id="transactionId"  value="@ViewBag.traId" />
 
 <div class="row justify-content-around">
-    <div class="col-4 col-md-3">
+    <div class="col-6 col-md-3">
          <select class="form-control selectpicker" data-live-search="true" name="newStatus" id="orderStatusList" asp-items="@(new SelectList(ViewBag.OrderStatusList,"Value","Text", (int)Model))">
                         </select>
     </div>
-     <div class="col-2 text-center">
+     <div class="col-3 text-center">
            <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
            <input type="button" id="btnChangeStatus" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
      </div>

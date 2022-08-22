@@ -13,6 +13,7 @@
     }
 
     List<ContentGlance> sidebarContents = (List<ContentGlance>)ViewBag.Sidbars;
+    var like = User.Identity.IsAuthenticated && ViewBag.Like ? true : false;
 }
 @section Styles
 {
@@ -94,35 +95,65 @@
     }
 
 </div>
-@if (@Model.IsRateBoxShowing)
-{
-    <div class="row">
 
-        <div class="sold_stars ratePart col-md-4 offset-md-8">
-            @for (int i = 1; i <= Model.LikeRate; i++)
-            {
-                <a href="#"
-           role="button" aria-expanded="false" title="@Language.GetString("ContentScore")" onclick="Rate(@i);">
-                    <i class="fas fa-star"></i>
-                </a>
-            }
-            @if (Model.HalfLikeRate)
-            {
-                <a href="#"
-           role="button" aria-expanded="false" title="@Language.GetString("ContentScore")" onclick="Rate(@Model.LikeRate+1);">
-                    <i class="fas fa-star-half-alt"></i>
-                </a>
-            }
-            @for (int i = (Model.HalfLikeRate ? Model.LikeRate + 2 : Model.LikeRate + 1); i <= Model.DisikeRate; i++)
-            {
-                <a href="#"
-           role="button" aria-expanded="false" onclick="Rate(@i);" title=@($"{@Language.GetString("ContentScore")}_{i}")>
-                    <i class="far fa-star"></i>
-                </a>
-            }
-        </div>
+    <div class="row g-0">
+       @if (@Model.IsRateBoxShowing)
+        {
+            <div class="sold_stars ratePart col-10 col-md-4 px-1">
+                @for (int i = 1; i <= Model.LikeRate; i++)
+                {
+                    <a href="#"
+                          role="button" aria-expanded="false" title="@Language.GetString("ContentScore")" onclick="Rate(@i);">
+                        <i class="fas fa-star"></i>
+                    </a>
+                }
+                @if (Model.HalfLikeRate)
+                {
+                    <a href="#"
+                           role="button" aria-expanded="false" title="@Language.GetString("ContentScore")" onclick="Rate(@Model.LikeRate+1);">
+                        <i class="fas fa-star-half-alt"></i>
+                    </a>
+                }
+                @for (int i = (Model.HalfLikeRate ? Model.LikeRate + 2 : Model.LikeRate + 1); i <= Model.DisikeRate; i++)
+                {
+                    <a href="#"
+                              role="button" aria-expanded="false" onclick="Rate(@i);" title=@($"{@Language.GetString("ContentScore")}_{i}")>
+                        <i class="far fa-star"></i>
+                    </a>
+                }
+            </div>
+             <div class="col-1 offset-1 col-md-4 offset-md-4 px-3">
+              <a href="#" role="button" class="float-end fs-4" data-bs-toggle="tooltip" onclick="AddToFavoriteList('@Model.ContentCode');"
+                         data-bs-placement="bottom" title="@Language.GetString("AlertAndMessage_AddToFavoriteList")">
+                         @if(!like)
+                        {
+                             <i class="far fa-heart"></i>
+                        }else
+                        {
+                            <i class="fas fa-heart"></i>
+                        }
+                       
+              </a>
+            </div>
+        }else
+        {
+            <div class="col-1 offset-11 px-3">
+              <a href="#" role="button" class="float-end fs-4" data-bs-toggle="tooltip" onclick="AddToFavoriteList('@Model.ContentCode');"
+                         data-bs-placement="bottom" title="@Language.GetString("AlertAndMessage_AddToFavoriteList")">
+                         @if(!like)
+                        {
+                             <i class="far fa-heart"></i>
+                        }else
+                        {
+                            <i class="fas fa-heart"></i>
+                        }
+                       
+              </a>
+            </div>
+        }
+
     </div>
-}
+
 <div class="row">
     @if (!Model.IsSidebarContentsShowing)
     {
@@ -211,7 +242,31 @@
              }
          });
      });
+    function AddToFavoriteList(contentCode)
+    {
+        debugger;
+        if ('@like' == "True") {
+            window.location.href = '@Url.Action("GetUserFavList", "Comment")';
+        }
+        else if ('@User.Identity.IsAuthenticated' == "True") {
+            $.ajax({
+                url: '@Url.Action("AddToFavList", "Comment")' + `?code=${contentCode}&name=content`,
+                contentType: "application/json",
+                type: "Get",
+                beforeSend: function() {
+                },
+                success: function(result) {
+                    debugger;
+                    if (result.status == "Succeed") {
 
+                        window.location.reload();
+                    }
+                }
+            });
+        } else
+            window.location.href = '@Url.Action("Login", "Account")' + `?returnUrl=${'@ViewBag.LanIcon'}/blog/${contentCode}`;
+
+    }
      function Rate(score) {
          debugger;
          var isAllow = false;

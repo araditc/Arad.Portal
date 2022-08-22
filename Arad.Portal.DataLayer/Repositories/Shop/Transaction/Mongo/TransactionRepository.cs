@@ -314,5 +314,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
             }
             return false;
         }
+
+        public Task<Result> AddToDownloadLimitation(Entities.Shop.Transaction.Transaction transaction)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

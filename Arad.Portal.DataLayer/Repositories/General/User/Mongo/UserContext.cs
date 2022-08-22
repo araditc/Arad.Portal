@@ -10,9 +10,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
         private readonly IMongoDatabase db;
         public IMongoCollection<Entities.General.User.ApplicationUser> Collection;
         public IMongoCollection<Entities.General.User.UserFavorites> UserFavoritesCollection;
-
+       
         public IMongoCollection<BsonDocument> BsonCollection;
         public IMongoCollection<BsonDocument> UserFavoritesBsonCollection;
+        
         private readonly IConfiguration _configuration;
 
         public UserContext(IConfiguration configuration)
@@ -24,6 +25,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             BsonCollection = db.GetCollection<BsonDocument>("Users");
             UserFavoritesCollection = db.GetCollection<Entities.General.User.UserFavorites>("UserFavorites");
             UserFavoritesBsonCollection = db.GetCollection<BsonDocument>("UserFavorites");
+           
         }
     }
 }

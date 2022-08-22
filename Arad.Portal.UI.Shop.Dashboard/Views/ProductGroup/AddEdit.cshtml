@@ -86,12 +86,12 @@
 
 <div class="modal fade" id="uploadlogoModal" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-        <div class="modal-content col-md-12">
+        <div class="modal-content col-12">
             <div class="modal-header">
-                <div class="col-md-1">
+                <div class="col-1">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="col-md-11" style="text-align: center">
+                <div class="col-11" style="text-align: center">
                     <h5 class="modal-title align-content-center" id="logoModalTitle">@Language.GetString("CropImage")</h5>
                 </div>
             </div>
@@ -121,7 +121,7 @@
 
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-12">
         <div class="card" id="addProductGroupCard">
             <div class="card-header">
                 <h5 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.ProductGroupId) ? Language.GetString("EditProductGroupPart_Title") : Language.GetString("AddProductGroupPart_Title"))</h5>
@@ -130,7 +130,7 @@
             <div class="card-body" id="addEditProductGroupCard">
                 <input type="hidden" value="@Model.ProductGroupId" asp-for="ProductGroupId" />
                 <div class="row">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <div class="card">
                             <div class="card-header lightColored">
                                 @Language.GetString("GroupImage")
@@ -158,13 +158,13 @@
                             <!-- /.card-body -->
                         </div>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label" asp-for="@Model.ParentId">@Language.GetString("ParentGroup")</label>
                         <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.ParentId" asp-items="@(new SelectList(ViewBag.ProductGroupList,"Value","Text"))">
                         </select>
                         <span data-val-result="ParentId" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label" asp-for="@Model.GroupCode">@Language.GetString("tbl_ProductGroupCode")</label>
                         <input type="text" class="form-control" asp-for="@Model.GroupCode" value="@Model.GroupCode" placeholder=" " disabled>
                         <span data-val-result="GroupCode" class="text-danger"></span>
@@ -172,45 +172,45 @@
                 </div>
 
                 <div class="row  border-top">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label" for="languageId">@Language.GetString("LanguageName")</label><br />
                         <select class="form-control" data-live-search="true" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                         </select>
                         <span data-val-result="languageId" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label" for="currencyId">@Language.GetString("Currency")</label><br />
                         <select class="form-control selectpicker" data-live-search="true" id="currencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
                         </select>
                         <span data-val-result="currencyId" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label" for="groupName">@Language.GetString("tbl_GroupName")</label><br />
                         <input type="text" class="form-control" id="groupName" placeholder=" ">
                         <span data-val-result="groupName" class="text-danger"></span>
                     </div>
-                   <div class="form-group col-md-3">
+                   <div class="form-group col-12 col-md-3">
                         <label class="form-label">@Language.GetString("UrlFriend")</label>
                         <input type="text" class="form-control" id="urlFriend" dir="ltr" placeholder=" "/>
                         <span data-val-result="urlFriend" class="text-danger"></span>
                    </div>
                
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label">@Language.GetString("SeoTitle")</label>
                         <input type="text" class="form-control" id="seoTitle" placeholder=" " maxlength="70">
                         <span data-val-result="seoTitle" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label">@Language.GetString("SeoDescription")</label>
                         <input type="text" class="form-control" id="seoDescription" placeholder=" " maxlength="150">
                         <span data-val-result="seoDescription" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12 col-md-3">
                         <label class="form-label">@Language.GetString("Description")</label>
                         <input type="text" class="form-control" id="description" placeholder=" ">
                         <span data-val-result="description" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3" style="text-align:center;margin:auto;">
+                    <div class="form-group col-12 col-md-3" style="text-align:center;margin:auto;">
                         <span data-val-result="MultiLingualProperties" class="text-danger"></span>
                         <div style="margin:auto;display:inline-block;">
                             <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addToTable();">

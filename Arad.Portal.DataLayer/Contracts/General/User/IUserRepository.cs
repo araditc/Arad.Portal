@@ -17,8 +17,10 @@ namespace Arad.Portal.DataLayer.Contracts.General.User
         string GetRoleNameOfUser(string userId);
         UserDTO GetUserWithPhone(string phoneNumber);
         List<UserDTO> GetAll();
-        List<UserDTO> search(string word);
+        List<UserDTO> Search(string word);
+        List<SelectListModel> GetAllProductType();
 
+        List<SelectListModel> GetAllDownloadLimitationType();
         List<SelectListModel> GetAddressTypes();
         bool CountPhone(string phoneNumber, string userPhone);
 

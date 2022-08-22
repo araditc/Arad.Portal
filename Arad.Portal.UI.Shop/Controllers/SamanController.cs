@@ -24,6 +24,7 @@ using Arad.Portal.DataLayer.Entities.General.User;
 using Microsoft.AspNetCore.Identity;
 using Serilog;
 using Microsoft.AspNetCore.Cors;
+using Arad.Portal.DataLayer.Contracts.Shop.Product;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -35,6 +36,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly SharedRuntimeData _sharedRuntimeData;
         private readonly IHttpContextAccessor _accessor;
         private readonly IDomainRepository _domainRepository;
+        private readonly IProductRepository _productRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private SamanModel _samanModel = null;
         public SamanController(ITransactionRepository transactionRepository,
@@ -42,6 +44,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             IDomainRepository domainRepository,
              SharedRuntimeData sharedRuntimeData,
              UserManager<ApplicationUser> userManager,
+             IProductRepository productRepository,
             HttpClientHelper httpClientHelper, IConfiguration configuration) : base(accessor, domainRepository)
         {
             _domainRepository = domainRepository;
@@ -54,6 +57,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             _sharedRuntimeData = sharedRuntimeData;
             _accessor = accessor;
             _userManager = userManager;
+            _productRepository = productRepository;
         }
        
         [HttpGet]
@@ -420,6 +424,17 @@ namespace Arad.Portal.UI.Shop.Controllers
                                 TempData["RRN"] = verifyOutPutModel.TransactionDetail.RRN;
                                 //کد رهگیری
                                 TempData["StraceNo"] = verifyOutPutModel.TransactionDetail.StraceNo;
+                                #region product download limitation
+                                var domainRes = _domainRepository.FetchByName(base.DomainName, false);
+                                foreach (var sub in transaction.SubInvoices)
+                                {
+                                    foreach (var item in sub.PurchasePerSeller.Products)
+                                    {
+                                      var res =  await _productRepository.InsertDownloadLimitation(item.ShoppingCartDetailId,
+                                           item.ProductId, transaction.CustomerData.UserId, domainRes.ReturnValue.DomainId);
+                                    }
+                                }
+                                #endregion
                                 _sharedRuntimeData.DeleteDataWithoutRollBack(transaction.TransactionId);
                                 return Redirect(successUrl);
                             }

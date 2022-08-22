@@ -43,7 +43,7 @@
 
             <div class="row">
 
-                <div class="form-group col-md-3">
+                <div class="form-group col-12 col-md-3">
                     <label class="form-label">@Language.GetString("LanguageName")</label>
                     <select class="form-control selectpicker" data-live-search="true" id="cmbLangIdFilter" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
                     </select>
@@ -56,10 +56,10 @@
 <div class="card">
     <div class="card-header">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-12 col-md-3">
                 <h5 class="card-title">@Language.GetString("Menu_ProductSpecificationGroup")</h5>
             </div>
-            <div class="col-md-3 offset-md-6">
+            <div class="col-12 col-md-3 offset-md-6">
                 <div class="card-tools float-end">
                   
                         <a asp-action="AddEdit" asp-controller="ProductSpecificationGroup" class="btn btn-success bg-gradient btn-sm">

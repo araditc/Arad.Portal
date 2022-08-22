@@ -91,7 +91,7 @@
 
             <div class="row" id="firstRow">
 
-                <div class="form-group col-md-3">
+                <div class="form-group col-12 col-md-3">
                     <label class="form-label" for="promotionTypeId">@Language.GetString("Classification")</label><br />
                     <select class="form-control selectpicker" id="promotionTypeId" data-live-search="true"
                             asp-items="@(new SelectList(ViewBag.PromotionTypes,"Value","Text", promotionTypeId))">
@@ -121,18 +121,18 @@
                     </div>*@
             </div>
             <div class="row">
-                <div class="form-group col-md-3">
+                <div class="form-group col-12 col-md-3">
                     <label class="form-label">@Language.GetString("Title")</label>
                     <input type="text" class="form-control" id="title" placeholder=" ">
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-12 col-md-3">
                     <label class="form-label" for="discountTypeId">@Language.GetString("Type")</label><br />
                     <select class="form-control selectpicker" id="discountTypeId" data-live-search="true"
                             asp-items="@(new SelectList(ViewBag.DiscountTypes,"Value","Text", discountTypeId))">
                     </select>
                     <span data-val-result="discountTypeId" class="text-danger"></span>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-12 col-md-3">
                     <label class="form-label">@Language.GetString("FromDate")</label>
                     
                     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
@@ -155,7 +155,7 @@
                     }
 
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-12 col-md-3">
                     <label class="form-label">@Language.GetString("ToDate")</label>
                     
                     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
@@ -193,10 +193,10 @@
 <div class="card">
     <div class="card-header">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-12 col-md-3">
                 <h5 class="card-title">@Language.GetString("Menu_Promotion")</h5>
             </div>
-            <div class="col-md-3 offset-md-6">
+            <div class="col-12 col-md-3 offset-md-6">
                 <div class="card-tools float-end">
                  
                         <a asp-action="AddEdit" asp-controller="Promotion" class="btn btn-success bg-gradient btn-sm">

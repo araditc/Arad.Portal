@@ -87,6 +87,7 @@ namespace Arad.Portal.UI.Shop.Mapping
             CreateMap<Permission, PermissionTreeViewDto>().ReverseMap();
             CreateMap<DataLayer.Entities.General.Permission.Action, ActionDto>().ReverseMap();
             CreateMap<Slide, SlideDTO>().ReverseMap();
+            CreateMap<UserFavorites, UserFavoritesDTO>().ReverseMap();
         }
     }
 }

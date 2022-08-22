@@ -14,6 +14,9 @@ using Arad.Portal.DataLayer.Contracts.General.Language;
 using System.Web;
 using System.Collections.Specialized;
 using Arad.Portal.GeneralLibrary.Utilities;
+using Arad.Portal.DataLayer.Entities.General.User;
+using Microsoft.AspNetCore.Identity;
+using Arad.Portal.DataLayer.Contracts.General.User;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -23,16 +26,22 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly IHttpContextAccessor _accessor;
         private readonly ILanguageRepository _lanRepository;
         private readonly IDomainRepository _domainrepository;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserRepository _userRepository;
 
         public ContentController(IContentRepository contentRepository,
             IDomainRepository domainRepository,
             ILanguageRepository lanRepository,
+            UserManager<ApplicationUser> userManager,
+            IUserRepository userRepository,
             IHttpContextAccessor accessor):base(accessor, domainRepository)
         {
             _contentRepository = contentRepository;
             _accessor = accessor;
             _domainrepository = domainRepository;
             _lanRepository = lanRepository;
+            _userManager = userManager;
+            _userRepository = userRepository;
         }
 
         [Route("{language?}/blog")]
@@ -102,8 +111,22 @@ namespace Arad.Portal.UI.Shop.Controllers
                         ViewBag.HasRateBefore = false;
                     }
                     #endregion
+                    #region FavoriteList
+                    var userEntity = await _userManager.FindByIdAsync(userId);
+                    var userFavoriteList = _userRepository.GetUserFavoriteList(userId, FavoriteType.Product);
+
+                    if (userFavoriteList.Any(_ => _.EntityId == entity.ContentId))
+                    {
+                        ViewBag.Like = true;
+                    }
+                    else
+                    {
+                        ViewBag.Like = false;
+                    }
+                    #endregion
                 }
                 ViewData["PageTitle"] = entity.Title;
+                ViewBag.LanIcon = lanIcon;
                 return View(entity);
             }else
             {

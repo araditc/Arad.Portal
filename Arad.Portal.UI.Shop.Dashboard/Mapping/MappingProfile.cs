@@ -79,6 +79,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Mapping
             CreateMap<Permission, PermissionTreeViewDto>().ReverseMap();
             CreateMap<Action, ActionDto>().ReverseMap();
             CreateMap<Slide, SlideDTO>().ReverseMap();
+            CreateMap<UserFavorites, UserFavoritesDTO>().ReverseMap();
 
 
 

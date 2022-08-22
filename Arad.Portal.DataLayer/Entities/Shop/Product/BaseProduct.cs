@@ -63,13 +63,13 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Product
         /// <summary>
         /// it defines type of product whether it is a phisical stuff or a file which can be downloaded
         /// </summary>
-        //public ProductType ProductType { get; set; }
+        public ProductType ProductType { get; set; }
 
-        //public DownloadLimitationType DownloadLimitationType { get; set; }
+        public DownloadLimitationType DownloadLimitationType { get; set; }
 
-        //public int? AllowedDownloadDurationDay { get; set; }
+        public int? AllowedDownloadDurationDay { get; set; }
 
-        //public int? AllowedDownloadCount { get; set; }
+        public int? AllowedDownloadCount { get; set; }
 
         /// <summary>
         /// all images of product will be store here

@@ -21,7 +21,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 
         Task<Result> Add(ProductInputDTO dto);
 
-
+        Task<Result> InsertDownloadLimitation(string shoppingCartDetailId, string productId, string userId, string domainId);
         long GetProductCode(string productId);
         Task<ProductOutputDTO> ProductFetch(string productId);
 

@@ -101,7 +101,7 @@
 
                     </div>
                     <div class="row">
-                        <div class="form-group col-md-4 p-2">
+                        <div class="form-group col-12 col-md-4 p-2">
                             <label class="form-label" asp-for="DefaultLanguageId">@Language.GetString("DefaultLanguage")</label>
                             <select class="form-select selectpicker" asp-for="DefaultLanguageId" asp-items="@(new SelectList(ViewBag.LangList, "Value", "Text"))" data-live-search="true">
                             </select>

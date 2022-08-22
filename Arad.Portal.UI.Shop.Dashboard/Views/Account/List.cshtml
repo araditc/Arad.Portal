@@ -53,17 +53,17 @@
         <div class="card-body">
             <div class="row">
 
-                <div class="form-group col-md-3">
+                <div class="form-group col-12 col-md-3">
                     <label class="form-label">@Language.GetString("User_UserName")</label>
                     <input id="userName" value="@(queryString != null ? @queryString["userName"] : "")" type="text" class="form-control" />
                 </div>
 
 
-                <div class="form-group col-md-3">
+                <div class="form-group col-12  col-md-3">
                     <label class="form-label">@Language.GetString("User_FullName")</label>
                     <input id="name" value="@(queryString != null ? @queryString["name"] : "")" type="text" class="form-control" />
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-12 col-md-3">
                     <label class="form-label">@Language.GetString("Role")</label>
                     <select  id="roleSelect" class="form-control selectpicker" data-live-search="true">
                         <option value="0" selected="@(queryString != null && string.IsNullOrWhiteSpace(queryString["role"]) ? "selected" : null)">@Language.GetString("AlertAndMessage_SelectOne")</option>
@@ -98,10 +98,10 @@
 <div class="card">
     <div class="card-header alert alert-secondary">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-12 col-md-3">
                 <h5 class="card-title">@Language.GetString("PermissionTitle_UserManagement")</h5>
             </div>
-            <div class="col-md-3 offset-md-6">
+            <div class="col-12 col-md-3 offset-md-6">
                 <div class="card-tools float-end">
                         <a asp-action="AddUser" asp-controller="Account" class="btn btn-success bg-gradient btn-sm">
                             <i style="position: relative; left: 5px; top: 2px;" class="fa fa-plus pt-1"></i>&nbsp; @Language.GetString("btn_Add")

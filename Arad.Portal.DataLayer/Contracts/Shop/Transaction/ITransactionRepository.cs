@@ -35,5 +35,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Transaction
         List<SelectListModel> GetAllOrderStatusType();
 
         List<SelectListModel> GetAllPaymentStageList();
+
+        Task<Result> AddToDownloadLimitation(Entities.Shop.Transaction.Transaction transaction);
     }
 }

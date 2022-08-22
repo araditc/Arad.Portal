@@ -18,7 +18,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Content
         List<ContentGlance> GetContentInCategory(int count, ProductOrContentType contentType, string contentCategoryId, bool isDevelopment = false);
         Task<ContentDTO> ContentFetch(string contentId);
         Task<Result> Update(ContentDTO dto);
-
+        List<Image> GetPictures(string contentId);
         Task<Result> UpdateVisitCount(string contentId);
         Task<Result> Delete(string contentId, string modificationReason);
         Task<Result<EntityRate>> RateContent(string contentId, int score, bool isNew, int prevScore);
