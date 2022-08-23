@@ -21,9 +21,19 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
         /// <summary>
         /// what is the source of this promotion
         /// whether it is on productGroup or Product or all products
+        /// if this record is asusercoupon then this enum is null
         /// </summary>
-        public PromotionType PromotionType { get; set; }
+        public PromotionType? PromotionType { get; set; }
 
+        /// <summary>
+        /// if this field is set to true it means this record like a discount copon which admin can assign to any user of site
+        /// </summary>
+        public bool AsUserCoupon { get; set; }
+
+        /// <summary>
+        /// if this entity is UserCopoun then this field should have filled and be given to different users
+        /// </summary>
+        public string CouponCode { get; set; }
 
         /// <summary>
         /// what is the type of this discount whethere it is fixed or percentage of whole price or another product

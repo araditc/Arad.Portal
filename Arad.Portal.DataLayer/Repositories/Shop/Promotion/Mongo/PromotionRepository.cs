@@ -16,6 +16,7 @@ using System.Web;
 using Arad.Portal.DataLayer.Entities.Shop.Promotion;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Microsoft.AspNetCore.Hosting;
+using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
 {
@@ -23,16 +24,19 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
     {
         private readonly PromotionContext _context;
         private readonly ProductContext _productContext;
+        private readonly DomainContext _domainContext;
         private readonly IMapper _mapper;
         public PromotionRepository(IHttpContextAccessor httpContextAccessor,
                                    PromotionContext promotionContext,
                                    IWebHostEnvironment env,
                                    IMapper mapper,
+                                   DomainContext domainContext,
                                    ProductContext productContext) : base(httpContextAccessor, env)
         {
             _context = promotionContext;
             _productContext = productContext;
             _mapper = mapper;
+            _domainContext = domainContext;
         }
 
         public async Task<Result> AssignPromotionToProduct(string promotionId, string productId)
@@ -211,14 +215,12 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                 {
                     result.Message = ConstMessages.GeneralError;
                 }
-
             }
             else
             {
                 result.Message = ConstMessages.ObjectNotFound;
             }
             return result;
-            
         }
 
         public async Task<PagedItems<PromotionDTO>> ListPromotions(string queryString)
@@ -242,8 +244,6 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                 {
                     filter.Set("PageSize", "20");
                 }
-               
-
                 var page = Convert.ToInt32(filter["page"]);
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
                 var userId = filter["userId"];
@@ -352,7 +352,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
         public List<SelectListModel> GetActivePromotionsOfCurrentUser(string userId, PromotionType type)
         {
             var alltypes = _context.Collection.Find(_ => _.CreatorUserId == userId && _.SDate <= DateTime.UtcNow &&
-            (_.EDate >= DateTime.UtcNow || _.EDate == null) && _.IsActive);
+            (_.EDate >= DateTime.UtcNow || _.EDate == null) && _.IsActive && !_.AsUserCoupon);
             var res = alltypes.ToList().Where(_=>_.PromotionType == type).Select(_ => new SelectListModel() 
             { 
                 Text = _.Title,
@@ -397,18 +397,31 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
             return result;
         }
 
-        public List<SelectListModel> GetAllDiscountType()
+        public List<SelectListModel> GetAllDiscountType(bool asCoupon)
         {
             var result = new List<SelectListModel>();
             foreach (int i in Enum.GetValues(typeof(DiscountType)))
             {
-                string name = Enum.GetName(typeof(DiscountType), i);
-                var obj = new SelectListModel()
+                if(!asCoupon)
                 {
-                    Text = name,
-                    Value = i.ToString()
-                };
-                result.Add(obj);
+                    string name = Enum.GetName(typeof(DiscountType), i);
+                    var obj = new SelectListModel()
+                    {
+                        Text = name,
+                        Value = i.ToString()
+                    };
+                    result.Add(obj);
+                }else if(i != 2)
+                {
+                    string name = Enum.GetName(typeof(DiscountType), i);
+                    var obj = new SelectListModel()
+                    {
+                        Text = name,
+                        Value = i.ToString()
+                    };
+                    result.Add(obj);
+                }
+                
             }
             result.Insert(0, new SelectListModel() { Text = Language.GetString("Choose"), Value = "-1" });
             return result;
@@ -433,6 +446,20 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                 result.Message = ConstMessages.ErrorInSaving;
             }
             return result;
+        }
+
+        public List<SelectListModel> GetAvailableCouponsOfDomain(string domainName)
+        {
+            var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
+            var res = new List<SelectListModel>();
+            res = _context.Collection.Find(_ => _.AssociatedDomainId == domainEntity.DomainId && _.SDate <= DateTime.UtcNow &&
+            (_.EDate >= DateTime.UtcNow || _.EDate == null) && _.IsActive && _.AsUserCoupon)
+                .Project(_=> new SelectListModel()
+                    {
+                    Text = _.Title,
+                    Value = _.PromotionId
+                }).ToList();
+            return res;
         }
     }
 }

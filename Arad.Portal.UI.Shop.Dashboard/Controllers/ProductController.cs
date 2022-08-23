@@ -48,6 +48,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IHttpClientFactory _clientFactory;
+       
         private readonly string imageSize = "";
         private readonly CodeGenerator _codeGenerator;
         
@@ -104,8 +105,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return View(result);
         }
 
-        
-        
         public async Task<IActionResult> AddEdit(string id = "")
         {
             
@@ -255,6 +254,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                     var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
                     var path = "images/Products";
+                    var productFilePath = "ProductFiles";
+                    if (dto.ProductType == Enums.ProductType.File)
+                    {
+                        var finalPath = Path.Combine(localStaticFileStorageURL, productFilePath, dto.ProductFileName);
+                        var res = SaveFileBase64String(dto.ProductFileContent, finalPath, dto.ProductFileName);
+                        if (res != "")
+                            dto.ProductFileUrl = res;
+                    }
                     foreach (var pic in dto.Pictures)
                     {
                         var res = ImageFunctions.SaveImageModel(pic, path, localStaticFileStorageURL);
@@ -334,6 +341,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     //}
                     var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
                     var path = "images/Products";
+                    var productFilePath = "ProductFiles";
+                    if(dto.ProductType == Enums.ProductType.File)
+                    {
+                        var finalPath = Path.Combine(localStaticFileStorageURL, productFilePath, dto.ProductFileName);
+                        var res = SaveFileBase64String(dto.ProductFileContent, finalPath, dto.ProductFileName);
+                        if (res != "")
+                            dto.ProductFileUrl = res;
+                    }
                     foreach (var pic in dto.Pictures)
                     {
                         Guid isGuidKey;
@@ -361,6 +376,22 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 
             }
             return result;
+        }
+
+        private static string SaveFileBase64String(string FileContent, string filePath, string fileName)
+        {
+            var res = $"ProductFiles/{fileName}";
+            try
+            {
+                var index = FileContent.IndexOf(",");
+                FileContent = FileContent.Substring(index+1);
+                System.IO.File.WriteAllBytes(filePath, Convert.FromBase64String(FileContent));
+            }
+            catch (Exception)
+            {
+                res = "";
+            }
+            return res;
         }
 
         //private async Task<string> GetToken()

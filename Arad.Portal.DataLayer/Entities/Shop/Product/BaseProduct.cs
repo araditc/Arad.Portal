@@ -71,6 +71,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Product
 
         public int? AllowedDownloadCount { get; set; }
 
+        public string ProductFileUrl { get; set; }
+
+        public string ProductFileName { get; set; }
         /// <summary>
         /// all images of product will be store here
         /// </summary>

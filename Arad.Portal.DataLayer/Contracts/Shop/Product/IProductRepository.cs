@@ -49,6 +49,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 
         bool IsCodeUnique(string code, string productId ="");
 
+        bool IsDownloadIconShowForCurrentUser(string userId, string productId);
         bool IsUniqueUrlFriend(string urlFriend, string productId = "");
         Task<Result<EntityRate>> RateProduct(string productId, int score, bool isNew, int prevScore);
         List<Image> GetPictures(string productId);

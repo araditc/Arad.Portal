@@ -19,6 +19,7 @@ namespace Arad.Portal.DataLayer.Entities.General.User
 
         public int? DownloadedCount { get; set; }
 
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime? StartDate { get; set; }
     }
 }

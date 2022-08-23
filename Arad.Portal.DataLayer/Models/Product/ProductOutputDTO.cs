@@ -2,6 +2,7 @@
 using Arad.Portal.DataLayer.Entities.Shop.Promotion;
 using Arad.Portal.DataLayer.Models.Promotion;
 using Arad.Portal.DataLayer.Models.Shared;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,12 +37,13 @@ namespace Arad.Portal.DataLayer.Models.Product
         public long ProductCode { get; set; }
 
         public ProductType ProductType { get; set; }
-
         public DownloadLimitationType DownloadLimitationType { get; set; }
-
         public int? AllowedDownloadDurationDay { get; set; }
-
         public int? AllowedDownloadCount { get; set; }
+        public string ProductFileContent { get; set; }
+        public string ProductFileName { get; set; }
+
+        public string ProductFileUrl { get; set; }
 
         public List<ProductSpecificationValue> Specifications { get; set; }
 

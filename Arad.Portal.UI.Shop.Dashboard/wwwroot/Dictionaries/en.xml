@@ -33,6 +33,9 @@
   <string key="btn_Add">
     <value>Add</value>
   </string>
+	<string key="AssignPromotionToUser">
+		<value>Assign Coupon To Users</value>
+	</string>
   <string key="btn_Break">
     <value>Add New Line</value>
   </string>
@@ -1643,6 +1646,12 @@
   <string key="AddPromotion_Title">
     <value>Add Promotion</value>
   </string>
+	<string key="Promotion_AsUserCoupon">
+		<value>As user coupon</value>
+	</string>
+	<string key="Promotion_Code">
+		<value>Coupon Code</value>
+	</string>
   <string key="EditComment_Title">
     <value>Edit Comment</value>
   </string>
@@ -1943,6 +1952,12 @@
   <string key="IsVendor">
     <value>Is Vendor?</value>
   </string>
+	<string key="ProductFile">
+		<value>Product File</value>
+	</string>
+	<string key="ProductFileName">
+		<value>Product File Name</value>
+	</string>
   <string key="ProductVendor">
     <value>Product Vendor</value>
   </string>

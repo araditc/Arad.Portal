@@ -37,7 +37,7 @@
 
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <link href = "@Url.Content($"~/plugins/datePicker/kamadatepicker.css")" rel="stylesheet" />
+        <link href = "@Url.Content($"~/lib/datePicker/kamadatepicker.css")" rel="stylesheet" />
     }
     else
     {
@@ -168,7 +168,7 @@
             <div class="col-12 col-md-3">
                 <h5 class="card-title">@Language.GetString("Menu_Products")</h5>
             </div>
-            <div class="col-12col-md-3 offset-md-6">
+            <div class="col-12 col-md-3 offset-md-6">
                 <div class="card-tools float-end">
                    
                         <a asp-action="ImportProductFromExcel" asp-controller="Excel" class="btn btn-success btn-sm bg-gradient">
@@ -295,7 +295,7 @@
 
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-        <script src="@Url.Content($"~/plugins/datePicker/kamadatepicker.min.js")"></script>
+        <script src="@Url.Content($"~/lib/datePicker/kamadatepicker.min.js")"></script>
     }
     else
     {

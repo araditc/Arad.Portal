@@ -153,13 +153,33 @@
                      <div class="form-group col-12 col-md-3 d-none fileSec timeDuration">
                           <label class="form-label">@Language.GetString("AllowedDownloadDuration")</label>
                           <input type="number" min="1" class="form-control" asp-for="@Model.AllowedDownloadDurationDay" />
-
+                           <span data-val-result="AllowedDownloadDurationDay" class="text-danger"></span>
                      </div>
                       <div class="form-group col-12 col-md-3 d-none fileSec downloadCnt">
                            <label class="form-label">@Language.GetString("AllowedDownloadNumber")</label>
                             <input type="number" min="1" class="form-control" asp-for="@Model.AllowedDownloadCount" />
+                            <span data-val-result="AllowedDownloadCount" class="text-danger"></span>
 
                       </div>
+                </div>
+                <div class="row">
+                     <div class="form-group col-12 col-md-6 fileSec d-none productFileUpload">
+                    <label class="form-label">
+                        @Language.GetString("ProductFile")
+                    </label>
+                    <input accept=".zip,.rar" class="form-control"  id="ProductFileContent"   type="file" />
+                    <span data-val-result="ProductFileContent" class="text-danger"></span>
+                </div>
+                @if(Model.ProductFileName != string.Empty)
+                {
+                     <div class="form-group col-12 col-md-3">
+                          <label class="form-label">
+                        @Language.GetString("ProductFileName")
+                    </label>
+                       <input type="text" min="1" class="form-control" asp-for="@Model.ProductFileName" />
+                    </div>
+                }
+               
                 </div>
 
                 <div class="row">
@@ -687,6 +707,7 @@ else
     var fileContent;
     var globalSender;
     var cropper;
+    var productFileContent;
     var currentFileSize;
     var currentFileName;
     var images = [];
@@ -711,7 +732,7 @@ else
       
         var multiLingualList = @Json.Serialize(@Model.MultiLingualProperties);
         for (var i = 0; i < multiLingualList.length; i++) {
-            debugger;
+           
             var obj = {};
             obj.Tag = multiLingualList[i].tag;
             obj.MultiLingualPropertyId = multiLingualList[i].multiLingualPropertyId;
@@ -755,6 +776,32 @@ else
             }
         }
 
+        debugger;
+        if('@Model.ProductType' == "File")
+        {
+            $(".downloadType").removeClass("d-none");
+            $(".productFileUpload").removeClass("d-none");
+            switch('@Model.DownloadLimitationType')
+            { 
+                case "NoLimitation": //nolimitation
+                   $(".timeDuration").addClass("d-none");
+                   $(".downloadCnt").addClass("d-none");
+                break;
+                case "TimeDuration": //timeduration
+                 $(".timeDuration").removeClass("d-none");
+                  $(".downloadCnt").addClass("d-none");
+                break;
+                case "TimeDurationWithCnt": //timedurationwithcount
+                 $(".timeDuration").removeClass("d-none");
+                   $(".downloadCnt").removeClass("d-none");
+                break;
+                case "DownloadCount"://downloadedcount
+                   $(".timeDuration").addClass("d-none");
+                   $(".downloadCnt").removeClass("d-none");
+                break;
+            }
+        }
+        
         $("#languageId").val('@ViewBag.LangId');
          $("#languageId").selectpicker("refresh");
         $("#multiLangId").val('@ViewBag.LangId');
@@ -803,10 +850,47 @@ else
                 flag = true;
             }
 
+            if($("#ProductType").val() ==""  )
+            {
+                $("span[data-val-result='ProductType']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+
+            if($("#ProductType").val() == "2" &&  $("#DownloadLimitationType").val() == "-1")
+            {
+                 $("span[data-val-result='DownloadLimitationType']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if($("#ProductType").val() == "2" && $("#DownloadLimitationType").val() == "2" && $("#AllowedDownloadDurationDay").val() == "" )
+            {
+                 $("span[data-val-result='AllowedDownloadDurationDay']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if($("#ProductType").val() == "2" && $("#DownloadLimitationType").val() == "3" &&
+             ( $("#AllowedDownloadDurationDay").val() == "" || $("#AllowedDownloadCount").val() == "" ))
+            {
+                 $("span[data-val-result='AllowedDownloadCount']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                  $("span[data-val-result='AllowedDownloadDurationDay']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+
+             if($("#ProductType").val() == "2" && $("#DownloadLimitationType").val() == "4" && $("#AllowedDownloadCount").val() == "" )
+            {
+                 $("span[data-val-result='AllowedDownloadCount']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if($("#ProductType").val() == "2" && !$("#ProductFileContent").prop("files")[0])
+            {
+                 $("span[data-val-result='ProductFileContent']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+
+
 
               debugger;
                 if (!flag) {
                     var dto = FillDataToSend();
+                    debugger;
                     $.ajax({
                         url: "@Model.ProductId" != "" ? '@Url.Action("Edit", "Product")' : '@Url.Action("Add", "Product")',
                         contentType: 'application/json',
@@ -1016,14 +1100,18 @@ else
             if(typeId = "2") //file
             {
                 $(".downloadType").removeClass("d-none");
+                $(".productFileUpload").removeClass("d-none");
             }else
             {
                 $(".fileSec").addClass("d-none");
+                
             }
         });
 
+
         $("#DownloadLimitationType").change(function(){
-            var typeId = $("DownloadLimitationType").val();
+            debugger;
+            var typeId = $("#DownloadLimitationType").val();
             switch(typeId)
             {
                 case "1": //nolimitation
@@ -1045,6 +1133,16 @@ else
             }
         });
     });
+
+     $('#ProductFileContent').on('change', function () {
+         debugger;
+            var fileReader = new FileReader();
+            fileReader.onload = function () {
+              productFileContent = fileReader.result;  // data <-- in this var you have the file data in Base64 format
+            };
+            fileReader.readAsDataURL($('#ProductFileContent').prop('files')[0]);
+        });
+
 
     function onConfirmDialog() {
         $(globalSender).parent().find("td:eq(5)").text(inActive);
@@ -1223,6 +1321,36 @@ else
         debugger;
         dto.MultiLingualProperties = multiLingualArr;
 
+
+         //downloadLimitation
+        debugger;
+        dto.ProductType = parseInt($("#ProductType").val());
+        if($("#ProductType").val() == "2")
+        {
+            dto.DownloadLimitationType = parseInt($("#DownloadLimitationType").val());
+        }
+
+        if($("#DownloadLimitationType").val() == "2")
+        {
+            dto.AllowedDownloadDurationDay = $("#AllowedDownloadDurationDay").val();
+        }
+        else 
+        if($("#DownloadLimitationType").val() == "3")
+        {
+            dto.AllowedDownloadDurationDay = $("#AllowedDownloadDurationDay").val();
+            dto.AllowedDownloadCount = $("#AllowedDownloadCount").val();
+        }
+        else
+        if($("#DownloadLimitationType").val() == "4")
+        {
+            dto.AllowedDownloadCount = $("#AllowedDownloadCount").val();
+        }
+
+        //ProductFile
+        var file = $("#ProductFileContent").prop("files")[0];
+        dto.ProductFileContent = productFileContent
+        dto.ProductFileName = file.name ;
+
         //prices
         $("#priceList tr").each(function () {
 
@@ -1273,6 +1401,9 @@ else
             //images[index] = item;
             dto.Pictures.push(images[index]);
         });
+
+       
+
 
         dto.UniqueCode = $("#UniqueCode").val();
         dto.Inventory = parseInt($("#Inventory").val());

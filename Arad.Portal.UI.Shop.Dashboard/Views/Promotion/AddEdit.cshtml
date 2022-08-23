@@ -47,8 +47,19 @@
                         </select>
                         <span data-val-result="currencyId" class="text-danger"></span>
                     </div>
-
-
+                     <div class="form-group col-12 col-md-3">
+                         <div class="form-check m-auto d-inline-block pt-3">
+                            <input class="form-check-input" type="checkbox" value="@Model.AsUserCoupon" asp-for="@Model.AsUserCoupon" min="0">
+                            <label class="form-check-label" for="AsUserCoupon">
+                                @Language.GetString("Promotion_AsUserCoupon")
+                            </label>
+                        </div>
+                     </div>
+                     <div class="form-group col-12 col-md-3 codeSection d-none">
+                           <label class="form-label" for="@Model.CouponCode">@Language.GetString("Promotion_Code")</label><br />
+                        <input type="text" class="form-control"  asp-for="@Model.CouponCode">
+                        <span data-val-result="CouponCode" class="text-danger"></span>
+                     </div>
                 </div>
                 <div class="row" id="firstRow">
                     <div class="form-group col-12 col-md-4">
@@ -252,6 +263,45 @@
                 $('.datepicker').datepicker();
       }
       LoadData();
+
+      $("#AsUserCoupon").click(function() { 
+          if($("#AsUserCoupon").is(":checked"))
+          {
+              $(".codeSection").removeClass("d-none");
+              $("#firstRow").addClass("d-none");
+          }else
+          {
+              $(".codeSection").addClass("d-none");
+              $("#firstRow").removeClass("d-none");
+          }
+          var flag = $("#AsUserCoupon").is(":checked");
+          $.ajax({
+               url: '@Url.Action("GetRelatedDiscountType", "Promotion")'+`?asUserCoupon=${flag}`,
+                        type: 'Get',
+                        dataType: 'json',
+                        success: function (result) {
+                            debugger;
+                            var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
+                            if (result.status === "success") {
+                                debugger;
+
+                                if (result.data.length != 0) {
+                                    (result.data).forEach(function (item) {
+                                        var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                        options += op;
+                                    });
+                                }
+                                $("#discountTypeId").html(options);
+                                $("#discountTypeId").selectpicker();
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert("@error");
+                            alert(xhr.status);
+                            alert(thrownError);
+                        }
+          });
+      });
     $("#promotionTypeId").change(function () {
                debugger;
                if ($("#promotionTypeId").val() != "-1") {
@@ -455,11 +505,10 @@
         debugger;
         var flag = false;
 
-
-         if ("@Model.PromotionId" != "" && $("#ModificationReason").val() == "") {
-                    $("span[data-val-result='ModificationReason']").html('@Language.GetString("AlertAndMessage_ModificationReason")');
-                    flag = true;
-                }
+          if($("#AsUserCoupon").is(":checked") && $("#CouponCode").val() == "")
+            {
+                $("span[data-val-result='CouponCode']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+            }
          if ($("#title").val() == "") {
               $("span[data-val-result='title']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                     flag = true;
@@ -468,7 +517,7 @@
               $("span[data-val-result='currencyId']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
                     flag = true;
          }
-         if ($("#promotionTypeId").val() == "-1") {
+         if (!$("#AsUserCoupon").is(":checked") && $("#promotionTypeId").val() == "-1") {
              $("span[data-val-result='promotionTypeId']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
                     flag = true;
          }
@@ -504,7 +553,7 @@
              }
          }
 
-         if ($("#discountTypeId").val() == "2")
+         if (!$("#AsUserCoupon").is(":checked") && $("#discountTypeId").val() == "2")
          {
              if ($("#ProductIdType").val() == "-1") {
                  $("span[data-val-result='ProductIdType']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
@@ -517,6 +566,7 @@
                  $("span[data-val-result='promotedCountofUnit']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
              }
          }
+          
          if (!flag) {
              var dataModel = FillDataToSend();
             $.ajax({
@@ -602,10 +652,30 @@
             obj.Title = $("#title").val();
             obj.CurrencyId = $("#currencyId").val();
             obj.CurrencyName = $("#currencyId option:selected").text();
-            obj.PromotionTypeId = parseInt($("#promotionTypeId").val());
+            if(!$("#AsUserCoupon").is(":checked"))
+            {
+                 obj.PromotionTypeId = parseInt($("#promotionTypeId").val());
+            }else
+            {
+                obj.PromotionTypeId = null;
+            }
+           
             obj.DiscountTypeId = parseInt($("#discountTypeId").val());
-            obj.PersianStartDate = $("#dtpFromDate").val();
-            obj.PersianEndDate = $("#dtpToDate").val();
+            if("@CultureInfo.CurrentCulture.Name" === "fa-IR")
+            {
+                 obj.PersianStartDate = $("#dtpFromDate").val();
+                 obj.PersianEndDate = $("#dtpToDate").val();
+            }else
+            {
+                obj.SDate = $("#dtpFromDate").val();
+                obj.EDate = $("#dtpToDate").val();
+            }
+           
+            obj.AsUserCoupon = $("#AsUserCoupon").is(":checked");
+            if($("#AsUserCoupon").is(":checked"))
+            {
+                obj.CouponCode = $("#CouponCode").val();
+            }
         if ($("#promotionTypeId").val() == "1") {
             //productGroup
             var model = {};
@@ -653,11 +723,24 @@
             debugger;
             var model = @Json.Serialize(Model);
             if (model.promotionId != "") {
-                $("#dtpFromDate").val(model.persianStartDate);
-                if (model.persianEndDate != "") {
-                    $("#dtpToDate").val(model.persianEndDate);
+                if("@CultureInfo.CurrentCulture.Name" === "fa-IR")
+                {
+                     $("#dtpFromDate").val(model.persianStartDate);
+                    if (model.persianEndDate != "") {
+                        $("#dtpToDate").val(model.persianEndDate);
+                    }
+                }else
+                {
+                    $("#dtpFromDate").val(model.sDate);
+                    if(model.eDate != ""){
+                        $("#dtpToDate").val(model.eDate);
+                    }
                 }
-                debugger;
+               
+                if(model.asUserCoupon)
+                {
+                    $(".codeSection").removeClass("d-none");
+                }
 
                 if (model.promotionTypeId == "1") {
                     {

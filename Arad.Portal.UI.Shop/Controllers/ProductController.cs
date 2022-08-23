@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Microsoft.AspNetCore.Localization;
 using Arad.Portal.DataLayer.Contracts.General.User;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -32,10 +34,11 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserRepository _userRepository;
         private readonly ICommentRepository _commentRepository;
+        private readonly IConfiguration _configuration;
         private readonly string _domainName;
 
         public ProductController(IProductRepository productRepository, IHttpContextAccessor accessor,
-            UserManager<ApplicationUser> userManager,
+            UserManager<ApplicationUser> userManager, IConfiguration configuration,
             IWebHostEnvironment env, IUserRepository userRepository,
             ILanguageRepository lanRepository, IDomainRepository domainRepository, ICommentRepository commentRepository):base(accessor, domainRepository)
         {
@@ -46,7 +49,9 @@ namespace Arad.Portal.UI.Shop.Controllers
             _userManager = userManager;
             _commentRepository = commentRepository;
             _domainName = this.DomainName;
+            _configuration = configuration;
             _userRepository = userRepository;
+            
             //_enyimMemcachedMethods = enyimMemcachedMethods;
         }
 
@@ -57,7 +62,43 @@ namespace Arad.Portal.UI.Shop.Controllers
             ViewData["PageTitle"] = Language.GetString("design_Products");
             return View();
         }
-       
+
+        [HttpGet]
+        [Route("{language}/product/Download")]
+        public async Task<IActionResult> Download([FromQuery]long code)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+                var domaindto = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
+                var entity = _productRepository.FetchByCode(code.ToString(), domaindto, userId);
+                var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
+                var filePath = System.IO.Path.Combine(localStaticFileStorageURL, entity.ProductFileUrl);
+               
+                
+                byte[] fileContent = await System.IO.File.ReadAllBytesAsync(filePath);
+                var test = GetMimeTypeForFileExtension(filePath);
+                return File(fileContent, GetMimeTypeForFileExtension(filePath), entity.ProductFileName);
+            }
+            else
+                return Json(null);
+           
+        }
+
+        public string GetMimeTypeForFileExtension(string filePath)
+        {
+            const string DefaultContentType = "application/octet-stream";
+
+            var provider = new FileExtensionContentTypeProvider();
+
+            if (!provider.TryGetContentType(filePath, out string contentType))
+            {
+                contentType = DefaultContentType;
+            }
+
+            return contentType;
+        }
+
         [Route("{language}/product/{**slug}")]
         public async Task<IActionResult> Details(string slug)
         {
@@ -85,7 +126,11 @@ namespace Arad.Portal.UI.Shop.Controllers
              
 
             var entity = _productRepository.FetchByCode(slug, domainEntity.ReturnValue, userId);
-            if(!string.IsNullOrEmpty(entity.ProductId))
+            if (isLoggedUser && entity.ProductType == Enums.ProductType.File)
+            {
+                ViewBag.IsDownloadable = _productRepository.IsDownloadIconShowForCurrentUser(userId, entity.ProductId);
+            }
+            if (!string.IsNullOrEmpty(entity.ProductId))
             {
                 var updateVisitCount = await _productRepository.UpdateVisitCount(entity.ProductId);
                 if (isLoggedUser)

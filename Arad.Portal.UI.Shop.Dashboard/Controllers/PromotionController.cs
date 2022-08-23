@@ -16,6 +16,8 @@ using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.DataLayer.Contracts.Shop.Product;
 using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Arad.Portal.DataLayer.Contracts.General.Domain;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -26,10 +28,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly ILanguageRepository _lanRepository;
         private readonly ICurrencyRepository _currencyRepository;
         private readonly IProductRepository _productRepositoy;
+        private readonly IDomainRepository _domainRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IHttpContextAccessor _accessor;
         public PromotionController(IPromotionRepository promotionRepository,
             ILanguageRepository lanRepository, 
             IProductRepository productRepositoy,
+            IHttpContextAccessor accessor,
+            IDomainRepository domainRepository,
             ICurrencyRepository currencyRepository, UserManager<ApplicationUser> userManager)
         {
             _promotionRepository = promotionRepository;
@@ -37,6 +43,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _currencyRepository = currencyRepository;
             _userManager = userManager;
             _productRepositoy = productRepositoy;
+            _accessor = accessor;
+            _domainRepository = domainRepository;
         }
 
         [HttpGet]
@@ -66,7 +74,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 ViewBag.DefCurrencyId = _currencyRepository.GetDefaultCurrency(currentUserId);
                 ViewBag.CurrencyList = _currencyRepository.GetAllActiveCurrency();
                 ViewBag.PromotionTypes = _promotionRepository.GetAllPromotionType();
-                ViewBag.DiscountTypes = _promotionRepository.GetAllDiscountType();
+                ViewBag.DiscountTypes = _promotionRepository.GetAllDiscountType(false);
                 ViewBag.ProductGroupList = _productRepositoy.GetAlActiveProductGroup(defaulltLang.LanguageId);
                 var vendorList = await _userManager.GetUsersForClaimAsync(new Claim("AppRole", "True"));
                 ViewBag.Vendors = vendorList.ToList().Select(_ => new SelectListModel()
@@ -103,7 +111,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
             ViewBag.DefCurrencyId = _currencyRepository.GetDefaultCurrency(currentUserId);
             ViewBag.CurrencyList = _currencyRepository.GetAllActiveCurrency();
-            ViewBag.DiscountTypes = _promotionRepository.GetAllDiscountType();
+            ViewBag.DiscountTypes = _promotionRepository.GetAllDiscountType(false);
             ViewBag.PromotionTypes = _promotionRepository.GetAllPromotionType();
             
             ViewBag.ProductGroupList = _productRepositoy.GetAlActiveProductGroup(defaulltLang.LanguageId);
@@ -144,6 +152,22 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
             return result;
 
+        }
+
+        [HttpGet]
+        public IActionResult AssignPromotionToUser()
+        {
+            var domainName = $"{_accessor.HttpContext.Request.Host}";
+            var domainEntity = _domainRepository.FetchByName(domainName, false).ReturnValue;
+            ViewBag.PromotionList = _promotionRepository.GetAvailableCouponsOfDomain(domainName);
+            ViewBag.DomainUsers = _userManager.Users
+                .Where(_ => _.DomainId == domainEntity.DomainId && _.IsActive && !_.IsDeleted)
+                .Select(_ => new SelectListModel()
+                {
+                   Text = _.Profile.FullName,
+                   Value = _.Id
+                }).ToList();
+            return View();
         }
 
         [HttpGet]
@@ -257,7 +281,23 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         }
 
+        [HttpGet]
+        public IActionResult GetRelatedDiscountType(bool asUserCoupon)
+        {
+            JsonResult result;
+            List<SelectListModel> List;
+            List = _promotionRepository.GetAllDiscountType(asUserCoupon);
+            if (List.Count() > 0)
+            {
+                result = new JsonResult(new { Status = "success", Data = List });
+            }
+            else
+            {
+                result = new JsonResult(new { Status = "notFound", Message = "" });
+            }
+            return result;
 
+        }
         [HttpGet]
         public async Task<IActionResult> GetFilteredProductGroup(string vendorId)
         {

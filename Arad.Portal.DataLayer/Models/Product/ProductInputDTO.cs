@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.DataLayer.Models.Promotion;
 using Arad.Portal.DataLayer.Models.ProductSpecification;
+using static Arad.Portal.DataLayer.Models.Shared.Enums;
 
 namespace Arad.Portal.DataLayer.Models.Product
 {
@@ -39,6 +40,20 @@ namespace Arad.Portal.DataLayer.Models.Product
         public int MinimumCount { get; set; }
 
         public long ProductCode { get; set; }
+
+        public ProductType ProductType { get; set; }
+
+        public DownloadLimitationType DownloadLimitationType { get; set; }
+
+        public int? AllowedDownloadDurationDay { get; set; }
+
+        public int? AllowedDownloadCount { get; set; }
+
+        public string ProductFileContent { get; set; }
+
+        public string ProductFileName { get; set; }
+
+        public string ProductFileUrl { get; set; }
 
         public bool ShowInLackOfInventory { get; set; }
        

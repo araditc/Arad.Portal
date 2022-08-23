@@ -30,9 +30,11 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Promotion
 
         List<SelectListModel> GetActivePromotionsOfCurrentUser(string userId, PromotionType type);
 
+        List<SelectListModel> GetAvailableCouponsOfDomain(string domainName);
+
         List<SelectListModel> GetAllPromotionType();
 
-        List<SelectListModel> GetAllDiscountType();
+        List<SelectListModel> GetAllDiscountType(bool asCoupon);
 
         Task<Result> Restore(string promotionId);
     }

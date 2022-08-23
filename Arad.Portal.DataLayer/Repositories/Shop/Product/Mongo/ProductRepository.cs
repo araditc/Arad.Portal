@@ -1563,6 +1563,31 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 return "";
             }
         }
+
+        public bool IsDownloadIconShowForCurrentUser(string userId, string productId)
+        {
+            var isShown = false;
+            var downLimit = _context.DownloadLimitationCollection.Find(_ => _.CreatorUserId == userId && _.ProductId == productId).ToList();
+            var proEntity = _context.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
+            if(proEntity.DownloadLimitationType == Enums.DownloadLimitationType.NoLimitation)
+            {
+                isShown = true;
+            }else if(proEntity.DownloadLimitationType == Enums.DownloadLimitationType.TimeDuration &&
+                downLimit.Where(_=>_.StartDate != null).Any(_=>_.StartDate.Value.AddDays(proEntity.AllowedDownloadDurationDay.Value) <= DateTime.Now))
+
+            {
+                isShown = true;
+            }else if(proEntity.DownloadLimitationType == Enums.DownloadLimitationType.TimeDurationWithCnt &&
+                downLimit.Where(_ => _.StartDate != null && _.DownloadedCount != null).Any(_ => _.StartDate.Value.AddDays(proEntity.AllowedDownloadDurationDay.Value) <= DateTime.Now && _.DownloadedCount < proEntity.AllowedDownloadCount.Value))
+            {
+                isShown = true;
+            }else if(proEntity.DownloadLimitationType == Enums.DownloadLimitationType.DownloadCount &&
+                downLimit.Where(_ => _.DownloadedCount != null).Any(_ => _.DownloadedCount < proEntity.AllowedDownloadCount.Value))
+            {
+                isShown = true;
+            }
+            return isShown;
+        }
     }
 }
 

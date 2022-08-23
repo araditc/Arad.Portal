@@ -17,9 +17,9 @@ namespace Arad.Portal.DataLayer.Models.Promotion
 
         public string Title { get; set; }
 
-        public PromotionType PromotionType { get; set; }
+        public PromotionType? PromotionType { get; set; }
 
-        public int PromotionTypeId { get; set; }
+        public int? PromotionTypeId { get; set; }
 
         public int DiscountTypeId { get; set; }
 
@@ -28,6 +28,10 @@ namespace Arad.Portal.DataLayer.Models.Promotion
         public long? Value { get; set; }
 
         public List<PromotionInfo> Infoes { get; set; }
+
+        public bool AsUserCoupon { get; set; }
+        
+        public string CouponCode { get; set; }
 
         public string ProductNamesConcat { get; set; }
 

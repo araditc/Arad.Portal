@@ -39,6 +39,9 @@
   <string key="btn_Add">
     <value>افزودن</value>
   </string>
+	<string key="AssignPromotionToUser">
+		<value>اختصاص کوپن به کاربران</value>
+	</string>
   <string key="btn_Break">
     <value>افزودن سطر جدید</value>
   </string>
@@ -1687,6 +1690,12 @@
   <string key="AddPromotion_Title">
     <value>افزودن تخفیفات و جشنواره ها</value>
   </string>
+	<string key="Promotion_AsUserCoupon">
+		<value>بعنوان کوپن برای کاربر</value>
+	</string>
+	<string key="Promotion_Code">
+		<value>کد کوپن</value>
+	</string>
   <string key="EditPromotion_Title">
     <value>ویرایش تخفیفات و جشنواره ها</value>
   </string>
@@ -1993,6 +2002,12 @@
   <string key="IsVendor">
     <value>فروشنده است؟</value>
   </string>
+	<string key="ProductFile">
+		<value>فایل محصول</value>
+	</string>
+	<string key="ProductFileName">
+		<value>نام فایل محصول</value>
+	</string>
   <string key="ProductVendor">
     <value>فروشنده محصول</value>
   </string>
