@@ -3,6 +3,7 @@
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
      var baseAdd = Config["BaseAddress"];
+    
 }
 @section Styles{
     <style>
@@ -48,7 +49,7 @@
                         <span data-val-result="currencyId" class="text-danger"></span>
                     </div>
                      <div class="form-group col-12 col-md-3">
-                         <div class="form-check m-auto d-inline-block pt-3">
+                         <div class="form-check m-auto d-inline-block mt-4 pt-2">
                             <input class="form-check-input" type="checkbox" value="@Model.AsUserCoupon" asp-for="@Model.AsUserCoupon" min="0">
                             <label class="form-check-label" for="AsUserCoupon">
                                 @Language.GetString("Promotion_AsUserCoupon")
@@ -57,7 +58,7 @@
                      </div>
                      <div class="form-group col-12 col-md-3 codeSection d-none">
                            <label class="form-label" for="@Model.CouponCode">@Language.GetString("Promotion_Code")</label><br />
-                        <input type="text" class="form-control"  asp-for="@Model.CouponCode">
+                        <input type="text" class="form-control" id="CouponCode" value="@Model.CouponCode" @(!string.IsNullOrWhiteSpace(Model.CouponCode) ? "readonly" : "")>
                         <span data-val-result="CouponCode" class="text-danger"></span>
                      </div>
                 </div>
@@ -65,7 +66,7 @@
                     <div class="form-group col-12 col-md-4">
                         <label class="form-label" for="promotionTypeId">@Language.GetString("Classification")</label><br />
                         <select class="form-control selectpicker" id="promotionTypeId" data-live-search="true"
-                                asp-items="@(new SelectList(ViewBag.PromotionTypes,"Value","Text", (int)Model.PromotionType))">
+                                asp-items="@(new SelectList(ViewBag.PromotionTypes,"Value","Text"))">
                         </select>
                         <span data-val-result="promotionTypeId" class="text-danger"></span>
                     </div>
@@ -111,7 +112,7 @@
                                 </tr>
                             </thead>
                             <tbody id="infoList">
-                                @if (Model.PromotionTypeId == 2 && Model.Infoes.Any())
+                                @if (Model.PromotionType == Arad.Portal.DataLayer.Entities.Shop.Promotion.PromotionType.Product && Model.Infoes.Any())
                                 {
                                     @foreach (var item in Model.Infoes)
                                     {
@@ -200,10 +201,11 @@
                         <span data-val-result="FromDate" class="text-danger"></span>
                     </div>
                     <div class="form-group col-12 col-md-4">
-                        <label class="form-label">@Language.GetString("ToDate")</label>
+                       <label class="form-label">@Language.GetString("ToDate")</label>
+                        
                         @if (CultureInfo.CurrentCulture.Name == "fa-IR")
                         {
-                            <div class="input-group-prepend">
+                            <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fa fa-calendar"></i>
                                 </span>
@@ -212,11 +214,11 @@
                         }
                         else
                         {
-                            <div class="input-group date" id="dtpToDate" data-target-input="nearest">
-                                <input type="text" class="form-control datetimepicker-input" />
-                                <div class="input-group-append" data-toggle="datetimepicker">
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                </div>
+                            <div class="input-group date" data-provide="datepicker">
+                                <input type="text" class="form-control" id="dtpToDate">
+                                <span class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
                             </div>
                         }
                         <span data-val-result="ToDate" class="text-danger"></span>
@@ -281,7 +283,7 @@
                         dataType: 'json',
                         success: function (result) {
                             debugger;
-                            var options = "<option value='-1'> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
+                            var options = "";
                             if (result.status === "success") {
                                 debugger;
 
@@ -291,8 +293,9 @@
                                         options += op;
                                     });
                                 }
+                                debugger;
                                 $("#discountTypeId").html(options);
-                                $("#discountTypeId").selectpicker();
+                                $("#discountTypeId").selectpicker("refresh");
                             }
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
@@ -740,6 +743,11 @@
                 if(model.asUserCoupon)
                 {
                     $(".codeSection").removeClass("d-none");
+                    $("#firstRow").addClass("d-none");
+                }else
+                {
+                    $("#promotionTypeId").selectpicker("val", model.promotionType.toString());                  
+                    $("#firstRow").removeClass("d-none");
                 }
 
                 if (model.promotionTypeId == "1") {
@@ -798,6 +806,7 @@
                 }
                 if ($("#discountTypeId").val() == "2" && $("#ProductIdType").length == 0) {
                     debugger;
+                    $(".proSec").css("display", "block");
                     fillProductGroupTypeSelect(model.groupIdOfPromotedProduct, model.promotedProductId);
                     $(".type2").css("display", "block");
                     $("#PriceOrDiscount").css("display", "none");

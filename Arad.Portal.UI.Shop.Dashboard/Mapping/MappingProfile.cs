@@ -80,8 +80,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Mapping
             CreateMap<Action, ActionDto>().ReverseMap();
             CreateMap<Slide, SlideDTO>().ReverseMap();
             CreateMap<UserFavorites, UserFavoritesDTO>().ReverseMap();
-
-
+            CreateMap<UserCoupon, UserCouponDTO>().ReverseMap();
 
         }
 

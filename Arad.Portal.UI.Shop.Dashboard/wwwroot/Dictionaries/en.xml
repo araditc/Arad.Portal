@@ -869,6 +869,9 @@
   <string key="AlertAndMessage_DuplicateUniqueCode">
     <value>UniqueCode is duplicate.</value>
   </string>
+	<string key="AlertAndMessage_DuplicateCode">
+    <value>code is duplicate.</value>
+  </string>
   <string key="AlertAndMessage_LangUniqueness">
     <value>There is already a row for this language.</value>
   </string>
@@ -1637,6 +1640,9 @@
   <string key="Choose">
     <value>choose ...</value>
   </string>
+	<string key="UserCoupons">
+    <value>user coupons</value>
+  </string>
   <string key="SpecificationGroupName">
     <value>Specification group name</value>
   </string>
@@ -2041,6 +2047,9 @@
   </string>
   <string key="Type">
     <value>Type</value>
+  </string>
+	 <string key="DiscountType">
+    <value>discount type</value>
   </string>
   <string key="AffectedProductName">
     <value>Product in Promotion</value>
@@ -2792,6 +2801,9 @@
   </string>
   <string key="ApplicationUser_UserList">
     <value>User list</value>
+  </string>
+	<string key="UserListCount">
+    <value>User list count</value>
   </string>
   <string key="PermissionTitle_Dashboard">
     <value>Dashboard</value>

@@ -868,6 +868,9 @@
   <string key="AlertAndMessage_DuplicateUniqueCode">
     <value>کد انحصاری تکراری است.</value>
   </string>
+	<string key="AlertAndMessage_DuplicateCode">
+		<value>کد تکراری است.</value>
+	</string>
   <string key="AlertAndMessage_LangUniqueness">
     <value>در حال حاضر برای این زبان یک سطر وجود دارد.</value>
   </string>
@@ -1681,6 +1684,9 @@
   <string key="Choose">
     <value>انتخاب کنید ...</value>
   </string>
+	<string key="UserCoupons">
+		<value>کوپن کاربران</value>
+	</string>
   <string key="SpecificationGroupName">
     <value>نام گروه مشخصات محصول</value>
   </string>
@@ -2092,6 +2098,9 @@
   <string key="Type">
     <value>نوع</value>
   </string>
+	<string key="DiscountType">
+		<value>نوع تخفیف</value>
+	</string>
   <string key="AffectedProductName">
     <value>محصول پروموشن دار</value>
   </string>
@@ -2707,6 +2716,15 @@
   <string key="ApplicationUser_Gender">
     <value>جنسیت</value>
   </string>
+	<string key="ApplicationUser_User">
+		<value>کاربر</value>
+	</string>
+	<string key="ApplicationUser_UserList">
+		<value>لیست کاربران</value>
+	</string>
+	<string key="UserListCount">
+		<value>تعداد کاربران</value>
+	</string>
   <string key="btn_AddNewAddress">
     <value>افزودن آدرس جدید</value>
   </string>

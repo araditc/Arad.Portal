@@ -18,6 +18,7 @@ using Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
+using Arad.Portal.DataLayer.Models.User;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -91,6 +92,37 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return View(list);
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> UserCouponsList()
+        {
+            PagedItems<UserCouponDTO> list = new PagedItems<UserCouponDTO>();
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUser = await _userManager.FindByIdAsync(currentUserId);
+            ViewBag.IsSysAcc = currentUser.IsSystemAccount;
+            var domainName = $"{_accessor.HttpContext.Request.Host}";
+            var domainEntity = _domainRepository.FetchByName(domainName, false).ReturnValue;
+
+            try
+            {
+                var q = string.Empty;
+                if (!string.IsNullOrWhiteSpace(Request.QueryString.ToString()))
+                {
+                    q = Request.QueryString.ToString() + "&";
+                }
+                else
+                {
+                    q = "?";
+                }
+                q += $"domainId={domainEntity.DomainId}";
+                list = await _promotionRepository.ListUserCoupon(q);
+                ViewBag.PromotionList = _promotionRepository.GetAvailableCouponsOfDomain(domainName);
+            }
+            catch (Exception)
+            {
+            }
+            return View(list);
+        }
         public  async Task<IActionResult> AddEdit(string id)
         {
             var model = new PromotionDTO();
@@ -125,14 +157,24 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpPost]
-
         public async Task<IActionResult> Add([FromBody] PromotionDTO dto)
         {
             JsonResult result;
+            var errors = new List<AjaxValidationErrorModel>();
+            var domainName = $"{_accessor.HttpContext.Request.Host}";
+            var domainEntity = _domainRepository.FetchByName(domainName, false).ReturnValue;
+            if (dto.AsUserCoupon)
+            {
+                var res = _promotionRepository.CheckCouponCodeUniqueness(dto.CouponCode, domainEntity.DomainId);
+                if (!res.Succeeded)
+                {
+                    var obj = new AjaxValidationErrorModel() { Key = "CouponCode", ErrorMessage = Language.GetString("AlertAndMessage_DuplicateCode") };
+                    errors.Add(obj);
+                }
+            }
             if (!ModelState.IsValid)
             {
-                var errors = new List<AjaxValidationErrorModel>();
-
+                
                 foreach (var modelStateKey in ModelState.Keys)
                 {
                     var modelStateVal = ModelState[modelStateKey];
@@ -141,10 +183,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 }
                 result = Json(new { Status = "ModelError", ModelStateErrors = errors });
             }
+            else if(errors.Count > 0)
+            {
+                result = Json(new { Status = "ModelError", ModelStateErrors = errors });
+            }
             else
             {
-                
-               
+                dto.AssociatedDomainId = domainEntity.DomainId;
                 Result saveResult = await _promotionRepository.InsertPromotion(dto);
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
@@ -154,10 +199,29 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddUserCoupon([FromBody] UserCouponDTO dto)
+        {
+            JsonResult result;
+            
+            var domainName = $"{_accessor.HttpContext.Request.Host}";
+            var domainEntity = _domainRepository.FetchByName(domainName, false).ReturnValue;
+            dto.AssociatedDomainId = domainEntity.DomainId;   
+            Result saveResult = await _promotionRepository.InsertUserCoupon(dto);
+            result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
+            : new { Status = "Error", saveResult.Message });
+
+            return result;
+        }
+
         [HttpGet]
-        public IActionResult AssignPromotionToUser()
+        public IActionResult AssignPromotionToUserAddEdit(string id)
         {
             var domainName = $"{_accessor.HttpContext.Request.Host}";
+            if(!string.IsNullOrWhiteSpace(id))
+            {
+                var dto = _promotionRepository.FetchUserCoupon(id);
+            }
             var domainEntity = _domainRepository.FetchByName(domainName, false).ReturnValue;
             ViewBag.PromotionList = _promotionRepository.GetAvailableCouponsOfDomain(domainName);
             ViewBag.DomainUsers = _userManager.Users
@@ -240,10 +304,37 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             : new { Status = "Error", saveResult.Message });
             return result;
         }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUserCoupon([FromBody] UserCouponDTO dto)
+        {
+            JsonResult result;
+            UserCouponDTO model;
+           
+            model = _promotionRepository.FetchUserCoupon(dto.UserCouponId);
+            if (model == null)
+            {
+                return RedirectToAction("PageOrItemNotFound", "Account");
+            }
+
+            Result saveResult = await _promotionRepository.UpdateUserCoupon(dto);
+
+            result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
+            : new { Status = "Error", saveResult.Message });
+            return result;
+        }
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
             Result opResult = await _promotionRepository.DeletePromotion(id, "delete");
+            return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
+            : new { Status = "Error", opResult.Message });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteUserCoupon(string id)
+        {
+            Result opResult = await _promotionRepository.DeleteUserCoupon(id);
             return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
             : new { Status = "Error", opResult.Message });
         }

@@ -198,7 +198,7 @@
             </div>
             <div class="col-12 col-md-3 offset-md-6">
                 <div class="card-tools float-end">
-                         <a asp-action="AssignPromotionToUser" asp-controller="Promotion" class="btn btn-success bg-gradient btn-sm">
+                        <a asp-action="UserCouponsList" asp-controller="Promotion" class="btn btn-primary bg-gradient btn-sm">
                             <i class="fa fa-plus pt-1"></i>@Language.GetString("AssignPromotionToUser")
                         </a>
                         <a asp-action="AddEdit" asp-controller="Promotion" class="btn btn-success bg-gradient btn-sm">
@@ -219,6 +219,7 @@
                     <th>@Language.GetString("ToDate")</th>
                     <th>@Language.GetString("Classification")</th>
                     <th>@Language.GetString("Type")</th>
+                    <th>@Language.GetString("Promotion_AsUserCoupon")</th>
                     <th>@Language.GetString("Value")</th>
                     <th>@Language.GetString("AffectedProductName")</th>
                     <th>@Language.GetString("AffectedProductGroupName")</th>
@@ -242,6 +243,7 @@
                             <td class="ListCell">@item.EDate</td>
                             <td class="ListCell">@item.PromotionType</td>
                             <td class="ListCell">@item.DiscountType</td>
+                            <td class="ListCell">@(item.AsUserCoupon ? Language.GetString("Yes") : Language.GetString("No"))</td>
                             <td class="ListCell">@item.Value</td>
                             <td class="ListCell">@item.ProductNamesConcat</td>
                             <td class="ListCell">@(@item.Infoes.Any() && (item.PromotionType ==  PromotionType.Group|| item.PromotionType == PromotionType.Product) ? @item.Infoes[0].AffectedProductGroupName : "")</td>

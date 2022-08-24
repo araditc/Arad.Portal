@@ -13,7 +13,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Promotion
         [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string UserCouponId { get; set; }
 
-        public string UserId { get; set; }
+        public List<string> UserIds { get; set; }
 
         public string PromotionId { get; set; }
 

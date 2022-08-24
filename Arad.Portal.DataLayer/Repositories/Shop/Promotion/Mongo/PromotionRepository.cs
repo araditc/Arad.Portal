@@ -17,6 +17,7 @@ using Arad.Portal.DataLayer.Entities.Shop.Promotion;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
+using Arad.Portal.DataLayer.Models.User;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
 {
@@ -169,7 +170,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
             equallentModel.CreationDate = DateTime.Now;
             equallentModel.CreatorUserId = GetUserId();
             equallentModel.CreatorUserName = GetUserName();
+
+            if(!dto.AsUserCoupon)
             equallentModel.PromotionType = (PromotionType)dto.PromotionTypeId;
+
             equallentModel.DiscountType = (DiscountType)dto.DiscountTypeId;
             equallentModel.SDate = dto.PersianStartDate.ToEnglishDate();
             equallentModel.EDate =dto.PersianEndDate.ToEnglishDate();
@@ -268,36 +272,35 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                 }
                 if(!string.IsNullOrWhiteSpace(title))
                 {
-                    list = list.Where(_ => _.Title.Contains(title)).Skip((page - 1) * pageSize)
-                     .Take(pageSize).ToList();
+                    list = list.Where(_ => _.Title.Contains(title)).ToList();
                 }
                 if (!string.IsNullOrWhiteSpace(promotionTypeId))
                 {
-                    list = list.Where(_ => _.PromotionType == (PromotionType)Convert.ToInt32(promotionTypeId)).Skip((page - 1) * pageSize)
-                      .Take(pageSize).ToList();
+                    list = list.Where(_ => _.PromotionType == (PromotionType)Convert.ToInt32(promotionTypeId)).ToList();
                 }
                 if (!string.IsNullOrWhiteSpace(discountTypeId))
                 {
-                    list = list.Where(_ => _.DiscountType == (DiscountType)Convert.ToInt32(discountTypeId)).Skip((page - 1) * pageSize)
-                      .Take(pageSize).ToList();
+                    list = list.Where(_ => _.DiscountType == (DiscountType)Convert.ToInt32(discountTypeId)).ToList();
                 }
                 if (!string.IsNullOrWhiteSpace(fromDate))
                 {
-                    list = list.Where(_ => _.SDate >= DateHelper.ToEnglishDate(fromDate).ToUniversalTime()).Skip((page - 1) * pageSize)
-                      .Take(pageSize).ToList();
+                    list = list.Where(_ => _.SDate >= DateHelper.ToEnglishDate(fromDate).ToUniversalTime()).ToList();
                 }
                 if (!string.IsNullOrWhiteSpace(toDate))
                 {
-                    list = list.Where(_ => _.EDate <= DateHelper.ToEnglishDate(toDate).ToUniversalTime()).Skip((page - 1) * pageSize)
-                      .Take(pageSize).ToList();
+                    list = list.Where(_ => _.EDate <= DateHelper.ToEnglishDate(toDate).ToUniversalTime()).ToList();
                 }
                 if (!string.IsNullOrWhiteSpace(productId))
                 {
-                    list = list.Where(_ => _.Infoes.Any(_=>_.AffectedProductId == productId)).Skip((page - 1) * pageSize)
-                     .Take(pageSize).ToList();
+                    list = list.Where(_ => _.Infoes.Any(_=>_.AffectedProductId == productId)).ToList();
                 }else if (!string.IsNullOrWhiteSpace(groupId))
                 {
-                    list = list.Where(_ => _.Infoes.Any(_=> _.AffectedProductGroupId == groupId)).Skip((page - 1) * pageSize)
+                    list = list.Where(_ => _.Infoes.Any(_=> _.AffectedProductGroupId == groupId)).ToList();
+                }
+
+                if(list.Count > pageSize)
+                {
+                    list = list.Skip((page - 1) * pageSize)
                      .Take(pageSize).ToList();
                 }
 
@@ -312,7 +315,6 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                         }
                     }
                 }
-               
             }
             catch (Exception ex)
             {
@@ -374,8 +376,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
             {
                 result.PersianEndDate = DateHelper.ToPersianDdate(entity.EDate.Value.ToLocalTime());
             }
-            
-            result.PromotionTypeId = (int)entity.PromotionType;
+            if(entity.PromotionType != null)
+            {
+                result.PromotionTypeId = (int)entity.PromotionType;
+            }
             result.DiscountTypeId = (int)entity.DiscountType;
             return result;
         }
@@ -459,7 +463,168 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                     Text = _.Title,
                     Value = _.PromotionId
                 }).ToList();
+            res.Insert(0, new SelectListModel() { Value = "-1", Text = Language.GetString("Choose") });
             return res;
+        }
+
+        public Result CheckCouponCodeUniqueness(string couponCode, string domainId)
+        {
+            var res = new Result();
+            var isExist = _context.Collection.Find(_ => _.AssociatedDomainId == domainId && _.CouponCode == couponCode).Any();
+            res.Succeeded = !isExist;
+            return res;
+        }
+
+        public UserCouponDTO FetchUserCoupon(string userCouponId)
+        {
+            var result = new UserCouponDTO();
+            var entity = _context.UserCouponCollection
+                .Find(_ => _.UserCouponId == userCouponId).FirstOrDefault();
+            
+            if(entity != null)
+            {
+                result.UserCouponId = userCouponId;
+                result.CouponCode = entity.CouponCode;
+                result.PromotionId = entity.PromotionId;
+                result.UserIds = entity.UserIds;
+
+                var promotion = _context.Collection
+                     .Find(_ => _.PromotionId == entity.PromotionId).FirstOrDefault();
+
+                if(promotion != null)
+                {
+                    result.PromotionName = promotion.Title;
+                    result.DiscountType = promotion.DiscountType;
+                    result.StartDate = promotion.SDate;
+                    result.EndDate = promotion.EDate.Value;
+                    result.Value = promotion.Value.Value;
+                }
+            }
+            return result;
+        }
+
+        public async Task<Result> InsertUserCoupon(UserCouponDTO dto)
+        {
+            var result = new Result();
+            try
+            {
+                var model = _mapper.Map<UserCoupon>(dto);
+                model.CreationDate = DateTime.Now;
+                model.CreatorUserId = GetUserId();
+                var promotion = _context.Collection.Find(_ => _.PromotionId == dto.PromotionId).FirstOrDefault();
+                model.CouponCode = promotion.CouponCode;
+                model.CreatorUserName = GetUserName();
+                model.UserCouponId = Guid.NewGuid().ToString();
+                await _context.UserCouponCollection.InsertOneAsync(model);
+                result.Succeeded = true;
+                result.Message = ConstMessages.SuccessfullyDone;
+
+            }
+            catch (Exception)
+            {
+                result.Message = ConstMessages.GeneralError;
+            }
+            return result;
+        }
+
+        public async Task<Result> UpdateUserCoupon(UserCouponDTO dto)
+        {
+            var result = new Result();
+            var model = _mapper.Map<UserCoupon>(dto);
+            var updateRes =await _context.UserCouponCollection.ReplaceOneAsync(_ => _.UserCouponId == model.UserCouponId, model);
+            if(updateRes.IsAcknowledged)
+            {
+                result.Succeeded = true;
+                result.Message = ConstMessages.SuccessfullyDone;
+            }
+            else
+            {
+                result.Message = ConstMessages.GeneralError;
+            }
+            return result;
+        }
+
+        public async Task<PagedItems<UserCouponDTO>> ListUserCoupon(string queryString)
+        {
+            PagedItems<UserCouponDTO> result = new PagedItems<UserCouponDTO>()
+            {
+                CurrentPage = 1,
+                ItemsCount = 0,
+                PageSize = 10,
+                QueryString = queryString
+            };
+            try
+            {
+                NameValueCollection filter = HttpUtility.ParseQueryString(queryString);
+
+                if (string.IsNullOrWhiteSpace(filter["page"]))
+                {
+                    filter.Set("page", "1");
+                }
+                if (string.IsNullOrWhiteSpace(filter["PageSize"]))
+                {
+                    filter.Set("PageSize", "20");
+                }
+                //surely querystring contains domainId
+                var page = Convert.ToInt32(filter["page"]);
+                var pageSize = Convert.ToInt32(filter["PageSize"]);
+                var domainId = filter["domainId"];
+                string promotionId = string.Empty;
+                if(string.IsNullOrWhiteSpace(filter["promotionId"]))
+                {
+                    promotionId = filter["promotionId"];
+                }
+                List<Entities.Shop.Promotion.UserCoupon> list;
+                long totalCount = await _context.UserCouponCollection.Find(_=>_.AssociatedDomainId == domainId && _.PromotionId == promotionId).CountDocumentsAsync();
+
+                list = _context.UserCouponCollection.Find(_ => _.AssociatedDomainId == domainId).ToList();
+                
+                if (!string.IsNullOrWhiteSpace(promotionId))
+                {
+                    list = list.Where(_ => _.PromotionId == promotionId).ToList();
+                }
+               if(list.Count > 0 )
+                {
+                    list = list.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                }
+                foreach (var item in list)
+                {
+                    var obj = _mapper.Map<UserCouponDTO>(item);
+                    var promotion = _context.Collection.Find(_ => _.PromotionId == item.PromotionId).FirstOrDefault();
+                    obj.DiscountType = promotion.DiscountType;
+                    obj.Value = promotion.Value;
+                    obj.StartDate = promotion.SDate;
+                    obj.CouponCode = promotion.CouponCode;
+                    obj.EndDate = promotion.EDate;
+                    result.Items.Add(obj);
+                }
+            }
+            catch (Exception ex)
+            {
+                result.CurrentPage = 1;
+                result.ItemsCount = 0;
+                result.PageSize = 10;
+            }
+            return result;
+        }
+
+        public async Task<Result> DeleteUserCoupon(string userCouponId)
+        {
+            var result = new Result();
+            var userCoupon = _context.UserCouponCollection
+                .Find(_ => _.UserCouponId == userCouponId).FirstOrDefault();
+
+            userCoupon.IsDeleted = true;
+            var updateRes = await _context.UserCouponCollection.ReplaceOneAsync(_ => _.UserCouponId == userCouponId, userCoupon);
+            if(updateRes.IsAcknowledged)
+            {
+                result.Succeeded = true;
+                result.Message = ConstMessages.SuccessfullyDone;
+            }else
+            {
+                result.Message = ConstMessages.ExceptionOccured;
+            }
+            return result;
         }
     }
 }

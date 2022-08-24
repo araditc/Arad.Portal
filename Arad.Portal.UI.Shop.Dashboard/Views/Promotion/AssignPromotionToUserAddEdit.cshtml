@@ -1,0 +1,112 @@
+﻿@model Arad.Portal.DataLayer.Models.User.UserCouponDTO
+@{
+  
+}
+@section Styles{
+    <style>
+        .text-danger {
+            font-size: 12px;
+        }
+    </style>
+     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <link href="@Url.Content($"~/lib/datePicker/kamadatepicker.css")" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="@Url.Content($"~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css")" rel="stylesheet" />
+    }
+}
+<h4>  @Language.GetString("AssignPromotionToUser") </h4>
+<hr />
+<div class="row">
+    <input type="hidden" asp-for="@Model.UserCouponId" />
+    <div class="col-12 col-md-3">
+        <label class="form-label">@Language.GetString("PermissionTitle_Promotions")</label>
+                        <select class="form-control selectpicker" data-live-search="true" id="PromotionList" asp-items="@(new SelectList(ViewBag.PromotionList,"Value","Text", @Model.PromotionId))">
+                        </select>
+                        <span data-val-result="PromotionList" class="text-danger"></span>
+    </div>
+    
+    <div class="col-10 col-md-3">
+        <label class="form-label">@Language.GetString("PermissionTitle_Users")</label>
+                        <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.UserIds" asp-items="@(new MultiSelectList( ViewBag.DomainUsers,"Value","Text"))">
+                        </select>
+            <span data-val-result="UserIds" class="text-danger"></span>
+
+    </div>
+    <
+    <div class="col-2 col-md-1">
+         <input type="button" id="btnAssignPromotionToUser" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
+    </div>
+</div>
+ <script>
+  var obj = {};
+  obj.UserIds = [];
+$(document).ready(function() {
+
+    $("#btnAssignPromotionToUser").click(function() {
+         var flag = false; 
+         if($("#PromotionList").val() == "-1")
+         {
+             $("span[data-val-result='PromotionList']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+             flag = true;
+         }
+        if($("#UserIds").val().length == 0)
+        {
+             $("span[data-val-result='UserIds']").html('@Language.GetString("AlertAndMessage_SelectOneItem")');
+             flag = true;
+        }
+        if (!flag) {
+            var dto = FillDataToSend();
+              $.ajax({
+                url: "@Model.UserCouponId" != "" ? '@Url.Action("EditUserCoupon", "Promotion")' : '@Url.Action("AddUserCoupon", "Promotion")',
+                    contentType: 'application/json',
+                    data: JSON.stringify(dataModel),
+                type: 'Post',
+                beforeSend: function () {
+                    debugger;
+                },
+                success: function (result) {
+                    debugger;
+                   /* AddLoading($("#addPromotionCard"));*/
+                    if (result.status === "Success") {
+                      
+                          document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
+                            document.getElementById('mainToastBody').classList.add('alert-success');
+                            var bsAlert = new bootstrap.Toast($("#mainToast"));
+                            $("#toastPanel").show();
+                                bsAlert.show();
+                            setTimeout(function()
+                            {
+                                $("#toastPanel").hide();
+                                 window.location.href = '@Url.Action("List")';
+                            },
+                            3000);
+                    }else
+                    {
+                        showError(result.message);
+                                    
+                    }
+                },
+                complete: function () {
+                }
+           });
+        }
+
+    });
+});
+
+function FillDataToSend(){
+     for (var i = 0; i < $("#UserIds").val().length; i++) {
+            debugger;
+            dto.UserIds.push($("#UserIds").val()[i]);
+        }
+        obj.PromotionId = $("#PromotionList").val();
+        if ($("#UserCouponId").val() != "") 
+        {
+            obj.UserCouponId = $("#UserCouponId").val();
+        }
+    return obj;
+}
+ </script>

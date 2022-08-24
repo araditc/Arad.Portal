@@ -63,5 +63,7 @@ namespace Arad.Portal.DataLayer.Models.Promotion
 
         public bool IsDeleted { get; set; }
 
+        public string AssociatedDomainId { get; set; }
+
     }
 }
