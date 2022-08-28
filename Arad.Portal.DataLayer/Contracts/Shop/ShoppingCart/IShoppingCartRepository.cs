@@ -46,6 +46,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart
 
         Task<Result> SubtractUserCartOrderCntFromInventory(Entities.Shop.ShoppingCart.ShoppingCart shoppingCart);
 
+        Task<Result> ChangePriceWithCouponCode(string shoppingCartId, string code, long oldPrice,  long newPrice);
+
         
     }
 }

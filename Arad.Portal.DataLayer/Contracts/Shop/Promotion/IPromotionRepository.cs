@@ -50,5 +50,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Promotion
         Task<Result> UpdateUserCoupon(UserCouponDTO model);
 
         Task<PagedItems<UserCouponDTO>> ListUserCoupon(string queryString);
+
+        Result<NewVal> CheckCode(string userId, string code, string domainId, long price);
     }
 }

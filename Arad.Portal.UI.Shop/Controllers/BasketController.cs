@@ -14,6 +14,8 @@ using Arad.Portal.DataLayer.Entities.General.User;
 using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Models.ShoppingCart;
 using Arad.Portal.DataLayer.Contracts.Shop.Product;
+using Arad.Portal.DataLayer.Contracts.Shop.Promotion;
+using Arad.Portal.DataLayer.Models.Shared;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -24,15 +26,18 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDomainRepository _domainRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IPromotionRepository _promotionRepository;
         public BasketController(IHttpContextAccessor accessor,
             IShoppingCartRepository shoppingCartRepository,
             UserManager<ApplicationUser> userManager,
+            IPromotionRepository promotionRepository,
             IProductRepository productRepository,
             IDomainRepository domainRepository) : base(accessor, domainRepository)
         {
             _shoppingCartRepository = shoppingCartRepository;
             _domainRepository = domainRepository;
             _userManager = userManager;
+            _promotionRepository = promotionRepository;
             _productRepository = productRepository;
         }
 
@@ -45,7 +50,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             if (User != null && User.Identity.IsAuthenticated)
             {
                 var res = await _shoppingCartRepository.AddOrChangeProductToUserCart(productId, cnt);
-                @ViewBag.BasketCount = res.ReturnValue.ItemsCount;
+                ViewBag.BasketCount = res.ReturnValue.ItemsCount;
                 return Json(new
                 {
                     status = res.Succeeded ? "Succeed" : "Error",
@@ -58,6 +63,34 @@ namespace Arad.Portal.UI.Shop.Controllers
                 //return RedirectToAction("Login", "Account", new { returnUrl = "/basket/AddProToBasket" });
                 return Redirect($"~/{lanIcon}/Account/Login?returnUrl=/{lanIcon}/basket/AddProToBasket?code={code}&cnt={cnt}");
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CheckCode([FromQuery] string code, [FromBody] NewVal model)
+        {
+            var res = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
+            var currentUserId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+            var result = _promotionRepository.CheckCode(currentUserId, code, res.DomainId, model.NewPrice);
+            if(result.Succeeded)
+            {
+                var shoppingCart = (await _shoppingCartRepository.FetchActiveUserShoppingCart(currentUserId, res.DomainId)).ReturnValue;
+                var shoppingCartUpdateRes = await _shoppingCartRepository.ChangePriceWithCouponCode(shoppingCart.ShoppingCartId, code, model.NewPrice, result.ReturnValue.NewPrice);
+
+                return Json(new
+                {
+                    status = result.Succeeded && shoppingCartUpdateRes.Succeeded ? "Succeed" : "Error",
+                    val = result.Succeeded ? result.ReturnValue.NewPrice : 0,
+                    Message = result.Succeeded ? "" : Language.GetString("AlertAndMessage_InvalidCode")
+                });
+            }
+
+            return Json(new
+            {
+                status = "Error",
+                val = 0,
+                Message = result.Succeeded ? "" : Language.GetString("AlertAndMessage_InvalidCode")
+            });
+
         }
 
         [HttpGet]
@@ -111,8 +144,6 @@ namespace Arad.Portal.UI.Shop.Controllers
         [HttpGet]
         public async Task<IActionResult> SendInfo()
         {
-           
-            //var items = HttpContext.Session.GetString("basket");
             var domainName = base.DomainName;
             var domainDTO = _domainRepository.FetchByName(domainName,false);
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -123,8 +154,10 @@ namespace Arad.Portal.UI.Shop.Controllers
             {
                 Addresses = user.Profile.Addresses.Where(_=>_.AddressType == DataLayer.Models.User.AddressType.ShippingAddress).ToList(),
                 CurrencySymbol = shoppingCart.ReturnValue.ShoppingCartCulture.CurrencySymbol,
-                TotalCost = shoppingCart.ReturnValue.FinalPriceForPay.ToString(),
-                UserCartId = shoppingCart.ReturnValue.UserCartId
+                TotalCost = !string.IsNullOrEmpty(shoppingCart.ReturnValue.CouponCode) ? 
+                        shoppingCart.ReturnValue.FinalPriceAfterCouponCode.Value.ToString() : 
+                        shoppingCart.ReturnValue.FinalPriceForPay.ToString(),
+                UserCartId = shoppingCart.ReturnValue.ShoppingCartId
             };
             return View(model);
            

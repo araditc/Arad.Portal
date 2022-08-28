@@ -27,6 +27,10 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
         /// </summary>
         public EntityCulture ShoppingCartCulture { get; set; }
 
+        public string CouponCode { get; set; }
+
+        public long? FinalPriceAfterCouponCode { get; set; }
+
         public long FinalPriceToPay { get; set; }
         /// <summary>
         /// end user can select product from different sellers each seller has individual object in his shoppingCart

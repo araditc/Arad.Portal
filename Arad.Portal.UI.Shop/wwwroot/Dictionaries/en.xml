@@ -21,6 +21,9 @@
   <string key="btn_Crop">
     <value>Crop</value>
   </string>
+<string key="btn_DeleteCouponCode">
+	<value>Delete Coupon Code</value>
+</string>
   <string key="btn_UploadImage">
     <value>Upload Image</value>
   </string>
@@ -62,6 +65,9 @@
   </string>
 	<string key="btn_ClassApply">
 		<value>apply class</value>
+	</string>
+	<string key="btn_Apply">
+		<value>apply</value>
 	</string>
   <string key="btn_Validation">
     <value>Check Validation</value>
@@ -1304,6 +1310,9 @@
   <string key="AlertAndMessage_EnterMobile">
     <value>Please enter your mobile number:</value>
   </string>
+	<string key="AlertAndMessage_InvalidCode">
+		<value>invalid code.</value>
+	</string>
   <string key="AlertAndMessage_InvalidMobileNumber">
     <value>Invalid mobile number.</value>
   </string>
@@ -3051,6 +3060,9 @@
   <string key="User_BankName">
     <value>Bank Name</value>
   </string>
+	<string key="User_DiscountCode">
+		<value>Discount Code</value>
+	</string>
   <string key="Profile_AddressType">
     <value>Address Type</value>
   </string>

@@ -22,9 +22,9 @@ namespace Arad.Portal.DataLayer.Models.ShoppingCart
         /// </summary>
         public long PreviousFinalPricePerUnit { get; set; }
 
-        public string ShoppingCartDetailId { get; set; }
-
         public Image ProductImage { get; set; }
+
+        public long ProductCode { get; set; }
 
         public List<string> Notifications { get; set; }
     }

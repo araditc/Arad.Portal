@@ -14,11 +14,15 @@ namespace Arad.Portal.DataLayer.Models.ShoppingCart
         {
             Details = new List<PurchasePerSellerDTO>();
         }
-        public string UserCartId { get; set; }
+        public string ShoppingCartId { get; set; }
 
         public string OwnerId { get; set; }
 
         public string DomainId { get; set; }
+
+        public string CouponCode { get; set; }
+
+        public long? FinalPriceAfterCouponCode { get; set; }
 
         public long FinalPriceForPay { get; set; }
 

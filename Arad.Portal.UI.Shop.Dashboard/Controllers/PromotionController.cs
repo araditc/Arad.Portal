@@ -218,9 +218,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public IActionResult AssignPromotionToUserAddEdit(string id)
         {
             var domainName = $"{_accessor.HttpContext.Request.Host}";
+            UserCouponDTO dto = new UserCouponDTO();
             if(!string.IsNullOrWhiteSpace(id))
             {
-                var dto = _promotionRepository.FetchUserCoupon(id);
+                dto = _promotionRepository.FetchUserCoupon(id);
             }
             var domainEntity = _domainRepository.FetchByName(domainName, false).ReturnValue;
             ViewBag.PromotionList = _promotionRepository.GetAvailableCouponsOfDomain(domainName);
@@ -231,7 +232,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                    Text = _.Profile.FullName,
                    Value = _.Id
                 }).ToList();
-            return View();
+            return View(dto);
         }
 
         [HttpGet]

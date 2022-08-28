@@ -460,7 +460,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
             (_.EDate >= DateTime.UtcNow || _.EDate == null) && _.IsActive && _.AsUserCoupon)
                 .Project(_=> new SelectListModel()
                     {
-                    Text = _.Title,
+                    Text = _.CouponCode,
                     Value = _.PromotionId
                 }).ToList();
             res.Insert(0, new SelectListModel() { Value = "-1", Text = Language.GetString("Choose") });
@@ -514,6 +514,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                 var promotion = _context.Collection.Find(_ => _.PromotionId == dto.PromotionId).FirstOrDefault();
                 model.CouponCode = promotion.CouponCode;
                 model.CreatorUserName = GetUserName();
+                model.IsActive = true;
                 model.UserCouponId = Guid.NewGuid().ToString();
                 await _context.UserCouponCollection.InsertOneAsync(model);
                 result.Succeeded = true;
@@ -623,6 +624,33 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
             }else
             {
                 result.Message = ConstMessages.ExceptionOccured;
+            }
+            return result;
+        }
+
+        public Result<NewVal> CheckCode(string userId, string code, string domainId, long price)
+        {
+            var result = new Result<NewVal>();
+            result.ReturnValue = new NewVal();
+            var entity = _context.UserCouponCollection
+                .Find(_ => _.UserIds.Contains(userId) && _.AssociatedDomainId == domainId && _.CouponCode == code).Any() ? _context.UserCouponCollection
+                .Find(_ => _.UserIds.Contains(userId) && _.AssociatedDomainId == domainId && _.CouponCode == code).FirstOrDefault() : null ;
+
+            if(entity != null)
+            {
+                var promotion = _context.Collection.Find(_ => _.PromotionId == entity.PromotionId).FirstOrDefault();
+                if(promotion != null && promotion.IsActive && !promotion.IsDeleted && promotion.SDate <= DateTime.UtcNow && promotion.EDate >= DateTime.UtcNow)
+                {
+                    result.Succeeded = true;
+                    if(promotion.DiscountType == DiscountType.Fixed)
+                    {
+                        result.ReturnValue.NewPrice = price - promotion.Value.Value;
+                    }else
+                    if(promotion.DiscountType == DiscountType.Percentage)
+                    {
+                        result.ReturnValue.NewPrice = (price - (promotion.Value.Value * price / 100));
+                    }
+                }
             }
             return result;
         }

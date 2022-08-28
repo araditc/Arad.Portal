@@ -129,6 +129,9 @@ namespace Arad.Portal.UI.Shop.Controllers
             if (isLoggedUser && entity.ProductType == Enums.ProductType.File)
             {
                 ViewBag.IsDownloadable = _productRepository.IsDownloadIconShowForCurrentUser(userId, entity.ProductId);
+            }else
+            {
+                ViewBag.IsDownloadable = false;
             }
             if (!string.IsNullOrEmpty(entity.ProductId))
             {

@@ -71,7 +71,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                             var transaction = new Transaction();
                             transaction.TransactionId = Guid.NewGuid().ToString();
                             transaction.MainInvoiceNumber = Guid.NewGuid().ToString();
-                            transaction.FinalPriceToPay = result.ReturnValue.FinalPriceToPay;
+                            transaction.FinalPriceToPay = string.IsNullOrWhiteSpace(result.ReturnValue.CouponCode) ? result.ReturnValue.FinalPriceToPay : result.ReturnValue.FinalPriceAfterCouponCode.Value ;
                             
                             transaction.CustomerData = new CustomerData()
                             {

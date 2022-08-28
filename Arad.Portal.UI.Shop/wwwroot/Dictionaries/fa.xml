@@ -21,7 +21,10 @@
   <string key="btn_Crop">
     <value>برش</value>
   </string>
-  <string key="btn_UploadImage">
+	<string key="btn_DeleteCouponCode">
+		<value>حذف کد تخفیف</value>
+	</string>
+	<string key="btn_UploadImage">
     <value>بارگزاری تصویر</value>
   </string>
   <string key="Upload">
@@ -69,6 +72,10 @@
 	<string key="btn_ClassApply">
 		<value>اعمال کلاس</value>
 	</string>
+	<string key="btn_Apply">
+		<value>اعمال</value>
+	</string>
+	
   <string key="btn_Validation">
     <value>اعتبارسنجی</value>
   </string>
@@ -1337,6 +1344,9 @@
   <string key="AlertAndMessage_EnterMobile">
     <value>لطفا شماره همراه خود را وارد نمائید:</value>
   </string>
+	<string key="AlertAndMessage_InvalidCode">
+		<value>کد معتبر نمیباشد.</value>
+	</string>
   <string key="AlertAndMessage_InvalidMobileNumber">
     <value>شماره همراه وارد شده اشتباه است.</value>
   </string>
@@ -2956,6 +2966,9 @@
   <string key="User_BankName">
     <value>نام بانک</value>
   </string>
+	<string key="User_DiscountCode">
+		<value>کد تخفیف</value>
+	</string>
   <string key="Profile_AddressType">
     <value>نوع آدرس</value>
   </string>

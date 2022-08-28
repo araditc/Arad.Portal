@@ -403,14 +403,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                       _.IsActive && _.AssociatedDomainId == domainId).FirstOrDefault();
             //surely we have an instance of ShoppingCart
                 dto.ShoppingCartCulture = userCartEntity.ShoppingCartCulture;
-                dto.UserCartId = userCartEntity.ShoppingCartId;
+                dto.ShoppingCartId = userCartEntity.ShoppingCartId;
                 dto.DomainId = domainId;
                 dto.OwnerId = userCartEntity.CreatorUserId;
                 var perSellerList = new List<PurchasePerSeller>();
                 result.ReturnValue.Details = new List<PurchasePerSellerDTO>();
                 int rowNumber = 1;
                 long finalPaymentPrice = 0;
-                //each time we fetch cartshopping data should be updated in it
+                //each time we fetch shoppingCart data should be updated in it
                 foreach (var sellerPurchase in userCartEntity.Details)
                 {
                     var obj = new PurchasePerSellerDTO();
@@ -437,13 +437,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                             det = new ShoppingCartDetailDTO
                             {
                                 RowNumber = rowNumber,
+                                ProductCode = productEntity.ProductCode,
                                 CreationDate = DateTime.Now,
                                 CreatorUserId = userCartEntity.CreatorUserId,
                                 CreatorUserName = userCartEntity.CreatorUserName,
                                 ProductId = productId,
                                 ProductName = pro.ProductName,
                                 ShoppingCartDetailId = pro.ShoppingCartDetailId,
-                                OrderCount = pro.OrderCount,
+                                OrderCount =  pro.OrderCount,
                                 PricePerUnit = activePriceValue,
                                 DiscountPricePerUnit = discountPerUnit.DiscountPerUnit,
                                 TotalAmountToPay = (activePriceValue - discountPerUnit.DiscountPerUnit) * pro.OrderCount,
@@ -807,7 +808,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                     model.FinalPriceToPay += sellerFactor;
                     model.Details.Add(purchasePerSeller);
                 }
-               
+                model.CouponCode = userCartEntity.CouponCode;
+                model.FinalPriceAfterCouponCode = userCartEntity.FinalPriceAfterCouponCode;
                 //model.FinalPriceForPay = finalPaymentPrice;
                 var updateResult = await _context.Collection
                     .ReplaceOneAsync(_ => _.ShoppingCartId == userCartEntity.ShoppingCartId, model);
@@ -889,13 +891,31 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             if(domainEntity != null)
             {
                 var res = await FetchActiveUserShoppingCart(userId, domainEntity.DomainId);
-                var cartEntiry = _context.Collection.Find(_ => _.ShoppingCartId == res.ReturnValue.UserCartId).FirstOrDefault();
+                var cartEntiry = _context.Collection.Find(_ => _.ShoppingCartId == res.ReturnValue.ShoppingCartId).FirstOrDefault();
                 return GetItemCountsInCart(cartEntiry);
             }else
             {
                 return 0;
             }
             
+        }
+
+        public async Task<Result> ChangePriceWithCouponCode(string shoppingCartId, string code, long oldPrice,  long newPrice)
+        {
+            var res = new Result();
+            var entity = await _context.Collection.Find(_ => _.ShoppingCartId == shoppingCartId).FirstOrDefaultAsync();
+            if(entity != null)
+            {
+                entity.CouponCode = code;
+                entity.FinalPriceAfterCouponCode = newPrice;
+                entity.FinalPriceToPay = oldPrice;
+                var updateResult = await _context.Collection.ReplaceOneAsync(_ => _.ShoppingCartId == shoppingCartId, entity);
+                if(updateResult.IsAcknowledged)
+                {
+                    res.Succeeded = true;
+                }
+            }
+            return res;
         }
     }
 }

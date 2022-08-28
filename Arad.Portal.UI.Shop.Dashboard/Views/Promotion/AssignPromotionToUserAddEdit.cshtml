@@ -23,7 +23,7 @@
     <input type="hidden" asp-for="@Model.UserCouponId" />
     <div class="col-12 col-md-3">
         <label class="form-label">@Language.GetString("PermissionTitle_Promotions")</label>
-                        <select class="form-control selectpicker" data-live-search="true" id="PromotionList" asp-items="@(new SelectList(ViewBag.PromotionList,"Value","Text", @Model.PromotionId))">
+                        <select class="form-control selectpicker" data-live-search="true" id="PromotionList" asp-items="@(new SelectList(ViewBag.PromotionList,"Value","Text"))">
                         </select>
                         <span data-val-result="PromotionList" class="text-danger"></span>
     </div>
@@ -35,7 +35,7 @@
             <span data-val-result="UserIds" class="text-danger"></span>
 
     </div>
-    <
+    
     <div class="col-2 col-md-1">
          <input type="button" id="btnAssignPromotionToUser" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
     </div>
@@ -45,6 +45,10 @@
   obj.UserIds = [];
 $(document).ready(function() {
 
+    if('@Model.UserCouponId' != "")
+    {
+        $("#PromotionList").selectpicker("val", '@Model.PromotionId');
+    }
     $("#btnAssignPromotionToUser").click(function() {
          var flag = false; 
          if($("#PromotionList").val() == "-1")
@@ -62,7 +66,7 @@ $(document).ready(function() {
               $.ajax({
                 url: "@Model.UserCouponId" != "" ? '@Url.Action("EditUserCoupon", "Promotion")' : '@Url.Action("AddUserCoupon", "Promotion")',
                     contentType: 'application/json',
-                    data: JSON.stringify(dataModel),
+                    data: JSON.stringify(dto),
                 type: 'Post',
                 beforeSend: function () {
                     debugger;
@@ -80,7 +84,7 @@ $(document).ready(function() {
                             setTimeout(function()
                             {
                                 $("#toastPanel").hide();
-                                 window.location.href = '@Url.Action("List")';
+                                 window.location.href = '@Url.Action("UserCouponsList")';
                             },
                             3000);
                     }else
@@ -98,9 +102,10 @@ $(document).ready(function() {
 });
 
 function FillDataToSend(){
+   
      for (var i = 0; i < $("#UserIds").val().length; i++) {
             debugger;
-            dto.UserIds.push($("#UserIds").val()[i]);
+            obj.UserIds.push($("#UserIds").val()[i]);
         }
         obj.PromotionId = $("#PromotionList").val();
         if ($("#UserCouponId").val() != "") 
@@ -109,4 +114,7 @@ function FillDataToSend(){
         }
     return obj;
 }
+
+
+
  </script>

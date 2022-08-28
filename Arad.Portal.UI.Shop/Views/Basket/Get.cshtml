@@ -6,11 +6,17 @@
     .pInTb {
         display: inline-block;
     }
-    .basket th{
-        text-align : center;
+
+    .basket th {
+        text-align: center;
     }
-     .basket td{
-        text-align : center;
+
+    .basket td {
+        text-align: center;
+    }
+    .proLink{
+        color: black;
+        text-decoration : none;
     }
 </style>
 <div class="container">
@@ -25,7 +31,7 @@
                         <div class="card-header bg-success bg-opacity-10">
                             <div class="row gy-2 align-middle pt-2">
                                 <div class="col-4 offset-2 col-md-2  offset-4">
-                                    <label class="form-label"> @Language.GetString("tbl_VendorName") : </label>
+                                    <label class="form-label"> @Language.GetString("tbl_VendorName"): </label>
                                 </div>
                                 <div class="col-4 col-md-2">
                                     <p><strong>@seller.SellerUserName</strong></p>
@@ -51,60 +57,66 @@
                                         @{
                                             foreach (var item in seller.Products)
                                             {
-                                                <tr>
-                                                    <th scope="row">@item.RowNumber</th>
-                                                    <td>
-                                                        @if (item.ProductImage != null)
+                                                    <tr>
+                                                        <th scope="row">@item.RowNumber</th>
+                                                        <td>
+                                                            @if (item.ProductImage != null)
                                                         {
-                                                            <img class="smlImg" src=@Url.Content($"~/getscaledimageonwidth?path={item.ProductImage.Url}&width={75}")>
+                                                                <a href="@($"/product/{item.ProductCode}")" class="proLink" role="button">
+                                                                    <img class="smlImg" src=@Url.Content($"~/getscaledimageonwidth?path={item.ProductImage.Url}&width={75}")>
+                                                                </a>
                                                         }
-                                                    </td>
-                                                    <td class="align-middle"><span>@item.ProductName</span></td>
-                                                    <td class="align-middle">
-                                                        @{
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <a href="@($"/product/{item.ProductCode}")" role="button" class="proLink">
+                                                                <span>@item.ProductName</span>
+                                                            </a>
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            @{
                                                             if (item.PreviousFinalPricePerUnit != 0 && item.PreviousFinalPricePerUnit != item.PricePerUnit - item.DiscountPricePerUnit)
                                                             {
-                                                                <div>
-                                                                    <p class="pInTb"><s>@($"{Convert.ToInt64(item.PreviousFinalPricePerUnit):n0} {Model.ShoppingCartCulture.CurrencySymbol}")</s></p>
-                                                                    <p class="pInTb"><mark>@($"{Convert.ToInt64(item.PricePerUnit - item.DiscountPricePerUnit): n0} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
-                                                                </div>
+                                                                        <div>
+                                                                            <p class="pInTb"><s>@($"{Convert.ToInt64(item.PreviousFinalPricePerUnit):n0} {Model.ShoppingCartCulture.CurrencySymbol}")</s></p>
+                                                                            <p class="pInTb"><mark>@($"{Convert.ToInt64(item.PricePerUnit - item.DiscountPricePerUnit): n0} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
+                                                                        </div>
                                                             }
                                                             else
                                                             {
-                                                                <div>
-                                                                    <p class="pInTb"><mark>@($"{Convert.ToInt64(item.PricePerUnit - item.DiscountPricePerUnit):n0} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
-                                                                </div>
+                                                                        <div>
+                                                                            <p class="pInTb"><mark>@($"{Convert.ToInt64(item.PricePerUnit - item.DiscountPricePerUnit):n0} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
+                                                                        </div>
 
                                                             }
-                                                        }
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        <div class="w-75">
-                                                            <input type="number" class="form-control orderCnt" proid='@item.ProductId' min="1" value="@item.OrderCount" />
-                                                        </div>
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        <div>
-                                                            <p><mark>@($"{Convert.ToInt64(@item.TotalAmountToPay) :n0} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        <button class="btn btn-sm btn-danger bg-gradient deleteItem" parId="@Model.UserCartId" detailId="@item.ShoppingCartDetailId">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        <div>
-                                                            @{
+                                                            }
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <div class="w-75">
+                                                                <input type="number" class="form-control orderCnt" proid='@item.ProductId' min="1" value="@item.OrderCount" />
+                                                            </div>
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <div>
+                                                                <p><mark>@($"{Convert.ToInt64(@item.TotalAmountToPay) :n0} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
+                                                            </div>
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <button class="btn btn-sm btn-danger bg-gradient deleteItem" parId="@Model.ShoppingCartId" detailId="@item.ShoppingCartDetailId">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <div>
+                                                                @{
                                                                 foreach (var not in item.Notifications)
                                                                 {
-                                                                    <p class="fw-lighter">@not</p>
-                                                                    <br />
+                                                                            <p class="fw-lighter">@not</p>
+                                                                            <br />
                                                                 }
-                                                            }
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                                }
+                                                            </div>
+                                                        </td>
+                                                    </tr>
                                             }
                                         }
                                     </tbody>
@@ -113,18 +125,29 @@
                         </div>
                         <div class="card-footer">
                             <div class="row mt-2">
-                                <div class="col-4 offset-2 col-md-2 offset-md-4 align-middle">
+                                <div class="col-4 col-md-2 d-flex justify-content-end align-middle">
                                     <label class="form-label"> @Language.GetString("ShippingExpense") : </label>
                                 </div>
-                                <div class="col-4 col-md-2 align-middle">
+                                <div class="col-4 col-md-2">
                                     <label class="form-control">@($"{Convert.ToInt64(seller.ShippingExpense):n0} {Model.ShoppingCartCulture.CurrencySymbol}")</label>
                                 </div>
+                                <div class="col-4 col-md-2 d-flex justify-content-end align-middle">
+                                    <label class="form-label"> @Language.GetString("User_DiscountCode") : </label>
+                                </div>
+                                <div class="col-4 col-md-2">
+                                    <input type="text" class="form-control" value="" id="discountCode" />
+                                </div>
+                                <div class="col-6 col-md-4">
+                                    <input type="button" class="btn btn-outline-secondary" value="@Language.GetString("btn_Apply")" id="btnDiscountCode" />
+                                    <input type="button" class="btn btn-outline-danger" value="@Language.GetString("btn_DeleteCouponCode")" id="btnDiscountCode" />
+                                </div>
+
                             </div>
                             <div class="row mt-2">
-                                <div class="col-4 offset-2 col-md-2 offset-md-4 align-middle">
+                                <div class="col-4 offset-2 col-md-2 offset-md-4 d-flex justify-content-end align-middle">
                                     <label class="form-label"> @Language.GetString("SumOfAmount") : </label>
                                 </div>
-                                <div class="col-4 col-md-2 align-middle">
+                                <div class="col-4 col-md-3 align-middle">
                                     <p><mark class="fs-5">@($"{Convert.ToInt64(seller.Products.Sum(_=>_.TotalAmountToPay) + seller.ShippingExpense):n0} {Model.ShoppingCartCulture.CurrencySymbol}")</mark></p>
                                 </div>
                             </div>
@@ -137,7 +160,7 @@
                         <label class="form-control bg-secondary bg-opacity-10 text-center"> @Language.GetString("FinalPriceForPayment") : </label>
                     </div>
                     <div class="col-3 col-md-2">
-                        <p><strong>@($"{Convert.ToInt64(Model.FinalPriceForPay):n0} {Model.ShoppingCartCulture.CurrencySymbol}")</strong></p>
+                        <p><strong id="finalP">@($"{Convert.ToInt64(Model.FinalPriceForPay):n0} {Model.ShoppingCartCulture.CurrencySymbol}")</strong></p>
                     </div>
                     <div class="col-2 col-md-2">
                         @if (@Model.Details.Any())
@@ -175,7 +198,19 @@
                     debugger;
                     if (result.status == "Succeed") {
                         window.location.reload();
+                    } else //error
+                    {
+                        document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${result.message}`;
+                        document.getElementById('mainToastBody').classList.add('alert-danger');
+                        $("#toastPanel").show();
+                        var toast = new bootstrap.Toast($("#mainToast"));
+                        toast.show();
+                        setTimeout(function() {
+                            $("#toastPanel").hide();
+                        }, 2500);
                     }
+
+
                 }
             });
         });
@@ -208,6 +243,43 @@
                             setTimeout(function() {
                                 $("#toastPanel").hide();
                             }, 2500);
+                        }
+                        else {
+
+                            document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${result.message}`;
+                            document.getElementById('mainToastBody').classList.add('alert-danger');
+                            $("#toastPanel").show();
+                            var toast = new bootstrap.Toast($("#mainToast"));
+                            toast.show();
+                            setTimeout(function() {
+                                $("#toastPanel").hide();
+                            }, 2500);
+                        }
+
+                    }
+                });
+            }
+        });
+
+        $("#btnDiscountCode").click(function() {
+            debugger;
+            var obj = {};
+            obj.NewPrice = '@Model.FinalPriceForPay';
+            var code = $("#discountCode").val();
+            if ('@User.Identity.IsAuthenticated' === 'True') {
+                debugger;
+                $.ajax({
+                    url: `/${'@ViewBag.LanIcon'}/Basket/CheckCode?code=${code}`,
+                    contentType: 'application/json',
+                    type: 'Post',
+                    data: JSON.stringify(obj),
+                    dataType: 'json',
+                    beforeSend: function() {
+                    },
+                    success: function(result) {
+                        if (result.status == "Succeed") {
+                            debugger;
+                            $("#finalP").html(result.val);
                         }
                         else {
 
