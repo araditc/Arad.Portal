@@ -143,13 +143,12 @@
                 </div>
             </div>
             <div class="row justify-content-center downloadSection">
-                @if(User.Identity.IsAuthenticated && ViewBag.IsDownloadable)
-                {
-                    <a class="btn btn-success btn-sm pe-3 mt-3" id="btnDownload" asp-controller="Product" asp-action="Download" asp-route-code="@Model.ProductCode">
-                    <i class="fas fa-file-download px-1 mt-1">
-                    </i>@Language.GetString("Download")
+
+                <a class="btn btn-success btn-sm pe-3 mt-3" id="btnAddToCompareList" asp-controller="Product" asp-action="AddToComapareList" asp-route-code="@Model.ProductCode">
+                    <i class="far fa-compress-arrows-alt px-1 mt-1"></i> 
+                    @Language.GetString("btn_AddToCompareList")
                 </a>
-                }
+              
             </div>
             <div class="row commentSection">
 

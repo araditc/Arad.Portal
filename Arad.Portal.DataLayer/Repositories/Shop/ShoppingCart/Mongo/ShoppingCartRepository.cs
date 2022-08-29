@@ -840,7 +840,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                 foreach (var product in seller.Products)
                 {
                    //check the quantity and price if no quantity and
-                   //price change shopping card is ready to go to paymentGateway
+                   //price change shoppingCart is ready to go to paymentGateway
                     var proEntity = _productContext.ProductCollection
                         .Find(_ => _.ProductId == product.ProductId).FirstOrDefault();
                     if(proEntity.IsDeleted || 
@@ -900,7 +900,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             
         }
 
-        public async Task<Result> ChangePriceWithCouponCode(string shoppingCartId, string code, long oldPrice,  long newPrice)
+        public async Task<Result> ChangePriceWithCouponCode(string shoppingCartId, string code, long oldPrice, long newPrice)
         {
             var res = new Result();
             var entity = await _context.Collection.Find(_ => _.ShoppingCartId == shoppingCartId).FirstOrDefaultAsync();
@@ -914,6 +914,77 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                 {
                     res.Succeeded = true;
                 }
+            }
+            return res;
+        }
+
+        public Entities.Shop.ShoppingCart.ShoppingCart FetchShoppingCart(string shoppingCartId)
+        {
+            var entity = _context.Collection.Find(_ => _.ShoppingCartId == shoppingCartId).FirstOrDefault();
+            return entity;
+        }
+
+        public async Task<Result> Reorder(string shoppingCartId)
+        {
+            var res = new Result();
+            var entity = _context.Collection.Find(_ => _.ShoppingCartId == shoppingCartId).FirstOrDefault();
+            long finalPrice = 0;
+            Entities.Shop.ShoppingCart.ShoppingCart shoppingCart = new Entities.Shop.ShoppingCart.ShoppingCart();
+            shoppingCart.ShoppingCartId = Guid.NewGuid().ToString();
+            shoppingCart.ShoppingCartCulture = entity.ShoppingCartCulture;
+            shoppingCart.CreatorUserId = entity.CreatorUserId;
+            shoppingCart.AssociatedDomainId = entity.AssociatedDomainId;
+            shoppingCart.CreationDate = DateTime.UtcNow;
+            foreach (var detail in entity.Details)
+            {
+                long purchaseamnt = 0; 
+                var purchaseperseller = new PurchasePerSeller();
+                purchaseperseller.SellerId = detail.SellerId;
+                purchaseperseller.SellerUserName = detail.SellerUserName;
+                purchaseperseller.ShippingExpense = detail.ShippingExpense;
+                purchaseperseller.ShippingTypeId = detail.ShippingTypeId;
+                purchaseamnt += detail.ShippingExpense;
+                foreach (var pro in detail.Products)
+                {
+                    var shoppingDetail = new ShoppingCartDetail();
+                    shoppingDetail.ShoppingCartDetailId = Guid.NewGuid().ToString();
+                    var productEntity = _productContext.ProductCollection
+                          .Find(_ => _.ProductId == pro.ProductId).FirstOrDefault();
+                    if (productEntity.Inventory >= 0)
+                    {
+                        shoppingDetail.ProductId = pro.ProductId;
+                        shoppingDetail.ProductName = pro.ProductName;
+                        shoppingDetail.SellerId = pro.SellerId;
+                        shoppingDetail.OrderCount = productEntity.Inventory >= pro.OrderCount ? pro.OrderCount : productEntity.Inventory;
+
+                        var activePriceValue = GetCurrentPrice(productEntity);
+                        var discountPerUnit = await GetCurrentDiscountPerUnit(productEntity, activePriceValue);
+
+                        shoppingDetail.PricePerUnit = activePriceValue;
+                        shoppingDetail.DiscountPricePerUnit = discountPerUnit.DiscountPerUnit;
+                        shoppingDetail.TotalAmountToPay = (activePriceValue - discountPerUnit.DiscountPerUnit) * shoppingDetail.OrderCount;
+
+                        purchaseperseller.Products.Add(shoppingDetail);
+                        purchaseamnt += shoppingDetail.TotalAmountToPay;
+                    }
+                    else //this product doesnt have stock then it cant be added to shoppingCart
+                        continue;
+                }
+                purchaseperseller.TotalDetailsAmountWithShipping = purchaseamnt;
+                finalPrice += purchaseamnt;
+                shoppingCart.Details.Add(purchaseperseller);
+            }
+            shoppingCart.FinalPriceToPay = finalPrice;
+
+            try
+            {
+                await _context.Collection.InsertOneAsync(shoppingCart);
+                res.Succeeded = true;
+                res.Message = Language.GetString("AlertAndMessage_OperarationDoneSuccessfully");
+            }
+            catch (Exception)
+            {
+                res.Message = ConstMessages.InternalServerErrorMessage;
             }
             return res;
         }

@@ -16,6 +16,7 @@ using Arad.Portal.DataLayer.Models.ShoppingCart;
 using Arad.Portal.DataLayer.Contracts.Shop.Product;
 using Arad.Portal.DataLayer.Contracts.Shop.Promotion;
 using Arad.Portal.DataLayer.Models.Shared;
+using System.Globalization;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -70,16 +71,17 @@ namespace Arad.Portal.UI.Shop.Controllers
         {
             var res = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
             var currentUserId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
-            var result = _promotionRepository.CheckCode(currentUserId, code, res.DomainId, model.NewPrice);
+            var result = _promotionRepository.CheckCode(currentUserId, code, res.DomainId, model.Price);
             if(result.Succeeded)
             {
                 var shoppingCart = (await _shoppingCartRepository.FetchActiveUserShoppingCart(currentUserId, res.DomainId)).ReturnValue;
-                var shoppingCartUpdateRes = await _shoppingCartRepository.ChangePriceWithCouponCode(shoppingCart.ShoppingCartId, code, model.NewPrice, result.ReturnValue.NewPrice);
+                var shoppingCartUpdateRes = await _shoppingCartRepository.ChangePriceWithCouponCode(shoppingCart.ShoppingCartId, code, model.Price, result.ReturnValue.Price);
+                var removeRes = await _promotionRepository.RemoveUserFromUserCoupon(code, currentUserId, res.DomainId);
 
                 return Json(new
                 {
                     status = result.Succeeded && shoppingCartUpdateRes.Succeeded ? "Succeed" : "Error",
-                    val = result.Succeeded ? result.ReturnValue.NewPrice : 0,
+                    val = result.Succeeded ? result.ReturnValue.Price : 0,
                     Message = result.Succeeded ? "" : Language.GetString("AlertAndMessage_InvalidCode")
                 });
             }
@@ -90,7 +92,34 @@ namespace Arad.Portal.UI.Shop.Controllers
                 val = 0,
                 Message = result.Succeeded ? "" : Language.GetString("AlertAndMessage_InvalidCode")
             });
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> RevertCode([FromQuery]string code, [FromBody]NewVal model)
+        {
+            var res = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
+            var currentUserId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+
+            var result = await _promotionRepository.RevertCodeForUser(currentUserId, code, res.DomainId, model.Price);
+            return Json(new
+            {
+                status = "Error",
+                val = 0,
+                Message = result.Succeeded ? "" : Language.GetString("AlertAndMessage_InvalidCode")
+            });
+
+        }
+
+        public IActionResult Reorder(string shoppingCartId)
+        {
+            var res = _shoppingCartRepository.Reorder(shoppingCartId);
+
+            var lanIcon = "";
+            if(CultureInfo.CurrentCulture.Name != null)
+            {
+                lanIcon = CultureInfo.CurrentCulture.Name;
+            }
+            return Redirect($"~/{lanIcon}/basket/get");
         }
 
         [HttpGet]

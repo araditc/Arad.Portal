@@ -36,6 +36,7 @@ using Arad.Portal.DataLayer.Repositories.General.CountryParts.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.CountryParts;
 using Arad.Portal.DataLayer.Contracts.General.DesignStructure;
 using Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo;
+using Microsoft.AspNetCore.Http;
 
 namespace Arad.Portal.UI.Shop.Helpers
 {
@@ -298,6 +299,21 @@ namespace Arad.Portal.UI.Shop.Helpers
             }
             #endregion
 
+        }
+
+        public static T GetComplexData<T>(this ISession session, string key)
+        {
+            var data = session.GetString(key);
+            if (data == null)
+            {
+                return default(T);
+            }
+            return JsonConvert.DeserializeObject<T>(data);
+        }
+
+        public static void SetComplexData(this ISession session, string key, object value)
+        {
+            session.SetString(key, JsonConvert.SerializeObject(value));
         }
     }
 }

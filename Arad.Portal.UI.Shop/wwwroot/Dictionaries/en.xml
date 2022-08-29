@@ -27,6 +27,12 @@
   <string key="btn_UploadImage">
     <value>Upload Image</value>
   </string>
+	 <string key="btn_reorder">
+    <value>reorder</value>
+  </string>
+	<string key="btn_AddToCompareList">
+		<value>add to compare list</value>
+	</string>
   <string key="Upload">
     <value>Upload</value>
   </string>
@@ -866,6 +872,8 @@
   <string key="Validation_MobileNumberInvalid2">
     <value>Enter the number of fixed phone.</value>
   </string>
+
+	
 	<string key="AlertAndMessage_AddToFavoriteList">
 		<value>Add to Favorite List</value>
 	</string>

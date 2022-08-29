@@ -27,6 +27,12 @@
 	<string key="btn_UploadImage">
     <value>بارگزاری تصویر</value>
   </string>
+	<string key="btn_reorder">
+		<value>سفارش مجدد</value>
+	</string>
+	<string key="btn_AddToCompareList">
+		<value>افزودن به لیست علاقه مندی ها</value>
+	</string>
   <string key="Upload">
     <value>آپلود</value>
   </string>
@@ -867,6 +873,9 @@
   <string key="Validation_MobileNumberInvalid2">
     <value>شماره وارد شده مربوط به تلفن ثابت می باشد.</value>
   </string>
+	<string key="AlertAndMessage_AddToCompareList">
+		<value>به لیست مقایسه افزوده شد</value>
+	</string>
 	<string key="AlertAndMessage_AddToFavoriteList">
 		<value>افزودن به لیست علاقمندیها</value>
 	</string>

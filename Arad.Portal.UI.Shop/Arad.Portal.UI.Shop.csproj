@@ -20,6 +20,7 @@
     <PackageReference Include="Flurl" Version="3.0.6" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.42" />
     <PackageReference Include="MailKit" Version="3.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0">
       <TreatAsUsed>true</TreatAsUsed>
     </PackageReference>

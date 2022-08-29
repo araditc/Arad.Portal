@@ -26,6 +26,8 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
         [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string TransactionId { get; set; }
 
+        public string ShoppingCartId { get; set; }
+
         /// <summary>
         /// this property would be worked as ResNumber In saman gateway
         /// </summary>
@@ -38,6 +40,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
 
         public PaymentGatewayData BasicData { get; set; }
 
+        /// <summary>
+        /// the sum of all product prices after apply discount or couponcode for this payment
+        /// </summary>
         public long FinalPriceToPay { get; set; }
 
         /// <summary>

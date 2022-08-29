@@ -19,7 +19,6 @@ namespace Arad.Portal.DataLayer.Contracts.General.User
         List<UserDTO> GetAll();
         List<UserDTO> Search(string word);
         List<SelectListModel> GetAllProductType();
-
         List<SelectListModel> GetAllDownloadLimitationType();
         List<SelectListModel> GetAddressTypes();
         bool CountPhone(string phoneNumber, string userPhone);

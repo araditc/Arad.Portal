@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Arad.Portal.DataLayer.Models.Shared.Enums;
 
 namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 {
@@ -28,7 +29,6 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         ProductOutputDTO FetchProductWithSlug(string slug, string domainName);
 
         Task<Result> AddCommentToProduct(string productId, Comment comment);
-
         Task<Result> UpdateVisitCount(string productId);
         Task<Result> ChangeUnitOfProduct(string productId,
             string unitId, string modificationReason);
@@ -49,6 +49,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 
         bool IsCodeUnique(string code, string productId ="");
 
+        Task<Result> UpdateDownloadLimitationCount(string userId, string productId);
         bool IsDownloadIconShowForCurrentUser(string userId, string productId);
         bool IsUniqueUrlFriend(string urlFriend, string productId = "");
         Task<Result<EntityRate>> RateProduct(string productId, int score, bool isNew, int prevScore);
@@ -83,7 +84,6 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         string FetchUrlFriendById(string productId);
 
         List<ProductOutputDTO> GetSpecialProducts(int count, string currencyId, ProductOrContentType type);
-
         bool HasActiveProductPromotion(string productId);
         List<SelectListModel> GetAllActiveProductList(string langId, string currentUserId, string productGroupId, string vendorId);
         List<SelectListModel> GetAllProductList(ApplicationUser user,string productGroupId, string langId);
@@ -91,5 +91,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 
         List<SelectListModel> GetGroupsOfThisVendor(string vendorId, string domainId);
         List<SelectListModel> GetProductsOfThisVendor(string langId, string currentUserId);
+
+        string GetProductSpecificationName(string specificationId, string languageId);
     }
 }

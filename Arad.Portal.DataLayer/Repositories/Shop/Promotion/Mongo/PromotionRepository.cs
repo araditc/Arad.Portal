@@ -644,15 +644,86 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                     result.Succeeded = true;
                     if(promotion.DiscountType == DiscountType.Fixed)
                     {
-                        result.ReturnValue.NewPrice = price - promotion.Value.Value;
+                        result.ReturnValue.Price = price - promotion.Value.Value;
                     }else
                     if(promotion.DiscountType == DiscountType.Percentage)
                     {
-                        result.ReturnValue.NewPrice = (price - (promotion.Value.Value * price / 100));
+                        result.ReturnValue.Price = (price - (promotion.Value.Value * price / 100));
                     }
                 }
             }
             return result;
+        }
+
+        public async Task<Result> RemoveUserFromUserCoupon(string couponCode, string userId, string domainId)
+        {
+            var res = new Result();
+            var entity = _context.UserCouponCollection.Find(_ => _.CouponCode == couponCode && _.AssociatedDomainId == domainId).FirstOrDefault();
+            if(entity != null)
+            {
+                entity.UserIds.Remove(userId);
+                var updateRes = await _context.UserCouponCollection.ReplaceOneAsync(_ => _.UserCouponId == entity.UserCouponId, entity);
+                if(updateRes.IsAcknowledged)
+                {
+                    res.Succeeded = true;
+                    res.Message = Language.GetString("AlertAndMessage_OperationDoneSuccessfully");
+                }else
+                {
+                    res.Message = ConstMessages.ExceptionOccured;
+                }
+            }
+            else
+            {
+                res.Message = ConstMessages.ObjectNotFound;
+            }
+            return res;
+        }
+
+        public async Task<Result<NewVal>> RevertCodeForUser(string userId, string code, string domainId, long currentPriceWithCouponCode)
+        {
+            var res = new Result<NewVal>();
+            res.ReturnValue = new NewVal();
+            var entity = _context.UserCouponCollection.Find(_ => _.CouponCode == code && _.AssociatedDomainId == domainId).FirstOrDefault();
+            if(entity != null)
+            {
+                var promotion = _context.Collection.Find(_ => _.PromotionId == entity.PromotionId).FirstOrDefault();
+                if(promotion != null)
+                {
+                    if (promotion.DiscountType == DiscountType.Fixed)
+                    {
+                        res.ReturnValue.Price = currentPriceWithCouponCode + promotion.Value.Value;
+                    }
+                    else
+                    if (promotion.DiscountType == DiscountType.Percentage)
+                    {
+                        long priceWithoutCode = 0;
+                        var val = promotion.Value.Value / 100;
+                        currentPriceWithCouponCode = priceWithoutCode - (val * priceWithoutCode);
+                        priceWithoutCode = currentPriceWithCouponCode / (1 - val);
+                        res.ReturnValue.Price = priceWithoutCode;
+                    }
+                    entity.UserIds.Add(userId);
+                    var updateRes = await _context.UserCouponCollection.ReplaceOneAsync(_ => _.UserCouponId == entity.UserCouponId, entity);
+                    if(updateRes.IsAcknowledged)
+                    {
+                        res.Succeeded = true;
+                        res.Message = Language.GetString("AlertAndMessage_OperarationDoneSuccessfully");
+                    }
+                    else
+                    {
+                        res.Succeeded = false;
+                        res.Message = ConstMessages.ErrorInSaving;
+                    }
+                }
+                else
+                {
+                    res.Message = ConstMessages.ObjectNotFound;
+                }
+            }else
+            {
+                res.Message = ConstMessages.ObjectNotFound;
+            }
+            return res;
         }
     }
 }

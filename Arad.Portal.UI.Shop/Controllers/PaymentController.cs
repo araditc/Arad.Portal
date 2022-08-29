@@ -70,6 +70,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                             var userEntity = await _userManager.FindByIdAsync(HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value);
                             var transaction = new Transaction();
                             transaction.TransactionId = Guid.NewGuid().ToString();
+                            transaction.ShoppingCartId = model.UserCartId;
                             transaction.MainInvoiceNumber = Guid.NewGuid().ToString();
                             transaction.FinalPriceToPay = string.IsNullOrWhiteSpace(result.ReturnValue.CouponCode) ? result.ReturnValue.FinalPriceToPay : result.ReturnValue.FinalPriceAfterCouponCode.Value ;
                             

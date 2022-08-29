@@ -8,6 +8,6 @@ namespace Arad.Portal.DataLayer.Models.Shared
 {
     public class NewVal
     {
-        public long NewPrice { get; set; }
+        public long Price { get; set; }
     }
 }

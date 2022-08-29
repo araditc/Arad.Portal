@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Localization;
 using Arad.Portal.DataLayer.Contracts.General.User;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.StaticFiles;
+using System.Globalization;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -75,6 +76,12 @@ namespace Arad.Portal.UI.Shop.Controllers
                 var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
                 var filePath = System.IO.Path.Combine(localStaticFileStorageURL, entity.ProductFileUrl);
                
+                //update download count for this user
+                if (entity.DownloadLimitationType == Enums.DownloadLimitationType.TimeDurationWithCnt ||
+                      entity.DownloadLimitationType == Enums.DownloadLimitationType.DownloadCount)
+                {
+                    await _productRepository.UpdateDownloadLimitationCount(userId, entity.ProductId);
+                }
                 
                 byte[] fileContent = await System.IO.File.ReadAllBytesAsync(filePath);
                 var test = GetMimeTypeForFileExtension(filePath);
@@ -82,7 +89,98 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
             else
                 return Json(null);
+        }
+
+        [HttpGet]
+        [Route("{language}/product/AddToComapareList")]
+        public IActionResult AddToComapareList([FromQuery] long code)
+        {
+            try
+            {
+                List<string> compareList = new List<string>();
+                
+                var productId = _productRepository.FetchIdByCode(code);
+                var remoteIpAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString().Replace(".", "");
+                var domainEntity = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
+                if (HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}") != null)
+                {
+                    compareList = HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}");
+                }
+                compareList.Add(productId);
+                HttpContext.Session.SetComplexData($"compareList_{remoteIpAddress}_{domainEntity.DomainId}", compareList);
+
+                return Json(new
+                {
+                    status = "Succeed" ,
+                    message = Language.GetString("AlertAndMessage_AddToCompareList")
+                });
+            }
+            catch (Exception)
+            {
+                return Json(new
+                {
+                    status = "Error",
+                    message = Language.GetString("AlertAndMessage_ErrorOccurrence")
+                });
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Compare()
+        {
+            List<string> compareList = new List<string>();
+            List<string> specificationIds = new List<string>();
+            var model = new CompareModel();
+            string lanId = string.Empty;
            
+
+            if(CultureInfo.CurrentCulture.Name != null)
+            {
+                 lanId = _lanRepository.FetchBySymbol(CultureInfo.CurrentCulture.Name);
+            }else
+            {
+               var lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
+                lanId = _lanRepository.FetchBySymbol(lanIcon);
+            }
+            List<ProductCompare> products = new List<ProductCompare>();
+            var remoteIpAddress = Request.HttpContext.Connection.RemoteIpAddress;
+            var domainEntity = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
+            if (HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}") != null)
+            {
+                compareList = HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}");
+            }
+            foreach (var item in compareList)
+            {
+                var productDto = await _productRepository.ProductFetch(item);
+                var obj = new ProductCompare()
+                {
+                    ProductId = item,
+                    Specifications = productDto.Specifications.Any(_=>_.LanguageId == lanId) ? 
+                        productDto.Specifications.Where(_=>_.LanguageId == lanId).ToList() : new List<ProductSpecificationValue>() ,
+                    ProductName = productDto.MultiLingualProperties.Any(_=> _.LanguageId == lanId) ? 
+                        productDto.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).Name :
+                      productDto.MultiLingualProperties.FirstOrDefault().Name
+                };
+                products.Add(obj);
+                if(specificationIds.Count == 0)
+                {
+                    specificationIds.AddRange(obj.Specifications.Select(_ => _.SpecificationId).ToList());
+                }else
+                {
+                    specificationIds = specificationIds.Union(obj.Specifications.Select(_ => _.SpecificationId).ToList()).ToList();
+                }
+            }
+            model.ProductComapreList = products;
+            foreach (var spec in specificationIds)
+            {
+                var obj = new SelectListModel()
+                {
+                    Value = spec,
+                    Text = _productRepository.GetProductSpecificationName(spec, lanId)
+                };
+                model.UnionSpecifications.Add(obj);
+            }
+            return View(model);
         }
 
         public string GetMimeTypeForFileExtension(string filePath)
@@ -126,13 +224,13 @@ namespace Arad.Portal.UI.Shop.Controllers
              
 
             var entity = _productRepository.FetchByCode(slug, domainEntity.ReturnValue, userId);
-            if (isLoggedUser && entity.ProductType == Enums.ProductType.File)
-            {
-                ViewBag.IsDownloadable = _productRepository.IsDownloadIconShowForCurrentUser(userId, entity.ProductId);
-            }else
-            {
-                ViewBag.IsDownloadable = false;
-            }
+            //if (isLoggedUser && entity.ProductType == Enums.ProductType.File)
+            //{
+            //    ViewBag.IsDownloadable = _productRepository.IsDownloadIconShowForCurrentUser(userId, entity.ProductId);
+            //}else
+            //{
+            //    ViewBag.IsDownloadable = false;
+            //}
             if (!string.IsNullOrEmpty(entity.ProductId))
             {
                 var updateVisitCount = await _productRepository.UpdateVisitCount(entity.ProductId);

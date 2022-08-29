@@ -101,6 +101,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
                 var dto = new TransactionDTO();
                 dto.TransactionId = item.TransactionId;
                 dto.UserId = userId;
+                dto.ShoppingCartId = item.ShoppingCartId;
                 dto.MainInvoiceNumber = item.MainInvoiceNumber;
                 dto.FinalPriceToPay = item.FinalPriceToPay;
                 dto.PaymentDate = DateTime.Parse(item.AdditionalData.FirstOrDefault(_ => _.Key == "CreationDate").Value);
@@ -117,13 +118,20 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
                     foreach (var pro in sub.PurchasePerSeller.Products)
                     {
                         var obj = new ProductOrderDetail();
-
+                        var productEntity = _productContext.ProductCollection.Find(_ => _.ProductId == pro.ProductId).FirstOrDefault();
                         obj.ProductId = pro.ProductId;
                         obj.ProductCode = this.GetProductCode(pro.ProductId);
                         obj.ProductName = pro.ProductName;
                         obj.OrderCount = pro.OrderCount;
                         obj.PriceWithDiscountPerUnit = pro.PricePerUnit - pro.DiscountPricePerUnit;
-
+                        if (productEntity.ProductType == Enums.ProductType.File)
+                        {
+                            obj.IsDownloadable = IsDownloadIconShowForCurrentUser(userId, productEntity.ProductId);
+                        }
+                        else
+                        {
+                            obj.IsDownloadable = false;
+                        }
                         detail.Products.Add(obj);
                         itemCount += 1;
                     }
@@ -135,6 +143,34 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
 
             return result;
         }
+        public bool IsDownloadIconShowForCurrentUser(string userId, string productId)
+        {
+            var isShown = false;
+            var downLimit = _productContext.DownloadLimitationCollection.Find(_ => _.CreatorUserId == userId && _.ProductId == productId).ToList();
+            var proEntity = _productContext.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
+            if (proEntity.DownloadLimitationType == Enums.DownloadLimitationType.NoLimitation)
+            {
+                isShown = true;
+            }
+            else if (proEntity.DownloadLimitationType == Enums.DownloadLimitationType.TimeDuration &&
+                downLimit.Where(_ => _.StartDate != null).Any(_ => _.StartDate.Value.AddDays(proEntity.AllowedDownloadDurationDay.Value) <= DateTime.Now))
+
+            {
+                isShown = true;
+            }
+            else if (proEntity.DownloadLimitationType == Enums.DownloadLimitationType.TimeDurationWithCnt &&
+                downLimit.Where(_ => _.StartDate != null && _.DownloadedCount != null).Any(_ => _.StartDate.Value.AddDays(proEntity.AllowedDownloadDurationDay.Value) <= DateTime.Now && _.DownloadedCount < proEntity.AllowedDownloadCount.Value))
+            {
+                isShown = true;
+            }
+            else if (proEntity.DownloadLimitationType == Enums.DownloadLimitationType.DownloadCount &&
+                downLimit.Where(_ => _.DownloadedCount != null).Any(_ => _.DownloadedCount < proEntity.AllowedDownloadCount.Value))
+            {
+                isShown = true;
+            }
+            return isShown;
+        }
+
 
         public async Task InsertTransaction(Entities.Shop.Transaction.Transaction transaction)
         {

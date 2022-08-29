@@ -17,6 +17,8 @@ namespace Arad.Portal.DataLayer.Models.Transaction
         public string TransactionId { get; set; }
         public string MainInvoiceNumber { get; set; }
 
+        public string ShoppingCartId { get; set; }
+
         /// <summary>
         /// based on culture its english or persian or others on Ui
         /// </summary>
@@ -64,6 +66,8 @@ namespace Arad.Portal.DataLayer.Models.Transaction
         public string ProductName { get; set; }
 
         public int OrderCount { get; set; }
+
+        public bool IsDownloadable { get; set; }
 
         /// <summary>
         /// price with discount

@@ -1588,6 +1588,35 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             }
             return isShown;
         }
+
+        public async Task<Result> UpdateDownloadLimitationCount(string userId, string productId)
+        {
+            var res = new Result();
+            var entity = _context.DownloadLimitationCollection
+                .Find(_ => _.CreatorUserId == userId && _.ProductId == productId && _.IsActive && !_.IsDeleted).ToList().OrderByDescending(_ => _.StartDate).FirstOrDefault();
+
+            entity.DownloadedCount += 1;
+            var updateResult = await _context.DownloadLimitationCollection.ReplaceOneAsync(_ => _.DownloadLimitId == entity.DownloadLimitId, entity);
+            if(updateResult.IsAcknowledged)
+            {
+                res.Succeeded = true;
+            }
+            return res;
+        }
+
+        public string GetProductSpecificationName(string specificationId, string languageId)
+        {
+            var res = string.Empty;
+            var entity = _context.SpecificationCollection
+                  .Find(_ => _.ProductSpecificationId == specificationId).FirstOrDefault();
+
+            if(entity != null)
+            {
+                res = entity.SpecificationNameValues.Any(_ => _.LanguageId == languageId) ?
+                    entity.SpecificationNameValues.FirstOrDefault(_ => _.LanguageId == languageId).Name : "";
+            }
+            return res;
+        }
     }
 }
 
