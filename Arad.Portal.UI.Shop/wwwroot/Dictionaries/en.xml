@@ -33,6 +33,9 @@
 	<string key="btn_AddToCompareList">
 		<value>add to compare list</value>
 	</string>
+	<string key="btn_CompareListView">
+		<value>Compare List View</value>
+	</string>
   <string key="Upload">
     <value>Upload</value>
   </string>

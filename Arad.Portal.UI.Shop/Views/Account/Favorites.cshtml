@@ -1,36 +1,60 @@
 ﻿@model List<Arad.Portal.DataLayer.Models.User.UserFavoritesDTO>
 @{
-
+  
 }
-<ul class="list-group list-group-flush">
-    @foreach (var item in Model)
-    {
-        <li class="list-group-item">
-
-            <div class="row">
-                @if(!item.NoImage)
-                {
-                    <div class="col-4">
-                    <a href="@(item.Url)" role="button">
-                        <img class="pt-lg-1 ps-lg-1 mb-lg-0  ps-md-1 imgSmall mb-sm-1 ms-sm-0 me-sm-0 rounded-3"
-                         src="@Url.Content($"~/GetScaledImageOnWidth?path={item.ImagePath}&width={100}")">
-                    </a>
-                </div>
-                <div class="col-8 d-flex justify-content-start">
-                    <a href="@item.Url" role="button" style="text-decoration: none;">
-                        <span>@item.Name</span>
-                    </a>
-                    </div>
-                }else
-                {
-                     <div class="col-12 d-flex justify-content-center">
-                    <a href="@item.Url" role="button" style="text-decoration: none;">
-                        <span>@item.Name</span>
-                    </a>
-                    </div>
-                }
-                
+<div class="container">
+    <div class="d-flex justify-content-center mb-3">
+        <div class="col-12 col-md-6">
+            <div class="input-group">
+                <input type="text" class="form-control" id="txtSearch" placeholder="@Language.GetString("btn_Search")" value="@(@ViewBag.Tag != null ? @ViewBag.Tag : "" )" />
+                <button type="button" class="input-group-text" id="btnSearch">
+                    <i class="fas fa-search p-1 m-1"></i>
+                </button>
             </div>
-        </li>
-    }
-</ul>
+        </div>
+    </div>
+    <ul class="list-group">
+        @foreach (var item in Model)
+        {
+            <li class="list-group-item">
+
+                <div class="row align-items-center">
+                    @if (!item.NoImage)
+                    {
+                        <div class="col-4 col-md-2 offset-md-2">
+                            <a href="@(item.Url)" role="button">
+                                <img class="pt-lg-1 ps-lg-1 mb-lg-0  ps-md-1 mb-sm-1 ms-sm-0 me-sm-0 rounded-3"
+                             src="@Url.Content($"~/GetScaledImageOnWidth?path={item.ImagePath}&width={100}")">
+                            </a>
+                        </div>
+                        <div class="col-8 col-md-8">
+                            <a href="@item.Url" class="alignt-middle" role="button" style="text-decoration: none;color: black;">
+                                <span>@item.Name</span>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-12 d-flex justify-content-center">
+                            <a href="@item.Url" class="alignt-middle" role="button" style="text-decoration: none;">
+                                <span>@item.Name</span>
+                            </a>
+                        </div>
+                    }
+
+                </div>
+            </li>
+        }
+    </ul>
+</div>
+<script type="text/javascript">
+$(document).ready(function() { 
+    $("#btnSearch").click(function() {
+        if ($("#txtSearch").val().trim() != "") {
+            var txt = $("#txtSearch").val().trim();
+            window.location.href = @Url.Action("Favorites", "Account")+"?type=" + "@ViewBag.Type" + "&keyword=" + txt;
+        }
+    });
+        
+});
+ </script>

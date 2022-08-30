@@ -94,7 +94,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
             FilterDefinition<Entities.Shop.Transaction.Transaction> transFilterDef = null;
             FilterDefinition<CustomerData> customerFilterDef = null;
             customerFilterDef = customerBuilder.Eq(nameof(CustomerData.UserId), userId);
-            transFilterDef = transBuilder.ElemMatch("CustomerData", customerFilterDef);
+            //transFilterDef = transBuilder.ElemMatch("CustomerData", customerFilterDef);
+            transFilterDef = transBuilder.Eq("CustomerData.UserId", userId);
             var lst = _context.Collection.Find(transFilterDef).ToList();
             foreach (var item in lst)
             {
@@ -104,7 +105,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo
                 dto.ShoppingCartId = item.ShoppingCartId;
                 dto.MainInvoiceNumber = item.MainInvoiceNumber;
                 dto.FinalPriceToPay = item.FinalPriceToPay;
-                dto.PaymentDate = DateTime.Parse(item.AdditionalData.FirstOrDefault(_ => _.Key == "CreationDate").Value);
+                dto.PaymentDate = item.AdditionalData.Any(_ => _.Key == "CreationDate") ? DateTime.Parse(item.AdditionalData.FirstOrDefault(_ => _.Key == "PaymentDate").Value) : null;
                 dto.RegisteredDate = item.CreationDate;
                 dto.OrderStatus = item.OrderStatus;
                 dto.PaymentStage = item.BasicData.Stage;

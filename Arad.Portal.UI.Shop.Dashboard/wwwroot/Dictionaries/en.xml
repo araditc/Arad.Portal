@@ -108,6 +108,9 @@
   <string key="btn_ChangeActivation">
     <value>Change Activation</value>
   </string>
+	<string key="btn_CreateProductCopyFromContent">
+		<value>Create product Copy from Content</value>
+	</string>
   <string key="treeView_Empty">
     <value>Without childs</value>
   </string>

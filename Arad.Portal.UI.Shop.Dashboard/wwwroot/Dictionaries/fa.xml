@@ -117,6 +117,9 @@
   <string key="btn_ChangeActivation">
     <value>تغییر وضعیت</value>
   </string>
+	<string key="btn_CreateProductCopyFromContent">
+		<value>ایجاد محصول از این محتوا</value>
+	</string>
   <string key="treeView_Empty">
     <value>بدون زیرمجموعه</value>
   </string>

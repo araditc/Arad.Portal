@@ -23,7 +23,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.User
         List<SelectListModel> GetAddressTypes();
         bool CountPhone(string phoneNumber, string userPhone);
 
-        List<UserFavorites> GetUserFavoriteList(string userId, FavoriteType type);
+        List<UserFavorites> GetUserFavoriteList(string userId, FavoriteType types);
 
         Result AddToUserFavoriteList(string userId, FavoriteType type, string entityId, string url, string domainId);
     }

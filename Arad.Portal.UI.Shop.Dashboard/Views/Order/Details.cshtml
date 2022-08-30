@@ -17,11 +17,11 @@
                             <div class="row gy-2 align-middle pt-2">
                                 <div class="col-6 col-md-4">
                                     <label class="form-label d-inline-block"> @Language.GetString("Order_RegisteredDate") : </label>
-                                    <p class="d-inline-block"><@(CultureInfo.CurrentCulture.Name == "fa-IR" ? DateHelper.ToPersianDdate(@Model.CreationDate) : @Model.CreationDate.ToString() )</p>
+                                    <p class="d-inline-block"><@Model.CreationDate</p>
                                 </div>
                                 <div class="col-6 col-md-2">
                                     <label class="form-label d-inline-block"> @Language.GetString("Order_PaymentDate") : </label>
-                                      <p class="d-inline-block"><@(CultureInfo.CurrentCulture.Name == "fa-IR" ? DateHelper.ToPersianDdate(DateTime.Parse(@ViewBag.PaymentDate)) : @ViewBag.PaymentDate.ToString() )</p>
+                                      <p class="d-inline-block">@(ViewBag.PaymentDate)</p>
                                 </div>
                                 <div class="col-6 col-md-4">
                                      <label class="form-label"> @Language.GetString("AlertAndMessage_UserfullName") : </label>

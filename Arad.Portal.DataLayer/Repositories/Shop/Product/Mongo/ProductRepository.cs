@@ -935,14 +935,16 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 {
                     if (dto.IsDefault)
                     {
+                        //test
                         productEntity = _context.ProductCollection
-                           .Find(_ => (_.AssociatedDomainId == dto.DomainId && _.ProductCode == codeNumber)
+                           .Find(_ => (/*_.AssociatedDomainId == dto.DomainId &&*/ _.ProductCode == codeNumber)
                         || (_.ProductCode == codeNumber && _.IsPublishedOnMainDomain)).FirstOrDefault();
                     }
                     else
                     {
+                        //test
                         productEntity = _context.ProductCollection
-                          .Find(_ => _.AssociatedDomainId == dto.DomainId && _.ProductCode == codeNumber).FirstOrDefault();
+                          .Find(_ => /*_.AssociatedDomainId == dto.DomainId &&*/ _.ProductCode == codeNumber).FirstOrDefault();
 
                     }
                 }

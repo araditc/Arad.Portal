@@ -102,11 +102,14 @@ namespace Arad.Portal.UI.Shop.Controllers
                 var productId = _productRepository.FetchIdByCode(code);
                 var remoteIpAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString().Replace(".", "");
                 var domainEntity = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
-                if (HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}") != null)
+                if (HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}") != null)
                 {
                     compareList = HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}");
                 }
-                compareList.Add(productId);
+                if(!compareList.Contains(productId))
+                {
+                    compareList.Add(productId);
+                }
                 HttpContext.Session.SetComplexData($"compareList_{remoteIpAddress}_{domainEntity.DomainId}", compareList);
 
                 return Json(new
@@ -126,6 +129,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
         [HttpGet]
+        [Route("{language}/product/compare")]
         public async Task<IActionResult> Compare()
         {
             List<string> compareList = new List<string>();
@@ -173,12 +177,17 @@ namespace Arad.Portal.UI.Shop.Controllers
             model.ProductComapreList = products;
             foreach (var spec in specificationIds)
             {
-                var obj = new SelectListModel()
+                if(!string.IsNullOrWhiteSpace(spec))
                 {
-                    Value = spec,
-                    Text = _productRepository.GetProductSpecificationName(spec, lanId)
-                };
-                model.UnionSpecifications.Add(obj);
+                    var obj = new SelectListModel()
+                    {
+                        Value = spec,
+                        Text = _productRepository.GetProductSpecificationName(spec, lanId)
+                    };
+                    model.UnionSpecifications.Add(obj);
+                }
+                
+                
             }
             return View(model);
         }

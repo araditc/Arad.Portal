@@ -1,10 +1,50 @@
 ﻿@model Arad.Portal.DataLayer.Models.Product.CompareModel
-{
+@{
 
 }
 <style>
 </style>
+<div class="container">
+    <div class="row">
+        @if (Model.ProductComapreList.Count != 0 &&  Model.UnionSpecifications.Count !=  0)
+        {
+            <table class="table table-hover my-3 border border-1 rounded">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        @{
+                            foreach (var pro in Model.ProductComapreList)
+                            {
+                                <th scope="col">@pro.ProductName</th>
+                            }
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (var spec in Model.UnionSpecifications)
+                        {
+                            <tr>
+                                <th scope="row">@spec.Text</th>
+                                @foreach (var pro in Model.ProductComapreList)
+                                {
+                                    <td>@(pro.Specifications.Any(_=>_.SpecificationId == spec.Value) ? pro.Specifications.FirstOrDefault(_=>_.SpecificationId == spec.Value).Values : "-")</td>
+                                }
+                            </tr>
 
-<div class="row">
+                        }
+                    }
+                </tbody>
+            </table>
+        }else if(Model.ProductComapreList.Count == 0)
+        {
+            <div class="col-12"><p>@Language.GetString("")</p></div>
+
+        }else if(Model.UnionSpecifications.Count == 0)
+        {
+            <div class="col-12"><p>@Language.GetString("")</p></div>
+        }
+
+    </div>
 
 </div>

@@ -27,7 +27,7 @@ namespace Arad.Portal.UI.Shop.ViewComponents
             _accessor = accessor;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(CategorySection categorySection)
+        public IViewComponentResult Invoke(CategorySection categorySection)
         {
             var result = new CommonViewModel();
             var domainName = _domainRepository.GetDomainName();

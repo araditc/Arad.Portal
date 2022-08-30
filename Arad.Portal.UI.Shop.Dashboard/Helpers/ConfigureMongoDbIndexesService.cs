@@ -27,7 +27,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
         {
             #region CreateIndexes
 
-            var options = new CreateIndexOptions { Collation = new Collation("en") };
+            var options = new CreateIndexOptions { Collation = new Collation("en")  };
 
                 #region Content
                 var contentCollection = db.GetCollection<DataLayer.Entities.General.Content.Content>("Content");

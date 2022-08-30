@@ -31,7 +31,10 @@
 		<value>سفارش مجدد</value>
 	</string>
 	<string key="btn_AddToCompareList">
-		<value>افزودن به لیست علاقه مندی ها</value>
+		<value>افزودن به لیست مقایسه محصولات</value>
+	</string>
+	<string key="btn_CompareListView">
+		<value>مشاهده لیست مقایسه</value>
 	</string>
   <string key="Upload">
     <value>آپلود</value>

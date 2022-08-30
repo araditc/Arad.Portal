@@ -762,7 +762,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Favorites(string type)
+        public async Task<IActionResult> Favorites(string type, string keyword = "")
         {
             var List = new List<UserFavoritesDTO>();
             var domainName = this.DomainName;
@@ -782,7 +782,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             {
                 lanId = domainRes.ReturnValue.DefaultLanguageId;
             }
-
+            ViewBag.Type = type;
             foreach (var item in lst)
                 {
                     var obj = new UserFavoritesDTO();
@@ -801,7 +801,10 @@ namespace Arad.Portal.UI.Shop.Controllers
                         images = res.Images;
                         obj.Name = res.Title;
                     }
-                    
+                    if(!string.IsNullOrWhiteSpace(keyword) && !obj.Name.Contains(keyword))
+                    {
+                         continue;
+                    }
                     var mainImage = images.FirstOrDefault(_ => _.IsMain);
                     if (mainImage == null)
                     {
@@ -869,7 +872,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         //    return result;
         //}
 
-       
+
         [HttpGet]
         public async Task<IActionResult> Profile()
         {

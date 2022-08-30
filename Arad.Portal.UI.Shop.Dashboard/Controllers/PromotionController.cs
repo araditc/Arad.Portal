@@ -92,7 +92,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return View(list);
         }
 
-
         [HttpGet]
         public async Task<IActionResult> UserCouponsList()
         {
@@ -123,6 +122,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             return View(list);
         }
+
         public  async Task<IActionResult> AddEdit(string id)
         {
             var model = new PromotionDTO();

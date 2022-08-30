@@ -10,10 +10,7 @@ namespace Arad.Portal.DataLayer.Models.User
     public class UserFavoritesDTO : UserFavorites
     {
         public string ImagePath { get; set; }
-
         public bool NoImage { get; set; }
-
-
         public string Name { get; set; }
     }
 }

@@ -407,7 +407,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                                     additionalData = PspActions.PspVerifyResponse.GetDescription(),
                                     ActionType = PspActions.PspVerifyResponse
                                 });
-                                transaction.AdditionalData.Add(new Parameter<string, string>() { Key = "CreationDate", Value = DateTime.Now.ToString() });
+                                transaction.AdditionalData.Add(new Parameter<string, string>() { Key = "PaymentDate", Value = DateTime.Now.ToString() });
                                 transaction.BasicData.Stage = Enums.PaymentStage.DoneAndConfirmed;
                                 transaction.OrderStatus = OrderStatus.OrderRegitered;
                                 transaction.BasicData.ReferenceId = verifyOutPutModel.TransactionDetail.RefNum;

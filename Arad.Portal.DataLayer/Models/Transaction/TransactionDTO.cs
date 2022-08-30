@@ -22,7 +22,7 @@ namespace Arad.Portal.DataLayer.Models.Transaction
         /// <summary>
         /// based on culture its english or persian or others on Ui
         /// </summary>
-        public DateTime PaymentDate { get; set; }
+        public DateTime? PaymentDate { get; set; }
 
         /// <summary>
         /// creationDate based on culture its english or persian or others on Ui

@@ -16,203 +16,203 @@
     var baseAdd = Config["BaseAddress"];
 }
 @section Styles{
-<link href="@Url.Content($"~/lib/cropperjs/cropper.css")" rel="stylesheet" />
-<link href="@Url.Content($"~/plugins/TagInput/amsify.suggestags.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/lib/cropperjs/cropper.css")" rel="stylesheet" />
+    <link href="@Url.Content($"~/plugins/TagInput/amsify.suggestags.css")" rel="stylesheet" />
 
- 
-<style>
-   
-    .removeImage {
-        display: inline-block;
-        position: absolute;
-        top: -7px;
-        right: -5px;
-        width: 20px;
-        height: 21px;
-        background: #dc3545;
-        text-align: center;
-        border-radius: 50%;
-        color: white !important;
-        cursor: pointer;
-    }
 
-    .row {
-        margin-top: 1%;
-    }
+    <style>
 
-    #bd-root-userBirthDate {
-        width: 100%
-    }
+        .removeImage {
+            display: inline-block;
+            position: absolute;
+            top: -7px;
+            right: -5px;
+            width: 20px;
+            height: 21px;
+            background: #dc3545;
+            text-align: center;
+            border-radius: 50%;
+            color: white !important;
+            cursor: pointer;
+        }
 
-    img {
-        max-width: 100%;
-        max-height: 100%;
-    }
+        .row {
+            margin-top: 1%;
+        }
 
-    .cropper-container {
-        width: 100%
-    }
+        #bd-root-userBirthDate {
+            width: 100%
+        }
 
-    .iti__flag-container {
-        direction: ltr
-    }
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
 
-    .modal {
-        z-index: 100001 !important;
-    }
+        .cropper-container {
+            width: 100%
+        }
 
-    .amsify-suggestags-input-area {
-        text-align: @(ViewBag.dir == "rtl" ? "right" : "left");
-        height: auto;
-    }
+        .iti__flag-container {
+            direction: ltr
+        }
 
-    img, svg, .SimpleUploadsTmpWrapper {
-        height: auto;
-        max-width: 100%;
-    }
-</style>
+        .modal {
+            z-index: 100001 !important;
+        }
+
+        .amsify-suggestags-input-area {
+            text-align: @(ViewBag.dir == "rtl" ? "right" : "left");
+            height: auto;
+        }
+
+        img, svg, .SimpleUploadsTmpWrapper {
+            height: auto;
+            max-width: 100%;
+        }
+    </style>
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-<link href="@Url.Content($"~/lib/datePicker/kamadatepicker.css")" rel="stylesheet" />
-<style>
-  
-    .text-danger {
-        font-size: 12px;
-    }
+        <link href="@Url.Content($"~/lib/datePicker/kamadatepicker.css")" rel="stylesheet" />
+        <style>
+
+            .text-danger {
+                font-size: 12px;
+            }
 
 
-    .removeImage {
-        display: inline-block;
-        position: absolute;
-        top: -7px;
-        right: -5px;
-        width: 20px;
-        height: 21px;
-        background: #dc3545;
-        text-align: center;
-        border-radius: 50%;
-        color: white !important;
-        cursor: pointer;
-    }
+            .removeImage {
+                display: inline-block;
+                position: absolute;
+                top: -7px;
+                right: -5px;
+                width: 20px;
+                height: 21px;
+                background: #dc3545;
+                text-align: center;
+                border-radius: 50%;
+                color: white !important;
+                cursor: pointer;
+            }
 
-    .divCenter {
-        text-align: center;
-        border: 1px solid;
-    }
+            .divCenter {
+                text-align: center;
+                border: 1px solid;
+            }
 
-    table tr {
-        text-align: center;
-    }
+            table tr {
+                text-align: center;
+            }
 
-    tbody tr td {
-        vertical-align: middle;
-    }
+            tbody tr td {
+                vertical-align: middle;
+            }
 
-    .valign {
-        vertical-align: middle;
-    }
-</style>
+            .valign {
+                vertical-align: middle;
+            }
+        </style>
     }
     else
     {
-            <link href="@Url.Content($"~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css")" rel="stylesheet" />
+        <link href="@Url.Content($"~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css")" rel="stylesheet" />
     }
 }
 
-<h4>@Language.GetString("Menu_Content")</h4>
-<hr />
+    <h4>@Language.GetString("Menu_Content")</h4>
+    <hr />
 
-<div class="modal fade" id="uploadModal" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-        <div class="modal-content col-12">
-            <div class="modal-header">
-                <div class="col-1">
-                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
-                    </button>
-                </div>
-                <div class="col-11" style="text-align: center">
-                    <h5 class="modal-title align-content-center" id="ModalLongTitle">@Language.GetString("CropImage")</h5>
-                </div>
-            </div>
-            <div class="modal-body">
-                <div class="modal-body" id="upload-modal-body">
-                    <div id="rowContainer" class="row justify-content-center align-items-center">
-                        <div id="container" style="position: relative;display: inline; height: 400px; width: 400px;max-width:100%;">
-                            <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="croppedImg"
-                                 alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
-                        </div>
-                        @*<div id="container" class="col-10 col-6">
-                            <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="croppedImg"
-                            alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
-                            </div>*@
-
+    <div class="modal fade" id="uploadModal" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content col-12">
+                <div class="modal-header">
+                    <div class="col-1">
+                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                        </button>
+                    </div>
+                    <div class="col-11" style="text-align: center">
+                        <h5 class="modal-title align-content-center" id="ModalLongTitle">@Language.GetString("CropImage")</h5>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer justify-content-center align-items-center">
-                <div>
-                    <button class="btn btn-success bg-gradient" id="send_pic" type="button"><i style="margin-left: 5px;font-size:13px" class="fas fa-check"></i>@Language.GetString("btn_Approve")</button>
-                    <button class="btn btn-primary bg-gradient" id="crop_button"><i style="margin-left: 5px;font-size:13px" class="fas fa-cut"></i>@Language.GetString("btn_Crop")</button>
-                    <button class="btn btn-primary bg-gradient" onclick="rotatePic()">
-                        <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i> @Language.GetString("btn_Rotate")
-                    </button>
+                <div class="modal-body">
+                    <div class="modal-body" id="upload-modal-body">
+                        <div id="rowContainer" class="row justify-content-center align-items-center">
+                            <div id="container" style="position: relative;display: inline; height: 400px; width: 400px;max-width:100%;">
+                                <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="croppedImg"
+                                 alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
+                            </div>
+                            @*<div id="container" class="col-10 col-6">
+                        <img onchange="getURL(this)" class="img-fluid" hidden="hidden" id="croppedImg"
+                        alt="your image" style="max-width: 100%;width: 356px;height: 356px;border: 1px solid black" />
+                        </div>*@
 
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center align-items-center">
+                    <div>
+                        <button class="btn btn-success bg-gradient" id="send_pic" type="button"><i style="margin-left: 5px;font-size:13px" class="fas fa-check"></i>@Language.GetString("btn_Approve")</button>
+                        <button class="btn btn-primary bg-gradient" id="crop_button"><i style="margin-left: 5px;font-size:13px" class="fas fa-cut"></i>@Language.GetString("btn_Crop")</button>
+                        <button class="btn btn-primary bg-gradient" onclick="rotatePic()">
+                            <i style="margin-left: 5px;font-size:13px" class="fas fa-retweet"></i> @Language.GetString("btn_Rotate")
+                        </button>
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-12">
-        <div class="card" id="addContentCardTitle">
-            <div class="card-header">
-                <h5 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.ContentId) ? Language.GetString("EditContent_Title") : Language.GetString("AddContent_Title"))</h5>
-            </div>
-
-            <div class="card-body" id="addContentCardBody">
-                <input type="hidden" value="@Model.ContentId" asp-for="ContentId" />
-                <div class="row">
-                    <div class="col-12 col-md-3">
-                        <label class="form-label" asp-for="@Model.LanguageId">@Language.GetString("RelatedLanguage")</label>
-                        <select class="form-control selectpicker" asp-for="@Model.LanguageId" data-live-search="true" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text", Model.LanguageId))">
-                        </select>
-                        <span data-val-result="LanguageId" class="text-danger"></span>
-                    </div>
-                    <div class="col-12 col-md-3">
-                        <label class="form-label" asp-for="@Model.ContentCategoryId">@Language.GetString("Menu_ContentCategory")</label>
-                        <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.ContentCategoryId" asp-items="@(new SelectList(ViewBag.CatList,"Value","Text", Model.ContentCategoryId))">
-                        </select>
-                        <span data-val-result="ContentCategoryId" class="text-danger"></span>
-                    </div>
-                    <div class="col-12 col-md-3">
-                        <label class="form-label" asp-for="Title">@Language.GetString("Entities_Title")</label>
-                        <input type="text" class="form-control" asp-for="@Model.Title" placeholder=" " value="@Model.Title">
-                        <span data-val-result="Title" class="text-danger"></span>
-                    </div>
-                    <div class="col-12 col-md-3">
-                        <label class="form-label" asp-for="SubTitle">@Language.GetString("Entities_SubTitle")</label>
-                        <input type="text" class="form-control" asp-for="@Model.SubTitle" placeholder=" " value="@Model.SubTitle">
-                        <span data-val-result="SubTitle" class="text-danger"></span>
-                    </div>
-
+    <div class="row">
+        <div class="col-12">
+            <div class="card" id="addContentCardTitle">
+                <div class="card-header">
+                    <h5 class="card-title" data-toggle="tab">@(!string.IsNullOrWhiteSpace(Model.ContentId) ? Language.GetString("EditContent_Title") : Language.GetString("AddContent_Title"))</h5>
                 </div>
-                <div class="row">
-                    <div class="form-group col-12 col-md-6">
-                        <label class="form-label" asp-for="Description">@Language.GetString("Description")</label>
-                        <textarea dir="@ViewBag.dir" asp-for="Description" class="form-control" rows="3">@Model.Description</textarea>
-                        <span data-val-result="Description" class="text-danger"></span>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <label class="form-label" asp-for="SeoDescription">@Language.GetString("SeoDescription")</label>
-                        <textarea dir="@ViewBag.dir" asp-for="SeoDescription" class="form-control" rows="3" maxlength="150" >@Model.SeoDescription</textarea>
-                        <span data-val-result="SeoDescription" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 col-md-3">
-                        <label class="form-label">@Language.GetString("StartShowDate")</label>
 
-                        @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                <div class="card-body" id="addContentCardBody">
+                    <input type="hidden" value="@Model.ContentId" asp-for="ContentId" />
+                    <div class="row">
+                        <div class="col-12 col-md-3">
+                            <label class="form-label" asp-for="@Model.LanguageId">@Language.GetString("RelatedLanguage")</label>
+                            <select class="form-control selectpicker" asp-for="@Model.LanguageId" data-live-search="true" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text", Model.LanguageId))">
+                            </select>
+                            <span data-val-result="LanguageId" class="text-danger"></span>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <label class="form-label" asp-for="@Model.ContentCategoryId">@Language.GetString("Menu_ContentCategory")</label>
+                            <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.ContentCategoryId" asp-items="@(new SelectList(ViewBag.CatList,"Value","Text", Model.ContentCategoryId))">
+                            </select>
+                            <span data-val-result="ContentCategoryId" class="text-danger"></span>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <label class="form-label" asp-for="Title">@Language.GetString("Entities_Title")</label>
+                            <input type="text" class="form-control" asp-for="@Model.Title" placeholder=" " value="@Model.Title">
+                            <span data-val-result="Title" class="text-danger"></span>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <label class="form-label" asp-for="SubTitle">@Language.GetString("Entities_SubTitle")</label>
+                            <input type="text" class="form-control" asp-for="@Model.SubTitle" placeholder=" " value="@Model.SubTitle">
+                            <span data-val-result="SubTitle" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12 col-md-6">
+                            <label class="form-label" asp-for="Description">@Language.GetString("Description")</label>
+                            <textarea dir="@ViewBag.dir" asp-for="Description" class="form-control" rows="3">@Model.Description</textarea>
+                            <span data-val-result="Description" class="text-danger"></span>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label" asp-for="SeoDescription">@Language.GetString("SeoDescription")</label>
+                            <textarea dir="@ViewBag.dir" asp-for="SeoDescription" class="form-control" rows="3" maxlength="150">@Model.SeoDescription</textarea>
+                            <span data-val-result="SeoDescription" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-3">
+                            <label class="form-label">@Language.GetString("StartShowDate")</label>
+
+                            @if (CultureInfo.CurrentCulture.Name == "fa-IR")
                         {
                             <div class="input-group">
                                 <span class="input-group-text">
@@ -286,7 +286,7 @@
                     </div>
                     <div class="col-12 col-md-3 pt-1 pb-2">
                         <div class="form-check m-auto d-inline-block pt-3">
-                            <input class="form-check-input" type="checkbox" value="@Model.IsCommentBoxShowing" asp-for="@Model.IsCommentBoxShowing" >
+                            <input class="form-check-input" type="checkbox" value="@Model.IsCommentBoxShowing" asp-for="@Model.IsCommentBoxShowing">
                             <label class="form-check-label" for="IsCommentBoxShowing">
                                 @Language.GetString("Content_IsCommentBoxShowing")
                             </label>
@@ -294,32 +294,32 @@
                     </div>
                     <div class="col-12 col-md-3 pt-1 pb-2">
                         <div class="form-check m-auto d-inline-block pt-3">
-                            <input class="form-check-input" type="checkbox" value="@Model.IsRateBoxShowing" asp-for="@Model.IsRateBoxShowing" >
+                            <input class="form-check-input" type="checkbox" value="@Model.IsRateBoxShowing" asp-for="@Model.IsRateBoxShowing">
                             <label class="form-check-label" for="IsRateBoxShowing">
                                 @Language.GetString("Content_IsRateBoxShowing")
                             </label>
                         </div>
                     </div>
-                     <div class="col-12 col-md-3 pt-1 pb-2">
+                    <div class="col-12 col-md-3 pt-1 pb-2">
                         <div class="form-check m-auto d-inline-block pt-3">
-                            <input class="form-check-input" type="checkbox" value="@Model.IsSliderShowing" asp-for="@Model.IsSliderShowing" >
+                            <input class="form-check-input" type="checkbox" value="@Model.IsSliderShowing" asp-for="@Model.IsSliderShowing">
                             <label class="form-check-label" for="IsSliderShowing">
                                 @Language.GetString("Content_IsSliderShowing")
                             </label>
                         </div>
                     </div>
-                     <div class="col-12 col-md-3 pt-1 pb-2">
+                    <div class="col-12 col-md-3 pt-1 pb-2">
                         <div class="form-check m-auto d-inline-block pt-3">
-                            <input class="form-check-input" type="checkbox" value="@Model.IsSidebarContentsShowing" onchange="showCountSection(this);" asp-for="@Model.IsSidebarContentsShowing" >
+                            <input class="form-check-input" type="checkbox" value="@Model.IsSidebarContentsShowing" onchange="showCountSection(this);" asp-for="@Model.IsSidebarContentsShowing">
                             <label class="form-check-label" for="IsSliderShowing">
                                 @Language.GetString("Content_IsSidebarContentsShowing")
                             </label>
                         </div>
                     </div>
                     <div class="col-12 col-md-3  sidebarContentCountSection d-none">
-                          <label class="form-label" asp-for="SidebarContentCount">@Language.GetString("Content_CountToShow")</label>
-                           <input type="text" class="form-control" asp-for="@Model.SidebarContentCount" placeholder="">
-                           <span data-val-result="SidebarContentCount" class="text-danger"></span>
+                        <label class="form-label" asp-for="SidebarContentCount">@Language.GetString("Content_CountToShow")</label>
+                        <input type="text" class="form-control" asp-for="@Model.SidebarContentCount" placeholder="">
+                        <span data-val-result="SidebarContentCount" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="row">
@@ -360,7 +360,7 @@
                                                 @foreach (var pic in Model.Images)
                                                 {
                                                     <tr>
-                                                        <td><img  src='@($"../../filemanager/GetScaledImageOnWidth?path={pic.Url}&width={120}")' /></td>
+                                                        <td><img src='@($"../../filemanager/GetScaledImageOnWidth?path={pic.Url}&width={120}")' /></td>
                                                         <td style="display:none;">@pic.ImageId</td>
                                                         <td><input type="text" class="form-control txtTitle" value="@pic.Title" /></td>
                                                         <td><input type="text" class="form-control txtDesc" value="@pic.Description" /></td>
@@ -396,6 +396,68 @@
                     </div>
                 </div>
                 <div class="row">
+                    <input type="button" class="btn btn-success" data-bs-toggle="collapse" data-bs-target="#proSection" id="btnCreateProductCopy"
+                           aria-expanded="false" aria-controls="proSection" value="@Language.GetString("btn_CreateProductCopyFromContent")" />
+                    <div class="collapse" id="proSection">
+                        <div class="row">
+                            <div class="form-group col-12 col-md-3">
+                                <label class="form-label">@Language.GetString("ProductType")</label>
+                                <select class="form-control selectpicker" data-live-search="true" id="productType" asp-items="@(new MultiSelectList(ViewBag.ProductType,"Value","Text"))">
+                                </select>
+                                <span data-val-result="productType" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-12 col-md-3 d-none fileSec downloadType">
+                                <label class="form-label">@Language.GetString("DownloadLimitation")</label>
+                                <select class="form-control selectpicker" data-live-search="true" id="downloadLimitationType" asp-items="@(new MultiSelectList(ViewBag.DownloadOptions,"Value","Text"))">
+                                </select>
+                                <span data-val-result="downloadLimitationType" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-12 col-md-3 d-none fileSec timeDuration">
+                                <label class="form-label">@Language.GetString("AllowedDownloadDuration")</label>
+                                <input type="number" min="1" class="form-control" id="allowedDownloadDurationDay" />
+                                <span data-val-result="allowedDownloadDurationDay" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-12 col-md-3 d-none fileSec downloadCnt">
+                                <label class="form-label">@Language.GetString("AllowedDownloadNumber")</label>
+                                <input type="number" min="1" class="form-control" id="allowedDownloadCount" />
+                                <span data-val-result="allowedDownloadCount" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-12 col-md-6 fileSec d-none productFileUpload">
+                                <label class="form-label">
+                                    @Language.GetString("ProductFile")
+                                </label>
+                                <input accept=".zip,.rar" class="form-control" id="ProductFileContent" type="file" />
+                                <span data-val-result="ProductFileContent" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="form-group col-12 col-md-3">
+                                <label class="form-label">@Language.GetString("tbl_Inventory")</label>
+                                <input type="number" class="form-control" id="inventory" min="0" />
+                                <span data-val-result="inventory" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-12 col-md-3">
+                                <label class="form-label">@Language.GetString("tbl_UniqeCode")</label>
+                                <input type="text" class="form-control" id="uniqueCode" />
+                                <span data-val-result="uniqueCode" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-12 col-md-3">
+                                <label class="form-label">@Language.GetString("tbl_ProductCode")</label>
+                                <input type="text" class="form-control" id="productCode" placeholder=" " disabled>
+                                <span data-val-result="productCode" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-12 col-md-3">
+                                <label class="form-label">@Language.GetString("UrlFriend")</label>
+                                <input type="text" class="form-control" dir="ltr" id="urlFriend" placeholder=" " />
+                                <span data-val-result="urlFriend" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-12">
                         <div class="card" id="ContentCardTitle">
                             <div class="card-header">
@@ -408,12 +470,12 @@
                                         <span data-val-result="editorCk" class="text-danger"></span>
                                         <textarea id="editorCk" name="editorCk" class="form-control" rows="40">@Html.Raw(Model.Contents)</textarea>
 
-                                   
-                                      <script src="@Url.Content($"~/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js")"></script>
-                                        <script>
-                                            
 
-                                           //CKEditor
+                                        <script src="@Url.Content($"~/lib/ckeditor_4.15.1_full/ckeditor/ckeditor.js")"></script>
+                                        <script>
+
+
+                                            //CKEditor
                                             var config = {
                                                 height: 300,
                                                 filebrowserUploadUrl: '../../Image/ContentImageUpload',
@@ -446,9 +508,9 @@
                                                 'Vazir;' +
                                                 'Shabnam';
 
-                                          
-                                           config.baseHref ="http://localhost:8085/";
-                                           
+
+                                            config.baseHref = "http://localhost:8085/";
+
                                             config.extraPlugins = '';
 
                                             var editor = document.getElementById("editorCk");
@@ -466,12 +528,12 @@
                     </div>
                 </div>
 
-            </div>
-            <div class="card-footer">
-                <div class="row">
-                    <div class="col-md-4 offset-md-8 col-12">
-                        <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
-                        <input type="button" id="btnAddContent" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-md-4 offset-md-8 col-12">
+                            <a asp-action="List" class="btn btn-secondary btnBack bg-gradient float-end m-2">@Language.GetString("btn_Back")</a>
+                            <input type="button" id="btnAddContent" value="@Language.GetString("btn_Save")" class="btn btn-success bg-gradient float-end m-2" />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -479,22 +541,21 @@
     </div>
 </div>
 
-
 @section Scripts{
-<script src="@Url.Content($"~/lib/cropperjs/cropper.js")"></script>
-<script src="@Url.Content($"~/plugins/TagInput/jquery.amsify.suggestags.js")"></script>
-<script src="@Url.Content($"~/js/character-counter.js")"></script>
-  
+    <script src="@Url.Content($"~/lib/cropperjs/cropper.js")"></script>
+    <script src="@Url.Content($"~/plugins/TagInput/jquery.amsify.suggestags.js")"></script>
+    <script src="@Url.Content($"~/js/character-counter.js")"></script>
+
     @if (CultureInfo.CurrentCulture.Name == "fa-IR")
     {
-      <script src="@Url.Content($"~/lib/datePicker/kamadatepicker.min.js")"></script>
+        <script src="@Url.Content($"~/lib/datePicker/kamadatepicker.min.js")"></script>
     }
     else
     {
-     <script src="@Url.Content($"~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
+        <script src="@Url.Content($"~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
     }
 
-<script>
+    <script>
         var fileName;
         var fileContent;
         var cropper;
@@ -506,460 +567,442 @@
         var active = '@Language.GetString("Active")';
         var inActive = '@Language.GetString("InActive")';
         var editorBodyVar;
-        $(document).ready(function () {
+        $(document).ready(function() {
             $("#SeoTitle").characterCounter(function() {
-                  //opacity : ".8",
-                     max: 70,
-                     color : "red"
+                //opacity : ".8",
+                max: 70,
+                    color : "red"
             });
             $("#SeoDescription").characterCounter(function() {
-                   //opacity : ".8",
-                     max: 150,
-                     color : "red"
+                //opacity : ".8",
+                max: 150,
+                    color : "red"
             });
-        //TagInput
-        $("input[name='tagKeyWords']").amsifySuggestags();
-        //datetimepicker
-        if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
-        {
+            //TagInput
+            $("input[name='tagKeyWords']").amsifySuggestags();
+            //datetimepicker
+            if ("@CultureInfo.CurrentCulture.Name" === "fa-IR") {
                 kamaDatepicker('dtpStartShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
                 kamaDatepicker('dtpEndShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
-        }
-        else
-        {
-            $('.datepicker').datepicker();
-        }
-        if ("@Model.ContentId" != "") {
-
-            if($("#IsSidebarContentsShowing").is(":checked"))
-            {
-                $(".sidebarContentCountSection").removeClass("d-none");
             }
-
-            $("#LanguageId").val('@Model.LanguageId');
-             $("#LanguageId").selectpicker("refresh");
-            if ("@Model.PersianStartShowDate" != "") {
-
-                $("#dtpStartShowDate").val("@Model.PersianStartShowDate");
+            else {
+                $('.datepicker').datepicker();
             }
-            if ("@Model.PersianEndShowDate" != "") {
-                $("#dtpEndShowDate").val("@Model.PersianEndShowDate");
-            }
-            if ('@Model.Images.Any()' == 'True') {
-                debugger;
-                var serverImages = @Json.Serialize(@Model.Images);
-                for (var i = 0; i < serverImages.length; i++) {
-                    var model = {};
-                    model.ImageId = serverImages[i].imageId;
-                    model.Title = serverImages[i].title;
-                    model.Description = serverImages[i].description;
-                    model.Content = serverImages[i].content;
-                    model.IsMain = serverImages[i].isMain;
-                    model.Url = serverImages[i].url;
+            if ("@Model.ContentId" != "") {
 
-                    images.push(model);
+                if ($("#IsSidebarContentsShowing").is(":checked")) {
+                    $(".sidebarContentCountSection").removeClass("d-none");
+                }
+
+                $("#LanguageId").val('@Model.LanguageId');
+                $("#LanguageId").selectpicker("refresh");
+                if ("@Model.PersianStartShowDate" != "") {
+
+                    $("#dtpStartShowDate").val("@Model.PersianStartShowDate");
+                }
+                if ("@Model.PersianEndShowDate" != "") {
+                    $("#dtpEndShowDate").val("@Model.PersianEndShowDate");
+                }
+                if ('@Model.Images.Any()' == 'True') {
+                    debugger;
+                    var serverImages = @Json.Serialize(@Model.Images);
+                    for (var i = 0; i < serverImages.length; i++) {
+                        var model = {};
+                        model.ImageId = serverImages[i].imageId;
+                        model.Title = serverImages[i].title;
+                        model.Description = serverImages[i].description;
+                        model.Content = serverImages[i].content;
+                        model.IsMain = serverImages[i].isMain;
+                        model.Url = serverImages[i].url;
+
+                        images.push(model);
+                    }
                 }
             }
-        }
-        else
-        {
-          $("#LanguageId").val('@ViewBag.LangId');
-          $("#LanguageId").selectpicker("refresh");
-        }
-        $("#btnAddContent").click(function () {
-            debugger;
-            /*console.log("btnAddContent started");*/
-            var flag = false;
-            if ($("#LanguageId").val() == "" || $("#LanguageId").val() == "-1") {
-                $("span[data-val-result='LanguageId']").html('@Language.GetString("AlertAndMessage_OptionEssential")');
-                flag = true;
+            else {
+                $("#LanguageId").val('@ViewBag.LangId');
+                $("#LanguageId").selectpicker("refresh");
             }
-            if ($("#ContentCategoryId").val() == "" || $("#ContentCategoryId").val() == "-1") {
-                $("span[data-val-result='ContentCategoryId']").html('@Language.GetString("AlertAndMessage_OptionEssential")');
-                flag = true;
-            }
-            if ($("#Title").val() == "") {
-                $("span[data-val-result='Title']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-                flag = true;
-            }
-            if ($("#SubTitle").val() == "") {
-                $("span[data-val-result='SubTitle']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-                flag = true;
-            }
-            if (CKEDITOR.instances.editorCk.getData() == "") {
-                $("span[data-val-result='editorCk']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-                flag = true;
-            }
-            if ($("#dtpStartShowDate").val() == "") {
-                $("span[data-val-result='dtpStartShowDate']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-                flag = true;
-            }
+            $("#btnAddContent").click(function() {
+                debugger;
+                /*console.log("btnAddContent started");*/
+                var flag = false;
+                if ($("#LanguageId").val() == "" || $("#LanguageId").val() == "-1") {
+                    $("span[data-val-result='LanguageId']").html('@Language.GetString("AlertAndMessage_OptionEssential")');
+                    flag = true;
+                }
+                if ($("#ContentCategoryId").val() == "" || $("#ContentCategoryId").val() == "-1") {
+                    $("span[data-val-result='ContentCategoryId']").html('@Language.GetString("AlertAndMessage_OptionEssential")');
+                    flag = true;
+                }
+                if ($("#Title").val() == "") {
+                    $("span[data-val-result='Title']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+                }
+                if ($("#SubTitle").val() == "") {
+                    $("span[data-val-result='SubTitle']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+                }
+                if (CKEDITOR.instances.editorCk.getData() == "") {
+                    $("span[data-val-result='editorCk']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+                }
+                if ($("#dtpStartShowDate").val() == "") {
+                    $("span[data-val-result='dtpStartShowDate']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                    flag = true;
+                }
                 if ($("#dtpEndShowDate").val() == "") {
                     $("span[data-val-result='dtpEndShowDate']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-                flag = true;
-            }
-            if ($("#SourceType").val() == "" || $("#SourceType").val() == "-1") {
+                    flag = true;
+                }
+                if ($("#SourceType").val() == "" || $("#SourceType").val() == "-1") {
                     $("span[data-val-result='dtpEndShowDate']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-                     flag = true;
-            }
+                    flag = true;
+                }
                 if ($("#ContentProviderName").val() == "" && $("#SourceType").val() != "0") {
                     $("span[data-val-result='ContentProviderName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-                    flag =  true;
-            }
-            //console.log("validation passed");
-            if (!flag)
-            {
-                $.ajax({
-                    url: `@Url.Action("CheckUrlFriendUniqueness", "Content")?id=${@Model.ContentId}&url=${$("#UrlFriend").val()}`,
-                    type: 'Get',
-                    dataType: 'json',
-                    success: function (result) {
-                        if(result.status =="Success")
-                        {
-                            var dto = FillDataToSend();
-                            $.ajax({
-                                url: "@Model.ContentId" != "" ? '@Url.Action("Edit", "Content")' : '@Url.Action("Add", "Content")',
-                                contentType: 'application/json',
-                                data: JSON.stringify(dto),
-                                type: 'Post',
-                                beforeSend: function () {
-                                    debugger;
-                                    /*  AddLoading($("#addContentCardBody"));*/
-                                },
-                                success: function (result)
-                                {
-                                    debugger;
-                                    if (result.status === "Success") {
-                                        document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
-                                        document.getElementById('mainToastBody').classList.add('alert-success');
-                                        $("#toastPanel").show();
-                                        var bsAlert = new bootstrap.Toast($("#mainToast"));
-                                        bsAlert.show();
-                                        setTimeout(function()
-                                        {
-                                            $("#toastPanel").hide();
+                    flag = true;
+                }
+                //console.log("validation passed");
+                if (!flag) {
+                    $.ajax({
+                        url: `@Url.Action("CheckUrlFriendUniqueness", "Content")?id=${@Model.ContentId}&url=${$("#UrlFriend").val()}`,
+                        type: 'Get',
+                        dataType: 'json',
+                        success: function(result) {
+                            if (result.status == "Success") {
+                                var dto = FillDataToSend();
+                                $.ajax({
+                                    url: "@Model.ContentId" != "" ? '@Url.Action("Edit", "Content")' : '@Url.Action("Add", "Content")',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify(dto),
+                                    type: 'Post',
+                                    beforeSend: function() {
+                                        debugger;
+                                        /*  AddLoading($("#addContentCardBody"));*/
+                                    },
+                                    success: function(result) {
+                                        debugger;
+                                        if (result.status === "Success") {
+                                            document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>' + result.message;
+                                            document.getElementById('mainToastBody').classList.add('alert-success');
+                                            $("#toastPanel").show();
+                                            var bsAlert = new bootstrap.Toast($("#mainToast"));
+                                            bsAlert.show();
+                                            setTimeout(function() {
+                                                $("#toastPanel").hide();
                                                 window.location.href = '@Url.Action("List")';
-                                        },
-                                        1500);
-                                    }
-                                    else
-                                        if (result.status === "ModelError") {
-                                            var spanErrorList = $('span[data-val-result]');
-                                            if (spanErrorList.length > 1) {
-                                                spanErrorList.each(function () {
-                                                    $(this).html("");
-                                                    $(this).parent().removeClass("has-error");
-                                                });
-                                            }
-                                            else {
-                                                spanErrorList.html("");
-                                                spanErrorList.parent().removeClass("has-error");
-                                            }
-                                            if (result.modelStateErrors !== null) {
-                                                $('[data-val-result=' + result.key + ']').html(result.errorMessage);
-                                                $('[data-val-result=' + result.key + ']').parent().addClass("has-error");
-                                            }
+                                            },
+                                                1500);
                                         }
-                                        else if (result.status === "Error") {
-                                            showError(result.message);
-                                        }
-                                },
-               
-                            });
-                        }else
-                        {
-                            $("span[data-val-result='urlFriend']").html('@Language.GetString("AlertAndMessage_UrlFriendIsNotUnique")');
-                        }
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        return false;
-                    }
-                });
-                
-            }
-        });
-       //$("#SourceType").change(function() {
-       //   if($("#SourceType option:selected").text() == "SiteAdmin") 
-       //   {
-       //       $("#ContentProviderName").hide();
-       //   }else
-       //   {
-       //       $("#ContentProviderName").show();
-              
-       //   }
-       //});
-        $("#LanguageId").change(function () {
-        debugger;
-        var langId = $("#LanguageId").val();
-        if (langId != "-1") {
-            $.ajax({
-                url: `@Url.Action("GetContentCategoryList", "ContentCategory")/${langId}`,
-                type: 'Get',
-                dataType: 'json',
-                success: function (result) {
-                    debugger;
-                    var options = "";
-                    if (result.status === "success") {
-                        debugger;
-                        if (result.data.length != 0) {
-                            (result.data).forEach(function (item) {
-                                var op = "<option value='" + item.value + "'>" + item.text + "</option>";
-                                options += op;
-                            });
+                                        else
+                                            if (result.status === "ModelError") {
+                                                var spanErrorList = $('span[data-val-result]');
+                                                if (spanErrorList.length > 1) {
+                                                    spanErrorList.each(function() {
+                                                        $(this).html("");
+                                                        $(this).parent().removeClass("has-error");
+                                                    });
+                                                }
+                                                else {
+                                                    spanErrorList.html("");
+                                                    spanErrorList.parent().removeClass("has-error");
+                                                }
+                                                if (result.modelStateErrors !== null) {
+                                                    $('[data-val-result=' + result.key + ']').html(result.errorMessage);
+                                                    $('[data-val-result=' + result.key + ']').parent().addClass("has-error");
+                                                }
+                                            }
+                                            else if (result.status === "Error") {
+                                                showError(result.message);
+                                            }
+                                    },
 
-                            $("#ContentCategoryId").html(options);
-                            $("#ContentCategoryId").val('@Model.ContentCategoryId');
-                             $("#ContentCategoryId").selectpicker("refresh");
+                                });
+                            } else {
+                                $("span[data-val-result='urlFriend']").html('@Language.GetString("AlertAndMessage_UrlFriendIsNotUnique")');
+                            }
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                            return false;
                         }
-                    }
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    alert("@error");
-                    alert(xhr.status);
-                    alert(thrownError);
+                    });
+
                 }
             });
-        }
-        });
+            //$("#SourceType").change(function() {
+            //   if($("#SourceType option:selected").text() == "SiteAdmin")
+            //   {
+            //       $("#ContentProviderName").hide();
+            //   }else
+            //   {
+            //       $("#ContentProviderName").show();
 
-         $("#send_pic").click(function () {
-            debugger;
-            $("#uploadModal").modal("hide");
-            var url = $("#galleryPic").attr("src");
-            var model = {};
-            model.ImageId = counter;
-            var width ="";
-            var height ="";
-            var ratio="";
-            switch($("#imgAspectRatio").val())
-            {
-                case "1":
-                ratio ="1*1";
-                width = 120;
-                height = 120;
-                width
-                break;
-                case "2":
-                ratio = "2*1";
-                width = 120;
-                height = 60;
-                break;
-                case "4":
-                ratio="4*1";
-                width = 120;
-                height = 30;
-                break;
-            }
-            model.Content = url;
-            
-            images.push(model);
-            var tr = "";
-                 tr = "<tr><td><img imgId='img_" + counter + "' src='" + model.Content +
-                    "' width='"+width+"' height='"+height+"'/></td><td style='display:none;'>" + model.ImageId +
+            //   }
+            //});
+            $("#LanguageId").change(function() {
+                debugger;
+                var langId = $("#LanguageId").val();
+                if (langId != "-1") {
+                    $.ajax({
+                        url: `@Url.Action("GetContentCategoryList", "ContentCategory")/${langId}`,
+                        type: 'Get',
+                        dataType: 'json',
+                        success: function(result) {
+                            debugger;
+                            var options = "";
+                            if (result.status === "success") {
+                                debugger;
+                                if (result.data.length != 0) {
+                                    (result.data).forEach(function(item) {
+                                        var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                        options += op;
+                                    });
+
+                                    $("#ContentCategoryId").html(options);
+                                    $("#ContentCategoryId").val('@Model.ContentCategoryId');
+                                    $("#ContentCategoryId").selectpicker("refresh");
+                                }
+                            }
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                            alert("@error");
+                            alert(xhr.status);
+                            alert(thrownError);
+                        }
+                    });
+                }
+            });
+
+            $("#send_pic").click(function() {
+                debugger;
+                $("#uploadModal").modal("hide");
+                var url = $("#galleryPic").attr("src");
+                var model = {};
+                model.ImageId = counter;
+                var width = "";
+                var height = "";
+                var ratio = "";
+                switch ($("#imgAspectRatio").val()) {
+                    case "1":
+                        ratio = "1*1";
+                        width = 120;
+                        height = 120;
+                        width
+                        break;
+                    case "2":
+                        ratio = "2*1";
+                        width = 120;
+                        height = 60;
+                        break;
+                    case "4":
+                        ratio = "4*1";
+                        width = 120;
+                        height = 30;
+                        break;
+                }
+                model.Content = url;
+
+                images.push(model);
+                var tr = "";
+                tr = "<tr><td><img imgId='img_" + counter + "' src='" + model.Content +
+                    "' width='" + width + "' height='" + height + "'/></td><td style='display:none;'>" + model.ImageId +
                     "</td><td style='vertical-align:middle;'><input type='text' class='form-control txtTitle' value='' placeHolder='" + '@Language.GetString("Title")' +
                     "'/></td><td style='vertical-align:middle;'><input type='text' class='form-control txtDesc' value='' placeHolder='" + '@Language.GetString("Description")' +
-                    "'/><td class='d-none'>"+$("#imgAspectRatio").val()+"</td><td>"+ratio+"</td><td style='vertical-align:middle;'><div class='form-check d-flex justify-content-center p-0'><input type='radio'  name='isMainImage' class='form-check-input rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' imgId='img_"
+                    "'/><td class='d-none'>" + $("#imgAspectRatio").val() + "</td><td>" + ratio + "</td><td style='vertical-align:middle;'><div class='form-check d-flex justify-content-center p-0'><input type='radio'  name='isMainImage' class='form-check-input rdbIsMain'></div></td><td style='vertical-align:middle;'><button type='button' class='btn btn-danger bg-gradient' imgId='img_"
                     + counter + "' onclick='deleteFromImageList(this);'><i class='fa fa-trash' ></i></button></td></tr>";
 
-            $("#imageList").append(tr);
-            counter += 1;
+                $("#imageList").append(tr);
+                counter += 1;
 
-         });
-                $("#uploadModal").on("shown.bs.modal", function() {
-                    debugger;
-                    var image = document.getElementById('croppedImg');
-                    $("#send_pic").attr("disabled", true);
-                    var ratio = $("#imgAspectRatio").val();
-                    if (cropper !== null && cropper !== undefined) {
-                    cropper.destroy();
-                    }
-                    cropper = new Cropper(image,
-                        {
-                            background: true,
-                            aspectRatio: ratio,
-                            viewMode: 1,
-                            responsive: true,
-                            rotatable: true
-
-                        });
             });
-      $('#uploadModal').on('hidden.bs.modal',
-        function () {
+            $("#uploadModal").on("shown.bs.modal", function() {
+                debugger;
+                var image = document.getElementById('croppedImg');
+                $("#send_pic").attr("disabled", true);
+                var ratio = $("#imgAspectRatio").val();
+                if (cropper !== null && cropper !== undefined) {
+                    cropper.destroy();
+                }
+                cropper = new Cropper(image,
+                    {
+                        background: true,
+                        aspectRatio: ratio,
+                        viewMode: 1,
+                        responsive: true,
+                        rotatable: true
 
-            cropper.destroy();
-            document.getElementById("image").value = "";
-            $("#cropped_result").remove();
+                    });
+            });
+            $('#uploadModal').on('hidden.bs.modal',
+                function() {
+
+                    cropper.destroy();
+                    document.getElementById("image").value = "";
+                    $("#cropped_result").remove();
+                });
+            $(document).on("click", "#crop_button",
+                function() {
+                    var imgUrl = cropper.getCroppedCanvas({
+                        imageSmoothingEnabled: true,
+                        imageSmoothingQuality: 'high'
+                    }).toDataURL('image/jpeg', 1);
+                    var img = document.createElement("img");
+                    img.setAttribute("id", "galleryPic");
+                    img.setAttribute("class", "img-fluid");
+                    var height = $("#container").attr("width");
+                    var croppedContainer = document.createElement("div");
+                    croppedContainer.setAttribute("id", "cropped_result");
+                    croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
+                    $("#uploadModal #rowContainer").append(croppedContainer);
+                    img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
+                    img.src = imgUrl;
+                    document.getElementById("cropped_result").innerHTML = "";
+                    document.getElementById("cropped_result").appendChild(img);
+                    $("#send_pic").attr("disabled", false);
+                });
         });
-       $(document).on("click", "#crop_button",
-       function ()
-       {
-           var imgUrl = cropper.getCroppedCanvas({imageSmoothingEnabled: true,
-                        imageSmoothingQuality: 'high' }).toDataURL('image/jpeg', 1);
-            var img = document.createElement("img");
-            img.setAttribute("id", "galleryPic");
-            img.setAttribute("class", "img-fluid");
-            var height = $("#container").attr("width");
-            var croppedContainer = document.createElement("div");
-            croppedContainer.setAttribute("id", "cropped_result");
-            croppedContainer.setAttribute("style", "max-width:100%; max-height:100%; width: 400px; height:" + height + "; border: none");
-            $("#uploadModal #rowContainer").append(croppedContainer);
-            img.setAttribute("style", "max-width:100%;max-height:100%;width: 400px;height: " + height + ";position: relative;left: 0px;border: 1px solid black");
-            img.src = imgUrl;
-            document.getElementById("cropped_result").innerHTML = "";
-            document.getElementById("cropped_result").appendChild(img);
-            $("#send_pic").attr("disabled", false);
-       });
-    });
 
-    function showCountSection(sender)
-    {
-        if($(sender).is(":checked"))
-        {
-            $(".sidebarContentCountSection").removeClass("d-none");
-        }else
-        {
-            $(".sidebarContentCountSection").addClass("d-none");
+        function showCountSection(sender) {
+            if ($(sender).is(":checked")) {
+                $(".sidebarContentCountSection").removeClass("d-none");
+            } else {
+                $(".sidebarContentCountSection").addClass("d-none");
+            }
         }
-    }
-    
-    function deleteFromImageList(sender) {
-        debugger;
-        var id = $(sender).attr("imgId").replace("img_", "");
-        //removeFromArray
-        var item = images.find(_ => _.ImageId === id);
-        var index = images.indexOf(item);
-        images.splice(index, 1);
-        //remove in view
-        $(sender).parent().parent().remove();
-     }
-    function FillDataToSend() {
-        debugger;
-        //console.log("FillDataToSend started");
-        var obj = {};
-        obj.Images = [];
-        obj.Comments = [];
-        obj.TagKeywords = [];
-        obj.ContentId = $("#ContentId").val();
-        obj.ContentCategoryId = $("#ContentCategoryId").val();
-        obj.ContentCategoryName = $("#ContentCategoryId option:selected").text();
-        obj.Title = $("#Title").val();
-        obj.SubTitle = $("#SubTitle").val();
-        obj.LanguageId = $("#LanguageId").val();
-        obj.LanguageName = $("#LanguageId  option:selected").text();
-        obj.Description = $("#Description").val();
-        obj.SeoTitle = $("#SeoTitle").val();
-        obj.SeoDescription = $("#SeoDescription").val();
-         obj.UrlFriend = $("#UrlFriend").val();
-        obj.ContentCode = Number($("#ContentCode").val());
-        obj.IsCommentBoxShowing = $("#IsCommentBoxShowing").is(":checked");
-        obj.IsRateBoxShowing = $("#IsRateBoxShowing").is(":checked");
-        obj.IsSliderShowing = $("#IsSliderShowing").is(":checked");
-        obj.IsSidebarContentsShowing = $("#IsSidebarContentsShowing").is(":checked");
-        if($("#IsSidebarContentsShowing").is(":checked"))
-        {
-            obj.SidebarContentCount = $("#SidebarContentCount").val();
-        }
-        debugger;
-        obj.Contents = CKEDITOR.instances.editorCk.getData();
-        var commaseperatedTags = $("#tagKeyWords").val();
-        var arr = commaseperatedTags.split(",");
-        $.each(arr, function (key, value) {
-            obj.TagKeywords.push(value);
-        });
-        obj.SourceTypeId = $("#SourceType").val();
-        obj.ContentProviderName = $("#ContentProviderName").val();
-        //if (fileContent != "") {
-        //    debugger;
-        //    obj.LogoContent = fileContent;
-        //}
-        //if (fileName != "") {
-        //    debugger;
-        //    obj.LogoName = fileName;
-        //}
 
-        //pictures
-        $("#imageList tr").each(function () {
+        function deleteFromImageList(sender) {
             debugger;
-            var id = $(this).find("td:eq(1)").text();
-            var item = images.find(_ => _.ImageId == id);
-            index = images.indexOf(item);
+            var id = $(sender).attr("imgId").replace("img_", "");
+            //removeFromArray
+            var item = images.find(_ => _.ImageId === id);
+            var index = images.indexOf(item);
+            images.splice(index, 1);
+            //remove in view
+            $(sender).parent().parent().remove();
+        }
+        function FillDataToSend() {
+            debugger;
+            //console.log("FillDataToSend started");
+            var obj = {};
+            obj.Images = [];
+            obj.Comments = [];
+            obj.TagKeywords = [];
+            obj.ContentId = $("#ContentId").val();
+            obj.ContentCategoryId = $("#ContentCategoryId").val();
+            obj.ContentCategoryName = $("#ContentCategoryId option:selected").text();
+            obj.Title = $("#Title").val();
+            obj.SubTitle = $("#SubTitle").val();
+            obj.LanguageId = $("#LanguageId").val();
+            obj.LanguageName = $("#LanguageId  option:selected").text();
+            obj.Description = $("#Description").val();
+            obj.SeoTitle = $("#SeoTitle").val();
+            obj.SeoDescription = $("#SeoDescription").val();
+            obj.UrlFriend = $("#UrlFriend").val();
+            obj.ContentCode = Number($("#ContentCode").val());
+            obj.IsCommentBoxShowing = $("#IsCommentBoxShowing").is(":checked");
+            obj.IsRateBoxShowing = $("#IsRateBoxShowing").is(":checked");
+            obj.IsSliderShowing = $("#IsSliderShowing").is(":checked");
+            obj.IsSidebarContentsShowing = $("#IsSidebarContentsShowing").is(":checked");
+            if ($("#IsSidebarContentsShowing").is(":checked")) {
+                obj.SidebarContentCount = $("#SidebarContentCount").val();
+            }
+            debugger;
+            obj.Contents = CKEDITOR.instances.editorCk.getData();
+            var commaseperatedTags = $("#tagKeyWords").val();
+            var arr = commaseperatedTags.split(",");
+            $.each(arr, function(key, value) {
+                obj.TagKeywords.push(value);
+            });
+            obj.SourceTypeId = $("#SourceType").val();
+            obj.ContentProviderName = $("#ContentProviderName").val();
+            //if (fileContent != "") {
+            //    debugger;
+            //    obj.LogoContent = fileContent;
+            //}
+            //if (fileName != "") {
+            //    debugger;
+            //    obj.LogoName = fileName;
+            //}
 
-            item.IsMain = $(this).find("td:eq(6) .rdbIsMain").is(":checked");
-            item.Title = $(this).find("td:eq(2) .txtTitle").val();
-            item.Description = $(this).find("td:eq(3) .txtDesc").val();
-            item.ImageRatioId = parseInt($(this).find("td:eq(4)").text());
-            item.ImageRatio = parseInt($(this).find("td:eq(4)").text());
-            item.ImageId = item.ImageId.toString();
-            images[index] = item;
-            obj.Images.push(item);
-        });
-         if("@CultureInfo.CurrentCulture.Name" === "fa-IR")
-            {
-                    obj.PersianStartShowDate = $("#dtpStartShowDate").val();
-                    obj.PersianEndShowDate = $("#dtpEndShowDate").val();
-            }else
-            {
+            //pictures
+            $("#imageList tr").each(function() {
+                debugger;
+                var id = $(this).find("td:eq(1)").text();
+                var item = images.find(_ => _.ImageId == id);
+                index = images.indexOf(item);
+
+                item.IsMain = $(this).find("td:eq(6) .rdbIsMain").is(":checked");
+                item.Title = $(this).find("td:eq(2) .txtTitle").val();
+                item.Description = $(this).find("td:eq(3) .txtDesc").val();
+                item.ImageRatioId = parseInt($(this).find("td:eq(4)").text());
+                item.ImageRatio = parseInt($(this).find("td:eq(4)").text());
+                item.ImageId = item.ImageId.toString();
+                images[index] = item;
+                obj.Images.push(item);
+            });
+            if ("@CultureInfo.CurrentCulture.Name" === "fa-IR") {
+                obj.PersianStartShowDate = $("#dtpStartShowDate").val();
+                obj.PersianEndShowDate = $("#dtpEndShowDate").val();
+            } else {
                 obj.StartShowDate = $("#dtpStartShowDate").val();
                 obj.EndShowDate = $("#dtpEndShowDate").val();
             }
-       
-        return obj;
-    }
 
-    function rotatePic() {
-    cropper.rotate(90);
-    }
+            return obj;
+        }
+
+        function rotatePic() {
+            cropper.rotate(90);
+        }
 
 
 
-    function getURL(input)
-    {
-        debugger;
+        function getURL(input) {
+            debugger;
             $("#cropped_result").remove();
             if (input.files && input.files[0]) {
-            var file = input.files[0];
-            currentFileName = file.name;
-            currentFileSize = file.size;
+                var file = input.files[0];
+                currentFileName = file.name;
+                currentFileSize = file.size;
 
-            if (currentFileSize <= @ViewBag.PicSize) {
-            var reader = new FileReader();
-            try {
-            reader.readAsDataURL(file);
-            } catch (e) {
+                if (currentFileSize <= @ViewBag.PicSize) {
+                    var reader = new FileReader();
+                    try {
+                        reader.readAsDataURL(file);
+                    } catch (e) {
 
-            }
-            reader.onload = function (e) {
-            var content = e.target.result;
-            //if file format is incorrect, then the 'content' won't have any src
-            if (content !== "data:") {
-            var reducedContent = content.slice(5);
+                    }
+                    reader.onload = function(e) {
+                        var content = e.target.result;
+                        //if file format is incorrect, then the 'content' won't have any src
+                        if (content !== "data:") {
+                            var reducedContent = content.slice(5);
 
-            if (reducedContent.startsWith("image")) {
-                $('#croppedImg').attr('src', content);
-               $("#uploadModal").modal("show");
-            }
-            else {
-            showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
-            document.getElementById("image").value = "";
-            $("#cropped_result").remove();
-            }
-            } else {
+                            if (reducedContent.startsWith("image")) {
+                                $('#croppedImg').attr('src', content);
+                                $("#uploadModal").modal("show");
+                            }
+                            else {
+                                showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
+                                document.getElementById("image").value = "";
+                                $("#cropped_result").remove();
+                            }
+                        } else {
 
-            showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
-            document.getElementById("image").value = "";
-            $("#cropped_result").remove();
+                            showError('@Language.GetString("AlertAndMessage_InvalidFormat")');
+                            document.getElementById("image").value = "";
+                            $("#cropped_result").remove();
+                        }
+                    };
+                }
+                else {
+                    showError("AlertAndMessage_InvalidFileSize");
+                    document.getElementById("image").value = "";
+                    $("#cropped_result").remove();
+                }
             }
-            };
-            }
-            else
-            {
-                       showError("AlertAndMessage_InvalidFileSize");
-            document.getElementById("image").value = "";
-            $("#cropped_result").remove();
-            }
-            }
+        }
+
+    </script>
     }
-
-</script>
-}
-
