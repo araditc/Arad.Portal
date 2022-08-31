@@ -2453,6 +2453,9 @@
   <string key="Title_BasicInfo">
     <value>Basic Informations</value>
   </string>
+	<string key="Title_Search">
+		<value>Product Search</value>
+	</string>
   <string key="CropImage">
     <value>Crop image</value>
   </string>

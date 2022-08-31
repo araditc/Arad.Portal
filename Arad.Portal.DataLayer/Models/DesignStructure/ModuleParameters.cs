@@ -53,6 +53,10 @@ namespace Arad.Portal.DataLayer.Models.DesignStructure
         public LoadAnimationType LoadAnimationType { get; set; }
 
 
+        [BsonIgnoreIfNull]
+        public string Keyword { get; set; }
+
+
     }
 
     public enum SelectionType

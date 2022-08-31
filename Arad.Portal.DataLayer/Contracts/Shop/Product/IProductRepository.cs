@@ -26,6 +26,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         long GetProductCode(string productId);
         Task<ProductOutputDTO> ProductFetch(string productId);
 
+
+        ProductOutputDTO EvaluateFinalPrice(string productId, List<Price> productPrices, List<string> productGroupIds, string defCurrenyId);
         ProductOutputDTO FetchProductWithSlug(string slug, string domainName);
 
         Task<Result> AddCommentToProduct(string productId, Comment comment);

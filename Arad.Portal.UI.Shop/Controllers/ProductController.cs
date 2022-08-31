@@ -22,6 +22,7 @@ using Arad.Portal.DataLayer.Contracts.General.User;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.StaticFiles;
 using System.Globalization;
+using Arad.Portal.DataLayer.Contracts.General.Currency;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -37,10 +38,11 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly ICommentRepository _commentRepository;
         private readonly IConfiguration _configuration;
         private readonly string _domainName;
+        private readonly ICurrencyRepository _curRepository;
 
         public ProductController(IProductRepository productRepository, IHttpContextAccessor accessor,
             UserManager<ApplicationUser> userManager, IConfiguration configuration,
-            IWebHostEnvironment env, IUserRepository userRepository,
+            IWebHostEnvironment env, IUserRepository userRepository,ICurrencyRepository curRepository,
             ILanguageRepository lanRepository, IDomainRepository domainRepository, ICommentRepository commentRepository):base(accessor, domainRepository)
         {
             _productRepository = productRepository;
@@ -52,6 +54,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             _domainName = this.DomainName;
             _configuration = configuration;
             _userRepository = userRepository;
+            _curRepository = curRepository;
             
             //_enyimMemcachedMethods = enyimMemcachedMethods;
         }
@@ -106,7 +109,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 {
                     compareList = HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}");
                 }
-                if(!compareList.Contains(productId))
+                if(!compareList.Contains(productId) && compareList.Count <= 4)
                 {
                     compareList.Add(productId);
                 }
@@ -135,6 +138,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             List<string> compareList = new List<string>();
             List<string> specificationIds = new List<string>();
             var model = new CompareModel();
+            var domainEntity = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
             string lanId = string.Empty;
            
 
@@ -146,9 +150,28 @@ namespace Arad.Portal.UI.Shop.Controllers
                var lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
                 lanId = _lanRepository.FetchBySymbol(lanIcon);
             }
+            #region currency
+            string curId = string.Empty;
+            if(CultureInfo.CurrentCulture.Name != null)
+            {
+                var ri = new RegionInfo(System.Threading.Thread.CurrentThread.CurrentUICulture.LCID);
+                var curSymbol = ri.ISOCurrencySymbol;
+                var currencyDto = _curRepository.GetCurrencyByItsPrefix(curSymbol);
+                curId = currencyDto.CurrencyId;
+                ViewBag.CurrencySymbol = curSymbol;
+            }
+            else
+            {
+
+                curId = domainEntity.DefaultCurrencyId;
+                var curDto = _curRepository.FetchCurrency(curId);
+                ViewBag.CurrencySymbol = curDto.ReturnValue.Symbol;
+            }
+            
+            #endregion
             List<ProductCompare> products = new List<ProductCompare>();
             var remoteIpAddress = Request.HttpContext.Connection.RemoteIpAddress;
-            var domainEntity = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
+           
             if (HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}") != null)
             {
                 compareList = HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}");
@@ -163,7 +186,11 @@ namespace Arad.Portal.UI.Shop.Controllers
                         productDto.Specifications.Where(_=>_.LanguageId == lanId).ToList() : new List<ProductSpecificationValue>() ,
                     ProductName = productDto.MultiLingualProperties.Any(_=> _.LanguageId == lanId) ? 
                         productDto.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).Name :
-                      productDto.MultiLingualProperties.FirstOrDefault().Name
+                      productDto.MultiLingualProperties.FirstOrDefault().Name,
+                    CurrentPrice = _productRepository.EvaluateFinalPrice(item, productDto.Prices, productDto.GroupIds, curId).PriceValWithPromotion,
+                    ProductImageUrl = productDto.Images.Any(_=>_.IsMain) ? productDto.Images.FirstOrDefault(_ => _.IsMain).Url :
+                    (productDto.Images.Any(_=>_.ImageRatio == ImageRatio.Square) ?
+                      productDto.Images.FirstOrDefault(_ => _.ImageRatio == ImageRatio.Square).Url : productDto.Images.FirstOrDefault().Url)
                 };
                 products.Add(obj);
                 if(specificationIds.Count == 0)

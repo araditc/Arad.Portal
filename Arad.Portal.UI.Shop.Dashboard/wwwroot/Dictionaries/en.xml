@@ -48,6 +48,9 @@
   <string key="btn_Save">
     <value>Save</value>
   </string>
+	<string key="btn_SaveProduct">
+		<value>Save Product</value>
+	</string>
   <string key="btn_Edit">
     <value>Edit</value>
   </string>

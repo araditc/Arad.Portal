@@ -214,7 +214,7 @@
                     </div>
                     <div class="form-group col-12 col-md-3 pt-1 pb-2">
                         <div class="form-check m-auto d-inline-block pt-3">
-                            <input class="form-check-input" type="checkbox" value="@Model.ShowInLackOfInventory" asp-for="@Model.ShowInLackOfInventory" min="0">
+                            <input class="form-check-input" type="checkbox" value="@Model.ShowInLackOfInventory" asp-for="@Model.ShowInLackOfInventory">
                             <label class="form-check-label" for="IsVendor">
                                 @Language.GetString("ShowInLackOfInventory")
                             </label>
@@ -231,7 +231,7 @@
                     </div>
                     <div class="form-group col-12 col-md-3 pt-4 pb-2">
                         <div class="form-check m-auto d-inline-block pt-3">
-                            <input class="form-check-input" type="checkbox" value="@Model.IsPublishedOnMainDomain" asp-for="@Model.IsPublishedOnMainDomain" min="0">
+                            <input class="form-check-input" type="checkbox" value="@Model.IsPublishedOnMainDomain" asp-for="@Model.IsPublishedOnMainDomain" >
                             <label class="form-check-label" for="IsVendor">
                                 @Language.GetString("AlertAndMessage_IsPublishedOnMainDomain")
                             </label>
@@ -824,10 +824,10 @@ else
 
             if ($("#Inventory").val() == "0")
             {
-                $("span[data-val-result='UniqueCode']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                $("span[data-val-result='Inventory']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                 flag = true;
             }
-            if ($("#Unit_ProductUnitId").val() == "-1" || $("#Unit_ProductUnitId").val() == "" )
+            if (($("#ProductType").val() == "1" && $("#Unit_ProductUnitId").val() == "-1") || $("#Unit_ProductUnitId").val() == "" )
             {
                 $("span[data-val-result='productUnitId']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                 flag = true;
@@ -892,7 +892,7 @@ else
                     var dto = FillDataToSend();
                     debugger;
                     $.ajax({
-                        url: "@Model.ProductId" != "" ? '@Url.Action("Edit", "Product")' : '@Url.Action("Add", "Product")',
+                        url: "@Model.ProductId" != "" ? '@Url.Action("Edit", "Product")' : '@Url.Action("Add", "Product")'+"?isFromContent=false",
                         contentType: 'application/json',
                         data:  JSON.stringify(dto),
                         type: 'Post',
@@ -1138,7 +1138,7 @@ else
          debugger;
             var fileReader = new FileReader();
             fileReader.onload = function () {
-              productFileContent = fileReader.result;  // data <-- in this var you have the file data in Base64 format
+              productFileContent = fileReader.result; 
             };
             fileReader.readAsDataURL($('#ProductFileContent').prop('files')[0]);
         });
@@ -1408,7 +1408,7 @@ else
         dto.UniqueCode = $("#UniqueCode").val();
         dto.Inventory = parseInt($("#Inventory").val());
         dto.MinimumCount = parseInt($("#MinimumCount").val());
-        dto.ShowInLackOfInventory = $("#chbNotifyInventory").is(":checked");
+        dto.ShowInLackOfInventory = $("#ShowInLackOfInventory").is(":checked");
         if ("@ViewBag.Vendors" != "-1") {
             dto.SellerUserId = $("#SellerUserId").val();
             dto.SellerUserName = $("#SellerUserId option:selected").text();

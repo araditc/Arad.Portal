@@ -5,8 +5,59 @@
 <style>
 </style>
 <div class="container">
+    <div class="modal" id="productSearchModal" tabindex="-1" aria-labelledby="productSearchModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">@Language.GetString("Title_Search")</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-12 col-md-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="txtSearch" placeholder="@Language.GetString("btn_Search")" value="@(@ViewBag.Tag != null ? @ViewBag.Tag : "" )" />
+                            <button type="button" class="input-group-text" id="btnSearch">
+                                <i class="fas fa-search p-1 m-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-12" id="productResult"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
-        @if (Model.ProductComapreList.Count != 0 &&  Model.UnionSpecifications.Count !=  0)
+        @foreach (var pro in Model.ProductComapreList)
+        {
+            <div class="col-12 col-md-3">
+                <div class="card">
+                    <a href="@($"/product/{pro.ProductCode}")" class="proLink" role="button">
+                        <img src="..." class="card-img-top" alt="...">
+                    </a>
+                    <div class="card-body">
+                        <a href="@($"/product/{pro.ProductCode}")" class="proLink" role="button">
+                            <p class="card-text text-center">@pro.ProductName</p>
+                        </a>
+                        <p class="card-title fs-6">
+                            @($"{Convert.ToInt64(pro.CurrentPrice):n0} {ViewBag.CurrencySymbol}")
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        }
+        @if (Model.ProductComapreList.Count < 4)
+        {
+            <div class="col-md-3 align-middle">
+                <input type="button" value="@Language.GetString("btn_AddToCompareList")" data-bs-toggle="modal"
+                   data-bs-target="#productSearchModal" id="btnAddToCampareList" class="btn btn-outline-secondary" />
+            </div>
+        }
+    </div>
+
+    <div class="row">
+        @if (Model.ProductComapreList.Count != 0 && Model.UnionSpecifications.Count != 0)
         {
             <table class="table table-hover my-3 border border-1 rounded">
                 <thead>
@@ -36,11 +87,13 @@
                     }
                 </tbody>
             </table>
-        }else if(Model.ProductComapreList.Count == 0)
+        }
+        else if (Model.ProductComapreList.Count == 0)
         {
             <div class="col-12"><p>@Language.GetString("")</p></div>
 
-        }else if(Model.UnionSpecifications.Count == 0)
+        }
+        else if (Model.UnionSpecifications.Count == 0)
         {
             <div class="col-12"><p>@Language.GetString("")</p></div>
         }
@@ -48,3 +101,13 @@
     </div>
 
 </div>
+
+<script>
+    $(document).ready(function() {
+        var currentCount = '@Model.ProductComapreList.Count';
+
+        $("#btnAddToCampareList").click(function() {
+
+        });
+    });
+</script>

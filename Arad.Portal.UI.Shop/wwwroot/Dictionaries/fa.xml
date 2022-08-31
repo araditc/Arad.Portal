@@ -2510,6 +2510,9 @@
   <string key="Title_BasicInfo">
     <value>اطلاعات پایه</value>
   </string>
+	<string key="Title_Search">
+		<value>جستجوی محصولات</value>
+	</string>
   <string key="CropImage">
     <value>برش تصویر</value>
   </string>

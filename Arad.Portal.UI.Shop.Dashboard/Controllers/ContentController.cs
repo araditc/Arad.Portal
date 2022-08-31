@@ -1,7 +1,11 @@
 ﻿using Arad.Portal.DataLayer.Contracts.General.Content;
 using Arad.Portal.DataLayer.Contracts.General.ContentCategory;
+using Arad.Portal.DataLayer.Contracts.General.Currency;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Contracts.General.Language;
+using Arad.Portal.DataLayer.Contracts.General.User;
+using Arad.Portal.DataLayer.Contracts.Shop.ProductGroup;
+using Arad.Portal.DataLayer.Contracts.Shop.ProductUnit;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Models.Content;
 using Arad.Portal.DataLayer.Models.Shared;
@@ -36,15 +40,19 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IDomainRepository _domainRepository;
         private readonly ILanguageRepository _lanRepository;
         private readonly IConfiguration _configuration;
+        private readonly IUserRepository _userRepository;
+        private readonly ICurrencyRepository _curRepository;
+        private readonly IProductGroupRepository _productGroupRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IProductUnitRepository _unitRepository;
         private readonly string imageSize = "";
         private readonly CodeGenerator _codeGenerator;
         public ContentController(IContentRepository contentRepository, IWebHostEnvironment webHostEnvironment,
-                                    IContentCategoryRepository contentCategoryRepository,
+                                    IContentCategoryRepository contentCategoryRepository,IProductUnitRepository unitRepository,
                                     ILanguageRepository languageRepository, UserManager<ApplicationUser> userManager,
-                                    CodeGenerator codeGenerator,
-                                    IDomainRepository domainRepository,
+                                    CodeGenerator codeGenerator,IUserRepository userRepository,ICurrencyRepository curRepository,
+                                    IDomainRepository domainRepository,IProductGroupRepository groupRepository,
                                     IHttpContextAccessor accessor, IConfiguration configuration)
         {
             _contentRepository = contentRepository;
@@ -57,6 +65,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _httpContextAccessor = accessor;
             imageSize = _configuration["ContentImageSize:Size"];
             _codeGenerator = codeGenerator;
+            _userRepository = userRepository;
+            _productGroupRepository = groupRepository;
+            _unitRepository = unitRepository;
+            _curRepository = curRepository;
         }
 
         [HttpGet]
@@ -104,7 +116,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var staticFileStorageURL = _configuration["LocalStaticFileStorage"];
-
+            var lan = _lanRepository.GetDefaultLanguage(currentUserId);
             var fileShown = _configuration["LocalStaticFileShown"];
             ViewBag.Url = fileShown;
             var model = new ContentDTO();
@@ -122,8 +134,20 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 model.ContentCode = _codeGenerator.GetNewId();
             }
 
+            ViewBag.ProductCode = _codeGenerator.GetNewId();
+            ViewBag.ProductType = _userRepository.GetAllProductType();
+            ViewBag.DownloadOptions = _userRepository.GetAllDownloadLimitationType();
+            var groupList = await _productGroupRepository.GetAlActiveProductGroup(lan.LanguageId, currentUserId);
+            ViewBag.ProductGroupList = groupList;
+            ViewBag.baseHref = fileShown;
+            var unitList = _unitRepository.GetAllActiveProductUnit(lan.LanguageId);
+            unitList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });
+            ViewBag.ProductUnitList = unitList;
+            var currencyList = _curRepository.GetAllActiveCurrency();
+            ViewBag.CurrencyList = currencyList;
+
             ViewBag.StaticFileStorage = staticFileStorageURL;
-            var lan = _lanRepository.GetDefaultLanguage(currentUserId);
+           
             var categoryList = await _contentCategoryRepository.AllActiveContentCategory(lan.LanguageId, currentUserId);
             categoryList = categoryList.OrderBy(_ => _.Text).ToList();
             //categoryList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value = "" });

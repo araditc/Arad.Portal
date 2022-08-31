@@ -95,7 +95,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 ViewBag.Path = staticFileStorageURL;
                 var groupList = await _productGroupRepository.GetAlActiveProductGroup(defLangId, currentUserId);
                 ViewBag.ProductGroupList = groupList;
-               
                 var unitList = _unitRepository.GetAllActiveProductUnit(defLangId);
                 ViewBag.ProductUnitList = unitList;
             }
@@ -201,7 +200,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] ProductInputDTO dto)
+        public async Task<IActionResult> Add([FromQuery]bool isFromContent, [FromBody] ProductInputDTO dto)
         {
             JsonResult result ;
             var errors = new List<AjaxValidationErrorModel>();
@@ -219,8 +218,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             }
             else
             {
-               
-
                 if (_productRepository.IsCodeUnique(dto.UniqueCode))
                 {
 
@@ -247,9 +244,20 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                         item.PriceId = Guid.NewGuid().ToString();
                         item.Symbol = cur.ReturnValue.Symbol;
+                        if(isFromContent)
+                        {
+                            item.SDate = DateTime.UtcNow;
+                        }
                         item.Prefix = cur.ReturnValue.Symbol;
-                        item.SDate = DateHelper.ToEnglishDate(item.StartDate);
+                        item.SDate = CultureInfo.CurrentCulture.Name == "fa-IR" ?  DateHelper.ToEnglishDate(item.StartDate) : DateTime.Parse(item.StartDate);
                         item.IsActive = true;
+                    }
+
+                    if(isFromContent)
+                    {
+                        dto.SellerUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                        var userEntity = await _userManager.FindByIdAsync(dto.SellerUserId);
+                        dto.SellerUserName = userEntity.UserName;
                     }
 
                     var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];

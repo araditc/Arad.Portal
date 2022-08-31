@@ -177,6 +177,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult ChangeLang([FromQuery] string langId)
         {
             var domainName = $"{HttpContext.Request.Host}";

@@ -1,0 +1,16 @@
+﻿@model Arad.Portal.DataLayer.Models.Shared.Filter
+@{
+    Layout = null;
+}
+<div class="border-top-0 w-100 m-2">
+    <div class="row">
+        <div class="col-12">
+            <div class="input-group">
+                <input type="text" class="form-control" id="txtSearch" placeholder="@Language.GetString("btn_Search")" value="@Model.Keyword" />
+                <a  class="input-group-text" id="btnSearch">
+                    <i class="fas fa-search p-1 m-1"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

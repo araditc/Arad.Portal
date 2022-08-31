@@ -298,6 +298,17 @@
 				side.classList.remove("show");
 			}
 		}
+
+        if(window.location.href.contains("/product/compare"))
+        {
+            if(window.innerWidth <= 767)
+            {
+                $(".compareSection").addClass("d-none")
+            }else
+            {
+                $(".compareSection").removeClass("d-none");
+            }
+        }
 	}
 	function GetDecoded(stringInput)
 	{

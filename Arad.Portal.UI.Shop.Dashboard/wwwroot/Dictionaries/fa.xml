@@ -54,6 +54,9 @@
   <string key="btn_Save">
     <value>ذخیره</value>
   </string>
+	<string key="btn_SaveProduct">
+		<value>ذخیره محصول</value>
+	</string>
   <string key="btn_Edit">
     <value>ویرایش</value>
   </string>

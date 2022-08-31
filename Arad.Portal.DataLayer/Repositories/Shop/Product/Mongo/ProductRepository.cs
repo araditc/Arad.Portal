@@ -114,8 +114,6 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             }
             return result;
         }
-
-
         public async Task<Result> InsertDownloadLimitation(string shoppingCartDetailId, string productId, string userId, string domainId)
         {
             var result = new Result();
@@ -189,7 +187,6 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             }
             return result;
         }
-
         public async Task<Result> AddMultilingualProperty(string productId,
             MultiLingualProperty multiLingualProperty)
         {
@@ -1010,7 +1007,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        private ProductOutputDTO EvaluateFinalPrice(string productId, List<Price> productPrices, List<string> productGroupIds, string defCurrenyId)
+        public ProductOutputDTO EvaluateFinalPrice(string productId, List<Price> productPrices, List<string> productGroupIds, string defCurrenyId)
         {
             var result = new ProductOutputDTO();
             var activePrice = productPrices.Where(_ => _.IsActive && _.CurrencyId == defCurrenyId

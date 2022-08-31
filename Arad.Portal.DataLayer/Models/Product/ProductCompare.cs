@@ -16,6 +16,12 @@ namespace Arad.Portal.DataLayer.Models.Product
 
         public string ProductName { get; set; }
 
+        public string ProductCode { get; set; }
+
+        public long CurrentPrice { get; set; }
+
+        public string ProductImageUrl { get; set; }
+
         public List<ProductSpecificationValue> Specifications { get; set; }
     }
 }

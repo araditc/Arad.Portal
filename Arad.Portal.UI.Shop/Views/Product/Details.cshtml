@@ -142,20 +142,20 @@
                     </ul>
                 </div>
             </div>
-            <div class="row justify-content-center compareSection">
+            <div class="row justify-content-center compareSection mb-2">
                 <div class="col-12 d-flex justify-content-end ">
-                     <button type="button" class="btn btn-success btn-sm pe-3 mt-3 me-2" id="btnAddToCompareList" >
-                    <i class="fas fa-compress px-1 mt-1"></i> 
-                    @Language.GetString("btn_AddToCompareList")
-                </button>
-               
-                      <a class="btn btn-secondary btn-sm pe-3 mt-3" id="btnCompareListView" asp-controller="Product" asp-action="Compare">
-                    
-                    @Language.GetString("btn_CompareListView")
-                </a>
+                    <button type="button" class="btn btn-success btn-sm pe-3 mt-3 me-2" id="btnAddToCompareList">
+                        <i class="fas fa-compress px-1 mt-1"></i>
+                        @Language.GetString("btn_AddToCompareList")
+                    </button>
+
+                    <a class="btn btn-secondary btn-sm pe-3 mt-3" id="btnCompareListView" asp-controller="Product" asp-action="Compare">
+
+                        @Language.GetString("btn_CompareListView")
+                    </a>
                 </div>
-               
-              
+
+
             </div>
             <div class="row commentSection">
 
@@ -184,117 +184,117 @@
                             if (Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) &&
                             !string.IsNullOrEmpty(Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).BodyContent))
                             {
-                                        @Html.Raw(Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).BodyContent)
+                                @Html.Raw(Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).BodyContent)
                             }
                         }
                     </div>
                     @{
-                                @foreach (var spec in @Model.Specifications.Where(_ => _.LanguageId == ViewBag.CurLanguageId))
+                        @foreach (var spec in @Model.Specifications.Where(_ => _.LanguageId == ViewBag.CurLanguageId))
                         {
-                                    <div class="row border-top m-1 py-2">
-                                        <div class="col-6">
-                                            <span>@spec.SpecificationName :</span>
-                                        </div>
-                                        <div class="col-6">
-                                            <span>@spec.Values.Replace("|",",")</span>
-                                        </div>
-                                    </div>
+                            <div class="row border-top m-1 py-2">
+                                <div class="col-6">
+                                    <span>@spec.SpecificationName :</span>
+                                </div>
+                                <div class="col-6">
+                                    <span>@spec.Values.Replace("|",",")</span>
+                                </div>
+                            </div>
                         }
 
                         if (Model.Inventory > 0)
                         {
-                                    <div class="mt-4 p-2 bg-secondary bg-opacity-10 border rounded-3">
-                                        <div class="row  mt-2">
-                                            <div class="col-12 col-md-3 col-lg-2">
-                                                <span>@Language.GetString("PriceValue") :</span>
-                                            </div>
-                                            @if (realPrice == Model.PriceValWithPromotion && Model.GiftProduct == null)
+                            <div class="mt-4 p-2 bg-secondary bg-opacity-10 border rounded-3">
+                                <div class="row  mt-2">
+                                    <div class="col-12 col-md-3 col-lg-2">
+                                        <span>@Language.GetString("PriceValue") :</span>
+                                    </div>
+                                    @if (realPrice == Model.PriceValWithPromotion && Model.GiftProduct == null)
                                     {
-                                                <div class="col-12 col-md-3">
-                                                    <p>
-                                                        <mark>
-                                                            @($"{Convert.ToInt64(@Model.PriceValWithPromotion):n0} {@price.Prefix}")
-                                                        </mark>
-                                                    <p>
-                                                </div>
+                                        <div class="col-12 col-md-3">
+                                            <p>
+                                                <mark>
+                                                    @($"{Convert.ToInt64(@Model.PriceValWithPromotion):n0} {@price.Prefix}")
+                                                </mark>
+                                            <p>
+                                        </div>
                                     }
                                     else
                                     {
-                                                @if (Model.GiftProduct == null)
+                                        @if (Model.GiftProduct == null)
                                         {
-                                                    <div class="col-12 col-md-4 col-lg-3">
-                                                        <p>
-                                                            <mark>
-                                                                @($"{Convert.ToInt64(@Model.PriceValWithPromotion):n0}  {@price.Prefix}");
-                                                            </mark>
-                                                        </p>
-                                                    </div>
-                                                    <div class="col-12 col-md-4 col-lg-3">
-                                                        <p>
-                                                            <s>
-                                                                @realPrice + @price.Prefix ;
-                                                            </s>
-                                                        </p>
-                                                    </div>
+                                            <div class="col-12 col-md-4 col-lg-3">
+                                                <p>
+                                                    <mark>
+                                                        @($"{Convert.ToInt64(@Model.PriceValWithPromotion):n0}  {@price.Prefix}");
+                                                    </mark>
+                                                </p>
+                                            </div>
+                                            <div class="col-12 col-md-4 col-lg-3">
+                                                <p>
+                                                    <s>
+                                                        @realPrice + @price.Prefix ;
+                                                    </s>
+                                                </p>
+                                            </div>
                                         }
                                         else
                                         {
-                                                    <div class="col-12 col-md-4 col-lg-3">
-                                                        <p>
-                                                            <mark>
-                                                                @($"{Convert.ToInt64(@Model.PriceValWithPromotion):n0} {@price.Prefix}");
-                                                            </mark>
-                                                        </p>
-                                                    </div>
-                                                    <div class="col-12 col-md-4 col-lg-3">
-                                                        <p>@Language.GetString("byBuying")</p>
-                                                        <span>@Model.Promotion.BoughtCount.Value</span>
-                                                        <p>@Language.GetString("AsGift")</p>
-                                                        <span>@Model.Promotion.PromotedCountofUnit.Value</span>
-                                                        <a class="bbb_deals_item_name" href="/product/@Model.GiftProduct.ProductCode">
-                                                            @(Model.GiftProduct.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
+                                            <div class="col-12 col-md-4 col-lg-3">
+                                                <p>
+                                                    <mark>
+                                                        @($"{Convert.ToInt64(@Model.PriceValWithPromotion):n0} {@price.Prefix}");
+                                                    </mark>
+                                                </p>
+                                            </div>
+                                            <div class="col-12 col-md-4 col-lg-3">
+                                                <p>@Language.GetString("byBuying")</p>
+                                                <span>@Model.Promotion.BoughtCount.Value</span>
+                                                <p>@Language.GetString("AsGift")</p>
+                                                <span>@Model.Promotion.PromotedCountofUnit.Value</span>
+                                                <a class="bbb_deals_item_name" href="/product/@Model.GiftProduct.ProductCode">
+                                                    @(Model.GiftProduct.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) ?
                                     Model.GiftProduct.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).Name :
                                     Model.GiftProduct.MultiLingualProperties.FirstOrDefault().Name )
-                                                        </a>
-                                                    </div>
+                                                </a>
+                                            </div>
                                         }
 
                                     }
 
-                                            <div class="col-12 col-md-3 text-start">
-                                                <span>@Language.GetString("InventoryInStore")</span>
-                                                <span>@Model.Inventory</span>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-12 col-md-3 d-flex justify-content-center">
-                                                <label class="lblMdl">@Language.GetString("OrderCnt") :</label>
-                                            </div>
-                                            <div class="col-12 col-md-3">
-                                                <input type="number" class="form-control" id="orderCnt" name="orderCnt" min="0" value="1" />
-                                            </div>
-                                            <div class="col-12 col-md-6 d-flex justify-content-center">
-                                                <button type="button" id="btnAddToCart" class="btn btn-success  @(@Model.Inventory <= 0 ? "disabled" : "")" prid="@Model.ProductId">
-                                                    <span class="shopping-cart">
-                                                        <em class="fa fa-shopping-basket"></em>
-                                                    </span>
-                                                    <span> @Language.GetString("btn_AddToShoppingCart")</span>
-                                                </button>
-                                            </div>
-                                        </div>
-
+                                    <div class="col-12 col-md-3 text-start">
+                                        <span>@Language.GetString("InventoryInStore")</span>
+                                        <span>@Model.Inventory</span>
                                     </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-3 d-flex justify-content-center">
+                                        <label class="lblMdl">@Language.GetString("OrderCnt") :</label>
+                                    </div>
+                                    <div class="col-12 col-md-3">
+                                        <input type="number" class="form-control" id="orderCnt" name="orderCnt" min="0" value="1" />
+                                    </div>
+                                    <div class="col-12 col-md-6 d-flex justify-content-center">
+                                        <button type="button" id="btnAddToCart" class="btn btn-success  @(@Model.Inventory <= 0 ? "disabled" : "")" prid="@Model.ProductId">
+                                            <span class="shopping-cart">
+                                                <em class="fa fa-shopping-basket"></em>
+                                            </span>
+                                            <span> @Language.GetString("btn_AddToShoppingCart")</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
                         }
                         else
                         {
-                                    <div class="row">
-                                        <div class="col-6 col-md-3 offset-md-3">
-                                            <button class="btn btn-light bg-gradient" disabled>@Language.GetString("UnAvailable")</button>
-                                        </div>
-                                        <div class="col-6 col-md-3">
-                                            <button class="btn btn-danger bg-gradient d-none">@Language.GetString("btn_InformMe")</button>
-                                        </div>
-                                    </div>
+                            <div class="row">
+                                <div class="col-6 col-md-3 offset-md-3">
+                                    <button class="btn btn-light bg-gradient" disabled>@Language.GetString("UnAvailable")</button>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <button class="btn btn-danger bg-gradient d-none">@Language.GetString("btn_InformMe")</button>
+                                </div>
+                            </div>
                         }
                     }
                 </div>
@@ -448,40 +448,40 @@ else
 
         $("#btnAddToCompareList").click(function() {
 
-              $.ajax({
-                    url: `/${'@ViewBag.LanIcon'}/Product/AddToComapareList?code=` + '@Model.ProductCode',
-                    contentType: 'application/json',
-                    type: 'Get',
-                    dataType: 'json',
-                    beforeSend: function() {
-                    },
-                    success: function(result) {
-                        if (result.status == "Succeed") {
-                            debugger;
+            $.ajax({
+                url: `/${'@ViewBag.LanIcon'}/Product/AddToComapareList?code=` + '@Model.ProductCode',
+                contentType: 'application/json',
+                type: 'Get',
+                dataType: 'json',
+                beforeSend: function() {
+                },
+                success: function(result) {
+                    if (result.status == "Succeed") {
+                        debugger;
 
-                            $('#mainToastBody').html(`<i class="far fa-check-circle"></i> ${result.message}`);
-                            $('#mainToastBody').addClass('alert-success');
-                            $("#toastPanel").show();
-                            var toast = new bootstrap.Toast($("#mainToast"));
-                            toast.show();
-                            setTimeout(function() {
-                                $("#toastPanel").hide();
-                            }, 2500);
-                        }
-                        else {
-
-                            document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${result.message}`;
-                            document.getElementById('mainToastBody').classList.add('alert-danger');
-                            $("#toastPanel").show();
-                            var toast = new bootstrap.Toast($("#mainToast"));
-                            toast.show();
-                            setTimeout(function() {
-                                $("#toastPanel").hide();
-                            }, 2500);
-                        }
-
+                        $('#mainToastBody').html(`<i class="far fa-check-circle"></i> ${result.message}`);
+                        $('#mainToastBody').addClass('alert-success');
+                        $("#toastPanel").show();
+                        var toast = new bootstrap.Toast($("#mainToast"));
+                        toast.show();
+                        setTimeout(function() {
+                            $("#toastPanel").hide();
+                        }, 2500);
                     }
-                });
+                    else {
+
+                        document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${result.message}`;
+                        document.getElementById('mainToastBody').classList.add('alert-danger');
+                        $("#toastPanel").show();
+                        var toast = new bootstrap.Toast($("#mainToast"));
+                        toast.show();
+                        setTimeout(function() {
+                            $("#toastPanel").hide();
+                        }, 2500);
+                    }
+
+                }
+            });
         });
 
     });

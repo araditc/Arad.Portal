@@ -63,5 +63,15 @@
     "ComponentName": "MultiLingual",
     "ModuleParameters": {
     }
+  },
+  {
+    "ModuleId": "rs854ffc-1653-41ba-a281-ee57fa7ffc09",
+    "ModuleName": "GeneralSearch",
+    "ModuleCategoryType": 4,
+    "IsActive": true,
+    "ComponentName": "GeneralSearch",
+    "ModuleParameters": {
+      "Keyword": ""
+    }
   }
 ]
