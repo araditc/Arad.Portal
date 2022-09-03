@@ -845,6 +845,12 @@
   <string key="Validation_MobileNumberInvalid2">
     <value>Enter the number of fixed phone.</value>
   </string>
+	<string key="AlertAndMessage_NoSpecificationsToCompare">
+		<value>there isnt any specification to compare</value>
+	</string>
+	<string key="AlertAndMessage_NoProductWereAddedToCompare">
+		<value>No product were added to compare</value>
+	</string>
 	<string key="AlertAndMessage_EnterOtp">
 		<value>please enter otp which sent to your phone.</value>
 	</string>

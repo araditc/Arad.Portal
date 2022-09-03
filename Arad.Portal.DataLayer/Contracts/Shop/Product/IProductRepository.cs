@@ -49,6 +49,12 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 
         Task<Result> DeleteProduct(string productId, string modificationReason);
 
+        Task<Result<List<ProductCompare>>> SearchProducts(string filter, string lanId, string currencyId, string domainId);
+
+        Task<Result<List<GeneralSearchResult>>> GeneralSearch(string filter, string lanId, string CurrencyId, string domainId);
+
+        Task<Result<List<ProductCompare>>> FindProductsInGroups(List<string> groupIds, string lanId, string currencyId, string domainId);
+
         bool IsCodeUnique(string code, string productId ="");
 
         Task<Result> UpdateDownloadLimitationCount(string userId, string productId);

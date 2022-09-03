@@ -17,5 +17,7 @@ namespace Arad.Portal.DataLayer.Models.Product
         public List<SelectListModel> UnionSpecifications { get; set; }
 
         public List<ProductCompare> ProductComapreList { get; set; }
+
+        public List<ProductCompare> SuggestionProducts { get; set; }
     }
 }

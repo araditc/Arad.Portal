@@ -38,7 +38,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
     {
         private readonly ProductContext _context;
        
-        private readonly FilterDefinitionBuilder<Entities.Shop.Product.Product> _builder = new();
+        private FilterDefinitionBuilder<Entities.Shop.Product.Product> _builder = new();
         private readonly DomainContext _domainContext;
         private readonly CurrencyContext _currencyContext;
         private readonly TransactionContext _transactionContext;
@@ -1322,22 +1322,23 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         {
             var domainName = this.GetCurrentDomainName();
             var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
-            FilterDefinitionBuilder<Entities.Shop.Product.Product> builder = new();
+            // FilterDefinitionBuilder<Entities.Shop.Product.Product> builder = new();
+            _builder = new();
             FilterDefinition<Entities.Shop.Product.Product> filterDef;
 
-            filterDef = builder.Eq(nameof(Entities.Shop.Product.Product.IsActive), true);
+            filterDef = _builder.Eq(nameof(Entities.Shop.Product.Product.IsActive), true);
             if (!domainEntity.IsDefault)
             {
-                filterDef = builder.And(filterDef, builder.Eq(nameof(Entities.Shop.Product.Product.AssociatedDomainId), domainEntity.DomainId));
+                filterDef = _builder.And(filterDef, _builder.Eq(nameof(Entities.Shop.Product.Product.AssociatedDomainId), domainEntity.DomainId));
             }
             else
             {
-                var filter1 = builder.And(filterDef, builder.Eq(nameof(Entities.Shop.Product.Product.AssociatedDomainId), domainEntity.DomainId));
-                var filter2 = builder.And(filter1, builder.Eq(nameof(Entities.Shop.Product.Product.IsPublishedOnMainDomain), true));
-                var orFilter = builder.Or(filter1, filter2);
-                filterDef = builder.And(orFilter);
+                var filter1 = _builder.And(filterDef, _builder.Eq(nameof(Entities.Shop.Product.Product.AssociatedDomainId), domainEntity.DomainId));
+                var filter2 = _builder.And(filter1, _builder.Eq(nameof(Entities.Shop.Product.Product.IsPublishedOnMainDomain), true));
+                var orFilter = _builder.Or(filter1, filter2);
+                filterDef = _builder.And(orFilter);
             }
-            filterDef = builder.And(filterDef, builder.Gt(nameof(Entities.Shop.Product.Product.Inventory), 0));
+            filterDef = _builder.And(filterDef, _builder.Gt(nameof(Entities.Shop.Product.Product.Inventory), 0));
 
             List<ProductOutputDTO> lst = new List<ProductOutputDTO>();
             switch (type)
@@ -1481,10 +1482,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             else
             {
                 var builder = Builders<Entities.Shop.Product.Product>.Filter;
-                var filter = builder.Ne("ProductId", productId) & builder.Eq("UniqueCode", code);
+                var filter = builder.Ne("ProductId", productId) & _builder.Eq("UniqueCode", code);
                 return !_context.ProductCollection.Find(filter).Any();
             }
-
         }
 
         public  bool IsUniqueUrlFriend(string urlFriend, string productId = "")
@@ -1495,11 +1495,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             }
             else
             { //update
-                FilterDefinitionBuilder<Entities.Shop.Product.Product> productBuilder = new();
+                _builder = new();
                 FilterDefinitionBuilder<MultiLingualProperty> multiLingualBuilder = new();
                 FilterDefinition<MultiLingualProperty> multiLingualFilterDefinition = multiLingualBuilder.Eq("UrlFriend", urlFriend);
                 
-                return !_context.ProductCollection.Find(productBuilder.ElemMatch("MultiLingualProperties", multiLingualFilterDefinition) & productBuilder.Ne("ProductId", productId)).Any();
+                return !_context.ProductCollection.Find(_builder.ElemMatch("MultiLingualProperties", multiLingualFilterDefinition) & _builder.Ne("ProductId", productId)).Any();
             }
         }
 
@@ -1613,6 +1613,136 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             {
                 res = entity.SpecificationNameValues.Any(_ => _.LanguageId == languageId) ?
                     entity.SpecificationNameValues.FirstOrDefault(_ => _.LanguageId == languageId).Name : "";
+            }
+            return res;
+        }
+
+        public async Task<Result<List<ProductCompare>>> SearchProducts(string filter, string lanId, string currencyId, string domainId)
+        {
+            var res = new Result<List<ProductCompare>>();
+            res.ReturnValue = new List<ProductCompare>();
+            var domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
+            if (!string.IsNullOrWhiteSpace(filter))
+            {
+                try
+                {
+
+                    _builder = new();
+                    FilterDefinition<Entities.Shop.Product.Product> proFilterDef;
+                    if(!domainEntity.IsDefault)
+                    {
+                        proFilterDef = _builder.Eq(nameof(Entities.Shop.Product.Product.AssociatedDomainId), domainEntity.DomainId);
+                    }else
+                    {
+                        proFilterDef = _builder.Empty;
+                    }
+                    FilterDefinitionBuilder<MultiLingualProperty> multiLingualBuilder = new();
+                    FilterDefinition<MultiLingualProperty> multiLingualFilterDefinition = multiLingualBuilder.Regex(_ => _.Name, new($".*{filter}.*"));
+                    multiLingualFilterDefinition = multiLingualBuilder.Or(multiLingualFilterDefinition, Builders<MultiLingualProperty>.Filter.Where(_ => _.TagKeywords.Contains(filter)));
+                    proFilterDef &= _builder.ElemMatch("MultiLingualProperties", multiLingualFilterDefinition);
+
+                    res.ReturnValue = await _context.ProductCollection.Find(proFilterDef)
+                            .Project(_ => new ProductCompare()
+                            {
+                                ProductCode = _.ProductCode,
+                                ProductId = _.ProductId,
+                                ProductImageUrl = _.Images.Any(img => img.IsMain || img.ImageRatio == ImageRatio.Square) ? _.Images.FirstOrDefault(img => img.IsMain || img.ImageRatio == ImageRatio.Square).Url :
+                                _.Images.FirstOrDefault().Url,
+                                ProductName = _.MultiLingualProperties.Any(a => a.LanguageId == lanId) ?
+                                _.MultiLingualProperties.FirstOrDefault(a => a.LanguageId == lanId).Name : _.MultiLingualProperties.FirstOrDefault().Name,
+                                CurrentPrice = EvaluateFinalPrice(_.ProductId, _.Prices, _.GroupIds, currencyId).PriceValWithPromotion
+                            }).ToListAsync();
+                    res.Succeeded = true;
+                }
+                catch (Exception ex)
+                {
+                    res.Message = ConstMessages.InternalServerErrorMessage;
+                }
+
+            }
+            return res;
+        }
+
+        public async  Task<Result<List<ProductCompare>>> FindProductsInGroups(List<string> groupIds, string lanId, string currencyId, string domainId)
+        {
+            var res = new Result<List<ProductCompare>>();
+            res.ReturnValue = new List<ProductCompare>();
+            var domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
+            try
+            {
+                _builder = new();
+                FilterDefinition<Entities.Shop.Product.Product> filterDef = _builder.Empty;
+                if(!domainEntity.IsDefault)
+                {
+                    filterDef = _builder.Eq(nameof(Entities.Shop.Product.Product.AssociatedDomainId), domainEntity.DomainId);
+                }
+                
+                filterDef = _builder.And(filterDef, Builders<Entities.Shop.Product.Product>.Filter.Where(_ => _.GroupIds.Intersect(groupIds).Any()));
+
+                res.ReturnValue = (await _context.ProductCollection.Find(filterDef).SortByDescending(_ => _.SaleCount)
+                           .Project(_ => new ProductCompare()
+                           {
+                               ProductCode = _.ProductCode,
+                               ProductId = _.ProductId,
+                               ProductImageUrl = _.Images.Any(img => img.IsMain || img.ImageRatio == ImageRatio.Square) ? _.Images.FirstOrDefault(img => img.IsMain || img.ImageRatio == ImageRatio.Square).Url :
+                               _.Images.FirstOrDefault().Url,
+                               ProductName = _.MultiLingualProperties.Any(a => a.LanguageId == lanId) ?
+                               _.MultiLingualProperties.FirstOrDefault(a => a.LanguageId == lanId).Name : _.MultiLingualProperties.FirstOrDefault().Name,
+                               CurrentPrice = EvaluateFinalPrice(_.ProductId, _.Prices, _.GroupIds, currencyId).PriceValWithPromotion
+                           }).ToListAsync()).Take(10).ToList();
+                res.Succeeded = true;
+
+            }
+            catch (Exception)
+            {
+                res.Message = ConstMessages.InternalServerErrorMessage;
+            }
+            return res;
+        }
+
+        public async Task<Result<List<GeneralSearchResult>>> GeneralSearch(string filter, string lanId, string CurrencyId, string domainId)
+        {
+            var res = new Result<List<GeneralSearchResult>>();
+            res.ReturnValue = new List<GeneralSearchResult>();
+            var domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
+            if (!string.IsNullOrWhiteSpace(filter))
+            {
+                try
+                {
+
+                    _builder = new();
+                    FilterDefinition<Entities.Shop.Product.Product> proFilterDef;
+                    if (!domainEntity.IsDefault)
+                    {
+                        proFilterDef = _builder.Eq(nameof(Entities.Shop.Product.Product.AssociatedDomainId), domainEntity.DomainId);
+                    }
+                    else
+                    {
+                        proFilterDef = _builder.Empty;
+                    }
+                    FilterDefinitionBuilder<MultiLingualProperty> multiLingualBuilder = new();
+                    FilterDefinition<MultiLingualProperty> multiLingualFilterDefinition = multiLingualBuilder.Regex(_ => _.Name, new($".*{filter}.*"));
+                    multiLingualFilterDefinition = multiLingualBuilder.Or(multiLingualFilterDefinition, Builders<MultiLingualProperty>.Filter.Where(_ => _.TagKeywords.Contains(filter)));
+                    proFilterDef &= _builder.ElemMatch("MultiLingualProperties", multiLingualFilterDefinition);
+
+                    res.ReturnValue = await _context.ProductCollection.Find(proFilterDef)
+                            .Project(_ => new GeneralSearchResult()
+                            {
+                                EntityCode = _.ProductCode,
+                                EntityId = _.ProductId,
+                                ImageUrl = _.Images.Any(img => img.IsMain || img.ImageRatio == ImageRatio.Square) ?
+                                _.Images.FirstOrDefault(img => img.IsMain || img.ImageRatio == ImageRatio.Square).Url :
+                                _.Images.FirstOrDefault().Url,
+                                EntityName = _.MultiLingualProperties.Any(a => a.LanguageId == lanId) ?
+                                _.MultiLingualProperties.FirstOrDefault(a => a.LanguageId == lanId).Name : _.MultiLingualProperties.FirstOrDefault().Name,
+                                IsProduct = true
+                            }).ToListAsync();
+                    res.Succeeded = true;
+                }
+                catch (Exception ex)
+                {
+                    res.Message = ConstMessages.InternalServerErrorMessage;
+                }
             }
             return res;
         }

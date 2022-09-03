@@ -131,6 +131,70 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
         }
 
+
+        [HttpGet]
+        [Route("{language}/product/AddToComparePage")]
+        public IActionResult AddToComparePage([FromQuery] long code)
+        {
+            var lanIcon = "";
+            List<string> compareList = new List<string>();
+            var domainEntity = _domainRepository.FetchByName(DomainName, false).ReturnValue;
+            var remoteIpAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString().Replace(".", "");
+
+            if (CultureInfo.CurrentCulture.Name != null)
+            {
+                lanIcon = CultureInfo.CurrentCulture.Name;
+            }
+            else
+            {
+                lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
+            }
+            
+            var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+            var dto = _productRepository.FetchByCode(code.ToString(), domainEntity, userId);
+            if (HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}") != null)
+            {
+                compareList = HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}");
+            }
+            if (!compareList.Contains(dto.ProductId) && compareList.Count <= 4)
+            {
+                compareList.Add(dto.ProductId);
+            }
+            HttpContext.Session.SetComplexData($"compareList_{remoteIpAddress}_{domainEntity.DomainId}", compareList);
+            return Redirect($"/{lanIcon}/Product/Compare");
+
+        }
+
+
+        [HttpGet]
+        [Route("{language}/product/DeleteProductFromCompareList")]
+        public IActionResult DeleteProductFromCompareList([FromQuery] long code)
+        {
+            List<string> compareList = new List<string>();
+            var lanIcon = "";
+            if (CultureInfo.CurrentCulture.Name != null)
+            {
+                lanIcon = CultureInfo.CurrentCulture.Name;
+            }
+            else
+            {
+                lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
+            }
+            var domainEntity = _domainRepository.FetchByName(DomainName, false).ReturnValue;
+            var remoteIpAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString().Replace(".", "");
+            var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+            var dto = _productRepository.FetchByCode(code.ToString(), domainEntity, userId);
+            if (HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}") != null)
+            {
+                compareList = HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}");
+            }
+            if (compareList.Contains(dto.ProductId))
+            {
+                compareList.Remove(dto.ProductId);
+            }
+            HttpContext.Session.SetComplexData($"compareList_{remoteIpAddress}_{domainEntity.DomainId}", compareList);
+            return Redirect($"/{lanIcon}/Product/Compare");
+        }
         [HttpGet]
         [Route("{language}/product/compare")]
         public async Task<IActionResult> Compare()
@@ -142,18 +206,12 @@ namespace Arad.Portal.UI.Shop.Controllers
             string lanId = string.Empty;
            
 
-            if(CultureInfo.CurrentCulture.Name != null)
-            {
-                 lanId = _lanRepository.FetchBySymbol(CultureInfo.CurrentCulture.Name);
-            }else
-            {
-               var lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
-                lanId = _lanRepository.FetchBySymbol(lanIcon);
-            }
-            #region currency
+           
+            #region currency and language
             string curId = string.Empty;
             if(CultureInfo.CurrentCulture.Name != null)
             {
+                lanId = _lanRepository.FetchBySymbol(CultureInfo.CurrentCulture.Name);
                 var ri = new RegionInfo(System.Threading.Thread.CurrentThread.CurrentUICulture.LCID);
                 var curSymbol = ri.ISOCurrencySymbol;
                 var currencyDto = _curRepository.GetCurrencyByItsPrefix(curSymbol);
@@ -162,23 +220,31 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
             else
             {
-
+                var lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
+                lanId = _lanRepository.FetchBySymbol(lanIcon);
+                ViewBag.LanIcon = lanIcon;
                 curId = domainEntity.DefaultCurrencyId;
                 var curDto = _curRepository.FetchCurrency(curId);
                 ViewBag.CurrencySymbol = curDto.ReturnValue.Symbol;
             }
-            
+
             #endregion
             List<ProductCompare> products = new List<ProductCompare>();
+            var FirstProductGroupIds = new List<string>();
             var remoteIpAddress = Request.HttpContext.Connection.RemoteIpAddress;
            
             if (HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}") != null)
             {
                 compareList = HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}");
             }
+            int index = 0;
             foreach (var item in compareList)
             {
                 var productDto = await _productRepository.ProductFetch(item);
+               if(index == 0)
+                {
+                    FirstProductGroupIds = productDto.GroupIds;
+                }
                 var obj = new ProductCompare()
                 {
                     ProductId = item,
@@ -200,7 +266,9 @@ namespace Arad.Portal.UI.Shop.Controllers
                 {
                     specificationIds = specificationIds.Union(obj.Specifications.Select(_ => _.SpecificationId).ToList()).ToList();
                 }
+                index++;
             }
+          
             model.ProductComapreList = products;
             foreach (var spec in specificationIds)
             {
@@ -213,10 +281,43 @@ namespace Arad.Portal.UI.Shop.Controllers
                     };
                     model.UnionSpecifications.Add(obj);
                 }
-                
-                
             }
+
+            model.SuggestionProducts = (await _productRepository.FindProductsInGroups(FirstProductGroupIds, lanId, curId, domainEntity.DomainId)).ReturnValue;
             return View(model);
+        }
+
+        [HttpGet]
+        [Route("{language}/product/search")]
+        public async Task<IActionResult> Search(string filter)
+        {
+            string lanId = "";
+            string curId = "";
+            var domainEntity = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
+            if (CultureInfo.CurrentCulture.Name != null)
+            {
+                lanId = _lanRepository.FetchBySymbol(CultureInfo.CurrentCulture.Name);
+                var ri = new RegionInfo(System.Threading.Thread.CurrentThread.CurrentUICulture.LCID);
+                var curSymbol = ri.ISOCurrencySymbol;
+                var currencyDto = _curRepository.GetCurrencyByItsPrefix(curSymbol);
+                curId = currencyDto.CurrencyId;
+            }
+            else
+            {
+                var lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
+                lanId = _lanRepository.FetchBySymbol(lanIcon);
+                curId = domainEntity.DefaultCurrencyId;
+            }
+            var res = await _productRepository.SearchProducts(filter, lanId, curId, domainEntity.DomainId);
+            if(res.Succeeded)
+            {
+                foreach (var item in res.ReturnValue)
+                {
+                    item.FormattedPrice = $"{Convert.ToInt64(item.CurrentPrice):n0}";
+                }
+            }
+            return new JsonResult(new { status = res.Succeeded ? "success" : "failed", data = res.ReturnValue, msg = res.Message });
+
         }
 
         public string GetMimeTypeForFileExtension(string filePath)
@@ -312,37 +413,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> RatingProduct([FromBody]RateProduct model)
-        //{
-        //    var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
-        //    string prevRate = ""; 
-        //    var userProductRateCookieName = $"{userId}_p{model.ProductId}";
-        //    if (!model.IsNew)//the user has rated before
-        //    {
-        //         prevRate = HttpContext.Request.Cookies[userProductRateCookieName];
-        //    }
-        //    int preS = !string.IsNullOrWhiteSpace(prevRate) ? Convert.ToInt32(prevRate) : 0;
-           
-        //    var res = await _productRepository.RateProduct(model.ProductId, model.Score,
-        //            model.IsNew, preS);
-        //    if (res.Succeeded)
-        //    {
-        //        //set its related cookie
-        //        return
-        //            Json(new
-        //            {
-        //                status = "Succeed",
-        //                like = res.ReturnValue.LikeRate,
-        //                dislike = res.ReturnValue.DisikeRate,
-        //                half = res.ReturnValue.HalfLikeRate
-        //            });
-        //    }
-        //    else
-        //    {
-        //        return Json(new { status = "error" });
-        //    }
-        //}
+       
     }
 }
 

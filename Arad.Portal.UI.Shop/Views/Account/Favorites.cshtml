@@ -50,11 +50,11 @@
 <script type="text/javascript">
 $(document).ready(function() { 
     $("#btnSearch").click(function() {
+        
         if ($("#txtSearch").val().trim() != "") {
             var txt = $("#txtSearch").val().trim();
             window.location.href = @Url.Action("Favorites", "Account")+"?type=" + "@ViewBag.Type" + "&keyword=" + txt;
         }
     });
-        
 });
  </script>

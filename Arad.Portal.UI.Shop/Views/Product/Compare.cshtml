@@ -1,10 +1,12 @@
 ﻿@model Arad.Portal.DataLayer.Models.Product.CompareModel
 @{
 
+
 }
 <style>
 </style>
 <div class="container">
+
     <div class="modal" id="productSearchModal" tabindex="-1" aria-labelledby="productSearchModal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -21,7 +23,29 @@
                             </button>
                         </div>
                     </div>
-                    <div class="col-12" id="productResult"></div>
+                    <div class="row" id="productResult">
+                        @{
+                            foreach (var pro in Model.SuggestionProducts)
+                            {
+                                                    <div class="col-12 col-md-3">
+                                                        <div class="card" onclick="addProduct(@pro.ProductId)">
+                                                            <a href="@($"/product/{pro.ProductCode}")" class="proLink" role="button">
+                                                                <img src="@($"../filemanager/getScaledImageOnWidth?path={pro.ProductImageUrl}&width={150}")" class="card-img-top" alt="...">
+                                                            </a>
+                                                            <div class="card-body">
+                                                                <a href="@($"/product/{pro.ProductCode}")" class="proLink" role="button">
+                                                                    <p class="card-text text-center">@pro.ProductName</p>
+                                                                </a>
+                                                                <p class="card-title fs-6">
+                                                                    @($"{Convert.ToInt64(pro.CurrentPrice):n0} {ViewBag.CurrencySymbol}")
+                                                                </p>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                            }
+                        }
+                    </div>
                 </div>
             </div>
         </div>
@@ -32,8 +56,10 @@
         {
             <div class="col-12 col-md-3">
                 <div class="card">
+                    <div class="card-header">  <button type="button" class="btn-close float-end"  aria-label="Close" onclick="DelPro(@(pro.ProductCode))"></button>
+                      </div>
                     <a href="@($"/product/{pro.ProductCode}")" class="proLink" role="button">
-                        <img src="..." class="card-img-top" alt="...">
+                        <img src="@($"../filemanager/getScaledImageOnWidth?path={pro.ProductImageUrl}&width={150}")" class="card-img-top" alt="...">
                     </a>
                     <div class="card-body">
                         <a href="@($"/product/{pro.ProductCode}")" class="proLink" role="button">
@@ -66,7 +92,7 @@
                         @{
                             foreach (var pro in Model.ProductComapreList)
                             {
-                                <th scope="col">@pro.ProductName</th>
+                                                    <th scope="col">@pro.ProductName</th>
                             }
                         }
                     </tr>
@@ -75,13 +101,13 @@
                     @{
                         foreach (var spec in Model.UnionSpecifications)
                         {
-                            <tr>
-                                <th scope="row">@spec.Text</th>
-                                @foreach (var pro in Model.ProductComapreList)
+                                                <tr>
+                                                    <th scope="row">@spec.Text</th>
+                                                    @foreach (var pro in Model.ProductComapreList)
                                 {
-                                    <td>@(pro.Specifications.Any(_=>_.SpecificationId == spec.Value) ? pro.Specifications.FirstOrDefault(_=>_.SpecificationId == spec.Value).Values : "-")</td>
+                                                        <td>@(pro.Specifications.Any(_=>_.SpecificationId == spec.Value) ? pro.Specifications.FirstOrDefault(_=>_.SpecificationId == spec.Value).Values : "-")</td>
                                 }
-                            </tr>
+                                                </tr>
 
                         }
                     }
@@ -90,12 +116,12 @@
         }
         else if (Model.ProductComapreList.Count == 0)
         {
-            <div class="col-12"><p>@Language.GetString("")</p></div>
+            <div class="col-12"><p>@Language.GetString("AlertAndMessage_EnterOtpNoProductWereAddedToCompare")</p></div>
 
         }
         else if (Model.UnionSpecifications.Count == 0)
         {
-            <div class="col-12"><p>@Language.GetString("")</p></div>
+            <div class="col-12"><p>@Language.GetString("AlertAndMessage_NoSpecificationsToCompare")</p></div>
         }
 
     </div>
@@ -106,8 +132,48 @@
     $(document).ready(function() {
         var currentCount = '@Model.ProductComapreList.Count';
 
-        $("#btnAddToCampareList").click(function() {
+        $("#btnSearch").click(function() {
 
+            var filter = $("#txtSearch").val();
+            $.ajax({
+                url: `/'@ViewBag.LanIcon'/Product/Search?filter=${filter}`,
+                contentType: 'application/json',
+                type: 'Get',
+                dataType: 'json',
+                beforeSend: function() { },
+                success: function(result) {
+                    if (result.status == "success") {
+                        $("#productResult").html("");
+                        for (var i = 0; i <= result.dataType.length; i++) {
+
+                            var pro = result.dataType[i];
+
+                            var html = `<div class="col-12 col-md-3"><div class="card" onclick="addProduct(${pro.ProductCode})">
+                                            <a href="/product/${pro.ProductCode}" class="proLink" role="button">
+                                                <img src="../filemanager/getScaledImageOnWidth?path=${pro.ProductImageUrl}&width=80")" class="card-img-top" alt="...">
+                                            </a>
+                                            <div class="card-body">
+                                                <a href=$"/product/${pro.ProductCode}" class="proLink" role="button">
+                                                    <p class="card-text text-center">${pro.ProductName}</p>
+                                                </a>
+                                                <p class="card-title fs-6">
+                                                    ${pro.FormattedPrice} ${'@ViewBag.CurrencySymbol'}
+                                                </p>
+                                            </div></div></div>`;
+                            $("#productResult").append(html);
+                        }
+                    } else {
+                        $("#productResult").html("");
+                    }
+                },
+            })
         });
     });
+    function addProduct(code) {
+        window.location.href = '@Url.Action("AddToComparePage", "Product")' + "?code=" + code;
+    }
+
+    function DelPro(code) {
+        window.location.href = '@Url.Action("DeleteProductFromCompareList", "Product")' + "?code=" + code;
+    }
 </script>

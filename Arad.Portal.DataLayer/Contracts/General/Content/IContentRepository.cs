@@ -22,6 +22,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Content
         Task<Result> UpdateVisitCount(string contentId);
         Task<Result> Delete(string contentId, string modificationReason);
         Task<Result<EntityRate>> RateContent(string contentId, int score, bool isNew, int prevScore);
+        Task<Result<List<GeneralSearchResult>>> GeneralSearch(string filter, string lanId, string CurrencyId, string domainId);
         Task<Result> Restore(string contentId);
         List<SelectListModel> GetContentsList(string domainId, string currentUserId, string categoryId);
         List<SelectListModel> GetAllSourceType();

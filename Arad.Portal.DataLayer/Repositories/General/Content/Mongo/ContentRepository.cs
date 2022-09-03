@@ -812,5 +812,55 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             }
             return result;
         }
+
+        public async Task<Result<List<GeneralSearchResult>>> GeneralSearch(string filter, string lanId, string CurrencyId, string domainId)
+        {
+            var res = new Result<List<GeneralSearchResult>>();
+            res.ReturnValue = new List<GeneralSearchResult>();
+            var domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
+            if (!string.IsNullOrWhiteSpace(filter))
+            {
+                try
+                {
+
+                    FilterDefinitionBuilder<Entities.General.Content.Content> builder = new();
+                    FilterDefinition<Entities.General.Content.Content> contentFilterDef;
+                    FilterDefinition<Entities.General.Content.Content> orFilterDef;
+                    if (!domainEntity.IsDefault)
+                    {
+                        contentFilterDef = builder.Eq(nameof(Entities.General.Content.Content.AssociatedDomainId), domainEntity.DomainId);
+                    }
+                    else
+                    {
+                        contentFilterDef = builder.Empty;
+                    }
+
+                    contentFilterDef &= builder.Eq(nameof(Entities.General.Content.Content.LanguageId), lanId);
+
+                    orFilterDef = builder.Regex(_ => _.Title, new($".*{filter}.*"));
+                    orFilterDef = builder.Or(orFilterDef, Builders<Entities.General.Content.Content>.Filter.Where(_ => _.TagKeywords.Contains(filter)));
+
+                    contentFilterDef = builder.And(contentFilterDef, orFilterDef);
+
+                    res.ReturnValue = await _contentContext.Collection.Find(contentFilterDef)
+                            .Project(_ => new GeneralSearchResult()
+                            {
+                                EntityCode = _.ContentCode,
+                                EntityId = _.ContentId,
+                                ImageUrl = _.Images.Any(img => img.IsMain || img.ImageRatio == ImageRatio.Square) ?
+                                _.Images.FirstOrDefault(img => img.IsMain || img.ImageRatio == ImageRatio.Square).Url :
+                                _.Images.FirstOrDefault().Url,
+                                EntityName = _.Title,
+                                IsProduct = false
+                            }).ToListAsync();
+                    res.Succeeded = true;
+                }
+                catch (Exception ex)
+                {
+                    res.Message = ConstMessages.InternalServerErrorMessage;
+                }
+            }
+            return res;
+        }
     }
 }

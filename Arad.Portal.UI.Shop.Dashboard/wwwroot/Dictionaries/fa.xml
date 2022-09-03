@@ -844,6 +844,12 @@
   <string key="Validation_MobileNumberInvalid2">
     <value>شماره وارد شده مربوط به تلفن ثابت می باشد.</value>
   </string>
+	<string key="AlertAndMessage_NoSpecificationsToCompare">
+		<value>هیچ خصیصیه ای برای مقایسه وجود ندارد.</value>
+	</string>
+	<string key="AlertAndMessage_EnterOtpNoProductWereAddedToCompare">
+		<value>هیچ محصولی برای مقایسه افزوده نشده است.</value>
+	</string>
 	<string key="AlertAndMessage_EnterOtp">
 		<value>لطفا کد وارد شده به گوشی همراه خود را وارد کنید.</value>
 	</string>
