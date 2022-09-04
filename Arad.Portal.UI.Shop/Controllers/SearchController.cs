@@ -34,13 +34,34 @@ namespace Arad.Portal.UI.Shop.Controllers
             _curRepository = curRepository;
             _accessor = accessor;
         }
+        /// <summary>
+        /// this method were called first time that user enter any keyword an press search button
+        /// </summary>
+        /// <param name="keyword">this is the exact keyword that user enter in search</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{language}/search/initial")]
+        public async Task<IActionResult> Initial(string keyword)
+        {
 
+        }
+
+        /// <summary>
+        /// this method were called after suggestion keywords for search
+        /// then it can be just a keyword or a keyword in specigic category or group or a similar keyword to initial Keyword
+        /// </summary>
+        /// <param name="f">it is the keyword for search it can be exact initial keyword
+        /// (first keyword that user enter without any changes) or can be a keyword from or suggestion list</param>
+        /// <param name="categoryId">if this category specified then we look in contents with this specific categoryId</param>
+        /// <param name="groupId">if this groupId specified then we look in products with specific groups</param>
+        /// <returns></returns>
         [HttpGet]
         [Route("{language}/search")]
-        public async Task<IActionResult> Index(string f)
+        public async Task<IActionResult> Index(string f, 
+            string contentCategoryName = "", string productGroupName = "")
         {
             List<GeneralSearchResult> lst = new List<GeneralSearchResult>();
-            var domainEntity = _domainRepository.FetchByName($"{_accessor.HttpContext.Request.Host}", false).ReturnValue;
+            var domainEntity = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
             string lanIcon;
             string currencyId = string.Empty;
             if (CultureInfo.CurrentCulture.Name != null)
