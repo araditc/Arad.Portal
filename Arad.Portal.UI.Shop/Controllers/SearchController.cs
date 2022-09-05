@@ -39,12 +39,12 @@ namespace Arad.Portal.UI.Shop.Controllers
         /// </summary>
         /// <param name="keyword">this is the exact keyword that user enter in search</param>
         /// <returns></returns>
-        [HttpGet]
-        [Route("{language}/search/initial")]
-        public async Task<IActionResult> Initial(string keyword)
-        {
+        //[HttpGet]
+        //[Route("{language}/search/initial")]
+        //public async Task<IActionResult> Initial(string keyword)
+        //{
 
-        }
+        //}
 
         /// <summary>
         /// this method were called after suggestion keywords for search

@@ -11,29 +11,36 @@ namespace Arad.Portal.DataLayer.Models.Shared
     /// </summary>
     public class LuceneSearchIndexModel
     {
+        public LuceneSearchIndexModel()
+        {
+            GroupIds = new();
+            TagKeywordList = new();
+            GroupNames = new();
+        }
         /// <summary>
-        /// if it is product it start with pro_ProductId and if it is content it start with con_ContentId
+        /// its whether product or content Id
         /// </summary>
-        public string EntityId { get; set; }
-
-        
+        public string ID { get; set; }
         public string EntityName { get; set; }
+        /// <summary>
+        /// if this product  entity then it is productGroupId and it can be more than one
+        /// if it is content entity then this is contentcategoryId and it is only one
+        /// </summary>
+        public List<string> GroupIds { get; set; }
+
+        public string Code { get; set; }
+
+        public string UniqueCode { get; set; }
 
         /// <summary>
-        /// if this product  entity then it is productGroupId 
-        /// if it is content entity then this is contentcategoryId
+        /// the productGroupName(single) or contentCategoryName(multiple) 
         /// </summary>
-        public string GroupId { get; set; }
+        public List<string> GroupNames { get; set; }
 
         /// <summary>
-        /// the productGroupName or contentCategoryName 
+        /// list of tags in language
         /// </summary>
-        public string GroupName { get; set; }
-
-        /// <summary>
-        /// list of tags in all languages
-        /// </summary>
-        public string TagKeywordList { get; set; }
+        public List<string> TagKeywordList { get; set; }
 
 
     }
