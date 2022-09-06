@@ -90,6 +90,7 @@ using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using System.Threading.Tasks;
 using Serilog;
+using Arad.Portal.DataLayer.Services;
 
 namespace Arad.Portal.UI.Shop
 {
@@ -263,7 +264,8 @@ namespace Arad.Portal.UI.Shop
                 var path9 = Path.Combine(Configuration["LocalStaticFileStorage"], "ckEditorProductImages");
                 var path10 = Path.Combine(Configuration["LocalStaticFileStorage"], "Log");
                 var path11 = Path.Combine(Configuration["LocalStaticFileStorage"], "ProductFiles");
-                List<string> pathes = new List<string>() { path1, path2, path3, path4, path5, path6, path7, path8, path9, path10, path11 };
+                var path12 = Path.Combine(Configuration["LocalStaticFileStorage"], "LuceneIndexes");
+                List<string> pathes = new List<string>() { path1, path2, path3, path4, path5, path6, path7, path8, path9, path10, path11, path12 };
 
                 foreach (var path in pathes)
                 {
@@ -392,6 +394,7 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<ICountryRepository, CountryRepository>();
             services.AddTransient<IModuleRepository, ModuleRepository>();
             services.AddTransient<ISliderRepository, SliderRepository>();
+            services.AddTransient<ILuceneService, LuceneService>();
             #endregion repositories
 
 

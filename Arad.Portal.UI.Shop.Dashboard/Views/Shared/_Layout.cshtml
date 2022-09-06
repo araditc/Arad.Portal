@@ -9,9 +9,9 @@
     var langList = new List<string>() { "fa", "en" };
     string lang = "";
     string userName = "";
-    @if(User.Identity.IsAuthenticated)
+    @if (User.Identity.IsAuthenticated)
     {
-       userName = _accessor.HttpContext?.User.GetUserName();
+        userName = _accessor.HttpContext?.User.GetUserName();
     }
 
     if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
@@ -34,16 +34,16 @@
             lang = "en";
             break;
     }
-   
+
     var baseAdd = Config["BaseAddress"];
-   var jsFileName = CultureInfo.CurrentCulture.Name.Replace('-', '_');
+    var jsFileName = CultureInfo.CurrentCulture.Name.Replace('-', '_');
 }
 
 
 <html dir="@direction" lang="@lang">
 
 <head>
-   <meta charset="utf-8">
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width , initial-scale=1" />
     <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
@@ -70,7 +70,7 @@
     <link href="@Url.Content($"~/lib/bootstrap-select/css/bootstrap-select.min.css")" rel="stylesheet" />
     <link href="@Url.Content($"~/css/site.css")" rel="stylesheet" />
     <link href="@Url.Content($"~/lib/font-awesome/css/all.css")" rel="stylesheet" />
-    <link href ="@Url.Content($"~/lib/animate.css/animate.compat.css")" rel="stylesheet"/>
+    <link href="@Url.Content($"~/lib/animate.css/animate.compat.css")" rel="stylesheet" />
 
     @await RenderSectionAsync("Styles", required: false)
     <script src="@Url.Content($"~/lib/jquery/dist/jquery.min.js")"></script>
@@ -85,11 +85,14 @@
 
 <body>
     <style>
-     .all{
-        color : darkblue;
-       }
+        .all{
+           color : darkblue;
+          }
+          .logoWidth{
+              width: 10%;
+          }
     </style>
-  <div id="loading" class="text-center">
+    <div id="loading" class="text-center">
         <div class="spinner-border text-danger" style="width: 4rem; height: 4rem;" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
@@ -97,60 +100,65 @@
 
     <header class="navbar navbar-light shadow navbar-expand flex-md-nowrap p-0 m-0">
         <div class="container-fluid">
-            <div class="navbar-brand col-md-3 me-0">
-                <img alt="siteLogo" class="navbar-logo" height="50" src="/images/Logo.png" width="50" />
-                @Language.GetString("Menu_Dashboard_HomeTitle")
-            </div>
-            <div class="w-100 text-center fw-semibold" dir="ltr" id="dateTime"></div>
-            <div>
-                <ul class="list-group list-group-horizontal">
-                    <li class="list-group-item border-0 p-0">
-                        <a class="nav-link  p-1" role="button">
-                            <img src="@Url.Content($"~/imgs/USA.png")" onclick="setLang('en-US')" />
-                        </a>
-                    </li>
-                    <li class="list-group-item border-0 p-0">
-                        <a class="nav-link p-1" role="button">
-                            <img src="@Url.Content($"~/imgs/IRAN.png")" onclick="setLang('fa-IR')" />
-                        </a>
-                    </li>
+            <div class="row w-100 gx-0">
+                <div class="navbar-brand col-12 col-sm-10 col-md-3 me-0 mt-0 mt-md-2 text-center">
+                    <img alt="siteLogo" class="navbar-logo logoWidth" src="/images/Logo.png"  />
+                    @Language.GetString("Menu_Dashboard_HomeTitle")
+                </div>
+                <div class="col-3 col-sm-2 col-md-6 text-center fw-semibold py-0 py-md-2" dir="ltr" id="dateTime"></div>
+                <div class="col-4 offset-sm-2 offset-md-0 col-md-1 d-flex justify-content-end">
+                    <ul class="list-group list-group-horizontal">
+                        <li class="list-group-item border-0 px-0 py-2 mt-0 mt-md-2">
+                            <a class="nav-link  p-1" role="button">
+                                <img src="@Url.Content($"~/imgs/USA.png")" onclick="setLang('en-US')" />
+                            </a>
+                        </li>
+                        <li class="list-group-item border-0 px-0 py-2 mt-0 mt-md-2">
+                            <a class="nav-link p-1" role="button">
+                                <img src="@Url.Content($"~/imgs/IRAN.png")" onclick="setLang('fa-IR')" />
+                            </a>
+                        </li>
 
-                </ul>
-            </div>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a aria-expanded="false" class="nav-link dropdown-toggle fw-bold" data-bs-toggle="dropdown" href="#" id="navbarDropdownMenuLink" role="button">
-                            @userName
-                        </a>
-                        <ul aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
-                            <li>
-                                <a class="dropdown-item fs" asp-action="ChangePassword" asp-controller="Account">
-                                    <i class="fas fa-key"></i>
-                                    @Language.GetString("ChangePassword")
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item fs" asp-action="Profile" asp-controller="Account">
-                                    <i class="far fa-id-badge"></i>
-                                    @Language.GetString("Menu_Profile")
-                                </a>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="dropdown-item fs" asp-action="Logout" asp-controller="Account">
-                                    <i class="fas fa-sign-out-alt"></i>
-                                    @Language.GetString("btn_Exit")
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <button aria-controls="bd-docs-nav" aria-expanded="false" aria-label="Toggle docs navigation" class="nav-link btn bg-gradient btn-sm btn-outline-success d-md-flex px-3 ms-3 collapsed" data-bs-target="#bd-docs-nav" data-bs-toggle="collapse" type="button">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                    </li>
-                </ul>
+                    </ul>
+                </div>
+                <div class="col-5 col-sm-6 col-md-2 collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown mt-1">
+                            <a aria-expanded="false" class="nav-link dropdown-toggle fw-bold" data-bs-toggle="dropdown" href="#" id="navbarDropdownMenuLink" role="button">
+                                @userName
+                            </a>
+                            <ul aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item fs" asp-action="ResetPassword" asp-controller="Account">
+                                        <i class="fas fa-key"></i>
+                                        @Language.GetString("ChangePassword")
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item fs" asp-action="Profile" asp-controller="Account">
+                                        <i class="far fa-id-badge"></i>
+                                        @Language.GetString("Menu_Profile")
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item fs" asp-action="Logout" asp-controller="Account">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        @Language.GetString("btn_Exit")
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <button aria-controls="bd-docs-nav" aria-expanded="false" aria-label="Toggle docs navigation" 
+                             class="nav-link btn bg-gradient btn-sm btn-outline-success d-md-flex px-3 ms-3 collapsed" data-bs-target="#bd-docs-nav" 
+                              data-bs-toggle="collapse" type="button">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
             </div>
         </div>
     </header>
@@ -161,23 +169,23 @@
                 @await Component.InvokeAsync("SidebarMenu")
             </nav>
 
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-2 flex-grow-1" id="mainContent">
+            <main class="col-12 col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-2 flex-grow-1" id="mainContent">
                 @RenderBody()
             </main>
         </div>
     </div>
-    
+
     <div class="position-fixed left-50 top-0 p-5" id="toastPanel" style="z-index: 11;">
         <div aria-atomic="true" aria-live="assertive" class="toast" id="mainToast" role="alert" autohide="false">
             <div class="toast-header">
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <div class="toast-body p-3 fs-5 rounded-3 text-center" id="mainToastBody" >
+            <div class="toast-body p-3 fs-5 rounded-3 text-center" id="mainToastBody">
             </div>
         </div>
     </div>
 
-   
+
     <div aria-hidden="true" aria-labelledby="confirmModalLabel" class="modal fade" id="confirmModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -204,203 +212,184 @@
     <script src="@Url.Content($"~/js/site.js")" asp-append-version="true"></script>
     <script>
 
-    $(document).ready(function () {
+        $(document).ready(function() {
 
-    });
-    var entityId;
-    var confirmUrl;
-    var typeOfRequest;
-    //var bsAlert = new bootstrap.Toast(document.getElementById('mainToast'));
+        });
+        var entityId;
+        var confirmUrl;
+        var typeOfRequest;
+        //var bsAlert = new bootstrap.Toast(document.getElementById('mainToast'));
 
-    adjustSidebar();
+        adjustSidebar();
 
-    window.addEventListener('load',
-        () =>
-        {
+        window.addEventListener('load',
+            () => {
 
-            $("#loading").removeClass('is-active');
-            $("#deleteToast").hide();
-            $("#toastPanel").hide();
-            setInterval(function()
-                {
+                $("#loading").removeClass('is-active');
+                $("#deleteToast").hide();
+                $("#toastPanel").hide();
+                setInterval(function() {
                     const dateTime = new Date();
                     const date = dateTime.toLocaleDateString('@CultureInfo.CurrentCulture.Name') + ' <br/> ' + dateTime.toLocaleTimeString('@CultureInfo.CurrentCulture.Name');
                     $("#dateTime").html(date);
                 },
-                1000);
+                    1000);
 
-           @* if ('@isNotNullOperationResult' === 'True')
-            {
-                $("#toastPanel").show();
-                bsAlert.show();
+        @* if ('@isNotNullOperationResult' === 'True')
+                    {
+                    $("#toastPanel").show();
+                    bsAlert.show();
 
-				if ("@isSuccess" === "False")
-                {
+                    if ("@isSuccess" === "False")
+                    {
                     document.getElementById('mainToastBody').innerHTML = '<i class="fas fa-exclamation-triangle"></i> @operationResult.Message';
                     document.getElementById('mainToastBody').classList.add('alert-danger');
 
                     setTimeout(function()
-                        {
-                            $("#toastPanel").hide();
-                        },
-                        2000);
-                }
-                else
-                {
+                    {
+                    $("#toastPanel").hide();
+                    },
+                    2000);
+                    }
+                    else
+                    {
                     document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @operationResult.Message';
                     document.getElementById('mainToastBody').classList.add('alert-success');
 
                     if ("@string.IsNullOrWhiteSpace(operationResult.Url)" === "False")
                     {
-                        setTimeout(function()
-                            {
-                                window.location.href = '@operationResult.Url';
-                            },
-                            2500);
-                    }
-                }
-            }*@
-       });
-
-    window.addEventListener('resize', adjustSidebar);
-
-    window.addEventListener("beforeunload",
-        () => {
-            $("#loading").addClass('is-active');
-        });
-	window.addEventListener('load',
-		() =>
-		{
-			setInterval(function()
-				{
-					const dateTime = new Date();
-					const date = dateTime.toLocaleDateString('@CultureInfo.CurrentCulture.Name') + ' <br/> ' + dateTime.toLocaleTimeString('@CultureInfo.CurrentCulture.Name');
-					$("#dateTime").html(date);
-				},
-				1000);
-		});
-	function adjustSidebar()
-	{
-		var side;
-		side = document.getElementById('bd-docs-nav');
-		if (window.innerWidth >= 576)
-		{
-			if (!side.classList.contains("show"))
-			{
-				side.classList.add('show');
-			}
-		}
-		else
-		{
-			side = document.getElementById('bd-docs-nav');
-			if (side.classList.contains("show"))
-			{
-				side.classList.remove("show");
-			}
-		}
-
-        if(window.location.href.contains("/product/compare"))
-        {
-            if(window.innerWidth <= 767)
-            {
-                $(".compareSection").addClass("d-none")
-            }else
-            {
-                $(".compareSection").removeClass("d-none");
-            }
-        }
-	}
-	function GetDecoded(stringInput)
-	{
-		var map = { "gt": ">", "&quot;": "\"", "lt": "<", "quot": "\"" /* , … */ };
-		return stringInput.replace(/&(#(?:x[0-9a-f]+|\d+)|[a-z]+);?/gi,
-			function($0, $1)
-			{
-				if ($1[0] === "#")
-				{
-					return String.fromCharCode($1[1].toLowerCase() === "x" ? parseInt($1.substr(2), 16) : parseInt($1.substr(1), 10));
-				}
-				else
-				{
-					return map.hasOwnProperty($1) ? map[$1] : $0;
-				}
-			});
-	};
-    function setLang(lang) {
-        var currentCulture = '@CultureInfo.CurrentCulture.Name';
-        if (currentCulture !== lang) {
-            $.ajax({
-                type: "GET",
-                url: '@Url.Action("changeLang", "Account")'+ "?langId=" + lang,
-                success: function () {
-
-                    window.location.reload();
-                }
-            });
-        }
-    }
- 
-
-    function onClickYes()
-    {
-        debugger;
-        $('#confirmModal').modal('hide');
-        $("#toastPanel").show();
-        $('#mainToastBody').removeClass('alert-success');
-        $('#mainToastBody').removeClass('alert-danger');
-
-
-        $.ajax({
-            type: typeOfRequest,
-            url: confirmUrl,
-            success: function (resultData) {
-                debugger;
-                if (resultData.status.toLowerCase() === "success") {
-
-                    $('#mainToastBody').html('<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessage_OperationDoneSuccessfully")');
-                    $('#mainToastBody').addClass('alert-success');
-                   
-                    var toast = new bootstrap.Toast($("#mainToast"));
-                    toast.show();
                     setTimeout(function()
                     {
-                        window.location.reload();
+                    window.location.href = '@operationResult.Url';
                     },
-                    3000);
-                }
-                if (resultData.status.toLowerCase() === "error") {
-                    showError(resultData.message);
+                    2500);
+                    }
+                    }
+                    }*@
+               });
+
+        window.addEventListener('resize', adjustSidebar);
+
+        window.addEventListener("beforeunload",
+            () => {
+                $("#loading").addClass('is-active');
+            });
+        window.addEventListener('load',
+            () => {
+                setInterval(function() {
+                    const dateTime = new Date();
+                    const date = dateTime.toLocaleDateString('@CultureInfo.CurrentCulture.Name') + ' <br/> ' + dateTime.toLocaleTimeString('@CultureInfo.CurrentCulture.Name');
+                    $("#dateTime").html(date);
+                },
+                    1000);
+            });
+        function adjustSidebar() {
+            var side;
+            side = $('#bd-docs-nav');
+            if (window.innerWidth >= 576) {
+                if (!$('#bd-docs-nav').hasClass("show")) {
+                    $('#bd-docs-nav').addClass('show');
                 }
             }
-            
-        });
-    }
+            else {
 
-    function showError(msg) {
-        
-        document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
-        document.getElementById('mainToastBody').classList.add('alert-danger');
-        $("#toastPanel").show();
-        var toast = new bootstrap.Toast($("#mainToast"));
-        toast.show();
-        setTimeout(function(){
-            $("#toastPanel").hide();
-        }, 2000)
-    }
+                if ($('#bd-docs-nav').hasClass("show")) {
+                    $('#bd-docs-nav').removeClass("show");
+                }
+            }
 
-    function clearFormValidation()
-    {
-        var spanErrorList = $('span[data-val-result]');
-        if (spanErrorList.length > 1) {
-            spanErrorList.each(function() {
-                $(this).html("");
-                $(this).parent().removeClass("has-error");
-            });
-        } else {
-            spanErrorList.html("");
-            spanErrorList.parent().removeClass("has-error");
+            if (window.location.href.includes("/product/compare")) {
+                if (window.innerWidth <= 767) {
+                    $(".compareSection").addClass("d-none")
+                } else {
+                    $(".compareSection").removeClass("d-none");
+                }
+            }
         }
-    }
+        function GetDecoded(stringInput) {
+            var map = { "gt": ">", "&quot;": "\"", "lt": "<", "quot": "\"" /* , … */ };
+            return stringInput.replace(/&(#(?:x[0-9a-f]+|\d+)|[a-z]+);?/gi,
+                function($0, $1) {
+                    if ($1[0] === "#") {
+                        return String.fromCharCode($1[1].toLowerCase() === "x" ? parseInt($1.substr(2), 16) : parseInt($1.substr(1), 10));
+                    }
+                    else {
+                        return map.hasOwnProperty($1) ? map[$1] : $0;
+                    }
+                });
+        };
+        function setLang(lang) {
+            var currentCulture = '@CultureInfo.CurrentCulture.Name';
+            if (currentCulture !== lang) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("changeLang", "Account")' + "?langId=" + lang,
+                    success: function() {
+
+                        window.location.reload();
+                    }
+                });
+            }
+        }
+
+
+        function onClickYes() {
+            debugger;
+            $('#confirmModal').modal('hide');
+            $("#toastPanel").show();
+            $('#mainToastBody').removeClass('alert-success');
+            $('#mainToastBody').removeClass('alert-danger');
+
+
+            $.ajax({
+                type: typeOfRequest,
+                url: confirmUrl,
+                success: function(resultData) {
+                    debugger;
+                    if (resultData.status.toLowerCase() === "success") {
+
+                        $('#mainToastBody').html('<i class="far fa-check-circle"></i> @Language.GetString("AlertAndMessage_OperationDoneSuccessfully")');
+                        $('#mainToastBody').addClass('alert-success');
+
+                        var toast = new bootstrap.Toast($("#mainToast"));
+                        toast.show();
+                        setTimeout(function() {
+                            window.location.reload();
+                        },
+                            3000);
+                    }
+                    if (resultData.status.toLowerCase() === "error") {
+                        showError(resultData.message);
+                    }
+                }
+
+            });
+        }
+
+        function showError(msg) {
+
+            document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
+            document.getElementById('mainToastBody').classList.add('alert-danger');
+            $("#toastPanel").show();
+            var toast = new bootstrap.Toast($("#mainToast"));
+            toast.show();
+            setTimeout(function() {
+                $("#toastPanel").hide();
+            }, 2000)
+        }
+
+        function clearFormValidation() {
+            var spanErrorList = $('span[data-val-result]');
+            if (spanErrorList.length > 1) {
+                spanErrorList.each(function() {
+                    $(this).html("");
+                    $(this).parent().removeClass("has-error");
+                });
+            } else {
+                spanErrorList.html("");
+                spanErrorList.parent().removeClass("has-error");
+            }
+        }
     </script>
 
 </body>

@@ -31,7 +31,6 @@ using MongoDB.Bson;
 using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.DataLayer.Repositories.General.Comment.Mongo;
 
-
 namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 {
     public class ProductRepository : BaseRepository, IProductRepository
@@ -76,9 +75,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             _commentContext = commentContext;
         }
 
-        public async Task<Result> Add(ProductInputDTO dto)
+        public async Task<Result<string>> Add(ProductInputDTO dto)
         {
-            Result result = new Result();
+            var result = new Result<string>();
+            result.ReturnValue = string.Empty;
+         
             try
             {
                 var equallentModel = MappingProduct(dto);
@@ -98,6 +99,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 
                 await _context.ProductCollection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;
+                result.ReturnValue = equallentModel.ProductId;
                 result.Message = ConstMessages.SuccessfullyDone;
 
             }
@@ -1744,6 +1746,13 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     res.Message = ConstMessages.InternalServerErrorMessage;
                 }
             }
+            return res;
+        }
+
+        public async Task<Entities.Shop.Product.Product> ProductSelect(string productId)
+        {
+            var res = (await _context.ProductCollection
+                .FindAsync(_ => _.ProductId == productId)).FirstOrDefault();
             return res;
         }
     }

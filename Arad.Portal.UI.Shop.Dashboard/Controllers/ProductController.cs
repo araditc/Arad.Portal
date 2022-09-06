@@ -29,6 +29,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using SixLabors.ImageSharp.Formats;
 using Arad.Portal.DataLayer.Contracts.General.User;
+using Arad.Portal.DataLayer.Services;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -48,6 +49,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IHttpClientFactory _clientFactory;
+        private readonly ILuceneService _luceneService;
        
         private readonly string imageSize = "";
         private readonly CodeGenerator _codeGenerator;
@@ -58,6 +60,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ICurrencyRepository currencyRepository, IProductUnitRepository unitRepository,
             IProductSpecGroupRepository specGroupRepository,IPromotionRepository promotionRepository,
             IWebHostEnvironment webHostEnvironment, IHttpClientFactory clientFactory,
+            ILuceneService luceneService,
             IHttpContextAccessor accessor, IConfiguration configuration)
         {
             _productRepository = productRepository;
@@ -70,6 +73,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _specGroupRepository = specGroupRepository;
             _httpContextAccessor = accessor;
             _userManager = userManager;
+            _luceneService = luceneService;
             _promotionRepository = promotionRepository;
             _webHostEnvironment = webHostEnvironment;
             _codeGenerator = codeGenerator;
@@ -185,6 +189,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             Result opResult = await _productRepository.DeleteProduct(id, "delete");
+            #region delete related luceneIndex
+            foreach (var cul in _configuration["SupportedCultures"].Replace("[", "").Replace("]", "").Trim().Split(",").ToList())
+            {
+                var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", "Product", cul.Trim());
+                _luceneService.DeleteItemFromExistingIndex(mainPath, id);
+            }
+            #endregion
             return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
             : new { Status = "Error", opResult.Message });
         }
@@ -206,8 +217,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var errors = new List<AjaxValidationErrorModel>();
             if (!ModelState.IsValid)
             {
-                
-
                 foreach (var modelStateKey in ModelState.Keys)
                 {
                     var modelStateVal = ModelState[modelStateKey];
@@ -280,9 +289,53 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                             pic.Content = "";
                         }
                     }
-                    Result saveResult = await _productRepository.Add(dto);
+                    Result<string> saveResult = await _productRepository.Add(dto);
+
                     if (saveResult.Succeeded)
                     {
+                        #region add to LuceneIndex 
+                        var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", "Product");
+                        if(!Directory.Exists(mainPath))
+                        {
+                            Directory.CreateDirectory(mainPath);
+                            foreach (var cul in _configuration["SupportedCultures"].Replace("[", "").Replace("]","").Trim().Split(",").ToList())
+                            {
+                                var culPath = Path.Combine(mainPath, cul.Trim());
+                                if(!Directory.Exists(culPath))
+                                {
+                                    Directory.CreateDirectory(culPath);
+                                }
+                            }
+                        }
+                        foreach (var cul in _configuration["SupportedCultures"].Replace("[", "").Replace("]", "").Trim().Split(",").ToList())
+                        {
+                            var lanId = _lanRepository.FetchBySymbol(cul);
+                            List<string> GroupNamesInlanguage = new List<string>();
+                            foreach (var grp in dto.GroupIds)
+                            {
+                                var groupDto = _productGroupRepository.ProductGroupFetch(grp);
+                                var groupName = groupDto.MultiLingualProperties.Any(_ => _.LanguageId == lanId) ?
+                                    groupDto.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).Name : "";
+                                if(!string.IsNullOrWhiteSpace(groupName))
+                                GroupNamesInlanguage.Add(groupName);
+                            }
+
+                            var obj = new LuceneSearchIndexModel()
+                            {
+                                ID = saveResult.ReturnValue,
+                                EntityName = dto.MultiLingualProperties.Any(_ => _.LanguageId == lanId) ?
+                                dto.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).Name : "",
+                                GroupIds = dto.GroupIds,
+                                Code = dto.ProductCode.ToString(),
+                                UniqueCode = dto.UniqueCode,
+                                GroupNames = GroupNamesInlanguage,
+                                TagKeywordList = dto.MultiLingualProperties.Any(_ => _.LanguageId == lanId) ?
+                                dto.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).TagKeywords : new List<string>()
+                            };
+                            _luceneService.AddItemToExistingIndex(Path.Combine(mainPath, cul.Trim()), obj, true);
+                        }
+                        #endregion 
+
                         _codeGenerator.SaveToDB(dto.ProductCode);
                     }
                     result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
@@ -343,10 +396,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         item.Prefix = cur.ReturnValue.Symbol;
                         item.IsActive = true;
                     }
-                    //if(changeCulture)
-                    //{
-                    //    CultureInfo.CurrentCulture = new CultureInfo("fa-IR");
-                    //}
+                    
                     var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
                     var path = "images/Products";
                     var productFilePath = "ProductFiles";
@@ -374,6 +424,37 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         }
                     }
                     Result saveResult = await _productRepository.UpdateProduct(dto);
+                    if (saveResult.Succeeded)
+                    {
+                        var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", "Product");
+                        foreach (var cul in _configuration["SupportedCultures"].Replace("[", "").Replace("]", "").Trim().Split(",").ToList())
+                        {
+                            var indexPath = Path.Combine(mainPath, cul.Trim());
+                            var lanId = _lanRepository.FetchBySymbol(cul.Trim());
+                            List<string> GroupNamesInlanguage = new List<string>();
+                            foreach (var grp in dto.GroupIds)
+                            {
+                                var groupDto = _productGroupRepository.ProductGroupFetch(grp);
+                                var groupName = groupDto.MultiLingualProperties.Any(_ => _.LanguageId == lanId) ?
+                                    groupDto.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).Name : "";
+                                if (!string.IsNullOrWhiteSpace(groupName))
+                                    GroupNamesInlanguage.Add(groupName);
+                            }
+                            var obj = new LuceneSearchIndexModel()
+                            {
+                                ID = dto.ProductId,
+                                EntityName = dto.MultiLingualProperties.Any(_ => _.LanguageId == lanId) ?
+                                dto.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).Name : "",
+                                GroupIds = dto.GroupIds,
+                                Code = dto.ProductCode.ToString(),
+                                UniqueCode = dto.UniqueCode,
+                                GroupNames = GroupNamesInlanguage,
+                                TagKeywordList = dto.MultiLingualProperties.Any(_ => _.LanguageId == lanId) ?
+                                dto.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).TagKeywords : new List<string>()
+                            };
+                            _luceneService.UpdateItemInIndex(indexPath, dto.ProductId, obj, true);
+                        }
+                    }
                     result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                     : new { Status = "Error", saveResult.Message });
                 }else
@@ -445,6 +526,37 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 var res = await _productRepository.Restore(id);
                 if (res.Succeeded)
                 {
+                    #region add to LuceneIndex
+                    var product = await _productRepository.ProductSelect(id);
+                    foreach (var cul in _configuration["SupportedCultures"].Replace("[", "").Replace("]", "").Trim().Split(",").ToList())
+                    {
+                        var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", "Product", cul.Trim());
+                        var lanId = _lanRepository.FetchBySymbol(cul);
+                        List<string> GroupNamesInlanguage = new List<string>();
+                        foreach (var grp in product.GroupIds)
+                        {
+                            var groupDto = _productGroupRepository.ProductGroupFetch(grp);
+                            var groupName = groupDto.MultiLingualProperties.Any(_ => _.LanguageId == lanId) ?
+                                groupDto.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).Name : "";
+                            if (!string.IsNullOrWhiteSpace(groupName))
+                                GroupNamesInlanguage.Add(groupName);
+                        }
+
+                        var obj = new LuceneSearchIndexModel()
+                        {
+                            ID = id,
+                            EntityName = product.MultiLingualProperties.Any(_ => _.LanguageId == lanId) ?
+                            product.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).Name : "",
+                            GroupIds = product.GroupIds,
+                            Code = product.ProductCode.ToString(),
+                            UniqueCode = product.UniqueCode,
+                            GroupNames = GroupNamesInlanguage,
+                            TagKeywordList = product.MultiLingualProperties.Any(_ => _.LanguageId == lanId) ?
+                              product.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).TagKeywords : new List<string>()
+                        };
+                        _luceneService.AddItemToExistingIndex(Path.Combine(mainPath, cul.Trim()), obj, true);
+                    }
+                    #endregion
                     result = new JsonResult(new
                     {
                         Status = "success",

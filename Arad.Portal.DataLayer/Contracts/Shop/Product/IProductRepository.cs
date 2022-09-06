@@ -20,12 +20,13 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
     {
         Task<PagedItems<ProductViewModel>> List(string queryString);
 
-        Task<Result> Add(ProductInputDTO dto);
+        Task<Result<string>> Add(ProductInputDTO dto);
 
         Task<Result> InsertDownloadLimitation(string shoppingCartDetailId, string productId, string userId, string domainId);
         long GetProductCode(string productId);
         Task<ProductOutputDTO> ProductFetch(string productId);
 
+        Task<Entities.Shop.Product.Product> ProductSelect(string productId);
 
         ProductOutputDTO EvaluateFinalPrice(string productId, List<Price> productPrices, List<string> productGroupIds, string defCurrenyId);
         ProductOutputDTO FetchProductWithSlug(string slug, string domainName);

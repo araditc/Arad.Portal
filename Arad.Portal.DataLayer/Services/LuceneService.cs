@@ -14,7 +14,6 @@ using Lucene.Net.Index;
 using Lucene.Net.QueryParsers.Classic;
 using Lucene.Net.Documents;
 using Lucene.Net.Search;
-using Lucene.Net.Util;
 using Lucene.Net.Store;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using System.IO;
@@ -48,8 +47,6 @@ namespace Arad.Portal.DataLayer.Services
     {
         public static IndexWriter Writer { get; set; }
         public static List<LuceneSearchIndexModel> Data { get; set; }
-        // private static readonly RAMDirectory Directory = new RAMDirectory();
-        private static string EntityIdToBeUpdated;
         const LuceneVersion Lv = LuceneVersion.LUCENE_48;
         static Analyzer Analyzer = new StandardAnalyzer(Lv);
         private readonly static string[] SupportedCultures = new string[] { "fa-IR", "en-US" };
@@ -76,7 +73,8 @@ namespace Arad.Portal.DataLayer.Services
                 var d = new Document()
             {
                 new StringField("ID", model.ID, Field.Store.YES),
-                new TextField("EntityName", model.EntityName, Field.Store.YES)
+                new TextField("EntityName", model.EntityName, Field.Store.YES),
+                new StringField("Code", model.Code, Field.Store.YES)
             };
                 foreach (var grp in model.GroupIds)
                 {
@@ -116,6 +114,7 @@ namespace Arad.Portal.DataLayer.Services
             {
                 d.Add(new StringField("ID", item.ContentId, Field.Store.YES));
                 d.Add(new TextField("EntityName", item.Title, Field.Store.YES));
+                d.Add(new StringField("Code", item.ContentCode.ToString(), Field.Store.YES));
                 d.Add(new StringField("GroupId", item.ContentCategoryId, Field.Store.YES));
                 d.Add(new TextField("GroupName", item.ContentCategoryName, Field.Store.YES));
                 foreach (var tag in item.TagKeywords)
@@ -135,7 +134,7 @@ namespace Arad.Portal.DataLayer.Services
             for (int i = 0; i < SupportedCultures.Length; i++)
             {
                 var lanId = _lanRepository.FetchBySymbol(SupportedCultures[i]);
-                var indexPath = Path.Combine(mainPath, $"/{SupportedCultures[i]}");
+                var indexPath = Path.Combine(mainPath, SupportedCultures[i]);
                 FSDirectory luceneIndexDirectory = FSDirectory.Open(indexPath);
                 Writer = new IndexWriter(luceneIndexDirectory, config);
 
@@ -145,6 +144,7 @@ namespace Arad.Portal.DataLayer.Services
                 {
                     d.Add(new StringField("ID", item.ProductId, Field.Store.YES));
                     d.Add(new StringField("UniqueCode", item.UniqueCode, Field.Store.YES));
+                    d.Add(new StringField("Code", item.ProductCode.ToString(), Field.Store.YES));
                     d.Add(new TextField("EntityName", (item.MultiLingualProperties.Any(_ => _.LanguageId == lanId) ?
                             item.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).Name : ""), Field.Store.YES));
                     foreach (var grp in item.GroupIds)
@@ -203,24 +203,33 @@ namespace Arad.Portal.DataLayer.Services
                 ScoreDoc[] docs = searcher.Search(query, null, 1000).ScoreDocs;
                 for (int i = 0; i < docs.Length; i++)
                 {
+                    var obj = new LuceneSearchIndexModel();
                     Document d = searcher.Doc(docs[i].Doc);
+                    obj.ID = d.Get("ID");
+                    obj.GroupIds = d.GetValues("GroupId").ToList();
+                    obj.GroupNames = d.GetValues("GroupName").ToList();
+                    obj.UniqueCode = d.Get("UniqueCode");
+                    obj.EntityName = d.Get("EntityName");
+                    obj.TagKeywordList = d.GetValues("TagKeyword").ToList();
+                    obj.Code = d.Get("Code");
 
+                    finalRes.Add(obj);
                 }
-
             }
-            throw new NotImplementedException();
+            return finalRes;
         }
 
         public Result UpdateItemInIndex(string indexFullPath, string id, LuceneSearchIndexModel model, bool isProduct)
         {
             var res = new Result();
+            //code couldnt change in update 
             try
             {
                 FSDirectory luceneIndexDirectory = FSDirectory.Open(indexFullPath);
                 Writer = new IndexWriter(luceneIndexDirectory, config);
                 var d = new Document()
                 {
-                    new StringField("Id", id, Field.Store.YES),
+                    new StringField("ID", id, Field.Store.YES),
                     new TextField("EntityName", model.EntityName, Field.Store.YES)
                 };
                 foreach (var grp in model.GroupIds)
@@ -231,6 +240,7 @@ namespace Arad.Portal.DataLayer.Services
                 {
                     d.Add(new TextField("GroupName", name, Field.Store.YES));
                 }
+
                 foreach (var tag in model.TagKeywordList)
                 {
                     d.Add(new TextField("TagKeyword", tag, Field.Store.YES));
@@ -249,10 +259,6 @@ namespace Arad.Portal.DataLayer.Services
             }
             return res;
         }
-
-        public void Dispose()
-        {
-            Writer.Dispose();
-        }
+      
     }
 }

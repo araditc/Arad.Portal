@@ -9,6 +9,7 @@ using Arad.Portal.DataLayer.Contracts.Shop.ProductUnit;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Models.Content;
 using Arad.Portal.DataLayer.Models.Shared;
+using Arad.Portal.DataLayer.Services;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.UI.Shop.Dashboard.Authorization;
 using Arad.Portal.UI.Shop.Dashboard.Helpers;
@@ -46,11 +47,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IProductUnitRepository _unitRepository;
+        private readonly ILuceneService _luceneService;
         private readonly string imageSize = "";
         private readonly CodeGenerator _codeGenerator;
         public ContentController(IContentRepository contentRepository, IWebHostEnvironment webHostEnvironment,
                                     IContentCategoryRepository contentCategoryRepository,IProductUnitRepository unitRepository,
                                     ILanguageRepository languageRepository, UserManager<ApplicationUser> userManager,
+                                    ILuceneService luceneService,
                                     CodeGenerator codeGenerator,IUserRepository userRepository,ICurrencyRepository curRepository,
                                     IDomainRepository domainRepository,IProductGroupRepository groupRepository,
                                     IHttpContextAccessor accessor, IConfiguration configuration)
@@ -60,6 +63,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _contentCategoryRepository = contentCategoryRepository;
             _lanRepository = languageRepository;
             _userManager = userManager;
+            _luceneService = luceneService;
             _configuration = configuration;
             _domainRepository = domainRepository;
             _httpContextAccessor = accessor;
@@ -173,6 +177,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             Result opResult = await _contentRepository.Delete(id, "delete");
+
+            #region delete lucene index
+            var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", "Content");
+            _luceneService.DeleteItemFromExistingIndex(mainPath, id);
+            #endregion
+
             return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
             : new { Status = "Error", opResult.Message });
         }
@@ -216,12 +226,30 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                             pic.Content = "";
                         }
                     }
-                    //if (dto.LogoContent != "")
-                    //    dto.FileLogo = dto.LogoContent;
-                    
-                    Result saveResult = await _contentRepository.Add(dto);
+                   
+                    Result<string> saveResult = await _contentRepository.Add(dto);
                     if (saveResult.Succeeded)
                     {
+                        #region add to LuceneIndex 
+                        var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", "Content");
+                        if (!Directory.Exists(mainPath))
+                        {
+                            Directory.CreateDirectory(mainPath);
+                        }
+                        var obj = new LuceneSearchIndexModel()
+                        {
+                            ID = saveResult.ReturnValue,
+                            EntityName = dto.Title,
+                            GroupIds = new List<string> { dto.ContentCategoryId},
+                            Code = dto.ContentCode.ToString(),
+                            GroupNames = new List<string> { dto.ContentCategoryName },
+                            TagKeywordList = dto.TagKeywords
+                        };
+                        _luceneService.AddItemToExistingIndex(mainPath, obj, false);
+                      
+                        #endregion 
+
+
                         _codeGenerator.SaveToDB(dto.ContentCode);
                     }
                     result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
@@ -276,6 +304,22 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     }
 
                     Result saveResult = await _contentRepository.Update(dto);
+                    if(saveResult.Succeeded)
+                    {
+                        #region update luceneIndex
+                        var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", "Content");
+                        var obj = new LuceneSearchIndexModel()
+                        {
+                            ID = dto.ContentId,
+                            EntityName = dto.Title,
+                            GroupIds = new List<string> { dto.ContentCategoryId },
+                            Code = dto.ContentCode.ToString(),
+                            GroupNames = new List<string> { dto.ContentCategoryName},
+                            TagKeywordList = dto.TagKeywords
+                        };
+                        _luceneService.UpdateItemInIndex(mainPath, dto.ContentId, obj, false);
+                        #endregion
+                    }
                     result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                     : new { Status = "Error", saveResult.Message });
                 }
@@ -292,6 +336,23 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 var res = await _contentRepository.Restore(id);
                 if (res.Succeeded)
                 {
+                    #region add to LuceneIndex
+                    var content = await _contentRepository.ContentSelect(id);
+                   
+                    var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", "Content");
+                    var obj = new LuceneSearchIndexModel()
+                    {
+                        ID = id,
+                        EntityName = content.Title,
+                        GroupIds = new List<string> { content.ContentCategoryId },
+                        Code = content.ContentCode.ToString(),
+                        GroupNames = new List<string> { content.ContentCategoryName },
+                        TagKeywordList = content.TagKeywords
+                    };
+                    _luceneService.AddItemToExistingIndex(mainPath, obj, false);
+                    #endregion
+
+
                     result = new JsonResult(new
                     {
                         Status = "success",

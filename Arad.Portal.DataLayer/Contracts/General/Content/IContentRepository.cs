@@ -12,7 +12,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Content
 {
     public interface IContentRepository
     {
-        Task<Result> Add(ContentDTO dto);
+        Task<Result<string>> Add(ContentDTO dto);
         Task<PagedItems<ContentViewModel>> List(string queryString);
         List<ContentGlance> GetSpecialContent(int count, ProductOrContentType contentType, SelectionType selectionType, string categoryId, List<string> selectedIds = null, bool isDevelopment = false);
         List<ContentGlance> GetContentInCategory(int count, ProductOrContentType contentType, string contentCategoryId, bool isDevelopment = false);
@@ -35,5 +35,6 @@ namespace Arad.Portal.DataLayer.Contracts.General.Content
         ContentDTO FetchBySlug(string slug, string domainName);
         ContentDTO FetchByCode(string slugOrCode);
         bool IsUniqueUrlFriend(string urlFriend, string domainId, string contentId = "");
+        Task<Entities.General.Content.Content> ContentSelect(string contentId);
     }
 }

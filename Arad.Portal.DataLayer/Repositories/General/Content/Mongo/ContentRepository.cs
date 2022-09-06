@@ -44,9 +44,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
             _domainContext = domainContext;
         }
 
-        public async Task<Result> Add(ContentDTO dto)
+        public async Task<Result<string>> Add(ContentDTO dto)
         {
-            Result result = new Result();
+            var result = new Result<string>();
             try
             {
                 var equallentModel = _mapper.Map<Entities.General.Content.Content>(dto);
@@ -87,6 +87,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
 
                 await _contentContext.Collection.InsertOneAsync(equallentModel);
                 result.Succeeded = true;
+                result.ReturnValue = equallentModel.ContentId;
                 result.Message = ConstMessages.SuccessfullyDone;
 
             }
@@ -860,6 +861,13 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                     res.Message = ConstMessages.InternalServerErrorMessage;
                 }
             }
+            return res;
+        }
+
+        public async Task<Entities.General.Content.Content> ContentSelect(string contentId)
+        {
+            var res = (await _contentContext.Collection
+               .FindAsync(_ => _.ContentId == contentId)).FirstOrDefault();
             return res;
         }
     }
