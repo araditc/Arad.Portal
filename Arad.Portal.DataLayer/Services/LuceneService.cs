@@ -31,7 +31,7 @@ namespace Arad.Portal.DataLayer.Services
         /// </summary>
         /// <param name="searchword"></param>
         /// <returns></returns>
-        IList<LuceneSearchIndexModel> Search(string searchword, List<string> directories);
+        List<LuceneSearchIndexModel> Search(string searchword, List<string> directories);
 
         /// <summary>
         /// 
@@ -188,7 +188,7 @@ namespace Arad.Portal.DataLayer.Services
             return res;
         }
 
-        public IList<LuceneSearchIndexModel> Search(string searchword, List<string> directories)
+        public List<LuceneSearchIndexModel> Search(string searchword, List<string> directories)
         {
             var finalRes = new List<LuceneSearchIndexModel>();
             string[] searchFields = { "EntityName", "Code", "UniqueCode", "GroupName", "TagKeyword" };

@@ -71,7 +71,6 @@
     "IsActive": true,
     "ComponentName": "GeneralSearch",
     "ModuleParameters": {
-      "Keyword": ""
     }
   }
 ]

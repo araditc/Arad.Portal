@@ -45,6 +45,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly ILanguageRepository _lanRepository;
         private readonly ICurrencyRepository _curRepository;
         private readonly IConfiguration _configuration;
+        private readonly IDomainRepository _domainRepository;
         private readonly IPromotionRepository _promotionRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -60,7 +61,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ICurrencyRepository currencyRepository, IProductUnitRepository unitRepository,
             IProductSpecGroupRepository specGroupRepository,IPromotionRepository promotionRepository,
             IWebHostEnvironment webHostEnvironment, IHttpClientFactory clientFactory,
-            ILuceneService luceneService,
+            ILuceneService luceneService,IDomainRepository domainRepository,
             IHttpContextAccessor accessor, IConfiguration configuration)
         {
             _productRepository = productRepository;
@@ -77,6 +78,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _promotionRepository = promotionRepository;
             _webHostEnvironment = webHostEnvironment;
             _codeGenerator = codeGenerator;
+            _domainRepository = domainRepository;
             _userRepository = userRepository;
             imageSize = _configuration["ProductImageSize:Size"];
         }
@@ -188,12 +190,22 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
+            var mainDomainPublishState = _productRepository.IsPublishOnMainDomain(id);
             Result opResult = await _productRepository.DeleteProduct(id, "delete");
-            #region delete related luceneIndex
+            var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+           
+            #region delete related luceneIndexes
             foreach (var cul in _configuration["SupportedCultures"].Replace("[", "").Replace("]", "").Trim().Split(",").ToList())
             {
-                var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", "Product", cul.Trim());
+                var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", domainId, "Product", cul.Trim());
+                
                 _luceneService.DeleteItemFromExistingIndex(mainPath, id);
+                if(mainDomainPublishState)
+                {
+                    var mainDomainId = _domainRepository.FetchDefaultDomain().ReturnValue.DomainId;
+                    var mainDomainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", mainDomainId, "Product", cul.Trim());
+                    _luceneService.DeleteItemFromExistingIndex(mainDomainPath, id);
+                }
             }
             #endregion
             return Json(opResult.Succeeded ? new { Status = "Success", opResult.Message }
@@ -294,7 +306,28 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     if (saveResult.Succeeded)
                     {
                         #region add to LuceneIndex 
-                        var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", "Product");
+                        var mainDomainId = "";
+                        var mainDomainPath = "";
+                        var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+                        if(dto.IsPublishedOnMainDomain)
+                        {
+                            mainDomainId = _domainRepository.FetchDefaultDomain().ReturnValue.DomainId;
+                            mainDomainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", mainDomainId, "Product");
+                            if(!Directory.Exists(mainDomainPath))
+                            {
+                                Directory.CreateDirectory(mainDomainPath);
+                                foreach (var cul in _configuration["SupportedCultures"].Replace("[", "").Replace("]", "").Trim().Split(",").ToList())
+                                {
+                                    var culPath = Path.Combine(mainDomainPath, cul.Trim());
+                                    if (!Directory.Exists(culPath))
+                                    {
+                                        Directory.CreateDirectory(culPath);
+                                    }
+                                }
+                            }
+                        }
+                        
+                        var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", domainId, "Product");
                         if(!Directory.Exists(mainPath))
                         {
                             Directory.CreateDirectory(mainPath);
@@ -307,6 +340,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                                 }
                             }
                         }
+                        
                         foreach (var cul in _configuration["SupportedCultures"].Replace("[", "").Replace("]", "").Trim().Split(",").ToList())
                         {
                             var lanId = _lanRepository.FetchBySymbol(cul);
@@ -333,6 +367,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                                 dto.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).TagKeywords : new List<string>()
                             };
                             _luceneService.AddItemToExistingIndex(Path.Combine(mainPath, cul.Trim()), obj, true);
+                            if(dto.IsPublishedOnMainDomain)
+                            {
+                                _luceneService.AddItemToExistingIndex(Path.Combine(mainDomainPath, cul.Trim()), obj, true);
+                            }
                         }
                         #endregion 
 
@@ -353,6 +391,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> Edit([FromBody] ProductInputDTO dto)
         {
             JsonResult result;
+            var previousPublishState = _productRepository.IsPublishOnMainDomain(dto.ProductId);
             var errors = new List<AjaxValidationErrorModel>();
             if (!ModelState.IsValid)
             {
@@ -426,10 +465,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     Result saveResult = await _productRepository.UpdateProduct(dto);
                     if (saveResult.Succeeded)
                     {
-                        var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", "Product");
+                        #region Update lucene Index
+                        var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+                        var mainDomainId = _domainRepository.FetchDefaultDomain().ReturnValue.DomainId;
+                        var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", domainId ,"Product");
+                        var mainDomainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", mainDomainId, "Product");
+
                         foreach (var cul in _configuration["SupportedCultures"].Replace("[", "").Replace("]", "").Trim().Split(",").ToList())
                         {
                             var indexPath = Path.Combine(mainPath, cul.Trim());
+                            var mainDomainIndexPath = Path.Combine(mainDomainPath, cul.Trim());
                             var lanId = _lanRepository.FetchBySymbol(cul.Trim());
                             List<string> GroupNamesInlanguage = new List<string>();
                             foreach (var grp in dto.GroupIds)
@@ -452,8 +497,22 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                                 TagKeywordList = dto.MultiLingualProperties.Any(_ => _.LanguageId == lanId) ?
                                 dto.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).TagKeywords : new List<string>()
                             };
+                           
                             _luceneService.UpdateItemInIndex(indexPath, dto.ProductId, obj, true);
+                            if(!previousPublishState  && dto.IsPublishedOnMainDomain)
+                            {
+                                _luceneService.AddItemToExistingIndex(mainDomainIndexPath, obj, true);
+
+                            }else if(previousPublishState && dto.IsPublishedOnMainDomain)
+                            {
+                                _luceneService.UpdateItemInIndex(mainDomainIndexPath, dto.ProductId, obj, true);
+
+                            }else if(previousPublishState && !dto.IsPublishedOnMainDomain)
+                            {
+                                _luceneService.DeleteItemFromExistingIndex(mainDomainIndexPath, dto.ProductId);
+                            }
                         }
+                        #endregion
                     }
                     result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                     : new { Status = "Error", saveResult.Message });
@@ -522,15 +581,18 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             JsonResult result;
             try
             {
-
+                var mainDomainPublishState = _productRepository.IsPublishOnMainDomain(id);
                 var res = await _productRepository.Restore(id);
                 if (res.Succeeded)
                 {
                     #region add to LuceneIndex
                     var product = await _productRepository.ProductSelect(id);
+                    var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+                    var mainDomainId = _domainRepository.FetchDefaultDomain().ReturnValue.DomainId;
                     foreach (var cul in _configuration["SupportedCultures"].Replace("[", "").Replace("]", "").Trim().Split(",").ToList())
                     {
-                        var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", "Product", cul.Trim());
+                        var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", domainId, "Product", cul.Trim());
+                        var mainDomainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", mainDomainId, "Product", cul.Trim());
                         var lanId = _lanRepository.FetchBySymbol(cul);
                         List<string> GroupNamesInlanguage = new List<string>();
                         foreach (var grp in product.GroupIds)
@@ -555,6 +617,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                               product.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).TagKeywords : new List<string>()
                         };
                         _luceneService.AddItemToExistingIndex(Path.Combine(mainPath, cul.Trim()), obj, true);
+
+                        if(mainDomainPublishState)
+                        {
+                            _luceneService.AddItemToExistingIndex(Path.Combine(mainDomainPath, cul.Trim()), obj, true);
+                        }
                     }
                     #endregion
                     result = new JsonResult(new

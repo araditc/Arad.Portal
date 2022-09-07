@@ -13,6 +13,8 @@ using Arad.Portal.DataLayer.Contracts.General.Currency;
 using Arad.Portal.DataLayer.Models.Shared;
 using System.Globalization;
 using Arad.Portal.DataLayer.Services;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -21,46 +23,44 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly IDomainRepository _domainRepository;
         private readonly ILanguageRepository _lanRepository;
         private readonly IHttpContextAccessor _accessor;
-        private readonly ICurrencyRepository _curRepository;
         private readonly ILuceneService _luceneService;
+        private readonly IConfiguration _configuration;
         public SearchController(
-            ILanguageRepository lanRepository, ICurrencyRepository curRepository,ILuceneService luceneService,
+            ILanguageRepository lanRepository, ILuceneService luceneService,
+            IConfiguration configuration,
             IDomainRepository domainRepository, IHttpContextAccessor accessor) :base(accessor, domainRepository)
         {
             _domainRepository = domainRepository;
             _luceneService = luceneService;
             _lanRepository = lanRepository;
-            _curRepository = curRepository;
+            _configuration = configuration;
             _accessor = accessor;
         }
-       
-        
-        //[HttpGet]
-        //[Route("{language}/search")]
-        //public async Task<IActionResult> Index([FromQuery] string f) 
-        //{
-        //    List<GeneralSearchResult> lst = new List<GeneralSearchResult>();
-        //    var domainEntity = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
-        //    string lanIcon;
-        //    string currencyId = string.Empty;
-        //    if (CultureInfo.CurrentCulture.Name != null)
-        //    {
-        //        lanIcon = CultureInfo.CurrentCulture.Name;
-        //        var ri = new RegionInfo(System.Threading.Thread.CurrentThread.CurrentUICulture.LCID);
-        //        var curSymbol = ri.ISOCurrencySymbol;
-        //        var currencyDto = _curRepository.GetCurrencyByItsPrefix(curSymbol);
-        //        currencyId = currencyDto.CurrencyId;
-        //    }
-        //    else
-        //    {
-        //        lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
-        //        currencyId = domainEntity.DefaultCurrencyId;
-        //    }
-        //    var lanId = _lanRepository.FetchBySymbol(lanIcon);
-        //    lst = (await _productRepository.GeneralSearch(f, lanId, currencyId, domainEntity.DomainId)).ReturnValue;
-        //    lst.AddRange((await _contentRepository.GeneralSearch(f, lanId, currencyId, domainEntity.DomainId)).ReturnValue);
 
-        //    return new JsonResult(new { data = lst });
-        //}
+        [HttpGet]
+        [Route("{language}/search")]
+        public IActionResult Index([FromQuery] string key)
+        {
+            List<LuceneSearchIndexModel> lst = new List<LuceneSearchIndexModel>();
+            var domainEntity = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
+            string lanIcon;
+           // string currencyId = string.Empty;
+            if (CultureInfo.CurrentCulture.Name != null)
+            {
+                lanIcon = CultureInfo.CurrentCulture.Name;
+            }
+            else
+            {
+                lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
+            }
+            var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", domainEntity.DomainId);
+            List<string> searchDirectories = new List<string>();
+            searchDirectories.Add(Path.Combine(mainPath, "Content"));
+            searchDirectories.Add(Path.Combine(mainPath, "Product", lanIcon));
+
+            lst = _luceneService.Search(f.Trim(), searchDirectories);
+
+            return new JsonResult(new { data = lst });
+        }
     }
 }

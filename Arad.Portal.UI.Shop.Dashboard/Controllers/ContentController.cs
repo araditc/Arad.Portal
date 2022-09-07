@@ -177,9 +177,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             Result opResult = await _contentRepository.Delete(id, "delete");
-
+            var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
             #region delete lucene index
-            var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", "Content");
+            var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", domainId, "Content");
             _luceneService.DeleteItemFromExistingIndex(mainPath, id);
             #endregion
 
@@ -228,10 +228,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     }
                    
                     Result<string> saveResult = await _contentRepository.Add(dto);
+                    var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
                     if (saveResult.Succeeded)
                     {
                         #region add to LuceneIndex 
-                        var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", "Content");
+                        var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", domainId, "Content");
                         if (!Directory.Exists(mainPath))
                         {
                             Directory.CreateDirectory(mainPath);
@@ -278,6 +279,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 //if (dto.LogoContent != "")
                 //dto.FileLogo = dto.LogoContent;
+                var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
                 var isCkEditorContentValid = HtmlSanitizer.SanitizeHtml(dto.Contents);
                 if (!isCkEditorContentValid)
                 {
@@ -307,7 +309,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     if(saveResult.Succeeded)
                     {
                         #region update luceneIndex
-                        var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", "Content");
+                        var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", domainId, "Content");
                         var obj = new LuceneSearchIndexModel()
                         {
                             ID = dto.ContentId,
@@ -333,13 +335,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             JsonResult result;
             try
             {
+                var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
                 var res = await _contentRepository.Restore(id);
                 if (res.Succeeded)
                 {
                     #region add to LuceneIndex
                     var content = await _contentRepository.ContentSelect(id);
                    
-                    var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", "Content");
+                    var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", domainId, "Content");
                     var obj = new LuceneSearchIndexModel()
                     {
                         ID = id,

@@ -1755,6 +1755,18 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 .FindAsync(_ => _.ProductId == productId)).FirstOrDefault();
             return res;
         }
+
+        public bool IsPublishOnMainDomain(string productId)
+        {
+            var entity = _context.ProductCollection
+                .Find(_ => _.ProductId == productId).FirstOrDefault();
+
+            if(entity != null)
+            {
+                return entity.IsPublishedOnMainDomain;
+            }
+            return false;
+        }
     }
 }
 

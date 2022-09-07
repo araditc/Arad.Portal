@@ -32,6 +32,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         ProductOutputDTO FetchProductWithSlug(string slug, string domainName);
 
         Task<Result> AddCommentToProduct(string productId, Comment comment);
+
+        bool IsPublishOnMainDomain(string productId);
         Task<Result> UpdateVisitCount(string productId);
         Task<Result> ChangeUnitOfProduct(string productId,
             string unitId, string modificationReason);

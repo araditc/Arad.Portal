@@ -1,0 +1,94 @@
+﻿@model string
+@{
+}
+<div class="border-top-0 w-100 m-2">
+    <div class="row">
+        <div class="col-12">
+            <form autocomplete="off" id="searchFrm" asp-controller="Search" asp-action="Index">
+                <div class="input-group searchContainer">
+                    <input type="text" class="form-control" id="txtSearch" name="key" placeholder="@Language.GetString("btn_Search")" value="@Model" />
+                    <button type="submit" class="input-group-text" id="btnSearch">
+                        <i class="fas fa-search p-1 m-1"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script on-content-loaded="true">
+$(document).ready(function() {
+
+    $("#searchFrm").submit(function(e) {
+         e.preventDefault();
+         var filter = $("#txtSearch").val().trim();
+          $.ajax({
+            url: $(this).attr('action')+"?key="+filter,
+            type: 'Get',
+            processData: false,
+            contentType: false,
+            dataType : "application/json",
+            beforeSend: function() {
+          /*  AddLoading($("#addUserCard"));*/
+            },
+            success: function (result)
+            {
+                debugger;
+                    if (result.status === "success")
+                    {
+
+                            document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
+                            document.getElementById('mainToastBody').classList.add('alert-success');
+                            var toastDiv = $("#mainToast");
+                            $("#toastPanel").show();
+                            var toast = new bootstrap.Toast(toastDiv);
+                            toast.show();
+                            setTimeout(function()
+                                {
+                                     $("#toastPanel").hide();
+                                     window.location.href = '@Url.Action("List")';
+                                },
+                                3000);
+                        }
+                    else if (result.status === "error")
+                      {
+                            var spanErrorList = $('span[data-val-result]');
+
+                            if (spanErrorList.length > 0)
+                            {
+                            spanErrorList.each(function() {
+                                $(this).html("");
+                                $(this).parent().removeClass("has-error");
+                                });
+                            } 
+                            else {
+                            spanErrorList.html("");
+                            spanErrorList.parent().removeClass("has-error");
+                            }
+
+                            if (result.modelStateErrors.length > 0) {
+                            debugger;
+                            result.modelStateErrors.forEach(function(value, index) {
+                            $('[data-val-result=' + value.key + ']').append(value.errorMessage);
+                            $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                            });
+                            }
+                            else
+                            {
+                                showError(result.message);
+                           }
+                       }
+
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert("@error");
+                alert(xhr.status);
+                alert(thrownError);
+            },
+            complete: function () {
+           /* removeLoading($("#addUserCard"));*/
+            }
+            });
+    });
+});
+</script>
