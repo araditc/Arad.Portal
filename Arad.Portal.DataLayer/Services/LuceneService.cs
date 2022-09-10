@@ -17,45 +17,42 @@ using Lucene.Net.Search;
 using Lucene.Net.Store;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using System.IO;
+using Microsoft.Extensions.Configuration;
 
 namespace Arad.Portal.DataLayer.Services
 {
-    public interface ILuceneService
-    {
-        Result AddItemToExistingIndex(string indexFullPath, LuceneSearchIndexModel model, bool isProduct);
-        void BuildContentIndexesPerLanguage(IList<Content> contents, string indexFullPath);
-        void BuildProductIndexesPerLanguage(IList<Product> products, string mainPath);
-        Result DeleteItemFromExistingIndex(string indexFullPath, string id);
-        /// <summary>
-        /// this part search on all lucene indexes
-        /// </summary>
-        /// <param name="searchword"></param>
-        /// <returns></returns>
-        List<LuceneSearchIndexModel> Search(string searchword, List<string> directories);
+    //public interface ILuceneService
+    //{
+    //    Result AddItemToExistingIndex(string indexFullPath, LuceneSearchIndexModel model, bool isProduct);
+    //    void BuildContentIndexesPerLanguage(IList<Content> contents, string indexFullPath);
+    //    void BuildProductIndexesPerLanguage(IList<Product> products, string mainPath);
+    //    Result DeleteItemFromExistingIndex(string indexFullPath, string id);
+    //    /// <summary>
+    //    /// this part search on all lucene indexes
+    //    /// </summary>
+    //    /// <param name="searchword"></param>
+    //    /// <returns></returns>
+    //    List<LuceneSearchIndexModel> Search(string searchword, List<string> directories);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="indexFullPath"></param>
-        /// <param name="id"></param>
-        /// <param name="model"></param>
-        /// <param name="isProduct">if it isnt product it is content</param>
-        /// <returns></returns>
-        Result UpdateItemInIndex(string indexFullPath, string id, LuceneSearchIndexModel model, bool isProduct);
-    }
-    public class LuceneService : ILuceneService
+    //    /// <summary>
+    //    /// 
+    //    /// </summary>
+    //    /// <param name="indexFullPath"></param>
+    //    /// <param name="id"></param>
+    //    /// <param name="model"></param>
+    //    /// <param name="isProduct">if it isnt product it is content</param>
+    //    /// <returns></returns>
+    //    Result UpdateItemInIndex(string indexFullPath, string id, LuceneSearchIndexModel model, bool isProduct);
+    //}
+    public class LuceneService 
     {
-        public static IndexWriter Writer { get; set; }
-        public static List<LuceneSearchIndexModel> Data { get; set; }
+        public IndexWriter Writer { get; set; }
+        public  List<LuceneSearchIndexModel> Data { get; set; }
         const LuceneVersion Lv = LuceneVersion.LUCENE_48;
         static Analyzer Analyzer = new StandardAnalyzer(Lv);
-        private readonly static string[] SupportedCultures = new string[] { "fa-IR", "en-US" };
+        private readonly string[] SupportedCultures = new string[] { "fa-IR", "en-US" };
         private readonly ILanguageRepository _lanRepository;
-        IndexWriterConfig config = new IndexWriterConfig(Lv, Analyzer)
-        {
-            OpenMode = OpenMode.CREATE_OR_APPEND,
-            WriteLockTimeout = Lock.LOCK_POLL_INTERVAL * 2
-        };
+        IndexWriterConfig config;
         public LuceneService(ILanguageRepository lanRepository)
         {
             _lanRepository = lanRepository;
@@ -65,17 +62,23 @@ namespace Arad.Portal.DataLayer.Services
         public Result AddItemToExistingIndex(string indexFullPath, LuceneSearchIndexModel model, bool isProduct)
         {
             var res = new Result();
+            FSDirectory luceneContentIndexDirectory = FSDirectory.Open(indexFullPath);
+            config  = new IndexWriterConfig(Lv, Analyzer)
+            {
+                OpenMode = OpenMode.APPEND,
+                WriteLockTimeout = Lock.LOCK_POLL_INTERVAL * 2
+            };
+            Writer = new IndexWriter(luceneContentIndexDirectory, config);
             try
             {
-                FSDirectory luceneContentIndexDirectory = FSDirectory.Open(indexFullPath);
-                Writer = new IndexWriter(luceneContentIndexDirectory, config);
+               
 
                 var d = new Document()
-            {
-                new StringField("ID", model.ID, Field.Store.YES),
-                new TextField("EntityName", model.EntityName, Field.Store.YES),
-                new StringField("Code", model.Code, Field.Store.YES)
-            };
+                {
+                    new StringField("ID", model.ID, Field.Store.YES),
+                    new TextField("EntityName", model.EntityName, Field.Store.YES),
+                    new StringField("Code", model.Code, Field.Store.YES)
+                };
                 foreach (var grp in model.GroupIds)
                 {
                     d.Add(new StringField("GroupId", grp, Field.Store.YES));
@@ -108,6 +111,11 @@ namespace Arad.Portal.DataLayer.Services
         public void BuildContentIndexesPerLanguage(IList<Content> contents, string indexFullPath)
         {
             FSDirectory luceneContentIndexDirectory = FSDirectory.Open(indexFullPath);
+            config = new IndexWriterConfig(Lv, Analyzer)
+            {
+                OpenMode = OpenMode.CREATE,
+                WriteLockTimeout = Lock.LOCK_POLL_INTERVAL * 2
+            };
             Writer = new IndexWriter(luceneContentIndexDirectory, config);
             Document d = new();
             foreach (Content item in contents)
@@ -133,11 +141,17 @@ namespace Arad.Portal.DataLayer.Services
         {
             for (int i = 0; i < SupportedCultures.Length; i++)
             {
+                config = new IndexWriterConfig(Lv, Analyzer)
+                {
+                    OpenMode = OpenMode.CREATE,
+                    WriteLockTimeout = Lock.LOCK_POLL_INTERVAL * 2
+                };
                 var lanId = _lanRepository.FetchBySymbol(SupportedCultures[i]);
                 var indexPath = Path.Combine(mainPath, SupportedCultures[i]);
                 FSDirectory luceneIndexDirectory = FSDirectory.Open(indexPath);
                 Writer = new IndexWriter(luceneIndexDirectory, config);
-
+               
+                    
                 Document d = new();
 
                 foreach (Product item in products)
@@ -164,17 +178,25 @@ namespace Arad.Portal.DataLayer.Services
 
                     Writer.AddDocument(d);
                 }
-                Writer.Commit();
+               Writer.Commit();
+               Writer.Dispose();
             }
-            Writer.Dispose();
+           
         }
 
         public Result DeleteItemFromExistingIndex(string indexFullPath, string id)
         {
             var res = new Result();
+            FSDirectory luceneIndexFullPath = FSDirectory.Open(indexFullPath);
+            config = new IndexWriterConfig(Lv, Analyzer)
+            {
+                OpenMode = OpenMode.APPEND,
+                WriteLockTimeout = Lock.LOCK_POLL_INTERVAL * 2
+            };
+           Writer = new IndexWriter(luceneIndexFullPath, config);
             try
             {
-                FSDirectory luceneIndexFullPath = FSDirectory.Open(indexFullPath);
+               
                 Writer = new IndexWriter(luceneIndexFullPath, config);
                 Writer.DeleteDocuments(new Term("ID", id));
                 Writer.Commit();
@@ -195,6 +217,7 @@ namespace Arad.Portal.DataLayer.Services
             IndexSearcher searcher;
             foreach (var dir in directories)
             {
+                var isProduct = dir.Replace("\\", "/").Contains("/Product");
                 FSDirectory luceneIndexDirectory = FSDirectory.Open(dir);
                 var dirReader = DirectoryReader.Open(luceneIndexDirectory);
                 searcher = new IndexSearcher(dirReader);
@@ -205,6 +228,7 @@ namespace Arad.Portal.DataLayer.Services
                 {
                     var obj = new LuceneSearchIndexModel();
                     Document d = searcher.Doc(docs[i].Doc);
+                    obj.IsProduct = isProduct;
                     obj.ID = d.Get("ID");
                     obj.GroupIds = d.GetValues("GroupId").ToList();
                     obj.GroupNames = d.GetValues("GroupName").ToList();
@@ -215,6 +239,7 @@ namespace Arad.Portal.DataLayer.Services
 
                     finalRes.Add(obj);
                 }
+               
             }
             return finalRes;
         }
@@ -222,11 +247,18 @@ namespace Arad.Portal.DataLayer.Services
         public Result UpdateItemInIndex(string indexFullPath, string id, LuceneSearchIndexModel model, bool isProduct)
         {
             var res = new Result();
+            FSDirectory luceneIndexDirectory = FSDirectory.Open(indexFullPath);
+            config = new IndexWriterConfig(Lv, Analyzer)
+            {
+                OpenMode = OpenMode.CREATE,
+                WriteLockTimeout = Lock.LOCK_POLL_INTERVAL * 2
+            };
+            Writer = new IndexWriter(luceneIndexDirectory, config);
+
             //code couldnt change in update 
             try
             {
-                FSDirectory luceneIndexDirectory = FSDirectory.Open(indexFullPath);
-                Writer = new IndexWriter(luceneIndexDirectory, config);
+              
                 var d = new Document()
                 {
                     new StringField("ID", id, Field.Store.YES),

@@ -274,6 +274,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     incorrectBoundary.EDate = activePrice.SDate.Value.AddDays(-1);
                 }
                 Result saveResult = await _domainRepository.AddDomain(dto);
+                
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
             }
@@ -384,6 +385,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return ViewComponent("MultiLingual");
         }
 
+        [HttpGet]
+        public IActionResult GetGeneralSearchViewComponent()
+        {
+            return ViewComponent("GeneralSearch");
+        }
+
        
         [HttpPost]
         public IActionResult GetContentModuleViewComponent(ProductOrContentType contentType, ContentTemplateDesign selectionTemplate, int? count,
@@ -472,12 +479,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     ViewBag.ContentList = _contentRepository.GetContentsList(id, currentUserId, "");
                     break;
                 case "imagetextslider":
-
                     var sliderList = _sliderRepository.ActiveSliderList(id);
                     ViewBag.SliderList = sliderList;
                     break;
                 case "horizantalstoremenu":
                 break;
+                case "generalsearch":
+                    break;
                 case "advertisement":
                     break;
                 default:

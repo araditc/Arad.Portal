@@ -84,7 +84,10 @@ using Arad.Portal.DataLayer.Repositories.General.DesignStructure.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.SliderModule;
 using Arad.Portal.DataLayer.Repositories.General.SliderModule.Mongo;
 using Serilog;
+using MongoDB.Driver;
 using Arad.Portal.DataLayer.Services;
+using Lucene.Net.Store;
+using Lucene.Net.Index;
 
 namespace Arad.Portal.UI.Shop.Dashboard
 {
@@ -195,14 +198,91 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<CreateNotification>();
           
             
-            //services.AddProgressiveWebApp();
+            services.AddProgressiveWebApp();
             AddRepositoryServices(services);
             services.AddTransient<CodeGenerator>();
 
+            #region luceneIndexes
+
+            ServiceProvider sp = services.BuildServiceProvider();
+            CheckAndConfigureLuceneIndexs(sp);
+            #endregion
+
         }
 
-       
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
+
+        private void CheckAndConfigureLuceneIndexs(ServiceProvider sp)
+        {
+            DomainContext domainContext = sp.GetService<DomainContext>();
+            ContentContext contentContext = sp.GetService<ContentContext>();
+            ProductContext productContext = sp.GetService<ProductContext>();
+            LuceneService luceneService = sp.GetService<LuceneService>();
+            List<DataLayer.Entities.General.Content.Content> contentList = new List<DataLayer.Entities.General.Content.Content>();
+            List<DataLayer.Entities.Shop.Product.Product> productList = new List<DataLayer.Entities.Shop.Product.Product>();
+
+            if (domainContext != null)
+            {
+                var domainIds = domainContext.Collection.Find(_ => _.IsActive && !_.IsDeleted).ToList().Select(_ => _.DomainId);
+                var supportedCultures = Configuration.GetSection("SupportedCultures").Get<string[]>().ToList();
+                var mainPath = Path.Combine(Configuration["LocalStaticFileStorage"], "LuceneIndexes");
+
+                foreach (var dom in domainIds)
+                {
+                    var domainEntity = domainContext.Collection.Find(_ => _.DomainId == dom).FirstOrDefault();
+                    if (contentContext != null)
+                    {
+                        // contentList = contentContext.Collection.Find(_ => _.AssociatedDomainId == dom).ToList();
+                        //test 
+                        contentList = contentContext.Collection.Find(_ => true).ToList();
+                    }
+                    if (productContext != null)
+                    {
+                        //if(domainEntity.IsDefault)
+                        //{
+                        //    productList = productContext.ProductCollection.Find(_ => _.AssociatedDomainId == dom || _.IsPublishedOnMainDomain).ToList();
+                        //}else
+                        //{
+                        //    productList = productContext.ProductCollection.Find(_ => _.AssociatedDomainId == dom).ToList();
+                        //}
+                        //test
+                        productList = productContext.ProductCollection.Find(_ => true).ToList();
+                    }
+                    var mainDir = Path.Combine(mainPath, dom);
+                    List<string> dirs = new List<string>()
+                    {
+                        Path.Combine(mainDir, "Content")
+                    };
+                    foreach (var cul in supportedCultures)
+                    {
+                        dirs.Add(Path.Combine(mainDir, "Product", cul.Trim()));
+                    }
+                    foreach (var dir in dirs)
+                    {
+                        if (!System.IO.Directory.Exists(dir))
+                        {
+                            System.IO.Directory.CreateDirectory(dir);
+                        }
+                        FSDirectory luceneIndexDirectory = FSDirectory.Open(dir);
+                        var isExist = DirectoryReader.IndexExists(luceneIndexDirectory);
+                        if (!isExist)
+                        {
+                            if (luceneService != null)
+                                if (dir.Replace("\\", "/").Contains("/Product"))
+                                {
+                                    luceneService.BuildProductIndexesPerLanguage(productList, Path.Combine(mainDir, "Product"));
+                                }
+                                else
+                                {
+                                    luceneService.BuildContentIndexesPerLanguage(contentList, Path.Combine(mainDir, "Content"));
+                                }
+                        }
+
+                    }
+                }
+            }
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipelinelucene
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -219,9 +299,9 @@ namespace Arad.Portal.UI.Shop.Dashboard
 
             try
             {
-                if (!Directory.Exists(Configuration["LocalStaticFileStorage"]))
+                if (!System.IO.Directory.Exists(Configuration["LocalStaticFileStorage"]))
                 {
-                    Directory.CreateDirectory(Configuration["LocalStaticFileStorage"]);
+                    System.IO.Directory.CreateDirectory(Configuration["LocalStaticFileStorage"]);
                 }
                 var path1 = Path.Combine(Configuration["LocalStaticFileStorage"], "images/Contents");
                 var path2 = Path.Combine(Configuration["LocalStaticFileStorage"], "images/ProductGroups");
@@ -239,9 +319,9 @@ namespace Arad.Portal.UI.Shop.Dashboard
 
                 foreach (var path in pathes)
                 {
-                    if (!Directory.Exists(path))
+                    if (!System.IO.Directory.Exists(path))
                     {
-                        Directory.CreateDirectory(path);
+                        System.IO.Directory.CreateDirectory(path);
                     }
                 }
             }
@@ -332,7 +412,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<CountryContext>();
             services.AddTransient<ModuleContext>();
             services.AddTransient<SliderContext>();
-
+            services.AddTransient<LuceneService>();
             #endregion
 
 
@@ -369,7 +449,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<ICountryRepository, CountryRepository>();
             services.AddTransient<IModuleRepository, ModuleRepository>();
             services.AddTransient<ISliderRepository, SliderRepository>();
-            services.AddTransient<ILuceneService, LuceneService>();
+           
         }
 
     }

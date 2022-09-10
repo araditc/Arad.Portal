@@ -34,6 +34,8 @@ namespace Arad.Portal.DataLayer.Contracts.General.Content
         PagedItems<ContentGlance> GetAllBlogList(string queryString, string domainId, string languageId);
         ContentDTO FetchBySlug(string slug, string domainName);
         ContentDTO FetchByCode(string slugOrCode);
+
+        List<Entities.General.Content.Content> AllContents(string domainId);
         bool IsUniqueUrlFriend(string urlFriend, string domainId, string contentId = "");
         Task<Entities.General.Content.Content> ContentSelect(string contentId);
     }

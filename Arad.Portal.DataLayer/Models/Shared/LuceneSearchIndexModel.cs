@@ -16,6 +16,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
             GroupIds = new();
             TagKeywordList = new();
             GroupNames = new();
+            SuggestionObjs = new();
         }
         /// <summary>
         /// its whether product or content Id
@@ -32,6 +33,8 @@ namespace Arad.Portal.DataLayer.Models.Shared
 
         public string UniqueCode { get; set; }
 
+        public bool IsProduct { get; set; }
+
         /// <summary>
         /// the productGroupName(single) or contentCategoryName(multiple) 
         /// </summary>
@@ -41,6 +44,8 @@ namespace Arad.Portal.DataLayer.Models.Shared
         /// list of tags in language
         /// </summary>
         public List<string> TagKeywordList { get; set; }
+
+        public List<SuggestionObject> SuggestionObjs { get; set; }
 
 
     }

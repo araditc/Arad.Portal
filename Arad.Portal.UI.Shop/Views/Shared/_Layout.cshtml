@@ -160,31 +160,34 @@
                                             switch (module.ModuleName)
                                             {
                                                 case "ProductList":
-                                                    @await Component.InvokeAsync("SpecialProduct",
+                                                        @await Component.InvokeAsync("SpecialProduct",
                                                     new { productType = module.ParametersValue.ProductOrContentType,
                                                     selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count,
                                                     loadAnimation = module.ParametersValue.LoadAnimation, loadAnimationType = module.ParametersValue.LoadAnimationType })
                                                     ;
                                                     break;
                                                 case "ContentList":
-                                                    @await Component.InvokeAsync("ContentTemplates", module.ParametersValue)
+                                                        @await Component.InvokeAsync("ContentTemplates", module.ParametersValue)
                                                     ;
                                                     break;
                                                 case "HorizantalStoreMenu":
-                                                    @await Component.InvokeAsync("StoreMenu")
+                                                        @await Component.InvokeAsync("StoreMenu")
                                                     ;
                                                     break;
                                                 case "ImageTextSlider":
-                                                    @await Component.InvokeAsync("SliderModule", new { sliderId =  module.ParametersValue.SliderId })
+                                                        @await Component.InvokeAsync("SliderModule", new { sliderId =  module.ParametersValue.SliderId })
                                                     ;
                                                     break;
                                                 case "LoginAndProfile":
-                                                    @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId})
+                                                        @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId})
                                                     ;
                                                     break;
                                                 case "MultiLingualFlags":
-                                                    @await Component.InvokeAsync("MultiLingual")
+                                                        @await Component.InvokeAsync("MultiLingual")
                                                     ;
+                                                    break;
+                                               case "GeneralSearch":
+                                                       @await Component.InvokeAsync("GeneralSearch");
                                                     break;
                                             }
                                         }
@@ -199,7 +202,7 @@
                                         var index = column.ColData.LastIndexOf("</div>");
                                         var data = column.ColData.Substring(0, index);
                                         var htmlRaw = data.Replace("<div target=\"editor\">", "");
-                                        @Html.Raw(@htmlRaw)
+                                            @Html.Raw(@htmlRaw)
                                         ;
                                     }
                                 }
@@ -207,14 +210,15 @@
                         }
                     </div>
                 }
-             
-                
             }
             @if (!string.IsNullOrWhiteSpace(process.LayoutModel.HeaderPart.LatterFixedContent))
             {
                 @Html.Raw(process.LayoutModel.HeaderPart.LatterFixedContent)
                 ;
             }
+            <div class="row">
+                   @await Component.InvokeAsync("GeneralSearch")
+            </div>
         }
         else
         {
@@ -270,31 +274,34 @@
                                          switch (module.ModuleName)
                                             {
                                                 case "ProductList":
-                                                    @await Component.InvokeAsync("SpecialProduct",
+                                                        @await Component.InvokeAsync("SpecialProduct",
                                                     new { productType = module.ParametersValue.ProductOrContentType,
                                                     selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count,
                                                     loadAnimation = module.ParametersValue.LoadAnimation, loadAnimationType = module.ParametersValue.LoadAnimationType })
                                                     ;
                                                     break;
                                                 case "ContentList":
-                                                    @await Component.InvokeAsync("ContentTemplates", module.ParametersValue)
+                                                        @await Component.InvokeAsync("ContentTemplates", module.ParametersValue)
                                                     ;
                                                     break;
                                                 case "HorizantalStoreMenu":
-                                                    @await Component.InvokeAsync("StoreMenu")
+                                                        @await Component.InvokeAsync("StoreMenu")
                                                     ;
                                                     break;
                                                 case "ImageTextSlider":
-                                                    @await Component.InvokeAsync("SliderModule", new { sliderId =  module.ParametersValue.SliderId })
+                                                        @await Component.InvokeAsync("SliderModule", new { sliderId =  module.ParametersValue.SliderId })
                                                     ;
                                                     break;
                                                 case "LoginAndProfile":
-                                                    @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId})
+                                                        @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId})
                                                     ;
                                                     break;
                                                 case "MultiLingualFlags":
-                                                    @await Component.InvokeAsync("MultiLingual")
-                                                    ;
+                                                @await Component.InvokeAsync("MultiLingual")
+                                                ;
+                                                break;
+                                            case "GeneralSearch":
+                                                       @await Component.InvokeAsync("GeneralSearch");
                                                     break;
                                             }
                                     }
@@ -304,7 +311,7 @@
                                         var data = column.ColData.Substring(0, index);
                                         var htmlRaw = data.Replace("<div target=\"editor\">", "");
 
-                                        @Html.Raw(@htmlRaw)
+                                            @Html.Raw(@htmlRaw)
                                         ;
                                     }
 

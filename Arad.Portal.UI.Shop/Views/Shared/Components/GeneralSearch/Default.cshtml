@@ -5,11 +5,13 @@
     <div class="row">
         <div class="col-12">
             <form autocomplete="off" id="searchFrm" asp-controller="Search" asp-action="Index">
-                <div class="input-group searchContainer">
+                <div class="searchContainer">
+                <div class="input-group">
                     <input type="text" class="form-control" id="txtSearch" name="key" placeholder="@Language.GetString("btn_Search")" value="@Model" />
                     <button type="submit" class="input-group-text" id="btnSearch">
                         <i class="fas fa-search p-1 m-1"></i>
                     </button>
+                </div>
                 </div>
             </form>
         </div>
@@ -20,6 +22,7 @@
 $(document).ready(function() {
 
     $("#searchFrm").submit(function(e) {
+        debugger;
          e.preventDefault();
          var filter = $("#txtSearch").val().trim();
           $.ajax({
@@ -36,59 +39,41 @@ $(document).ready(function() {
                 debugger;
                     if (result.status === "success")
                     {
-
-                            document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
-                            document.getElementById('mainToastBody').classList.add('alert-success');
-                            var toastDiv = $("#mainToast");
-                            $("#toastPanel").show();
-                            var toast = new bootstrap.Toast(toastDiv);
-                            toast.show();
-                            setTimeout(function()
+                        var div = document.createElement("DIV");
+                        $(div).attr("id", "suggestion-list");
+                        $(div).attr("class", "suggestion-items");
+                        var containerParent = $(this).parent().parent(); 
+                        $(containerParent).append(div);
+                        var row = "<div class='container'><div class='row'>";
+                        if(result.data.length > 0)
+                        {
+                            for (i = 0; i <= result.data.length; i++) 
+                            {
+                                for (j = 0; j <= result.data[i].SuggestionPhrases; j++)
                                 {
-                                     $("#toastPanel").hide();
-                                     window.location.href = '@Url.Action("List")';
-                                },
-                                3000);
+                                    var phrase = result.data[i].SuggestionPhrases[j];
+                                    row += `<div class='col suggestItem d-flex justify-content-ceneter align-middle'><strong>${phrase.phrase}</strong><input type='hidden' class='hide' value='${phrase.url}'/></div>`;
+                                }
+                            }
+                        }else 
+                        {
+                            row += `<div class='d-flex justify-content-center'><p>${result.message}</p></div>`;
                         }
+                        row += "</div></div>";  
+                        $(div).append(row);
+                    }
                     else if (result.status === "error")
-                      {
-                            var spanErrorList = $('span[data-val-result]');
+                    {
+                           
+                    }
+              }
+          });
+    });
 
-                            if (spanErrorList.length > 0)
-                            {
-                            spanErrorList.each(function() {
-                                $(this).html("");
-                                $(this).parent().removeClass("has-error");
-                                });
-                            } 
-                            else {
-                            spanErrorList.html("");
-                            spanErrorList.parent().removeClass("has-error");
-                            }
-
-                            if (result.modelStateErrors.length > 0) {
-                            debugger;
-                            result.modelStateErrors.forEach(function(value, index) {
-                            $('[data-val-result=' + value.key + ']').append(value.errorMessage);
-                            $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
-                            });
-                            }
-                            else
-                            {
-                                showError(result.message);
-                           }
-                       }
-
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert("@error");
-                alert(xhr.status);
-                alert(thrownError);
-            },
-            complete: function () {
-           /* removeLoading($("#addUserCard"));*/
-            }
-            });
+    $(".suggestItem").click(function() {
+        debugger;
+        var url = $(this).find("hide").val();
+        window.location.href = url;
     });
 });
 </script>

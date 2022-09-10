@@ -23,10 +23,10 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly IDomainRepository _domainRepository;
         private readonly ILanguageRepository _lanRepository;
         private readonly IHttpContextAccessor _accessor;
-        private readonly ILuceneService _luceneService;
+        private readonly LuceneService _luceneService;
         private readonly IConfiguration _configuration;
         public SearchController(
-            ILanguageRepository lanRepository, ILuceneService luceneService,
+            ILanguageRepository lanRepository, LuceneService luceneService,
             IConfiguration configuration,
             IDomainRepository domainRepository, IHttpContextAccessor accessor) :base(accessor, domainRepository)
         {
@@ -42,25 +42,43 @@ namespace Arad.Portal.UI.Shop.Controllers
         public IActionResult Index([FromQuery] string key)
         {
             List<LuceneSearchIndexModel> lst = new List<LuceneSearchIndexModel>();
-            var domainEntity = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
-            string lanIcon;
-           // string currencyId = string.Empty;
-            if (CultureInfo.CurrentCulture.Name != null)
+            try
             {
-                lanIcon = CultureInfo.CurrentCulture.Name;
+                var domainEntity = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
+                string lanIcon;
+
+                if (CultureInfo.CurrentCulture.Name != null)
+                {
+                    lanIcon = CultureInfo.CurrentCulture.Name;
+                }
+                else
+                {
+                    lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
+                }
+                var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", domainEntity.DomainId);
+                List<string> searchDirectories = new List<string>();
+                searchDirectories.Add(Path.Combine(mainPath, "Content"));
+                searchDirectories.Add(Path.Combine(mainPath, "Product", lanIcon));
+                string msg = "";
+                lst = _luceneService.Search(key.Trim(), searchDirectories);
+                if(lst.Count == 0)
+                {
+                    msg = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_NoInformationWasFound");
+                }
+                foreach (var item in lst)
+                {
+                    foreach (var grp in item.GroupNames)
+                    {
+                        item.SuggestionObjs.Add(new SuggestionObject() {Phrase = $"{key} {GeneralLibrary.Utilities.Language.GetString("Search_IN")} {grp}",
+                            Url = item.IsProduct ? $"{lanIcon}/group/{item.Code}" : $"{lanIcon}/category/{item.Code}" });
+                    };
+                }
+                return new JsonResult(new { status = "success", data = lst, message = msg });
             }
-            else
+            catch (Exception ex)
             {
-                lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
+                return new JsonResult(new {status ="error" });
             }
-            var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", domainEntity.DomainId);
-            List<string> searchDirectories = new List<string>();
-            searchDirectories.Add(Path.Combine(mainPath, "Content"));
-            searchDirectories.Add(Path.Combine(mainPath, "Product", lanIcon));
-
-            lst = _luceneService.Search(f.Trim(), searchDirectories);
-
-            return new JsonResult(new { data = lst });
         }
     }
 }

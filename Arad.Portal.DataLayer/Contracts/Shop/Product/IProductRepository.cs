@@ -103,6 +103,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         List<SelectListModel> GetGroupsOfThisVendor(string vendorId, string domainId);
         List<SelectListModel> GetProductsOfThisVendor(string langId, string currentUserId);
 
+        List<Entities.Shop.Product.Product> AllProducts(string domainId);
         string GetProductSpecificationName(string specificationId, string languageId);
     }
 }

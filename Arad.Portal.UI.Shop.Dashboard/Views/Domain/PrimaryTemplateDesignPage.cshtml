@@ -2574,6 +2574,8 @@
                              break;
                              case "MultiLingualFlags":
                              break;
+                             case "GeneralSearch":
+                                 break;
 
                        }
                  });
@@ -2625,6 +2627,9 @@
                      case "multilingualflags":
                      url = "@Url.Action("GetMultiLingualModuleViewComponent", "Domain")";
                      break;
+                     case "generalsearch":
+                         url = "@Url.Action("GetGeneralSearchViewComponent","Domain")";
+                         break;
 
                  }
              

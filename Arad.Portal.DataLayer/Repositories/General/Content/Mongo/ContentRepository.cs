@@ -870,5 +870,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
                .FindAsync(_ => _.ContentId == contentId)).FirstOrDefault();
             return res;
         }
+
+        public List<Entities.General.Content.Content> AllContents(string domainId)
+        {
+            return _contentContext.Collection.Find(_ =>_.AssociatedDomainId == domainId).ToList();
+        }
     }
 }

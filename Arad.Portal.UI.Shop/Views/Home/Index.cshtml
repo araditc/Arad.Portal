@@ -111,6 +111,16 @@
                                             Log.Fatal("error in loading multilingual flags");
                                         }
                                         break;
+                                    case "GeneralSearch":
+                                     try
+                                        {
+                                            @await Component.InvokeAsync("GeneralSearch");
+                                        }
+                                        catch(Exception ex)
+                                        {
+                                            Log.Fatal("error in loading gneralSearch viewcomponent");
+                                        }
+                                        break;
 
                                 }
                             }

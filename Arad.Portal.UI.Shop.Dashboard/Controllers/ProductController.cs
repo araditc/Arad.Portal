@@ -30,6 +30,8 @@ using Microsoft.AspNetCore.Authorization;
 using SixLabors.ImageSharp.Formats;
 using Arad.Portal.DataLayer.Contracts.General.User;
 using Arad.Portal.DataLayer.Services;
+using Lucene.Net.Index;
+using Lucene.Net.Store;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -50,7 +52,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IHttpClientFactory _clientFactory;
-        private readonly ILuceneService _luceneService;
+        private readonly LuceneService _luceneService;
        
         private readonly string imageSize = "";
         private readonly CodeGenerator _codeGenerator;
@@ -61,7 +63,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ICurrencyRepository currencyRepository, IProductUnitRepository unitRepository,
             IProductSpecGroupRepository specGroupRepository,IPromotionRepository promotionRepository,
             IWebHostEnvironment webHostEnvironment, IHttpClientFactory clientFactory,
-            ILuceneService luceneService,IDomainRepository domainRepository,
+            LuceneService luceneService,IDomainRepository domainRepository,
             IHttpContextAccessor accessor, IConfiguration configuration)
         {
             _productRepository = productRepository;
@@ -193,9 +195,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var mainDomainPublishState = _productRepository.IsPublishOnMainDomain(id);
             Result opResult = await _productRepository.DeleteProduct(id, "delete");
             var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
-           
+
             #region delete related luceneIndexes
-            foreach (var cul in _configuration["SupportedCultures"].Replace("[", "").Replace("]", "").Trim().Split(",").ToList())
+            var lst = _configuration.GetSection("SupportedCultures").Get<string[]>().ToList();
+            foreach (var cul in lst)
             {
                 var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", domainId, "Product", cul.Trim());
                 
@@ -313,35 +316,37 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         {
                             mainDomainId = _domainRepository.FetchDefaultDomain().ReturnValue.DomainId;
                             mainDomainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", mainDomainId, "Product");
-                            if(!Directory.Exists(mainDomainPath))
+                            if(!System.IO.Directory.Exists(mainDomainPath))
                             {
-                                Directory.CreateDirectory(mainDomainPath);
-                                foreach (var cul in _configuration["SupportedCultures"].Replace("[", "").Replace("]", "").Trim().Split(",").ToList())
+                                System.IO.Directory.CreateDirectory(mainDomainPath);
+                                var cultureList = _configuration.GetSection("SupportedCultures").Get<string[]>().ToList();
+                                foreach (var cul in cultureList)
                                 {
                                     var culPath = Path.Combine(mainDomainPath, cul.Trim());
-                                    if (!Directory.Exists(culPath))
+                                    if (!System.IO.Directory.Exists(culPath))
                                     {
-                                        Directory.CreateDirectory(culPath);
+                                        System.IO.Directory.CreateDirectory(culPath);
                                     }
                                 }
                             }
                         }
                         
                         var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", domainId, "Product");
-                        if(!Directory.Exists(mainPath))
+                        if(!System.IO.Directory.Exists(mainPath))
                         {
-                            Directory.CreateDirectory(mainPath);
-                            foreach (var cul in _configuration["SupportedCultures"].Replace("[", "").Replace("]","").Trim().Split(",").ToList())
+                            System.IO.Directory.CreateDirectory(mainPath);
+                            var cultureList = _configuration.GetSection("SupportedCultures").Get<string[]>().ToList();
+                            foreach (var cul in cultureList)
                             {
                                 var culPath = Path.Combine(mainPath, cul.Trim());
-                                if(!Directory.Exists(culPath))
+                                if(!System.IO.Directory.Exists(culPath))
                                 {
-                                    Directory.CreateDirectory(culPath);
+                                    System.IO.Directory.CreateDirectory(culPath);
                                 }
                             }
                         }
-                        
-                        foreach (var cul in _configuration["SupportedCultures"].Replace("[", "").Replace("]", "").Trim().Split(",").ToList())
+                        var lst = _configuration.GetSection("SupportedCultures").Get<string[]>().ToList();
+                        foreach (var cul in lst)
                         {
                             var lanId = _lanRepository.FetchBySymbol(cul);
                             List<string> GroupNamesInlanguage = new List<string>();
@@ -353,7 +358,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                                 if(!string.IsNullOrWhiteSpace(groupName))
                                 GroupNamesInlanguage.Add(groupName);
                             }
-
+                            if(!DirectoryReader.IndexExists(FSDirectory.Open(Path.Combine(mainPath, cul.Trim()))))
+                            {
+                                var productList = _productRepository.AllProducts(domainId);
+                                _luceneService.BuildProductIndexesPerLanguage(productList, Path.Combine(mainPath, cul.Trim()));
+                            }
                             var obj = new LuceneSearchIndexModel()
                             {
                                 ID = saveResult.ReturnValue,
@@ -369,7 +378,16 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                             _luceneService.AddItemToExistingIndex(Path.Combine(mainPath, cul.Trim()), obj, true);
                             if(dto.IsPublishedOnMainDomain)
                             {
-                                _luceneService.AddItemToExistingIndex(Path.Combine(mainDomainPath, cul.Trim()), obj, true);
+                                if(!DirectoryReader.IndexExists(FSDirectory.Open(Path.Combine(mainDomainPath, cul.Trim()))))
+                                {
+                                    var productList = _productRepository.AllProducts(mainDomainId);
+                                    _luceneService.BuildProductIndexesPerLanguage(productList, Path.Combine(mainDomainPath, cul.Trim()));
+                                }
+                                else
+                                {
+                                    _luceneService.AddItemToExistingIndex(Path.Combine(mainDomainPath, cul.Trim()), obj, true);
+                                }
+                                
                             }
                         }
                         #endregion 
@@ -470,8 +488,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         var mainDomainId = _domainRepository.FetchDefaultDomain().ReturnValue.DomainId;
                         var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", domainId ,"Product");
                         var mainDomainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", mainDomainId, "Product");
-
-                        foreach (var cul in _configuration["SupportedCultures"].Replace("[", "").Replace("]", "").Trim().Split(",").ToList())
+                        var lst = _configuration.GetSection("SupportedCultures").Get<string[]>().ToList();
+                        foreach (var cul in lst)
                         {
                             var indexPath = Path.Combine(mainPath, cul.Trim());
                             var mainDomainIndexPath = Path.Combine(mainDomainPath, cul.Trim());
@@ -589,7 +607,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     var product = await _productRepository.ProductSelect(id);
                     var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
                     var mainDomainId = _domainRepository.FetchDefaultDomain().ReturnValue.DomainId;
-                    foreach (var cul in _configuration["SupportedCultures"].Replace("[", "").Replace("]", "").Trim().Split(",").ToList())
+                    var lst = _configuration.GetSection("SupportedCultures").Get<string[]>().ToList();
+                    foreach (var cul in lst)
                     {
                         var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", domainId, "Product", cul.Trim());
                         var mainDomainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", mainDomainId, "Product", cul.Trim());

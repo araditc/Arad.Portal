@@ -13,6 +13,8 @@ using Arad.Portal.DataLayer.Services;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Arad.Portal.UI.Shop.Dashboard.Authorization;
 using Arad.Portal.UI.Shop.Dashboard.Helpers;
+using Lucene.Net.Index;
+using Lucene.Net.Store;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -47,13 +49,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IProductUnitRepository _unitRepository;
-        private readonly ILuceneService _luceneService;
+        private readonly LuceneService _luceneService;
         private readonly string imageSize = "";
         private readonly CodeGenerator _codeGenerator;
         public ContentController(IContentRepository contentRepository, IWebHostEnvironment webHostEnvironment,
                                     IContentCategoryRepository contentCategoryRepository,IProductUnitRepository unitRepository,
                                     ILanguageRepository languageRepository, UserManager<ApplicationUser> userManager,
-                                    ILuceneService luceneService,
+                                    LuceneService luceneService,
                                     CodeGenerator codeGenerator,IUserRepository userRepository,ICurrencyRepository curRepository,
                                     IDomainRepository domainRepository,IProductGroupRepository groupRepository,
                                     IHttpContextAccessor accessor, IConfiguration configuration)
@@ -192,6 +194,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             JsonResult result;
             var errors = new List<AjaxValidationErrorModel>();
+           
             if (!ModelState.IsValid)
             {
                 foreach (var modelStateKey in ModelState.Keys)
@@ -232,21 +235,33 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     if (saveResult.Succeeded)
                     {
                         #region add to LuceneIndex 
+                        
                         var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", domainId, "Content");
-                        if (!Directory.Exists(mainPath))
+                        if (!System.IO.Directory.Exists(mainPath))
                         {
-                            Directory.CreateDirectory(mainPath);
+                            System.IO.Directory.CreateDirectory(mainPath);
                         }
-                        var obj = new LuceneSearchIndexModel()
+                        var isExist = DirectoryReader.IndexExists(FSDirectory.Open(mainPath));
+                        if(!isExist)
                         {
-                            ID = saveResult.ReturnValue,
-                            EntityName = dto.Title,
-                            GroupIds = new List<string> { dto.ContentCategoryId},
-                            Code = dto.ContentCode.ToString(),
-                            GroupNames = new List<string> { dto.ContentCategoryName },
-                            TagKeywordList = dto.TagKeywords
-                        };
-                        _luceneService.AddItemToExistingIndex(mainPath, obj, false);
+
+                            var contentList = _contentRepository.AllContents(domainId);
+                            _luceneService.BuildContentIndexesPerLanguage(contentList, mainPath);
+                        }
+                        else
+                        {
+                            var obj = new LuceneSearchIndexModel()
+                            {
+                                ID = saveResult.ReturnValue,
+                                EntityName = dto.Title,
+                                GroupIds = new List<string> { dto.ContentCategoryId },
+                                Code = dto.ContentCode.ToString(),
+                                GroupNames = new List<string> { dto.ContentCategoryName },
+                                TagKeywordList = dto.TagKeywords
+                            };
+                            _luceneService.AddItemToExistingIndex(mainPath, obj, false);
+                        }
+                       
                       
                         #endregion 
 
