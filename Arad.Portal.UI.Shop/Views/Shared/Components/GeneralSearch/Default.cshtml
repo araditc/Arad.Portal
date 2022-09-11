@@ -1,14 +1,14 @@
-﻿@model string
+﻿@model Arad.Portal.DataLayer.Models.Shared.Filter
 @{
 }
 <div class="border-top-0 w-100 m-2">
     <div class="row">
         <div class="col-12">
-            <form autocomplete="off" id="searchFrm" asp-controller="Search" asp-action="Index">
-                <div class="searchContainer">
-                <div class="input-group">
-                    <input type="text" class="form-control" id="txtSearch" name="key" placeholder="@Language.GetString("btn_Search")" value="@Model" />
-                    <button type="submit" class="input-group-text" id="btnSearch">
+            <form autocomplete="off" id="searchFrm" class="d-flex justify-content-center" asp-controller="Search" asp-action="Index">
+                <div class="searchContainer w-75 mx-3">
+                <div class="input-group rounded">
+                    <input type="text" class="form-control" id="txtSearch" name="key" placeholder="@Language.GetString("btn_Search")" value="@Model.Keyword" />
+                    <button type="button" class="input-group-text" id="btnSearch">
                         <i class="fas fa-search p-1 m-1"></i>
                     </button>
                 </div>
@@ -20,40 +20,65 @@
 
 <script on-content-loaded="true">
 $(document).ready(function() {
+    $("#txtSearch").change(function() {
+         var $this = $(this);
+    var timer = $this.data("timer");
+    if (timer) {
+        window.clearTimeout(timer);
+    }
+    $this.data("timer", window.setTimeout(SearchProcess, 1500));
+    });
 
-    $("#searchFrm").submit(function(e) {
-        debugger;
-         e.preventDefault();
-         var filter = $("#txtSearch").val().trim();
-          $.ajax({
-            url: $(this).attr('action')+"?key="+filter,
+    $("#btnSearch").click(function() {
+         var timer = $("#txtSearch").data("timer");
+        window.clearTimeout(timer);
+        SearchProcess();
+    });
+   
+});
+
+function SelPhrase(sender)
+{
+    debugger;
+    var url = $(sender).parent().find(".hide").val();
+    window.location.href = url;
+}
+
+function SearchProcess()
+{
+    debugger;
+     var filter = $("#txtSearch").val().trim();
+     if(filter != "")
+         {
+              $.ajax({
+            url:"@Url.Action("Index", "Search")" +"?key="+filter,
             type: 'Get',
-            processData: false,
-            contentType: false,
-            dataType : "application/json",
+            dataType :  "json",
             beforeSend: function() {
           /*  AddLoading($("#addUserCard"));*/
             },
             success: function (result)
             {
+                console.log(result.status);
                 debugger;
                     if (result.status === "success")
                     {
+                        debugger;
+                       
+                        $("#suggestion-list").remove();
                         var div = document.createElement("DIV");
                         $(div).attr("id", "suggestion-list");
                         $(div).attr("class", "suggestion-items");
-                        var containerParent = $(this).parent().parent(); 
+                        var containerParent = $("#btnSearch").parent().parent(); 
                         $(containerParent).append(div);
                         var row = "<div class='container'><div class='row'>";
                         if(result.data.length > 0)
                         {
-                            for (i = 0; i <= result.data.length; i++) 
+                            for (i = 0; i < result.data.length; i++) 
                             {
-                                for (j = 0; j <= result.data[i].SuggestionPhrases; j++)
-                                {
-                                    var phrase = result.data[i].SuggestionPhrases[j];
-                                    row += `<div class='col suggestItem d-flex justify-content-ceneter align-middle'><strong>${phrase.phrase}</strong><input type='hidden' class='hide' value='${phrase.url}'/></div>`;
-                                }
+                                var phrase = result.data[i];
+                                row += `<div class='col-12 col-md-3'><div class='border rounded suggestItem' onclick='SelPhrase(this)'><span class='spanPh'>${phrase.phrase}</span></div><input type='hidden' class='hide' value='${phrase.url}'/></div>`;
+                                
                             }
                         }else 
                         {
@@ -66,14 +91,18 @@ $(document).ready(function() {
                     {
                            
                     }
+              },
+            error: function(xhr, ajaxOptions, thrownError) {
+                debugger;
+                console.log(thrownError);
+                alert(xhr.status);
+            },
+              complete: function(result)
+              {
+                  console.log("here in compelete")
               }
+            
           });
-    });
-
-    $(".suggestItem").click(function() {
-        debugger;
-        var url = $(this).find("hide").val();
-        window.location.href = url;
-    });
-});
+         }
+}
 </script>

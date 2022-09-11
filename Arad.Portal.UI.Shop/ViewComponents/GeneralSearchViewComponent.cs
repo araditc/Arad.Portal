@@ -4,9 +4,11 @@ namespace Arad.Portal.UI.Shop.ViewComponents
 {
     public class GeneralSearchViewComponent : ViewComponent
     {
-        public IViewComponentResult Invoke()
+        public IViewComponentResult Invoke(string filter="")
         {
-            return View();
+            DataLayer.Models.Shared.Filter obj = new DataLayer.Models.Shared.Filter();
+            obj.Keyword = filter;
+            return View(obj);
         }
     }
 }

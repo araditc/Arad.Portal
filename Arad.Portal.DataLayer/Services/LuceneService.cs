@@ -120,6 +120,7 @@ namespace Arad.Portal.DataLayer.Services
             Document d = new();
             foreach (Content item in contents)
             {
+                d = new();
                 d.Add(new StringField("ID", item.ContentId, Field.Store.YES));
                 d.Add(new TextField("EntityName", item.Title, Field.Store.YES));
                 d.Add(new StringField("Code", item.ContentCode.ToString(), Field.Store.YES));
@@ -156,6 +157,7 @@ namespace Arad.Portal.DataLayer.Services
 
                 foreach (Product item in products)
                 {
+                    d = new();
                     d.Add(new StringField("ID", item.ProductId, Field.Store.YES));
                     d.Add(new StringField("UniqueCode", item.UniqueCode, Field.Store.YES));
                     d.Add(new StringField("Code", item.ProductCode.ToString(), Field.Store.YES));

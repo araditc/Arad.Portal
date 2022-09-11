@@ -55,13 +55,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 model = await _specificationRepository.SpecificationFetch(id);
             }
-
+            var controlTypes = _specificationRepository.GetAllControlTypes();
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
             var groupList = _groupRepository.AllActiveSpecificationGroup(lan.LanguageId);
             groupList.Insert(0, new SelectListModel() { Text = Language.GetString("AlertAndMessage_Choose"), Value =""  });
             ViewBag.SpecificationGroupList = groupList;
             ViewBag.LangId = lan.LanguageId;
-
+            ViewBag.ControlTypes = controlTypes;
             ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
             return View(model);
         }

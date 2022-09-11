@@ -2065,6 +2065,9 @@
   <string key="Name">
     <value>نام</value>
   </string>
+	<string key="UIControlType">
+		<value>نوع کنترل در UI</value>
+	</string>
   <string key="fromCreationDate">
     <value>از تاریخ ایجاد</value>
   </string>

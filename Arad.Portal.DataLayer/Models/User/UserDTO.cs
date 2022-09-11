@@ -16,7 +16,7 @@ namespace Arad.Portal.DataLayer.Models.User
         public UserDTO()
         {
             Addresses = new();
-            FavoriteList = new();
+            //FavoriteList = new();
             DomainId = new();
             Roles = new();
         }
@@ -47,7 +47,7 @@ namespace Arad.Portal.DataLayer.Models.User
         public string UserRoleId { get; set; }
         public OTP Otp { get; set; }
         public bool IsDeleted { get; set; }
-        public List<string> FavoriteList { get; set; }
+        //public List<string> FavoriteList { get; set; }
         public List<string> DomainId { get; set; }
         public DateTime CreationDate { get; set; }
         public string CreatorId { get; set; }

@@ -2015,6 +2015,9 @@
   <string key="Name">
     <value>Name</value>
   </string>
+	 <string key="UIControlType">
+    <value>Ui Control Type</value>
+  </string>
   <string key="fromCreationDate">
     <value>from creation date</value>
   </string>

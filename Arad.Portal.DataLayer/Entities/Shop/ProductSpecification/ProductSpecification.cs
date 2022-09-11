@@ -27,5 +27,17 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ProductSpecification
         /// languageId, GroupName for SpecificationGroupName, Name for SpecificationName and NameValues (as list of avalable values for this specification) will be filled here
         /// </summary>
         public List<MultiLingualProperty> SpecificationNameValues { get; set; }
+
+        public ControlType ControlType { get; set; }
+    }
+
+    public enum ControlType
+    {
+        CheckBoxList = 1,
+        TwoStateFlags = 2,
+        /// <summary>
+        /// something like price range
+        /// </summary>
+        RangeSlider = 3
     }
 }

@@ -1,4 +1,5 @@
-﻿using Arad.Portal.DataLayer.Models.Shared;
+﻿using Arad.Portal.DataLayer.Entities.Shop.ProductSpecification;
+using Arad.Portal.DataLayer.Models.Shared;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,8 @@ namespace Arad.Portal.DataLayer.Models.ProductSpecification
         public List<MultiLingualProperty> SpecificationNameValues { get; set; }
 
         public bool IsDeleted { get; set; }
+
+        public ControlType ControlType { get; set; }
 
         public string ModificationReason { get; set; }
     }

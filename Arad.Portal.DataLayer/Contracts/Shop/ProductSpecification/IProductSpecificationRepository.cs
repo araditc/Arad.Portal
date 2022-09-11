@@ -19,6 +19,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductSpecification
         Task<Result> Restore(string specificationId);
         Result<List<MultiLingualProperty>> GetSpecificationValues(string productSpecificationId);
         List<SelectListModel> GetSpcificationValuesInLanguage(string specificationId, string languageId);
+
+        List<SelectListModel> GetAllControlTypes();
         List<ProductSpecificationDTO> GetAllSpecificationsInGroup(string specificationGroupId);
         List<SelectListModel> GetSpecInGroupAndLanguage(string specificationGroupId, string languageId);
     }

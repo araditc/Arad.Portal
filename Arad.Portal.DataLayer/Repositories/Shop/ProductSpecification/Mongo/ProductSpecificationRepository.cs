@@ -16,6 +16,7 @@ using System.Collections.Specialized;
 using System.Web;
 using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
 using Microsoft.AspNetCore.Hosting;
+using Arad.Portal.DataLayer.Entities.Shop.ProductSpecification;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
 {
@@ -331,6 +332,23 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                 Text = _.Trim(),
                 Value = ""
             }).ToList(); 
+            return result;
+        }
+
+        public List<SelectListModel> GetAllControlTypes()
+        {
+            var result = new List<SelectListModel>();
+            foreach (int i in Enum.GetValues(typeof(ControlType)))
+            {
+                string name = Enum.GetName(typeof(ControlType), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name,
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            result.Insert(0, new SelectListModel() { Text = Arad.Portal.GeneralLibrary.Utilities.Language.GetString("Choose"), Value = "-1" });
             return result;
         }
     }
