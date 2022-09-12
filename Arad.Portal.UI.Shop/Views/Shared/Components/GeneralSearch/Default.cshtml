@@ -6,12 +6,12 @@
         <div class="col-12">
             <form autocomplete="off" id="searchFrm" class="d-flex justify-content-center" asp-controller="Search" asp-action="Index">
                 <div class="searchContainer w-75 mx-3">
-                <div class="input-group rounded">
-                    <input type="text" class="form-control" id="txtSearch" name="key" placeholder="@Language.GetString("btn_Search")" value="@Model.Keyword" />
-                    <button type="button" class="input-group-text" id="btnSearch">
-                        <i class="fas fa-search p-1 m-1"></i>
-                    </button>
-                </div>
+                    <div class="input-group rounded">
+                        <input type="text" class="form-control" id="txtSearch" name="key" placeholder="@Language.GetString("btn_Search")" value="@Model.Keyword" />
+                        <button type="button" class="input-group-text" id="btnSearch">
+                            <i class="fas fa-search p-1 m-1"></i>
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -19,90 +19,101 @@
 </div>
 
 <script on-content-loaded="true">
-$(document).ready(function() {
-    $("#txtSearch").change(function() {
-         var $this = $(this);
-    var timer = $this.data("timer");
-    if (timer) {
-        window.clearTimeout(timer);
+    $(document).ready(function() {
+        $("#txtSearch").change(function() {
+            var $this = $(this);
+            var timer = $this.data("timer");
+            if (timer) {
+                window.clearTimeout(timer);
+            }
+            $this.data("timer", window.setTimeout(SearchProcess, 1500));
+        });
+
+        $("#btnSearch").click(function() {
+            var timer = $("#txtSearch").data("timer");
+            window.clearTimeout(timer);
+            SearchProcess();
+        });
+
+    });
+
+
+    $('#txtSearch').keydown(function(event) {
+        if (event.key === "Enter") {
+            debugger;
+            var timer = $("#txtSearch").data("timer");
+            window.clearTimeout(timer);
+            SearchProcess();
+        }
+    });
+    function SelPhrase(sender) {
+        debugger;
+        var isProduct = ($(sender).parent().find(".hide.isProduct").val() == "true");
+        var param = $(sender).parent().find(".hide.params").val();
+        //url = "~/group/11";
+        if(isProduct)
+        {
+            window.location = window.location.protocol + "//" + window.location.host + "/" + '@ViewBag.LanIcon' + "/group/" + param;
+           
+        }else
+        {
+            window.location = window.location.protocol + "//" + window.location.host + "/" + '@ViewBag.LanIcon' + "/category/" + param;
+        }
+      
     }
-    $this.data("timer", window.setTimeout(SearchProcess, 1500));
-    });
 
-    $("#btnSearch").click(function() {
-         var timer = $("#txtSearch").data("timer");
-        window.clearTimeout(timer);
-        SearchProcess();
-    });
-   
-});
-
-function SelPhrase(sender)
-{
-    debugger;
-    var url = $(sender).parent().find(".hide").val();
-    window.location.href = url;
-}
-
-function SearchProcess()
-{
-    debugger;
-     var filter = $("#txtSearch").val().trim();
-     if(filter != "")
-         {
-              $.ajax({
-            url:"@Url.Action("Index", "Search")" +"?key="+filter,
-            type: 'Get',
-            dataType :  "json",
-            beforeSend: function() {
-          /*  AddLoading($("#addUserCard"));*/
-            },
-            success: function (result)
-            {
-                console.log(result.status);
-                debugger;
-                    if (result.status === "success")
-                    {
+    function SearchProcess() {
+      
+        var filter = $("#txtSearch").val().trim();
+        if (filter != "") {
+            $.ajax({
+                url: "@Url.Action("Index", "Search")" + "?key=" + filter,
+                type: 'Get',
+                dataType: "json",
+                beforeSend: function() {
+                    /*  AddLoading($("#addUserCard"));*/
+                },
+                success: function(result) {
+                    console.log(result.status);
+                    debugger;
+                    if (result.status === "success") {
                         debugger;
-                       
+
                         $("#suggestion-list").remove();
                         var div = document.createElement("DIV");
                         $(div).attr("id", "suggestion-list");
                         $(div).attr("class", "suggestion-items");
-                        var containerParent = $("#btnSearch").parent().parent(); 
+                        var containerParent = $("#btnSearch").parent().parent();
                         $(containerParent).append(div);
                         var row = "<div class='container'><div class='row'>";
-                        if(result.data.length > 0)
-                        {
-                            for (i = 0; i < result.data.length; i++) 
-                            {
+                        if (result.data.length > 0) {
+                            for (i = 0; i < result.data.length; i++) {
                                 var phrase = result.data[i];
-                                row += `<div class='col-12 col-md-3'><div class='border rounded suggestItem' onclick='SelPhrase(this)'><span class='spanPh'>${phrase.phrase}</span></div><input type='hidden' class='hide' value='${phrase.url}'/></div>`;
-                                
+                                row += `<div class='col-12 col-md-3'><div class='border rounded suggestItem' onclick='SelPhrase(this)'><span class='spanPh'>${phrase.phrase}</span></div>`+
+                                `<input type='hidden' class='hide isProduct' value='${phrase.isProduct}'/><input type='hidden' class='hide params' value='${phrase.urlParameter}'/></div>`;
+
                             }
-                        }else 
+                        } else
                         {
                             row += `<div class='d-flex justify-content-center'><p>${result.message}</p></div>`;
                         }
-                        row += "</div></div>";  
+                        row += "</div></div>";
                         $(div).append(row);
                     }
-                    else if (result.status === "error")
-                    {
-                           
+                    else if (result.status === "error") {
+
                     }
-              },
-            error: function(xhr, ajaxOptions, thrownError) {
-                debugger;
-                console.log(thrownError);
-                alert(xhr.status);
-            },
-              complete: function(result)
-              {
-                  console.log("here in compelete")
-              }
-            
-          });
-         }
-}
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    debugger;
+                    console.log(thrownError);
+                    alert(xhr.status);
+                },
+                complete: function(result) {
+                    console.log("here in compelete")
+                }
+
+            });
+        }
+    }
 </script>

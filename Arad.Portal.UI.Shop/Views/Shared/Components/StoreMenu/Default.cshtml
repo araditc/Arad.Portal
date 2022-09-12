@@ -9,7 +9,7 @@
     }
 </style>
 
-    <div class="border-top-0 w-100 m-2" id="navbar">
+    <div class="border-top-0 w-100 mx-2" id="navbar">
         <div class="row gx-0">
             <div class="col-12">
                 <nav class="navbar navbar-expand-lg rounded navbar-light  mt-0">
@@ -190,10 +190,12 @@
       if (window.pageYOffset >= sticky)
       {
         navbar.classList.add("sticky")
+         navbar.classList.add("ps-5")
       } 
       else 
       {
         navbar.classList.remove("sticky");
+        navbar.classList.remove("ps-5");
       }
     }
 </script> 

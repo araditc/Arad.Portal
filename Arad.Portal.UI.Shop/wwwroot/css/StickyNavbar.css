@@ -13,12 +13,13 @@
 .sticky {
     position: fixed;
     top: 0;
-    width: 100%;
+    right: 0;
+    left: 0;
     background-color: white;
     z-index: 99999;
+    box-shadow: 5px 5px 30px rgb(16 15 15 / 20%);
 }
-
-/* Add some top padding to the page content to prevent sudden quick movement (as the navigation bar gets a new position at the top of the page (position:fixed and top:0) */
-.sticky + .content {
+    /* Add some top padding to the page content to prevent sudden quick movement (as the navigation bar gets a new position at the top of the page (position:fixed and top:0) */
+    .sticky + .content {
    // padding-top: 60px;
 }

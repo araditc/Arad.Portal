@@ -32,3 +32,6 @@ div.suggestItem:hover {
     background-color: DodgerBlue !important;
     color: #ffffff;
 }
+#txtSearch:focus {
+    box-shadow: 0 0 0 0 rgb(13 110 253 / 25%) !important;
+  }

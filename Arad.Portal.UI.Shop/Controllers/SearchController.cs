@@ -70,6 +70,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                     searchDirectories.Add(Path.Combine(mainPath, "Content"));
                     string lanId = _lanRepository.FetchBySymbol(lanIcon);
                     searchDirectories.Add(Path.Combine(mainPath, "Product", lanIcon));
+                    ViewBag.LanIcon = lanIcon;
                     string msg = "";
                     lst = _luceneService.Search(key.Trim(), searchDirectories);
                     if (lst.Count == 0)
@@ -102,8 +103,9 @@ namespace Arad.Portal.UI.Shop.Controllers
                             {
 
                                 Phrase = $"{key} {GeneralLibrary.Utilities.Language.GetString("Search_IN")} {name}",
-                                Url = item.IsProduct ? $"{lanIcon}/group/{id}" : $"{lanIcon}/category/{id}"
-                            });
+                                IsProduct = item.IsProduct,
+                                UrlParameter = id
+                            }) ;
 
                         };
                     }

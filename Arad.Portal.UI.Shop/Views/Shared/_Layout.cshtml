@@ -67,7 +67,7 @@
     <link href="~/css/siteTemplate/ForthContentTemplate.css" rel="stylesheet" />
     <link href="~/css/siteTemplate/FifthContentTemplate.css" rel="stylesheet" />
     <link href="~/css/siteTemplate/SearchComponent.css" rel="stylesheet" />
-    <link href ="~/css/StickyNavbar.css" rel ="stylesheet" />
+    <link href="~/css/StickyNavbar.css" rel="stylesheet" />
     <link href="~/css/header.css" rel="stylesheet" />
     <link href="~/lib/animate.css/animate.compat.css" rel="stylesheet" />
     @await RenderSectionAsync("Styles", required: false)
@@ -88,7 +88,8 @@
             background-attachment: fixed;
             background-position: center bottom;
         }
-        body{
+
+        body {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -160,34 +161,35 @@
                                             switch (module.ModuleName)
                                             {
                                                 case "ProductList":
-                                                        @await Component.InvokeAsync("SpecialProduct",
-                                                    new { productType = module.ParametersValue.ProductOrContentType,
-                                                    selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count,
-                                                    loadAnimation = module.ParametersValue.LoadAnimation, loadAnimationType = module.ParametersValue.LoadAnimationType })
+                                                    @await Component.InvokeAsync("SpecialProduct",
+                new { productType = module.ParametersValue.ProductOrContentType,
+                selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count,
+                loadAnimation = module.ParametersValue.LoadAnimation, loadAnimationType = module.ParametersValue.LoadAnimationType })
                                                     ;
                                                     break;
                                                 case "ContentList":
-                                                        @await Component.InvokeAsync("ContentTemplates", module.ParametersValue)
+                                                    @await Component.InvokeAsync("ContentTemplates", module.ParametersValue)
                                                     ;
                                                     break;
                                                 case "HorizantalStoreMenu":
-                                                        @await Component.InvokeAsync("StoreMenu")
+                                                    @await Component.InvokeAsync("StoreMenu")
                                                     ;
                                                     break;
                                                 case "ImageTextSlider":
-                                                        @await Component.InvokeAsync("SliderModule", new { sliderId =  module.ParametersValue.SliderId })
+                                                    @await Component.InvokeAsync("SliderModule", new { sliderId =  module.ParametersValue.SliderId })
                                                     ;
                                                     break;
                                                 case "LoginAndProfile":
-                                                        @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId})
+                                                    @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId})
                                                     ;
                                                     break;
                                                 case "MultiLingualFlags":
-                                                        @await Component.InvokeAsync("MultiLingual")
+                                                    @await Component.InvokeAsync("MultiLingual")
                                                     ;
                                                     break;
-                                               case "GeneralSearch":
-                                                       @await Component.InvokeAsync("GeneralSearch");
+                                                case "GeneralSearch":
+                                                    @await Component.InvokeAsync("GeneralSearch")
+                                                    ;
                                                     break;
                                             }
                                         }
@@ -202,7 +204,7 @@
                                         var index = column.ColData.LastIndexOf("</div>");
                                         var data = column.ColData.Substring(0, index);
                                         var htmlRaw = data.Replace("<div target=\"editor\">", "");
-                                            @Html.Raw(@htmlRaw)
+                                        @Html.Raw(@htmlRaw)
                                         ;
                                     }
                                 }
@@ -216,9 +218,9 @@
                 @Html.Raw(process.LayoutModel.HeaderPart.LatterFixedContent)
                 ;
             }
-            <div class="row">
-                   @await Component.InvokeAsync("GeneralSearch")
-            </div>
+          @*  <div class="row">
+                @await Component.InvokeAsync("GeneralSearch")
+            </div>*@
         }
         else
         {
@@ -243,7 +245,7 @@
             @RenderBody()
         </main>
     </div>
-@*
+
     <footer class="dynamicFooterPart mt-auto" style=@(process.LayoutModel.FooterPart != null && !string.IsNullOrWhiteSpace(process.LayoutModel.FooterPart.CodeColor) ?
             $"background-color:{process.LayoutModel.FooterPart.CodeColor}" : (process.LayoutModel.FooterPart != null && !string.IsNullOrWhiteSpace(process.LayoutModel.FooterPart.BgImage) ?
             $"background-image:{process.LayoutModel.FooterPart.BgImage}" :""))>
@@ -271,39 +273,40 @@
                                     {
                                         var module = JsonConvert.DeserializeObject<ModuleWithParametersValue>(column.ColData.Replace("<div target=\"module\">", "")
                                         .Replace("</div>", ""));
-                                         switch (module.ModuleName)
-                                            {
-                                                case "ProductList":
-                                                        @await Component.InvokeAsync("SpecialProduct",
-                                                    new { productType = module.ParametersValue.ProductOrContentType,
-                                                    selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count,
-                                                    loadAnimation = module.ParametersValue.LoadAnimation, loadAnimationType = module.ParametersValue.LoadAnimationType })
-                                                    ;
-                                                    break;
-                                                case "ContentList":
-                                                        @await Component.InvokeAsync("ContentTemplates", module.ParametersValue)
-                                                    ;
-                                                    break;
-                                                case "HorizantalStoreMenu":
-                                                        @await Component.InvokeAsync("StoreMenu")
-                                                    ;
-                                                    break;
-                                                case "ImageTextSlider":
-                                                        @await Component.InvokeAsync("SliderModule", new { sliderId =  module.ParametersValue.SliderId })
-                                                    ;
-                                                    break;
-                                                case "LoginAndProfile":
-                                                        @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId})
-                                                    ;
-                                                    break;
-                                                case "MultiLingualFlags":
+                                        switch (module.ModuleName)
+                                        {
+                                            case "ProductList":
+                                                @await Component.InvokeAsync("SpecialProduct",
+                new { productType = module.ParametersValue.ProductOrContentType,
+                selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count,
+                loadAnimation = module.ParametersValue.LoadAnimation, loadAnimationType = module.ParametersValue.LoadAnimationType })
+                                                ;
+                                                break;
+                                            case "ContentList":
+                                                @await Component.InvokeAsync("ContentTemplates", module.ParametersValue)
+                                                ;
+                                                break;
+                                            case "HorizantalStoreMenu":
+                                                @await Component.InvokeAsync("StoreMenu")
+                                                ;
+                                                break;
+                                            case "ImageTextSlider":
+                                                @await Component.InvokeAsync("SliderModule", new { sliderId =  module.ParametersValue.SliderId })
+                                                ;
+                                                break;
+                                            case "LoginAndProfile":
+                                                @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId})
+                                                ;
+                                                break;
+                                            case "MultiLingualFlags":
                                                 @await Component.InvokeAsync("MultiLingual")
                                                 ;
                                                 break;
                                             case "GeneralSearch":
-                                                       @await Component.InvokeAsync("GeneralSearch");
-                                                    break;
-                                            }
+                                                @await Component.InvokeAsync("GeneralSearch")
+                                                ;
+                                                break;
+                                        }
                                     }
                                     else if (div.Attributes["target"].Value == "editor")
                                     {
@@ -311,7 +314,7 @@
                                         var data = column.ColData.Substring(0, index);
                                         var htmlRaw = data.Replace("<div target=\"editor\">", "");
 
-                                            @Html.Raw(@htmlRaw)
+                                        @Html.Raw(@htmlRaw)
                                         ;
                                     }
 
@@ -331,21 +334,20 @@
         {
 
         }
-    </footer>*@
+    </footer>
 
 
     <script>
-          var confirmUrl;
-         var typeOfRequest;
-        function setLang(lang)
-        {
+        var confirmUrl;
+        var typeOfRequest;
+        function setLang(lang) {
             debugger;
             var currentCulture = '@CultureInfo.CurrentCulture.Name';
             if (currentCulture !== lang) {
                 $.ajax({
                     type: "GET",
                     url: '/Account/changeLang?langId=' + lang,
-                    success: function () {
+                    success: function() {
                         debugger;
                         window.location.reload();
                     }
@@ -354,20 +356,20 @@
         }
         function setProductCountInCart(number) {
             debugger;
-           $("span.count-basket").text(`${number} ${'@Language.GetString("Stuff")'}`);
+            $("span.count-basket").text(`${number} ${'@Language.GetString("Stuff")'}`);
         }
 
-         function doAnimations(elems) {
-                            var animEndEv = "webkitAnimationEnd animationend";
+        function doAnimations(elems) {
+            var animEndEv = "webkitAnimationEnd animationend";
 
-                            elems.each(function () {
-                                var $this = $(this),
-                                    $animationType = $this.data("animation");
-                                $this.addClass($animationType).one(animEndEv, function () {
-                                    $this.removeClass($animationType);
-                                });
-                            });
-                        }
+            elems.each(function() {
+                var $this = $(this),
+                    $animationType = $this.data("animation");
+                $this.addClass($animationType).one(animEndEv, function() {
+                    $this.removeClass($animationType);
+                });
+            });
+        }
 
         function changeScreen() {
             var windowSize = $(window).width();
@@ -375,59 +377,57 @@
             if (windowSize <= 974) {
                 $(".nascr").removeClass("d-none").addClass("d-block");
                 $(".wiscr").removeClass("d-block").addClass("d-none");
-                if($("#navbar") != undefined)
-                {
-                   if($("#navbar").hasClass("sticky")) 
-                   {
-                       $("#navbar").removeClass("sticky");
-                   }
+                if ($("#navbar") != undefined) {
+                    if ($("#navbar").hasClass("sticky")) {
+                        $("#navbar").removeClass("sticky");
+                    }
                 }
-            } 
+            }
             else {
                 $(".nascr").removeClass("d-block").addClass("d-none");
                 $(".wiscr").removeClass("d-none").addClass("d-block");
             }
         }
-            $(document).ready(function () {
-                changeScreen();
-                $(window).resize(changeScreen);
+        $(document).ready(function() {
+            changeScreen();
+            $(window).resize(changeScreen);
 
-                $(".menu-area").mouseover(function () {
-                        var windowSize = $(window).width();
-                        if (windowSize > 975) {
-                            $(this).addClass("show");
-                            $(this).find(".dropdown-toggle").addClass("text-primary");
-                            $(this).find(".mega-area").addClass("show");
-                        }
-                });
-
-                $(".menu-area").mouseleave(function () {
-                    var windowSize = $(window).width();
-                    if (windowSize > 975) {
-                        $(this).removeClass("show");
-                        $(this).find(".dropdown-toggle").removeClass("text-primary");
-                        $(this).find(".mega-area").removeClass("show");
-                    }
-                });
-
-                $(".nav-item .nav-link").mouseover(function () {
-                        $(this).addClass("text-primary");
-                });
-                $(".nav-item .nav-link").mouseleave(function () {
-                        $(this).removeClass("text-primary");
-                });
-
-                $(".custmDrp").click(function () {
-                    debugger;
-                    var item = $(this).parent().parent().siblings(".mega-area")
-                    if (item.hasClass("show")) {
-                        item.removeClass("show");
-                    } else {
-                        item.addClass("show");
-                    }
-                })
-
+            $(".menu-area").mouseover(function() {
+                var windowSize = $(window).width();
+                if (windowSize > 975) {
+                    $(this).addClass("show");
+                    $(this).find(".dropdown-toggle").addClass("text-primary");
+                    $(this).find(".mega-area").addClass("show");
+                }
             });
+
+            $(".menu-area").mouseleave(function() {
+                var windowSize = $(window).width();
+                if (windowSize > 975) {
+                    $(this).removeClass("show");
+                    $(this).find(".dropdown-toggle").removeClass("text-primary");
+                    $(this).find(".mega-area").removeClass("show");
+                }
+            });
+
+            $(".nav-item .nav-link").mouseover(function() {
+                $(this).addClass("text-primary");
+            });
+            $(".nav-item .nav-link").mouseleave(function() {
+                $(this).removeClass("text-primary");
+            });
+
+            $(".custmDrp").click(function() {
+                debugger;
+                var item = $(this).parent().parent().siblings(".mega-area")
+                if (item.hasClass("show")) {
+                    item.removeClass("show");
+                } else {
+                    item.addClass("show");
+                }
+            })
+
+        });
     </script>
 </body>
 </html>

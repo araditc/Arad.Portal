@@ -10,6 +10,8 @@ namespace Arad.Portal.DataLayer.Models.Shared
     {
         public string Phrase { get; set; }
 
-        public string Url { get; set; }
+        public bool IsProduct { get; set; }
+
+        public string UrlParameter { get; set; }
     }
 }

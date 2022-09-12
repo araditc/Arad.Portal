@@ -8,7 +8,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
 {
     public class SuggestionObjectComparer : IEqualityComparer<SuggestionObject>
     {
-         // SuggestionObjects are equal if their phrase and url are equal.
+         // SuggestionObjects are equal if their phrase and isProduct and urlParameter are equal.
         public bool Equals(SuggestionObject x, SuggestionObject y)
         {
 
@@ -20,7 +20,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
                 return false;
 
         //Check whether SuggestionObject properties are equal.
-        return x.Phrase == y.Phrase && x.Url == y.Url;
+        return x.Phrase == y.Phrase && x.IsProduct == y.IsProduct && x.UrlParameter == y.UrlParameter;
         }
 
     // If Equals() returns true for a pair of objects
@@ -34,11 +34,16 @@ namespace Arad.Portal.DataLayer.Models.Shared
         //Get hash code for the phrase field if it is not null.
         int hashPhrase = suggestionObject.Phrase == null ? 0 : suggestionObject.Phrase.GetHashCode();
 
-        //Get hash code for the Url field.
-        int hashUrl = suggestionObject.Url.GetHashCode();
+        //Get hash code for the isProduct field.
+        int hashIsProduct = suggestionObject.IsProduct.GetHashCode();
+        
+         //Get hash code urlParameter field
+        int hashUrlParam = suggestionObject.UrlParameter.GetHashCode();
 
-        //Calculate the hash code for the product.
-        return hashPhrase ^ hashUrl;
+        
+
+        //Calculate the hash code for the product. ^ is XOR
+        return (hashPhrase ^ hashIsProduct ^ hashUrlParam);
     }
 }
 }

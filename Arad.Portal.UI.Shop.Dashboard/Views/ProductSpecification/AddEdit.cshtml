@@ -4,6 +4,7 @@
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
     var baseAdd = Config["BaseAddress"];
+    string selectedVal = ((int)@Model.ControlType).ToString();
 }
 @section Styles{
     <style>
@@ -52,7 +53,7 @@
                     </div>
                     <div class="form-group col-12 col-md-2">
                         <label class="form-label" for="name">@Language.GetString("UIControlType")</label><br />
-                         <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.ControlType" asp-items="@(new SelectList(ViewBag.ViewBag.ControlTypes,"Value","Text"))">
+                         <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.ControlType" asp-items="@(new SelectList(ViewBag.ControlTypes,"Value","Text"))">
                         </select>
                         <span data-val-result="controlType" class="text-danger"></span>
                     </div>
@@ -173,7 +174,8 @@
             }
             if('@Model.ProductSpecificationId' != "")
             {
-                $("#ControlType").val('@Model.ControlType');
+                debugger;
+                $("#ControlType").val(@selectedVal);
                 $("#ControlType").selectpicker("refresh");
 
             }
@@ -215,10 +217,7 @@
             $("#btnAddProductSpecification").click(function () {
             debugger;
                 var flag = false;
-                if ("@Model.ProductSpecificationId" != "" && $("#ModificationReason").val() == "") {
-                    $("span[data-val-result='ModificationReason']").html('@Language.GetString("AlertAndMessage_ModificationReason")');
-                    flag = true;
-                }
+               
                 if ($("#SpecificationGroupId").val() == "") {
                     $("span[data-val-result='specificationGroupId']").html('@Language.GetString("AlertAndMessage_SelectSpecificationGroup")');
                 }
@@ -324,7 +323,7 @@
                 obj.ProductSpecificationId = $("#ProductSpecificationId").val();
 
             obj.SpecificationGroupId = $("#SpecificationGroupId").val();
-            obj.ControlType = $("#ControlType").val();
+            obj.ControlType = parseInt($("#ControlType").val());
            
             $("#multiLingualList tr").each(function () {
                 debugger;

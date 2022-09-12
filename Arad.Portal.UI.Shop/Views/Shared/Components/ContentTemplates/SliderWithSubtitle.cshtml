@@ -27,27 +27,27 @@
                 <div class="row">
                     <div class="col-8 m-auto">
                         <div class="row">
-                            <div class="col-6 card m-0 p-0" style="background-color: #e9f8f8;">
-                                <div class="card-body m-5">
-                                    <h5 class="text-start fs-4 fw-bold pb-4 border-bottom">@Model[i].Title</h5>
+                            <div class="col-12 col-md-6 card m-0 p-0" style="background-color: #e9f8f8;">
+                                <div class="card-body m-0 p-xl-5">
+                                    <h5 class="text-start fs-4 fw-bold pb-0 pb-xl-4 border-bottom">@Model[i].Title</h5>
                                     <div class="row fs-6">@Model[i].SubTitle</div>
-                                    <div class="float-start ms-4 mt-5">
-                                        <a class="btn btn-lg btn-dark text-decoration-none mt-5" role="button" href="@(!string.IsNullOrWhiteSpace(Model[i].UrlFriend) ? Model[i].UrlFriend : $"/blog/{Model[0].ContentCode}")" role="button">
+                                    <div class="float-start ms-0 mt-0 ms-xl-4 mt-xl-5">
+                                        <a class="btn btn-lg btn-dark text-decoration-none mt-0 mt-xl-5" role="button" href="@(!string.IsNullOrWhiteSpace(Model[i].UrlFriend) ? Model[i].UrlFriend : $"/blog/{Model[0].ContentCode}")" role="button">
                                             @Language.GetString("design_Continue")
                                         </a>
                                     </div>
                                 </div>
-                                <div class="mt-5 m-3 border-top">
+                                <div class="m-0 mt-xl-5 m-xl-3 border-top">
                                 </div>
                             </div>
-                            <div class="col-6 m-0 p-0">
+                            <div class="col-12 col-md-6 m-0 p-0">
                                 <picture>
                                     <source media="(max-width: 767px)" srcset="@Url.Content($"~/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={360}")" />
                                     <source media="(min-width: 768px)" srcset="@Url.Content($"~/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={460}")">
                                     <source media="(min-width: 992px)" srcset="@Url.Content($"~/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={650}")">
                                     <img class="d-block w-100 h-100 rounded-0"
-                                     src="@Url.Content($"~/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={460}")" style="object-fit:contain;"
-                                     @($" {@innerElementsAtr} " )
+                                         src="@Url.Content($"~/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={650}")" style="object-fit:contain;"
+                                         @($" {@innerElementsAtr} " )
                                      alt="@(Model[i].Images.Any(_=>_.ImageRatio == ImageRatio.Square) ? Model[i].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title : "")">
                                 </picture>
                             </div>
