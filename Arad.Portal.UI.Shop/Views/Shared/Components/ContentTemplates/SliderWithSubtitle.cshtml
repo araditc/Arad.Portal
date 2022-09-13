@@ -25,22 +25,9 @@
         {
             <div class="carousel-item @(i == 0 ? "active" : "")" @innerElementsAtr>
                 <div class="row">
-                    <div class="col-8 m-auto">
-                        <div class="row">
-                            <div class="col-12 col-md-6 card m-0 p-0" style="background-color: #e9f8f8;">
-                                <div class="card-body m-0 p-xl-5">
-                                    <h5 class="text-start fs-4 fw-bold pb-0 pb-xl-4 border-bottom">@Model[i].Title</h5>
-                                    <div class="row fs-6">@Model[i].SubTitle</div>
-                                    <div class="float-start ms-0 mt-0 ms-xl-4 mt-xl-5">
-                                        <a class="btn btn-lg btn-dark text-decoration-none mt-0 mt-xl-5" role="button" href="@(!string.IsNullOrWhiteSpace(Model[i].UrlFriend) ? Model[i].UrlFriend : $"/blog/{Model[0].ContentCode}")" role="button">
-                                            @Language.GetString("design_Continue")
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="m-0 mt-xl-5 m-xl-3 border-top">
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6 m-0 p-0">
+                    <div class="col-8 col-xl-9  m-auto">
+                        <div class="row flex-row-reverse">
+                             <div class="col-12 col-xl-6 m-0 p-0">
                                 <picture>
                                     <source media="(max-width: 767px)" srcset="@Url.Content($"~/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={360}")" />
                                     <source media="(min-width: 768px)" srcset="@Url.Content($"~/GetScaledImageOnWidth?path={Model[i].DesiredImageUrl}&width={460}")">
@@ -51,6 +38,22 @@
                                      alt="@(Model[i].Images.Any(_=>_.ImageRatio == ImageRatio.Square) ? Model[i].Images.FirstOrDefault(_=>_.ImageRatio == ImageRatio.Square).Title : "")">
                                 </picture>
                             </div>
+                            <div class="col-12 col-xl-6 card m-0 p-0" style="background-color: #e9f8f8;">
+                                <div class="card-body m-0 p-3">
+                                    <h6 class="text-start pb-1 pb-xxl-4 pb-xl-1 fw-bold fs-3 ps-xl-3 border-bottom mt-xl-1 mt-xxl-5 sliderTitle">@Model[i].Title</h6>
+                                    <div class="row ps-3  pe-1 pt-xl-2  mt-xl-1 mt-xxl-5 px-xxl-5 sliderSubtitle">@Model[i].SubTitle</div>
+                                    
+                                </div>
+                                <div class="card-footer" style="background-color: initial;border-top: none;">
+                                    <div class="float-end mt-0 mt-lg-2 mt-xxl-3 me-5 mb-xl-1 mb-xxl-5">
+                                        <a class="btn btn-lg btn-dark text-decoration-none mt-1 mb-xl-3 mt-xl-3" role="button" href="@(!string.IsNullOrWhiteSpace(Model[i].UrlFriend) ? Model[i].UrlFriend : $"/blog/{Model[0].ContentCode}")" role="button">
+                                            @Language.GetString("design_Continue")
+                                        </a>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                           
                         </div>
                     </div>
                 </div>

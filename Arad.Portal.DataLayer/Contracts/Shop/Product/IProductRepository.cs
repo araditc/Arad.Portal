@@ -19,53 +19,35 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
     public interface IProductRepository
     {
         Task<PagedItems<ProductViewModel>> List(string queryString);
-
         Task<Result<string>> Add(ProductInputDTO dto);
-
         Task<Result> InsertDownloadLimitation(string shoppingCartDetailId, string productId, string userId, string domainId);
         long GetProductCode(string productId);
         Task<ProductOutputDTO> ProductFetch(string productId);
-
         Task<Entities.Shop.Product.Product> ProductSelect(string productId);
-
         ProductOutputDTO EvaluateFinalPrice(string productId, List<Price> productPrices, List<string> productGroupIds, string defCurrenyId);
         ProductOutputDTO FetchProductWithSlug(string slug, string domainName);
-
         Task<Result> AddCommentToProduct(string productId, Comment comment);
-
         bool IsPublishOnMainDomain(string productId);
         Task<Result> UpdateVisitCount(string productId);
-        Task<Result> ChangeUnitOfProduct(string productId,
-            string unitId, string modificationReason);
-
-        Task<Result> AddMultilingualProperty(string productId,
-            MultiLingualProperty multiLingualProperty);
-
+        Task<Result> ChangeUnitOfProduct(string productId, string unitId, string modificationReason);
+        Task<Result> AddMultilingualProperty(string productId, MultiLingualProperty multiLingualProperty);
         List<SelectListModel> GetAllImageRatio();
-        Task<Result> AddPictureToProduct(string productId,
-            Image picture);
+        Task<Result> AddPictureToProduct(string productId, Image picture);
         Task<Result> ImportFromExcel(List<ProductExcelImport> lst);
-        Task<Result> Restore(string productId);
-        Task<Result> AddProductSpecifications(string productId,
-            ProductSpecificationValue specValues);
+        Task<List<DynamicFilter>> GetFilterList(string languageId, string groupId = null);
+       Task<Result> Restore(string productId);
+        Task<Result> AddProductSpecifications(string productId, ProductSpecificationValue specValues);
         Task<Result> UpdateProduct(ProductInputDTO dto);
-
         Task<Result> DeleteProduct(string productId, string modificationReason);
-
         Task<Result<List<ProductCompare>>> SearchProducts(string filter, string lanId, string currencyId, string domainId);
-
         Task<Result<List<GeneralSearchResult>>> GeneralSearch(string filter, string lanId, string CurrencyId, string domainId);
-
         Task<Result<List<ProductCompare>>> FindProductsInGroups(List<string> groupIds, string lanId, string currencyId, string domainId);
-
         bool IsCodeUnique(string code, string productId ="");
-
         Task<Result> UpdateDownloadLimitationCount(string userId, string productId);
         bool IsDownloadIconShowForCurrentUser(string userId, string productId);
         bool IsUniqueUrlFriend(string urlFriend, string productId = "");
         Task<Result<EntityRate>> RateProduct(string productId, int score, bool isNew, int prevScore);
         List<Image> GetPictures(string productId);
-
         List<string> GetProductGroups(string productId);
 
         //Task<bool> SetProductPic(string path, string productId);
@@ -94,7 +76,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 
         string FetchUrlFriendById(string productId);
 
-        List<ProductOutputDTO> GetSpecialProducts(int count, string currencyId, ProductOrContentType type);
+        List<ProductOutputDTO> GetSpecialProducts(int count, string currencyId, ProductOrContentType type, int skip = 0);
         bool HasActiveProductPromotion(string productId);
         List<SelectListModel> GetAllActiveProductList(string langId, string currentUserId, string productGroupId, string vendorId);
         List<SelectListModel> GetAllProductList(ApplicationUser user,string productGroupId, string langId);

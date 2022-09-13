@@ -1,4 +1,6 @@
-﻿@using Arad.Portal.DataLayer.Entities.General.DesignStructure;
+﻿@model PagedItems<Arad.Portal.DataLayer.Models.Product.ProductOutputDTO>
+@using Arad.Portal.DataLayer.Models.Shared
+@using Arad.Portal.UI.Shop.ViewComponents;
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -7,25 +9,46 @@
     <link href="~/lib/owlCarousel/css/owl.theme.default.min.css" rel="stylesheet" />
     <link href="~/lib/owlCarousel/css/CarouselCustomArrowKeys.css" rel="stylesheet" />
     <link href="~/css/SpecialProduct.css" rel="stylesheet" />
-    
+
 }
 
 
-<div class="card mt-2 border-0">
+    @*<div class="card mt-2 border-0">
     <div class="card-body">
         <div id="productSection">
             @await Component.InvokeAsync("SpecialProduct", new { count = 10, productType = ProductOrContentType.Newest })
         </div>
     </div>
-</div>
+</div>*@
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-9">
+            <div class="row">
+                <div class="card">
+                    <div class="card-header"></div>
+                    <div class="card-body"></div>
+                    <div class="card-footer">
+                    @await Component.InvokeAsync("Pagination", new PageViewModel
+                        {
+                        CurrentPage = Model.CurrentPage,
+                        ItemsCount = Model.ItemsCount,
+                        PageSize = Model.PageSize,
+                        Navigation = Url.Action("Index", "Product"),
+                        QueryParams = Model.QueryString
+                        })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-@section Scripts{
+    @section Scripts{
 
-    <script src="~/lib/owlCarousel/js/owl.carousel.min.js"></script>
+    @*<script src="~/lib/owlCarousel/js/owl.carousel.min.js"></script>*@
 
     <script>
-        $(document).ready(function () {
-            $(".likeLink i").click(function () {
+        $(document).ready(function() {
+            $(".likeLink i").click(function() {
                 if ($(this).hasClass("far fa-heart")) {
                     $(this).removeClass("far fa-heart");
                     $(this).addClass("fas fa-heart");
@@ -34,30 +57,30 @@
                     $(this).addClass("far fa-heart");
                 }
             });
-            $(".owl-carousel").owlCarousel({
-                loop: true,
-                rtl: true,
-                /* autoplay: true,*/
-                margin: 10,
-                animateOut: 'fadeOut',
-                animateIn: 'fadeIn',
-                nav: true,
-                /*dots: true,*/
-                autoplayHoverPause: false,
-                items: 3,
-                navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>", "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
-                responsive: {
-                    0: {
-                        items: 1
-                    },
-                    600: {
-                        items: 3
-                    },
-                    1000: {
-                        items: 5
-                    }
-                }
-            });
+            //$(".owl-carousel").owlCarousel({
+            //    loop: true,
+            //    rtl: true,
+            //    /* autoplay: true,*/
+            //    margin: 10,
+            //    animateOut: 'fadeOut',
+            //    animateIn: 'fadeIn',
+            //    nav: true,
+            //    /*dots: true,*/
+            //    autoplayHoverPause: false,
+            //    items: 3,
+            //    navText: ["<div class='nav-btn prev-slide'><i class='fas fa-chevron-left' style='line-height:5;font-size:larger;'></i></div>", "<div class='nav-btn next-slide'><i class='fas fa-chevron-right' style='line-height:5;font-size:larger;'></i></div>"],
+            //    responsive: {
+            //        0: {
+            //            items: 1
+            //        },
+            //        600: {
+            //            items: 3
+            //        },
+            //        1000: {
+            //            items: 5
+            //        }
+            //    }
+            //});
 
             //$(".owl-nav").addClass("text-center");
             //$(".owl-prev").addClass("m-2");

@@ -2,7 +2,6 @@
   "version": "1.0",
   "defaultProvider": "cdnjs",
   "libraries": [
-    
     {
       "library": "slick-carousel@1.8.1",
       "destination": "wwwroot/lib/slick-carousel/"
@@ -26,6 +25,10 @@
     {
       "library": "animate.css@4.1.1",
       "destination": "wwwroot/lib/animate.css/"
+    },
+    {
+      "library": "noUiSlider@15.6.1",
+      "destination": "wwwroot/lib/noUiSlider/"
     }
   ]
 }

@@ -27,7 +27,7 @@
 
 }
 
-@{
+
     if (Model.ItemsCount > 0)
     {
         <hr />
@@ -38,18 +38,18 @@
                         @{
                             if (pageCount == 1)
                             {
-                                <li class="page-item active"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator + "1")" class="page-link" page-id="1">1</a></li>
+                                <li class="page-item active"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator + "1")"  class="page-link" page-id="1">1</a></li>
                             }
                             else if (pageCount == 2)
                             {
-                                <li class="page-item @(Model.CurrentPage==1?"active":null)"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator+"1")" class="page-link" page-id="1">1</a></li>
-                                <li class="page-item @(Model.CurrentPage==2?"active":null)"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator+"2")" class="page-link" page-id="2">2</a></li>
+                                <li class="page-item @(Model.CurrentPage==1?"active":null)"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator+"1")"  class="page-link" page-id="1">1</a></li>
+                                <li class="page-item @(Model.CurrentPage==2?"active":null)"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator+"2")"  class="page-link" page-id="2">2</a></li>
                             }
                             else if (pageCount == 3)
                             {
-                                <li class="page-item @(Model.CurrentPage==1?"active":null)"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator+"1")" class="page-link" page-id="2">1</a></li>
-                                <li class="page-item @(Model.CurrentPage==2?"active":null)"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator+"2")" class="page-link" page-id="1">2</a></li>
-                                <li class="page-item @(Model.CurrentPage==3?"active":null)"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator+"3")" class="page-link" page-id="3">3</a></li>
+                                <li class="page-item @(Model.CurrentPage==1?"active":null)"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator+"1")"  class="page-link" page-id="2">1</a></li>
+                                <li class="page-item @(Model.CurrentPage==2?"active":null)"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator+"2")"  class="page-link" page-id="1">2</a></li>
+                                <li class="page-item @(Model.CurrentPage==3?"active":null)"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator+"3")"  class="page-link" page-id="3">3</a></li>
                             }
                             else
                             {
@@ -60,15 +60,15 @@
                                         <li class="page-item"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator+"1")" class="page-link" page-id="1">@Language.GetString("tbl_FirstPage")</a></li>
                                     }
 
-                                    <li class="page-item"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator+(Model.CurrentPage-1))" class="page-link" page-id="@Model.CurrentPage-1">@Language.GetString("tbl_PreviousPage")</a></li>
-                                    <li class="page-item"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator+(Model.CurrentPage-1))" class="page-link" page-id="@Model.CurrentPage-1">@(Model.CurrentPage-1)</a></li>
+                                    <li class="page-item"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator+(Model.CurrentPage-1))"  class="page-link" page-id="@Model.CurrentPage-1">@Language.GetString("tbl_PreviousPage")</a></li>
+                                    <li class="page-item"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator+(Model.CurrentPage-1))"  class="page-link" page-id="@Model.CurrentPage-1">@(Model.CurrentPage-1)</a></li>
                                 }
-                                <li class="page-item active"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator+Model.CurrentPage)" class="page-link" page-id="@Model.CurrentPage">@(Model.CurrentPage)</a></li>
+                                <li class="page-item active"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator+Model.CurrentPage)"  class="page-link" page-id="@Model.CurrentPage">@(Model.CurrentPage)</a></li>
                                 if (Model.CurrentPage < lastPage)
                                 {
-                                    <li class="page-item"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator+(Model.CurrentPage+1))" class="page-link" page-id="@Model.CurrentPage+1">@(Model.CurrentPage+1)</a></li>
-                                    <li class="page-item"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator+(Model.CurrentPage+1))" class="page-link" page-id="@Model.CurrentPage+1">@Language.GetString("tbl_NextPage")</a></li>
-                                    <li class="page-item"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator + pageCount)" class="page-link" page-id="@pageCount">@Language.GetString("tbl_LastPage")</a></li>
+                                    <li class="page-item"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator+(Model.CurrentPage+1))"  class="page-link" page-id="@Model.CurrentPage+1">@(Model.CurrentPage+1)</a></li>
+                                    <li class="page-item"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator+(Model.CurrentPage+1))"  class="page-link" page-id="@Model.CurrentPage+1">@Language.GetString("tbl_NextPage")</a></li>
+                                    <li class="page-item"><a href="@(Model.Navigation + Model.QueryParams + pageIndicator + pageCount)"  class="page-link" page-id="@pageCount">@Language.GetString("tbl_LastPage")</a></li>
                                 }
                             }
                         }
@@ -87,5 +87,5 @@
             </div>
         </div>
     }
-}
+
 

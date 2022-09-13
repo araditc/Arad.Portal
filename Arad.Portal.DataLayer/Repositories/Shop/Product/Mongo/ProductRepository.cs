@@ -1320,7 +1320,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return result;
         }
 
-        public List<ProductOutputDTO> GetSpecialProducts(int count, string currencyId, ProductOrContentType type)
+        public List<ProductOutputDTO> GetSpecialProducts(int count, string currencyId, ProductOrContentType type, int skip = 0)
         {
             var domainName = this.GetCurrentDomainName();
             var domainEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
@@ -1365,7 +1365,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                             ScoredCount = _.ScoredCount,
                             Unit = _.Unit,
                             VisitCount = _.VisitCount
-                        }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.CreationDate)).Limit(count).ToList();
+                        }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.CreationDate)).Skip(skip).Limit(count).ToList();
                     break;
                 case ProductOrContentType.MostPopular:
                     lst = _context.ProductCollection
@@ -1387,7 +1387,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                                ScoredCount = _.ScoredCount,
                                Unit = _.Unit,
                                VisitCount = _.VisitCount
-                           }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => (float)_.TotalScore / _.ScoredCount)).Limit(count).ToList();
+                           }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => (float)_.TotalScore / _.ScoredCount)).Skip(skip).Limit(count).ToList();
                     break;
                 case ProductOrContentType.BestSale:
                     lst = _context.ProductCollection
@@ -1409,7 +1409,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                             ScoredCount = _.ScoredCount,
                             Unit = _.Unit,
                             VisitCount = _.VisitCount
-                        }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.SaleCount)).Limit(count).ToList();
+                        }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.SaleCount)).Skip(skip).Limit(count).ToList();
                     break;
                 case ProductOrContentType.MostVisited:
                     lst = _context.ProductCollection
@@ -1431,7 +1431,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                             ScoredCount = _.ScoredCount,
                             Unit = _.Unit,
                             VisitCount = _.VisitCount
-                        }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.VisitCount)).Limit(count).ToList();
+                        }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.VisitCount)).Skip(skip).Limit(count).ToList();
                     break;
             }
             //for testing
@@ -1779,6 +1779,62 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 return _context.ProductCollection.Find(_ => _.AssociatedDomainId == domainId || _.IsPublishedOnMainDomain).ToList();
             }
             
+        }
+
+        public async Task<List<DynamicFilter>> GetFilterList(string languageId, string groupId = null)
+        {
+            var result = new List<DynamicFilter>();
+            List<List<string>> ProductSpecifications = new List<List<string>>();
+            List<string> commonSpecIds = new List<string>();
+           _builder = new();
+            FilterDefinition<Entities.Shop.Product.Product> filterDef;
+
+            filterDef = _builder.Eq(nameof(Entities.Shop.Product.Product.IsActive), true);
+            filterDef &= _builder.Eq(nameof(Entities.Shop.Product.Product.IsDeleted), false);
+            if(groupId != null)
+            {
+                filterDef &= _builder.AnyIn(nameof(Entities.Shop.Product.Product.GroupIds), new List<string>() { groupId });
+            }
+
+            using IAsyncCursor<Entities.Shop.Product.Product> cursor = await _context.ProductCollection.WithReadPreference(ReadPreference.Secondary)
+                .FindAsync(filterDef, new() { AllowDiskUse = true, BatchSize = 2000 , Projection =
+                   Builders<Entities.Shop.Product.Product>.Projection.Expression(x => 
+                   new Entities.Shop.Product.Product { Specifications = x.Specifications, ProductId = x.ProductId, GroupIds = x.GroupIds }) });
+
+            while (await cursor.MoveNextAsync())
+            {
+                var specList = cursor.Current.Select(_ => _.Specifications.Select(a => a.SpecificationId).ToList()).ToList();
+                ProductSpecifications.AddRange(specList);
+            }
+
+            //find common specs between list intersection of alls
+            try
+            {
+                commonSpecIds = ProductSpecifications
+                      .Skip(1)
+                      .Aggregate(
+                          new HashSet<string>(ProductSpecifications.First()),
+                          (h, e) => { h.IntersectWith(e); return h; }
+                      ).ToList();
+            }
+            catch (Exception)
+            {
+                commonSpecIds = new List<string>();
+            }
+          
+
+            foreach (var id in commonSpecIds)
+            {
+                var spec = _context.SpecificationCollection.Find(_ => _.ProductSpecificationId == id).FirstOrDefault();
+                var obj = new DynamicFilter()
+                {
+                    ControlType = spec.ControlType,
+                    SpecificationId = spec.ProductSpecificationId,
+                    PossibleValues = spec.ControlType == Entities.Shop.ProductSpecification.ControlType.CheckBoxList ? spec.SpecificationNameValues.FirstOrDefault(_ => _.LanguageId == languageId).NameValues : new List<string>()
+                };
+                result.Add(obj);
+            }
+            return result;
         }
     }
 }

@@ -34,7 +34,6 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ProductSpecification
     public enum ControlType
     {
         CheckBoxList = 1,
-        TwoStateFlags = 2,
         /// <summary>
         /// something like price range
         /// </summary>

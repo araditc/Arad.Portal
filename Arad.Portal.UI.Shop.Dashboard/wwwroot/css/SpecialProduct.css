@@ -1,17 +1,18 @@
 ﻿.thumb-wrapper {
-    padding: 25px 15px;
+    padding: 1.5% 1%;
     background: #fff;
     border-radius: 6px;
     position: relative;
     /*box-shadow: 0 2px 3px rgba(0,0,0,0.2);*/
     box-shadow: 1px 3px 4px 2px rgb(0 0 0 / 10%);
 }
+
 .star-rating li {
     padding: 0;
 }
 
 .star-rating i {
-    font-size: 14px;
+    font-size: initial;
     color: #ffc000;
 }
 
@@ -19,75 +20,86 @@
     font-size: 1rem;
 }
 
-.item-price strike {
-    opacity: 0.7;
-    margin-right: 5px;
-}
+    .item-price strike {
+        opacity: 0.7;
+        margin-right: 1%;
+    }
 
 .far.fa-heart {
     color: #a8a4a491;
 }
+
 .fas.fa-heart {
     color: red;
 }
-.fas.fa-shopping-cart
-{
-    color : black;
+
+.fas.fa-shopping-cart {
+    color: black;
 }
+
 .img-overlay-wrap {
     position: relative;
 }
 
-.img-overlay-wrap:hover .likepart {
-    display: block;
-}
-.img-overlay-wrap:hover .shoppingCartPart {
-    display: block;
-}
-.img-overlay-wrap:hover .star-rating {
-    display: block;
-}
-.img-overlay-wrap:hover .discount {
-    display: block;
-}
-.img-overlay-wrap:hover .newp {
-    display: block;
+    .img-overlay-wrap:hover .likepart {
+        display: block;
+    }
+
+    .img-overlay-wrap:hover .shoppingCartPart {
+        display: block;
+    }
+
+    .img-overlay-wrap:hover .star-rating {
+        display: block;
+    }
+
+    .img-overlay-wrap:hover .discount {
+        display: block;
+    }
+
+    .img-overlay-wrap:hover .newp {
+        display: block;
+    }
+
+    .img-overlay-wrap .likepart {
+        position: absolute;
+        bottom: 3%;
+        display: none;
+    }
+
+    .img-overlay-wrap .shoppingCartPart {
+        position: absolute;
+        bottom: 3%;
+        left: 3%;
+        display: none;
+    }
+
+    .img-overlay-wrap .star-rating {
+        position: absolute;
+        top: 3%;
+        left: 3%;
+        display: none;
+    }
+
+    .img-overlay-wrap .discount {
+        position: absolute;
+        top: 3%;
+        left: 3%;
+        display: block;
+    }
+
+    .img-overlay-wrap .newp {
+        position: absolute;
+        top: 3%;
+        left: 3%;
+        display: none;
+    }
+
+.discount {
+    color: red;
 }
 
-.img-overlay-wrap .likepart {
-    position: absolute;
-    bottom: 3%;
-    display: none;
-}
-.img-overlay-wrap .shoppingCartPart {
-    position: absolute;
-    bottom: 3%;
-    left : 3%;
-    display: none;
-}
-.img-overlay-wrap .star-rating {
-    position: absolute;
-    top: 3%;
-    right: 3%;
-    display: none;
-}
-.img-overlay-wrap .discount {
-    position: absolute;
-    top: 3%;
-    left: 3%;
-    display: block;
-}
-.img-overlay-wrap .newp {
-    position: absolute;
-    top: 3%;
-    left: 3%;
-    display: none;
-}
-.discount{
-    color : red;
-}
-
-.newp{
-    color : green;
+.newp {
+    color: green;
     font-size: 0.75rem;
 }

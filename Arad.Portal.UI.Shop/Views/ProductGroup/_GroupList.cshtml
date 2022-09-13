@@ -1,9 +1,10 @@
 ﻿@model List<Arad.Portal.DataLayer.Models.ProductGroup.ProductGroupDTO>
 
+ <div class="container">
 <div class="row">
     @foreach (var item in Model)
     {
-        <div class="col-md-3">
+        <div class="col-md-4">
 
             <div class="card text-center pgCard" @*style="width: 18rem;"*@>
                 <img class="card-img-top rounded" src="@Url.Content(item.GroupImage.Url)" alt="@item.GroupImage.Title">
@@ -18,4 +19,5 @@
 
         </div>
     }
+</div>
 </div>

@@ -23,6 +23,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.StaticFiles;
 using System.Globalization;
 using Arad.Portal.DataLayer.Contracts.General.Currency;
+using Arad.Portal.UI.Shop.ViewComponents;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -60,10 +61,24 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
         [Route("{language?}/products")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             ViewData["DomainTitle"] = this.DomainTitle;
             ViewData["PageTitle"] = Language.GetString("design_Products");
+            var lanId = _lanRepository.FetchBySymbol(CultureInfo.CurrentCulture.Name);
+            var ri = new RegionInfo(System.Threading.Thread.CurrentThread.CurrentUICulture.LCID);
+            var curSymbol = ri.ISOCurrencySymbol;
+            var currencyDto = _curRepository.GetCurrencyByItsPrefix(curSymbol);
+            var res = await _productRepository.GetFilterList(lanId);
+            var list = _productRepository.GetSpecialProducts(20, currencyDto.CurrencyId, DataLayer.Entities.General.DesignStructure.ProductOrContentType.Newest);
+            return View(list);
+        }
+
+        [HttpPost]
+        [Route("{language?}/product/Filter")]
+        public IActionResult Filter([FromBody]List<DynamicFilter> Filters)
+        {
+           
             return View();
         }
 
