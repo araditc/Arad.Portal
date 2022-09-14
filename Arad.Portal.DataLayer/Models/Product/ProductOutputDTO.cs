@@ -65,9 +65,9 @@ namespace Arad.Portal.DataLayer.Models.Product
 
         public Entities.Shop.ProductUnit.ProductUnit Unit { get; set; }
         public DiscountType? DiscountType { get; set; }
-        public long? DiscountValue { get; set; }
-        public long OldPrice { get; set; }
-        public long PriceValWithPromotion { get; set; }
+        public decimal? DiscountValue { get; set; }
+        public decimal OldPrice { get; set; }
+        public decimal PriceValWithPromotion { get; set; }
         public List<Price> Prices { get; set; }
         public ProductOutputDTO GiftProduct { get; set; }
 

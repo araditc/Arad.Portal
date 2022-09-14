@@ -43,7 +43,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Transaction
         /// <summary>
         /// the sum of all product prices after apply discount or couponcode for this payment
         /// </summary>
-        public long FinalPriceToPay { get; set; }
+        public decimal FinalPriceToPay { get; set; }
 
         /// <summary>
         /// information of user who has done this transaction

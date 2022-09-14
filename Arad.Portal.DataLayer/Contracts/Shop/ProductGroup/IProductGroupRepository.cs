@@ -33,6 +33,10 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductGroup
         Task<Result> AddPromotionToGroup(string productGroupId,
             Models.Promotion.PromotionDTO promotionDto, string modificationReason);
 
+        List<SelectListModel> GetSubGroups(string languageId, string domainId, string parentId = null);
+
+        Task<ModelOutputFilter> GetFilterList(string languageId, string domainId, string groupId = null);
+
         Task<List<string>> AllGroupIdsWhichEndInProducts(string domainName);
     }
 }

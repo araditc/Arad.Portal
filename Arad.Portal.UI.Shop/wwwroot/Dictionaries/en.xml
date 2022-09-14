@@ -279,6 +279,7 @@
 	<string key="FileImportExport_Help">
 		<value>Help</value>
 	</string>
+	
 	<string key="FileImportExport_ProductImages">
 		<value>Add Product Images Folder</value>
 	</string>
@@ -294,6 +295,27 @@
 	</string>
 	<string key="FileImportExport_NoFileSelected">
 		<value>No File Selected.</value>
+	</string>
+	<string key="EnumDesc_Sorting">
+		<value>Sorting</value>
+	</string>
+	<string key="EnumDesc_MostVisited">
+		<value>Most Visited</value>
+	</string>
+	<string key="EnumDesc_MostPopular">
+		<value>Most popular</value>
+	</string>
+	<string key="EnumDesc_BestSelling">
+		<value>Best Selling</value>
+	</string>
+	<string key="EnumDesc_Newest">
+		<value>Newest</value>
+	</string>
+	<string key="EnumDesc_MostExpensive">
+		<value>Most Expensive</value>
+	</string>
+	<string key="EnumDesc_Cheapest">
+		<value>Cheapest</value>
 	</string>
 	<string key="ProductCommentDelete">
 		<value>comment delete</value>
@@ -2525,8 +2547,14 @@
 	<string key="Search">
 		<value>Search</value>
 	</string>
+	<string key="PriceRange">
+		<value>Price Range</value>
+	</string>
 	<string key="Search_IN">
 		<value>in</value>
+	</string>
+	<string key="Search_OnlyAvailableProducts">
+		<value>only available products</value>
 	</string>
 	<string key="RelatedLanguage">
 		<value>Related Language</value>
@@ -2872,6 +2900,9 @@
 	</string>
 	<string key="btn_AddNewAddress">
 		<value>add new address</value>
+	</string>
+	<string key="btn_Filter">
+		<value>Filter</value>
 	</string>
 	<string key="btn_Register">
 		<value>Register</value>

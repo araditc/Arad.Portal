@@ -1,13 +1,11 @@
 ﻿using Arad.Portal.DataLayer.Contracts.Shop.Product;
 using Arad.Portal.DataLayer.Models.Product;
-using Arad.Portal.DataLayer.Models.ProductSpecification;
 using Arad.Portal.DataLayer.Models.Shared;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
@@ -18,7 +16,6 @@ using System.Collections.Specialized;
 using System.Web;
 using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
 using Arad.Portal.GeneralLibrary.Utilities;
-using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Entities.General.Comment;
 using Microsoft.Extensions.Configuration;
@@ -27,7 +24,6 @@ using Arad.Portal.DataLayer.Models.Domain;
 using Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
 using Arad.Portal.DataLayer.Entities.General.DesignStructure;
-using MongoDB.Bson;
 using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.DataLayer.Repositories.General.Comment.Mongo;
 
@@ -1062,7 +1058,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             promotionList.Add(promotionOnThisProduct);
 
 
-            long finalPrice = 0;
+            decimal finalPrice = 0;
             for (int i = 0; i < promotionList.Count; i++)
             {
                 if (newestPromotion == null)
@@ -1781,60 +1777,17 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             
         }
 
-        public async Task<List<DynamicFilter>> GetFilterList(string languageId, string groupId = null)
+        public List<ProductOutputDTO> GetFilteredProduct(int count, string currencyId, string languageId, string domainId, SelectedFilter filter)
         {
-            var result = new List<DynamicFilter>();
-            List<List<string>> ProductSpecifications = new List<List<string>>();
-            List<string> commonSpecIds = new List<string>();
-           _builder = new();
-            FilterDefinition<Entities.Shop.Product.Product> filterDef;
+            _builder = new FilterDefinitionBuilder<Entities.Shop.Product.Product>();
 
-            filterDef = _builder.Eq(nameof(Entities.Shop.Product.Product.IsActive), true);
-            filterDef &= _builder.Eq(nameof(Entities.Shop.Product.Product.IsDeleted), false);
-            if(groupId != null)
-            {
-                filterDef &= _builder.AnyIn(nameof(Entities.Shop.Product.Product.GroupIds), new List<string>() { groupId });
-            }
+            FilterDefinitionBuilder<Price> priceBuilder = new();
+            FilterDefinition<Price> priceFilterDefinition = priceBuilder.Empty;
 
-            using IAsyncCursor<Entities.Shop.Product.Product> cursor = await _context.ProductCollection.WithReadPreference(ReadPreference.Secondary)
-                .FindAsync(filterDef, new() { AllowDiskUse = true, BatchSize = 2000 , Projection =
-                   Builders<Entities.Shop.Product.Product>.Projection.Expression(x => 
-                   new Entities.Shop.Product.Product { Specifications = x.Specifications, ProductId = x.ProductId, GroupIds = x.GroupIds }) });
+            FilterDefinitionBuilder<ProductSpecificationValue> specificationBuilder = new();
+            FilterDefinition<ProductSpecificationValue> specFilterDefinition = specificationBuilder.Empty;
 
-            while (await cursor.MoveNextAsync())
-            {
-                var specList = cursor.Current.Select(_ => _.Specifications.Select(a => a.SpecificationId).ToList()).ToList();
-                ProductSpecifications.AddRange(specList);
-            }
 
-            //find common specs between list intersection of alls
-            try
-            {
-                commonSpecIds = ProductSpecifications
-                      .Skip(1)
-                      .Aggregate(
-                          new HashSet<string>(ProductSpecifications.First()),
-                          (h, e) => { h.IntersectWith(e); return h; }
-                      ).ToList();
-            }
-            catch (Exception)
-            {
-                commonSpecIds = new List<string>();
-            }
-          
-
-            foreach (var id in commonSpecIds)
-            {
-                var spec = _context.SpecificationCollection.Find(_ => _.ProductSpecificationId == id).FirstOrDefault();
-                var obj = new DynamicFilter()
-                {
-                    ControlType = spec.ControlType,
-                    SpecificationId = spec.ProductSpecificationId,
-                    PossibleValues = spec.ControlType == Entities.Shop.ProductSpecification.ControlType.CheckBoxList ? spec.SpecificationNameValues.FirstOrDefault(_ => _.LanguageId == languageId).NameValues : new List<string>()
-                };
-                result.Add(obj);
-            }
-            return result;
         }
     }
 }

@@ -409,13 +409,13 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                 var perSellerList = new List<PurchasePerSeller>();
                 result.ReturnValue.Details = new List<PurchasePerSellerDTO>();
                 int rowNumber = 1;
-                long finalPaymentPrice = 0;
+                decimal finalPaymentPrice = 0;
                 //each time we fetch shoppingCart data should be updated in it
                 foreach (var sellerPurchase in userCartEntity.Details)
                 {
                     var obj = new PurchasePerSellerDTO();
                     obj.SellerId = sellerPurchase.SellerId;
-                    long sellerFactor = 0;
+                    decimal sellerFactor = 0;
                     obj.SellerUserName = sellerPurchase.SellerUserName;
                     obj.ShippingTypeId = sellerPurchase.ShippingTypeId;
                    obj.ShippingExpense = sellerPurchase.ShippingExpense;
@@ -455,8 +455,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                             sellerFactor += det.TotalAmountToPay;
 
                             #region changing in final amount pre unit
-                            long previousAmountPerUnit = pro.PricePerUnit - pro.DiscountPricePerUnit;
-                            long currentAmountPerUnit = det.PricePerUnit - det.DiscountPricePerUnit;
+                            decimal previousAmountPerUnit = pro.PricePerUnit - pro.DiscountPricePerUnit;
+                            decimal currentAmountPerUnit = det.PricePerUnit - det.DiscountPricePerUnit;
                             if (previousAmountPerUnit != currentAmountPerUnit)
                             {
                                 det.PreviousFinalPricePerUnit = previousAmountPerUnit; 
@@ -755,12 +755,12 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                 var perSellerList = new List<PurchasePerSeller>();
                 result.ReturnValue.Details = new List<PurchasePerSeller>();
                 int rowNumber = 1;
-                long finalPaymentPrice = 0;
+                decimal finalPaymentPrice = 0;
                 //each time we fetch cartshopping data should be updated in it
                 foreach (var sellerPurchase in userCartEntity.Details)
                 {
                     var purchasePerSeller = new PurchasePerSeller();
-                    long sellerFactor = 0;
+                    decimal sellerFactor = 0;
                     purchasePerSeller.SellerId = sellerPurchase.SellerId;
                     purchasePerSeller.SellerUserName = sellerPurchase.SellerUserName;
                     purchasePerSeller.ShippingTypeId = sellerPurchase.ShippingTypeId;
@@ -928,7 +928,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
         {
             var res = new Result();
             var entity = _context.Collection.Find(_ => _.ShoppingCartId == shoppingCartId).FirstOrDefault();
-            long finalPrice = 0;
+            decimal finalPrice = 0;
             Entities.Shop.ShoppingCart.ShoppingCart shoppingCart = new Entities.Shop.ShoppingCart.ShoppingCart();
             shoppingCart.ShoppingCartId = Guid.NewGuid().ToString();
             shoppingCart.ShoppingCartCulture = entity.ShoppingCartCulture;
@@ -937,7 +937,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             shoppingCart.CreationDate = DateTime.UtcNow;
             foreach (var detail in entity.Details)
             {
-                long purchaseamnt = 0; 
+                decimal purchaseamnt = 0; 
                 var purchaseperseller = new PurchasePerSeller();
                 purchaseperseller.SellerId = detail.SellerId;
                 purchaseperseller.SellerUserName = detail.SellerUserName;

@@ -1,7 +1,132 @@
-﻿@{
-
+﻿@using Arad.Portal.DataLayer.Models.Shared
+@model Arad.Portal.DataLayer.Models.Shared.ModelOutputFilter
+@{
+    List<SelectListModel> lst = ViewBag.ProductGroupList;
 }
-<div class="row">
-    <
+<div class="rounded border border-1 rounded">
+    <div class="row border-bottom">
+        <label class="form-label">@Language.GetString("tbl_ProductGroup")</label>
+        <br />
+        @foreach (var grp in lst)
+        {
+            <div class="col-12">
+                <div class="form-check m-auto d-inline-block pt-3">
+                    <input class="form-check-input" type="checkbox" name="groupIds" value="@grp.Value">
+                    <label class="form-check-label">
+                        grp.Text
+                    </label>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="row">
+        <label class="form-label">@Language.GetString("PriceRange")</label>
+        <div id="priceRange"></div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-check m-auto d-inline-block pt-3">
+                <input class="form-check-input" type="checkbox" id="chbIsOnlyAvailableProducts">
+                <label class="form-check-label">
+                    @Language.GetString("Search_OnlyAvailableProducts")
+                </label>
+            </div>
+        </div>
+    </div>
+    @foreach (var spec in Model.Filters)
+    {
+        <div class="row border-bottom dynamicSection">
+            <label class="form-label">@spec.SpecificationName</label>
+            <input type="hidden" class="hdnSpecId" value="@spec.SpecificationId" />
+            @foreach (var item in spec.PossibleValues)
+            {
+                <div class="col-12">
+                    <div class="form-check m-auto d-inline-block pt-3">
+                        <input class="form-check-input" name="@spec.SpecificationId" type="checkbox" value="@item">
+                        <label class="form-check-label">
+                            @item
+                        </label>
+                    </div>
+                </div>
+            }
 
+        </div>
+    }
+    <div class="row">
+        <div class="col-12">
+            <input type="button"  class="btn btn-danger btn-sm p-2 float-end" id="btnFilter" value="btn_Filter" />
+        </div>
+    </div>
 </div>
+<script on-content-loaded="true">
+    var priceRangeSlider = document.getElementById("priceRange");
+     noUiSlider.create(priceRangeSlider, 
+        {
+         start : [parseInt('@Model.MinPrice'), parseInt('@Model.MaxPrice')],
+         connect: true,
+         range: { min: parseInt('@Model.MinPrice'), max: parseInt('@Model.MaxPrice')},
+         step : parseInt('@Model.Step')
+        });
+
+
+    $(document).ready(function(){
+        $("#btnFilter").click(function() {
+            var obj = {} //an instance of selectedFilter
+            obj.GroupIds = [];
+            obj.SelectedDynamicFilters = [];
+            var priceRange = priceRangeSlider.noUiSlider.get();
+            obj.FirstPrice = parseFloat(priceRange.split(",")[0]);
+            obj.LastPrice = parseFloat(priceRange.split(",")[1]);
+
+             $.each($("input[name='groupIds']:checked"), function(){
+                obj.GroupIds.push($(this).val());
+            });
+
+            obj.IsAvailable = $("#chbIsOnlyAvailableProducts").is(":checked");
+
+            $.each($(".dynamicSection"), function() {
+                var filter = {}; //an intance of SelectedDynamicFilter
+                filter.SelectedValues = [];
+                var specId = $(this).find(".hdnSpecId").val();
+                filter.SpecificationId = specId;
+                $.each($(`input[name='${specId}']:checked`),
+                    function() {
+                        filter.SelectedValues.push($(this).val());
+                    });
+
+                obj.SelectedDynamicFilters.push(filter)
+            });
+
+              $.ajax({
+                        url:  '@Url.Action("Filter", "Product")',
+                        contentType: 'application/json',
+                        data:  JSON.stringify(obj),
+                        type: 'Post',
+                        dataType:'json',
+                        beforeSend: function () {
+                           /* AddLoading($("#addProductCard"));*/
+                        },
+                        success: function (result) {
+
+                            if (result.status === "Success")
+                            {
+                                debugger;
+                               
+                            }
+                         },
+                        error: function (xhr, ajaxOptions, thrownError)
+                        {
+                          
+                            alert(xhr.status);
+                            alert(thrownError);
+                        },
+                        complete: function () {
+                           /* removeLoading($("#addProductCard"));*/
+                        }
+                });
+
+           
+        });
+    })
+
+</script>

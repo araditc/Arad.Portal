@@ -78,7 +78,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             {
                 ResNum = reservationNumber,
                 Action = "token",
-                Amount = transaction.FinalPriceToPay,
+                Amount = Convert.ToInt64(transaction.FinalPriceToPay),
                 RedirectURL = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host}/fa-ir/Saman/Verify"
             };
 

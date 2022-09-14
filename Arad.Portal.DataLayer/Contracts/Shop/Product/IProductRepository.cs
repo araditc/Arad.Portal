@@ -34,7 +34,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         List<SelectListModel> GetAllImageRatio();
         Task<Result> AddPictureToProduct(string productId, Image picture);
         Task<Result> ImportFromExcel(List<ProductExcelImport> lst);
-        Task<List<DynamicFilter>> GetFilterList(string languageId, string groupId = null);
+       // Task<ModelOutputFilter> GetFilterList(string languageId, string domainId, string groupId = null);
        Task<Result> Restore(string productId);
         Task<Result> AddProductSpecifications(string productId, ProductSpecificationValue specValues);
         Task<Result> UpdateProduct(ProductInputDTO dto);
@@ -77,6 +77,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         string FetchUrlFriendById(string productId);
 
         List<ProductOutputDTO> GetSpecialProducts(int count, string currencyId, ProductOrContentType type, int skip = 0);
+
+        List<ProductOutputDTO> GetFilteredProduct(int count, string currencyId, string languageId, string domainId, SelectedFilter filter);
         bool HasActiveProductPromotion(string productId);
         List<SelectListModel> GetAllActiveProductList(string langId, string currentUserId, string productGroupId, string vendorId);
         List<SelectListModel> GetAllProductList(ApplicationUser user,string productGroupId, string langId);

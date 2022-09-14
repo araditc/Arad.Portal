@@ -37,6 +37,6 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ProductSpecification
         /// <summary>
         /// something like price range
         /// </summary>
-        RangeSlider = 3
+        //RangeSlider = 3
     }
 }

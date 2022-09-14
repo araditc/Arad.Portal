@@ -25,7 +25,7 @@ using Arad.Portal.DataLayer.Models.Product;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
 using MongoDB.Bson;
 using Microsoft.AspNetCore.Hosting;
-
+using static Arad.Portal.DataLayer.Models.Shared.Enums;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
 {
@@ -584,6 +584,150 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             var groups = _productContext.ProductGroupCollection.AsQueryable().Select(_ => _.ProductGroupId).ToList();
             finalList = groups;
             return finalList;
+        }
+
+        public List<SelectListModel> GetSubGroups(string languageId,string domainId, string parentId = null)
+        {
+            var result = new List<SelectListModel>();
+            if(!string.IsNullOrWhiteSpace(parentId))
+            {
+                result = _productContext.ProductGroupCollection
+                     .Find(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId).Project(_ => new SelectListModel()
+                     {
+                         Value = _.ProductGroupId,
+                         Text = _.MultiLingualProperties.Any(_=>_.LanguageId == languageId) ? _.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == languageId).Name : _.MultiLingualProperties.FirstOrDefault().Name
+
+                     }).ToList();
+            }
+            else
+            {
+                result = _productContext.ProductGroupCollection
+                   .Find(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId && _.ParentId == parentId).Project(_ => new SelectListModel()
+                   {
+                       Value = _.ProductGroupId,
+                       Text = _.MultiLingualProperties.Any(_ => _.LanguageId == languageId) ? _.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == languageId).Name : _.MultiLingualProperties.FirstOrDefault().Name
+
+                   }).ToList();
+            }
+            return result;
+        }
+        public async Task<ModelOutputFilter> GetFilterList(string languageId, string domainId, string groupId = null)
+        {
+            var model = new ModelOutputFilter();
+            model.Filters = new List<DynamicFilter>();
+             FilterDefinitionBuilder<Entities.Shop.Product.Product> _builder = new();
+             List<List<string>> ProductSpecifications = new List<List<string>>();
+            List<string> commonSpecIds = new List<string>();
+         
+            FilterDefinition<Entities.Shop.Product.Product> filterDef;
+
+            filterDef = _builder.Eq(nameof(Entities.Shop.Product.Product.IsActive), true);
+            filterDef &= _builder.Eq(nameof(Entities.Shop.Product.Product.IsDeleted), false);
+            filterDef &= _builder.Eq(nameof(Entities.Shop.Product.Product.AssociatedDomainId), domainId);
+            if (groupId != null)
+            {
+                filterDef &= _builder.AnyIn(nameof(Entities.Shop.Product.Product.GroupIds), new List<string>() { groupId });
+            }
+
+            using IAsyncCursor<Entities.Shop.Product.Product> cursor = await _productContext.ProductCollection.WithReadPreference(ReadPreference.Secondary)
+                .FindAsync(filterDef, new()
+                {
+                    AllowDiskUse = true,
+                    BatchSize = 2000,
+                    Projection =
+                   Builders<Entities.Shop.Product.Product>.Projection.Expression(x =>
+                   new Entities.Shop.Product.Product { Specifications = x.Specifications, ProductId = x.ProductId, GroupIds = x.GroupIds })
+                });
+
+            while (await cursor.MoveNextAsync())
+            {
+                var specList = cursor.Current.Select(_ => _.Specifications.Select(a => a.SpecificationId).ToList()).ToList();
+                ProductSpecifications.AddRange(specList);
+            }
+
+            //find common specs between list intersection of alls
+            try
+            {
+                commonSpecIds = ProductSpecifications
+                      .Skip(1)
+                      .Aggregate(
+                          new HashSet<string>(ProductSpecifications.First()),
+                          (h, e) => { h.IntersectWith(e); return h; }
+                      ).ToList();
+
+                foreach (var id in commonSpecIds)
+                {
+                    var spec = _productContext.SpecificationCollection.Find(_ => _.ProductSpecificationId == id).FirstOrDefault();
+                    var obj = new DynamicFilter()
+                    {
+                        ControlType = spec.ControlType,
+                        SpecificationId = spec.ProductSpecificationId,
+                        SpecificationName = spec.SpecificationNameValues.Any(_=>_.LanguageId == languageId) ? spec.SpecificationNameValues.FirstOrDefault(_=>_.LanguageId == languageId).Name : "",
+                        PossibleValues = spec.ControlType == Entities.Shop.ProductSpecification.ControlType.CheckBoxList ?
+                             spec.SpecificationNameValues.FirstOrDefault(_ => _.LanguageId == languageId).NameValues : new List<string>()
+                    };
+                    model.Filters.Add(obj);
+                }
+                if (groupId != null)
+                {
+                    model.MinPrice = _productContext.ProductCollection.AsQueryable()
+                               .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId && _.GroupIds.Contains(groupId))
+                               .Select(_ => _.Prices.FirstOrDefault(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).Any() ?
+                               _productContext.ProductCollection.AsQueryable()
+                               .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId && _.GroupIds.Contains(groupId))
+                               .Select(_ => _.Prices.FirstOrDefault(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).OrderBy(_=>_.PriceValue).FirstOrDefault().PriceValue : 0;
+
+                    model.MaxPrice = _productContext.ProductCollection.AsQueryable()
+                              .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId && _.GroupIds.Contains(groupId))
+                              .Select(_ => _.Prices.FirstOrDefault(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).Any() ?
+                              _productContext.ProductCollection.AsQueryable()
+                              .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId && _.GroupIds.Contains(groupId))
+                              .Select(_ => _.Prices.FirstOrDefault(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).OrderByDescending(_ => _.PriceValue).FirstOrDefault().PriceValue : 0;
+
+                }else
+                {
+                    model.MinPrice = _productContext.ProductCollection.AsQueryable()
+                              .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId )
+                              .Select(_ => _.Prices.FirstOrDefault(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).Any() ?
+                              _productContext.ProductCollection.AsQueryable()
+                              .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId )
+                              .Select(_ => _.Prices.FirstOrDefault(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).OrderBy(_ => _.PriceValue).FirstOrDefault().PriceValue : 0;
+
+                    model.MaxPrice = _productContext.ProductCollection.AsQueryable()
+                              .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId )
+                              .Select(_ => _.Prices.FirstOrDefault(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).Any() ?
+                              _productContext.ProductCollection.AsQueryable()
+                              .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId )
+                              .Select(_ => _.Prices.FirstOrDefault(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).OrderByDescending(_ => _.PriceValue).FirstOrDefault().PriceValue : 0;
+
+                }
+                var gap = (model.MaxPrice - model.MinPrice);
+                model.Step = Convert.ToInt32(gap / 10);
+
+            }
+            catch (Exception)
+            {
+                commonSpecIds = new List<string>();
+            }
+
+            return model;
+        }
+
+        public List<SelectListModel> GetProductSortingType()
+        {
+            var result = new List<SelectListModel>();
+            foreach (int i in Enum.GetValues(typeof(ProductSortingType)))
+            {
+                string name = Enum.GetName(typeof(ProductSortingType), i);
+                var obj = new SelectListModel()
+                {
+                    Text = name.GetDescription(),
+                    Value = i.ToString()
+                };
+                result.Add(obj);
+            }
+            result.Insert(0, new SelectListModel() { Text = Language.GetString("Choose"), Value = "-1" });
+            return result;
         }
     }
 }

@@ -80,6 +80,23 @@ namespace Arad.Portal.DataLayer.Models.Shared
             Two_One = 11
         }
 
+
+        public enum ProductSortingType
+        {
+            [CustomDescription("EnumDesc_Newest")]
+            Newest = 1,
+            [CustomDescription("EnumDesc_MostVisited")]
+            MostVisited = 2,
+            [CustomDescription("EnumDesc_MostPopular")]
+            MostPopular = 3,
+            [CustomDescription("EnumDesc_BestSelling")]
+            BestSelling = 4,
+            [CustomDescription("EnumDesc_MostExpensive")]
+            MostExpensive = 5,
+            [CustomDescription("EnumDesc_Cheapest")]
+            Cheapest = 6
+
+        }
         public enum ThreeColsTemplateWidth
         {
            One_One_One = 1,

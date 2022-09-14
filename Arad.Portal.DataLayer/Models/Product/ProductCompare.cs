@@ -18,7 +18,7 @@ namespace Arad.Portal.DataLayer.Models.Product
 
         public long ProductCode { get; set; }
 
-        public long CurrentPrice { get; set; }
+        public decimal CurrentPrice { get; set; }
 
         public string FormattedPrice { get; set; }
 

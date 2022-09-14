@@ -24,12 +24,14 @@ using Microsoft.AspNetCore.StaticFiles;
 using System.Globalization;
 using Arad.Portal.DataLayer.Contracts.General.Currency;
 using Arad.Portal.UI.Shop.ViewComponents;
+using Arad.Portal.DataLayer.Contracts.Shop.ProductGroup;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
     public class ProductController : BaseController
     {
         private readonly IProductRepository _productRepository;
+        private readonly IProductGroupRepository _groupRepository;
         private readonly IHttpContextAccessor _accessor;
         private readonly ILanguageRepository _lanRepository;
         private readonly IDomainRepository _domainRepository;
@@ -42,7 +44,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly ICurrencyRepository _curRepository;
 
         public ProductController(IProductRepository productRepository, IHttpContextAccessor accessor,
-            UserManager<ApplicationUser> userManager, IConfiguration configuration,
+            UserManager<ApplicationUser> userManager, IConfiguration configuration, IProductGroupRepository grpRepository,
             IWebHostEnvironment env, IUserRepository userRepository,ICurrencyRepository curRepository,
             ILanguageRepository lanRepository, IDomainRepository domainRepository, ICommentRepository commentRepository):base(accessor, domainRepository)
         {
@@ -56,7 +58,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             _configuration = configuration;
             _userRepository = userRepository;
             _curRepository = curRepository;
-            
+            _groupRepository = grpRepository;
             //_enyimMemcachedMethods = enyimMemcachedMethods;
         }
 
@@ -65,21 +67,25 @@ namespace Arad.Portal.UI.Shop.Controllers
         {
             ViewData["DomainTitle"] = this.DomainTitle;
             ViewData["PageTitle"] = Language.GetString("design_Products");
+            var domainEntity = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
             var lanId = _lanRepository.FetchBySymbol(CultureInfo.CurrentCulture.Name);
             var ri = new RegionInfo(System.Threading.Thread.CurrentThread.CurrentUICulture.LCID);
             var curSymbol = ri.ISOCurrencySymbol;
             var currencyDto = _curRepository.GetCurrencyByItsPrefix(curSymbol);
-            var res = await _productRepository.GetFilterList(lanId);
+            var res = await _groupRepository.GetFilterList(lanId, domainEntity.DomainId);
+            ViewBag.FilterModel = res;
             var list = _productRepository.GetSpecialProducts(20, currencyDto.CurrencyId, DataLayer.Entities.General.DesignStructure.ProductOrContentType.Newest);
             return View(list);
         }
 
         [HttpPost]
         [Route("{language?}/product/Filter")]
-        public IActionResult Filter([FromBody]List<DynamicFilter> Filters)
+        public IActionResult Filter([FromBody]SelectedFilter filter)
         {
-           
-            return View();
+            var domainEntity = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
+            var lanId = _lanRepository.FetchBySymbol(CultureInfo.CurrentCulture.Name);
+
+            return Json(new {});
         }
 
         [HttpGet]

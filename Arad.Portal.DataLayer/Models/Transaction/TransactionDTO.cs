@@ -32,7 +32,7 @@ namespace Arad.Portal.DataLayer.Models.Transaction
 
         public int OrderItemsCount { get; set; }
 
-        public long FinalPriceToPay { get; set; }
+        public decimal FinalPriceToPay { get; set; }
 
         public PaymentStage PaymentStage { get; set; }
 
@@ -54,7 +54,7 @@ namespace Arad.Portal.DataLayer.Models.Transaction
 
         public List<ProductOrderDetail> Products { get; set; }
 
-        public long TotalDetailsAmountToPayWithShipping { get; set; }
+        public decimal TotalDetailsAmountToPayWithShipping { get; set; }
     }
 
     public class ProductOrderDetail
@@ -72,7 +72,7 @@ namespace Arad.Portal.DataLayer.Models.Transaction
         /// <summary>
         /// price with discount
         /// </summary>
-        public long PriceWithDiscountPerUnit { get; set; }
+        public decimal PriceWithDiscountPerUnit { get; set; }
         
     }
 }

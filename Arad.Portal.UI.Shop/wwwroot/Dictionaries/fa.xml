@@ -39,12 +39,7 @@
 	<string key="Upload">
 		<value>آپلود</value>
 	</string>
-	<string key="ProductCommentDelete">
-		<value>حذف نظر</value>
-	</string>
-	<string key="ProductCommentApprove">
-		<value>تایید نظر</value>
-	</string>
+	
 	<string key="PutImage">
 		<value>قراردادن تصویر</value>
 	</string>
@@ -307,6 +302,33 @@
 	</string>
 	<string key="FileImportExport_NoFileSelected">
 		<value>فایلی انتخاب نشده است.</value>
+	</string>
+	<string key="EnumDesc_Sorting">
+		<value>مرتب سازی</value>
+	</string>
+	<string key="EnumDesc_MostVisited">
+		<value>پربازدیدترین</value>
+	</string>
+	<string key="EnumDesc_MostPopular">
+		<value>محبوبترین</value>
+	</string>
+	<string key="EnumDesc_BestSelling">
+		<value>پرفروشترین</value>
+	</string>
+	<string key="EnumDesc_Newest">
+		<value>جدیدترین</value>
+	</string>
+	<string key="EnumDesc_MostExpensive">
+		<value>گرانترین</value>
+	</string>
+	<string key="EnumDesc_Cheapest">
+		<value>ارزانترین</value>
+	</string>
+	<string key="ProductCommentDelete">
+		<value>حذف نظر</value>
+	</string>
+	<string key="ProductCommentApprove">
+		<value>تایید نظر</value>
 	</string>
 	<string key="PermissionTitle_MainPage">
 		<value>داشبورد</value>
@@ -2582,8 +2604,14 @@
 	<string key="Search">
 		<value>جستجو</value>
 	</string>
+	<string key="PriceRange">
+		<value>محدوده قیمت</value>
+	</string>
 	<string key="Search_IN">
 		<value>در</value>
+	</string>
+	<string key="Search_OnlyAvailableProducts">
+		<value>فقط کالاهای موجود</value>
 	</string>
 	<string key="RelatedLanguage">
 		<value>زبان مربوطه</value>
@@ -2785,6 +2813,9 @@
 	</string>
 	<string key="btn_AddNewAddress">
 		<value>افزودن آدرس جدید</value>
+	</string>
+	<string key="btn_Filter">
+		<value>فیلتر</value>
 	</string>
 	<string key="btn_Register">
 		<value>ثبت نام</value>

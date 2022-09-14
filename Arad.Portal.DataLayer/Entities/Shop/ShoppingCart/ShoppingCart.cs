@@ -1,4 +1,5 @@
 ﻿using Arad.Portal.DataLayer.Models.Shared;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
@@ -29,9 +30,11 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
 
         public string CouponCode { get; set; }
 
-        public long? FinalPriceAfterCouponCode { get; set; }
+        [BsonRepresentation(BsonType.Decimal128)]
+        public decimal? FinalPriceAfterCouponCode { get; set; }
 
-        public long FinalPriceToPay { get; set; }
+        [BsonRepresentation(BsonType.Decimal128)]
+        public decimal FinalPriceToPay { get; set; }
         /// <summary>
         /// end user can select product from different sellers each seller has individual object in his shoppingCart
         /// Details is the list of invoice Per seller
@@ -60,9 +63,9 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
         /// </summary>
         public int ShippingTypeId { get; set; }
 
-        public long ShippingExpense { get; set; }
+        public decimal ShippingExpense { get; set; }
 
-        public long TotalDetailsAmountWithShipping { get; set; }
+        public decimal TotalDetailsAmountWithShipping { get; set; }
     }
     public class ShoppingCartDetail : BaseEntity
     {
@@ -80,14 +83,14 @@ namespace Arad.Portal.DataLayer.Entities.Shop.ShoppingCart
         /// <summary>
         /// price without discount
         /// </summary>
-        public long PricePerUnit { get; set; }
+        public decimal PricePerUnit { get; set; }
 
-        public long DiscountPricePerUnit { get; set; }
+        public decimal DiscountPricePerUnit { get; set; }
 
         /// <summary>
         /// (PricePerUnit - DiscountPerUnit ) * OrderCount
         /// </summary>
-        public long TotalAmountToPay { get; set; }
+        public decimal TotalAmountToPay { get; set; }
     }
 
     //public enum ShippingType

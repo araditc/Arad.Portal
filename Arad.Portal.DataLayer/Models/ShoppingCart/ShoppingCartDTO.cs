@@ -22,9 +22,9 @@ namespace Arad.Portal.DataLayer.Models.ShoppingCart
 
         public string CouponCode { get; set; }
 
-        public long? FinalPriceAfterCouponCode { get; set; }
+        public decimal? FinalPriceAfterCouponCode { get; set; }
 
-        public long FinalPriceForPay { get; set; }
+        public decimal FinalPriceForPay { get; set; }
 
         public EntityCulture ShoppingCartCulture { get; set; }
 

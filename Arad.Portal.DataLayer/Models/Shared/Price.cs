@@ -1,4 +1,5 @@
 ﻿using Arad.Portal.DataLayer.Entities.General.Currency;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,8 @@ namespace Arad.Portal.DataLayer.Models.Shared
 
         public string Prefix { get; set; }
 
-        public long PriceValue { get; set; }
+        [BsonRepresentation(BsonType.Decimal128)]
+        public decimal PriceValue { get; set; }
 
         public bool IsActive { get; set; }
 

@@ -24,7 +24,7 @@ namespace Arad.Portal.DataLayer.Models.Transaction
 
         public DateTime PaymentDate { get; set; }
 
-        public long TotalAmount { get; set; }
+        public decimal TotalAmount { get; set; }
 
         public int OrderItemCount { get; set; }
 
