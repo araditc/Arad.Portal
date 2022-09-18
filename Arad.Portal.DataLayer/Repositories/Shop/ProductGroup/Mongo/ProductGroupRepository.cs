@@ -623,7 +623,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
 
             filterDef = _builder.Eq(nameof(Entities.Shop.Product.Product.IsActive), true);
             filterDef &= _builder.Eq(nameof(Entities.Shop.Product.Product.IsDeleted), false);
-            filterDef &= _builder.Eq(nameof(Entities.Shop.Product.Product.AssociatedDomainId), domainId);
+            //test
+            //filterDef &= _builder.Eq(nameof(Entities.Shop.Product.Product.AssociatedDomainId), domainId);
             if (groupId != null)
             {
                 filterDef &= _builder.AnyIn(nameof(Entities.Shop.Product.Product.GroupIds), new List<string>() { groupId });
@@ -672,35 +673,38 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                 {
                     model.MinPrice = _productContext.ProductCollection.AsQueryable()
                                .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId && _.GroupIds.Contains(groupId))
-                               .Select(_ => _.Prices.FirstOrDefault(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).Any() ?
+                               .Select(_ => _.Prices.First(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).Any() ?
                                _productContext.ProductCollection.AsQueryable()
                                .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId && _.GroupIds.Contains(groupId))
-                               .Select(_ => _.Prices.FirstOrDefault(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).OrderBy(_=>_.PriceValue).FirstOrDefault().PriceValue : 0;
+                               .Select(_ => _.Prices.First(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).OrderBy(_=>_.PriceValue).FirstOrDefault().PriceValue : 0;
 
                     model.MaxPrice = _productContext.ProductCollection.AsQueryable()
                               .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId && _.GroupIds.Contains(groupId))
-                              .Select(_ => _.Prices.FirstOrDefault(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).Any() ?
+                              .Select(_ => _.Prices.First(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).Any() ?
                               _productContext.ProductCollection.AsQueryable()
                               .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId && _.GroupIds.Contains(groupId))
-                              .Select(_ => _.Prices.FirstOrDefault(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).OrderByDescending(_ => _.PriceValue).FirstOrDefault().PriceValue : 0;
+                              .Select(_ => _.Prices.First(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).OrderByDescending(_ => _.PriceValue).FirstOrDefault().PriceValue : 0;
 
                 }else
                 {
                     model.MinPrice = _productContext.ProductCollection.AsQueryable()
                               .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId )
-                              .Select(_ => _.Prices.FirstOrDefault(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).Any() ?
+                              .Select(_ => _.Prices.First(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).Any() ?
                               _productContext.ProductCollection.AsQueryable()
                               .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId )
-                              .Select(_ => _.Prices.FirstOrDefault(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).OrderBy(_ => _.PriceValue).FirstOrDefault().PriceValue : 0;
+                              .Select(_ => _.Prices.First(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).OrderBy(_ => _.PriceValue).FirstOrDefault().PriceValue : 0;
 
                     model.MaxPrice = _productContext.ProductCollection.AsQueryable()
                               .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId )
-                              .Select(_ => _.Prices.FirstOrDefault(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).Any() ?
+                              .Select(_ => _.Prices.First(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).Any() ?
                               _productContext.ProductCollection.AsQueryable()
                               .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId )
-                              .Select(_ => _.Prices.FirstOrDefault(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).OrderByDescending(_ => _.PriceValue).FirstOrDefault().PriceValue : 0;
+                              .Select(_ => _.Prices.First(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).OrderByDescending(_ => _.PriceValue).FirstOrDefault().PriceValue : 0;
 
                 }
+                //for testing 
+                model.MinPrice = 1000;
+                model.MaxPrice = 10000;
                 var gap = (model.MaxPrice - model.MinPrice);
                 model.Step = Convert.ToInt32(gap / 10);
 

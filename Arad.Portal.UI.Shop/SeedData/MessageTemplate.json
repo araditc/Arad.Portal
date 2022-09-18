@@ -304,5 +304,53 @@
         "Body": "<p><span style=\"background-color:rgb(255,255,255);color:rgb(33,37,41);\">{$domainName}</span></p><p>کد شما : {$otp}</p>"
       }
     ]
+  },
+  {
+    "MessageTemplateId": "74b604b1-3127-4486-920a-56b13c283333",
+    "CreationDate": "2021-09-01T05:23:43.424+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [],
+    "IsActive": true,
+    "TemplateName": "AdminRegisterNewOrder",
+    "TemplateDescription": "سفارش جدید",
+    "IsSystemTemplate": true,
+    "NotificationType": "2",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "سفارش جدید در {$company_name}",
+        "Body": "ثبت شده است برای مشاهده جزییات به پنل ادمین مراجعه کنید. {$client_name} سفارش جدیدی توسط "
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "new order in {$company_name}",
+        "Body": "new order have been regitered by {$client_name},check admin panel for details."
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": "90b604b1-3127-4486-920a-56b13c283390",
+    "CreationDate": "2021-09-01T05:23:43.424+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [],
+    "IsActive": true,
+    "TemplateName": "UserRegisterNewOrder",
+    "TemplateDescription": "سفارش جدید کاربر",
+    "IsSystemTemplate": true,
+    "NotificationType": "2",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "سفارش جدید شما در {$company_name}",
+        "Body": "{$client_name} عزیز, سفارش شما با موفقیت ثبت شد برای مشاهده جزییات با پنل کاربری خود مراجعه نمایید."
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "your new order in {$company_name}",
+        "Body": "dear {$client_name} your order has been registered, please check your user profile for details."
+      }
+    ]
   }
 ]

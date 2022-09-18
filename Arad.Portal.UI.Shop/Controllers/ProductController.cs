@@ -25,6 +25,15 @@ using System.Globalization;
 using Arad.Portal.DataLayer.Contracts.General.Currency;
 using Arad.Portal.UI.Shop.ViewComponents;
 using Arad.Portal.DataLayer.Contracts.Shop.ProductGroup;
+using System.Collections.Specialized;
+using System.Web;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc.ViewFeatures.Buffers;
+using System.IO;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Text.Encodings.Web;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -74,19 +83,51 @@ namespace Arad.Portal.UI.Shop.Controllers
             var currencyDto = _curRepository.GetCurrencyByItsPrefix(curSymbol);
             var res = await _groupRepository.GetFilterList(lanId, domainEntity.DomainId);
             ViewBag.FilterModel = res;
-            var list = _productRepository.GetSpecialProducts(20, currencyDto.CurrencyId, DataLayer.Entities.General.DesignStructure.ProductOrContentType.Newest);
-            return View(list);
+            var model = await _productRepository.GetFilteredProduct(20, 0, currencyDto.CurrencyId, lanId, domainEntity.DomainId, new SelectedFilter());
+
+            return View("Index", model);
         }
 
         [HttpPost]
         [Route("{language?}/product/Filter")]
-        public IActionResult Filter([FromBody]SelectedFilter filter)
+        public async Task<IActionResult> Filter([FromBody]SelectedFilter filter)
         {
             var domainEntity = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
             var lanId = _lanRepository.FetchBySymbol(CultureInfo.CurrentCulture.Name);
+            var ri = new RegionInfo(System.Threading.Thread.CurrentThread.CurrentUICulture.LCID);
+            var curSymbol = ri.ISOCurrencySymbol;
+            var currencyDto = _curRepository.GetCurrencyByItsPrefix(curSymbol);
+            NameValueCollection queryStrings = HttpUtility.ParseQueryString(Request.QueryString.ToString());
+            if (string.IsNullOrWhiteSpace(queryStrings["page"]))
+            {
+                queryStrings.Set("page", "1");
+            }
 
-            return Json(new {});
+            if (string.IsNullOrWhiteSpace(queryStrings["pagesize"]))
+            {
+                queryStrings.Set("pagesize", "20");
+            }
+            var page = Convert.ToInt32(queryStrings["page"]);
+            var pageSize = Convert.ToInt32(queryStrings["pagesize"]);
+            var skip = ((page - 1) * pageSize);
+            var res = await _productRepository.GetFilteredProduct(pageSize, skip, currencyDto.CurrencyId, lanId, domainEntity.DomainId, filter);
+
+            return Json(new
+            {
+                products = PartialView("~/Views/Product/_ProductList.cshtml", res.Items),
+                pagination = PartialView("~/Views/Product/_ProductFilterPagination.cshtml",
+                new ProductPageViewModel()
+                {
+                    CurrentPage = res.CurrentPage,
+                    Filter = filter,
+                    ItemsCount = res.ItemsCount,
+                    PageSize = res.PageSize,
+                    QueryParams = $"?page={res.CurrentPage}&pagesize={res.PageSize}"
+                }),
+                sorting = res.Items.Count() > 0 ? PartialView("~/Views/Product/_SortingSection.cshtml", filter) : PartialView()
+            }); 
         }
+
 
         [HttpGet]
         [Route("{language}/product/Download")]

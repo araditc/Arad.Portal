@@ -66,9 +66,6 @@
     <None Include="Views\Shared\Components\MultiLingual\Default.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Views\Shared\Components\Pagination\Default.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="wwwroot\lib\counter\counter.js" />
   </ItemGroup>
 

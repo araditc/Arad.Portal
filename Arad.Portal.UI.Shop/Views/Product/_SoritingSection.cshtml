@@ -1,0 +1,61 @@
+﻿@model Arad.Portal.DataLayer.Models.Shared.SelectedFilter
+<div class="col-12">
+    <ul class="list-group list-group-flush list-group-horizontal-sm">
+        <li class="list-group-item">
+            <button type="button" class="m-2 btn btn-outline-success sortingType" val="1">@Language.GetString("EnumDesc_Newest")</button>
+        </li>
+        <li class="list-group-item">
+            <button type="button" class="m-2 btn btn-outline-success sortingType" val="2">@Language.GetString("EnumDesc_MostVisited")</button>
+        </li>
+        <li class="list-group-item">
+            <button type="button" class="m-3 btn btn-outline-success sortingType" val="3">@Language.GetString("EnumDesc_MostPopular")</button>
+        </li>
+        <li class="list-group-item">
+            <button type="button" class="m-2 btn btn-outline-success sortingType" val="4">@Language.GetString("EnumDesc_BestSelling")</button>
+        </li>
+    </ul>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $(".sortingType").click(function() {
+            debugger;
+            var sort = $(this).attr("val");
+            var obj = @Json.Serialize(@Model);
+            obj.ProductSortingType = parseInt(sort);
+
+             $.ajax({
+                        url:  '@Url.Action("Filter", "Product")',
+                        contentType: 'application/json',
+                        data:  JSON.stringify(obj),
+                        type: 'Post',
+                        dataType:'json',
+                        beforeSend: function () {
+                           /* AddLoading($("#addProductCard"));*/
+                        },
+                        success: function (result) {
+                            
+                            $(".productListSec").html("");
+                            $(".productListSec").html(result.products);
+                            $(".paginationSec").html("");
+                            $(".paginationSec").html(res.pagination);
+                            $("#filterObj").val(JSON.stringify(obj));
+                            if (result.sorting.trim() != "") {
+                                $(".sortingSec").html();
+                                $(".sortingSec").html(res.sorting);
+                            }
+                           
+                         },
+                        error: function (xhr, ajaxOptions, thrownError)
+                        {
+                            alert(xhr.status);
+                            alert(thrownError);
+                        },
+                        complete: function () {
+                           /* removeLoading($("#addProductCard"));*/
+                        }
+                });
+        });
+       
+    })
+</script>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Arad.Portal.DataLayer.Models.Shared.Enums;
 
 namespace Arad.Portal.DataLayer.Models.Shared
 {
@@ -13,13 +14,15 @@ namespace Arad.Portal.DataLayer.Models.Shared
             SelectedDynamicFilters = new();
             GroupIds = new();
         }
-        public decimal FirstPrice { get; set; }
+        public decimal? FirstPrice { get; set; }
 
-        public decimal LastPrice { get; set; }
+        public decimal? LastPrice { get; set; }
 
         public List<string> GroupIds { get; set; }
 
-        public bool IsAvailable { get; set; }
+        public bool? IsAvailable { get; set; }
+
+        public ProductSortingType ProductSortingType { get; set; }
 
         public List<SelectedDynamicFilter> SelectedDynamicFilters { get; set; }
     }

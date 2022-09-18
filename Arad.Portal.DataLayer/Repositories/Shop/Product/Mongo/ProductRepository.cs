@@ -1439,9 +1439,9 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 pro.GiftProduct = res.GiftProduct;
                 pro.Promotion = res.Promotion;
                 pro.PriceValWithPromotion = res.PriceValWithPromotion;
-                //pro.OldPrice = res.OldPrice;
+                pro.OldPrice = res.OldPrice;
                 //testing
-                pro.OldPrice = ran.Next(0, 56000);
+               // pro.OldPrice = ran.Next(0, 56000);
                 pro.DiscountType = res.DiscountType;
                 pro.DiscountValue = res.DiscountValue;
                 pro.MainImageUrl = pro.Images.Any(_ => _.IsMain) ? pro.Images.FirstOrDefault(_ => _.IsMain).Url : "";
@@ -1455,6 +1455,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return lst;
         }
 
+      
         public List<SelectListModel> GetAllImageRatio()
         {
             var result = new List<SelectListModel>();
@@ -1777,16 +1778,177 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             
         }
 
-        public List<ProductOutputDTO> GetFilteredProduct(int count, string currencyId, string languageId, string domainId, SelectedFilter filter)
+        public async Task<PagedItems<ProductOutputDTO>> GetFilteredProduct(int count, int skip, string currencyId, string languageId, string domainId, SelectedFilter filter)
         {
+            var result = new PagedItems<ProductOutputDTO>();
             _builder = new FilterDefinitionBuilder<Entities.Shop.Product.Product>();
+            FilterDefinition<Entities.Shop.Product.Product> filterDef = _builder.Empty;
+            var domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
+            filterDef = _builder.Eq(nameof(Entities.Shop.Product.Product.AssociatedDomainId), domainId);
+            if (domainEntity.IsDefault)
+            {
+                var filterDefOr = _builder.Eq(nameof(Entities.Shop.Product.Product.IsPublishedOnMainDomain), true);
+                filterDef = _builder.Or(filterDef, filterDefOr);
+            }
+            if(filter.GroupIds.Count > 0)
+            {
+                filterDef &= _builder.AnyIn(nameof(Entities.Shop.Product.Product.GroupIds), filter.GroupIds);
+            }
+            if(filter.IsAvailable != null && filter.IsAvailable.Value)
+            {
+                filterDef &= _builder.Gt(nameof(Entities.Shop.Product.Product.Inventory), 0);
+            }
+
+            FilterDefinitionBuilder<MultiLingualProperty> multiBuilder = new();
+            FilterDefinition<MultiLingualProperty> multiFilterDef = multiBuilder.Empty;
+            multiFilterDef = multiBuilder.Eq(nameof(MultiLingualProperty.LanguageId), languageId);
 
             FilterDefinitionBuilder<Price> priceBuilder = new();
             FilterDefinition<Price> priceFilterDefinition = priceBuilder.Empty;
+            priceFilterDefinition = priceBuilder.Eq(nameof(Price.CurrencyId), currencyId);
+            if(filter.FirstPrice != null)
+            {
+                priceFilterDefinition &= priceBuilder.Gte(nameof(Price.PriceValue), filter.FirstPrice.Value);
+            }
+
+            if(filter.LastPrice != null)
+            {
+                priceFilterDefinition &= priceBuilder.Lte(nameof(Price.PriceValue), filter.LastPrice.Value);
+            }
 
             FilterDefinitionBuilder<ProductSpecificationValue> specificationBuilder = new();
-            FilterDefinition<ProductSpecificationValue> specFilterDefinition = specificationBuilder.Empty;
+            FilterDefinition<ProductSpecificationValue> mainSpecFilterDefinition = specificationBuilder.Empty;
+            foreach (var item in filter.SelectedDynamicFilters)
+            {
+                var specFilter = specificationBuilder.Eq(nameof(ProductSpecificationValue.SpecificationId), item.SpecificationId);
+                specFilter &= specificationBuilder.AnyIn(nameof(ProductSpecificationValue.ValueList), item.SelectedValues);
+                mainSpecFilterDefinition = specificationBuilder.And(specFilter);
+            }
 
+            filterDef &= _builder.ElemMatch("Prices", priceFilterDefinition);
+            filterDef &= _builder.ElemMatch("MultiLingualProperties", multiFilterDef);
+            filterDef &= _builder.ElemMatch("Specifications", mainSpecFilterDefinition);
+            var totalCount = await _context.ProductCollection.Find(filterDef).CountDocumentsAsync();
+            List<ProductOutputDTO> lst = new List<ProductOutputDTO>();
+            switch (filter.ProductSortingType)
+            {
+                case Enums.ProductSortingType.Newest:
+                    lst = _context.ProductCollection
+                    .Find(filterDef)
+                    .Project(_ =>
+                        new ProductOutputDTO()
+                        {
+                            GroupIds = _.GroupIds,
+                            Inventory = _.Inventory,
+                            Images = _.Images,
+                            MultiLingualProperties = _.MultiLingualProperties,
+                            Prices = _.Prices,
+                            ProductCode = _.ProductCode,
+                            ProductId = _.ProductId,
+                            Promotion = _.Promotion,
+                            SaleCount = _.SaleCount,
+                            UniqueCode = _.UniqueCode,
+                            TotalScore = _.TotalScore,
+                            ScoredCount = _.ScoredCount,
+                            Unit = _.Unit,
+                            VisitCount = _.VisitCount
+                        }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.CreationDate)).Skip(skip).Limit(count).ToList();
+                    break;
+                case Enums.ProductSortingType.MostVisited:
+                    lst = _context.ProductCollection
+                    .Find(filterDef)
+                    .Project(_ =>
+                        new ProductOutputDTO()
+                        {
+                            GroupIds = _.GroupIds,
+                            Inventory = _.Inventory,
+                            Images = _.Images,
+                            MultiLingualProperties = _.MultiLingualProperties,
+                            Prices = _.Prices,
+                            ProductCode = _.ProductCode,
+                            ProductId = _.ProductId,
+                            Promotion = _.Promotion,
+                            SaleCount = _.SaleCount,
+                            UniqueCode = _.UniqueCode,
+                            TotalScore = _.TotalScore,
+                            ScoredCount = _.ScoredCount,
+                            Unit = _.Unit,
+                            VisitCount = _.VisitCount
+                        }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.VisitCount)).Skip(skip).Limit(count).ToList();
+                    break;
+                case Enums.ProductSortingType.MostPopular:
+                    lst = _context.ProductCollection
+                    .Find(filterDef)
+                    .Project(_ =>
+                        new ProductOutputDTO()
+                        {
+                            GroupIds = _.GroupIds,
+                            Inventory = _.Inventory,
+                            Images = _.Images,
+                            MultiLingualProperties = _.MultiLingualProperties,
+                            Prices = _.Prices,
+                            ProductCode = _.ProductCode,
+                            ProductId = _.ProductId,
+                            Promotion = _.Promotion,
+                            SaleCount = _.SaleCount,
+                            UniqueCode = _.UniqueCode,
+                            TotalScore = _.TotalScore,
+                            ScoredCount = _.ScoredCount,
+                            Unit = _.Unit,
+                            VisitCount = _.VisitCount
+                        }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => (float)_.TotalScore / _.ScoredCount)).Skip(skip).Limit(count).ToList();
+                    break;
+                case Enums.ProductSortingType.BestSelling:
+                    lst = _context.ProductCollection
+                    .Find(filterDef)
+                    .Project(_ =>
+                        new ProductOutputDTO()
+                        {
+                            GroupIds = _.GroupIds,
+                            Inventory = _.Inventory,
+                            Images = _.Images,
+                            MultiLingualProperties = _.MultiLingualProperties,
+                            Prices = _.Prices,
+                            ProductCode = _.ProductCode,
+                            ProductId = _.ProductId,
+                            Promotion = _.Promotion,
+                            SaleCount = _.SaleCount,
+                            UniqueCode = _.UniqueCode,
+                            TotalScore = _.TotalScore,
+                            ScoredCount = _.ScoredCount,
+                            Unit = _.Unit,
+                            VisitCount = _.VisitCount
+                        }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.SaleCount)).Skip(skip).Limit(count).ToList();
+                    break;
+                default:
+                    break;
+            }
+            
+
+            foreach (var pro in lst)
+            {
+                var res = EvaluateFinalPrice(pro.ProductId, pro.Prices, pro.GroupIds, currencyId);
+                pro.GiftProduct = res.GiftProduct;
+                pro.Promotion = res.Promotion;
+                pro.PriceValWithPromotion = res.PriceValWithPromotion;
+                pro.OldPrice = res.OldPrice;
+                //testing
+                // pro.OldPrice = ran.Next(0, 56000);
+                pro.DiscountType = res.DiscountType;
+                pro.DiscountValue = res.DiscountValue;
+                pro.MainImageUrl = pro.Images.Any(_ => _.IsMain) ? pro.Images.FirstOrDefault(_ => _.IsMain).Url : "";
+                pro.MainAlt = pro.Images.Any(_ => _.IsMain) ? (!string.IsNullOrWhiteSpace(pro.Images.FirstOrDefault(_ => _.IsMain).Title) ? pro.Images.FirstOrDefault(_ => _.IsMain).Title : "") : "";
+                var r = Helpers.Utilities.ConvertPopularityRate(pro.TotalScore ?? 0, pro.ScoredCount ?? 0);
+                pro.LikeRate = r.LikeRate;
+                pro.DisikeRate = r.DisikeRate;
+                pro.HalfLikeRate = r.HalfLikeRate;
+            }
+            result.Items = lst;
+            result.CurrentPage = (skip / count) + 1;
+            result.ItemsCount = totalCount;
+            result.PageSize = count;
+            result.QueryString = $"?page={result.CurrentPage}&pagesize={count}";
+            return result;
 
         }
     }

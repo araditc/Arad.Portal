@@ -78,7 +78,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 
         List<ProductOutputDTO> GetSpecialProducts(int count, string currencyId, ProductOrContentType type, int skip = 0);
 
-        List<ProductOutputDTO> GetFilteredProduct(int count, string currencyId, string languageId, string domainId, SelectedFilter filter);
+        //Task<PagedItems<ProductOutputDTO>> GetSpecialProduct(int cnt, string currencyId, ProductOrContentType type, int skip);
+        Task<PagedItems<ProductOutputDTO>> GetFilteredProduct(int count, int skip, string currencyId, string languageId, string domainId, SelectedFilter filter);
         bool HasActiveProductPromotion(string productId);
         List<SelectListModel> GetAllActiveProductList(string langId, string currentUserId, string productGroupId, string vendorId);
         List<SelectListModel> GetAllProductList(ApplicationUser user,string productGroupId, string langId);

@@ -91,10 +91,10 @@ namespace Arad.Portal.DataLayer.Models.Shared
             MostPopular = 3,
             [CustomDescription("EnumDesc_BestSelling")]
             BestSelling = 4,
-            [CustomDescription("EnumDesc_MostExpensive")]
-            MostExpensive = 5,
-            [CustomDescription("EnumDesc_Cheapest")]
-            Cheapest = 6
+            //[CustomDescription("EnumDesc_MostExpensive")]
+            //MostExpensive = 5,
+            //[CustomDescription("EnumDesc_Cheapest")]
+            //Cheapest = 6
 
         }
         public enum ThreeColsTemplateWidth
