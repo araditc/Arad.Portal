@@ -25,6 +25,8 @@ using Microsoft.AspNetCore.Identity;
 using Serilog;
 using Microsoft.AspNetCore.Cors;
 using Arad.Portal.DataLayer.Contracts.Shop.Product;
+using Arad.Portal.DataLayer.Helpers;
+using Utilities = Arad.Portal.UI.Shop.Helpers.Utilities;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -36,11 +38,14 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly SharedRuntimeData _sharedRuntimeData;
         private readonly IHttpContextAccessor _accessor;
         private readonly IDomainRepository _domainRepository;
+        private readonly CreateNotification _createNotification;
         private readonly IProductRepository _productRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+
         private SamanModel _samanModel = null;
         public SamanController(ITransactionRepository transactionRepository,
             IHttpContextAccessor accessor,
+            CreateNotification createNotification,
             IDomainRepository domainRepository,
              SharedRuntimeData sharedRuntimeData,
              UserManager<ApplicationUser> userManager,
@@ -48,18 +53,16 @@ namespace Arad.Portal.UI.Shop.Controllers
             HttpClientHelper httpClientHelper, IConfiguration configuration) : base(accessor, domainRepository)
         {
             _domainRepository = domainRepository;
-            //MethodInfo method = typeof(XmlSerializer)
-            //    .GetMethod("set_Mode", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
-            //method.Invoke(null, new object[] { 1 });
             _transactionRepository = transactionRepository;
             _httpClientHelper = httpClientHelper;
             _configuration = configuration;
             _sharedRuntimeData = sharedRuntimeData;
             _accessor = accessor;
             _userManager = userManager;
+            _createNotification = createNotification;
             _productRepository = productRepository;
         }
-       
+
         [HttpGet]
         public async Task<IActionResult> GetToken(string reservationNumber)
         {
@@ -71,7 +74,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             {
                 TempData["Psp"] = "Saman";
                 TempData["PaymentErrorMessage"] = "تراکنش مورد نظر یافت نشد.";
-                return  Json(new {status ="error", redirecturl = errorUrl });
+                return Json(new { status = "error", redirecturl = errorUrl });
             }
 
             var senderModel = new GetTokenRequestModel()
@@ -99,7 +102,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 TempData["Psp"] = "Saman";
                 TempData["PaymentErrorMessage"] = "پارامترهای درگاه پرداخت سامان یافت نشد.";
                 //return Json({"PaymentError", "Payment");
-                return Json(new {status = "error", redirecturl =   errorUrl});
+                return Json(new { status = "error", redirecturl = errorUrl });
             }
 
 
@@ -157,37 +160,37 @@ namespace Arad.Portal.UI.Shop.Controllers
 
                         //ViewBag.Token = tokenResponse.Token;
                         //ViewBag.RedirectAddress = path;
-                        return Json(new {status = "success", redirecturl = path});
-                       
-                       
+                        return Json(new { status = "success", redirecturl = path });
+
+
                     }
                     else
                     {
                         transaction.EventsData.FirstOrDefault(_ => _.ActionType == PspActions.PspTokenResponse).additionalData =
                         $"token error desc : {tokenResponse.ErrorDesc}, errorCode: {tokenResponse.ErrorCode}";
-                       
+
                         await _transactionRepository.UpdateTransaction(transaction);
                         //Log.Error($"token error desc : {tokenResponse.ErrorDesc}, errorCode: {tokenResponse.ErrorCode}");
                         TempData["Psp"] = transaction.BasicData.PspType.GetDescription();
                         TempData["PaymentErrorMessage"] = "خطا در اتصال به درگاه.";
-                        return Json(new {status ="error", redirecturl = errorUrl });
+                        return Json(new { status = "error", redirecturl = errorUrl });
                     }
 
                 }
                 catch (Exception ex)
                 {
-                    
+
                     await _transactionRepository.UpdateTransaction(transaction);
                     //Log.Error($"overal error : {e.Message}");
                     TempData["Psp"] = transaction.BasicData.PspType.GetDescription();
                     TempData["PaymentErrorMessage"] = "خطا در اتصال به درگاه.";
-                    return Json(new {status = "error", redirecturl = errorUrl });
+                    return Json(new { status = "error", redirecturl = errorUrl });
                 }
             }
             //Log.Error($"token error statusCode : {response.StatusCode}");
             TempData["Psp"] = transaction.BasicData.PspType.GetDescription();
             TempData["PaymentErrorMessage"] = "خطا در اتصال به درگاه.";
-            return Json(new {status ="error", redirecturl = errorUrl });
+            return Json(new { status = "error", redirecturl = errorUrl });
         }
 
         [HttpPost]
@@ -318,7 +321,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                     {
                         try
                         {
-                            
+
                             response = await client.PostAsync(_samanModel.VerifyEndpoint, verifyContent);
                             //get result before timeout
                             break;
@@ -371,7 +374,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                                         ActionType = PspActions.PspResponseReverseTransaction
                                     });
                                     transaction.BasicData.Stage = Enums.PaymentStage.Failed;
-                                    
+
                                     await _transactionRepository.UpdateTransaction(transaction);
                                     TempData["Psp"] = "Saman";
                                     await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
@@ -388,7 +391,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                                         ActionType = PspActions.PspResponseReverseTransaction
                                     });
                                     transaction.BasicData.Stage = Enums.PaymentStage.Failed;
-                                  
+
                                     await _transactionRepository.UpdateTransaction(transaction);
                                     TempData["Psp"] = "Saman";
                                     await _sharedRuntimeData.DeleteDataWithRollBack(transaction.TransactionId);
@@ -430,10 +433,18 @@ namespace Arad.Portal.UI.Shop.Controllers
                                 {
                                     foreach (var item in sub.PurchasePerSeller.Products)
                                     {
-                                      var res =  await _productRepository.InsertDownloadLimitation(item.ShoppingCartDetailId,
-                                           item.ProductId, transaction.CustomerData.UserId, domainRes.ReturnValue.DomainId);
+                                        var res = await _productRepository.InsertDownloadLimitation(item.ShoppingCartDetailId,
+                                             item.ProductId, transaction.CustomerData.UserId, domainRes.ReturnValue.DomainId);
                                     }
                                 }
+                                #endregion
+
+                                #region sendNotification for customer and siteadmin
+                                var customerUser = await _userManager.FindByIdAsync(transaction.CustomerData.UserId);
+                                var siteAdmin = _userManager.Users
+                                    .Where(_ => _.IsDomainAdmin && _.DomainId == domainRes.ReturnValue.DomainId).FirstOrDefault();
+                                await _createNotification.NotifyNewOrder("UserRegisterNewOrder", customerUser);
+                                await _createNotification.NotifyNewOrder("AdminRegisterNewOrder", siteAdmin);
                                 #endregion
                                 _sharedRuntimeData.DeleteDataWithoutRollBack(transaction.TransactionId);
                                 return Redirect(successUrl);
@@ -449,7 +460,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                                 ActionType = PspActions.PspVerifyResponse
                             });
                             transaction.BasicData.Stage = Enums.PaymentStage.Failed;
-                            
+
                             await _transactionRepository.UpdateTransaction(transaction);
                             TempData["Psp"] = "Saman";
                             TempData["PaymentErrorMessage"] = "خطا در تایید تراکنش توسط درگاه";
@@ -487,7 +498,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
         }
 
-       
+
     }
 }
 

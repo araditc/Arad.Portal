@@ -320,12 +320,12 @@
       {
         "LanguageName": "fa-IR",
         "Subject": "سفارش جدید در {$company_name}",
-        "Body": "ثبت شده است برای مشاهده جزییات به پنل ادمین مراجعه کنید. {$client_name} سفارش جدیدی توسط "
+        "Body": "ثبت شده است برای مشاهده جزییات به پنل ادمین مراجعه کنید.  درتاریخ {$date}{$client_name} سفارش جدیدی توسط "
       },
       {
         "LanguageName": "en-US",
         "Subject": "new order in {$company_name}",
-        "Body": "new order have been regitered by {$client_name},check admin panel for details."
+        "Body": "new order have been regitered by {$client_name} in {$date},check admin panel for details."
       }
     ]
   },
@@ -344,12 +344,12 @@
       {
         "LanguageName": "fa-IR",
         "Subject": "سفارش جدید شما در {$company_name}",
-        "Body": "{$client_name} عزیز, سفارش شما با موفقیت ثبت شد برای مشاهده جزییات با پنل کاربری خود مراجعه نمایید."
+        "Body": "{$client_name} عزیز, سفارش شمادرتاریخ {$date}با موفقیت ثبت شد برای مشاهده جزییات با پنل کاربری خود مراجعه نمایید."
       },
       {
         "LanguageName": "en-US",
         "Subject": "your new order in {$company_name}",
-        "Body": "dear {$client_name} your order has been registered, please check your user profile for details."
+        "Body": "dear {$client_name} your order in {$date} has been registered, please check your user profile for details."
       }
     ]
   }

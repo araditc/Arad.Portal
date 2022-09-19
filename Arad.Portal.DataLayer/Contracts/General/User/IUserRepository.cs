@@ -25,6 +25,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.User
 
         List<UserFavorites> GetUserFavoriteList(string userId, FavoriteType types);
 
+        ApplicationUser FindAdminOfDomain(string domainId);
         Result AddToUserFavoriteList(string userId, FavoriteType type, string entityId, string url, string domainId);
     }
 }

@@ -87,7 +87,6 @@ namespace Arad.Portal.DataLayer.Helpers
         }
 
 
-
         public async Task<Result> ClientSignUp(string templateName, ApplicationUser user, string password)
         {
 
@@ -171,7 +170,74 @@ namespace Arad.Portal.DataLayer.Helpers
                 await _notificationRepository.AddRange(notifications);
             }
 
-            return new() { Succeeded = true, Message = Language.GetString("AlertAndMessage_OperationSuccess") };
+           
+        }
+
+
+        /// <summary>
+        /// whethere it is used for user or site admin
+        /// </summary>
+        /// <param name="templateName"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task<Result> NotifyNewOrder(string templateName, ApplicationUser user)
+        {
+            try
+            {
+
+            
+            if (_sendSmsConfig == null)
+            {
+                return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_NotFoundSmsSetting") };
+            }
+            List<MessageTemplate> messageTemplates = await _messageTemplateRepository.GetAllByName(templateName);
+
+            if (!messageTemplates.Any())
+            {
+                return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_NotFoundMessageTemplate") };
+            }
+            MessageTemplate messageTemplate = messageTemplates
+                    .FirstOrDefault(m => m.NotificationType == NotificationType.Sms &&
+                    m.MessageTemplateMultiLingual.Any(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)));
+
+           if(messageTemplate != null)
+                {
+                    string title = await GenerateText(NotificationType.Sms,
+               messageTemplate.MessageTemplateMultiLingual
+               .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Subject, user);
+                    string messageText = await GenerateText(NotificationType.Sms, messageTemplate.MessageTemplateMultiLingual
+                        .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body, user, "", "", "");
+
+                    Notification notification = new()
+                    {
+                        Type = NotificationType.Sms,
+                        NotificationId = Guid.NewGuid().ToString(),
+                        IsActive = true,
+                        ScheduleDate = DateTime.Now.ToUniversalTime(),
+                        SendStatus = NotificationSendStatus.Store,
+                        Title = title,
+                        Body = messageText,
+                        CreationDate = DateTime.Now.ToUniversalTime(),
+                        CreatorUserId = user.Id,
+                        CreatorUserName = user.UserName,
+                        TemplateName = templateName,
+                        UserFullName = user.Profile.FullName,
+                        SendSmsConfig = _sendSmsConfig,
+                        AssociatedDomainId = _domainRepository.FetchByName(_domainName, true).ReturnValue.DomainId,
+                        UserPhoneNumber = user.PhoneNumber
+                    };
+
+                    await _notificationRepository.AddRange(new List<Notification>() { notification });
+                    return new() { Succeeded = true, Message = Language.GetString("AlertAndMessage_OperationSuccess") };
+
+                }
+                return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_NotFoundMessageTemplate") };
+            }
+            catch (Exception)
+            {
+                return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_InsertError") };
+            }
+
         }
 
         public async Task<Result> SendCustomMessage(ApplicationUser user, string messageText)
@@ -631,14 +697,7 @@ namespace Arad.Portal.DataLayer.Helpers
                 text = text.Replace("{$client_status}", user.IsActive ? Language.GetString("Action_Active") : Language.GetString("Action_Inactive"));
                 text = text.Replace("{$client_password}", passwordBeforeHash);
 
-                //if (user.Addresses != null)
-                //{
-                //    text = text.Replace("{$client_address1}", IsNullOrEmpty(user.Address.MainAddress));
-                //    text = text.Replace("{$client_city}", IsNullOrEmpty(user.Address.CityName));
-                //    text = text.Replace("{$client_state}", IsNullOrEmpty(user.Address.StateName));
-                //    text = text.Replace("{$client_postcode}", IsNullOrEmpty(user.Address.PostalCode));
-                //    text = text.Replace("{$client_country}", IsNullOrEmpty(user.Address.CountyName));
-                //}
+                
             }
 
             return text;

@@ -19,7 +19,7 @@ using Arad.Portal.DataLayer.Repositories.General.Role.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Permission.Mongo;
 using Arad.Portal.GeneralLibrary.Utilities;
 using static Arad.Portal.DataLayer.Models.Shared.Enums;
-
+using Microsoft.AspNetCore.Identity;
 
 namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
 {
@@ -29,8 +29,10 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
         private readonly RoleContext _roleContext;
         private readonly PermissionContext _permissionContext;
         private readonly IMapper _mapper;
+        private readonly UserManager<ApplicationUser> _userManager;
         public UserRepository(UserContext userContext,
             RoleContext roleContext,
+            UserManager<ApplicationUser> userManager,
             PermissionContext permissionContext,
             IHttpContextAccessor httpContextAccessor,
             IWebHostEnvironment env,
@@ -40,6 +42,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             _roleContext = roleContext;
             _permissionContext = permissionContext;
             _mapper = mapper;
+            _userManager = userManager;
         }
 
         public Result AddToUserFavoriteList(string userId, FavoriteType type, string entityId, string url, string domainId)
@@ -101,6 +104,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
                 result = false;
             }
             return result;
+        }
+
+        public ApplicationUser FindAdminOfDomain(string domainId)
+        {
+            var domainUser = _userManager.Users.Where(_ => _.DomainId == domainId && _.IsDomainAdmin).FirstOrDefault();
+            return domainUser;
         }
 
         public List<string> GetAccessibleRoutsOfUser(ApplicationUser user)

@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Hosting;
 using static Arad.Portal.DataLayer.Models.Shared.Enums;
 using System.Security.Claims;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
+using Arad.Portal.DataLayer.Contracts.General.User;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -28,6 +29,7 @@ namespace Arad.Portal.UI.Shop.Controllers
     {
         private readonly IProductRepository _productRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+       
         private readonly ITransactionRepository _transactionRepository;
         private readonly IMapper _mapper;
         private readonly IShoppingCartRepository _shoppingCartRepository;
@@ -45,6 +47,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             _mapper = mapper;
             _shoppingCartRepository = shoppingCartRepository;
             _sharedRuntimeData = sharedRuntimeData;
+           
         }
 
 
