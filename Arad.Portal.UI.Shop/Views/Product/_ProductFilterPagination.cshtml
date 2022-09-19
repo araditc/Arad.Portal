@@ -2,6 +2,7 @@
 @using System.Collections.Specialized
 @model Arad.Portal.DataLayer.Models.Shared.ProductPageViewModel
 @{
+    Layout = null;
     var mod = Model.ItemsCount % Model.PageSize;
     var pageCount = Model.ItemsCount / Model.PageSize;
     if (mod != 0)
@@ -28,7 +29,7 @@
 }
 
 
-    if (Model.ItemsCount > 0)
+    @if (Model.ItemsCount > 0)
     {
         <hr />
         <div class="row ">
@@ -38,18 +39,18 @@
                         @{
                             if (pageCount == 1)
                             {
-                                            <li class="page-item active"><button type="button" url="@(Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator + "1")"  class="page-link" page-id="1">1</button></li>
+                                                <li class="page-item active"><button type="button" url="@(Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator + "1")"  class="page-link" page-id="1">1</button></li>
                             }
                             else if (pageCount == 2)
                             {
-                                            <li class="page-item @(Model.CurrentPage==1?"active":null)"><button type="button" url="@(Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator+"1")"  class="page-link" page-id="1">1</button></li>
-                                            <li class="page-item @(Model.CurrentPage==2?"active":null)"><button type="button" url="@Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator+"2")"  class="page-link" page-id="2">2</button></li>
+                                                <li class="page-item @(Model.CurrentPage==1?"active":null)"><button type="button" url="@(Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator+"1")"  class="page-link" page-id="1">1</button></li>
+                                                <li class="page-item @(Model.CurrentPage==2?"active":null)"><button type="button" url="@Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator+"2")"  class="page-link" page-id="2">2</button></li>
                             }
                             else if (pageCount == 3)
                             {
-                                            <li class="page-item @(Model.CurrentPage==1?"active":null)"><button type="button" url="@(Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator+"1")"  class="page-link" page-id="2">1</button></li>
-                                            <li class="page-item @(Model.CurrentPage==2?"active":null)"><button type="button" url="@(Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator+"2")"  class="page-link" page-id="1">2</button></li>
-                                            <li class="page-item @(Model.CurrentPage==3?"active":null)"><button type="button" url="@Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator+"3")"  class="page-link" page-id="3">3</button></li>
+                                                <li class="page-item @(Model.CurrentPage==1?"active":null)"><button type="button" url="@(Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator+"1")"  class="page-link" page-id="2">1</button></li>
+                                                <li class="page-item @(Model.CurrentPage==2?"active":null)"><button type="button" url="@(Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator+"2")"  class="page-link" page-id="1">2</button></li>
+                                                <li class="page-item @(Model.CurrentPage==3?"active":null)"><button type="button" url="@Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator+"3")"  class="page-link" page-id="3">3</button></li>
                             }
                             else
                             {
@@ -57,18 +58,18 @@
                                 {
                                     if (Model.CurrentPage >= 3)
                                     {
-                                                    <li class="page-item"><button type="button" url="@(Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator+"1")" class="page-link" page-id="1">@Language.GetString("tbl_FirstPage")</button></li>
+                                                        <li class="page-item"><button type="button" url="@(Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator+"1")" class="page-link" page-id="1">@Language.GetString("tbl_FirstPage")</button></li>
                                     }
 
-                                                <li class="page-item"><button type="button" url="@(Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator+(Model.CurrentPage-1))"  class="page-link" page-id="@Model.CurrentPage-1">@Language.GetString("tbl_PreviousPage")</button></li>
-                                                <li class="page-item"><button type="button" url="@(Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator+(Model.CurrentPage-1))"  class="page-link" page-id="@Model.CurrentPage-1">@(Model.CurrentPage-1)</button></li>
+                                                    <li class="page-item"><button type="button" url="@(Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator+(Model.CurrentPage-1))"  class="page-link" page-id="@Model.CurrentPage-1">@Language.GetString("tbl_PreviousPage")</button></li>
+                                                    <li class="page-item"><button type="button" url="@(Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator+(Model.CurrentPage-1))"  class="page-link" page-id="@Model.CurrentPage-1">@(Model.CurrentPage-1)</button></li>
                                 }
-                                            <li class="page-item active"><button type="button" url="@(Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator+Model.CurrentPage)"  class="page-link" page-id="@Model.CurrentPage">@(Model.CurrentPage)</button></li>
+                                                <li class="page-item active"><button type="button" url="@(Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator+Model.CurrentPage)"  class="page-link" page-id="@Model.CurrentPage">@(Model.CurrentPage)</button></li>
                                 if (Model.CurrentPage < lastPage)
                                 {
-                                                <li class="page-item"><button type="button" url="@(Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator+(Model.CurrentPage+1))"  class="page-link" page-id="@Model.CurrentPage+1">@(Model.CurrentPage+1)</button></li>
-                                                <li class="page-item"><button type="button" url="@(Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator+(Model.CurrentPage+1))"  class="page-link" page-id="@Model.CurrentPage+1">@Language.GetString("tbl_NextPage")</button></li>
-                                                <li class="page-item"><button type="button" url="@(Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator + pageCount)"  class="page-link" page-id="@pageCount">@Language.GetString("tbl_LastPage")</button></li>
+                                                    <li class="page-item"><button type="button" url="@(Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator+(Model.CurrentPage+1))"  class="page-link" page-id="@Model.CurrentPage+1">@(Model.CurrentPage+1)</button></li>
+                                                    <li class="page-item"><button type="button" url="@(Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator+(Model.CurrentPage+1))"  class="page-link" page-id="@Model.CurrentPage+1">@Language.GetString("tbl_NextPage")</button></li>
+                                                    <li class="page-item"><button type="button" url="@(Url.Action("Filter", "Product") + Model.QueryParams + pageIndicator + pageCount)"  class="page-link" page-id="@pageCount">@Language.GetString("tbl_LastPage")</button></li>
                                 }
                             }
                         }
@@ -96,15 +97,15 @@ $(document).ready(function() {
                            /* AddLoading($("#addProductCard"));*/
                         },
                         success: function (result) {
-                            
+                            debugger;
                              $(".productListSec").html("");
                             $(".productListSec").html(result.products);
                             $(".paginationSec").html("");
-                            $(".paginationSec").html(res.pagination);
+                            $(".paginationSec").html(result.pagination);
                             $("#filterObj").val(JSON.stringify(obj));
                             if (result.sorting.trim() != "") {
                                 $(".sortingSec").html();
-                                $(".sortingSec").html(res.sorting);
+                                $(".sortingSec").html(result.sorting);
                             }
                          },
                         error: function (xhr, ajaxOptions, thrownError)

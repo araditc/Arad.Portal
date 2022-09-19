@@ -1,4 +1,7 @@
 ﻿@model Arad.Portal.DataLayer.Models.Shared.SelectedFilter
+@{
+    Layout = null;
+}
 <div class="col-12">
     <ul class="list-group list-group-flush list-group-horizontal-sm">
         <li class="list-group-item">
@@ -8,7 +11,7 @@
             <button type="button" class="m-2 btn btn-outline-success sortingType" val="2">@Language.GetString("EnumDesc_MostVisited")</button>
         </li>
         <li class="list-group-item">
-            <button type="button" class="m-3 btn btn-outline-success sortingType" val="3">@Language.GetString("EnumDesc_MostPopular")</button>
+            <button type="button" class="m-2 btn btn-outline-success sortingType" val="3">@Language.GetString("EnumDesc_MostPopular")</button>
         </li>
         <li class="list-group-item">
             <button type="button" class="m-2 btn btn-outline-success sortingType" val="4">@Language.GetString("EnumDesc_BestSelling")</button>
@@ -20,8 +23,14 @@
     $(document).ready(function(){
         $(".sortingType").click(function() {
             debugger;
+            var obj = {};
             var sort = $(this).attr("val");
-            var obj = @Json.Serialize(@Model);
+            var objTmp = @Json.Serialize(@Model);
+            obj.FirstPrice = objTmp.firstPrice;
+            obj.LastPrice = objTmp.lastPrice;
+            obj.GroupIds = objTmp.groupIds;
+            obj.IsAvailable = objTmp.isAvailable;
+            obj.SelectedDynamicFilters = objTmp.selectedDynamicfilters;
             obj.ProductSortingType = parseInt(sort);
 
              $.ajax({
@@ -34,20 +43,21 @@
                            /* AddLoading($("#addProductCard"));*/
                         },
                         success: function (result) {
-                            
+                            debugger;
                             $(".productListSec").html("");
                             $(".productListSec").html(result.products);
                             $(".paginationSec").html("");
-                            $(".paginationSec").html(res.pagination);
+                            $(".paginationSec").html(result.pagination);
                             $("#filterObj").val(JSON.stringify(obj));
                             if (result.sorting.trim() != "") {
                                 $(".sortingSec").html();
-                                $(".sortingSec").html(res.sorting);
+                                $(".sortingSec").html(result.sorting);
                             }
                            
                          },
                         error: function (xhr, ajaxOptions, thrownError)
                         {
+                            debugger;
                             alert(xhr.status);
                             alert(thrownError);
                         },

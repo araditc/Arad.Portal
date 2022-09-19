@@ -2,12 +2,12 @@
 @using Arad.Portal.DataLayer.Entities.Shop.Promotion;
 @using Arad.Portal.DataLayer.Models.DesignStructure;
 @{
-
+    Layout = null;
 }
 <div class="row">
     @foreach (var item in Model)
     {
-        <div class="col-12 col-md-3 col-lg-4 thumb-wrapper m-1 text-center">
+        <div class="col-12 col-md-4 col-lg-3 thumb-wrapper my-1 text-center">
             <div class="img-overlay-wrap">
                 @if ((item.DiscountType != null && (item.DiscountType == DiscountType.Percentage || item.DiscountType == DiscountType.Fixed)))
                 {
@@ -64,7 +64,8 @@
                     </a>
                 </div>
                 <div class="shoppingCartPart float-end border-0 bg-white rounded-3 text-center align-middle ps-2 pe-2 pt-1 ms-2 mt-2">
-                    <a href="#" role="button" class="btnAddToCard" data-bs-toggle="tooltip" data-bs-placement="bottom" title='@Language.GetString("btn_AddToShoppingCart")'>
+                    <a href="#" role="button" class="btnAddToCard" data-bs-toggle="tooltip" data-bs-placement="bottom" 
+                    title='@Language.GetString("btn_AddToShoppingCart")'>
                         <i class="fas fa-shopping-cart"></i>
                     </a>
                 </div>

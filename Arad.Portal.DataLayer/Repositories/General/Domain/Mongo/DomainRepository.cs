@@ -26,18 +26,15 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
     public class DomainRepository : BaseRepository, IDomainRepository
     {
         private readonly DomainContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _accessor;
 
         public DomainRepository(DomainContext context,
                                 IHttpContextAccessor httpContextAccessor,
-                                UserManager<ApplicationUser> userManager,
                                 IWebHostEnvironment env,
                                 IMapper mapper) : base(httpContextAccessor, env)
         {
             _context = context;
-            _userManager = userManager;
             _mapper = mapper;
             _accessor = httpContextAccessor;
         }

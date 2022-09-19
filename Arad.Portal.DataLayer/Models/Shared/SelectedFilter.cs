@@ -13,6 +13,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
         {
             SelectedDynamicFilters = new();
             GroupIds = new();
+            ProductSortingType = ProductSortingType.Newest;
         }
         public decimal? FirstPrice { get; set; }
 

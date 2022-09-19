@@ -32,7 +32,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
     public class ProductRepository : BaseRepository, IProductRepository
     {
         private readonly ProductContext _context;
-       
+
         private FilterDefinitionBuilder<Entities.Shop.Product.Product> _builder = new();
         private readonly DomainContext _domainContext;
         private readonly CurrencyContext _currencyContext;
@@ -43,7 +43,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         private readonly IConfiguration _configuration;
         private readonly CommentContext _commentContext;
         private readonly IMapper _mapper;
-       
+
 
         public ProductRepository(IHttpContextAccessor httpContextAccessor,
             ProductContext context, IMapper mapper,
@@ -75,7 +75,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         {
             var result = new Result<string>();
             result.ReturnValue = string.Empty;
-         
+
             try
             {
                 var equallentModel = MappingProduct(dto);
@@ -151,7 +151,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 result.Message = ConstMessages.InternalServerErrorMessage;
             }
             return result;
-           
+
         }
         public async Task<Result> AddCommentToProduct(string productId, Comment comment)
         {
@@ -453,11 +453,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             {
                 var unitEntity = _context
                     .ProductUnitCollection.Find(_ => _.ProductUnitId == dto.UnitId).FirstOrDefault();
-                if(unitEntity != null)
+                if (unitEntity != null)
                 {
                     equallentModel.Unit = unitEntity;
                 }
-                
+
             }
             #endregion
 
@@ -471,7 +471,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     {
                         var exist = equallentModel.Prices.FirstOrDefault(_ => _.CurrencyId == price.CurrencyId && _.EndDate != null && _.IsActive);
                         //equallentModel.Prices.Remove(exist);
-                        if(exist != null)
+                        if (exist != null)
                         {
                             exist.IsActive = false;
                             exist.EndDate = DateTime.Now;
@@ -502,11 +502,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             {
                 var promotionEntity =
                     _promotionContext.Collection.Find(_ => _.PromotionId == dto.PromotionId).FirstOrDefault();
-                if(promotionEntity != null)
+                if (promotionEntity != null)
                 {
                     equallentModel.Promotion = promotionEntity;
                 }
-                
+
             }
             #endregion Promotion
 
@@ -692,7 +692,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         {
             var result = new Result();
             var product = _context.ProductCollection.Find(_ => _.ProductId == dto.ProductId).FirstOrDefault();
-            if(product != null)
+            if (product != null)
             {
                 var equallentModel = MappingProduct(dto);
                 equallentModel.CreationDate = product.CreationDate;
@@ -718,7 +718,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             var result = new Result();
             var entity = _context.ProductCollection
               .Find(_ => _.ProductId == productId).FirstOrDefault();
-            if(entity != null)
+            if (entity != null)
             {
                 entity.IsDeleted = false;
                 var updateResult = await _context.ProductCollection
@@ -733,11 +733,12 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     result.Succeeded = false;
                     result.Message = ConstMessages.ErrorInSaving;
                 }
-            }else
+            }
+            else
             {
                 result.Message = ConstMessages.ObjectNotFound;
             }
-           
+
             return result;
         }
 
@@ -862,7 +863,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         public List<SelectListModel> GetAllProductList(ApplicationUser user, string productGroupId, string domainId)
         {
             var result = new List<SelectListModel>();
-            var domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).Any() 
+            var domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).Any()
                 ? _domainContext.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault() : new Entities.General.Domain.Domain();
             if (user.IsSystemAccount)//systemAccount
             {
@@ -876,7 +877,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             }
             else
             {
-                if(domainEntity != null)
+                if (domainEntity != null)
                 {
                     result = _context.ProductCollection.Find(_ => _.GroupIds.Contains(productGroupId) && _.IsActive && _.CreatorUserId == user.Id)
                   .Project(_ => new SelectListModel()
@@ -886,7 +887,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                       Value = _.ProductId
                   }).ToList();
                 }
-                
+
             }
             return result;
         }
@@ -897,8 +898,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             var urlFriend = $"{domainName}/product/{slug}";
             var productEntity = _context.ProductCollection
                 .Find(_ => _.MultiLingualProperties.Any(a => a.UrlFriend == urlFriend)).FirstOrDefault();
-            if(productEntity != null)
-            result = _mapper.Map<ProductOutputDTO>(productEntity);
+            if (productEntity != null)
+                result = _mapper.Map<ProductOutputDTO>(productEntity);
             result.MultiLingualProperties = productEntity.MultiLingualProperties;
 
             return result;
@@ -921,7 +922,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         {
             var result = new ProductOutputDTO();
             var productEntity = new Entities.Shop.Product.Product();
-          
+
             long codeNumber;
             if (long.TryParse(slugOrCode, out codeNumber))
             {
@@ -930,16 +931,16 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 {
                     if (dto.IsDefault)
                     {
-                        //test
+                        //test comment domain
                         productEntity = _context.ProductCollection
-                           .Find(_ => (/*_.AssociatedDomainId == dto.DomainId &&*/ _.ProductCode == codeNumber)
+                           .Find(_ => (_.AssociatedDomainId == dto.DomainId && _.ProductCode == codeNumber)
                         || (_.ProductCode == codeNumber && _.IsPublishedOnMainDomain)).FirstOrDefault();
                     }
                     else
                     {
-                        //test
+                        //test comment domain
                         productEntity = _context.ProductCollection
-                          .Find(_ => /*_.AssociatedDomainId == dto.DomainId &&*/ _.ProductCode == codeNumber).FirstOrDefault();
+                          .Find(_ => _.AssociatedDomainId == dto.DomainId && _.ProductCode == codeNumber).FirstOrDefault();
 
                     }
                 }
@@ -952,7 +953,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     if (dto.IsDefault)
                     {
                         productEntity = _context.ProductCollection
-                           .Find(_ => (_.AssociatedDomainId == dto.DomainId && _.MultiLingualProperties.Any(a=> a.UrlFriend == $"/product/{slugOrCode}"))
+                           .Find(_ => (_.AssociatedDomainId == dto.DomainId && _.MultiLingualProperties.Any(a => a.UrlFriend == $"/product/{slugOrCode}"))
                         || (_.MultiLingualProperties.Any(a => a.UrlFriend == $"/product/{slugOrCode}") && _.IsPublishedOnMainDomain)).FirstOrDefault();
                     }
                     else
@@ -963,7 +964,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     }
                 }
             }
-             
+
             if (productEntity != null)
             {
                 result = _mapper.Map<ProductOutputDTO>(productEntity);
@@ -1021,14 +1022,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 
             var promotionList = new List<Entities.Shop.Promotion.Promotion>();
             if (_promotionContext.Collection.Find(_ => _.PromotionType ==
-             Entities.Shop.Promotion.PromotionType.All 
-             && (_.EDate == null || _.EDate.Value >= DateTime.Now) && _.SDate <= DateTime.Now 
-             && _.AssociatedDomainId == domainEntity.DomainId 
+             Entities.Shop.Promotion.PromotionType.All
+             && (_.EDate == null || _.EDate.Value >= DateTime.Now) && _.SDate <= DateTime.Now
+             && _.AssociatedDomainId == domainEntity.DomainId
              && _.IsActive && !_.IsDeleted).Any())
             {
                 promotionOnAll = _promotionContext.Collection
-                    .Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.All 
-                        && (_.EDate == null || _.EDate.Value >= DateTime.Now) && _.SDate <= DateTime.Now 
+                    .Find(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.All
+                        && (_.EDate == null || _.EDate.Value >= DateTime.Now) && _.SDate <= DateTime.Now
                         && _.AssociatedDomainId == domainEntity.DomainId && _.IsActive && !_.IsDeleted).FirstOrDefault();
             }
             if (_promotionContext.Collection.AsQueryable().Any(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group &&
@@ -1036,7 +1037,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     && _.AssociatedDomainId == domainEntity.DomainId
                     && _.Infoes.Any(a => productGroupIds.Contains(a.AffectedProductGroupId))))
             {
-               
+
                 promotionOnProductGroup = _promotionContext.Collection.AsQueryable()
                    .FirstOrDefault(_ => _.PromotionType == Entities.Shop.Promotion.PromotionType.Group &&
                    _.Infoes.Any(a => productGroupIds.Contains(a.AffectedProductGroupId)) &&
@@ -1141,7 +1142,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             List<CommentVM> result;
             if (!list.Any(_ => _.ParentId == currentCommentId))
             {
-               result = new List<CommentVM>();
+                result = new List<CommentVM>();
             }
             else
             {
@@ -1383,7 +1384,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                                ScoredCount = _.ScoredCount,
                                Unit = _.Unit,
                                VisitCount = _.VisitCount
-                           }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => (float)_.TotalScore / _.ScoredCount)).Skip(skip).Limit(count).ToList();
+                           }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.TotalScore)).Skip(skip).Limit(count).ToList();
                     break;
                 case ProductOrContentType.BestSale:
                     lst = _context.ProductCollection
@@ -1441,7 +1442,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 pro.PriceValWithPromotion = res.PriceValWithPromotion;
                 pro.OldPrice = res.OldPrice;
                 //testing
-               // pro.OldPrice = ran.Next(0, 56000);
+                // pro.OldPrice = ran.Next(0, 56000);
                 pro.DiscountType = res.DiscountType;
                 pro.DiscountValue = res.DiscountValue;
                 pro.MainImageUrl = pro.Images.Any(_ => _.IsMain) ? pro.Images.FirstOrDefault(_ => _.IsMain).Url : "";
@@ -1455,7 +1456,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return lst;
         }
 
-      
+
         public List<SelectListModel> GetAllImageRatio()
         {
             var result = new List<SelectListModel>();
@@ -1486,18 +1487,18 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             }
         }
 
-        public  bool IsUniqueUrlFriend(string urlFriend, string productId = "")
+        public bool IsUniqueUrlFriend(string urlFriend, string productId = "")
         {
             if (string.IsNullOrWhiteSpace(productId)) //insert
             {
-                return ! _context.ProductCollection.Find(_ => _.MultiLingualProperties.Any(a => a.UrlFriend == urlFriend)).Any();
+                return !_context.ProductCollection.Find(_ => _.MultiLingualProperties.Any(a => a.UrlFriend == urlFriend)).Any();
             }
             else
             { //update
                 _builder = new();
                 FilterDefinitionBuilder<MultiLingualProperty> multiLingualBuilder = new();
                 FilterDefinition<MultiLingualProperty> multiLingualFilterDefinition = multiLingualBuilder.Eq("UrlFriend", urlFriend);
-                
+
                 return !_context.ProductCollection.Find(_builder.ElemMatch("MultiLingualProperties", multiLingualFilterDefinition) & _builder.Ne("ProductId", productId)).Any();
             }
         }
@@ -1531,7 +1532,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         {
             long result = 0;
             var entity = _context.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
-            if(entity != null)
+            if (entity != null)
             {
                 result = entity.ProductCode;
             }
@@ -1541,10 +1542,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         public string FetchIdByCode(long productCode)
         {
             var entity = _context.ProductCollection.Find(_ => _.ProductCode == productCode).FirstOrDefault();
-            if(entity != null)
+            if (entity != null)
             {
                 return entity.ProductId;
-            }else
+            }
+            else
             {
                 return "";
             }
@@ -1553,10 +1555,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         public string FetchUrlFriendById(string productId)
         {
             var entity = _context.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
-            if(entity != null)
+            if (entity != null)
             {
                 return entity.ProductCode.ToString();
-            }else
+            }
+            else
             {
                 return "";
             }
@@ -1567,19 +1570,22 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             var isShown = false;
             var downLimit = _context.DownloadLimitationCollection.Find(_ => _.CreatorUserId == userId && _.ProductId == productId).ToList();
             var proEntity = _context.ProductCollection.Find(_ => _.ProductId == productId).FirstOrDefault();
-            if(proEntity.DownloadLimitationType == Enums.DownloadLimitationType.NoLimitation)
+            if (proEntity.DownloadLimitationType == Enums.DownloadLimitationType.NoLimitation)
             {
                 isShown = true;
-            }else if(proEntity.DownloadLimitationType == Enums.DownloadLimitationType.TimeDuration &&
-                downLimit.Where(_=>_.StartDate != null).Any(_=>_.StartDate.Value.AddDays(proEntity.AllowedDownloadDurationDay.Value) <= DateTime.Now))
+            }
+            else if (proEntity.DownloadLimitationType == Enums.DownloadLimitationType.TimeDuration &&
+                downLimit.Where(_ => _.StartDate != null).Any(_ => _.StartDate.Value.AddDays(proEntity.AllowedDownloadDurationDay.Value) <= DateTime.Now))
 
             {
                 isShown = true;
-            }else if(proEntity.DownloadLimitationType == Enums.DownloadLimitationType.TimeDurationWithCnt &&
+            }
+            else if (proEntity.DownloadLimitationType == Enums.DownloadLimitationType.TimeDurationWithCnt &&
                 downLimit.Where(_ => _.StartDate != null && _.DownloadedCount != null).Any(_ => _.StartDate.Value.AddDays(proEntity.AllowedDownloadDurationDay.Value) <= DateTime.Now && _.DownloadedCount < proEntity.AllowedDownloadCount.Value))
             {
                 isShown = true;
-            }else if(proEntity.DownloadLimitationType == Enums.DownloadLimitationType.DownloadCount &&
+            }
+            else if (proEntity.DownloadLimitationType == Enums.DownloadLimitationType.DownloadCount &&
                 downLimit.Where(_ => _.DownloadedCount != null).Any(_ => _.DownloadedCount < proEntity.AllowedDownloadCount.Value))
             {
                 isShown = true;
@@ -1595,7 +1601,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 
             entity.DownloadedCount += 1;
             var updateResult = await _context.DownloadLimitationCollection.ReplaceOneAsync(_ => _.DownloadLimitId == entity.DownloadLimitId, entity);
-            if(updateResult.IsAcknowledged)
+            if (updateResult.IsAcknowledged)
             {
                 res.Succeeded = true;
             }
@@ -1608,7 +1614,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             var entity = _context.SpecificationCollection
                   .Find(_ => _.ProductSpecificationId == specificationId).FirstOrDefault();
 
-            if(entity != null)
+            if (entity != null)
             {
                 res = entity.SpecificationNameValues.Any(_ => _.LanguageId == languageId) ?
                     entity.SpecificationNameValues.FirstOrDefault(_ => _.LanguageId == languageId).Name : "";
@@ -1628,10 +1634,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 
                     _builder = new();
                     FilterDefinition<Entities.Shop.Product.Product> proFilterDef;
-                    if(!domainEntity.IsDefault)
+                    if (!domainEntity.IsDefault)
                     {
                         proFilterDef = _builder.Eq(nameof(Entities.Shop.Product.Product.AssociatedDomainId), domainEntity.DomainId);
-                    }else
+                    }
+                    else
                     {
                         proFilterDef = _builder.Empty;
                     }
@@ -1662,7 +1669,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             return res;
         }
 
-        public async  Task<Result<List<ProductCompare>>> FindProductsInGroups(List<string> groupIds, string lanId, string currencyId, string domainId)
+        public async Task<Result<List<ProductCompare>>> FindProductsInGroups(List<string> groupIds, string lanId, string currencyId, string domainId)
         {
             var res = new Result<List<ProductCompare>>();
             res.ReturnValue = new List<ProductCompare>();
@@ -1671,11 +1678,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             {
                 _builder = new();
                 FilterDefinition<Entities.Shop.Product.Product> filterDef = _builder.Empty;
-                if(!domainEntity.IsDefault)
+                if (!domainEntity.IsDefault)
                 {
                     filterDef = _builder.Eq(nameof(Entities.Shop.Product.Product.AssociatedDomainId), domainEntity.DomainId);
                 }
-                
+
                 filterDef = _builder.And(filterDef, Builders<Entities.Shop.Product.Product>.Filter.Where(_ => _.GroupIds.Intersect(groupIds).Any()));
 
                 res.ReturnValue = (await _context.ProductCollection.Find(filterDef).SortByDescending(_ => _.SaleCount)
@@ -1758,7 +1765,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             var entity = _context.ProductCollection
                 .Find(_ => _.ProductId == productId).FirstOrDefault();
 
-            if(entity != null)
+            if (entity != null)
             {
                 return entity.IsPublishedOnMainDomain;
             }
@@ -1768,188 +1775,201 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         public List<Entities.Shop.Product.Product> AllProducts(string domainId)
         {
             var domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
-            if(!domainEntity.IsDefault)
+            if (!domainEntity.IsDefault)
             {
                 return _context.ProductCollection.Find(_ => _.AssociatedDomainId == domainId).ToList();
-            }else
+            }
+            else
             {
                 return _context.ProductCollection.Find(_ => _.AssociatedDomainId == domainId || _.IsPublishedOnMainDomain).ToList();
             }
-            
+
         }
 
-        public async Task<PagedItems<ProductOutputDTO>> GetFilteredProduct(int count, int skip, string currencyId, string languageId, string domainId, SelectedFilter filter)
+        public async Task<PagedItems<ProductOutputDTO>> GetFilteredProduct(int count, int skip, string currencyId, string languageId,
+            string domainId, SelectedFilter filter)
         {
             var result = new PagedItems<ProductOutputDTO>();
-            _builder = new FilterDefinitionBuilder<Entities.Shop.Product.Product>();
-            FilterDefinition<Entities.Shop.Product.Product> filterDef = _builder.Empty;
-            var domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
-            filterDef = _builder.Eq(nameof(Entities.Shop.Product.Product.AssociatedDomainId), domainId);
-            if (domainEntity.IsDefault)
+            try
             {
-                var filterDefOr = _builder.Eq(nameof(Entities.Shop.Product.Product.IsPublishedOnMainDomain), true);
-                filterDef = _builder.Or(filterDef, filterDefOr);
-            }
-            if(filter.GroupIds.Count > 0)
-            {
-                filterDef &= _builder.AnyIn(nameof(Entities.Shop.Product.Product.GroupIds), filter.GroupIds);
-            }
-            if(filter.IsAvailable != null && filter.IsAvailable.Value)
-            {
-                filterDef &= _builder.Gt(nameof(Entities.Shop.Product.Product.Inventory), 0);
-            }
+                _builder = new FilterDefinitionBuilder<Entities.Shop.Product.Product>();
+                FilterDefinition<Entities.Shop.Product.Product> filterDef = _builder.Empty;
+                var domainEntity = _domainContext.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
+                filterDef = _builder.Eq(nameof(Entities.Shop.Product.Product.AssociatedDomainId), domainId);
+                if (domainEntity.IsDefault)
+                {
+                    var filterDefOr = _builder.Eq(nameof(Entities.Shop.Product.Product.IsPublishedOnMainDomain), true);
+                    filterDef = _builder.Or(filterDef, filterDefOr);
+                }
+                if (filter.GroupIds.Count > 0)
+                {
+                    filterDef &= _builder.AnyIn(nameof(Entities.Shop.Product.Product.GroupIds), filter.GroupIds);
+                }
+                if (filter.IsAvailable != null && filter.IsAvailable.Value)
+                {
+                    filterDef &= _builder.Gt(nameof(Entities.Shop.Product.Product.Inventory), 0);
+                }
 
-            FilterDefinitionBuilder<MultiLingualProperty> multiBuilder = new();
-            FilterDefinition<MultiLingualProperty> multiFilterDef = multiBuilder.Empty;
-            multiFilterDef = multiBuilder.Eq(nameof(MultiLingualProperty.LanguageId), languageId);
+                FilterDefinitionBuilder<MultiLingualProperty> multiBuilder = new();
+                FilterDefinition<MultiLingualProperty> multiFilterDef = multiBuilder.Empty;
+                multiFilterDef = multiBuilder.Eq(nameof(MultiLingualProperty.LanguageId), languageId);
 
-            FilterDefinitionBuilder<Price> priceBuilder = new();
-            FilterDefinition<Price> priceFilterDefinition = priceBuilder.Empty;
-            priceFilterDefinition = priceBuilder.Eq(nameof(Price.CurrencyId), currencyId);
-            if(filter.FirstPrice != null)
-            {
-                priceFilterDefinition &= priceBuilder.Gte(nameof(Price.PriceValue), filter.FirstPrice.Value);
-            }
+                FilterDefinitionBuilder<Price> priceBuilder = new();
+                FilterDefinition<Price> priceFilterDefinition = priceBuilder.Empty;
+                priceFilterDefinition = priceBuilder.Eq(nameof(Price.CurrencyId), currencyId);
+                if (filter.FirstPrice != null)
+                {
+                    priceFilterDefinition &= priceBuilder.Gte(nameof(Price.PriceValue), filter.FirstPrice.Value);
+                }
 
-            if(filter.LastPrice != null)
-            {
-                priceFilterDefinition &= priceBuilder.Lte(nameof(Price.PriceValue), filter.LastPrice.Value);
-            }
+                if (filter.LastPrice != null)
+                {
+                    priceFilterDefinition &= priceBuilder.Lte(nameof(Price.PriceValue), filter.LastPrice.Value);
+                }
 
-            FilterDefinitionBuilder<ProductSpecificationValue> specificationBuilder = new();
-            FilterDefinition<ProductSpecificationValue> mainSpecFilterDefinition = specificationBuilder.Empty;
-            foreach (var item in filter.SelectedDynamicFilters)
-            {
-                var specFilter = specificationBuilder.Eq(nameof(ProductSpecificationValue.SpecificationId), item.SpecificationId);
-                specFilter &= specificationBuilder.AnyIn(nameof(ProductSpecificationValue.ValueList), item.SelectedValues);
-                mainSpecFilterDefinition = specificationBuilder.And(specFilter);
-            }
+                FilterDefinitionBuilder<ProductSpecificationValue> specificationBuilder = new();
+                FilterDefinition<ProductSpecificationValue> mainSpecFilterDefinition = specificationBuilder.Empty;
+                foreach (var item in filter.SelectedDynamicFilters)
+                {
+                    var specFilter = specificationBuilder.Eq(nameof(ProductSpecificationValue.SpecificationId), item.SpecificationId);
+                    specFilter &= specificationBuilder.AnyIn(nameof(ProductSpecificationValue.ValueList), item.SelectedValues);
+                    mainSpecFilterDefinition = specificationBuilder.And(specFilter);
+                }
 
-            filterDef &= _builder.ElemMatch("Prices", priceFilterDefinition);
-            filterDef &= _builder.ElemMatch("MultiLingualProperties", multiFilterDef);
-            filterDef &= _builder.ElemMatch("Specifications", mainSpecFilterDefinition);
-            var totalCount = await _context.ProductCollection.Find(filterDef).CountDocumentsAsync();
-            List<ProductOutputDTO> lst = new List<ProductOutputDTO>();
-            switch (filter.ProductSortingType)
-            {
-                case Enums.ProductSortingType.Newest:
-                    lst = _context.ProductCollection
-                    .Find(filterDef)
-                    .Project(_ =>
-                        new ProductOutputDTO()
-                        {
-                            GroupIds = _.GroupIds,
-                            Inventory = _.Inventory,
-                            Images = _.Images,
-                            MultiLingualProperties = _.MultiLingualProperties,
-                            Prices = _.Prices,
-                            ProductCode = _.ProductCode,
-                            ProductId = _.ProductId,
-                            Promotion = _.Promotion,
-                            SaleCount = _.SaleCount,
-                            UniqueCode = _.UniqueCode,
-                            TotalScore = _.TotalScore,
-                            ScoredCount = _.ScoredCount,
-                            Unit = _.Unit,
-                            VisitCount = _.VisitCount
-                        }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.CreationDate)).Skip(skip).Limit(count).ToList();
-                    break;
-                case Enums.ProductSortingType.MostVisited:
-                    lst = _context.ProductCollection
-                    .Find(filterDef)
-                    .Project(_ =>
-                        new ProductOutputDTO()
-                        {
-                            GroupIds = _.GroupIds,
-                            Inventory = _.Inventory,
-                            Images = _.Images,
-                            MultiLingualProperties = _.MultiLingualProperties,
-                            Prices = _.Prices,
-                            ProductCode = _.ProductCode,
-                            ProductId = _.ProductId,
-                            Promotion = _.Promotion,
-                            SaleCount = _.SaleCount,
-                            UniqueCode = _.UniqueCode,
-                            TotalScore = _.TotalScore,
-                            ScoredCount = _.ScoredCount,
-                            Unit = _.Unit,
-                            VisitCount = _.VisitCount
-                        }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.VisitCount)).Skip(skip).Limit(count).ToList();
-                    break;
-                case Enums.ProductSortingType.MostPopular:
-                    lst = _context.ProductCollection
-                    .Find(filterDef)
-                    .Project(_ =>
-                        new ProductOutputDTO()
-                        {
-                            GroupIds = _.GroupIds,
-                            Inventory = _.Inventory,
-                            Images = _.Images,
-                            MultiLingualProperties = _.MultiLingualProperties,
-                            Prices = _.Prices,
-                            ProductCode = _.ProductCode,
-                            ProductId = _.ProductId,
-                            Promotion = _.Promotion,
-                            SaleCount = _.SaleCount,
-                            UniqueCode = _.UniqueCode,
-                            TotalScore = _.TotalScore,
-                            ScoredCount = _.ScoredCount,
-                            Unit = _.Unit,
-                            VisitCount = _.VisitCount
-                        }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => (float)_.TotalScore / _.ScoredCount)).Skip(skip).Limit(count).ToList();
-                    break;
-                case Enums.ProductSortingType.BestSelling:
-                    lst = _context.ProductCollection
-                    .Find(filterDef)
-                    .Project(_ =>
-                        new ProductOutputDTO()
-                        {
-                            GroupIds = _.GroupIds,
-                            Inventory = _.Inventory,
-                            Images = _.Images,
-                            MultiLingualProperties = _.MultiLingualProperties,
-                            Prices = _.Prices,
-                            ProductCode = _.ProductCode,
-                            ProductId = _.ProductId,
-                            Promotion = _.Promotion,
-                            SaleCount = _.SaleCount,
-                            UniqueCode = _.UniqueCode,
-                            TotalScore = _.TotalScore,
-                            ScoredCount = _.ScoredCount,
-                            Unit = _.Unit,
-                            VisitCount = _.VisitCount
-                        }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.SaleCount)).Skip(skip).Limit(count).ToList();
-                    break;
-                default:
-                    break;
-            }
-            
+                filterDef &= _builder.ElemMatch("Prices", priceFilterDefinition);
+                filterDef &= _builder.ElemMatch("MultiLingualProperties", multiFilterDef);
+                filterDef &= _builder.ElemMatch("Specifications", mainSpecFilterDefinition);
+                var totalCount = await _context.ProductCollection.Find(filterDef).CountDocumentsAsync();
+                List<ProductOutputDTO> lst = new List<ProductOutputDTO>();
+                switch (filter.ProductSortingType)
+                {
+                    case Enums.ProductSortingType.Newest:
+                        lst = _context.ProductCollection
+                        .Find(filterDef)
+                        .Project(_ =>
+                            new ProductOutputDTO()
+                            {
+                                GroupIds = _.GroupIds,
+                                Inventory = _.Inventory,
+                                Images = _.Images,
+                                MultiLingualProperties = _.MultiLingualProperties,
+                                Prices = _.Prices,
+                                ProductCode = _.ProductCode,
+                                ProductId = _.ProductId,
+                                Promotion = _.Promotion,
+                                SaleCount = _.SaleCount,
+                                UniqueCode = _.UniqueCode,
+                                TotalScore = _.TotalScore,
+                                ScoredCount = _.ScoredCount,
+                                Unit = _.Unit,
+                                VisitCount = _.VisitCount
+                            }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.CreationDate)).Skip(skip).Limit(count).ToList();
+                        break;
+                    case Enums.ProductSortingType.MostVisited:
+                        lst = _context.ProductCollection
+                        .Find(filterDef)
+                        .Project(_ =>
+                            new ProductOutputDTO()
+                            {
+                                GroupIds = _.GroupIds,
+                                Inventory = _.Inventory,
+                                Images = _.Images,
+                                MultiLingualProperties = _.MultiLingualProperties,
+                                Prices = _.Prices,
+                                ProductCode = _.ProductCode,
+                                ProductId = _.ProductId,
+                                Promotion = _.Promotion,
+                                SaleCount = _.SaleCount,
+                                UniqueCode = _.UniqueCode,
+                                TotalScore = _.TotalScore,
+                                ScoredCount = _.ScoredCount,
+                                Unit = _.Unit,
+                                VisitCount = _.VisitCount
+                            }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.VisitCount)).Skip(skip).Limit(count).ToList();
+                        break;
+                    case Enums.ProductSortingType.MostPopular:
+                        lst = _context.ProductCollection
+                        .Find(filterDef)
+                        .Project(_ =>
+                            new ProductOutputDTO()
+                            {
+                                GroupIds = _.GroupIds,
+                                Inventory = _.Inventory,
+                                Images = _.Images,
+                                MultiLingualProperties = _.MultiLingualProperties,
+                                Prices = _.Prices,
+                                ProductCode = _.ProductCode,
+                                ProductId = _.ProductId,
+                                Promotion = _.Promotion,
+                                SaleCount = _.SaleCount,
+                                UniqueCode = _.UniqueCode,
+                                TotalScore = _.TotalScore,
+                                ScoredCount = _.ScoredCount,
+                                Unit = _.Unit,
+                                VisitCount = _.VisitCount
+                            }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ =>_.TotalScore)).Skip(skip).Limit(count).ToList();
+                        break;
+                    case Enums.ProductSortingType.BestSelling:
+                        lst = _context.ProductCollection
+                        .Find(filterDef)
+                        .Project(_ =>
+                            new ProductOutputDTO()
+                            {
+                                GroupIds = _.GroupIds,
+                                Inventory = _.Inventory,
+                                Images = _.Images,
+                                MultiLingualProperties = _.MultiLingualProperties,
+                                Prices = _.Prices,
+                                ProductCode = _.ProductCode,
+                                ProductId = _.ProductId,
+                                Promotion = _.Promotion,
+                                SaleCount = _.SaleCount,
+                                UniqueCode = _.UniqueCode,
+                                TotalScore = _.TotalScore,
+                                ScoredCount = _.ScoredCount,
+                                Unit = _.Unit,
+                                VisitCount = _.VisitCount
+                            }).Sort(Builders<Entities.Shop.Product.Product>.Sort.Descending(_ => _.SaleCount)).Skip(skip).Limit(count).ToList();
+                        break;
+                    default:
+                        break;
+                }
 
-            foreach (var pro in lst)
-            {
-                var res = EvaluateFinalPrice(pro.ProductId, pro.Prices, pro.GroupIds, currencyId);
-                pro.GiftProduct = res.GiftProduct;
-                pro.Promotion = res.Promotion;
-                pro.PriceValWithPromotion = res.PriceValWithPromotion;
-                pro.OldPrice = res.OldPrice;
-                //testing
-                // pro.OldPrice = ran.Next(0, 56000);
-                pro.DiscountType = res.DiscountType;
-                pro.DiscountValue = res.DiscountValue;
-                pro.MainImageUrl = pro.Images.Any(_ => _.IsMain) ? pro.Images.FirstOrDefault(_ => _.IsMain).Url : "";
-                pro.MainAlt = pro.Images.Any(_ => _.IsMain) ? (!string.IsNullOrWhiteSpace(pro.Images.FirstOrDefault(_ => _.IsMain).Title) ? pro.Images.FirstOrDefault(_ => _.IsMain).Title : "") : "";
-                var r = Helpers.Utilities.ConvertPopularityRate(pro.TotalScore ?? 0, pro.ScoredCount ?? 0);
-                pro.LikeRate = r.LikeRate;
-                pro.DisikeRate = r.DisikeRate;
-                pro.HalfLikeRate = r.HalfLikeRate;
+
+                foreach (var pro in lst)
+                {
+                    var res = EvaluateFinalPrice(pro.ProductId, pro.Prices, pro.GroupIds, currencyId);
+                    pro.GiftProduct = res.GiftProduct;
+                    pro.Promotion = res.Promotion;
+                    pro.PriceValWithPromotion = res.PriceValWithPromotion;
+                    pro.OldPrice = res.OldPrice;
+                    //testing
+                    // pro.OldPrice = ran.Next(0, 56000);
+                    pro.DiscountType = res.DiscountType;
+                    pro.DiscountValue = res.DiscountValue;
+                    pro.MainImageUrl = pro.Images.Any(_ => _.IsMain) ? pro.Images.FirstOrDefault(_ => _.IsMain).Url : "";
+                    pro.MainAlt = pro.Images.Any(_ => _.IsMain) ? (!string.IsNullOrWhiteSpace(pro.Images.FirstOrDefault(_ => _.IsMain).Title) ? pro.Images.FirstOrDefault(_ => _.IsMain).Title : "") : "";
+                    var r = Helpers.Utilities.ConvertPopularityRate(pro.TotalScore ?? 0, pro.ScoredCount ?? 0);
+                    pro.LikeRate = r.LikeRate;
+                    pro.DisikeRate = r.DisikeRate;
+                    pro.HalfLikeRate = r.HalfLikeRate;
+                }
+                result.Items = lst;
+                result.CurrentPage = (skip / count) + 1;
+                result.ItemsCount = totalCount;
+                result.PageSize = count;
+                result.QueryString = $"?page={result.CurrentPage}&pagesize={count}";
+                
             }
-            result.Items = lst;
-            result.CurrentPage = (skip / count) + 1;
-            result.ItemsCount = totalCount;
-            result.PageSize = count;
-            result.QueryString = $"?page={result.CurrentPage}&pagesize={count}";
+            catch (Exception ex)
+            {
+                result.Items = new List<ProductOutputDTO>() ;
+                result.CurrentPage = 0;
+                result.ItemsCount = 0;
+                result.PageSize = count;
+                result.QueryString = $"?page={result.CurrentPage}&pagesize={count}";
+            }
             return result;
-
         }
     }
 }

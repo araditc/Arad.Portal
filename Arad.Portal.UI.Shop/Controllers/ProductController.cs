@@ -51,10 +51,12 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly IConfiguration _configuration;
         private readonly string _domainName;
         private readonly ICurrencyRepository _curRepository;
+        private readonly IRazorPartialToStringRenderer _renderPartial;
 
         public ProductController(IProductRepository productRepository, IHttpContextAccessor accessor,
             UserManager<ApplicationUser> userManager, IConfiguration configuration, IProductGroupRepository grpRepository,
             IWebHostEnvironment env, IUserRepository userRepository,ICurrencyRepository curRepository,
+            IRazorPartialToStringRenderer renderPartial,
             ILanguageRepository lanRepository, IDomainRepository domainRepository, ICommentRepository commentRepository):base(accessor, domainRepository)
         {
             _productRepository = productRepository;
@@ -68,6 +70,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             _userRepository = userRepository;
             _curRepository = curRepository;
             _groupRepository = grpRepository;
+            _renderPartial = renderPartial;
             //_enyimMemcachedMethods = enyimMemcachedMethods;
         }
 
@@ -111,22 +114,33 @@ namespace Arad.Portal.UI.Shop.Controllers
             var pageSize = Convert.ToInt32(queryStrings["pagesize"]);
             var skip = ((page - 1) * pageSize);
             var res = await _productRepository.GetFilteredProduct(pageSize, skip, currencyDto.CurrencyId, lanId, domainEntity.DomainId, filter);
-
-            return Json(new
+            var model = new ProductPageViewModel()
             {
-                products = PartialView("~/Views/Product/_ProductList.cshtml", res.Items),
-                pagination = PartialView("~/Views/Product/_ProductFilterPagination.cshtml",
-                new ProductPageViewModel()
+                CurrentPage = res.CurrentPage,
+                Filter = filter,
+                ItemsCount = res.ItemsCount,
+                PageSize = res.PageSize,
+                QueryParams = $"?page={res.CurrentPage}&pagesize={res.PageSize}"
+            };
+          
+            try
+            {
+                var jsonResult = new
                 {
-                    CurrentPage = res.CurrentPage,
-                    Filter = filter,
-                    ItemsCount = res.ItemsCount,
-                    PageSize = res.PageSize,
-                    QueryParams = $"?page={res.CurrentPage}&pagesize={res.PageSize}"
-                }),
-                sorting = res.Items.Count() > 0 ? PartialView("~/Views/Product/_SortingSection.cshtml", filter) : PartialView()
-            }); 
+                    products = await _renderPartial.RenderToString("~/Views/Product/_ProductList.cshtml", res.Items),
+                    pagination = await _renderPartial.RenderToString("~/Views/Product/_ProductFilterPagination.cshtml", model),
+                    sorting = res.Items.Count > 0 ? await _renderPartial.RenderToString("~/Views/Product/_SortingSection.cshtml", filter) : ""
+                };
+                return Json(jsonResult);
+            }
+            catch (Exception ex)
+            {
+                return Json("");
+            }
+            
         }
+
+       
 
 
         [HttpGet]

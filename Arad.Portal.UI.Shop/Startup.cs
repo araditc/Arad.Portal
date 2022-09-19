@@ -206,9 +206,9 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<HttpClientHelper>();
             services.AddTransient<LayoutContentProcess>();
             AddRepositoryServices(services);
+            services.AddTransient<IRazorPartialToStringRenderer, RazorPartialToStringRenderer>();
             services.AddSingleton<IHostedService, LifetimeEventsHostedService>();
-
-
+            
             ServiceProvider sp = services.BuildServiceProvider();
 
             //cacheCleaner

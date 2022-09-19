@@ -3,27 +3,27 @@
 @{
     List<SelectListModel> lst = ViewBag.ProductGroupList;
 }
-<div class="rounded border border-1 rounded">
-    <div class="row border-bottom">
+<div class="rounded border border-1 rounded p-3">
+    <div class="row border-bottom py-2">
         <label class="form-label">@Language.GetString("tbl_ProductGroup")</label>
         <br />
         @foreach (var grp in lst)
         {
-            <div class="col-12">
+            <div class="col-6">
                 <div class="form-check m-auto d-inline-block pt-3">
                     <input class="form-check-input" type="checkbox" name="groupIds" value="@grp.Value">
                     <label class="form-check-label">
-                        grp.Text
+                        @grp.Text
                     </label>
                 </div>
             </div>
         }
     </div>
-    <div class="row">
+    <div class="row p-2">
         <label class="form-label">@Language.GetString("PriceRange")</label>
         <div id="priceRange"></div>
     </div>
-    <div class="row">
+    <div class="row p-2">
         <div class="col-12">
             <div class="form-check m-auto d-inline-block pt-3">
                 <input class="form-check-input" type="checkbox" id="chbIsOnlyAvailableProducts">
@@ -59,13 +59,29 @@
     </div>
 </div>
 <script on-content-loaded="true">
+    var formatForSlider =
+    {
+        from: function (formattedValue) {
+            return Number(formattedValue);
+        },
+        to: function(numericValue) {
+            return Math.round(numericValue);
+        }
+    };
     var priceRangeSlider = document.getElementById("priceRange");
      noUiSlider.create(priceRangeSlider, 
         {
          start : [parseInt('@Model.MinPrice'), parseInt('@Model.MaxPrice')],
          connect: true,
          range: { min: parseInt('@Model.MinPrice'), max: parseInt('@Model.MaxPrice')},
-         step : parseInt('@Model.Step')
+         step : parseInt('@Model.Step'),
+         format: formatForSlider,
+         tooltips: {
+            // tooltips are output only, so only a "to" is needed
+            to: function(numericValue) {
+                return numericValue.toFixed(1);
+            }
+         }
         });
 
 
@@ -107,19 +123,20 @@
                            /* AddLoading($("#addProductCard"));*/
                         },
                         success: function (result) {
-                            
+                            debugger;
                             $(".productListSec").html("");
-                            $(".productListSec").html(result.products);
+                            $(".productListSec").load();
                             $(".paginationSec").html("");
-                            $(".paginationSec").html(res.pagination);
+                            $(".paginationSec").html(result.pagination);
                             $("#filterObj").val(JSON.stringify(obj));
                             if (result.sorting.trim() != "") {
                                 $(".sortingSec").html();
-                                $(".sortingSec").html(res.sorting);
+                                $(".sortingSec").html(result.sorting);
                             }
                          },
                         error: function (xhr, ajaxOptions, thrownError)
                         {
+                            debugger;
                             alert(xhr.status);
                             alert(thrownError);
                         },

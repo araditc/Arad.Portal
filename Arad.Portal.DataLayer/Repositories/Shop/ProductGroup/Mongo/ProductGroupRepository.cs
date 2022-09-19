@@ -592,20 +592,22 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             if(!string.IsNullOrWhiteSpace(parentId))
             {
                 result = _productContext.ProductGroupCollection
-                     .Find(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId).Project(_ => new SelectListModel()
+                     .Find(_ => _.IsActive && !_.IsDeleted).Project(_ => new SelectListModel()
                      {
                          Value = _.ProductGroupId,
-                         Text = _.MultiLingualProperties.Any(_=>_.LanguageId == languageId) ? _.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == languageId).Name : _.MultiLingualProperties.FirstOrDefault().Name
+                         Text = _.MultiLingualProperties.Any(_=>_.LanguageId == languageId) ?
+                          _.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == languageId).Name : _.MultiLingualProperties.FirstOrDefault().Name
 
                      }).ToList();
             }
             else
             {
                 result = _productContext.ProductGroupCollection
-                   .Find(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId && _.ParentId == parentId).Project(_ => new SelectListModel()
+                   .Find(_ => _.IsActive && !_.IsDeleted && _.ParentId == parentId).Project(_ => new SelectListModel()
                    {
                        Value = _.ProductGroupId,
-                       Text = _.MultiLingualProperties.Any(_ => _.LanguageId == languageId) ? _.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == languageId).Name : _.MultiLingualProperties.FirstOrDefault().Name
+                       Text = _.MultiLingualProperties.Any(_ => _.LanguageId == languageId) ? 
+                        _.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == languageId).Name : _.MultiLingualProperties.FirstOrDefault().Name
 
                    }).ToList();
             }
@@ -673,38 +675,38 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                 {
                     model.MinPrice = _productContext.ProductCollection.AsQueryable()
                                .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId && _.GroupIds.Contains(groupId))
-                               .Select(_ => _.Prices.First(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).Any() ?
+                               .Select(_ => _.Prices.First(a => a.IsActive && a.StartDate <= DateTime.UtcNow && (a.EndDate == null || a.EndDate >= DateTime.UtcNow))).Any() ?
                                _productContext.ProductCollection.AsQueryable()
                                .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId && _.GroupIds.Contains(groupId))
-                               .Select(_ => _.Prices.First(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).OrderBy(_=>_.PriceValue).FirstOrDefault().PriceValue : 0;
+                               .Select(_ => _.Prices.First(a => a.IsActive && a.StartDate <= DateTime.UtcNow && (a.EndDate == null || a.EndDate >= DateTime.UtcNow))).OrderBy(_=>_.PriceValue).FirstOrDefault().PriceValue : 0;
 
                     model.MaxPrice = _productContext.ProductCollection.AsQueryable()
                               .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId && _.GroupIds.Contains(groupId))
-                              .Select(_ => _.Prices.First(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).Any() ?
+                              .Select(_ => _.Prices.First(a => a.IsActive && a.StartDate <= DateTime.UtcNow && (a.EndDate == null || a.EndDate >= DateTime.UtcNow))).Any() ?
                               _productContext.ProductCollection.AsQueryable()
                               .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId && _.GroupIds.Contains(groupId))
-                              .Select(_ => _.Prices.First(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).OrderByDescending(_ => _.PriceValue).FirstOrDefault().PriceValue : 0;
+                              .Select(_ => _.Prices.First(a => a.IsActive && a.StartDate <= DateTime.UtcNow && (a.EndDate == null || a.EndDate >= DateTime.UtcNow))).OrderByDescending(_ => _.PriceValue).FirstOrDefault().PriceValue : 0;
 
                 }else
                 {
                     model.MinPrice = _productContext.ProductCollection.AsQueryable()
                               .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId )
-                              .Select(_ => _.Prices.First(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).Any() ?
+                              .Select(_ => _.Prices.First(a => a.IsActive && a.StartDate <= DateTime.UtcNow && (a.EndDate == null || a.EndDate >= DateTime.UtcNow))).Any() ?
                               _productContext.ProductCollection.AsQueryable()
                               .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId )
-                              .Select(_ => _.Prices.First(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).OrderBy(_ => _.PriceValue).FirstOrDefault().PriceValue : 0;
+                              .Select(_ => _.Prices.First(a => a.IsActive && a.StartDate <= DateTime.UtcNow && (a.EndDate == null || a.EndDate >= DateTime.UtcNow))).OrderBy(_ => _.PriceValue).FirstOrDefault().PriceValue : 0;
 
                     model.MaxPrice = _productContext.ProductCollection.AsQueryable()
                               .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId )
-                              .Select(_ => _.Prices.First(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).Any() ?
+                              .Select(_ => _.Prices.First(a => a.IsActive && a.StartDate <= DateTime.UtcNow && (a.EndDate == null || a.EndDate >= DateTime.UtcNow))).Any() ?
                               _productContext.ProductCollection.AsQueryable()
                               .Where(_ => _.IsActive && !_.IsDeleted && _.AssociatedDomainId == domainId )
-                              .Select(_ => _.Prices.First(_ => _.IsActive && _.StartDate <= DateTime.UtcNow && (_.EndDate == null || _.EndDate >= DateTime.UtcNow))).OrderByDescending(_ => _.PriceValue).FirstOrDefault().PriceValue : 0;
+                              .Select(_ => _.Prices.First(a => a.IsActive && a.StartDate <= DateTime.UtcNow && (a.EndDate == null || a.EndDate >= DateTime.UtcNow))).OrderByDescending(_ => _.PriceValue).FirstOrDefault().PriceValue : 0;
 
                 }
                 //for testing 
-                model.MinPrice = 1000;
-                model.MaxPrice = 10000;
+                //model.MinPrice = 1000;
+                //model.MaxPrice = 10000;
                 var gap = (model.MaxPrice - model.MinPrice);
                 model.Step = Convert.ToInt32(gap / 10);
 
