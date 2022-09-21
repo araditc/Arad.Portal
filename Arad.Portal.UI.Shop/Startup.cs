@@ -125,10 +125,6 @@ namespace Arad.Portal.UI.Shop
                 });
             });
             services.AddHttpClient();
-            //services.AddEnyimMemcached(setup =>
-            //{
-            //    setup.Servers.Add(new Server { Address = "127.0.0.1", Port = 11211 });
-            //});
            
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
            
@@ -159,9 +155,6 @@ namespace Arad.Portal.UI.Shop
                     options.Cookie.IsEssential = true;
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.Cookie.SameSite = SameSiteMode.Strict;
-                    //options.AccessDeniedPath = "/Account/unAuthorize";
-                    //options.LoginPath = "/Account/Login";
-                    //options.LogoutPath = "/Account/Logout";
                     options.Cookie.Name = "IdentityCookie";
                 }
             });
@@ -261,21 +254,22 @@ namespace Arad.Portal.UI.Shop
                     var domainEntity = domainContext.Collection.Find(_ => _.DomainId == dom).FirstOrDefault();
                     if (contentContext != null)
                     {
-                        // contentList = contentContext.Collection.Find(_ => _.AssociatedDomainId == dom).ToList();
+                         contentList = contentContext.Collection.Find(_ => _.AssociatedDomainId == dom).ToList();
                         //test 
-                        contentList = contentContext.Collection.Find(_ => true).ToList();
+                        //contentList = contentContext.Collection.Find(_ => true).ToList();
                     }
                     if (productContext != null)
                     {
-                        //if(domainEntity.IsDefault)
-                        //{
-                        //    productList = productContext.ProductCollection.Find(_ => _.AssociatedDomainId == dom || _.IsPublishedOnMainDomain).ToList();
-                        //}else
-                        //{
-                        //    productList = productContext.ProductCollection.Find(_ => _.AssociatedDomainId == dom).ToList();
-                        //}
+                        if (domainEntity.IsDefault)
+                        {
+                            productList = productContext.ProductCollection.Find(_ => _.AssociatedDomainId == dom || _.IsPublishedOnMainDomain).ToList();
+                        }
+                        else
+                        {
+                            productList = productContext.ProductCollection.Find(_ => _.AssociatedDomainId == dom).ToList();
+                        }
                         //test
-                        productList = productContext.ProductCollection.Find(_ => true).ToList();
+                        //productList = productContext.ProductCollection.Find(_ => true).ToList();
                     }
                     var mainDir = Path.Combine(mainPath, dom);
                     List<string> dirs = new List<string>()
@@ -339,10 +333,12 @@ namespace Arad.Portal.UI.Shop
                 var path7 = Path.Combine(Configuration["LocalStaticFileStorage"], "ckEditorContentImages");
                 var path8 = Path.Combine(Configuration["LocalStaticFileStorage"], "ckEditorDomainImages");
                 var path9 = Path.Combine(Configuration["LocalStaticFileStorage"], "ckEditorProductImages");
-                var path10 = Path.Combine(Configuration["LocalStaticFileStorage"], "Log");
-                var path11 = Path.Combine(Configuration["LocalStaticFileStorage"], "ProductFiles");
-                var path12 = Path.Combine(Configuration["LocalStaticFileStorage"], "LuceneIndexes");
-                List<string> pathes = new List<string>() { path1, path2, path3, path4, path5, path6, path7, path8, path9, path10, path11, path12 };
+                var path10 = Path.Combine(Configuration["LocalStaticFileStorage"], "Log/DashboardLogs");
+                var path11 = Path.Combine(Configuration["LocalStaticFileStorage"], "Log/StoreLogs");
+                var path12 = Path.Combine(Configuration["LocalStaticFileStorage"], "ProductFiles");
+                var path13 = Path.Combine(Configuration["LocalStaticFileStorage"], "LuceneIndexes");
+                List<string> pathes = new List<string>() 
+                { path1, path2, path3, path4, path5, path6, path7, path8, path9, path10, path11, path12, path13 };
 
                 foreach (var path in pathes)
                 {

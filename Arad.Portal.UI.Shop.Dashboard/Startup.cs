@@ -231,21 +231,22 @@ namespace Arad.Portal.UI.Shop.Dashboard
                     var domainEntity = domainContext.Collection.Find(_ => _.DomainId == dom).FirstOrDefault();
                     if (contentContext != null)
                     {
-                        // contentList = contentContext.Collection.Find(_ => _.AssociatedDomainId == dom).ToList();
+                         contentList = contentContext.Collection.Find(_ => _.AssociatedDomainId == dom).ToList();
                         //test 
-                        contentList = contentContext.Collection.Find(_ => true).ToList();
+                        //contentList = contentContext.Collection.Find(_ => true).ToList();
                     }
                     if (productContext != null)
                     {
-                        //if(domainEntity.IsDefault)
-                        //{
-                        //    productList = productContext.ProductCollection.Find(_ => _.AssociatedDomainId == dom || _.IsPublishedOnMainDomain).ToList();
-                        //}else
-                        //{
-                        //    productList = productContext.ProductCollection.Find(_ => _.AssociatedDomainId == dom).ToList();
-                        //}
+                        if (domainEntity.IsDefault)
+                        {
+                            productList = productContext.ProductCollection.Find(_ => _.AssociatedDomainId == dom || _.IsPublishedOnMainDomain).ToList();
+                        }
+                        else
+                        {
+                            productList = productContext.ProductCollection.Find(_ => _.AssociatedDomainId == dom).ToList();
+                        }
                         //test
-                        productList = productContext.ProductCollection.Find(_ => true).ToList();
+                        //productList = productContext.ProductCollection.Find(_ => true).ToList();
                     }
                     var mainDir = Path.Combine(mainPath, dom);
                     List<string> dirs = new List<string>()
@@ -311,10 +312,12 @@ namespace Arad.Portal.UI.Shop.Dashboard
                 var path7 = Path.Combine(Configuration["LocalStaticFileStorage"], "ckEditorContentImages");
                 var path8 = Path.Combine(Configuration["LocalStaticFileStorage"], "ckEditorDomainImages");
                 var path9 = Path.Combine(Configuration["LocalStaticFileStorage"], "ckEditorProductImages");
-                var path10 = Path.Combine(Configuration["LocalStaticFileStorage"], "Log");
-                var path11 = Path.Combine(Configuration["LocalStaticFileStorage"], "ProductFiles");
-                var path12 = Path.Combine(Configuration["LocalStaticFileStorage"], "LuceneIndexes");
-                List<string> pathes = new List<string>() { path1, path2, path3, path4, path5, path6, path7, path8, path9, path10, path11, path12 };
+                var path10 = Path.Combine(Configuration["LocalStaticFileStorage"], "Log/DashboardLogs");
+                var path11 = Path.Combine(Configuration["LocalStaticFileStorage"], "Log/StoreLogs");
+                var path12 = Path.Combine(Configuration["LocalStaticFileStorage"], "ProductFiles");
+                var path13 = Path.Combine(Configuration["LocalStaticFileStorage"], "LuceneIndexes");
+                List<string> pathes = new List<string>()
+                { path1, path2, path3, path4, path5, path6, path7, path8, path9, path10, path11, path12, path13 };
 
                 foreach (var path in pathes)
                 {
@@ -389,7 +392,6 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<PermissionContext>();
             services.AddTransient<RoleContext>();
             services.AddTransient<UserContext>();
-            //services.AddTransient<OrderContext>();
             services.AddTransient<ProductContext>();
             services.AddTransient<PromotionContext>();
             services.AddTransient<ShoppingCartContext>();
@@ -422,7 +424,6 @@ namespace Arad.Portal.UI.Shop.Dashboard
             services.AddTransient<IRoleRepository, RoleRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<UserExtensions, UserExtensions>();
-            //services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IProductGroupRepository, ProductGroupRepository>();
             services.AddTransient<IProductSpecificationRepository, ProductSpecificationRepository>();

@@ -1,23 +1,14 @@
 ﻿using Arad.Portal.DataLayer.Contracts.General.Permission;
-using Arad.Portal.DataLayer.Contracts.General.Role;
-using Arad.Portal.DataLayer.Entities;
-using Arad.Portal.DataLayer.Entities.General.User;
-using Arad.Portal.DataLayer.Models.User;
 using Arad.Portal.DataLayer.Repositories.General.Permission.Mongo;
-using Arad.Portal.DataLayer.Repositories.General.Role.Mongo;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Claims;
 using Newtonsoft.Json;
 using Arad.Portal.DataLayer.Entities.General.Permission;
-using Arad.Portal.DataLayer.Models.Role;
-using Arad.Portal.DataLayer.Entities.General.Role;
 using Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.MessageTemplate;
 using Arad.Portal.DataLayer.Entities.General.MessageTemplate;
@@ -25,11 +16,6 @@ using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using Arad.Portal.DataLayer.Contracts.General.Currency;
 using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
-using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
-using Arad.Portal.DataLayer.Contracts.General.Domain;
-using Arad.Portal.DataLayer.Entities.General.Domain;
-using Arad.Portal.DataLayer.Contracts.General.BasicData;
-using Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.Services;
 using Arad.Portal.DataLayer.Repositories.General.Service.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.CountryParts.Mongo;
@@ -170,29 +156,29 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
               (ProviderRepository)scope.ServiceProvider.GetService(typeof(IProviderRepository));
             if (providerRepository.GetProvidersPerType(DataLayer.Entities.General.Service.ProviderType.Payment).Count() == 0)
             {
-                var parsianGateway = new DataLayer.Entities.General.Service.Provider()
-                {
-                    ProviderId = Guid.NewGuid().ToString(),
-                    CreationDate = DateTime.Now,
-                    IsActive = true,
-                    Template = "{'BaseUrl','UserName','PINCode', 'TerminalId'}",
-                    ProviderType = DataLayer.Entities.General.Service.ProviderType.Payment,
-                    ProviderName = "Parsian",
-                    AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf"
-                };
-                providerRepository.InsertOne(parsianGateway);
+                //var parsianGateway = new DataLayer.Entities.General.Service.Provider()
+                //{
+                //    ProviderId = Guid.NewGuid().ToString(),
+                //    CreationDate = DateTime.Now,
+                //    IsActive = true,
+                //    Template = "{'BaseUrl','UserName','PINCode', 'TerminalId'}",
+                //    ProviderType = DataLayer.Entities.General.Service.ProviderType.Payment,
+                //    ProviderName = "Parsian",
+                //    AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf"
+                //};
+                //providerRepository.InsertOne(parsianGateway);
 
-                var iranKishGateway = new DataLayer.Entities.General.Service.Provider()
-                {
-                    ProviderId = Guid.NewGuid().ToString(),
-                    CreationDate = DateTime.Now,
-                    IsActive = true,
-                    Template = "{'BaseUrl','UserName', 'Password', 'MerchantId','TerminalId','AcceptorId', 'AccountIban', 'Sha1'}",
-                    ProviderType = DataLayer.Entities.General.Service.ProviderType.Payment,
-                    ProviderName = "IranKish",
-                    AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf"
-                };
-                providerRepository.InsertOne(iranKishGateway);
+                //var iranKishGateway = new DataLayer.Entities.General.Service.Provider()
+                //{
+                //    ProviderId = Guid.NewGuid().ToString(),
+                //    CreationDate = DateTime.Now,
+                //    IsActive = true,
+                //    Template = "{'BaseUrl','UserName', 'Password', 'MerchantId','TerminalId','AcceptorId', 'AccountIban', 'Sha1'}",
+                //    ProviderType = DataLayer.Entities.General.Service.ProviderType.Payment,
+                //    ProviderName = "IranKish",
+                //    AssociatedDomainId = "d24ceebd-c587-4a02-a201-3ad5a9345daf"
+                //};
+                //providerRepository.InsertOne(iranKishGateway);
 
                 var samanGateway = new DataLayer.Entities.General.Service.Provider()
                 {

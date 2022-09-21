@@ -1,10 +1,7 @@
 ﻿using Arad.Portal.DataLayer.Contracts.General.Permission;
-using Arad.Portal.DataLayer.Contracts.General.Role;
-using Arad.Portal.DataLayer.Entities;
 using Arad.Portal.DataLayer.Entities.General.User;
 using Arad.Portal.DataLayer.Models.User;
 using Arad.Portal.DataLayer.Repositories.General.Permission.Mongo;
-using Arad.Portal.DataLayer.Repositories.General.Role.Mongo;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,11 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Claims;
 using Newtonsoft.Json;
 using Arad.Portal.DataLayer.Entities.General.Permission;
-using Arad.Portal.DataLayer.Models.Role;
-using Arad.Portal.DataLayer.Entities.General.Role;
 using Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.MessageTemplate;
 using Arad.Portal.DataLayer.Entities.General.MessageTemplate;
@@ -25,11 +19,6 @@ using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using Arad.Portal.DataLayer.Contracts.General.Currency;
 using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
-using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
-using Arad.Portal.DataLayer.Contracts.General.Domain;
-using Arad.Portal.DataLayer.Entities.General.Domain;
-using Arad.Portal.DataLayer.Contracts.General.BasicData;
-using Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Service.Mongo;
 using Arad.Portal.DataLayer.Contracts.General.Services;
 using Arad.Portal.DataLayer.Repositories.General.CountryParts.Mongo;
@@ -125,49 +114,7 @@ namespace Arad.Portal.UI.Shop.Helpers
             }
             #endregion permission
 
-            //#region role
-            //var roleRepository =
-            //   (RoleRepository)scope.ServiceProvider.GetService(typeof(IRoleRepository));
-
-
-            //if (!roleRepository.HasAny())
-            //{
-            //    var role = new Role()
-            //    {
-            //        // RoleId = Guid.NewGuid().ToString(), it will be changed for publish
-            //        RoleId = "0e1643a3-1212-485b-862f-45147532427c",
-            //        RoleName = "سوپر ادمین",
-            //        CreationDate = DateTime.Now,
-            //        IsActive = true,
-            //        PermissionIds = permissionRepository.GetAllPermissionIds()
-            //    };
-            //    var role2 = new Role()
-            //    {
-            //        RoleId = Guid.NewGuid().ToString(),
-            //        RoleName = "مدیریت کاربران",
-            //        CreationDate = DateTime.Now,
-            //        IsActive = true
-            //    };
-            //    var role3 = new Role()
-            //    {
-            //        RoleId = Guid.NewGuid().ToString(),
-            //        RoleName = "مشتری",
-            //        CreationDate = DateTime.Now,
-            //        IsActive = true
-            //    };
-            //    var role4 = new Role()
-            //    {
-            //        RoleId = Guid.NewGuid().ToString(),
-            //        RoleName = "فروشنده",
-            //        CreationDate = DateTime.Now,
-            //        IsActive = true
-            //    };
-            //    List<Role> items = new List<Role>();
-            //    items.AddRange(new List<Role> { role, role2, role3, role4 });
-            //    roleRepository.InsertMany(items).Wait();
-
-            //}
-            //#endregion role
+            
 
             #region user
             var userManager =
@@ -176,50 +123,50 @@ namespace Arad.Portal.UI.Shop.Helpers
 
             if (userManager != null && !userManager.Users.Any())
             {
-                //var user = new ApplicationUser()
-                //{
-                //    //just for testing
-                //    //Id = Guid.NewGuid().ToString(),
-                //    Id = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa",
-                //    UserName = "SuperAdmin",
-                //    Claims = new List<IdentityUserClaim<string>>()
-                //    {
-                //        new IdentityUserClaim<string>()
-                //        {
-                //            ClaimType = "AppRole",
-                //            ClaimValue = true.ToString(),
-                //        },
-                //        //,???
-                //        new IdentityUserClaim<string>()
-                //        {
-                //            ClaimType = "RelatedDomain",
-                //            ClaimValue = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004",
-                //            //testing
-                //            UserId = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa"
+                var user = new ApplicationUser()
+                {
+                    //for testing
+                    //Id = Guid.NewGuid().ToString(),
+                    Id = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa",
+                    UserName = "SuperAdmin",
+                    Claims = new List<IdentityUserClaim<string>>()
+                    {
+                        new IdentityUserClaim<string>()
+                        {
+                            ClaimType = "AppRole",
+                            ClaimValue = true.ToString(),
+                        },
+                        //,???
+                        new IdentityUserClaim<string>()
+                        {
+                            ClaimType = "RelatedDomain",
+                            ClaimValue = "28d0433f-2bb6-4ef9-bad7-0a18a28d9004",
+                            //testing
+                            UserId = "ba63fb8b-3a2d-4efb-8be2-710fa21f68fa"
 
-                //        }
-                //    },
-                //    PhoneNumber = "989309910790",
-                //    IsActive = true,
-                //    IsSystemAccount = true,
-                //    UserRoleId = "0e1643a3-1212-485b-862f-45147532427c",
-                //    Profile = new Profile()
-                //    {
-                //        Gender = Gender.Female,
-                //        FatherName = "نام پدر",
-                //        FirstName = "ادمین",
-                //        LastName = "شماره یک",
-                //        FullName = "ادمین" + " " + "شماره یک",
-                //        NationalCode = ""
-                //        CompanyName = "Arad",
-                //        DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
-                //        DefaultCurrencyId = "f6a41b2d-3ed5-412b-b511-68498a7b62f3",
-                //        UserType = UserType.Admin
-                //    },
-                //    CreationDate = DateTime.UtcNow
-                //};
+                        }
+                    },
+                    PhoneNumber = "989309910790",
+                    IsActive = true,
+                    IsSystemAccount = true,
+                    UserRoleId = "0e1643a3-1212-485b-862f-45147532427c",
+                    Profile = new Profile()
+                    {
+                        Gender = Gender.Female,
+                        FatherName = "نام پدر",
+                        FirstName = "ادمین",
+                        LastName = "شماره یک",
+                        FullName = "ادمین" + " " + "شماره یک",
+                        NationalCode = "",
+                        CompanyName = "myComapany",
+                        DefaultLanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
+                        DefaultCurrencyId = "f6a41b2d-3ed5-412b-b511-68498a7b62f3",
+                        UserType = UserType.Admin
+                    },
+                    CreationDate = DateTime.UtcNow
+                };
 
-                //userManager.CreateAsync(user, "Sa@12345").Wait();
+                userManager.CreateAsync(user, "Sa@12345").Wait();
             }
             #endregion user
 

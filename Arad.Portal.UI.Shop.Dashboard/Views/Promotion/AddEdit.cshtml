@@ -263,8 +263,12 @@
             else
             {
                 $('.datepicker').datepicker();
+            }
+      if('@Model.PromotionId' != '')
+      {
+            LoadData();
       }
-      LoadData();
+    
 
       $("#AsUserCoupon").click(function() { 
           if($("#AsUserCoupon").is(":checked"))
@@ -746,7 +750,7 @@
                     $("#firstRow").addClass("d-none");
                 }else
                 {
-                    $("#promotionTypeId").selectpicker("val", model.promotionType.toString());                  
+                    $("#promotionTypeId").selectpicker("val", model.promotionType);                  
                     $("#firstRow").removeClass("d-none");
                 }
 
