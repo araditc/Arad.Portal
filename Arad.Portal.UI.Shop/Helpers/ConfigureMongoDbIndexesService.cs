@@ -69,6 +69,9 @@ namespace Arad.Portal.UI.Shop.Helpers
             var contentLanguageIndex = Builders<DataLayer.Entities.General.Content.Content>.IndexKeys.Descending(_ => _.LanguageId);
             await contentCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.General.Content.Content>(contentLanguageIndex, options),
                 cancellationToken: cancellationToken);
+
+            var visitCountIndex = Builders<DataLayer.Entities.General.Content.Content>.IndexKeys.Ascending(_ => _.VisitCount);
+            await contentCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.General.Content.Content>(visitCountIndex);
             #endregion Content
 
             #region ContentCategory
