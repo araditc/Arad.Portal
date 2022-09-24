@@ -1971,6 +1971,93 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             }
             return result;
         }
+
+        public async Task<Result> AddtoNotifyList(string productId, string userId)
+        {
+            var res = new Result();
+            try
+            {
+                var product = (await _context.ProductCollection.FindAsync(_ => _.ProductId == productId)).FirstOrDefault();
+                if(product != null)
+                {
+                    product.UserNotifyInventoryCount.Add(userId);
+                    var updateResult = await _context.ProductCollection.ReplaceOneAsync(_ => _.ProductId == productId, product);
+                    if (updateResult.IsAcknowledged)
+                    {
+                        res.Succeeded = true;
+                        res.Message = Language.GetString("AlertAndMessage_OperationDoneSuccessfully");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return res;
+
+        }
+
+        public async Task<Result> RemoveFromNotifyList(string productId, string userId)
+        {
+            var res = new Result();
+            try
+            {
+                var product = (await _context.ProductCollection.FindAsync(_ => _.ProductId == productId)).FirstOrDefault();
+                if(product != null)
+                {
+                    var index = product.UserNotifyInventoryCount.IndexOf(userId);
+                    product.UserNotifyInventoryCount.RemoveAt(index);
+                    var updateResult = await _context.ProductCollection.ReplaceOneAsync(_ => _.ProductId == productId, product);
+                    if (updateResult.IsAcknowledged)
+                    {
+                        res.Succeeded = true;
+                        res.Message = Language.GetString("AlertAndMessage_OperationDoneSuccessfully");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                res.Succeeded = false;
+            }
+            return res;
+        }
+
+        public async Task<Result> ClearWholeNotifyList(string productId)
+        {
+            var res = new Result();
+            try
+            {
+                var product = (await _context.ProductCollection.FindAsync(_ => _.ProductId == productId)).FirstOrDefault();
+                if(product != null)
+                {
+                    product.UserNotifyInventoryCount = new List<string>();
+                    var updateResult = await _context.ProductCollection.ReplaceOneAsync(_ => _.ProductId == productId, product);
+                    if (updateResult.IsAcknowledged)
+                    {
+                        res.Succeeded = true;
+                        res.Message = Language.GetString("AlertAndMessage_OperationDoneSuccessfully");
+                    }
+                }
+                
+            }
+            catch (Exception)
+            {
+                res.Succeeded = false;
+            }
+            return res;
+        }
+
+        public async Task<Result<List<string>>> GetUserNotifyList(string productId)
+        {
+            var res = new Result<List<string>>();
+            res.ReturnValue = new List<string>();
+            var product = (await _context.ProductCollection.FindAsync(_ => _.ProductId == productId)).FirstOrDefault();
+            if(product != null)
+            {
+                res.ReturnValue = product.UserNotifyInventoryCount;
+                res.Succeeded = true;
+            }
+            return res;
+        }
     }
 }
 

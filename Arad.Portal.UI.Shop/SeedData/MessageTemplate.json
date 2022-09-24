@@ -352,5 +352,53 @@
         "Body": "dear {$client_name} your order in {$date} has been registered, please check your user profile for details."
       }
     ]
+  },
+  {
+    "MessageTemplateId": "jjb604b1-3127-4486-920a-56b13c2833nj",
+    "CreationDate": "2021-09-01T05:23:43.424+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [],
+    "IsActive": true,
+    "TemplateName": "NotifyProductMinimumCount",
+    "TemplateDescription": "اعلان موجودی حداقل به ادمین سایت",
+    "IsSystemTemplate": true,
+    "NotificationType": "2",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "کمبود موجودی",
+        "Body": "موجودی محصول {$productName} به کمترین میزان تعیین شده رسیده است"
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "LackOfInventory",
+        "Body": "inventory of product ${$productName} achieved its minimum specified count."
+      }
+    ]
+  },
+  {
+    "MessageTemplateId": " dfb604b1-3127-4486-920a-56b13c2833sg",
+    "CreationDate": "2021-09-01T05:23:43.424+0000",
+    "CreatorId": "b96dc045-3d34-4642-8c9d-320753a8d82c",
+    "CreatorUserName": "SuperAdmin",
+    "Modifications": [],
+    "IsActive": true,
+    "TemplateName": "UserRegisterNewOrder",
+    "TemplateDescription": "اعلان موجود شدن کالا به کاربر",
+    "IsSystemTemplate": true,
+    "NotificationType": "2",
+    "MessageTemplateMultiLingual": [
+      {
+        "LanguageName": "fa-IR",
+        "Subject": "اعلان موجودی کالا",
+        "Body": "کالای {$productName} در تاریخ {$date} در انبار {$company_name} موجود شد."
+      },
+      {
+        "LanguageName": "en-US",
+        "Subject": "Notify Product Inventory",
+        "Body": "product {$productName} is now available in {$company_name} store in date: {$date}"
+      }
+    ]
   }
 ]

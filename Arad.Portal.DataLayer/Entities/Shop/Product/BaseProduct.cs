@@ -25,6 +25,7 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Product
             Prices = new ();
             Comments = new ();
             MultiLingualProperties = new ();
+            UserNotifyInventoryCount = new List<string>();
         }
 
 
@@ -124,6 +125,8 @@ namespace Arad.Portal.DataLayer.Entities.Shop.Product
         public List<Price> Prices { get; set; }
 
         public Promotion.Promotion Promotion { get; set; }
+
+        public List<string> UserNotifyInventoryCount { get; set; }
 
         /// <summary>
         /// sum of scores up to now
