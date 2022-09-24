@@ -218,24 +218,119 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
             #endregion
 
             #region ApplicationUser
+            var userCollection = db.GetCollection<DataLayer.Entities.General.User.ApplicationUser>("ApplicationUser");
+            var userNameInDomain = Builders<DataLayer.Entities.General.User.ApplicationUser>.IndexKeys.Ascending(_ => _.UserName).Ascending(_ => _.DomainId);
+            await userCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.General.User.ApplicationUser>(userNameInDomain, uniqueOption),
+                cancellationToken: cancellationToken);
+
+            var defaultCurrencyIdIndex = Builders<DataLayer.Entities.General.User.ApplicationUser>.IndexKeys.Ascending(_ => _.Profile.DefaultCurrencyId);
+            await userCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.General.User.ApplicationUser>(defaultCurrencyIdIndex, generalOptions),
+                cancellationToken: cancellationToken);
+
+            var defaultlanguageId = Builders<DataLayer.Entities.General.User.ApplicationUser>.IndexKeys.Ascending(_ => _.Profile.DefaultLanguageId);
+            await userCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.General.User.ApplicationUser>(defaultlanguageId, generalOptions),
+                cancellationToken: cancellationToken);
             #endregion
 
             #region Comment
+
+            var commentCollection = db.GetCollection<DataLayer.Entities.General.Comment.Comment>("Comment");
+
+            var associatedDomainIdIndex = Builders<DataLayer.Entities.General.Comment.Comment>.IndexKeys.Ascending(_ => _.AssociatedDomainId);
+            await commentCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.General.Comment.Comment>(associatedDomainIdIndex, generalOptions),
+                cancellationToken: cancellationToken);
+
+            var parentIdIndex = Builders<DataLayer.Entities.General.Comment.Comment>.IndexKeys.Ascending(_ => _.ParentId);
+            await commentCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.General.Comment.Comment>(parentIdIndex, generalOptions),
+                cancellationToken: cancellationToken);
+
+            var commentUserIdIndex = Builders<DataLayer.Entities.General.Comment.Comment>.IndexKeys.Ascending(_ => _.UserId);
+            await commentCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.General.Comment.Comment>(commentUserIdIndex, generalOptions),
+                cancellationToken: cancellationToken);
+
+            var commentReferenceId = Builders<DataLayer.Entities.General.Comment.Comment>.IndexKeys.Ascending(_ => _.ReferenceId);
+            await commentCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.General.Comment.Comment>(commentReferenceId, generalOptions),
+                cancellationToken: cancellationToken);
+
             #endregion
 
             #region ProductSpecification
+            var specificationCollection = db.GetCollection<DataLayer.Entities.Shop.ProductSpecification.ProductSpecification>("ProductSpecification");
+
+            var associatedDomainIdspecIndex = Builders<DataLayer.Entities.Shop.ProductSpecification.ProductSpecification>.IndexKeys.Ascending(_ => _.AssociatedDomainId);
+            await specificationCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.Shop.ProductSpecification.ProductSpecification>(associatedDomainIdspecIndex, generalOptions),
+                cancellationToken: cancellationToken);
+
+            var specGroupIndex = Builders<DataLayer.Entities.Shop.ProductSpecification.ProductSpecification>.IndexKeys.Ascending(_ => _.SpecificationGroupId);
+            await specificationCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.Shop.ProductSpecification.ProductSpecification>(specGroupIndex, generalOptions),
+                cancellationToken: cancellationToken);
             #endregion
 
             #region ShoppingCart
+            var shoppingCartCollection = db.GetCollection<DataLayer.Entities.Shop.ShoppingCart.ShoppingCart>("ShoppingCart");
+
+            var shoppingCartDomainIndex = Builders<DataLayer.Entities.Shop.ShoppingCart.ShoppingCart>.IndexKeys.Ascending(_ => _.AssociatedDomainId);
+            await shoppingCartCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.Shop.ShoppingCart.ShoppingCart>(shoppingCartDomainIndex, generalOptions),
+                cancellationToken: cancellationToken);
+
+            var shoppingCartCreatorUserIdIndex = Builders<DataLayer.Entities.Shop.ShoppingCart.ShoppingCart>.IndexKeys.Ascending(_ => _.CreatorUserId);
+            await shoppingCartCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.Shop.ShoppingCart.ShoppingCart>(shoppingCartCreatorUserIdIndex, generalOptions),
+                cancellationToken: cancellationToken);
+
+            var shoppingCartIsActiveIndex = Builders<DataLayer.Entities.Shop.ShoppingCart.ShoppingCart>.IndexKeys.Ascending(_ => _.IsActive);
+            await shoppingCartCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.Shop.ShoppingCart.ShoppingCart>(shoppingCartIsActiveIndex, generalOptions),
+                cancellationToken: cancellationToken);
+
+            var shoppingCartIsDeletedIndex = Builders<DataLayer.Entities.Shop.ShoppingCart.ShoppingCart>.IndexKeys.Ascending(_ => _.IsDeleted);
+            await shoppingCartCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.Shop.ShoppingCart.ShoppingCart>(shoppingCartIsDeletedIndex, generalOptions),
+                cancellationToken: cancellationToken);
+
+
             #endregion
 
             #region Transaction
+            var transactionCollection = db.GetCollection<DataLayer.Entities.Shop.Transaction.Transaction>("Transaction");
+
+            var transactionDomainIndex = Builders<DataLayer.Entities.Shop.Transaction.Transaction>.IndexKeys.Ascending(_ => _.AssociatedDomainId);
+            await transactionCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.Shop.Transaction.Transaction>(transactionDomainIndex, generalOptions),
+                cancellationToken: cancellationToken);
+
+            var invoiceNumberInDomain = Builders<DataLayer.Entities.Shop.Transaction.Transaction>.IndexKeys.Ascending(_ => _.MainInvoiceNumber).Ascending(_ => _.AssociatedDomainId);
+            await transactionCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.Shop.Transaction.Transaction>(invoiceNumberInDomain, generalOptions),
+                cancellationToken: cancellationToken);
+
+            var transactionUserIdIndex = Builders<DataLayer.Entities.Shop.Transaction.Transaction>.IndexKeys.Ascending(_ => _.CustomerData.UserId);
+            await transactionCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.Shop.Transaction.Transaction>(transactionUserIdIndex, generalOptions),
+                 cancellationToken: cancellationToken);
+
             #endregion
 
             #region UserCoupon
+            var userCouponCollection = db.GetCollection<DataLayer.Entities.Shop.Promotion.UserCoupon>("UserCoupon");
+
+            var userCouponDomainIndex = Builders<DataLayer.Entities.Shop.Promotion.UserCoupon>.IndexKeys.Ascending(_ => _.AssociatedDomainId).Ascending(_=>_.CouponCode);
+            await userCouponCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.Shop.Promotion.UserCoupon>(userCouponDomainIndex, generalOptions),
+               cancellationToken: cancellationToken);
+
+            var userCouponPromotionIndex = Builders<DataLayer.Entities.Shop.Promotion.UserCoupon>.IndexKeys.Ascending(_ => _.PromotionId);
+            await userCouponCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.Shop.Promotion.UserCoupon>(userCouponPromotionIndex, generalOptions),
+                cancellationToken: cancellationToken);
             #endregion
 
             #region UserFavorites
+            var userFavouriteCollection = db.GetCollection<DataLayer.Entities.General.User.UserFavorites>("UserFavorites");
+
+            var userFavoriteDomainIndex = Builders<DataLayer.Entities.General.User.UserFavorites>.IndexKeys.Ascending(_ => _.AssociatedDomainId);
+            await userFavouriteCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.General.User.UserFavorites>(userFavoriteDomainIndex, generalOptions),
+                cancellationToken: cancellationToken);
+
+            var userFavouriteEntityIdIndex = Builders<DataLayer.Entities.General.User.UserFavorites>.IndexKeys.Ascending(_ => _.EntityId);
+            await userFavouriteCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.General.User.UserFavorites>(userFavouriteEntityIdIndex, generalOptions),
+                cancellationToken: cancellationToken);
+
+            var userFavoritesFavoriteTypeIndex = Builders<DataLayer.Entities.General.User.UserFavorites>.IndexKeys.Ascending(_ => _.FavoriteType);
+            await userFavouriteCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.General.User.UserFavorites>(userFavoritesFavoriteTypeIndex, generalOptions),
+                cancellationToken: cancellationToken);
             #endregion
 
             #endregion
