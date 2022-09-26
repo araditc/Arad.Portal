@@ -90,11 +90,6 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
 
         List<Entities.Shop.Product.Product> AllProducts(string domainId);
         string GetProductSpecificationName(string specificationId, string languageId);
-
-        Task<Result> AddtoNotifyList(string productId, string userId);
-        Task<Result> RemoveFromNotifyList(string productId, string userId);
-
-        Task<Result> ClearWholeNotifyList(string productId);
-        Task<Result<List<string>>> GetUserNotifyList(string productId);
+        
     }
 }

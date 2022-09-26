@@ -140,7 +140,27 @@ namespace Arad.Portal.UI.Shop.Controllers
             
         }
 
-       
+        [HttpGet]
+        [Route("{language}/product/informme")]
+        public async Task<IActionResult> InformMe([FromQuery] long code)
+        {
+            var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
+            if (User.Identity.IsAuthenticated)
+            {
+                var productId = _productRepository.FetchIdByCode(code);
+                var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+                var insertInform = await _userRepository.AddtoNotifyList(productId, userId);
+                return Json(new
+                {
+                    status = insertInform.Succeeded ? "Succeed" : "Error",
+                    message = insertInform.Succeeded ? Language.GetString("AlertAndMessage_OperationDoneSuccessfully") : Language.GetString("AlertAndMessage_ErrorInSaving")
+                });
+            }
+            else
+            {
+                return Redirect($"~/{lanIcon}/Account/Login?returnUrl=/{lanIcon}/product/{code}");
+            }
+        }
 
 
         [HttpGet]

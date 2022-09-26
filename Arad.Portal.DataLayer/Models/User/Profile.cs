@@ -17,6 +17,7 @@ namespace Arad.Portal.DataLayer.Models.User
             ProfilePhoto = new();
             BankAccount = new();
             Access = new();
+            InformProductList = new();
         }
         public string FirstName { get; set; }
 
@@ -39,6 +40,8 @@ namespace Arad.Portal.DataLayer.Models.User
         public Image ProfilePhoto { get; set; }
 
         public string CompanyName { get; set; }
+
+        public List<string> InformProductList { get; set; }
 
         public BankAccount BankAccount { get; set; }
 

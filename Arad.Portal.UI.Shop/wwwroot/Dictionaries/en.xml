@@ -1317,7 +1317,7 @@
 		<value>Operation failed</value>
 	</string>
 	<string key="AlertAndMessage_ErrorInSaving">
-		<value>Error storing data.</value>
+		<value>Error in saving data.</value>
 	</string>
 	<string key="AlertAndMessage_ErrorInLoadingImage">
 		<value>Error in loading image.</value>

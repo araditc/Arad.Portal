@@ -86,7 +86,7 @@ namespace Arad.Portal.DataLayer.Helpers
         }
 
 
-        public async Task<Result> ClientSignUp(string templateName, ApplicationUser user, string password)
+    public async Task<Result> ClientSignUp(string templateName, ApplicationUser user, string password)
         {
 
             SMTP smtp = _domainRepository.GetSMTPAccount(_domainName);
@@ -171,7 +171,120 @@ namespace Arad.Portal.DataLayer.Helpers
             return new() { Succeeded = true, Message = Language.GetString("AlertAndMessage_OperationSuccess") };
         }
 
-  
+    public async Task<Result> NotifyProductAvailibility(string templateName, ApplicationUser user, string productName)
+    {
+            try
+            {
+                if (_sendSmsConfig == null)
+                {
+                    return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_NotFoundSmsSetting") };
+                }
+                List<MessageTemplate> messageTemplates = await _messageTemplateRepository.GetAllByName(templateName);
+
+                if (!messageTemplates.Any())
+                {
+                    return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_NotFoundMessageTemplate") };
+                }
+                MessageTemplate messageTemplate = messageTemplates
+                  .FirstOrDefault(m => m.NotificationType == NotificationType.Sms &&
+                  m.MessageTemplateMultiLingual.Any(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)));
+
+                if (messageTemplate != null)
+                {
+                    string title = await GenerateText(NotificationType.Sms,
+               messageTemplate.MessageTemplateMultiLingual
+               .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Subject, user, "", "", "", productName);
+                    string messageText = await GenerateText(NotificationType.Sms, messageTemplate.MessageTemplateMultiLingual
+                        .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body, user, "", "", "", productName);
+
+                    Notification notification = new()
+                    {
+                        Type = NotificationType.Sms,
+                        NotificationId = Guid.NewGuid().ToString(),
+                        IsActive = true,
+                        ScheduleDate = DateTime.Now.ToUniversalTime(),
+                        SendStatus = NotificationSendStatus.Store,
+                        Title = title,
+                        Body = messageText,
+                        CreationDate = DateTime.Now.ToUniversalTime(),
+                        CreatorUserId = user.Id,
+                        CreatorUserName = user.UserName,
+                        TemplateName = templateName,
+                        UserFullName = user.Profile.FullName,
+                        SendSmsConfig = _sendSmsConfig,
+                        AssociatedDomainId = _domainRepository.FetchByName(_domainName, true).ReturnValue.DomainId,
+                        UserPhoneNumber = user.PhoneNumber
+                    };
+
+                    await _notificationRepository.AddRange(new List<Notification>() { notification });
+                    return new() { Succeeded = true, Message = Language.GetString("AlertAndMessage_OperationSuccess") };
+
+                }
+                return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_NotFoundMessageTemplate") };
+            }
+            catch (Exception)
+            {
+                return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_InsertError") };
+            }
+    }
+
+    public async Task<Result> NotifySiteAdminForLackOfInventory(string templateName, string productName, string userAdminId)
+    {
+            try
+            {
+                if (_sendSmsConfig == null)
+                {
+                    return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_NotFoundSmsSetting") };
+                }
+                List<MessageTemplate> messageTemplates = await _messageTemplateRepository.GetAllByName(templateName);
+
+                if (!messageTemplates.Any())
+                {
+                    return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_NotFoundMessageTemplate") };
+                }
+                MessageTemplate messageTemplate = messageTemplates
+                  .FirstOrDefault(m => m.NotificationType == NotificationType.Sms &&
+                  m.MessageTemplateMultiLingual.Any(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)));
+                var adminUserEntity = await _userManager.FindByIdAsync(userAdminId);
+
+                if (messageTemplate != null)
+                {
+                    string title = await GenerateText(NotificationType.Sms,
+               messageTemplate.MessageTemplateMultiLingual
+               .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Subject, null, "", "", "", productName);
+                    string messageText = await GenerateText(NotificationType.Sms, messageTemplate.MessageTemplateMultiLingual
+                        .First(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)).Body, null, "", "", "", productName);
+
+                    Notification notification = new()
+                    {
+                        Type = NotificationType.Sms,
+                        NotificationId = Guid.NewGuid().ToString(),
+                        IsActive = true,
+                        ScheduleDate = DateTime.Now.ToUniversalTime(),
+                        SendStatus = NotificationSendStatus.Store,
+                        Title = title,
+                        Body = messageText,
+                        CreationDate = DateTime.Now.ToUniversalTime(),
+                        CreatorUserId = userAdminId,
+                        CreatorUserName = adminUserEntity.UserName,
+                        TemplateName = templateName,
+                        UserFullName = adminUserEntity.Profile.FullName,
+                        SendSmsConfig = _sendSmsConfig,
+                        AssociatedDomainId = _domainRepository.FetchByName(_domainName, true).ReturnValue.DomainId,
+                        UserPhoneNumber = adminUserEntity.PhoneNumber
+                    };
+
+                    await _notificationRepository.AddRange(new List<Notification>() { notification });
+                    return new() { Succeeded = true, Message = Language.GetString("AlertAndMessage_OperationSuccess") };
+
+                }
+                return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_NotFoundMessageTemplate") };
+            }
+            catch (Exception)
+            {
+                return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_InsertError") };
+            }
+        }
 
 
     /// <summary>
@@ -184,8 +297,6 @@ namespace Arad.Portal.DataLayer.Helpers
     {
         try
         {
-
-
             if (_sendSmsConfig == null)
             {
                 return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_NotFoundSmsSetting") };
@@ -239,7 +350,6 @@ namespace Arad.Portal.DataLayer.Helpers
         }
 
     }
-
     public async Task<Result> SendCustomMessage(ApplicationUser user, string messageText)
     {
         if (_sendSmsConfig == null)
@@ -658,7 +768,7 @@ namespace Arad.Portal.DataLayer.Helpers
     }
 
     private async Task<string> GenerateText(NotificationType notificationType, string text,
-           ApplicationUser user, string callbackUrl = "", string otp = "", string passwordBeforeHash = "")
+           ApplicationUser user, string callbackUrl = "", string otp = "", string passwordBeforeHash = "", string productName = "")
     {
         if (string.IsNullOrWhiteSpace(text))
         {
@@ -675,6 +785,7 @@ namespace Arad.Portal.DataLayer.Helpers
         text = text.Replace("{$time}", DateTime.Now.ToString("HH:mm"));
         text = text.Replace("{$otp}", IsNullOrEmpty(otp));
         text = text.Replace("{$domainName}", _domainName);
+        text = text.Replace("{$productName}", productName);
 
 
         if (!string.IsNullOrWhiteSpace(callbackUrl))

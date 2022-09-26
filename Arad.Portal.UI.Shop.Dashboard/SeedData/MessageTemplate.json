@@ -373,7 +373,7 @@
       {
         "LanguageName": "en-US",
         "Subject": "LackOfInventory",
-        "Body": "inventory of product ${$productName} achieved its minimum specified count."
+        "Body": "inventory of product {$productName} achieved its minimum specified count."
       }
     ]
   },
@@ -392,12 +392,12 @@
       {
         "LanguageName": "fa-IR",
         "Subject": "اعلان موجودی کالا",
-        "Body": "کالای {$productName} در تاریخ {$date} در انبار {$company_name} موجود شد."
+        "Body": "کاریر گرامی کالای {$productName} در تاریخ {$date} در انبار {$company_name} موجود شد."
       },
       {
         "LanguageName": "en-US",
         "Subject": "Notify Product Inventory",
-        "Body": "product {$productName} is now available in {$company_name} store in date: {$date}"
+        "Body": "dear user product {$productName} is now available in {$company_name} store in date: {$date}"
       }
     ]
   }

@@ -27,5 +27,9 @@ namespace Arad.Portal.DataLayer.Contracts.General.User
 
         ApplicationUser FindAdminOfDomain(string domainId);
         Result AddToUserFavoriteList(string userId, FavoriteType type, string entityId, string url, string domainId);
+
+        Task<Result> AddtoNotifyList(string productId, string userId);
+        Task<Result> RemoveFromNotifyList(string productId, string userId);
+        Task<Result<List<string>>> GetUserInformList(string userId);
     }
 }

@@ -303,5 +303,67 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             return result;
         }
 
+        public async Task<Result> AddtoNotifyList(string productId, string userId)
+        {
+            var res = new Result();
+            try
+            {
+                var userEntity = await _userManager.FindByIdAsync(userId);
+               
+                if (userEntity != null)
+                {
+                    userEntity.Profile.InformProductList.Add(productId);
+                    var updateResult = await _context.Collection.ReplaceOneAsync(_ => _.Id == userId, userEntity);
+                    if (updateResult.IsAcknowledged)
+                    {
+                        res.Succeeded = true;
+                        res.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_OperationDoneSuccessfully");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return res;
+
+        }
+
+        public async Task<Result> RemoveFromNotifyList(string productId, string userId)
+        {
+            var res = new Result();
+            try
+            {
+                var userEntity = await _userManager.FindByIdAsync(userId);
+                if (userEntity != null)
+                {
+                    var index = userEntity.Profile.InformProductList.IndexOf(productId);
+                    userEntity.Profile.InformProductList.RemoveAt(index);
+                    var updateResult = await _context.Collection.ReplaceOneAsync(_ => _.Id == userId, userEntity);
+                    if (updateResult.IsAcknowledged)
+                    {
+                        res.Succeeded = true;
+                        res.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_OperationDoneSuccessfully");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                res.Succeeded = false;
+            }
+            return res;
+        }
+        public async Task<Result<List<string>>> GetUserInformList(string userId)
+        {
+            var res = new Result<List<string>>();
+            res.ReturnValue = new List<string>();
+            var userEntity = await _userManager.FindByIdAsync(userId);
+            if (userEntity != null)
+            {
+                res.ReturnValue = userEntity.Profile.InformProductList;
+                res.Succeeded = true;
+            }
+            return res;
+        }
+
     }
 }
