@@ -89,7 +89,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Notification.Mongo
         {
            List<Entities.General.Notify.Notification> notifications = await _context.Collection.AsQueryable()
                                                               .Where(n => (n.SendStatus == NotificationSendStatus.Store || n.SendStatus == NotificationSendStatus.Error) &&
-                                                                          n.ScheduleDate <= DateTime.Now.ToUniversalTime() && n.Type == notificationType)
+                                                                          n.ScheduleDate <= DateTime.Now.ToUniversalTime() && n.Type == notificationType && n.ActionType == ActionType.NoExtraAction)
                                                               .Take(notificationType == NotificationType.Email ? _setting.HowManyEmailsSendEachTime : _setting.HowManySmsSendEachTime)
                                                               .ToListAsync();
 

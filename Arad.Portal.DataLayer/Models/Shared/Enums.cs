@@ -173,6 +173,14 @@ namespace Arad.Portal.DataLayer.Models.Shared
             Notification
         }
 
+        public enum ActionType
+        {
+            [CustomDescription("EnumDesc_NoExtraAction")]
+            NoExtraAction = 1,
+
+            [CustomDescription("EnumDesc_ProductAvailibilityReminder")]
+            ProductAvailibilityReminder = 2,
+        }
         public enum NotificationSendStatus
         {
             Store = 1,

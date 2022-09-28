@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Arad.Portal.DataLayer.Models.Shared;
+using System;
 using System.Collections.Generic;
 using static Arad.Portal.DataLayer.Models.Shared.Enums;
 
@@ -9,11 +10,14 @@ namespace Arad.Portal.DataLayer.Models.Notification
         public NotificationDTO()
         {
             Attachments = new();
+            ExtraData = new();
         }
 
         public string NotificationId { get; set; }
 
         public NotificationType Type { get; set; }
+
+        public ActionType ActionType { get; set; }
 
         public DateTime ScheduleDate { get; set; }
 
@@ -40,5 +44,7 @@ namespace Arad.Portal.DataLayer.Models.Notification
         public string CreatorUserId { get; set; }
 
         public string CreatorUserName { get; set; }
+
+        public List<(string, string)> ExtraData { get; set; }
     }
 }

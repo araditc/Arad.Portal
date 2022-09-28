@@ -14,11 +14,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductGroup
         Task<Result> Update(ProductGroupDTO dto);
         ProductGroupDTO ProductGroupFetch(string productGroupId);
         ProductGroupDTO FetchBySlug(string slug, string domainName);
-        //ProductGroupDTO FetchByCode(long groupCode);
-        //CommonViewModel FetchByCode(long groupCode);
         string FetchByCode(string slugOrCode);
         bool GroupExistance(string productGroupId);
-
         bool IsUniqueUrlFriend(string urlFriend, string groupId = "");
         Task<PagedItems<ProductGroupViewModel>> List(string queryString);
         Task<Result> Delete(string productGroupId, string modificationReason);
@@ -32,11 +29,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.ProductGroup
         Task<List<SelectListModel>> GetAlActiveProductGroup(string langId, string currentUserId);
         Task<Result> AddPromotionToGroup(string productGroupId,
             Models.Promotion.PromotionDTO promotionDto, string modificationReason);
-
         List<SelectListModel> GetSubGroups(string languageId, string domainId, string parentId = null);
-
         Task<ModelOutputFilter> GetFilterList(string languageId, string domainId, string groupId = null);
-
         Task<List<string>> AllGroupIdsWhichEndInProducts(string domainName);
     }
 }

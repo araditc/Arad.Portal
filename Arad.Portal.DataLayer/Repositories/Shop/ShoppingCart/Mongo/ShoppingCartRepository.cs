@@ -21,6 +21,9 @@ using Arad.Portal.DataLayer.Repositories.General.Language.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Currency.Mongo;
 using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo;
+using Arad.Portal.DataLayer.Helpers;
+using static Arad.Portal.DataLayer.Models.Shared.Enums;
+using System.Globalization;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
 {
@@ -35,6 +38,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
         private readonly PromotionContext _promotionContext;
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly CreateNotification _createNotification;
         public ShoppingCartRepository(IHttpContextAccessor httpContextAccessor,
             ShoppingCartContext context,
             ProductContext productContext,
@@ -45,6 +49,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             UserManager<ApplicationUser> userManager,
             ShippingSettingContext shippingSettingContext,
             IWebHostEnvironment env,
+            CreateNotification createNotification,
             IMapper mapper)
             : base(httpContextAccessor, env)
         {
@@ -57,6 +62,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             _mapper = mapper;
             _languageContext = languageContext;
             _shippingContext = shippingSettingContext;
+            _createNotification = createNotification;
         }
         public Result<string> FindCurrentUserShoppingCart(string userId, string domainId)
         {
@@ -858,6 +864,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
         public async Task<Result> SubtractUserCartOrderCntFromInventory(Entities.Shop.ShoppingCart.ShoppingCart shoppingCart)
         {
             var result = new Result();
+            var adminUser = _userManager.Users.FirstOrDefault(_ => _.IsDomainAdmin && _.DomainId == shoppingCart.AssociatedDomainId);
+            var lanId = _languageContext.Collection.Find(_ => _.Symbol.ToLower() == CultureInfo.CurrentCulture.Name.ToLower()).FirstOrDefault().LanguageId;
             try
             {
                 foreach (var seller in shoppingCart.Details)
@@ -872,6 +880,14 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                             productEntity.Inventory -= product.OrderCount;
                             var upDateResult = await _productContext.ProductCollection
                                 .ReplaceOneAsync(_ => _.ProductId == product.ProductId, productEntity);
+
+                            if(productEntity.Inventory <= productEntity.MinimumCount)
+                            {
+                                var productName = productEntity.MultiLingualProperties.Any(_ => _.LanguageId == lanId) ?
+                                    productEntity.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).Name :
+                                    productEntity.MultiLingualProperties.FirstOrDefault().Name;
+                                await _createNotification.NotifySiteAdminForLackOfInventory("NotifyProductMinimumCount", productName, adminUser, NotificationType.Sms);
+                            }
                         }
                     }
                 }

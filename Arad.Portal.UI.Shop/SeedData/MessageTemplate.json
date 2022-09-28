@@ -384,7 +384,7 @@
     "CreatorUserName": "SuperAdmin",
     "Modifications": [],
     "IsActive": true,
-    "TemplateName": "UserRegisterNewOrder",
+    "TemplateName": "ProductAvailibilityNotify",
     "TemplateDescription": "اعلان موجود شدن کالا به کاربر",
     "IsSystemTemplate": true,
     "NotificationType": "2",

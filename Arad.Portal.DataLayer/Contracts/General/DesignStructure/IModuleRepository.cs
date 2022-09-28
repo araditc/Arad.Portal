@@ -33,10 +33,6 @@ namespace Arad.Portal.DataLayer.Contracts.General.DesignStructure
         List<SelectImageListModel> GetAllAdvertisementTemplateDesign();
 
         List<SelectImageListModel> GetAllImageSliderTemplateDesign();
-        
-        //Entities.General.DesignStructure.Template FetchTemplateByName(string templateName);
-
-        //Entities.General.DesignStructure.Template FetchTemplateById(string templateId);
 
         Entities.General.DesignStructure.Module FetchById(string moduleId);
 

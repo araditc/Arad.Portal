@@ -13,11 +13,17 @@ namespace Arad.Portal.DataLayer.Entities.General.Notify
 {
     public class Notification : BaseEntity
     {
+        public Notification()
+        {
+            ExtraData = new();
+        }
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.String)]
         public string NotificationId { get; set; }
 
         public NotificationType Type { get; set; }
+
+        public ActionType ActionType { get; set; }
 
         public NotificationSendStatus SendStatus { get; set; }
 
@@ -49,6 +55,8 @@ namespace Arad.Portal.DataLayer.Entities.General.Notify
         public string BatchId { get; set; }
 
         public List<Attachment> Attachments { get; set; }
+
+        public List<(string, string)> ExtraData { get; set; }
 
         public string TemplateName { get; set; }
     }

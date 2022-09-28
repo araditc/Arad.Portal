@@ -827,52 +827,6 @@ namespace Arad.Portal.UI.Shop.Controllers
         }
 
 
-        //[HttpPost]
-        //public async Task<IActionResult> ChangePassword(ChangePassword model)
-        //{
-        //    JsonResult result;
-        //    if (!ModelState.IsValid)
-        //    {
-        //        List<ClientValidationErrorModel> errors = new List<ClientValidationErrorModel>();
-
-        //        foreach (var modelStateKey in ModelState.Keys)
-        //        {
-        //            var modelStateVal = ModelState[modelStateKey];
-        //            foreach (var error in modelStateVal.Errors)
-        //            {
-        //                var obj = new ClientValidationErrorModel
-        //                {
-        //                    Key = modelStateKey,
-        //                    ErrorMessage = error.ErrorMessage,
-        //                };
-
-        //                errors.Add(obj);
-        //            }
-        //        }
-        //        result = Json(new { Status = "ModelError", ModelStateErrors = errors });
-        //    }
-
-        //    try
-        //    {
-        //        var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-        //        var user = await _userManager.FindByIdAsync(userId);
-
-        //        var res = await _userManager.ChangePasswordAsync(user, model.Password, model.NewPassword);
-
-        //        if (res.Succeeded)
-        //        {
-        //            result = Json(new { status = "success", Message = Language.GetString("AlertAndMessage_PasswordChangeSuccessfully") });
-        //        }
-        //       result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_ErrorTryAgain"), ModelStateErrors = new List<string>() });
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        result = Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_ErrorTryAgain"), ModelStateErrors = new List<string>() });
-        //    }
-        //    return result;
-        //}
-
-
         [HttpGet]
         public async Task<IActionResult> Profile()
         {
@@ -1048,49 +1002,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             return Ok(new { Status = "Success", result.Message });
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Login([FromForm] LoginViewModel model)
-        //{
-        //    if (!HttpContext.Session.ValidateCaptcha(model.Captcha))
-        //    {
-        //        ModelState.AddModelError("Captcha", Language.GetString("AlertAndMessage_CaptchaIsExpired"));
-        //    }
-
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(model);
-        //    }
-
-        //    await HttpContext.SignOutAsync();
-        //    ApplicationUser user = await _userManager.FindByNameAsync(model.Username);
-
-        //    if (user == null || await _userManager.CheckPasswordAsync(user, model.Password) != true)
-        //    {
-        //        ViewBag.Message = Language.GetString("AlertAndMessage_InvalidUsernameOrPassword");
-        //        return View(model);
-        //    }
-
-        //    if (!user.IsActive)
-        //    {
-        //        ViewBag.Message = Language.GetString("AlertAndMessage_InActiveUserAccount");
-        //        return View(model);
-        //    }
-        //    await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
-
-        //    user.LastLoginDate = DateTime.Now;
-        //    await _userManager.UpdateAsync(user);
-
-        //    if (!string.IsNullOrWhiteSpace(model.ReturnUrl) && model.ReturnUrl != "/")
-        //    {
-        //        return Redirect(model.ReturnUrl);
-        //    }
-
-        //    TempData["LoginUser"] = $"{user.Profile.FirstName} {user.Profile.LastName} {Language.GetString("AlertAndMessage_Welcome")}";
-        //    return RedirectToAction("Index", "Home");
-        //}
-
-
+       
         [HttpGet]
         public IActionResult ChangeLang(string langId)
         {

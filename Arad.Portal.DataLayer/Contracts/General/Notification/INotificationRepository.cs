@@ -24,5 +24,7 @@ namespace Arad.Portal.DataLayer.Contracts.General.Notification
         Task<Result> AddRange(IEnumerable<Entities.General.Notify.Notification> entities);
         Task<Result> UpdateMany(List<string> notificationIds, 
             UpdateDefinition<Entities.General.Notify.Notification> definitions);
+
+       
     }
 }

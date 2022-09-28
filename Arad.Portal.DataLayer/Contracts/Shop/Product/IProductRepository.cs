@@ -49,16 +49,8 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         Task<Result<EntityRate>> RateProduct(string productId, int score, bool isNew, int prevScore);
         List<Image> GetPictures(string productId);
         List<string> GetProductGroups(string productId);
-
-        //Task<bool> SetProductPic(string path, string productId);
         List<ProductSpecificationValue> GetProductSpecifications(string productId);
-        //ProductBasket GetProductBasket(string id);
-        //ProductFav GetProductFav(string id);
-        //Task<bool> UpdateViewersCount(string id);
-        //Task<bool> UpdateSaleCount(string id);
         Task<Result> ChangeActivation(string productId, string modificationReason);
-
-        //Pagination<ProductViewGallery> ListProductsGroup(GalleryPagination modelPagination);
         int GetInventory(string productId);
         /// <summary>
         /// 
@@ -68,8 +60,7 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         /// <param name="count"></param>
         /// <returns></returns>
         Task<Result> UpdateProductInventory(string productId, bool isIncreament, int count);
-        //ProductOutputDTO FetchBySlug(string slug, string domainName);
-
+       
         ProductOutputDTO FetchByCode(string slugOrCode, DomainDTO dto, string userId);
 
         string FetchIdByCode(long productCode);
@@ -77,17 +68,13 @@ namespace Arad.Portal.DataLayer.Contracts.Shop.Product
         string FetchUrlFriendById(string productId);
 
         List<ProductOutputDTO> GetSpecialProducts(int count, string currencyId, ProductOrContentType type, int skip = 0);
-
-        //Task<PagedItems<ProductOutputDTO>> GetSpecialProduct(int cnt, string currencyId, ProductOrContentType type, int skip);
         Task<PagedItems<ProductOutputDTO>> GetFilteredProduct(int count, int skip, string currencyId, string languageId, string domainId, SelectedFilter filter);
         bool HasActiveProductPromotion(string productId);
         List<SelectListModel> GetAllActiveProductList(string langId, string currentUserId, string productGroupId, string vendorId);
         List<SelectListModel> GetAllProductList(ApplicationUser user,string productGroupId, string langId);
         List<SelectListModel> GetAlActiveProductGroup(string langId);
-
         List<SelectListModel> GetGroupsOfThisVendor(string vendorId, string domainId);
         List<SelectListModel> GetProductsOfThisVendor(string langId, string currentUserId);
-
         List<Entities.Shop.Product.Product> AllProducts(string domainId);
         string GetProductSpecificationName(string specificationId, string languageId);
         

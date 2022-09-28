@@ -1,5 +1,6 @@
 ﻿using Arad.Portal.DataLayer.Contracts.General.Notification;
 using Arad.Portal.DataLayer.Entities.General.Notify;
+using Arad.Portal.DataLayer.Helpers;
 using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.GeneralLibrary.Utilities;
 using Microsoft.Extensions.Hosting;
@@ -22,14 +23,16 @@ namespace Arad.Portal.UI.Shop.Helpers
     {
         private readonly INotificationRepository _notificationRepository;
         private readonly Setting _setting;
+        private readonly CreateNotification _createNotification;
         private Timer _timer;
         private bool _flag = true;
         private static readonly object syncLock = new object();
-        public SmsSenderService(INotificationRepository notificationRepository, Setting setting)
+        public SmsSenderService(INotificationRepository notificationRepository,
+                                Setting setting, CreateNotification createNotification)
         {
             _notificationRepository = notificationRepository;
             _setting = setting;
-          
+            _createNotification = createNotification;
         }
 
 
@@ -57,26 +60,29 @@ namespace Arad.Portal.UI.Shop.Helpers
             UpdateDefinition<Notification> definition;
             Stopwatch sw1 = new();
             Stopwatch sw2 = new();
-            //int sucessCount = 0;
-            //int failedCount = 0;
+            int sucessCount = 0;
+            int failedCount = 0;
             sw1.Start();
-            List<Notification> notifications = await _notificationRepository.GetForSend(NotificationType.Sms);
 
+            List<Notification> wholeList = await _notificationRepository.GetForSend(NotificationType.Sms);
+            List<Notification> smsNotifications = wholeList.Where(_ => _.ActionType == ActionType.NoExtraAction).ToList();
+            List<Notification> productNotification = wholeList.Where(_ => _.ActionType == ActionType.ProductAvailibilityReminder).ToList();
             sw1.Stop();
-            if (notifications.Any())
+            sw2.Start();
+            if (smsNotifications.Any())
             {
-                sw2.Start();
+                
 
                 try
                 {
 
-                    string[] smsResultArray = SendSMS_LikeToLike(notifications.Select(_ => _.Body).ToArray(),
-                        notifications.Select(_ => _.UserPhoneNumber).ToArray(),
-                        notifications[0].SendSmsConfig.AradVas_Number,
-                        notifications[0].SendSmsConfig.AradVas_UserName,
-                        notifications[0].SendSmsConfig.AradVas_Password,
-                        notifications[0].SendSmsConfig.AradVas_Link_1,
-                        notifications[0].SendSmsConfig.AradVas_Domain);
+                    string[] smsResultArray = SendSMS_LikeToLike(smsNotifications.Select(_ => _.Body).ToArray(),
+                        smsNotifications.Select(_ => _.UserPhoneNumber).ToArray(),
+                        smsNotifications[0].SendSmsConfig.AradVas_Number,
+                        smsNotifications[0].SendSmsConfig.AradVas_UserName,
+                        smsNotifications[0].SendSmsConfig.AradVas_Password,
+                        smsNotifications[0].SendSmsConfig.AradVas_Link_1,
+                        smsNotifications[0].SendSmsConfig.AradVas_Domain);
 
 
                     if (smsResultArray[0] == "CHECK_OK")
@@ -87,8 +93,8 @@ namespace Arad.Portal.UI.Shop.Helpers
                         definition.AddToSet(nameof(Notification.SentDate), DateTime.Now);
 
                         await _notificationRepository.UpdateMany
-                            (notifications.Select(_ => _.NotificationId).ToList(), definition);
-                        //sucessCount++;
+                            (smsNotifications.Select(_ => _.NotificationId).ToList(), definition);
+                        sucessCount++;
                     }
                     else
                     {
@@ -96,8 +102,8 @@ namespace Arad.Portal.UI.Shop.Helpers
                             NotificationSendStatus.Error);
                         definition.AddToSet(nameof(Notification.ScheduleDate), DateTime.Now);
                         await _notificationRepository.UpdateMany
-                            (notifications.Select(_ => _.NotificationId).ToList(), definition);
-                        //failedCount++;
+                            (smsNotifications.Select(_ => _.NotificationId).ToList(), definition);
+                        failedCount++;
                     }
 
                 }
@@ -107,18 +113,22 @@ namespace Arad.Portal.UI.Shop.Helpers
                         NotificationSendStatus.Error);
                     definition.AddToSet(nameof(Notification.ScheduleDate), DateTime.Now);
                     await _notificationRepository.UpdateMany
-                        (notifications.Select(_ => _.NotificationId).ToList(), definition);
-                    //failedCount++;
+                        (smsNotifications.Select(_ => _.NotificationId).ToList(), definition);
+                    failedCount++;
                     Logger.WriteLogFile($"Error in sending SMS. Error is: {e.Message}");
                 }
-
-
-                sw2.Stop();
-                Logger.WriteLogFile($"RowCount: " +
-                    $"{notifications.Count}\t " +
-                    $"ReadTime: {sw1.ElapsedMilliseconds}\t " +
-                    $"SendTime: {sw2.ElapsedMilliseconds}");
             }
+            if(productNotification.Any())
+            {
+                Parallel.ForEach(productNotification, async notify => { await _createNotification.GenerateProductNotificationToUsers("ProductAvailibilityNotify", notify);  });
+            }
+
+            sw2.Stop();
+            Logger.WriteLogFile($"RowCount: {smsNotifications.Count}\t " +
+                               $"ReadTime: {sw1.ElapsedMilliseconds}\t " +
+                               $"SendTime: {sw2.ElapsedMilliseconds}\t " +
+                               $"SuccessCount: {sucessCount}\t " +
+                               $"FailedCount: {failedCount}");
             _flag = true;
         }
 

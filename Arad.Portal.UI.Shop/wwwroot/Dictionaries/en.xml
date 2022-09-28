@@ -299,6 +299,15 @@
 	<string key="EnumDesc_Sorting">
 		<value>Sorting</value>
 	</string>
+	<string key="EnumDesc_NoExtraAction">
+		<value>No Extra Action</value>
+	</string>
+	<string key="EnumDesc_ProductAvailibilityReminder">
+		<value>ProductAvailibilityReminder</value>
+	</string>
+	<string key="EnumDesc_ProductLackOfInventory">
+		<value>ProductLackOfInventory</value>
+	</string>
 	<string key="EnumDesc_MostVisited">
 		<value>Most Visited</value>
 	</string>

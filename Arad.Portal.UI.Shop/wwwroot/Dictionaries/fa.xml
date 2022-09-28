@@ -306,6 +306,15 @@
 	<string key="EnumDesc_Sorting">
 		<value>مرتب سازی</value>
 	</string>
+	<string key="EnumDesc_NoExtraAction">
+		<value>بدون عملیات اضافی</value>
+	</string>
+	<string key="EnumDesc_ProductAvailibilityReminder">
+		<value>اعلان موجود شدن محصول</value>
+	</string>
+	<string key="EnumDesc_ProductLackOfInventory">
+		<value>اعلان کاهش موجودی محصول به ادمین</value>
+	</string>
 	<string key="EnumDesc_MostVisited">
 		<value>پربازدیدترین</value>
 	</string>

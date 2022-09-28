@@ -1,5 +1,6 @@
 ﻿using Arad.Portal.DataLayer.Contracts.General.Notification;
 using Arad.Portal.DataLayer.Entities.General.Notify;
+using Arad.Portal.DataLayer.Helpers;
 using Arad.Portal.DataLayer.Models.Shared;
 using Arad.Portal.GeneralLibrary.Utilities;
 using MailKit.Net.Smtp;
@@ -18,13 +19,15 @@ namespace Arad.Portal.UI.Shop.Helpers
     public class EmailSenderService
     {
         private readonly INotificationRepository _notificationRepository;
+        private readonly CreateNotification _createNotification;
         private readonly Setting _setting;
         private Timer _timer;
         private bool _flag = true;
-        public EmailSenderService(INotificationRepository notificationRepository, Setting setting)
+        public EmailSenderService(INotificationRepository notificationRepository, Setting setting, CreateNotification createNotification)
         {
             _notificationRepository = notificationRepository;
             _setting = setting;
+            _createNotification = createNotification;
         }
 
         public void StartTimer()
@@ -55,13 +58,15 @@ namespace Arad.Portal.UI.Shop.Helpers
             int sucessCount = 0;
             int failedCount = 0;
             sw1.Start();
-            List<Notification> notifications = await _notificationRepository.GetForSend(NotificationType.Email);
+            List<Notification> wholeList = await _notificationRepository.GetForSend(NotificationType.Email);
+            List<Notification> emailNotifications = wholeList.Where(_ => _.ActionType == ActionType.NoExtraAction).ToList();
+            List<Notification> productNotification = wholeList.Where(_ => _.ActionType == ActionType.ProductAvailibilityReminder).ToList();
             sw1.Stop();
+            sw2.Start();
 
-            if (notifications.Any())
+            if (emailNotifications.Any())
             {
-                sw2.Start();
-                foreach (Notification notification in notifications)
+                foreach (Notification notification in emailNotifications)
                 {
                     try
                     {
@@ -97,14 +102,19 @@ namespace Arad.Portal.UI.Shop.Helpers
                         Logger.WriteLogFile($"Error in sending email. Error is: {e.Message}");
                     }
                 }
-                sw2.Stop();
-                Logger.WriteLogFile($"RowCount: {notifications.Count}\t " +
-                                    $"ReadTime: {sw1.ElapsedMilliseconds}\t " +
-                                    $"SendTime: {sw2.ElapsedMilliseconds}\t " +
-                                    $"SuccessCount: {sucessCount}\t " +
-                                    $"FailedCount: {failedCount}");
             }
 
+            if (productNotification.Any())
+            {
+                Parallel.ForEach(productNotification, async notify => { await _createNotification.GenerateProductNotificationToUsers("ProductAvailibilityNotify", notify); });
+            }
+
+            sw2.Stop();
+            Logger.WriteLogFile($"RowCount: {emailNotifications.Count}\t " +
+                               $"ReadTime: {sw1.ElapsedMilliseconds}\t " +
+                               $"SendTime: {sw2.ElapsedMilliseconds}\t " +
+                               $"SuccessCount: {sucessCount}\t " +
+                               $"FailedCount: {failedCount}");
             _flag = true;
         }
     }
