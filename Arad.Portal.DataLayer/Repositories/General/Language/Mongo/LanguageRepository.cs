@@ -24,6 +24,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
         private readonly LanguageContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
+        public IMongoCollection<Entities.General.Language.Language> Languages { get; set; }
         public LanguageRepository(LanguageContext context, IMapper mapper,
             UserManager<ApplicationUser> userManager,
             IWebHostEnvironment env,
@@ -32,6 +33,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
             _context = context;
             _mapper = mapper;
             _userManager = userManager;
+            Languages = context.Collection;
         }
         public async Task<Result> AddNewLanguage(LanguageDTO dto)
         {
@@ -57,16 +59,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
 
             return result;
         }
-
-
-        /// <summary>
-        /// this method is used just in seedData
-        /// </summary>
-        /// <param name="entity"></param>
-        public void InsertOne(Entities.General.Language.Language entity)
-        {
-            _context.Collection.InsertOne(entity);
-        }
+               
         public async Task<Result> EditLanguage(LanguageDTO dto)
         {
             Result result = new Result();

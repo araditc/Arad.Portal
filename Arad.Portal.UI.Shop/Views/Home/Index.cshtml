@@ -38,7 +38,7 @@
                                     case "ProductList":
                                         try
                                         {
-                                            @await Component.InvokeAsync("SpecialProduct",
+                                                @await Component.InvokeAsync("SpecialProduct",
                                         new { productType = module.ParametersValue.ProductOrContentType,
                                         selectionTemplate = module.ParametersValue.ProductTemplateDesign, count = module.ParametersValue.Count,
                                         loadAnimation = module.ParametersValue.LoadAnimation, loadAnimationType = module.ParametersValue.LoadAnimationType } )
@@ -53,7 +53,7 @@
                                     case "ContentList":
                                         try
                                         {
-                                            @await Component.InvokeAsync("ContentTemplates", module.ParametersValue)
+                                                @await Component.InvokeAsync("ContentTemplates", module.ParametersValue)
                                             ;
                                         }
                                         catch(Exception ex)
@@ -65,7 +65,7 @@
                                     case "HorizantalStoreMenu":
                                         try
                                         {
-                                            @await Component.InvokeAsync("StoreMenu")
+                                                @await Component.InvokeAsync("StoreMenu")
                                             ;
                                         }
                                         catch(Exception ex)
@@ -78,7 +78,7 @@
                                         try
                                         {
                                             Log.Fatal("before invoke imageSlider");
-                                            @await Component.InvokeAsync("SliderModule", new { sliderId =  module.ParametersValue.SliderId })
+                                                @await Component.InvokeAsync("SliderModule", new { sliderId =  module.ParametersValue.SliderId })
                                             ;
                                             Log.Fatal("after invoke imageSlider");
                                         }
@@ -91,7 +91,7 @@
                                     case "LoginAndProfile":
                                         try
                                         {
-                                            @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId, isShop = module.ParametersValue.IsShop })
+                                                @await Component.InvokeAsync("LoginProfile", new { domainId = module.ParametersValue.DomainId, isShop = module.ParametersValue.IsShop })
                                             ;
                                         }
                                         catch(Exception ex)
@@ -103,7 +103,7 @@
                                     case "MultiLingualFlags":
                                         try
                                         {
-                                            @await Component.InvokeAsync("MultiLingual")
+                                                @await Component.InvokeAsync("MultiLingual")
                                             ;
                                         }
                                         catch(Exception ex)
@@ -114,7 +114,7 @@
                                     case "GeneralSearch":
                                      try
                                         {
-                                            @await Component.InvokeAsync("GeneralSearch");
+                                                @await Component.InvokeAsync("GeneralSearch");
                                         }
                                         catch(Exception ex)
                                         {
@@ -132,7 +132,7 @@
                                 var index = column.ColData.LastIndexOf("</div>");
                                 var data = column.ColData.Substring(0, index);
                                 var htmlRaw = data.Replace("<div target=\"editor\">", "");
-                                @Html.Raw(@htmlRaw);
+                                    @Html.Raw(@htmlRaw);
                             }
                             catch (Exception ex)
                             {
@@ -146,7 +146,10 @@
             }
         </div>
     }
-   
+}
+else
+{
+    <h3 class="m-5" style="color: red;">@Language.GetString("AlertAndMessage_NoDesignImplementation")</h3>
 }
 
 

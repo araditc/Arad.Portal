@@ -28,6 +28,14 @@ using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.DataLayer.Repositories.General.Comment.Mongo;
 using Arad.Portal.DataLayer.Repositories.General.Notification.Mongo;
 using Arad.Portal.DataLayer.Helpers;
+using static Arad.Portal.DataLayer.Models.Shared.Enums;
+using Arad.Portal.DataLayer.Entities.General.Email;
+using Arad.Portal.DataLayer.Contracts.General.MessageTemplate;
+using Arad.Portal.DataLayer.Entities.General.MessageTemplate;
+using System.Globalization;
+using Arad.Portal.DataLayer.Contracts.General.Notification;
+using Arad.Portal.DataLayer.Entities.General.Notify;
+using Arad.Portal.DataLayer.Repositories.General.MessageTemplate.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
 {
@@ -44,8 +52,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
         private readonly ShoppingCartContext _shoppingCartContext;
         private readonly IConfiguration _configuration;
         private readonly CommentContext _commentContext;
-        private readonly CreateNotification _createNotification;
         private readonly IMapper _mapper;
+        private readonly MessageTemplateContext _messageTemplateContext;
+        private readonly NotificationContext _notContext;
+      
 
 
         public ProductRepository(IHttpContextAccessor httpContextAccessor,
@@ -58,8 +68,10 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             LanguageContext languageContext,
             DomainContext domainContext,
             IHttpContextAccessor accessor,
-            CreateNotification createNotification,
             IWebHostEnvironment env,
+            MessageTemplateContext msgContext,
+            NotificationContext notificationContext,
+            IMessageTemplateRepository messageTemplateRepository,
             TransactionContext transactionContext)
             : base(httpContextAccessor, env)
         {
@@ -73,7 +85,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
             _shoppingCartContext = shoppingCartContext;
             _currencyContext = currencyContext;
             _commentContext = commentContext;
-            _createNotification = createNotification;
+            _messageTemplateContext = msgContext;
+            _notContext = notificationContext;
         }
 
         public async Task<Result<string>> Add(ProductInputDTO dto)
@@ -718,7 +731,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                     {
                         var userId = _httpContextAccessor.HttpContext.User.Claims
                    .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-                        await _createNotification.AddReminderProductNotify("ProductAvailibilityNotify", equallentModel, userId, Enums.NotificationType.Sms);
+                        await AddReminderProductNotify("ProductAvailibilityNotify", equallentModel, userId, Enums.NotificationType.Sms);
                     }
                     result.Succeeded = true;
                     result.Message = ConstMessages.SuccessfullyDone;
@@ -729,6 +742,69 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Product.Mongo
                 }
             }
             return result;
+        }
+
+        private async Task<Result> AddReminderProductNotify(string templateName, Entities.Shop.Product.Product product, string adminId, NotificationType notificationType)
+        {
+            try
+            {
+                List<MessageTemplate> messageTemplates = _messageTemplateContext.Collection.Find(_ => _.TemplateName.ToLower() == templateName).ToList();
+
+                if (!messageTemplates.Any())
+                {
+                    return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_NotFoundMessageTemplate") };
+                }
+                MessageTemplate messageTemplate = messageTemplates
+                  .FirstOrDefault(m => m.NotificationType == notificationType &&
+                  m.MessageTemplateMultiLingual.Any(d => d.LanguageName.Equals(CultureInfo.CurrentCulture.Name)));
+
+                //var adminUser = await _userManager.FindByIdAsync(adminId);
+
+                var lanId = _languageContext.Collection.Find(_=>_.Symbol.ToLower() == CultureInfo.CurrentCulture.Name.ToLower()).FirstOrDefault().LanguageId;
+
+                if (messageTemplate != null)
+                {
+
+                    var lanSymbol = CultureInfo.CurrentCulture.Name;
+                    var productName = product.MultiLingualProperties.Any(_ => _.LanguageId == lanId) ?
+                            product.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).Name :
+                            product.MultiLingualProperties.FirstOrDefault().Name;
+                    var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+                    if (domainId == null)
+                    {
+                        domainId = _domainContext.Collection.Find(_ => _.IsDefault == true).FirstOrDefault().DomainId;
+                    }
+                    Notification notification = new()
+                    {
+                        Type = notificationType,
+                        ActionType = ActionType.ProductAvailibilityReminder,
+                        NotificationId = Guid.NewGuid().ToString(),
+                        IsActive = true,
+                        ScheduleDate = DateTime.Now.ToUniversalTime(),
+                        SendStatus = NotificationSendStatus.Store,
+                        CreationDate = DateTime.Now.ToUniversalTime(),
+                        CreatorUserId = adminId,
+                        CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
+                               .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value,
+                        TemplateName = "ProductNotifyRecord",
+                        UserFullName = "",
+                        SendSmsConfig = new SendSmsConfig(),
+                        SMTP = new SMTP(),
+                        AssociatedDomainId = domainId,
+                        ExtraData = new List<(string, string)> { ("productId", product.ProductId),
+                            ("productName",productName) }
+                    };
+
+                    await _notContext.Collection.InsertOneAsync(notification);
+                    return new() { Succeeded = true, Message = Language.GetString("AlertAndMessage_OperationSuccess") };
+
+                }
+                return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_NotFoundMessageTemplate") };
+            }
+            catch (Exception)
+            {
+                return new() { Succeeded = false, Message = Language.GetString("AlertAndMessage_InsertError") };
+            }
         }
 
         public async Task<Result> Restore(string productId)

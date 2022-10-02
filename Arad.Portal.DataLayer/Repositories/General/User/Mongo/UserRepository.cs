@@ -29,7 +29,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
         private readonly RoleContext _roleContext;
         private readonly PermissionContext _permissionContext;
         private readonly IMapper _mapper;
-        private readonly UserManager<ApplicationUser> _userManager;
+       // private readonly UserManager<ApplicationUser> _userManager;
         public UserRepository(UserContext userContext,
             RoleContext roleContext,
             UserManager<ApplicationUser> userManager,
@@ -42,7 +42,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             _roleContext = roleContext;
             _permissionContext = permissionContext;
             _mapper = mapper;
-            _userManager = userManager;
+           // _userManager = userManager;
         }
 
         public Result AddToUserFavoriteList(string userId, FavoriteType type, string entityId, string url, string domainId)
@@ -108,8 +108,9 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
 
         public ApplicationUser FindAdminOfDomain(string domainId)
         {
-            var domainUser = _userManager.Users.Where(_ => _.DomainId == domainId && _.IsDomainAdmin).FirstOrDefault();
-            return domainUser;
+            //var domainAdminUser = _userManager.Users.Where(_ => _.DomainId == domainId && _.IsDomainAdmin).FirstOrDefault();
+            var domainAdminUser = _context.Collection.Find(_ => _.DomainId == domainId && _.IsDomainAdmin).FirstOrDefault();
+            return domainAdminUser;
         }
 
         public List<string> GetAccessibleRoutsOfUser(ApplicationUser user)
@@ -308,7 +309,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             var res = new Result();
             try
             {
-                var userEntity = await _userManager.FindByIdAsync(userId);
+                var userEntity = (await _context.Collection.FindAsync(_ => _.Id == userId)).FirstOrDefault();
                
                 if (userEntity != null)
                 {
@@ -333,7 +334,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
             var res = new Result();
             try
             {
-                var userEntity = await _userManager.FindByIdAsync(userId);
+                
+                var userEntity = (await _context.Collection.FindAsync(_ => _.Id == userId)).FirstOrDefault();
                 if (userEntity != null)
                 {
                     var index = userEntity.Profile.InformProductList.IndexOf(productId);
@@ -356,7 +358,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.User.Mongo
         {
             var res = new Result<List<string>>();
             res.ReturnValue = new List<string>();
-            var userEntity = await _userManager.FindByIdAsync(userId);
+            var userEntity = (await _context.Collection.FindAsync(_ => _.Id == userId)).FirstOrDefault();
             if (userEntity != null)
             {
                 res.ReturnValue = userEntity.Profile.InformProductList;

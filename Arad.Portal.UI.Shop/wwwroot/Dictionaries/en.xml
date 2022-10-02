@@ -906,8 +906,15 @@
 	<string key="Validation_MobileNumberInvalid2">
 		<value>Enter the number of fixed phone.</value>
 	</string>
-
-
+	<string key="AlertAndMessage_NoDesignImplementation">
+		<value>No design has beeen implemented for this address.</value>
+	</string>
+	<string key="AlertAndMessage_NoFooterDesignImplementation">
+		<value>No design has beeen implemented for footer.</value>
+	</string>
+	<string key="AlertAndMessage_NoHeaderDesignImplementation">
+		<value>No design has beeen implemented for this header.</value>
+	</string>
 	<string key="AlertAndMessage_AddToFavoriteList">
 		<value>Add to Favorite List</value>
 	</string>

@@ -59,7 +59,6 @@ using Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo;
 using Arad.Portal.DataLayer.Repositories.Shop.Transaction.Mongo;
 using Arad.Portal.UI.Shop.Authorization;
 using Arad.Portal.UI.Shop.Helpers;
-using Arad.Portal.UI.Shop.LifeTimeApplicationEvents;
 using Arad.Portal.UI.Shop.Middlewares;
 using Arad.Portal.UI.Shop.Scheduling;
 using AspNetCore.Identity.Mongo;
@@ -91,6 +90,7 @@ using MongoDB.Driver;
 using Arad.Portal.DataLayer.Services;
 using Lucene.Net.Index;
 using Lucene.Net.Store;
+using Microsoft.AspNetCore.Identity;
 
 namespace Arad.Portal.UI.Shop
 {
@@ -197,8 +197,11 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<LayoutContentProcess>();
             AddRepositoryServices(services);
             services.AddTransient<IRazorPartialToStringRenderer, RazorPartialToStringRenderer>();
-            services.AddSingleton<IHostedService, LifetimeEventsHostedService>();
+            services.AddSingleton<SharedRuntimeData>();
             
+            services.AddSingleton<IHostedService, LifetimeEventsHostedService>();
+           
+
             ServiceProvider sp = services.BuildServiceProvider();
 
             //cacheCleaner
@@ -228,7 +231,7 @@ namespace Arad.Portal.UI.Shop
 
             services.AddLocalization();
            
-            services.AddSingleton<SharedRuntimeData>();
+            
            // services.AddProgressiveWebApp();
         }
         private void CheckAndConfigureLuceneIndexs(ServiceProvider sp)
@@ -426,7 +429,7 @@ namespace Arad.Portal.UI.Shop
             services.AddTransient<ModuleContext>();
             services.AddTransient<SliderContext>();
             services.AddTransient<LuceneService>();
-
+           
             #endregion
 
             #region repositories

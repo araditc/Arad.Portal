@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.IO;
@@ -27,20 +28,27 @@ namespace Arad.Portal.GeneralLibrary.Utilities
     public class Language
     {
         #region---------- Constructors -------------------
-        private Language() { }
+        private Language()
+        {
+
+        }
         static Language()
         {
             activeLanguage = AvalibaleLanguages.en;
         }
         #endregion
 
+        public List<string> AvailableCultures { get; set; }
         public enum AvalibaleLanguages
         {
             fa = 1, //Farsi
             en = 2, //English
         }
 
-
+        //private static List<string>  GetAllAvailableCultures()
+        //{
+        //    Ava
+        //}
         private static AvalibaleLanguages MapCultureInfo(CultureInfo info)
         {
             switch (info.Name)

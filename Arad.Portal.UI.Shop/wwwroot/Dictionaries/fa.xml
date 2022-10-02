@@ -907,6 +907,15 @@
 	<string key="Validation_MobileNumberInvalid2">
 		<value>شماره وارد شده مربوط به تلفن ثابت می باشد.</value>
 	</string>
+	<string key="AlertAndMessage_NoDesignImplementation">
+		<value>هیچ طراحی برای این آدرس تعریف نشده است.</value>
+	</string>
+	<string key="AlertAndMessage_NoFooterDesignImplementation">
+		<value>هیچ طراحی برای فوتر تعریف نشده است.</value>
+	</string>
+	<string key="AlertAndMessage_NoHeaderDesignImplementation">
+		<value>هیچ طراحی برای هدر تعریف نشده است.</value>
+	</string>
 	<string key="AlertAndMessage_AddToCompareList">
 		<value>به لیست مقایسه افزوده شد</value>
 	</string>

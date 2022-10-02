@@ -29,6 +29,10 @@
     {
       "library": "noUiSlider@15.6.1",
       "destination": "wwwroot/lib/noUiSlider/"
+    },
+    {
+      "library": "flag-icons@6.6.6",
+      "destination": "wwwroot/lib/flag-icons/"
     }
   ]
 }

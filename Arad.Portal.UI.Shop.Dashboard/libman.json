@@ -7,14 +7,17 @@
       "destination": "wwwroot/lib/animate.css3.5.2/"
     },
     {
-      "provider": "cdnjs",
       "library": "animate.css@4.1.1",
       "destination": "wwwroot/lib/animate.css/"
     },
     {
-      "provider": "cdnjs",
       "library": "bootstrap-colorpicker@3.4.0",
       "destination": "wwwroot/lib/bootstrap-colorpicker/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "flag-icons@6.6.6",
+      "destination": "wwwroot/lib/flag-icons/"
     }
   ]
 }

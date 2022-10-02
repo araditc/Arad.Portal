@@ -18,8 +18,11 @@ namespace Arad.Portal.DataLayer.Entities.General.Country
 
         public string Name { get; set; }
 
+        /// <summary>
+        /// Alpha-2 code
+        /// </summary>
         public string SortName { get; set; }
-
+       
         public List<State> States { get; set; }
     }
 

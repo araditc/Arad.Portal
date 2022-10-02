@@ -34,31 +34,17 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 
             #region Language
             var languageRepository =
-                (LanguageRepository)scope.ServiceProvider.GetService(typeof(ILanguageRepository));
+              (LanguageRepository)scope.ServiceProvider.GetService(typeof(ILanguageRepository));
             if (!languageRepository.HasAny())
             {
-                var lan = new DataLayer.Entities.General.Language.Language()
+                using StreamReader r = new StreamReader(Path.Combine(applicationPath, "SeedData", "Languages.json"));
+                string json = r.ReadToEnd();
+                List<DataLayer.Entities.General.Language.Language> languages = JsonConvert.DeserializeObject<List<DataLayer.Entities.General.Language.Language>>(json);
+
+                if (languages.Any())
                 {
-                    //LanguageId = Guid.NewGuid().ToString(),
-                    LanguageId = "9cbda53a-f5ca-47df-a648-44de1c06c75c",
-                    Direction = DataLayer.Entities.General.Language.Direction.ltr,
-                    IsActive = true,
-                    LanguageName = "English",
-                    Symbol = "en-US",
-                    IsDefault = false
-                };
-                languageRepository.InsertOne(lan);
-                var lanFa = new DataLayer.Entities.General.Language.Language()
-                {
-                    //LanguageId = Guid.NewGuid().ToString(),
-                    LanguageId = "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
-                    Direction = DataLayer.Entities.General.Language.Direction.rtl,
-                    IsActive = true,
-                    LanguageName = "فارسی",
-                    Symbol = "fa-IR",
-                    IsDefault = true
-                };
-                languageRepository.InsertOne(lanFa);
+                    languageRepository.Languages.InsertMany(languages);
+                }
             }
             #endregion Language
 

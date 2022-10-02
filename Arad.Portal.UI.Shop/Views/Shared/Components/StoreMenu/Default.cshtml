@@ -175,6 +175,10 @@
             </div>
         </div>
     </div>
+    @if(Model.Where(_ => _.ParentId == null && _.IsFull).Count() == 0)
+    {
+       <p class="m-5">@Language.GetString("AlertAndMessage_NoHeaderDesignImplementation")</p>
+    }
 
 
 <script on-content-loaded="true">
