@@ -3,6 +3,7 @@
 //  Copyright (c) 2005-2021 Arad ITC.
 //
 //  Author : Ammar Heidari <ammar@arad-itc.org>
+//  Modified by : Somaye Azizi <azizi@arad-itc.org>
 //  Licensed under the Apache License, Version 2.0 (the "License")
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
@@ -22,52 +23,58 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.IO;
-
+using System.Linq;
+using Newtonsoft.Json;
 namespace Arad.Portal.GeneralLibrary.Utilities
 {
+
+    public class KeyVal
+    {
+        public string Key { get; set; }
+
+        public string Value { get; set; }
+    }
     public class Language
     {
         #region---------- Constructors -------------------
         private Language()
         {
-
+            AvailableNeutralCultures = CultureInfo.GetCultures(CultureTypes.AllCultures & CultureTypes.NeutralCultures).ToList()
+              .Where(_ => !string.IsNullOrEmpty(_.Name)).Select(_ => _.Name).ToList();
         }
         static Language()
         {
-            activeLanguage = AvalibaleLanguages.en;
+            activeLanguage = "en";
+            AvailableNeutralCultures = CultureInfo.GetCultures(CultureTypes.AllCultures & CultureTypes.NeutralCultures).ToList()
+                .Where(_=>!string.IsNullOrEmpty(_.Name)).Select(_=>_.Name).ToList();
         }
         #endregion
 
-        public List<string> AvailableCultures { get; set; }
-        public enum AvalibaleLanguages
-        {
-            fa = 1, //Farsi
-            en = 2, //English
-        }
+        public static List<string> AvailableNeutralCultures { get; set; }
+      
 
-        //private static List<string>  GetAllAvailableCultures()
-        //{
-        //    Ava
-        //}
-        private static AvalibaleLanguages MapCultureInfo(CultureInfo info)
+        /// <summary>
+        /// cultureInfo.Name
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        private static string MapCultureInfo(CultureInfo info)
         {
-            switch (info.Name)
+            if(info.CultureTypes == CultureTypes.NeutralCultures)
             {
-                case "fa-IR":
-                    return AvalibaleLanguages.fa;
-
-                case "en-US":
-                case "en-UK":
-                    return AvalibaleLanguages.en;
-
-                default:
-                    return AvalibaleLanguages.en;
+                return info.Name;
+            }else
+            {
+                return info.Name.Split("-")[0];
             }
         }
 
         public static string _hostingEnvironment;
-        private static AvalibaleLanguages activeLanguage;
+
+        private static string activeLanguage;
+
         private static Hashtable languageDictionary = null;
+
         private static object fillDictionaryCacheLock = new object(); // Used to ensure only one thread can run FillDictionaryCache
 
 
@@ -82,17 +89,16 @@ namespace Arad.Portal.GeneralLibrary.Utilities
 
                 Hashtable dictionaryCache = new Hashtable();
 
-                string xmlPath = Path.Combine(_hostingEnvironment, "Dictionaries");
+                string jsonPath = Path.Combine(_hostingEnvironment, "Dictionaries");
 
-                foreach (AvalibaleLanguages language in System.Enum.GetValues(typeof(AvalibaleLanguages)))
+                foreach (var lan in AvailableNeutralCultures)
                 {
-                    string languageCode = language.ToString();
                     Hashtable dictionary = new Hashtable();
 
-                    LoadDictionaryHashtableFromFile(languageCode, xmlPath, ref dictionary);
+                    LoadDictionaryHashtableFromFile(lan, jsonPath, ref dictionary);
 
-                    if (!dictionaryCache.ContainsKey(languageCode))
-                        dictionaryCache.Add(languageCode, dictionary);
+                    if (!dictionaryCache.ContainsKey(lan))
+                        dictionaryCache.Add(lan, dictionary);
                 }
 
                 if (dictionaryCache.Count == 0)
@@ -104,29 +110,35 @@ namespace Arad.Portal.GeneralLibrary.Utilities
 
         private static void LoadDictionaryHashtableFromFile(string languageCode, string dictionariesPath, ref Hashtable htDictionary)
         {
-            string filePath = Path.Combine(dictionariesPath, languageCode + ".xml");
+            string filePath = Path.Combine(dictionariesPath, languageCode + ".json");
 
             if (!System.IO.File.Exists(filePath))
+            {
+                filePath = Path.Combine(dictionariesPath, "en" + ".json");
+            }
+
+            //DataSet dictionaryDataSet = new DataSet();
+            //dictionaryDataSet.ReadXml(filePath);
+            //if (dictionaryDataSet.Tables.Count == 0)
+            //    return;
+            //DataTable dtDictionary = dictionaryDataSet.Tables[0];
+            string readResult = System.IO.File.ReadAllText(filePath);
+            if(string.IsNullOrWhiteSpace(readResult))
+            {
                 return;
-
-            DataSet dictionaryDataSet = new DataSet();
-            dictionaryDataSet.ReadXml(filePath);
-
-            if (dictionaryDataSet.Tables.Count == 0)
-                return;
-
-            DataTable dtDictionary = dictionaryDataSet.Tables[0];
+            }
+            List<KeyVal> data = JsonConvert.DeserializeObject<List<KeyVal>>(readResult);
 
             try
             {
-                foreach (DataRow word in dtDictionary.Rows)
+                foreach (KeyVal word in data)
                 {
-                    htDictionary.Add(word["key"].ToString(), word["value"]);
+                    htDictionary.Add(word.Key, word.Value);
                 }
             }
             catch (ArgumentException ex)
             {
-                throw new Exception("Duplicate key found in XML dictionary files. " + ex.Message, ex);
+                throw new Exception("Duplicate key found in JSON dictionary files. " + ex.Message, ex);
             }
         }
 
@@ -136,7 +148,7 @@ namespace Arad.Portal.GeneralLibrary.Utilities
             FillDictionaryCache();
         }
 
-        public static AvalibaleLanguages ActiveLanguage
+        public static string ActiveLanguage
         {
             set
             {
@@ -153,7 +165,7 @@ namespace Arad.Portal.GeneralLibrary.Utilities
         public static string GetString(string keyword)
         {
             activeLanguage = MapCultureInfo(CultureInfo.CurrentCulture);
-            string languageCode = ActiveLanguage.ToString();
+            string languageCode = ActiveLanguage;
 
             if (keyword == null)
                 return string.Empty;

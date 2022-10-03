@@ -1,20 +1,13 @@
 ﻿@{
     Layout = null;
-    var dir = "";
-    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-    {
-        dir = "rtl";
-    }
-    else
-    {
-        dir = "ltr";
-    }
+     var direction = HelpersMothods.GetDirection(CultureInfo.CurrentCulture);
+    var lang = HelpersMothods.GetHtmlLang(CultureInfo.CurrentCulture);
 }
-<html style="height: auto;">
+<html style="height: auto;" dir="@direction" lang="@lang">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>عدم دسترسی</title>
+    <title>@Language.GetString("AlertAndMessage_Inaccessibility")</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @if (dir == "ltr")
@@ -38,9 +31,6 @@
 
                 <div class="error-content">
                     <h3><i class="fa fa-warning text-danger"></i>@Language.GetString("AlertAndMessage_NotFound")</h3>
-                    @*<p>
-                            صفحه یا آیتمی که درخواست کرده اید پیدا نشد با <a href="@Url.Action("Login","Account")"> این لینک </a>می توانید به صفحه اصلی برگردید..
-                     </p>*@
                 </div>
             </div>
             <!-- /.error-page -->

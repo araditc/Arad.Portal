@@ -1,31 +1,11 @@
 ﻿@using System.Globalization
 @model Arad.Portal.DataLayer.Models.Shared.InstallModel
-
 @{
-    var dir = "";
+
     var error = Language.GetString("AlertAndMessage_Error");
-    var langList = new List<string>() { "fa", "en" };
-    string lang = "";
-    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-    {
-        dir = "rtl";
-        ViewBag.dir = "rtl";
-    }
-    else
-    {
-        dir = "ltr";
-        ViewBag.dir = "ltr";
-    }
-    switch (CultureInfo.CurrentCulture.Name)
-    {
-        case "fa-IR":
-            lang = "fa";
-            break;
-        case "en-US":
-            lang = "en";
-            break;
-    }
     Layout = null;
+    var dir = HelpersMothods.GetDirection(CultureInfo.CurrentCulture);
+    var lang = HelpersMothods.GetHtmlLang(CultureInfo.CurrentCulture);
 }
 <!DOCTYPE html>
 <html dir="@dir" lang="@lang">
@@ -44,12 +24,12 @@
         <link href="~/lib/bootstrap5/css/bootstrap.rtl.min.css" rel="stylesheet" />
         <link href="~/Fonts/IranSans/css/fontiran.css" rel="stylesheet" />
     }
-  
+
     <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
     <link href="~/lib/intl-tel-input/css/intlTelInput.css" rel="stylesheet" />
-    
+
     <link href="~/css/site.css" rel="stylesheet" />
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -61,12 +41,12 @@
 </head>
 <body>
 
-     <div class="position-fixed left-50 top-0 p-5" id="toastPanel" style="z-index: 11;">
+    <div class="position-fixed left-50 top-0 p-5" id="toastPanel" style="z-index: 11;">
         <div aria-atomic="true" aria-live="assertive" class="toast" id="mainToast" role="alert" autohide="false">
             <div class="toast-header">
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <div class="toast-body p-3 fs-5 rounded-3 text-center" id="mainToastBody" >
+            <div class="toast-body p-3 fs-5 rounded-3 text-center" id="mainToastBody">
             </div>
         </div>
     </div>
@@ -78,7 +58,7 @@
                         <h5 class="card-title">@Language.GetString("User_SysAccount")</h5>
                     </div>
                     <div class="card-body">
-                       
+
                         <div class="row">
                             <div class="form-group col-12 col-md-4 p-2">
                                 <label for="Name" class="form-label">@Language.GetString("User_FirstName")</label>
@@ -151,7 +131,7 @@
                             </div>
                             <div class="form-group col-12 col-md-3">
                                 <label class="form-label" for="">@Language.GetString("Title")</label><br />
-                                <input type="text" class="form-control" asp-for="Title" >
+                                <input type="text" class="form-control" asp-for="Title">
                                 <span data-val-result="Title" class="text-danger"></span>
                             </div>
                         </div>
@@ -159,7 +139,7 @@
                         <div class="row m-1">
                             <div class="form-group col-12 col-md-3">
                                 <label class="form-label">@Language.GetString("Currency")</label>
-                                <select class="form-control selectpicker" data-live-search="true" name ="CurrencyId" id="CurrencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
+                                <select class="form-control selectpicker" data-live-search="true" name="CurrencyId" id="CurrencyId" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text"))">
                                 </select>
                                 <span data-val-result="CurrencyId" class="text-danger"></span>
                             </div>
@@ -175,62 +155,62 @@
 
                 <div class="card">
                     <div class="card-header">
-                         <h5 class="card-title">@Language.GetString("Setting")</h5>
+                        <h5 class="card-title">@Language.GetString("Setting")</h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="fom-group col-12 col-md-4">
-                                 <label class="form-label">@Language.GetString("ConnectionString")</label>
-                                  <input type="text" class="form-control" asp-for="ConnectionString" dir="ltr">
+                                <label class="form-label">@Language.GetString("ConnectionString")</label>
+                                <input type="text" class="form-control" asp-for="ConnectionString" dir="ltr">
                                 <span data-val-result="ConnectionString" class="text-danger"></span>
                             </div>
-                             <div class="fom-group col-12 col-md-4">
-                                 <label class="form-label">@Language.GetString("LogFileDirectory")</label>
-                                 <input type="text" class="form-control" asp-for="LogFileDirectory" dir="ltr">
-                                  <span data-val-result="LogFileDirectory" class="text-danger"></span>
+                            <div class="fom-group col-12 col-md-4">
+                                <label class="form-label">@Language.GetString("LogFileDirectory")</label>
+                                <input type="text" class="form-control" asp-for="LogFileDirectory" dir="ltr">
+                                <span data-val-result="LogFileDirectory" class="text-danger"></span>
                             </div>
-                             <div class="fom-group col-12 col-md-4">
-                                 <label class="form-label">@Language.GetString("LocalStaticFileStorage")</label>
-                                 <input type="text" class="form-control" asp-for="LocalStaticFileStorage" dir="ltr">
-                                  <span data-val-result="LocalStaticFileStorage" class="text-danger"></span>
+                            <div class="fom-group col-12 col-md-4">
+                                <label class="form-label">@Language.GetString("LocalStaticFileStorage")</label>
+                                <input type="text" class="form-control" asp-for="LocalStaticFileStorage" dir="ltr">
+                                <span data-val-result="LocalStaticFileStorage" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                 <h5 class="card-title">@Language.GetString("SmsLineInformation")</h5>
+                                <h5 class="card-title">@Language.GetString("SmsLineInformation")</h5>
                             </div>
                         </div>
                         <div class="row">
-                             <div class="fom-group col-12 col-md-4">
-                                  <label class="form-label">@Language.GetString("Sms_LinkAddress")</label>
-                                     <input type="text" class="form-control" asp-for="AradVas_Link_1" dir="ltr">
-                                  <span data-val-result="AradVas_Link_1" class="text-danger"></span>
-
-                             </div>
-                             <div class="fom-group col-12 col-md-4">
-                                  <label class="form-label">@Language.GetString("Sms_UserName")</label>
-                                   <input type="text" class="form-control" asp-for="AradVas_UserName" dir="ltr">
-                                  <span data-val-result="AradVas_UserName" class="text-danger"></span>
-
-                             </div>
-                             <div class="fom-group col-12 col-md-4">
-                                  <label class="form-label">@Language.GetString("Sms_Passworrd")</label>
-                                   <input type="text" class="form-control" asp-for="AradVas_Password" dir="ltr">
-                                  <span data-val-result="AradVas_Password" class="text-danger"></span>
-
-                             </div>
-                        </div>
-                        <div class="row">
                             <div class="fom-group col-12 col-md-4">
-                                 <label class="form-label">@Language.GetString("Sms_LineNumber")</label>
-                                  <input type="text" class="form-control" asp-for="AradVas_Number" dir="ltr">
-                                  <span data-val-result="AradVas_Number" class="text-danger"></span>
+                                <label class="form-label">@Language.GetString("Sms_LinkAddress")</label>
+                                <input type="text" class="form-control" asp-for="AradVas_Link_1" dir="ltr">
+                                <span data-val-result="AradVas_Link_1" class="text-danger"></span>
 
                             </div>
                             <div class="fom-group col-12 col-md-4">
-                                 <label class="form-label">@Language.GetString("Sms_ComapnyName")</label>
-                                  <input type="text" class="form-control" asp-for="AradVas_Domain" dir="ltr">
-                                  <span data-val-result="AradVas_Domain" class="text-danger"></span>
+                                <label class="form-label">@Language.GetString("Sms_UserName")</label>
+                                <input type="text" class="form-control" asp-for="AradVas_UserName" dir="ltr">
+                                <span data-val-result="AradVas_UserName" class="text-danger"></span>
+
+                            </div>
+                            <div class="fom-group col-12 col-md-4">
+                                <label class="form-label">@Language.GetString("Sms_Passworrd")</label>
+                                <input type="text" class="form-control" asp-for="AradVas_Password" dir="ltr">
+                                <span data-val-result="AradVas_Password" class="text-danger"></span>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="fom-group col-12 col-md-4">
+                                <label class="form-label">@Language.GetString("Sms_LineNumber")</label>
+                                <input type="text" class="form-control" asp-for="AradVas_Number" dir="ltr">
+                                <span data-val-result="AradVas_Number" class="text-danger"></span>
+
+                            </div>
+                            <div class="fom-group col-12 col-md-4">
+                                <label class="form-label">@Language.GetString("Sms_ComapnyName")</label>
+                                <input type="text" class="form-control" asp-for="AradVas_Domain" dir="ltr">
+                                <span data-val-result="AradVas_Domain" class="text-danger"></span>
 
                             </div>
 
@@ -247,10 +227,10 @@
                 </div>
 
                 <div class="row">
-                        <div class="col-md-4 offset-md-8 col-12">
-                            <input type="submit" value="@Language.GetString("btn_Install")" id="btnSubmit" class="btn btn-primary bg-gradient float-end m-2" />
-                        </div>
+                    <div class="col-md-4 offset-md-8 col-12">
+                        <input type="submit" value="@Language.GetString("btn_Install")" id="btnSubmit" class="btn btn-primary bg-gradient float-end m-2" />
                     </div>
+                </div>
             </form>
         </div>
     </div>
@@ -262,220 +242,191 @@
     <script src="~/lib/intl-tel-input/js/intlTelInput.js"></script>
     <script src="~/lib/intl-tel-input/js/utils.js"></script>
     <script type="text/javascript">
-    $(document).ready(function() {
-        $("#DefaultLanguageId").selectpicker();
-        $("#CurrencyId").selectpicker();
-        var input = document.querySelector("#PhoneNumber");
+        $(document).ready(function() {
+            $("#DefaultLanguageId").selectpicker();
+            $("#CurrencyId").selectpicker();
+            var input = document.querySelector("#PhoneNumber");
             window.intlTelInput(input,
-            {
-            initialCountry: "IR",
-            placeholderNumberType: "MOBILE",
-            separateDialCode: true,
-            utilsScript: "../../lib/intl-tel-input/js/utils.js",
-            nationalMode: true,
-            hiddenInput: "FullMobile"
-            });
+                {
+                    initialCountry: "IR",
+                    placeholderNumberType: "MOBILE",
+                    separateDialCode: true,
+                    utilsScript: "../../lib/intl-tel-input/js/utils.js",
+                    nationalMode: true,
+                    hiddenInput: "FullMobile"
+                });
 
-        $("#installForm").submit(function(e) {
-            e.preventDefault();
-             $('span[data-val-result]').each(function () {
+            $("#installForm").submit(function(e) {
+                e.preventDefault();
+                $('span[data-val-result]').each(function() {
                     $(this).html("");
                 });
-           if(!checkValidation())
-           {
-               var frm = document.getElementById('installForm');
-            var form = new FormData(frm);
+                if (!checkValidation()) {
+                    var frm = document.getElementById('installForm');
+                    var form = new FormData(frm);
 
-             $.ajax({
-            url: $(this).attr('action'),
-            data: form,
-            type: 'Post',
-            processData: false,
-            contentType: false,
-            beforeSend: function() {
-          /*  AddLoading($("#addUserCard"));*/
-            },
-            success: function (result)
-            {
-                debugger;
-                    if (result.status === "success")
-                    {
-
-                            document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
-                            document.getElementById('mainToastBody').classList.add('alert-success');
-                            var toastDiv = $("#mainToast");
-                            $("#toastPanel").show();
-                            var toast = new bootstrap.Toast(toastDiv);
-                            toast.show();
-                            setTimeout(function()
-                                {
-                                     $("#toastPanel").hide();
-                                     window.location.href = '@Url.Action("List")';
-                                },
-                                3000);
-                        }
-                    else if (result.status === "error")
-                      {
-                            var spanErrorList = $('span[data-val-result]');
-
-                            if (spanErrorList.length > 0)
-                            {
-                            spanErrorList.each(function() {
-                                $(this).html("");
-                                $(this).parent().removeClass("has-error");
-                                });
-                            } 
-                            else {
-                            spanErrorList.html("");
-                            spanErrorList.parent().removeClass("has-error");
-                            }
-
-                            if (result.modelStateErrors.length > 0) {
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        data: form,
+                        type: 'Post',
+                        processData: false,
+                        contentType: false,
+                        beforeSend: function() {
+                            /*  AddLoading($("#addUserCard"));*/
+                        },
+                        success: function(result) {
                             debugger;
-                            result.modelStateErrors.forEach(function(value, index) {
-                            $('[data-val-result=' + value.key + ']').append(value.errorMessage);
-                            $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
-                            });
+                            if (result.status === "success") {
+
+                                document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>' + result.message;
+                                document.getElementById('mainToastBody').classList.add('alert-success');
+                                var toastDiv = $("#mainToast");
+                                $("#toastPanel").show();
+                                var toast = new bootstrap.Toast(toastDiv);
+                                toast.show();
+                                setTimeout(function() {
+                                    $("#toastPanel").hide();
+                                    window.location.href = '@Url.Action("List")';
+                                },
+                                    3000);
                             }
-                            else
-                            {
-                                showError(result.message);
-                           }
-                       }
+                            else if (result.status === "error") {
+                                var spanErrorList = $('span[data-val-result]');
 
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert("@error");
-                alert(xhr.status);
-                alert(thrownError);
-            },
-            complete: function () {
-           /* removeLoading($("#addUserCard"));*/
-            }
-            });
-           }else
-           {
-                document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${'@Language.GetString("AlertAndMessage_FillEssentialFields")'}`;
-                document.getElementById('mainToastBody').classList.add('alert-danger');
-                $("#toastPanel").show();
-                var toast = new bootstrap.Toast($("#mainToast"));
-                toast.show();
-                setTimeout(function(){
-                    $("#toastPanel").hide();
-                }, 2000)
+                                if (spanErrorList.length > 0) {
+                                    spanErrorList.each(function() {
+                                        $(this).html("");
+                                        $(this).parent().removeClass("has-error");
+                                    });
+                                }
+                                else {
+                                    spanErrorList.html("");
+                                    spanErrorList.parent().removeClass("has-error");
+                                }
+
+                                if (result.modelStateErrors.length > 0) {
+                                    debugger;
+                                    result.modelStateErrors.forEach(function(value, index) {
+                                        $('[data-val-result=' + value.key + ']').append(value.errorMessage);
+                                        $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                    });
+                                }
+                                else {
+                                    showError(result.message);
+                                }
+                            }
+
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                            alert("@error");
+                            alert(xhr.status);
+                            alert(thrownError);
+                        },
+                        complete: function() {
+                            /* removeLoading($("#addUserCard"));*/
+                        }
+                    });
+                } else {
+                    document.getElementById('mainToastBody').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${'@Language.GetString("AlertAndMessage_FillEssentialFields")'}`;
+                    document.getElementById('mainToastBody').classList.add('alert-danger');
+                    $("#toastPanel").show();
+                    var toast = new bootstrap.Toast($("#mainToast"));
+                    toast.show();
+                    setTimeout(function() {
+                        $("#toastPanel").hide();
+                    }, 2000)
                 }
-            
+
+            });
         });
-    });
 
-    function checkValidation()
-    {
-         var flag = false;
-        if($("#FirstName").val().trim() == "")
-        {
-             $("span[data-val-result='FirstName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-             flag = true;
-        }
-        if($("#LastName").val().trim() == "")
-        {
-             $("span[data-val-result='LastName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-             flag = true;
-        }
-        if($("#UserName").val().trim() == "")
-        {
-             $("span[data-val-result='UserName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-             flag = true;
-        }
-        if($("#Password").val().trim() == "")
-        {
-             $("span[data-val-result='Password']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-             flag = true;
-        }
-        if($("#RePassword").val().trim() == "")
-        {
-             $("span[data-val-result='RePassword']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-             flag = true;
-        }
-        if($("#PhoneNumber").val().trim() == "")
-        {
-             $("span[data-val-result='PhoneNumber']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-             flag = true;
-        }
-        if($("#Password").val().trim() != "" && $("#RePassword").val().trim() != "" && $("#Password").val().trim() !=  $("#RePassword").val().trim())
-        {
-            $("span[data-val-result='RePassword']").html('@Language.GetString("AlertAndMessage_PasswordRepassWordCompare")');
-            flag = true;
-        }
+        function checkValidation() {
+            var flag = false;
+            if ($("#FirstName").val().trim() == "") {
+                $("span[data-val-result='FirstName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#LastName").val().trim() == "") {
+                $("span[data-val-result='LastName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#UserName").val().trim() == "") {
+                $("span[data-val-result='UserName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#Password").val().trim() == "") {
+                $("span[data-val-result='Password']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#RePassword").val().trim() == "") {
+                $("span[data-val-result='RePassword']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#PhoneNumber").val().trim() == "") {
+                $("span[data-val-result='PhoneNumber']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#Password").val().trim() != "" && $("#RePassword").val().trim() != "" && $("#Password").val().trim() != $("#RePassword").val().trim()) {
+                $("span[data-val-result='RePassword']").html('@Language.GetString("AlertAndMessage_PasswordRepassWordCompare")');
+                flag = true;
+            }
 
-        if($("#DefaultLanguageId").val() == "-1")
-        {
-            $("span[data-val-result='DefaultLanguageId']").html('@Language.GetString("AlertAndMessage_OptionEssential")');
-            flag = true;
-        }
+            if ($("#DefaultLanguageId").val() == "-1") {
+                $("span[data-val-result='DefaultLanguageId']").html('@Language.GetString("AlertAndMessage_OptionEssential")');
+                flag = true;
+            }
 
-        if($("#DomainName").val().trim() == "")
-        {
-            $("span[data-val-result='DomainName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-            flag = true;
-        }
-        if($("#Title").val().trim() == "")
-        {
-            $("span[data-val-result='Title']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-            flag = true;
-        }
-        if($("#CurrencyId").val() == "-1")
-        {
-            $("span[data-val-result='CurrencyId']").html('@Language.GetString("AlertAndMessage_OptionEssential")');
-            flag = true;
-        }
+            if ($("#DomainName").val().trim() == "") {
+                $("span[data-val-result='DomainName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#Title").val().trim() == "") {
+                $("span[data-val-result='Title']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#CurrencyId").val() == "-1") {
+                $("span[data-val-result='CurrencyId']").html('@Language.GetString("AlertAndMessage_OptionEssential")');
+                flag = true;
+            }
 
-        if($("#PriceValue").val() == "" || $("#PriceValue").val() =="0" )
-        {
-            $("span[data-val-result='PriceValue']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-            flag = true;
-        }
-        if($("#ConnectionString").val().trim() == "")
-        {
-            $("span[data-val-result='ConnectionString']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-            flag = true;
-        }
-        if($("#LogFileDirectory").val().trim() == "")
-        {
-            $("span[data-val-result='LogFileDirectory']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-            flag = true;
-        }
-        if($("#LocalStaticFileStorage").val().trim() == "")
-        {
-            $("span[data-val-result='LocalStaticFileStorage']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-            flag = true;
-        }
-        if($("#AradVas_Link_1").val().trim() == "")
-        {
-            $("span[data-val-result='AradVas_Link_1']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-            flag = true;
-        }
-        if($("#AradVas_UserName").val().trim() == "")
-        {
-            $("span[data-val-result='AradVas_UserName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-            flag = true;
-        }
-        if($("#AradVas_Password").val().trim() == "")
-        {
-            $("span[data-val-result='AradVas_Password']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-            flag = true;
-        }
-         if($("#AradVas_Number").val().trim() == "")
-        {
-            $("span[data-val-result='AradVas_Number']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-            flag = true;
-        }
-          if($("#AradVas_Domain").val().trim() == "")
-        {
-            $("span[data-val-result='AradVas_Domain']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
-            flag = true;
-        }
+            if ($("#PriceValue").val() == "" || $("#PriceValue").val() == "0") {
+                $("span[data-val-result='PriceValue']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#ConnectionString").val().trim() == "") {
+                $("span[data-val-result='ConnectionString']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#LogFileDirectory").val().trim() == "") {
+                $("span[data-val-result='LogFileDirectory']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#LocalStaticFileStorage").val().trim() == "") {
+                $("span[data-val-result='LocalStaticFileStorage']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#AradVas_Link_1").val().trim() == "") {
+                $("span[data-val-result='AradVas_Link_1']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#AradVas_UserName").val().trim() == "") {
+                $("span[data-val-result='AradVas_UserName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#AradVas_Password").val().trim() == "") {
+                $("span[data-val-result='AradVas_Password']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#AradVas_Number").val().trim() == "") {
+                $("span[data-val-result='AradVas_Number']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
+            if ($("#AradVas_Domain").val().trim() == "") {
+                $("span[data-val-result='AradVas_Domain']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
+                flag = true;
+            }
 
-    }
+        }
     </script>
 
 </body>

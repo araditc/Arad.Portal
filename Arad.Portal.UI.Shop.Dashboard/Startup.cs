@@ -98,7 +98,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
-            GeneralLibrary.Utilities.Language._hostingEnvironment = env.WebRootPath;
+            GeneralLibrary.Utilities.Language._hostingEnvironment = Configuration["DictionaryFolderPath"];
             ApplicationPath = env.ContentRootPath;
             _environment = env;
         }

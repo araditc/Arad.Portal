@@ -4,15 +4,7 @@
     //Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
-    var lan = "";
-    if (CultureInfo.CurrentCulture.Name == "fa-IR")
-    {
-        lan = "fa";
-    }
-    else
-    {
-        lan = "en";
-    }
+    var lan = HelpersMothods.GetHtmlLang(CultureInfo.CurrentCulture);
     var baseAdd = Config["BaseAddress"];
 }
 @section Styles{

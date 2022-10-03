@@ -1,1772 +1,3921 @@
 [
   {
-    "LanguageId": "eaf96cd0-4b53-490e-a93e-63649e3cf8a1",
-    "LanguageName": "Invariant Language (Invariant Country)",
-    "Symbol": "",
+    "LanguageId": "71516ccc-ea09-4192-8e2f-0859954a3025",
+    "LanguageName": "Afar (Djibouti)",
+    "Symbol": "aa-DJ",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "39f6ea78-015f-4831-89fd-74de622773cb",
-    "LanguageName": "Afar",
-    "Symbol": "aa",
+    "LanguageId": "0ecadc27-6a7f-43cd-a182-ec39ae40c3d5",
+    "LanguageName": "Afar (Eritrea)",
+    "Symbol": "aa-ER",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "a979dd05-08af-44cc-8be7-5d59c93e723b",
-    "LanguageName": "Afrikaans",
-    "Symbol": "af",
+    "LanguageId": "bf6585f7-bfda-4280-815b-e34d05180aa1",
+    "LanguageName": "Afar (Ethiopia)",
+    "Symbol": "aa-ET",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "88ec58f7-414a-4930-ba43-6db78a154f4c",
-    "LanguageName": "Aghem",
-    "Symbol": "agq",
+    "LanguageId": "d8918e0e-38ad-49e4-afab-8ac94d2f7f5e",
+    "LanguageName": "Afrikaans (Namibia)",
+    "Symbol": "af-NA",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "12be8f27-b639-4861-a896-e66720ed5e65",
-    "LanguageName": "Akan",
-    "Symbol": "ak",
+    "LanguageId": "a015adbb-74ff-4a03-9763-285dc6296f79",
+    "LanguageName": "Afrikaans (South Africa)",
+    "Symbol": "af-ZA",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "18948f8b-07cc-4b79-ad65-3ec2fe840afa",
-    "LanguageName": "Amharic",
-    "Symbol": "am",
+    "LanguageId": "5b279d7b-bb60-4b61-aad3-91fa5824c4ac",
+    "LanguageName": "Aghem (Cameroon)",
+    "Symbol": "agq-CM",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "376e40f7-e675-437c-8e43-dbe74a8b8e4c",
-    "LanguageName": "Arabic",
-    "Symbol": "ar",
+    "LanguageId": "4d8d2ae7-4fd1-47ba-8f44-d00c9f25a13a",
+    "LanguageName": "Akan (Ghana)",
+    "Symbol": "ak-GH",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "769bb793-73a1-4e29-8f6f-d66deeb7cfc4",
+    "LanguageName": "Amharic (Ethiopia)",
+    "Symbol": "am-ET",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "9e8f2690-02db-468c-98ed-c2e80cde2f9a",
+    "LanguageName": "Arabic (World)",
+    "Symbol": "ar-001",
     "Direction": 1,
     "IsDefault": false
   },
   {
-    "LanguageId": "ba7429d5-b36f-4558-b714-bebf37d030b0",
-    "LanguageName": "Mapuche",
-    "Symbol": "arn",
+    "LanguageId": "260e1c3a-8d27-4098-8fd7-e1d63e452106",
+    "LanguageName": "Arabic (United Arab Emirates)",
+    "Symbol": "ar-AE",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "26d57696-091b-4aa1-85d1-390ca0036e0e",
+    "LanguageName": "Arabic (Bahrain)",
+    "Symbol": "ar-BH",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "bd753744-b09a-4a84-bcf5-0a0c42972f07",
+    "LanguageName": "Arabic (Djibouti)",
+    "Symbol": "ar-DJ",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "3bf7d710-8d77-4466-825c-7ebf231ed798",
+    "LanguageName": "Arabic (Algeria)",
+    "Symbol": "ar-DZ",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "f4e6efce-ebb5-4ae5-b6c6-0534864baa28",
+    "LanguageName": "Arabic (Egypt)",
+    "Symbol": "ar-EG",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "87f27637-384f-4542-b5a3-36db291c45bb",
+    "LanguageName": "Arabic (Eritrea)",
+    "Symbol": "ar-ER",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "852f861a-f6c8-4cc0-920c-7d0c16492333",
+    "LanguageName": "Arabic (Israel)",
+    "Symbol": "ar-IL",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "dec08e24-7ad8-49a8-bc19-87449f7707b4",
+    "LanguageName": "Arabic (Iraq)",
+    "Symbol": "ar-IQ",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "3c842c39-87e3-4727-a3f0-20219d21dd3d",
+    "LanguageName": "Arabic (Jordan)",
+    "Symbol": "ar-JO",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "9283e864-f3f7-47a9-a60c-3c29f6e993f8",
+    "LanguageName": "Arabic (Comoros)",
+    "Symbol": "ar-KM",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "48e05dd7-5a60-40ee-9d39-2b1ba023b0e6",
+    "LanguageName": "Arabic (Kuwait)",
+    "Symbol": "ar-KW",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "e7094c57-bdd2-4654-b505-8a3c563bf298",
+    "LanguageName": "Arabic (Lebanon)",
+    "Symbol": "ar-LB",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "a8f58c4d-22a3-46a4-82d8-43c45733777f",
+    "LanguageName": "Arabic (Libya)",
+    "Symbol": "ar-LY",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "f7a8ccc0-59a3-4bf3-99c4-03d6fc04b201",
+    "LanguageName": "Arabic (Morocco)",
+    "Symbol": "ar-MA",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "5ecf1cb2-c01f-44d9-a056-f798580930a5",
+    "LanguageName": "Arabic (Mauritania)",
+    "Symbol": "ar-MR",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "46df2de6-49db-4c27-bc57-a8f877f503f6",
+    "LanguageName": "Arabic (Oman)",
+    "Symbol": "ar-OM",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "31b54b22-2906-4a9b-9593-2079a438caa0",
+    "LanguageName": "Arabic (Palestinian Authority)",
+    "Symbol": "ar-PS",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "e023bada-b8ce-4959-a3a4-b05e569b9b38",
+    "LanguageName": "Arabic (Qatar)",
+    "Symbol": "ar-QA",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "47f2f5b9-2b1d-415b-a0d5-be74c0fbd3fc",
+    "LanguageName": "Arabic (Saudi Arabia)",
+    "Symbol": "ar-SA",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "faa9cbc9-1480-4bb5-a9e7-a76c08237437",
+    "LanguageName": "Arabic (Sudan)",
+    "Symbol": "ar-SD",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "9e585c52-ad60-4e5b-b162-395cb21652b2",
+    "LanguageName": "Arabic (Somalia)",
+    "Symbol": "ar-SO",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "039b32c1-df60-41a6-925b-abef7f806760",
+    "LanguageName": "Arabic (South Sudan)",
+    "Symbol": "ar-SS",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "6e9f373a-c0da-4697-a2f5-a15d447aa910",
+    "LanguageName": "Arabic (Syria)",
+    "Symbol": "ar-SY",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "49e7de89-6bdb-4b07-8c8a-6abde3f00071",
+    "LanguageName": "Arabic (Chad)",
+    "Symbol": "ar-TD",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "06685d7b-533e-4879-9db2-089b78ee13f1",
+    "LanguageName": "Arabic (Tunisia)",
+    "Symbol": "ar-TN",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "37e6aa62-38ce-4e54-aa67-b2c28b5709eb",
+    "LanguageName": "Arabic (Yemen)",
+    "Symbol": "ar-YE",
+    "Direction": 1,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "0aae96fd-8552-42f4-9177-29c63c01d902",
+    "LanguageName": "Mapuche (Chile)",
+    "Symbol": "arn-CL",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "60eaa9fd-f51e-4037-84ab-0d37e06be443",
-    "LanguageName": "Assamese",
-    "Symbol": "as",
+    "LanguageId": "931b9023-c12f-4331-a130-3abf0de85256",
+    "LanguageName": "Assamese (India)",
+    "Symbol": "as-IN",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "85a84d78-43e7-448c-9655-a49a0498a808",
-    "LanguageName": "Asu",
-    "Symbol": "asa",
+    "LanguageId": "9b59e588-7e66-4ab5-ac5c-ba1e3e2a6846",
+    "LanguageName": "Asu (Tanzania)",
+    "Symbol": "asa-TZ",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "cf860e4f-e25e-4a06-88aa-423d00ced7dc",
-    "LanguageName": "Asturian",
-    "Symbol": "ast",
+    "LanguageId": "2a9c179f-a4e6-48a2-b9e3-00b33d829f48",
+    "LanguageName": "Asturian (Spain)",
+    "Symbol": "ast-ES",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "4f2ea392-7b6c-4b11-affb-ca82ab933977",
-    "LanguageName": "Azerbaijani",
-    "Symbol": "az",
+    "LanguageId": "1517fba0-f722-467c-995f-48100b634463",
+    "LanguageName": "Azerbaijani (Cyrillic, Azerbaijan)",
+    "Symbol": "az-Cyrl-AZ",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "8f219efa-9833-41dc-b180-60e144f5a028",
-    "LanguageName": "Azerbaijani (Cyrillic)",
-    "Symbol": "az-Cyrl",
+    "LanguageId": "0522718f-64e1-445b-aaf4-8fcc6b3389d0",
+    "LanguageName": "Azerbaijani (Latin, Azerbaijan)",
+    "Symbol": "az-Latn-AZ",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "0bf97714-7971-48e5-8547-7ec07cb43a38",
-    "LanguageName": "Azerbaijani (Latin)",
-    "Symbol": "az-Latn",
+    "LanguageId": "e7875cc8-6a08-4faf-a282-30401db2e9c3",
+    "LanguageName": "Bashkir (Russia)",
+    "Symbol": "ba-RU",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "37e694eb-d195-46af-a4b0-f45e38c7786d",
-    "LanguageName": "Bashkir",
-    "Symbol": "ba",
+    "LanguageId": "ab06bb91-ee11-44c9-bb3e-280a4791ed41",
+    "LanguageName": "Basaa (Cameroon)",
+    "Symbol": "bas-CM",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "76065925-1edf-41e1-8ba6-bbe5648bdf4a",
-    "LanguageName": "Basaa",
-    "Symbol": "bas",
+    "LanguageId": "b8a1ec1a-390c-45ac-ab1e-2b6425fde9c0",
+    "LanguageName": "Belarusian (Belarus)",
+    "Symbol": "be-BY",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "6064ab31-794e-4eb7-98b0-f9fc298f89f3",
-    "LanguageName": "Belarusian",
-    "Symbol": "be",
+    "LanguageId": "5583d6cf-afac-418d-9de6-d75878afee2d",
+    "LanguageName": "Bemba (Zambia)",
+    "Symbol": "bem-ZM",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "060661ac-7483-46ad-86b8-496b42cd4abc",
-    "LanguageName": "Bemba",
-    "Symbol": "bem",
+    "LanguageId": "bccfc825-8c07-4c99-a051-515ee90db7dd",
+    "LanguageName": "Bena (Tanzania)",
+    "Symbol": "bez-TZ",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "6e7ba5cd-f72f-4359-9c19-986ad1b3c3b8",
-    "LanguageName": "Bena",
-    "Symbol": "bez",
+    "LanguageId": "586a0d6b-f1d9-4dbd-9b9c-123fd08eb762",
+    "LanguageName": "Bulgarian (Bulgaria)",
+    "Symbol": "bg-BG",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "3a6f57dc-0a2f-45f1-b021-85a25a6e630e",
-    "LanguageName": "Bulgarian",
-    "Symbol": "bg",
+    "LanguageId": "828ff7be-0808-44ac-8764-adf35c69c14a",
+    "LanguageName": "Bamanankan (Mali)",
+    "Symbol": "bm-ML",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "1551a274-eb47-46ea-b45d-60d14f3d2c45",
-    "LanguageName": "Bamanankan",
-    "Symbol": "bm",
+    "LanguageId": "0a8a0867-06b4-478e-841c-b390ed879c9a",
+    "LanguageName": "Bangla (Bangladesh)",
+    "Symbol": "bn-BD",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "a713aed2-78aa-4e92-a3f6-e50ed45af947",
-    "LanguageName": "Bangla",
-    "Symbol": "bn",
+    "LanguageId": "816e5087-fbc7-413a-b249-119325b69272",
+    "LanguageName": "Bangla (India)",
+    "Symbol": "bn-IN",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "b8aa212c-1e81-4f01-aa07-11f8d105fdfd",
-    "LanguageName": "Tibetan",
-    "Symbol": "bo",
+    "LanguageId": "717f7575-3082-42a8-92c1-07bc6126cae0",
+    "LanguageName": "Tibetan (China)",
+    "Symbol": "bo-CN",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "027274fb-6227-4e68-95cd-09664861ec00",
-    "LanguageName": "Breton",
-    "Symbol": "br",
+    "LanguageId": "15fcfb38-7619-4733-b749-8b83deae8a39",
+    "LanguageName": "Tibetan (India)",
+    "Symbol": "bo-IN",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "1c00b74e-37fe-4aea-9bc9-27fcc5699c55",
-    "LanguageName": "Bodo",
-    "Symbol": "brx",
+    "LanguageId": "1fdc4c95-76f4-41b1-a104-ad656a8c347c",
+    "LanguageName": "Breton (France)",
+    "Symbol": "br-FR",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "d358012d-66ab-4259-b92b-bc9c7f50fa58",
-    "LanguageName": "Bosnian",
-    "Symbol": "bs",
+    "LanguageId": "9efd4fb7-5df1-46a3-8380-0e6e5a17ebf6",
+    "LanguageName": "Bodo (India)",
+    "Symbol": "brx-IN",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "399a8808-6b75-48a5-8a66-31aa25052eaa",
-    "LanguageName": "Bosnian (Cyrillic)",
-    "Symbol": "bs-Cyrl",
+    "LanguageId": "e21c2485-cb2f-4544-babb-e79cae9ccd39",
+    "LanguageName": "Bosnian (Cyrillic, Bosnia \u0026 Herzegovina)",
+    "Symbol": "bs-Cyrl-BA",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "a79e91e2-64fa-46de-8782-62ae4b42a05c",
-    "LanguageName": "Bosnian (Latin)",
-    "Symbol": "bs-Latn",
+    "LanguageId": "f3321e1b-5d66-49e4-a40b-e80ac7e81cab",
+    "LanguageName": "Bosnian (Latin, Bosnia \u0026 Herzegovina)",
+    "Symbol": "bs-Latn-BA",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "181f07e0-9b91-4277-8e21-83b39fc0cda5",
-    "LanguageName": "Blin",
-    "Symbol": "byn",
+    "LanguageId": "10835e62-94f4-45a1-9185-4c2fb3f1bf8f",
+    "LanguageName": "Blin (Eritrea)",
+    "Symbol": "byn-ER",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "1e48a605-f9d5-491e-9746-196c25b92108",
-    "LanguageName": "Catalan",
-    "Symbol": "ca",
+    "LanguageId": "6718739f-1860-4b21-b096-03e0e87e36ac",
+    "LanguageName": "Catalan (Andorra)",
+    "Symbol": "ca-AD",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "d86b0fdf-9225-4afa-8579-c75c2b1df097",
-    "LanguageName": "Chakma",
-    "Symbol": "ccp",
+    "LanguageId": "c4af0430-1a19-457a-8e60-b3a54831520d",
+    "LanguageName": "Catalan (Spain)",
+    "Symbol": "ca-ES",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "cc293244-aa24-4499-b879-770f8b3cd053",
-    "LanguageName": "Chechen",
-    "Symbol": "ce",
+    "LanguageId": "22fa3424-fc51-40d6-be93-9622ef54e0fe",
+    "LanguageName": "Catalan (Spain, Valencian)",
+    "Symbol": "ca-ES-VALENCIA",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "02c5d02d-f8ab-40d0-b8ee-c207d6343a1e",
-    "LanguageName": "Cebuano",
-    "Symbol": "ceb",
+    "LanguageId": "22d3ca11-972f-4d79-a2fa-9e729678f903",
+    "LanguageName": "Catalan (France)",
+    "Symbol": "ca-FR",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "38d8671c-2835-45ac-9633-c5c092d8ee40",
-    "LanguageName": "Chiga",
-    "Symbol": "cgg",
+    "LanguageId": "27b07ba9-4dad-4d03-a04f-6904b4bc3fab",
+    "LanguageName": "Catalan (Italy)",
+    "Symbol": "ca-IT",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "dd0bf746-f3fe-4334-a033-4fc463e84ce4",
-    "LanguageName": "Cherokee",
-    "Symbol": "chr",
+    "LanguageId": "06cde857-ee9a-4d56-ade0-b4c79d4d34c2",
+    "LanguageName": "Chakma (Bangladesh)",
+    "Symbol": "ccp-BD",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "c292c56b-91a2-471a-b757-6e638f6b4cd2",
-    "LanguageName": "Central Kurdish",
-    "Symbol": "ckb",
+    "LanguageId": "04ea8bba-60f2-4ee9-a4ae-a89b91797d78",
+    "LanguageName": "Chakma (India)",
+    "Symbol": "ccp-IN",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "80206aea-4cf1-454b-9206-cf25a135a1ef",
-    "LanguageName": "Corsican",
-    "Symbol": "co",
+    "LanguageId": "8ec24a23-b207-47a6-8bb4-693264e3059d",
+    "LanguageName": "Chechen (Russia)",
+    "Symbol": "ce-RU",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "446f3f94-5974-4443-900f-0747db28d9b0",
-    "LanguageName": "Czech",
-    "Symbol": "cs",
+    "LanguageId": "5f186327-523f-494c-a537-c20e7a1ae6b0",
+    "LanguageName": "Cebuano (Philippines)",
+    "Symbol": "ceb-PH",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "796696df-979e-4d4d-9f5a-9bfe82f4ddcd",
-    "LanguageName": "Church Slavic",
-    "Symbol": "cu",
+    "LanguageId": "e21b422d-45b4-4e73-b18f-171dca2c9b80",
+    "LanguageName": "Chiga (Uganda)",
+    "Symbol": "cgg-UG",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "57041f20-bcce-45b4-bafb-c1d227962de2",
-    "LanguageName": "Welsh",
-    "Symbol": "cy",
+    "LanguageId": "ebdd7b36-8874-4c1d-80c7-897b1b15b95e",
+    "LanguageName": "Cherokee (United States)",
+    "Symbol": "chr-US",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "04cbab67-a74a-4bb6-b677-596fea9ae968",
-    "LanguageName": "Danish",
-    "Symbol": "da",
+    "LanguageId": "a849c79e-86ef-4da4-8e9e-20ef575475ba",
+    "LanguageName": "Central Kurdish (Iraq)",
+    "Symbol": "ckb-IQ",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "c0288756-e60f-49d9-904b-deea7e3ab8be",
-    "LanguageName": "Taita",
-    "Symbol": "dav",
+    "LanguageId": "83336c2b-35d9-4a67-b363-3d30aa857a2d",
+    "LanguageName": "Central Kurdish (Iran)",
+    "Symbol": "ckb-IR",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "0b0371a3-503b-4700-947f-2929a8aca1ad",
-    "LanguageName": "German",
-    "Symbol": "de",
+    "LanguageId": "48ebf806-e2a1-4779-bc48-82ef456b600b",
+    "LanguageName": "Corsican (France)",
+    "Symbol": "co-FR",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "9353573b-61f3-4ae9-9ee6-b9d98b6900d2",
-    "LanguageName": "Zarma",
-    "Symbol": "dje",
+    "LanguageId": "6472a81d-964e-4685-a06d-8d22ebc82cff",
+    "LanguageName": "Czech (Czechia)",
+    "Symbol": "cs-CZ",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "6af9fe84-82d7-4f0a-a90a-6bf1ac24e11d",
-    "LanguageName": "Lower Sorbian",
-    "Symbol": "dsb",
+    "LanguageId": "b00229fa-6a9d-4c6a-a761-d10ec2e8bc93",
+    "LanguageName": "Church Slavic (Russia)",
+    "Symbol": "cu-RU",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "5f37feda-e111-4fcd-81a4-fc33eef883cf",
-    "LanguageName": "Duala",
-    "Symbol": "dua",
+    "LanguageId": "673764b8-161f-4420-ae63-f3aa33774a43",
+    "LanguageName": "Welsh (United Kingdom)",
+    "Symbol": "cy-GB",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "5b31d0d0-c857-4735-b659-c60c0b087af8",
-    "LanguageName": "Divehi",
-    "Symbol": "dv",
+    "LanguageId": "3b14f6db-9a76-4c76-8e3f-61908bd76d50",
+    "LanguageName": "Danish (Denmark)",
+    "Symbol": "da-DK",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "6a9c8812-81e9-4f9c-8068-223d7dd8f647",
-    "LanguageName": "Jola-Fonyi",
-    "Symbol": "dyo",
+    "LanguageId": "238e610c-70bc-42b2-9057-a6793615c44c",
+    "LanguageName": "Danish (Greenland)",
+    "Symbol": "da-GL",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "7c75b8ae-d956-4c01-8a73-6f4ffea7ecb1",
-    "LanguageName": "Dzongkha",
-    "Symbol": "dz",
+    "LanguageId": "fb4d61be-93e2-499f-b100-daed6b0a7eb2",
+    "LanguageName": "Taita (Kenya)",
+    "Symbol": "dav-KE",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "1284e2bc-aef5-4f80-a62c-4b195f9b16c9",
-    "LanguageName": "Embu",
-    "Symbol": "ebu",
+    "LanguageId": "b13a122a-18af-4910-8c83-dc49d21d4ddc",
+    "LanguageName": "German (Austria)",
+    "Symbol": "de-AT",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "b9730e5d-bc7a-4141-bd04-18418628bf1b",
-    "LanguageName": "Ewe",
-    "Symbol": "ee",
+    "LanguageId": "9d8a6f71-7070-4a8e-8d81-7524890d40ff",
+    "LanguageName": "German (Belgium)",
+    "Symbol": "de-BE",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "a3a0fdda-ecc2-4dd1-866a-a4f8550d98bf",
-    "LanguageName": "Greek",
-    "Symbol": "el",
+    "LanguageId": "ddd1c716-dc96-47ce-992c-793d45f2ca4b",
+    "LanguageName": "German (Switzerland)",
+    "Symbol": "de-CH",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "641c8302-c3ad-49a2-ba6a-b0ca1b01a9db",
+    "LanguageName": "German (Germany)",
+    "Symbol": "de-DE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "e2a8ce72-9407-49d3-a1d7-48fdffca8694",
+    "LanguageName": "German (Italy)",
+    "Symbol": "de-IT",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "8c7dd87a-79c9-440f-9d85-49344ee29e39",
+    "LanguageName": "German (Liechtenstein)",
+    "Symbol": "de-LI",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "12b54ac1-bf88-40bf-90f8-91dd8228697f",
+    "LanguageName": "German (Luxembourg)",
+    "Symbol": "de-LU",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "a42e7aff-1b4b-4f5c-b490-1f88245c7a7d",
+    "LanguageName": "Zarma (Niger)",
+    "Symbol": "dje-NE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "15c6bcdf-c7ac-403f-963e-4ad87b9e1d02",
+    "LanguageName": "Lower Sorbian (Germany)",
+    "Symbol": "dsb-DE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "bff6874a-efb7-4ebc-8145-026954ff5a13",
+    "LanguageName": "Duala (Cameroon)",
+    "Symbol": "dua-CM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "bb82d4a8-1c5f-4b25-8152-0eda9a51ddf3",
+    "LanguageName": "Divehi (Maldives)",
+    "Symbol": "dv-MV",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "465b37e7-ee53-4fe6-b55b-088607017fa0",
+    "LanguageName": "Jola-Fonyi (Senegal)",
+    "Symbol": "dyo-SN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "54f3edfb-7a61-4da2-ade0-daf82e409b9d",
+    "LanguageName": "Dzongkha (Bhutan)",
+    "Symbol": "dz-BT",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "079e9797-7494-484b-a832-6484ebe52739",
+    "LanguageName": "Embu (Kenya)",
+    "Symbol": "ebu-KE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "b6267b5b-50e4-463c-99eb-8e281e687aa8",
+    "LanguageName": "Ewe (Ghana)",
+    "Symbol": "ee-GH",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "8be225d8-7ccb-446d-b22d-5470bd88b7e5",
+    "LanguageName": "Ewe (Togo)",
+    "Symbol": "ee-TG",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "66d10df2-1986-4b0f-8d3b-76fd52c329cf",
+    "LanguageName": "Greek (Cyprus)",
+    "Symbol": "el-CY",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "c7961e53-a5f5-4858-b37d-f97fdd84cbe8",
+    "LanguageName": "Greek (Greece)",
+    "Symbol": "el-GR",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "caa35de9-1c87-4a5b-be53-373c3dda7898",
+    "LanguageName": "English (World)",
+    "Symbol": "en-001",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "ab422ee7-ceac-4df2-ad71-1dd0c8558f33",
+    "LanguageName": "English (Europe)",
+    "Symbol": "en-150",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "66785ee4-d6f4-4fe3-81e4-5873f8364cff",
+    "LanguageName": "English (United Arab Emirates)",
+    "Symbol": "en-AE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "e23d753c-6988-4e9b-ade6-f3415836503b",
+    "LanguageName": "English (Antigua \u0026 Barbuda)",
+    "Symbol": "en-AG",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "71f2fb12-4c3d-421c-8a5a-a52c24d7ceb0",
+    "LanguageName": "English (Anguilla)",
+    "Symbol": "en-AI",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "17d98072-cae1-4981-ad8c-d3c35e91eb30",
+    "LanguageName": "English (American Samoa)",
+    "Symbol": "en-AS",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "2e05c85c-f68e-432c-afad-8de2a8ed25e3",
+    "LanguageName": "English (Austria)",
+    "Symbol": "en-AT",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "8680f571-9051-4ce0-a37c-63a515ed2ed3",
+    "LanguageName": "English (Australia)",
+    "Symbol": "en-AU",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "c360e9b8-71c0-4d6c-b712-15dde933e6fe",
+    "LanguageName": "English (Barbados)",
+    "Symbol": "en-BB",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "a4aac762-5e5d-4608-a3f8-24c08b47943b",
+    "LanguageName": "English (Belgium)",
+    "Symbol": "en-BE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "7e27ff83-aee4-482f-9bca-7003243812ef",
+    "LanguageName": "English (Burundi)",
+    "Symbol": "en-BI",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "c742f23b-071b-423d-a798-eb93fee9cee4",
+    "LanguageName": "English (Bermuda)",
+    "Symbol": "en-BM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "0e239631-dfa6-49ba-aa6e-4233cdd00202",
+    "LanguageName": "English (Bahamas)",
+    "Symbol": "en-BS",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "382cf28c-74ce-4842-93b2-3384dafe4c98",
+    "LanguageName": "English (Botswana)",
+    "Symbol": "en-BW",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "e531425a-7f97-492f-95d1-ebba8bd894f7",
+    "LanguageName": "English (Belize)",
+    "Symbol": "en-BZ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "7aeec847-2665-4c1c-ad6b-2268959dae77",
+    "LanguageName": "English (Canada)",
+    "Symbol": "en-CA",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "a2b35714-c997-4b8e-9b07-66bfb0a35436",
+    "LanguageName": "English (Cocos [Keeling] Islands)",
+    "Symbol": "en-CC",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "1a63eb5a-4faa-4a58-a78c-1061f8521b7f",
+    "LanguageName": "English (Switzerland)",
+    "Symbol": "en-CH",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "e6adb730-e6f8-406e-8927-c73ebe7ac016",
+    "LanguageName": "English (Cook Islands)",
+    "Symbol": "en-CK",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "5d80ba03-8e35-4d5a-8c86-321656f52dcc",
+    "LanguageName": "English (Cameroon)",
+    "Symbol": "en-CM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "886375a0-511f-4f2c-ae6f-2f1680b3a06d",
+    "LanguageName": "English (Christmas Island)",
+    "Symbol": "en-CX",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "a739b792-e74a-4c84-bd44-fab8e68f8225",
+    "LanguageName": "English (Cyprus)",
+    "Symbol": "en-CY",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "5064ea6e-b30a-4e91-b034-cb09fa9b7fdf",
+    "LanguageName": "English (Germany)",
+    "Symbol": "en-DE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "20d2c4c7-4cea-48b4-9aa5-44f8e7da313b",
+    "LanguageName": "English (Denmark)",
+    "Symbol": "en-DK",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "6b8e2879-a9c1-4d0d-8e4d-d93149a69b78",
+    "LanguageName": "English (Dominica)",
+    "Symbol": "en-DM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "bea69b5f-47e3-43d9-835b-3a8e9f1007be",
+    "LanguageName": "English (Eritrea)",
+    "Symbol": "en-ER",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "b0b8bc3b-1381-466e-9d84-df7b6201c709",
+    "LanguageName": "English (Finland)",
+    "Symbol": "en-FI",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "4b01def4-2d02-4ca8-808d-63ea442ee0ce",
+    "LanguageName": "English (Fiji)",
+    "Symbol": "en-FJ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "8ff607a4-59d3-4563-b437-788ed9d375d5",
+    "LanguageName": "English (Falkland Islands)",
+    "Symbol": "en-FK",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "bc58fe45-9ee4-48eb-b7bf-443ce248c3f3",
+    "LanguageName": "English (Micronesia)",
+    "Symbol": "en-FM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "a29f203b-f547-405e-9bbd-093a45f5f9e8",
+    "LanguageName": "English (United Kingdom)",
+    "Symbol": "en-GB",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "59cdf95f-bdfe-4a36-b860-ed7eea5c307b",
+    "LanguageName": "English (Grenada)",
+    "Symbol": "en-GD",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "266531f1-3341-4725-b222-b66685047300",
+    "LanguageName": "English (Guernsey)",
+    "Symbol": "en-GG",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "0feca4ca-d2a5-4fcc-bd4a-86cb5767f18f",
+    "LanguageName": "English (Ghana)",
+    "Symbol": "en-GH",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "a40e8c56-d085-4b95-b84a-cbab0280ef30",
+    "LanguageName": "English (Gibraltar)",
+    "Symbol": "en-GI",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "628a38e6-1cfb-4750-b056-71849cc23cd0",
+    "LanguageName": "English (Gambia)",
+    "Symbol": "en-GM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "3465c81e-829d-4df7-8c48-0a549d1dac23",
+    "LanguageName": "English (Guam)",
+    "Symbol": "en-GU",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "7c34185e-0c8b-4055-911f-c44c2223fe5c",
+    "LanguageName": "English (Guyana)",
+    "Symbol": "en-GY",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "c9340a1d-b4eb-4adb-b27b-b822be176c97",
+    "LanguageName": "English (Hong Kong SAR)",
+    "Symbol": "en-HK",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "ac395de5-1f71-440a-a6d6-a4591b44fc1a",
+    "LanguageName": "English (Ireland)",
+    "Symbol": "en-IE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "c0915497-1bea-4e67-9a37-602654f48137",
+    "LanguageName": "English (Israel)",
+    "Symbol": "en-IL",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "907c00fb-b2a0-4063-bea5-4b799d391fc2",
+    "LanguageName": "English (Isle of Man)",
+    "Symbol": "en-IM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "5b0e9755-e369-40aa-aebf-fa268ca86c9f",
+    "LanguageName": "English (India)",
+    "Symbol": "en-IN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "5b40afbb-2bb0-466f-a2ff-5cbf1306f0e1",
+    "LanguageName": "English (British Indian Ocean Territory)",
+    "Symbol": "en-IO",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "d8a5a645-45aa-4968-b41d-fa3f78ac3335",
+    "LanguageName": "English (Jersey)",
+    "Symbol": "en-JE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "254c1115-1c1f-4bac-a245-b03c3f7cfc15",
+    "LanguageName": "English (Jamaica)",
+    "Symbol": "en-JM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "e1506046-0cc5-4e0c-a7bd-012e3327860b",
+    "LanguageName": "English (Kenya)",
+    "Symbol": "en-KE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "0928ee34-d986-451f-a2c6-c30f8839309d",
+    "LanguageName": "English (Kiribati)",
+    "Symbol": "en-KI",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "9db8cd95-128f-448e-838b-7715d4cc59af",
+    "LanguageName": "English (St. Kitts \u0026 Nevis)",
+    "Symbol": "en-KN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "fc358dbe-72ed-4e08-9bc9-ff516380dcf6",
+    "LanguageName": "English (Cayman Islands)",
+    "Symbol": "en-KY",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "93733510-0bf1-4e94-bc32-f77ba7be856a",
+    "LanguageName": "English (St. Lucia)",
+    "Symbol": "en-LC",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "c8c42034-5504-4a08-8454-84c0a8eb6d27",
+    "LanguageName": "English (Liberia)",
+    "Symbol": "en-LR",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "319277a8-707c-4355-bbc5-22564b34f35f",
+    "LanguageName": "English (Lesotho)",
+    "Symbol": "en-LS",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "73a3c312-6a37-48bb-81f8-647c932eaa18",
+    "LanguageName": "English (Madagascar)",
+    "Symbol": "en-MG",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "6dc0c12d-e621-490f-bee5-c39ebb6ae288",
+    "LanguageName": "English (Marshall Islands)",
+    "Symbol": "en-MH",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "d6bf83f6-b432-4627-a951-87460fe120ab",
+    "LanguageName": "English (Macao SAR)",
+    "Symbol": "en-MO",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "ee6baf8a-ede8-43c9-b625-134ebecfebf6",
+    "LanguageName": "English (Northern Mariana Islands)",
+    "Symbol": "en-MP",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "32208a46-1b03-471a-8d00-734435719133",
+    "LanguageName": "English (Montserrat)",
+    "Symbol": "en-MS",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "a7a6aa21-9e56-4063-b476-7a2026111dd2",
+    "LanguageName": "English (Malta)",
+    "Symbol": "en-MT",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "4b441873-b686-4cb4-9de0-a09282d0f8a8",
+    "LanguageName": "English (Mauritius)",
+    "Symbol": "en-MU",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "48560a7e-5fa0-408b-945a-3dacdabbaa2b",
+    "LanguageName": "English (Malawi)",
+    "Symbol": "en-MW",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "23f44d54-36e3-4bff-8768-8582ef5744d7",
+    "LanguageName": "English (Malaysia)",
+    "Symbol": "en-MY",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "6d65e2d7-9c6b-462b-a30d-be0721bdddec",
+    "LanguageName": "English (Namibia)",
+    "Symbol": "en-NA",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "b1d5fd9c-c504-43bf-bcae-a989620585fe",
+    "LanguageName": "English (Norfolk Island)",
+    "Symbol": "en-NF",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "81e539f0-e3d7-4d43-a05d-e8816e2b60cb",
+    "LanguageName": "English (Nigeria)",
+    "Symbol": "en-NG",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "77823954-2844-4e63-9643-7d7d2fcd4cdc",
+    "LanguageName": "English (Netherlands)",
+    "Symbol": "en-NL",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "205bcf5a-79ab-4658-91c9-b1737f87d805",
+    "LanguageName": "English (Nauru)",
+    "Symbol": "en-NR",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "825c1516-4df9-4ea1-9295-2f65a8c1b951",
+    "LanguageName": "English (Niue)",
+    "Symbol": "en-NU",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "2a0ac337-3b8e-4052-a72c-b488e2f252f7",
+    "LanguageName": "English (New Zealand)",
+    "Symbol": "en-NZ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "5feae39d-4376-4405-991c-89c110899a55",
+    "LanguageName": "English (Papua New Guinea)",
+    "Symbol": "en-PG",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "dbf90de9-91bf-458e-a6ca-ec4cc6cbfcd6",
+    "LanguageName": "English (Philippines)",
+    "Symbol": "en-PH",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "b0dbbafa-dd3a-40e1-90b0-2f2539e380cd",
+    "LanguageName": "English (Pakistan)",
+    "Symbol": "en-PK",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "43ceebb6-def4-4172-9398-be772b276567",
+    "LanguageName": "English (Pitcairn Islands)",
+    "Symbol": "en-PN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "9f07473d-b3a4-49ea-9842-a1e6143f2c80",
+    "LanguageName": "English (Puerto Rico)",
+    "Symbol": "en-PR",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "ab752f8d-6f5a-4fee-b2d2-45319ded7855",
+    "LanguageName": "English (Palau)",
+    "Symbol": "en-PW",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "9740d434-8ec3-42b8-9a81-790ca2f3a3c1",
+    "LanguageName": "English (Rwanda)",
+    "Symbol": "en-RW",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "cece12b7-4b6f-4ce4-9330-de3153873f31",
+    "LanguageName": "English (Solomon Islands)",
+    "Symbol": "en-SB",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "3e3c5045-b322-46ca-90be-3cfe56dc1405",
+    "LanguageName": "English (Seychelles)",
+    "Symbol": "en-SC",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "7f26451c-bc32-4461-b28e-f60aec4fdfd5",
+    "LanguageName": "English (Sudan)",
+    "Symbol": "en-SD",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "a8cb859f-780c-422e-bc67-877c7e26e72c",
+    "LanguageName": "English (Sweden)",
+    "Symbol": "en-SE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "e9118576-24a1-4767-92c3-6b8b61d7be73",
+    "LanguageName": "English (Singapore)",
+    "Symbol": "en-SG",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "5ee6548d-c039-4c17-8ef2-b02bc78ba3ee",
+    "LanguageName": "English (St Helena, Ascension, Tristan da Cunha)",
+    "Symbol": "en-SH",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "7c59d316-c0f5-4ee0-94ba-813dba322d29",
+    "LanguageName": "English (Slovenia)",
+    "Symbol": "en-SI",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "2a2c7d2d-20f4-4821-9ee7-fa329eb3c93b",
+    "LanguageName": "English (Sierra Leone)",
+    "Symbol": "en-SL",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "593c0776-e9df-4066-86e8-099f8a675a26",
+    "LanguageName": "English (South Sudan)",
+    "Symbol": "en-SS",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "66d19588-c8e0-43e3-b8fb-9b40bae90f3e",
+    "LanguageName": "English (Sint Maarten)",
+    "Symbol": "en-SX",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "9aa204a4-500f-47af-9751-b610f528bc30",
+    "LanguageName": "English (Eswatini)",
+    "Symbol": "en-SZ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "7c31126b-45aa-4355-a9ac-b34179776c7a",
+    "LanguageName": "English (Turks \u0026 Caicos Islands)",
+    "Symbol": "en-TC",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "6dc27a8d-4f16-4f2c-a18b-16098158c99c",
+    "LanguageName": "English (Tokelau)",
+    "Symbol": "en-TK",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "86ce95c7-84fc-4527-96b4-a20b64611f14",
+    "LanguageName": "English (Tonga)",
+    "Symbol": "en-TO",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "37135e1a-d3b5-4f0e-922e-f95168987249",
+    "LanguageName": "English (Trinidad \u0026 Tobago)",
+    "Symbol": "en-TT",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "2e87bc40-b521-4bd9-a094-aadb077bc3c3",
+    "LanguageName": "English (Tuvalu)",
+    "Symbol": "en-TV",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "e52900d7-c4df-4104-9e42-2df8f771018a",
+    "LanguageName": "English (Tanzania)",
+    "Symbol": "en-TZ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "5050e88e-89bd-4f8b-916d-7c76553307de",
+    "LanguageName": "English (Uganda)",
+    "Symbol": "en-UG",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "799f4205-31cb-49c5-88e8-fce0f9ee6161",
+    "LanguageName": "English (U.S. Outlying Islands)",
+    "Symbol": "en-UM",
     "Direction": 0,
     "IsDefault": false
   },
   {
     "LanguageId": "9cbda53a-f5ca-47df-a648-44de1c06c75c",
-    "LanguageName": "English",
-    "Symbol": "en",
+    "LanguageName": "English (United States)",
+    "Symbol": "en-US",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "7e9f0bc4-4008-43b1-bbbb-7ab47249e802",
-    "LanguageName": "Esperanto",
-    "Symbol": "eo",
+    "LanguageId": "3e86aa02-8613-45bf-88b8-f9bd4a77115d",
+    "LanguageName": "English (United States, Computer)",
+    "Symbol": "en-US-POSIX",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "0f2e4973-b84d-4ec6-bf30-94f1a2f58e8b",
-    "LanguageName": "Spanish",
-    "Symbol": "es",
+    "LanguageId": "f29bb497-ff7b-4397-ad3c-501c16b14650",
+    "LanguageName": "English (St. Vincent \u0026 Grenadines)",
+    "Symbol": "en-VC",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "30314c23-f91e-45a9-8edd-5d8468841ad4",
-    "LanguageName": "Estonian",
-    "Symbol": "et",
+    "LanguageId": "d0c44200-a9c6-471e-b1d2-f13e59026764",
+    "LanguageName": "English (British Virgin Islands)",
+    "Symbol": "en-VG",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "a9c40768-2523-4990-97a3-d2fc2ea9711e",
-    "LanguageName": "Basque",
-    "Symbol": "eu",
+    "LanguageId": "c41b125a-288a-4c01-bcf3-937e93d95de3",
+    "LanguageName": "English (U.S. Virgin Islands)",
+    "Symbol": "en-VI",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "b30ceafc-ed58-4c03-9f3e-fd86da3cdf5d",
-    "LanguageName": "Ewondo",
-    "Symbol": "ewo",
+    "LanguageId": "24a86b0c-c088-46a2-8bb4-2d27b4e723db",
+    "LanguageName": "English (Vanuatu)",
+    "Symbol": "en-VU",
     "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "de36cb86-fb0b-4514-b4a9-3a270bb453e7",
+    "LanguageName": "English (Samoa)",
+    "Symbol": "en-WS",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "c11f8f9a-ce45-4872-80de-415171c9d014",
+    "LanguageName": "English (South Africa)",
+    "Symbol": "en-ZA",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "57ae4233-67c4-43d7-9269-bf2de397a760",
+    "LanguageName": "English (Zambia)",
+    "Symbol": "en-ZM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "a2de61b1-000a-4701-b500-64ac4f3c464b",
+    "LanguageName": "English (Zimbabwe)",
+    "Symbol": "en-ZW",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "c30cc4a1-024d-4085-ac85-e59df4256457",
+    "LanguageName": "Esperanto (World)",
+    "Symbol": "eo-001",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "92131479-01e2-4723-8bc6-e399823d0ab0",
+    "LanguageName": "Spanish (Latin America)",
+    "Symbol": "es-419",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "09fbec76-413b-4956-8afb-c4704e082e09",
+    "LanguageName": "Spanish (Argentina)",
+    "Symbol": "es-AR",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "700ccbec-6f4f-41d6-8cae-e28a4f2cf373",
+    "LanguageName": "Spanish (Bolivia)",
+    "Symbol": "es-BO",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "d0c3e0c9-a747-4dff-b9ae-549cb3dc9fef",
+    "LanguageName": "Spanish (Brazil)",
+    "Symbol": "es-BR",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "d3063a70-3e2a-43fd-b8fb-a617eede1596",
+    "LanguageName": "Spanish (Belize)",
+    "Symbol": "es-BZ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "b227b1a6-3927-45fa-9cd9-9c15a181535a",
+    "LanguageName": "Spanish (Chile)",
+    "Symbol": "es-CL",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "0503994b-424d-48e5-8599-9388181561c9",
+    "LanguageName": "Spanish (Colombia)",
+    "Symbol": "es-CO",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "e16669a1-f317-4e0c-b38e-e02803e846f9",
+    "LanguageName": "Spanish (Costa Rica)",
+    "Symbol": "es-CR",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "68335adf-8396-4ff8-bc40-7f2739298d8f",
+    "LanguageName": "Spanish (Cuba)",
+    "Symbol": "es-CU",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "8c8e922d-57cf-4b11-ab08-24d45004e9a7",
+    "LanguageName": "Spanish (Dominican Republic)",
+    "Symbol": "es-DO",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "ebc20c57-d4ec-4e7a-adee-b81916031eaf",
+    "LanguageName": "Spanish (Ecuador)",
+    "Symbol": "es-EC",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "96d65254-ab11-4277-be51-86b60146fc64",
+    "LanguageName": "Spanish (Spain)",
+    "Symbol": "es-ES",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "bc45521e-dd64-4ab3-a1bf-7bc0f00b0641",
+    "LanguageName": "Spanish (Equatorial Guinea)",
+    "Symbol": "es-GQ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "2ff3b37b-7349-4489-87cc-747dd6e2d14f",
+    "LanguageName": "Spanish (Guatemala)",
+    "Symbol": "es-GT",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "060ae8f6-0b5f-4bf6-b991-805111209e2f",
+    "LanguageName": "Spanish (Honduras)",
+    "Symbol": "es-HN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "27c27cf9-7ce4-4458-98f9-b6068c11e58d",
+    "LanguageName": "Spanish (Mexico)",
+    "Symbol": "es-MX",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "53f6a5f0-b4f0-4efe-ab23-96e8c0258015",
+    "LanguageName": "Spanish (Nicaragua)",
+    "Symbol": "es-NI",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "2c55dcb8-f4ac-41fc-a2d5-e876f41402eb",
+    "LanguageName": "Spanish (Panama)",
+    "Symbol": "es-PA",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "3abd3643-ea8d-4e1a-993f-c888018d0ca2",
+    "LanguageName": "Spanish (Peru)",
+    "Symbol": "es-PE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "ecac7d94-471c-47d0-9487-723d22630a95",
+    "LanguageName": "Spanish (Philippines)",
+    "Symbol": "es-PH",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "a46d18be-040a-4c03-92db-7333b1bb7a56",
+    "LanguageName": "Spanish (Puerto Rico)",
+    "Symbol": "es-PR",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "d4af3afe-c95a-42db-a0ee-d6af9cab7c4a",
+    "LanguageName": "Spanish (Paraguay)",
+    "Symbol": "es-PY",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "8a964d8d-c701-4560-a95e-fc097ab6de42",
+    "LanguageName": "Spanish (El Salvador)",
+    "Symbol": "es-SV",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "14eeb624-c412-4c83-ac5b-d3a912ddcd37",
+    "LanguageName": "Spanish (United States)",
+    "Symbol": "es-US",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "656edd13-e7fa-4536-9228-f493a0cdce60",
+    "LanguageName": "Spanish (Uruguay)",
+    "Symbol": "es-UY",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "3abd9ca1-c296-4fb6-8744-d9bc4f1eed7a",
+    "LanguageName": "Spanish (Venezuela)",
+    "Symbol": "es-VE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "35646c80-37bc-45e6-a3f5-9d04360df8d6",
+    "LanguageName": "Estonian (Estonia)",
+    "Symbol": "et-EE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "a1278b12-d750-4a00-8ae9-9b9ef8379e5e",
+    "LanguageName": "Basque (Spain)",
+    "Symbol": "eu-ES",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "53e96405-b594-4000-a2f0-b88c6d0f928d",
+    "LanguageName": "Ewondo (Cameroon)",
+    "Symbol": "ewo-CM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "30ffeb74-4702-464b-ae3e-a2e3324509f0",
+    "LanguageName": "Persian (Afghanistan)",
+    "Symbol": "fa-AF",
+    "Direction": 1,
     "IsDefault": false
   },
   {
     "LanguageId": "0f0815fb-5fca-470c-bbfd-4d8c162de05a",
-    "LanguageName": "Persian",
-    "Symbol": "fa",
+    "LanguageName": "Persian (Iran)",
+    "Symbol": "fa-IR",
+    "Direction": 1,
+    "IsDefault": true
+  },
+  {
+    "LanguageId": "b71be9fe-30db-4aeb-9077-bcda8a8d41ed",
+    "LanguageName": "Fulah (Latin, Burkina Faso)",
+    "Symbol": "ff-Latn-BF",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "532fcba3-3bcd-4ed3-b0a0-5da651597a87",
+    "LanguageName": "Fulah (Latin, Cameroon)",
+    "Symbol": "ff-Latn-CM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "c8272c6f-e37b-4134-9057-6a62a611f6b4",
+    "LanguageName": "Fulah (Latin, Ghana)",
+    "Symbol": "ff-Latn-GH",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "538b51a5-4ea2-4759-b9d1-3bb0c6899ea1",
+    "LanguageName": "Fulah (Latin, Gambia)",
+    "Symbol": "ff-Latn-GM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "3bfbc0b0-ac37-4ae7-964d-7b455cf58bec",
+    "LanguageName": "Fulah (Latin, Guinea)",
+    "Symbol": "ff-Latn-GN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "2dc82e44-57a0-4c39-8c31-bd7ca14e612c",
+    "LanguageName": "Fulah (Latin, Guinea-Bissau)",
+    "Symbol": "ff-Latn-GW",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "f47a5469-8c41-4855-ab0a-06657713a9ab",
+    "LanguageName": "Fulah (Latin, Liberia)",
+    "Symbol": "ff-Latn-LR",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "b3d9396d-8bb4-41b6-bd69-a798457812b2",
+    "LanguageName": "Fulah (Latin, Mauritania)",
+    "Symbol": "ff-Latn-MR",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "e48d8c78-afb0-42e3-9259-3716f9ec2d65",
+    "LanguageName": "Fulah (Latin, Niger)",
+    "Symbol": "ff-Latn-NE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "f685b77e-3ce5-4499-a046-b56b6f576398",
+    "LanguageName": "Fulah (Latin, Nigeria)",
+    "Symbol": "ff-Latn-NG",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "15695904-142c-4bf6-a598-5a8109cbb23b",
+    "LanguageName": "Fulah (Latin, Sierra Leone)",
+    "Symbol": "ff-Latn-SL",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "a252710e-c3aa-4d8c-bd27-0cdc010f65e5",
+    "LanguageName": "Fulah (Latin, Senegal)",
+    "Symbol": "ff-Latn-SN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "cd43d61a-2700-4e83-bff7-842b1a187d4e",
+    "LanguageName": "Finnish (Finland)",
+    "Symbol": "fi-FI",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "a82ef265-1dac-4bbf-92c1-207e9b9f5e4f",
+    "LanguageName": "Filipino (Philippines)",
+    "Symbol": "fil-PH",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "945afccf-9551-4ccc-a53d-c053d1d1af78",
+    "LanguageName": "Faroese (Denmark)",
+    "Symbol": "fo-DK",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "1e9c49ef-6c54-4195-a06f-f049d037866a",
+    "LanguageName": "Faroese (Faroe Islands)",
+    "Symbol": "fo-FO",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "558ec8ee-b809-40b2-8392-4702eeea96cd",
+    "LanguageName": "French (Belgium)",
+    "Symbol": "fr-BE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "d110b167-6a30-4018-843d-d35d1aacd31c",
+    "LanguageName": "French (Burkina Faso)",
+    "Symbol": "fr-BF",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "b2db8eae-8ee6-45b9-b8e7-0b67390cdd2c",
+    "LanguageName": "French (Burundi)",
+    "Symbol": "fr-BI",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "3a6b8e38-5aef-4ec9-bb55-4131c80a72e4",
+    "LanguageName": "French (Benin)",
+    "Symbol": "fr-BJ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "d629ba3b-6244-4926-b4d3-67cb390048c2",
+    "LanguageName": "French (St. Barth\u00E9lemy)",
+    "Symbol": "fr-BL",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "d99200e0-e279-44bf-9d7f-c4d4c0c0ed98",
+    "LanguageName": "French (Canada)",
+    "Symbol": "fr-CA",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "c0c4ab16-4321-41c9-af3f-1709ca000942",
+    "LanguageName": "French (Congo [DRC])",
+    "Symbol": "fr-CD",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "f3b13a4f-1eb4-4720-b5be-4f4461c132fb",
+    "LanguageName": "French (Central African Republic)",
+    "Symbol": "fr-CF",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "2cb2b1a3-7933-43b2-ad5f-4825689eccd2",
+    "LanguageName": "French (Congo)",
+    "Symbol": "fr-CG",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "6e9e02f9-fa5a-4ba9-9b1c-047968442fd6",
+    "LanguageName": "French (Switzerland)",
+    "Symbol": "fr-CH",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "4f7d5cb9-d1fc-4e26-9233-df8a9aed72d0",
+    "LanguageName": "French (C\u00F4te d\u2019Ivoire)",
+    "Symbol": "fr-CI",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "ba956c54-5b50-412c-afaf-1ec6cc2ae305",
+    "LanguageName": "French (Cameroon)",
+    "Symbol": "fr-CM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "36d312e5-bcd6-4f43-aad8-4f70f4c533b4",
+    "LanguageName": "French (Djibouti)",
+    "Symbol": "fr-DJ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "556e93ae-c79e-448a-9c0c-5696572c5655",
+    "LanguageName": "French (Algeria)",
+    "Symbol": "fr-DZ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "0993393b-4cfd-4791-b187-aedd3126bb2d",
+    "LanguageName": "French (France)",
+    "Symbol": "fr-FR",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "b1688f57-0be4-4eec-9bdf-213a3a54d21d",
+    "LanguageName": "French (Gabon)",
+    "Symbol": "fr-GA",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "10af1157-6dc5-466a-9534-5de053b064dd",
+    "LanguageName": "French (French Guiana)",
+    "Symbol": "fr-GF",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "13bc0633-55ea-40e1-9f8e-ec376702da4a",
+    "LanguageName": "French (Guinea)",
+    "Symbol": "fr-GN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "608bfb12-901e-48b6-87dd-60a1752305cf",
+    "LanguageName": "French (Guadeloupe)",
+    "Symbol": "fr-GP",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "5b0e2bbb-7a34-4463-a98b-6033760c99c3",
+    "LanguageName": "French (Equatorial Guinea)",
+    "Symbol": "fr-GQ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "6a7782d2-f1fc-491d-b104-555427aade85",
+    "LanguageName": "French (Haiti)",
+    "Symbol": "fr-HT",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "8d8810d4-5b19-48c8-b1db-a84185b45a5b",
+    "LanguageName": "French (Comoros)",
+    "Symbol": "fr-KM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "2924911b-c2dc-433d-b971-5d5e0fb5a9cd",
+    "LanguageName": "French (Luxembourg)",
+    "Symbol": "fr-LU",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "ca1a76a3-85c9-40cc-a08d-bb4e26039ca7",
+    "LanguageName": "French (Morocco)",
+    "Symbol": "fr-MA",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "f70b0bdc-156b-40d5-b9ac-4e53d2eb7aab",
+    "LanguageName": "French (Monaco)",
+    "Symbol": "fr-MC",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "52e9abac-fc50-4f51-9848-7808a281e777",
+    "LanguageName": "French (St. Martin)",
+    "Symbol": "fr-MF",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "6f8caae9-e7d3-4dba-970c-2f224954c159",
+    "LanguageName": "French (Madagascar)",
+    "Symbol": "fr-MG",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "229c698d-c0c2-4722-8642-c50afab1631f",
+    "LanguageName": "French (Mali)",
+    "Symbol": "fr-ML",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "41938405-3583-4125-9be6-355515e9adb5",
+    "LanguageName": "French (Martinique)",
+    "Symbol": "fr-MQ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "7881e61d-44bc-4b9c-b360-a09f1db96376",
+    "LanguageName": "French (Mauritania)",
+    "Symbol": "fr-MR",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "88f4a56e-aa74-4a4c-ac1d-067e12bb7ee6",
+    "LanguageName": "French (Mauritius)",
+    "Symbol": "fr-MU",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "edec11ce-3d4a-48e8-b240-c94e981a1adb",
+    "LanguageName": "French (New Caledonia)",
+    "Symbol": "fr-NC",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "a8dbe355-450c-42f9-89bd-4c5984152a72",
+    "LanguageName": "French (Niger)",
+    "Symbol": "fr-NE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "c42f0602-66a4-4d97-8395-216dfb0bd88b",
+    "LanguageName": "French (French Polynesia)",
+    "Symbol": "fr-PF",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "3004b25f-fcdd-44cb-a746-1f58b64fde2e",
+    "LanguageName": "French (St. Pierre \u0026 Miquelon)",
+    "Symbol": "fr-PM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "a68ae314-278e-4fe7-8ca0-b6165e4ec797",
+    "LanguageName": "French (R\u00E9union)",
+    "Symbol": "fr-RE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "f86d36cf-a7d8-40bf-aa17-7ab20106d576",
+    "LanguageName": "French (Rwanda)",
+    "Symbol": "fr-RW",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "caa3829c-0158-40a7-a847-aa9fd7643ec6",
+    "LanguageName": "French (Seychelles)",
+    "Symbol": "fr-SC",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "4b8f4521-b340-47e4-baaa-1f3ae2c999e2",
+    "LanguageName": "French (Senegal)",
+    "Symbol": "fr-SN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "ced9630c-1b4a-474d-a191-407ad6bbc60f",
+    "LanguageName": "French (Syria)",
+    "Symbol": "fr-SY",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "3843e1f1-e428-4770-84fb-bb8b5f617988",
+    "LanguageName": "French (Chad)",
+    "Symbol": "fr-TD",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "7f10b0cd-5e37-45d8-bb1e-c61b92195a03",
+    "LanguageName": "French (Togo)",
+    "Symbol": "fr-TG",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "797d77a9-8df6-4037-8995-54fc5e0e3270",
+    "LanguageName": "French (Tunisia)",
+    "Symbol": "fr-TN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "465cc825-5296-4c54-9d5e-4cfb10146799",
+    "LanguageName": "French (Vanuatu)",
+    "Symbol": "fr-VU",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "921a9939-e112-4db7-8092-bde6c4c01be8",
+    "LanguageName": "French (Wallis \u0026 Futuna)",
+    "Symbol": "fr-WF",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "8b2276a4-4f4f-4cf9-a0a5-4a9f3f21cf36",
+    "LanguageName": "French (Mayotte)",
+    "Symbol": "fr-YT",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "87dc195f-4af1-4b16-a622-45824ad40a43",
+    "LanguageName": "Friulian (Italy)",
+    "Symbol": "fur-IT",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "0435808e-0568-4e20-9ec5-1d1269940eda",
+    "LanguageName": "Western Frisian (Netherlands)",
+    "Symbol": "fy-NL",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "f6882e55-0e62-42bc-8225-7382af863f47",
+    "LanguageName": "Irish (Ireland)",
+    "Symbol": "ga-IE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "0a89b99b-a25b-4ee1-abdb-cbc345bb4885",
+    "LanguageName": "Scottish Gaelic (United Kingdom)",
+    "Symbol": "gd-GB",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "c446491e-9295-4e67-af93-a1769c3538a5",
+    "LanguageName": "Galician (Spain)",
+    "Symbol": "gl-ES",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "0e37c5ef-f896-44b2-82f5-4063c71f5030",
+    "LanguageName": "Guarani (Paraguay)",
+    "Symbol": "gn-PY",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "21644ac8-43f2-4131-a206-48d9781ca84c",
+    "LanguageName": "Swiss German (Switzerland)",
+    "Symbol": "gsw-CH",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "287dd2e7-c172-414d-8e29-5add2cf73e54",
+    "LanguageName": "Swiss German (France)",
+    "Symbol": "gsw-FR",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "bcab9424-13d0-41c5-ba99-735125008393",
+    "LanguageName": "Swiss German (Liechtenstein)",
+    "Symbol": "gsw-LI",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "a62ff7af-e616-4e10-b49d-ef42439304f8",
+    "LanguageName": "Gujarati (India)",
+    "Symbol": "gu-IN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "b3ca49cd-745a-4c7f-975f-d5be1177833b",
+    "LanguageName": "Gusii (Kenya)",
+    "Symbol": "guz-KE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "d0ae2c92-cb66-439c-8e72-d229aca483e9",
+    "LanguageName": "Manx (Isle of Man)",
+    "Symbol": "gv-IM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "67960223-27a2-4590-a51d-b4fb2f24d142",
+    "LanguageName": "Hausa (Ghana)",
+    "Symbol": "ha-GH",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "fba64226-2be3-4191-8a10-02a4829a032e",
+    "LanguageName": "Hausa (Niger)",
+    "Symbol": "ha-NE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "6d83d463-3782-4066-bf2a-a6b3e111eeba",
+    "LanguageName": "Hausa (Nigeria)",
+    "Symbol": "ha-NG",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "ebb69591-afe7-4691-9e70-af098cfea4ea",
+    "LanguageName": "Hawaiian (United States)",
+    "Symbol": "haw-US",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "4cfaf1ac-a9b5-4b85-8dbd-c20a35f9c133",
+    "LanguageName": "Hebrew (Israel)",
+    "Symbol": "he-IL",
     "Direction": 1,
     "IsDefault": false
   },
   {
-    "LanguageId": "43b62eb2-50d7-4769-992e-8fc075546a0d",
-    "LanguageName": "Fulah",
-    "Symbol": "ff",
+    "LanguageId": "5c8aa17f-9814-4d56-8d13-136db2ab56ce",
+    "LanguageName": "Hindi (India)",
+    "Symbol": "hi-IN",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "4c1ea643-9dc4-4f00-9448-88a19e35b75a",
-    "LanguageName": "Fulah (Latin)",
-    "Symbol": "ff-Latn",
+    "LanguageId": "9f79ca2f-3a61-4f79-9941-8484dc440baf",
+    "LanguageName": "Croatian (Bosnia \u0026 Herzegovina)",
+    "Symbol": "hr-BA",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "15a762f5-455b-46af-b8e2-b76a71652043",
-    "LanguageName": "Finnish",
-    "Symbol": "fi",
+    "LanguageId": "3c312ed0-06ea-4576-8052-f8c427cf10d8",
+    "LanguageName": "Croatian (Croatia)",
+    "Symbol": "hr-HR",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "e64f1b4a-4803-4462-819b-1d131c9b4f0e",
-    "LanguageName": "Filipino",
-    "Symbol": "fil",
+    "LanguageId": "2e934afa-3c05-4a5b-9fec-ab33a1dbb83c",
+    "LanguageName": "Upper Sorbian (Germany)",
+    "Symbol": "hsb-DE",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "588fccf5-fac8-40bb-b237-55b9fa7714d1",
-    "LanguageName": "Faroese",
-    "Symbol": "fo",
+    "LanguageId": "6531a32f-5701-44e7-b9ab-e8d655154166",
+    "LanguageName": "Hungarian (Hungary)",
+    "Symbol": "hu-HU",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "446ddc7a-144d-4802-89ec-d3d11be19b9b",
-    "LanguageName": "French",
-    "Symbol": "fr",
+    "LanguageId": "a7bb6217-ae6a-4a92-b142-1fa39a8d33f9",
+    "LanguageName": "Armenian (Armenia)",
+    "Symbol": "hy-AM",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "0e30a32e-6940-4ce1-83b9-22d0d8533223",
-    "LanguageName": "Friulian",
-    "Symbol": "fur",
+    "LanguageId": "e39424b0-e02f-4723-b7ca-52cd03336254",
+    "LanguageName": "Interlingua (World)",
+    "Symbol": "ia-001",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "71097fb7-4c1f-4566-b404-39b9c737bb7a",
-    "LanguageName": "Western Frisian",
-    "Symbol": "fy",
+    "LanguageId": "30b227c5-8eb0-45d7-9dd0-7bfd027e9f6e",
+    "LanguageName": "Indonesian (Indonesia)",
+    "Symbol": "id-ID",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "6de4b138-f730-42fe-b5e1-9ba1714f4221",
-    "LanguageName": "Irish",
-    "Symbol": "ga",
+    "LanguageId": "cfc6a199-b975-4e7b-ab4f-4f57f6187438",
+    "LanguageName": "Igbo (Nigeria)",
+    "Symbol": "ig-NG",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "205ebc06-12c2-40ab-8249-1a9a7eba2beb",
-    "LanguageName": "Scottish Gaelic",
-    "Symbol": "gd",
+    "LanguageId": "8f3c1052-d7c8-4d71-9e02-251638922830",
+    "LanguageName": "Yi (China)",
+    "Symbol": "ii-CN",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "cd88488c-088e-4a9c-9c04-2173b7653bc9",
-    "LanguageName": "Galician",
-    "Symbol": "gl",
+    "LanguageId": "a1b97e9b-dc3b-44c3-885a-cad1962e4fd0",
+    "LanguageName": "Icelandic (Iceland)",
+    "Symbol": "is-IS",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "8d3f0e30-cbcc-4b2b-8fd3-38865eeb1638",
-    "LanguageName": "Guarani",
-    "Symbol": "gn",
+    "LanguageId": "8da8a080-3375-40e8-9ca7-823dfddd282a",
+    "LanguageName": "Italian (Switzerland)",
+    "Symbol": "it-CH",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "9a83dafb-242d-4307-a65d-555aa60cc0a5",
-    "LanguageName": "Swiss German",
-    "Symbol": "gsw",
+    "LanguageId": "a32101c0-d118-4abf-9bc8-aede18007636",
+    "LanguageName": "Italian (Italy)",
+    "Symbol": "it-IT",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "a8d09b07-30f9-4fca-8074-87d8d72b62dc",
-    "LanguageName": "Gujarati",
-    "Symbol": "gu",
+    "LanguageId": "d2045357-beff-4683-b844-ffa8879c2a5e",
+    "LanguageName": "Italian (San Marino)",
+    "Symbol": "it-SM",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "36b336ab-a089-45c4-8484-990a58d0e16e",
-    "LanguageName": "Gusii",
-    "Symbol": "guz",
+    "LanguageId": "0fdffb76-90d2-4fb6-8e61-e85f08eea302",
+    "LanguageName": "Italian (Vatican City)",
+    "Symbol": "it-VA",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "52269a19-fd32-467a-b436-eb85b5253d04",
-    "LanguageName": "Manx",
-    "Symbol": "gv",
+    "LanguageId": "4fe7f127-776a-4652-a018-cad5f61331fb",
+    "LanguageName": "Inuktitut (Canada)",
+    "Symbol": "iu-CA",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "f202b93d-6179-4ce9-be9b-281505b828fe",
-    "LanguageName": "Hausa",
-    "Symbol": "ha",
+    "LanguageId": "7fd6677e-72f6-462b-9079-228c80c448f2",
+    "LanguageName": "Inuktitut (Latin, Canada)",
+    "Symbol": "iu-Latn-CA",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "a5538a27-c206-4eb6-822f-38678386b21e",
-    "LanguageName": "Hawaiian",
-    "Symbol": "haw",
+    "LanguageId": "969dcc40-bdc6-40c3-bf5b-bf3d6484ec5c",
+    "LanguageName": "Japanese (Japan)",
+    "Symbol": "ja-JP",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "cc37befd-b8aa-4d2c-92a0-9694ac8557f7",
-    "LanguageName": "Hebrew",
-    "Symbol": "he",
+    "LanguageId": "f84ba6df-c78a-42d7-8702-1b282c775312",
+    "LanguageName": "Ngomba (Cameroon)",
+    "Symbol": "jgo-CM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "fce4940b-39fa-47e3-bc86-978f004e3d35",
+    "LanguageName": "Machame (Tanzania)",
+    "Symbol": "jmc-TZ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "f0e75410-d8a8-41ce-bf65-2239867bec46",
+    "LanguageName": "Javanese (Indonesia)",
+    "Symbol": "jv-ID",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "50823bef-19f4-40b2-a837-3cddbbdd25ba",
+    "LanguageName": "Georgian (Georgia)",
+    "Symbol": "ka-GE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "c1528ad2-2bfc-4ab1-9000-30fc5004fc4e",
+    "LanguageName": "Kabyle (Algeria)",
+    "Symbol": "kab-DZ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "f963ecdc-e412-4d3a-ae09-9518737945a7",
+    "LanguageName": "Kamba (Kenya)",
+    "Symbol": "kam-KE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "578a3fb5-8786-4e5f-86fb-1dccea22ceea",
+    "LanguageName": "Makonde (Tanzania)",
+    "Symbol": "kde-TZ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "ead16280-dc60-4320-a179-73b56f79a02b",
+    "LanguageName": "Kabuverdianu (Cabo Verde)",
+    "Symbol": "kea-CV",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "6dee87a6-a6ee-4c86-a59a-c1686dd206c1",
+    "LanguageName": "Koyra Chiini (Mali)",
+    "Symbol": "khq-ML",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "a2c57b37-4e55-4e07-957d-7f8284a38b99",
+    "LanguageName": "Kikuyu (Kenya)",
+    "Symbol": "ki-KE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "409afefa-2d1f-4174-9f9a-c39069af5d2e",
+    "LanguageName": "Kazakh (Kazakhstan)",
+    "Symbol": "kk-KZ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "4282959a-2c15-4f3f-8328-c7f98b0f6364",
+    "LanguageName": "Kako (Cameroon)",
+    "Symbol": "kkj-CM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "8c494550-2558-471f-a4fc-4770a847cb25",
+    "LanguageName": "Kalaallisut (Greenland)",
+    "Symbol": "kl-GL",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "62c1090a-c71e-428f-9ae3-b3ea188f61c5",
+    "LanguageName": "Kalenjin (Kenya)",
+    "Symbol": "kln-KE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "6792f9df-5b5e-446a-8edd-a55798f349db",
+    "LanguageName": "Khmer (Cambodia)",
+    "Symbol": "km-KH",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "732131c1-c42d-4f50-99bc-e0b436a33b54",
+    "LanguageName": "Kannada (India)",
+    "Symbol": "kn-IN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "eb1b738e-3045-4e24-8f16-d245748f75a8",
+    "LanguageName": "Korean (North Korea)",
+    "Symbol": "ko-KP",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "1eb08284-4535-4beb-acd7-4e1d9a931239",
+    "LanguageName": "Korean (Korea)",
+    "Symbol": "ko-KR",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "1bcb440b-deb2-4d2b-ba1e-f8620243622f",
+    "LanguageName": "Konkani (India)",
+    "Symbol": "kok-IN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "10d8cf14-4ac9-49d5-a98a-0ccdb5e6543f",
+    "LanguageName": "Kashmiri (India)",
+    "Symbol": "ks-IN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "d49e0344-ca47-4ee2-8b95-857579097cd5",
+    "LanguageName": "Shambala (Tanzania)",
+    "Symbol": "ksb-TZ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "e9a2c977-270a-4552-b647-dc719e066e3c",
+    "LanguageName": "Bafia (Cameroon)",
+    "Symbol": "ksf-CM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "fdbbd3e4-9c1d-4b03-aff6-179de7fd292e",
+    "LanguageName": "Colognian (Germany)",
+    "Symbol": "ksh-DE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "cf82da8c-0cb5-4340-84c0-9a4b35437fcf",
+    "LanguageName": "Cornish (United Kingdom)",
+    "Symbol": "kw-GB",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "afd33443-838b-4a8f-8aae-491440858fc4",
+    "LanguageName": "Kyrgyz (Kyrgyzstan)",
+    "Symbol": "ky-KG",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "a5c77efc-3e7e-4f78-b4ba-67a8152bd8ac",
+    "LanguageName": "Langi (Tanzania)",
+    "Symbol": "lag-TZ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "099f9c19-8c79-469f-9cd9-d96765660d22",
+    "LanguageName": "Luxembourgish (Luxembourg)",
+    "Symbol": "lb-LU",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "ce26197a-9b1b-4a22-ab88-e72518722d7a",
+    "LanguageName": "Ganda (Uganda)",
+    "Symbol": "lg-UG",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "21d8e67b-69a3-4029-b8ae-c97f62f9081f",
+    "LanguageName": "Lakota (United States)",
+    "Symbol": "lkt-US",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "131e68b9-030a-4364-bdcb-7b95d01df632",
+    "LanguageName": "Lingala (Angola)",
+    "Symbol": "ln-AO",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "57d5a7df-b061-4dbf-995e-6727d718cb7b",
+    "LanguageName": "Lingala (Congo [DRC])",
+    "Symbol": "ln-CD",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "e0c32912-7db9-4b13-9bd6-e3fba895790e",
+    "LanguageName": "Lingala (Central African Republic)",
+    "Symbol": "ln-CF",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "3c36cac4-a026-4bb0-bd39-195087678975",
+    "LanguageName": "Lingala (Congo)",
+    "Symbol": "ln-CG",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "4ddff17c-d01e-4dd3-bba9-b5b7d8bdfd9e",
+    "LanguageName": "Lao (Laos)",
+    "Symbol": "lo-LA",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "d370534a-e508-490e-a45a-eda675995745",
+    "LanguageName": "Northern Luri (Iraq)",
+    "Symbol": "lrc-IQ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "c841a40f-b703-442b-96b1-03699ed7efc9",
+    "LanguageName": "Northern Luri (Iran)",
+    "Symbol": "lrc-IR",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "f5d7edf7-b5bc-4fa2-a400-51fa59f7f096",
+    "LanguageName": "Lithuanian (Lithuania)",
+    "Symbol": "lt-LT",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "9f8e4a9c-8b66-49ec-ae97-f4c05585cc2f",
+    "LanguageName": "Luba-Katanga (Congo [DRC])",
+    "Symbol": "lu-CD",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "1e625ab3-67bf-4be3-889d-e838f036908b",
+    "LanguageName": "Luo (Kenya)",
+    "Symbol": "luo-KE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "b3d7196c-dfd2-4aa4-973c-e6686580bbf3",
+    "LanguageName": "Luyia (Kenya)",
+    "Symbol": "luy-KE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "1962749b-ab86-4339-9b68-938d8a74a9c8",
+    "LanguageName": "Latvian (Latvia)",
+    "Symbol": "lv-LV",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "8dbe04ed-85c3-42bb-8a9a-60e596f81167",
+    "LanguageName": "Masai (Kenya)",
+    "Symbol": "mas-KE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "f4c139b0-aea1-4b39-a7e9-935341713b49",
+    "LanguageName": "Masai (Tanzania)",
+    "Symbol": "mas-TZ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "73082bf9-0ec4-4189-8ca1-099a4da580ac",
+    "LanguageName": "Meru (Kenya)",
+    "Symbol": "mer-KE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "3629dfd3-ac3d-4943-ad4f-ae17bc6b1166",
+    "LanguageName": "Morisyen (Mauritius)",
+    "Symbol": "mfe-MU",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "666ddaba-8d1f-4e90-8070-e9c22022ab53",
+    "LanguageName": "Malagasy (Madagascar)",
+    "Symbol": "mg-MG",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "0d615706-41a0-4ac1-958d-55ea88fe7287",
+    "LanguageName": "Makhuwa-Meetto (Mozambique)",
+    "Symbol": "mgh-MZ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "2dad60f0-7b5a-4d92-a080-2ce1aacff6ac",
+    "LanguageName": "Meta\u02BC (Cameroon)",
+    "Symbol": "mgo-CM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "632446b2-cfa7-4335-ba0a-ef4bf6bb33e1",
+    "LanguageName": "Maori (New Zealand)",
+    "Symbol": "mi-NZ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "2ee5df37-e9a9-401a-a2be-49982da39fb5",
+    "LanguageName": "Macedonian (North Macedonia)",
+    "Symbol": "mk-MK",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "34f7a05c-c32f-4941-a4bf-262ad6a6dbd0",
+    "LanguageName": "Malayalam (India)",
+    "Symbol": "ml-IN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "3e572798-8fa4-4935-9ef9-ea06de028158",
+    "LanguageName": "Mongolian (Mongolia)",
+    "Symbol": "mn-MN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "d111d695-a752-4d70-9eb7-16f883f81e4c",
+    "LanguageName": "Mongolian (Mongolian, China)",
+    "Symbol": "mn-Mong-CN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "ce21cf58-9716-4e39-a787-de417a36a59c",
+    "LanguageName": "Mongolian (Mongolian, Mongolia)",
+    "Symbol": "mn-Mong-MN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "410573c1-394c-4f8a-93a6-b03e19092f65",
+    "LanguageName": "Mohawk (Canada)",
+    "Symbol": "moh-CA",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "0fae46b0-a457-4d2f-b2f6-fe36a07d75b0",
+    "LanguageName": "Marathi (India)",
+    "Symbol": "mr-IN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "3d3dedc1-a7fc-4268-a027-4ffbeb0660a9",
+    "LanguageName": "Malay (Brunei)",
+    "Symbol": "ms-BN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "216894a1-e6b3-4e5f-830b-c2535fb92135",
+    "LanguageName": "Malay (Malaysia)",
+    "Symbol": "ms-MY",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "90ff4189-007d-4378-ba12-2826ef070ac6",
+    "LanguageName": "Malay (Singapore)",
+    "Symbol": "ms-SG",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "cc8c6e45-4a89-4a67-b05d-8b899d100481",
+    "LanguageName": "Maltese (Malta)",
+    "Symbol": "mt-MT",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "51048744-b3c4-4193-9615-a2462794aa8f",
+    "LanguageName": "Mundang (Cameroon)",
+    "Symbol": "mua-CM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "554bc693-d4a7-4049-9943-b9850b5f07f1",
+    "LanguageName": "Burmese (Myanmar)",
+    "Symbol": "my-MM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "f12e795a-d05e-45d1-93b6-4404d708010e",
+    "LanguageName": "Mazanderani (Iran)",
+    "Symbol": "mzn-IR",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "7baa57d0-ce61-4a84-a928-a5a118e94a09",
+    "LanguageName": "Nama (Namibia)",
+    "Symbol": "naq-NA",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "ec3d167a-5e2f-44c0-aee7-1e30ce08993e",
+    "LanguageName": "Norwegian Bokm\u00E5l (Norway)",
+    "Symbol": "nb-NO",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "8b21841c-b5bc-4d4f-aabe-68d5e8449755",
+    "LanguageName": "Norwegian Bokm\u00E5l (Svalbard \u0026 Jan Mayen)",
+    "Symbol": "nb-SJ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "2a8e15d9-35ec-40a8-ab2e-9d79192b4325",
+    "LanguageName": "North Ndebele (Zimbabwe)",
+    "Symbol": "nd-ZW",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "251f8f3c-14f8-47a4-a9c0-f0d8a412b87d",
+    "LanguageName": "Low German (Germany)",
+    "Symbol": "nds-DE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "3482197d-fd98-4ce5-9f63-d56aca17e676",
+    "LanguageName": "Low German (Netherlands)",
+    "Symbol": "nds-NL",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "dbfa223e-b82d-45b2-9c17-7b57520b9ab3",
+    "LanguageName": "Nepali (India)",
+    "Symbol": "ne-IN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "e7201fee-e0e0-484a-9183-4f6b22af1b81",
+    "LanguageName": "Nepali (Nepal)",
+    "Symbol": "ne-NP",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "587e1647-d41b-4b2a-9b72-7973446c3f8f",
+    "LanguageName": "Dutch (Aruba)",
+    "Symbol": "nl-AW",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "f1e70301-a4e1-4177-805f-bd20d77ec572",
+    "LanguageName": "Dutch (Belgium)",
+    "Symbol": "nl-BE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "a4e55a99-aa6c-432f-9cf3-e52eeb4ba51c",
+    "LanguageName": "Dutch (Bonaire, Sint Eustatius and Saba)",
+    "Symbol": "nl-BQ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "5aefa970-809e-43ad-8387-e457dd8c238a",
+    "LanguageName": "Dutch (Cura\u00E7ao)",
+    "Symbol": "nl-CW",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "8300353f-732e-4e2a-b5eb-6bdcb78be4fb",
+    "LanguageName": "Dutch (Netherlands)",
+    "Symbol": "nl-NL",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "998735ae-97fe-4c0f-b70c-dbf68b78304a",
+    "LanguageName": "Dutch (Suriname)",
+    "Symbol": "nl-SR",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "6b070cd0-f70d-4d00-9f9d-5fb98cad48a1",
+    "LanguageName": "Dutch (Sint Maarten)",
+    "Symbol": "nl-SX",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "f02493e9-0c24-4554-8357-d101a6fffb47",
+    "LanguageName": "Kwasio (Cameroon)",
+    "Symbol": "nmg-CM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "fd755d57-4aa4-4425-906e-c0e47043d0ec",
+    "LanguageName": "Norwegian Nynorsk (Norway)",
+    "Symbol": "nn-NO",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "07e27818-61da-4a9c-95ba-3e888c8371d4",
+    "LanguageName": "Ngiemboon (Cameroon)",
+    "Symbol": "nnh-CM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "25593255-8d13-4b88-9802-b8ac75a36f0d",
+    "LanguageName": "N\u2019Ko (Guinea)",
+    "Symbol": "nqo-GN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "5bad67bf-0fa0-4c77-97b1-1cbe31ee6829",
+    "LanguageName": "South Ndebele (South Africa)",
+    "Symbol": "nr-ZA",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "ccfede09-4cd4-4888-a4fd-948bada275d2",
+    "LanguageName": "Sesotho sa Leboa (South Africa)",
+    "Symbol": "nso-ZA",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "6a437ff0-074a-4046-872d-34f0f39c66c2",
+    "LanguageName": "Nuer (South Sudan)",
+    "Symbol": "nus-SS",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "760ce546-10d4-4ef3-90ce-6b87a4e2b3fc",
+    "LanguageName": "Nyankole (Uganda)",
+    "Symbol": "nyn-UG",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "323a381d-ca6f-45bb-a57a-f7a9e236382c",
+    "LanguageName": "Occitan (France)",
+    "Symbol": "oc-FR",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "c482ea67-fba6-4650-ba90-1fef16742eef",
+    "LanguageName": "Oromo (Ethiopia)",
+    "Symbol": "om-ET",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "d7c1dc40-1d93-41f9-a43e-090f250dae00",
+    "LanguageName": "Oromo (Kenya)",
+    "Symbol": "om-KE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "33b28f81-542b-4ced-ab38-8ac5a826e175",
+    "LanguageName": "Odia (India)",
+    "Symbol": "or-IN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "5844fa2d-1d72-437f-9413-404c38b18a15",
+    "LanguageName": "Ossetic (Georgia)",
+    "Symbol": "os-GE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "23840c2e-35be-4a6e-9349-9a115382aaaf",
+    "LanguageName": "Ossetic (Russia)",
+    "Symbol": "os-RU",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "8df2c4fd-8bd5-4ee0-824d-95644c02ae59",
+    "LanguageName": "Punjabi (Arabic, Pakistan)",
+    "Symbol": "pa-Arab-PK",
     "Direction": 1,
     "IsDefault": false
   },
   {
-    "LanguageId": "c645678b-eb6e-4fa8-ba16-eb052d6e372d",
-    "LanguageName": "Hindi",
-    "Symbol": "hi",
+    "LanguageId": "1dd63804-a346-491e-b043-502a6f10faee",
+    "LanguageName": "Punjabi (Gurmukhi, India)",
+    "Symbol": "pa-Guru-IN",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "5228bfb4-e866-41f0-829e-ed7e69684f59",
-    "LanguageName": "Croatian",
-    "Symbol": "hr",
+    "LanguageId": "54b68595-3853-494a-a915-9551b8f208f9",
+    "LanguageName": "Polish (Poland)",
+    "Symbol": "pl-PL",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "b3e97ace-8260-483d-b08c-ddd0c61fec29",
-    "LanguageName": "Upper Sorbian",
-    "Symbol": "hsb",
+    "LanguageId": "6d03e33d-a970-4902-a4a4-7e5d0c2eac54",
+    "LanguageName": "Prussian (World)",
+    "Symbol": "prg-001",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "388e08ab-6bb1-468d-86fe-9f1797d3dc63",
-    "LanguageName": "Hungarian",
-    "Symbol": "hu",
+    "LanguageId": "9d4b34de-5b56-4dd6-9dcd-4631f84dcd0d",
+    "LanguageName": "Pashto (Afghanistan)",
+    "Symbol": "ps-AF",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "5af806c5-123e-4f5a-a7b4-4bcf2c996076",
-    "LanguageName": "Armenian",
-    "Symbol": "hy",
+    "LanguageId": "b78a53c4-e7d5-4cf0-ae40-d65d49f56229",
+    "LanguageName": "Pashto (Pakistan)",
+    "Symbol": "ps-PK",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "85188349-45b3-4c16-a86e-547421fcd576",
-    "LanguageName": "Interlingua",
-    "Symbol": "ia",
+    "LanguageId": "80a577ef-9c43-43a3-a007-f734aa02fc42",
+    "LanguageName": "Portuguese (Angola)",
+    "Symbol": "pt-AO",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "b3a2c0e7-de95-47bd-9a02-10e1491cb64d",
-    "LanguageName": "Indonesian",
-    "Symbol": "id",
+    "LanguageId": "8305bcac-4d36-4f4b-918a-ebc77d418207",
+    "LanguageName": "Portuguese (Brazil)",
+    "Symbol": "pt-BR",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "659eb26e-7e3d-4fa0-947e-7174fa9961d7",
-    "LanguageName": "Igbo",
-    "Symbol": "ig",
+    "LanguageId": "f28acea4-fb65-4fcd-98e2-9ea6e369a9ce",
+    "LanguageName": "Portuguese (Switzerland)",
+    "Symbol": "pt-CH",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "fdbae664-ea60-43a7-bd1a-2fca07d0bf33",
-    "LanguageName": "Yi",
-    "Symbol": "ii",
+    "LanguageId": "ec625a97-67f4-42f5-8d4f-ec5b26d275af",
+    "LanguageName": "Portuguese (Cabo Verde)",
+    "Symbol": "pt-CV",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "2a1fd653-1cd1-49a5-89e0-3979c55e3bfa",
-    "LanguageName": "Icelandic",
-    "Symbol": "is",
+    "LanguageId": "deca007f-2149-430b-9bda-b388b61200c8",
+    "LanguageName": "Portuguese (Equatorial Guinea)",
+    "Symbol": "pt-GQ",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "df5615f3-a2c2-425a-8ff4-75371a42eecb",
-    "LanguageName": "Italian",
-    "Symbol": "it",
+    "LanguageId": "3c392e1c-eaa4-4729-84be-65936e32abd1",
+    "LanguageName": "Portuguese (Guinea-Bissau)",
+    "Symbol": "pt-GW",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "bedb2343-242c-498c-b850-61f30b76e752",
-    "LanguageName": "Inuktitut",
-    "Symbol": "iu",
+    "LanguageId": "d702869b-aaca-4a87-af06-0d39ccbb7337",
+    "LanguageName": "Portuguese (Luxembourg)",
+    "Symbol": "pt-LU",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "25216278-dad1-4604-ae1c-46171dd67009",
-    "LanguageName": "Inuktitut (Latin)",
-    "Symbol": "iu-Latn",
+    "LanguageId": "3fa1ac14-9e5d-4e08-9c42-9048ab020cea",
+    "LanguageName": "Portuguese (Macao SAR)",
+    "Symbol": "pt-MO",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "7746866e-594e-48e2-831d-f528b4315e06",
-    "LanguageName": "Japanese",
-    "Symbol": "ja",
+    "LanguageId": "8fc0abbb-7d87-4341-9bf7-b483c4b87bdb",
+    "LanguageName": "Portuguese (Mozambique)",
+    "Symbol": "pt-MZ",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "eb52a960-c4a7-431f-865f-ee688c2af7ce",
-    "LanguageName": "Ngomba",
-    "Symbol": "jgo",
+    "LanguageId": "27e451d0-6359-4c8e-a03d-76eb0e8168c6",
+    "LanguageName": "Portuguese (Portugal)",
+    "Symbol": "pt-PT",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "06d746f4-9fa6-4e71-8a2d-aea13c744fa0",
-    "LanguageName": "Machame",
-    "Symbol": "jmc",
+    "LanguageId": "cb672614-0d26-460b-aba8-0da56d55d3a2",
+    "LanguageName": "Portuguese (S\u00E3o Tom\u00E9 \u0026 Pr\u00EDncipe)",
+    "Symbol": "pt-ST",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "0bac53c1-3682-4b2a-9480-e495f287b4d5",
-    "LanguageName": "Javanese",
-    "Symbol": "jv",
+    "LanguageId": "1d7771b4-efec-4c98-960d-37f1d49cdc5d",
+    "LanguageName": "Portuguese (Timor-Leste)",
+    "Symbol": "pt-TL",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "315a4579-7d88-4ae0-ac7e-a95d839e78cd",
-    "LanguageName": "Georgian",
-    "Symbol": "ka",
+    "LanguageId": "1216739a-951f-46c7-ab15-c57bde106af9",
+    "LanguageName": "Quechua (Bolivia)",
+    "Symbol": "qu-BO",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "28d9286a-b245-4317-81be-bb2ce301fad4",
-    "LanguageName": "Kabyle",
-    "Symbol": "kab",
+    "LanguageId": "a7d11ab8-eb94-44b9-85c9-71283a9423a3",
+    "LanguageName": "Quechua (Ecuador)",
+    "Symbol": "qu-EC",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "5e7629ad-54e6-42b2-a5ef-1fdc3a74ef6a",
-    "LanguageName": "Kamba",
-    "Symbol": "kam",
+    "LanguageId": "b0823d3f-7285-45c4-9f87-13acd7f140ed",
+    "LanguageName": "Quechua (Peru)",
+    "Symbol": "qu-PE",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "16499259-de13-4994-a227-242d3cce9c75",
-    "LanguageName": "Makonde",
-    "Symbol": "kde",
+    "LanguageId": "1fa2e81b-6d40-469e-92a4-15f1a0436934",
+    "LanguageName": "K\u02BCiche\u02BC (Guatemala)",
+    "Symbol": "quc-GT",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "15925ffb-418b-4683-a176-48adf9da91e4",
-    "LanguageName": "Kabuverdianu",
-    "Symbol": "kea",
+    "LanguageId": "8e823a79-8808-423b-8eb2-5430757be32a",
+    "LanguageName": "Romansh (Switzerland)",
+    "Symbol": "rm-CH",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "d420a8f5-f214-45ce-8a9f-f501b3ad11c8",
-    "LanguageName": "Koyra Chiini",
-    "Symbol": "khq",
+    "LanguageId": "6fcf7043-cb59-44ec-9b6e-2c677d89af51",
+    "LanguageName": "Rundi (Burundi)",
+    "Symbol": "rn-BI",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "bcfe052c-ae88-4372-8bb5-884c2dc8ebc5",
-    "LanguageName": "Kikuyu",
-    "Symbol": "ki",
+    "LanguageId": "403fbb0c-771a-430c-a6b9-c50a5e727f30",
+    "LanguageName": "Romanian (Moldova)",
+    "Symbol": "ro-MD",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "9581b2dd-8a91-4ae2-975e-32d969e56864",
-    "LanguageName": "Kazakh",
-    "Symbol": "kk",
+    "LanguageId": "2dc59ec2-a1a2-4db0-b29a-3eaf7788ff6b",
+    "LanguageName": "Romanian (Romania)",
+    "Symbol": "ro-RO",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "028655a4-aeec-4c47-915e-3de8b24f886c",
-    "LanguageName": "Kako",
-    "Symbol": "kkj",
+    "LanguageId": "b9dbedb7-a0eb-473e-b8f2-7159dfb6bacb",
+    "LanguageName": "Rombo (Tanzania)",
+    "Symbol": "rof-TZ",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "a5819c3b-63f1-4fe8-a520-a92d6fe199ea",
-    "LanguageName": "Kalaallisut",
-    "Symbol": "kl",
+    "LanguageId": "3f6a8442-14db-4196-9a40-71996ec94313",
+    "LanguageName": "Russian (Belarus)",
+    "Symbol": "ru-BY",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "9e73d2eb-627e-4f3f-bd67-8b83338aa5e4",
-    "LanguageName": "Kalenjin",
-    "Symbol": "kln",
+    "LanguageId": "a3485889-4abd-44dc-bf53-96cb39026123",
+    "LanguageName": "Russian (Kyrgyzstan)",
+    "Symbol": "ru-KG",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "90be6bd6-d2aa-473c-82c1-7e4a928536cf",
-    "LanguageName": "Khmer",
-    "Symbol": "km",
+    "LanguageId": "35737013-2497-4bc1-9d69-149d8c01da4c",
+    "LanguageName": "Russian (Kazakhstan)",
+    "Symbol": "ru-KZ",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "e36d4bd0-5188-4cc0-8962-1144ebbf1138",
-    "LanguageName": "Kannada",
-    "Symbol": "kn",
+    "LanguageId": "876f3218-87c9-46a0-9ef0-5f688cf5fcec",
+    "LanguageName": "Russian (Moldova)",
+    "Symbol": "ru-MD",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "cc925df4-258d-4c08-a601-96fc895b56ba",
-    "LanguageName": "Korean",
-    "Symbol": "ko",
+    "LanguageId": "975e443b-b5c8-4f05-bdad-8e082070966e",
+    "LanguageName": "Russian (Russia)",
+    "Symbol": "ru-RU",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "336adc7a-3fb3-4571-970d-5afe71c871d8",
-    "LanguageName": "Konkani",
-    "Symbol": "kok",
+    "LanguageId": "dae62ac0-0225-4976-a63e-85f073cdd3f3",
+    "LanguageName": "Russian (Ukraine)",
+    "Symbol": "ru-UA",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "d9b453e6-7416-4133-8df4-ff11d68344df",
-    "LanguageName": "Kashmiri",
-    "Symbol": "ks",
+    "LanguageId": "5e389b7a-af01-44ca-a062-1db8c8f78a42",
+    "LanguageName": "Kinyarwanda (Rwanda)",
+    "Symbol": "rw-RW",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "a78d9df5-20ec-4b13-b334-6986fb663c98",
-    "LanguageName": "Shambala",
-    "Symbol": "ksb",
+    "LanguageId": "9e961c32-3cb4-4618-b830-6b4009705833",
+    "LanguageName": "Rwa (Tanzania)",
+    "Symbol": "rwk-TZ",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "e0b529fe-440f-4c49-9677-c3b8f60a7db1",
-    "LanguageName": "Bafia",
-    "Symbol": "ksf",
+    "LanguageId": "d1b87ca2-36ee-4ddc-af45-14288fb4aa6d",
+    "LanguageName": "Sanskrit (India)",
+    "Symbol": "sa-IN",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "dd70400b-33fb-46f6-938e-fd668bd1ac5f",
-    "LanguageName": "Colognian",
-    "Symbol": "ksh",
+    "LanguageId": "93fc6560-2405-46a6-9216-599f99c11484",
+    "LanguageName": "Sakha (Russia)",
+    "Symbol": "sah-RU",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "e3cad277-f28c-4778-a790-2be65cc6e7a0",
-    "LanguageName": "Cornish",
-    "Symbol": "kw",
+    "LanguageId": "c55a04b7-0090-406a-8c0e-fdab213cd4ad",
+    "LanguageName": "Samburu (Kenya)",
+    "Symbol": "saq-KE",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "a8abd7f4-5559-4152-a634-4735e09f1802",
-    "LanguageName": "Kyrgyz",
-    "Symbol": "ky",
+    "LanguageId": "a4813ddf-fc28-4ae9-b509-a4a93258583c",
+    "LanguageName": "Sangu (Tanzania)",
+    "Symbol": "sbp-TZ",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "4445044f-635d-458b-ada9-dff93e3c0db1",
-    "LanguageName": "Langi",
-    "Symbol": "lag",
+    "LanguageId": "b693947c-10bf-46d4-9582-3ab1e660a1b2",
+    "LanguageName": "Sindhi (Pakistan)",
+    "Symbol": "sd-PK",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "e7691fbb-2db4-4318-9665-95af551ddd2d",
-    "LanguageName": "Luxembourgish",
-    "Symbol": "lb",
+    "LanguageId": "75dab5af-c3f4-4d91-94e4-582aa0d99760",
+    "LanguageName": "Northern Sami (Finland)",
+    "Symbol": "se-FI",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "f641edc8-1570-4d34-a207-add6620f654f",
-    "LanguageName": "Ganda",
-    "Symbol": "lg",
+    "LanguageId": "cc8ff974-a7b1-4380-ad8f-75b35c902ab3",
+    "LanguageName": "Northern Sami (Norway)",
+    "Symbol": "se-NO",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "35657eef-4008-4092-8f5c-105061934250",
-    "LanguageName": "Lakota",
-    "Symbol": "lkt",
+    "LanguageId": "5eadaeeb-5510-47bb-9fb5-18dfc641b419",
+    "LanguageName": "Northern Sami (Sweden)",
+    "Symbol": "se-SE",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "4535233b-95bb-4f6f-acc8-b78e83166b51",
-    "LanguageName": "Lingala",
-    "Symbol": "ln",
+    "LanguageId": "67fcb559-d102-4bfd-b925-2f8a016740a8",
+    "LanguageName": "Sena (Mozambique)",
+    "Symbol": "seh-MZ",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "2e2ceb4d-c032-4502-974a-c0122be357d2",
-    "LanguageName": "Lao",
-    "Symbol": "lo",
+    "LanguageId": "09b4d3e6-475e-44fc-8cf2-88e6ea81dccd",
+    "LanguageName": "Koyraboro Senni (Mali)",
+    "Symbol": "ses-ML",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "48c6dcdf-60c0-4ef1-9e52-57a2cf491dbb",
-    "LanguageName": "Northern Luri",
-    "Symbol": "lrc",
+    "LanguageId": "2aa3b23b-664f-4c59-ba30-4b584bde8eac",
+    "LanguageName": "Sango (Central African Republic)",
+    "Symbol": "sg-CF",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "ce9125ac-f1cc-4f73-99f8-cd4586a22ad8",
-    "LanguageName": "Lithuanian",
-    "Symbol": "lt",
+    "LanguageId": "a0c75512-dfe1-4ac3-9c3f-9132b225261d",
+    "LanguageName": "Tachelhit (Latin, Morocco)",
+    "Symbol": "shi-Latn-MA",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "82ea62ec-e7aa-49a3-975b-e66c52851be2",
-    "LanguageName": "Luba-Katanga",
-    "Symbol": "lu",
+    "LanguageId": "ea07028e-26b5-4c86-a093-96aa89ba6229",
+    "LanguageName": "Tachelhit (Tifinagh, Morocco)",
+    "Symbol": "shi-Tfng-MA",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "2966d312-873d-46dc-90fc-17609352a09e",
-    "LanguageName": "Luo",
-    "Symbol": "luo",
+    "LanguageId": "8c8d9ee4-afec-412d-b5c4-bd5783d795b8",
+    "LanguageName": "Sinhala (Sri Lanka)",
+    "Symbol": "si-LK",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "15c5547a-85b6-468b-9494-d32a823e769d",
-    "LanguageName": "Luyia",
-    "Symbol": "luy",
+    "LanguageId": "8ca3e213-a6cd-416f-af35-3668be8bac56",
+    "LanguageName": "Slovak (Slovakia)",
+    "Symbol": "sk-SK",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "7dcda1a5-6b73-4cc2-8fc6-539dfef13de8",
-    "LanguageName": "Latvian",
-    "Symbol": "lv",
+    "LanguageId": "770085f1-0b3d-4348-973b-8d235f81792d",
+    "LanguageName": "Slovenian (Slovenia)",
+    "Symbol": "sl-SI",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "438bdd24-96a8-4d3f-815f-79fbfa84f5fe",
-    "LanguageName": "Masai",
-    "Symbol": "mas",
+    "LanguageId": "d091f5bb-c13f-4d49-9641-e4fb05832d8f",
+    "LanguageName": "Southern Sami (Norway)",
+    "Symbol": "sma-NO",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "9af03c5c-591c-49aa-8de8-ffec45a6f3db",
-    "LanguageName": "Meru",
-    "Symbol": "mer",
+    "LanguageId": "a87835c9-8a49-4cd2-bced-916ae9ff2b19",
+    "LanguageName": "Southern Sami (Sweden)",
+    "Symbol": "sma-SE",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "05f0e9e4-bc30-4c68-896a-a1b849642b80",
-    "LanguageName": "Morisyen",
-    "Symbol": "mfe",
+    "LanguageId": "2d3fc026-cbc5-4cdc-88eb-8977c5103a75",
+    "LanguageName": "Lule Sami (Norway)",
+    "Symbol": "smj-NO",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "144e6eb0-57f9-49e2-87d3-e75d7177530e",
-    "LanguageName": "Malagasy",
-    "Symbol": "mg",
+    "LanguageId": "24d3bf69-40a6-4f04-8505-c8a66f5fb8af",
+    "LanguageName": "Lule Sami (Sweden)",
+    "Symbol": "smj-SE",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "75131f3a-9e91-47ba-8313-c9ca6eef14da",
-    "LanguageName": "Makhuwa-Meetto",
-    "Symbol": "mgh",
+    "LanguageId": "ee6896d1-6984-4143-a795-25a95746667c",
+    "LanguageName": "Inari Sami (Finland)",
+    "Symbol": "smn-FI",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "e1432a00-fac9-4752-ab49-e81ed55fe023",
-    "LanguageName": "Meta\u02BC",
-    "Symbol": "mgo",
+    "LanguageId": "666693f2-3819-4145-8ba7-7bad92659717",
+    "LanguageName": "Skolt Sami (Finland)",
+    "Symbol": "sms-FI",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "f0f8f1cd-c8fd-4bbc-9808-800dd37cd82d",
-    "LanguageName": "Maori",
-    "Symbol": "mi",
+    "LanguageId": "25a8f3e7-f277-436e-a25d-52ada2ada5b3",
+    "LanguageName": "Shona (Zimbabwe)",
+    "Symbol": "sn-ZW",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "89856eab-9495-4b27-acdb-60912609538b",
-    "LanguageName": "Macedonian",
-    "Symbol": "mk",
+    "LanguageId": "ff143585-f39e-42eb-95f3-0cb3998583d1",
+    "LanguageName": "Somali (Djibouti)",
+    "Symbol": "so-DJ",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "42b64dab-52bb-48f5-b381-4cf1e4341d6e",
-    "LanguageName": "Malayalam",
-    "Symbol": "ml",
+    "LanguageId": "a4e3ec33-65b5-412d-b8d8-c96be4a15810",
+    "LanguageName": "Somali (Ethiopia)",
+    "Symbol": "so-ET",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "7410d486-1c40-4cdc-827d-58d2d1a2ddfe",
-    "LanguageName": "Mongolian",
-    "Symbol": "mn",
+    "LanguageId": "3196fe89-e419-48c3-8007-294650fa57c8",
+    "LanguageName": "Somali (Kenya)",
+    "Symbol": "so-KE",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "31d0b45e-1682-4c71-be92-65b3919b83a5",
-    "LanguageName": "Mongolian (Mongolian)",
-    "Symbol": "mn-Mong",
+    "LanguageId": "0e3a1538-356d-4e86-a1fc-ed7d6a6db551",
+    "LanguageName": "Somali (Somalia)",
+    "Symbol": "so-SO",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "85a6cc7c-ade1-4fb6-b7f1-8581f65362ae",
-    "LanguageName": "Mohawk",
-    "Symbol": "moh",
+    "LanguageId": "eb3b0a09-417e-4901-bf6e-fbc127b7cc79",
+    "LanguageName": "Albanian (Albania)",
+    "Symbol": "sq-AL",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "1ce5600b-297b-4546-a19e-9ec96edbeb87",
-    "LanguageName": "Marathi",
-    "Symbol": "mr",
+    "LanguageId": "65e883af-9b84-4ce2-8f99-6259175e8b98",
+    "LanguageName": "Albanian (North Macedonia)",
+    "Symbol": "sq-MK",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "1cbb8ac5-feef-475e-9165-1a483d1cb1b5",
-    "LanguageName": "Malay",
-    "Symbol": "ms",
+    "LanguageId": "b76ee07c-e952-4d63-84d9-d3719bf2cccf",
+    "LanguageName": "Albanian (Kosovo)",
+    "Symbol": "sq-XK",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "2c0f9c9d-aaf8-410b-8aef-7db9c3d0110a",
-    "LanguageName": "Maltese",
-    "Symbol": "mt",
+    "LanguageId": "38ea6429-1c63-442e-a640-2668067e5351",
+    "LanguageName": "Serbian (Cyrillic, Bosnia \u0026 Herzegovina)",
+    "Symbol": "sr-Cyrl-BA",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "0fc15782-d808-49c0-a26f-27ad67241673",
-    "LanguageName": "Mundang",
-    "Symbol": "mua",
+    "LanguageId": "b5efaaaa-fb1d-4e6e-853b-7b7f2c5973e1",
+    "LanguageName": "Serbian (Cyrillic, Montenegro)",
+    "Symbol": "sr-Cyrl-ME",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "f3d30568-e99a-4dde-9bbb-c4ced881d4eb",
-    "LanguageName": "Burmese",
-    "Symbol": "my",
+    "LanguageId": "afbe7274-6679-4074-93b0-602d26842a5a",
+    "LanguageName": "Serbian (Cyrillic, Serbia)",
+    "Symbol": "sr-Cyrl-RS",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "f15223ee-c72a-4977-8e8b-0d89707f07c4",
-    "LanguageName": "Mazanderani",
-    "Symbol": "mzn",
+    "LanguageId": "69c053bd-685a-43cd-bb13-0c1fbd9cfb1e",
+    "LanguageName": "Serbian (Cyrillic, Kosovo)",
+    "Symbol": "sr-Cyrl-XK",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "7de4dc7f-9c47-4522-a844-e4e3ffe37073",
-    "LanguageName": "Nama",
-    "Symbol": "naq",
+    "LanguageId": "d1207770-c554-4564-bf08-b32b2c571eab",
+    "LanguageName": "Serbian (Latin, Bosnia \u0026 Herzegovina)",
+    "Symbol": "sr-Latn-BA",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "6077ce89-d47c-4708-97b2-94cf8d9ac401",
-    "LanguageName": "Norwegian Bokm\u00E5l",
-    "Symbol": "nb",
+    "LanguageId": "97313fb5-e75a-40c8-a4df-2777abd5d6e2",
+    "LanguageName": "Serbian (Latin, Montenegro)",
+    "Symbol": "sr-Latn-ME",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "09fb1432-0631-4539-8806-28a77eef6400",
-    "LanguageName": "North Ndebele",
-    "Symbol": "nd",
+    "LanguageId": "a76d1b17-a806-4c3f-a140-a2015709b13d",
+    "LanguageName": "Serbian (Latin, Serbia)",
+    "Symbol": "sr-Latn-RS",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "63129f5f-a698-4cd2-a7ca-07da3168995f",
-    "LanguageName": "Low German",
-    "Symbol": "nds",
+    "LanguageId": "17d7018c-bb0d-4bf9-b660-483e797d630f",
+    "LanguageName": "Serbian (Latin, Kosovo)",
+    "Symbol": "sr-Latn-XK",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "6d0f9e1b-4dbf-46a3-a505-b1dbb78c8e49",
-    "LanguageName": "Nepali",
-    "Symbol": "ne",
+    "LanguageId": "75423e67-8458-4a19-a9c7-d7766e8f6b80",
+    "LanguageName": "siSwati (Eswatini)",
+    "Symbol": "ss-SZ",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "6ba41cc7-1689-4eed-af9b-aa716f55724e",
-    "LanguageName": "Dutch",
-    "Symbol": "nl",
+    "LanguageId": "d04caf77-6832-4143-94c7-bad5c0d516c6",
+    "LanguageName": "siSwati (South Africa)",
+    "Symbol": "ss-ZA",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "04c421e3-ab2a-485e-bd63-d50382f9fdeb",
-    "LanguageName": "Kwasio",
-    "Symbol": "nmg",
+    "LanguageId": "80a45fab-76d6-4cde-ab79-0fd5b1401de9",
+    "LanguageName": "Saho (Eritrea)",
+    "Symbol": "ssy-ER",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "413c4529-1357-4ad2-81c6-b1f278646180",
-    "LanguageName": "Norwegian Nynorsk",
-    "Symbol": "nn",
+    "LanguageId": "5e41af2b-b9c6-4429-88bd-cba2d2443f04",
+    "LanguageName": "Sesotho (Lesotho)",
+    "Symbol": "st-LS",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "70eeb8d8-8014-47cd-b783-6216590ddc48",
-    "LanguageName": "Ngiemboon",
-    "Symbol": "nnh",
+    "LanguageId": "401a5820-b6d4-4092-904a-d310bc0c6ebc",
+    "LanguageName": "Sesotho (South Africa)",
+    "Symbol": "st-ZA",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "a8103372-d5d6-4d00-a3e9-510af4bf89b7",
-    "LanguageName": "N\u2019Ko",
-    "Symbol": "nqo",
+    "LanguageId": "721b3e7e-5621-4a08-82aa-55cbb998134f",
+    "LanguageName": "Swedish (\u00C5land Islands)",
+    "Symbol": "sv-AX",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "17f1017a-2771-4a1f-92b0-bd4b990dfd90",
-    "LanguageName": "South Ndebele",
-    "Symbol": "nr",
+    "LanguageId": "cbbc342b-cdf3-4d9b-b70c-e23765018491",
+    "LanguageName": "Swedish (Finland)",
+    "Symbol": "sv-FI",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "d962fe21-99e8-4a96-bdcb-7327f6c03c4a",
-    "LanguageName": "Sesotho sa Leboa",
-    "Symbol": "nso",
+    "LanguageId": "19d373a9-d4ee-4e51-a538-91980b101953",
+    "LanguageName": "Swedish (Sweden)",
+    "Symbol": "sv-SE",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "def64b18-e8a1-4de9-907b-1a4f37900791",
-    "LanguageName": "Nuer",
-    "Symbol": "nus",
+    "LanguageId": "0417353b-065f-49e2-876c-a00a0d5fef8b",
+    "LanguageName": "Kiswahili (Congo [DRC])",
+    "Symbol": "sw-CD",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "304279ae-68f3-427f-b7b2-ace486c8b60d",
-    "LanguageName": "Nyankole",
-    "Symbol": "nyn",
+    "LanguageId": "5a2a7f62-072d-44cf-a422-7327ae20195b",
+    "LanguageName": "Kiswahili (Kenya)",
+    "Symbol": "sw-KE",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "b6b30a23-b021-4deb-b5ce-0b83ae39f3d7",
-    "LanguageName": "Occitan",
-    "Symbol": "oc",
+    "LanguageId": "0cbe5b33-2c57-44eb-ba1f-86139704626a",
+    "LanguageName": "Kiswahili (Tanzania)",
+    "Symbol": "sw-TZ",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "ef57be32-de41-4384-80ae-f7459d38ed10",
-    "LanguageName": "Oromo",
-    "Symbol": "om",
+    "LanguageId": "8efbc29d-3ec7-40b3-b132-83172cd2fe49",
+    "LanguageName": "Kiswahili (Uganda)",
+    "Symbol": "sw-UG",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "37a3955e-4626-4478-bd2e-dce4c6e4df96",
-    "LanguageName": "Odia",
-    "Symbol": "or",
+    "LanguageId": "75238999-1cee-49fb-adbd-7ef063a214a6",
+    "LanguageName": "Syriac (Syria)",
+    "Symbol": "syr-SY",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "ae8e4b7d-6ce3-4db5-9002-15e03ce30107",
-    "LanguageName": "Ossetic",
-    "Symbol": "os",
+    "LanguageId": "327686e1-e9c0-4178-9db5-597135db5fd0",
+    "LanguageName": "Tamil (India)",
+    "Symbol": "ta-IN",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "b278db34-e9a8-4d27-a28e-93388c33bf9b",
-    "LanguageName": "Punjabi",
-    "Symbol": "pa",
+    "LanguageId": "bc64db82-57c1-4897-8ec4-05e386a779bb",
+    "LanguageName": "Tamil (Sri Lanka)",
+    "Symbol": "ta-LK",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "f1333bc8-0306-4303-8106-069de3395fde",
-    "LanguageName": "Punjabi (Arabic)",
-    "Symbol": "pa-Arab",
+    "LanguageId": "d54434c9-4af8-4f0a-a5b2-8122d00c8529",
+    "LanguageName": "Tamil (Malaysia)",
+    "Symbol": "ta-MY",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "e06ae3a7-b5f5-40bb-9f2f-9d52e4b811a8",
+    "LanguageName": "Tamil (Singapore)",
+    "Symbol": "ta-SG",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "ef2a721c-e828-4f1a-9597-e0dde484e5ab",
+    "LanguageName": "Telugu (India)",
+    "Symbol": "te-IN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "33e0c335-2e02-44bc-90d4-b6c5271ca3cb",
+    "LanguageName": "Teso (Kenya)",
+    "Symbol": "teo-KE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "4e5c812b-2b18-4c10-a7b1-976d54ac11b9",
+    "LanguageName": "Teso (Uganda)",
+    "Symbol": "teo-UG",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "9c4a7b17-2918-4549-b068-c26cdc135d93",
+    "LanguageName": "Tajik (Tajikistan)",
+    "Symbol": "tg-TJ",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "775091b1-ae10-43c9-a393-38b2e47fe9bb",
+    "LanguageName": "Thai (Thailand)",
+    "Symbol": "th-TH",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "2fa63a4d-0a14-42a8-8d6c-f550ccfbf6fd",
+    "LanguageName": "Tigrinya (Eritrea)",
+    "Symbol": "ti-ER",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "5cabf9cc-ac66-4260-84e6-e20e93d345d2",
+    "LanguageName": "Tigrinya (Ethiopia)",
+    "Symbol": "ti-ET",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "2e31c9fb-5e1d-4b08-8f1b-5fcb53f213cc",
+    "LanguageName": "Tigre (Eritrea)",
+    "Symbol": "tig-ER",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "9ca8b2a6-8f56-4a64-84ff-6286b4d67cbf",
+    "LanguageName": "Turkmen (Turkmenistan)",
+    "Symbol": "tk-TM",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "e5e16547-0947-4334-88dd-0c054c4b7602",
+    "LanguageName": "Setswana (Botswana)",
+    "Symbol": "tn-BW",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "ba53fdb6-5942-4705-aac9-42e5fc635ac0",
+    "LanguageName": "Setswana (South Africa)",
+    "Symbol": "tn-ZA",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "83e0675c-9380-453a-921b-a8fefd6454a1",
+    "LanguageName": "Tongan (Tonga)",
+    "Symbol": "to-TO",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "ae5bfa01-da5d-4c0a-90ae-b0dea3da2a7e",
+    "LanguageName": "Turkish (Cyprus)",
+    "Symbol": "tr-CY",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "caebe0a6-19b6-4eb5-a7c8-44386843c3c2",
+    "LanguageName": "Turkish (Turkey)",
+    "Symbol": "tr-TR",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "27316ff3-c56c-41c6-b40e-6e68a7fdade8",
+    "LanguageName": "Xitsonga (South Africa)",
+    "Symbol": "ts-ZA",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "b371d6b8-8e90-418e-af55-50560bcd9214",
+    "LanguageName": "Tatar (Russia)",
+    "Symbol": "tt-RU",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "d51a56e1-ac81-4a20-9758-3634ceb66b99",
+    "LanguageName": "Tasawaq (Niger)",
+    "Symbol": "twq-NE",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "c438f543-a467-4d66-b417-ed156d915e96",
+    "LanguageName": "Central Atlas Tamazight (Morocco)",
+    "Symbol": "tzm-MA",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "3c2e0282-958b-4e33-adfa-40995443bebe",
+    "LanguageName": "Uyghur (China)",
+    "Symbol": "ug-CN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "68b712a6-411c-4ae7-9e2b-f1b739ffb4cf",
+    "LanguageName": "Ukrainian (Ukraine)",
+    "Symbol": "uk-UA",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "a55f6078-760b-41ff-a72a-029bfc1c60f7",
+    "LanguageName": "Urdu (India)",
+    "Symbol": "ur-IN",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "fd0a7046-417c-43cf-814e-bcfe3cc1d9a1",
+    "LanguageName": "Urdu (Pakistan)",
+    "Symbol": "ur-PK",
+    "Direction": 0,
+    "IsDefault": false
+  },
+  {
+    "LanguageId": "007ed5c8-cdf1-4171-bd22-d8b541909dd6",
+    "LanguageName": "Uzbek (Arabic, Afghanistan)",
+    "Symbol": "uz-Arab-AF",
     "Direction": 1,
     "IsDefault": false
   },
   {
-    "LanguageId": "e4d653ad-aa60-4cad-9257-c4bcc1021aeb",
-    "LanguageName": "Punjabi (Gurmukhi)",
-    "Symbol": "pa-Guru",
+    "LanguageId": "13756ba9-34bb-4421-b84f-8a958dcbf948",
+    "LanguageName": "Uzbek (Cyrillic, Uzbekistan)",
+    "Symbol": "uz-Cyrl-UZ",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "c784748a-307c-4d92-bd4e-bef6d8a2707b",
-    "LanguageName": "Polish",
-    "Symbol": "pl",
+    "LanguageId": "79f9a0fc-9ae3-4d9c-8982-a5dcdccc1b1c",
+    "LanguageName": "Uzbek (Latin, Uzbekistan)",
+    "Symbol": "uz-Latn-UZ",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "e508140d-d7ac-4a87-9ac4-f32cfff8bade",
-    "LanguageName": "Prussian",
-    "Symbol": "prg",
+    "LanguageId": "f888856d-e0a8-4b1a-917c-d3398bb47d2d",
+    "LanguageName": "Vai (Latin, Liberia)",
+    "Symbol": "vai-Latn-LR",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "9e88b253-6c0e-427c-9d46-1f0242cf78b5",
-    "LanguageName": "Pashto",
-    "Symbol": "ps",
+    "LanguageId": "63191589-90ca-4170-a4a3-d86712f6d320",
+    "LanguageName": "Vai (Vai, Liberia)",
+    "Symbol": "vai-Vaii-LR",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "d01ccc69-100c-412a-8df9-191a1ca7f4da",
-    "LanguageName": "Portuguese",
-    "Symbol": "pt",
+    "LanguageId": "e48921b8-aa52-4573-9ffe-fd2630b6c883",
+    "LanguageName": "Venda (South Africa)",
+    "Symbol": "ve-ZA",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "6447747a-95ab-4a28-b064-83b5e5849bb5",
-    "LanguageName": "Quechua",
-    "Symbol": "qu",
+    "LanguageId": "8056a20f-b8f8-4ee3-8e53-14671d1333bb",
+    "LanguageName": "Vietnamese (Vietnam)",
+    "Symbol": "vi-VN",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "1523fe6b-1a9d-4255-aaec-e9254195e739",
-    "LanguageName": "K\u02BCiche\u02BC",
-    "Symbol": "quc",
+    "LanguageId": "dea11034-f620-460d-8444-db1227708ef4",
+    "LanguageName": "Volap\u00FCk (World)",
+    "Symbol": "vo-001",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "385015fc-82ee-4dd1-944b-2f7917543a7c",
-    "LanguageName": "Romansh",
-    "Symbol": "rm",
+    "LanguageId": "15594333-72dd-4132-9c91-7ea92ace6a13",
+    "LanguageName": "Vunjo (Tanzania)",
+    "Symbol": "vun-TZ",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "92c4f51f-6c84-440d-a288-cb716f4e637f",
-    "LanguageName": "Rundi",
-    "Symbol": "rn",
+    "LanguageId": "ba6d97a5-2c7a-4a75-9bdf-a55ae71aa4e9",
+    "LanguageName": "Walser (Switzerland)",
+    "Symbol": "wae-CH",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "28dca62e-563a-4f9d-a9d3-e93ae74655f5",
-    "LanguageName": "Romanian",
-    "Symbol": "ro",
+    "LanguageId": "5588853a-3b7e-4670-ab6d-bb15904d9a2e",
+    "LanguageName": "Wolaytta (Ethiopia)",
+    "Symbol": "wal-ET",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "5f9f2d9b-e7c4-45c2-a98b-de8ecf547ef8",
-    "LanguageName": "Rombo",
-    "Symbol": "rof",
+    "LanguageId": "d8abec3b-d2bb-46ff-b8ec-7c0421075ff8",
+    "LanguageName": "Wolof (Senegal)",
+    "Symbol": "wo-SN",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "29718436-a437-40b9-98ab-ab79ae5aa4d0",
-    "LanguageName": "Russian",
-    "Symbol": "ru",
+    "LanguageId": "d5234122-6b86-4f6e-8392-535b10258783",
+    "LanguageName": "isiXhosa (South Africa)",
+    "Symbol": "xh-ZA",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "7f3bf2d9-4b2c-405b-86bd-a6ed59b89db3",
-    "LanguageName": "Kinyarwanda",
-    "Symbol": "rw",
+    "LanguageId": "6d7944a4-8fd1-4969-ab8b-2f768eec75fb",
+    "LanguageName": "Soga (Uganda)",
+    "Symbol": "xog-UG",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "5673ca39-c8df-4afc-a6d6-740acbd81fce",
-    "LanguageName": "Rwa",
-    "Symbol": "rwk",
+    "LanguageId": "4596c9cf-0aa7-4bd0-8230-9f00638ed4cf",
+    "LanguageName": "Yangben (Cameroon)",
+    "Symbol": "yav-CM",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "f9e4d574-faf5-4e03-a06e-f8dca606265e",
-    "LanguageName": "Sanskrit",
-    "Symbol": "sa",
+    "LanguageId": "f541c33f-b751-4d7b-bd2f-1956b2596e88",
+    "LanguageName": "Yiddish (World)",
+    "Symbol": "yi-001",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "b145f481-ee59-486f-983b-3942c92f712d",
-    "LanguageName": "Sakha",
-    "Symbol": "sah",
+    "LanguageId": "0518b6d2-5710-444c-aad4-74aded31c584",
+    "LanguageName": "Yoruba (Benin)",
+    "Symbol": "yo-BJ",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "c600b1c0-8d9e-49aa-aacf-a8d3cf801b76",
-    "LanguageName": "Samburu",
-    "Symbol": "saq",
+    "LanguageId": "612974e7-b59d-46ec-b7dc-fcc1c59a0ba5",
+    "LanguageName": "Yoruba (Nigeria)",
+    "Symbol": "yo-NG",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "cc9fb20d-ff83-4935-ab0f-2bac0f35de27",
-    "LanguageName": "Sangu",
-    "Symbol": "sbp",
+    "LanguageId": "c6fa7fb0-b700-4da4-ad0c-d8ae443e72fe",
+    "LanguageName": "Standard Moroccan Tamazight (Morocco)",
+    "Symbol": "zgh-MA",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "24372a04-0d4c-4aaf-8bf5-6bf24233bdd8",
-    "LanguageName": "Sindhi",
-    "Symbol": "sd",
+    "LanguageId": "21d66195-2fb3-4415-8aa4-14105ea8099b",
+    "LanguageName": "Chinese (Simplified, China)",
+    "Symbol": "zh-Hans-CN",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "8d85b61e-fadc-4975-9cda-3a2d671d184b",
-    "LanguageName": "Northern Sami",
-    "Symbol": "se",
+    "LanguageId": "8ca0209e-ed67-4807-9cfc-b8263ce7d416",
+    "LanguageName": "Chinese (Simplified, Hong Kong SAR)",
+    "Symbol": "zh-Hans-HK",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "3e1c2a58-6113-47dc-82f4-d18c563e821e",
-    "LanguageName": "Sena",
-    "Symbol": "seh",
+    "LanguageId": "4545a7c5-d915-49a5-857f-6fd1b89fee45",
+    "LanguageName": "Chinese (Simplified, Macao SAR)",
+    "Symbol": "zh-Hans-MO",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "3eddd9b4-7fbf-4c9d-b50d-3833d68ad459",
-    "LanguageName": "Koyraboro Senni",
-    "Symbol": "ses",
+    "LanguageId": "c2e89949-8a8a-4f43-ab9f-67323bcd9acc",
+    "LanguageName": "Chinese (Simplified, Singapore)",
+    "Symbol": "zh-Hans-SG",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "ea34f97c-0680-416d-8e49-da95d783e1aa",
-    "LanguageName": "Sango",
-    "Symbol": "sg",
+    "LanguageId": "d5d4a169-8799-4385-a665-e8362c06d4f2",
+    "LanguageName": "Chinese (Traditional, Hong Kong SAR)",
+    "Symbol": "zh-Hant-HK",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "7eac14e4-4b58-4e0f-90d8-dee549da8e5b",
-    "LanguageName": "Tachelhit",
-    "Symbol": "shi",
+    "LanguageId": "678c58c8-9b1a-4413-9390-0c20150a1bc4",
+    "LanguageName": "Chinese (Traditional, Macao SAR)",
+    "Symbol": "zh-Hant-MO",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "3d92b5fc-1f33-4bb7-b985-f838b898ce38",
-    "LanguageName": "Tachelhit (Latin)",
-    "Symbol": "shi-Latn",
+    "LanguageId": "dc4e7335-c01a-4001-a892-6b299c3f964f",
+    "LanguageName": "Chinese (Traditional, Taiwan)",
+    "Symbol": "zh-Hant-TW",
     "Direction": 0,
     "IsDefault": false
   },
   {
-    "LanguageId": "2c0994de-6093-40b8-b8a2-0488166f89bf",
-    "LanguageName": "Tachelhit (Tifinagh)",
-    "Symbol": "shi-Tfng",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "1f7cc20e-9d44-4789-8179-7dda9a75b468",
-    "LanguageName": "Sinhala",
-    "Symbol": "si",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "a6af2fc6-2d72-4683-93a5-c00ac2ab1e86",
-    "LanguageName": "Slovak",
-    "Symbol": "sk",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "9c468e69-6145-4079-a4ce-64be87f8d616",
-    "LanguageName": "Slovenian",
-    "Symbol": "sl",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "d86549d4-d24e-47c4-939a-e991f559dc39",
-    "LanguageName": "Southern Sami",
-    "Symbol": "sma",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "10651434-0777-4105-b650-6897bc010de6",
-    "LanguageName": "Lule Sami",
-    "Symbol": "smj",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "cee8473b-fe1b-49fd-86b8-492e131449bd",
-    "LanguageName": "Inari Sami",
-    "Symbol": "smn",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "2169c78d-7c0a-4846-a34d-77896f307b37",
-    "LanguageName": "Skolt Sami",
-    "Symbol": "sms",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "2a5ae743-a45f-466d-b365-67d461ee2276",
-    "LanguageName": "Shona",
-    "Symbol": "sn",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "c5eb969a-483b-4bab-92ec-bef21f3751a1",
-    "LanguageName": "Somali",
-    "Symbol": "so",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "17255333-065f-4e90-b0ad-3731563e5146",
-    "LanguageName": "Albanian",
-    "Symbol": "sq",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "19e297de-d950-4e8e-a22d-73cddfab3e3f",
-    "LanguageName": "Serbian",
-    "Symbol": "sr",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "e4c65d0d-aed8-4c5f-86c7-3443ca5ed15d",
-    "LanguageName": "Serbian (Cyrillic)",
-    "Symbol": "sr-Cyrl",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "cb633b45-c545-4b89-b040-7a8e15870e10",
-    "LanguageName": "Serbian (Latin)",
-    "Symbol": "sr-Latn",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "93de2c14-88e3-414d-aa0d-8349a38b62b9",
-    "LanguageName": "siSwati",
-    "Symbol": "ss",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "8cd6b8f7-6488-4e09-8dfa-daa9b8c7525f",
-    "LanguageName": "Saho",
-    "Symbol": "ssy",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "0beb2d10-f362-4670-b12a-144c846fc8c1",
-    "LanguageName": "Sesotho",
-    "Symbol": "st",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "62d37d6c-9c29-460b-877d-0ba6a092603b",
-    "LanguageName": "Swedish",
-    "Symbol": "sv",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "4e3fce1b-af85-4ac8-b60f-4b9f8acf8ee4",
-    "LanguageName": "Kiswahili",
-    "Symbol": "sw",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "547fcd54-2e0d-477e-b4de-228b0f75ee7f",
-    "LanguageName": "Syriac",
-    "Symbol": "syr",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "4ebf0fe2-340f-4c20-9a6e-8af26ec9d213",
-    "LanguageName": "Tamil",
-    "Symbol": "ta",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "a5c4a972-012f-40e2-82bb-a3fa47ee249e",
-    "LanguageName": "Telugu",
-    "Symbol": "te",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "a0cd325f-f3b3-499b-a989-503d9e7408c8",
-    "LanguageName": "Teso",
-    "Symbol": "teo",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "4e84da23-3f35-4a71-998a-4832117c9955",
-    "LanguageName": "Tajik",
-    "Symbol": "tg",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "d5b3c6c3-185a-4a33-a5af-d32062b1eef2",
-    "LanguageName": "Thai",
-    "Symbol": "th",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "520a23ee-2464-4b38-b637-c1daa838f30a",
-    "LanguageName": "Tigrinya",
-    "Symbol": "ti",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "6a8a2e93-ce3c-4649-ad32-14215e19ca66",
-    "LanguageName": "Tigre",
-    "Symbol": "tig",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "047fc0e7-9447-4f13-a170-813ee22bb76a",
-    "LanguageName": "Turkmen",
-    "Symbol": "tk",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "d44742be-645c-46e8-8452-d8d1dbae1023",
-    "LanguageName": "Setswana",
-    "Symbol": "tn",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "a44b0392-8c31-431d-b984-d478689f8796",
-    "LanguageName": "Tongan",
-    "Symbol": "to",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "ebd34385-d66b-4ca1-b186-43d3a03cfadc",
-    "LanguageName": "Turkish",
-    "Symbol": "tr",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "55901832-baa2-4606-844d-86579cddba08",
-    "LanguageName": "Xitsonga",
-    "Symbol": "ts",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "3017282d-85da-40f8-8405-8378524a19b9",
-    "LanguageName": "Tatar",
-    "Symbol": "tt",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "c9dce0c2-42f2-4ab6-9a08-1264794608ca",
-    "LanguageName": "Tasawaq",
-    "Symbol": "twq",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "28d987b8-4452-4bb7-b019-13fa02bc188c",
-    "LanguageName": "Central Atlas Tamazight",
-    "Symbol": "tzm",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "317bec97-e97a-4c34-89dd-f0ee55152f89",
-    "LanguageName": "Uyghur",
-    "Symbol": "ug",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "b74572ff-204c-45fe-b378-ff36e8b6d48d",
-    "LanguageName": "Ukrainian",
-    "Symbol": "uk",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "4d049358-b99d-4daa-a6ef-7b887185289b",
-    "LanguageName": "Urdu",
-    "Symbol": "ur",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "cb8407b7-f3f1-44c7-a42c-e6042ff90344",
-    "LanguageName": "Uzbek",
-    "Symbol": "uz",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "27d815d7-94e7-4838-9596-3bcc9e5f09a1",
-    "LanguageName": "Uzbek (Arabic)",
-    "Symbol": "uz-Arab",
-    "Direction": 1,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "67bb12fa-dc07-443f-b119-46049df649a8",
-    "LanguageName": "Uzbek (Cyrillic)",
-    "Symbol": "uz-Cyrl",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "1936903d-2a59-44ed-821c-a035280fb4e3",
-    "LanguageName": "Uzbek (Latin)",
-    "Symbol": "uz-Latn",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "3ae7fca6-c5ce-43f4-9847-64fb08f5ce30",
-    "LanguageName": "Vai",
-    "Symbol": "vai",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "c1d63c2b-c012-4883-9002-332db6929878",
-    "LanguageName": "Vai (Latin)",
-    "Symbol": "vai-Latn",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "eebd09de-65b1-41c1-917a-c3674693c091",
-    "LanguageName": "Vai (Vai)",
-    "Symbol": "vai-Vaii",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "1775cddc-1825-4f7b-83ce-547a300f47fe",
-    "LanguageName": "Venda",
-    "Symbol": "ve",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "8e00cd0a-f83e-4e8a-9f31-5c98f98633d4",
-    "LanguageName": "Vietnamese",
-    "Symbol": "vi",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "36aa5790-3ab2-4de1-9d2b-70ae089d238c",
-    "LanguageName": "Volap\u00FCk",
-    "Symbol": "vo",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "f88949bf-43e2-4be0-b649-a1fc0c5cef01",
-    "LanguageName": "Vunjo",
-    "Symbol": "vun",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "55acd006-5783-43b1-85d3-57db2b650c18",
-    "LanguageName": "Walser",
-    "Symbol": "wae",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "258a98bd-479a-4fc7-ade8-62fdc564d1c8",
-    "LanguageName": "Wolaytta",
-    "Symbol": "wal",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "f560c9f9-b6df-484b-ba8d-a59319a74f33",
-    "LanguageName": "Wolof",
-    "Symbol": "wo",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "b50c6182-96b0-4401-b10d-4198d918b8b7",
-    "LanguageName": "isiXhosa",
-    "Symbol": "xh",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "09ce2125-61dc-4f5e-8d7e-259e2157df40",
-    "LanguageName": "Soga",
-    "Symbol": "xog",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "47357ff8-cd49-4468-baf9-f69512e18ec8",
-    "LanguageName": "Yangben",
-    "Symbol": "yav",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "b802f821-8f1b-41eb-9258-dbcec4fe6f7f",
-    "LanguageName": "Yiddish",
-    "Symbol": "yi",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "1dad6bc0-0a92-4a44-982e-4ac381c12779",
-    "LanguageName": "Yoruba",
-    "Symbol": "yo",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "2df7359c-e6e0-475b-9d9b-c0adad48780b",
-    "LanguageName": "Standard Moroccan Tamazight",
-    "Symbol": "zgh",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "883b2841-86c1-4cff-b1f9-b5cf3c44cc82",
-    "LanguageName": "Chinese",
-    "Symbol": "zh",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "c87cda57-428f-4d99-8e9b-9b4d76b7a05c",
-    "LanguageName": "Chinese (Simplified)",
-    "Symbol": "zh-Hans",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "cc6d0340-2da8-4d75-97a7-8609fad3d856",
-    "LanguageName": "Chinese (Traditional)",
-    "Symbol": "zh-Hant",
-    "Direction": 0,
-    "IsDefault": false
-  },
-  {
-    "LanguageId": "7edc6462-780c-4e7f-9dd7-6824b341c285",
-    "LanguageName": "isiZulu",
-    "Symbol": "zu",
+    "LanguageId": "79e1dff6-f816-4634-837c-b8d797c7be84",
+    "LanguageName": "isiZulu (South Africa)",
+    "Symbol": "zu-ZA",
     "Direction": 0,
     "IsDefault": false
   }

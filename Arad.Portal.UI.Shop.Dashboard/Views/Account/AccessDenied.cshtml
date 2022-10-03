@@ -1,25 +1,7 @@
 ﻿@{
     Layout = null;
-    string lang = "";
-    var dir = "";
-    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-    {
-        dir = "rtl";
-    }
-    else
-    {
-        dir = "ltr";
-    }
-
-    switch (CultureInfo.CurrentCulture.Name)
-    {
-        case "fa-IR":
-            lang = "fa";
-            break;
-        case "en-US":
-            lang = "en";
-            break;
-    }
+    var dir = HelpersMothods.GetDirection(CultureInfo.CurrentCulture);
+    var lang = HelpersMothods.GetHtmlLang(CultureInfo.CurrentCulture);
     var baseAdd = Config["BaseAddress"];
 }
 <html style="height: auto;" dir="@dir" lang="@lang">

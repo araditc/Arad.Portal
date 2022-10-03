@@ -457,13 +457,7 @@ namespace Arad.Portal.UI.Shop.Controllers
              
 
             var entity = _productRepository.FetchByCode(slug, domainEntity.ReturnValue, userId);
-            //if (isLoggedUser && entity.ProductType == Enums.ProductType.File)
-            //{
-            //    ViewBag.IsDownloadable = _productRepository.IsDownloadIconShowForCurrentUser(userId, entity.ProductId);
-            //}else
-            //{
-            //    ViewBag.IsDownloadable = false;
-            //}
+            
             if (!string.IsNullOrEmpty(entity.ProductId))
             {
                 var updateVisitCount = await _productRepository.UpdateVisitCount(entity.ProductId);
@@ -500,6 +494,8 @@ namespace Arad.Portal.UI.Shop.Controllers
                 ViewBag.LanIcon = lanIcon;
                 ViewBag.CurCurrencyId = domainEntity.ReturnValue.DefaultCurrencyId;
                 ViewBag.CurLanguageId = lanId;
+                ViewBag.Price = entity.Prices.Any(_ => _.StartDate <= DateTime.Now && _.CurrencyId == ViewBag.CurCurrencyId && _.IsActive && _.EndDate == null) ?
+                                       entity.Prices.FirstOrDefault(_ => _.StartDate <= DateTime.Now && _.CurrencyId == ViewBag.CurCurrencyId && _.IsActive && _.EndDate == null) : null;
                 ViewData["PageTitle"] = entity.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == languageId).Name;
                 return View(entity);
             }else

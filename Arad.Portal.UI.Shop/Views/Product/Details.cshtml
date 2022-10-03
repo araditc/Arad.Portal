@@ -1,19 +1,9 @@
 ﻿@model Arad.Portal.DataLayer.Models.Product.ProductOutputDTO
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    //Layout = null;
-    var dir = "";
-    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-    {
-        dir = "rtl";
-    }
-    else
-    {
-        dir = "ltr";
-    }
-    var price = Model.Prices.Any(_ => _.StartDate <= DateTime.Now && _.CurrencyId == ViewBag.CurCurrencyId && _.IsActive && _.EndDate == null) ?
-                                        Model.Prices.FirstOrDefault(_ => _.StartDate <= DateTime.Now && _.CurrencyId == ViewBag.CurCurrencyId && _.IsActive && _.EndDate == null) : null;
-    var realPrice = price.PriceValue;
+    var dir = HelpersMothods.GetDirection(CultureInfo.CurrentCulture);
+   
+    var realPrice = ViewBag.Price.PriceValue;
     var score = @Language.GetString("ProductScore");
     var like = User.Identity.IsAuthenticated && ViewBag.Like ? true : false;
 }
@@ -318,18 +308,7 @@
                 </div>
             </div>
         </div>
-        @*<div class="col-md-6 txtAlign">
-        <div class="border rounded-3 m-2 p-2">
-        @{
-        if (Model.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLanguageId) &&
-        !string.IsNullOrEmpty(Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).BodyContent))
-        {
-        @Html.Raw(Model.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLanguageId).BodyContent)
-        }
-        }
-        </div>
-        </div>
-        }*@
+       
     </div>
 </div>
 <script src="~/js/CommentSection/cmt.js"></script>

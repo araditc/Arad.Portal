@@ -2,34 +2,14 @@
 @model Arad.Portal.DataLayer.Models.User.LoginDTO
 @inject Arad.Portal.DataLayer.Contracts.General.SystemSetting.ISystemSettingRepository _systemSettingRepository
 @{
-    var dir = "";
-    var langList = new List<string>() { "fa", "en" };
-    string lang = "";
-    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-    {
-        dir = "rtl";
-        ViewBag.dir = "rtl";
-    }
-    else
-    {
-        dir = "ltr";
-        ViewBag.dir = "ltr";
-    }
-    switch (CultureInfo.CurrentCulture.Name)
-    {
-        case "fa-IR":
-            lang = "fa";
-            break;
-        case "en-US":
-            lang = "en";
-            break;
-    }
+    var direction = HelpersMothods.GetDirection(CultureInfo.CurrentCulture);
+    var lang = HelpersMothods.GetHtmlLang(CultureInfo.CurrentCulture);
     Arad.Portal.DataLayer.Entities.General.SystemSetting.SystemSetting systemSetting
         = (await _systemSettingRepository.GetAll()).FirstOrDefault();
     Layout = null;
 }
 <!DOCTYPE html>
-<html dir="@dir" lang="@lang">
+<html dir="@direction" lang="@lang">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible"
@@ -197,7 +177,7 @@
 
     function setLang(lang)
     {
-
+        debugger;
         const currentCulture = '@CultureInfo.CurrentCulture.Name';
         if (currentCulture !== lang)
         {

@@ -2,16 +2,9 @@
 @using Arad.Portal.DataLayer.Models.Shared;
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var dir = "";
-    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-    {
-        dir = "rtl";
-    }
-    else
-    {
-        dir = "ltr";
-    }
-}
+    var dir = HelpersMothods.GetDirection(CultureInfo.CurrentCulture);
+ }
+   
 
 @section Styles{
   

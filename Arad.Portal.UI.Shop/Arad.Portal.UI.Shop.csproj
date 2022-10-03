@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Search\**" />
+    <Content Remove="Views\Search\**" />
+    <EmbeddedResource Remove="Views\Search\**" />
+    <None Remove="Views\Search\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="Views\Shared\Components\ContentTemplates\Fifth.cshtml" />
     <Content Remove="Views\Shared\Components\ContentTemplates\First.cshtml" />
     <Content Remove="Views\Shared\Components\ContentTemplates\Forth.cshtml" />
@@ -40,7 +47,6 @@
 
   <ItemGroup>
     <Folder Include="Connected Services\" />
-    <Folder Include="Views\Search\" />
     <Folder Include="wwwroot\css\imgs\" />
     <Folder Include="wwwroot\Images\" />
     <Folder Include="wwwroot\Files\" />
@@ -95,9 +101,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="Views\Basket\Get.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="Views\Basket\Index.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="Views\Basket\SendInfo.cshtml">

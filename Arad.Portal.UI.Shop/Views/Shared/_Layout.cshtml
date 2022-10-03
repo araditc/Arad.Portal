@@ -10,28 +10,9 @@
 @inject Arad.Portal.UI.Shop.Helpers.LayoutContentProcess process
 @inject Arad.Portal.DataLayer.Contracts.Shop.ShoppingCart.IShoppingCartRepository cartRepo
 @{
-    var direction = "";
-    var langList = new List<string>() { "fa", "en" };
-    string lang = "";
-    if (CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
-    {
-        direction = "rtl";
-        ViewBag.dir = "rtl";
-    }
-    else
-    {
-        direction = "ltr";
-        ViewBag.dir = "ltr";
-    }
-    switch (CultureInfo.CurrentCulture.Name)
-    {
-        case "fa-IR":
-            lang = "fa";
-            break;
-        case "en-US":
-            lang = "en";
-            break;
-    }
+    var direction = HelpersMothods.GetDirection(CultureInfo.CurrentCulture);
+    var lang = HelpersMothods.GetHtmlLang(CultureInfo.CurrentCulture);
+
     if (User.Identity.IsAuthenticated)
     {
         var res = await cartRepo.LoadUserCartShopping(User.Claims
@@ -95,6 +76,12 @@
             display: flex;
             flex-direction: column;
         }
+
+        .flagIcon{
+            width: 2em !important;
+            line-height: normal !important;
+            font-size: 20px;
+          }
     </style>
 
 

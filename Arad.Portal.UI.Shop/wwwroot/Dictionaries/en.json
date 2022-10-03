@@ -1,0 +1,4534 @@
+[
+  {
+    "Value": "design home page",
+    "Key": "btn_HomePageDesign"
+  },
+  {
+    "Value": "design blog page",
+    "Key": "btn_ContentPageDesign"
+  },
+  {
+    "Value": "design product page",
+    "Key": "btn_ProductPageDesign"
+  },
+  {
+    "Value": "Inform me when available",
+    "Key": "btn_InformMe"
+  },
+  {
+    "Value": "Rotate",
+    "Key": "btn_Rotate"
+  },
+  {
+    "Value": "Login",
+    "Key": "btn_Login"
+  },
+  {
+    "Value": "Crop",
+    "Key": "btn_Crop"
+  },
+  {
+    "Value": "Upload Image",
+    "Key": "btn_UploadImage"
+  },
+  {
+    "Value": "Upload",
+    "Key": "Upload"
+  },
+  {
+    "Value": "Put Image",
+    "Key": "PutImage"
+  },
+  {
+    "Value": "Add",
+    "Key": "btn_Add"
+  },
+  {
+    "Value": "Assign Coupon To Users",
+    "Key": "AssignPromotionToUser"
+  },
+  {
+    "Value": "Add New Line",
+    "Key": "btn_Break"
+  },
+  {
+    "Value": "Add New Row",
+    "Key": "btn_NewRow"
+  },
+  {
+    "Value": "Get data from excel file",
+    "Key": "btn_ExcelImport"
+  },
+  {
+    "Value": "Save",
+    "Key": "btn_Save"
+  },
+  {
+    "Value": "Save Product",
+    "Key": "btn_SaveProduct"
+  },
+  {
+    "Value": "Edit",
+    "Key": "btn_Edit"
+  },
+  {
+    "Value": "Exit",
+    "Key": "btn_Exit"
+  },
+  {
+    "Value": "Send",
+    "Key": "btn_Send"
+  },
+  {
+    "Value": "select",
+    "Key": "btn_Select"
+  },
+  {
+    "Value": "apply class",
+    "Key": "btn_ClassApply"
+  },
+  {
+    "Value": "Check Validation",
+    "Key": "btn_Validation"
+  },
+  {
+    "Value": "Approve",
+    "Key": "btn_Approved"
+  },
+  {
+    "Value": "Cancel",
+    "Key": "btn_Cancel"
+  },
+  {
+    "Value": "Back",
+    "Key": "btn_Back"
+  },
+  {
+    "Value": "Restore",
+    "Key": "btn_Restore"
+  },
+  {
+    "Value": "Delete",
+    "Key": "btn_Delete"
+  },
+  {
+    "Value": "Detail",
+    "Key": "btn_Detail"
+  },
+  {
+    "Value": "Show",
+    "Key": "btn_Show"
+  },
+  {
+    "Value": "Preview",
+    "Key": "btn_Preview"
+  },
+  {
+    "Value": "Change Password",
+    "Key": "btn_ChangePass"
+  },
+  {
+    "Value": "Search",
+    "Key": "btn_Search"
+  },
+  {
+    "Value": "Find",
+    "Key": "btn_Find"
+  },
+  {
+    "Value": "Yes",
+    "Key": "btn_Confirm"
+  },
+  {
+    "Value": "No",
+    "Key": "btn_NotConfirm"
+  },
+  {
+    "Value": "Change Activation",
+    "Key": "btn_ChangeActivation"
+  },
+  {
+    "Value": "Create product Copy from Content",
+    "Key": "btn_CreateProductCopyFromContent"
+  },
+  {
+    "Value": "Without childs",
+    "Key": "treeView_Empty"
+  },
+  {
+    "Value": "Login Page",
+    "Key": "LoginPage"
+  },
+  {
+    "Value": "Shop Domain",
+    "Key": "design_IsShopDomain"
+  },
+  {
+    "Value": "Continue",
+    "Key": "design_Continue"
+  },
+  {
+    "Value": "MultiLingual Domain",
+    "Key": "design_IsMultiLingual"
+  },
+  {
+    "Value": "time interval with next slide",
+    "Key": "design_IntervalTime"
+  },
+  {
+    "Value": "animation delay",
+    "Key": "design_AnimationDelay"
+  },
+  {
+    "Value": "row style settings",
+    "Key": "design_RowStyle"
+  },
+  {
+    "Value": "column style settings",
+    "Key": "design_ColumnStyles"
+  },
+  {
+    "Value": "slider",
+    "Key": "design_Slider"
+  },
+  {
+    "Value": "slide",
+    "Key": "design_Slide"
+  },
+  {
+    "Value": "slides of",
+    "Key": "design_SlidesOf"
+  },
+  {
+    "Value": "layers",
+    "Key": "design_Layers"
+  },
+  {
+    "Value": "sliders",
+    "Key": "design_Sliders"
+  },
+  {
+    "Value": "add new slider",
+    "Key": "design_AddNewSlider"
+  },
+  {
+    "Value": "slide images",
+    "Key": "design_SlideImages"
+  },
+  {
+    "Value": "slide title",
+    "Key": "design_SlideTitle"
+  },
+  {
+    "Value": "background color",
+    "Key": "design_bgColor"
+  },
+  {
+    "Value": "transaction type",
+    "Key": "design_TransactionType"
+  },
+  {
+    "Value": "Add new layer",
+    "Key": "design_AddNewLayer"
+  },
+  {
+    "Value": "link specification",
+    "Key": "design_LinkSpecification"
+  },
+  {
+    "Value": "Link",
+    "Key": "design_Link"
+  },
+  {
+    "Value": "link view",
+    "Key": "design_LinkView"
+  },
+  {
+    "Value": "position specification",
+    "Key": "design_PositionSpecification"
+  },
+  {
+    "Value": "Attribute Specification",
+    "Key": "design_AttributeSpecification"
+  },
+  {
+    "Value": "Alt Tag",
+    "Key": "design_AltTag"
+  },
+  {
+    "Value": "Style Specification",
+    "Key": "design_StyleSpecification"
+  },
+  {
+    "Value": "Custom Css",
+    "Key": "design_CustomCss"
+  },
+  {
+    "Value": "edit layer",
+    "Key": "design_EditLayer"
+  },
+  {
+    "Value": "layer type",
+    "Key": "design_LayerType"
+  },
+  {
+    "Value": "load effect",
+    "Key": "design_loadAnimation"
+  },
+  {
+    "Value": "effect target",
+    "Key": "design_loadAnimationType"
+  },
+  {
+    "Value": "selection item types",
+    "Key": "design_SelectionType"
+  },
+  {
+    "Value": "category list",
+    "Key": "design_CategoryList"
+  },
+  {
+    "Value": "content list",
+    "Key": "design_ContentList"
+  },
+  {
+    "Value": "content text",
+    "Key": "design_ContentText"
+  },
+  {
+    "Value": "Columns width ratio",
+    "Key": "design_ColSizeRatio"
+  },
+  {
+    "Value": "background Image",
+    "Key": "design_bgPhoto"
+  },
+  {
+    "Value": "vertical padding",
+    "Key": "design_VerticalPadding"
+  },
+  {
+    "Value": "horizantal padding",
+    "Key": "design_HorizantalPadding"
+  },
+  {
+    "Value": "vertical margin",
+    "Key": "design_VerticalMargin"
+  },
+  {
+    "Value": "horizantal margin",
+    "Key": "design_HorizantalMargin"
+  },
+  {
+    "Value": "row styles",
+    "Key": "design_RowStyles"
+  },
+  {
+    "Value": "Choose background color",
+    "Key": "design_bg"
+  },
+  {
+    "Value": "choose color",
+    "Key": "design_ChooseColor"
+  },
+  {
+    "Value": "stuff",
+    "Key": "Stuff"
+  },
+  {
+    "Value": "No Color",
+    "Key": "design_NoColor"
+  },
+  {
+    "Value": "delete bg image",
+    "Key": "design_ImageDelete"
+  },
+  {
+    "Value": "get template for product import via excel file",
+    "Key": "FileImportExport_GetProductExcelFileTemplate"
+  },
+  {
+    "Value": "file type is not an excel file.",
+    "Key": "FileImportExport_InvalidContentType"
+  },
+  {
+    "Value": "The uploaded file imported successfully.",
+    "Key": "FileImportExport_ResultMessage"
+  },
+  {
+    "Value": "Help",
+    "Key": "FileImportExport_Help"
+  },
+  {
+    "Value": "Add Product Images Folder",
+    "Key": "FileImportExport_ProductImages"
+  },
+  {
+    "Value": "for each product exist in excel file to upload, you could put\n\t\t\tan square image in defined pixels with the name of row number of product in excel file and then put all images together in zip folder with optional name and upload in add product Images section.\n\t\t\tfor example: a product which exists in nth row of excel file has image with the name n.png or n.jpg in desired folder.",
+    "Key": "FileImportExport_AddProductImageHelp"
+  },
+  {
+    "Value": "product excel file",
+    "Key": "FileImportExport_ProductExcelFile"
+  },
+  {
+    "Value": "No File Selected.",
+    "Key": "FileImportExport_NoFileSelected"
+  },
+  {
+    "Value": "comment delete",
+    "Key": "ProductCommentDelete"
+  },
+  {
+    "Value": "comment approve",
+    "Key": "ProductCommentApprove"
+  },
+  {
+    "Value": "order details",
+    "Key": "PermissionTitle_OrderDetail"
+  },
+  {
+    "Value": "Dashboard",
+    "Key": "PermissionTitle_MainPage"
+  },
+  {
+    "Value": "comment delete",
+    "Key": "PermissionTitle_ProductCommentDelete"
+  },
+  {
+    "Value": "comment approve",
+    "Key": "PermissionTitle_ProductCommentApprove"
+  },
+  {
+    "Value": "User Management",
+    "Key": "PermissionTitle_UserManagement"
+  },
+  {
+    "Value": "Users",
+    "Key": "PermissionTitle_Users"
+  },
+  {
+    "Value": "User Edit",
+    "Key": "PermissionTitle_UserEdit"
+  },
+  {
+    "Value": "Add User",
+    "Key": "PermissionTitle_AddUser"
+  },
+  {
+    "Value": "Role Add",
+    "Key": "PermissionTitle_RoleAdd"
+  },
+  {
+    "Value": "Role Edit",
+    "Key": "PermissionTitle_RoleEdit"
+  },
+  {
+    "Value": "Action Delete",
+    "Key": "PermissionTitle_ActionDelete"
+  },
+  {
+    "Value": "Action New",
+    "Key": "PermissionTitle_ActionNew"
+  },
+  {
+    "Value": "change status",
+    "Key": "PermissionTitle_ChangeStatus"
+  },
+  {
+    "Value": "Action Edit",
+    "Key": "PermissionTitle_ActionEdit"
+  },
+  {
+    "Value": "Action Restore",
+    "Key": "PermissionTitle_ActionRestore"
+  },
+  {
+    "Value": "Change Activation State",
+    "Key": "PermissionTitle_ChangeActivation"
+  },
+  {
+    "Value": "Homepage Design",
+    "Key": "PermissionTitle_HomePageDesign"
+  },
+  {
+    "Value": "Edit User",
+    "Key": "PermissionTitle_EditUser"
+  },
+  {
+    "Value": "Role List",
+    "Key": "PermissionTitle_RoleList"
+  },
+  {
+    "Value": "Save Role",
+    "Key": "PermissionTitle_SaveRole"
+  },
+  {
+    "Value": "Save Permission",
+    "Key": "PermissionTitle_SavePermission"
+  },
+  {
+    "Value": "Roles",
+    "Key": "PermissionTitle_Roles"
+  },
+  {
+    "Value": "View User List",
+    "Key": "PermissionTitle_ViewUserList"
+  },
+  {
+    "Value": "Delete User",
+    "Key": "PermissionTitle_UserDelete"
+  },
+  {
+    "Value": "Change Password",
+    "Key": "PermissionTitle_UserChangePassword"
+  },
+  {
+    "Value": "Change Activation",
+    "Key": "PermissionTitle_UserChangeActivation"
+  },
+  {
+    "Value": "User Restore",
+    "Key": "PermissionTitle_UserRestore"
+  },
+  {
+    "Value": "Change Activation",
+    "Key": "PermissionTitle_PermissionChangeActivation"
+  },
+  {
+    "Value": "Menu List",
+    "Key": "PermissionTitle_MenuList"
+  },
+  {
+    "Value": "Product Management",
+    "Key": "PermissionTitle_ProductManagement"
+  },
+  {
+    "Value": "Product Unit",
+    "Key": "PermissionTitle_ProductUnit"
+  },
+  {
+    "Value": "Product Group",
+    "Key": "PermissionTitle_ProductGroup"
+  },
+  {
+    "Value": "Product Specification",
+    "Key": "PermissionTitle_ProductSpecification"
+  },
+  {
+    "Value": "Product SpecificationGroup",
+    "Key": "PermissionTitle_ProductSpecificationGroup"
+  },
+  {
+    "Value": "Products",
+    "Key": "PermissionTitle_Products"
+  },
+  {
+    "Value": "Roles",
+    "Key": "PermissionTitle_Role"
+  },
+  {
+    "Value": "view role list",
+    "Key": "PermissionTitle_ViewRoleList"
+  },
+  {
+    "Value": "Add Role",
+    "Key": "PermissionTitle_AddRole"
+  },
+  {
+    "Value": "treeview role list",
+    "Key": "PermissionTitle_TreeViewRoleList"
+  },
+  {
+    "Value": "Delete Role",
+    "Key": "PermissionTitle_RoleDelete"
+  },
+  {
+    "Value": "change role activation",
+    "Key": "PermissionTitle_RoleChangeActivation"
+  },
+  {
+    "Value": "Permissions",
+    "Key": "PermissionTitle_Permissions"
+  },
+  {
+    "Value": "Permissions",
+    "Key": "PermissionTitle_PermissionList"
+  },
+  {
+    "Value": "Add Permission",
+    "Key": "PermissionTitle_AddPermission"
+  },
+  {
+    "Value": "Edit Permission",
+    "Key": "PermissionTitle_EditPermission"
+  },
+  {
+    "Value": "Delete Permission",
+    "Key": "PermissionTitle_PermissionDelete"
+  },
+  {
+    "Value": "Promotions",
+    "Key": "PermissionTitle_Promotions"
+  },
+  {
+    "Value": "Promotion Details",
+    "Key": "PermissionTitle_PromotionDetails"
+  },
+  {
+    "Value": "Add Promotion",
+    "Key": "PermissionTitle_AddPromotion"
+  },
+  {
+    "Value": "EditPromotion",
+    "Key": "PermissionTitle_EditPromotion"
+  },
+  {
+    "Value": "Promotion Delete",
+    "Key": "PermissionTitle_PromotionDelete"
+  },
+  {
+    "Value": "Promotion Restore",
+    "Key": "PermissionTitle_PromotionRestore"
+  },
+  {
+    "Value": "Promotion Change Activation",
+    "Key": "PermissionTitle_PromotionChangeActivation"
+  },
+  {
+    "Value": "Content Management",
+    "Key": "PermissionTitle_ContentManagement"
+  },
+  {
+    "Value": "Content Categories",
+    "Key": "PermissionTitle_ContentCategories"
+  },
+  {
+    "Value": "Content Category",
+    "Key": "PermissionTitle_ContentCategory"
+  },
+  {
+    "Value": "Content Category detail",
+    "Key": "PermissionTitle_ContentCategoryDetail"
+  },
+  {
+    "Value": "Content Category Add",
+    "Key": "PermissionTitle_ContentCategoryAdd"
+  },
+  {
+    "Value": "Content Category Edit",
+    "Key": "PermissionTitle_ContentCategoryEdit"
+  },
+  {
+    "Value": "Content Category Delete",
+    "Key": "PermissionTitle_ContentCategoryDelete"
+  },
+  {
+    "Value": "Content Category Restore",
+    "Key": "PermissionTitle_ContentCategoryRestore"
+  },
+  {
+    "Value": "Contents",
+    "Key": "PermissionTitle_Contents"
+  },
+  {
+    "Value": "Content",
+    "Key": "PermissionTitle_Content"
+  },
+  {
+    "Value": "Content Detail",
+    "Key": "PermissionTitle_ContentDetail"
+  },
+  {
+    "Value": "Content Add",
+    "Key": "PermissionTitle_ContentAdd"
+  },
+  {
+    "Value": "Content Edit",
+    "Key": "PermissionTitle_ContentEdit"
+  },
+  {
+    "Value": "Content Delete",
+    "Key": "PermissionTitle_ContentDelete"
+  },
+  {
+    "Value": "Content Restore",
+    "Key": "PermissionTitle_ContentRestore"
+  },
+  {
+    "Value": "Product Comments",
+    "Key": "PermissionTitle_ProductComments"
+  },
+  {
+    "Value": "Content Comments",
+    "Key": "PermissionTitle_ContentComments"
+  },
+  {
+    "Value": "Store Settings",
+    "Key": "PermissionTitle_StoreSettings"
+  },
+  {
+    "Value": "Orders",
+    "Key": "PermissionTitle_Orders"
+  },
+  {
+    "Value": "Store Menues",
+    "Key": "PermissionTitle_StoreMenues"
+  },
+  {
+    "Value": "Domains",
+    "Key": "PermissionTitle_Domains"
+  },
+  {
+    "Value": "Sliders",
+    "Key": "PermissionTitle_Sliders"
+  },
+  {
+    "Value": "Shipping Setting",
+    "Key": "PermissionTitle_ShippingSetting"
+  },
+  {
+    "Value": "Store links access",
+    "Key": "PermissionTitle_StoreLinksAccess"
+  },
+  {
+    "Value": "User Cart Shopping",
+    "Key": "PermissionTitle_CartShopping"
+  },
+  {
+    "Value": "Comments",
+    "Key": "PermissionTitle_Comments"
+  },
+  {
+    "Value": "Rating Products",
+    "Key": "PermissionTitle_RatingProduct"
+  },
+  {
+    "Value": "Adding like and dislike",
+    "Key": "PermissionTitle_AddingLikeDislike"
+  },
+  {
+    "Value": "Payments",
+    "Key": "PermissionTitle_Payments"
+  },
+  {
+    "Value": "Template Number1",
+    "Key": "TemplateName_TemplateNumber1"
+  },
+  {
+    "Value": "Template Number2",
+    "Key": "TemplateName_TemplateNumber2"
+  },
+  {
+    "Value": "One Column",
+    "Key": "Template_OneCol"
+  },
+  {
+    "Value": "Two Column",
+    "Key": "Template_TwoCol"
+  },
+  {
+    "Value": "Three Column",
+    "Key": "Template_ThreeCol"
+  },
+  {
+    "Value": "Four Column",
+    "Key": "Template_FourCol"
+  },
+  {
+    "Value": "Six Column",
+    "Key": "Template_SixCol"
+  },
+  {
+    "Value": "Content Type",
+    "Key": "Template_ContentType"
+  },
+  {
+    "Value": "System Modules",
+    "Key": "Template_SystemModules"
+  },
+  {
+    "Value": "Editor",
+    "Key": "Template_Editor"
+  },
+  {
+    "Value": "Payment gateways",
+    "Key": "tbl_PaymentGateways"
+  },
+  {
+    "Value": "Parameter name",
+    "Key": "tbl_ParameterName"
+  },
+  {
+    "Value": "Parameter Value",
+    "Key": "tbl_ParameterValue"
+  },
+  {
+    "Value": "Provider Name",
+    "Key": "tbl_ProviderName"
+  },
+  {
+    "Value": "Invoice number creation way",
+    "Key": "tbl_InvoiceNumberCreationWay"
+  },
+  {
+    "Value": "First invoice number",
+    "Key": "FirstInvoiceNumberPattern"
+  },
+  {
+    "Value": "Increasement Value Per Invoice",
+    "Key": "IncreasementLevel"
+  },
+  {
+    "Value": "Gateway Information",
+    "Key": "tbl_GatewayInformation"
+  },
+  {
+    "Value": "Domain Payment Gateways Informations",
+    "Key": "tbl_DomainPaymentGatewaysInfoes"
+  },
+  {
+    "Value": "Row",
+    "Key": "tbl_RowName"
+  },
+  {
+    "Value": "Shipping types",
+    "Key": "tbl_ShippingTypes"
+  },
+  {
+    "Value": "Shipping type",
+    "Key": "tbl_ShippingType"
+  },
+  {
+    "Value": "Is Expense Fixed?",
+    "Key": "tbl_HasFixedExpense"
+  },
+  {
+    "Value": "Fixed Expense Value",
+    "Key": "tbl_FixedExpenseValue"
+  },
+  {
+    "Value": "Provider",
+    "Key": "tbl_Provider"
+  },
+  {
+    "Value": "From Invoice With Price",
+    "Key": "tbl_FromInvoiceExpense"
+  },
+  {
+    "Value": "Shipping Expense",
+    "Key": "tbl_ShippingExpense"
+  },
+  {
+    "Value": "Price",
+    "Key": "tbl_Price"
+  },
+  {
+    "Value": "Main Image",
+    "Key": "tbl_MainImage"
+  },
+  {
+    "Value": "possible Value for this specification",
+    "Key": "specificationName_placeHolder"
+  },
+  {
+    "Value": "Product Unit",
+    "Key": "tbl_ProductUnit"
+  },
+  {
+    "Value": "Product Name",
+    "Key": "tbl_ProductName"
+  },
+  {
+    "Value": "Product Images",
+    "Key": "tbl_ProductImages"
+  },
+  {
+    "Value": "Content Images",
+    "Key": "tbl_ContentImages"
+  },
+  {
+    "Value": "image aspect ratio",
+    "Key": "tbl_AspectRatioImage"
+  },
+  {
+    "Value": "Product Group",
+    "Key": "tbl_ProductGroup"
+  },
+  {
+    "Value": "Specification Name",
+    "Key": "tbl_SpecificationName"
+  },
+  {
+    "Value": "Specification Values",
+    "Key": "tbl_SpecificationValues"
+  },
+  {
+    "Value": "Parent Group",
+    "Key": "tbl_ParentGroup"
+  },
+  {
+    "Value": "Vendor Name",
+    "Key": "tbl_VendorName"
+  },
+  {
+    "Value": "Group Name",
+    "Key": "tbl_GroupName"
+  },
+  {
+    "Value": "Menu Title",
+    "Key": "tbl_MenuTitle"
+  },
+  {
+    "Value": "ContentCategory Name",
+    "Key": "tbl_CategoryName"
+  },
+  {
+    "Value": "Content",
+    "Key": "tbl_Content"
+  },
+  {
+    "Value": "Group Names",
+    "Key": "tbl_GroupNames"
+  },
+  {
+    "Value": "Unique Code",
+    "Key": "tbl_UniqeCode"
+  },
+  {
+    "Value": "Inventory",
+    "Key": "tbl_Inventory"
+  },
+  {
+    "Value": "Name",
+    "Key": "tbl_RoleName"
+  },
+  {
+    "Value": "Permission Title",
+    "Key": "tbl_PermissionTitle"
+  },
+  {
+    "Value": "Permission Type",
+    "Key": "tbl_PermissionType"
+  },
+  {
+    "Value": "Routes",
+    "Key": "tbl_Routes"
+  },
+  {
+    "Value": "Client Address",
+    "Key": "tbl_ClientAddress"
+  },
+  {
+    "Value": "First",
+    "Key": "tbl_FirstPage"
+  },
+  {
+    "Value": "First",
+    "Key": "tbl_First"
+  },
+  {
+    "Value": "Last",
+    "Key": "tbl_Last"
+  },
+  {
+    "Value": "Last",
+    "Key": "tbl_LastPage"
+  },
+  {
+    "Value": "Previous",
+    "Key": "tbl_PreviousPage"
+  },
+  {
+    "Value": "Next",
+    "Key": "tbl_NextPage"
+  },
+  {
+    "Value": "Product Id",
+    "Key": "tbl_ProductCode"
+  },
+  {
+    "Value": "ProductGroup Id",
+    "Key": "tbl_ProductGroupCode"
+  },
+  {
+    "Value": "Content Id",
+    "Key": "tbl_ContentCode"
+  },
+  {
+    "Value": "ContentCategory Id",
+    "Key": "tbl_ContentCategoryCode"
+  },
+  {
+    "Value": "shipping ways",
+    "Key": "tbl_ShippingWays"
+  },
+  {
+    "Value": "free shipping for purchase upper than",
+    "Key": "tbl_FreeShipping"
+  },
+  {
+    "Value": "Orders from [0] shipping expense [1]",
+    "Key": "tbl_ShippingCoupon"
+  },
+  {
+    "Value": "List",
+    "Key": "EnumDesc_List"
+  },
+  {
+    "Value": "Male",
+    "Key": "EnumDesc_Male"
+  },
+  {
+    "Value": "Female",
+    "Key": "EnumDesc_Female"
+  },
+  {
+    "Value": "Add",
+    "Key": "EnumDesc_Add"
+  },
+  {
+    "Value": "Remove",
+    "Key": "EnumDesc_Remove"
+  },
+  {
+    "Value": "Edit",
+    "Key": "EnumDesc_Edit"
+  },
+  {
+    "Value": "Password",
+    "Key": "EnumDesc_Password"
+  },
+  {
+    "Value": "Active",
+    "Key": "EnumDesc_Active"
+  },
+  {
+    "Value": "select latest based on content type from all categories",
+    "Key": "EnumDesc_LatestFromProductOrContentTypeInAllCategories"
+  },
+  {
+    "Value": "select latest based on content type from selected category",
+    "Key": "EnumDesc_LatestFromProductOrContentTypeSelectedCategory"
+  },
+  {
+    "Value": "select items from content list",
+    "Key": "EnumDesc_CustomizedSelection"
+  },
+  {
+    "Value": "animation on inner elements",
+    "Key": "EnumDesc_LoadAnimationTypeInner"
+  },
+  {
+    "Value": "animation on outer elements",
+    "Key": "EnumDesc_LoadAnimationTypeOuter"
+  },
+  {
+    "Value": "download",
+    "Key": "Download"
+  },
+  {
+    "Value": "Get Product Excel Template",
+    "Key": "GetExcelTemplate"
+  },
+  {
+    "Value": "Dependency",
+    "Key": "EnumDesc_Dependency"
+  },
+  {
+    "Value": "Details",
+    "Key": "EnumDesc_Details"
+  },
+  {
+    "Value": "Email",
+    "Key": "EnumDesc_Email"
+  },
+  {
+    "Value": "SMS",
+    "Key": "EnumDesc_Sms"
+  },
+  {
+    "Value": "Notification",
+    "Key": "EnumDesc_Notification"
+  },
+  {
+    "Value": "phisical stuff",
+    "Key": "EnumDesc_PhisicalStuff"
+  },
+  {
+    "Value": "file",
+    "Key": "EnumDesc_File"
+  },
+  {
+    "Value": "No Limitation For Downloading",
+    "Key": "EnumDesc_NoLimitation"
+  },
+  {
+    "Value": "Can Be Downloaded in Duration",
+    "Key": "EnumDesc_TimeDuration"
+  },
+  {
+    "Value": "Can Be Downloaded in Duration at maximum specific Times",
+    "Key": "EnumDesc_TimeDurationWithCnt"
+  },
+  {
+    "Value": "Can Be Downloaded at Maximum specific Times",
+    "Key": "EnumDesc_DownloadCount"
+  },
+  {
+    "Value": "Category Type",
+    "Key": "Enum_ContentCategoryType"
+  },
+  {
+    "Value": "newest",
+    "Key": "Enum_Newest"
+  },
+  {
+    "Value": "most popular",
+    "Key": "Enum_MostPopular"
+  },
+  {
+    "Value": "best sale",
+    "Key": "Enum_BestSale"
+  },
+  {
+    "Value": "most visited",
+    "Key": "Enum_MostVisited"
+  },
+  {
+    "Value": "Validation Code",
+    "Key": "ValidationCode"
+  },
+  {
+    "Value": "Please select a username.",
+    "Key": "Validation_EnterUsername"
+  },
+  {
+    "Value": "The entered mobile number is already registered.",
+    "Key": "Validation_MobileNumberAlreadyRegistered"
+  },
+  {
+    "Value": "Enter the mobile phone.",
+    "Key": "Validation_EnterMobileNumber"
+  },
+  {
+    "Value": "The entered mobile number is not valid.",
+    "Key": "Validation_MobileNumberInvalid1"
+  },
+  {
+    "Value": "Enter the number of fixed phone.",
+    "Key": "Validation_MobileNumberInvalid2"
+  },
+  {
+    "Value": "there isnt any specification to compare",
+    "Key": "AlertAndMessage_NoSpecificationsToCompare"
+  },
+  {
+    "Value": "No product were added to compare",
+    "Key": "AlertAndMessage_NoProductWereAddedToCompare"
+  },
+  {
+    "Value": "please enter otp which sent to your phone.",
+    "Key": "AlertAndMessage_EnterOtp"
+  },
+  {
+    "Value": "request for changing password",
+    "Key": "AlertAndMessage_RequestChangePassword"
+  },
+  {
+    "Value": "this module hast any parameter just click add botton.",
+    "Key": "AlertAndMessage_ModuleWithoutParameters"
+  },
+  {
+    "Value": "copy page design from other language.",
+    "Key": "AlertAndMessage_CopyDesigntFromOtherLanguage"
+  },
+  {
+    "Value": "url friend is not unique.",
+    "Key": "AlertAndMessage_UrlFriendIsNotUnique"
+  },
+  {
+    "Value": "please choose the language of design page at first.",
+    "Key": "AlertAndMessage_FirstChooseLanguage"
+  },
+  {
+    "Value": "expire date must be greater than start date.",
+    "Key": "AlertAndMessage_EndDateMustBeGreaterThanStartDate"
+  },
+  {
+    "Value": "Fill All Payment Gateway Informations.",
+    "Key": "AlertAndMessage_PaymentGatewayInfoes"
+  },
+  {
+    "Value": "Error i Inserting informations.",
+    "Key": "AlertAndMessage_InsertError"
+  },
+  {
+    "Value": "UniqueCode is duplicate.",
+    "Key": "AlertAndMessage_DuplicateUniqueCode"
+  },
+  {
+    "Value": "code is duplicate.",
+    "Key": "AlertAndMessage_DuplicateCode"
+  },
+  {
+    "Value": "There is already a row for this language.",
+    "Key": "AlertAndMessage_LangUniqueness"
+  },
+  {
+    "Value": "Passwords must have at least one lowercase ('a'-'z').",
+    "Key": "AlertAndMessage_PasswordRequiresLower"
+  },
+  {
+    "Value": "Editor content is valid",
+    "Key": "AlertAndMessage_EditorContentIsValid"
+  },
+  {
+    "Value": "Invalid Editor Content",
+    "Key": "AlertAndMessage_InvalidEditorContent"
+  },
+  {
+    "Value": "Valid Editor Content",
+    "Key": "AlertAndMessage_ValidEditorContent"
+  },
+  {
+    "Value": "How many columns this row have?",
+    "Key": "AlertAndMessage_HowManyColumns"
+  },
+  {
+    "Value": "First of all plaese create new row",
+    "Key": "AlertAndMessage_CreateNewRow"
+  },
+  {
+    "Value": "Are you Sure for removing this part from page?",
+    "Key": "AlertAndMessage_RemoveBoxConfrim"
+  },
+  {
+    "Value": "for preventing error occurrence and saving data to database avoid changing the columns order or rename columns.",
+    "Key": "AlertAndMessage_DontChangeExcelTemplate"
+  },
+  {
+    "Value": "Recieve products from excel file",
+    "Key": "AlertAndMessage_ImportProductFromExcel"
+  },
+  {
+    "Value": "image is uploaded successfully.",
+    "Key": "AlertAndMessage_ImageSuccessfullyUploaded"
+  },
+  {
+    "Value": "The security statement is incorrect or has expired.",
+    "Key": "AlertAndMessage_CaptchaIncorrectOrExpired"
+  },
+  {
+    "Value": "please choose a picture.",
+    "Key": "AlertAndMessage_NotImageMessage"
+  },
+  {
+    "Value": "First choose promotionType as product then you can add product to this promotion.",
+    "Key": "AlertAndMessage_PromotionTypeProduct"
+  },
+  {
+    "Value": "the file size exceed limitation.",
+    "Key": "AlertAndMessage_InvalidFileSize"
+  },
+  {
+    "Value": "the file size exceed 500 KB.",
+    "Key": "AlertAndMessage_FileSizeExceed"
+  },
+  {
+    "Value": "there is already an active price for this currency,if start and end of duration overlapped, then previous price will be deactivated.",
+    "Key": "AlertAndMessage_PricePerCurrencyUniqueness"
+  },
+  {
+    "Value": "Please select default language of user.",
+    "Key": "AlertAndMessage_DefaultLanguageRequired"
+  },
+  {
+    "Value": "Please select default currency of user.",
+    "Key": "AlertAndMessage_DefaultCurrencyRequired"
+  },
+  {
+    "Value": "Please fill at least on row for specifications",
+    "Key": "AlertAndMessage_Specifications"
+  },
+  {
+    "Value": "Published on main domain.",
+    "Key": "AlertAndMessage_IsPublishedOnMainDomain"
+  },
+  {
+    "Value": "Notify when inventory is:",
+    "Key": "AlertAndMessage_NotifyWhenCountIsLessThan"
+  },
+  {
+    "Value": "The image have not been saved,please try again later.",
+    "Key": "AlertAndMessage_ImageNotSave"
+  },
+  {
+    "Value": "Enter the result.",
+    "Key": "AlertAndMessage_EnterTheResult"
+  },
+  {
+    "Value": "Sign in to site",
+    "Key": "AlertAndMessage_SignInToSite"
+  },
+  {
+    "Value": "You are not allowed to perform operations.",
+    "Key": "AlertAndMessages_NotAllowed"
+  },
+  {
+    "Value": "forgot your password?",
+    "Key": "AlertAndMessage_ForgetPassword"
+  },
+  {
+    "Value": "please enter username and password.",
+    "Key": "AlertAndMessage_EnterUsernameAndPassword"
+  },
+  {
+    "Value": "invalid format.",
+    "Key": "AlertAndMessage_InvalidFormat"
+  },
+  {
+    "Value": "please select specificationgroup.",
+    "Key": "AlertAndMessage_SelectSpecificationGroup"
+  },
+  {
+    "Value": "this specification Value will be deleted.",
+    "Key": "AlertAndMessage_DeleteSpecificationValue"
+  },
+  {
+    "Value": "Please fill specification Value.",
+    "Key": "AlertAndMessage_FillSpecificationValue"
+  },
+  {
+    "Value": "Please choose your desired language.",
+    "Key": "AlertAndMessage_ChooseLanguage"
+  },
+  {
+    "Value": "Please fill at Least one row of table.",
+    "Key": "AlertAndMessage_FillMultiLingualProperty"
+  },
+  {
+    "Value": "Please fill at Least one row of table.",
+    "Key": "AlertAndMessage_FillShippingWay"
+  },
+  {
+    "Value": "Please fill One valid and active price row",
+    "Key": "AlertAndMessage_FillPriceList"
+  },
+  {
+    "Value": "Please add at Least one item to list.",
+    "Key": "AlertAndMessage_FillList"
+  },
+  {
+    "Value": "Please select related language.",
+    "Key": "AlertAndMessage_FillLangId"
+  },
+  {
+    "Value": "Seperate diffrent routes by ,comma.",
+    "Key": "AlertAndMessage_SeprateRoutesByComma"
+  },
+  {
+    "Value": "This name already exist.",
+    "Key": "AlertAndMessage_AlreadyExists"
+  },
+  {
+    "Value": "This Permission will be deleted.",
+    "Key": "AlertAndMessage_DeletePermission"
+  },
+  {
+    "Value": "This entity will be deleted.",
+    "Key": "AlertAndMessage_DeleteEntity"
+  },
+  {
+    "Value": "This ProductUnit will be deleted.",
+    "Key": "AlertAndMessage_DeleteProductUnit"
+  },
+  {
+    "Value": "This ProductGroup will be deleted.",
+    "Key": "AlertAndMessage_DeleteProductGroup"
+  },
+  {
+    "Value": "This Product will be deleted.",
+    "Key": "AlertAndMessage_DeleteProduct"
+  },
+  {
+    "Value": "This Product specification group will be deleted.",
+    "Key": "AlertAndMessage_DeleteProductSpecificationGroup"
+  },
+  {
+    "Value": "This Promotion will be deleted.",
+    "Key": "AlertAndMessage_DeletePromotion"
+  },
+  {
+    "Value": "This Role will be deleted.",
+    "Key": "AlertAndMessage_DeleteRole"
+  },
+  {
+    "Value": "Are you",
+    "Key": "AlertAndMessage_DeleteRecord"
+  },
+  {
+    "Value": "Filling this field is essential.",
+    "Key": "AlertAndMessage_FieldEssential"
+  },
+  {
+    "Value": "Selecting one option is essential.",
+    "Key": "AlertAndMessage_OptionEssential"
+  },
+  {
+    "Value": "Please fill why you modify this entity.",
+    "Key": "AlertAndMessage_ModificationReason"
+  },
+  {
+    "Value": "One permission must be selected at least.",
+    "Key": "AlertAndMessage_PermissionSelectLimitation"
+  },
+  {
+    "Value": "error",
+    "Key": "AlertAndMessage_Error"
+  },
+  {
+    "Value": "success",
+    "Key": "AlertAndMessage_Success"
+  },
+  {
+    "Value": "Are you sure for deletion?",
+    "Key": "AlertAndMessage_DeletionSure"
+  },
+  {
+    "Value": "Are you sure to change password?",
+    "Key": "AlertAndMessage_ChangePassSureness"
+  },
+  {
+    "Value": "Please fill username.",
+    "Key": "AlertAndMessage_UserNameRequired"
+  },
+  {
+    "Value": "Please fill Name.",
+    "Key": "AlertAndMessage_NameRequired"
+  },
+  {
+    "Value": "Please fill LastName.",
+    "Key": "AlertAndMessage_LastNameRequired"
+  },
+  {
+    "Value": "Please fill PhoneNumber.",
+    "Key": "AlertAndMessage_PhonenumberRequired"
+  },
+  {
+    "Value": "Please Select UserRole.",
+    "Key": "AlertAndMessage_UserRoleRequired"
+  },
+  {
+    "Value": "Please Fill Password.",
+    "Key": "AlertAndMessage_PasswordRequired"
+  },
+  {
+    "Value": "Password have to be mixed of characters and numbers.",
+    "Key": "AlertAndMessage_PasswordValidation"
+  },
+  {
+    "Value": "Please fill repassword.",
+    "Key": "AlertAndMessage_RePasswordRequired"
+  },
+  {
+    "Value": "Password and Repassword should be matched.",
+    "Key": "AlertAndMessage_PasswordRepassWordCompare"
+  },
+  {
+    "Value": "0 length dont have to be less than 1.",
+    "Key": "AlertAndMessage_MinLength"
+  },
+  {
+    "Value": "This number should be less than zero.",
+    "Key": "AlertAndMessage_NumberLessThanZero"
+  },
+  {
+    "Value": "Please Fill Essential Fields.",
+    "Key": "AlertAndMessage_FillEssentialFields"
+  },
+  {
+    "Value": "the data was not found.",
+    "Key": "AlertAndMessage_DataWasNotFound"
+  },
+  {
+    "Value": "Are you sure for deleting ?",
+    "Key": "AlertAndMessage_DeletionSureness"
+  },
+  {
+    "Value": "Are you sure for restoring ?",
+    "Key": "AlertAndMessage_RestorationSureness"
+  },
+  {
+    "Value": "Are you sure?",
+    "Key": "AlertAndMessage_AreYouSure"
+  },
+  {
+    "Value": "The user will be deleted.",
+    "Key": "AlertAndMessage_UserDeleteText"
+  },
+  {
+    "Value": "The user will be restored.",
+    "Key": "AlertAndMessage_UserRestoreText"
+  },
+  {
+    "Value": "The entity will be restored.",
+    "Key": "AlertAndMessage_EntityRestoreText"
+  },
+  {
+    "Value": "The captcha is invalid or expired.",
+    "Key": "AlertAndMessage_CaptchaIsExpired"
+  },
+  {
+    "Value": "The captcha is invalid or expired.",
+    "Key": "AlertAndMessage_InvalidUsernameOrPassword"
+  },
+  {
+    "Value": "This Account was deactivated by Admin.",
+    "Key": "AlertAndMessage_InActiveUserAccount"
+  },
+  {
+    "Value": "Welcome",
+    "Key": "AlertAndMessage_Welcome"
+  },
+  {
+    "Value": "Duplicate username",
+    "Key": "AlertAndMessage_DuplicateUsername"
+  },
+  {
+    "Value": "User was created successfully.",
+    "Key": "AlertAndMessage_UserCreatedSuccessfully"
+  },
+  {
+    "Value": "There is a user account with this mobilePhone.",
+    "Key": "AlertAndMessage_DuplicatePhoneNumber"
+  },
+  {
+    "Value": "You dont have access to do this action.",
+    "Key": "AlertAndMessage_NoAccess"
+  },
+  {
+    "Value": "No user was found.",
+    "Key": "AlertAndMessage_NoUserWasFound"
+  },
+  {
+    "Value": "The entity not found.",
+    "Key": "AlertAndMessage_EntityNotFound"
+  },
+  {
+    "Value": "No role was found.",
+    "Key": "AlertAndMessage_NoRoleWasFound"
+  },
+  {
+    "Value": "no data to show",
+    "Key": "AlertAndMessage_NoDataToShow"
+  },
+  {
+    "Value": "Your new password will be sent to your mobilephone if you press send button",
+    "Key": "AlertAndMessage_NotifySendingSMS"
+  },
+  {
+    "Value": "Your new Pass will be sent to your mobilephone",
+    "Key": "AlertAndMessage_SendNewPassword"
+  },
+  {
+    "Value": "Please try lator again.",
+    "Key": "AlertAndMessage_TryLator"
+  },
+  {
+    "Value": "Please select icon.",
+    "Key": "AlertAndMessage_lackOfIcon"
+  },
+  {
+    "Value": "Please set priority.",
+    "Key": "AlertAndMessage_lackOfPriority"
+  },
+  {
+    "Value": "Please set at least one route.",
+    "Key": "AlertAndMessage_lackOfRoutes"
+  },
+  {
+    "Value": "Please set menuId of this module.",
+    "Key": "AlertAndMessage_lackOfMenuIdofModule"
+  },
+  {
+    "Value": "Edition done successfully.",
+    "Key": "AlertAndMessage_EditionDoneSuccessfully"
+  },
+  {
+    "Value": "Insertion done successfully.",
+    "Key": "AlertAndMessage_InsertionDoneSuccessfully"
+  },
+  {
+    "Value": "Deletion done successfully.",
+    "Key": "AlertAndMessage_DeletionDoneSuccessfully"
+  },
+  {
+    "Value": "Operation done successfully.",
+    "Key": "AlertAndMessage_OperarationDoneSuccessfully"
+  },
+  {
+    "Value": "Deletion not allowed.",
+    "Key": "AlertAndMessage_DeletionNotAllowed"
+  },
+  {
+    "Value": "Are you Sure For Restoring This User?",
+    "Key": "AlertAndMessage_UserRestoreSureness"
+  },
+  {
+    "Value": "No Data To Show",
+    "Key": "AlertAndMessage_NotifyEmptyList"
+  },
+  {
+    "Value": "Got it",
+    "Key": "AlertAndMessage_GotIt"
+  },
+  {
+    "Value": "This field is required.",
+    "Key": "AlertAndMessage_RequiredErrorMessage"
+  },
+  {
+    "Value": "Invalid file type.",
+    "Key": "AlertAndMessage_InvalidFileType"
+  },
+  {
+    "Value": "Please enter username.",
+    "Key": "AlertAndMessage_EnterUsername"
+  },
+  {
+    "Value": "Please enter first name.",
+    "Key": "AlertAndMessage_EnterFirstName"
+  },
+  {
+    "Value": "Please enter last name.",
+    "Key": "AlertAndMessage_EnterLastName"
+  },
+  {
+    "Value": "Please enter password.",
+    "Key": "AlertAndMessage_EnterPassword"
+  },
+  {
+    "Value": "Please select the gender type.",
+    "Key": "AlertAndMessage_SelectGender"
+  },
+  {
+    "Value": "Gender",
+    "Key": "AlertAndMessage_Gender"
+  },
+  {
+    "Value": "Please enter the father name.",
+    "Key": "AlertAndMessage_EnterFatherName"
+  },
+  {
+    "Value": "Sorry, something went wrong!",
+    "Key": "AlertAndMessage_InternalServerErrorMessage"
+  },
+  {
+    "Value": "Model to be created should not contain id parameter!",
+    "Key": "AlertAndMessage_ModelHasIdError"
+  },
+  {
+    "Value": "Exception occured.",
+    "Key": "AlertAndMessage_ExceptionOccured"
+  },
+  {
+    "Value": "Check query parameters.",
+    "Key": "AlertAndMessage_ParameterError"
+  },
+  {
+    "Value": "Item aleardy exists!",
+    "Key": "AlertAndMessage_DuplicateError"
+  },
+  {
+    "Value": "Unknown error.",
+    "Key": "AlertAndMessage_GeneralError"
+  },
+  {
+    "Value": "Model error!",
+    "Key": "AlertAndMessage_ModelError"
+  },
+  {
+    "Value": "Invalid password!",
+    "Key": "AlertAndMessage_InvalidPassword"
+  },
+  {
+    "Value": "Server is not responding at the moment!",
+    "Key": "AlertAndMessage_NoServerResponseError"
+  },
+  {
+    "Value": "The request is not valid!",
+    "Key": "AlertAndMessage_BadRequestError"
+  },
+  {
+    "Value": "Range limit exceed!",
+    "Key": "AlertAndMessage_RangeLimitExceed"
+  },
+  {
+    "Value": "Operation done successfully",
+    "Key": "AlertAndMessage_OperationDoneSuccessfully"
+  },
+  {
+    "Value": "Operation failed",
+    "Key": "AlertAndMessage_OperationFailed"
+  },
+  {
+    "Value": "Error storing data.",
+    "Key": "AlertAndMessage_ErrorInSaving"
+  },
+  {
+    "Value": "Error in loading image.",
+    "Key": "AlertAndMessage_ErrorInLoadingImage"
+  },
+  {
+    "Value": "Invalid date.",
+    "Key": "AlertAndMessage_InvalidDate"
+  },
+  {
+    "Value": "Please enter your fixed phone number.",
+    "Key": "AlertAndMessage_EnterFixedPhoneNumber"
+  },
+  {
+    "Value": "Invalid fix phone number.",
+    "Key": "AlertAndMessage_InvalidFixedPhoneNumber"
+  },
+  {
+    "Value": "Select item....",
+    "Key": "AlertAndMessage_SelectOne"
+  },
+  {
+    "Value": "You entered mobile number.",
+    "Key": "AlertAndMessage_YouEnteredMobileNumber"
+  },
+  {
+    "Value": "Please enter your mobile number.",
+    "Key": "AlertAndMessage_EnterMobileNumber"
+  },
+  {
+    "Value": "Please enter your mobile number:",
+    "Key": "AlertAndMessage_EnterMobile"
+  },
+  {
+    "Value": "Invalid mobile number.",
+    "Key": "AlertAndMessage_InvalidMobileNumber"
+  },
+  {
+    "Value": "You entered fix phone number.",
+    "Key": "AlertAndMessage_YouEnteredFixPhoneNumber"
+  },
+  {
+    "Value": "Invalid national code.",
+    "Key": "AlertAndMessage_InvalidNationalCode"
+  },
+  {
+    "Value": "Please enter postal code.",
+    "Key": "AlertAndMessage_EnterPostalCode"
+  },
+  {
+    "Value": "Invalid postal code.",
+    "Key": "AlertAndMessage_InvalidPostalCode"
+  },
+  {
+    "Value": "The account has been disabled by the admin.",
+    "Key": "AlertAndMessage_TheAccountHasBeenDisabledByTheAdmin"
+  },
+  {
+    "Value": "You came in instead of",
+    "Key": "AlertAndMessage_YouCameInInsteadOf"
+  },
+  {
+    "Value": "Error in sending SMS.",
+    "Key": "AlertAndMessage_ErrorInSendingSMS"
+  },
+  {
+    "Value": "Error, please try again",
+    "Key": "AlertAndMessage_ErrorTryAgain"
+  },
+  {
+    "Value": "Error in file uploading",
+    "Key": "AlertAndMessage_ErrorInUploadFile"
+  },
+  {
+    "Value": "The validity of the OTP is only 3 minutes",
+    "Key": "AlertAndMessage_ValidityOfOTP"
+  },
+  {
+    "Value": "Your new password is:",
+    "Key": "AlertAndMessage_YourNewPasswordIs"
+  },
+  {
+    "Value": "Invalid captcha.",
+    "Key": "AlertAndMessage_InvalidCaptcha"
+  },
+  {
+    "Value": "Please select country.",
+    "Key": "AlertAndMessage_SelectCountry"
+  },
+  {
+    "Value": "Please select state.",
+    "Key": "AlertAndMessage_SelectState"
+  },
+  {
+    "Value": "Please select city.",
+    "Key": "AlertAndMessage_SelectCity"
+  },
+  {
+    "Value": "Please select related currency.",
+    "Key": "AlertAndMessage_SelectCurrency"
+  },
+  {
+    "Value": "Modification profile.",
+    "Key": "AlertAndMessage_ModificationProfile"
+  },
+  {
+    "Value": "Invalid current password.",
+    "Key": "AlertAndMessage_InvalidCurrentPassword"
+  },
+  {
+    "Value": "Modification password by user.",
+    "Key": "AlertAndMessage_ModificationPasswordByUser"
+  },
+  {
+    "Value": "Modification password by admin.",
+    "Key": "AlertAndMessage_ModificationPasswordByAdmin"
+  },
+  {
+    "Value": "Password changed.",
+    "Key": "AlertAndMessage_PasswordChanged"
+  },
+  {
+    "Value": "Please enter modification reason.",
+    "Key": "AlertAndMessage_EnterModificationReason"
+  },
+  {
+    "Value": "The Value of this field must be a number.",
+    "Key": "AlertAndMessage_EnterValidNumber"
+  },
+  {
+    "Value": "The Value of this field must be a number and alphanumeric.",
+    "Key": "AlertAndMessage_EnterValidAlphanumeric"
+  },
+  {
+    "Value": "The Value of this field must be a number, alphanumeric and * or ?",
+    "Key": "AlertAndMessage_EnterValidAlphanumericRange"
+  },
+  {
+    "Value": "At least one item selection is required",
+    "Key": "AlertAndMessage_SelectAtLeastOneItem"
+  },
+  {
+    "Value": "one item selection is required",
+    "Key": "AlertAndMessage_SelectOneItem"
+  },
+  {
+    "Value": "Choose...",
+    "Key": "AlertAndMessage_Choose"
+  },
+  {
+    "Value": "Cancel",
+    "Key": "AlertAndMessage_Cancel"
+  },
+  {
+    "Value": "The format of the entered parameters is not correct",
+    "Key": "AlertAndMessage_FormatIsNotCorrect"
+  },
+  {
+    "Value": "The upper limit cannot be smaller than the lower limit.",
+    "Key": "AlertAndMessage_UpperAndLowerLimit"
+  },
+  {
+    "Value": "The upper or lower limit Values of this package overlap with the other package.",
+    "Key": "AlertAndMessage_UpperAndLowerLimitOverlap"
+  },
+  {
+    "Value": "Please enter mobile number.",
+    "Key": "AlertAndMessage_EnterBlockedMobileNumber"
+  },
+  {
+    "Value": "Please enter mobile number.",
+    "Key": "AlertAndMessage_EnterChangeRoutedMobileNumber"
+  },
+  {
+    "Value": "Not enough credit!",
+    "Key": "AlertAndMessage_NotEnoughCredit"
+  },
+  {
+    "Value": "The imported file has no information.",
+    "Key": "AlertAndMessage_FileHasNoInformation"
+  },
+  {
+    "Value": "Upstream gateway not found.",
+    "Key": "AlertAndMessage_UpstreamGatewayNotFound"
+  },
+  {
+    "Value": "Edit upstream gateway",
+    "Key": "AlertAndMessage_EditUpstreamGateway"
+  },
+  {
+    "Value": "The priority for accessing the menu type is mandatory and must be a number greater than 0.",
+    "Key": "AlertAndMessage_ThePriorityIsMandatory"
+  },
+  {
+    "Value": "Creator",
+    "Key": "AlertAndMessage_Creator"
+  },
+  {
+    "Value": "Not found.",
+    "Key": "AlertAndMessage_NotFound"
+  },
+  {
+    "Value": "Direct users",
+    "Key": "AlertAndMessage_DirectUsers"
+  },
+  {
+    "Value": "the username exists.",
+    "Key": "AlertAndMessage_UsernameExist"
+  },
+  {
+    "Value": "No sender id found to assign.",
+    "Key": "AlertAndMessage_NoSenderIdFoundToAssign"
+  },
+  {
+    "Value": "Choose another username.",
+    "Key": "AlertAndMessage_ChooseAnotherUsername"
+  },
+  {
+    "Value": "the mobile exists.",
+    "Key": "AlertAndMessage_MobileExist"
+  },
+  {
+    "Value": "The password and its repetition are not the same.",
+    "Key": "AlertAndMessage_PasswordAndRepetitionNotTheSame"
+  },
+  {
+    "Value": "Please fill all fields.",
+    "Key": "AlertAndMessage_FillAllField"
+  },
+  {
+    "Value": "Please check the input data format.",
+    "Key": "AlertAndMessage_CheckTheInputDataFormat"
+  },
+  {
+    "Value": "You do not have permission to access this page.",
+    "Key": "AlertAndMessage_AccessDeniedToThisPage"
+  },
+  {
+    "Value": "click here",
+    "Key": "AlertAndMessage_ClickMe"
+  },
+  {
+    "Value": "To return to the main page.",
+    "Key": "AlertAndMessage_ClickMeToReturn"
+  },
+  {
+    "Value": "Inaccessibility",
+    "Key": "AlertAndMessage_Inaccessibility"
+  },
+  {
+    "Value": "Error occurrence",
+    "Key": "AlertAndMessage_ErrorOccurrence"
+  },
+  {
+    "Value": "The requested submission parameters are incorrect.",
+    "Key": "AlertAndMessage_TheRequestedSubmissionParametersAreIncorrect"
+  },
+  {
+    "Value": "Login",
+    "Key": "AlertAndMessage_LoginPage"
+  },
+  {
+    "Value": "you dont have permission to access this page",
+    "Key": "AlertAndMessage_AccessDenied"
+  },
+  {
+    "Value": "Login",
+    "Key": "AlertAndMessage_Login"
+  },
+  {
+    "Value": "Logout",
+    "Key": "AlertAndMessage_Logout"
+  },
+  {
+    "Value": "login and logout history",
+    "Key": "AlertAndMessage_LoginHistory"
+  },
+  {
+    "Value": "Login to your account",
+    "Key": "AlertAndMessage_LoginToAccount"
+  },
+  {
+    "Value": "Enter your username and password",
+    "Key": "AlertAndMessage_EnterUserAndPassword"
+  },
+  {
+    "Value": "Enter OTP",
+    "Key": "AlertAndMessage_EnterOTP"
+  },
+  {
+    "Value": "ChangePassword:",
+    "Key": "AlertAndMessage_ChangePassword"
+  },
+  {
+    "Value": "Current password",
+    "Key": "AlertAndMessage_CurrentPassword"
+  },
+  {
+    "Value": "New password",
+    "Key": "AlertAndMessage_NewPassword"
+  },
+  {
+    "Value": "Confirm password",
+    "Key": "AlertAndMessage_ConfirmPassword"
+  },
+  {
+    "Value": "Create a password by the system",
+    "Key": "AlertAndMessage_CreatePasswordBySyetm"
+  },
+  {
+    "Value": "Random password",
+    "Key": "AlertAndMessage_RandomPassword"
+  },
+  {
+    "Value": "Copy to clipboard",
+    "Key": "AlertAndMessage_CopyToClipboard"
+  },
+  {
+    "Value": "is now sent to user.",
+    "Key": "AlertAndMessage_SentToUser"
+  },
+  {
+    "Value": "OTP:",
+    "Key": "AlertAndMessage_OTP"
+  },
+  {
+    "Value": "Send OTP",
+    "Key": "AlertAndMessage_SendOTP"
+  },
+  {
+    "Value": "OTP sent successfully",
+    "Key": "AlertAndMessage_OTPSentSuccessfully"
+  },
+  {
+    "Value": "Username",
+    "Key": "AlertAndMessage_Username"
+  },
+  {
+    "Value": "user full name",
+    "Key": "AlertAndMessage_UserfullName"
+  },
+  {
+    "Value": "Password",
+    "Key": "AlertAndMessage_Password"
+  },
+  {
+    "Value": "Remember Me",
+    "Key": "AlertAndMessage_RememberMe"
+  },
+  {
+    "Value": "Reset password",
+    "Key": "AlertAndMessage_ResetPassword"
+  },
+  {
+    "Value": "Page not found",
+    "Key": "AlertAndMessage_PageNotFound"
+  },
+  {
+    "Value": "Yes, Delete!",
+    "Key": "AlertAndMessage_DeleteConfirm"
+  },
+  {
+    "Value": "No",
+    "Key": "AlertAndMessage_Deny"
+  },
+  {
+    "Value": "Yes",
+    "Key": "AlertAndMessage_Approve"
+  },
+  {
+    "Value": "Are you sure?",
+    "Key": "AlertAndMessage_AskForConfirm"
+  },
+  {
+    "Value": "Are you sure you want to delete this image?",
+    "Key": "AlertAndMessage_AskForConfirmImageDeletion"
+  },
+  {
+    "Value": "Permission will be deleted.",
+    "Key": "AlertAndMessage_PermissionWillBeDeleted"
+  },
+  {
+    "Value": "Role will be deleted.",
+    "Key": "AlertAndMessage_RoleWillBeDeleted"
+  },
+  {
+    "Value": "Item will be deleted.",
+    "Key": "AlertAndMessage_ItemWillBeDeleted"
+  },
+  {
+    "Value": "Nothing to show.",
+    "Key": "AlertAndMessage_NothingToShow"
+  },
+  {
+    "Value": "Please select a file.",
+    "Key": "AlertAndMessage_SelectFile"
+  },
+  {
+    "Value": "No file selected yet.",
+    "Key": "AlertAndMessage_NoFileSelected"
+  },
+  {
+    "Value": "Succeeded",
+    "Key": "AlertAndMessage_Succeeded"
+  },
+  {
+    "Value": "Failed",
+    "Key": "AlertAndMessage_Failed"
+  },
+  {
+    "Value": "All failed",
+    "Key": "AlertAndMessage_AllFailed"
+  },
+  {
+    "Value": "Ip address",
+    "Key": "AlertAndMessage_UserIpAddress"
+  },
+  {
+    "Value": "View batchId's",
+    "Key": "AlertAndMessage_ViewBatchIDs"
+  },
+  {
+    "Value": "Incomplete profile",
+    "Key": "AlertAndMessage_IncompleteProfile"
+  },
+  {
+    "Value": "Please complete your information from the profile menu before accessing the system features.",
+    "Key": "AlertAndMessage_IncompleteProfileMessage"
+  },
+  {
+    "Value": "The following items need to be completed:",
+    "Key": "AlertAndMessage_IncompleteProfileItems"
+  },
+  {
+    "Value": "Transfered cellphone list",
+    "Key": "AlertAndMessage_TransferCellphoneBetweenOperatorsList"
+  },
+  {
+    "Value": "Transfered cellphone",
+    "Key": "AlertAndMessage_TransferCellphone"
+  },
+  {
+    "Value": "Add extra params",
+    "Key": "AlertAndMessage_AddExtraParams"
+  },
+  {
+    "Value": "Please input api claims in a correct format.",
+    "Key": "AlertAndMessage_ApiAccessFormatError"
+  },
+  {
+    "Value": "Operator list",
+    "Key": "AlertAndMessage_OperatorList"
+  },
+  {
+    "Value": "New operator",
+    "Key": "AlertAndMessage_NewOperator"
+  },
+  {
+    "Value": "Success count",
+    "Key": "AlertAndMessage_SuccessCount"
+  },
+  {
+    "Value": "Failed count",
+    "Key": "AlertAndMessage_FailedCount"
+  },
+  {
+    "Value": "New role",
+    "Key": "AlertAndMessage_NewRole"
+  },
+  {
+    "Value": "Receivers",
+    "Key": "AlertAndMessage_Receivers"
+  },
+  {
+    "Value": "Change tariff",
+    "Key": "AlertAndMessage_ChangeUserTariff"
+  },
+  {
+    "Value": "Set User Sender Ids",
+    "Key": "AlertAndMessage_SetUserSenderIds"
+  },
+  {
+    "Value": "from",
+    "Key": "AlertAndMessage_DateFrom"
+  },
+  {
+    "Value": "to",
+    "Key": "AlertAndMessage_DateTo"
+  },
+  {
+    "Value": "Type",
+    "Key": "AlertAndMessage_Type"
+  },
+  {
+    "Value": "Set Icon",
+    "Key": "AlertAndMessage_Icon"
+  },
+  {
+    "Value": "User not found",
+    "Key": "AlertAndMessages_UserNotFound"
+  },
+  {
+    "Value": "Set Priority",
+    "Key": "AlertAndMessage_Priority"
+  },
+  {
+    "Value": "Set Route",
+    "Key": "AlertAndMessage_Route"
+  },
+  {
+    "Value": "Choose MenuOfModule",
+    "Key": "AlertAndMessage_MenuOfModule"
+  },
+  {
+    "Value": "password and password repitation isnt equal.",
+    "Key": "AlertAndMessage_PasswordandRepeatIsNotEqual"
+  },
+  {
+    "Value": "choose ...",
+    "Key": "Choose"
+  },
+  {
+    "Value": "user coupons",
+    "Key": "UserCoupons"
+  },
+  {
+    "Value": "Specification group name",
+    "Key": "SpecificationGroupName"
+  },
+  {
+    "Value": "Specification group",
+    "Key": "SpecificationGroup"
+  },
+  {
+    "Value": "Add Promotion",
+    "Key": "AddPromotion_Title"
+  },
+  {
+    "Value": "As user coupon",
+    "Key": "Promotion_AsUserCoupon"
+  },
+  {
+    "Value": "Coupon Code",
+    "Key": "Promotion_Code"
+  },
+  {
+    "Value": "Edit Comment",
+    "Key": "EditComment_Title"
+  },
+  {
+    "Value": "Add Comment",
+    "Key": "AddComment_Title"
+  },
+  {
+    "Value": "Edit Promotion",
+    "Key": "EditPromotion_Title"
+  },
+  {
+    "Value": "Add New Product Specification Group",
+    "Key": "AddProSpecGroupPart_Title"
+  },
+  {
+    "Value": "Add Product Specification Group",
+    "Key": "EditProSpecGroupPart_Title"
+  },
+  {
+    "Value": "Add New Permission",
+    "Key": "AddPermissionPart_Title"
+  },
+  {
+    "Value": "Add ProductGroup",
+    "Key": "AddProductGroupPart_Title"
+  },
+  {
+    "Value": "Add StoreMenu",
+    "Key": "AddMenu_Title"
+  },
+  {
+    "Value": "Edit ProductGroup",
+    "Key": "EditProductGroupPart_Title"
+  },
+  {
+    "Value": "Edit Domain",
+    "Key": "EditDomain_Title"
+  },
+  {
+    "Value": "Edit Shipping Setting",
+    "Key": "Edit_ShippingSetting"
+  },
+  {
+    "Value": "Add Shipping Setting",
+    "Key": "Add_ShippingSetting"
+  },
+  {
+    "Value": "Edit Product",
+    "Key": "EditProductPart_Title"
+  },
+  {
+    "Value": "Edit ContentCategory",
+    "Key": "EditContentCategory_Title"
+  },
+  {
+    "Value": "Edit StoreMenu",
+    "Key": "EditMenu_Title"
+  },
+  {
+    "Value": "Add ContentCategory",
+    "Key": "AddContentCategory_Title"
+  },
+  {
+    "Value": "Edit Content",
+    "Key": "EditContent_Title"
+  },
+  {
+    "Value": "Add Content",
+    "Key": "AddContent_Title"
+  },
+  {
+    "Value": "Add Product",
+    "Key": "AddProductPart_Title"
+  },
+  {
+    "Value": "Add ProductSpecification",
+    "Key": "AddProductSpecificationPart_Title"
+  },
+  {
+    "Value": "Edit ProductSpecification",
+    "Key": "EditProductSpecificationPart_Title"
+  },
+  {
+    "Value": "Add ProductUnit",
+    "Key": "AddProductUnitPart_Title"
+  },
+  {
+    "Value": "Add Domain",
+    "Key": "AddDomain_Title"
+  },
+  {
+    "Value": "Edit ProductUnit",
+    "Key": "EditProductUnitPart_Title"
+  },
+  {
+    "Value": "Edit Permission",
+    "Key": "EditPermissionPart_Title"
+  },
+  {
+    "Value": "Add User",
+    "Key": "AddUserPart_Title"
+  },
+  {
+    "Value": "Add  Role",
+    "Key": "AddRolePart_Title"
+  },
+  {
+    "Value": "Edit Role",
+    "Key": "EditRolePart_Title"
+  },
+  {
+    "Value": "Delete Permission",
+    "Key": "Permission_Delete"
+  },
+  {
+    "Value": "Permission Title",
+    "Key": "Permission_Name"
+  },
+  {
+    "Value": "Permission Type",
+    "Key": "Permission_Type"
+  },
+  {
+    "Value": "Permission Method",
+    "Key": "Permission_Method"
+  },
+  {
+    "Value": "Routes",
+    "Key": "Permission_Routes"
+  },
+  {
+    "Value": "Client Address",
+    "Key": "Permission_ClientAddress"
+  },
+  {
+    "Value": "ProductUnitName",
+    "Key": "ProductUnit_Name"
+  },
+  {
+    "Value": "RoleName",
+    "Key": "Role_Name"
+  },
+  {
+    "Value": "Role Edit",
+    "Key": "Role_Edit"
+  },
+  {
+    "Value": "Role Delete",
+    "Key": "Role_Delete"
+  },
+  {
+    "Value": "Creator username",
+    "Key": "Role_CreatorUserName"
+  },
+  {
+    "Value": "User Profile",
+    "Key": "User_Profile"
+  },
+  {
+    "Value": "is site user",
+    "Key": "User_IsSiteUser"
+  },
+  {
+    "Value": "Captcha",
+    "Key": "User_Captcha"
+  },
+  {
+    "Value": "CellPhoneNumber",
+    "Key": "User_CellPhoneNumber"
+  },
+  {
+    "Value": "Name",
+    "Key": "User_FirstName"
+  },
+  {
+    "Value": "management panel",
+    "Key": "User_ManagementPanel"
+  },
+  {
+    "Value": "Father name",
+    "Key": "User_FatherName"
+  },
+  {
+    "Value": "LastName",
+    "Key": "User_LastName"
+  },
+  {
+    "Value": "PhoneNumber",
+    "Key": "User_PhoneNumber"
+  },
+  {
+    "Value": "UserName",
+    "Key": "User_UserName"
+  },
+  {
+    "Value": "Password",
+    "Key": "User_Password"
+  },
+  {
+    "Value": "RePassword",
+    "Key": "User_RePassword"
+  },
+  {
+    "Value": "First and LastName",
+    "Key": "User_FullName"
+  },
+  {
+    "Value": "Role Name",
+    "Key": "User_RoleName"
+  },
+  {
+    "Value": "Birth Date",
+    "Key": "User_BirthDate"
+  },
+  {
+    "Value": "Result ?",
+    "Key": "User_ResultOfSum"
+  },
+  {
+    "Value": "State",
+    "Key": "ActivationState"
+  },
+  {
+    "Value": "Title",
+    "Key": "Title"
+  },
+  {
+    "Value": "Content/Product",
+    "Key": "SubName"
+  },
+  {
+    "Value": "Content/Product GroupName",
+    "Key": "SubGroupName"
+  },
+  {
+    "Value": "Comment Title",
+    "Key": "CommentTitle"
+  },
+  {
+    "Value": "Description",
+    "Key": "Description"
+  },
+  {
+    "Value": "Active",
+    "Key": "Active"
+  },
+  {
+    "Value": "count to show",
+    "Key": "CountToShow"
+  },
+  {
+    "Value": "view template",
+    "Key": "ViewTemplate"
+  },
+  {
+    "Value": "Page Template",
+    "Key": "PageTemplate"
+  },
+  {
+    "Value": "All",
+    "Key": "All"
+  },
+  {
+    "Value": "show",
+    "Key": "Show"
+  },
+  {
+    "Value": "from",
+    "Key": "From"
+  },
+  {
+    "Value": "to",
+    "Key": "To"
+  },
+  {
+    "Value": "items",
+    "Key": "Item"
+  },
+  {
+    "Value": "Or",
+    "Key": "Or"
+  },
+  {
+    "Value": "Domain Owner",
+    "Key": "DomainOwner"
+  },
+  {
+    "Value": "Domain Name",
+    "Key": "DomainName"
+  },
+  {
+    "Value": "Rename",
+    "Key": "Rename"
+  },
+  {
+    "Value": "Choose Image Form",
+    "Key": "ChooseImageForm"
+  },
+  {
+    "Value": "Choose Image",
+    "Key": "ChooseImage"
+  },
+  {
+    "Value": "Folders:",
+    "Key": "Folders"
+  },
+  {
+    "Value": "Change Logo",
+    "Key": "ChangeLogo"
+  },
+  {
+    "Value": "Change Image",
+    "Key": "ChangeImage"
+  },
+  {
+    "Value": "Content Logo",
+    "Key": "FileLogo"
+  },
+  {
+    "Value": "Group Image",
+    "Key": "GroupImage"
+  },
+  {
+    "Value": "Like Count",
+    "Key": "LikeCount"
+  },
+  {
+    "Value": "Dislike Count",
+    "Key": "DisLikeCount"
+  },
+  {
+    "Value": "Comment Type",
+    "Key": "ReferenceType"
+  },
+  {
+    "Value": "Reference Title",
+    "Key": "ReferenceTitle"
+  },
+  {
+    "Value": "Approve",
+    "Key": "IsApproved"
+  },
+  {
+    "Value": "Content Owner Type",
+    "Key": "SourceType"
+  },
+  {
+    "Value": "Content ProviderName",
+    "Key": "ContentProviderName"
+  },
+  {
+    "Value": "ShowDate Start",
+    "Key": "StartShowDate"
+  },
+  {
+    "Value": "ShowDate End",
+    "Key": "EndShowDate"
+  },
+  {
+    "Value": "Tag Keywords",
+    "Key": "TagKeywords"
+  },
+  {
+    "Value": "Products in Promotion",
+    "Key": "ProductsInPromotion"
+  },
+  {
+    "Value": "Value",
+    "Key": "Value"
+  },
+  {
+    "Value": "Product",
+    "Key": "Product"
+  },
+  {
+    "Value": "Bought Count",
+    "Key": "BoughtCount"
+  },
+  {
+    "Value": "Count Of FreeProduct",
+    "Key": "PromotedCountofUnit"
+  },
+  {
+    "Value": "Image",
+    "Key": "Image"
+  },
+  {
+    "Value": "Main Image",
+    "Key": "MainPhoto"
+  },
+  {
+    "Value": "InActive",
+    "Key": "InActive"
+  },
+  {
+    "Value": "Is Vendor?",
+    "Key": "IsVendor"
+  },
+  {
+    "Value": "Product File",
+    "Key": "ProductFile"
+  },
+  {
+    "Value": "Product File Name",
+    "Key": "ProductFileName"
+  },
+  {
+    "Value": "Product Vendor",
+    "Key": "ProductVendor"
+  },
+  {
+    "Value": "Price History",
+    "Key": "PriceHistory"
+  },
+  {
+    "Value": "Show in lack of inventory",
+    "Key": "ShowInLackOfInventory"
+  },
+  {
+    "Value": "Show/Hide",
+    "Key": "ShowHide"
+  },
+  {
+    "Value": "Multi lingual property",
+    "Key": "MultiLingualProperty"
+  },
+  {
+    "Value": "Parent Group",
+    "Key": "ParentGroup"
+  },
+  {
+    "Value": "Parent Menu",
+    "Key": "ParentMenu"
+  },
+  {
+    "Value": "Parent Menu Title",
+    "Key": "ParentMenuTitle"
+  },
+  {
+    "Value": "Menu Type",
+    "Key": "MenuType"
+  },
+  {
+    "Value": "Parent Comment",
+    "Key": "ParentComment"
+  },
+  {
+    "Value": "Content Comment",
+    "Key": "ContentComment"
+  },
+  {
+    "Value": "Parent Category Name",
+    "Key": "ParentCategoryName"
+  },
+  {
+    "Value": "Name",
+    "Key": "Name"
+  },
+  {
+    "Value": "Ui Control Type",
+    "Key": "UIControlType"
+  },
+  {
+    "Value": "from creation date",
+    "Key": "fromCreationDate"
+  },
+  {
+    "Value": "to creation date",
+    "Key": "toCreationDate"
+  },
+  {
+    "Value": "Products With Discount",
+    "Key": "ProductWithDiscount"
+  },
+  {
+    "Value": "Existent Products",
+    "Key": "ExistentProducts"
+  },
+  {
+    "Value": "Promotions",
+    "Key": "Promotion"
+  },
+  {
+    "Value": "Products on Promotions",
+    "Key": "ProductsOnPromotion"
+  },
+  {
+    "Value": "Product Inventory Less than",
+    "Key": "ProductInventoryLessThan"
+  },
+  {
+    "Value": "Seo Description",
+    "Key": "SeoDescription"
+  },
+  {
+    "Value": "Seo Title",
+    "Key": "SeoTitle"
+  },
+  {
+    "Value": "UrlFriend",
+    "Key": "UrlFriend"
+  },
+  {
+    "Value": "Url",
+    "Key": "Url"
+  },
+  {
+    "Value": "Yes",
+    "Key": "Yes"
+  },
+  {
+    "Value": "No",
+    "Key": "No"
+  },
+  {
+    "Value": "Currency",
+    "Key": "Currency"
+  },
+  {
+    "Value": "Type",
+    "Key": "Type"
+  },
+  {
+    "Value": "discount type",
+    "Key": "DiscountType"
+  },
+  {
+    "Value": "Product in Promotion",
+    "Key": "AffectedProductName"
+  },
+  {
+    "Value": "ProductGroup in Promotion",
+    "Key": "AffectedProductGroupName"
+  },
+  {
+    "Value": "Free Product",
+    "Key": "PromotedProductName"
+  },
+  {
+    "Value": "Classification",
+    "Key": "Classification"
+  },
+  {
+    "Value": "default currency",
+    "Key": "DefaultCurrency"
+  },
+  {
+    "Value": "default domain",
+    "Key": "DefaultDomain"
+  },
+  {
+    "Value": "Price",
+    "Key": "PriceValue"
+  },
+  {
+    "Value": "Roles",
+    "Key": "User_Roles"
+  },
+  {
+    "Value": "User Filters",
+    "Key": "User_Filters"
+  },
+  {
+    "Value": "User Delete",
+    "Key": "User_Delete"
+  },
+  {
+    "Value": "User Restore",
+    "Key": "User_Restore"
+  },
+  {
+    "Value": "User FullMobile",
+    "Key": "User_FullMobile"
+  },
+  {
+    "Value": "User Role",
+    "Key": "User_Role"
+  },
+  {
+    "Value": "sign up",
+    "Key": "User_Signup"
+  },
+  {
+    "Value": "Login/Register",
+    "Key": "User_LoginRegister"
+  },
+  {
+    "Value": "From Date",
+    "Key": "FromDate"
+  },
+  {
+    "Value": "To Date",
+    "Key": "ToDate"
+  },
+  {
+    "Value": "Restore",
+    "Key": "Restore"
+  },
+  {
+    "Value": "CreationDate",
+    "Key": "CreationDate"
+  },
+  {
+    "Value": "Add New User",
+    "Key": "User_Add"
+  },
+  {
+    "Value": "Edit User",
+    "Key": "User_Edit"
+  },
+  {
+    "Value": "change Password",
+    "Key": "User_ChangePass"
+  },
+  {
+    "Value": "Clear Form",
+    "Key": "FormClear"
+  },
+  {
+    "Value": "Filter",
+    "Key": "Filter"
+  },
+  {
+    "Value": "Content",
+    "Key": "Content"
+  },
+  {
+    "Value": "Content Title",
+    "Key": "ContentTitle"
+  },
+  {
+    "Value": "Product Specs(extra infoes about product)",
+    "Key": "ProductSpecs"
+  },
+  {
+    "Value": "Store Menues",
+    "Key": "Menu_StoreMenues"
+  },
+  {
+    "Value": "Product Comments",
+    "Key": "Menu_ProductComments"
+  },
+  {
+    "Value": "Content Comments",
+    "Key": "Menu_ContentComments"
+  },
+  {
+    "Value": "Promotions",
+    "Key": "Menu_Promotion"
+  },
+  {
+    "Value": "Product Specification Groups",
+    "Key": "Menu_ProductSpecificationGroup"
+  },
+  {
+    "Value": "Permissions",
+    "Key": "Menu_Permissions"
+  },
+  {
+    "Value": "Products",
+    "Key": "Menu_Products"
+  },
+  {
+    "Value": "Product",
+    "Key": "Menu_Product"
+  },
+  {
+    "Value": "Product Units",
+    "Key": "Menu_ProductUnits"
+  },
+  {
+    "Value": "Product Unit",
+    "Key": "Menu_ProductUnit"
+  },
+  {
+    "Value": "Product Groups",
+    "Key": "Menu_ProductGroups"
+  },
+  {
+    "Value": "Domains",
+    "Key": "Menu_domains"
+  },
+  {
+    "Value": "Shipping Setting",
+    "Key": "Menu_ShippingSetting"
+  },
+  {
+    "Value": "Content Category",
+    "Key": "Menu_ContentCategory"
+  },
+  {
+    "Value": "Content",
+    "Key": "Menu_Content"
+  },
+  {
+    "Value": "Product Specifications",
+    "Key": "Menu_ProductSpecifications"
+  },
+  {
+    "Value": "Roles",
+    "Key": "Menu_Roles"
+  },
+  {
+    "Value": "نقش",
+    "Key": "Role"
+  },
+  {
+    "Value": "Edit permissions",
+    "Key": "EditPermissions"
+  },
+  {
+    "Value": "User Profile",
+    "Key": "Menu_Profile"
+  },
+  {
+    "Value": "My Orders",
+    "Key": "Menu_MyOrders"
+  },
+  {
+    "Value": "Home",
+    "Key": "Menu_Home"
+  },
+  {
+    "Value": "Seprate each route with comma ,",
+    "Key": "Menu_RoutePlaceHolder"
+  },
+  {
+    "Value": "Add",
+    "Key": "Menu_Add"
+  },
+  {
+    "Value": "PermissionName",
+    "Key": "Menu_PermissionName"
+  },
+  {
+    "Value": "Permission Title",
+    "Key": "Menu_PermissionTitle"
+  },
+  {
+    "Value": "PermissionType",
+    "Key": "Menu_PermissionType"
+  },
+  {
+    "Value": "Routes",
+    "Key": "Menu_Routes"
+  },
+  {
+    "Value": "PermissionMethod",
+    "Key": "Menu_PermissionMethod"
+  },
+  {
+    "Value": "MenuIdOfModule",
+    "Key": "Menu_MenuIdOfModule"
+  },
+  {
+    "Value": "ParentMenuId",
+    "Key": "Menu_ParentMenuId"
+  },
+  {
+    "Value": "Icon",
+    "Key": "Menu_Icon"
+  },
+  {
+    "Value": "Priority",
+    "Key": "Menu_Priority"
+  },
+  {
+    "Value": "Client Address",
+    "Key": "Menu_ClientAddress"
+  },
+  {
+    "Value": "PermissionName",
+    "Key": "Per_PermissionName"
+  },
+  {
+    "Value": "Permission Title",
+    "Key": "Per_PermissionTitle"
+  },
+  {
+    "Value": "PermissionType",
+    "Key": "Per_PermissionType"
+  },
+  {
+    "Value": "Routes",
+    "Key": "Per_Routes"
+  },
+  {
+    "Value": "PermissionMethod",
+    "Key": "Per_PermissionMethod"
+  },
+  {
+    "Value": "MenuIdOfModule",
+    "Key": "Per_MenuIdOfModule"
+  },
+  {
+    "Value": "ParentMenuId",
+    "Key": "Per_ParentMenuId"
+  },
+  {
+    "Value": "Icon",
+    "Key": "Per_Icon"
+  },
+  {
+    "Value": "Priority",
+    "Key": "Per_Priority"
+  },
+  {
+    "Value": "Client Address",
+    "Key": "Per_ClientAddress"
+  },
+  {
+    "Value": "Modification Reason",
+    "Key": "ModificationReason"
+  },
+  {
+    "Value": "without modification",
+    "Key": "WithoutModification"
+  },
+  {
+    "Value": "Dashboard",
+    "Key": "Menu_Dashboard"
+  },
+  {
+    "Value": "Dashboard v1",
+    "Key": "Menu_Dashboardv1"
+  },
+  {
+    "Value": "EXAMPLES",
+    "Key": "Menu_Dashboard_Examples"
+  },
+  {
+    "Value": "invoice",
+    "Key": "Menu_Dashboard_Invoice"
+  },
+  {
+    "Value": "Arad Portal Management System",
+    "Key": "Menu_Dashboard_HomeTitle"
+  },
+  {
+    "Value": "Gallery",
+    "Key": "Menu_Dashboard_Gallery"
+  },
+  {
+    "Value": "Pages",
+    "Key": "Menu_Dashboard_Pages"
+  },
+  {
+    "Value": "Notification",
+    "Key": "Menu_Dashboard_Notification"
+  },
+  {
+    "Value": "new messeges",
+    "Key": "Menu_Dashboard_newMesseges"
+  },
+  {
+    "Value": "mins",
+    "Key": "Menu_Dashboard_min"
+  },
+  {
+    "Value": "See All Notifications",
+    "Key": "Menu_Dashboard_SeeAllNotifications"
+  },
+  {
+    "Value": "",
+    "Key": "Msg_Content_Test1"
+  },
+  {
+    "Value": "Hours Ago",
+    "Key": "Msg_Content_Test2"
+  },
+  {
+    "Value": "Arad Portal Dashboard",
+    "Key": "CompanyName"
+  },
+  {
+    "Value": "See All Messages",
+    "Key": "SeeMoreMsgs"
+  },
+  {
+    "Value": "Is commenting allowed on?",
+    "Key": "Content_IsCommentBoxShowing"
+  },
+  {
+    "Value": "Is rating allowed on?",
+    "Key": "Content_IsRateBoxShowing"
+  },
+  {
+    "Value": "Is slider showing?",
+    "Key": "Content_IsSliderShowing"
+  },
+  {
+    "Value": "Is sidebar contents showing beside this content?",
+    "Key": "Content_IsSidebarContentsShowing"
+  },
+  {
+    "Value": "count to show",
+    "Key": "Content_CountToShow"
+  },
+  {
+    "Value": "Exit",
+    "Key": "Exit"
+  },
+  {
+    "Value": "purchase",
+    "Key": "byBuying"
+  },
+  {
+    "Value": "Unavailable",
+    "Key": "UnAvailable"
+  },
+  {
+    "Value": "UnAuthorized",
+    "Key": "UnAuthorize"
+  },
+  {
+    "Value": "Gift :",
+    "Key": "AsGift"
+  },
+  {
+    "Value": "Start Date",
+    "Key": "StartDate"
+  },
+  {
+    "Value": "End Date",
+    "Key": "EndDate"
+  },
+  {
+    "Value": "New",
+    "Key": "New"
+  },
+  {
+    "Value": "Crop",
+    "Key": "Crop"
+  },
+  {
+    "Value": "Profile picture",
+    "Key": "ProfilePic"
+  },
+  {
+    "Value": "Change picture",
+    "Key": "ChangeProfilePic"
+  },
+  {
+    "Value": "Edit profile",
+    "Key": "EditProfile"
+  },
+  {
+    "Value": "Edit user profile",
+    "Key": "EditUserProfile"
+  },
+  {
+    "Value": "Basic Informations",
+    "Key": "Title_BasicInfo"
+  },
+  {
+    "Value": "Crop image",
+    "Key": "CropImage"
+  },
+  {
+    "Value": "Assign numbers",
+    "Key": "AssignNumber"
+  },
+  {
+    "Value": "Create new",
+    "Key": "CreateNew"
+  },
+  {
+    "Value": "Ok",
+    "Key": "Ok"
+  },
+  {
+    "Value": "Order",
+    "Key": "Order"
+  },
+  {
+    "Value": "order detail",
+    "Key": "Order_Detail"
+  },
+  {
+    "Value": "change order status",
+    "Key": "Order_changeOrderStatus"
+  },
+  {
+    "Value": "Registered Date",
+    "Key": "Order_RegisteredDate"
+  },
+  {
+    "Value": "discount per unit",
+    "Key": "Order_DiscountPerUnit"
+  },
+  {
+    "Value": "final price after discount",
+    "Key": "Order_FinlaPriceAfterDiscount"
+  },
+  {
+    "Value": "invoice number",
+    "Key": "Order_InvoiceNumber"
+  },
+  {
+    "Value": "Payment Date",
+    "Key": "Order_PaymentDate"
+  },
+  {
+    "Value": "user fullname",
+    "Key": "Order_UserFullName"
+  },
+  {
+    "Value": "username",
+    "Key": "Order_UserName"
+  },
+  {
+    "Value": "order amount",
+    "Key": "Order_Amount"
+  },
+  {
+    "Value": "order item count",
+    "Key": "Order_OrderItemCount"
+  },
+  {
+    "Value": "payment status",
+    "Key": "Order_PaymentStatus"
+  },
+  {
+    "Value": "order status",
+    "Key": "Order_OrderStatus"
+  },
+  {
+    "Value": "order count",
+    "Key": "OrderCnt"
+  },
+  {
+    "Value": "Go back",
+    "Key": "Return"
+  },
+  {
+    "Value": "Add",
+    "Key": "Add"
+  },
+  {
+    "Value": "Edit",
+    "Key": "Edit"
+  },
+  {
+    "Value": "Cancel",
+    "Key": "Cancel"
+  },
+  {
+    "Value": "Delete",
+    "Key": "Delete"
+  },
+  {
+    "Value": "Change Size",
+    "Key": "ChangeSize"
+  },
+  {
+    "Value": "Change Image Size",
+    "Key": "ChangeImageSize"
+  },
+  {
+    "Value": "Search",
+    "Key": "Search"
+  },
+  {
+    "Value": "Related Language",
+    "Key": "RelatedLanguage"
+  },
+  {
+    "Value": "Current Domain Price",
+    "Key": "CurrentDomainPrice"
+  },
+  {
+    "Value": "Associated Domain",
+    "Key": "AssociatedDomain"
+  },
+  {
+    "Value": "Default Language",
+    "Key": "DefaultLanguage"
+  },
+  {
+    "Value": "Default Shipping Type",
+    "Key": "DefaultShippingType"
+  },
+  {
+    "Value": "Product Template File Language",
+    "Key": "ProductTemplateLanguage"
+  },
+  {
+    "Value": "Language Name",
+    "Key": "LanguageName"
+  },
+  {
+    "Value": "Product Type",
+    "Key": "ProductType"
+  },
+  {
+    "Value": "Download Limitation",
+    "Key": "DownloadLimitation"
+  },
+  {
+    "Value": "day count for allowed download duration",
+    "Key": "AllowedDownloadDuration"
+  },
+  {
+    "Value": "Allowed download count",
+    "Key": "AllowedDownloadNumber"
+  },
+  {
+    "Value": "source language to copy",
+    "Key": "LanguageToCopy"
+  },
+  {
+    "Value": "get from excel file",
+    "Key": "GetFromExcelFile"
+  },
+  {
+    "Value": "Find",
+    "Key": "Find"
+  },
+  {
+    "Value": "Change password",
+    "Key": "ChangePassword"
+  },
+  {
+    "Value": "Login as user",
+    "Key": "LoginAsUser"
+  },
+  {
+    "Value": "View",
+    "Key": "View"
+  },
+  {
+    "Value": "Copy",
+    "Key": "Copy"
+  },
+  {
+    "Value": "Close",
+    "Key": "Close"
+  },
+  {
+    "Value": "Send sms",
+    "Key": "SendSms"
+  },
+  {
+    "Value": "Send",
+    "Key": "Send"
+  },
+  {
+    "Value": "Sent",
+    "Key": "Sent"
+  },
+  {
+    "Value": "Save",
+    "Key": "Save"
+  },
+  {
+    "Value": "Arad Portal Management System",
+    "Key": "AradPortalDashboard"
+  },
+  {
+    "Value": "Add Extra Parameters",
+    "Key": "AddExtraParams"
+  },
+  {
+    "Value": "Current Password",
+    "Key": "ChangePassword_CurrentPassword"
+  },
+  {
+    "Value": "New Password",
+    "Key": "ChangePassword_NewPassword"
+  },
+  {
+    "Value": "Confirm Password",
+    "Key": "ChangePassword_ConfirmPassword"
+  },
+  {
+    "Value": "Create a password by the system.",
+    "Key": "ChangePassword_CreatePasswordBySystem"
+  },
+  {
+    "Value": "Your created password: {0} Click here to copy.",
+    "Key": "ChangePassword_CreatePasswordBySystemCopy"
+  },
+  {
+    "Value": "Permissions",
+    "Key": "Entities_Permissions"
+  },
+  {
+    "Value": "Icon",
+    "Key": "Entities_PermissionIcon"
+  },
+  {
+    "Value": "Title",
+    "Key": "Entities_Title"
+  },
+  {
+    "Value": "SubTitle",
+    "Key": "Entities_SubTitle"
+  },
+  {
+    "Value": "PermissionType",
+    "Key": "Entities_PermissionType"
+  },
+  {
+    "Value": "PermissionViewKey",
+    "Key": "Entities_PermissionViewKey"
+  },
+  {
+    "Value": "Priority",
+    "Key": "Entities_Priority"
+  },
+  {
+    "Value": "MenuOfModule",
+    "Key": "Entities_MenuOfModule"
+  },
+  {
+    "Value": "ParentMenu",
+    "Key": "Entities_ParentMenu"
+  },
+  {
+    "Value": "PermissionRoutes",
+    "Key": "Entities_PermissionRoutes"
+  },
+  {
+    "Value": "ModificationReason",
+    "Key": "Entities_ModificationReason"
+  },
+  {
+    "Value": "PermissionClientAddress",
+    "Key": "Entities_PermissionClientAddress"
+  },
+  {
+    "Value": "showing",
+    "Key": "PageNavigation_showing"
+  },
+  {
+    "Value": "from",
+    "Key": "PageNavigation_from"
+  },
+  {
+    "Value": "to",
+    "Key": "PageNavigation_to"
+  },
+  {
+    "Value": "items",
+    "Key": "PageNavigation_items"
+  },
+  {
+    "Value": "next",
+    "Key": "PageNavigation_next"
+  },
+  {
+    "Value": "previous",
+    "Key": "PageNavigation_previous"
+  },
+  {
+    "Value": "last",
+    "Key": "PageNavigation_last"
+  },
+  {
+    "Value": "first",
+    "Key": "PageNavigation_first"
+  },
+  {
+    "Value": "Basic information",
+    "Key": "TableHeader_BasicInfo"
+  },
+  {
+    "Value": "Male",
+    "Key": "TableHeader_Male"
+  },
+  {
+    "Value": "Female",
+    "Key": "TableHeader_Female"
+  },
+  {
+    "Value": "Other information",
+    "Key": "TableHeader_OtherInfo"
+  },
+  {
+    "Value": "User image",
+    "Key": "TableHeader_UserImage"
+  },
+  {
+    "Value": "No",
+    "Key": "TableHeader_Row"
+  },
+  {
+    "Value": "Date",
+    "Key": "TableHeader_Date"
+  },
+  {
+    "Value": "Previous balance",
+    "Key": "TableHeader_PreviousInventory"
+  },
+  {
+    "Value": "Current balance",
+    "Key": "TableHeader_CurrentInventory"
+  },
+  {
+    "Value": "Modification reason",
+    "Key": "TableHeader_ModificationReason"
+  },
+  {
+    "Value": "Actions",
+    "Key": "TableHeader_Actions"
+  },
+  {
+    "Value": "Priority",
+    "Key": "TableHeader_Priority"
+  },
+  {
+    "Value": "Title",
+    "Key": "TableHeader_Title"
+  },
+  {
+    "Value": "Creator",
+    "Key": "TableHeader_Creator"
+  },
+  {
+    "Value": "Create date",
+    "Key": "TableHeader_CreateDate"
+  },
+  {
+    "Value": "Modifications",
+    "Key": "TableHeader_Modifications"
+  },
+  {
+    "Value": "Status",
+    "Key": "TableHeader_Status"
+  },
+  {
+    "Value": "Is System Account",
+    "Key": "ApplicationUser_IsSystemAccount"
+  },
+  {
+    "Value": "Address",
+    "Key": "ApplicationUser_Address"
+  },
+  {
+    "Value": "Profile",
+    "Key": "ApplicationUser_Profile"
+  },
+  {
+    "Value": "Gender",
+    "Key": "ApplicationUser_Gender"
+  },
+  {
+    "Value": "Fixed PhoneNumber",
+    "Key": "ApplicationUser_FixedPhoneNumber"
+  },
+  {
+    "Value": "Last Login Date",
+    "Key": "ApplicationUser_LastLoginDate"
+  },
+  {
+    "Value": "Role",
+    "Key": "ApplicationUser_Role"
+  },
+  {
+    "Value": "Receive Active",
+    "Key": "ApplicationUser_ReceiveActive"
+  },
+  {
+    "Value": "Receive Settings",
+    "Key": "ApplicationUser_ReceiveSettings"
+  },
+  {
+    "Value": "Delivery Settings",
+    "Key": "ApplicationUser_DeliverySettings"
+  },
+  {
+    "Value": "Reference",
+    "Key": "ApplicationUser_Reference"
+  },
+  {
+    "Value": "Relay",
+    "Key": "ApplicationUser_Relay"
+  },
+  {
+    "Value": "Receive Type",
+    "Key": "ApplicationUser_ReceiveType"
+  },
+  {
+    "Value": "Receive Method",
+    "Key": "ApplicationUser_ReceiveMethod"
+  },
+  {
+    "Value": "Receive Setting",
+    "Key": "ApplicationUser_ReceiveSetting"
+  },
+  {
+    "Value": "Tariff Package",
+    "Key": "ApplicationUser_TariffPackage"
+  },
+  {
+    "Value": "Credit",
+    "Key": "ApplicationUser_Credit"
+  },
+  {
+    "Value": "Is Postpaid",
+    "Key": "ApplicationUser_IsPostPaid"
+  },
+  {
+    "Value": "Send via http",
+    "Key": "ApplicationUser_SendViaHttp"
+  },
+  {
+    "Value": "Send via SMPP",
+    "Key": "ApplicationUser_SendViaSMPP"
+  },
+  {
+    "Value": "Filter check",
+    "Key": "ApplicationUser_FilterCheck"
+  },
+  {
+    "Value": "BlackList check",
+    "Key": "ApplicationUser_BlackListCheck"
+  },
+  {
+    "Value": "Archive access",
+    "Key": "ApplicationUser_ArchiveAccess"
+  },
+  {
+    "Value": "Post paid",
+    "Key": "ApplicationUser_PostPaid"
+  },
+  {
+    "Value": "Method",
+    "Key": "ApplicationUser_Method"
+  },
+  {
+    "Value": "Change type",
+    "Key": "ApplicationUser_ChangeType"
+  },
+  {
+    "Value": "Assign number",
+    "Key": "ApplicationUser_AssignSenderId"
+  },
+  {
+    "Value": "User SenderIds",
+    "Key": "ApplicationUser_UserSenderIds"
+  },
+  {
+    "Value": "Description",
+    "Key": "ApplicationUser_Description"
+  },
+  {
+    "Value": "management",
+    "Key": "DropdownItems_Management"
+  },
+  {
+    "Value": "Change amount",
+    "Key": "DropdownItems_ChangeAmount"
+  },
+  {
+    "Value": "Credit Changes",
+    "Key": "ApplicationUser_CreditChanges"
+  },
+  {
+    "Value": "MPS",
+    "Key": "ApplicationUser_MPS"
+  },
+  {
+    "Value": "Last Send Date",
+    "Key": "ApplicationUser_LastSendDate"
+  },
+  {
+    "Value": "Last Receive Date",
+    "Key": "ApplicationUser_LastReceiveDate"
+  },
+  {
+    "Value": "Delivery Active",
+    "Key": "ApplicationUser_DeliveryActive"
+  },
+  {
+    "Value": "Delivery Type",
+    "Key": "ApplicationUser_DeliveryType"
+  },
+  {
+    "Value": "Delivery Method",
+    "Key": "ApplicationUser_DeliveryMethod"
+  },
+  {
+    "Value": "Delivery Setting",
+    "Key": "ApplicationUser_DeliverySetting"
+  },
+  {
+    "Value": "API Access",
+    "Key": "ApplicationUser_APIAccess"
+  },
+  {
+    "Value": "SMPP Access",
+    "Key": "ApplicationUser_SMPPAccess"
+  },
+  {
+    "Value": "Priority",
+    "Key": "ApplicationUser_Priority"
+  },
+  {
+    "Value": "View Old Data",
+    "Key": "ApplicationUser_ViewOldData"
+  },
+  {
+    "Value": "Alert Credit",
+    "Key": "ApplicationUser_AlertCredit"
+  },
+  {
+    "Value": "Credit Amount For Alert",
+    "Key": "ApplicationUser_CreditAmountForAlert"
+  },
+  {
+    "Value": "Last Send Alert Date",
+    "Key": "ApplicationUser_LastSendAlertDate"
+  },
+  {
+    "Value": "Ips",
+    "Key": "ApplicationUser_Ips"
+  },
+  {
+    "Value": "User",
+    "Key": "ApplicationUser_User"
+  },
+  {
+    "Value": "User list",
+    "Key": "ApplicationUser_UserList"
+  },
+  {
+    "Value": "User list count",
+    "Key": "UserListCount"
+  },
+  {
+    "Value": "Dashboard",
+    "Key": "PermissionTitle_Dashboard"
+  },
+  {
+    "Value": "User Management",
+    "Key": "PermissionTitle_User_Management"
+  },
+  {
+    "Value": "Permissions",
+    "Key": "PermissionTitle_User_Permissions"
+  },
+  {
+    "Value": "add new address",
+    "Key": "btn_AddNewAddress"
+  },
+  {
+    "Value": "Register",
+    "Key": "btn_Register"
+  },
+  {
+    "Value": "Continue Shopping Procedure",
+    "Key": "btn_ContinueBuyingOnline"
+  },
+  {
+    "Value": "send informations",
+    "Key": "SendInfoes"
+  },
+  {
+    "Value": "add new address",
+    "Key": "AddNewAddress"
+  },
+  {
+    "Value": "more",
+    "Key": "GetMore"
+  },
+  {
+    "Value": "Articles",
+    "Key": "design_Articles"
+  },
+  {
+    "Value": "Atricle Categories",
+    "Key": "design_ArticleCategories"
+  },
+  {
+    "Value": "Products",
+    "Key": "design_Products"
+  },
+  {
+    "Value": "Product Groups",
+    "Key": "design_ProductGroups"
+  },
+  {
+    "Value": "HomePage",
+    "Key": "design_HomePage"
+  },
+  {
+    "Value": "Shopping Cart",
+    "Key": "ShoppingCart"
+  },
+  {
+    "Value": "Unavailable",
+    "Key": "Shop_Unavailable"
+  },
+  {
+    "Value": "Add to Cart",
+    "Key": "btn_AddToShoppingCart"
+  },
+  {
+    "Value": "Add",
+    "Key": "btn_Insert"
+  },
+  {
+    "Value": "Log In",
+    "Key": "TextAndPlaceholder_LogIn"
+  },
+  {
+    "Value": "UserName",
+    "Key": "TextAndPlaceholder_UserName"
+  },
+  {
+    "Value": "UserName, Email or Mobile",
+    "Key": "TextAndPlaceholder_UserName_Mobile_Email"
+  },
+  {
+    "Value": "Password",
+    "Key": "TextAndPlaceholder_Password"
+  },
+  {
+    "Value": "Enter result",
+    "Key": "TextAndPlaceholder_Captcha"
+  },
+  {
+    "Value": "Or",
+    "Key": "TextAndPlaceholder_Or"
+  },
+  {
+    "Value": "Mobile(UserName)",
+    "Key": "TextAndPlaceholder_Mobile_UserName"
+  },
+  {
+    "Value": "Security code",
+    "Key": "TextAndPlaceholder_SecurityCode"
+  },
+  {
+    "Value": "Mobile",
+    "Key": "TextAndPlaceholder_Mobile"
+  },
+  {
+    "Value": "User detail",
+    "Key": "PermissionTitle_UserDetails"
+  },
+  {
+    "Value": "Role Details",
+    "Key": "PermissionTitle_RoleDetails"
+  },
+  {
+    "Value": "Inventory :",
+    "Key": "InventoryInStore"
+  },
+  {
+    "Value": "Payment Gateways",
+    "Key": "tbl_PaymenyGateways"
+  },
+  {
+    "Value": "Are you sure?",
+    "Key": "Title_AreYouSure"
+  },
+  {
+    "Value": "please select AddressType",
+    "Key": "AlertAndMessage_AddressType"
+  },
+  {
+    "Value": "please select country",
+    "Key": "AlertAndMessage_CountryId"
+  },
+  {
+    "Value": "please select province",
+    "Key": "AlertAndMessage_ProvinceId"
+  },
+  {
+    "Value": "please select city",
+    "Key": "AlertAndMessage_CityId"
+  },
+  {
+    "Value": "please enter address1",
+    "Key": "AlertAndMessage_Address1"
+  },
+  {
+    "Value": "Address have been added successfully",
+    "Key": "AlertAndMessage_AddressAddedSuccessfully"
+  },
+  {
+    "Value": "Please choose one address, otherwise the first one will be selected.",
+    "Key": "AlertAndMessage_ChooseOneAddress"
+  },
+  {
+    "Value": "Please insert your address.",
+    "Key": "AlertAndMessage_AddressInsert"
+  },
+  {
+    "Value": "You havent been logged,please  login first.",
+    "Key": "AlertAndMessage_LoginFirst"
+  },
+  {
+    "Value": "Password have changed successfully.",
+    "Key": "AlertAndMessage_PasswordChangeSuccessfully"
+  },
+  {
+    "Value": "this product has been added to your cart.",
+    "Key": "AlertAndMessage_ProductCountInCart"
+  },
+  {
+    "Value": "Your basket is empty.",
+    "Key": "AlertAndMessage_ShoppingCartIsEmpty"
+  },
+  {
+    "Value": "Unfortunatelly, the price of product [0] have been increased.",
+    "Key": "AlertAndMessage_ProductPriceIncrease"
+  },
+  {
+    "Value": "the price of product [0] have been decreased.",
+    "Key": "AlertAndMessage_ProductPriceDecrease"
+  },
+  {
+    "Value": "Sorry, the inventory of this product decreased to [0].",
+    "Key": "AlertAndMessage_ProductDecreaseInventory"
+  },
+  {
+    "Value": "Sorry, inventory of product has been finished.",
+    "Key": "AlertAndMessage_ProductNullCount"
+  },
+  {
+    "Value": "Error, Please try again later",
+    "Key": "AlertAndMessage_SubmitOtpPleaseTryAgainLater"
+  },
+  {
+    "Value": "Send security code to mobile number {0}.",
+    "Key": "AlertAndMessage_SendSecurityCode"
+  },
+  {
+    "Value": "A verification code has been sent to you.",
+    "Key": "AlertAndMessage_ProfileConfirmPhoneSending"
+  },
+  {
+    "Value": "The verification code has expired.",
+    "Key": "AlertAndMessage_ProfileConfirmPhoneTimeOut"
+  },
+  {
+    "Value": "Confirmation of number with error encountered.",
+    "Key": "AlertAndMessage_ProfileConfirmPhoneError"
+  },
+  {
+    "Value": "The operation was successful.",
+    "Key": "AlertAndMessage_OperationSuccess"
+  },
+  {
+    "Value": "Not found message template.",
+    "Key": "AlertAndMessage_NotFoundMessageTemplate"
+  },
+  {
+    "Value": "Not found sms setting.",
+    "Key": "AlertAndMessage_NotFoundSmsSetting"
+  },
+  {
+    "Value": "Not found smtp setting.",
+    "Key": "AlertAndMessage_NotFoundSmtp"
+  },
+  {
+    "Value": "Add your comment here.",
+    "Key": "AlertAndMessage_WriteComment"
+  },
+  {
+    "Value": "The password you have entered is incorrect.",
+    "Key": "AlertAndMessage_PasswordIncorrect"
+  },
+  {
+    "Value": "Comment Sent Successfully and It will be shown after approve.",
+    "Key": "AlertAndMessage_SubmitComment"
+  },
+  {
+    "Value": "Invalid national id.",
+    "Key": "AlertAndMessage_InvalidNationalId"
+  },
+  {
+    "Value": "Please enter your new password",
+    "Key": "AlertAndMessage_NewPasswordRequired"
+  },
+  {
+    "Value": "Please enter your new password again",
+    "Key": "AlertAndMessage_ReNewPasswordRequired"
+  },
+  {
+    "Value": "persian",
+    "Key": "Persian"
+  },
+  {
+    "Value": "english",
+    "Key": "English"
+  },
+  {
+    "Value": "Current Password",
+    "Key": "User_CurrentPass"
+  },
+  {
+    "Value": "company name",
+    "Key": "User_CompanyName"
+  },
+  {
+    "Value": "Address Informations",
+    "Key": "User_AddressInfoes"
+  },
+  {
+    "Value": "Account Number",
+    "Key": "User_AccountNumber"
+  },
+  {
+    "Value": "Account Name",
+    "Key": "User_AccountName"
+  },
+  {
+    "Value": "Iban",
+    "Key": "User_Iban"
+  },
+  {
+    "Value": "Bank Name",
+    "Key": "User_BankName"
+  },
+  {
+    "Value": "Address Type",
+    "Key": "Profile_AddressType"
+  },
+  {
+    "Value": "bank account information",
+    "Key": "Profile_BankAccountInfoes"
+  },
+  {
+    "Value": "Country",
+    "Key": "Profile_Country"
+  },
+  {
+    "Value": "Province",
+    "Key": "Profile_Province"
+  },
+  {
+    "Value": "City",
+    "Key": "Profile_City"
+  },
+  {
+    "Value": "IsMainAddress",
+    "Key": "Profile_IsMainAddress"
+  },
+  {
+    "Value": "ZipCode",
+    "Key": "Profile_ZipCode"
+  },
+  {
+    "Value": "Add Address",
+    "Key": "Profile_AddAddress"
+  },
+  {
+    "Value": "Address1",
+    "Key": "Profile_Address1"
+  },
+  {
+    "Value": "State/City",
+    "Key": "Profile_StateCity"
+  },
+  {
+    "Value": "Address2",
+    "Key": "Profile_Address2"
+  },
+  {
+    "Value": "sent to this address.",
+    "Key": "Shopping_Senttothisaddress"
+  },
+  {
+    "Value": "add invoice with orders",
+    "Key": "Shopping_AddInvoiceWithOrders"
+  },
+  {
+    "Value": "online payment",
+    "Key": "Shopping_OnlinePayment"
+  },
+  {
+    "Value": "Changes",
+    "Key": "Shopping_Changes"
+  },
+  {
+    "Value": "Password Repetition",
+    "Key": "User_PasswordRepetition"
+  },
+  {
+    "Value": "Approve Profile",
+    "Key": "User_ProfileApprove"
+  },
+  {
+    "Value": "Count",
+    "Key": "Count"
+  },
+  {
+    "Value": "Shipping Expense",
+    "Key": "ShippingExpense"
+  },
+  {
+    "Value": "price per unit",
+    "Key": "PricePerUnit"
+  },
+  {
+    "Value": "Final Price",
+    "Key": "FinalPricePerSeller"
+  },
+  {
+    "Value": "final price for payment",
+    "Key": "FinalPriceForPayment"
+  },
+  {
+    "Value": "sum of amount",
+    "Key": "SumOfAmount"
+  },
+  {
+    "Value": "final price",
+    "Key": "FinalPrice"
+  },
+  {
+    "Value": "Product Score",
+    "Key": "ProductScore"
+  },
+  {
+    "Value": "Content Score",
+    "Key": "ContentScore"
+  },
+  {
+    "Value": "Comment On Product",
+    "Key": "CommentOnProduct"
+  },
+  {
+    "Value": "Profile Informations",
+    "Key": "Menu_ProfileInfoes"
+  },
+  {
+    "Value": "HomePage",
+    "Key": "Menu_HomePage"
+  },
+  {
+    "Value": "Available :",
+    "Key": "Available"
+  },
+  {
+    "Value": "I forgot my password",
+    "Key": "Action_ResetPassword"
+  },
+  {
+    "Value": "Sign In",
+    "Key": "Action_SignIn"
+  },
+  {
+    "Value": "Register",
+    "Key": "Action_Register"
+  },
+  {
+    "Value": "Resend code",
+    "Key": "Action_ResendCode"
+  },
+  {
+    "Value": "Next",
+    "Key": "Action_Next"
+  },
+  {
+    "Value": "I already have a membership",
+    "Key": "Action_AlreadyUserName"
+  },
+  {
+    "Value": "Yes, Sending.",
+    "Key": "Action_YesSend"
+  },
+  {
+    "Value": "No",
+    "Key": "Action_No"
+  },
+  {
+    "Value": "Delete Coupon Code",
+    "Key": "btn_DeleteCouponCode"
+  },
+  {
+    "Value": "reorder",
+    "Key": "btn_reorder"
+  },
+  {
+    "Value": "add to compare list",
+    "Key": "btn_AddToCompareList"
+  },
+  {
+    "Value": "Compare List View",
+    "Key": "btn_CompareListView"
+  },
+  {
+    "Value": "Install",
+    "Key": "btn_Install"
+  },
+  {
+    "Value": "apply",
+    "Key": "btn_Apply"
+  },
+  {
+    "Value": "Sorting",
+    "Key": "EnumDesc_Sorting"
+  },
+  {
+    "Value": "No Extra Action",
+    "Key": "EnumDesc_NoExtraAction"
+  },
+  {
+    "Value": "ProductAvailibilityReminder",
+    "Key": "EnumDesc_ProductAvailibilityReminder"
+  },
+  {
+    "Value": "ProductLackOfInventory",
+    "Key": "EnumDesc_ProductLackOfInventory"
+  },
+  {
+    "Value": "Most Visited",
+    "Key": "EnumDesc_MostVisited"
+  },
+  {
+    "Value": "Most popular",
+    "Key": "EnumDesc_MostPopular"
+  },
+  {
+    "Value": "Best Selling",
+    "Key": "EnumDesc_BestSelling"
+  },
+  {
+    "Value": "Newest",
+    "Key": "EnumDesc_Newest"
+  },
+  {
+    "Value": "Most Expensive",
+    "Key": "EnumDesc_MostExpensive"
+  },
+  {
+    "Value": "Cheapest",
+    "Key": "EnumDesc_Cheapest"
+  },
+  {
+    "Value": "initial transaction registeration",
+    "Key": "EnumDesc_InitialTransaction"
+  },
+  {
+    "Value": "token generation",
+    "Key": "EnumDesc_TokenGeneration"
+  },
+  {
+    "Value": "lead to payment gateway",
+    "Key": "EnumDesc_LeadToPaymentGateway"
+  },
+  {
+    "Value": "waiting for transaction approval",
+    "Key": "EnumDesc_WaitingforTransactionApproval"
+  },
+  {
+    "Value": "successfull and approved",
+    "Key": "EnumDesc_SuccessfullAndApproved"
+  },
+  {
+    "Value": "unsuccessfull and approved",
+    "Key": "EnumDesc_UnsuccessfullAndApproved"
+  },
+  {
+    "Value": "application has been stopped while payment occurred then transaction will roll back",
+    "Key": "EnumDesc_RollBack"
+  },
+  {
+    "Value": "client reguest for getting token",
+    "Key": "EnumDesc_ClientTokenRequest"
+  },
+  {
+    "Value": "Psp response to token request",
+    "Key": "EnumDesc_PspTokenResponse"
+  },
+  {
+    "Value": "client request to login",
+    "Key": "EnumDesc_ClientRequestToLogin"
+  },
+  {
+    "Value": "Psp response to client request for login",
+    "Key": "EnumDesc_PspLoginResponse"
+  },
+  {
+    "Value": "client send transaction data for sign in",
+    "Key": "EnumDesc_ClientRequestDataToSignIn"
+  },
+  {
+    "Value": "Psp response to transaction Data for sign in",
+    "Key": "EnumDesc_PspResponseToDataToSignIn"
+  },
+  {
+    "Value": "Psp send payment information to client after payment",
+    "Key": "EnumDesc_PspSendCallback"
+  },
+  {
+    "Value": "client request for transaction approval",
+    "Key": "EnumDesc_ClientVerifyRequest"
+  },
+  {
+    "Value": "Psp verify transaction and send response to client",
+    "Key": "EnumDesc_PspVerifyResponse"
+  },
+  {
+    "Value": "client request to reverse transaction",
+    "Key": "EnumDesc_ClientRequestReverseTransaction"
+  },
+  {
+    "Value": "psp reverse the transaction and respond to client",
+    "Key": "EnumDesc_PspResponseReverseTransaction"
+  },
+  {
+    "Value": "order registered",
+    "Key": "Enum_OrderRegistered"
+  },
+  {
+    "Value": "order approved",
+    "Key": "Enum_OrderApproved"
+  },
+  {
+    "Value": "canceled by user",
+    "Key": "Enum_CanceledByUser"
+  },
+  {
+    "Value": "ready to send",
+    "Key": "Enum_ReadyToSend"
+  },
+  {
+    "Value": "sent",
+    "Key": "Enum_Sent"
+  },
+  {
+    "Value": "No design has beeen implemented for this address.",
+    "Key": "AlertAndMessage_NoDesignImplementation"
+  },
+  {
+    "Value": "No design has beeen implemented for footer.",
+    "Key": "AlertAndMessage_NoFooterDesignImplementation"
+  },
+  {
+    "Value": "No design has beeen implemented for this header.",
+    "Key": "AlertAndMessage_NoHeaderDesignImplementation"
+  },
+  {
+    "Value": "Add to Favorite List",
+    "Key": "AlertAndMessage_AddToFavoriteList"
+  },
+  {
+    "Value": "Please waiting for sms on your phone.",
+    "Key": "AlertAndMessage_WaitingForSms"
+  },
+  {
+    "Value": "Error in deleting",
+    "Key": "AlertAndMessage_DeleteError"
+  },
+  {
+    "Value": "your current password is incorrect",
+    "Key": "AlertAndMessage_InCorrectPassword"
+  },
+  {
+    "Value": "username or password is incorrect",
+    "Key": "AlertAndMessage_UsernameIncorrect"
+  },
+  {
+    "Value": "new password and repeat new password isnt equal",
+    "Key": "AlertAndMessage_PassWordAndRePassNotEqual"
+  },
+  {
+    "Value": "invalid code.",
+    "Key": "AlertAndMessage_InvalidCode"
+  },
+  {
+    "Value": "No Options were found.",
+    "Key": "AlertAndMessage_NoInformationWasFound"
+  },
+  {
+    "Value": "Repeat new password",
+    "Key": "AlertAndMessage_RepeatPassword"
+  },
+  {
+    "Value": "Do you plane to have a sample design in home Page?",
+    "Key": "AlertAndMessage_HomepageDefaultDesign"
+  },
+  {
+    "Value": "Setting",
+    "Key": "Setting"
+  },
+  {
+    "Value": "Database Connection String",
+    "Key": "ConnectionString"
+  },
+  {
+    "Value": "Logging File Directory",
+    "Key": "LogFileDirectory"
+  },
+  {
+    "Value": "Local Static File Storage Path",
+    "Key": "LocalStaticFileStorage"
+  },
+  {
+    "Value": "SMS Line Information",
+    "Key": "SmsLineInformation"
+  },
+  {
+    "Value": "Link Address",
+    "Key": "Sms_LinkAddress"
+  },
+  {
+    "Value": "UserName",
+    "Key": "Sms_UserName"
+  },
+  {
+    "Value": "Password",
+    "Key": "Sms_Passworrd"
+  },
+  {
+    "Value": "LineNumber",
+    "Key": "Sms_LineNumber"
+  },
+  {
+    "Value": "Company Name",
+    "Key": "Sms_ComapnyName"
+  },
+  {
+    "Value": "Favorite Product List",
+    "Key": "User_FavoritProductList"
+  },
+  {
+    "Value": "Favorite Content List",
+    "Key": "User_FavoritContentList"
+  },
+  {
+    "Value": "System Account User",
+    "Key": "User_SysAccount"
+  },
+  {
+    "Value": "national code",
+    "Key": "User_NationalCode"
+  },
+  {
+    "Value": "Login",
+    "Key": "User_Login"
+  },
+  {
+    "Value": "Register",
+    "Key": "User_Register"
+  },
+  {
+    "Value": "Product Search",
+    "Key": "Title_Search"
+  },
+  {
+    "Value": "price per unit with discount",
+    "Key": "PricePerUnitWithDiscount"
+  },
+  {
+    "Value": "order items Count",
+    "Key": "OrderItemCount"
+  },
+  {
+    "Value": "order status",
+    "Key": "OrderStatus"
+  },
+  {
+    "Value": "payment status",
+    "Key": "PaymentStatus"
+  },
+  {
+    "Value": "order amount",
+    "Key": "OrderAmount"
+  },
+  {
+    "Value": "vendor name",
+    "Key": "SellerName"
+  },
+  {
+    "Value": "OrderDate",
+    "Key": "OrderDate"
+  },
+  {
+    "Value": "InvoiceNumber",
+    "Key": "InvoiceNumber"
+  },
+  {
+    "Value": "Price Range",
+    "Key": "PriceRange"
+  },
+  {
+    "Value": "in",
+    "Key": "Search_IN"
+  },
+  {
+    "Value": "only available products",
+    "Key": "Search_OnlyAvailableProducts"
+  },
+  {
+    "Value": "Filter",
+    "Key": "btn_Filter"
+  },
+  {
+    "Value": "you havent registered any order yet.",
+    "Key": "AlertAndMessage_NoOrderToShow"
+  },
+  {
+    "Value": "Discount Code",
+    "Key": "User_DiscountCode"
+  },
+  {
+    "Value": "State",
+    "Key": "Profile_State"
+  },
+  {
+    "Value": "Send",
+    "Key": "Action_Send"
+  }
+]

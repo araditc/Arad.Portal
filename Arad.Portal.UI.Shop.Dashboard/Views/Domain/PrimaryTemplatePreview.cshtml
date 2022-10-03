@@ -6,19 +6,8 @@
 @using Arad.Portal.GeneralLibrary.Utilities;
 @{
     Layout = null;
-    var direction = "";
-    var langList = new List<string>() { "fa", "en" };
-   
-
-    if (Model.LangSymbol == "fa")
-    {
-        direction = "rtl";
-    }
-    else
-    {
-        direction = "ltr";
-    }
-     var baseAdd = _configuration["BaseAddress"];
+    var direction = HelpersMothods.GetDirection(CultureInfo.CurrentCulture);
+    var baseAdd = _configuration["BaseAddress"];
 }
 <html dir="@direction" lang="@Model.LangSymbol">
 <head>

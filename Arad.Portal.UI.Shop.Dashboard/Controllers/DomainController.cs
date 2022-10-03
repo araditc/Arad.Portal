@@ -134,7 +134,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ViewBag.LangId = lan.LanguageId;
             ViewBag.LangList = _lanRepository.GetAllActiveLanguage();
             
-            var shippingTypelist = _basicDataRepository.GetList("ShippingType");
+            var shippingTypelist = _basicDataRepository.GetList("ShippingType", true);
             ViewBag.ShippingTypeList = shippingTypelist;
 
             var currencyList = _curRepository.GetAllActiveCurrency();

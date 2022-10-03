@@ -96,7 +96,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
            
 
             ViewBag.Providers = _providerRepository.GetProvidersPerType(DataLayer.Entities.General.Service.ProviderType.Shipping);
-            ViewBag.ShippngTypes = _basicDataRepository.GetList("ShippingType");
+            ViewBag.ShippngTypes = _basicDataRepository.GetList("ShippingType", true);
             ViewBag.CurrencyList = _currencyRepository.GetAllActiveCurrency();
             ViewBag.DomainList = _domainRepository.GetAllActiveDomains();
             return View(model);
