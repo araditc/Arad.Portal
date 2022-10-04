@@ -707,7 +707,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Promotion.Mongo
                     if(updateRes.IsAcknowledged)
                     {
                         res.Succeeded = true;
-                        res.Message = Language.GetString("AlertAndMessage_OperarationDoneSuccessfully");
+                        res.Message = Language.GetString("AlertAndMessage_OperationDoneSuccessfully");
                     }
                     else
                     {

@@ -996,7 +996,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             {
                 await _context.Collection.InsertOneAsync(shoppingCart);
                 res.Succeeded = true;
-                res.Message = Language.GetString("AlertAndMessage_OperarationDoneSuccessfully");
+                res.Message = Language.GetString("AlertAndMessage_OperationDoneSuccessfully");
             }
             catch (Exception)
             {

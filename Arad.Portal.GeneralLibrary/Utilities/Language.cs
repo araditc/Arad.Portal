@@ -116,12 +116,7 @@ namespace Arad.Portal.GeneralLibrary.Utilities
             {
                 filePath = Path.Combine(dictionariesPath, "en" + ".json");
             }
-
-            //DataSet dictionaryDataSet = new DataSet();
-            //dictionaryDataSet.ReadXml(filePath);
-            //if (dictionaryDataSet.Tables.Count == 0)
-            //    return;
-            //DataTable dtDictionary = dictionaryDataSet.Tables[0];
+           
             string readResult = System.IO.File.ReadAllText(filePath);
             if(string.IsNullOrWhiteSpace(readResult))
             {

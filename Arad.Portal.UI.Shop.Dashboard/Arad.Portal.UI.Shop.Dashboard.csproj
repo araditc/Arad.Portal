@@ -785,9 +785,6 @@
     <Content Update="Views\Role\_GeneratePermissions.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="Views\Shared\Components\AddPermissionComponent\Default.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Update="Views\Shared\Components\AddRoleComponent\Default.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
