@@ -211,7 +211,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                     }
                     else
                     {
-                        result.Message = ConstMessages.ObjectNotFound;
+                        result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
                     }
 
                 }
@@ -260,7 +260,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             }
             else
             {
-                result.Message = ConstMessages.ObjectNotFound;
+                result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
             }
 
             return result;
@@ -288,7 +288,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 }
                 else
                 {
-                    result.Message = ConstMessages.ObjectNotFound;
+                    result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
                     result.ReturnValue = new DomainDTO();
                 }
 
@@ -310,11 +310,11 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 var dbEntity = _context.Collection.Find(_ => _.DomainId == domainId).FirstOrDefault();
                 if (dbEntity == null)
                 {
-                    result.Message = ConstMessages.ObjectNotFound;
+                    result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
                 }
 
                 var dto = _mapper.Map<DomainDTO>(dbEntity);
-                dto.InvoiceNumberProcedure = ((int)dbEntity.InvoiceNumberProcedure).ToString();
+                
                 result.Succeeded = true;
                 result.Message = ConstMessages.SuccessfullyDone;
                 result.ReturnValue = dto;
@@ -366,7 +366,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             }
             else
             {
-                result.Message = ConstMessages.ObjectNotFound;
+                result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
             }
 
             return result;
@@ -464,7 +464,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             else
             {
                 result.Succeeded = false;
-                result.Message = ConstMessages.ObjectNotFound;
+                result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
             }
             return result;
         }
@@ -499,7 +499,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
             else
             {
                 result.Succeeded = false;
-                result.Message = ConstMessages.ObjectNotFound;
+                result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
             }
             return result;
         }
@@ -728,7 +728,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Domain.Mongo
                 }
                 else
                 {
-                    result.Message = ConstMessages.ObjectNotFound;
+                    result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
                     result.ReturnValue = new DomainDTO();
                 }
 

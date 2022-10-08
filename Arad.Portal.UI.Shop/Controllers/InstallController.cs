@@ -24,6 +24,18 @@ using System.IO;
 using MongoDB.Bson.IO;
 using System.Xml;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Hosting;
+using Arad.Portal.DataLayer.Models.Setting;
+using Arad.Portal.DataLayer.Models.Product;
+using SharpCompress.Common;
+using static Lucene.Net.Util.Fst.Util;
+using ClosedXML.Excel;
+using Flurl.Util;
+using DocumentFormat.OpenXml.Drawing.Charts;
+using Arad.Portal.GeneralLibrary.Utilities;
+using KeyVal = Arad.Portal.DataLayer.Models.Shared.KeyVal;
+using Arad.Portal.DataLayer.Contracts.General.BasicData;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -31,6 +43,7 @@ namespace Arad.Portal.UI.Shop.Controllers
     {
         private readonly IDomainRepository _domainRepository;
         private readonly IMapper _mapper;
+        private readonly IConfiguration _configuration;
         private readonly IMenuRepository _menuRepository;
         private readonly ILanguageRepository _languageRepository;
         private readonly ICurrencyRepository _currencyRepository;
@@ -38,13 +51,16 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly IContentCategoryRepository _contentCategoryRepository;
         private readonly IContentRepository _contentRepository;
         private readonly IHttpContextAccessor _accessor;
+        private readonly IBasicDataRepository _basicRepository;
+        private IWebHostEnvironment _Environment;
         private AppSetting _appSetting = new AppSetting();
         private bool isReadyToStart = false;
        
         public InstallController(IDomainRepository domainRepository, IMenuRepository menuRepository, 
                                  UserManager<ApplicationUser> userManager, IHttpContextAccessor accessor,
                                  ILanguageRepository lanRepository, ICurrencyRepository curRepository,
-                                 IMapper mapper, 
+                                 IMapper mapper, IWebHostEnvironment environment, IConfiguration config,
+                                 IBasicDataRepository basicRepository,
                                  IContentCategoryRepository categoryRepository, IContentRepository contentRepository ):base(accessor, domainRepository)
         {
             _domainRepository = domainRepository;
@@ -56,6 +72,9 @@ namespace Arad.Portal.UI.Shop.Controllers
             _languageRepository = lanRepository;
             _currencyRepository = curRepository;
             _accessor = accessor;
+            _Environment = environment;
+            _configuration = config;
+            _basicRepository = basicRepository;
         }
         public IActionResult Index()
         {
@@ -188,5 +207,6 @@ namespace Arad.Portal.UI.Shop.Controllers
 
             return result;
         }
+
     }
 }

@@ -17,6 +17,7 @@ namespace Arad.Portal.DataLayer.Models.Domain
             Prices = new();
             DomainPaymentProviders = new();
             HomePageDesign = new();
+            SupportedCultures = new();
         }
         public string DomainId { get; set; }
 
@@ -52,9 +53,11 @@ namespace Arad.Portal.DataLayer.Models.Domain
 
         public List<PriceDTO> Prices { get; set; }
 
+        public List<string> SupportedCultures { get; set; }
+
         public List<ProviderDetailDTO> DomainPaymentProviders { get; set; }
 
-        public string InvoiceNumberProcedure { get; set; }
+        public InvoiceNumberProcedure InvoiceNumberProcedure { get; set; }
 
         /// <summary>
         /// if InvoiceNumberProcedure=CustomFromMyInstance owner should fill this prop
@@ -63,6 +66,8 @@ namespace Arad.Portal.DataLayer.Models.Domain
         public string InvoiceNumberInitializer { get; set; }
 
         public int? IncreasementValue { get; set; }
+
+        public string LastInvoiceNumber { get; set; }
 
         public string MainPageTemplateId { get; set; }
         

@@ -2,14 +2,14 @@
 @model Arad.Portal.DataLayer.Models.User.LoginDTO
 @inject Arad.Portal.DataLayer.Contracts.General.SystemSetting.ISystemSettingRepository _systemSettingRepository
 @{
-    var direction = HelpersMothods.GetDirection(CultureInfo.CurrentCulture);
+    var dir = HelpersMothods.GetDirection(CultureInfo.CurrentCulture);
     var lang = HelpersMothods.GetHtmlLang(CultureInfo.CurrentCulture);
     Arad.Portal.DataLayer.Entities.General.SystemSetting.SystemSetting systemSetting
         = (await _systemSettingRepository.GetAll()).FirstOrDefault();
     Layout = null;
 }
 <!DOCTYPE html>
-<html dir="@direction" lang="@lang">
+<html dir="@dir" lang="@lang">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible"

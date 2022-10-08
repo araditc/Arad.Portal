@@ -146,6 +146,10 @@
     "Key": "LoginPage"
   },
   {
+    "Value": "SupportedCultures",
+    "Key": "design_SupportedCultures"
+  },
+  {
     "Value": "Shop Domain",
     "Key": "design_IsShopDomain"
   },
@@ -333,6 +337,10 @@
   {
     "Value": "get template for product import via excel file",
     "Key": "FileImportExport_GetProductExcelFileTemplate"
+  },
+  {
+    "Value": "Language File",
+    "Key": "FileImportExport_LanguageFile"
   },
   {
     "Value": "file type is not an excel file.",
@@ -881,6 +889,18 @@
     "Key": "Validation_MobileNumberInvalid2"
   },
   {
+    "Value": "this field is required",
+    "Key": "AlertAndMessage_IdRequired"
+  },
+  {
+    "Value": "import new language file",
+    "Key": "AlertAndMessage_ImportNewLanguage"
+  },
+  {
+    "Value": "Get Language File Template",
+    "Key": "AlertAndMessage_GetLanguageFileTemplate"
+  },
+  {
     "Value": "there isnt any specification to compare",
     "Key": "AlertAndMessage_NoSpecificationsToCompare"
   },
@@ -929,8 +949,16 @@
     "Key": "AlertAndMessage_DuplicateUniqueCode"
   },
   {
+    "Value": "delete are not allowed for dependencies",
+    "Key": "AlertAndMessage_DeletedNotAllowedForDependencies"
+  },
+  {
     "Value": "code is duplicate.",
     "Key": "AlertAndMessage_DuplicateCode"
+  },
+  {
+    "Value": "this field value is duplicate.",
+    "Key": "AlerAndMessage_DuplicateField"
   },
   {
     "Value": "There is already a row for this language.",
@@ -1118,6 +1146,10 @@
     "Key": "AlertAndMessage_DataWasNotFound"
   },
   {
+    "Value": "object not found.",
+    "Key": "AlertAndMessage_ObjectNotFound"
+  },
+  {
     "Value": "Are you sure for deleting ?",
     "Key": "AlertAndMessage_DeletionSureness"
   },
@@ -1244,6 +1276,10 @@
   {
     "Value": "Model error!",
     "Key": "AlertAndMessage_ModelError"
+  },
+  {
+    "Value": "Model has Id Error!",
+    "Key": "AlertAndMessage_ModelHasIdError"
   },
   {
     "Value": "Invalid password!",
@@ -1769,8 +1805,16 @@
     "Key": "ShowInLackOfInventory"
   },
   {
-    "Value": "Multi lingual property",
+    "Value": "lack of product inventory",
+    "Key": "LackOfProductInventory"
+  },
+  {
+    "Value": "Multilingual property",
     "Key": "MultiLingualProperty"
+  },
+  {
+    "Value": "Add other Language",
+    "Key": "AddExtraLanguage"
   },
   {
     "Value": "Parent Group",
@@ -2371,6 +2415,10 @@
   {
     "Value": "please select AddressType",
     "Key": "AlertAndMessage_AddressType"
+  },
+  {
+    "Value": "file is not valid",
+    "Key": "AlertandMessage_FileIsNotValid"
   },
   {
     "Value": "please select country",

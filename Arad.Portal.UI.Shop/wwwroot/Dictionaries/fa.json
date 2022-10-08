@@ -152,6 +152,10 @@
     "Key": "LoginPage"
   },
   {
+    "Value": "زبانهای قابل پشتیبانی",
+    "Key": "design_SupportedCultures"
+  },
+  {
     "Value": "دامنه فروشگاهی",
     "Key": "design_IsShopDomain"
   },
@@ -339,6 +343,10 @@
   {
     "Value": "دریافت قالب برای ورود محصولات از طریق فایل اکسل",
     "Key": "FileImportExport_GetProductExcelFileTemplate"
+  },
+  {
+    "Value": "فایل زبان",
+    "Key": "FileImportExport_LanguageFile"
   },
   {
     "Value": "نوع فایل اکسل نیست.",
@@ -869,6 +877,18 @@
     "Key": "Validation_MobileNumberInvalid2"
   },
   {
+    "Value": "این فیلد اجباریست",
+    "Key": "AlertAndMessage_IdRequired"
+  },
+  {
+    "Value": "دریافت فایل زبان جدید",
+    "Key": "AlertAndMessage_ImportNewLanguage"
+  },
+  {
+    "Value": "دریافت قالب فایل زبان",
+    "Key": "AlertAndMessage_GetLanguageFileTemplate"
+  },
+  {
     "Value": "هیچ خصیصیه ای برای مقایسه وجود ندارد.",
     "Key": "AlertAndMessage_NoSpecificationsToCompare"
   },
@@ -917,8 +937,16 @@
     "Key": "AlertAndMessage_DuplicateUniqueCode"
   },
   {
+    "Value": "حذف بدلیل وابستگی ها امکان پذیر نمیباشد.",
+    "Key": "AlertAndMessage_DeletedNotAllowedForDependencies"
+  },
+  {
     "Value": "کد تکراری است.",
     "Key": "AlertAndMessage_DuplicateCode"
+  },
+  {
+    "Value": "مقدار این فیلد تکراریست.",
+    "Key": "AlerAndMessage_DuplicateField"
   },
   {
     "Value": "در حال حاضر برای این زبان یک سطر وجود دارد.",
@@ -1101,6 +1129,10 @@
     "Key": "AlertAndMessage_DataWasNotFound"
   },
   {
+    "Value": "شی مورد نظر یافت نشد.",
+    "Key": "AlertAndMessage_ObjectNotFound"
+  },
+  {
     "Value": "آیا برای حذف اطمینان دارید؟",
     "Key": "AlertAndMessage_DeletionSureness"
   },
@@ -1227,6 +1259,10 @@
   {
     "Value": "خطای مدل!",
     "Key": "AlertAndMessage_ModelError"
+  },
+  {
+    "Value": "خطای Id مدل!",
+    "Key": "AlertAndMessage_ModelHasIdError"
   },
   {
     "Value": "گذرواژه نامعتبر است!",
@@ -1760,8 +1796,16 @@
     "Key": "ShowInLackOfInventory"
   },
   {
+    "Value": "کمبود موجودی کالا",
+    "Key": "LackOfProductInventory"
+  },
+  {
     "Value": "صفات چند زبانه",
     "Key": "MultiLingualProperty"
+  },
+  {
+    "Value": "افزودن زبان دیگر",
+    "Key": "AddExtraLanguage"
   },
   {
     "Value": "گروه والد",
@@ -2360,6 +2404,10 @@
   {
     "Value": "لطفا نوع آدرس را انتخاب کنید.",
     "Key": "AlertAndMessage_AddressType"
+  },
+  {
+    "Value": "فایل معتبر نمیباشد.",
+    "Key": "AlertandMessage_FileIsNotValid"
   },
   {
     "Value": "لطفا کشور را انتخاب کنید.",

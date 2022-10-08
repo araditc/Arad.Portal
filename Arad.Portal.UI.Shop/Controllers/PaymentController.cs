@@ -22,6 +22,8 @@ using System.Security.Claims;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Contracts.General.User;
 using Arad.Portal.DataLayer.Helpers;
+using Arad.Portal.DataLayer.Entities.General.Domain;
+using Arad.Portal.DataLayer.Contracts.General.BasicData;
 
 namespace Arad.Portal.UI.Shop.Controllers
 {
@@ -33,6 +35,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         private readonly ITransactionRepository _transactionRepository;
         private readonly IMapper _mapper;
         private readonly IShoppingCartRepository _shoppingCartRepository;
+        private readonly IDomainRepository _domainRepository;
         private readonly SharedRuntimeData _sharedRuntimeData;
 
         public PaymentController(IProductRepository productRepository, IHttpContextAccessor accessor,
@@ -45,6 +48,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             _userManager = userManager;
             _transactionRepository = transationRepository;
             _mapper = mapper;
+            _domainRepository = domRepository;
             _shoppingCartRepository = shoppingCartRepository;
             _sharedRuntimeData = sharedRuntimeData;
         }
@@ -73,7 +77,37 @@ namespace Arad.Portal.UI.Shop.Controllers
                             var transaction = new Transaction();
                             transaction.TransactionId = Guid.NewGuid().ToString();
                             transaction.ShoppingCartId = model.UserCartId;
-                            transaction.MainInvoiceNumber = Guid.NewGuid().ToString();
+                            var domainEntity =  _domainRepository.FetchByName(this.DomainName, false);
+                            if(domainEntity.Succeeded)
+                            {
+                                if(!domainEntity.ReturnValue.IsDefault)
+                                {
+                                    if (domainEntity.ReturnValue.InvoiceNumberProcedure == InvoiceNumberProcedure.FromMainDomain)
+                                    {
+                                        transaction.MainInvoiceNumber = Guid.NewGuid().ToString();
+                                    }
+                                    else
+                                    {
+                                        if(!string.IsNullOrEmpty(domainEntity.ReturnValue.LastInvoiceNumber))
+                                        {
+                                            transaction.MainInvoiceNumber = (Convert.ToInt64(domainEntity.ReturnValue.LastInvoiceNumber) +
+                                                domainEntity.ReturnValue.IncreasementValue).ToString();
+                                        }else
+                                        {
+                                            transaction.MainInvoiceNumber = domainEntity.ReturnValue.InvoiceNumberInitializer;
+                                        }
+
+                                        domainEntity.ReturnValue.LastInvoiceNumber = transaction.MainInvoiceNumber;
+                                        await _domainRepository.EditDomain(domainEntity.ReturnValue);
+                                    }
+                                }else
+                                {
+                                    transaction.MainInvoiceNumber = Guid.NewGuid().ToString();
+                                }
+
+                            }
+                           
+                            
                             transaction.FinalPriceToPay = string.IsNullOrWhiteSpace(result.ReturnValue.CouponCode) ? result.ReturnValue.FinalPriceToPay : result.ReturnValue.FinalPriceAfterCouponCode.Value ;
                             
                             transaction.CustomerData = new CustomerData()

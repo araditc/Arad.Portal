@@ -140,6 +140,13 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             var currencyList = _curRepository.GetAllActiveCurrency();
             ViewBag.CurrencyList = currencyList;
             ViewBag.DefCurrency = _curRepository.GetDefaultCurrency(currentUserId).ReturnValue.CurrencyId;
+            ViewBag.Activelanguages = _lanRepository.GetAllActiveLanguage();
+            var supportedCultures = _basicDataRepository.GetList("SupportedCultures", false);
+            foreach (var item in supportedCultures)
+            {
+                var lanId = _lanRepository.FetchBySymbol(item.Text);
+                model.SupportedCultures.Add(lanId);
+            }
 
             var invoiceNumberEnum = _domainRepository.GetInvoiceNumberProcedureEnum();
             ViewBag.InvoiceNumberEnum = invoiceNumberEnum;

@@ -231,7 +231,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
                 var dbEntity = _context.Collection.Find(_=>_.CurrencyId == currencyId).FirstOrDefault();
                 if (dbEntity == null)
                 {
-                    result.Message = ConstMessages.ObjectNotFound;
+                    result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
                 }
 
                 var dto = _mapper.Map<CurrencyDTO>(dbEntity);
@@ -268,7 +268,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Currency.Mongo
                
                 if (dbEntity == null)
                 {
-                    result.Message = ConstMessages.ObjectNotFound;
+                    result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
                 }
 
                 var dto = _mapper.Map<CurrencyDTO>(dbEntity);

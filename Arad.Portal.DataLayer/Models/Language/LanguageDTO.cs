@@ -18,6 +18,8 @@ namespace Arad.Portal.DataLayer.Models.Language
         public Direction Direction { get; set; }
 
         public string ModificationReason { get; set; }
+
+        public bool IsActive { get; set; }
     }
 
 }

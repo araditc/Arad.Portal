@@ -206,12 +206,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
                     }
                     else
                     {
-                        result.Message = ConstMessages.ObjectNotFound;
+                        result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
                     }
                 }
                 else
                 {
-                    result.Message = ConstMessages.DeletedNotAllowedForDependencies;
+                    result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_DeletedNotAllowedForDependencies");
                 }
             }
             catch (Exception e)
@@ -437,7 +437,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             else
             {
                 result.Succeeded = false;
-                result.Message = ConstMessages.ObjectNotFound;
+                result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
             }
             return result;
         }

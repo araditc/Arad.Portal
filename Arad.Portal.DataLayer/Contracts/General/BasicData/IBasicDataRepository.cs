@@ -15,6 +15,8 @@ namespace Arad.Portal.DataLayer.Contracts.General.BasicData
 
         bool SaveLastId(long id);
 
+        Task<Result> InsertNewRecord(Entities.General.BasicData.BasicData model);
+
         bool HasShippingType();
 
         

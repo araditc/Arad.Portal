@@ -15,11 +15,13 @@ using Arad.Portal.DataLayer.Contracts.General.Domain;
 using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
 using Microsoft.AspNetCore.Hosting;
 using Serilog;
-
+using Arad.Portal.DataLayer.Entities.General.Domain;
+using Arad.Portal.DataLayer.Entities;
+using Arad.Portal.GeneralLibrary.Utilities;
 
 namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
 {
-    public class BasicDataRepository: BaseRepository, IBasicDataRepository
+    public class BasicDataRepository : BaseRepository, IBasicDataRepository
     {
         private readonly IMapper _mapper;
         private readonly BasicDataContext _context;
@@ -30,7 +32,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
             IWebHostEnvironment env,
             UserManager<ApplicationUser> userManager,
             DomainContext domainContext,
-            IMapper mapper, BasicDataContext basicDataContext):base(httpContextAccessor, env )
+            IMapper mapper, BasicDataContext basicDataContext) : base(httpContextAccessor, env)
         {
             _mapper = mapper;
             _context = basicDataContext;
@@ -38,7 +40,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
             _domainContext = domainContext;
         }
 
-       
+
         public List<BasicDataModel> GetList(string groupKey, bool withChooseItem)
         {
             var result = new List<BasicDataModel>();
@@ -49,7 +51,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
             if (groupKey.ToLower() == "shippingType")
             {
                 var hasShippingType = HasShippingType();
-                if(!hasShippingType)
+                if (!hasShippingType)
                 {
                     var post = new Entities.General.BasicData.BasicData
                     {
@@ -57,7 +59,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
                         GroupKey = "ShippingType",
                         Text = "Post",
                         Value = "1",
-                        Order = 1, 
+                        Order = 1,
                         AssociatedDomainId = domainEntity.DomainId
                     };
                     _context.Collection.InsertOne(post);
@@ -76,16 +78,16 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
                     _context.Collection.InsertOne(courier);
                 }
             }
-          //test uncommented
+            //test uncommented
             var lst = _context.Collection
                 .Find(_ => _.GroupKey.ToLower() == groupKey.ToLower() /*&& _.AssociatedDomainId == domainEntity.DomainId*/).ToList();
 
             result = _mapper.Map<List<BasicDataModel>>(lst);
-            if(withChooseItem)
+            if (withChooseItem)
             {
                 result.Insert(0, new BasicDataModel() { Text = GeneralLibrary.Utilities.Language.GetString("Choose"), Value = "-1" });
             }
-            
+
             return result;
         }
 
@@ -118,6 +120,22 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
             return result;
         }
 
+        public async Task<Result> InsertNewRecord(Entities.General.BasicData.BasicData model)
+        {
+            Result result = new Result();
+            try
+            {
+                await _context.Collection.InsertOneAsync(model);
+                result.Succeeded = true;
+                result.Message = ConstMessages.SuccessfullyDone;
+            }
+            catch (Exception ex)
+            {
+                result.Message = ConstMessages.InternalServerErrorMessage;
+            }
+            return result;
+        }
+
         public void InsertOne(Entities.General.BasicData.BasicData entity)
         {
             try
@@ -128,7 +146,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
             {
                 Log.Fatal(ex.ToString());
             }
-            
+
         }
 
         public bool SaveLastId(long id)
@@ -139,7 +157,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
               _domainContext.Collection.Find(_ => _.DomainName == domainName).First() :
               _domainContext.Collection.Find(_ => _.IsDefault).First();
             var hasLastId = this.HasLastID();
-            if(!hasLastId)
+            if (!hasLastId)
             {
                 var def = new Entities.General.BasicData.BasicData
                 {
@@ -152,15 +170,15 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
                 };
                 _context.Collection.InsertOne(def);
             }
-            var entity = _context.Collection.Find(_ => _.GroupKey.ToLower() == "lastid" && _.AssociatedDomainId == domainEntity.DomainId ).FirstOrDefault();
+            var entity = _context.Collection.Find(_ => _.GroupKey.ToLower() == "lastid" && _.AssociatedDomainId == domainEntity.DomainId).FirstOrDefault();
             entity.Text = id.ToString();
             entity.Value = id.ToString();
             var updateResult = _context.Collection.ReplaceOne(_ => _.BasicDataId == entity.BasicDataId, entity);
             if (updateResult.IsAcknowledged)
             {
-                result =  true;
+                result = true;
             }
-            return result; 
+            return result;
 
         }
     }

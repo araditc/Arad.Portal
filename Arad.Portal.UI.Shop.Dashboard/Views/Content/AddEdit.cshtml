@@ -62,12 +62,7 @@
             height: auto;
             max-width: 100%;
         }
-    </style>
-    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
-    {
-        <link href="@Url.Content($"~/lib/datePicker/kamadatepicker.css")" rel="stylesheet" />
-        <style>
-
+   
             .text-danger {
                 font-size: 12px;
             }
@@ -104,6 +99,10 @@
                 vertical-align: middle;
             }
         </style>
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <link href="@Url.Content($"~/lib/datePicker/kamadatepicker.css")" rel="stylesheet" />
+       
     }
     else
     {
@@ -204,7 +203,7 @@
                         <div class="col-12 col-md-3">
                             <label class="form-label">@Language.GetString("StartShowDate")</label>
 
-                            @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+                        @if (CultureInfo.CurrentCulture.Name == "fa-IR")
                         {
                             <div class="input-group">
                                 <span class="input-group-text">
@@ -630,7 +629,7 @@
             //TagInput
             $("input[name='tagKeyWords']").amsifySuggestags();
             //datetimepicker
-            if ("@CultureInfo.CurrentCulture.Name" === "fa-IR") {
+            if ("@CultureInfo.CurrentCulture.Name" == "fa-IR") {
                 kamaDatepicker('dtpStartShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
                 kamaDatepicker('dtpEndShowDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
             }
@@ -1250,7 +1249,7 @@
                 images[index] = item;
                 obj.Images.push(item);
             });
-            if ("@CultureInfo.CurrentCulture.Name" === "fa-IR") {
+            if ("@CultureInfo.CurrentCulture.Name" == "fa-IR") {
                 obj.PersianStartShowDate = $("#dtpStartShowDate").val();
                 obj.PersianEndShowDate = $("#dtpEndShowDate").val();
             } else {

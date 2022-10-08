@@ -94,7 +94,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.Setting.Mongo
             else
             {
                 result.Succeeded = false;
-                result.Message = ConstMessages.ObjectNotFound;
+                result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
             }
             return result;
         }

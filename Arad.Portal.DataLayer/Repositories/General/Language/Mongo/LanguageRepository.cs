@@ -140,7 +140,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
                         }
                     }else
                     {
-                        result.Message = ConstMessages.ObjectNotFound;
+                        result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
                     }
                 }
                 else
@@ -207,12 +207,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
         public List<SelectListModel> GetAllActiveLanguage()
         {
             var result = new List<SelectListModel>();
-            result = _context.Collection.AsQueryable().Where(_ => _.IsActive).Select(_ => new SelectListModel()
+            result = _context.Collection.Find(_=>_.IsActive).Project(_ => new SelectListModel()
             {
                 Text = _.LanguageName,
                 Value = _.LanguageId
             }).ToList();
-            //result.Insert(0, new SelectListModel() { Text = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_Choose"), Value = "-1" });
+           
             return result;
         }
 
@@ -262,6 +262,18 @@ namespace Arad.Portal.DataLayer.Repositories.General.Language.Mongo
 
             }
             
+        }
+
+        public List<SelectListModel> GetAllLanguages()
+        {
+            var result = new List<SelectListModel>();
+            result = _context.Collection.Find(_=> true).Project(_ => new SelectListModel()
+            {
+                Text = _.LanguageName,
+                Value = _.LanguageId
+            }).ToList();
+          
+            return result;
         }
     }
 }

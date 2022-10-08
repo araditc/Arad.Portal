@@ -9,7 +9,7 @@ namespace Arad.Portal.DataLayer.Models.Shared
 {
     public static class ConstMessages
     {
-        public static string IdRequired = GetString("AlertAndMessage_IdRequired");
+       
         public static string ObjectNotFound = GetString("AlertAndMessage_ObjectNotFound");
         public static string InternalServerErrorMessage = GetString("AlertAndMessage_InternalServerErrorMessage");
         public static string ModelHasIdError = GetString("AlertAndMessage_ModelHasIdError");
@@ -27,8 +27,10 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public static string BadRequestError = GetString("AlertAndMessage_BadRequestError");
         public static string RangeLimitExceed = GetString("AlertAndMessage_RangeLimitExceed");
         public static string DuplicateField = GetString("AlerAndMessage_DuplicateField");
-        public static string DeletedNotAllowedForDependencies = GetString("AlerAndMessage_DeletedNotAllowedForDependencies");
-        public static string LackOfInventoryOfProduct = GetString("AlertAndMessage_LackOfInventoryOfProduct");
-        
+        public static string DeletedNotAllowedForDependencies = GetString("AlertAndMessage_DeletedNotAllowedForDependencies");
+        public static string LackOfInventoryOfProduct = GetString("LackOfProductInventory");
+
+
+
     }
 }

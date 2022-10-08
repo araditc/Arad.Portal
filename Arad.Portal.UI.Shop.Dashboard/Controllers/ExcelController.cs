@@ -18,6 +18,10 @@ using Arad.Portal.DataLayer.Contracts.General.Language;
 using System.IO.Compression;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authorization;
+using Arad.Portal.DataLayer.Models.Setting;
+using KeyVal = Arad.Portal.DataLayer.Models.Shared.KeyVal;
+using Microsoft.AspNetCore.Identity;
+using Arad.Portal.DataLayer.Entities.General.User;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -29,10 +33,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IProductRepository _productRepository;
         private readonly ILanguageRepository _languageRepository;
         private readonly IProductGroupRepository _productGroupRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
         public ExcelController(IConfiguration configuration,
             IProductRepository productRepository,
             IWebHostEnvironment env,
             IProductGroupRepository groupRepository,
+            UserManager<ApplicationUser> userManager,
             ILanguageRepository languageRepository)
         {
             _configuration = configuration;
@@ -40,6 +46,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _productGroupRepository = groupRepository;
             _languageRepository = languageRepository;
             _Environment = env;
+            _userManager = userManager;
         }
       
         [HttpGet]
@@ -202,6 +209,111 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                                                           };
             
             return View(model);
+        }
+
+
+        [HttpGet]
+        /// <summary>
+        /// this method can only Accessed by system account
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> AddExtraLanguage()
+        {
+            var model = new LanguageDictionaryModel();
+            var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(currentUserId);
+            if(user.IsSystemAccount)
+            {
+                ViewBag.Languages = _languageRepository.GetAllLanguages();
+                return View(model);
+            }else
+            {
+                return Unauthorized();
+            }
+           
+        }
+
+
+        /// <summary>
+        /// this method can only Accessed by system account
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddFileDictionary([FromForm] LanguageDictionaryModel model)
+        {
+            var formFile = model.LanguageUploadFile;
+            List<KeyVal> lst = new List<KeyVal>();
+            string[] extension = { ".xls", ".xlsx" };
+            if (formFile is { Length: > 0 })
+            {
+                if (!extension.Any(e => e.Equals(Path.GetExtension(formFile.FileName))))
+                {
+
+                    return View(new { Message = Language.GetString("FileImportExport_InvalidContentType"), Succeeded = false });
+                }
+                var lanEntity = _languageRepository.FetchLanguage(model.LanguageId);
+
+                var lanSymbolName = lanEntity.Symbol.Contains("-") ? lanEntity.Symbol.Split("-")[0] : lanEntity.Symbol;
+                string jsonFileName = Path.Combine(_configuration["DictionaryFolderPath"], $"Dictionaries/{lanSymbolName}.json");
+                string excelFilePath = Path.Combine(_configuration["LocalStaticFileStorage"], "Temp", "LanguageTemp.xlsx");
+
+                if (!System.IO.File.Exists(jsonFileName))
+                {
+                    System.IO.File.Create(jsonFileName);
+                }
+
+
+                await using FileStream inputStream = new(excelFilePath, FileMode.Create);
+                await formFile.CopyToAsync(inputStream);
+                byte[] array = new byte[inputStream.Length];
+                inputStream.Seek(0, SeekOrigin.Begin);
+                inputStream.Read(array, 0, array.Length);
+                inputStream.Close();
+
+                using (XLWorkbook wb = new(excelFilePath))
+                {
+                    var ws = wb.Worksheet("Sheet1");
+                    var titleRow = ws.FirstRowUsed();
+                    var exelRow = titleRow.RowBelow();
+                    while (!exelRow.IsEmpty())
+                    {
+                        var obj = new KeyVal();
+
+                        obj.Key = exelRow.Cell("A").GetString();
+                        obj.Val = exelRow.Cell("B").GetString();
+                        lst.Add(obj);
+
+                        exelRow = exelRow.RowBelow();
+                    }
+                }
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(lst);
+                System.IO.File.WriteAllText(jsonFileName, json);
+
+                //delete uploaded excel file
+                System.IO.File.Delete(excelFilePath);
+
+                //make the current Language Active
+                lanEntity.IsActive = true;
+                await _languageRepository.EditLanguage(lanEntity);
+
+                return Json(new { Succeeded = true });
+            }
+            else
+                return Json(new { Succeed = false, Message = Language.GetString("AlertandMessage_FileIsNotValid") });
+        }
+
+        [HttpGet]
+        public async Task<FileResult> GetLanguageTemplate()
+        {
+            var filePath = Path.Combine(_configuration["DictionaryFolderPath"], $"Dictionaries/DictionaryTemplate.xlsx");
+            // Calling the ReadAllBytes() function
+            byte[] fileContent = await System.IO.File.ReadAllBytesAsync(filePath);
+            return File(fileContent,
+                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                 "Template.xlsx");
         }
     }
 }

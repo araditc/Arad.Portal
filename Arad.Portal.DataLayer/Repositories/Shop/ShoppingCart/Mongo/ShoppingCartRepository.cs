@@ -78,7 +78,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             }
             else
             {
-                result.Message = ConstMessages.ObjectNotFound;
+                result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
                 result.ReturnValue = Guid.NewGuid().ToString();
             }
             return result;
@@ -202,7 +202,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             }
             else
             {
-                result.Message = ConstMessages.ObjectNotFound;
+                result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
             }
             return result;
         }
@@ -269,7 +269,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                         }
                         else
                         {
-                            result.Message = ConstMessages.ObjectNotFound;
+                            result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
                         }
                     }
                     else
@@ -330,11 +330,11 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
                 }
                 else
                 {
-                    result.Message = ConstMessages.ObjectNotFound;
+                    result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
                 }
             }else
             {
-                result.Message = ConstMessages.ObjectNotFound;
+                result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
             }
             return result;
         }
@@ -386,7 +386,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             }
             else
             {
-                result.Message = ConstMessages.ObjectNotFound;
+                result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
             }
             return result;
         }
@@ -832,7 +832,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
             }
             else
             {
-                result.Message = ConstMessages.ObjectNotFound;
+                result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
             }
             return result;
         }
@@ -865,7 +865,8 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ShoppingCart.Mongo
         {
             var result = new Result();
             var adminUser = _userManager.Users.FirstOrDefault(_ => _.IsDomainAdmin && _.DomainId == shoppingCart.AssociatedDomainId);
-            var lanId = _languageContext.Collection.Find(_ => _.Symbol.ToLower() == CultureInfo.CurrentCulture.Name.ToLower()).FirstOrDefault().LanguageId;
+            var lanId = _languageContext.Collection
+                .Find(_ => _.Symbol.ToLower() == CultureInfo.CurrentCulture.Name.ToLower()).FirstOrDefault().LanguageId;
             try
             {
                 foreach (var seller in shoppingCart.Details)

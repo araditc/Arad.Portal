@@ -17,7 +17,7 @@
         countryCodes.Add(new (item.Text, regionInfo.TwoLetterISORegionName, cultureInfo.DisplayName));
 
     }
-    string lang = "";
+  
     string userName = "";
     @if (User.Identity.IsAuthenticated)
     {
@@ -35,15 +35,7 @@
         ViewBag.dir = "ltr";
     }
 
-    switch (CultureInfo.CurrentCulture.Name)
-    {
-        case "fa-IR":
-            lang = "fa";
-            break;
-        case "en-US":
-            lang = "en";
-            break;
-    }
+    var lang = HelpersMothods.GetHtmlLang(CultureInfo.CurrentCulture);
 
     var baseAdd = Config["BaseAddress"];
     var jsFileName = CultureInfo.CurrentCulture.Name.Replace('-', '_');

@@ -122,6 +122,8 @@ namespace Arad.Portal.DataLayer.Entities.General.Domain
         /// </summary>
         public int? IncreasementValue { get; set; }
 
+        public string LastInvoiceNumber { get; set; }
+
         /// <summary>
         /// there is already two ShippingType considered in this application which exist in basicData entity with 'ShippingType' Group Key and this is the Value Field of one of them
         /// it can be extended based on developer need

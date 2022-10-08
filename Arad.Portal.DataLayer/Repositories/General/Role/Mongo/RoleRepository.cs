@@ -90,7 +90,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
                 }
                 else
                 {
-                    result.Message = ConstMessages.ObjectNotFound;
+                    result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
                 }
               
             }
@@ -133,7 +133,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.Role.Mongo
                 }
                 else
                 {
-                    result.Message = ConstMessages.ObjectNotFound;
+                    result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
                 }
             }
             catch (Exception e)

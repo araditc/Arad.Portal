@@ -118,7 +118,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
                     }
                     else
                     {
-                        result.Message = ConstMessages.ObjectNotFound;
+                        result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
                     }
                 }else
                 {
@@ -241,7 +241,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             }
             else
             {
-                result.Message = ConstMessages.ObjectNotFound;
+                result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
 
             }
             return result;
@@ -355,7 +355,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             }else
             {
                 result.Succeeded = false;
-                result.Message = ConstMessages.ObjectNotFound;
+                result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
             }
             return result;
         }
@@ -383,7 +383,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductGroup.Mongo
             }
             else
             {
-                result.Message = ConstMessages.ObjectNotFound;
+                result.Message = GeneralLibrary.Utilities.Language.GetString("AlertAndMessage_ObjectNotFound");
             }
            
             return result;

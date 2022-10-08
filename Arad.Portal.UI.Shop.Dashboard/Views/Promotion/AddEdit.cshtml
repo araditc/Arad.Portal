@@ -255,7 +255,7 @@
   $(document).ready(function () {
 
        //datetimepicker
-            if ("@CultureInfo.CurrentCulture.Name" === "fa-IR")
+            if ("@CultureInfo.CurrentCulture.Name" == "fa-IR")
             {
                 kamaDatepicker('dtpFromDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
                 kamaDatepicker('dtpToDate', { buttonsColor: "red", forceFarsiDigits: true, markToday: true, gotoToday: true });
@@ -668,7 +668,7 @@
             }
            
             obj.DiscountTypeId = parseInt($("#discountTypeId").val());
-            if("@CultureInfo.CurrentCulture.Name" === "fa-IR")
+            if("@CultureInfo.CurrentCulture.Name" == "fa-IR")
             {
                  obj.PersianStartDate = $("#dtpFromDate").val();
                  obj.PersianEndDate = $("#dtpToDate").val();
@@ -730,7 +730,7 @@
             debugger;
             var model = @Json.Serialize(Model);
             if (model.promotionId != "") {
-                if("@CultureInfo.CurrentCulture.Name" === "fa-IR")
+                if("@CultureInfo.CurrentCulture.Name" == "fa-IR")
                 {
                      $("#dtpFromDate").val(model.persianStartDate);
                     if (model.persianEndDate != "") {

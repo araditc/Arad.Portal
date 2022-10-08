@@ -1013,7 +1013,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 //prevent port of localhost
                 domainName = HttpContext.Request.Host.ToString().Substring(0, 9);
             }
-            if (CultureInfo.CurrentCulture.Name != langId)
+            if (CultureInfo.CurrentCulture.Name.ToLower() != langId.ToLower())
             {
                 Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
                     CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(langId))
