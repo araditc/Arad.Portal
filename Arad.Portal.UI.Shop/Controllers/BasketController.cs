@@ -70,7 +70,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         public async Task<IActionResult> CheckCode([FromQuery] string code, [FromBody] NewVal model)
         {
             var res = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
-            var currentUserId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+            var currentUserId = User.GetUserId();
             var result = _promotionRepository.CheckCode(currentUserId, code, res.DomainId, model.Price);
             if(result.Succeeded)
             {
@@ -98,7 +98,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         public async Task<IActionResult> RevertCode([FromQuery]string code, [FromBody]NewVal model)
         {
             var res = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
-            var currentUserId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+            var currentUserId = User.GetUserId();
 
             var result = await _promotionRepository.RevertCodeForUser(currentUserId, code, res.DomainId, model.Price);
             return Json(new
@@ -130,7 +130,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             if (User != null && User.Identity.IsAuthenticated)
             {
                 var domainName = base.DomainName;
-                var currentUserId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+                var currentUserId = User.GetUserId();
                 var res = _domainRepository.FetchByName(domainName, false);
                 if(res.Succeeded)
                 {

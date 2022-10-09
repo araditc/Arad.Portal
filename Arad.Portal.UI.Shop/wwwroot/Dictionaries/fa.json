@@ -377,6 +377,10 @@
     "Key": "FileImportExport_NoFileSelected"
   },
   {
+    "Value": "افزودن زبان جدید",
+    "Key": "PermissionTitle_AddNewLanguage"
+  },
+  {
     "Value": "جزییات سفارش",
     "Key": "PermissionTitle_OrderDetail"
   },
@@ -879,6 +883,14 @@
   {
     "Value": "این فیلد اجباریست",
     "Key": "AlertAndMessage_IdRequired"
+  },
+  {
+    "Value": "در صورتیکه تمایل دارید کل cmc در زبان دلخواه شما نمایش داده شود لازم است ابتدا زبان مربوطه را انتخاب کرده سپس قالب زبان را دانلود کرده و مقادیر کلیدها را در زبان مربوطه پرکنید و پس از آن فایل اکسل پر شده را آپلود کنید پس از انجام عملیات زبان مورد نظر به اپلیکیشن اضافه خواهد شد.",
+    "Key": "AlertAndMessage_AddNewLangHelp1"
+  },
+  {
+    "Value": "برای محتوا یا محصول یا منو تنها کافیست در entity مورد نظر رکورد صفات چند زبانه مربوط به آن زبان را اضافه کنید و entity را اپدیت کنید",
+    "Key": "AlertAndMessage_AddNewLangHelp2"
   },
   {
     "Value": "دریافت فایل زبان جدید",

@@ -49,7 +49,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 var userEntity = await _userManager.FindByIdAsync(currentUserId);
                 if (!userEntity.IsSystemAccount)
                 {
-                    var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+                    var domainId = User.GetClaimValue("RelatedDomain");
                     if (!string.IsNullOrWhiteSpace(Request.QueryString.ToString()))
                     {
                         querystring += $"&domainId={domainId}";
@@ -73,7 +73,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
-            var currentUserId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+            var currentUserId = User.GetUserId();
             List<KeyValuePair<string, long>> productCodeList = new List<KeyValuePair<string, long>>();
             var model = _transactionRepository.FetchById(id);
             var cnt = 0;

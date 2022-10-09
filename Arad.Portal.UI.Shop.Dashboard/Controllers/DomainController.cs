@@ -37,6 +37,7 @@ using Arad.Portal.DataLayer.Contracts.General.SliderModule;
 using Arad.Portal.DataLayer.Contracts.General.Content;
 using Arad.Portal.DataLayer.Contracts.General.ContentCategory;
 using Arad.Portal.DataLayer.Contracts.General.BasicData;
+using Microsoft.AspNetCore.Http;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -56,6 +57,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IBasicDataRepository _basicDataRepository;
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IHttpContextAccessor _accessor;
         
       
 
@@ -69,6 +71,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ISliderRepository sliderRepository,
             IConfiguration configuration,
             IContentRepository contentRepository,
+            IHttpContextAccessor accessor,
             IContentCategoryRepository categoryRepository,
             ICurrencyRepository currencyRepository)
         {
@@ -85,6 +88,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _contentRepository = contentRepository;
             _basicDataRepository = basicDataRepository;
             _categoryRepository = categoryRepository;
+            _accessor = accessor;
         }
 
         
@@ -128,6 +132,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             if (!string.IsNullOrWhiteSpace(id))
             {
                 model = _domainRepository.FetchDomain(id).ReturnValue;
+                model.SupportedCultures = _basicDataRepository.GetList("SupportedCultures", false).Select(_ => _.Text).ToList();
             }
             
             var lan = _lanRepository.GetDefaultLanguage(currentUserId);
@@ -258,13 +263,36 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     var activePrice = dto.Prices.Where(_ => _.IsActive && _.EDate == null).FirstOrDefault();
                     incorrectBoundary.EDate = activePrice.SDate.Value.AddDays(-1);
                 }
+
+                var supportedIds = dto.SupportedCultures;
+
+                var domainId = User.GetClaimValue("RelatedDomain");
+                var i = 1;
+                foreach (var lanId in supportedIds)
+                {
+                    var lanEntity = _lanRepository.FetchLanguage(lanId);
+                    var basicObject = new DataLayer.Entities.General.BasicData.BasicData()
+                    {
+                        AssociatedDomainId = domainId,
+                        BasicDataId = Guid.NewGuid().ToString(),
+                        GroupKey = "SupportedCultures",
+                        Value = i.ToString(),
+                        Text = lanEntity.Symbol,
+                        Order = i,
+                        CreationDate = DateTime.UtcNow,
+                        IsActive = true,
+                        CreatorUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
+                    };
+                    await _basicDataRepository.InsertNewRecord(basicObject);
+                    i++;
+                }
+
                 Result saveResult = await _domainRepository.AddDomain(dto);
                 
                 result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
                 : new { Status = "Error", saveResult.Message });
             }
             return result;
-
         }
 
         [HttpGet]
@@ -577,6 +605,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             JsonResult result;
             //Result saveResult;
             DomainDTO model;
+            var domainId = User.GetClaimValue("RelatedDomain");
             if (!ModelState.IsValid)
             {
                 var errors = new List<AjaxValidationErrorModel>();
@@ -614,7 +643,33 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     var activePrice = dto.Prices.Where(_ => _.IsActive && _.EDate == null).FirstOrDefault();
                     incorrectActivation.EDate = activePrice.SDate.Value.AddDays(-1);
                 }
-
+                List<string> supportedCulsInput = new List<string>();
+                var currentSupportedCultures = _basicDataRepository.GetList("SupportedCultures", false).Select(_=>_.Text);
+                foreach (var item in dto.SupportedCultures)
+                {
+                    var lanEntity = _lanRepository.FetchLanguage(item);
+                    supportedCulsInput.Add(lanEntity.Symbol);
+                }
+                var intersection = supportedCulsInput.Intersect(currentSupportedCultures);
+                if(intersection.Count() != currentSupportedCultures.Count() || intersection.Count() != supportedCulsInput.Count())
+                {
+                    var res = await _basicDataRepository.DeleteGroupKeyListInDomain(domainId, "SupportedCultures");
+                    int i = 1;
+                    foreach (var item in supportedCulsInput)
+                    {
+                        await _basicDataRepository.InsertNewRecord(new DataLayer.Entities.General.BasicData.BasicData()
+                        {
+                            AssociatedDomainId = domainId,
+                            BasicDataId = Guid.NewGuid().ToString(),
+                            CreationDate = DateTime.UtcNow,
+                            GroupKey = "SupportedCultures",
+                            Value = i.ToString(),
+                            Text = item,
+                            Order = i
+                        });
+                        i++;
+                    }
+                }
 
                 Result saveResult = await _domainRepository.EditDomain(dto);
 

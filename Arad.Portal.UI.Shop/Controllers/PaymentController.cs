@@ -73,7 +73,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                         PspType psp = Enum.Parse<PspType>(model.PspType);
                         if (subtractResult.Succeeded)
                         {
-                            var userEntity = await _userManager.FindByIdAsync(HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value);
+                            var userEntity = await _userManager.FindByIdAsync(User.GetUserId());
                             var transaction = new Transaction();
                             transaction.TransactionId = Guid.NewGuid().ToString();
                             transaction.ShoppingCartId = model.UserCartId;

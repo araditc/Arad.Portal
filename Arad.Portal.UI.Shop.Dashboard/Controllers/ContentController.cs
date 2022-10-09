@@ -81,7 +81,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public IActionResult CheckUrlFriendUniqueness(string id, string url)
         {
             var urlFriend = $"/blog/{url}";
-            var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+            var domainId = User.GetClaimValue("RelatedDomain");
             if (domainId == null)
             {
                 domainId = _domainRepository.FetchDefaultDomain().ReturnValue.DomainId;
@@ -179,7 +179,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             Result opResult = await _contentRepository.Delete(id, "delete");
-            var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+            var domainId = User.GetClaimValue("RelatedDomain");
             #region delete lucene index
             var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", domainId, "Content");
             _luceneService.DeleteItemFromExistingIndex(mainPath, id);
@@ -231,7 +231,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     }
                    
                     Result<string> saveResult = await _contentRepository.Add(dto);
-                    var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+                    var domainId = User.GetClaimValue("RelatedDomain");
                     if (saveResult.Succeeded)
                     {
                         #region add to LuceneIndex 
@@ -294,7 +294,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 //if (dto.LogoContent != "")
                 //dto.FileLogo = dto.LogoContent;
-                var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+                var domainId = User.GetClaimValue("RelatedDomain");
                 var isCkEditorContentValid = HtmlSanitizer.SanitizeHtml(dto.Contents);
                 if (!isCkEditorContentValid)
                 {
@@ -350,7 +350,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             JsonResult result;
             try
             {
-                var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+                var domainId = User.GetClaimValue("RelatedDomain");
                 var res = await _contentRepository.Restore(id);
                 if (res.Succeeded)
                 {

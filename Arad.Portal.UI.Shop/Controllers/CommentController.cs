@@ -136,7 +136,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                         {
                             Status = "Success",
                             Message = Language.GetString("AlertAndMessage_SubmitComment"),
-                            username = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.Name).Value,
+                            username = User.GetUserName(),
                             date = Arad.Portal.GeneralLibrary.Utilities.DateHelper.ToPersianDdate(saveResult.ReturnValue.CreationDate),
                             commentid = saveResult.ReturnValue.CommentId,
                             content = saveResult.ReturnValue.Content,
@@ -165,7 +165,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             var domainResult = _domainRepository.FetchByName(domainName, false);
             if (User != null && User.Identity.IsAuthenticated)
             {
-                var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+                var userId = User.GetUserId();
                 var productId = _productRepository.FetchIdByCode(Convert.ToInt64(code));
                
                 FavoriteType type;
@@ -202,7 +202,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             if (User != null && User.Identity.IsAuthenticated)
             {
 
-                var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+                var userId = User.GetUserId();
                 string prevRate = "";
                 var userProductRateCookieName = $"{userId}_p{model.ProductId}";
                 if (!model.IsNew)//the user has rated before
@@ -242,7 +242,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             {
                 //set cookie for related user
                 var res = await _commentRepository.AddLikeDislike(commentId, isLike);
-                var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+                var userId = User.GetUserId();
                 HttpContext.Response.Cookies.Append($"{userId}_cmt{commentId}", isLike.ToString());
 
                 result = Json(res.Succeeded ? new { Status = "Success", IsLike = isLike }

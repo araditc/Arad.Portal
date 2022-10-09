@@ -79,7 +79,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.Content.Mongo
               
                 //Filter specific claim    
                 var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
-                if(domainId == null)
+              
+                if (domainId == null)
                 {
                     domainId = _domainContext.Collection.Find(_ => _.IsDefault == true).FirstOrDefault().DomainId;
                 }

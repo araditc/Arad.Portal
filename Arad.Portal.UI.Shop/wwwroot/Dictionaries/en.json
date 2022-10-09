@@ -893,6 +893,14 @@
     "Key": "AlertAndMessage_IdRequired"
   },
   {
+    "Value": "If you are supposed to have whole cms in your desired language, First of all choose your desired language from dropdown list after that download the language template excel file and fill each value per a key in your selected language then upload filled excel file after that the selected language will be added to application.",
+    "Key": "AlertAndMessage_AddNewLangHelp1"
+  },
+  {
+    "Value": "for entities which are stored in databasesuch as product, content or menu, just add a new record of multilingual property in related language for that entity.",
+    "Key": "AlertAndMessage_AddNewLangHelp2"
+  },
+  {
     "Value": "import new language file",
     "Key": "AlertAndMessage_ImportNewLanguage"
   },

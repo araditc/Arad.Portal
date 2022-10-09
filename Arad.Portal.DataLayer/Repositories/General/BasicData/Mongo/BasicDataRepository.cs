@@ -40,6 +40,21 @@ namespace Arad.Portal.DataLayer.Repositories.General.BasicData.Mongo
             _domainContext = domainContext;
         }
 
+        public async Task<Result> DeleteGroupKeyListInDomain(string domainId, string groupKey)
+        {
+            var result = new Result();
+            FilterDefinitionBuilder<Entities.General.BasicData.BasicData> _builder = new FilterDefinitionBuilder<Entities.General.BasicData.BasicData>();
+            FilterDefinition<Entities.General.BasicData.BasicData> filterDef = _builder.Empty;
+            filterDef = _builder.Eq(nameof(Entities.General.BasicData.BasicData.AssociatedDomainId), domainId);
+            filterDef &= _builder.Eq(nameof(Entities.General.BasicData.BasicData.GroupKey), groupKey);
+
+            var delResult = await _context.Collection.DeleteManyAsync(filterDef);
+            if(delResult.IsAcknowledged)
+            {
+                result.Succeeded = true;
+            }
+            return result;
+        }
 
         public List<BasicDataModel> GetList(string groupKey, bool withChooseItem)
         {

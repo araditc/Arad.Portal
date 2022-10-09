@@ -1,7 +1,11 @@
 ﻿@model Arad.Portal.DataLayer.Models.Setting.LanguageDictionaryModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    OperationResult operationResult = ViewBag.OperationResult ?? new OperationResult();
+    bool isNotNullOperationResult = ViewBag.OperationResult is not null;
+    bool isSuccess = operationResult is { Succeeded: true };
 }
+
 <div class="card pb-0 rounded-3 shadow-sm">
     <div class="card-header py-2 bg-secondary bg-gradient bg-opacity-10">
         <p class="my-0 fw-bold col fs-5">
@@ -12,23 +16,22 @@
     <div class="card-body">
         <div class="row">
             <div class="col-12 offset-md-8 col-md-4">
-                <a asp-action="GetTemplate" class="float-end btn btn-dark p-3 m-2">
+                <button type="button" id="btnDownload" class="float-end btn btn-dark p-3 m-2">
                     <i class="fa fa-download px-1 mt-1">
                     </i>@Language.GetString("AlertAndMessage_GetLanguageFileTemplate")
-                </a>
+                </button>
             </div>
         </div>
     </div>
     <div class="card-body">
 
-        <form asp-action="ImportProductFromExcel" class="row g-3" enctype="multipart/form-data" method="post" role="form">
+        <form asp-action="AddExtraLanguage" class="row g-3" enctype="multipart/form-data" method="post" role="form">
             <div class="row">
                <div class="form-group col-12 col-md-4">
                     <label class="form-label" asp-for="LanguageId">
                         @Language.GetString("RelatedLanguage")
                     </label>
-                    <select class="form-control selectpicker" multiple="multiple"
-                            asp-for="@Model.LanguageId" asp-items="@(new SelectList(ViewBag.Languages,"Value","Text"))" data-live-search="true">
+                    <select class="form-control selectpicker" asp-for="@Model.LanguageId" asp-items="@(new SelectList(ViewBag.Languages,"Value","Text"))" data-live-search="true">
                     </select>
                     <span data-val-result="GroupIds" class="text-danger"></span>
                </div>
@@ -49,7 +52,7 @@
                     <i class="far fa-save px-1 mt-1">
                     </i>@Language.GetString("btn_Save")
                 </button>
-                <a asp-action="List" asp-controller="Product" class="btn btn-secondary btnBack bg-gradient">
+                <a asp-action="Index" asp-controller="Home" class="btn btn-secondary btnBack bg-gradient">
                     <i class="far fa-share-square px-1 mt-1"></i>
                     @Language.GetString("btn_Back")
                 </a>
@@ -66,16 +69,58 @@
         </p>
     </div>
     <div class="card-body px-4 ">
-        @*<h5 class="card-title">
-        @Language.GetString("AlertAndMessage_DontChangeExcelTemplate")
-        </h5>*@
+      
         <h6 class="card-title text-danger py-2">
             <i class="fas fa-exclamation-triangle"></i>
-            @Language.GetString("AlertAndMessage_DontChangeExcelTemplate")
+            @Language.GetString("AlertAndMessage_AddNewLangHelp1")
         </h6>
         <p class="card-title text-danger py-2">
             <i class="fas fa-exclamation-triangle"></i>
-            @Language.GetString("FileImportExport_AddProductImageHelp")
+            @Language.GetString("AlertAndMessage_AddNewLangHelp2")
         </p>
     </div>
 </div>
+
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            debugger;
+            $("#btnDownload").click(function () {
+               
+                window.location.href = `@Url.Action("GetLanguageTemplate", "Excel")`,
+                    $("#loading").removeClass('is-active');
+            });
+
+            if ('@isNotNullOperationResult' === 'True') {
+                //bsAlert.show();
+
+                if ("@isSuccess" === "False") {
+                    document.getElementById('mainToastBody').innerHTML = '<i class="fas fa-exclamation-triangle"></i> @operationResult.Message';
+                    document.getElementById('mainToastBody').classList.add('alert-danger');
+                    $("#toastPanel").show();
+                    var bsAlert = new bootstrap.Toast($("#mainToast"));
+                    bsAlert.show();
+                    setTimeout(function () {
+                        $("#toastPanel").hide();
+                    },
+                        2500);
+                }
+                else {
+                    document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @operationResult.Message';
+                    document.getElementById('mainToastBody').classList.add('alert-success');
+                    $("#toastPanel").show();
+                    var bsAlert = new bootstrap.Toast($("#mainToast"));
+                    bsAlert.show();
+                    
+                    setTimeout(function () {
+                        $("#toastPanel").hide();
+                    }, 2500);
+                            
+                  
+                }
+            }
+            
+        });
+    </script>
+}

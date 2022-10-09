@@ -39,6 +39,7 @@ namespace Arad.Portal.UI.Shop.Helpers
         ///     containing the password strength requirements.
         /// </param>
         /// <returns>A random password</returns>
+        ///
         public static string GenerateRandomPassword(PasswordOptions opts = null)
         {
             opts ??= new() { RequiredLength = 8, RequiredUniqueChars = 4, RequireDigit = true, RequireLowercase = true, RequireNonAlphanumeric = true, RequireUppercase = true };
@@ -96,5 +97,6 @@ namespace Arad.Portal.UI.Shop.Helpers
         {
             return Convert.ChangeType(source, dest);
         }
+       
     }
 }

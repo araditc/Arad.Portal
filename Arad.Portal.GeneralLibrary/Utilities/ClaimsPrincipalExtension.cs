@@ -38,6 +38,12 @@ namespace Arad.Portal.GeneralLibrary.Utilities
             return result;
         }
 
-        
+        public static string GetClaimValue(this ClaimsPrincipal user, string claimName)
+        {
+            Claim claim = user.FindFirst(x => x.Type == claimName);
+            return claim is not null ? claim.Value : string.Empty;
+        }
+
+
     }
 }

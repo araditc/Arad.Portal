@@ -178,6 +178,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 //{
                 //    ModelState.AddModelError("Username", Language.GetString("AlertAndMessage_AccountHasDeactivated"));
                 //}
+                
             }
             else
             {
@@ -255,7 +256,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             if (User != null && User.Identity.IsAuthenticated)
             {
                 var domainName = base.DomainName;
-                var currentUserId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+                var currentUserId = User.GetUserId();
                 var res = _domainRepository.FetchByName(domainName, false);
                 if (res.Succeeded)
                 {
@@ -275,16 +276,6 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
 
         }
-
-
-        //public ActionResult GetUserOrders()
-        //{
-        //    if(User.Identity.IsAuthenticated)
-        //    {
-        //        var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
-        //    }
-
-        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -733,10 +724,9 @@ namespace Arad.Portal.UI.Shop.Controllers
                     return Json(new { Status = "error", Message = Language.GetString("AlertAndMessage_FillEssentialFields"), ModelStateErrors = errors });
                 }
 
-                //var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                //var userName = User.FindFirstValue(ClaimTypes.Name);
+              
 
-                var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var userId = User.GetUserId();
                 var user = await _userManager.FindByIdAsync(userId);
 
                 address.Id = Guid.NewGuid().ToString();
@@ -769,7 +759,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             var domainRes = _domainRepository.FetchByName(domainName, false);
             var images = new List<Image>();
             FavoriteType favType = type.ToLower() == "product" ? FavoriteType.Product : FavoriteType.Content;
-            var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+            var userId =User.GetUserId();
             var lst = _userRepository.GetUserFavoriteList(userId, favType);
             string lanSymbol = string.Empty;
             string lanId = string.Empty;

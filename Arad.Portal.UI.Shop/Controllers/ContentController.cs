@@ -80,7 +80,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             ViewData["DomainTitle"] = this.DomainTitle;
             var isLoggedUser = HttpContext.User.Identity.IsAuthenticated;
             string userId = "";
-            userId = isLoggedUser ? HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value : "";
+            userId = isLoggedUser ? User.GetUserId() : "";
             var lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
             var entity = _contentRepository.FetchByCode(slug);
             if(entity != null)
@@ -138,7 +138,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         [HttpPost]
         public async Task<IActionResult> Rate([FromQuery] string contentId, [FromQuery] int score, [FromQuery] bool isNew)
         {
-            var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+            var userId = User.GetUserId();
             string prevRate = "";
             var userProductRateCookieName = $"{userId}_cc{contentId}";
             if (!isNew)//the user has rated before

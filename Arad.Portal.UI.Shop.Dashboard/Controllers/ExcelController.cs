@@ -22,6 +22,8 @@ using Arad.Portal.DataLayer.Models.Setting;
 using KeyVal = Arad.Portal.DataLayer.Models.Shared.KeyVal;
 using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Entities.General.User;
+using static Lucene.Net.Util.Fst.Util;
+using Arad.Portal.DataLayer.Contracts.General.BasicData;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -33,10 +35,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IProductRepository _productRepository;
         private readonly ILanguageRepository _languageRepository;
         private readonly IProductGroupRepository _productGroupRepository;
+        private readonly IBasicDataRepository _basicDataRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         public ExcelController(IConfiguration configuration,
             IProductRepository productRepository,
             IWebHostEnvironment env,
+            IBasicDataRepository basicDataRepository,
             IProductGroupRepository groupRepository,
             UserManager<ApplicationUser> userManager,
             ILanguageRepository languageRepository)
@@ -46,6 +50,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _productGroupRepository = groupRepository;
             _languageRepository = languageRepository;
             _Environment = env;
+            _basicDataRepository = basicDataRepository;
             _userManager = userManager;
         }
       
@@ -242,67 +247,110 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddFileDictionary([FromForm] LanguageDictionaryModel model)
+        public async Task<IActionResult> AddExtraLanguage([FromForm] LanguageDictionaryModel model)
         {
-            var formFile = model.LanguageUploadFile;
-            List<KeyVal> lst = new List<KeyVal>();
-            string[] extension = { ".xls", ".xlsx" };
-            if (formFile is { Length: > 0 })
+            var res = new LanguageDictionaryModel();
+            if (model.LanguageUploadFile == null)
             {
-                if (!extension.Any(e => e.Equals(Path.GetExtension(formFile.FileName))))
+                ViewBag.OperationResult = new OperationResult
                 {
-
-                    return View(new { Message = Language.GetString("FileImportExport_InvalidContentType"), Succeeded = false });
-                }
-                var lanEntity = _languageRepository.FetchLanguage(model.LanguageId);
-
-                var lanSymbolName = lanEntity.Symbol.Contains("-") ? lanEntity.Symbol.Split("-")[0] : lanEntity.Symbol;
-                string jsonFileName = Path.Combine(_configuration["DictionaryFolderPath"], $"Dictionaries/{lanSymbolName}.json");
-                string excelFilePath = Path.Combine(_configuration["LocalStaticFileStorage"], "Temp", "LanguageTemp.xlsx");
-
-                if (!System.IO.File.Exists(jsonFileName))
-                {
-                    System.IO.File.Create(jsonFileName);
-                }
-
-
-                await using FileStream inputStream = new(excelFilePath, FileMode.Create);
-                await formFile.CopyToAsync(inputStream);
-                byte[] array = new byte[inputStream.Length];
-                inputStream.Seek(0, SeekOrigin.Begin);
-                inputStream.Read(array, 0, array.Length);
-                inputStream.Close();
-
-                using (XLWorkbook wb = new(excelFilePath))
-                {
-                    var ws = wb.Worksheet("Sheet1");
-                    var titleRow = ws.FirstRowUsed();
-                    var exelRow = titleRow.RowBelow();
-                    while (!exelRow.IsEmpty())
-                    {
-                        var obj = new KeyVal();
-
-                        obj.Key = exelRow.Cell("A").GetString();
-                        obj.Val = exelRow.Cell("B").GetString();
-                        lst.Add(obj);
-
-                        exelRow = exelRow.RowBelow();
-                    }
-                }
-                var json = Newtonsoft.Json.JsonConvert.SerializeObject(lst);
-                System.IO.File.WriteAllText(jsonFileName, json);
-
-                //delete uploaded excel file
-                System.IO.File.Delete(excelFilePath);
-
-                //make the current Language Active
-                lanEntity.IsActive = true;
-                await _languageRepository.EditLanguage(lanEntity);
-
-                return Json(new { Succeeded = true });
+                    Message = Language.GetString("FileImportExport_NoFileSelected"),
+                    Succeeded = false
+                };
+                return View(res);
             }
-            else
-                return Json(new { Succeed = false, Message = Language.GetString("AlertandMessage_FileIsNotValid") });
+            try
+            {
+                var formFile = model.LanguageUploadFile;
+                List<KeyVal> lst = new List<KeyVal>();
+                string[] extension = { ".xls", ".xlsx" };
+
+                if (formFile is { Length: > 0 })
+                {
+                    if (!extension.Any(e => e.Equals(Path.GetExtension(formFile.FileName))))
+                    {
+                        ViewBag.OperationResult = new OperationResult { Message = Language.GetString("FileImportExport_InvalidContentType"), Succeeded = false };
+                        return View();
+                    }
+                    var lanEntity = _languageRepository.FetchLanguage(model.LanguageId);
+
+                    var lanSymbolName = lanEntity.Symbol.Contains("-") ? lanEntity.Symbol.Split("-")[0] : lanEntity.Symbol;
+                    string jsonFileName = Path.Combine(_configuration["DictionaryFolderPath"], $"Dictionaries/{lanSymbolName}.json");
+                    string excelFilePath = Path.Combine(_configuration["LocalStaticFileStorage"], "Temp", "LanguageTemp.xlsx");
+
+
+                    await using FileStream inputStream = new(excelFilePath, FileMode.Create);
+                    await formFile.CopyToAsync(inputStream);
+                    byte[] array = new byte[inputStream.Length];
+                    inputStream.Seek(0, SeekOrigin.Begin);
+                    inputStream.Read(array, 0, array.Length);
+                    inputStream.Close();
+
+                    using (XLWorkbook wb = new(excelFilePath))
+                    {
+                        var ws = wb.Worksheet("Sheet1");
+                        var titleRow = ws.FirstRowUsed();
+                        var exelRow = titleRow.RowBelow();
+                        while (!exelRow.IsEmpty())
+                        {
+                            var obj = new KeyVal();
+
+                            obj.Key = exelRow.Cell("A").GetString();
+                            obj.Val = exelRow.Cell("B").GetString();
+                            lst.Add(obj);
+
+                            exelRow = exelRow.RowBelow();
+                        }
+                    }
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(lst);
+                    if (!System.IO.File.Exists(jsonFileName))
+                    {
+                        var fs = System.IO.File.Create(jsonFileName);
+                        fs.Close();
+
+                    }
+                    System.IO.File.WriteAllText(jsonFileName, json);
+
+                    //delete uploaded excel file
+                    System.IO.File.Delete(excelFilePath);
+
+                    //make the current Language Active
+                    lanEntity.IsActive = true;
+                    var result = await _languageRepository.EditLanguage(lanEntity);
+
+                    //add this culture to supported cultures
+                    var list = _basicDataRepository.GetList("SupportedCultures", false);
+                    var lastValue = list.Max(_ => _.Value);
+                    await _basicDataRepository.InsertNewRecord(new DataLayer.Entities.General.BasicData.BasicData()
+                    {
+                        BasicDataId = Guid.NewGuid().ToString(),
+                        GroupKey = "SupportedCultures",
+                        Value = !string.IsNullOrWhiteSpace(lastValue) ? (Convert.ToInt32(lastValue) + 1).ToString() : "1",
+                        Text = lanEntity.Symbol,
+                        AssociatedDomainId = User.GetClaimValue("RelatedDomain"),
+                        Order = !string.IsNullOrWhiteSpace(lastValue) ? Convert.ToInt32(lastValue) + 1 : 1
+                    });
+
+                    ViewBag.OperationResult = new OperationResult
+                    {
+                        Message = Language.GetString("FileImportExport_ResultMessage"),
+                        Succeeded = result.Succeeded,
+                    };
+                }
+                Language.ReloadDictionary();
+               
+            }
+            catch (Exception)
+            {
+
+                ViewBag.OperationResult = new OperationResult
+                {
+                    Message = Language.GetString("AlertAndMessage_ErrorOccurrence"),
+                    Succeeded = false,
+                };
+            }
+            ViewBag.Languages = _languageRepository.GetAllLanguages();
+            return View(model);
         }
 
         [HttpGet]

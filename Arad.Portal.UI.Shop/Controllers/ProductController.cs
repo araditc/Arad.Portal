@@ -148,7 +148,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var productId = _productRepository.FetchIdByCode(code);
-                var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+                var userId = User.GetUserId();
                 var insertInform = await _userRepository.AddtoNotifyList(productId, userId);
                 return Json(new
                 {
@@ -169,7 +169,7 @@ namespace Arad.Portal.UI.Shop.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+                var userId = User.GetUserId();
                 var domaindto = _domainRepository.FetchByName(this.DomainName, false).ReturnValue;
                 var entity = _productRepository.FetchByCode(code.ToString(), domaindto, userId);
                 var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
@@ -246,7 +246,7 @@ namespace Arad.Portal.UI.Shop.Controllers
                 lanIcon = _accessor.HttpContext.Request.Path.Value.Split("/")[1];
             }
             
-            var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+            var userId = User.GetUserId();
             var dto = _productRepository.FetchByCode(code.ToString(), domainEntity, userId);
             if (HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}") != null)
             {
@@ -278,7 +278,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
             var domainEntity = _domainRepository.FetchByName(DomainName, false).ReturnValue;
             var remoteIpAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString().Replace(".", "");
-            var userId = HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+            var userId = User.GetUserId();
             var dto = _productRepository.FetchByCode(code.ToString(), domainEntity, userId);
             if (HttpContext.Session.GetComplexData<List<string>>($"compareList_{remoteIpAddress}_{domainEntity.DomainId}") != null)
             {
@@ -436,7 +436,7 @@ namespace Arad.Portal.UI.Shop.Controllers
             var isLoggedUser = HttpContext.User.Identity.IsAuthenticated;
             string userId = "";
             ViewData["DomainTitle"] = this.DomainTitle;
-            userId = isLoggedUser ? HttpContext.User.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).Value : "";
+            userId = isLoggedUser ? User.GetUserId() : "";
             var domainEntity = _domainRepository.FetchByName(_domainName, false);
             ViewBag.Providers = domainEntity.ReturnValue.DomainPaymentProviders
                 .Select(_ => new SelectListModel() { Text = _.PspType.ToString(), Value = ((int)_.PspType).ToString() });

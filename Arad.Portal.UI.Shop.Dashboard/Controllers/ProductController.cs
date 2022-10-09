@@ -194,7 +194,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         {
             var mainDomainPublishState = _productRepository.IsPublishOnMainDomain(id);
             Result opResult = await _productRepository.DeleteProduct(id, "delete");
-            var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+            var domainId = User.GetClaimValue("RelatedDomain");
 
             #region delete related luceneIndexes
             var lst = _configuration.GetSection("SupportedCultures").Get<string[]>().ToList();
@@ -311,8 +311,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         #region add to LuceneIndex 
                         var mainDomainId = "";
                         var mainDomainPath = "";
-                        var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
-                        if(dto.IsPublishedOnMainDomain)
+                        var domainId = User.GetClaimValue("RelatedDomain");
+                        if (dto.IsPublishedOnMainDomain)
                         {
                             mainDomainId = _domainRepository.FetchDefaultDomain().ReturnValue.DomainId;
                             mainDomainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", mainDomainId, "Product");
@@ -484,7 +484,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     if (saveResult.Succeeded)
                     {
                         #region Update lucene Index
-                        var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+                        var domainId = User.GetClaimValue("RelatedDomain");
                         var mainDomainId = _domainRepository.FetchDefaultDomain().ReturnValue.DomainId;
                         var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", domainId ,"Product");
                         var mainDomainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", mainDomainId, "Product");
@@ -605,7 +605,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 {
                     #region add to LuceneIndex
                     var product = await _productRepository.ProductSelect(id);
-                    var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+                    var domainId = User.GetClaimValue("RelatedDomain");
                     var mainDomainId = _domainRepository.FetchDefaultDomain().ReturnValue.DomainId;
                     var lst = _configuration.GetSection("SupportedCultures").Get<string[]>().ToList();
                     foreach (var cul in lst)

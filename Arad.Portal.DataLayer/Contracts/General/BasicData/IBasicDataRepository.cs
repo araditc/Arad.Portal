@@ -19,6 +19,8 @@ namespace Arad.Portal.DataLayer.Contracts.General.BasicData
 
         bool HasShippingType();
 
+        Task<Result> DeleteGroupKeyListInDomain(string domainId, string groupKey);
+
         
     }
 }

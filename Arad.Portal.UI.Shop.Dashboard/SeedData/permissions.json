@@ -640,8 +640,23 @@
               "Urls": []
             }
           ]
+        },
+        {
+          "PermissionId": "ghu3534a-1586-4b64-80fb-19b6127fa322",
+          "Title": "AddNewLanguage",
+          "LevelNo": 2,
+          "Priority": 6,
+          "Icon": "fas fa-language",
+          "ClientAddress": "/Excel/AddExtraLanguage",
+          "Actions": [
+            {
+              "PermissionId": "ace3534a-1586-56hj-80fb-19b6127fa322",
+              "Title": "ActionNew",
+              "ClientAddress": "/Excel/GetLanguageTemplate",
+              "Urls": []
+            }
+          ]
         }
-
       ]
 
     }

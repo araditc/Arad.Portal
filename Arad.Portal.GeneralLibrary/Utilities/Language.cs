@@ -95,6 +95,7 @@ namespace Arad.Portal.GeneralLibrary.Utilities
                 {
                     Hashtable dictionary = new Hashtable();
 
+                    
                     LoadDictionaryHashtableFromFile(lan, jsonPath, ref dictionary);
 
                     if (!dictionaryCache.ContainsKey(lan))
@@ -137,7 +138,7 @@ namespace Arad.Portal.GeneralLibrary.Utilities
             }
         }
 
-        private static void ReloadDictionary()
+        public static void ReloadDictionary()
         {
             languageDictionary = null;
             FillDictionaryCache();
