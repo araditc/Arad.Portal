@@ -516,17 +516,17 @@
                             success: function (result) {
                                 debugger;
                                 if (result.status === "Success") {
-                                   document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
-                                    document.getElementById('mainToastBody').classList.add('alert-success');
+                                    $("#mainToastBody").html('<i class="far fa-check-circle"></i>' + result.message);
+                                    $("#mainToastBody").addClass('alert-success');
                                     $("#toastPanel").show();
-                                    var bsAlert = new bootstrap.Toast($("#mainToast"));
+                                    var bsAlert = new bootstrap.Toast($('#mainToast'));
                                     bsAlert.show();
-                                    setTimeout(function()
-                                    {
-                                        $("#toastPanel").hide();
-                                         window.location.href = '@Url.Action("List")';
-                                    },
-                                 1500);
+                                 //   setTimeout(function()
+                                 //   {
+                                 //       $("#toastPanel").hide();
+                                 //        window.location.href = '@Url.Action("List")';
+                                 //   },
+                                 //1500);
                                 }else
                                 if (result.status === "ModelError") {
                                     var spanErrorList = $('span[data-val-result]');

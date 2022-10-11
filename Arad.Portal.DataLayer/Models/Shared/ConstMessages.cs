@@ -13,8 +13,8 @@ namespace Arad.Portal.DataLayer.Models.Shared
         public static string ObjectNotFound = GetString("AlertAndMessage_ObjectNotFound");
         public static string InternalServerErrorMessage = GetString("AlertAndMessage_InternalServerErrorMessage");
         public static string ModelHasIdError = GetString("AlertAndMessage_ModelHasIdError");
-        public static string DuplicateClientIdInsertError = GetString("AlertAndMessage_DuplicateClientIdInsertError");
-        public static string InProperIdFormat = GetString("AlertAndMessage_InProperIdFormat");
+        //public static string DuplicateClientIdInsertError = GetString("AlertAndMessage_DuplicateClientIdInsertError");
+        //public static string InProperIdFormat = GetString("AlertAndMessage_InProperIdFormat");
         public static string ExceptionOccured = GetString("AlertAndMessage_ExceptionOccured");
         public static string ParameterError = GetString("AlertAndMessage_ParameterError");
         public static string SuccessfullyDone = GetString("AlertAndMessage_SuccessfullyDone");

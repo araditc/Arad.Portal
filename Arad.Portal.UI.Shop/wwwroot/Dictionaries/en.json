@@ -371,6 +371,10 @@
     "Key": "FileImportExport_NoFileSelected"
   },
   {
+    "Value": "Add New Language",
+    "Key": "PermissionTitle_AddNewLanguage"
+  },
+  {
     "Value": "comment delete",
     "Key": "ProductCommentDelete"
   },
@@ -893,6 +897,10 @@
     "Key": "AlertAndMessage_IdRequired"
   },
   {
+    "Value": "operation successfullywere  done.",
+    "Key": "AlertAndMessage_SuccessfullyDone"
+  },
+  {
     "Value": "If you are supposed to have whole cms in your desired language, First of all choose your desired language from dropdown list after that download the language template excel file and fill each value per a key in your selected language then upload filled excel file after that the selected language will be added to application.",
     "Key": "AlertAndMessage_AddNewLangHelp1"
   },
@@ -1366,10 +1374,6 @@
   {
     "Value": "you dont have permission to access this page",
     "Key": "AlertAndMessage_AccessDenied"
-  },
-  {
-    "Value": "Enter OTP",
-    "Key": "AlertAndMessage_EnterOTP"
   },
   {
     "Value": "Current password",

@@ -103,10 +103,11 @@
                 {
                     document.getElementById('mainToastBody').innerHTML = '<i class="fas fa-exclamation-triangle"></i> @operationResult.Message';
                     document.getElementById('mainToastBody').classList.add('alert-danger');
-                    $("#toastPanel").show();
+                    $("#toastPanel").css("dispaly", "block");
                     
                     var toast = new bootstrap.Toast($("#mainToast"));
                     toast.show();
+                    $("#mainToast").removeClass("fade").removeClass("showing");
                     setTimeout(function()
                     {   
                          $("#toastPanel").hide();
@@ -117,17 +118,16 @@
                 {
                     document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @operationResult.Message';
                     document.getElementById('mainToastBody').classList.add('alert-success');
-                    $("#toastPanel").show();
+                    $("#toastPanel").css("dispaly", "block");
                     var toast = new bootstrap.Toast($("#mainToast"));
                     toast.show();
-                    if ("@string.IsNullOrWhiteSpace(operationResult.Url)" === "False")
-                    {
-                        setTimeout(function()
-                            {
-                            $("#toastPanel").hide();
-                            },
-                            2500);
-                    }
+                    $("#mainToast").removeClass("fade").removeClass("showing");
+                    setTimeout(function()
+                        {
+                        $("#toastPanel").hide();
+                        },
+                        2500);
+                    
                 }
             }
            

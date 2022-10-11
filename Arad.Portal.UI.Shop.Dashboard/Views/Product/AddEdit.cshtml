@@ -901,12 +901,12 @@ else
                                 $("#toastPanel").show();
                                 var bsAlert = new bootstrap.Toast($("#mainToast"));
                                 bsAlert.show();
-                                setTimeout(function()
-                                {
-                                    $("#toastPanel").hide();
-                                     window.location.href = '@Url.Action("List")';
-                                },
-                                3000);
+                                //setTimeout(function()
+                                //{
+                                //    $("#toastPanel").hide();
+                                //     window.location.href = '@Url.Action("List")';
+                                //},
+                                //3000);
                             }else
                             if (result.status === "ModelError") {
                                 var spanErrorList = $('span[data-val-result]');
