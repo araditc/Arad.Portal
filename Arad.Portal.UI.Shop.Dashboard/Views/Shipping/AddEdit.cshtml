@@ -40,7 +40,7 @@
 
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <label class="form-label" for="CurrencyId">@Language.GetString("Currency")</label><br />
+                        <label class="form-label" asp-for="CurrencyId">@Language.GetString("Currency")</label><br />
                         <select class="form-control selectpicker" asp-for="CurrencyId" data-live-search="true" asp-items="@(new SelectList(ViewBag.CurrencyList,"Value","Text", Model.CurrencyId))">
                         </select>
                         <span data-val-result="currencyId" class="text-danger"></span>
@@ -48,7 +48,7 @@
                     @if (!string.IsNullOrWhiteSpace(Model.DomainName) && !ViewBag.IsSystem)
                     {
                         <div class="form-group col-md-3">
-                            <label v for="domainName">@Language.GetString("DomainName")</label><br />
+                            <label asp-for="@Model.DomainName">@Language.GetString("DomainName")</label><br />
                             <input type="text" asp-for="@Model.DomainName" class="form-control" value="@Model.DomainName" disabled />
                         </div>
                     }
@@ -56,7 +56,7 @@
                     @if (ViewBag.IsSystem)
                     {
                         <div class="form-group col-md-3">
-                            <label class="form-label" for="AssociatedDomainId">@Language.GetString("DomainName")</label><br />
+                            <label class="form-label" asp-for="AssociatedDomainId">@Language.GetString("DomainName")</label><br />
                             <select class="form-control selectpicker" asp-for="AssociatedDomainId" data-live-search="true" asp-items="@(new SelectList(ViewBag.DomainList,"Value","Text", Model.AssociatedDomainId))">
                             </select>
                         </div>
@@ -166,13 +166,13 @@
 
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <label class="form-label">@Language.GetString("tbl_FromInvoiceExpense")</label>
+                        <label class="form-label" asp-for="@Model.ShippingCoupon.FromInvoiceExpense">@Language.GetString("tbl_FromInvoiceExpense")</label>
                         <input type="number" class="form-control" asp-for="@Model.ShippingCoupon.FromInvoiceExpense"
                                value="@Model.ShippingCoupon.FromInvoiceExpense" min="0" />
                         <span data-val-result="fromInvoiceExpense" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-3">
-                        <label class="form-label">@Language.GetString("tbl_ShippingExpense")</label>
+                        <label class="form-label" asp-for="@Model.ShippingCoupon.ShippingExpense">@Language.GetString("tbl_ShippingExpense")</label>
                         <input type="number" class="form-control" asp-for="@Model.ShippingCoupon.ShippingExpense"
                                value="@Model.ShippingCoupon.ShippingExpense" min="0" />
                         @*<span data-val-result="shippingExpense" class="text-danger"></span>*@

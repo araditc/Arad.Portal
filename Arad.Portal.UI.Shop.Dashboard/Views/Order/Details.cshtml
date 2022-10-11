@@ -16,11 +16,11 @@
                         <div class="card-header bg-success bg-opacity-10">
                             <div class="row gy-2 align-middle pt-2">
                                 <div class="col-6 col-md-4">
-                                    <label class="form-label d-inline-block"> @Language.GetString("Order_RegisteredDate") : </label>
+                <label class="form-label d-inline-block" asp-for="CreationDate"> @Language.GetString("Order_RegisteredDate") : </label>
                                     <p class="d-inline-block"><@Model.CreationDate</p>
                                 </div>
                                 <div class="col-6 col-md-2">
-                                    <label class="form-label d-inline-block"> @Language.GetString("Order_PaymentDate") : </label>
+                <label class="form-label d-inline-block" > @Language.GetString("Order_PaymentDate") : </label>
                                       <p class="d-inline-block">@(ViewBag.PaymentDate)</p>
                                 </div>
                                 <div class="col-6 col-md-4">
@@ -33,7 +33,7 @@
                         <div class="card-body">
                            <div class="row">
                                <div class="col-6 col-md-3">
-                                   <label class="form-label"> @Language.GetString("Order_InvoiceNumber") : </label> <br/>
+                <label class="form-label" asp-for="MainInvoiceNumber"> @Language.GetString("Order_InvoiceNumber") : </label> <br />
                                     <label class="form-label"> Model.MainInvoiceNumber </label>
                                </div>
                                <div class="col-6 col-md-3">
@@ -41,7 +41,7 @@
                                     <label class="form-label"> @ViewBag.OrderItemCount </label>
                                </div>
                                 <div class="col-6 col-md-3">
-                                    <label class="form-label"> @Language.GetString("Order_PaymentStatus") : </label> <br/>
+                <label class="form-label" asp-for="BasicData.Stage"> @Language.GetString("Order_PaymentStatus") : </label> <br />
                                     <label class="form-label"> @Model.BasicData.Stage.GetDescription() </label>
                                 </div>
                                <div class="col-6 col-md-3">
@@ -52,7 +52,7 @@
                            </div>
                            <div class="row">
                                <div class="col-6 col-md-3">
-                                    <label class="form-label"> @Language.GetString("Order_Amount") : </label> <br/>
+                 <label class="form-label" asp-for="FinalPriceToPay"> @Language.GetString("Order_Amount")  : </label> <br/>
                                     <label class="form-label">@Model.FinalPriceToPay</label>
                                </div>
                                <div class="col-6 col-md-3">

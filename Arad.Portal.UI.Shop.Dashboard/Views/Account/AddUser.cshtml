@@ -28,12 +28,12 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="form-group col-12 col-md-4 p-2">
-                            <label for="Name" class="form-label">@Language.GetString("User_FirstName")</label>
+                            <label asp-for="Name" class="form-label">@Language.GetString("User_FirstName")</label>
                             <input asp-for="Name" type="text" class="form-control" placeholder=" ">
                             <span data-val-result="Name" class="text-danger"></span>
                         </div>
                         <div class="form-group col-12 col-md-4 p-2">
-                            <label for="LastName" class="form-label">@Language.GetString("User_LastName")</label>
+                            <label asp-for="LastName" class="form-label">@Language.GetString("User_LastName")</label>
                             <input asp-for="LastName" type="text" class="form-control" placeholder=" ">
                             <span data-val-result="LastName" class="text-danger"></span>
                         </div>
@@ -46,12 +46,12 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-12 col-md-4 p-2">
-                            <label for="Password" class="form-label">@Language.GetString("User_Password")</label>
+                            <label asp-for="Password" class="form-label">@Language.GetString("User_Password")</label>
                             <input asp-for="Password" type="password" class="form-control" placeholder=" " autocomplete="new-password">
                             <span data-val-result="Password" class="text-danger"></span>
                         </div>
                         <div class="form-group col-12 col-md-4 p-2">
-                            <label class="form-label" for="RePassword">@Language.GetString("User_RePassword")</label>
+                            <label class="form-label" asp-for="RePassword">@Language.GetString("User_RePassword")</label>
                             <input asp-for="RePassword" type="password" class="form-control" placeholder=" " autocomplete="new-password">
                             <span data-val-result="RePassword" class="text-danger"></span>
                         </div>
@@ -111,7 +111,7 @@
                             if (Convert.ToBoolean(ViewBag.IsSystem))
                             {
                                                 <div class="form-group col-12 col-md-4 p-2">
-                                                    <label class="form-label">@Language.GetString("AssociatedDomain")</label>
+                                    <label asp-for="DomainId" class="form-label">@Language.GetString("AssociatedDomain")</label>
                                                     <select class="form-select selectpicker" asp-for="DomainId" asp-items="@(new SelectList(ViewBag.DomainList, "Value", "Text"))" data-live-search="true">
                                                     </select>
                                                     <span data-val-result="DomainId" class="text-danger"></span>

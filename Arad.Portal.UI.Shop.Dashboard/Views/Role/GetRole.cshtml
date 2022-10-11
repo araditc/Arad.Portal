@@ -106,7 +106,7 @@
                         $("#loading").css("display", "block");
                     },
                     success: function(result) {
-                        var spanErrorList = $('#edit span[data-val-result]');
+                    var spanErrorList = $('#edit span[data-valmsg-for]');
 
                         spanErrorList.html("");
                         spanErrorList.parent().removeClass("has-error");
@@ -131,9 +131,9 @@
 
                                 result.modelStateErrors.forEach(function(value, index) {
 
-                                    $("#edit").find('[data-val-result=' + value.key + ']')
+                                $("#edit").find('[data-valmsg-for=' + value.key + ']')
                                         .html(value.errorMessage);
-                                    $("#edit").find('[data-val-result=' + value.key + ']').parent()
+                                $("#edit").find('[data-valmsg-for=' + value.key + ']').parent()
                                         .addClass("has-error");
                                 });
                             } else {

@@ -32,14 +32,14 @@
                         <span data-val-result="ParentId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-12 col-md-3">
-                        <label class="form-label" for="categoryTypeId">@Language.GetString("Enum_ContentCategoryType")</label>
+                        <label class="form-label" asp-for="CategoryTypeId">@Language.GetString("Enum_ContentCategoryType")</label>
                         <select class="form-control selectpicker" id="categoryTypeId" data-live-search="true"
                                 asp-items="@(new SelectList(ViewBag.CategoryTypes,"Value","Text", (int)Model.CategoryType))">
                         </select>
                         <span data-val-result="categoryTypeId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-12 col-md-3">
-                        <label class="form-label" for="@Model.CategoryCode">@Language.GetString("tbl_ContentCategoryCode")</label>
+                        <label class="form-label" asp-for="CategoryCode">@Language.GetString("tbl_ContentCategoryCode")</label>
                         <input type="text" class="form-control" asp-for="@Model.CategoryCode" value="@Model.CategoryCode" disabled />
                         <span data-val-result="CategoryCode" class="text-danger"></span>
                     </div>

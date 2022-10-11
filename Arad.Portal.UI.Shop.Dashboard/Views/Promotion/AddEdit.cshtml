@@ -51,13 +51,13 @@
                      <div class="form-group col-12 col-md-3">
                          <div class="form-check m-auto d-inline-block mt-4 pt-2">
                             <input class="form-check-input" type="checkbox" value="@Model.AsUserCoupon" asp-for="@Model.AsUserCoupon" min="0">
-                            <label class="form-check-label" for="AsUserCoupon">
+                            <label class="form-check-label" asp-for="@Model.AsUserCoupon">
                                 @Language.GetString("Promotion_AsUserCoupon")
                             </label>
                         </div>
                      </div>
                      <div class="form-group col-12 col-md-3 codeSection d-none">
-                           <label class="form-label" for="@Model.CouponCode">@Language.GetString("Promotion_Code")</label><br />
+                           <label class="form-label" asp-for="@Model.CouponCode">@Language.GetString("Promotion_Code")</label><br />
                         <input type="text" class="form-control" id="CouponCode" value="@Model.CouponCode" @(!string.IsNullOrWhiteSpace(Model.CouponCode) ? "readonly" : "")>
                         <span data-val-result="CouponCode" class="text-danger"></span>
                      </div>
@@ -144,7 +144,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-12 col-md-3">
-                        <label class="form-label" for="discountTypeId">@Language.GetString("Type")</label><br />
+                        <label class="form-label" asp-for="DiscountTypeId">@Language.GetString("Type")</label><br />
                         <select class="form-control selectpicker" id="discountTypeId" data-live-search="true"
                                 asp-items="@(new SelectList(ViewBag.DiscountTypes,"Value","Text", (int)Model.DiscountType))">
                         </select>
@@ -160,12 +160,12 @@
                 </div>
                 <div class="row type2" style="display:none;">
                     <div class="col-12 col-md-3">
-                        <label class="form-label" for="boughtCount">@Language.GetString("BoughtCount")</label><br />
+                        <label class="form-label" asp-for="BoughtCount">@Language.GetString("BoughtCount")</label><br />
                         <input type="number" class="form-control" id="boughtCount" value="@Model.BoughtCount">
                         <span data-val-result="boughtCount" class="text-danger"></span>
                     </div>
                     <div class="col-12 col-md-3">
-                        <label class="form-label" for="promotedCountofUnit">@Language.GetString("PromotedCountofUnit")</label><br />
+                        <label class="form-label" asp-for="PromotedCountofUnit">@Language.GetString("PromotedCountofUnit")</label><br />
                         <input type="number" class="form-control" id="promotedCountofUnit" value="@Model.PromotedCountofUnit">
                         <span data-val-result="PromotedCountofUnit" class="text-danger"></span>
                     </div>
@@ -173,12 +173,12 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-12 col-md-4" id="PriceOrDiscount">
-                        <label class="form-label" for="value">@Language.GetString("Value")</label><br />
+                        <label class="form-label" asp-for="Value">@Language.GetString("Value")</label><br />
                         <input type="number" class="form-control" id="value" placeholder=" " value="@Model.Value">
                         <span data-val-result="value" class="text-danger"></span>
                     </div>
                     <div class="form-group col-12 col-md-4">
-                        <label class="form-label">@Language.GetString("FromDate")</label>
+                        <label asp-for="SDate" class="form-label">@Language.GetString("FromDate")</label>
                         
                         @if (CultureInfo.CurrentCulture.Name == "fa-IR")
                         {
@@ -198,10 +198,10 @@
                                 </span>
                             </div>
                         }
-                        <span data-val-result="FromDate" class="text-danger"></span>
+                        <span data-val-result="SDate" class="text-danger"></span>
                     </div>
                     <div class="form-group col-12 col-md-4">
-                       <label class="form-label">@Language.GetString("ToDate")</label>
+                       <label asp-for="EDate" class="form-label">@Language.GetString("ToDate")</label>
                         
                         @if (CultureInfo.CurrentCulture.Name == "fa-IR")
                         {
@@ -221,7 +221,7 @@
                                 </span>
                             </div>
                         }
-                        <span data-val-result="ToDate" class="text-danger"></span>
+                        <span data-val-result="EDate" class="text-danger"></span>
                     </div>
                 </div>
 

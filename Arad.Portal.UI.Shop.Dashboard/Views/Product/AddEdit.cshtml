@@ -131,24 +131,24 @@
                 <input type="hidden" value="@Model.ProductId" asp-for="ProductId" />
                 <div class="row">
                     <div class="form-group col-12 col-md-3">
-                          <label class="form-label">@Language.GetString("ProductType")</label>
+                          <label asp-for="ProductType" class="form-label">@Language.GetString("ProductType")</label>
                           <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.ProductType" asp-items="@(new MultiSelectList(ViewBag.ProductType,"Value","Text"))">
                         </select>
                         <span data-val-result="ProductType" class="text-danger"></span>
                     </div>
                     <div class="form-group col-12 col-md-3 d-none fileSec downloadType">
-                         <label class="form-label">@Language.GetString("DownloadLimitation")</label>
+                         <label asp-for="DownloadLimitationType" class="form-label">@Language.GetString("DownloadLimitation")</label>
                          <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.DownloadLimitationType" asp-items="@(new MultiSelectList(ViewBag.DownloadOptions,"Value","Text"))">
                         </select>
                         <span data-val-result="DownloadLimitationType" class="text-danger"></span>
                     </div>
                      <div class="form-group col-12 col-md-3 d-none fileSec timeDuration">
-                          <label class="form-label">@Language.GetString("AllowedDownloadDuration")</label>
+                          <label asp-for="AllowedDownloadDurationDay" class="form-label">@Language.GetString("AllowedDownloadDuration")</label>
                           <input type="number" min="1" class="form-control" asp-for="@Model.AllowedDownloadDurationDay" />
                            <span data-val-result="AllowedDownloadDurationDay" class="text-danger"></span>
                      </div>
                       <div class="form-group col-12 col-md-3 d-none fileSec downloadCnt">
-                           <label class="form-label">@Language.GetString("AllowedDownloadNumber")</label>
+                           <label asp-for="AllowedDownloadCount"  class="form-label">@Language.GetString("AllowedDownloadNumber")</label>
                             <input type="number" min="1" class="form-control" asp-for="@Model.AllowedDownloadCount" />
                             <span data-val-result="AllowedDownloadCount" class="text-danger"></span>
 
@@ -165,7 +165,7 @@
                 @if(Model.ProductFileName != string.Empty)
                 {
                      <div class="form-group col-12 col-md-3">
-                          <label class="form-label">
+                          <label class="form-label" asp-for="@Model.ProductFileName">
                         @Language.GetString("ProductFileName")
                     </label>
                        <input type="text" min="1" class="form-control" asp-for="@Model.ProductFileName" />
@@ -176,23 +176,23 @@
 
                 <div class="row">
                     <div class="form-group col-12 col-md-3">
-                        <label class="form-label">@Language.GetString("tbl_ProductGroup")</label>
+                        <label asp-for="@Model.GroupIds" class="form-label">@Language.GetString("tbl_ProductGroup")</label>
                         <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.GroupIds" asp-items="@(new MultiSelectList(ViewBag.ProductGroupList,"Value","Text"))">
                         </select>
                         <span data-val-result="GroupIds" class="text-danger"></span>
                     </div>
                     <div class="form-group col-12 col-md-3">
-                        <label class="form-label">@Language.GetString("tbl_UniqeCode")</label>
+                        <label asp-for="@Model.UniqueCode" class="form-label">@Language.GetString("tbl_UniqeCode")</label>
                         <input type="text" class="form-control" asp-for="@Model.UniqueCode" value="@Model.UniqueCode" />
                         <span data-val-result="UniqueCode" class="text-danger"></span>
                     </div>
                     <div class="form-group col-12 col-md-3">
-                        <label class="form-label">@Language.GetString("tbl_Inventory")</label>
+                        <label asp-for="@Model.Inventory" class="form-label">@Language.GetString("tbl_Inventory")</label>
                         <input type="number" class="form-control" asp-for="@Model.Inventory" value="@Model.Inventory" min="0" />
                         <span data-val-result="Inventory" class="text-danger"></span>
                     </div>
                     <div class="form-group col-12 col-md-3">
-                        <label class="form-label">@Language.GetString("Menu_ProductUnit")</label>
+                        <label asp-for="@Model.Unit.ProductUnitId" class="form-label">@Language.GetString("Menu_ProductUnit")</label>
                         <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.Unit.ProductUnitId" asp-items="@(new SelectList(ViewBag.ProductUnitList,"Value","Text"))">
                         </select>
                         <span data-val-result="productUnitId" class="text-danger"></span>
@@ -200,14 +200,14 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-12 col-md-3">
-                        <lable> @Language.GetString("AlertAndMessage_NotifyWhenCountIsLessThan")</lable>
+                        <lable asp-for="@Model.MinimumCount"> @Language.GetString("AlertAndMessage_NotifyWhenCountIsLessThan")</lable>
                         <input type="number" class="form-control" asp-for="@Model.MinimumCount" value="@Model.MinimumCount" min="0" />
 
                     </div>
                     <div class="form-group col-12 col-md-3 pt-1 pb-2">
                         <div class="form-check m-auto d-inline-block pt-3">
                             <input class="form-check-input" type="checkbox" value="@Model.ShowInLackOfInventory" asp-for="@Model.ShowInLackOfInventory">
-                            <label class="form-check-label" for="IsVendor">
+                            <label class="form-check-label" asp-for="@Model.ShowInLackOfInventory">
                                 @Language.GetString("ShowInLackOfInventory")
                             </label>
                         </div>
@@ -215,7 +215,7 @@
                     <div class="form-group col-12 col-md-3">
                         @if (ViewBag.Vendors != "-1")
                         {
-                            <label class="form-label">@Language.GetString("ProductVendor")</label>
+                            <label class="form-label" asp-for="@Model.SellerUserId">@Language.GetString("ProductVendor")</label>
                             <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.SellerUserId" asp-items="@(new SelectList(ViewBag.Vendors,"Value","Text"))">
                             </select>
                             <span data-val-result="sellerUserId" class="text-danger"></span>
@@ -224,7 +224,7 @@
                     <div class="form-group col-12 col-md-3 pt-4 pb-2">
                         <div class="form-check m-auto d-inline-block pt-3">
                             <input class="form-check-input" type="checkbox" value="@Model.IsPublishedOnMainDomain" asp-for="@Model.IsPublishedOnMainDomain" >
-                            <label class="form-check-label" for="IsVendor">
+                            <label class="form-check-label" asp-for="@Model.IsPublishedOnMainDomain">
                                 @Language.GetString("AlertAndMessage_IsPublishedOnMainDomain")
                             </label>
                         </div>
@@ -232,7 +232,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-12 col-md-3">
-                        <label class="form-label">@Language.GetString("tbl_ProductCode")</label>
+                        <label asp-for="@Model.ProductCode" class="form-label">@Language.GetString("tbl_ProductCode")</label>
                         <input type="text" class="form-control" asp-for="@Model.ProductCode" value="@Model.ProductCode" placeholder=" " disabled>
                         <span data-val-result="ProductCode" class="text-danger"></span>
                     </div>

@@ -146,7 +146,7 @@
                         if (result.status == "ModelError")
                         {
                             debugger;
-                            const spanErrorList = $('span[data-val-result]');
+                                const spanErrorList = $('span[data-valmsg-for]');
                             if (spanErrorList.length > 1)
                             {
                                 spanErrorList.each(function()
@@ -165,8 +165,8 @@
                             {
                                 result.modelStateErrors.forEach(function(value)
                                 {
-                                    $(`[data-val-result=${value.key}]`).html(value.errorMessage);
-                                    $(`[data-val-result=${value.key}]`).parent().addClass("has-error");
+                                    $(`[data-valmsg-for=${value.key}]`).html(value.errorMessage);
+                                    $(`[data-valmsg-for=${value.key}]`).parent().addClass("has-error");
                                 });
                             }
                         }

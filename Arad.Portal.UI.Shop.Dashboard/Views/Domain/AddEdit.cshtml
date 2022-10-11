@@ -72,20 +72,20 @@
 
                         <div class="form-check m-auto d-inline-block pt-3 fs-6 ms-1">
                             <input class="form-check-input" type="checkbox" value="@Model.IsDefault" asp-for="@Model.IsDefault">
-                            <label class="form-check-label" for="IsDefault">
+                            <label class="form-check-label" asp-for="IsDefault">
                                 @Language.GetString("DefaultDomain")
                             </label>
                         </div>
 
                          <div class="form-check m-auto d-inline-block pt-3 fs-6 ms-4">
                             <input class="form-check-input" type="checkbox" value="@Model.IsShop" asp-for="@Model.IsShop" >
-                            <label class="form-check-label" for="IsShop">
+                            <label class="form-check-label" asp-for="IsShop">
                                 @Language.GetString("design_IsShopDomain")
                             </label>
                         </div>
                     </div>
                     <div class="form-group col-12 col-md-3 ShippingTypeSection d-none">
-                         <label class="form-label" for="DefaultShippingTypeId">@Language.GetString("DefaultShippingType")</label><br />
+                         <label class="form-label" asp-for="DefaultShippingTypeId">@Language.GetString("DefaultShippingType")</label><br />
                         <select class="form-control selectpicker" data-live-search="true" asp-for="DefaultShippingTypeId" asp-items="@(new SelectList(ViewBag.ShippingTypeList,"Value","Text", Model.DefaultLanguageId))">
                         </select>
                         <span data-val-result="DefaultShippingTypeId" class="text-danger"></span>
@@ -94,7 +94,7 @@
                 <div class="row m-1">
                     <div class="form-check m-auto d-inline-block pt-3 fs-6 ms-4">
                             <input class="form-check-input" type="checkbox" value="@Model.IsMultiLinguals" asp-for="@Model.IsMultiLinguals">
-                            <label class="form-check-label" for="IsMultiLinguals">
+                        <label class="form-check-label" asp-for="IsMultiLinguals">
                                 @Language.GetString("design_IsMultiLingual")
                             </label>
                         </div>
@@ -109,23 +109,23 @@
                 </div>
                 <div class="row m-1">
                     <div class="form-group col-12 col-md-3">
-                        <label class="form-label" for="DefaultLanguageId">@Language.GetString("DefaultLanguage")</label><br />
+                        <label class="form-label" asp-for="DefaultLanguageId">@Language.GetString("DefaultLanguage")</label><br />
                         <select class="form-control selectpicker" data-live-search="true" asp-for="DefaultLanguageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text", Model.DefaultLanguageId))">
                         </select>
                         <span data-val-result="DefaultLanguageId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-12 col-md-3">
-                        <label class="form-label" for="groupName">@Language.GetString("DomainName")</label><br />
+                        <label class="form-label" asp-for="DomainName">@Language.GetString("DomainName")</label><br />
                         <input type="text" class="form-control" asp-for="DomainName" dir="ltr">
                         <span data-val-result="DomainName" class="text-danger"></span>
                     </div>
                      <div class="form-group col-12 col-md-3">
-                        <label class="form-label" for="groupName">@Language.GetString("Title")</label><br />
+                        <label class="form-label" asp-for="Title">@Language.GetString("Title")</label><br />
                         <input type="text" class="form-control" asp-for="Title" dir="ltr">
                         <span data-val-result="Title" class="text-danger"></span>
                     </div>
                     <div class="form-group col-12 col-md-3">
-                        <label class="form-label" for="languageId">@Language.GetString("DomainOwner")</label><br />
+                        <label class="form-label" asp-for="OwnerUserId">@Language.GetString("DomainOwner")</label><br />
                         <select class="form-control selectpicker" data-live-search="true" asp-for="OwnerUserId" asp-items="@(new SelectList(ViewBag.Vendors,"Value","Text", Model.OwnerUserId))">
                         </select>
                         <span data-val-result="OwnerUserId" class="text-danger"></span>
@@ -133,24 +133,24 @@
                 </div>
                 <div class="row m-1 InvoiceSection d-none">
                     <div class="form-group col-12 col-md-3">
-                        <label class="form-label" for="DefaultCurrencyId">@Language.GetString("DefaultCurrency")</label><br />
+                        <label class="form-label" asp-for="DefaultCurrencyId">@Language.GetString("DefaultCurrency")</label><br />
                         <select class="form-control selectpicker" data-live-search="true" asp-for="DefaultCurrencyId" asp-items="@(new SelectList( ViewBag.CurrencyList,"Value","Text", Model.DefaultCurrencyId))">
                         </select>
                         <span data-val-result="DefaultCurrencyId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-12 col-md-3">
-                        <label class="form-label" for="InvoiceNumberProcedure">@Language.GetString("tbl_InvoiceNumberCreationWay")</label><br />
+                        <label class="form-label" asp-for="InvoiceNumberProcedure">@Language.GetString("tbl_InvoiceNumberCreationWay")</label><br />
                         <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.InvoiceNumberProcedure" asp-items="@(new SelectList( ViewBag.InvoiceNumberEnum,"Value","Text", Model.InvoiceNumberProcedure))">
                         </select>
                         <span data-val-result="InvoiceNumberProcedure" class="text-danger"></span>
                     </div>
                     <div class="form-group col-12 col-md-3 invoiceInitialise">
-                        <label class="form-label" for="InvoiceNumberInitializer">@Language.GetString("FirstInvoiceNumberPattern")</label><br />
+                        <label class="form-label" asp-for="InvoiceNumberInitializer">@Language.GetString("FirstInvoiceNumberPattern")</label><br />
                         <input type="text" class="form-control" asp-for="@Model.InvoiceNumberInitializer" value="@Model.InvoiceNumberInitializer" />
                         <span data-val-result="InvoiceNumberInitializer" class="text-danger"></span>
                     </div>
                     <div class="form-group col-12 col-md-3 invoiceInitialise">
-                        <label class="form-label" for="IncreasementValue">@Language.GetString("IncreasementLevel")</label><br />
+                        <label class="form-label" asp-for="IncreasementValue">@Language.GetString("IncreasementLevel")</label><br />
                         <input type="text" class="form-control" asp-for="@Model.IncreasementValue" value="@Model.IncreasementValue" />
                         <span data-val-result="IncreasementValue" class="text-danger"></span>
                     </div>
@@ -272,7 +272,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="form-group col-10 col-md-3">
-                                        <label class="form-label" for="languageId">@Language.GetString("tbl_PaymentGateways")</label><br />
+                                        <label class="form-label" for="providerId">@Language.GetString("tbl_PaymentGateways")</label><br />
                                         <select class="form-control selectpicker" id="providerId" asp-items="@(new SelectList(ViewBag.Providers, "Value","Text"))" data-live-search="true">
                                         </select>
                                         <span data-val-result="providerId" class="text-danger"></span>

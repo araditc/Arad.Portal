@@ -49,12 +49,12 @@
                         <div class="form-group col-12 col-md-3">
                             <input type="hidden" value="@(string.IsNullOrWhiteSpace(Model.Icon) ? "fas fa-bomb" : Model.Icon)" asp-for="Icon" id="iconPick" />
 
-                            <label class="form-label">@Language.GetString("Menu_Icon")</label><br/>
+                            <label class="form-label" asp-for="Icon">@Language.GetString("Menu_Icon")</label><br />
                             <button id="iconPicktarget" class="btn btn-primary bg-gradient"></button>
                         </div>
                         
                         <div class="form-group col-12 col-md-3 invisible" id="urlSection">
-                            <label class="form-label">@Language.GetString("Url")</label>
+                            <label class="form-label" asp-for="Url">@Language.GetString("Url")</label>
                             <input type="text" class="form-control ltr" asp-for="@Model.Url" />
                             <span data-val-result="Url" class="text-danger"></span>
                         </div>

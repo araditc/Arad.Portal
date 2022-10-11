@@ -29,7 +29,7 @@
     </div>
     
     <div class="col-10 col-md-3">
-        <label class="form-label">@Language.GetString("PermissionTitle_Users")</label>
+        <label asp-for="@Model.UserIds" class="form-label">@Language.GetString("PermissionTitle_Users")</label>
                         <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.UserIds" asp-items="@(new MultiSelectList( ViewBag.DomainUsers,"Value","Text"))">
                         </select>
             <span data-val-result="UserIds" class="text-danger"></span>
