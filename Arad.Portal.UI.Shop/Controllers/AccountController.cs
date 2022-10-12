@@ -323,14 +323,14 @@ namespace Arad.Portal.UI.Shop.Controllers
 
             if (string.IsNullOrWhiteSpace(model.SecurityCode))
             {
-                ModelState.AddModelError("SecurityCode", Language.GetString("AlertAndMessage_ProfileConfirmPhoneError"));
+                ModelState.AddModelError("SecurityCode", Language.GetString("AlertAndMessage_SecurityCodeIsInvalid"));
             }
 
             OTP otp = OtpHelper.Get(model.FullCellPhoneNumber);
 
             if (otp == null)
             {
-                ModelState.AddModelError("SecurityCode", Language.GetString("AlertAndMessage_ProfileConfirmPhoneError"));
+                ModelState.AddModelError("SecurityCode", Language.GetString("AlertAndMessage_SecurityCodeIsInvalid"));
             }
             else
             {
@@ -341,7 +341,7 @@ namespace Arad.Portal.UI.Shop.Controllers
 
                 if (!string.IsNullOrWhiteSpace(model.SecurityCode) && !model.SecurityCode.Equals(otp.Code))
                 {
-                    ModelState.AddModelError("SecurityCode", Language.GetString("AlertAndMessage_ProfileConfirmPhoneTimeOut"));
+                    ModelState.AddModelError("SecurityCode", Language.GetString("AlertAndMessage_SecurityCodeIsInvalid"));
                 }
             }
 

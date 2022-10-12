@@ -2494,6 +2494,10 @@
     "Key": "AlertAndMessage_ProfileConfirmPhoneError"
   },
   {
+    "Value": "یکبار رمز نامعتبر است",
+    "Key": "AlertAndMessage_SecurityCodeIsInvalid"
+  },
+  {
     "Value": "عملیات با موفقیت انجام شد.",
     "Key": "AlertAndMessage_OperationSuccess"
   },

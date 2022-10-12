@@ -2501,6 +2501,11 @@
     "Key": "AlertAndMessage_ProfileConfirmPhoneError"
   },
   {
+    "Value": "security code is invalid.",
+    "Key": "AlertAndMessage_SecurityCodeIsInvalid"
+  },
+
+  {
     "Value": "The operation was successful.",
     "Key": "AlertAndMessage_OperationSuccess"
   },
