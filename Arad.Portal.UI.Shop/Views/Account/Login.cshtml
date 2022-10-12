@@ -62,7 +62,8 @@
                                       id="basic-addon1">
                                     <i class="fas fa-user"></i>
                                 </span>
-                                <input aria-describedby="basic-addon1" asp-for="Username" class="form-control" placeholder="@Language.GetString("AlertAndMessage_Username")" type="text">
+                               @* <input aria-describedby="basic-addon1" asp-for="Username" class="form-control" placeholder="@Language.GetString("AlertAndMessage_Username")" type="text">*@
+                                <input aria-describedby="basic-addon1" asp-for="Username" type="tel" class="form-control" placeholder="@Language.GetString("AlertAndMessage_Username")">
                             </div>
                             <span asp-validation-for="Username" class="text-danger form-validation-alert"></span>
                             <div class="col-12 input-group p-0 mb-1">
@@ -148,8 +149,20 @@
     </main>
    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap5/js/bootstrap.bundle.js"></script>
+    <script src="~/lib/intl-tel-input/js/intlTelInput.js"></script>
+    <script src="~/lib/intl-tel-input/js/utils.js"></script>
     <script>
-    function refreshCaptcha()
+        var cell = document.querySelector("#Username");
+        var cellPhoneInit = window.intlTelInput(cell,
+            {
+                initialCountry: "IR",
+                placeholderNumberType: "MOBILE",
+                separateDialCode: true,
+                nationalMode: true,
+                hiddenInput: "FullUserName"
+            });
+
+        function refreshCaptcha()
     {
         debugger;
         $("#imgCpatcha").attr('src', `@Url.Action("CaptchaImage", "Captcha")?${new Date().getTime()}`);

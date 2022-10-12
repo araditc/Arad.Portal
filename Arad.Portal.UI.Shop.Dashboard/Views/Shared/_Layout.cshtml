@@ -169,11 +169,11 @@
 
     <div class="container-fluid mt-2">
         <div class="row h-100">
-            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar shadow collapse shadow-lg" id="bd-docs-nav">
+            <nav class="col-md-3 col-xl-2 d-md-block bg-light sidebar shadow collapse shadow-lg" id="bd-docs-nav">
                 @await Component.InvokeAsync("SidebarMenu")
             </nav>
 
-            <main class="col-12 col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-2 flex-grow-1" id="mainContent">
+            <main class="col-12 col-md-9 ms-sm-auto col-xl-10 px-md-4 pt-2 flex-grow-1" id="mainContent">
                 @RenderBody()
             </main>
         </div>
@@ -239,38 +239,7 @@
                 },
                     1000);
 
-        @* if ('@isNotNullOperationResult' === 'True')
-                    {
-                    $("#toastPanel").show();
-                    bsAlert.show();
-
-                    if ("@isSuccess" === "False")
-                    {
-                    document.getElementById('mainToastBody').innerHTML = '<i class="fas fa-exclamation-triangle"></i> @operationResult.Message';
-                    document.getElementById('mainToastBody').classList.add('alert-danger');
-
-                    setTimeout(function()
-                    {
-                    $("#toastPanel").hide();
-                    },
-                    2000);
-                    }
-                    else
-                    {
-                    document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i> @operationResult.Message';
-                    document.getElementById('mainToastBody').classList.add('alert-success');
-
-                    if ("@string.IsNullOrWhiteSpace(operationResult.Url)" === "False")
-                    {
-                    setTimeout(function()
-                    {
-                    window.location.href = '@operationResult.Url';
-                    },
-                    2500);
-                    }
-                    }
-                    }*@
-               });
+             });
 
         window.addEventListener('resize', adjustSidebar);
 
@@ -301,7 +270,7 @@
                     $('#bd-docs-nav').removeClass("show");
                 }
             }
-
+            console.log(window.innerWidth);
             if (window.location.href.includes("/product/compare")) {
                 if (window.innerWidth <= 767) {
                     $(".compareSection").addClass("d-none")

@@ -195,12 +195,12 @@
                         {
                                     <div class="mt-4 p-2 bg-secondary bg-opacity-10 border rounded-3">
                                         <div class="row  mt-2">
-                                            <div class="col-12 col-md-3 col-lg-2">
-                                                <span>@Language.GetString("PriceValue") :</span>
+                                            <div class="col-6 col-md-3 col-lg-3">
+                                                <span>@Language.GetString("PriceValue"):</span>
                                             </div>
                                             @if (realPrice == Model.PriceValWithPromotion && Model.GiftProduct == null)
                                     {
-                                                <div class="col-12 col-md-3">
+                                                <div class="col-6 col-md-3 col-lg-5">
                                                     <p>
                                                         <mark>
                                                             @($"{Convert.ToInt64(@Model.PriceValWithPromotion):n0} {@ViewBag.Price.Prefix}")
@@ -212,14 +212,14 @@
                                     {
                                                 @if (Model.GiftProduct == null)
                                         {
-                                                    <div class="col-12 col-md-4 col-lg-3">
+                                                    <div class="col-6 col-md-3 col-lg-3">
                                                         <p>
                                                             <mark>
                                                         @($"{Convert.ToInt64(@Model.PriceValWithPromotion):n0}  {@ViewBag.Price.Prefix}");
                                                             </mark>
                                                         </p>
                                                     </div>
-                                                    <div class="col-12 col-md-4 col-lg-3">
+                                                    <div class="col-6 col-md-3 col-lg-3">
                                                         <p>
                                                             <s>
                                                         @realPrice + @ViewBag.Price.Prefix ;
@@ -229,14 +229,14 @@
                                         }
                                         else
                                         {
-                                                    <div class="col-12 col-md-4 col-lg-3">
+                                                    <div class="col-6 col-md-3 col-lg-3">
                                                         <p>
                                                             <mark>
                                                         @($"{Convert.ToInt64(@Model.PriceValWithPromotion):n0} {@ViewBag.Price.Prefix}");
                                                             </mark>
                                                         </p>
                                                     </div>
-                                                    <div class="col-12 col-md-4 col-lg-3">
+                                                    <div class="col-6 col-md-3 col-lg-3">
                                                         <p>@Language.GetString("byBuying")</p>
                                                         <span>@Model.Promotion.BoughtCount.Value</span>
                                                         <p>@Language.GetString("AsGift")</p>
@@ -251,19 +251,19 @@
 
                                     }
 
-                                            <div class="col-12 col-md-3 text-start">
+                                            <div class="col-6  col-lg-4 text-start">
                                                 <span>@Language.GetString("InventoryInStore")</span>
                                                 <span>@Model.Inventory</span>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-12 col-md-3 d-flex justify-content-center">
+                                            <div class="col-6 col-md-3 col-lg-4 d-flex justify-content-start">
                                                 <label class="lblMdl">@Language.GetString("OrderCnt") :</label>
                                             </div>
-                                            <div class="col-12 col-md-3">
+                                            <div class="col-6 col-md-3">
                                                 <input type="number" class="form-control" id="orderCnt" name="orderCnt" min="0" value="1" />
                                             </div>
-                                            <div class="col-12 col-md-6 d-flex justify-content-center">
+                                            <div class="col-6 col-md-4 d-flex justify-content-center">
                                                 <button type="button" id="btnAddToCart" class="btn btn-success  @(@Model.Inventory <= 0 ? "disabled" : "")" prid="@Model.ProductId">
                                                     <span class="shopping-cart">
                                                         <em class="fa fa-shopping-basket"></em>

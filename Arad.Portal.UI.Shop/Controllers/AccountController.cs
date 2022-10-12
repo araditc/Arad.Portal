@@ -158,7 +158,8 @@ namespace Arad.Portal.UI.Shop.Controllers
             }
 
             await HttpContext.SignOutAsync();
-            ApplicationUser user = await _userManager.FindByNameAsync(model.Username);
+            model.FullUserName = model.FullUserName.Replace("+", "");
+            ApplicationUser user = await _userManager.FindByNameAsync(model.FullUserName.Trim());
 
             if (user != null)
             {
@@ -425,8 +426,8 @@ namespace Arad.Portal.UI.Shop.Controllers
                 ModelState.AddModelError("Captcha", Language.GetString("AlertAndMessage_CaptchaIncorrectOrExpired"));
             }
 
-            model.FullCellPhoneNumber = model.FullCellPhoneNumber.Replace("+", "");
-            model.FullCellPhoneNumber = model.FullCellPhoneNumber.Replace(" ", "");
+            model.FullCellPhoneNumber = model.FullCellPhoneNumber.Replace("+", "").Trim();
+           
 
             if (string.IsNullOrWhiteSpace(model.FullCellPhoneNumber))
             {
