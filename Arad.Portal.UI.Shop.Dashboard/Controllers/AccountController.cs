@@ -178,6 +178,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        public ActionResult CheckCaptcha(string captcha)
+        {
+            return Ok(HttpContext.Session.ValidateCaptcha(captcha) ? new { Status = "success" } : new { Status = "error" });
+        }
+
+
+        [HttpGet]
+        [AllowAnonymous]
         public IActionResult ChangeLang([FromQuery] string langId)
         {
             var domainName = $"{HttpContext.Request.Host}";
@@ -199,42 +207,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 return Ok(true);
             }
             return Ok(false);
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> ChangePassword(string id)
-        {
-            string currentUserId = User.GetUserId();
-
-            string pass = Helpers.Utilities.GenerateRandomPassword
-                (new() { RequireDigit = false, RequireLowercase = true, RequireNonAlphanumeric = true, RequireUppercase = true, 
-                    RequiredLength = 10, RequiredUniqueChars = 1 });
-
-            ApplicationUser user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            if (!user.IsSystemAccount && user.Id != user.CreatorId )
-            {
-                return Forbid();
-            }
-
-            string token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            IdentityResult result = await _userManager.ResetPasswordAsync(user, token, pass);
-            if (!result.Succeeded)
-            {
-                return Ok(new { Result = result.Succeeded });
-            }
-
-            user.Modifications.Add(new() { DateTime = DateTime.Now, 
-                ModificationReason = Language.GetString("User_ModificationPasswordByAdmin"), 
-                UserName = User.GetUserName(), UserId = currentUserId });
-
-            result = await _userManager.UpdateAsync(user);
-
-            return Ok(new { Result = result.Succeeded, Data = pass });
         }
 
         [HttpGet]
@@ -777,9 +749,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         }
 
 
-
-        
-
         [HttpGet]
         public async Task<IActionResult> ChangeActivation(string id)
         {
@@ -850,29 +819,28 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ResetPassword()
+        public IActionResult ChangePassword()
         {
-            ResetPassword model = new();
-            return View("ResetPassword", model);
+            RegisterDTO registerDto = new();
+
+            return View(registerDto);
         }
 
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ResetPassword([FromForm] ResetPassword model)
+        public async Task<IActionResult> ChangePassword([FromForm] RegisterDTO model)
         {
-            #region validate
+            #region Validate
             if (!HttpContext.Session.ValidateCaptcha(model.Captcha))
             {
                 ModelState.AddModelError("Captcha", Language.GetString("AlertAndMessage_CaptchaIncorrectOrExpired"));
             }
 
-            if (string.IsNullOrWhiteSpace(model.UserName))
-            {
-                ModelState.AddModelError("UserName", Language.GetString("Validation_EnterUsername"));
-            }
+            model.FullCellPhoneNumber = model.FullCellPhoneNumber.Replace("+", "").Trim();
 
-            if (string.IsNullOrWhiteSpace(model.CellPhoneNumber))
+
+            if (string.IsNullOrWhiteSpace(model.FullCellPhoneNumber))
             {
                 ModelState.AddModelError("CellPhoneNumber", Language.GetString("Validation_EnterMobileNumber"));
             }
@@ -880,7 +848,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 PhoneNumberUtil phoneUtil = PhoneNumberUtil.GetInstance();
 
-                PhoneNumber phoneNumber = phoneUtil.Parse(model.CellPhoneNumber, "IR");
+                PhoneNumber phoneNumber = phoneUtil.Parse(model.FullCellPhoneNumber, "IR");
 
                 if (!phoneUtil.IsValidNumber(phoneNumber))
                 {
@@ -897,6 +865,30 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 }
             }
 
+            if (string.IsNullOrWhiteSpace(model.SecurityCode))
+            {
+                ModelState.AddModelError("SecurityCode", Language.GetString("AlertAndMessage_ProfileConfirmPhoneError"));
+            }
+
+            OTP otp = OtpHelper.Get(model.FullCellPhoneNumber);
+
+            if (otp == null)
+            {
+                ModelState.AddModelError("SecurityCode", Language.GetString("AlertAndMessage_ProfileConfirmPhoneError"));
+            }
+            else
+            {
+                if (otp.ExpirationDate >= DateTime.Now.AddMinutes(3))
+                {
+                    ModelState.AddModelError("SecurityCode", Language.GetString("AlertAndMessage_ProfileConfirmPhoneTimeOut"));
+                }
+
+                if (!string.IsNullOrWhiteSpace(model.SecurityCode) && !model.SecurityCode.Equals(otp.Code))
+                {
+                    ModelState.AddModelError("SecurityCode", Language.GetString("AlertAndMessage_ProfileConfirmPhoneTimeOut"));
+                }
+            }
+
             if (!ModelState.IsValid)
             {
                 List<AjaxValidationErrorModel> errors = new();
@@ -904,37 +896,102 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 foreach (string modelStateKey in ModelState.Keys)
                 {
                     ModelStateEntry modelStateVal = ModelState[modelStateKey];
-                    errors.AddRange(modelStateVal.Errors.Select(error => new AjaxValidationErrorModel 
-                    { Key = modelStateKey, ErrorMessage = error.ErrorMessage }));
+                    errors.AddRange(modelStateVal.Errors
+                        .Select(error => new AjaxValidationErrorModel { Key = modelStateKey, ErrorMessage = error.ErrorMessage }));
                 }
 
                 return Ok(new { Status = "ModelError", ModelStateErrors = errors });
             }
-
             #endregion
 
-            ApplicationUser user = await _userManager.FindByNameAsync(model.UserName);
+            var currentUser = await _userManager.FindByNameAsync(model.Username);
 
-            if (user == null)
+            string pass = Helpers.Utilities.GenerateRandomPassword(new()
             {
-                return Ok(new { Status = "Error", Message = Language.GetString("AlertAndMessage_NotFoundUser") });
+                RequireDigit = true,
+                RequireLowercase = true,
+                RequireNonAlphanumeric = false,
+                RequireUppercase = true,
+                RequiredLength = 6,
+                RequiredUniqueChars = 0
+            });
+            while (!Password.PasswordIsValid(true, true, true,
+                   true, false, pass))
+            {
+                pass = Password.GeneratePassword(true, true, true,
+                    true, false, 6);
             }
 
-            if (user.PhoneNumber != model.FullCellPhoneNumber.Replace("+",""))
+            Result result = await _createNotification.Send("AutomatedPasswordReset", currentUser, pass);
+            if (result.Succeeded)
             {
-                return Ok(new { Status = "Error", Message = Language.GetString("AlertAndMessage_NotFoundUser") });
+                var token = await _userManager.GeneratePasswordResetTokenAsync(currentUser);
+                var changePassResult =
+                    await _userManager.ResetPasswordAsync(currentUser, token, pass);
+
+                return Ok(changePassResult.Succeeded ?
+                    new { Status = "Success", Message = Language.GetString("AlertAndMessage_OperationSuccess") } :
+                    new { Status = "Error", Message = Language.GetString("AlertAndMessage_Error") });
             }
-
-            string otp = DataLayer.Helpers.Utilities.GenerateOtp();
-            HttpContext.Session.SetString("Otp", otp);
-            HttpContext.Session.SetString("UserName", user.UserName);
-            HttpContext.Session.SetString("OtpTime", DateTime.Now.ToString(CultureInfo.CurrentCulture));
-
-            Result result = await _createNotification.SendOtp("SendOtpForResetPassword", user, otp);
-
-            return Ok(result.Succeeded ? new { Status = "Success", result.Message } : new { Status = "Error", result.Message });
+            else
+                return Ok(new { Status = "Error", Message = Language.GetString("AlertAndMessage_Error") });
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> SendSecurityCode(string cellPhoneNumber)
+        {
+            #region validate
+            cellPhoneNumber = cellPhoneNumber.Replace("+", "");
+            cellPhoneNumber = cellPhoneNumber.Replace(" ", "");
+
+            if (string.IsNullOrWhiteSpace(cellPhoneNumber))
+            {
+                return Ok(new { Status = "Error", Message = Language.GetString("Validation_EnterMobileNumber") });
+            }
+
+            PhoneNumberUtil phoneUtil = PhoneNumberUtil.GetInstance();
+
+            PhoneNumber phoneNumber = phoneUtil.Parse(cellPhoneNumber, "IR");
+
+            if (!phoneUtil.IsValidNumber(phoneNumber))
+            {
+                return Ok(new { Status = "Error", Message = Language.GetString("Validation_MobileNumberInvalid1") });
+            }
+
+            PhoneNumberType numberType = phoneUtil.GetNumberType(phoneNumber); // Produces Mobile , FIXED_LINE 
+
+            if (numberType != PhoneNumberType.MOBILE)
+            {
+                return Ok(new { Status = "Error", Message = Language.GetString("Validation_MobileNumberInvalid2") });
+            }
+
+            OTP process = OtpHelper.Process(new()
+            {
+                Mobile = cellPhoneNumber,
+                Code = DataLayer.Helpers.Utilities.GenerateOtp(),
+                ExpirationDate = DateTime.Now.AddMinutes(3),
+                IsSent = false
+            });
+
+            if (process.IsSent)
+            {
+                return Ok(new { Status = "Error", Message = Language.GetString("AlertAndMessage_ProfileConfirmPhoneSending") });
+            }
+            #endregion
+
+            Result result = await _createNotification.SendOtp("SendOtp", cellPhoneNumber, process.Code);
+
+            if (!result.Succeeded)
+            {
+                ErrorLog errorLog = new() { Error = result.Message, Source = @"Account\SendSecurityCode", Ip = Request.HttpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString() };
+                await _errorLogRepository.Add(errorLog);
+
+                return Ok(new { Status = "Error", Message = Language.GetString("AlertAndMessage_SubmitOtpPleaseTryAgainLater") });
+            }
+
+            return Ok(new { Status = "Success", result.Message });
+        }
 
         [AllowAnonymous]
         public IActionResult UnAuthorize()

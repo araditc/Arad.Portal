@@ -16,6 +16,7 @@ namespace Arad.Portal.DataLayer.Models.User
 
         public string Email { get; set; }
 
+        public string Username { get; set; }
         public string Captcha { get; set; }
 
         public string SecurityCode { get; set; }

@@ -2410,6 +2410,14 @@
     "Key": "TextAndPlaceholder_Mobile_UserName"
   },
   {
+    "Value": "شماره تلفن همراه",
+    "Key": "TextAndPlaceholder_Mobile"
+  },
+  {
+    "Value": "نام کاربری",
+    "Key": "TextAndPlaceholder_UserName"
+  },
+  {
     "Value": "یکبار رمز",
     "Key": "TextAndPlaceholder_SecurityCode"
   },

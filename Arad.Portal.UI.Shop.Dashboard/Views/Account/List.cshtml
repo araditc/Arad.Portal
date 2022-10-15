@@ -153,7 +153,7 @@
                                     <a id=@($"editRecord_{@item.Id}") asp-action="EditUser" asp-controller="Account" asp-route-id="@item.Id" class="btn btn-sm btn-warning bg-gradient">
                                         @Language.GetString("btn_Edit")
                                     </a>
-                                       <a id=@($"resetPass_{@item.Id}") asp-action="ResetPassword" asp-controller="Account"  class="btn btn-sm btn-danger bg-gradient">
+                                       <a id=@($"resetPass_{@item.Id}") asp-action="ChangePassword" asp-controller="Account"  class="btn btn-sm btn-danger bg-gradient">
                                         @Language.GetString("btn_ChangePass")
                                     </a>
                                

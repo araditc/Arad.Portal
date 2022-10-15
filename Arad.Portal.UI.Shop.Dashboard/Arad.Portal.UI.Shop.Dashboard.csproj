@@ -595,6 +595,8 @@
     </Content>
     <Content Update="Views\Account\ChangePassword.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
     <Content Update="Views\Account\EditUser.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -606,9 +608,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="Views\Account\PageOrItemNotFound.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="Views\Account\ResetPassword.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="Views\Account\UnAuthorize.cshtml">

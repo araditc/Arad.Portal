@@ -85,6 +85,7 @@ using MongoDB.Driver;
 using Arad.Portal.DataLayer.Services;
 using Lucene.Net.Store;
 using Lucene.Net.Index;
+using System.Collections.Concurrent;
 
 namespace Arad.Portal.UI.Shop.Dashboard
 {
@@ -93,7 +94,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
         private readonly IWebHostEnvironment _environment;
         public IConfiguration Configuration { get; }
         public static string ApplicationPath { get; set; }
-
+        public static ConcurrentDictionary<string, OTP> OTP = new();
         //private static readonly IBasicDataRepository basicDataRepository;
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
