@@ -3030,5 +3030,13 @@
   {
     "Value": "Send",
     "Key": "Action_Send"
+  },
+  {
+    "Value": "Subset Groups",
+    "Key": "Design_SubsetGroups"
+  },
+  {
+    "Value": "Products in this group",
+    "Key": "Design_ProductsInGroup"
   }
 ]

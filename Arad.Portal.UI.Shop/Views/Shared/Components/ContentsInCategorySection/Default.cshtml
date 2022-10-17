@@ -15,7 +15,7 @@
                             <div class="bbb_deals_content">
                                 
                                 <div class="bbb_deals_info_line d-flex flex-row justify-content-center">
-                                    <a class="text-decoration-none" href="/blog/@item.ContentCode">
+                                    <a class="text-decoration-none text-dark" href="/blog/@item.ContentCode">
                                         @(item.Title)
                                     </a>
                                    
@@ -23,7 +23,7 @@
                                 <div class="available">
                                     <div class="available_line d-flex flex-row justify-content-center">
                                       
-                                        <div class="sold_stars ml-auto">
+                                        <div class="sold_stars m-auto">
                                             @for (int i = 1; i <= item.LikeRate; i++)
                                             {
                                                <i class="fas fa-star"></i>

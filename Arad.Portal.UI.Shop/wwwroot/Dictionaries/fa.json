@@ -3020,5 +3020,13 @@
   {
     "Value": "ارسال",
     "Key": "Action_Send"
+  },
+  {
+    "Value": "گروههای زیر مجموعه",
+    "Key": "Design_SubsetGroups"
+  },
+  {
+    "Value": "محصولات در این گروه",
+    "Key": "Design_ProductsInGroup"
   }
 ]

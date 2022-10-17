@@ -14,11 +14,8 @@
                             </div>
                             <div class="bbb_deals_content">
                                 <div class="bbb_deals_info_line d-flex flex-row justify-content-start">
-                                    <div class="bbb_deals_item_category">
-                                        @*<a href="/product/@item.ProductCode">@(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ?
-                                            item.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLangId).Name : item.MultiLingualProperties.FirstOrDefault().Name )</a>*@
-                                    </div>
-                                    <div class="bbb_deals_item_price_a ml-auto">
+                                    
+                                    <div class="bbb_deals_item_price_a m-auto">
                                      @if(item.OldPrice != 0 && item.OldPrice != item.PriceValWithPromotion)
                                         {
                                             <strike>@item.OldPrice</strike>
@@ -26,16 +23,16 @@
                                     </div>
                                 </div>
                                 <div class="bbb_deals_info_line d-flex flex-row justify-content-center">
-                                    <a class="text-decoration-none" href="/product/@item.ProductCode">
+                                    <a class="text-decoration-none text-dark" href="/product/@item.ProductCode">
                                         @(item.MultiLingualProperties.Any(_ => _.LanguageId == ViewBag.CurLangId) ?
                                         item.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == ViewBag.CurLangId).Name : item.MultiLingualProperties.FirstOrDefault().Name )
                                     </a>
-                                    <div class="bbb_deals_item_price ml-auto">@($"{@item.PriceValWithPromotion} {ViewBag.CurrencySymbol}")</div>
+                                    <div class="bbb_deals_item_price m-auto">@($"{@item.PriceValWithPromotion} {ViewBag.CurrencySymbol}")</div>
                                 </div>
                                 <div class="available">
                                     <div class="available_line d-flex flex-row justify-content-center">
-                                        <div class="available_title"> @Language.GetString("Available") <span>@item.Inventory</span></div>
-                                        <div class="sold_stars ml-auto">
+                                        <div class="available_title pe-3 me-3"> @Language.GetString("Available") <span>@item.Inventory</span></div>
+                                        <div class="sold_stars m-auto">
                                             @for (int i = 1; i <= item.LikeRate; i++)
                                             {
                                                <i class="fas fa-star"></i>
