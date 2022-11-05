@@ -77,6 +77,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 return (fileContent, mimeType);
             }
         }
+
         public IActionResult Index()
 
         {

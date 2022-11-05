@@ -2,8 +2,8 @@
 @model Arad.Portal.DataLayer.Models.User.LoginDTO
 @inject Arad.Portal.DataLayer.Contracts.General.SystemSetting.ISystemSettingRepository _systemSettingRepository
 @{
-    var dir = HelpersMothods.GetDirection(CultureInfo.CurrentCulture);
-    var lang = HelpersMothods.GetHtmlLang(CultureInfo.CurrentCulture);
+    var dir = HelpersMethods.GetDirection(CultureInfo.CurrentCulture);
+    var lang = HelpersMethods.GetHtmlLang(CultureInfo.CurrentCulture);
     Arad.Portal.DataLayer.Entities.General.SystemSetting.SystemSetting systemSetting
         = (await _systemSettingRepository.GetAll()).FirstOrDefault();
     Layout = null;

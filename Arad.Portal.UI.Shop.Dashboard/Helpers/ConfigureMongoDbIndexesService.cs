@@ -106,7 +106,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
 
             var contentCategoryCollection = db.GetCollection<DataLayer.Entities.General.ContentCategory.ContentCategory>("ContentCategory");
 
-            if (!contentCollection.Indexes.List().ToList().Any(i => i.GetValue("name").Equals($"{nameof(DataLayer.Entities.General.ContentCategory.ContentCategory.ParentCategoryId)}_1")))
+            if (!contentCategoryCollection.Indexes.List().ToList().Any(i => i.GetValue("name").Equals($"{nameof(DataLayer.Entities.General.ContentCategory.ContentCategory.ParentCategoryId)}_1")))
             {
                 var parentCategoryIndex = Builders<DataLayer.Entities.General.ContentCategory.ContentCategory>.IndexKeys.Descending(_ => _.ParentCategoryId);
                 generalOptions.Name = "ParentCategoryId_1";
@@ -114,7 +114,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                     cancellationToken: cancellationToken);
             }
 
-            if (!contentCollection.Indexes.List().ToList().Any(i => i.GetValue("name").Equals($"{nameof(DataLayer.Entities.General.ContentCategory.ContentCategory.CategoryType)}_1")))
+            if (!contentCategoryCollection.Indexes.List().ToList().Any(i => i.GetValue("name").Equals($"{nameof(DataLayer.Entities.General.ContentCategory.ContentCategory.CategoryType)}_1")))
             {
                 var categoryTypeIndex = Builders<DataLayer.Entities.General.ContentCategory.ContentCategory>.IndexKeys.Descending(_ => _.CategoryType);
                 generalOptions.Name = "CategoryType_1";
@@ -122,7 +122,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                     cancellationToken: cancellationToken);
             }
 
-            if (!contentCollection.Indexes.List().ToList().Any(i => i.GetValue("name").Equals($"{nameof(DataLayer.Entities.General.ContentCategory.ContentCategory.CategoryCode)}_1")))
+            if (!contentCategoryCollection.Indexes.List().ToList().Any(i => i.GetValue("name").Equals($"{nameof(DataLayer.Entities.General.ContentCategory.ContentCategory.CategoryCode)}_1")))
             {
                 var categoryCodeIndex = Builders<DataLayer.Entities.General.ContentCategory.ContentCategory>.IndexKeys.Descending(_ => _.CategoryCode);
                 uniqueOption.Name = "CategoryCode_1";
@@ -130,7 +130,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                     cancellationToken: cancellationToken);
             }
 
-            if (!contentCollection.Indexes.List().ToList().Any(i => i.GetValue("name").Equals($"{nameof(DataLayer.Entities.General.ContentCategory.ContentCategory.IsActive)}_1")))
+            if (!contentCategoryCollection.Indexes.List().ToList().Any(i => i.GetValue("name").Equals($"{nameof(DataLayer.Entities.General.ContentCategory.ContentCategory.IsActive)}_1")))
             {
                 var categoryIsActiveIndex = Builders<DataLayer.Entities.General.ContentCategory.ContentCategory>.IndexKeys.Descending(_ => _.IsActive);
                 generalOptions.Name = "IsActive_1";
@@ -138,14 +138,14 @@ namespace Arad.Portal.UI.Shop.Dashboard.Helpers
                     cancellationToken: cancellationToken);
             }
 
-            if (!contentCollection.Indexes.List().ToList().Any(i => i.GetValue("name").Equals($"{nameof(DataLayer.Entities.General.ContentCategory.ContentCategory.IsDeleted)}_1")))
+            if (!contentCategoryCollection.Indexes.List().ToList().Any(i => i.GetValue("name").Equals($"{nameof(DataLayer.Entities.General.ContentCategory.ContentCategory.IsDeleted)}_1")))
             {
                 var categoryIsDeletedIndex = Builders<DataLayer.Entities.General.ContentCategory.ContentCategory>.IndexKeys.Descending(_ => _.IsDeleted);
                 generalOptions.Name = "IsDeleted_1";
                 await contentCategoryCollection.Indexes.CreateOneAsync(new CreateIndexModel<DataLayer.Entities.General.ContentCategory.ContentCategory>(categoryIsDeletedIndex, generalOptions),
                      cancellationToken: cancellationToken);
             }
-            if (!contentCollection.Indexes.List().ToList().Any(i => i.GetValue("name").Equals("CategoryNames.LanguageId_1")))
+            if (!contentCategoryCollection.Indexes.List().ToList().Any(i => i.GetValue("name").Equals("CategoryNames.LanguageId_1")))
             {
                 var contentCategoryLanguageIndex = Builders<DataLayer.Entities.General.ContentCategory.ContentCategory>.IndexKeys.Descending("CategoryNames.LanguageId");
                 generalOptions.Name = "CategoryNames.LanguageId_1";

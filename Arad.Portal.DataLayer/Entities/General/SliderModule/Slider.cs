@@ -225,6 +225,4 @@ namespace Arad.Portal.DataLayer.Entities.General.SliderModule
         Blank,
         Parent
     }
-
-
 }

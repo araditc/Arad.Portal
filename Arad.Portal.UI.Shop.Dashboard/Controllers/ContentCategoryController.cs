@@ -108,9 +108,6 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
         }
 
-       
-
-
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] ContentCategoryDTO dto)
         {

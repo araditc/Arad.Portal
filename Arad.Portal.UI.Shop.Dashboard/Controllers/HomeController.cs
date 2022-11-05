@@ -3,13 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
+using Serilog;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -17,9 +12,11 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
     public class HomeController : Controller
     {
         private readonly IWebHostEnvironment _env;
-        public HomeController(IWebHostEnvironment env)
+        private readonly IHttpContextAccessor _accessor;
+        public HomeController(IWebHostEnvironment env, IHttpContextAccessor accessor)
         {
             _env = env;
+            _accessor = accessor;
         }
 
         [HttpGet]

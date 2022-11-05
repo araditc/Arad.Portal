@@ -2,7 +2,7 @@
 @model Arad.Portal.DataLayer.Models.Content.ContentDTO
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var dir = HelpersMothods.GetDirection(CultureInfo.CurrentCulture);
+    var dir = HelpersMethods.GetDirection(CultureInfo.CurrentCulture);
    
     List<ContentGlance> sidebarContents = (List<ContentGlance>)ViewBag.Sidbars;
     var like = User.Identity.IsAuthenticated && ViewBag.Like ? true : false;

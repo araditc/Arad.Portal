@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Serilog;
+using Microsoft.AspNetCore.Http;
 
 namespace Arad.Portal.UI.Shop.Dashboard
 {
@@ -38,6 +39,7 @@ namespace Arad.Portal.UI.Shop.Dashboard
             }
             
             CreateHostBuilder(args).Build().Run();
+
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args)

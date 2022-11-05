@@ -7,7 +7,7 @@ using System.Globalization;
 
 namespace Arad.Portal.GeneralLibrary.Utilities
 {
-    public class HelpersMothods
+    public class HelpersMethods
     {
 
         public static string GetDirection(CultureInfo currentCulture)

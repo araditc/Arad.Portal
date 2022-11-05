@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var alert = Language.GetString("AlertAndMessage_GotIt");
     var error = Language.GetString("AlertAndMessage_Error");
-    var lan = HelpersMothods.GetHtmlLang(CultureInfo.CurrentCulture);
+    var lan = HelpersMethods.GetHtmlLang(CultureInfo.CurrentCulture);
     var count = @Model.MultiLingualProperties.Count + 1;
      var baseAdd = Config["BaseAddress"];
 }

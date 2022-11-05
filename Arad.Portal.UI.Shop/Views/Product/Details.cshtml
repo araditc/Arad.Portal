@@ -1,7 +1,7 @@
 ﻿@model Arad.Portal.DataLayer.Models.Product.ProductOutputDTO
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var dir = HelpersMothods.GetDirection(CultureInfo.CurrentCulture);
+    var dir = HelpersMethods.GetDirection(CultureInfo.CurrentCulture);
    
     var realPrice = ViewBag.Price.PriceValue;
     var score = @Language.GetString("ProductScore");

@@ -6,7 +6,7 @@
 @using Arad.Portal.GeneralLibrary.Utilities;
 @{
     Layout = null;
-    var direction = HelpersMothods.GetDirection(CultureInfo.CurrentCulture);
+    var direction = HelpersMethods.GetDirection(CultureInfo.CurrentCulture);
     var baseAdd = _configuration["BaseAddress"];
 }
 <html dir="@direction" lang="@Model.LangSymbol">

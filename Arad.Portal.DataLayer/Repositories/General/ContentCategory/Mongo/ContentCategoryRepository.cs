@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Identity;
 using Arad.Portal.DataLayer.Models.Content;
 using Microsoft.AspNetCore.Hosting;
 using Arad.Portal.DataLayer.Contracts.General.Domain;
+using Arad.Portal.DataLayer.Repositories.General.Domain.Mongo;
 
 namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
 {
@@ -32,12 +33,12 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
         private readonly ContentContext _contentContext;
         private readonly LanguageContext _languageContext;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IDomainRepository _domainRepository;
+        private readonly DomainContext _domainContext;
 
         public ContentCategoryRepository(IHttpContextAccessor httpContextAccessor,
             IMapper mapper, ContentCategoryContext categoryContext,
             IWebHostEnvironment env,
-            IDomainRepository domainRepository,
+            DomainContext domainContext,
             UserManager<ApplicationUser> userManager,
             LanguageContext langContext, ContentContext contentContext)
             : base(httpContextAccessor, env)
@@ -47,7 +48,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
             _languageContext = langContext;
             _contentContext = contentContext;
             _userManager = userManager;
-            _domainRepository = domainRepository;
+            _domainContext = domainContext;
         }
         public async Task<Result> Add(ContentCategoryDTO dto)
         {
@@ -62,7 +63,16 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
                     .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
                 equallentEntity.CreatorUserName = _httpContextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
-               
+
+                //Filter specific claim    
+                var domainId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("RelatedDomain"))?.Value;
+
+                if (domainId == null)
+                {
+                    domainId = _domainContext.Collection.Find(_ => _.IsDefault == true).FirstOrDefault().DomainId;
+                }
+                equallentEntity.AssociatedDomainId = domainId;
+
                 equallentEntity.IsActive = true;
                 await _categoryContext.Collection.InsertOneAsync(equallentEntity);
                 result.Succeeded = true;
@@ -110,13 +120,14 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
 
         public async Task<List<string>> AllCategoryIdsWhichEndInContents(string domainName)
         {
-            var currentDomain = _domainRepository.FetchByName(domainName, false);
-            var defDomain = _domainRepository.GetDefaultDomain();
+            
+            var dbEntity = _domainContext.Collection.Find(_ => _.DomainName == domainName).FirstOrDefault();
+            var defDomain = _domainContext.Collection.Find(_ => _.IsDefault).FirstOrDefault();
 
             FilterDefinitionBuilder<Entities.General.Content.Content> builder = new();
             FilterDefinition<Entities.General.Content.Content> filterDef;
            
-            filterDef = builder.Eq(nameof(Entities.General.Content.Content.AssociatedDomainId), currentDomain.ReturnValue.DomainId);
+            filterDef = builder.Eq(nameof(Entities.General.Content.Content.AssociatedDomainId), dbEntity.DomainId);
            
             //TODO : doesnt work
             var cursor = await _contentContext.Collection.DistinctAsync<string>("ContentCategoryId", filterDef);
@@ -141,9 +152,7 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
                              .Find(_ => _.ContentCategoryId == tmp.ParentCategoryId).FirstOrDefault() : null;
                     }
                 }
-
             }
-           
             return finalList;
         }
 
@@ -454,7 +463,8 @@ namespace Arad.Portal.DataLayer.Repositories.General.ContentCategory.Mongo
                 FilterDefinitionBuilder<MultiLingualProperty> multiLingualBuilder = new();
                 FilterDefinition<MultiLingualProperty> multiLingualFilterDefinition = multiLingualBuilder.Eq("UrlFriend", urlFriend) ;
 
-                return !_categoryContext.Collection.Find(categoryBuilder.ElemMatch("CategoryNames", multiLingualFilterDefinition) & categoryBuilder.Ne("ContentCategoryId", contentCategoryId)).Any();
+                return !_categoryContext.Collection.Find(categoryBuilder.ElemMatch("CategoryNames", multiLingualFilterDefinition) &
+                           categoryBuilder.Ne("ContentCategoryId", contentCategoryId)).Any();
             }
         }
     }

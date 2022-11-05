@@ -11,8 +11,8 @@
 @model List<Arad.Portal.DataLayer.Models.DesignStructure.PageDesignContent>;
 @{
     Layout = null;
-    var direction = HelpersMothods.GetDirection(CultureInfo.CurrentCulture);
-    var lang = HelpersMothods.GetHtmlLang(CultureInfo.CurrentCulture);
+    var direction = HelpersMethods.GetDirection(CultureInfo.CurrentCulture);
+    var lang = HelpersMethods.GetHtmlLang(CultureInfo.CurrentCulture);
     var domainId = @ViewBag.DomainId;
     var rowCount = @Model.Count;
     var pageType = (int)((Enums.PageType)@ViewBag.PageType);
