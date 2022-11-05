@@ -40,6 +40,19 @@
     <link href="@Url.Content($"~/lib/font-awesome/css/all.css")" rel="stylesheet" />
   </head>
 <body style="font-family: IransansWeb" class="hold-transition login-page">
+
+
+    <div class="position-fixed left-50 top-0 p-5" id="toastPanel" style="z-index: 11;">
+        <div aria-atomic="true" aria-live="assertive" class="toast" id="mainToast" role="alert" autohide="false">
+            <div class="toast-header">
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body p-3 fs-5 rounded-3 text-center" id="mainToastBody">
+            </div>
+        </div>
+    </div>
+
+
     <div class="container mt-5">
         <div class="row">
             <div class="col-12 col-md-4 offset-md-4">
@@ -211,6 +224,20 @@
     <script src="@Url.Content($"~/lib/bootstrap5/js/bootstrap.bundle.js")"></script>
 
     <script>
+        $(document).ready(function(){
+            debugger;
+            if('@ViewBag.Message' != '')
+            {
+                $('#mainToastBody').html(`<i class="far fa-check-circle"></i>`+ '@ViewBag.Message');
+                $('#mainToastBody').addClass('alert-danger');
+                $("#toastPanel").show();
+                var toast = new bootstrap.Toast($("#mainToast"));
+                toast.show();
+                setTimeout(function () {
+                    $("#toastPanel").hide();
+                }, 2500);
+            }
+        })
 
     function refreshCaptcha()
     {

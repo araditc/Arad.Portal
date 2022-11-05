@@ -1182,7 +1182,7 @@
     "Key": "AlertAndMessage_CaptchaIsExpired"
   },
   {
-    "Value": "The captcha is invalid or expired.",
+    "Value": "invalid username or password.",
     "Key": "AlertAndMessage_InvalidUsernameOrPassword"
   },
   {
