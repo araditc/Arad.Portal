@@ -12,28 +12,28 @@
             font-size: 12px;
         }
 
-      
+
     </style>
 }
 
-<h4>  @Language.GetString("Menu_ProductSpecifications") </h4>
-<hr />
+    <h4>  @Language.GetString("Menu_ProductSpecifications") </h4>
+    <hr />
 
 
-<div class="row">
-    <div class="col-12">
-        <div class="card" id="addProductGroupCard">
-            <div class="card-header">
-                <h5 class="card-title">
-                    @(!string.IsNullOrWhiteSpace(Model.ProductSpecificationId)
-                   ? Language.GetString("EditProductSpecificationPart_Title")
-                   : Language.GetString("AddProductSpecificationPart_Title"))
+    <div class="row">
+        <div class="col-12">
+            <div class="card" id="addProductGroupCard">
+                <div class="card-header">
+                    <h5 class="card-title">
+                        @(!string.IsNullOrWhiteSpace(Model.ProductSpecificationId)
+                        ? Language.GetString("EditProductSpecificationPart_Title")
+                        : Language.GetString("AddProductSpecificationPart_Title"))
                 </h5>
             </div>
 
             <div class="card-body" id="addEditProductSpecificationCard">
                 <input type="hidden" value="@Model.ProductSpecificationId" asp-for="@Model.ProductSpecificationId" />
-                <div class="row align-items-center p-2" >
+                <div class="row align-items-center p-2">
                     <div class="form-group col-12 col-md-3">
                         <label class="form-label" for="languageId">@Language.GetString("LanguageName")</label><br />
                         <select class="form-control selectpicker" data-live-search="true" id="languageId" asp-items="@(new SelectList(ViewBag.LangList,"Value","Text"))">
@@ -53,43 +53,48 @@
                     </div>
                     <div class="form-group col-12 col-md-2">
                         <label class="form-label" asp-for="@Model.ControlType">@Language.GetString("UIControlType")</label><br />
-                         <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.ControlType" asp-items="@(new SelectList(ViewBag.ControlTypes,"Value","Text"))">
+                        <select class="form-control selectpicker" data-live-search="true" asp-for="@Model.ControlType" asp-items="@(new SelectList(ViewBag.ControlTypes,"Value","Text"))">
                         </select>
                         <span data-val-result="controlType" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-12 col-md-1" >
+                 
+                </div>
 
-                        <div class="float-end">
+                <div class="row align-items-center m-md-4 m-0">
+                    <div class="col-9">
+                        <div class="row  bg-secondary bg-opacity-25 py-2">
+                            <div class="form-group col-11 col-md-5">
+                                <label class="form-label" for="nameValuesInput">@Language.GetString("tbl_SpecificationValues")</label>
+                                <input type="text" class="form-control" id="nameValuesInput" placeholder='@Language.GetString("specificationName_placeHolder")'>
+
+                            </div>
+                            <div class=" form-group col-1" style="text-align:center;margin:auto;">
+                                <div class="float-end">
+                                    <button type="button" class="btn btn-success bg-gradient btn-sm mt-3 mb-3" onclick="addToValueList();">
+                                        <i class="fa fa-plus pt-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group col-6 col-md-5">
+                                <span data-val-result="SpecificationNameValues" class="text-danger"></span>
+                                <ul class="list-group" id="nameValuesList"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="d-flex justify-content-center">
+                            @*<div class="float-end">*@
                             <button type="button" class="btn btn-success bg-gradient btn-sm" onclick="addToTable();">
-                                <i class="fa fa-plus pt-1" ></i>
+                                <i class="fa fa-plus pt-1"></i>
                                 @Language.GetString("btn_Add")
                             </button>
+                        @*</div>*@
                         </div>
                     </div>
-                </div>
-
-                <div class="row align-items-center alert alert-secondary m-md-4 m-0">
-                    <div class="form-group col-11 col-md-3">
-                        <label class="form-label" for="nameValuesInput">@Language.GetString("tbl_SpecificationValues")</label>
-                        <input type="text" class="form-control" id="nameValuesInput" placeholder='@Language.GetString("specificationName_placeHolder")'>
-
-                    </div>
-                    <div class=" form-group col-1" style="text-align:center;margin:auto;">
-                        <div class="float-end">
-                            <button type="button" class="btn btn-success bg-gradient btn-sm mt-3 mb-3" onclick="addToValueList();">
-                                <i class="fa fa-plus pt-1" ></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="form-group col-6 col-md-3">
-                        <span data-val-result="SpecificationNameValues" class="text-danger"></span>
-                        <ul class="list-group" id="nameValuesList"></ul>
-                    </div>
-                    <div class="col-6 col-md-5"></div>
 
                 </div>
 
-                <div class="row mt-1" >
+                <div class="row mt-1">
                     <div class="card-body table-bordered  table-responsive p-0">
                         <table class="table table-hover">
                             <thead>
@@ -113,7 +118,7 @@
                                         <td>@(string.Join('|', item.NameValues))</td>
                                         <td>
                                             <button type="button" class="btn btn-danger bg-gradient" onclick="deleteFromTable(this);">
-                                                <i class="fa fa-trash" ></i>
+                                                <i class="fa fa-trash"></i>
                                             </button>
                                         </td>
                                     </tr>
@@ -167,13 +172,12 @@
             $(globalSender).closest("li").remove();
         }
         $(document).ready(function () {
-           
+
             if ('@ViewBag.LangId' != "") {
                 $("#languageId").val('@ViewBag.LangId');
                 $("#languageId").selectpicker("refresh");
             }
-            if('@Model.ProductSpecificationId' != "")
-            {
+            if ('@Model.ProductSpecificationId' != "") {
                 debugger;
                 $("#ControlType").val(@selectedVal);
                 $("#ControlType").selectpicker("refresh");
@@ -183,41 +187,41 @@
                 debugger;
                 var langId = $("#languageId").val();
                 if (langId != "-1") {
-                $.ajax({
-                    url:'@Url.Action("GetSpecificationGroupList", "ProductSpecification")'+"/"+ langId, 
-                    type: 'Get',
-                    dataType : 'json',
-                    success: function (result) {
-                        debugger;
-                        var options = "<option value=''> " +'@Language.GetString("AlertAndMessage_Choose")'+" </option>";
-                        if (result.status === "success") {
+                    $.ajax({
+                        url: '@Url.Action("GetSpecificationGroupList", "ProductSpecification")' + "/" + langId,
+                        type: 'Get',
+                        dataType: 'json',
+                        success: function (result) {
                             debugger;
-                            if (result.data.length != 0) {
-                                (result.data).forEach(function (item) {
-                                    var op = "<option value='" + item.value + "'>" + item.text + "</option>";
-                                    options += op;
-                                });
+                            var options = "<option value=''> " + '@Language.GetString("AlertAndMessage_Choose")' + " </option>";
+                            if (result.status === "success") {
+                                debugger;
+                                if (result.data.length != 0) {
+                                    (result.data).forEach(function (item) {
+                                        var op = "<option value='" + item.value + "'>" + item.text + "</option>";
+                                        options += op;
+                                    });
 
-                                $("#SpecificationGroupId").html(options);
-                                $("#SpecificationGroupId").val('@Model.SpecificationGroupId');
-                                $("#SpecificationGroupId").selectpicker("refresh");
+                                    $("#SpecificationGroupId").html(options);
+                                    $("#SpecificationGroupId").val('@Model.SpecificationGroupId');
+                                    $("#SpecificationGroupId").selectpicker("refresh");
+                                }
                             }
-                        }
                         },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        alert("@error");
-                        alert(xhr.status);
-                        alert(thrownError);
-                    }
-                   });
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert("@error");
+                            alert(xhr.status);
+                            alert(thrownError);
+                        }
+                    });
                 }
 
             });
 
             $("#btnAddProductSpecification").click(function () {
-            debugger;
+                debugger;
                 var flag = false;
-               
+
                 if ($("#SpecificationGroupId").val() == "") {
                     $("span[data-val-result='specificationGroupId']").html('@Language.GetString("AlertAndMessage_SelectSpecificationGroup")');
                 }
@@ -226,67 +230,64 @@
                     $("span[data-val-result='SpecificationNameValues']").html('@Language.GetString("AlertAndMessage_FillMultiLingualProperty")');
                     flag = true;
                 }
-           if (!flag) {
-            var dataModel = FillDataToSend();
-               $.ajax({
-                   url: "@Model.ProductSpecificationId" != "" ? '@Url.Action("Edit", "ProductSpecification")' : '@Url.Action("Add", "ProductSpecification")',
-                   data: dataModel,
-                   contentType: 'application/json',
-                   data: JSON.stringify(dataModel),
-                type: 'Post',
-                beforeSend: function () {
-                   /* AddLoading($("#addEditProductSpecificationCard"));*/
-                },
-                success: function (result) {
-                    debugger;
-                    if (result.status === "Success") 
-                    {
-                       
-                        document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>'+result.message;
-                        document.getElementById('mainToastBody').classList.add('alert-success');
-                        $("#toastPanel").show();
-                         var bsAlert = new bootstrap.Toast($("#mainToast"));
-                            bsAlert.show();
-                        setTimeout(function()
-                        {
-                            $("#toastPanel").hide();
-                                window.location.href = '@Url.Action("List")';
+                if (!flag) {
+                    var dataModel = FillDataToSend();
+                    $.ajax({
+                        url: "@Model.ProductSpecificationId" != "" ? '@Url.Action("Edit", "ProductSpecification")' : '@Url.Action("Add", "ProductSpecification")',
+                        data: dataModel,
+                        contentType: 'application/json',
+                        data: JSON.stringify(dataModel),
+                        type: 'Post',
+                        beforeSend: function () {
+                            /* AddLoading($("#addEditProductSpecificationCard"));*/
                         },
-                        3000);
-                    }else
-                    if (result.status === "ModelError") {
-                        var spanErrorList = $('span[data-val-result]');
-                        if (spanErrorList.length > 1) {
-                            spanErrorList.each(function() {
-                                $(this).html("");
-                                $(this).parent().removeClass("has-error");
-                            });
-                        } else {
-                            spanErrorList.html("");
-                            spanErrorList.parent().removeClass("has-error");
-                        }
-                        if (result.modelStateErrors != null && result.modelStateErrors.length > 0) {
+                        success: function (result) {
                             debugger;
-                                    result.modelStateErrors.forEach(function(value, index) {
-                                    $('[data-val-result=' + value.key + ']').append(value.errorMessage);
-                                    $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
-                                    });
+                            if (result.status === "Success") {
+
+                                document.getElementById('mainToastBody').innerHTML = '<i class="far fa-check-circle"></i>' + result.message;
+                                document.getElementById('mainToastBody').classList.add('alert-success');
+                                $("#toastPanel").show();
+                                var bsAlert = new bootstrap.Toast($("#mainToast"));
+                                bsAlert.show();
+                                setTimeout(function () {
+                                    $("#toastPanel").hide();
+                                    window.location.href = '@Url.Action("List")';
+                                },
+                                    3000);
+                            } else
+                                if (result.status === "ModelError") {
+                                    var spanErrorList = $('span[data-val-result]');
+                                    if (spanErrorList.length > 1) {
+                                        spanErrorList.each(function () {
+                                            $(this).html("");
+                                            $(this).parent().removeClass("has-error");
+                                        });
+                                    } else {
+                                        spanErrorList.html("");
+                                        spanErrorList.parent().removeClass("has-error");
                                     }
-                                    else
-                                    {
+                                    if (result.modelStateErrors != null && result.modelStateErrors.length > 0) {
+                                        debugger;
+                                        result.modelStateErrors.forEach(function (value, index) {
+                                            $('[data-val-result=' + value.key + ']').append(value.errorMessage);
+                                            $('[data-val-result=' + value.key + ']').parent().addClass("has-error");
+                                        });
+                                    }
+                                    else {
                                         showError(result.message);
-                                   }
-                                   }
-                    },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    alert("@error");
-                    alert(xhr.status);
-                    alert(thrownError);
-                },
-                complete: function () {
-                   /* removeLoading($("#addEditProductSpecificationCard"));*/
-                }
-                });
+                                    }
+                                }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert("@error");
+                            alert(xhr.status);
+                            alert(thrownError);
+                        },
+                        complete: function () {
+                            /* removeLoading($("#addEditProductSpecificationCard"));*/
+                        }
+                    });
                 }
             });
         });
@@ -297,14 +298,14 @@
             if ($("#nameValuesInput").val() != "") {
                 var val = $("#nameValuesInput").val();
                 var li = "";
-               
-                 li = "<li class='list-group-item'>" + val + "<i class='fa fa-times-circle'" +
-                        "onclick='deleteValue(this);' style='font-size:1rem;color:red;' class='float-end'></i></li>";
+
+                li = "<li class='list-group-item'>" + val + "<i class='fa fa-times-circle'" +
+                    "onclick='deleteValue(this);' style='font-size:1rem;color:red;' class='float-end'></i></li>";
 
                 $("#nameValuesList").append(li);
                 $("#nameValuesInput").val("");
             } else {
-               
+
                 showError('@Language.GetString("AlertAndMessage_FillSpecificationValue")');
             }
         }
@@ -312,8 +313,8 @@
             debugger;
             globalSender = sender;
             document.getElementById('confirmLabel').innerHTML = '@Language.GetString("AlertAndMessage_AreYouSure")';
-			document.getElementById('confirmBody').innerHTML = '@Language.GetString("AlertAndMessage_DeleteSpecificationValue")';
-			$('#showModal').modal('show');
+            document.getElementById('confirmBody').innerHTML = '@Language.GetString("AlertAndMessage_DeleteSpecificationValue")';
+            $('#showModal').modal('show');
         }
         function FillDataToSend() {
             debugger;
@@ -324,7 +325,7 @@
 
             obj.SpecificationGroupId = $("#SpecificationGroupId").val();
             obj.ControlType = parseInt($("#ControlType").val());
-           
+
             $("#multiLingualList tr").each(function () {
                 debugger;
 
@@ -355,7 +356,7 @@
                 flag = true;
             }
             if ($("#languageId").val() == "-1") {
-                 $("span[data-val-result='languageId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
+                $("span[data-val-result='languageId']").html('@Language.GetString("AlertAndMessage_FieldEssential")');
                 flag = true;
             }
             if ($("#nameValuesList li").length == 0) {

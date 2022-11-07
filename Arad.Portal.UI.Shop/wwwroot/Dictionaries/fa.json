@@ -60,6 +60,10 @@
     "Key": "btn_Save"
   },
   {
+    "Value": "حذف تصویر",
+    "Key": "btn_ImageUploadDelete"
+  },
+  {
     "Value": "ذخیره محصول",
     "Key": "btn_SaveProduct"
   },

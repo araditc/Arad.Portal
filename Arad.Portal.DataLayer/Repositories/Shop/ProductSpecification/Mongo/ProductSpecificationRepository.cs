@@ -214,7 +214,7 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                 var pageSize = Convert.ToInt32(filter["PageSize"]);
                 var langId = filter["LanguageId"].ToString();
                 long totalCount = await _productContext.SpecificationCollection.Find(c => true).CountDocumentsAsync();
-                var list = _productContext.SpecificationCollection.AsQueryable().Skip((page - 1) * pageSize)
+                var list = _productContext.SpecificationCollection.AsQueryable().Where(_=>!_.IsDeleted).Skip((page - 1) * pageSize)
                    .Take(pageSize).Select(_ => new ProductSpecificationViewModel()
                    {
                       ProductSpecificationId = _.ProductSpecificationId,
@@ -222,7 +222,6 @@ namespace Arad.Portal.DataLayer.Repositories.Shop.ProductSpecification.Mongo
                       SpecificationNameValues = _.SpecificationNameValues.Any(a=>a.LanguageId == langId) ?
                       _.SpecificationNameValues.First(a => a.LanguageId == langId) : 
                       _.SpecificationNameValues.First()
-                     
                    }).ToList();
 
                 result.CurrentPage = page;

@@ -53,6 +53,10 @@
     "Key": "btn_Save"
   },
   {
+    "Value": "delete image",
+    "Key": "btn_ImageUploadDelete"
+  },
+  {
     "Value": "Save Product",
     "Key": "btn_SaveProduct"
   },

@@ -103,6 +103,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 ViewBag.Path = staticFileStorageURL;
                 var groupList = await _productGroupRepository.GetAlActiveProductGroup(defLangId, currentUserId);
                 ViewBag.ProductGroupList = groupList;
+                ViewBag.ShopUrl = _configuration["ProductUrl"];
                 var unitList = _unitRepository.GetAllActiveProductUnit(defLangId);
                 ViewBag.ProductUnitList = unitList;
             }

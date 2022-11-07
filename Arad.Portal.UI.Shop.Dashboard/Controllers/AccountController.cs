@@ -38,6 +38,8 @@ using Arad.Portal.DataLayer.Contracts.General.Error;
 using AutoMapper;
 using MongoDB.Driver;
 using MongoDB.Bson;
+using Arad.Portal.DataLayer.Contracts.General.User;
+using Arad.Portal.DataLayer.Contracts.General.CountryParts;
 
 namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 {
@@ -59,10 +61,12 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
         private readonly IDomainRepository _domainRepository;
         private readonly IErrorLogRepository _errorLogRepository;
         private readonly CreateNotification _createNotification;
-        private readonly UserContext _userContext;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly ICountryRepository _countryRepository;
+       
 
-        
+
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             UserExtensions userExtension,
@@ -77,8 +81,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             ICurrencyRepository currencyRepository,
             IDomainRepository domainRepository,
             IErrorLogRepository errorLogRepository,
-            UserContext userContext,
             IMapper mapper,
+            ICountryRepository countryRepository,
+            IUserRepository userRepository,
             IMessageTemplateRepository messageTemplateRepository)
         {
             _userManager = userManager;
@@ -97,7 +102,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             _createNotification = createNotification;
             _errorLogRepository = errorLogRepository;
             _mapper = mapper;
-            _userContext = userContext;
+            _userRepository = userRepository;
+            _countryRepository = countryRepository;
         }
 
         [HttpGet]
@@ -240,8 +246,9 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             {
                 var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var userEntity = _userManager.Users.FirstOrDefault(_ => _.Id == currentUserId);
-                filterDef = builder.Ne(nameof(ApplicationUser.Id), currentUserId);
-                    
+                // filterDef = builder.Ne(nameof(ApplicationUser.Id), currentUserId);
+
+                var users = _userManager.Users.Where(_ => _.Id != currentUserId);
 
                 NameValueCollection queryParams = HttpUtility.ParseQueryString(Request.QueryString.ToString());
 
@@ -257,45 +264,46 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                 if (!string.IsNullOrWhiteSpace(queryParams["role"]))
                 {
-                    filterDef = builder.And(filterDef, builder.Eq(nameof(ApplicationUser.UserRoleId), queryParams["role"]));
+                    //filterDef = builder.And(filterDef, builder.Eq(nameof(ApplicationUser.UserRoleId), queryParams["role"]));
+                    users = users.Where(_ => _.UserRoleId == queryParams["role"]);
                 }
 
                 if (!string.IsNullOrWhiteSpace(queryParams["name"]))
                 {
-                    
-                    filterDef = builder.And(filterDef, builder.Regex(_=>_.Profile.FirstName, new(queryParams["name"].ToLower())));
+
+                    //filterDef = builder.And(filterDef, builder.Regex(_=>_.Profile.FirstName, new(queryParams["name"].ToLower())));
+                    users = users.Where(_ => _.Profile.FirstName.ToLower().Contains(queryParams["name"].ToLower()));
                 }
 
                 if (!string.IsNullOrWhiteSpace(queryParams["userName"]))
                 {
                     //query = query.Where(c => c.UserName.ToLower().Contains(queryParams["userName"].ToLower()));
-                    filterDef = builder.And(filterDef, builder.Regex(_ => _.UserName, new BsonRegularExpression(queryParams["userName"].ToLower())));
+                    //filterDef = builder.And(filterDef, builder.Regex(_ => _.UserName, new BsonRegularExpression(queryParams["userName"].ToLower())));
+                    users = users.Where(_ => _.UserName.ToLower().Contains(queryParams["userName"].ToLower()));
                 }
 
 
-                long count = _userContext.Collection.Find(filterDef).CountDocuments();
+                long count = users.Count();
 
                 //var lst = _userManager.Users.fin.OrderBy(x => x.CreationDate).ThenBy(x => x.Profile.LastName)
                 //    .Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
-                var lst = _userContext.Collection
-                 .Find(filterDef)
-                   .Project(_ =>
-                       new UserListView()
-                       {
-                           Id = _.Id,
-                           PhoneNumber = _.PhoneNumber,
-                           IsActive = _.IsActive,
-                           Name = _.Profile.FirstName,
-                           IsSystem = _.IsSystemAccount,
-                           LastName = _.Profile.LastName,
-                           UserName = _.UserName,
-                           UserRoleId = _.UserRoleId,
-                           RoleName = !string.IsNullOrWhiteSpace(_.UserRoleId) ? _roleRepository.FetchRole(_.UserRoleId).Result.RoleName : "",
-                           CreateDate = _.CreationDate,
-                           //persianCreateDate = _.CreationDate,
-                           IsDelete = _.IsDeleted
-                       }).Sort(Builders<ApplicationUser>.Sort.Descending(a => a.CreationDate)).Skip((page - 1) * pageSize).Limit(pageSize).ToList();
+                
+                var lst = users.Select(_=> new UserListView()
+                {
+                    Id = _.Id,
+                    PhoneNumber = _.PhoneNumber,
+                    IsActive = _.IsActive,
+                    Name = _.Profile.FirstName,
+                    IsSystem = _.IsSystemAccount,
+                    LastName = _.Profile.LastName,
+                    UserName = _.UserName,
+                    UserRoleId = _.UserRoleId,
+                    RoleName = !string.IsNullOrWhiteSpace(_.UserRoleId) ? _roleRepository.FetchRole(_.UserRoleId).Result.RoleName : "",
+                    CreateDate = _.CreationDate,
+                    //persianCreateDate = _.CreationDate,
+                    IsDelete = _.IsDeleted
+                }).ToList().OrderByDescending(_=>_.CreateDate).Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
                 result = new PagedItems<UserListView>()
                 {
@@ -999,95 +1007,99 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             return View();
         }
 
-        
+
         //private async Task SetViewBag()
         //{
-            //List<Country> countries = await _countryRepository.GetAll();
-            //string iranCountryId = countries.Any(c => c.Iso.Equals("IR")) ? countries.First(c => c.Iso.Equals("IR")).Id : "";
+        //List<Country> countries = await _countryRepository.GetAll();
+        //string iranCountryId = countries.Any(c => c.Iso.Equals("IR")) ? countries.First(c => c.Iso.Equals("IR")).Id : "";
 
-            //ViewBag.IranCountryId = iranCountryId;
-            //ViewBag.Countries = new SelectList(countries, "Id", "Name", iranCountryId);
-            //ViewBag.Roles = new SelectList(await _roleRepository.GetAll(), "Id", "Title");
-       // }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Profile([FromForm] UserProfileDTO model)
+        //ViewBag.IranCountryId = iranCountryId;
+        //ViewBag.Countries = new SelectList(countries, "Id", "Name", iranCountryId);
+        //ViewBag.Roles = new SelectList(await _roleRepository.GetAll(), "Id", "Title");
+        // }
+        [HttpGet]
+        public async Task<IActionResult> Profile()
         {
-            if (!ModelState.IsValid)
-            {
-                //await SetViewBag();
-                return View(model);
-            }
+            string userId = User.GetUserId();
+            ApplicationUser user = await _userManager.FindByIdAsync(userId);
 
-            //if (_userManager.Users.Any(_ => _.PhoneNumber == model.PhoneNumber && !_.UserName.Equals(model.UserName)))
-            //{
-            //    ViewBag.OperationResult = new OperationResult { Message = Language.GetString("Validation_MobileNumberAlreadyRegistered"), Succeeded = false };
-            //    //await SetViewBag();
-            //    return View(model);
-            //}
-
-            ApplicationUser user = await _userManager.FindByIdAsync(User.GetUserId());
             if (user == null)
             {
                 return RedirectToAction("PageOrItemNotFound", "Account");
             }
 
-            //updating claims
-            List<IdentityUserClaim<string>> claims = user.Claims;
-            IdentityUserClaim<string> claim = new() { ClaimType = ClaimTypes.GivenName, ClaimValue = user.Profile.FullName };
-            IdentityUserClaim<string> foundClaim = claims.Find(c => c.ClaimType == ClaimTypes.GivenName);
-            if (foundClaim != null)
-            {
-                user.Claims.Remove(foundClaim);
-            }
-
-            string userName = user.UserName;
-            _mapper.Map(model, user);
-            user.UserName = userName;
-            model.UserName = userName;
-            user.Claims.Add(claim);
-
-            // saving image
-            string result = SaveImage(user.Id.ToString());
-            if (!string.IsNullOrWhiteSpace(result))
-            {
-                ViewBag.OperationResult = new OperationResult { Message = result, Succeeded = false };
-                //await SetViewBag();
-                return View(model);
-            }
-
-            IdentityResult updateResult = await _userManager.UpdateAsync(user);
-            ViewBag.OperationResult = new OperationResult
-            {
-                Message = Language.GetString($"AlertAndMessages_{(updateResult.Succeeded ? "OperationDoneSuccessfully" : "OperationFailed")}"),
-                Succeeded = updateResult.Succeeded,
-                Url = Url.Action("Index", "Home", new { Area = "" })
-            };
             //await SetViewBag();
-            return View(model);
+            var lst = _userRepository.GetAddressTypes();
+            ViewBag.AddressTypes = lst;
+            UserProfileDTO dto = _mapper.Map<UserProfileDTO>(user.Profile);
+            dto.UserName = user.UserName;
+            dto.UserID = user.Id;
 
-            string SaveImage(string id)
-            {
-                //if (!string.IsNullOrWhiteSpace(model.FileContent) && !string.IsNullOrWhiteSpace(model.FileName) && model.FileContent != "undefined" && model.FileName != "undefined")
-                //{
-                //    UploadPicResult uploadResult = ProfilePic.UploadProfilePic(new() { FileName = model.FileName, ImageBase64 = model.FileContent, Id = id, _env = _env });
+            var countries = _countryRepository.GetAllCountries();
+            ViewBag.Countries = countries;
+            ViewBag.LangList = _languageRepository.GetAllActiveLanguage();
+            var lanIcon = HttpContext.Request.Path.Value.Split("/")[1];
+            ViewBag.LanIcon = lanIcon;
+            var currencyList = _currencyRepository.GetAllActiveCurrency();
+            ViewBag.CurrencyList = currencyList;
 
-                //    if (uploadResult.UploadResult)
-                //    {
-                //        user.Profile.Avatar = uploadResult.UploadedAddress;
-                //        model.ProfileDto.Avatar = uploadResult.UploadedAddress;
-                //    }
-                //    else
-                //    {
-                //        return uploadResult.ErrorMessage;
-                //    }
-                //}
+            //await SetViewBag();
 
-                return "";
-            }
+            return View(dto);
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Profile([FromBody] UserProfileDTO dto)
+        {
+            JsonResult result;
+            var errors = new List<AjaxValidationErrorModel>();
+            if (!ModelState.IsValid)
+            {
+
+                foreach (var modelStateKey in ModelState.Keys)
+                {
+                    var modelStateVal = ModelState[modelStateKey];
+                    errors.AddRange(modelStateVal.Errors.Select(error => new AjaxValidationErrorModel
+                    { Key = modelStateKey, ErrorMessage = error.ErrorMessage }));
+                }
+                result = Json(new { Status = "ModelError", ModelStateErrors = errors });
+            }
+            else
+            {
+                var user = await _userManager.FindByIdAsync(dto.UserID);
+                var pro = _mapper.Map<DataLayer.Models.User.Profile>(dto);
+                var localStaticFileStorageURL = _configuration["LocalStaticFileStorage"];
+                var path = "Images/UserProfiles";
+                var img = new Image()
+                {
+                    Content = dto.FileContent,
+                    Title = dto.FileName
+                };
+
+
+                var res = ImageFunctions.SaveImageModel(img, path, localStaticFileStorageURL);
+                if (res.Key != Guid.Empty.ToString())
+                {
+                    pro.ProfilePhoto.ImageId = res.Key;
+                    pro.ProfilePhoto.Url = res.Value;
+                    pro.ProfilePhoto.Content = "";
+                }
+
+                pro.FullName = dto.FirstName + " " + dto.LastName;
+                user.UserName = dto.UserName;
+                user.Profile = pro;
+
+                var updateRes = await _userManager.UpdateAsync(user);
+
+                result = Json(updateRes.Succeeded ? new { Status = "Success", Message = Language.GetString("AlertAndMessage_OperationSuccess") }
+               : new { Status = "Error", Message = Language.GetString("AlertAndMessage_OperationFailed") });
+
+            }
+            return result;
+
+        }
+
     }
 }
 

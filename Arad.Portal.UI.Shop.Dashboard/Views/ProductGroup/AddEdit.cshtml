@@ -144,15 +144,18 @@
                                     }
                                     else
                                     {
-                                         <img id="groupImage" onclick="ViewImage('@Model.GroupImage.Url')" style="cursor: pointer" imgid="@(!string.IsNullOrWhiteSpace(@Model.GroupImage.ImageId) ? @Model.GroupImage.ImageId : "-1")"
-                                         class="profile-user-img img-fluid img-circle" src="@(!string.IsNullOrWhiteSpace(@Model.GroupImage.Content) ? @Model.GroupImage.Content : "/imgs/NoImage.png")" alt="@(!string.IsNullOrWhiteSpace(@Model.GroupImage.Title) ? @Model.GroupImage.Title : "productGroup Image")">
+                                         <img id="groupImage" onclick="ViewImage('')" style="cursor: pointer" imgid="-1"
+                                            class="profile-user-img img-fluid img-circle" src="/imgs/NoImage.png" alt="productGroup Image">
                                     }
 
                                 </div>
                                 <hr>
-                                <div class="border">
+                                <div class="border row">
                                     <label class="custom-file-label float-start" for="image">@Language.GetString("ChangeImage")</label>
                                     <input accept="image/x-png,image/jpeg" type="file" class="btn btn-sm float-end" name="image" id="image" onchange="getURL(this)">
+                                </div>
+                                <div class="py-2 row">
+                                <input type="button" id="btnDeleteImageUpload" value="@Language.GetString("btn_ImageUploadDelete")" class="d-none btn btn-outline-danger bg-gradient" /> 
                                 </div>
                             </div>
                             <!-- /.card-body -->
@@ -316,6 +319,7 @@
                 $("#groupImage").attr("imgid", "-1");
                 fileContent = url;
                 fileName = currentFileName;
+                $("#btnDeleteImageUpload").removeClass("d-none");
             });
             $("#languageId").change(function(){
                   var langId = $("#languageId").val();
@@ -416,6 +420,16 @@
                         });
                 }
 
+            });
+
+
+            $("#btnDeleteImageUpload").click(function(){
+                $("#groupImage").attr('src', "/imgs/NoImage.png");
+                $("#groupImage").attr("imgid", "");
+                fileContent = "";
+                fileName = "";
+                $("#btnDeleteImageUpload").addClass("d-none");
+                $("#image").val("");
             });
         });
 

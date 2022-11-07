@@ -220,11 +220,10 @@
                         {
                             var src = item.Images.Any(_ => _.IsMain) ?
                                 item.Images.FirstOrDefault(_ => _.IsMain).Url : @Url.Content($"~/imgs/NoImage.png");
-
-                            var img = $"<img class='smlImg' src='{$"../../filemanager/getscaledimageOnWidth?path={src}&width={75}"}'>";
+                           
                             <tr class="ListCell">
                                 <td>@(++i)</td>
-                                <td>@Html.Raw(img)</td>
+                                <td><img src="@(Url.Action("GetScaledImageOnWidth", "filemanager")+$"?path={src}&width={75}")" /></td>
                                 <td>@(item.MultiLingualProperties.Any(_=>_.LanguageId == langId) ? item.MultiLingualProperties.First(_ => _.LanguageId == langId).Name : "")</td>
                                 <td>@(item.Unit != null && item.Unit.UnitNames.Any(_=>_.LanguageId == langId) ? item.Unit.UnitNames.First(_ => _.LanguageId == langId).Name : "")</td>
                                 <td>@(string.Join("|", item.GroupNames))</td>
@@ -237,10 +236,13 @@
                                 <td>@item.CreationDate</td>
                                 <td dir="ltr">@(item.MultiLingualProperties.Any(_=>_.LanguageId == langId) ? item.MultiLingualProperties.First(_ => _.LanguageId == langId).UrlFriend : "")</td>
                                 <td>
-                                    <a class="btn btn-sm btn-dark bg-gradient" 
-                                    href=@((item.MultiLingualProperties.Any(_=>_.LanguageId == langId) && !string.IsNullOrWhiteSpace(item.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == langId).UrlFriend)) ? $"~{item.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == langId).UrlFriend}"  : $"~/product/{item.ProductCode}" ) >
+                                    <button class="btn btn-sm btn-dark bg-gradient" 
+                                    data-url=@((item.MultiLingualProperties.Any(_=>_.LanguageId == langId) && 
+                                    !string.IsNullOrWhiteSpace(item.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == langId).UrlFriend)) ?
+                                    $"{item.MultiLingualProperties.FirstOrDefault(_=>_.LanguageId == langId).UrlFriend}" : $"/product/{item.ProductCode}") onclick="ShowProduct(this)">
+                                    
                                         <i class="fa fa-eye"></i>@Language.GetString("btn_Show")
-                                    </a>
+                                    </button>
                                 </td>
                                 <td>
                                     
@@ -327,38 +329,45 @@
 
             $("#btnSearch").click(function () {
                 debugger;
-                var queryString = "?LanguageId=" + $("#cmbLangIdFilter").val();
+                var queryString = "?";
                 if ($("#cmbProductGroupFilter").val().length != 0) {
                     var groupIds = $("#cmbProductGroupFilter").val().join('|');
-                    queryString += "&groupIds=" + groupIds;
+                    queryString += queryString == "?" ? "groupIds=" + groupIds : "&groupIds=" + groupIds;
                 }
                 if ($("#txtProductNameFilter").val() != "") {
-                    queryString += "&name=" + $("#txtProductNameFilter").val().trim();
+                    queryString += queryString == "?" ? "name=" + $("#txtProductNameFilter").val().trim() : "&name=" + $("#txtProductNameFilter").val().trim();
                 }
                 if ($("#txtDescriptionFilter").val() != "") {
-                    queryString += "&desc=" + $("#txtDescriptionFilter").val().trim();
+                    queryString += queryString == "?" ? "desc=" + $("#txtDescriptionFilter").val().trim() : "&desc=" + $("#txtDescriptionFilter").val().trim();
                 }
                 if ($("#txtUniqueCodeFilter").val() != "") {
-                    queryString += "&code=" + $("#txtUniqueCodeFilter").val().trim();
+                    queryString += queryString == "?" ? "code=" + $("#txtUniqueCodeFilter").val().trim() : "&code=" + $("#txtUniqueCodeFilter").val().trim();
                 }
                 if ($("#dtpFromCreationDate").val() != "") {
-                    queryString += "&from=" + $("#dtpFromCreationDate").val().trim();
+                    queryString += queryString == "?" ? "from=" + $("#dtpFromCreationDate").val().trim() : "&from=" + $("#dtpFromCreationDate").val().trim();
                 }
                 if ($("#dtpToCreationDate").val() != "") {
                     queryString += "&to=" + $("#dtpToCreationDate").val().trim();
                 }
-                if ($("#txtLeastProduct").val() != "0") {
-                    queryString += "&inventory=" + $("#txtLeastProduct").val();
+                if ($("#txtLeastProduct").val() != "0" && $("#txtLeastProduct").val() != "") {
+                    queryString += queryString == "?" ? "inventory=" + $("#txtLeastProduct").val() : "&inventory=" + $("#txtLeastProduct").val();
                 }
                 if ($("#chbProductsOnPromotion").is(":checked")) {
-                    queryString += "&promotion=true";
+                    queryString += queryString == "?" ? "promotion=true" : "&promotion=true";
                 }
                 if ($("#chbExistentProducts").is(":checked")) {
-                    queryString += "&exist=true";
+                    queryString += queryString == "?" ? "exist=true" : "&exist=true" ;
                 }
                 window.location.href = '@Url.Action("List", "Product")' + queryString;
             });
         });
+
+        function ShowProduct(sender)
+        {
+            var url = $(sender).attr("data-url");
+            var final = `${'@ViewBag.ShopUrl'}/${url}`;
+            window.open(final);
+        }
         function EntityDelete(id) {
             debugger;
              entityId = id;

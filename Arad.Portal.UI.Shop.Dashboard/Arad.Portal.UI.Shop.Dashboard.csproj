@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Account\Profile.cshtml" />
     <Content Remove="Views\Shared\Components\LoginProfile\Default.cshtml" />
     <Content Remove="Views\Shared\Components\MultiLingual\Default.cshtml" />
     <Content Remove="wwwroot\Template\Content\SliderWithSubtitle.jpg" />
@@ -609,6 +608,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="Views\Account\PageOrItemNotFound.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Views\Account\Profile.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="Views\Account\UnAuthorize.cshtml">
