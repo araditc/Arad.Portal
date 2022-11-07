@@ -305,7 +305,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         }
                     }
                     Result<string> saveResult = await _productRepository.Add(dto);
-
+                    Result luceneResult = new Result();
                     if (saveResult.Succeeded)
                     {
                         #region add to LuceneIndex 
@@ -375,7 +375,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                                 TagKeywordList = dto.MultiLingualProperties.Any(_ => _.LanguageId == lanId) ?
                                 dto.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).TagKeywords : new List<string>()
                             };
-                            _luceneService.AddItemToExistingIndex(Path.Combine(mainPath, cul.Trim()), obj, true);
+                            luceneResult = _luceneService.AddItemToExistingIndex(Path.Combine(mainPath, cul.Trim()), obj, true);
                             if(dto.IsPublishedOnMainDomain)
                             {
                                 if(!DirectoryReader.IndexExists(FSDirectory.Open(Path.Combine(mainDomainPath, cul.Trim()))))
@@ -394,7 +394,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                         _codeGenerator.SaveToDB(dto.ProductCode);
                     }
-                    result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
+                    result = Json(saveResult.Succeeded && luceneResult.Succeeded ? new { Status = "Success", saveResult.Message }
                     : new { Status = "Error", saveResult.Message });
                 }else
                 {
@@ -481,6 +481,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         }
                     }
                     Result saveResult = await _productRepository.UpdateProduct(dto);
+                    Result luceneResult = new Result();
                     if (saveResult.Succeeded)
                     {
                         #region Update lucene Index
@@ -516,7 +517,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                                 dto.MultiLingualProperties.FirstOrDefault(_ => _.LanguageId == lanId).TagKeywords : new List<string>()
                             };
                            
-                            _luceneService.UpdateItemInIndex(indexPath, dto.ProductId, obj, true);
+                            luceneResult = _luceneService.UpdateItemInIndex(indexPath, dto.ProductId, obj, true);
                             if(!previousPublishState  && dto.IsPublishedOnMainDomain)
                             {
                                 _luceneService.AddItemToExistingIndex(mainDomainIndexPath, obj, true);
@@ -532,7 +533,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                         }
                         #endregion
                     }
-                    result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
+                    result = Json(saveResult.Succeeded && luceneResult.Succeeded ? new { Status = "Success", saveResult.Message }
                     : new { Status = "Error", saveResult.Message });
                 }else
                 {

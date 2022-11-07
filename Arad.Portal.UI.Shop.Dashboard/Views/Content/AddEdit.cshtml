@@ -616,15 +616,15 @@
         var inActive = '@Language.GetString("InActive")';
         var editorBodyVar;
         $(document).ready(function() {
-            $("#SeoTitle").characterCounter(function() {
-                //opacity : ".8",
-                max: 70,
-                    color : "red"
+            $("#SeoTitle").characterCounter({
+             //opacity : ".8",
+             max: 70,
+             color: "red"
             });
-            $("#SeoDescription").characterCounter(function() {
-                //opacity : ".8",
-                max: 150,
-                    color : "red"
+            $("#SeoDescription").characterCounter({
+                 //opacity : ".8",
+                 max: 150,
+                 color: "red"
             });
             //TagInput
             $("input[name='tagKeyWords']").amsifySuggestags();
@@ -711,10 +711,12 @@
                     $("span[data-val-result='ContentProviderName']").html('@Language.GetString("AlertAndMessage_FillEssentialFields")');
                     flag = true;
                 }
-                //console.log("validation passed");
+                
+                var urlFriend =$("#UrlFriend").val(); 
+                 var contentId = '@Model.ContentId' == '' ? "" : '@Model.ContentId' ;
                 if (!flag) {
                     $.ajax({
-                        url: `@Url.Action("CheckUrlFriendUniqueness", "Content")?id=${@Model.ContentId}&url=${$("#UrlFriend").val()}`,
+                        url: `@Url.Action("CheckUrlFriendUniqueness", "Content")?id=${contentId}&url=${urlFriend}`,
                         type: 'Get',
                         dataType: 'json',
                         success: function(result) {

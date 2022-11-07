@@ -244,9 +244,10 @@
                     flag = true;
                 }
                 var urlFriend = $("#urlFriend").val();
+                var catId = '@Model.ContentCategoryId' == '' ? "" : '@Model.ContentCategoryId';
                 if (!flag) {
                     $.ajax({
-                            url: `@Url.Action("CheckUrlFriendUniqueness", "ContentCategory")?id=${@Model.ContentCategoryId}&url=${urlFriend}`, 
+                            url: `@Url.Action("CheckUrlFriendUniqueness", "ContentCategory")?id=${catId}&url=${urlFriend}`, 
                             type: 'Get',
                             dataType: 'json',
                             success: function (result) {

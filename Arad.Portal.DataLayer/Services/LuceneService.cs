@@ -18,6 +18,7 @@ using Lucene.Net.Store;
 using Arad.Portal.DataLayer.Contracts.General.Language;
 using System.IO;
 using Microsoft.Extensions.Configuration;
+using Serilog;
 
 namespace Arad.Portal.DataLayer.Services
 {
@@ -100,8 +101,9 @@ namespace Arad.Portal.DataLayer.Services
                 Writer.Commit();
                 res.Succeeded = true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Log.Fatal("Error in luceneService AddItemToExistingIndex" + ex.ToString() + "******" + ex.InnerException);
                 res.Message = ConstMessages.ErrorInSaving;
             }
             Writer.Dispose();
@@ -204,8 +206,9 @@ namespace Arad.Portal.DataLayer.Services
                 Writer.Commit();
                 res.Succeeded = true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Log.Fatal("Error in luceneService DeleteItemFromExistingIndex" + ex.ToString() + "******" + ex.InnerException);
                 res.Message = ConstMessages.InternalServerErrorMessage;
             }
             Writer.Dispose();
@@ -285,10 +288,12 @@ namespace Arad.Portal.DataLayer.Services
                 }
                 Writer.UpdateDocument(new Term("ID", id), d);
                 Writer.Commit();
+                Writer.Dispose();
                 res.Succeeded = true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Log.Fatal("Error in luceneService UpdateItemInIndex" + ex.ToString() + "******" + ex.InnerException);
                 res.Message = ConstMessages.ExceptionOccured;
             }
             return res;

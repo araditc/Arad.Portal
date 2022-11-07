@@ -231,6 +231,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     }
                    
                     Result<string> saveResult = await _contentRepository.Add(dto);
+                    Result luceneResult = new Result();
                     var domainId = User.GetClaimValue("RelatedDomain");
                     if (saveResult.Succeeded)
                     {
@@ -247,6 +248,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                             var contentList = _contentRepository.AllContents(domainId);
                             _luceneService.BuildContentIndexesPerLanguage(contentList, mainPath);
+                            luceneResult.Succeeded = true;
                         }
                         else
                         {
@@ -259,7 +261,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                                 GroupNames = new List<string> { dto.ContentCategoryName },
                                 TagKeywordList = dto.TagKeywords
                             };
-                            _luceneService.AddItemToExistingIndex(mainPath, obj, false);
+                           luceneResult =  _luceneService.AddItemToExistingIndex(mainPath, obj, false);
                         }
                        
                       
@@ -268,7 +270,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
 
                         _codeGenerator.SaveToDB(dto.ContentCode);
                     }
-                    result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
+                    result = Json(saveResult.Succeeded && luceneResult.Succeeded ? new { Status = "Success", saveResult.Message }
                     : new { Status = "Error", saveResult.Message });
                 }
             }
@@ -321,7 +323,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                     }
 
                     Result saveResult = await _contentRepository.Update(dto);
-                    if(saveResult.Succeeded)
+                    Result luceneRes = new Result();
+                    if (saveResult.Succeeded)
                     {
                         #region update luceneIndex
                         var mainPath = Path.Combine(_configuration["LocalStaticFileStorage"], "LuceneIndexes", domainId, "Content");
@@ -334,10 +337,10 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                             GroupNames = new List<string> { dto.ContentCategoryName},
                             TagKeywordList = dto.TagKeywords
                         };
-                        _luceneService.UpdateItemInIndex(mainPath, dto.ContentId, obj, false);
+                        luceneRes = _luceneService.UpdateItemInIndex(mainPath, dto.ContentId, obj, false);
                         #endregion
                     }
-                    result = Json(saveResult.Succeeded ? new { Status = "Success", saveResult.Message }
+                    result = Json(saveResult.Succeeded && luceneRes.Succeeded ? new { Status = "Success", saveResult.Message }
                     : new { Status = "Error", saveResult.Message });
                 }
             }

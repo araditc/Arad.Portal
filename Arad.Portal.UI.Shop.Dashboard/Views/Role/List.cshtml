@@ -37,7 +37,6 @@
                     <th>@Language.GetString("Role_CreatorUserName")</th>
                     <th>@Language.GetString("CreationDate")</th>
                     <th>@Language.GetString("ActivationState")</th>
-                    <th>@Language.GetString("TableHeader_Modifications")</th>
                     <th></th>
                 </tr>
             </thead>
@@ -60,18 +59,6 @@
                                     else
                                     {
                                         <button onclick='changeActivation("@item.Id")' class="btn-sm btn btn-danger bg-gradient">@Language.GetString("InActive")</button>
-                                    }
-                                }
-                            </td>
-                            <td class="ListCell">
-                                @{
-                                    if (item.HasModifications)
-                                    {
-                                        <button onclick="getLatestModifications('@item.Id')" class="btn btn-sm btn-primary bg-gradient">@Language.GetString("btn_Show")</button>
-                                    }
-                                    else
-                                    {
-                                        <span>@Language.GetString("WithoutModification")</span>
                                     }
                                 }
                             </td>

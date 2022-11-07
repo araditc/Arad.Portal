@@ -154,8 +154,10 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <button aria-controls="bd-docs-nav" aria-expanded="false" aria-label="Toggle docs navigation" 
-                             class="nav-link btn bg-gradient btn-sm btn-outline-success d-md-flex px-3 ms-3 collapsed" data-bs-target="#bd-docs-nav" 
+                          @*d-md-flex *@
+                            @*aria-label="Toggle docs navigation"*@
+                            <button aria-controls="bd-docs-nav" aria-expanded="false"
+                             class="nav-link btn bg-gradient btn-sm btn-outline-success px-3 ms-3" data-bs-target="#bd-docs-nav" 
                               data-bs-toggle="collapse" type="button">
                                 <span class="navbar-toggler-icon"></span>
                             </button>
@@ -169,7 +171,8 @@
 
     <div class="container-fluid mt-2">
         <div class="row h-100">
-            <nav class="col-md-3 col-xl-2 d-md-block bg-light sidebar shadow collapse shadow-lg" id="bd-docs-nav">
+            @*sidebar d-md-block*@
+            <nav class="col-md-3 col-xl-2 bg-light shadow collapse shadow-lg" id="bd-docs-nav">
                 @await Component.InvokeAsync("SidebarMenu")
             </nav>
 
@@ -270,7 +273,7 @@
                     $('#bd-docs-nav').removeClass("show");
                 }
             }
-            console.log(window.innerWidth);
+           // console.log(window.innerWidth);
             if (window.location.href.includes("/product/compare")) {
                 if (window.innerWidth <= 767) {
                     $(".compareSection").addClass("d-none")
@@ -291,6 +294,7 @@
                     }
                 });
         };
+
         function setLang(lang) {
             debugger;
             var currentCulture = '@CultureInfo.CurrentCulture.Name';
