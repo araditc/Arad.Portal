@@ -92,6 +92,8 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
             
             try
             {
+                var domainId = User.GetClaimValue("RelatedDomain");
+                var domainName = _domainRepository.FetchDomain(domainId);
                 result = await _productRepository.List(Request.QueryString.ToString());
                 var currentUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var defLangId = _lanRepository.GetDefaultLanguage(currentUserId).LanguageId;
@@ -103,7 +105,7 @@ namespace Arad.Portal.UI.Shop.Dashboard.Controllers
                 ViewBag.Path = staticFileStorageURL;
                 var groupList = await _productGroupRepository.GetAlActiveProductGroup(defLangId, currentUserId);
                 ViewBag.ProductGroupList = groupList;
-                ViewBag.ShopUrl = _configuration["ProductUrl"];
+                ViewBag.ShopUrl = domainName;
                 var unitList = _unitRepository.GetAllActiveProductUnit(defLangId);
                 ViewBag.ProductUnitList = unitList;
             }
